@@ -108,15 +108,6 @@
     "arcadeTurnPowerMult": 1.2
   },
   {
-    "customClassIco": "!#ui/gameuiskin#image_in_progress_ico"
-  },
-  {
-    "customImage": "!#ui/unitskin#image_in_progress"
-  },
-  {
-    "customTooltipImage": "ui/aircrafts/image_in_progress"
-  },
-  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "RHA_tank",
@@ -282,13 +273,16 @@
           "armorThickness": 24.0
         },
         "gun_mask_01_dm": {
-          "armorThickness": 24.0
+          "armorThickness": 24.0,
+          "armorClass": "CHA_tank"
         },
         "gun_mask_02_dm": {
-          "armorThickness": 24.0
+          "armorThickness": 24.0,
+          "armorClass": "CHA_tank"
         },
         "gun_mask_03_dm": {
-          "armorThickness": 24.0
+          "armorThickness": 24.0,
+          "armorClass": "CHA_tank"
         },
         "turret_back_dm": {
           "armorThickness": 24.0
@@ -1191,6 +1185,66 @@
             "name": "ammo_turret_55_dm"
           },
           {
+            "name": "ammo_turret_56_dm"
+          },
+          {
+            "name": "ammo_turret_57_dm"
+          },
+          {
+            "name": "ammo_turret_58_dm"
+          },
+          {
+            "name": "ammo_turret_59_dm"
+          },
+          {
+            "name": "ammo_turret_60_dm"
+          },
+          {
+            "name": "ammo_turret_61_dm"
+          },
+          {
+            "name": "ammo_turret_62_dm"
+          },
+          {
+            "name": "ammo_turret_63_dm"
+          },
+          {
+            "name": "ammo_turret_64_dm"
+          },
+          {
+            "name": "ammo_turret_65_dm"
+          },
+          {
+            "name": "ammo_turret_66_dm"
+          },
+          {
+            "name": "ammo_turret_67_dm"
+          },
+          {
+            "name": "ammo_turret_68_dm"
+          },
+          {
+            "name": "ammo_turret_69_dm"
+          },
+          {
+            "name": "ammo_turret_70_dm"
+          },
+          {
+            "name": "ammo_turret_71_dm"
+          },
+          {
+            "name": "ammo_turret_72_dm"
+          },
+          {
+            "name": "ammo_turret_73_dm"
+          },
+          {
+            "name": "ammo_turret_74_dm"
+          },
+          {
+            "name": "ammo_turret_75_dm"
+          },
+          {
             "onHit": {
               "damageType": "cumulative",
               "expl": 0.4,
@@ -1642,6 +1696,9 @@
           "role": "loader"
         },
         {
+          "substitute": "commander"
+        },
+        {
           "substitute": "machine_gunner"
         }
       ],
@@ -1653,30 +1710,28 @@
           "role": "driver"
         },
         {
-          "substitute": "gunner"
+          "substitute": "commander"
         },
         {
           "substitute": "machine_gunner"
         }
       ],
-      "commander": [
-        {
-          "dmPart": "commander_dm"
-        },
-        {
-          "role": "commander"
-        },
-        {
-          "substitute": "machine_gunner"
-        },
-        {
-          "substitute": "gunner"
-        }
-      ],
+      "commander": {
+        "dmPart": "commander_dm",
+        "role": "commander",
+        "substitute": "machine_gunner"
+      },
       "machine_gunner": {
         "dmPart": "machine_gunner_dm",
         "role": "radio_gunner"
       }
+    }
+  },
+  {
+    "gunConvergence": {
+      "distance": 400.0,
+      "vertical": true,
+      "horizontal": true
     }
   },
   {
@@ -1690,6 +1745,7 @@
           "blk": "gameData/Weapons/groundModels_weapons/37mm_kan_m38_user_cannon.blk",
           "emitter": "bone_gun_barrel",
           "flash": "emtr_gun_flame_01",
+          "useEmitter": true,
           "maxAdditionalPitch": 0.0,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
@@ -1698,7 +1754,7 @@
           "speedYaw": 16.0,
           "speedPitch": 4.0,
           "fireConeAngle": 1.0,
-          "bullets": 150,
+          "bullets": 127,
           "salvoAmount": 100.0,
           "ChainfireTime": 0.0,
           "DelayAfterShoot": 5.0,

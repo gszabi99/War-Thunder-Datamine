@@ -176,7 +176,7 @@
           "armorThickness": 30.0
         },
         "turret_07_back_dm": {
-          "armorThickness": 70.0
+          "armorThickness": 5.0
         },
         "turret_06_back_dm": {
           "armorThickness": 20.0
@@ -204,9 +204,6 @@
         },
         "turret_01_front_dm": {
           "armorThickness": 20.0
-        },
-        "turret_01_back_dm": {
-          "armorThickness": 5.0
         },
         "turret_back_dm": {
           "armorThickness": 20.0
@@ -249,6 +246,10 @@
         },
         "turret_03_top_dm": {
           "armorThickness": 5.0
+        },
+        "turret_01_back_dm": {
+          "armorThickness": 5.0,
+          "hidableInViewer": true
         }
       },
       "turret_composite_armor": {
@@ -460,13 +461,13 @@
         "ex_armor_turret_l_02_dm": []
       },
       "era_turret_hull": {
-        "armorClass": "ERA_K_I",
-        "kineticProtectionEquivalent": 5.0,
-        "cumulativeProtectionEquivalent": 370.0,
+        "armorClass": "ERA_FY_4",
+        "kineticProtectionEquivalent": 120.0,
+        "cumulativeProtectionEquivalent": 400.0,
         "hp": 250.0,
-        "armorThickness": 70.0,
-        "genericArmorQuality": 0.08,
+        "armorThickness": 20.0,
         "genericDamageMult": 3.0,
+        "cumulativeArmorQuality": 6.4,
         "stopChanceOnDeadPart": 0.0,
         "hidableInViewer": true,
         "hidableInXrayViewer": true,
@@ -476,6 +477,16 @@
         "ex_era_turret_04_dm": [],
         "ex_era_turret_05_dm": [],
         "ex_era_turret_06_dm": [],
+        "ex_era_turret_07_dm": [],
+        "ex_era_turret_08_dm": [],
+        "ex_era_turret_09_dm": [],
+        "ex_era_turret_10_dm": [],
+        "ex_era_turret_11_dm": [],
+        "ex_era_turret_12_dm": [],
+        "ex_era_turret_13_dm": [],
+        "ex_era_turret_14_dm": [],
+        "ex_era_turret_15_dm": [],
+        "ex_era_turret_16_dm": [],
         "ex_era_hull_01_dm": [],
         "ex_era_hull_02_dm": [],
         "ex_era_hull_03_dm": []
@@ -810,6 +821,26 @@
         "ammo_turret_53_dm": [],
         "ammo_turret_54_dm": [],
         "ammo_turret_55_dm": [],
+        "ammo_turret_56_dm": [],
+        "ammo_turret_57_dm": [],
+        "ammo_turret_58_dm": [],
+        "ammo_turret_59_dm": [],
+        "ammo_turret_60_dm": [],
+        "ammo_turret_61_dm": [],
+        "ammo_turret_62_dm": [],
+        "ammo_turret_63_dm": [],
+        "ammo_turret_64_dm": [],
+        "ammo_turret_65_dm": [],
+        "ammo_turret_66_dm": [],
+        "ammo_turret_67_dm": [],
+        "ammo_turret_68_dm": [],
+        "ammo_turret_69_dm": [],
+        "ammo_turret_70_dm": [],
+        "ammo_turret_71_dm": [],
+        "ammo_turret_72_dm": [],
+        "ammo_turret_73_dm": [],
+        "ammo_turret_74_dm": [],
+        "ammo_turret_75_dm": [],
         "ammo_body_dm": [],
         "ammo_body_01_dm": [],
         "ammo_body_02_dm": [],
@@ -1447,6 +1478,66 @@
             "name": "ammo_turret_55_dm"
           },
           {
+            "name": "ammo_turret_56_dm"
+          },
+          {
+            "name": "ammo_turret_57_dm"
+          },
+          {
+            "name": "ammo_turret_58_dm"
+          },
+          {
+            "name": "ammo_turret_59_dm"
+          },
+          {
+            "name": "ammo_turret_60_dm"
+          },
+          {
+            "name": "ammo_turret_61_dm"
+          },
+          {
+            "name": "ammo_turret_62_dm"
+          },
+          {
+            "name": "ammo_turret_63_dm"
+          },
+          {
+            "name": "ammo_turret_64_dm"
+          },
+          {
+            "name": "ammo_turret_65_dm"
+          },
+          {
+            "name": "ammo_turret_66_dm"
+          },
+          {
+            "name": "ammo_turret_67_dm"
+          },
+          {
+            "name": "ammo_turret_68_dm"
+          },
+          {
+            "name": "ammo_turret_69_dm"
+          },
+          {
+            "name": "ammo_turret_70_dm"
+          },
+          {
+            "name": "ammo_turret_71_dm"
+          },
+          {
+            "name": "ammo_turret_72_dm"
+          },
+          {
+            "name": "ammo_turret_73_dm"
+          },
+          {
+            "name": "ammo_turret_74_dm"
+          },
+          {
+            "name": "ammo_turret_75_dm"
+          },
+          {
             "onHit": {
               "damageType": "cumulative",
               "expl": 0.4,
@@ -1923,6 +2014,12 @@
           "blk": "gameData/Weapons/groundModels_weapons/125mm_Type_88C_user_cannon.blk",
           "emitter": "bone_gun_barrel",
           "flash": "emtr_gun_flame",
+          "sleeveEmitter": "emtr_shell",
+          "sleeveMesh": "semi_combustible_cartridge_case",
+          "hatchAnimVar": "hatch_toggle",
+          "openHatchTime": 1.3,
+          "sleevesLifeTime": 10.0,
+          "sleeveImpulse": [5.0,0.0,0.0],
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
           "barrelDP": "gun_barrel_dm",
@@ -1977,12 +2074,12 @@
           ],
           "limits": {
             "yaw": [-180.0,180.0],
-            "pitch": [-6.5,14.0]
+            "pitch": [-5.4,12.8]
           },
           "limitsTable": {
-            "lim1": [-180.0,-140.0,-4.0,13.78],
-            "lim2": [-140.0,120.0,-6.5,14.0],
-            "lim3": [120.0,180.0,-4.0,13.78]
+            "lim1": [-180.0,-140.0,-4.0,12.8],
+            "lim2": [-140.0,120.0,-5.4,12.8],
+            "lim3": [120.0,180.0,-4.0,12.8]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": false,
@@ -2147,9 +2244,9 @@
   {
     "VehiclePhys": {
       "Mass": {
-        "Empty": 40500.0,
+        "Empty": 42300.0,
         "Fuel": 500.0,
-        "TakeOff": 41000.0,
+        "TakeOff": 42800.0,
         "momentOfInertia": [2.5,2.5,6.0],
         "CenterOfGravity": [0.1,0.5,0.0],
         "CenterOfGravityClampY": [0.0,0.7],
@@ -2166,7 +2263,7 @@
         "cls_body": "convex_hull"
       },
       "engine": {
-        "horsePowers": 730.0,
+        "horsePowers": 800.0,
         "maxRPM": 2000.0,
         "minRPM": 800.0
       },
@@ -2177,7 +2274,7 @@
         "sideGearRatio": 6.25,
         "gearRatios": [
           {
-            "ratio": -8.0
+            "ratio": -10.0
           },
           {
             "ratio": 0.0
@@ -2201,7 +2298,7 @@
             "ratio": 1.467
           },
           {
-            "ratio": 1.0
+            "ratio": 0.97
           }
         ]
       },
@@ -3061,26 +3158,25 @@
         }
       },
       "night_vision_system": {
+        "image": "#ui/gameuiskin#thermal_sight",
         "tier": 2,
         "modClass": "protection",
         "effects": {
           "nightVision": {
-            "gunnerIr": {
-              "resolution": [800,600],
-              "lightMult": 8.0,
-              "ghosting": 0.75,
-              "noiseFactor": 0.2
+            "gunnerThermal": {
+              "resolution": [500,300],
+              "noiseFactor": 0.05
             },
             "commanderIr": {
-              "resolution": [800,600],
-              "lightMult": 8.0,
-              "ghosting": 0.75,
+              "resolution": [1600,1200],
+              "lightMult": 9.0,
+              "ghosting": 0.6,
               "noiseFactor": 0.2
             },
             "driverIr": {
               "resolution": [800,600],
               "lightMult": 5.0,
-              "ghosting": 0.7,
+              "ghosting": 0.6,
               "noiseFactor": 0.2
             }
           }

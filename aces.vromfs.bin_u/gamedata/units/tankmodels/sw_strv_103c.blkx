@@ -111,22 +111,6 @@
     "arcadeTurnPowerMult": 1.0
   },
   {
-    "customClassIco": "!#ui/gameuiskin#image_in_progress_ico"
-  },
-  {
-    "customImage": "!#ui/unitskin#image_in_progress"
-  },
-  {
-    "customTooltipImage": "ui/aircrafts/image_in_progress"
-  },
-  {
-    "spawn_count": {
-      "numSpawnsPerBattleSimulation": 2,
-      "numSpawnsPerBattleArcade": 3,
-      "numSpawnsPerBattleHistorical": 3
-    }
-  },
-  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "RHA_tank_modern",
@@ -150,7 +134,7 @@
           "hidableInViewer": true
         },
         "turret_04_front_dm": {
-          "armorThickness": 20.0
+          "armorThickness": 40.0
         },
         "superstructure_side_dm": {
           "armorThickness": 10.0,
@@ -279,6 +263,9 @@
         "composite_armor_hull_02_dm": {
           "armorThickness": 10.0,
           "hidableInXrayViewer": true
+        },
+        "ex_decor_01_dm": {
+          "armorThickness": 20.0
         }
       },
       "body_shields": {
@@ -293,7 +280,6 @@
         "ex_armor_r_04_dm": [],
         "ex_armor_l_07_dm": [],
         "ex_armor_r_07_dm": [],
-        "ex_decor_01_dm": [],
         "ex_decor_13_dm": [],
         "ex_decor_14_dm": [],
         "ex_decor_15_dm": [],
@@ -1255,6 +1241,66 @@
             "name": "ammo_turret_55_dm"
           },
           {
+            "name": "ammo_turret_56_dm"
+          },
+          {
+            "name": "ammo_turret_57_dm"
+          },
+          {
+            "name": "ammo_turret_58_dm"
+          },
+          {
+            "name": "ammo_turret_59_dm"
+          },
+          {
+            "name": "ammo_turret_60_dm"
+          },
+          {
+            "name": "ammo_turret_61_dm"
+          },
+          {
+            "name": "ammo_turret_62_dm"
+          },
+          {
+            "name": "ammo_turret_63_dm"
+          },
+          {
+            "name": "ammo_turret_64_dm"
+          },
+          {
+            "name": "ammo_turret_65_dm"
+          },
+          {
+            "name": "ammo_turret_66_dm"
+          },
+          {
+            "name": "ammo_turret_67_dm"
+          },
+          {
+            "name": "ammo_turret_68_dm"
+          },
+          {
+            "name": "ammo_turret_69_dm"
+          },
+          {
+            "name": "ammo_turret_70_dm"
+          },
+          {
+            "name": "ammo_turret_71_dm"
+          },
+          {
+            "name": "ammo_turret_72_dm"
+          },
+          {
+            "name": "ammo_turret_73_dm"
+          },
+          {
+            "name": "ammo_turret_74_dm"
+          },
+          {
+            "name": "ammo_turret_75_dm"
+          },
+          {
             "onHit": {
               "damageType": "cumulative",
               "expl": 0.4,
@@ -1737,6 +1783,13 @@
     }
   },
   {
+    "gunConvergence": {
+      "distance": 1200.0,
+      "vertical": true,
+      "horizontal": true
+    }
+  },
+  {
     "sound": {
       "EngineName": "engine_stug40",
       "TrackSoundPath": "tanks/engines_tanks",
@@ -2113,9 +2166,9 @@
   {
     "VehiclePhys": {
       "Mass": {
-        "Empty": 37000.0,
+        "Empty": 41800.0,
         "Fuel": 700.0,
-        "TakeOff": 37700.0,
+        "TakeOff": 42500.0,
         "momentOfInertia": [2.0,4.0,4.0],
         "CenterOfGravity": [0.1,0.4,0.0],
         "AdvancedMass": false,
@@ -2132,8 +2185,8 @@
         "cls_body": "convex_hull"
       },
       "engine": {
-        "horsePowers": 540.0,
-        "maxRPM": 3600.0,
+        "horsePowers": 780.0,
+        "maxRPM": 3960.0,
         "minRPM": 600.0
       },
       "mechanics": {
@@ -2144,7 +2197,7 @@
         "neutralGearRatio": 13.0,
         "gearRatios": [
           {
-            "ratio": -1.02
+            "ratio": -1.12
           },
           {
             "ratio": -1.74
@@ -2183,7 +2236,7 @@
             "ratio": 1.47
           },
           {
-            "ratio": 0.9
+            "ratio": 1.0
           }
         ]
       },
@@ -2790,7 +2843,7 @@
   },
   {
     "user_skin": {
-      "name": "strv_103a",
+      "name": "strv_103c",
       "replace_tex": {
         "from": "se_camo_green*"
       }

@@ -108,20 +108,6 @@
     "drowningCheckHeightMultiplier": 0.45
   },
   {
-    "customClassIco": "!#ui/gameuiskin#image_in_progress_ico"
-  },
-  {
-    "customImage": "!#ui/unitskin#image_in_progress"
-  },
-  {
-    "customTooltipImage": "ui/aircrafts/image_in_progress"
-  },
-  {
-    "spawn_count": {
-      "numSpawnsPerBattleSimulation": 2
-    }
-  },
-  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "RHA_tank",
@@ -221,13 +207,15 @@
           "armorThickness": 5.0
         },
         "turret_05_front_dm": {
-          "armorThickness": 5.0
+          "armorThickness": 15.0,
+          "armorClass": "CHA_tank"
         },
         "turret_01_bottom_dm": {
           "armorThickness": 5.0
         },
         "turret_commander_dm": {
-          "armorThickness": 5.0
+          "armorThickness": 15.0,
+          "armorClass": "CHA_tank"
         }
       },
       "sensor": {
@@ -1153,6 +1141,66 @@
           },
           {
             "name": "ammo_turret_55_dm"
+          },
+          {
+            "name": "ammo_turret_56_dm"
+          },
+          {
+            "name": "ammo_turret_57_dm"
+          },
+          {
+            "name": "ammo_turret_58_dm"
+          },
+          {
+            "name": "ammo_turret_59_dm"
+          },
+          {
+            "name": "ammo_turret_60_dm"
+          },
+          {
+            "name": "ammo_turret_61_dm"
+          },
+          {
+            "name": "ammo_turret_62_dm"
+          },
+          {
+            "name": "ammo_turret_63_dm"
+          },
+          {
+            "name": "ammo_turret_64_dm"
+          },
+          {
+            "name": "ammo_turret_65_dm"
+          },
+          {
+            "name": "ammo_turret_66_dm"
+          },
+          {
+            "name": "ammo_turret_67_dm"
+          },
+          {
+            "name": "ammo_turret_68_dm"
+          },
+          {
+            "name": "ammo_turret_69_dm"
+          },
+          {
+            "name": "ammo_turret_70_dm"
+          },
+          {
+            "name": "ammo_turret_71_dm"
+          },
+          {
+            "name": "ammo_turret_72_dm"
+          },
+          {
+            "name": "ammo_turret_73_dm"
+          },
+          {
+            "name": "ammo_turret_74_dm"
+          },
+          {
+            "name": "ammo_turret_75_dm"
           },
           {
             "onHit": {
@@ -2106,9 +2154,11 @@
   {
     "sensors": {
       "sensor": {
-        "blk": "gameData/sensors/sw_ps-42_search.blk",
+        "blk": "gameData/sensors/uk_marconi_s_400.blk",
         "turretIndex": 0,
-        "dmPart": "antenna_target_tagging_dm"
+        "designationFromBody": true,
+        "designationTurretIndex": 0,
+        "dmPart": "antenna_target_location_dm"
       }
     }
   },
@@ -2712,7 +2762,7 @@
   },
   {
     "cockpit": {
-      "headPos": [0.0,5.0,-8.5],
+      "headPos": [0.0,5.0,-6.5],
       "headPosOnShooting": [-0.25,3.6,-0.5],
       "zoomOutFov": 50.75,
       "zoomInFov": 12.3,

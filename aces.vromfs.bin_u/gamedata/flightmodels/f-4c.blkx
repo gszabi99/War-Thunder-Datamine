@@ -2992,7 +2992,7 @@
           "flaps": [0.0,1.0],
           "flaps_fixed": false,
           "trimmer_indicator": [-1.0,1.0],
-          "speed": [0.0,437.0],
+          "speed": [0.0,437.278],
           "mach": [0.0,2.5],
           "vario": [-30.48,30.48],
           "altitude_10k": [0.0,100000.0],
@@ -3327,7 +3327,7 @@
   },
   {
     "fireParams": {
-      "engineExtinguishFireSpeed": [630.0,670.0],
+      "engineExtinguishFireSpeed": [620.0,660.0],
       "engineExtinguishFireSpeedChance": [0.01,0.1],
       "fireDamagePowerRel": 0.05,
       "nonExtinguishFireTime": 5.0
@@ -3508,9 +3508,19 @@
         "tier": 1,
         "modClass": "weapon",
         "effects": {
-          "sensor": {
-            "blk": "gameData/sensors/us_an_apr_25.blk"
-          }
+          "sensors": [
+            {
+              "sensor": {
+                "blk": "gameData/sensors/us_an_apr_25.blk"
+              }
+            },
+            {
+              "sensor": {
+                "blk": "gameData/sensors/us_an_apq_100.blk",
+                "dmPart": "radar_dm"
+              }
+            }
+          ]
         }
       },
       "us_aim_9b": {
@@ -3522,6 +3532,14 @@
         "reqModification": "us_aim_9b",
         "tier": 3,
         "modClass": "weapon"
+      }
+    }
+  },
+  {
+    "default_skin": {
+      "replace_tex": {
+        "from": "aero_7_olive_c*",
+        "to": "aero_7_white_c*"
       }
     }
   },

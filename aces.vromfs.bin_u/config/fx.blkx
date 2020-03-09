@@ -135,9 +135,9 @@
     "maxScale": 1.0,
     "onePointNumber": 8,
     "sfxPath": "tanks/explosions_tanks",
-    "sfxPathStudio": "ground/explosions",
-    "sfxEvent": "explosion_ground_37_50",
-    "soundEnableDistance": 500.0
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "bullethit_ground",
+    "soundEnableDistance": 100.0
   },
   "7_20_hit_stone": {
     "fx": "7_20_stone_composite_fx",
@@ -416,7 +416,7 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground",
-    "soundEnableDistance": 1000.0
+    "soundEnableDistance": 5000.0
   },
   "50_75_ap_hit_snow": {
     "fx": "50_75_ap_hit_ground_snow_composite",
@@ -430,7 +430,7 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground",
-    "soundEnableDistance": 1000.0
+    "soundEnableDistance": 5000.0
   },
   "50_75_ap_hit_stone": {
     "fx": "50_75_ap_hit_stone_composite",
@@ -472,7 +472,7 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground",
-    "soundEnableDistance": 1000.0
+    "soundEnableDistance": 5000.0
   },
   "50_75_he_hit_snow": {
     "fx": "50_75_he_hit_ground_snow_composite",
@@ -486,7 +486,7 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground",
-    "soundEnableDistance": 1000.0
+    "soundEnableDistance": 5000.0
   },
   "50_75_he_hit_stone": {
     "fx": "50_75_he_hit_stone_composite",
@@ -897,7 +897,7 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_water",
-    "soundEnableDistance": 1000.0
+    "soundEnableDistance": 5000.0
   },
   "water_splash_76_00": {
     "fx": "bulletsplash_76_00mm_composite_fx",
@@ -912,7 +912,7 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_water",
-    "soundEnableDistance": 1000.0
+    "soundEnableDistance": 5000.0
   },
   "big_water_splash": {
     "fx": "pv_hit_water_composite_fx",
@@ -1240,7 +1240,9 @@
     "numInstances": 14,
     "numReserved": 2,
     "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
+    "sfxPathStudio": "aircraft/explosions",
+    "sfxEvent": "bomb_explosion_ground",
+    "soundEnableDistance": 5000.0
   },
   "bomb_ground_explosion_huge": {
     "fx": "bomb_big_expl_composite_fx",
@@ -1251,7 +1253,9 @@
     "numInstances": 14,
     "numReserved": 2,
     "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
+    "sfxPathStudio": "aircraft/explosions",
+    "sfxEvent": "bomb_explosion_ground",
+    "soundEnableDistance": 5000.0
   },
   "bomb_ground_explosion_big_sfx": {
     "fx": "bomb_big_expl_composite_fx",
@@ -1264,7 +1268,7 @@
     "sfxPath": "sounds/explosions",
     "sfxPathStudio": "aircraft/explosions",
     "sfxEvent": "bomb_explosion_ground",
-    "soundEnableDistance": 3000.0
+    "soundEnableDistance": 5000.0
   },
   "bomb_ground_explosion_med": {
     "fx": "bomb_big_expl_composite_fx",
@@ -1275,7 +1279,9 @@
     "numInstances": 28,
     "numReserved": 2,
     "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
+    "sfxPathStudio": "aircraft/explosions",
+    "sfxEvent": "bomb_explosion_ground",
+    "soundEnableDistance": 5000.0
   },
   "bomb_ground_explosion_small": {
     "fx": "bomb_small_expl_composite_fx",
@@ -1287,7 +1293,9 @@
     "numInstances": 56,
     "numReserved": 2,
     "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
+    "sfxPathStudio": "aircraft/explosions",
+    "sfxEvent": "bomb_explosion_ground",
+    "soundEnableDistance": 5000.0
   },
   "bomb_water_explosion_big": {
     "fx": "bomb_water_big_expl_composite_fx",
@@ -1297,7 +1305,9 @@
     "numReserved": 3,
     "group": "water_proj",
     "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
+    "sfxPathStudio": "aircraft/explosions",
+    "sfxEvent": "bomb_explosion_water",
+    "soundEnableDistance": 5000.0
   },
   "bomb_water_explosion_huge": {
     "fx": "bomb_water_big_expl_composite_fx",
@@ -1309,7 +1319,9 @@
     "numReserved": 3,
     "group": "water_proj",
     "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
+    "sfxPathStudio": "aircraft/explosions",
+    "sfxEvent": "bomb_explosion_water",
+    "soundEnableDistance": 5000.0
   },
   "bomb_water_explosion_med": {
     "fx": "bomb_water_med_expl_composite_fx",
@@ -1319,7 +1331,9 @@
     "numReserved": 3,
     "group": "water_proj",
     "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
+    "sfxPathStudio": "aircraft/explosions",
+    "sfxEvent": "bomb_explosion_water",
+    "soundEnableDistance": 5000.0
   },
   "bomb_water_explosion_small": {
     "fx": "bomb_water_small_expl_composite_fx",
@@ -1332,8 +1346,9 @@
     "maxScale": 1.5,
     "group": "water_proj",
     "sfxPath": "ships/explosions_ships",
-    "sfxPathStudio": "naval/explosions",
-    "sfxEvent": "bomb_expl_underwater"
+    "sfxPathStudio": "aircraft/explosions",
+    "sfxEvent": "bomb_explosion_water",
+    "soundEnableDistance": 5000.0
   },
   "bomb_splash": {
     "fx": "bigsplashexplosion_fx",
@@ -1354,8 +1369,8 @@
     "numReserved": 1,
     "sfxPath": "sounds/explosions",
     "sfxPathStudio": "aircraft/explosions",
-    "sfxEvent": "explosion_water",
-    "soundEnableDistance": 1700.0
+    "sfxEvent": "heavy_explosion_water",
+    "soundEnableDistance": 5000.0
   },
   "torpedo_broken": {
     "fx": "bigsplashexplosion_fx",
@@ -1374,8 +1389,8 @@
     "numReserved": 3,
     "sfxPath": "sounds/explosions",
     "sfxPathStudio": "aircraft/explosions",
-    "sfxEvent": "explosion_water",
-    "soundEnableDistance": 1700.0
+    "sfxEvent": "heavy_explosion_water",
+    "soundEnableDistance": 5000.0
   },
   "torpedo_explosion_unit_bubble": {
     "fx": "torpedo_explosion_unit_bubble_composite_fx",
@@ -1386,7 +1401,7 @@
     "sfxPath": "sounds/explosions",
     "sfxPathStudio": "aircraft/explosions",
     "sfxEvent": "torpedo_explosion_unit",
-    "soundEnableDistance": 1000.0,
+    "soundEnableDistance": 5000.0,
     "group": "underwater"
   },
   "torpedo_explosion_unit": {
@@ -1395,10 +1410,11 @@
     "softnessDepth": 5.0,
     "numInstances": 15,
     "numReserved": 3,
+    "farPlane": 12000.0,
     "sfxPath": "sounds/explosions",
     "sfxPathStudio": "aircraft/explosions",
     "sfxEvent": "torpedo_explosion_unit",
-    "soundEnableDistance": 1000.0
+    "soundEnableDistance": 5000.0
   },
   "bomb_reflection": {
     "fx": "bomb_reflection_splash_fx",
@@ -1524,8 +1540,8 @@
     "onePointNumber": 8,
     "sfxPath": "sounds/explosions",
     "sfxPathStudio": "aircraft/explosions",
-    "sfxEvent": "explosion_water",
-    "soundEnableDistance": 1700.0
+    "sfxEvent": "heavy_explosion_water",
+    "soundEnableDistance": 5000.0
   },
   "120-203_smoke_water_splash": {
     "fx": "120_203mm_water_smoke_hit_composite_fx",
@@ -1541,8 +1557,8 @@
     "onePointNumber": 8,
     "sfxPath": "sounds/explosions",
     "sfxPathStudio": "aircraft/explosions",
-    "sfxEvent": "explosion_water",
-    "soundEnableDistance": 1700.0
+    "sfxEvent": "heavy_explosion_water",
+    "soundEnableDistance": 5000.0
   },
   "120-203_he_water_splash": {
     "fx": "120_203mm_he_water_hit_composite_fx",
@@ -1558,8 +1574,8 @@
     "onePointNumber": 8,
     "sfxPath": "sounds/explosions",
     "sfxPathStudio": "aircraft/explosions",
-    "sfxEvent": "explosion_water",
-    "soundEnableDistance": 1700.0
+    "sfxEvent": "heavy_explosion_water",
+    "soundEnableDistance": 5000.0
   },
   "cannon_hit_ship_cumulative": {
     "fx": "ps_hit_cumulative_composite_fx",
@@ -1584,7 +1600,7 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_explosion_ground",
-    "soundEnableDistance": 1000.0,
+    "soundEnableDistance": 5000.0,
     "farPlane": 15000.0
   },
   "ps_hit_100_152mm_ap_hit_ground": {
@@ -1612,7 +1628,7 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "naval/effects",
     "sfxEvent": "bullethit_metal",
-    "soundEnableDistance": 1000.0
+    "soundEnableDistance": 200.0
   },
   "ps_hit_150mm_cumulative": {
     "fx": "ps_hit_150mm_cumulative_composite_fx",
@@ -1624,7 +1640,7 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "naval/effects",
     "sfxEvent": "bullethit_metal",
-    "soundEnableDistance": 1000.0
+    "soundEnableDistance": 200.0
   },
   "cannon_hit_ship_ap": {
     "fx": "ps_hit_ap_composite_fx",
@@ -1635,7 +1651,7 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "naval/effects",
     "sfxEvent": "bullethit_metal",
-    "soundEnableDistance": 1000.0
+    "soundEnableDistance": 200.0
   },
   "autocannon_hit_ship_he": {
     "fx": "ps_hit_cumulative_smoke_composite_fx",
@@ -1646,7 +1662,7 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "naval/effects",
     "sfxEvent": "bullethit_metal",
-    "soundEnableDistance": 1000.0
+    "soundEnableDistance": 200.0
   },
   "aerobatics_smoke_fx_names": [
     {
@@ -1957,7 +1973,7 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "fire_destroyed",
-    "soundEnableDistance": 100.0
+    "soundEnableDistance": 5000.0
   },
   "land_crash_smoke": {
     "fx": "land_crash_smoke_fx",
@@ -2149,7 +2165,9 @@
     "numInstances": 20,
     "numReserved": 4,
     "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "fire",
+    "soundEnableDistance": 200.0
   },
   "major_fuel_smoke": {
     "fx": "major_fuel_smoke_fx",
@@ -3283,7 +3301,7 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "ammo_explode",
-    "soundEnableDistance": 100.0
+    "soundEnableDistance": 1000.0
   },
   "tank_fire_small": {
     "fx": "pv_fire_small_composite_fx",
@@ -3294,7 +3312,7 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "fire_destroyed",
-    "soundEnableDistance": 100.0
+    "soundEnableDistance": 5000.0
   },
   "tank_fire_big": {
     "fx": "pv_fire_composite_fx",
@@ -3305,7 +3323,7 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "fire_destroyed",
-    "soundEnableDistance": 100.0
+    "soundEnableDistance": 5000.0
   },
   "tank_smoke_small": {
     "fx": "pv_smoke_small_composite_fx",
@@ -3518,7 +3536,7 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "naval/explosions",
     "sfxEvent": "fire_destroyed",
-    "soundEnableDistance": 150.0,
+    "soundEnableDistance": 5000.0,
     "minScale": 1.0,
     "maxScale": 1.5,
     "group": "underwater"
@@ -3546,7 +3564,7 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "naval/explosions",
     "sfxEvent": "fire_destroyed",
-    "soundEnableDistance": 150.0,
+    "soundEnableDistance": 5000.0,
     "farPlane": 12000.0
   },
   "ship_explosion": {
@@ -3609,7 +3627,7 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "naval/explosions",
     "sfxEvent": "fire_destroyed",
-    "soundEnableDistance": 150.0,
+    "soundEnableDistance": 5000.0,
     "farPlane": 15000.0
   },
   "ship_smoke": {
@@ -3638,8 +3656,19 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "naval/explosions",
     "sfxEvent": "fire_big",
-    "soundEnableDistance": 1000.0,
+    "soundEnableDistance": 5000.0,
     "farPlane": 15000.0
+  },
+  "ship_fire_medium": {
+    "fx": "ps_fire_medium_composite_fx",
+    "lifeTime": 10.0,
+    "numInstances": 30,
+    "numReserved": 3,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "naval/explosions",
+    "sfxEvent": "fire_big",
+    "soundEnableDistance": 5000.0,
+    "farPlane": 10000.0
   },
   "ship_ammo_fire_underwater": {
     "fx": "ps_ammo_fire_underwater_composite_fx",
@@ -3649,7 +3678,7 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "naval/explosions",
     "sfxEvent": "ammo_explode",
-    "soundEnableDistance": 150.0,
+    "soundEnableDistance": 5000.0,
     "group": "underwater"
   },
   "ship_ammo_fire": {
@@ -3660,7 +3689,7 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "naval/explosions",
     "sfxEvent": "ammo_explode",
-    "soundEnableDistance": 150.0,
+    "soundEnableDistance": 5000.0,
     "farPlane": 15000.0
   },
   "ship_ammo_fire_large": {
@@ -3671,7 +3700,7 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "naval/explosions",
     "sfxEvent": "ammo_explode",
-    "soundEnableDistance": 150.0,
+    "soundEnableDistance": 5000.0,
     "farPlane": 15000.0
   },
   "start_torpedo_submerged": {
@@ -4052,8 +4081,10 @@
     "numReserved": 1,
     "minScale": 0.6,
     "maxScale": 1.4,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "fire_destroyed",
+    "soundEnableDistance": 5000.0
   },
   "ground_model_gray_smoke": {
     "fx": "graysmoke",
@@ -4074,8 +4105,10 @@
     "sortDistanceOffset": 1.0,
     "numInstances": 10,
     "numReserved": 1,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "destroy",
+    "soundEnableDistance": 5000.0
   },
   "cut_tail_smoke": {
     "fx": "gm_fire_fx",
@@ -4107,7 +4140,7 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "naval/explosions",
     "sfxEvent": "fire_destroyed",
-    "soundEnableDistance": 150.0
+    "soundEnableDistance": 5000.0
   },
   "ship_model_expl": {
     "fx": "ship_expl_composite_fx",
@@ -4119,7 +4152,7 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_water",
-    "soundEnableDistance": 1700.0
+    "soundEnableDistance": 5000.0
   },
   "ship_model_expl_sfx": {
     "fx": "ship_expl_composite_fx",
@@ -4131,7 +4164,7 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_water",
-    "soundEnableDistance": 1700.0
+    "soundEnableDistance": 5000.0
   },
   "ground_light": {
     "fx": "artillery_ground_fx",

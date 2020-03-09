@@ -114,15 +114,6 @@
     "depthTraceCriticalDepth": 5.3
   },
   {
-    "customClassIco": "!#ui/gameuiskin#image_in_progress_ico"
-  },
-  {
-    "customImage": "!#ui/unitskin#image_in_progress"
-  },
-  {
-    "customTooltipImage": "ui/aircrafts/image_in_progress"
-  },
-  {
     "hideNodesInDmg": {
       "node": "flag"
     }
@@ -2686,21 +2677,27 @@
         "armorThickness": 17.0,
         "oneSided": true,
         "superstructure_back_dm": {
+          "fireParamsPreset": "ship_superstructure_back",
           "hp": 6500.0
         },
         "superstructure_front_dm": {
+          "fireParamsPreset": "ship_superstructure_front",
           "hp": 6500.0
         },
         "superstructure_bottom_dm": {
+          "fireParamsPreset": "ship_superstructure_bottom",
           "hp": 6500.0
         },
         "superstructure_side_dm": {
+          "fireParamsPreset": "ship_superstructure_side",
           "hp": 6500.0
         },
         "superstructure_top_dm": {
+          "fireParamsPreset": "ship_superstructure_top",
           "hp": 3500.0
         },
         "superstructure_dm": {
+          "fireParamsPreset": "ship_superstructure",
           "hp": 6500.0
         }
       },
@@ -3368,13 +3365,13 @@
         "armorThickness": 3.0,
         "oneSided": true,
         "ammunition_storage_charges_01_dm": {
-          "hp": 3643.0
+          "hp": 2500.0
         },
         "ammunition_storage_charges_02_dm": {
-          "hp": 3394.0
+          "hp": 2500.0
         },
         "ammunition_storage_charges_03_dm": {
-          "hp": 3098.0
+          "hp": 2500.0
         }
       },
       "ammo_storages_auxiliary": {
@@ -3383,13 +3380,13 @@
         "armorThickness": 3.0,
         "oneSided": true,
         "ammunition_storage_aux_01_dm": {
-          "hp": 2445.0
-        },
-        "ammunition_storage_aux_02_dm": {
           "hp": 2000.0
         },
+        "ammunition_storage_aux_02_dm": {
+          "hp": 1881.0
+        },
         "ammunition_storage_aux_03_dm": {
-          "hp": 2354.0
+          "hp": 2000.0
         }
       },
       "ammo_first_stage": {
@@ -8102,23 +8099,58 @@
         ]
       },
       {
-        "event": [
-          {
-            "name": "superstructure_fire"
-          },
-          {
-            "fx": {
-              "name": "ship_fire_large",
-              "emitter": "emtr_fire_dmg_01"
-            }
-          },
-          {
-            "fx": {
-              "name": "ship_fire_large",
-              "emitter": "emtr_fire_dmg_02"
-            }
+        "event": {
+          "name": "superstructure_back_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
           }
-        ]
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_front_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_top_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_bottom_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_side_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
       },
       {
         "event": {
@@ -8549,18 +8581,40 @@
     "ammoStowages": {
       "ammo1": {
         "weaponTrigger": "gunner0",
-        "shells": {
-          "fatalFire": true,
-          "fatalExplosion": true,
-          "damageEffect": "ammunition_storage_shells",
-          "explosionEvent": "ammo_explosion_1",
-          "fireEvent": "ammo_fire_1",
-          "elevator": "elevator_03_dm",
-          "dstrElevatorDisablesShooting": false,
-          "ammunition_storage_shells_01_dm": {
-            "count": 450
+        "shells": [
+          {
+            "fatalFire": true
+          },
+          {
+            "fatalExplosion": true
+          },
+          {
+            "damageEffect": "ammunition_storage_shells"
+          },
+          {
+            "explosionEvent": "ammo_explosion_1"
+          },
+          {
+            "fireEvent": "ammo_fire_1"
+          },
+          {
+            "elevator": "elevator_01_dm"
+          },
+          {
+            "elevator": "elevator_02_dm"
+          },
+          {
+            "elevator": "elevator_03_dm"
+          },
+          {
+            "dstrElevatorDisablesShooting": false
+          },
+          {
+            "ammunition_storage_shells_01_dm": {
+              "count": 450
+            }
           }
-        },
+        ],
         "charges": [
           {
             "fatalFire": false
@@ -8581,6 +8635,9 @@
             "elevator": "elevator_02_dm"
           },
           {
+            "elevator": "elevator_03_dm"
+          },
+          {
             "dstrElevatorDisablesShooting": false
           },
           {
@@ -8592,18 +8649,40 @@
       },
       "ammo2": {
         "weaponTrigger": "gunner1",
-        "shells": {
-          "fatalFire": true,
-          "fatalExplosion": true,
-          "damageEffect": "ammunition_storage_shells",
-          "explosionEvent": "ammo_explosion_1",
-          "fireEvent": "ammo_fire_1",
-          "elevator": "elevator_06_dm",
-          "dstrElevatorDisablesShooting": false,
-          "ammunition_storage_shells_02_dm": {
-            "count": 450
+        "shells": [
+          {
+            "fatalFire": true
+          },
+          {
+            "fatalExplosion": true
+          },
+          {
+            "damageEffect": "ammunition_storage_shells"
+          },
+          {
+            "explosionEvent": "ammo_explosion_1"
+          },
+          {
+            "fireEvent": "ammo_fire_1"
+          },
+          {
+            "elevator": "elevator_04_dm"
+          },
+          {
+            "elevator": "elevator_05_dm"
+          },
+          {
+            "elevator": "elevator_06_dm"
+          },
+          {
+            "dstrElevatorDisablesShooting": false
+          },
+          {
+            "ammunition_storage_shells_02_dm": {
+              "count": 450
+            }
           }
-        },
+        ],
         "charges": [
           {
             "fatalFire": false
@@ -8624,6 +8703,9 @@
             "elevator": "elevator_05_dm"
           },
           {
+            "elevator": "elevator_06_dm"
+          },
+          {
             "dstrElevatorDisablesShooting": false
           },
           {
@@ -8635,18 +8717,40 @@
       },
       "ammo3": {
         "weaponTrigger": "gunner2",
-        "shells": {
-          "fatalFire": true,
-          "fatalExplosion": true,
-          "damageEffect": "ammunition_storage_shells",
-          "explosionEvent": "ammo_explosion_2",
-          "fireEvent": "ammo_fire_2",
-          "elevator": "elevator_08_dm",
-          "dstrElevatorDisablesShooting": false,
-          "ammunition_storage_shells_03_dm": {
-            "count": 450
+        "shells": [
+          {
+            "fatalFire": true
+          },
+          {
+            "fatalExplosion": true
+          },
+          {
+            "damageEffect": "ammunition_storage_shells"
+          },
+          {
+            "explosionEvent": "ammo_explosion_2"
+          },
+          {
+            "fireEvent": "ammo_fire_2"
+          },
+          {
+            "elevator": "elevator_07_dm"
+          },
+          {
+            "elevator": "elevator_08_dm"
+          },
+          {
+            "elevator": "elevator_09_dm"
+          },
+          {
+            "dstrElevatorDisablesShooting": false
+          },
+          {
+            "ammunition_storage_shells_03_dm": {
+              "count": 450
+            }
           }
-        },
+        ],
         "charges": [
           {
             "fatalFire": false
@@ -8662,6 +8766,9 @@
           },
           {
             "elevator": "elevator_07_dm"
+          },
+          {
+            "elevator": "elevator_08_dm"
           },
           {
             "elevator": "elevator_09_dm"

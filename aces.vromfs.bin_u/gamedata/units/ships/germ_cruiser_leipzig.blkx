@@ -111,15 +111,6 @@
     "depthTraceCriticalDepth": 5.3
   },
   {
-    "customClassIco": "!#ui/gameuiskin#image_in_progress_ico"
-  },
-  {
-    "customImage": "!#ui/unitskin#image_in_progress"
-  },
-  {
-    "customTooltipImage": "ui/aircrafts/image_in_progress"
-  },
-  {
     "hideNodesInDmg": {
       "node": "flag"
     }
@@ -2088,15 +2079,19 @@
         "armorThickness": 8.0,
         "oneSided": true,
         "superstructure_back_dm": {
+          "fireParamsPreset": "ship_superstructure_back",
           "hp": 5000.0
         },
         "superstructure_front_dm": {
+          "fireParamsPreset": "ship_superstructure_front",
           "hp": 5000.0
         },
         "superstructure_top_dm": {
+          "fireParamsPreset": "ship_superstructure_top",
           "hp": 2631.0
         },
         "superstructure_dm": {
+          "fireParamsPreset": "ship_superstructure",
           "hp": 5000.0
         }
       },
@@ -2278,7 +2273,7 @@
           "hp": 10000.0
         },
         "armor_cit_08_dm": {
-          "armorThickness": 30.0,
+          "armorThickness": 50.0,
           "armorClass": "ship_RGA",
           "hp": 10000.0
         },
@@ -2302,6 +2297,11 @@
         "armor_cit_13_dm": {
           "armorThickness": 15.0,
           "hp": 10000.0
+        },
+        "armor_cit_14_dm": {
+          "armorThickness": 30.0,
+          "armorClass": "ship_RGA",
+          "hp": 10000.0
         }
       },
       "belt_armor": {
@@ -2323,7 +2323,7 @@
         },
         "armor_belt_03_dm": {
           "armorClass": "ship_RGA",
-          "armorThickness": 25.0,
+          "armorThickness": 35.0,
           "hp": 10000.0
         }
       },
@@ -2687,7 +2687,7 @@
           "hp": 2191.0
         },
         "ammunition_storage_charges_02_dm": {
-          "hp": 2927.0
+          "hp": 2500.0
         },
         "ammunition_storage_charges_03_dm": {
           "hp": 2184.0
@@ -2699,13 +2699,13 @@
         "armorThickness": 5.0,
         "oneSided": true,
         "ammunition_storage_aux_01_dm": {
-          "hp": 2000.0
+          "hp": 1330.0
         },
         "ammunition_storage_aux_02_dm": {
-          "hp": 2000.0
+          "hp": 1000.0
         },
         "ammunition_storage_aux_03_dm": {
-          "hp": 2000.0
+          "hp": 1000.0
         }
       },
       "ammo_first_stage": {
@@ -6961,23 +6961,58 @@
         ]
       },
       {
-        "event": [
-          {
-            "name": "superstructure_fire"
-          },
-          {
-            "fx": {
-              "name": "ship_fire_large",
-              "emitter": "emtr_fire_dmg_01"
-            }
-          },
-          {
-            "fx": {
-              "name": "ship_fire_large",
-              "emitter": "emtr_fire_dmg_02"
-            }
+        "event": {
+          "name": "superstructure_back_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
           }
-        ]
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_front_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_top_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_bottom_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_side_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
       },
       {
         "event": {

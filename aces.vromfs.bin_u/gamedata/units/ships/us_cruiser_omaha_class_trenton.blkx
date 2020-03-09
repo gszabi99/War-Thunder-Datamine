@@ -1567,31 +1567,31 @@
         "armorThickness": 2.0,
         "oneSided": true,
         "compartment_01_dm": {
-          "hp": 7644.0
-        },
-        "compartment_02_dm": {
           "hp": 9000.0
         },
+        "compartment_02_dm": {
+          "hp": 8731.0
+        },
         "compartment_03_dm": {
-          "hp": 8513.0
+          "hp": 6216.0
         },
         "compartment_04_dm": {
-          "hp": 8464.0
+          "hp": 5059.0
         },
         "compartment_05_dm": {
-          "hp": 8219.0
+          "hp": 5314.0
         },
         "compartment_06_dm": {
-          "hp": 6799.0
+          "hp": 4409.0
         },
         "compartment_07_dm": {
-          "hp": 3000.0
+          "hp": 3929.0
         },
         "compartment_08_dm": {
           "hp": 3000.0
         },
         "compartment_09_dm": {
-          "hp": 3000.0
+          "hp": 4004.0
         },
         "bridge_dm": {
           "hp": 400.0
@@ -2086,16 +2086,16 @@
         "armorThickness": 3.0,
         "oneSided": true,
         "ammunition_storage_charges_01_dm": {
-          "hp": 2000.0
+          "hp": 1811.0
         },
         "ammunition_storage_charges_02_dm": {
-          "hp": 4000.0
+          "hp": 2500.0
         },
         "ammunition_storage_charges_03_dm": {
-          "hp": 3259.0
+          "hp": 2500.0
         },
         "ammunition_storage_charges_04_dm": {
-          "hp": 2000.0
+          "hp": 1500.0
         }
       },
       "ammo_storages_auxiliary": {
@@ -2104,7 +2104,7 @@
         "armorThickness": 5.0,
         "oneSided": true,
         "ammunition_storage_aux_01_dm": {
-          "hp": 2000.0
+          "hp": 1000.0
         }
       },
       "ammo_first_stage": {
@@ -2220,47 +2220,47 @@
       "sailor2": {
         "dmPart": "compartment_01_dm",
         "role": "sailor",
-        "crew": 37
+        "crew": 52
       },
       "sailor3": {
         "dmPart": "compartment_02_dm",
         "role": "sailor",
-        "crew": 45
+        "crew": 50
       },
       "sailor4": {
         "dmPart": "compartment_03_dm",
         "role": "sailor",
-        "crew": 42
+        "crew": 35
       },
       "sailor5": {
         "dmPart": "compartment_04_dm",
         "role": "sailor",
-        "crew": 41
+        "crew": 29
       },
       "sailor6": {
         "dmPart": "compartment_05_dm",
         "role": "sailor",
-        "crew": 40
+        "crew": 30
       },
       "sailor7": {
         "dmPart": "compartment_06_dm",
         "role": "sailor",
-        "crew": 33
+        "crew": 25
       },
       "sailor8": {
         "dmPart": "compartment_07_dm",
         "role": "sailor",
-        "crew": 15
+        "crew": 22
       },
       "sailor9": {
         "dmPart": "compartment_08_dm",
         "role": "sailor",
-        "crew": 15
+        "crew": 17
       },
       "sailor10": {
         "dmPart": "compartment_09_dm",
         "role": "sailor",
-        "crew": 15
+        "crew": 23
       },
       "sailor11": {
         "dmPart": "radio_station_dm",
@@ -5899,20 +5899,43 @@
           "removeLoadedAmmo": true
         },
         {
-          "shells": {
-            "firstStage": true,
-            "fatalFire": false,
-            "fatalExplosion": false,
-            "damageEffect": "ammunition_first_stage",
-            "explosionEvent": "ammo_explosion_1",
-            "fireEvent": "ammo_fire_1",
-            "fireParamsPreset": "ship_ammo_fire",
-            "elevator": "elevator_01_dm",
-            "dstrElevatorDisablesShooting": false,
-            "ammo_turret_01_dm": {
-              "count": 20
+          "shells": [
+            {
+              "firstStage": true
+            },
+            {
+              "fatalFire": false
+            },
+            {
+              "fatalExplosion": false
+            },
+            {
+              "damageEffect": "ammunition_first_stage"
+            },
+            {
+              "explosionEvent": "ammo_explosion_1"
+            },
+            {
+              "fireEvent": "ammo_fire_1"
+            },
+            {
+              "fireParamsPreset": "ship_ammo_fire"
+            },
+            {
+              "elevator": "elevator_01_dm"
+            },
+            {
+              "elevator": "elevator_02_dm"
+            },
+            {
+              "dstrElevatorDisablesShooting": false
+            },
+            {
+              "ammo_turret_01_dm": {
+                "count": 20
+              }
             }
-          }
+          ]
         },
         {
           "shells": [
@@ -6073,50 +6096,115 @@
           "removeLoadedAmmo": true
         },
         {
-          "shells": {
-            "firstStage": true,
-            "fatalFire": false,
-            "fatalExplosion": false,
-            "damageEffect": "ammunition_first_stage",
-            "explosionEvent": "ammo_explosion_1",
-            "fireEvent": "ammo_fire_1",
-            "fireParamsPreset": "ship_ammo_fire",
-            "elevator": "elevator_03_dm",
-            "dstrElevatorDisablesShooting": false,
-            "ammo_turret_03_dm": {
-              "count": 20
+          "shells": [
+            {
+              "firstStage": true
+            },
+            {
+              "fatalFire": false
+            },
+            {
+              "fatalExplosion": false
+            },
+            {
+              "damageEffect": "ammunition_first_stage"
+            },
+            {
+              "explosionEvent": "ammo_explosion_1"
+            },
+            {
+              "fireEvent": "ammo_fire_1"
+            },
+            {
+              "fireParamsPreset": "ship_ammo_fire"
+            },
+            {
+              "elevator": "elevator_03_dm"
+            },
+            {
+              "elevator": "elevator_04_dm"
+            },
+            {
+              "dstrElevatorDisablesShooting": false
+            },
+            {
+              "ammo_turret_03_dm": {
+                "count": 20
+              }
             }
-          }
+          ]
         },
         {
-          "shells": {
-            "reloadTimeMult": 1.16,
-            "fatalFire": true,
-            "fatalExplosion": true,
-            "damageEffect": "ammunition_storage_shells",
-            "explosionEvent": "ammo_explosion_2",
-            "fireEvent": "ammo_fire_2",
-            "elevator": "elevator_04_dm",
-            "dstrElevatorDisablesShooting": false,
-            "ammunition_storage_shells_03_dm": {
-              "count": 380
+          "shells": [
+            {
+              "reloadTimeMult": 1.16
+            },
+            {
+              "fatalFire": true
+            },
+            {
+              "fatalExplosion": true
+            },
+            {
+              "damageEffect": "ammunition_storage_shells"
+            },
+            {
+              "explosionEvent": "ammo_explosion_2"
+            },
+            {
+              "fireEvent": "ammo_fire_2"
+            },
+            {
+              "elevator": "elevator_03_dm"
+            },
+            {
+              "elevator": "elevator_04_dm"
+            },
+            {
+              "dstrElevatorDisablesShooting": false
+            },
+            {
+              "ammunition_storage_shells_03_dm": {
+                "count": 380
+              }
             }
-          }
+          ]
         },
         {
-          "charges": {
-            "reloadTimeMult": 1.16,
-            "fatalFire": false,
-            "damageEffect": "ammunition_storage_charges",
-            "explosionEvent": "ammo_explosion_2",
-            "fireEvent": "ammo_fire_2",
-            "fireParamsPreset": "ship_ammo_fire",
-            "elevator": "elevator_04_dm",
-            "dstrElevatorDisablesShooting": false,
-            "ammunition_storage_charges_03_dm": {
-              "count": 400
+          "charges": [
+            {
+              "reloadTimeMult": 1.16
+            },
+            {
+              "fatalFire": false
+            },
+            {
+              "damageEffect": "ammunition_storage_charges"
+            },
+            {
+              "explosionEvent": "ammo_explosion_2"
+            },
+            {
+              "fireEvent": "ammo_fire_2"
+            },
+            {
+              "fireParamsPreset": "ship_ammo_fire"
+            },
+            {
+              "elevator": "elevator_03_dm"
+            },
+            {
+              "elevator": "elevator_04_dm"
+            },
+            {
+              "dstrElevatorDisablesShooting": false
+            },
+            {
+              "ammunition_storage_charges_03_dm": {
+                "count": 400
+              }
             }
-          }
+          ]
         }
       ],
       "ammo4": [
@@ -6133,20 +6221,43 @@
           "removeLoadedAmmo": true
         },
         {
-          "shells": {
-            "firstStage": true,
-            "fatalFire": false,
-            "fatalExplosion": false,
-            "damageEffect": "ammunition_first_stage",
-            "explosionEvent": "ammo_explosion_2",
-            "fireEvent": "ammo_fire_2",
-            "fireParamsPreset": "ship_ammo_fire",
-            "elevator": "elevator_04_dm",
-            "dstrElevatorDisablesShooting": false,
-            "ammo_turret_04_dm": {
-              "count": 20
+          "shells": [
+            {
+              "firstStage": true
+            },
+            {
+              "fatalFire": false
+            },
+            {
+              "fatalExplosion": false
+            },
+            {
+              "damageEffect": "ammunition_first_stage"
+            },
+            {
+              "explosionEvent": "ammo_explosion_2"
+            },
+            {
+              "fireEvent": "ammo_fire_2"
+            },
+            {
+              "fireParamsPreset": "ship_ammo_fire"
+            },
+            {
+              "elevator": "elevator_04_dm"
+            },
+            {
+              "elevator": "elevator_05_dm"
+            },
+            {
+              "dstrElevatorDisablesShooting": false
+            },
+            {
+              "ammo_turret_04_dm": {
+                "count": 20
+              }
             }
-          }
+          ]
         },
         {
           "shells": [
@@ -6314,23 +6425,58 @@
         ]
       },
       {
-        "event": [
-          {
-            "name": "superstructure_fire"
-          },
-          {
-            "fx": {
-              "name": "ship_fire_large",
-              "emitter": "emtr_fire_dmg_01"
-            }
-          },
-          {
-            "fx": {
-              "name": "ship_fire_large",
-              "emitter": "emtr_fire_dmg_02"
-            }
+        "event": {
+          "name": "superstructure_back_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
           }
-        ]
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_front_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_top_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_bottom_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_side_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
       },
       {
         "event": {

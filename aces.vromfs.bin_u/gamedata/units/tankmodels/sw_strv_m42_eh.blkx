@@ -105,40 +105,31 @@
     "type": "typeMediumTank"
   },
   {
-    "customClassIco": "!#ui/gameuiskin#image_in_progress_ico"
-  },
-  {
-    "customImage": "!#ui/unitskin#image_in_progress"
-  },
-  {
-    "customTooltipImage": "ui/aircrafts/image_in_progress"
-  },
-  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "RHA_tank",
       "hp": 10000.0,
       "hull": {
         "body_front_dm": {
-          "armorThickness": 34.0
+          "armorThickness": 30.0
         },
         "superstructure_front_dm": {
-          "armorThickness": 34.0
+          "armorThickness": 55.0
         },
         "body_side_dm": {
-          "armorThickness": 34.0
+          "armorThickness": 30.0
         },
         "superstructure_side_dm": {
-          "armorThickness": 24.0
+          "armorThickness": 25.0
         },
         "body_back_dm": {
-          "armorThickness": 24.0
+          "armorThickness": 20.0
         },
         "superstructure_back_dm": {
           "armorThickness": 24.0
         },
         "body_top_dm": {
-          "armorThickness": 20.0
+          "armorThickness": 25.0
         },
         "body_bottom_dm": {
           "armorThickness": 9.0
@@ -147,16 +138,16 @@
           "armorThickness": 20.0
         },
         "turret_02_front_dm": {
-          "armorThickness": 9.0
+          "armorThickness": 20.0
         },
         "turret_03_front_dm": {
-          "armorThickness": 13.0
+          "armorThickness": 55.0
         },
         "turret_04_front_dm": {
-          "armorThickness": 15.0
+          "armorThickness": 30.0
         },
         "turret_02_top_dm": {
-          "armorThickness": 9.0
+          "armorThickness": 20.0
         },
         "turret_04_top_dm": {
           "armorThickness": 9.0
@@ -165,7 +156,7 @@
           "armorThickness": 9.0
         },
         "turret_02_side_dm": {
-          "armorThickness": 13.0
+          "armorThickness": 20.0
         },
         "turret_01_back_dm": {
           "armorThickness": 9.0
@@ -174,26 +165,19 @@
           "armorThickness": 24.0
         },
         "turret_04_back_dm": {
-          "armorThickness": 55.0
+          "armorThickness": 53.0
         },
         "turret_04_side_dm": {
-          "armorThickness": 10.0
-        },
-        "ex_armor_l_01_dm": {
-          "armorThickness": 15.0
-        },
-        "ex_armor_r_01_dm": {
-          "armorThickness": 15.0
+          "armorThickness": 30.0
         },
         "ex_armor_05_dm": {
-          "armorThickness": 5.0
+          "armorThickness": 9.0
         },
         "ex_armor_06_dm": {
-          "armorThickness": 5.0
+          "armorThickness": 9.0
         },
         "superstructure_bottom_dm": {
-          "armorClass": "tank_structural_steel",
-          "armorThickness": 9.0
+          "armorThickness": 10.0
         },
         "ex_decor_l_04_dm": {
           "armorClass": "tank_structural_steel",
@@ -204,30 +188,30 @@
           "armorThickness": 4.0
         },
         "turret_03_bottom_dm": {
-          "armorThickness": 15.0
-        },
-        "turret_04_bottom_dm": {
-          "armorThickness": 15.0
-        },
-        "ex_armor_01_dm": {
           "armorThickness": 5.0
         },
+        "turret_04_bottom_dm": {
+          "armorThickness": 10.0
+        },
         "ex_armor_08_dm": {
-          "armorThickness": 15.0
+          "armorThickness": 30.0
+        },
+        "turret_05_side_dm": {
+          "armorThickness": 55.0
         }
       },
       "turret": {
         "turret_front_dm": {
-          "armorThickness": 34.0
+          "armorThickness": 55.0
         },
         "turret_top_dm": {
           "armorThickness": 10.0
         },
         "turret_side_dm": {
-          "armorThickness": 28.0
+          "armorThickness": 25.0
         },
         "turret_back_dm": {
-          "armorThickness": 20.0
+          "armorThickness": 25.0
         },
         "turret_02_back_dm": {
           "armorThickness": 5.0
@@ -242,13 +226,13 @@
           "armorThickness": 20.0
         },
         "turret_01_side_dm": {
-          "armorThickness": 28.0
+          "armorThickness": 30.0
         },
         "turret_03_top_dm": {
-          "armorThickness": 20.0
+          "armorThickness": 30.0
         },
         "turret_03_side_dm": {
-          "armorThickness": 34.0
+          "armorThickness": 25.0
         },
         "turret_01_bottom_dm": {
           "armorThickness": 55.0
@@ -257,9 +241,19 @@
           "armorThickness": 30.0
         }
       },
+      "structural_steel_parts": {
+        "armorClass": "tank_structural_steel",
+        "hp": 1000.0,
+        "armorThickness": 4.0,
+        "stopChanceOnDeadPart": 0.0,
+        "createSecondaryShatters": false,
+        "hidableInViewer": true,
+        "ex_decor_l_02_dm": [],
+        "ex_decor_r_02_dm": []
+      },
       "mask": {
         "gun_mask_dm": {
-          "armorThickness": 20.0,
+          "armorThickness": 55.0,
           "hp": 10000.0
         }
       },
@@ -332,11 +326,12 @@
         "wheel_l_front_dm": [],
         "wheel_r_front_dm": [],
         "wheel_support_dm": [],
+        "ex_armor_l_01_dm": [],
+        "ex_armor_r_01_dm": [],
         "submodule": {
           "armorClass": "tank_traks",
           "armorThickness": 15.0,
-          "ex_armor_07_dm": [],
-          "ex_armor_02_dm": []
+          "ex_armor_07_dm": []
         }
       },
       "gun": {
@@ -344,22 +339,12 @@
         "hp": 100.0,
         "armorThickness": 10.0,
         "gun_barrel_dm": [],
-        "gun_barrel_01_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        },
         "gun_barrel_02_dm": {
           "armorThrough": 10.0,
           "armorThickness": 5.0,
           "hp": 50.0
         },
         "gun_barrel_03_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        },
-        "gun_barrel_04_dm": {
           "armorThrough": 10.0,
           "armorThickness": 5.0,
           "hp": 50.0
@@ -1147,6 +1132,66 @@
             "name": "ammo_turret_55_dm"
           },
           {
+            "name": "ammo_turret_56_dm"
+          },
+          {
+            "name": "ammo_turret_57_dm"
+          },
+          {
+            "name": "ammo_turret_58_dm"
+          },
+          {
+            "name": "ammo_turret_59_dm"
+          },
+          {
+            "name": "ammo_turret_60_dm"
+          },
+          {
+            "name": "ammo_turret_61_dm"
+          },
+          {
+            "name": "ammo_turret_62_dm"
+          },
+          {
+            "name": "ammo_turret_63_dm"
+          },
+          {
+            "name": "ammo_turret_64_dm"
+          },
+          {
+            "name": "ammo_turret_65_dm"
+          },
+          {
+            "name": "ammo_turret_66_dm"
+          },
+          {
+            "name": "ammo_turret_67_dm"
+          },
+          {
+            "name": "ammo_turret_68_dm"
+          },
+          {
+            "name": "ammo_turret_69_dm"
+          },
+          {
+            "name": "ammo_turret_70_dm"
+          },
+          {
+            "name": "ammo_turret_71_dm"
+          },
+          {
+            "name": "ammo_turret_72_dm"
+          },
+          {
+            "name": "ammo_turret_73_dm"
+          },
+          {
+            "name": "ammo_turret_74_dm"
+          },
+          {
+            "name": "ammo_turret_75_dm"
+          },
+          {
             "onHit": {
               "damageType": "cumulative",
               "expl": 0.4,
@@ -1598,6 +1643,9 @@
           "role": "loader"
         },
         {
+          "substitute": "commander"
+        },
+        {
           "substitute": "machine_gunner"
         }
       ],
@@ -1609,30 +1657,28 @@
           "role": "driver"
         },
         {
-          "substitute": "gunner"
+          "substitute": "commander"
         },
         {
           "substitute": "machine_gunner"
         }
       ],
-      "commander": [
-        {
-          "dmPart": "commander_dm"
-        },
-        {
-          "role": "commander"
-        },
-        {
-          "substitute": "machine_gunner"
-        },
-        {
-          "substitute": "gunner"
-        }
-      ],
+      "commander": {
+        "dmPart": "commander_dm",
+        "role": "commander",
+        "substitute": "machine_gunner"
+      },
       "machine_gunner": {
         "dmPart": "machine_gunner_dm",
         "role": "radio_gunner"
       }
+    }
+  },
+  {
+    "gunConvergence": {
+      "distance": 800.0,
+      "vertical": true,
+      "horizontal": true
     }
   },
   {
@@ -1858,7 +1904,7 @@
         "minRPM": 600.0
       },
       "mechanics": {
-        "maxBrakeForce": 40000.0,
+        "maxBrakeForce": 100000.0,
         "driveGearRadius": 0.302,
         "mainGearRatio": 3.8,
         "sideGearRatio": 2.0,
@@ -1894,7 +1940,7 @@
         "defaultGearRadius": 0.3,
         "frontBackGearRadius": 0.3,
         "topGearRadius": 0.1,
-        "defaultDampeningForce": [40000.0,40000.0],
+        "defaultDampeningForce": [100000.0,100000.0],
         "dampeningRelaxationRatio": 0.4,
         "dampeningCompressionRatio": 0.15
       }

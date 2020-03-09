@@ -108,15 +108,6 @@
     "canReloadNonGuns": true
   },
   {
-    "customClassIco": "!#ui/gameuiskin#image_in_progress_ico"
-  },
-  {
-    "customImage": "!#ui/unitskin#image_in_progress"
-  },
-  {
-    "customTooltipImage": "ui/aircrafts/image_in_progress"
-  },
-  {
     "controlDevices": [
       {
         "device": {
@@ -450,15 +441,6 @@
         "wheel_support_dm": [],
         "ex_armor_10_dm": []
       },
-      "attachables": {
-        "ex_armor_body_r_01_dm": true,
-        "ex_armor_body_l_07_dm": true,
-        "ex_armor_02_dm": true,
-        "ex_armor_body_l_08_dm": true,
-        "ex_armor_body_r_08_dm": true,
-        "ex_armor_body_r_07_dm": true,
-        "turret_03_bottom_dm": true
-      },
       "gun": {
         "armorClass": "tank_barrel",
         "hp": 250.0,
@@ -688,6 +670,26 @@
         "ammo_turret_53_dm": [],
         "ammo_turret_54_dm": [],
         "ammo_turret_55_dm": [],
+        "ammo_turret_56_dm": [],
+        "ammo_turret_57_dm": [],
+        "ammo_turret_58_dm": [],
+        "ammo_turret_59_dm": [],
+        "ammo_turret_60_dm": [],
+        "ammo_turret_61_dm": [],
+        "ammo_turret_62_dm": [],
+        "ammo_turret_63_dm": [],
+        "ammo_turret_64_dm": [],
+        "ammo_turret_65_dm": [],
+        "ammo_turret_66_dm": [],
+        "ammo_turret_67_dm": [],
+        "ammo_turret_68_dm": [],
+        "ammo_turret_69_dm": [],
+        "ammo_turret_70_dm": [],
+        "ammo_turret_71_dm": [],
+        "ammo_turret_72_dm": [],
+        "ammo_turret_73_dm": [],
+        "ammo_turret_74_dm": [],
+        "ammo_turret_75_dm": [],
         "ammo_body_dm": [],
         "ammo_body_01_dm": [],
         "ammo_body_02_dm": [],
@@ -793,6 +795,17 @@
         "fuel_tank_l_04_dm": [],
         "fuel_tank_l_05_dm": []
       }
+    }
+  },
+  {
+    "attachables": {
+      "ex_armor_body_r_01_dm": true,
+      "ex_armor_body_l_07_dm": true,
+      "ex_armor_02_dm": true,
+      "ex_armor_body_l_08_dm": true,
+      "ex_armor_body_r_08_dm": true,
+      "ex_armor_body_r_07_dm": true,
+      "turret_03_bottom_dm": true
     }
   },
   {
@@ -1239,6 +1252,66 @@
           },
           {
             "name": "ammo_turret_55_dm"
+          },
+          {
+            "name": "ammo_turret_56_dm"
+          },
+          {
+            "name": "ammo_turret_57_dm"
+          },
+          {
+            "name": "ammo_turret_58_dm"
+          },
+          {
+            "name": "ammo_turret_59_dm"
+          },
+          {
+            "name": "ammo_turret_60_dm"
+          },
+          {
+            "name": "ammo_turret_61_dm"
+          },
+          {
+            "name": "ammo_turret_62_dm"
+          },
+          {
+            "name": "ammo_turret_63_dm"
+          },
+          {
+            "name": "ammo_turret_64_dm"
+          },
+          {
+            "name": "ammo_turret_65_dm"
+          },
+          {
+            "name": "ammo_turret_66_dm"
+          },
+          {
+            "name": "ammo_turret_67_dm"
+          },
+          {
+            "name": "ammo_turret_68_dm"
+          },
+          {
+            "name": "ammo_turret_69_dm"
+          },
+          {
+            "name": "ammo_turret_70_dm"
+          },
+          {
+            "name": "ammo_turret_71_dm"
+          },
+          {
+            "name": "ammo_turret_72_dm"
+          },
+          {
+            "name": "ammo_turret_73_dm"
+          },
+          {
+            "name": "ammo_turret_74_dm"
+          },
+          {
+            "name": "ammo_turret_75_dm"
           },
           {
             "onHit": {
@@ -1916,7 +1989,8 @@
       "TrackSoundNameCockpit": "tracks_wheels_interior",
       "turret_turn": "turret_turn_servo",
       "EngineNameAi": "engine_truck_ai",
-      "TrackSoundNameAi": "tracks_ai_wheels"
+      "TrackSoundNameAi": "tracks_ai_wheels",
+      "gun_turn": "turret_turn_mg_light"
     }
   },
   {
@@ -3218,18 +3292,16 @@
         "effects": {
           "nightVision": {
             "gunnerThermal": {
-              "resolution": [500,300],
-              "noiseFactor": 0.05
+              "resolution": [800,600],
+              "noiseFactor": 0.04
             },
-            "commanderIr": {
-              "resolution": [1600,1200],
-              "lightMult": 9.0,
-              "ghosting": 0.6,
-              "noiseFactor": 0.2
+            "commanderThermal": {
+              "resolution": [800,600],
+              "noiseFactor": 0.04
             },
             "driverIr": {
-              "resolution": [800,600],
-              "lightMult": 5.0,
+              "resolution": [1200,800],
+              "lightMult": 7.0,
               "ghosting": 0.6,
               "noiseFactor": 0.2
             }

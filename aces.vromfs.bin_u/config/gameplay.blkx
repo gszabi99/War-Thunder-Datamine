@@ -1421,9 +1421,9 @@
       "loadFactorFilterViscosity": 0.05,
       "loadFactorDeadZone": 0.0,
       "maxLoadFactorMult": 0.85,
-      "assistMaxAoaFactorMul": 0.25,
-      "additionalAoaMaxFactorMult": 0.5,
-      "maxAoaFactorMult": 0.8,
+      "targetMaxAoaFactorMult": 1.0,
+      "additionalAoaMaxFactorMult": 1.0,
+      "maxAoaFactorMult": 0.95,
       "limitAoaByLoadFactor": true,
       "limitStabAoa": false,
       "loadFactorTimeMultBase": 5.0,
@@ -1755,6 +1755,7 @@
     "sunInfraRedBrightnessSourcesMask": 3,
     "opticalTreesTransparencyTreshold": 0.02,
     "laserDesignatorTreesTransparencyTreshold": 0.25,
+    "opticalCloudsTransparencyTreshold": 1,
     "radarSelectedTargetLockFromOptics": true,
     "radarCrossSectionAspectMultFrontFront": 1.0,
     "radarCrossSectionAspectMultFrontSide": 1.2,
@@ -1764,6 +1765,13 @@
     "propellersRadarCrossSectionSourcesMask": 2,
     "activeSonarReflectionMult": 40000000000.0,
     "radarAntipodEffect": [0.0,1.0,100.0,0.0],
+    "radarModeName0": "standby",
+    "radarModeName1": "search",
+    "radarModeName2": "acquisition",
+    "radarModeName3": "ACM",
+    "radarModeName4": "track",
+    "radarModeName5": "air_search",
+    "radarModeName6": "ground_search",
     "correctRadarAnimation": true,
     "radarDetectedTargetActivityTimeMult": 2.0,
     "radarDetectedTargetSelectionRelSpeedMin": 20.0,
@@ -2863,6 +2871,105 @@
     },
     {
       "allowNode": "ex_armor_l_10_dm"
+    },
+    {
+      "allowNode": "turret_07_bottom_dm"
+    },
+    {
+      "allowNode": "turret_07_back_dm"
+    },
+    {
+      "allowNode": "turret_07_side_dm"
+    },
+    {
+      "allowNode": "turret_07_top_dm"
+    },
+    {
+      "allowNode": "turret_08_bottom_dm"
+    },
+    {
+      "allowNode": "turret_08_back_dm"
+    },
+    {
+      "allowNode": "turret_08_side_dm"
+    },
+    {
+      "allowNode": "turret_08_top_dm"
+    },
+    {
+      "allowNode": "turret_08_front_dm"
+    },
+    {
+      "allowNode": "turret_09_bottom_dm"
+    },
+    {
+      "allowNode": "turret_09_back_dm"
+    },
+    {
+      "allowNode": "turret_09_side_dm"
+    },
+    {
+      "allowNode": "turret_09_front_dm"
+    },
+    {
+      "allowNode": "turret_10_bottom_dm"
+    },
+    {
+      "allowNode": "turret_10_back_dm"
+    },
+    {
+      "allowNode": "turret_10_side_dm"
+    },
+    {
+      "allowNode": "turret_10_top_dm"
+    },
+    {
+      "allowNode": "turret_10_front_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_06_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_07_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_08_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_09_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_10_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_l_07_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_l_08_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_l_09_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_l_10_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_l_11_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_r_07_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_r_08_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_r_09_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_r_10_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_r_11_dm"
     }
   ],
   "torpedoCourseCorrection": {

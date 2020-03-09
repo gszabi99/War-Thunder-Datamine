@@ -111,15 +111,6 @@
     "depthTraceCriticalDepth": 2.0
   },
   {
-    "customClassIco": "!#ui/gameuiskin#image_in_progress_ico"
-  },
-  {
-    "customImage": "!#ui/unitskin#image_in_progress"
-  },
-  {
-    "customTooltipImage": "ui/aircrafts/image_in_progress"
-  },
-  {
     "hideNodesInDmg": {
       "node": "flag"
     }
@@ -1019,9 +1010,11 @@
         "armorThickness": 8.0,
         "oneSided": true,
         "superstructure_back_dm": {
+          "fireParamsPreset": "ship_superstructure_back",
           "hp": 3482.0
         },
         "superstructure_front_dm": {
+          "fireParamsPreset": "ship_superstructure_front",
           "hp": 2900.0
         }
       },
@@ -1245,40 +1238,40 @@
         "createSecondaryShatters": false,
         "oneSided": true,
         "ammunition_storage_01_dm": {
-          "hp": 2000.0
+          "hp": 1545.0
         },
         "ammunition_storage_02_dm": {
-          "hp": 2000.0
+          "hp": 1328.0
         },
         "ammunition_storage_03_dm": {
-          "hp": 2000.0
+          "hp": 1000.0
         },
         "ammunition_storage_04_dm": {
-          "hp": 2000.0
+          "hp": 1000.0
         },
         "ammunition_storage_05_dm": {
-          "hp": 2000.0
+          "hp": 1000.0
         },
         "ammunition_storage_06_dm": {
-          "hp": 2000.0
+          "hp": 1000.0
         },
         "ammunition_storage_07_dm": {
-          "hp": 2000.0
+          "hp": 1000.0
         },
         "ammunition_storage_08_dm": {
-          "hp": 2000.0
+          "hp": 1000.0
         },
         "ammunition_storage_09_dm": {
-          "hp": 2000.0
+          "hp": 1000.0
         },
         "ammunition_storage_10_dm": {
-          "hp": 2000.0
+          "hp": 1000.0
         },
         "ammunition_storage_11_dm": {
-          "hp": 2000.0
+          "hp": 1000.0
         },
         "ammunition_storage_12_dm": {
-          "hp": 2000.0
+          "hp": 1000.0
         }
       },
       "ammo_storages_shells": {
@@ -1310,10 +1303,10 @@
         "armorThickness": 5.0,
         "oneSided": true,
         "ammo_turret_01_dm": {
-          "hp": 1000.0
+          "hp": 500.0
         },
         "ammo_turret_02_dm": {
-          "hp": 1000.0
+          "hp": 500.0
         }
       },
       "depth_charges": {
@@ -1637,10 +1630,19 @@
       "radiolocation": {
         "armorClass": "ship_structural_steel",
         "armorThickness": 5.0,
-        "radar_01_dm": {
+        "radar_02_dm": {
+          "hp": 150.0
+        },
+        "antenna_target_location_01_dm": {
           "hp": 188.0
         },
-        "radar_02_dm": {
+        "antenna_target_location_02_dm": {
+          "hp": 150.0
+        },
+        "fire_director_01_dm": {
+          "hp": 150.0
+        },
+        "fire_director_mount_01_dm": {
           "hp": 150.0
         }
       }
@@ -2592,14 +2594,14 @@
   },
   {
     "sound": {
-      "EngineName": "engine_shipmid01",
-      "EngineNameAi": "engine_shipmid_ai",
+      "EngineName": "engine_shiplight01",
+      "EngineNameAi": "engine_shiplight_ai",
       "TrackSoundPath": "ships/engines_ships",
       "TrackSoundPathStudio": "naval/engines",
-      "TrackSoundName": "tracks_mid",
-      "TrackSoundNameCockpit": "tracks_mid_interior",
-      "TrackSoundNameAi": "tracks_ai_mid",
-      "turret_turn": "turret_turn_big"
+      "TrackSoundName": "tracks_light",
+      "TrackSoundNameCockpit": "tracks_light_interior",
+      "TrackSoundNameAi": "tracks_ai_light",
+      "turret_turn": "turret_turn"
     }
   },
   {
@@ -2609,6 +2611,19 @@
   },
   {
     "commonWeapons": [
+      {
+        "animatedBones": [
+          {
+            "node": "antenna_target_location_01"
+          },
+          {
+            "node": "fire_director_01"
+          },
+          {
+            "node": "fire_director_mount_01"
+          }
+        ]
+      },
       {
         "Weapon": [
           {
@@ -2932,6 +2947,7 @@
           "speedYaw": 30.0,
           "speedPitch": 24.0,
           "bullets": 2000,
+          "fireConeAngle": 1.0,
           "useGunnerTargetingQuality": false,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
@@ -3004,6 +3020,7 @@
           "speedYaw": 30.0,
           "speedPitch": 24.0,
           "bullets": 2000,
+          "fireConeAngle": 1.0,
           "useGunnerTargetingQuality": false,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
@@ -3104,6 +3121,59 @@
     ]
   },
   {
+    "sensors": [
+      {
+        "sensor": [
+          {
+            "blk": "gameData/sensors/su_foot_n.blk"
+          },
+          {
+            "designationFromBody": true
+          },
+          {
+            "designationTurretIndex": 1
+          },
+          {
+            "dmPart": "antenna_target_location_01_dm"
+          },
+          {
+            "dmPart": "antenna_target_location_02_dm"
+          }
+        ]
+      },
+      {
+        "sensor": [
+          {
+            "blk": "gameData/sensors/ship_optical_sight.blk"
+          },
+          {
+            "dmPart": "fire_director_mount_01_dm"
+          },
+          {
+            "dmPart": "fire_director_01_dm"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "radarAnimations": [
+      {
+        "anim": {
+          "radarAnimVar": "radar_target_yaw_rotate",
+          "animatedRadarIdx": 0
+        }
+      },
+      {
+        "anim": {
+          "radarAnimVar": "target_tagging_yaw_rotate",
+          "animatedRadarIdx": 1,
+          "radarAnimPitchVar": "target_tagging_pitch_rotate"
+        }
+      }
+    ]
+  },
+  {
     "unitFx": [
       {
         "event": [
@@ -3132,6 +3202,60 @@
             }
           }
         ]
+      },
+      {
+        "event": {
+          "name": "superstructure_back_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_front_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_top_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_bottom_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_side_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
       },
       {
         "event": [

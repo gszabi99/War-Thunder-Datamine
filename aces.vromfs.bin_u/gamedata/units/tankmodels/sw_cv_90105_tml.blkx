@@ -39,6 +39,9 @@
     "useSimpleDeathConditionsAndEffects": false
   },
   {
+    "autoSightDistanceCorrection": true
+  },
+  {
     "subclass": "heavyVehicle"
   },
   {
@@ -120,7 +123,7 @@
           "armorThickness": 10.0
         },
         "superstructure_side_dm": {
-          "armorThickness": 24.0
+          "armorThickness": 6.0
         },
         "body_back_dm": {
           "armorThickness": 20.0
@@ -192,10 +195,6 @@
         "superstructure_bottom_dm": {
           "armorThickness": 10.0
         },
-        "ex_decor_l_04_dm": {
-          "armorClass": "tank_structural_steel",
-          "armorThickness": 4.0
-        },
         "ex_decor_06_dm": {
           "armorThickness": 5.0
         },
@@ -207,22 +206,32 @@
         }
       },
       "hull_turret_spaced_armor": {
-        "hp": 5000.0,
-        "armorClass": "leopard_2a5_turret_nera",
+        "armorClass": "RHA_tank",
         "composite_armor_hull_01_dm": {
-          "armorThickness": 0.0,
-          "cumulativeArmorQuality": 0.7,
-          "genericArmorQuality": 0.0
+          "armorThickness": 10.0
+        },
+        "composite_armor_hull_02_dm": {
+          "armorThickness": 10.0
         }
       },
       "body_shields": {
+        "armorClass": "tank_structural_steel",
         "armorThickness": 5.0,
+        "hp": 1000.0,
+        "stopChanceOnDeadPart": 0.0,
+        "createSecondaryShatters": false,
         "ex_armor_l_01_dm": [],
         "ex_armor_r_01_dm": [],
         "ex_armor_l_02_dm": [],
         "ex_armor_r_02_dm": [],
         "ex_armor_l_03_dm": [],
-        "ex_armor_r_03_dm": []
+        "ex_armor_r_03_dm": [],
+        "ex_decor_l_01_dm": [],
+        "ex_decor_r_01_dm": [],
+        "ex_decor_l_04_dm": [],
+        "ex_decor_r_04_dm": [],
+        "ex_decor_l_05_dm": [],
+        "ex_decor_r_05_dm": []
       },
       "turret": {
         "turret_front_dm": {
@@ -715,6 +724,39 @@
     }
   },
   {
+    "xray_viewer_data": [
+      {
+        "armorArrayHull": {
+          "xrayDmPart": "composite_armor_hull_01_dm",
+          "titleLoc": "RHA_tank_modern",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_hull_01_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayHull": {
+          "xrayDmPart": "composite_armor_hull_02_dm",
+          "titleLoc": "RHA_tank_modern",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_hull_02_dm"
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "attachables": {
+      "ex_armor_01_dm": true,
+      "ex_decor_03_dm": true,
+      "ex_decor_06_dm": true
+    }
+  },
+  {
     "sound": {
       "EngineName": "engine_su100",
       "TrackSoundPath": "tanks/engines_tanks",
@@ -1170,6 +1212,66 @@
           },
           {
             "name": "ammo_turret_55_dm"
+          },
+          {
+            "name": "ammo_turret_56_dm"
+          },
+          {
+            "name": "ammo_turret_57_dm"
+          },
+          {
+            "name": "ammo_turret_58_dm"
+          },
+          {
+            "name": "ammo_turret_59_dm"
+          },
+          {
+            "name": "ammo_turret_60_dm"
+          },
+          {
+            "name": "ammo_turret_61_dm"
+          },
+          {
+            "name": "ammo_turret_62_dm"
+          },
+          {
+            "name": "ammo_turret_63_dm"
+          },
+          {
+            "name": "ammo_turret_64_dm"
+          },
+          {
+            "name": "ammo_turret_65_dm"
+          },
+          {
+            "name": "ammo_turret_66_dm"
+          },
+          {
+            "name": "ammo_turret_67_dm"
+          },
+          {
+            "name": "ammo_turret_68_dm"
+          },
+          {
+            "name": "ammo_turret_69_dm"
+          },
+          {
+            "name": "ammo_turret_70_dm"
+          },
+          {
+            "name": "ammo_turret_71_dm"
+          },
+          {
+            "name": "ammo_turret_72_dm"
+          },
+          {
+            "name": "ammo_turret_73_dm"
+          },
+          {
+            "name": "ammo_turret_74_dm"
+          },
+          {
+            "name": "ammo_turret_75_dm"
           },
           {
             "onHit": {
@@ -1653,7 +1755,9 @@
   },
   {
     "gunConvergence": {
-      "distance": 1200.0,
+      "updateFromRangefinder": true,
+      "minDistance": 200.0,
+      "distance": 1000.0,
       "vertical": true,
       "horizontal": true
     }
@@ -1807,7 +1911,9 @@
       "engine": {
         "horsePowers": 550.0,
         "maxRPM": 2100.0,
-        "minRPM": 800.0
+        "minRPM": 800.0,
+        "manufacturer": "scania",
+        "model": "dsi_14"
       },
       "mechanics": {
         "maxBrakeForce": 160000.0,
@@ -1815,21 +1921,33 @@
         "mainGearRatio": 1.0,
         "sideGearRatio": 2.542,
         "neutralGearRatio": 12.0,
+        "manufacturer": "perkins",
+        "model": "x_300",
+        "type": "auto",
         "gearRatios": [
           {
             "ratio": -1.665
           },
           {
-            "ratio": -5.319
+            "ratio": -4.054
+          },
+          {
+            "ratio": -7.054
           },
           {
             "ratio": 0.0
           },
           {
-            "ratio": 4.054
+            "ratio": 7.054
           },
           {
-            "ratio": 2.275
+            "ratio": 5.054
+          },
+          {
+            "ratio": 3.275
+          },
+          {
+            "ratio": 2.0
           },
           {
             "ratio": 1.452
@@ -2360,12 +2478,12 @@
   },
   {
     "cockpit": {
-      "zoomOutFov": 40.0,
-      "zoomInFov": 21.0,
-      "sightFov": 25.0,
-      "sightName": "default_tank_spg",
-      "headPos": [0.0,3.2,-6.7],
-      "headPosOnShooting": [0.3,3.0,-0.25],
+      "zoomOutFov": 8.37,
+      "zoomInFov": 7.37,
+      "sightFov": 6.0,
+      "sightName": "m504",
+      "headPos": [0.0,3.9,-8.5],
+      "headPosOnShooting": [-1.23,3.0,0.47],
       "detectionHeight": 2.9
     }
   },
@@ -2391,34 +2509,422 @@
       },
       "105mm_usa_HESH": [],
       "105mm_usa_HEAT_FS": [],
-      "105mm_usa_HESH_ammo_pack": [],
-      "105mm_usa_HEAT_FS_ammo_pack": [],
+      "105mm_usa_HESH_ammo_pack": {
+        "tier": 1
+      },
+      "105mm_usa_HEAT_FS_ammo_pack": {
+        "tier": 2
+      },
       "105mm_usa_M735_APDS_FS": [],
       "105mm_usa_M735_APDS_FS_ammo_pack": [],
+      "modern_tank_laser_rangefinder": {
+        "tier": 3
+      },
+      "airstrike": [],
+      "improved_optics": [],
+      "tank_smoke_screen_system_mod": {
+        "tier": 4,
+        "modClass": "protection",
+        "effects": {
+          "commonWeapons": [
+            {
+              "Weapon": {
+                "trigger": "gunner0",
+                "blk": "gameData/Weapons/groundModels_weapons/105mm_CN_105_G2_user_cannon.blk",
+                "emitter": "bone_gun_barrel",
+                "flash": "emtr_gun_flame",
+                "recoilOffset": 1.2,
+                "maxAdditionalPitch": 0.0,
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "barrelDP": "gun_barrel_dm",
+                "breechDP": "cannon_breech_dm",
+                "speedYaw": 30.0,
+                "speedPitch": 8.0,
+                "fireConeAngle": 1.0,
+                "bullets": 40,
+                "salvoAmount": 100.0,
+                "ChainfireTime": 0.0,
+                "DelayAfterShoot": 5.0,
+                "AttackMaxDistance": 1000.0,
+                "AttackMaxRadius": 1000.0,
+                "AttackMaxHeight": 1000.0,
+                "accuracyAir": 0.0,
+                "accuracyGnd": 1.5,
+                "errMeasureVel": 0.0,
+                "errMeasureVelFast": 0.0,
+                "errMeasureVelFwdShift": 0.0,
+                "errMeasureVelDir": 0.0,
+                "errTargettingOn100kmph": 0.0,
+                "errTargetting": 3.0,
+                "errExplTime": 0.0,
+                "turret": {
+                  "head": "bone_turret",
+                  "gun": "bone_gun",
+                  "barrel": "bone_gun_barrel",
+                  "gunnerDm": "gunner_dm"
+                },
+                "limits": {
+                  "yaw": [-180.0,180.0],
+                  "pitch": [-7.5,20.0]
+                },
+                "limitsTable": {
+                  "lim1": [-180.0,-140.0,-4.0,20.0],
+                  "lim2": [-140.0,140.0,-7.5,20.0],
+                  "lim3": [140.0,180.0,-4.0,20.0]
+                },
+                "gunStabilizer": {
+                  "hasVerticalGunFreeMode": false,
+                  "hasHorizontal": true,
+                  "horizontalOmegaMult": 1.0,
+                  "horizontalSpeedLimitKPH": 75.0,
+                  "hasVertical": true,
+                  "verticalOmegaMult": 1.0,
+                  "verticalSpeedLimitKPH": 75.0,
+                  "speedFromVehicleVerticalMult": -1.0,
+                  "errorKPHToDegrees": [
+                    {
+                      "row": [5.0,0.0]
+                    },
+                    {
+                      "row": [45.0,0.015]
+                    },
+                    {
+                      "row": [80.0,0.02]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Weapon": {
+                "trigger": "gunner1",
+                "triggerGroup": "coaxial",
+                "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Ksp_58_Strv_user_machinegun.blk",
+                "emitter": "bone_mg_gun_twin_01",
+                "flash": "emtr_mg_flame_01",
+                "barrelDP": "gun_barrel_01_dm",
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "speedYaw": 18.0,
+                "speedPitch": 4.0,
+                "fireConeAngle": 1.0,
+                "bullets": 1200,
+                "isBulletBelt": true,
+                "salvoAmount": 100.0,
+                "ChainfireTime": 0.0,
+                "DelayAfterShoot": 5.0,
+                "AttackMaxDistance": 1000.0,
+                "AttackMaxRadius": 1000.0,
+                "AttackMaxHeight": 1000.0,
+                "accuracyAir": 0.0,
+                "accuracyGnd": 1.5,
+                "errMeasureVel": 0.0,
+                "errMeasureVelFast": 0.0,
+                "errMeasureVelFwdShift": 0.0,
+                "errMeasureVelDir": 0.0,
+                "errTargettingOn100kmph": 0.0,
+                "errTargetting": 3.0,
+                "errExplTime": 0.0,
+                "turret": {
+                  "head": "bone_mg_gun_twin_01",
+                  "gun": "bone_mg_gun_twin_01",
+                  "gunnerDm": "gunner_dm"
+                },
+                "limits": {
+                  "yaw": [-0.0,0.0],
+                  "pitch": [-0.0,0.0]
+                }
+              }
+            },
+            {
+              "Weapon": [
+                {
+                  "trigger": "gunner3"
+                },
+                {
+                  "triggerGroup": "smoke"
+                },
+                {
+                  "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk"
+                },
+                {
+                  "weaponType": "rockets"
+                },
+                {
+                  "startFx": ""
+                },
+                {
+                  "useEmitter": true
+                },
+                {
+                  "emitter": "emtr_mortar_flame_01"
+                },
+                {
+                  "emitterGenRange": [1,14]
+                },
+                {
+                  "emitterGenFmt": "emtr_mortar_flame_%02d"
+                },
+                {
+                  "ignoreLoaderPenalty": true
+                },
+                {
+                  "createGunEffects": true
+                },
+                {
+                  "defaultYaw": 0.0
+                },
+                {
+                  "defaultPitch": 0.0
+                },
+                {
+                  "allowableDelta": 360.0
+                },
+                {
+                  "salvo": 7
+                },
+                {
+                  "speedYaw": 24.0
+                },
+                {
+                  "speedPitch": 15.0
+                },
+                {
+                  "fireConeAngle": 1.0
+                },
+                {
+                  "bullets": 14
+                },
+                {
+                  "fireConeAngle": 15.0
+                },
+                {
+                  "ChainfireTime": 0.5
+                },
+                {
+                  "DelayAfterShoot": 2.0
+                },
+                {
+                  "accuracyAir": 1.5
+                },
+                {
+                  "accuracyGnd": 0.0
+                },
+                {
+                  "errMeasureVel": 0.0
+                },
+                {
+                  "errMeasureVelFast": 0.0
+                },
+                {
+                  "errMeasureVelFwdShift": 0.0
+                },
+                {
+                  "errMeasureVelDir": 0.0
+                },
+                {
+                  "errTargettingOn100kmph": 0.0
+                },
+                {
+                  "errTargetting": 3.0
+                },
+                {
+                  "errExplTime": 0.0
+                },
+                {
+                  "turret": {
+                    "head": "bone_grenade",
+                    "gun": "bone_grenade"
+                  }
+                },
+                {
+                  "limits": {
+                    "yaw": [0.0,0.0],
+                    "pitch": [0.0,0.0]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
       "night_vision_system": {
         "image": "#ui/gameuiskin#thermal_sight",
         "tier": 3,
         "effects": {
           "nightVision": {
             "gunnerThermal": {
-              "resolution": [500,300],
-              "noiseFactor": 0.05
+              "resolution": [800,600],
+              "noiseFactor": 0.04
             },
-            "commanderIr": {
-              "resolution": [1600,1200],
-              "lightMult": 9.0,
-              "ghosting": 0.6,
-              "noiseFactor": 0.2
+            "commanderThermal": {
+              "resolution": [800,600],
+              "noiseFactor": 0.04
             },
             "driverIr": {
-              "resolution": [800,600],
-              "lightMult": 5.0,
+              "resolution": [1200,800],
+              "lightMult": 7.0,
               "ghosting": 0.6,
               "noiseFactor": 0.2
             }
           }
         }
       }
+    }
+  },
+  {
+    "ammoStowages": {
+      "ammo1": [
+        {
+          "removeLoadedAmmo": true
+        },
+        {
+          "weaponTrigger": "gunner0"
+        },
+        {
+          "fatalFire": true
+        },
+        {
+          "fatalExplosion": true
+        },
+        {
+          "replenishmentDelay": 3.0
+        },
+        {
+          "replenishmentTime": 7.0
+        },
+        {
+          "shells": {
+            "firstStage": true,
+            "ammo_turret_01_dm": {
+              "count": 1
+            },
+            "ammo_turret_02_dm": {
+              "count": 1
+            },
+            "ammo_turret_03_dm": {
+              "count": 1
+            },
+            "ammo_turret_04_dm": {
+              "count": 1
+            },
+            "ammo_turret_05_dm": {
+              "count": 1
+            },
+            "ammo_turret_06_dm": {
+              "count": 1
+            },
+            "ammo_turret_07_dm": {
+              "count": 1
+            },
+            "ammo_turret_08_dm": {
+              "count": 1
+            },
+            "ammo_turret_09_dm": {
+              "count": 1
+            },
+            "ammo_turret_10_dm": {
+              "count": 1
+            },
+            "ammo_turret_11_dm": {
+              "count": 1
+            },
+            "ammo_turret_12_dm": {
+              "count": 1
+            }
+          }
+        },
+        {
+          "shells": {
+            "reloadTimeMult": 1.28,
+            "ammo_body_01_dm": {
+              "count": 1
+            },
+            "ammo_body_02_dm": {
+              "count": 1
+            },
+            "ammo_body_03_dm": {
+              "count": 1
+            },
+            "ammo_body_04_dm": {
+              "count": 1
+            },
+            "ammo_body_05_dm": {
+              "count": 1
+            },
+            "ammo_body_06_dm": {
+              "count": 1
+            },
+            "ammo_body_07_dm": {
+              "count": 1
+            },
+            "ammo_body_08_dm": {
+              "count": 1
+            },
+            "ammo_body_09_dm": {
+              "count": 1
+            },
+            "ammo_body_10_dm": {
+              "count": 1
+            },
+            "ammo_body_11_dm": {
+              "count": 1
+            },
+            "ammo_body_12_dm": {
+              "count": 1
+            },
+            "ammo_body_13_dm": {
+              "count": 1
+            },
+            "ammo_body_14_dm": {
+              "count": 1
+            },
+            "ammo_body_15_dm": {
+              "count": 1
+            },
+            "ammo_body_16_dm": {
+              "count": 1
+            },
+            "ammo_body_17_dm": {
+              "count": 1
+            },
+            "ammo_body_18_dm": {
+              "count": 1
+            },
+            "ammo_body_19_dm": {
+              "count": 1
+            },
+            "ammo_body_20_dm": {
+              "count": 1
+            },
+            "ammo_body_21_dm": {
+              "count": 1
+            },
+            "ammo_body_22_dm": {
+              "count": 1
+            },
+            "ammo_body_23_dm": {
+              "count": 1
+            },
+            "ammo_body_24_dm": {
+              "count": 1
+            },
+            "ammo_body_25_dm": {
+              "count": 1
+            },
+            "ammo_body_26_dm": {
+              "count": 1
+            },
+            "ammo_body_27_dm": {
+              "count": 1
+            },
+            "ammo_body_28_dm": {
+              "count": 1
+            }
+          }
+        }
+      ]
     }
   },
   {

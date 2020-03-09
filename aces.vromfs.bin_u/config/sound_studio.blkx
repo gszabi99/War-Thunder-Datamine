@@ -4,7 +4,6 @@
   "maxVorbisCodecs": 64,
   "maxFADPCMCodecs": 64,
   "vol0virtualvol": 0.006,
-  "fmodSynchronousMode": true,
   "memoryPC": 175,
   "memoryPS4": 175,
   "memoryPCLowMode": 140,
@@ -17,7 +16,7 @@
   "defGame": "master",
   "maxAltFallBullets": 20.0,
   "maxSpeedFallBullets": 50.0,
-  "event_time_to_live": 20.0,
+  "event_time_to_live": 12.0,
   "FmEngineAi": "engine_ai",
   "FmBomberEngineAi": "engine_bomber_ai",
   "FmJetEngineAi": "engine_jet_ai",
@@ -502,10 +501,10 @@
     "bomb_explosion_building": "heavy_explosion_building",
     "bomb_explosion_unit": "heavy_explosion_unit",
     "bomb_explosion_ship": "heavy_explosion_unit",
-    "torpedo_explosion_ground": "torpedo_explosion_unit",
-    "torpedo_explosion_water": "torpedo_explosion_unit",
-    "torpedo_explosion_air": "torpedo_explosion_unit",
-    "torpedo_explosion_building": "torpedo_explosion_unit",
+    "torpedo_explosion_ground": "heavy_explosion_ground",
+    "torpedo_explosion_water": "heavy_explosion_water",
+    "torpedo_explosion_air": "heavy_explosion_air",
+    "torpedo_explosion_building": "heavy_explosion_building",
     "torpedo_explosion_unit": "torpedo_explosion_unit",
     "torpedo_explosion_ship": "torpedo_explosion_unit",
     "plane_explosion_air": "parts_explosion",
@@ -6458,6 +6457,11 @@
       "path": "ground/effects",
       "event": "reload_roland",
       "time": 10.0
+    },
+    "grd_sturm_s_reload": {
+      "path": "ground/effects",
+      "event": "reload_sturm_s",
+      "time": 12.0
     },
     "grd_cannon_reload_auto": {
       "path": "ground/effects",

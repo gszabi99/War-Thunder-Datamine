@@ -30,6 +30,9 @@
     "dustFx": ""
   },
   {
+    "canReloadNonGuns": true
+  },
+  {
     "useSimpleDeathConditionsAndEffects": false
   },
   {
@@ -99,13 +102,7 @@
     "type": "typeTankDestroyer"
   },
   {
-    "customClassIco": "!#ui/gameuiskin#image_in_progress_ico"
-  },
-  {
-    "customImage": "!#ui/unitskin#image_in_progress"
-  },
-  {
-    "customTooltipImage": "ui/aircrafts/image_in_progress"
+    "rearmTimeOnField": 30.0
   },
   {
     "DamageParts": {
@@ -1826,6 +1823,88 @@
   {
     "optics": {
       "driverReticule": "car_driver_optics"
+    }
+  },
+  {
+    "ammoStowages": {
+      "ammo1": {
+        "weaponTrigger": "gunner1",
+        "removeLoadedAmmo": false,
+        "fatalFire": true,
+        "fatalExplosion": true,
+        "shells": {
+          "fireEvent": "ammo_fire",
+          "explosionEvent": "ammo_explosion",
+          "wreckedPartId": 0,
+          "replenishmentDelay": 0.1,
+          "replenishmentTime": 0.1,
+          "ammo_turret_12_dm": {
+            "count": 1
+          },
+          "ammo_turret_20_dm": {
+            "count": 1
+          },
+          "ammo_turret_19_dm": {
+            "count": 1
+          },
+          "ammo_turret_18_dm": {
+            "count": 1
+          },
+          "ammo_turret_17_dm": {
+            "count": 1
+          },
+          "ammo_turret_16_dm": {
+            "count": 1
+          },
+          "ammo_turret_15_dm": {
+            "count": 1
+          },
+          "ammo_turret_14_dm": {
+            "count": 1
+          },
+          "ammo_turret_13_dm": {
+            "count": 1
+          }
+        }
+      },
+      "ammo2": {
+        "weaponTrigger": "gunner2",
+        "removeLoadedAmmo": false,
+        "fatalFire": true,
+        "fatalExplosion": true,
+        "shells": {
+          "fireEvent": "ammo_fire",
+          "explosionEvent": "ammo_explosion",
+          "wreckedPartId": 0,
+          "ammo_turret_02_dm": {
+            "count": 1
+          },
+          "ammo_turret_10_dm": {
+            "count": 1
+          },
+          "ammo_turret_09_dm": {
+            "count": 1
+          },
+          "ammo_turret_08_dm": {
+            "count": 1
+          },
+          "ammo_turret_07_dm": {
+            "count": 1
+          },
+          "ammo_turret_06_dm": {
+            "count": 1
+          },
+          "ammo_turret_05_dm": {
+            "count": 1
+          },
+          "ammo_turret_04_dm": {
+            "count": 1
+          },
+          "ammo_turret_03_dm": {
+            "count": 1
+          }
+        }
+      }
     }
   },
   {

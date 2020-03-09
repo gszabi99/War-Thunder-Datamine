@@ -2296,55 +2296,131 @@
     }
   },
   {
-    "cockpit": {
-      "textToShowInCockpit": "msg/textToShowInCockpit",
-      "headPos": [2.78,0.66,0.055],
-      "headPosOnShooting": [2.78,0.66,0.055],
-      "collimatorSize": 0.2,
-      "lightPos": [-0.488212,1.03476,0.206514],
-      "lightColor": [0.62,0.3,0.21],
-      "lightAttenuation": 12.0,
-      "devices": {
-        "compass": [0.0,360.0],
-        "aviahorizon_pitch": [-90.0,90.0],
-        "aviahorizon_roll": [-180.0,180.0],
-        "speed": [0.0,333.333],
-        "mach": [0.5,1.2],
-        "turn": [-0.23562,0.23562],
-        "bank": [-8.0,8.0],
-        "bank1": [-8.0,8.0],
-        "vario": [-40.0,40.0],
-        "g_meter": [0.0,9.0],
-        "rpm": [2500.0,8500.0],
-        "clock_hour": [0.0,12.0],
-        "clock_min": [0.0,60.0],
-        "clock_sec": [0.0,60.0],
-        "altitude_hour": [0.0,10000.0],
-        "altitude_min": [0.0,1000.0],
-        "oil_pressure": [0.0,150.0],
-        "exhaust_temp": [0.0,800.0],
-        "fuel1": [0.0,1700.0],
-        "fuel2": [0.0,1200.0],
-        "fuel3": [0.0,1200.0]
+    "cockpit": [
+      {
+        "headPos": [2.72,0.622,0.0]
       },
-      "parts_holes_dmg": {
-        "part": "fuse"
+      {
+        "headPosOnShooting": [2.82,0.622,0.0]
       },
-      "parts_oil_dmg": [
-        {
-          "part": "engine1"
-        },
-        {
-          "part": "engine2"
-        },
-        {
-          "part": "engine3"
-        },
-        {
-          "part": "engine4"
+      {
+        "collimatorSize": 0.15
+      },
+      {
+        "mirror": true
+      },
+      {
+        "mirrorPos": [3.212,0.776,0.0]
+      },
+      {
+        "mirrorNorm": [-0.99,-0.139,0.0]
+      },
+      {
+        "mirrorNode": "blister7"
+      },
+      {
+        "lightPos": [3.291486,0.158663,0.410814]
+      },
+      {
+        "lightColor": [9.3,0.55,0.0]
+      },
+      {
+        "lightRadius": 0.2
+      },
+      {
+        "lightPos1": [3.286169,0.231623,0.08779]
+      },
+      {
+        "lightColor1": [9.3,0.55,0.0]
+      },
+      {
+        "lightRadius1": 0.3
+      },
+      {
+        "lightPos2": [3.31335,0.146487,-0.377762]
+      },
+      {
+        "lightColor2": [9.3,0.55,0.0]
+      },
+      {
+        "lightRadius2": 0.3
+      },
+      {
+        "lightPos2": [3.057758,-0.058987,-0.508323]
+      },
+      {
+        "lightColor2": [9.3,0.55,0.0]
+      },
+      {
+        "lightRadius2": 0.3
+      },
+      {
+        "devices": {
+          "stick_ailerons": [-1.0,1.0],
+          "stick_elevator": [-1.0,1.0],
+          "pedals": [-1.0,1.0],
+          "pedals1": [-1.0,1.0],
+          "pedals2": [-1.0,1.0],
+          "pedals3": [-1.0,1.0],
+          "throttle": [0.0,1.0],
+          "weapon2": [0.0,1.0],
+          "weapon3": [0.0,1.0],
+          "gears": [0.0,1.0],
+          "gear_fixed": true,
+          "flaps": [0.0,1.0],
+          "flaps_fixed": true,
+          "speed": [0.0,333.333],
+          "mach": [0.0,1.2],
+          "vario": [-40.0,40.0],
+          "altitude_hour": [0.0,10000.0],
+          "altitude_min": [0.0,1000.0],
+          "altitude_koef": 1.0,
+          "bank": [-8.0,8.0],
+          "turn": [-0.23562,0.23562],
+          "aviahorizon_pitch": [-45.0,45.0],
+          "aviahorizon_roll": [-180.0,180.0],
+          "aviahorizon_pitch1": [-95.0,95.0],
+          "aviahorizon_roll1": [-180.0,180.0],
+          "compass": [0.0,360.0],
+          "compass1": [0.0,360.0],
+          "clock_hour": [0.0,12.0],
+          "clock_min": [0.0,60.0],
+          "clock_sec": [0.0,60.0],
+          "fuel_consume": [0.0,100.0],
+          "fuel_consume1": [0.0,100.0],
+          "rpm": [0.0,10000.0],
+          "oil_pressure": [0.0,160.0],
+          "water_temperature": [50.0,850.0],
+          "fuel_pressure": [0.0,15.0],
+          "fuel": [0.0,1275.0],
+          "fuel1": [0.0,1275.0],
+          "g_meter": [0.0,10.0],
+          "g_meter_max": [0.0,10.0],
+          "gears_lamp": [0.0,0.0]
         }
-      ]
-    }
+      },
+      {
+        "parts_holes_dmg": {
+          "part": "fuse"
+        }
+      },
+      {
+        "parts_oil_dmg": [
+          {
+            "part": "engine1"
+          },
+          {
+            "part": "engine2"
+          },
+          {
+            "part": "engine3"
+          },
+          {
+            "part": "engine4"
+          }
+        ]
+      }
+    ]
   },
   {
     "commonWeapons": [

@@ -105,15 +105,6 @@
     "canReloadNonGuns": true
   },
   {
-    "customClassIco": "!#ui/gameuiskin#image_in_progress_ico"
-  },
-  {
-    "customImage": "!#ui/unitskin#image_in_progress"
-  },
-  {
-    "customTooltipImage": "ui/aircrafts/image_in_progress"
-  },
-  {
     "ikGunner": [
       {
         "model": "sweden_gunner_char"
@@ -418,13 +409,6 @@
     ]
   },
   {
-    "spawn_count": {
-      "numSpawnsPerBattleSimulation": 2,
-      "numSpawnsPerBattleArcade": 3,
-      "numSpawnsPerBattleHistorical": 3
-    }
-  },
-  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "RHA_tank",
@@ -439,7 +423,6 @@
         "superstructure_side_dm": [],
         "superstructure_front_dm": [],
         "superstructure_back_dm": [],
-        "superstructure_bottom_dm": [],
         "body_bottom_dm": [],
         "turret_bottom_dm": [],
         "turret_top_dm": [],
@@ -474,7 +457,10 @@
         "createSecondaryShatters": false,
         "hidableInViewer": true,
         "ex_decor_l_02_dm": [],
-        "ex_decor_r_02_dm": []
+        "ex_decor_r_02_dm": [],
+        "ex_decor_l_04_dm": [],
+        "ex_decor_r_03_dm": [],
+        "superstructure_bottom_dm": []
       },
       "mask": {
         "armorClass": "CHA_tank",
@@ -1391,6 +1377,66 @@
             "name": "ammo_turret_55_dm"
           },
           {
+            "name": "ammo_turret_56_dm"
+          },
+          {
+            "name": "ammo_turret_57_dm"
+          },
+          {
+            "name": "ammo_turret_58_dm"
+          },
+          {
+            "name": "ammo_turret_59_dm"
+          },
+          {
+            "name": "ammo_turret_60_dm"
+          },
+          {
+            "name": "ammo_turret_61_dm"
+          },
+          {
+            "name": "ammo_turret_62_dm"
+          },
+          {
+            "name": "ammo_turret_63_dm"
+          },
+          {
+            "name": "ammo_turret_64_dm"
+          },
+          {
+            "name": "ammo_turret_65_dm"
+          },
+          {
+            "name": "ammo_turret_66_dm"
+          },
+          {
+            "name": "ammo_turret_67_dm"
+          },
+          {
+            "name": "ammo_turret_68_dm"
+          },
+          {
+            "name": "ammo_turret_69_dm"
+          },
+          {
+            "name": "ammo_turret_70_dm"
+          },
+          {
+            "name": "ammo_turret_71_dm"
+          },
+          {
+            "name": "ammo_turret_72_dm"
+          },
+          {
+            "name": "ammo_turret_73_dm"
+          },
+          {
+            "name": "ammo_turret_74_dm"
+          },
+          {
+            "name": "ammo_turret_75_dm"
+          },
+          {
             "onHit": {
               "damageType": "cumulative",
               "expl": 0.4,
@@ -1912,7 +1958,7 @@
         "speedYaw": 70.0,
         "speedPitch": 45.0,
         "fireConeAngle": 1.0,
-        "bullets": 96,
+        "bullets": 104,
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
@@ -2557,6 +2603,60 @@
       "headPos": [0.0,3.2,-6.5],
       "headPosOnShooting": [-0.45,2.75,0.6],
       "detectionHeight": 2.09
+    }
+  },
+  {
+    "ammoStowages": {
+      "ammo1": {
+        "weaponTrigger": "gunner0",
+        "removeLoadedAmmo": false,
+        "fatalFire": true,
+        "fatalExplosion": true,
+        "shells": {
+          "fireEvent": "ammo_fire",
+          "explosionEvent": "ammo_explosion",
+          "wreckedPartId": 0,
+          "ammo_turret_01_dm": {
+            "count": 8
+          },
+          "ammo_turret_02_dm": {
+            "count": 8
+          },
+          "ammo_turret_03_dm": {
+            "count": 8
+          },
+          "ammo_turret_04_dm": {
+            "count": 8
+          },
+          "ammo_turret_05_dm": {
+            "count": 8
+          },
+          "ammo_turret_06_dm": {
+            "count": 8
+          },
+          "ammo_turret_07_dm": {
+            "count": 8
+          },
+          "ammo_turret_08_dm": {
+            "count": 8
+          },
+          "ammo_turret_09_dm": {
+            "count": 8
+          },
+          "ammo_turret_10_dm": {
+            "count": 8
+          },
+          "ammo_turret_11_dm": {
+            "count": 8
+          },
+          "ammo_turret_12_dm": {
+            "count": 8
+          },
+          "ammo_turret_13_dm": {
+            "count": 8
+          }
+        }
+      }
     }
   },
   {

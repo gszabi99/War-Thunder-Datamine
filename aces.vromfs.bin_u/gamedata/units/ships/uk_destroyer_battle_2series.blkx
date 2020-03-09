@@ -1526,15 +1526,19 @@
         "armorThickness": 8.0,
         "oneSided": true,
         "superstructure_back_dm": {
+          "fireParamsPreset": "ship_superstructure_back",
           "hp": 4172.0
         },
         "superstructure_bottom_dm": {
+          "fireParamsPreset": "ship_superstructure_bottom",
           "hp": 5000.0
         },
         "superstructure_side_dm": {
+          "fireParamsPreset": "ship_superstructure_side",
           "hp": 2167.0
         },
         "superstructure_dm": {
+          "fireParamsPreset": "ship_superstructure",
           "hp": 5000.0
         }
       },
@@ -1870,7 +1874,7 @@
         "armorThickness": 2.0,
         "oneSided": true,
         "ammunition_storage_aux_01_dm": {
-          "hp": 2000.0
+          "hp": 1488.0
         }
       },
       "ammo_first_stage": {
@@ -4333,6 +4337,10 @@
       "114mm_uk_aa_distant_fuse_ammo_pack": {
         "prevModification": "114mm_uk_sap_ammo_pack"
       },
+      "114mm_uk_aa_radio_fuse": [],
+      "114mm_uk_aa_radio_fuse_ammo_pack": {
+        "prevModification": "ship_rangefinder"
+      },
       "40mm_bofors_l60_navy_universal": [],
       "40mm_bofors_l60_navy_he": [],
       "40mm_bofors_l60_navy_he_ammo_pack": [],
@@ -4342,13 +4350,14 @@
       },
       "ship_torpedoes": [],
       "ship_rangefinder": {
-        "prevModification": "40mm_bofors_l60_navy_ap_ammo_pack"
+        "prevModification": "114mm_uk_aa_distant_fuse_ammo_pack"
       },
       "new_aux_caliber_turrets": [],
       "new_main_caliber_turrets": {
         "reqModification": "new_aux_caliber_turrets"
       },
       "torpedoes_movement_mode": {
+        "prevModification": "new_main_caliber_turrets",
         "effects": {
           "distToLive": 2750.0,
           "maxSpeedInWater": -3.09
@@ -4521,23 +4530,58 @@
         ]
       },
       {
-        "event": [
-          {
-            "name": "superstructure_fire"
-          },
-          {
-            "fx": {
-              "name": "ship_fire_large",
-              "emitter": "emtr_fire_dmg_01"
-            }
-          },
-          {
-            "fx": {
-              "name": "ship_fire_large",
-              "emitter": "emtr_fire_dmg_02"
-            }
+        "event": {
+          "name": "superstructure_back_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
           }
-        ]
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_front_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_top_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_bottom_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_side_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
       },
       {
         "event": {

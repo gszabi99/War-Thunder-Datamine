@@ -18,6 +18,9 @@
     "haveCCIPForGun": true
   },
   {
+    "haveCCRPForBombs": true
+  },
+  {
     "gearSinkRangeLR": 0.42
   },
   {
@@ -2870,7 +2873,7 @@
           "flaps": [0.0,1.0],
           "flaps_fixed": false,
           "trimmer_indicator": [-1.0,1.0],
-          "speed": [0.0,437.0],
+          "speed": [0.0,437.278],
           "mach": [0.0,2.5],
           "vario": [-30.48,30.48],
           "altitude_10k": [0.0,100000.0],
@@ -2955,7 +2958,30 @@
     ]
   },
   {
-    "commonWeapons": []
+    "commonWeapons": {
+      "hideNodes": [
+        {
+          "node": "pylon_l_ltc_in"
+        },
+        {
+          "node": "pylon_r_ltc_in"
+        }
+      ],
+      "Weapon": {
+        "dummy": true,
+        "trigger": "gunner0",
+        "triggerGroup": "primary",
+        "blk": "gameData/Weapons/gunBrowning30_usaaf.blk",
+        "emitter": "flare1",
+        "parkInDeadzone": false,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "speedYaw": 25.0,
+        "speedPitch": 25.0,
+        "bullets": 1,
+        "aimForOperatedShell": true
+      }
+    }
   },
   {
     "weapon_presets": [
@@ -3176,6 +3202,72 @@
       "new_cover": {
         "tier": 4
       },
+      "aircrafts_false_thermal_targets": {
+        "turn_it_off": false,
+        "invertEnableLogic": false,
+        "group": "mi-24_EVU",
+        "tier": 1,
+        "effects": {
+          "commonWeapons": [
+            {
+              "Weapon": {
+                "dummy": true,
+                "trigger": "gunner0",
+                "triggerGroup": "primary",
+                "blk": "gameData/Weapons/gunBrowning30_usaaf.blk",
+                "emitter": "flare1",
+                "parkInDeadzone": false,
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "speedYaw": 25.0,
+                "speedPitch": 25.0,
+                "bullets": 1,
+                "aimForOperatedShell": true
+              }
+            },
+            {
+              "Weapon": {
+                "trigger": "flares",
+                "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
+                "emitter": "emtr_flare1",
+                "bullets": 30,
+                "external": true,
+                "separate": false
+              }
+            },
+            {
+              "Weapon": {
+                "trigger": "flares",
+                "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
+                "emitter": "emtr_flare2",
+                "bullets": 30,
+                "external": true,
+                "separate": false
+              }
+            },
+            {
+              "Weapon": {
+                "trigger": "flares",
+                "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
+                "emitter": "emtr_flare3",
+                "bullets": 15,
+                "external": true,
+                "separate": false
+              }
+            },
+            {
+              "Weapon": {
+                "trigger": "flares",
+                "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
+                "emitter": "emtr_flare4",
+                "bullets": 15,
+                "external": true,
+                "separate": false
+              }
+            }
+          ]
+        }
+      },
       "M60_air_targets": [],
       "M60_armor_targets": [],
       "M60_stealth": [],
@@ -3199,6 +3291,14 @@
         "tier": 3,
         "modClass": "weapon",
         "reqModification": "fr_matra_sneb"
+      }
+    }
+  },
+  {
+    "default_skin": {
+      "replace_tex": {
+        "from": "aero_7_olive_c*",
+        "to": "aero_7_white_c*"
       }
     }
   },

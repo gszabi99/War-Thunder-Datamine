@@ -860,9 +860,11 @@
         "armorThickness": 8.0,
         "oneSided": true,
         "superstructure_back_dm": {
+          "fireParamsPreset": "ship_superstructure_back",
           "hp": 2308.0
         },
         "superstructure_front_dm": {
+          "fireParamsPreset": "ship_superstructure_front",
           "hp": 4646.0
         }
       },
@@ -1092,13 +1094,13 @@
         "createSecondaryShatters": false,
         "oneSided": true,
         "ammunition_storage_01_dm": {
-          "hp": 2000.0
+          "hp": 1000.0
         },
         "ammunition_storage_02_dm": {
-          "hp": 2000.0
+          "hp": 1000.0
         },
         "ammunition_storage_03_dm": {
-          "hp": 2000.0
+          "hp": 1000.0
         }
       },
       "ammo_storages_shells": {
@@ -1130,10 +1132,10 @@
         "armorThickness": 5.0,
         "oneSided": true,
         "ammo_turret_01_dm": {
-          "hp": 1000.0
+          "hp": 500.0
         },
         "ammo_turret_02_dm": {
-          "hp": 1000.0
+          "hp": 561.0
         }
       },
       "depth_charges": {
@@ -2756,6 +2758,60 @@
             }
           }
         ]
+      },
+      {
+        "event": {
+          "name": "superstructure_back_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_front_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_top_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_bottom_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_side_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
       },
       {
         "event": [

@@ -108,15 +108,6 @@
     "rearmTimeOnField": 45.0
   },
   {
-    "customClassIco": "!#ui/gameuiskin#image_in_progress_ico"
-  },
-  {
-    "customImage": "!#ui/unitskin#image_in_progress"
-  },
-  {
-    "customTooltipImage": "ui/aircrafts/image_in_progress"
-  },
-  {
     "ikGunner": [
       {
         "model": "sweden_gunner_char"
@@ -2323,9 +2314,9 @@
   {
     "VehiclePhys": {
       "Mass": {
-        "Empty": 13290.0,
-        "Fuel": 510.0,
-        "TakeOff": 13800.0,
+        "Empty": 9500.0,
+        "Fuel": 200.0,
+        "TakeOff": 9700.0,
         "momentOfInertia": [1.8,1.7,4.0],
         "CenterOfGravity": [0.0,0.5,0.0],
         "CenterOfGravityClampY": [0.0,0.4],
@@ -2344,36 +2335,33 @@
         "cls_body": "convex_hull"
       },
       "engine": {
-        "horsePowers": 500.0,
-        "maxRPM": 1500.0,
+        "horsePowers": 136.0,
+        "maxRPM": 5200.0,
         "minRPM": 500.0
       },
       "mechanics": {
-        "maxBrakeForce": 65000.0,
-        "driveGearRadius": 0.28,
-        "mainGearRatio": 2.55,
-        "sideGearRatio": 2.25,
+        "maxBrakeForce": 50000.0,
+        "driveGearRadius": 0.25,
+        "mainGearRatio": 2.3,
+        "sideGearRatio": 4.0,
         "gearRatios": [
           {
-            "ratio": -6.0
+            "ratio": -8.0
           },
           {
             "ratio": 0.0
           },
           {
-            "ratio": 7.55
+            "ratio": 7.72
           },
           {
-            "ratio": 3.1
+            "ratio": 4.08
           },
           {
-            "ratio": 1.795
+            "ratio": 2.18
           },
           {
-            "ratio": 1.111
-          },
-          {
-            "ratio": 0.733
+            "ratio": 1.4
           }
         ]
       },
@@ -2381,7 +2369,8 @@
         "suspensionOffsets": [-0.13,-0.09,0.05],
         "defaultGearRadius": 0.185,
         "frontBackGearRadius": 0.19,
-        "defaultDampeningForce": [41400.0,41400.0],
+        "topGearRadius": 0.1,
+        "defaultDampeningForce": [50000.0,50000.0],
         "dampeningRelaxationRatio": 0.4,
         "dampeningCompressionRatio": 0.15
       }
@@ -2983,10 +2972,10 @@
   },
   {
     "cockpit": {
-      "zoomOutFov": 18.494,
-      "zoomInFov": 9.217,
-      "sightFov": 11.0,
-      "sightName": "centauro",
+      "zoomOutFov": 11.537,
+      "zoomInFov": 10.537,
+      "sightFov": 7.0,
+      "sightName": "lvrbv_701",
       "openedCockpit": true,
       "headPos": [0.0,4.0,-7.5],
       "headPosOnShooting": [0.35,3.3,-0.2],
@@ -3023,7 +3012,7 @@
               "Weapon": {
                 "trigger": "gunner0",
                 "triggerGroup": "primary",
-                "blk": "gameData/Weapons/groundModels_weapons/152mm_Rbs_55_tow_2_rocket_launcher.blk",
+                "blk": "gameData/Weapons/groundModels_weapons/130mm_Rbs_70B_rocket_launcher.blk",
                 "weaponType": "rockets",
                 "flash": "emtr_gun_flame_01",
                 "useEmitter": true,
@@ -3040,7 +3029,7 @@
                 "speedPitch": 25.0,
                 "fireConeAngle": 1.0,
                 "isBulletBelt": false,
-                "bullets": 8,
+                "bullets": 6,
                 "salvoAmount": 100.0,
                 "ChainfireTime": 0.0,
                 "DelayAfterShoot": 5.0,
@@ -3062,8 +3051,8 @@
                   "gunnerDm": "gunner_dm"
                 },
                 "limits": {
-                  "yaw": [-35.0,35.0],
-                  "pitch": [-5.0,10.0]
+                  "yaw": [-40.0,40.0],
+                  "pitch": [-5.0,35.0]
                 }
               }
             },

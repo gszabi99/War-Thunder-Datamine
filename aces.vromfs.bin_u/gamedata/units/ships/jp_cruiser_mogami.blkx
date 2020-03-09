@@ -1784,15 +1784,19 @@
         "armorThickness": 12.7,
         "oneSided": true,
         "superstructure_back_dm": {
+          "fireParamsPreset": "ship_superstructure_back",
           "hp": 6500.0
         },
         "superstructure_front_dm": {
+          "fireParamsPreset": "ship_superstructure_front",
           "hp": 6500.0
         },
         "superstructure_top_dm": {
+          "fireParamsPreset": "ship_superstructure_top",
           "hp": 6500.0
         },
         "superstructure_dm": {
+          "fireParamsPreset": "ship_superstructure",
           "hp": 6500.0
         }
       },
@@ -1802,8 +1806,8 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 25.4,
         "fireDamageMult": 0.1,
-        "mid_dm": {
-          "hp": 15000.0
+        "mid_bottom_dm": {
+          "hp": 20000.0
         },
         "bow_side_dm": {
           "hp": 15000.0
@@ -2114,6 +2118,18 @@
         },
         "turret_05_front_dm": {
           "hp": 10000.0
+        },
+        "turret_06_front_dm": {
+          "hp": 10000.0
+        },
+        "turret_07_front_dm": {
+          "hp": 10000.0
+        },
+        "turret_08_front_dm": {
+          "hp": 10000.0
+        },
+        "turret_09_front_dm": {
+          "hp": 10000.0
         }
       },
       "hull_armor": {
@@ -2254,16 +2270,16 @@
         "oneSided": true,
         "fireProtectionHp": 25.0,
         "auxiliary_caliber_turret_01_dm": {
-          "hp": 450.0
+          "hp": 300.0
         },
         "auxiliary_caliber_turret_02_dm": {
-          "hp": 450.0
+          "hp": 300.0
         },
         "auxiliary_caliber_turret_03_dm": {
-          "hp": 450.0
+          "hp": 300.0
         },
         "auxiliary_caliber_turret_04_dm": {
-          "hp": 450.0
+          "hp": 300.0
         }
       },
       "turrets_aa_caliber": {
@@ -2317,16 +2333,16 @@
         "armorClass": "tank_barrel",
         "armorThickness": 15.0,
         "auxiliary_caliber_gun_01_dm": {
-          "hp": 200.0
+          "hp": 100.0
         },
         "auxiliary_caliber_gun_02_dm": {
-          "hp": 200.0
+          "hp": 100.0
         },
         "auxiliary_caliber_gun_03_dm": {
-          "hp": 200.0
+          "hp": 100.0
         },
         "auxiliary_caliber_gun_04_dm": {
-          "hp": 200.0
+          "hp": 100.0
         }
       },
       "gun_aa_caliber": {
@@ -2410,19 +2426,19 @@
         "armorThickness": 3.0,
         "oneSided": true,
         "ammunition_storage_charges_01_dm": {
-          "hp": 2000.0
+          "hp": 1500.0
         },
         "ammunition_storage_charges_02_dm": {
-          "hp": 2000.0
+          "hp": 1500.0
         },
         "ammunition_storage_charges_03_dm": {
-          "hp": 2000.0
+          "hp": 1500.0
         },
         "ammunition_storage_charges_04_dm": {
-          "hp": 2000.0
+          "hp": 1609.0
         },
         "ammunition_storage_charges_05_dm": {
-          "hp": 2000.0
+          "hp": 1609.0
         }
       },
       "ammo_storages_auxiliary": {
@@ -2431,7 +2447,7 @@
         "armorThickness": 3.0,
         "oneSided": true,
         "ammunition_storage_aux_01_dm": {
-          "hp": 2000.0
+          "hp": 1475.0
         }
       },
       "ammo_first_stage": {
@@ -3916,23 +3932,58 @@
         ]
       },
       {
-        "event": [
-          {
-            "name": "superstructure_fire"
-          },
-          {
-            "fx": {
-              "name": "ship_fire_large",
-              "emitter": "emtr_fire_dmg_01"
-            }
-          },
-          {
-            "fx": {
-              "name": "ship_fire_large",
-              "emitter": "emtr_fire_dmg_02"
-            }
+        "event": {
+          "name": "superstructure_back_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
           }
-        ]
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_front_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_top_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_bottom_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_side_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
       },
       {
         "event": {
@@ -4537,8 +4588,8 @@
             "gunnerDm": "main_caliber_turret_02_dm",
             "linkedAnimPart": {
               "horNode": "ex_armor_02",
-              "horLimits": [-70.0,150.0],
-              "horOriginLimits": [-150.0,150.0]
+              "horLimits": [-140.0,140.0],
+              "horOriginLimits": [-140.0,140.0]
             }
           },
           "limits": {

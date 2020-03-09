@@ -1629,31 +1629,31 @@
         "armorThickness": 2.0,
         "oneSided": true,
         "compartment_01_dm": {
-          "hp": 5769.0
+          "hp": 5268.0
         },
         "compartment_02_dm": {
-          "hp": 4512.0
+          "hp": 3791.0
         },
         "compartment_03_dm": {
-          "hp": 3499.0
+          "hp": 3498.0
         },
         "compartment_04_dm": {
-          "hp": 4962.0
+          "hp": 9000.0
         },
         "compartment_05_dm": {
-          "hp": 9000.0
+          "hp": 3230.0
         },
         "compartment_06_dm": {
           "hp": 9000.0
         },
         "compartment_07_dm": {
-          "hp": 5953.0
+          "hp": 3000.0
         },
         "compartment_08_dm": {
-          "hp": 3475.0
+          "hp": 3000.0
         },
         "compartment_09_dm": {
-          "hp": 7849.0
+          "hp": 4939.0
         },
         "bridge_dm": {
           "hp": 400.0
@@ -1700,21 +1700,27 @@
         "armorThickness": 12.0,
         "oneSided": true,
         "superstructure_back_dm": {
+          "fireParamsPreset": "ship_superstructure_back",
           "hp": 2500.0
         },
         "superstructure_front_dm": {
+          "fireParamsPreset": "ship_superstructure_front",
           "hp": 5000.0
         },
         "superstructure_bottom_dm": {
+          "fireParamsPreset": "ship_superstructure_bottom",
           "hp": 5000.0
         },
         "superstructure_side_dm": {
+          "fireParamsPreset": "ship_superstructure_side",
           "hp": 2500.0
         },
         "superstructure_top_dm": {
+          "fireParamsPreset": "ship_superstructure_top",
           "hp": 5000.0
         },
         "superstructure_dm": {
+          "fireParamsPreset": "ship_superstructure",
           "hp": 3829.0
         }
       },
@@ -2191,7 +2197,7 @@
           "hp": 2000.0
         },
         "ammunition_storage_shells_03_dm": {
-          "hp": 2000.0
+          "hp": 2874.0
         }
       },
       "ammo_storages_charges": {
@@ -2199,13 +2205,13 @@
         "armorThickness": 3.0,
         "oneSided": true,
         "ammunition_storage_charges_01_dm": {
-          "hp": 2000.0
+          "hp": 1500.0
         },
         "ammunition_storage_charges_02_dm": {
-          "hp": 2000.0
+          "hp": 1500.0
         },
         "ammunition_storage_charges_03_dm": {
-          "hp": 2000.0
+          "hp": 1500.0
         }
       },
       "ammo_storages_auxiliary": {
@@ -2214,10 +2220,10 @@
         "armorThickness": 5.0,
         "oneSided": true,
         "ammunition_storage_aux_01_dm": {
-          "hp": 2000.0
+          "hp": 1000.0
         },
         "ammunition_storage_aux_02_dm": {
-          "hp": 2000.0
+          "hp": 1000.0
         }
       },
       "ammo_first_stage": {
@@ -2417,47 +2423,47 @@
       "sailor2": {
         "dmPart": "compartment_01_dm",
         "role": "sailor",
-        "crew": 66
+        "crew": 73
       },
       "sailor3": {
         "dmPart": "compartment_02_dm",
         "role": "sailor",
-        "crew": 52
+        "crew": 53
       },
       "sailor4": {
         "dmPart": "compartment_03_dm",
         "role": "sailor",
-        "crew": 40
+        "crew": 49
       },
       "sailor5": {
         "dmPart": "compartment_04_dm",
         "role": "sailor",
-        "crew": 57
+        "crew": 125
       },
       "sailor6": {
         "dmPart": "compartment_05_dm",
         "role": "sailor",
-        "crew": 103
+        "crew": 45
       },
       "sailor7": {
         "dmPart": "compartment_06_dm",
         "role": "sailor",
-        "crew": 104
+        "crew": 125
       },
       "sailor8": {
         "dmPart": "compartment_07_dm",
         "role": "sailor",
-        "crew": 68
+        "crew": 42
       },
       "sailor9": {
         "dmPart": "compartment_08_dm",
         "role": "sailor",
-        "crew": 40
+        "crew": 42
       },
       "sailor10": {
         "dmPart": "compartment_09_dm",
         "role": "sailor",
-        "crew": 90
+        "crew": 66
       },
       "sailor11": {
         "dmPart": "main_caliber_turret_01_dm",
@@ -5720,20 +5726,43 @@
           "removeLoadedAmmo": true
         },
         {
-          "shells": {
-            "firstStage": true,
-            "fatalFire": false,
-            "fatalExplosion": false,
-            "damageEffect": "ammunition_first_stage",
-            "explosionEvent": "ammo_explosion_1",
-            "fireEvent": "ammo_fire_1",
-            "fireParamsPreset": "ship_ammo_fire",
-            "elevator": "elevator_02_dm",
-            "dstrElevatorDisablesShooting": false,
-            "ammo_turret_01_dm": {
-              "count": 20
+          "shells": [
+            {
+              "firstStage": true
+            },
+            {
+              "fatalFire": false
+            },
+            {
+              "fatalExplosion": false
+            },
+            {
+              "damageEffect": "ammunition_first_stage"
+            },
+            {
+              "explosionEvent": "ammo_explosion_1"
+            },
+            {
+              "fireEvent": "ammo_fire_1"
+            },
+            {
+              "fireParamsPreset": "ship_ammo_fire"
+            },
+            {
+              "elevator": "elevator_01_dm"
+            },
+            {
+              "elevator": "elevator_02_dm"
+            },
+            {
+              "dstrElevatorDisablesShooting": false
+            },
+            {
+              "ammo_turret_01_dm": {
+                "count": 20
+              }
             }
-          }
+          ]
         },
         {
           "shells": [
@@ -5822,20 +5851,43 @@
           "removeLoadedAmmo": true
         },
         {
-          "shells": {
-            "firstStage": true,
-            "fatalFire": false,
-            "fatalExplosion": false,
-            "damageEffect": "ammunition_first_stage",
-            "explosionEvent": "ammo_explosion_1",
-            "fireEvent": "ammo_fire_1",
-            "fireParamsPreset": "ship_ammo_fire",
-            "elevator": "elevator_04_dm",
-            "dstrElevatorDisablesShooting": false,
-            "ammo_turret_02_dm": {
-              "count": 20
+          "shells": [
+            {
+              "firstStage": true
+            },
+            {
+              "fatalFire": false
+            },
+            {
+              "fatalExplosion": false
+            },
+            {
+              "damageEffect": "ammunition_first_stage"
+            },
+            {
+              "explosionEvent": "ammo_explosion_1"
+            },
+            {
+              "fireEvent": "ammo_fire_1"
+            },
+            {
+              "fireParamsPreset": "ship_ammo_fire"
+            },
+            {
+              "elevator": "elevator_03_dm"
+            },
+            {
+              "elevator": "elevator_04_dm"
+            },
+            {
+              "dstrElevatorDisablesShooting": false
+            },
+            {
+              "ammo_turret_02_dm": {
+                "count": 20
+              }
             }
-          }
+          ]
         },
         {
           "shells": [
@@ -5924,20 +5976,43 @@
           "removeLoadedAmmo": true
         },
         {
-          "shells": {
-            "firstStage": true,
-            "fatalFire": false,
-            "fatalExplosion": false,
-            "damageEffect": "ammunition_first_stage",
-            "explosionEvent": "ammo_explosion_2",
-            "fireEvent": "ammo_fire_2",
-            "fireParamsPreset": "ship_ammo_fire",
-            "elevator": "elevator_08_dm",
-            "dstrElevatorDisablesShooting": false,
-            "ammo_turret_03_dm": {
-              "count": 20
+          "shells": [
+            {
+              "firstStage": true
+            },
+            {
+              "fatalFire": false
+            },
+            {
+              "fatalExplosion": false
+            },
+            {
+              "damageEffect": "ammunition_first_stage"
+            },
+            {
+              "explosionEvent": "ammo_explosion_2"
+            },
+            {
+              "fireEvent": "ammo_fire_2"
+            },
+            {
+              "fireParamsPreset": "ship_ammo_fire"
+            },
+            {
+              "elevator": "elevator_07_dm"
+            },
+            {
+              "elevator": "elevator_08_dm"
+            },
+            {
+              "dstrElevatorDisablesShooting": false
+            },
+            {
+              "ammo_turret_03_dm": {
+                "count": 20
+              }
             }
-          }
+          ]
         },
         {
           "shells": [
@@ -6407,23 +6482,58 @@
         ]
       },
       {
-        "event": [
-          {
-            "name": "superstructure_fire"
-          },
-          {
-            "fx": {
-              "name": "ship_fire_large",
-              "emitter": "emtr_fire_dmg_01"
-            }
-          },
-          {
-            "fx": {
-              "name": "ship_fire_large",
-              "emitter": "emtr_fire_dmg_02"
-            }
+        "event": {
+          "name": "superstructure_back_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
           }
-        ]
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_front_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_top_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_bottom_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_side_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
       },
       {
         "event": {

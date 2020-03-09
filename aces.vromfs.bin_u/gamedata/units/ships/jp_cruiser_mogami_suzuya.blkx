@@ -1713,31 +1713,31 @@
         "armorThickness": 2.0,
         "oneSided": true,
         "compartment_01_dm": {
-          "hp": 6833.0
+          "hp": 6284.0
         },
         "compartment_02_dm": {
           "hp": 10764.0
         },
         "compartment_03_dm": {
-          "hp": 7340.0
+          "hp": 6475.0
         },
         "compartment_04_dm": {
-          "hp": 4500.0
+          "hp": 11000.0
         },
         "compartment_05_dm": {
-          "hp": 11000.0
+          "hp": 7837.0
         },
         "compartment_06_dm": {
-          "hp": 11000.0
+          "hp": 7878.0
         },
         "compartment_07_dm": {
-          "hp": 5415.0
+          "hp": 7967.0
         },
         "compartment_08_dm": {
-          "hp": 10011.0
+          "hp": 4773.0
         },
         "compartment_09_dm": {
-          "hp": 11000.0
+          "hp": 6189.0
         },
         "bridge_dm": {
           "hp": 600.0
@@ -1784,15 +1784,19 @@
         "armorThickness": 12.7,
         "oneSided": true,
         "superstructure_back_dm": {
+          "fireParamsPreset": "ship_superstructure_back",
           "hp": 6500.0
         },
         "superstructure_front_dm": {
+          "fireParamsPreset": "ship_superstructure_front",
           "hp": 6500.0
         },
         "superstructure_top_dm": {
+          "fireParamsPreset": "ship_superstructure_top",
           "hp": 6500.0
         },
         "superstructure_dm": {
+          "fireParamsPreset": "ship_superstructure",
           "hp": 6500.0
         }
       },
@@ -1802,8 +1806,8 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 25.4,
         "fireDamageMult": 0.1,
-        "mid_dm": {
-          "hp": 15000.0
+        "mid_bottom_dm": {
+          "hp": 20000.0
         },
         "bow_side_dm": {
           "hp": 15000.0
@@ -2104,6 +2108,18 @@
         },
         "turret_05_front_dm": {
           "hp": 10000.0
+        },
+        "turret_06_front_dm": {
+          "hp": 10000.0
+        },
+        "turret_07_front_dm": {
+          "hp": 10000.0
+        },
+        "turret_08_front_dm": {
+          "hp": 10000.0
+        },
+        "turret_09_front_dm": {
+          "hp": 10000.0
         }
       },
       "hull_armor": {
@@ -2226,16 +2242,16 @@
         "oneSided": true,
         "fireProtectionHp": 25.0,
         "auxiliary_caliber_turret_01_dm": {
-          "hp": 450.0
+          "hp": 300.0
         },
         "auxiliary_caliber_turret_02_dm": {
-          "hp": 450.0
+          "hp": 300.0
         },
         "auxiliary_caliber_turret_03_dm": {
-          "hp": 450.0
+          "hp": 300.0
         },
         "auxiliary_caliber_turret_04_dm": {
-          "hp": 450.0
+          "hp": 300.0
         }
       },
       "turrets_aa_caliber": {
@@ -2382,19 +2398,19 @@
         "armorThickness": 3.0,
         "oneSided": true,
         "ammunition_storage_charges_01_dm": {
-          "hp": 2000.0
+          "hp": 1500.0
         },
         "ammunition_storage_charges_02_dm": {
-          "hp": 2000.0
+          "hp": 1500.0
         },
         "ammunition_storage_charges_03_dm": {
-          "hp": 2000.0
+          "hp": 1500.0
         },
         "ammunition_storage_charges_04_dm": {
-          "hp": 2000.0
+          "hp": 1609.0
         },
         "ammunition_storage_charges_05_dm": {
-          "hp": 2000.0
+          "hp": 1609.0
         }
       },
       "ammo_storages_auxiliary": {
@@ -2403,7 +2419,7 @@
         "armorThickness": 3.0,
         "oneSided": true,
         "ammunition_storage_aux_01_dm": {
-          "hp": 2000.0
+          "hp": 1475.0
         }
       },
       "ammo_first_stage": {
@@ -2567,12 +2583,12 @@
       "sailor2": {
         "dmPart": "compartment_01_dm",
         "role": "sailor",
-        "crew": 62
+        "crew": 64
       },
       "sailor3": {
         "dmPart": "compartment_02_dm",
         "role": "sailor",
-        "crew": 97
+        "crew": 109
       },
       "sailor4": {
         "dmPart": "compartment_03_dm",
@@ -2582,32 +2598,32 @@
       "sailor5": {
         "dmPart": "compartment_04_dm",
         "role": "sailor",
-        "crew": 41
+        "crew": 111
       },
       "sailor6": {
         "dmPart": "compartment_05_dm",
         "role": "sailor",
-        "crew": 99
+        "crew": 79
       },
       "sailor7": {
         "dmPart": "compartment_06_dm",
         "role": "sailor",
-        "crew": 99
+        "crew": 80
       },
       "sailor8": {
         "dmPart": "compartment_07_dm",
         "role": "sailor",
-        "crew": 49
+        "crew": 81
       },
       "sailor9": {
         "dmPart": "compartment_08_dm",
         "role": "sailor",
-        "crew": 90
+        "crew": 48
       },
       "sailor10": {
         "dmPart": "compartment_09_dm",
         "role": "sailor",
-        "crew": 99
+        "crew": 63
       },
       "sailor11": {
         "dmPart": "main_caliber_turret_01_dm",
@@ -2657,7 +2673,7 @@
       "sailor20": {
         "dmPart": "radio_station_dm",
         "role": "sailor",
-        "crew": 11
+        "crew": 12
       }
     }
   },
@@ -3872,23 +3888,58 @@
         ]
       },
       {
-        "event": [
-          {
-            "name": "superstructure_fire"
-          },
-          {
-            "fx": {
-              "name": "ship_fire_large",
-              "emitter": "emtr_fire_dmg_01"
-            }
-          },
-          {
-            "fx": {
-              "name": "ship_fire_large",
-              "emitter": "emtr_fire_dmg_02"
-            }
+        "event": {
+          "name": "superstructure_back_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
           }
-        ]
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_front_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_top_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_bottom_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_side_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
       },
       {
         "event": {

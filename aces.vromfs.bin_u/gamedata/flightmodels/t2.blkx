@@ -2487,6 +2487,13 @@
       },
       {
         "preset": {
+          "name": "t2_zuni",
+          "blk": "gameData/flightModels/weaponPresets/t2_zuni.blk",
+          "reqModification": "t2_rl4_zuni"
+        }
+      },
+      {
+        "preset": {
           "name": "t2_2xAero7",
           "blk": "gameData/flightModels/weaponPresets/t2_2xAero7.blk",
           "reqModification": "jp_jlau_3a"
@@ -2525,6 +2532,22 @@
           },
           {
             "reqModification": "jp_750lb_jm117"
+          },
+          {
+            "reqModification": "us_aim_9b"
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "t2_zuni_aim9b"
+          },
+          {
+            "blk": "gameData/flightModels/weaponPresets/t2_zuni_aim9b.blk"
+          },
+          {
+            "reqModification": "t2_rl4_zuni"
           },
           {
             "reqModification": "us_aim_9b"
@@ -2580,6 +2603,22 @@
           },
           {
             "reqModification": "jp_750lb_jm117"
+          },
+          {
+            "reqModification": "us_aim_9e"
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "t2_zuni_aim9e"
+          },
+          {
+            "blk": "gameData/flightModels/weaponPresets/t2_zuni_aim9e.blk"
+          },
+          {
+            "reqModification": "t2_rl4_zuni"
           },
           {
             "reqModification": "us_aim_9e"
@@ -2841,7 +2880,12 @@
         "modClass": "weapon",
         "reqModification": "us_500lb_m82"
       },
+      "t2_rl4_zuni": {
+        "tier": 1,
+        "modClass": "weapon"
+      },
       "jp_jlau_3a": {
+        "reqModification": "t2_rl4_zuni",
         "tier": 2,
         "modClass": "weapon"
       },

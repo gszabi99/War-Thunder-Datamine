@@ -12,7 +12,8 @@
   "paratrooper": "ally",
   "advancedInstructor": true,
   "advancedMouseAim": true,
-  "instructorCritMult": [0.6,0.6],
+  "instructorCritMult": [0.8,0.8],
+  "instructorOverloadMult": [0.6,0.67,0.85,0.92],
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
@@ -32,6 +33,9 @@
         "hp": 15.0
       },
       "cannon2_dm": {
+        "hp": 15.0
+      },
+      "radar_dm": {
         "hp": 15.0
       }
     },
@@ -1185,6 +1189,11 @@
     {
       "part": {
         "name": "pilot_dm"
+      }
+    },
+    {
+      "part": {
+        "name": "radar_dm"
       }
     },
     {
@@ -2383,6 +2392,16 @@
       }
     },
     {
+      "multifunctionDisplays": {
+        "display": {
+          "textureArea": [0.0,0.0,1.0,1.0],
+          "page": {
+            "type": "radar"
+          }
+        }
+      }
+    },
+    {
       "parts_holes_dmg": {
         "part": "fuse"
       }
@@ -2638,5 +2657,13 @@
     "emtr_break_wing2_r_to": [-0.435388,-0.0272442,-3.93029],
     "emtr_break_wing_tail": [-5.34938,0.0,0.0],
     "finCut": true
+  },
+  "parachutes": {
+    "emitterRange": [1,1],
+    "emitterName": "emtr_chute",
+    "chuteModel": "chute_f_100_char",
+    "chuteAnimVarName": "chute_state_switch",
+    "chuteTimeScaleParam": "chute_time_scale",
+    "chuteFallSpeed": 1.6
   }
 }

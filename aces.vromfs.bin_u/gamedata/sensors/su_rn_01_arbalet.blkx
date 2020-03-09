@@ -153,19 +153,18 @@
             "value": -6.25
           },
           "setTargetDesignationRange": {
-            "azimuthRange": [-110.0,110.0],
+            "azimuthRange": [-60.0,60.0],
             "elevationRange": [-20.0,20.0],
             "distanceRange": [500.0,12000.0]
           },
           "setScopeRangeSet": {
             "scopeRangeSet": "common"
-          },
-          "setFsmActive": {
-            "fsm": "mode",
-            "active": true
           }
         },
         "setStandbyMode": {
+          "setModeName": {
+            "name": "standby"
+          },
           "setEnabled": {
             "value": false
           },
@@ -173,18 +172,34 @@
             "source": "constant",
             "value": 0.0
           },
-          "clearTargets": []
-        },
-        "setSearchMode": {
-          "setEnabled": {
-            "value": true
-          },
           "clearTargets": [],
           "setFsmActive": {
-            "fsm": "search",
-            "active": true
+            "fsm": "mode",
+            "active": false
           }
         },
+        "setSearchMode": [
+          {
+            "setEnabled": {
+              "value": true
+            }
+          },
+          {
+            "clearTargets": []
+          },
+          {
+            "setFsmActive": {
+              "fsm": "search",
+              "active": true
+            }
+          },
+          {
+            "setFsmActive": {
+              "fsm": "mode",
+              "active": true
+            }
+          }
+        ],
         "resetSearchMode": {
           "setFsmActive": {
             "fsm": "search",
@@ -301,6 +316,9 @@
       "stateInit": "init",
       "actionsTemplates": {
         "setGTMMode": {
+          "setModeName": {
+            "name": "ground_search"
+          },
           "setTransiver": {
             "transiver": "GTM"
           },
@@ -317,6 +335,9 @@
           "clearTargets": []
         },
         "setATMMode": {
+          "setModeName": {
+            "name": "air_search"
+          },
           "setTransiver": {
             "transiver": "ATM"
           },
@@ -340,6 +361,20 @@
           "stateTo": "gtm",
           "actions": {
             "setGTMMode": []
+          }
+        },
+        "showGTM": {
+          "stateFrom": "gtm",
+          "event": "fsmActivate",
+          "actions": {
+            "setGTMMode": []
+          }
+        },
+        "showATM": {
+          "stateFrom": "atm",
+          "event": "fsmActivate",
+          "actions": {
+            "setATMMode": []
           }
         },
         "switchToATM": {

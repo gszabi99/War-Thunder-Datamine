@@ -99,22 +99,6 @@
     "type": "typeTankDestroyer"
   },
   {
-    "customClassIco": "!#ui/gameuiskin#image_in_progress_ico"
-  },
-  {
-    "customImage": "!#ui/unitskin#image_in_progress"
-  },
-  {
-    "customTooltipImage": "ui/aircrafts/image_in_progress"
-  },
-  {
-    "spawn_count": {
-      "numSpawnsPerBattleSimulation": 2,
-      "numSpawnsPerBattleArcade": 3,
-      "numSpawnsPerBattleHistorical": 3
-    }
-  },
-  {
     "ikGunner": [
       {
         "model": "sweden_gunner_char"
@@ -1590,6 +1574,66 @@
             "name": "ammo_turret_55_dm"
           },
           {
+            "name": "ammo_turret_56_dm"
+          },
+          {
+            "name": "ammo_turret_57_dm"
+          },
+          {
+            "name": "ammo_turret_58_dm"
+          },
+          {
+            "name": "ammo_turret_59_dm"
+          },
+          {
+            "name": "ammo_turret_60_dm"
+          },
+          {
+            "name": "ammo_turret_61_dm"
+          },
+          {
+            "name": "ammo_turret_62_dm"
+          },
+          {
+            "name": "ammo_turret_63_dm"
+          },
+          {
+            "name": "ammo_turret_64_dm"
+          },
+          {
+            "name": "ammo_turret_65_dm"
+          },
+          {
+            "name": "ammo_turret_66_dm"
+          },
+          {
+            "name": "ammo_turret_67_dm"
+          },
+          {
+            "name": "ammo_turret_68_dm"
+          },
+          {
+            "name": "ammo_turret_69_dm"
+          },
+          {
+            "name": "ammo_turret_70_dm"
+          },
+          {
+            "name": "ammo_turret_71_dm"
+          },
+          {
+            "name": "ammo_turret_72_dm"
+          },
+          {
+            "name": "ammo_turret_73_dm"
+          },
+          {
+            "name": "ammo_turret_74_dm"
+          },
+          {
+            "name": "ammo_turret_75_dm"
+          },
+          {
             "onHit": {
               "damageType": "cumulative",
               "expl": 0.4,
@@ -2089,6 +2133,13 @@
     }
   },
   {
+    "gunConvergence": {
+      "distance": 400.0,
+      "vertical": true,
+      "horizontal": true
+    }
+  },
+  {
     "sound": {
       "EngineName": "engine_hetzer",
       "TrackSoundPath": "tanks/engines_tanks",
@@ -2112,7 +2163,8 @@
           "blk": "gameData/Weapons/groundModels_weapons/150mm_kan_fm43_44_user_cannon.blk",
           "emitter": "bone_gun_barrel",
           "flash": "emtr_gun_flame",
-          "recoilMultiplier": 0.2,
+          "recoilOffset": 0.01,
+          "recoilMultiplier": 0.01,
           "allowableDelta": 20.0,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
@@ -2148,8 +2200,8 @@
             }
           },
           "limits": {
-            "yaw": [-15.0,15.0],
-            "pitch": [-15.0,10.0]
+            "yaw": [-12.0,12.0],
+            "pitch": [-4.0,10.0]
           }
         }
       },
@@ -2204,9 +2256,9 @@
   {
     "VehiclePhys": {
       "Mass": {
-        "Empty": 11400.0,
+        "Empty": 9700.0,
         "Fuel": 300.0,
-        "TakeOff": 11700.0,
+        "TakeOff": 10000.0,
         "momentOfInertia": [2.5,2.5,6.0],
         "CenterOfGravity": [0.2,0.5,0.0],
         "CenterOfGravityClampY": [0.0,0.7],

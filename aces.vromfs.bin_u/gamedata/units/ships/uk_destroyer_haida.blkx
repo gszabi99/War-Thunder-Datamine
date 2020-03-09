@@ -2850,6 +2850,10 @@
       "120mm_uk_navy_dist_fuse_he_ammo_pack": {
         "prevModification": "120mm_uk_navy_AP_ammo_pack"
       },
+      "120mm_uk_navy_radio_fuse_he": [],
+      "120mm_uk_navy_radio_fuse_he_ammo_pack": {
+        "prevModification": "ship_rangefinder"
+      },
       "102mm_uk_mkxvi_navy_HE": [],
       "102mm_uk_mkxvi_navy_SAP": [],
       "102mm_uk_mkxvi_navy_SAP_ammo_pack": [],
@@ -2857,9 +2861,13 @@
       "102mm_uk_mkxvi_navy_he_dist_fuse_ammo_pack": {
         "prevModification": "102mm_uk_mkxvi_navy_SAP_ammo_pack"
       },
+      "102mm_uk_mkxvi_navy_he_radio_fuse": [],
+      "102mm_uk_mkxvi_navy_he_radio_fuse_ammo_pack": {
+        "prevModification": "102mm_uk_mkxvi_navy_he_dist_fuse_ammo_pack"
+      },
       "ship_torpedoes": [],
       "ship_rangefinder": {
-        "prevModification": "102mm_uk_mkxvi_navy_he_dist_fuse_ammo_pack"
+        "prevModification": "120mm_uk_navy_dist_fuse_he_ammo_pack"
       },
       "new_aa_caliber_turrets": [],
       "new_aux_caliber_turrets": {
@@ -2931,23 +2939,58 @@
         ]
       },
       {
-        "event": [
-          {
-            "name": "superstructure_fire"
-          },
-          {
-            "fx": {
-              "name": "ship_fire_large",
-              "emitter": "emtr_fire_dmg_01"
-            }
-          },
-          {
-            "fx": {
-              "name": "ship_fire_large",
-              "emitter": "emtr_fire_dmg_02"
-            }
+        "event": {
+          "name": "superstructure_back_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
           }
-        ]
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_front_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_top_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_bottom_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_side_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "superstructure_fire",
+          "fx": {
+            "name": "ship_fire_medium",
+            "centerDmgPart": true
+          }
+        }
       },
       {
         "event": {
@@ -3587,15 +3630,19 @@
         "armorThickness": 8.0,
         "oneSided": true,
         "superstructure_back_dm": {
+          "fireParamsPreset": "ship_superstructure_back",
           "hp": 5000.0
         },
         "superstructure_front_dm": {
+          "fireParamsPreset": "ship_superstructure_front",
           "hp": 4381.0
         },
         "superstructure_side_dm": {
+          "fireParamsPreset": "ship_superstructure_side",
           "hp": 5000.0
         },
         "superstructure_dm": {
+          "fireParamsPreset": "ship_superstructure",
           "hp": 5000.0
         }
       },
@@ -3970,13 +4017,13 @@
         "armorThickness": 5.0,
         "oneSided": true,
         "ammunition_storage_shells_01_dm": {
-          "hp": 2000.0
+          "hp": 1500.0
         },
         "ammunition_storage_shells_02_dm": {
-          "hp": 2000.0
+          "hp": 1500.0
         },
         "ammunition_storage_shells_03_dm": {
-          "hp": 2000.0
+          "hp": 1500.0
         }
       },
       "ammo_storages_charges": {
@@ -3984,13 +4031,13 @@
         "armorThickness": 3.0,
         "oneSided": true,
         "ammunition_storage_charges_01_dm": {
-          "hp": 2000.0
+          "hp": 1500.0
         },
         "ammunition_storage_charges_02_dm": {
-          "hp": 2000.0
+          "hp": 1500.0
         },
         "ammunition_storage_charges_03_dm": {
-          "hp": 2000.0
+          "hp": 1500.0
         }
       },
       "ammo_storages_auxiliary": {
@@ -3999,10 +4046,10 @@
         "armorThickness": 2.0,
         "oneSided": true,
         "ammunition_storage_aux_01_dm": {
-          "hp": 2000.0
+          "hp": 1010.0
         },
         "ammunition_storage_aux_03_dm": {
-          "hp": 2000.0
+          "hp": 1000.0
         }
       },
       "ammo_first_stage": {
@@ -4014,16 +4061,16 @@
         "armorThickness": 5.0,
         "oneSided": true,
         "ammo_turret_01_dm": {
-          "hp": 1000.0
+          "hp": 500.0
         },
         "ammo_turret_02_dm": {
-          "hp": 1000.0
+          "hp": 500.0
         },
         "ammo_turret_03_dm": {
-          "hp": 1000.0
+          "hp": 500.0
         },
         "ammo_turret_04_dm": {
-          "hp": 1000.0
+          "hp": 500.0
         }
       },
       "depth_charges": {

@@ -21,6 +21,12 @@
     "haveCCIPForGun": true
   },
   {
+    "haveCCRPForBombs": true
+  },
+  {
+    "havePointOfInterestDesignator": true
+  },
+  {
     "gearSinkRangeLR": 0.42
   },
   {
@@ -2816,9 +2822,6 @@
         "collimatorSize": 0.15
       },
       {
-        "staticAimPitch": 1.0
-      },
-      {
         "mirror": true
       },
       {
@@ -2891,7 +2894,7 @@
           "flaps": [0.0,1.0],
           "flaps_fixed": false,
           "trimmer_indicator": [-1.0,1.0],
-          "speed": [0.0,437.0],
+          "speed": [0.0,437.278],
           "mach": [0.0,2.5],
           "vario": [-30.48,30.48],
           "altitude_10k": [0.0,100000.0],
@@ -3404,8 +3407,8 @@
               "Weapon": {
                 "trigger": "flares",
                 "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
-                "emitter": "airbrake_l",
-                "bullets": 45,
+                "emitter": "emtr_flare1",
+                "bullets": 30,
                 "external": true,
                 "separate": false
               }
@@ -3414,8 +3417,28 @@
               "Weapon": {
                 "trigger": "flares",
                 "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
-                "emitter": "airbrake_r",
-                "bullets": 45,
+                "emitter": "emtr_flare2",
+                "bullets": 30,
+                "external": true,
+                "separate": false
+              }
+            },
+            {
+              "Weapon": {
+                "trigger": "flares",
+                "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
+                "emitter": "emtr_flare3",
+                "bullets": 15,
+                "external": true,
+                "separate": false
+              }
+            },
+            {
+              "Weapon": {
+                "trigger": "flares",
+                "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
+                "emitter": "emtr_flare4",
+                "bullets": 15,
                 "external": true,
                 "separate": false
               }
@@ -3461,6 +3484,14 @@
         }
       }
     ]
+  },
+  {
+    "default_skin": {
+      "replace_tex": {
+        "from": "aero_7_olive_c*",
+        "to": "aero_7_white_c*"
+      }
+    }
   },
   {
     "default_skin_tomoe": [

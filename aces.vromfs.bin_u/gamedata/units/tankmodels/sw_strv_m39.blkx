@@ -105,15 +105,6 @@
     "type": "typeLightTank"
   },
   {
-    "customClassIco": "!#ui/gameuiskin#image_in_progress_ico"
-  },
-  {
-    "customImage": "!#ui/unitskin#image_in_progress"
-  },
-  {
-    "customTooltipImage": "ui/aircrafts/image_in_progress"
-  },
-  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "RHA_tank",
@@ -168,7 +159,7 @@
           "armorThickness": 6.0
         },
         "turret_03_side_dm": {
-          "armorThickness": 13.0
+          "armorThickness": 8.0
         },
         "turret_05_side_dm": {
           "armorThickness": 13.0
@@ -183,7 +174,8 @@
           "armorThickness": 15.0
         },
         "turret_02_back_dm": {
-          "armorThickness": 15.0
+          "armorThickness": 15.0,
+          "armorClass": "CHA_tank"
         },
         "turret_04_back_dm": {
           "armorThickness": 13.0
@@ -195,7 +187,8 @@
           "armorThickness": 8.0
         },
         "turret_02_bottom_dm": {
-          "armorThickness": 15.0
+          "armorThickness": 15.0,
+          "armorClass": "CHA_tank"
         },
         "turret_03_bottom_dm": {
           "armorThickness": 7.0
@@ -268,7 +261,8 @@
       "mask": {
         "gun_mask_dm": {
           "armorThickness": 35.0,
-          "hp": 10000.0
+          "hp": 10000.0,
+          "armorClass": "CHA_tank"
         }
       },
       "optics": {
@@ -1155,6 +1149,66 @@
             "name": "ammo_turret_55_dm"
           },
           {
+            "name": "ammo_turret_56_dm"
+          },
+          {
+            "name": "ammo_turret_57_dm"
+          },
+          {
+            "name": "ammo_turret_58_dm"
+          },
+          {
+            "name": "ammo_turret_59_dm"
+          },
+          {
+            "name": "ammo_turret_60_dm"
+          },
+          {
+            "name": "ammo_turret_61_dm"
+          },
+          {
+            "name": "ammo_turret_62_dm"
+          },
+          {
+            "name": "ammo_turret_63_dm"
+          },
+          {
+            "name": "ammo_turret_64_dm"
+          },
+          {
+            "name": "ammo_turret_65_dm"
+          },
+          {
+            "name": "ammo_turret_66_dm"
+          },
+          {
+            "name": "ammo_turret_67_dm"
+          },
+          {
+            "name": "ammo_turret_68_dm"
+          },
+          {
+            "name": "ammo_turret_69_dm"
+          },
+          {
+            "name": "ammo_turret_70_dm"
+          },
+          {
+            "name": "ammo_turret_71_dm"
+          },
+          {
+            "name": "ammo_turret_72_dm"
+          },
+          {
+            "name": "ammo_turret_73_dm"
+          },
+          {
+            "name": "ammo_turret_74_dm"
+          },
+          {
+            "name": "ammo_turret_75_dm"
+          },
+          {
             "onHit": {
               "damageType": "cumulative",
               "expl": 0.4,
@@ -1621,6 +1675,13 @@
     }
   },
   {
+    "gunConvergence": {
+      "distance": 400.0,
+      "vertical": true,
+      "horizontal": true
+    }
+  },
+  {
     "class_tags": []
   },
   {
@@ -1631,6 +1692,7 @@
           "blk": "gameData/Weapons/groundModels_weapons/37mm_kan_m38_user_cannon.blk",
           "emitter": "bone_gun_barrel",
           "flash": "emtr_gun_flame",
+          "useEmitter": true,
           "maxAdditionalPitch": 0.0,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
@@ -1665,9 +1727,9 @@
             "pitch": [-15.0,25.0]
           },
           "limitsTable": {
-            "lim1": [-180.0,-140.0,-15.0,25.0],
+            "lim1": [-180.0,-140.0,-9.0,25.0],
             "lim2": [-140.0,140.0,-15.0,25.0],
-            "lim3": [140.0,180.0,-15.0,25.0]
+            "lim3": [140.0,180.0,-9.0,25.0]
           }
         }
       },
