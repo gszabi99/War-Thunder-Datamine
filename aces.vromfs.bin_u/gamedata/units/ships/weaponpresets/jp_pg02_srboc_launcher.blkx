@@ -1,0 +1,92 @@
+[
+  {
+    "hideNodes": [
+      {
+        "node": "turret_01"
+      },
+      {
+        "node": "turret_02"
+      },
+      {
+        "node": "ex_decor_22"
+      },
+      {
+        "node": "ex_decor_23"
+      },
+      {
+        "node": "ex_decor_28"
+      },
+      {
+        "node": "ex_decor_29"
+      },
+      {
+        "node": "rocket_13"
+      },
+      {
+        "node": "rocket_14"
+      },
+      {
+        "node": "rocket_15"
+      },
+      {
+        "node": "rocket_16"
+      }
+    ]
+  },
+  {
+    "Weapon": {
+      "trigger": "gunner1",
+      "triggerGroup": "smoke",
+      "weaponType": "rockets",
+      "blk": "gameData/weapons/bombguns/bomb_mark36_srboc_launcher.blk",
+      "emitter": "bone_rocket_01",
+      "bullets": 6,
+      "external": true,
+      "dropSpeed": 100.0,
+      "useEmitter": true,
+      "emitterGenRange": [1,6],
+      "emitterGenFmt": "bone_rocket_%02d",
+      "ammoDpGenFmt": "rocket_%02d_dm",
+      "barrelDP": "depth_charge_mount_01_dm",
+      "brokenBarrelAllowShoot": false,
+      "createGunEffects": true,
+      "allowableDelta": 90.0,
+      "turret": {
+        "head": "turret_03",
+        "gun": "depth_charge_mount_01"
+      },
+      "limits": {
+        "yaw": [-0.0,0.0],
+        "pitch": [-0.0,0.0]
+      }
+    }
+  },
+  {
+    "Weapon": {
+      "trigger": "gunner2",
+      "triggerGroup": "smoke",
+      "weaponType": "rockets",
+      "blk": "gameData/weapons/bombguns/bomb_mark36_srboc_launcher.blk",
+      "emitter": "bone_rocket_07",
+      "bullets": 6,
+      "external": true,
+      "dropSpeed": 100.0,
+      "useEmitter": true,
+      "emitterGenRange": [7,12],
+      "emitterGenFmt": "bone_rocket_%02d",
+      "ammoDpGenFmt": "rocket_%02d_dm",
+      "barrelDP": "depth_charge_mount_02_dm",
+      "brokenBarrelAllowShoot": false,
+      "createGunEffects": true,
+      "allowableDelta": 90.0,
+      "turret": {
+        "head": "turret_03",
+        "gun": "depth_charge_mount_02"
+      },
+      "limits": {
+        "yaw": [-0.0,0.0],
+        "pitch": [-0.0,0.0]
+      }
+    }
+  }
+]

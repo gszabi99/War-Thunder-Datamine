@@ -1,0 +1,41 @@
+{
+  "model": "gmc_aa_m16_a",
+  "collisionSphere0": [0.0,-1.5,0.0,5.0],
+  "collisionSphere1": [5.0,2.0,0.0,1.0],
+  "timeToFire": 5.0,
+  "subclass": "radar",
+  "onRadarAs": "aam",
+  "expClass": "exp_radar",
+  "moveType": "vehicle",
+  "maxFwdSpeed": 0.0,
+  "maxRevSpeed": 0.0,
+  "maxAngSpeed": 0.0,
+  "maxAccel": 0.0,
+  "maxDecel": 0.0,
+  "maxAngAccel0": 0.0,
+  "maxAngAccelV": 0.0,
+  "maxAngAccel": 0.0,
+  "groundNormSmoothViscosity": 0.1,
+  "bulletHitFx": "ground_model_hit",
+  "partDamageFx": "part_damage",
+  "explosionFx": "ground_model_expl",
+  "fireFx": "ground_model_fire",
+  "DamageParts": {
+    "steel": {
+      "body_dm": {
+        "hp": 10.0
+      }
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body_dm",
+      "onHit": [],
+      "onKill": {
+        "fire": 2.0,
+        "smoke": 5.0,
+        "expl": 5.0
+      }
+    }
+  }
+}

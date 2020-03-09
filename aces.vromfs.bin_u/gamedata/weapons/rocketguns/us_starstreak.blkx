@@ -1,0 +1,340 @@
+{
+  "rocketGun": true,
+  "preset_cost": 20,
+  "bullets": 1,
+  "shotFreq": 1000.25,
+  "sound": "weapon.rocketgun_132",
+  "helicopterGroup": 2,
+  "mesh": "starstreak_hvm_rocket",
+  "animChar": "starstreak_hvm_rocket_char",
+  "reloadAnimParam": "cap_hide",
+  "tags": [],
+  "rocket": [
+    {
+      "operated": true
+    },
+    {
+      "operatedDist": 7000.0
+    },
+    {
+      "operationTimer": 0.01
+    },
+    {
+      "autoAiming": true
+    },
+    {
+      "autoAimingFirstPerson": false
+    },
+    {
+      "autoAimingInArcade": true
+    },
+    {
+      "autoLeveling": true
+    },
+    {
+      "autoAimTrackingSensitivity": 0.3
+    },
+    {
+      "aimSensitivity": 15.0
+    },
+    {
+      "maxAxisValues": 0.12
+    },
+    {
+      "bulletType": "aam"
+    },
+    {
+      "bulletName": "us_starstreak"
+    },
+    {
+      "caliber": 0.13
+    },
+    {
+      "mass": 14.0
+    },
+    {
+      "explosiveMass": 1.2
+    },
+    {
+      "massEnd": 10.5
+    },
+    {
+      "maxDeltaAngle": 2.0
+    },
+    {
+      "dragCx": 0.025
+    },
+    {
+      "length": 2.84
+    },
+    {
+      "distFromCmToStab": 0.1
+    },
+    {
+      "CxK": 2.5
+    },
+    {
+      "WdK": [0.1,0.1,0.1]
+    },
+    {
+      "force": 28000.0
+    },
+    {
+      "timeFire": 1.5
+    },
+    {
+      "spawnExplosionFx": false
+    },
+    {
+      "spawnExplosionWreckage": false
+    },
+    {
+      "explosionEffect": "atgm_hit"
+    },
+    {
+      "defFxScale": [1.5,1.6]
+    },
+    {
+      "groundCollisionEffect": "art_ground_splash"
+    },
+    {
+      "groundFxScale": [1.3,1.5]
+    },
+    {
+      "ricochetEffect": "cannon_ricochet"
+    },
+    {
+      "waterCollisionEffect": "120-203_he_water_splash"
+    },
+    {
+      "waterFxScale": [1.1,1.2]
+    },
+    {
+      "explosionPatchRadius": 3.4
+    },
+    {
+      "smokeEffect": "hydra_smoke_modern"
+    },
+    {
+      "maxDistance": 8500.0
+    },
+    {
+      "minDistance": 600.0
+    },
+    {
+      "distanceFuse": false
+    },
+    {
+      "hitPowerMult": 400.0
+    },
+    {
+      "fuseDelayDist": 1.0
+    },
+    {
+      "explodeTreshold": 10.0
+    },
+    {
+      "explodeTreshold": 0.1
+    },
+    {
+      "explodeHitPower": 600.0
+    },
+    {
+      "explodeArmorPower": 30.0
+    },
+    {
+      "explodeRadius": [0.6,2.07]
+    },
+    {
+      "rendinstDamageRadius": 4.0
+    },
+    {
+      "statType": "hydra"
+    },
+    {
+      "advancedMissiles": false
+    },
+    {
+      "useStartSpeed": true
+    },
+    {
+      "startSpeed": 10.0
+    },
+    {
+      "endSpeed": 1400.0
+    },
+    {
+      "speedViscosity": 0.1
+    },
+    {
+      "timeToLive": 14.0
+    },
+    {
+      "machMax": 2.0
+    },
+    {
+      "loadFactorMax": 2.0
+    },
+    {
+      "rangeMax": 4.0
+    },
+    {
+      "price": 3000.0
+    },
+    {
+      "mesh": "starstreak_hvm_rocket_deployed"
+    },
+    {
+      "DamageParts": {
+        "body": {
+          "hp": 5.0,
+          "armorClass": "tank_structural_steel",
+          "armorThickness": 1.0
+        }
+      }
+    },
+    {
+      "damage": {
+        "shatter": [
+          {
+            "useRealShatters": true
+          },
+          {
+            "countPortion": 0.15
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.5,
+              "damageScale": 1.5,
+              "angles": [0.0,9.0],
+              "countPortion": 0.1
+            }
+          },
+          {
+            "segment": {
+              "angles": [10.0,29.0],
+              "countPortion": 0.0
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [30.0,124.0],
+              "countPortion": 0.35
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.5,
+              "damageScale": 1.5,
+              "angles": [45.0,70.0],
+              "countPortion": 0.05
+            }
+          },
+          {
+            "segment": {
+              "angles": [125.0,169.0],
+              "countPortion": 0.0
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [170.0,189.0],
+              "countPortion": 0.1
+            }
+          },
+          {
+            "segment": {
+              "angles": [190.0,234.0],
+              "countPortion": 0.0
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [235.0,329.0],
+              "countPortion": 0.35
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.5,
+              "damageScale": 1.5,
+              "angles": [290.0,315.0],
+              "countPortion": 0.05
+            }
+          },
+          {
+            "segment": {
+              "angles": [330.0,349.0],
+              "countPortion": 0.0
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.5,
+              "damageScale": 1.5,
+              "angles": [350.0,359.0],
+              "countPortion": 0.1
+            }
+          }
+        ],
+        "explosive": {
+          "radius": 0.15,
+          "offset": 0.9
+        }
+      }
+    },
+    {
+      "collisions": {
+        "steel": {
+          "fx": "atgm_hit",
+          "fxScale": [4.0,4.2]
+        },
+        "armor": {
+          "fx": "atgm_hit",
+          "fxScale": [4.0,4.2]
+        },
+        "buildings": {
+          "fx": "atgm_hit",
+          "fxScale": [4.0,4.2]
+        },
+        "wood": {
+          "fx": "atgm_hit",
+          "fxScale": [4.0,4.2]
+        }
+      }
+    },
+    {
+      "arcadeProp": {
+        "timeFire": 2.0
+      }
+    },
+    {
+      "armorpower": {
+        "ArmorPower0m": [50.0,10.0],
+        "ArmorPower7000m": [50.0,6000.0]
+      }
+    },
+    {
+      "hitpower": {
+        "HitPower0m": [1.0,500.0],
+        "HitPower1000m": [0.9,1000.0],
+        "HitPower1500m": [0.65,1500.0],
+        "HitPower2500m": [0.5,2500.0],
+        "HitPower7000m": [0.0,7000.0]
+      }
+    }
+  ]
+}

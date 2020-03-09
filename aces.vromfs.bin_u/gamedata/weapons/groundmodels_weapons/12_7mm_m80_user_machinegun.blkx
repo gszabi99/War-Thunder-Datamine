@@ -1,0 +1,175 @@
+{
+  "cannon": true,
+  "weaponType": -1,
+  "bUseHookAsRel": true,
+  "emitColor": [1.0,1.0,0.0],
+  "emitI": 10.0,
+  "emitR": 3.0,
+  "emitTime": 0.03,
+  "aimMinDist": 0.1,
+  "aimMaxDist": 1000.0,
+  "maxDeltaAngle": 0.1,
+  "shotFreq": 5.0,
+  "shotFreqRndK": 0.14,
+  "traceFreq": 4,
+  "bEnablePause": false,
+  "bullets": 500,
+  "bulletsCluster": 1,
+  "reloadTime": 2.5,
+  "bulletsCartridge": 5,
+  "fxType": "machine_gun_flame",
+  "fxMultipleSpawn": true,
+  "fxScale": 1.0,
+  "shouldCollideWithRendinsts": true,
+  "sfxReloadBullet": "grd_cannon_belt_reload",
+  "sound_path": "tanks/weapon_tanks/mguns",
+  "sound_pathStudio": "ground/weapon/mguns",
+  "sound": "12mm_m2",
+  "soundLoop": true,
+  "bullet": {
+    "mass": 0.0113,
+    "caliber": 0.0127,
+    "speed": 532.0,
+    "Cx": 0.15,
+    "bulletType": "t_ball_M48A2",
+    "bulletName": "t_ball_M48A2",
+    "maxDistance": 2000.0,
+    "hitPowerMult": 1.0,
+    "onHitChanceMultFire": 2.0,
+    "nearHitPower": [1.0,50.0],
+    "midHitPower": [0.9,300.0],
+    "farHitPower": [0.1,700.0],
+    "endHitPower": [0.008,1500.0],
+    "relativeVelHitShift": [300.0,1000.0],
+    "relativeVelArmorShift": [200.0,1000.0],
+    "explodeTreshold": 0.3,
+    "explodeHitPower": 12.0,
+    "explodeArmorPower": 2.0,
+    "explodeRadius": [0.13,0.25],
+    "fuseDelayDist": 0.02,
+    "shutterDamage": true,
+    "shutterDamageRadius": 0.3,
+    "shutterAmount": 8,
+    "shutterArmorPower": 3.0,
+    "shutterHit": 3.0,
+    "ricochetEffect": "bullet_hit_armor",
+    "waterCollisionEffect": "water_splash",
+    "waterFxScale": [1.4,1.6],
+    "armorpower": {
+      "ArmorPower0m": [2.0,10.0],
+      "ArmorPower100m": [2.0,100.0],
+      "ArmorPower500m": [1.5,500.0],
+      "ArmorPower1000m": [1.0,1000.0],
+      "ArmorPower1450m": [0.5,1450.0],
+      "ArmorPower1500m": [0.0,1500.0]
+    },
+    "visual": {
+      "range_percent_of_ammo": [100.0,0.0],
+      "traceFreq": 1,
+      "tracer": "12mmDarkRed",
+      "trail": "noTrail"
+    },
+    "collisions": {
+      "default": {
+        "fx": "7_20_hit_ground",
+        "fxScale": [1.1,1.4]
+      },
+      "horLandMesh": {
+        "fx": "7_20_hit_ground",
+        "fxScale": [1.1,1.4]
+      },
+      "soil": {
+        "fx": "7_20_hit_ground",
+        "fxScale": [1.1,1.4]
+      },
+      "dirt": {
+        "fx": "7_20_hit_ground",
+        "fxScale": [1.1,1.4]
+      },
+      "road": {
+        "fx": "7_20_hit_ground",
+        "fxScale": [1.1,1.4]
+      },
+      "roadSoil": {
+        "fx": "7_20_hit_ground",
+        "fxScale": [1.1,1.4]
+      },
+      "sand": {
+        "fx": "7_20_hit_sand",
+        "fxScale": [1.1,1.4]
+      },
+      "duneSand": {
+        "fx": "7_20_hit_sand",
+        "fxScale": [1.1,1.4]
+      },
+      "roadSand": {
+        "fx": "7_20_hit_sand",
+        "fxScale": [1.1,1.4]
+      },
+      "quickSand": {
+        "fx": "7_20_hit_sand",
+        "fxScale": [1.1,1.4]
+      },
+      "snow": {
+        "fx": "7_20_hit_snow",
+        "fxScale": [1.1,1.4]
+      },
+      "ice": {
+        "fx": "7_20_hit_snow",
+        "fxScale": [1.1,1.4]
+      },
+      "roadSnow": {
+        "fx": "7_20_hit_snow",
+        "fxScale": [1.1,1.4]
+      },
+      "snowLower": {
+        "fx": "7_20_hit_snow",
+        "fxScale": [1.1,1.4]
+      },
+      "glass": {
+        "fx": "7_20_hit_glass",
+        "fxScale": [0.2,0.4]
+      },
+      "wood": {
+        "fx": "7_20_hit_wood",
+        "fxScale": [0.5,0.7]
+      },
+      "buildings": {
+        "fx": "7_20_hit_stone",
+        "fxScale": [0.4,0.6]
+      },
+      "verLandMesh": {
+        "fx": "7_20_hit_stone",
+        "fxScale": [0.4,0.6]
+      },
+      "beton": {
+        "fx": "7_20_hit_stone",
+        "fxScale": [0.4,0.6]
+      },
+      "rocks": {
+        "fx": "7_20_hit_stone",
+        "fxScale": [0.4,0.6]
+      },
+      "rocksSlippery": {
+        "fx": "7_20_hit_stone",
+        "fxScale": [0.4,0.6]
+      },
+      "fabric": {
+        "fx": "7_20_hit_stone",
+        "fxScale": [0.4,0.6]
+      },
+      "stone_snow": {
+        "fx": "7_20_hit_stone",
+        "fxScale": [0.4,0.6]
+      },
+      "steel": {
+        "fx": "bullet_hit_light",
+        "fxScale": [0.5,0.8]
+      },
+      "metal": {
+        "fx": "bullet_hit_light",
+        "fxScale": [0.5,0.8]
+      }
+    }
+  }
+}

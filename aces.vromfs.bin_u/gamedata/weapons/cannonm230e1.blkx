@@ -1,0 +1,187 @@
+{
+  "cannon": true,
+  "weaponType": -1,
+  "bUseHookAsRel": true,
+  "emitColor": [1.0,1.0,0.0],
+  "emitI": 10.0,
+  "emitR": 3.0,
+  "emitTime": 0.03,
+  "aimMinDist": 10.0,
+  "aimMaxDist": 1000.0,
+  "maxDeltaAngle": 0.35,
+  "shotFreq": 10.41,
+  "traceFreq": 4,
+  "bEnablePause": false,
+  "bullets": 1200,
+  "bulletsCluster": 1,
+  "dragCx": 0.001,
+  "mass": 55.9,
+  "bullet": {
+    "bulletCount": 30,
+    "mass": 0.348,
+    "explosiveType": "comp_b",
+    "explosiveMass": 0.021,
+    "caliber": 0.03,
+    "speed": 805.0,
+    "maxDistance": 7000.0,
+    "bulletType": "he_frag_i_t",
+    "bulletName": "30mm_m789",
+    "hitPowerMult": 10.0,
+    "effectiveDistance": 2500.0,
+    "relativeVelHitShift": [300.0,1000.0],
+    "ricochetEffect": "bullet_hit_armor",
+    "waterCollisionEffect": "big_water_splash",
+    "waterFxScale": [0.8,1.0],
+    "hitpower": {
+      "HitPower0m": [1.0,500.0],
+      "HitPower1000m": [0.9,1000.0],
+      "HitPower1500m": [0.65,1500.0],
+      "HitPower2500m": [0.5,2500.0],
+      "HitPower7000m": [0.0,7000.0]
+    },
+    "cumulativeDamage": {
+      "armorPower": 51.0,
+      "distance": 2.5,
+      "damage": 100.0,
+      "onHitChanceMultFire": 10.0
+    },
+    "collisions": {
+      "default": {
+        "fx": "20_37_he_hit_ground",
+        "fxScale": [0.7,0.9]
+      },
+      "horLandMesh": {
+        "fx": "20_37_he_hit_ground",
+        "fxScale": [0.7,0.9]
+      },
+      "soil": {
+        "fx": "20_37_he_hit_ground",
+        "fxScale": [0.7,0.9]
+      },
+      "dirt": {
+        "fx": "20_37_he_hit_ground",
+        "fxScale": [0.7,0.9]
+      },
+      "road": {
+        "fx": "20_37_he_hit_ground",
+        "fxScale": [0.7,0.9]
+      },
+      "roadSoil": {
+        "fx": "20_37_he_hit_ground",
+        "fxScale": [0.7,0.9]
+      },
+      "sand": {
+        "fx": "20_37_he_hit_ground",
+        "fxScale": [0.7,0.9]
+      },
+      "duneSand": {
+        "fx": "20_37_he_hit_ground",
+        "fxScale": [0.7,0.9]
+      },
+      "roadSand": {
+        "fx": "20_37_he_hit_ground",
+        "fxScale": [0.7,0.9]
+      },
+      "quickSand": {
+        "fx": "20_37_he_hit_ground",
+        "fxScale": [0.7,0.9]
+      },
+      "snow": {
+        "fx": "20_37_he_hit_snow",
+        "fxScale": [0.7,0.9]
+      },
+      "ice": {
+        "fx": "20_37_he_hit_snow",
+        "fxScale": [0.7,0.9]
+      },
+      "roadSnow": {
+        "fx": "20_37_he_hit_snow",
+        "fxScale": [0.7,0.9]
+      },
+      "snowLower": {
+        "fx": "20_37_he_hit_snow",
+        "fxScale": [0.7,0.9]
+      },
+      "glass": {
+        "fx": "7_20_hit_glass",
+        "fxScale": [0.5,0.6]
+      },
+      "wood": {
+        "fx": "20_ap_wood_splash",
+        "fxScale": [0.8,1.0]
+      },
+      "steel": {
+        "fx": "bullet_hit_armor_cumulative",
+        "fxScale": [0.9,0.9]
+      },
+      "metal": {
+        "fx": "bullet_hit_armor_cumulative",
+        "fxScale": [0.9,0.9]
+      },
+      "buildings": {
+        "fx": "20_37_he_hit_stone",
+        "fxScale": [0.5,0.7]
+      },
+      "verLandMesh": {
+        "fx": "20_37_he_hit_stone",
+        "fxScale": [0.5,0.7]
+      },
+      "beton": {
+        "fx": "20_37_he_hit_stone",
+        "fxScale": [0.5,0.7]
+      },
+      "bricks_red": {
+        "fx": "20_37_he_hit_stone",
+        "fxScale": [0.7,0.9]
+      },
+      "rocks": {
+        "fx": "20_37_he_hit_stone",
+        "fxScale": [0.7,0.9]
+      },
+      "rocksSlippery": {
+        "fx": "20_37_he_hit_stone",
+        "fxScale": [0.7,0.9]
+      },
+      "fabric": {
+        "fx": "20_37_he_hit_stone",
+        "fxScale": [0.7,0.9]
+      },
+      "stone_snow": {
+        "fx": "20_37_he_hit_snow_stone",
+        "fxScale": [0.7,0.9]
+      }
+    },
+    "visual": {
+      "range_percent_of_ammo": [100.0,0.0],
+      "traceFreq": 1,
+      "tracer": "noColor",
+      "trail": "smallTrail"
+    }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "cannon_t_160_outside",
+    "cockpit": "cannon_t_160_inside",
+    "ai": "cannon_t_160_ai"
+  },
+  "overheat": [
+    {
+      "overheat": [21.3,0.0]
+    },
+    {
+      "overheat": [32.0,0.05]
+    }
+  ],
+  "aden_new_gun": {
+    "maxDeltaAngle": 0.65,
+    "overheat": [
+      {
+        "overheat": [20.0,0.0]
+      },
+      {
+        "overheat": [30.0,0.05]
+      }
+    ]
+  }
+}

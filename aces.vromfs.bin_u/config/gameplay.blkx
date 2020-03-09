@@ -1,0 +1,2849 @@
+{
+  "detectionExpCooldownBetweenDetections": 2.0,
+  "detectionExpCooldownAfterTeleport": 10.0,
+  "detectionExpCooldownFromMissionStart": 15.0,
+  "air_hit_statistics": true,
+  "air_pos_statistics": true,
+  "playerTurretDeviation": 0.25,
+  "playerTurretDeviationSpeed": [1.0,2.0,3.0,10.0],
+  "playerTurretDeviationK": [0.0,0.001,0.002,0.003],
+  "boostersFuel": 1.0,
+  "playerTurretDeviationArcade": [0.0,0.001,0.002,0.003],
+  "playerTurretDeviationRealistic": [0.0,0.001,0.002,0.003],
+  "playerTurretDeviationHardcore": [0.0,0.001,0.002,0.2],
+  "boostersFuelArcade": 1.0,
+  "boostersFuelRealistic": 0.5,
+  "boostersFuelHardcore": 0.5,
+  "gunnerTurretDeviationMin": 0.6,
+  "gunnerTurretDeviationMax": 1.5,
+  "missionAIGunnerTurretDeviation": 6.0,
+  "gunnerTurretRotationSpeed": 18.0,
+  "minAltCameraBomberView": 20.0,
+  "showUpObjToTeamIconBlinkTime": 5.0,
+  "showUpObjToTeamCooldownTime": 10.0,
+  "saclosMissileLineOfSight": true,
+  "saclosMissileTreesDeadZone": 0.0,
+  "saclosMissileTreesTransparencyTreshold": 0.5,
+  "minFreeCrewIntegrity": -1.0,
+  "ai": {
+    "outerSphereMul": 3.0,
+    "effectiveness": {
+      "fighter": {
+        "playerKills": 0.1,
+        "playerHits": 0.01,
+        "playerAlmostHitEnemy": 0.0005,
+        "playerAlmostHitEnemyOuter": 0.0,
+        "playerDies": 0.25,
+        "playerHitByEnemy": -0.01,
+        "playerAlmostHitByEnemy": -0.0005,
+        "playerAlmostHitByEnemyOuter": -0.0004,
+        "squadronMul": 1.5,
+        "alliesMul": 1.0,
+        "enemiesMul": -1.0
+      },
+      "bomber": {
+        "playerKills": 0.01,
+        "playerHits": 0.005,
+        "playerAlmostHitEnemy": 0.0003,
+        "playerAlmostHitEnemyOuter": 0.0,
+        "playerDies": 0.25,
+        "playerHitByEnemy": -0.02,
+        "playerAlmostHitByEnemy": -0.001,
+        "playerAlmostHitByEnemyOuter": -0.0008,
+        "squadronMul": 1.5,
+        "alliesMul": 1.0,
+        "enemiesMul": -1.0
+      }
+    }
+  },
+  "cta": {
+    "ctaDeathTicketPenalty": 100,
+    "ctaCaptureZoneDominationPenalty": 28,
+    "ctaNoRespawnBasesPenalty": 0,
+    "ctaNoRespawnBasesPenaltyIncreaseTime": 60,
+    "ctaNoRespawnBasesPenaltyMul": 1.0,
+    "ctaNoRespawnBasesNoPlayersPenaltyIncreaseTime": 10,
+    "ctaZoneCaptureTime": 15,
+    "powForCapturersCount": 0.5,
+    "ctaWaitInRespawn": 25,
+    "ctaZoneDominationDiff": 8,
+    "ctaNoAliveAirctaftTimer": 20,
+    "ctaNoAliveAirctaftPenalty": 0.05,
+    "ctaMinPlayerSupremacy": 2.0,
+    "ctaMaxPlayerSupremacy": 4.0,
+    "ctaPlayerSupremacyMaxCoef": 3.0,
+    "ctaNoAliveAirctaftDelay": 100,
+    "ctaZoneDominationTimeToKillStreakScore": 90
+  },
+  "cta_rounds": {
+    "ctaDeathTicketPenalty": 5,
+    "ctaCaptureZoneDominationPenalty": 14,
+    "ctaNoRespawnBasesPenalty": 0,
+    "ctaNoRespawnBasesPenaltyIncreaseTime": 60,
+    "ctaNoRespawnBasesPenaltyMul": 1.0,
+    "ctaNoRespawnBasesNoPlayersPenaltyIncreaseTime": 10,
+    "ctaZoneCaptureTime": 20,
+    "powForCapturersCount": 0.5,
+    "ctaWaitInRespawn": 25,
+    "ctaZoneDominationDiff": 4,
+    "ctaNoAliveAirctaftTimer": 20,
+    "ctaNoAliveAirctaftPenalty": 0.05,
+    "ctaMinPlayerSupremacy": 2.0,
+    "ctaMaxPlayerSupremacy": 4.0,
+    "ctaPlayerSupremacyMaxCoef": 3.0,
+    "ctaNoAliveAirctaftDelay": 100,
+    "ctaZoneDominationTimeToKillStreakScore": 90
+  },
+  "killStreaks": [
+    {
+      "expClass": "exp_bomber"
+    },
+    {
+      "expClass": "exp_fighter"
+    },
+    {
+      "expClass": "exp_assault"
+    },
+    {
+      "expClass": "exp_tank"
+    },
+    {
+      "expClass": "exp_heavy_tank"
+    },
+    {
+      "expClass": "exp_tank_destroyer"
+    },
+    {
+      "expClass": "exp_SPAA"
+    },
+    {
+      "expClass": "exp_helicopter"
+    },
+    {
+      "countCombinedKillStreakEvents": 2
+    },
+    {
+      "timeDelayBetweenKillStreakEvent": 45.0
+    },
+    {
+      "killStreak": {
+        "type": "artillery_attack",
+        "tag": "artillery",
+        "maxCount": 3,
+        "maxCountForLightTank": 3,
+        "maxCountForMediumTank": 2,
+        "requiredKillsToGain": 1,
+        "eventTimer": 0.5,
+        "extraSupplyTimer": 120.0,
+        "dominationScoreMult": 0,
+        "airKillsMult": 1,
+        "groundKillsMult": 1,
+        "airAiKillsMult": 1,
+        "groundAiKillsMult": 1
+      }
+    },
+    {
+      "killStreak": {
+        "type": "control_unit_event",
+        "maxCount": 1,
+        "requiredKillsToGain": 1,
+        "eventType": "ship",
+        "tag": "cl",
+        "canStartEvent": true,
+        "canJoinEvent": false,
+        "eventTimer": 180.0
+      }
+    },
+    {
+      "killStreak": {
+        "type": "control_unit_event",
+        "maxCount": 1,
+        "requiredKillsToGain": 1,
+        "eventType": "ship",
+        "tag": "dd",
+        "canStartEvent": true,
+        "canJoinEvent": false,
+        "eventTimer": 120.0
+      }
+    },
+    {
+      "killStreak": [
+        {
+          "type": "control_unit_event"
+        },
+        {
+          "maxCount": 1
+        },
+        {
+          "requiredKillsToGain": 3
+        },
+        {
+          "airKillsMult": 1
+        },
+        {
+          "groundKillsMult": 1
+        },
+        {
+          "airAiKillsMult": 1
+        },
+        {
+          "groundAiKillsMult": 1
+        },
+        {
+          "eventType": "bomber"
+        },
+        {
+          "tag": "bomber"
+        },
+        {
+          "canStartEvent": true
+        },
+        {
+          "canJoinEvent": false
+        },
+        {
+          "canJoinAsExtra": true
+        },
+        {
+          "eventTimer": 60.0
+        },
+        {
+          "maxSimultaneousUnits": 3
+        },
+        {
+          "spawnPos": {
+            "ranks": [0,7],
+            "initiator": [2900.0,800.0],
+            "ally": [250.0,400.0],
+            "enemy": [1400.0,700.0],
+            "enemy_dist": [1000.0,1200.0],
+            "enemy_angles": [45.0,135.0],
+            "enemy_height": [50.0,150.0],
+            "ally_dist": [1000.0,1200.0],
+            "ally_angles": [45.0,135.0],
+            "ally_height": [50.0,150.0],
+            "extra_ally_dist": [250.0,400.0]
+          }
+        },
+        {
+          "spawnPos": {
+            "ranks": [8,13],
+            "initiator": [3300.0,900.0],
+            "ally": [250.0,400.0],
+            "enemy": [1500.0,700.0],
+            "enemy_dist": [1200.0,1400.0],
+            "enemy_angles": [45.0,135.0],
+            "enemy_height": [100.0,200.0],
+            "ally_dist": [1200.0,1400.0],
+            "ally_angles": [45.0,135.0],
+            "ally_height": [100.0,200.0],
+            "extra_ally_dist": [250.0,400.0]
+          }
+        },
+        {
+          "spawnPos": {
+            "ranks": [14,30],
+            "initiator": [3600.0,1000.0],
+            "ally": [250.0,400.0],
+            "enemy": [1750.0,750.0],
+            "enemy_dist": [1400.0,1600.0],
+            "enemy_angles": [45.0,135.0],
+            "enemy_height": [150.0,250.0],
+            "ally_dist": [1400.0,1600.0],
+            "ally_angles": [45.0,135.0],
+            "ally_height": [150.0,250.0],
+            "extra_ally_dist": [250.0,400.0]
+          }
+        },
+        {
+          "clearProgress": [
+            {
+              "count": 3
+            },
+            {
+              "tag": "attacker"
+            },
+            {
+              "tag": "fighter"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "killStreak": [
+        {
+          "type": "control_unit_event"
+        },
+        {
+          "maxCount": 1
+        },
+        {
+          "requiredKillsToGain": 2
+        },
+        {
+          "airKillsMult": 1
+        },
+        {
+          "groundKillsMult": 1
+        },
+        {
+          "airAiKillsMult": 1
+        },
+        {
+          "groundAiKillsMult": 1
+        },
+        {
+          "eventType": "bomber"
+        },
+        {
+          "tag": "attacker"
+        },
+        {
+          "canStartEvent": true
+        },
+        {
+          "canJoinEvent": false
+        },
+        {
+          "canJoinAsExtra": true
+        },
+        {
+          "eventTimer": 60.0
+        },
+        {
+          "maxSimultaneousUnits": 2
+        },
+        {
+          "spawnPos": {
+            "ranks": [0,7],
+            "initiator": [2500.0,700.0],
+            "ally": [250.0,400.0],
+            "enemy": [1400.0,1000.0],
+            "enemy_dist": [1000.0,1200.0],
+            "enemy_angles": [45.0,135.0],
+            "enemy_height": [50.0,150.0],
+            "ally_dist": [1000.0,1200.0],
+            "ally_angles": [45.0,135.0],
+            "ally_height": [50.0,150.0],
+            "extra_ally_dist": [250.0,400.0]
+          }
+        },
+        {
+          "spawnPos": {
+            "ranks": [8,13],
+            "initiator": [2700.0,800.0],
+            "ally": [250.0,400.0],
+            "enemy": [1500.0,700.0],
+            "enemy_dist": [1200.0,1400.0],
+            "enemy_angles": [45.0,135.0],
+            "enemy_height": [100.0,200.0],
+            "ally_dist": [1200.0,1400.0],
+            "ally_angles": [45.0,135.0],
+            "ally_height": [100.0,200.0],
+            "extra_ally_dist": [250.0,400.0]
+          }
+        },
+        {
+          "spawnPos": {
+            "ranks": [14,30],
+            "initiator": [3000.0,800.0],
+            "ally": [250.0,400.0],
+            "enemy": [1750.0,750.0],
+            "enemy_dist": [1400.0,1600.0],
+            "enemy_angles": [45.0,135.0],
+            "enemy_height": [150.0,250.0],
+            "ally_dist": [1400.0,1600.0],
+            "ally_angles": [45.0,135.0],
+            "ally_height": [150.0,250.0],
+            "extra_ally_dist": [250.0,400.0]
+          }
+        },
+        {
+          "clearProgress": [
+            {
+              "count": 2
+            },
+            {
+              "tag": "bomber"
+            },
+            {
+              "tag": "fighter"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "killStreak": {
+        "type": "control_unit_event",
+        "maxCount": 1,
+        "requiredKillsToGain": 1,
+        "airKillsMult": 1,
+        "groundKillsMult": 1,
+        "airAiKillsMult": 1,
+        "groundAiKillsMult": 1,
+        "eventType": "bomber",
+        "tag": "fighter",
+        "canStartEvent": false,
+        "canJoinEvent": true,
+        "clearProgress": [
+          {
+            "count": 1
+          },
+          {
+            "tag": "bomber"
+          },
+          {
+            "tag": "attacker"
+          }
+        ]
+      }
+    }
+  ],
+  "killStreaksAircraftOrHelicopter_1": [
+    {
+      "expClass": "exp_bomber"
+    },
+    {
+      "expClass": "exp_fighter"
+    },
+    {
+      "expClass": "exp_assault"
+    },
+    {
+      "expClass": "exp_tank"
+    },
+    {
+      "expClass": "exp_heavy_tank"
+    },
+    {
+      "expClass": "exp_tank_destroyer"
+    },
+    {
+      "expClass": "exp_SPAA"
+    },
+    {
+      "expClass": "exp_helicopter"
+    },
+    {
+      "countCombinedKillStreakEvents": 2
+    },
+    {
+      "timeDelayBetweenKillStreakEvent": 45.0
+    },
+    {
+      "ranks": [0,23]
+    },
+    {
+      "weight": 1.0
+    },
+    {
+      "killStreak": {
+        "type": "artillery_attack",
+        "tag": "artillery",
+        "maxCount": 3,
+        "maxCountForLightTank": 3,
+        "maxCountForMediumTank": 2,
+        "requiredKillsToGain": 1,
+        "eventTimer": 0.5,
+        "extraSupplyTimer": 120.0,
+        "dominationScoreMult": 0,
+        "airKillsMult": 1,
+        "groundKillsMult": 1,
+        "airAiKillsMult": 1,
+        "groundAiKillsMult": 1
+      }
+    },
+    {
+      "killStreak": [
+        {
+          "type": "control_unit_event"
+        },
+        {
+          "maxCount": 1
+        },
+        {
+          "requiredKillsToGain": 3
+        },
+        {
+          "airKillsMult": 1
+        },
+        {
+          "groundKillsMult": 1
+        },
+        {
+          "airAiKillsMult": 1
+        },
+        {
+          "groundAiKillsMult": 1
+        },
+        {
+          "tag": "bomber"
+        },
+        {
+          "unitTag": "bomber"
+        },
+        {
+          "canStartEvent": true
+        },
+        {
+          "canJoinEvent": false
+        },
+        {
+          "canJoinAsExtra": true
+        },
+        {
+          "eventTimer": 60.0
+        },
+        {
+          "maxSimultaneousUnits": 3
+        },
+        {
+          "spawnPos": {
+            "ranks": [0,7],
+            "initiator": [2900.0,800.0],
+            "ally": [250.0,400.0],
+            "enemy": [1400.0,700.0],
+            "enemy_dist": [1000.0,1200.0],
+            "enemy_angles": [45.0,135.0],
+            "enemy_height": [50.0,150.0],
+            "ally_dist": [1000.0,1200.0],
+            "ally_angles": [45.0,135.0],
+            "ally_height": [50.0,150.0],
+            "extra_ally_dist": [250.0,400.0]
+          }
+        },
+        {
+          "spawnPos": {
+            "ranks": [8,13],
+            "initiator": [3300.0,900.0],
+            "ally": [250.0,400.0],
+            "enemy": [1500.0,700.0],
+            "enemy_dist": [1200.0,1400.0],
+            "enemy_angles": [45.0,135.0],
+            "enemy_height": [100.0,200.0],
+            "ally_dist": [1200.0,1400.0],
+            "ally_angles": [45.0,135.0],
+            "ally_height": [100.0,200.0],
+            "extra_ally_dist": [250.0,400.0]
+          }
+        },
+        {
+          "spawnPos": {
+            "ranks": [14,30],
+            "initiator": [3600.0,1000.0],
+            "ally": [250.0,400.0],
+            "enemy": [1750.0,750.0],
+            "enemy_dist": [1400.0,1600.0],
+            "enemy_angles": [45.0,135.0],
+            "enemy_height": [150.0,250.0],
+            "ally_dist": [1400.0,1600.0],
+            "ally_angles": [45.0,135.0],
+            "ally_height": [150.0,250.0],
+            "extra_ally_dist": [250.0,400.0]
+          }
+        },
+        {
+          "clearProgress": [
+            {
+              "count": 3
+            },
+            {
+              "tag": "attacker"
+            },
+            {
+              "tag": "fighter"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "killStreak": [
+        {
+          "type": "control_unit_event"
+        },
+        {
+          "maxCount": 1
+        },
+        {
+          "requiredKillsToGain": 2
+        },
+        {
+          "airKillsMult": 1
+        },
+        {
+          "groundKillsMult": 1
+        },
+        {
+          "airAiKillsMult": 1
+        },
+        {
+          "groundAiKillsMult": 1
+        },
+        {
+          "tag": "attacker"
+        },
+        {
+          "unitTag": "attacker"
+        },
+        {
+          "canStartEvent": true
+        },
+        {
+          "canJoinEvent": false
+        },
+        {
+          "canJoinAsExtra": true
+        },
+        {
+          "eventTimer": 60.0
+        },
+        {
+          "maxSimultaneousUnits": 2
+        },
+        {
+          "spawnPos": {
+            "ranks": [0,7],
+            "initiator": [2500.0,700.0],
+            "ally": [250.0,400.0],
+            "enemy": [1400.0,1000.0],
+            "enemy_dist": [1000.0,1200.0],
+            "enemy_angles": [45.0,135.0],
+            "enemy_height": [50.0,150.0],
+            "ally_dist": [1000.0,1200.0],
+            "ally_angles": [45.0,135.0],
+            "ally_height": [50.0,150.0],
+            "extra_ally_dist": [250.0,400.0]
+          }
+        },
+        {
+          "spawnPos": {
+            "ranks": [8,13],
+            "initiator": [2700.0,800.0],
+            "ally": [250.0,400.0],
+            "enemy": [1500.0,700.0],
+            "enemy_dist": [1200.0,1400.0],
+            "enemy_angles": [45.0,135.0],
+            "enemy_height": [100.0,200.0],
+            "ally_dist": [1200.0,1400.0],
+            "ally_angles": [45.0,135.0],
+            "ally_height": [100.0,200.0],
+            "extra_ally_dist": [250.0,400.0]
+          }
+        },
+        {
+          "spawnPos": {
+            "ranks": [14,30],
+            "initiator": [3000.0,800.0],
+            "ally": [250.0,400.0],
+            "enemy": [1750.0,750.0],
+            "enemy_dist": [1400.0,1600.0],
+            "enemy_angles": [45.0,135.0],
+            "enemy_height": [150.0,250.0],
+            "ally_dist": [1400.0,1600.0],
+            "ally_angles": [45.0,135.0],
+            "ally_height": [150.0,250.0],
+            "extra_ally_dist": [250.0,400.0]
+          }
+        },
+        {
+          "clearProgress": [
+            {
+              "count": 2
+            },
+            {
+              "tag": "bomber"
+            },
+            {
+              "tag": "fighter"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "killStreak": {
+        "type": "control_unit_event",
+        "maxCount": 1,
+        "requiredKillsToGain": 1,
+        "airKillsMult": 1,
+        "groundKillsMult": 1,
+        "airAiKillsMult": 1,
+        "groundAiKillsMult": 1,
+        "tag": "fighter",
+        "unitTag": "fighter",
+        "canStartEvent": false,
+        "canJoinEvent": true,
+        "clearProgress": [
+          {
+            "count": 1
+          },
+          {
+            "tag": "bomber"
+          },
+          {
+            "tag": "attacker"
+          }
+        ]
+      }
+    }
+  ],
+  "killStreaksAircraftOrHelicopter_2": [
+    {
+      "expClass": "exp_bomber"
+    },
+    {
+      "expClass": "exp_fighter"
+    },
+    {
+      "expClass": "exp_assault"
+    },
+    {
+      "expClass": "exp_tank"
+    },
+    {
+      "expClass": "exp_heavy_tank"
+    },
+    {
+      "expClass": "exp_tank_destroyer"
+    },
+    {
+      "expClass": "exp_SPAA"
+    },
+    {
+      "expClass": "exp_helicopter"
+    },
+    {
+      "countCombinedKillStreakEvents": 2
+    },
+    {
+      "timeDelayBetweenKillStreakEvent": 75.0
+    },
+    {
+      "ranks": [24,30]
+    },
+    {
+      "weight": 1.0
+    },
+    {
+      "killStreak": {
+        "type": "artillery_attack",
+        "tag": "artillery",
+        "maxCount": 3,
+        "maxCountForLightTank": 3,
+        "maxCountForMediumTank": 2,
+        "requiredKillsToGain": 1,
+        "eventTimer": 0.5,
+        "extraSupplyTimer": 120.0,
+        "dominationScoreMult": 0,
+        "airKillsMult": 1,
+        "groundKillsMult": 1,
+        "airAiKillsMult": 1,
+        "groundAiKillsMult": 1
+      }
+    },
+    {
+      "killStreak": {
+        "type": "control_unit_event",
+        "maxCount": 1,
+        "requiredKillsToGain": 3,
+        "airKillsMult": 1,
+        "groundKillsMult": 1,
+        "airAiKillsMult": 1,
+        "groundAiKillsMult": 1,
+        "tag": "bomber",
+        "unitTag": "helicopter_atgm",
+        "canStartEvent": true,
+        "canJoinEvent": false,
+        "canJoinAsExtra": true,
+        "eventTimer": 90.0,
+        "maxSimultaneousUnits": 3,
+        "spawnPos": {
+          "ranks": [0,30],
+          "initiator": [3500.0,600.0],
+          "ally": [250.0,400.0],
+          "enemy": [1500.0,800.0],
+          "enemy_dist": [700.0,1000.0],
+          "enemy_angles": [30.0,135.0],
+          "enemy_height": [50.0,150.0],
+          "ally_dist": [700.0,1000.0],
+          "ally_angles": [30.0,135.0],
+          "ally_height": [50.0,150.0],
+          "extra_ally_dist": [250.0,400.0]
+        },
+        "clearProgress": [
+          {
+            "count": 3
+          },
+          {
+            "tag": "attacker"
+          },
+          {
+            "tag": "fighter"
+          }
+        ]
+      }
+    },
+    {
+      "killStreak": {
+        "type": "control_unit_event",
+        "maxCount": 1,
+        "requiredKillsToGain": 2,
+        "airKillsMult": 1,
+        "groundKillsMult": 1,
+        "airAiKillsMult": 1,
+        "groundAiKillsMult": 1,
+        "tag": "attacker",
+        "unitTag": "helicopter_rocket",
+        "canStartEvent": true,
+        "canJoinEvent": false,
+        "canJoinAsExtra": true,
+        "eventTimer": 90.0,
+        "maxSimultaneousUnits": 2,
+        "spawnPos": {
+          "ranks": [0,30],
+          "initiator": [2500.0,500.0],
+          "ally": [250.0,400.0],
+          "enemy": [1500.0,800.0],
+          "enemy_dist": [700.0,1000.0],
+          "enemy_angles": [30.0,135.0],
+          "enemy_height": [50.0,150.0],
+          "ally_dist": [700.0,1000.0],
+          "ally_angles": [30.0,135.0],
+          "ally_height": [50.0,150.0],
+          "extra_ally_dist": [250.0,400.0]
+        },
+        "clearProgress": [
+          {
+            "count": 2
+          },
+          {
+            "tag": "bomber"
+          },
+          {
+            "tag": "fighter"
+          }
+        ]
+      }
+    },
+    {
+      "killStreak": {
+        "type": "control_unit_event",
+        "maxCount": 1,
+        "requiredKillsToGain": 1,
+        "airKillsMult": 1,
+        "groundKillsMult": 1,
+        "airAiKillsMult": 1,
+        "groundAiKillsMult": 1,
+        "tag": "fighter",
+        "unitTag": "helicopter_mguns",
+        "canStartEvent": false,
+        "canJoinEvent": true,
+        "clearProgress": [
+          {
+            "count": 1
+          },
+          {
+            "tag": "bomber"
+          },
+          {
+            "tag": "attacker"
+          }
+        ]
+      }
+    }
+  ],
+  "killStreaks_survival_event_aircraftOrHelicopter_1": [
+    {
+      "expClass": "exp_bomber"
+    },
+    {
+      "expClass": "exp_fighter"
+    },
+    {
+      "expClass": "exp_assault"
+    },
+    {
+      "expClass": "exp_tank"
+    },
+    {
+      "expClass": "exp_heavy_tank"
+    },
+    {
+      "expClass": "exp_tank_destroyer"
+    },
+    {
+      "expClass": "exp_SPAA"
+    },
+    {
+      "expClass": "exp_helicopter"
+    },
+    {
+      "countCombinedKillStreakEvents": 8
+    },
+    {
+      "timeDelayBetweenKillStreakEvent": 0.0
+    },
+    {
+      "bombFuseTimeForKillStreak": 0.0
+    },
+    {
+      "ranks": [0,21]
+    },
+    {
+      "weight": 1.0
+    },
+    {
+      "killStreak": {
+        "type": "artillery_attack",
+        "tag": "artillery",
+        "maxCount": 3,
+        "maxCountForLightTank": 1,
+        "maxCountForMediumTank": 1,
+        "requiredKillsToGain": 3,
+        "eventTimer": 0.5,
+        "extraSupplyTimer": 120.0,
+        "dominationScoreMult": 0,
+        "airKillsMult": 1,
+        "groundKillsMult": 1,
+        "airAiKillsMult": 1,
+        "groundAiKillsMult": 1
+      }
+    },
+    {
+      "killStreak": [
+        {
+          "type": "control_unit_event"
+        },
+        {
+          "maxCount": 1
+        },
+        {
+          "requiredKillsToGain": 8
+        },
+        {
+          "airKillsMult": 1
+        },
+        {
+          "groundKillsMult": 1
+        },
+        {
+          "airAiKillsMult": 1
+        },
+        {
+          "groundAiKillsMult": 1
+        },
+        {
+          "eventType": "bomber"
+        },
+        {
+          "tag": "bomber"
+        },
+        {
+          "canStartEvent": true
+        },
+        {
+          "canJoinEvent": false
+        },
+        {
+          "eventTimer": 60.0
+        },
+        {
+          "maxSimultaneousUnits": 1
+        },
+        {
+          "spawnPos": {
+            "ranks": [0,7],
+            "initiator": [2900.0,800.0],
+            "ally": [250.0,400.0],
+            "enemy": [1400.0,700.0],
+            "enemy_dist": [1000.0,1200.0],
+            "enemy_angles": [45.0,135.0],
+            "enemy_height": [50.0,150.0],
+            "ally_dist": [1000.0,1200.0],
+            "ally_angles": [45.0,135.0],
+            "ally_height": [50.0,150.0],
+            "extra_ally_dist": [250.0,400.0]
+          }
+        },
+        {
+          "spawnPos": {
+            "ranks": [8,13],
+            "initiator": [3300.0,900.0],
+            "ally": [250.0,400.0],
+            "enemy": [1500.0,700.0],
+            "enemy_dist": [1200.0,1400.0],
+            "enemy_angles": [45.0,135.0],
+            "enemy_height": [100.0,200.0],
+            "ally_dist": [1200.0,1400.0],
+            "ally_angles": [45.0,135.0],
+            "ally_height": [100.0,200.0],
+            "extra_ally_dist": [250.0,400.0]
+          }
+        },
+        {
+          "spawnPos": {
+            "ranks": [14,30],
+            "initiator": [3600.0,1000.0],
+            "ally": [250.0,400.0],
+            "enemy": [1750.0,750.0],
+            "enemy_dist": [1400.0,1600.0],
+            "enemy_angles": [45.0,135.0],
+            "enemy_height": [150.0,250.0],
+            "ally_dist": [1400.0,1600.0],
+            "ally_angles": [45.0,135.0],
+            "ally_height": [150.0,250.0],
+            "extra_ally_dist": [250.0,400.0]
+          }
+        },
+        {
+          "clearProgress": [
+            {
+              "count": 8
+            },
+            {
+              "tag": "attacker"
+            },
+            {
+              "tag": "fighter"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "killStreak": [
+        {
+          "type": "control_unit_event"
+        },
+        {
+          "maxCount": 1
+        },
+        {
+          "requiredKillsToGain": 3
+        },
+        {
+          "airKillsMult": 1
+        },
+        {
+          "groundKillsMult": 1
+        },
+        {
+          "airAiKillsMult": 1
+        },
+        {
+          "groundAiKillsMult": 1
+        },
+        {
+          "eventType": "bomber"
+        },
+        {
+          "tag": "attacker"
+        },
+        {
+          "canStartEvent": true
+        },
+        {
+          "canJoinEvent": false
+        },
+        {
+          "eventTimer": 60.0
+        },
+        {
+          "maxSimultaneousUnits": 1
+        },
+        {
+          "spawnPos": {
+            "ranks": [0,7],
+            "initiator": [2500.0,700.0],
+            "ally": [250.0,400.0],
+            "enemy": [1400.0,1000.0],
+            "enemy_dist": [1000.0,1200.0],
+            "enemy_angles": [45.0,135.0],
+            "enemy_height": [50.0,150.0],
+            "ally_dist": [1000.0,1200.0],
+            "ally_angles": [45.0,135.0],
+            "ally_height": [50.0,150.0],
+            "extra_ally_dist": [250.0,400.0]
+          }
+        },
+        {
+          "spawnPos": {
+            "ranks": [8,13],
+            "initiator": [2700.0,800.0],
+            "ally": [250.0,400.0],
+            "enemy": [1500.0,700.0],
+            "enemy_dist": [1200.0,1400.0],
+            "enemy_angles": [45.0,135.0],
+            "enemy_height": [100.0,200.0],
+            "ally_dist": [1200.0,1400.0],
+            "ally_angles": [45.0,135.0],
+            "ally_height": [100.0,200.0],
+            "extra_ally_dist": [250.0,400.0]
+          }
+        },
+        {
+          "spawnPos": {
+            "ranks": [14,30],
+            "initiator": [3000.0,800.0],
+            "ally": [250.0,400.0],
+            "enemy": [1750.0,750.0],
+            "enemy_dist": [1400.0,1600.0],
+            "enemy_angles": [45.0,135.0],
+            "enemy_height": [150.0,250.0],
+            "ally_dist": [1400.0,1600.0],
+            "ally_angles": [45.0,135.0],
+            "ally_height": [150.0,250.0],
+            "extra_ally_dist": [250.0,400.0]
+          }
+        },
+        {
+          "clearProgress": [
+            {
+              "count": 3
+            },
+            {
+              "tag": "bomber"
+            },
+            {
+              "tag": "fighter"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "killStreak": {
+        "type": "control_unit_event",
+        "maxCount": 1,
+        "requiredKillsToGain": 2,
+        "airKillsMult": 1,
+        "groundKillsMult": 1,
+        "airAiKillsMult": 1,
+        "groundAiKillsMult": 1,
+        "eventType": "bomber",
+        "tag": "fighter",
+        "canStartEvent": true,
+        "canJoinEvent": false,
+        "eventTimer": 60.0,
+        "maxSimultaneousUnits": 1,
+        "spawnPos": {
+          "ranks": [0,30],
+          "initiator": [2000.0,800.0],
+          "ally": [250.0,400.0],
+          "enemy": [1750.0,750.0],
+          "enemy_dist": [1200.0,1400.0],
+          "enemy_angles": [45.0,135.0],
+          "enemy_height": [150.0,250.0],
+          "ally_dist": [1200.0,1400.0],
+          "ally_angles": [45.0,135.0],
+          "ally_height": [150.0,250.0],
+          "extra_ally_dist": [250.0,400.0]
+        },
+        "clearProgress": [
+          {
+            "count": 2
+          },
+          {
+            "tag": "bomber"
+          },
+          {
+            "tag": "attacker"
+          }
+        ]
+      }
+    }
+  ],
+  "killStreaks_survival_event_aircraftOrHelicopter_2": [
+    {
+      "expClass": "exp_bomber"
+    },
+    {
+      "expClass": "exp_fighter"
+    },
+    {
+      "expClass": "exp_assault"
+    },
+    {
+      "expClass": "exp_tank"
+    },
+    {
+      "expClass": "exp_heavy_tank"
+    },
+    {
+      "expClass": "exp_tank_destroyer"
+    },
+    {
+      "expClass": "exp_SPAA"
+    },
+    {
+      "expClass": "exp_helicopter"
+    },
+    {
+      "countCombinedKillStreakEvents": 8
+    },
+    {
+      "timeDelayBetweenKillStreakEvent": 0.0
+    },
+    {
+      "bombFuseTimeForKillStreak": 0.0
+    },
+    {
+      "ranks": [22,30]
+    },
+    {
+      "weight": 1.0
+    },
+    {
+      "killStreak": {
+        "type": "artillery_attack",
+        "tag": "artillery",
+        "maxCount": 3,
+        "maxCountForLightTank": 1,
+        "maxCountForMediumTank": 1,
+        "requiredKillsToGain": 3,
+        "eventTimer": 0.5,
+        "extraSupplyTimer": 120.0,
+        "dominationScoreMult": 0,
+        "airKillsMult": 1,
+        "groundKillsMult": 1,
+        "airAiKillsMult": 1,
+        "groundAiKillsMult": 1
+      }
+    },
+    {
+      "killStreak": {
+        "type": "control_unit_event",
+        "maxCount": 1,
+        "requiredKillsToGain": 8,
+        "airKillsMult": 1,
+        "groundKillsMult": 1,
+        "airAiKillsMult": 1,
+        "groundAiKillsMult": 1,
+        "tag": "bomber",
+        "unitTag": "helicopter_atgm",
+        "canStartEvent": true,
+        "canJoinEvent": false,
+        "eventTimer": 90.0,
+        "maxSimultaneousUnits": 1,
+        "spawnPos": {
+          "ranks": [0,30],
+          "initiator": [3500.0,600.0],
+          "ally": [250.0,400.0],
+          "enemy": [1500.0,800.0],
+          "enemy_dist": [700.0,1000.0],
+          "enemy_angles": [30.0,135.0],
+          "enemy_height": [50.0,150.0],
+          "ally_dist": [700.0,1000.0],
+          "ally_angles": [30.0,135.0],
+          "ally_height": [50.0,150.0],
+          "extra_ally_dist": [250.0,400.0]
+        },
+        "clearProgress": [
+          {
+            "count": 8
+          },
+          {
+            "tag": "attacker"
+          },
+          {
+            "tag": "fighter"
+          }
+        ]
+      }
+    },
+    {
+      "killStreak": {
+        "type": "control_unit_event",
+        "maxCount": 1,
+        "requiredKillsToGain": 3,
+        "airKillsMult": 1,
+        "groundKillsMult": 1,
+        "airAiKillsMult": 1,
+        "groundAiKillsMult": 1,
+        "tag": "attacker",
+        "unitTag": "helicopter_rocket",
+        "canStartEvent": true,
+        "canJoinEvent": false,
+        "eventTimer": 90.0,
+        "maxSimultaneousUnits": 1,
+        "spawnPos": {
+          "ranks": [0,30],
+          "initiator": [2500.0,500.0],
+          "ally": [250.0,400.0],
+          "enemy": [1500.0,800.0],
+          "enemy_dist": [700.0,1000.0],
+          "enemy_angles": [30.0,135.0],
+          "enemy_height": [50.0,150.0],
+          "ally_dist": [700.0,1000.0],
+          "ally_angles": [30.0,135.0],
+          "ally_height": [50.0,150.0],
+          "extra_ally_dist": [250.0,400.0]
+        },
+        "clearProgress": [
+          {
+            "count": 3
+          },
+          {
+            "tag": "bomber"
+          },
+          {
+            "tag": "fighter"
+          }
+        ]
+      }
+    },
+    {
+      "killStreak": {
+        "type": "control_unit_event",
+        "maxCount": 1,
+        "requiredKillsToGain": 2,
+        "airKillsMult": 1,
+        "groundKillsMult": 1,
+        "airAiKillsMult": 1,
+        "groundAiKillsMult": 1,
+        "tag": "fighter",
+        "canStartEvent": true,
+        "canJoinEvent": false,
+        "eventTimer": 60.0,
+        "maxSimultaneousUnits": 1,
+        "spawnPos": {
+          "ranks": [0,30],
+          "initiator": [2000.0,800.0],
+          "ally": [250.0,400.0],
+          "enemy": [1750.0,750.0],
+          "enemy_dist": [1200.0,1400.0],
+          "enemy_angles": [45.0,135.0],
+          "enemy_height": [150.0,250.0],
+          "ally_dist": [1200.0,1400.0],
+          "ally_angles": [45.0,135.0],
+          "ally_height": [150.0,250.0],
+          "extra_ally_dist": [250.0,400.0]
+        },
+        "clearProgress": [
+          {
+            "count": 2
+          },
+          {
+            "tag": "bomber"
+          },
+          {
+            "tag": "attacker"
+          }
+        ]
+      }
+    }
+  ],
+  "farAwayParams": {
+    "indicatorScaleScreenHeight": 1080.0,
+    "pixelSize": 1080.0,
+    "sizesFar": [0.34,0.462],
+    "sizesNear": [15.0,18.0],
+    "closeSphereRadius": 1800.0,
+    "skySphereRadius": 6144.0,
+    "skySphereRadiusRenderMultiplier": 0.6,
+    "projectedRadiusMinThreshold": 1.0,
+    "projectedRadiusMaxThreshold": 4.0,
+    "radiusFadeSpeed": 4.0,
+    "alphaFadeSpeed": 1.0,
+    "isFarAwayTanksEnabled": true,
+    "minSilhouetteElemSize": 4,
+    "maxSilhouetteElemSize": 12,
+    "silhouetteFadeDist": 200.0,
+    "silhouetteFadeSize": 2.0
+  },
+  "predictionVolumeParams": {
+    "aircraftPVsEnabledAtDistance": 1800.0,
+    "aircraftPVsEnabledAtArrivalTime": 10.0,
+    "maxAircraftsVisibilityDistance": 35000.0,
+    "aircraftsAvailabilityBeltSize": 200.0
+  },
+  "damageModel": {
+    "ricochetAngle": 60.0,
+    "ricochetCosinePower": 2.0
+  },
+  "instructor": {
+    "pitchPropCoeffBase": 0.12,
+    "pitchDerrCoeffBase": 5.0
+  },
+  "mouseAim": {
+    "mouseAimDisableControlTreshold": 0.8,
+    "disableMouseAimTime": 0.05,
+    "enableMouseAimTime": 0.1,
+    "angVelFactorMin": 1.42,
+    "rollRateToAngVelFactor": 0.497,
+    "localDirYawPitchRotYZMax0": 0.125,
+    "autoBankLevelMultToLocalDirYawPitchRotYZMax": 0.3,
+    "rollAndPullUpWishDirYMin": -0.7,
+    "rollandPullUpWishDirMin": 0.3,
+    "allowedRollRateCoeff": [0.17,0.3,0.4,1.5],
+    "rollTimeMult": 0.44,
+    "rollPidKpMult": 1.25,
+    "dirXZFactorPitch0": [0.15,2.0,0.35,0.06],
+    "dirXZFactorPitchMin": 0.02,
+    "dirXZFactorYaw0": [0.15,2.0,0.35,0.06],
+    "dirXZFactorYawMin": 0.02,
+    "rollRateLimToDirXZFactor": [0.7,1000000.0],
+    "angDistToRadialAngleAdd": [0.12,0.0,0.03,1.0],
+    "rollRateToRadialAngleAdd": 0.15,
+    "radialAngleAddMax": 0.3
+  },
+  "mouseJoystick": {
+    "minMouseJoystickSensitivity": 0.5,
+    "maxMouseJoystickSensitivity": 3.5,
+    "maxMouseJoystickDeadZone": 0.2,
+    "maxMouseJoystickRudder": 1.0,
+    "minMouseJoystickScreenSize": 0.2,
+    "maxMouseJoystickScreenSize": 1.0
+  },
+  "weaponsWarning": {
+    "weaponsWarningMinimumPrimary": 5,
+    "weaponsWarningMinimumSecondary": 5
+  },
+  "tacticalMap": [
+    {
+      "mapInflationTotal": 2500.0
+    },
+    {
+      "mapInflationHero": 5000.0
+    },
+    {
+      "mapInflationTankTotal": 100.0
+    },
+    {
+      "mapInflationTankHero": 200.0
+    },
+    {
+      "blinkBlackOutTime": 0.5
+    },
+    {
+      "blinkDawnTime": 0.5
+    },
+    {
+      "blinkPauseTime": 0.5
+    },
+    {
+      "messageRoyalInterval": 1.0
+    },
+    {
+      "alwaysBlink": true
+    },
+    {
+      "areaBlink": {
+        "eventFreqSec": 30.0,
+        "eventLengthSec": 6.9
+      }
+    },
+    {
+      "areaBlink": {
+        "leftTimeSec": 15.0,
+        "eventFreqSec": 1.0,
+        "eventLengthSec": 15.0
+      }
+    }
+  ],
+  "common": {
+    "gunReloadCooldownTime": 30.0,
+    "cannonReloadCooldownTime": 60.0,
+    "rocketReloadCooldownTime": 80.0,
+    "bombReloadCooldownTime": 80.0,
+    "torpedoReloadCooldownTime": 60.0,
+    "gunnersReloadCooldownTime": 60.0
+  },
+  "reloadCooldownTimeByCaliber": [
+    {
+      "time": [0.0075,15.0]
+    },
+    {
+      "time": [0.00762,15.0]
+    },
+    {
+      "time": [0.0077,15.0]
+    },
+    {
+      "time": [0.00792,15.0]
+    },
+    {
+      "time": [0.008,15.0]
+    },
+    {
+      "time": [0.0127,20.0]
+    },
+    {
+      "time": [0.013,20.0]
+    },
+    {
+      "time": [0.0132,20.0]
+    },
+    {
+      "time": [0.0145,20.0]
+    },
+    {
+      "time": [0.015,40.0]
+    },
+    {
+      "time": [0.02,40.0]
+    },
+    {
+      "time": [0.023,40.0]
+    },
+    {
+      "time": [0.03,60.0]
+    },
+    {
+      "time": [0.037,60.0]
+    },
+    {
+      "time": [0.04,60.0]
+    },
+    {
+      "time": [0.045,60.0]
+    },
+    {
+      "time": [0.047,60.0]
+    },
+    {
+      "time": [0.05,60.0]
+    },
+    {
+      "time": [0.057,60.0]
+    },
+    {
+      "time": [0.075,60.0]
+    },
+    {
+      "time": [0.102,60.0]
+    }
+  ],
+  "rearmBulletTimeByCaliber": [
+    {
+      "time": [0.0075,0.1]
+    },
+    {
+      "time": [0.00762,0.1]
+    },
+    {
+      "time": [0.0077,0.1]
+    },
+    {
+      "time": [0.00792,0.1]
+    },
+    {
+      "time": [0.008,0.1]
+    },
+    {
+      "time": [0.0127,0.1]
+    },
+    {
+      "time": [0.013,0.1]
+    },
+    {
+      "time": [0.0132,0.1]
+    },
+    {
+      "time": [0.0145,0.1]
+    },
+    {
+      "time": [0.015,0.1]
+    },
+    {
+      "time": [0.02,0.1]
+    },
+    {
+      "time": [0.023,0.2]
+    },
+    {
+      "time": [0.03,0.2]
+    },
+    {
+      "time": [0.035,0.2]
+    },
+    {
+      "time": [0.037,0.6]
+    },
+    {
+      "time": [0.04,0.8]
+    },
+    {
+      "time": [0.045,1.6]
+    },
+    {
+      "time": [0.047,1.65]
+    },
+    {
+      "time": [0.057,3.0]
+    },
+    {
+      "time": [0.06,3.0]
+    },
+    {
+      "time": [0.07,5.0]
+    },
+    {
+      "time": [0.073,5.0]
+    },
+    {
+      "time": [0.075,5.0]
+    },
+    {
+      "time": [0.0762,5.0]
+    },
+    {
+      "time": [0.082,8.0]
+    },
+    {
+      "time": [0.0834,5.0]
+    },
+    {
+      "time": [0.085,5.0]
+    },
+    {
+      "time": [0.088,5.0]
+    },
+    {
+      "time": [0.09,6.0]
+    },
+    {
+      "time": [0.094,6.0]
+    },
+    {
+      "time": [0.1,6.0]
+    },
+    {
+      "time": [0.105,6.0]
+    },
+    {
+      "time": [0.107,6.0]
+    },
+    {
+      "time": [0.114,10.0]
+    },
+    {
+      "time": [0.115,6.0]
+    },
+    {
+      "time": [0.12,6.0]
+    },
+    {
+      "time": [0.122,6.0]
+    },
+    {
+      "time": [0.125,6.0]
+    },
+    {
+      "time": [0.13,6.0]
+    },
+    {
+      "time": [0.132,12.0]
+    },
+    {
+      "time": [0.128,7.0]
+    },
+    {
+      "time": [0.142,7.0]
+    },
+    {
+      "time": [0.15,7.0]
+    },
+    {
+      "time": [0.152,7.0]
+    },
+    {
+      "time": [0.155,7.0]
+    },
+    {
+      "time": [0.158,12.0]
+    },
+    {
+      "time": [0.163,8.0]
+    },
+    {
+      "time": [0.164,8.0]
+    },
+    {
+      "time": [0.18,10.0]
+    },
+    {
+      "time": [0.425,15.0]
+    }
+  ],
+  "typeFighter": {
+    "rocketReloadCooldownTime": 200.0,
+    "bombReloadCooldownTime": 400.0,
+    "torpedoReloadCooldownTime": 400.0
+  },
+  "common_3": {
+    "gunReloadCooldownTime": 30.0,
+    "cannonReloadCooldownTime": 60.0,
+    "rocketReloadCooldownTime": 120.0,
+    "bombReloadCooldownTime": 120.0,
+    "torpedoReloadCooldownTime": 100.0,
+    "gunnersReloadCooldownTime": 60.0
+  },
+  "sensorsConstants": {
+    "engineInfraRedBrightnessAspectMultFront": 0.0006,
+    "engineInfraRedBrightnessAspectMultSide": 0.06,
+    "engineInfraRedBrightnessAspectMultRear": 1.0,
+    "engineInfraRedBrightnessSourcesMask": 1,
+    "airframeInfraRedBrightnessMult": 200.0,
+    "airframeInfraRedBrightnessSourcesMask": 2,
+    "sunInfraRedBrightnessMult": 0.0001,
+    "sunInfraRedBrightnessSourcesMask": 3,
+    "opticalTreesTransparencyTreshold": 0.02,
+    "laserDesignatorTreesTransparencyTreshold": 0.25,
+    "radarSelectedTargetLockFromOptics": true,
+    "radarCrossSectionAspectMultFrontFront": 1.0,
+    "radarCrossSectionAspectMultFrontSide": 1.2,
+    "radarCrossSectionAspectMultFrontRear": 1.0,
+    "propellerRadarCrossSectionMult": 1.0,
+    "airframeRadarCrossSectionSourcesMask": 1,
+    "propellersRadarCrossSectionSourcesMask": 2,
+    "activeSonarReflectionMult": 40000000000.0,
+    "radarAntipodEffect": [0.0,1.0,100.0,0.0],
+    "radarDetectedTargetActivityTimeMult": 2.0,
+    "radarDetectedTargetSelectionRelSpeedMin": 20.0,
+    "radarTargetsMaxTime": 2.0,
+    "radarFrequencyBandCrossSection0": {
+      "band10": true,
+      "band11": true,
+      "band12": true,
+      "crossSectionMult": 1.0,
+      "backScattering0": [3.0,-28.0],
+      "backScattering1": [10.0,-12.0],
+      "backScattering2": [20.0,-11.0],
+      "backScattering3": [50.0,-8.0],
+      "backScattering4": [70.0,-4.0],
+      "backScattering5": [90.0,-1.7],
+      "treesNonTransparencyMult": 0.001
+    },
+    "radarFrequencyBandCrossSection1": {
+      "band7": true,
+      "band8": true,
+      "band9": true,
+      "crossSectionMult": 1.0,
+      "backScattering0": [3.0,-35.0],
+      "backScattering1": [10.0,-16.0],
+      "backScattering2": [20.0,-15.0],
+      "backScattering3": [50.0,-12.0],
+      "backScattering4": [70.0,-7.0],
+      "backScattering5": [90.0,-2.0],
+      "treesNonTransparencyMult": 0.004
+    },
+    "radarFrequencyBandCrossSection2": {
+      "band6": true,
+      "band5": true,
+      "band4": true,
+      "crossSectionMult": 1.0,
+      "backScattering0": [3.0,-35.0],
+      "backScattering1": [10.0,-20.0],
+      "backScattering2": [20.0,-19.0],
+      "backScattering3": [50.0,-16.0],
+      "backScattering4": [70.0,-10.0],
+      "backScattering5": [90.0,-2.0],
+      "treesNonTransparencyMult": 0.008
+    },
+    "radarFrequencyBandCrossSection3": {
+      "band3": true,
+      "crossSectionMult": 1.0,
+      "backScattering0": [3.0,-40.0],
+      "backScattering1": [10.0,-28.0],
+      "backScattering2": [20.0,-25.0],
+      "backScattering3": [50.0,-20.0],
+      "backScattering4": [70.0,-15.0],
+      "backScattering5": [90.0,-3.0],
+      "treesNonTransparencyMult": 0.016
+    },
+    "radarFrequencyBandCrossSection4": {
+      "band0": true,
+      "band1": true,
+      "band2": true,
+      "crossSectionMult": 1.0,
+      "backScattering0": [3.0,-55.0],
+      "backScattering1": [10.0,-50.0],
+      "backScattering2": [20.0,-48.0],
+      "backScattering3": [50.0,-42.0],
+      "backScattering4": [70.0,-25.0],
+      "backScattering5": [90.0,-5.0],
+      "treesNonTransparencyMult": 0.25
+    }
+  },
+  "fmConstants": {
+    "oilLeakSpeed": 0.0024,
+    "oilLeakTime": [420.0,210.0,20.0],
+    "oilEmptyDamageSpeed": 0.0042,
+    "waterLeakSpeed": 0.0048,
+    "waterLeakTime": [210.0,105.0,15.0],
+    "waterEmptyDamageSpeed": 0.0111,
+    "leakIntensityByTankCapacity": [100.0,1000.0,0.012,0.12],
+    "alphaAileronMin": 0.1,
+    "alphaRudderMin": 0.1,
+    "alphaElevatorMin": 0.2,
+    "allowStrongControlsRestrictions": true,
+    "ufoHoverAlt": 15.0,
+    "ufoHoverOmegaKp": 2.0,
+    "ufoHoverOmegaKd": 0.0,
+    "ufoHoverClimbKp": 30.0,
+    "ufoHoverClimbKd": 10.0,
+    "surfaceFriction": 0.8,
+    "surfaceBounce": 0.05,
+    "surfaceErpMult": 0.04,
+    "moveMinSq": 0.0001,
+    "rotMinSq": 0.0,
+    "rollingFriction": 0.02,
+    "selfSteeringWheelSideFrictionMult": 2.0,
+    "explosionImpulseVel": 15.0,
+    "staticObjectsRayCastLength": -1.0,
+    "treeImpulseTreshold": 80000.0,
+    "engineDegradationSpeed1": 0.0005,
+    "engineDegradationSpeed2": 0.0035,
+    "engineDegradationSpeed3": 0.025,
+    "oilLeakTime1": 420.0,
+    "oilLeakTime2": 210.0,
+    "oilLeakTime3": 20.0,
+    "waterLeakTime1": 210.0,
+    "waterLeakTime2": 105.0,
+    "waterLeakTime3": 15.0,
+    "shaftDegradationSpeed1": 0.0005,
+    "shaftDegradationSpeed2": 0.0035,
+    "shaftDegradationSpeed3": 0.025,
+    "normalizedFrictionAccelMax": true,
+    "shaftDamageFrictionAccelMax": 0.002,
+    "shaftCutFrictionAccelMax": 0.0003,
+    "transmissionDamageFrictionAccelMax": 0.076,
+    "transmissionCutFrictionAccelMax": 0.02,
+    "trasmissionOilMinSafeLevel": 0.1,
+    "forceTransmissionDamageLevelAfterShaftCut": 3,
+    "forceTransmissionDamageLevelAfterPropeller": 3,
+    "damagedPropClMult": 0.4,
+    "damagedPropCdMult": 3.0,
+    "damagedSurfaceCxMultSquareRatioMin": 0.3,
+    "damagedSurfaceCxMultSquareRatioMax": 0.5,
+    "damagedSurfaceCxMultMax": 2.3,
+    "propellerScreenEffectMultiRayCast": false,
+    "distToSurfaceTimeConst": 0.2,
+    "mainRotorLowSpeedAlarmPercent": 0.9,
+    "vortexRingAlarmPercent": 0.7,
+    "wingOverloadToBreakProbabilityMult": 6.0,
+    "wingOverspeedToBreakProbabilityMult": 0.03,
+    "controlFinsDestructionSpeedDiff": 10.0,
+    "controlOverspeedToBreakProbabilityMult": 0.05,
+    "tailDestructionSpeedDiff": 40.0,
+    "tailOverspeedToBreakProbabilityMult": 0.05,
+    "horsePowersToInfraRedBrightness": 0.42,
+    "thrustKgsToInfraRedBrightness": 1.0,
+    "afterburnerThrustKgsToInfraRedBrightness": 4.5
+  },
+  "bombingDefaults": {
+    "bomberviewBomber": {
+      "maxDelay": 2.0,
+      "canBeDropped": {
+        "altitude": [-100.0,20000.0],
+        "tangage": [-50.0,50.0],
+        "roll": 60.0
+      },
+      "maxDispersionAt": {
+        "altitude": [20.0,10000.0],
+        "tangage": [-45.0,45.0],
+        "roll": 50.0
+      },
+      "noDispersionAt": {
+        "altitude": [20.0,6000.0],
+        "tangage": [-10.0,10.0],
+        "roll": 18.0
+      },
+      "sightDisappears": {
+        "altitude": [40.0,10000.0],
+        "tangage": [-45.0,45.0],
+        "roll": 50.0
+      },
+      "sightStartsFading": {
+        "altitude": [40.0,6000.0],
+        "tangage": [-18.0,18.0],
+        "roll": 25.0
+      },
+      "sightEnabled": {
+        "altitude": [20.0,15000.0],
+        "tangage": [-70.0,70.0],
+        "roll": 60.0
+      },
+      "maxDelayAt": {
+        "altitude": [-20000.0,20000.0],
+        "tangage": [-45.0,45.0],
+        "roll": 45.0
+      },
+      "noDelayAt": {
+        "altitude": [-19999.0,19999.0],
+        "tangage": [-10.0,10.0],
+        "roll": 10.0
+      },
+      "external": {
+        "maxDelay": 2.0,
+        "canBeDropped": {
+          "altitude": [-100.0,10000.0],
+          "tangage": [-270.0,90.0],
+          "roll": 90.0
+        },
+        "maxDispersionAt": {
+          "altitude": [20.0,10000.0],
+          "tangage": [-45.0,45.0],
+          "roll": 50.0
+        },
+        "noDispersionAt": {
+          "altitude": [20.0,6000.0],
+          "tangage": [-10.0,10.0],
+          "roll": 18.0
+        },
+        "sightDisappears": {
+          "altitude": [40.0,10000.0],
+          "tangage": [-45.0,45.0],
+          "roll": 50.0
+        },
+        "sightStartsFading": {
+          "altitude": [40.0,6000.0],
+          "tangage": [-18.0,18.0],
+          "roll": 25.0
+        },
+        "sightEnabled": {
+          "altitude": [20.0,15000.0],
+          "tangage": [-70.0,70.0],
+          "roll": 60.0
+        },
+        "maxDelayAt": {
+          "altitude": [-20000.0,20000.0],
+          "tangage": [-45.0,45.0],
+          "roll": 45.0
+        },
+        "noDelayAt": {
+          "altitude": [-19999.0,19999.0],
+          "tangage": [-10.0,10.0],
+          "roll": 10.0
+        }
+      }
+    },
+    "noBomberviewBomber": {
+      "maxDelay": 0.0,
+      "canBeDropped": {
+        "altitude": [-100.0,20000.0],
+        "tangage": [-90.0,90.0],
+        "roll": 90.0
+      },
+      "maxDispersionAt": {
+        "altitude": [20.0,1200.0],
+        "tangage": [-120.0,-5.0],
+        "roll": 75.0
+      },
+      "noDispersionAt": {
+        "altitude": [40.0,1000.0],
+        "tangage": [-105.0,-25.0],
+        "roll": 55.0
+      },
+      "sightDisappears": {
+        "altitude": [20.0,2900.0],
+        "tangage": [-120.0,-5.0],
+        "roll": 80.0
+      },
+      "sightStartsFading": {
+        "altitude": [40.0,1100.0],
+        "tangage": [-105.0,-25.0],
+        "roll": 60.0
+      },
+      "sightEnabled": {
+        "altitude": [20.0,15000.0],
+        "tangage": [-120.0,-10.0],
+        "roll": 180.0
+      },
+      "maxDelayAt": {
+        "altitude": [-20000.0,20000.0],
+        "tangage": [-180.0,180.0],
+        "roll": 180.0
+      },
+      "noDelayAt": {
+        "altitude": [-19999.0,19999.0],
+        "tangage": [-179.0,179.0],
+        "roll": 179.0
+      }
+    },
+    "external": {
+      "maxDelay": 2.0,
+      "canBeDropped": {
+        "altitude": [-100.0,20000.0],
+        "tangage": [-90.0,90.0],
+        "roll": 90.0
+      },
+      "maxDispersionAt": {
+        "altitude": [20.0,10000.0],
+        "tangage": [-45.0,45.0],
+        "roll": 50.0
+      },
+      "noDispersionAt": {
+        "altitude": [20.0,6000.0],
+        "tangage": [-10.0,10.0],
+        "roll": 18.0
+      },
+      "sightDisappears": {
+        "altitude": [40.0,10000.0],
+        "tangage": [-45.0,45.0],
+        "roll": 50.0
+      },
+      "sightStartsFading": {
+        "altitude": [40.0,6000.0],
+        "tangage": [-18.0,18.0],
+        "roll": 25.0
+      },
+      "sightEnabled": {
+        "altitude": [20.0,15000.0],
+        "tangage": [-70.0,70.0],
+        "roll": 60.0
+      },
+      "maxDelayAt": {
+        "altitude": [-20000.0,20000.0],
+        "tangage": [-45.0,45.0],
+        "roll": 45.0
+      },
+      "noDelayAt": {
+        "altitude": [-19999.0,19999.0],
+        "tangage": [-10.0,10.0],
+        "roll": 10.0
+      }
+    }
+  },
+  "bombingDefaults_3": {
+    "bomberviewBomber": {
+      "maxDelay": 2.0,
+      "canBeDropped": {
+        "altitude": [-100.0,20000.0],
+        "tangage": [-50.0,50.0],
+        "roll": 60.0
+      },
+      "maxDispersionAt": {
+        "altitude": [20.0,10000.0],
+        "tangage": [-45.0,45.0],
+        "roll": 50.0
+      },
+      "noDispersionAt": {
+        "altitude": [20.0,6000.0],
+        "tangage": [-10.0,10.0],
+        "roll": 18.0
+      },
+      "sightDisappears": {
+        "altitude": [40.0,10000.0],
+        "tangage": [-45.0,45.0],
+        "roll": 50.0
+      },
+      "sightStartsFading": {
+        "altitude": [40.0,6000.0],
+        "tangage": [-18.0,18.0],
+        "roll": 25.0
+      },
+      "sightEnabled": {
+        "altitude": [20.0,15000.0],
+        "tangage": [-70.0,70.0],
+        "roll": 60.0
+      },
+      "maxDelayAt": {
+        "altitude": [-20000.0,20000.0],
+        "tangage": [-45.0,45.0],
+        "roll": 45.0
+      },
+      "noDelayAt": {
+        "altitude": [-19999.0,19999.0],
+        "tangage": [-10.0,10.0],
+        "roll": 10.0
+      },
+      "external": {
+        "maxDelay": 2.0,
+        "canBeDropped": {
+          "altitude": [-100.0,10000.0],
+          "tangage": [-90.0,90.0],
+          "roll": 90.0
+        },
+        "maxDispersionAt": {
+          "altitude": [20.0,10000.0],
+          "tangage": [-45.0,45.0],
+          "roll": 50.0
+        },
+        "noDispersionAt": {
+          "altitude": [20.0,6000.0],
+          "tangage": [-10.0,10.0],
+          "roll": 18.0
+        },
+        "sightDisappears": {
+          "altitude": [40.0,10000.0],
+          "tangage": [-45.0,45.0],
+          "roll": 50.0
+        },
+        "sightStartsFading": {
+          "altitude": [40.0,6000.0],
+          "tangage": [-18.0,18.0],
+          "roll": 25.0
+        },
+        "sightEnabled": {
+          "altitude": [20.0,15000.0],
+          "tangage": [-70.0,70.0],
+          "roll": 60.0
+        },
+        "maxDelayAt": {
+          "altitude": [-20000.0,20000.0],
+          "tangage": [-45.0,45.0],
+          "roll": 45.0
+        },
+        "noDelayAt": {
+          "altitude": [-19999.0,19999.0],
+          "tangage": [-10.0,10.0],
+          "roll": 10.0
+        }
+      }
+    },
+    "noBomberviewBomber": {
+      "maxDelay": 0.0,
+      "canBeDropped": {
+        "altitude": [-100.0,20000.0],
+        "tangage": [-90.0,90.0],
+        "roll": 90.0
+      },
+      "maxDispersionAt": {
+        "altitude": [20.0,1200.0],
+        "tangage": [-120.0,-5.0],
+        "roll": 75.0
+      },
+      "noDispersionAt": {
+        "altitude": [40.0,1000.0],
+        "tangage": [-105.0,-25.0],
+        "roll": 55.0
+      },
+      "sightDisappears": {
+        "altitude": [20.0,2900.0],
+        "tangage": [-120.0,-5.0],
+        "roll": 80.0
+      },
+      "sightStartsFading": {
+        "altitude": [40.0,1100.0],
+        "tangage": [-105.0,-25.0],
+        "roll": 60.0
+      },
+      "sightEnabled": {
+        "altitude": [20.0,15000.0],
+        "tangage": [-120.0,-10.0],
+        "roll": 180.0
+      },
+      "maxDelayAt": {
+        "altitude": [-20000.0,20000.0],
+        "tangage": [-180.0,180.0],
+        "roll": 180.0
+      },
+      "noDelayAt": {
+        "altitude": [-19999.0,19999.0],
+        "tangage": [-179.0,179.0],
+        "roll": 179.0
+      }
+    }
+  },
+  "attachables": [
+    {
+      "allowNode": "composite_armor_hull_01_dm"
+    },
+    {
+      "allowNode": "composite_armor_hull_02_dm"
+    },
+    {
+      "allowNode": "composite_armor_hull_03_dm"
+    },
+    {
+      "allowNode": "composite_armor_hull_04_dm"
+    },
+    {
+      "allowNode": "composite_armor_turret_01_dm"
+    },
+    {
+      "allowNode": "composite_armor_turret_02_dm"
+    },
+    {
+      "allowNode": "composite_armor_turret_03_dm"
+    },
+    {
+      "allowNode": "composite_armor_turret_04_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_01_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_02_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_03_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_04_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_05_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_06_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_07_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_08_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_09_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_10_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_11_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_12_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_13_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_14_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_15_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_16_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_17_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_18_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_19_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_20_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_21_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_22_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_23_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_24_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_25_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_26_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_27_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_28_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_29_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_30_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_31_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_32_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_33_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_34_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_35_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_36_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_37_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_38_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_39_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_40_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_41_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_42_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_43_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_44_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_45_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_46_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_47_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_48_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_49_dm"
+    },
+    {
+      "allowNode": "ex_era_hull_50_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_01_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_02_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_03_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_04_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_05_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_06_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_07_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_08_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_09_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_10_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_11_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_12_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_13_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_14_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_15_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_16_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_17_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_18_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_19_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_20_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_21_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_22_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_23_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_24_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_25_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_26_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_27_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_28_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_29_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_30_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_31_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_32_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_33_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_34_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_35_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_36_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_37_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_38_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_39_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_40_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_41_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_42_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_43_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_44_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_45_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_46_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_47_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_48_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_49_dm"
+    },
+    {
+      "allowNode": "ex_era_turret_50_dm"
+    },
+    {
+      "allowNode": "superstructure_front_dm"
+    },
+    {
+      "allowNode": "superstructure_bottom_dm"
+    },
+    {
+      "allowNode": "superstructure_back_dm"
+    },
+    {
+      "allowNode": "superstructure_side_dm"
+    },
+    {
+      "allowNode": "superstructure_top_dm"
+    },
+    {
+      "allowNode": "body_front_dm"
+    },
+    {
+      "allowNode": "body_back_dm"
+    },
+    {
+      "allowNode": "body_side_dm"
+    },
+    {
+      "allowNode": "body_top_dm"
+    },
+    {
+      "allowNode": "body_shield_dm"
+    },
+    {
+      "allowNode": "body_dm"
+    },
+    {
+      "allowNode": "body_bottom_dm"
+    },
+    {
+      "allowNode": "turret_bottom_dm"
+    },
+    {
+      "allowNode": "turret_front_dm"
+    },
+    {
+      "allowNode": "turret_back_dm"
+    },
+    {
+      "allowNode": "turret_side_dm"
+    },
+    {
+      "allowNode": "turret_top_dm"
+    },
+    {
+      "allowNode": "body_front_hatch_dm"
+    },
+    {
+      "allowNode": "gun_mask_shield_dm"
+    },
+    {
+      "allowNode": "gun_mask_01_dm"
+    },
+    {
+      "allowNode": "gun_mask_02_dm"
+    },
+    {
+      "allowNode": "gun_mask_03_dm"
+    },
+    {
+      "allowNode": "gun_mask_04_dm"
+    },
+    {
+      "allowNode": "gun_mask_05_dm"
+    },
+    {
+      "allowNode": "gun_mask_dm"
+    },
+    {
+      "allowNode": "turret_commander_dm"
+    },
+    {
+      "allowNode": "gun_barrel_armor_dm"
+    },
+    {
+      "allowNode": "turret_05_front_dm"
+    },
+    {
+      "allowNode": "turret_05_back_dm"
+    },
+    {
+      "allowNode": "turret_05_side_dm"
+    },
+    {
+      "allowNode": "turret_05_top_dm"
+    },
+    {
+      "allowNode": "turret_05_bottom_dm"
+    },
+    {
+      "allowNode": "turret_04_front_dm"
+    },
+    {
+      "allowNode": "turret_07_front_dm"
+    },
+    {
+      "allowNode": "turret_04_back_dm"
+    },
+    {
+      "allowNode": "turret_04_side_dm"
+    },
+    {
+      "allowNode": "turret_04_top_dm"
+    },
+    {
+      "allowNode": "turret_03_front_dm"
+    },
+    {
+      "allowNode": "turret_03_back_dm"
+    },
+    {
+      "allowNode": "turret_03_side_dm"
+    },
+    {
+      "allowNode": "turret_03_top_dm"
+    },
+    {
+      "allowNode": "turret_02_front_dm"
+    },
+    {
+      "allowNode": "turret_02_back_dm"
+    },
+    {
+      "allowNode": "turret_02_side_dm"
+    },
+    {
+      "allowNode": "turret_02_top_dm"
+    },
+    {
+      "allowNode": "turret_01_front_dm"
+    },
+    {
+      "allowNode": "turret_01_back_dm"
+    },
+    {
+      "allowNode": "turret_01_side_dm"
+    },
+    {
+      "allowNode": "turret_01_top_dm"
+    },
+    {
+      "allowNode": "turret_01_bottom_dm"
+    },
+    {
+      "allowNode": "turret_02_bottom_dm"
+    },
+    {
+      "allowNode": "turret_03_bottom_dm"
+    },
+    {
+      "allowNode": "turret_04_bottom_dm"
+    },
+    {
+      "allowNode": "turret_06_front_dm"
+    },
+    {
+      "allowNode": "turret_06_bottom_dm"
+    },
+    {
+      "allowNode": "turret_06_back_dm"
+    },
+    {
+      "allowNode": "turret_06_side_dm"
+    },
+    {
+      "allowNode": "turret_06_top_dm"
+    },
+    {
+      "allowNode": "turret_09_top_dm"
+    },
+    {
+      "allowNode": "ex_decor_l_01_dm"
+    },
+    {
+      "allowNode": "ex_decor_l_02_dm"
+    },
+    {
+      "allowNode": "ex_decor_l_03_dm"
+    },
+    {
+      "allowNode": "ex_decor_l_04_dm"
+    },
+    {
+      "allowNode": "ex_decor_l_05_dm"
+    },
+    {
+      "allowNode": "ex_decor_r_01_dm"
+    },
+    {
+      "allowNode": "ex_decor_r_02_dm"
+    },
+    {
+      "allowNode": "ex_decor_r_03_dm"
+    },
+    {
+      "allowNode": "ex_decor_r_04_dm"
+    },
+    {
+      "allowNode": "ex_decor_r_05_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_l_01_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_l_02_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_l_03_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_l_04_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_l_05_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_l_06_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_r_01_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_r_02_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_r_03_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_r_04_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_r_05_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_r_06_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_01_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_02_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_03_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_04_dm"
+    },
+    {
+      "allowNode": "ex_armor_body_05_dm"
+    },
+    {
+      "allowNode": "ex_armor_03_dm"
+    },
+    {
+      "allowNode": "ex_armor_04_dm"
+    },
+    {
+      "allowNode": "ex_armor_05_dm"
+    },
+    {
+      "allowNode": "ex_armor_06_dm"
+    },
+    {
+      "allowNode": "ex_armor_07_dm"
+    },
+    {
+      "allowNode": "ex_armor_08_dm"
+    },
+    {
+      "allowNode": "ex_armor_r_01_dm"
+    },
+    {
+      "allowNode": "ex_armor_r_02_dm"
+    },
+    {
+      "allowNode": "ex_armor_r_03_dm"
+    },
+    {
+      "allowNode": "ex_armor_r_04_dm"
+    },
+    {
+      "allowNode": "ex_armor_r_05_dm"
+    },
+    {
+      "allowNode": "ex_armor_r_06_dm"
+    },
+    {
+      "allowNode": "ex_armor_r_07_dm"
+    },
+    {
+      "allowNode": "ex_armor_r_08_dm"
+    },
+    {
+      "allowNode": "ex_armor_r_09_dm"
+    },
+    {
+      "allowNode": "ex_armor_r_10_dm"
+    },
+    {
+      "allowNode": "ex_armor_l_01_dm"
+    },
+    {
+      "allowNode": "ex_armor_l_02_dm"
+    },
+    {
+      "allowNode": "ex_armor_l_03_dm"
+    },
+    {
+      "allowNode": "ex_armor_l_04_dm"
+    },
+    {
+      "allowNode": "ex_armor_l_05_dm"
+    },
+    {
+      "allowNode": "ex_armor_l_06_dm"
+    },
+    {
+      "allowNode": "ex_armor_l_07_dm"
+    },
+    {
+      "allowNode": "ex_armor_l_08_dm"
+    },
+    {
+      "allowNode": "ex_armor_l_09_dm"
+    },
+    {
+      "allowNode": "ex_armor_l_10_dm"
+    }
+  ],
+  "torpedoCourseCorrection": {
+    "courseSmoothness": 16.0,
+    "angularSpeed": 0.3,
+    "accelTangent": 30.0,
+    "ruddersViscosity": 0.0
+  },
+  "pickUpPresets": {
+    "allInOne": {
+      "fxName": "repair_ground",
+      "fxScale": 0.3,
+      "rewards": {
+        "medical_kit_expendable": 1,
+        "manual_extinguisher_expendable": 1,
+        "artillery": 1,
+        "ammo_percent": 100,
+        "repair_percent": 100
+      }
+    },
+    "tankPvE": {
+      "fxName": "repair_ground",
+      "fxScale": 0.6,
+      "rewards": {
+        "medical_kit_expendable": 1,
+        "manual_extinguisher_expendable": 1,
+        "ammo_percent": 100,
+        "repair_percent": 100
+      }
+    }
+  },
+  "markUnitPresets": {
+    "ship_buoys": {
+      "unitsByPerimeter": true,
+      "distanceBetweenPerimeterUnit": 50.0,
+      "unitInCenter": true,
+      "unitClass": "buoy_a",
+      "onlyOnWater": true
+    },
+    "tank_decal": {
+      "unitsByPerimeter": false,
+      "unitInCenter": true,
+      "unitClass": "capture_zone_circle",
+      "unitRadius": 24.0
+    }
+  }
+}

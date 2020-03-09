@@ -1,0 +1,230 @@
+[
+  {
+    "timeToFire": 40.0
+  },
+  {
+    "timeToSmoke": 300.0
+  },
+  {
+    "hasExpl": true
+  },
+  {
+    "exhaustFx": "boat_exhaust"
+  },
+  {
+    "expClass": "exp_aaa"
+  },
+  {
+    "model": "patrol_boat_a"
+  },
+  {
+    "subclass": "warShip"
+  },
+  {
+    "dustFx": "water_units_dust"
+  },
+  {
+    "dynCollisionGeom": true
+  },
+  {
+    "moveType": "ship"
+  },
+  {
+    "maxFwdSpeed": 80.0
+  },
+  {
+    "maxRevSpeed": 5.0
+  },
+  {
+    "maxAngSpeed": 15.0
+  },
+  {
+    "maxAccel": 20.0
+  },
+  {
+    "maxDecel": 5.0
+  },
+  {
+    "maxAngAccel": 15.0
+  },
+  {
+    "maxAngAccel0": 2.0
+  },
+  {
+    "maxAngAccelV": 15.0
+  },
+  {
+    "groundNormSmoothViscosity": 0.1
+  },
+  {
+    "customUpdateDiv": 5
+  },
+  {
+    "SoundMove": "models.Ship"
+  },
+  {
+    "tailStartOffset": 10.0
+  },
+  {
+    "DamageParts": {
+      "formatVersion": 2,
+      "armorClass": "RHA_tank",
+      "hp": 1000.0,
+      "cover": {
+        "armorClass": "RHA_tank",
+        "hp": 480.0,
+        "armorThickness": 4.0,
+        "body_dm": {
+          "explosionDamageMult": 3.0
+        },
+        "gun2_dm": {
+          "armorThickness": 5.0,
+          "hp": 10.0,
+          "explosionDamageMult": 3.0
+        },
+        "gun1_dm": {
+          "armorThickness": 5.0,
+          "hp": 10.0,
+          "explosionDamageMult": 3.0
+        },
+        "gun0_dm": {
+          "armorThickness": 5.0,
+          "hp": 10.0,
+          "explosionDamageMult": 3.0
+        }
+      }
+    }
+  },
+  {
+    "DamageEffects": {
+      "part": {
+        "name": "body_dm",
+        "onKill": {
+          "expl": 1.0
+        }
+      }
+    }
+  },
+  {
+    "class_tags": {
+      "pacific": true,
+      "mediterran": true,
+      "westernfront": true
+    }
+  },
+  {
+    "sound": {
+      "path": "sounds/engines",
+      "pathStudio": "aircraft/engines",
+      "engine": "boat"
+    }
+  },
+  {
+    "weapon": {
+      "trigger": "gunner0",
+      "blk": "gameData/weapons/groundModels_weapons/common_AAgun20mm.blk",
+      "emitter": "gun0",
+      "flash": "flame0",
+      "allowableDelta": 2.0,
+      "ChainfireTime": 60.0,
+      "DelayAfterShoot": 0.0,
+      "aimMinDist": 20.0,
+      "aimMaxDist": 4000.0,
+      "randomAngle": 0.0,
+      "accuracyBotMultAir": 0.55,
+      "accuracyAir": 1.0,
+      "accuracyGnd": 0.5,
+      "errMeasureVel": 0.0,
+      "errTargettingOn100kmph": 0.0,
+      "errMeasureVelFast": 100.0,
+      "errMeasureVelFwdShift": 1.0,
+      "errMeasureVelDir": 3.0,
+      "errTargetting": 1.0,
+      "errExplTime": 0.0,
+      "defaultYaw": 0.0,
+      "defaultPitch": 10.0,
+      "turret": {
+        "head": "turret0",
+        "gun": "gun0"
+      },
+      "limits": {
+        "yaw": [-180.0,180.0],
+        "pitch": [-10.0,90.0]
+      }
+    }
+  },
+  {
+    "weapon": {
+      "trigger": "gunner1",
+      "blk": "gameData/weapons/groundModels_weapons/common_AAgun20mm.blk",
+      "emitter": "gun1",
+      "flash": "flame1",
+      "allowableDelta": 1.0,
+      "speedYaw": 45.0,
+      "speedPitch": 45.0,
+      "fireConeAngle": 20.0,
+      "salvoAmount": 100.0,
+      "ChainfireTime": 3.0,
+      "DelayAfterShoot": 3.0,
+      "AttackMaxDistance": 1000.0,
+      "AttackMaxRadius": 1000.0,
+      "AttackMaxHeight": 1000.0,
+      "accuracyAir": 0.5,
+      "accuracyGnd": 0.1,
+      "errMeasureVel": 0.0,
+      "errTargettingOn100kmph": 0.0,
+      "errMeasureVelFast": 40.0,
+      "errMeasureVelFwdShift": 1.0,
+      "errMeasureVelDir": 3.0,
+      "errTargetting": 1.0,
+      "errExplTime": 0.0,
+      "defaultYaw": 0.0,
+      "defaultPitch": 10.0,
+      "turret": {
+        "head": "turret1",
+        "gun": "gun1"
+      },
+      "limits": {
+        "yaw": [-180.0,180.0],
+        "pitch": [-10.0,90.0]
+      }
+    }
+  },
+  {
+    "weapon": {
+      "trigger": "gunner2",
+      "blk": "gameData/weapons/groundModels_weapons/common_AAgun20mm.blk",
+      "emitter": "gun2",
+      "flash": "flame2",
+      "allowableDelta": 1.0,
+      "speedYaw": 45.0,
+      "speedPitch": 45.0,
+      "fireConeAngle": 20.0,
+      "salvoAmount": 100.0,
+      "ChainfireTime": 3.0,
+      "DelayAfterShoot": 3.0,
+      "AttackMaxDistance": 1000.0,
+      "AttackMaxRadius": 1000.0,
+      "AttackMaxHeight": 1000.0,
+      "accuracyAir": 0.5,
+      "accuracyGnd": 0.1,
+      "errMeasureVel": 0.0,
+      "errTargettingOn100kmph": 0.0,
+      "errMeasureVelFast": 40.0,
+      "errMeasureVelFwdShift": 1.0,
+      "errMeasureVelDir": 3.0,
+      "errTargetting": 1.0,
+      "errExplTime": 0.0,
+      "defaultYaw": 0.0,
+      "defaultPitch": 10.0,
+      "turret": {
+        "head": "turret2",
+        "gun": "gun2"
+      },
+      "limits": {
+        "yaw": [-180.0,180.0],
+        "pitch": [-10.0,90.0]
+      }
+    }
+  }
+]

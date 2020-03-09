@@ -1,0 +1,83 @@
+{
+  "bombGun": true,
+  "preset_cost": 300,
+  "bullets": 1,
+  "shotFreq": 10.0,
+  "external": true,
+  "sound": "weapon.bombgun",
+  "mesh": "de_fx1400",
+  "tags": {
+    "antiTankBomb": true,
+    "antiShipBomb": true
+  },
+  "bomb": {
+    "operated": true,
+    "operatedDist": 8000.0,
+    "autoAiming": false,
+    "autoAimingFirstPerson": false,
+    "autoAimingInArcade": false,
+    "autoLeveling": false,
+    "rollStabilization": true,
+    "controlSensitivity": 0.7,
+    "aimSensitivity": 2.0,
+    "maxAxisValues": 1.0,
+    "operationTimer": 1.0,
+    "mass": 1570.0,
+    "explosiveType": "amatol",
+    "explosiveMass": 320.0,
+    "bombType": "he_bomb",
+    "bombName": "sc1000_l2",
+    "dragCx": 0.134,
+    "caliber": 0.562,
+    "length": 3.262,
+    "distFromCmToStab": 1.3,
+    "CyMaxAoA": 1.0,
+    "CyK": 1.05,
+    "finsAoa": 0.15,
+    "finsAoaHor": 0.11,
+    "finsAoaVer": 0.15,
+    "hasTracerTrail": true,
+    "tracerTrailEmitter": [-0.35,-0.3,0.0],
+    "sound": "weapon.bomb_big",
+    "waterExplosionEffect": "bigesplashxplosion_fx",
+    "hitPowerMult": 1.0,
+    "nearHitPower": [1.0,50.0],
+    "midHitPower": [0.9,400.0],
+    "farHitPower": [0.1,1000.0],
+    "endHitPower": [0.01,1500.0],
+    "relativeVelHitShift": [300.0,1000.0],
+    "nearArmorPower": [10.0,50.0],
+    "midArmorPower": [7.0,400.0],
+    "farArmorPower": [0.2,700.0],
+    "relativeVelArmorShift": [200.0,1000.0],
+    "explodeTreshold": 0.0,
+    "explodeHitPower": 2500.0,
+    "explodeArmorPower": 250.0,
+    "explodeRadius": [12.0,30.0],
+    "explosionPatchRadius": 30.0,
+    "explosionPatchHeightScale": 0.1,
+    "rendinstDamageRadius": 80.0,
+    "shutterDamage": true,
+    "shutterDamageRadius": 150.0,
+    "shutterAmount": 3000,
+    "shutterArmorPower": 15.0,
+    "shutterHit": 15.0,
+    "DamageParts": {
+      "body": {
+        "hp": 35.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 5.0,
+        "explosionArmorQuality": 45.0,
+        "shatterArmorQuality": 45.0
+      }
+    },
+    "tracerTrail": {
+      "smokeEffect": "fx1400_smoke",
+      "visual": {
+        "traceFreq": 1,
+        "tracer": "100mmBlue",
+        "trail": "black"
+      }
+    }
+  }
+}

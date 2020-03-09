@@ -1,0 +1,49 @@
+{
+  "model": "unit_vietnam_watermill",
+  "subclass": "fortification",
+  "dynCollisionGeom": true,
+  "hasDmg": false,
+  "damageableByGun": true,
+  "expClass": "exp_zero",
+  "renderInWaterReflection": true,
+  "toGround": false,
+  "forceFastPhysForAI": true,
+  "useDestrPhysObj": true,
+  "substRI": false,
+  "damageCollisionMultiplier": 0.1,
+  "explosionImpulse": 1.0,
+  "timeToFire": 4.0,
+  "InitAnimParamsRandomly": {
+    "part": {
+      "name": "prop_rotate_01",
+      "range": [0.0,360.0]
+    }
+  },
+  "DamageParts": {
+    "formatVersion": 2,
+    "steel": {
+      "armorClass": "RHA_tank",
+      "body_dm": {
+        "armorThickness": 8.0,
+        "hp": 100.0
+      }
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body_dm",
+      "onHit": {
+        "smoke": 0.0,
+        "fire": 0.0
+      },
+      "onKill": {
+        "expl": 1.0
+      }
+    }
+  },
+  "explosion": {
+    "expl": {
+      "explosionEffectName": "ad_wood_big"
+    }
+  }
+}

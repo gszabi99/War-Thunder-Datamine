@@ -1,0 +1,208 @@
+{
+  "type": "radar",
+  "transivers": {
+    "search": {
+      "pulsePower": 60000.0,
+      "pulseWidth": 0.0,
+      "prf": 300.0,
+      "band": 4,
+      "rcs": 20.0,
+      "range": 120000.0,
+      "rangeMax": 150000.0,
+      "antenna": {
+        "azimuth": {
+          "angleHalfSens": 7.0,
+          "sideLobesSensitivity": -30.0
+        },
+        "elevation": {
+          "angleHalfSens": 15.0,
+          "sideLobesSensitivity": -30.0
+        }
+      }
+    }
+  },
+  "scanPatterns": {
+    "search": {
+      "type": "cylinder",
+      "azimuthLimits": [-180.0,180.0],
+      "elevationLimits": [7.5,7.5],
+      "yawStabLimit": 180.0,
+      "pitchStabLimit": 10.0,
+      "rollStabLimit": 10.0,
+      "period": 2.0,
+      "barHeight": 15.0,
+      "barsCount": 1,
+      "rowMajor": true
+    }
+  },
+  "signals": {
+    "search": {
+      "aircraftAsTarget": true,
+      "groundVehiclesAsTarget": false,
+      "groundClutter": false,
+      "friendFoeId": true,
+      "distance": {
+        "presents": true,
+        "minValue": 1000.0,
+        "maxValue": 150000.0
+      }
+    }
+  },
+  "scopeRanges": {
+    "range1": 10000.0,
+    "range2": 50000.0,
+    "range3": 100000.0,
+    "range4": 150000.0
+  },
+  "fsms": {
+    "main": {
+      "stateInit": "init",
+      "actionsTemplates": {
+        "init": {
+          "setSignal": {
+            "signal": "search"
+          },
+          "setScanPattern": {
+            "scanPattern": "search"
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": 7.5
+          },
+          "setTargetDesignationRange": {
+            "azimuthRange": [-150.0,150.0],
+            "distanceRange": [0.0,30000.0]
+          }
+        },
+        "setStandbyMode": {
+          "setTransiver": [],
+          "setCenterAzimuth": {
+            "source": "constant",
+            "value": 0.0
+          },
+          "clearTargets": []
+        },
+        "setSearchMode": {
+          "clearTargets": [],
+          "setFsmActive": {
+            "fsm": "search",
+            "active": true
+          },
+          "setTransiver": {
+            "transiver": "search"
+          },
+          "setScanPattern": {
+            "scanPattern": "search"
+          }
+        },
+        "resetSearchMode": {
+          "setFsmActive": {
+            "fsm": "search",
+            "active": false
+          }
+        }
+      },
+      "transitions": {
+        "init": {
+          "stateFrom": "init",
+          "event": "init",
+          "stateTo": "standby",
+          "actions": {
+            "init": [],
+            "setStandbyMode": []
+          }
+        },
+        "switchOn": {
+          "stateFrom": "standby",
+          "command": "switch",
+          "event": "enable",
+          "stateTo": "search",
+          "actions": {
+            "setSearchMode": []
+          }
+        },
+        "switchOff": {
+          "stateFrom": "search",
+          "command": "switch",
+          "event": "disable",
+          "stateTo": "standby",
+          "actions": {
+            "resetSearchMode": [],
+            "setStandbyMode": []
+          }
+        },
+        "switchScanPattern": [
+          {
+            "stateFrom": "standby"
+          },
+          {
+            "stateFrom": "search"
+          },
+          {
+            "command": "scanPatternSwitch"
+          },
+          {
+            "actions": {
+              "setNextScanPattern": []
+            }
+          }
+        ],
+        "switchScopeRange": {
+          "command": "rangeSwitch",
+          "actions": {
+            "setNextScopeRange": []
+          }
+        }
+      }
+    },
+    "search": {
+      "stateInit": "search",
+      "transitions": {
+        "scan": {
+          "event": "update",
+          "actions": {
+            "scan": []
+          }
+        },
+        "detect": {
+          "event": "targetInSight",
+          "actions": {
+            "setDistGatePos": {
+              "source": "continuousScale",
+              "width": 0.0
+            },
+            "detectTarget": []
+          }
+        },
+        "addTarget": {
+          "event": "targetDetected",
+          "actions": {
+            "addTarget": [],
+            "updateActiveDetectedTarget": []
+          }
+        },
+        "switchSelectedTarget": {
+          "command": "switchTarget",
+          "actions": {
+            "setNextDetectedTargetActive": []
+          }
+        },
+        "setSelectedTarget": {
+          "command": "switchToTarget",
+          "actions": {
+            "setDetectedTargetActive": []
+          }
+        },
+        "designateTarget": {
+          "command": "selectTarget",
+          "actions": {
+            "designateActiveDetectedTarget": {
+              "type": 0,
+              "sensorIndex": 1
+            }
+          }
+        }
+      }
+    }
+  }
+}

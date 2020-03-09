@@ -1,0 +1,3892 @@
+[
+  {
+    "hasQualityModels": true
+  },
+  {
+    "model": "pt811"
+  },
+  {
+    "subclass": "warShip"
+  },
+  {
+    "dustFx": "water_units_dust"
+  },
+  {
+    "useBotForAi": true
+  },
+  {
+    "support_unit_class": "structures/germ_380mm_skc34"
+  },
+  {
+    "support_unit_tag": "artillery"
+  },
+  {
+    "harmonizationSuffix": "_tomoe"
+  },
+  {
+    "moveType": "ship"
+  },
+  {
+    "maxFwdSpeed": 80.0
+  },
+  {
+    "maxRevSpeed": 5.0
+  },
+  {
+    "maxAngSpeed": 15.0
+  },
+  {
+    "maxAccel": 20.0
+  },
+  {
+    "maxDecel": 5.0
+  },
+  {
+    "maxAngAccel": 15.0
+  },
+  {
+    "maxAngAccel0": 2.0
+  },
+  {
+    "maxAngAccelV": 15.0
+  },
+  {
+    "groundNormSmoothViscosity": 0.1
+  },
+  {
+    "customUpdateDiv": 5
+  },
+  {
+    "SoundMove": "models.Ship"
+  },
+  {
+    "tailStartOffset": 10.0
+  },
+  {
+    "type": "typeTorpedoBoat"
+  },
+  {
+    "expClass": "exp_torpedo_boat"
+  },
+  {
+    "timeToFire": 40.0
+  },
+  {
+    "timeToSmoke": 300.0
+  },
+  {
+    "hasExpl": false
+  },
+  {
+    "exhaustFx": "ps_exhaust"
+  },
+  {
+    "explosionFx": "ship_explosion"
+  },
+  {
+    "smokeScreenActivateTime": 2.5
+  },
+  {
+    "smokeScreenEffectTime": 20.0
+  },
+  {
+    "smokeScreenRad": 20.0
+  },
+  {
+    "smokeScreenOffset": [-3.0,0.0,2.0]
+  },
+  {
+    "canReloadNonGuns": true
+  },
+  {
+    "hideNodesInDmg": {
+      "node": "flag"
+    }
+  },
+  {
+    "default_skin_tomoe": [
+      {
+        "replace_tex": {
+          "from": "flag_ussr_01_c*",
+          "to": "flag_ussr_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "flag_usa_01_c*",
+          "to": "flag_usa_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "flag_usa_02_c*",
+          "to": "flag_usa_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "flag_uk_01_c*",
+          "to": "flag_uk_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "flag_japan_01_c*",
+          "to": "flag_japan_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "flag_japan_02_c*",
+          "to": "flag_japan_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "flag_italy_01_c*",
+          "to": "flag_italy_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "flag_germany_01_c*",
+          "to": "flag_germany_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "flag_germany_02_c*",
+          "to": "flag_germany_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "flag_germany_03_c*",
+          "to": "flag_germany_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "flag_germany_04_c*",
+          "to": "flag_germany_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "germany_flag_decal*",
+          "to": "germany_harm_flag_decal*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "airplane_ger_ar196_c*",
+          "to": "airplane_ger_ar196_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "airplane_japan_e7k2_c*",
+          "to": "airplane_japan_e7k2_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "airplane_japan_e13a1_c*",
+          "to": "airplane_japan_e13a1_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "airplane_usa_curtiss_sc_seahawk_c*",
+          "to": "airplane_usa_curtiss_sc_seahawk_c_tomoe*"
+        }
+      }
+    ]
+  },
+  {
+    "ikGunner": [
+      {
+        "model": "usa_sailor_navy_char"
+      },
+      {
+        "maxHeadHorAngle": 60.0
+      },
+      {
+        "maxHeadDownAngle": 60.0
+      },
+      {
+        "maxHeadUpAngle": 10.0
+      },
+      {
+        "headNode": "Bip01 Head"
+      },
+      {
+        "pelvisNode": "Bip01 Pelvis"
+      },
+      {
+        "pelvisTargetNode": "Bip01 Pelvis_"
+      },
+      {
+        "crouchDelta": [0.0,0.0,0.0]
+      },
+      {
+        "suffix": "1"
+      },
+      {
+        "deadHeadAttitudeMin": -55.0
+      },
+      {
+        "deadHeadAttitudeMax": -40.0
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "lefthand_",
+          "flexionDir": [0.5,-0.5,0.3]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "righthand_",
+          "flexionDir": [-0.5,-0.5,0.3]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [-0.2,1.0,-1.0]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [-0.6,1.0,-1.0]
+        }
+      }
+    ]
+  },
+  {
+    "ikGunner": [
+      {
+        "model": "usa_sailor_navy_char"
+      },
+      {
+        "maxHeadHorAngle": 60.0
+      },
+      {
+        "maxHeadDownAngle": 60.0
+      },
+      {
+        "maxHeadUpAngle": 10.0
+      },
+      {
+        "headNode": "Bip01 Head"
+      },
+      {
+        "pelvisNode": "Bip01 Pelvis"
+      },
+      {
+        "pelvisTargetNode": "Bip01 Pelvis_"
+      },
+      {
+        "crouchDelta": [0.0,0.0,0.0]
+      },
+      {
+        "suffix": "2"
+      },
+      {
+        "deadHeadAttitudeMin": -55.0
+      },
+      {
+        "deadHeadAttitudeMax": -40.0
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "lefthand_",
+          "flexionDir": [0.5,-0.5,0.3]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "righthand_",
+          "flexionDir": [-0.5,-0.5,0.3]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [-0.2,1.0,-1.0]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [-0.6,1.0,-1.0]
+        }
+      }
+    ]
+  },
+  {
+    "ikGunner": [
+      {
+        "model": "usa_sailor_navy_char"
+      },
+      {
+        "maxHeadHorAngle": 60.0
+      },
+      {
+        "maxHeadDownAngle": 60.0
+      },
+      {
+        "maxHeadUpAngle": 10.0
+      },
+      {
+        "headNode": "Bip01 Head"
+      },
+      {
+        "pelvisNode": "Bip01 Pelvis"
+      },
+      {
+        "pelvisTargetNode": "Bip01 Pelvis_"
+      },
+      {
+        "crouchDelta": [-0.3,-0.9,0.3]
+      },
+      {
+        "suffix": "3"
+      },
+      {
+        "deadHeadAttitudeMin": -55.0
+      },
+      {
+        "deadHeadAttitudeMax": -40.0
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "lefthand_",
+          "flexionDir": [0.5,-0.5,0.3]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "righthand_",
+          "flexionDir": [-0.5,-0.5,0.3]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [-0.2,1.0,-1.0]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [-0.6,1.0,-1.0]
+        }
+      }
+    ]
+  },
+  {
+    "ikGunner": [
+      {
+        "model": "usa_sailor_navy_char"
+      },
+      {
+        "maxHeadHorAngle": 60.0
+      },
+      {
+        "maxHeadDownAngle": 60.0
+      },
+      {
+        "maxHeadUpAngle": 10.0
+      },
+      {
+        "headNode": "Bip01 Head"
+      },
+      {
+        "pelvisNode": "Bip01 Pelvis"
+      },
+      {
+        "pelvisTargetNode": "Bip01 Pelvis_"
+      },
+      {
+        "crouchDelta": [-0.3,-0.9,0.3]
+      },
+      {
+        "suffix": "4"
+      },
+      {
+        "deadHeadAttitudeMin": -55.0
+      },
+      {
+        "deadHeadAttitudeMax": -40.0
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "lefthand_",
+          "flexionDir": [0.5,-0.5,0.3]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "righthand_",
+          "flexionDir": [-0.5,-0.5,0.3]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [-0.2,1.0,-1.0]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [-0.6,1.0,-1.0]
+        }
+      }
+    ]
+  },
+  {
+    "ikGunner": [
+      {
+        "model": "usa_officer_navy_char"
+      },
+      {
+        "maxHeadHorAngle": 60.0
+      },
+      {
+        "maxHeadDownAngle": 60.0
+      },
+      {
+        "maxHeadUpAngle": 10.0
+      },
+      {
+        "headNode": "Bip01 Head"
+      },
+      {
+        "pelvisNode": "Bip01 Pelvis"
+      },
+      {
+        "pelvisTargetNode": "Bip01 Pelvis_"
+      },
+      {
+        "crouchDelta": [0.0,0.0,0.0]
+      },
+      {
+        "suffix": "5"
+      },
+      {
+        "deadHeadAttitudeMin": -55.0
+      },
+      {
+        "deadHeadAttitudeMax": -40.0
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "lefthand_",
+          "flexionDir": [0.5,-0.5,0.3]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "righthand_",
+          "flexionDir": [-0.5,-0.5,0.3]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [-0.2,1.0,-1.0]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [-0.6,1.0,-1.0]
+        }
+      }
+    ]
+  },
+  {
+    "ikGunner": [
+      {
+        "model": "usa_sailor_navy_char"
+      },
+      {
+        "maxHeadHorAngle": 60.0
+      },
+      {
+        "maxHeadDownAngle": 60.0
+      },
+      {
+        "maxHeadUpAngle": 10.0
+      },
+      {
+        "headNode": "Bip01 Head"
+      },
+      {
+        "pelvisNode": "Bip01 Pelvis"
+      },
+      {
+        "pelvisTargetNode": "Bip01 Pelvis_"
+      },
+      {
+        "crouchDelta": [0.0,0.0,0.0]
+      },
+      {
+        "suffix": "6"
+      },
+      {
+        "deadHeadAttitudeMin": -55.0
+      },
+      {
+        "deadHeadAttitudeMax": -40.0
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "lefthand_",
+          "flexionDir": [0.5,-0.5,0.3]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "righthand_",
+          "flexionDir": [-0.5,-0.5,0.3]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [-0.2,1.0,-1.0]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [-0.6,1.0,-1.0]
+        }
+      }
+    ]
+  },
+  {
+    "ikGunner": [
+      {
+        "model": "usa_sailor_navy_char"
+      },
+      {
+        "maxHeadHorAngle": 60.0
+      },
+      {
+        "maxHeadDownAngle": 60.0
+      },
+      {
+        "maxHeadUpAngle": 10.0
+      },
+      {
+        "headNode": "Bip01 Head"
+      },
+      {
+        "pelvisNode": "Bip01 Pelvis"
+      },
+      {
+        "pelvisTargetNode": "Bip01 Pelvis_"
+      },
+      {
+        "crouchDelta": [-0.3,-0.9,0.3]
+      },
+      {
+        "suffix": "7"
+      },
+      {
+        "deadHeadAttitudeMin": -55.0
+      },
+      {
+        "deadHeadAttitudeMax": -40.0
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "lefthand_",
+          "flexionDir": [0.5,-0.5,0.3]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "righthand_",
+          "flexionDir": [-0.5,-0.5,0.3]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [-0.2,1.0,-1.0]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [-0.6,1.0,-1.0]
+        }
+      }
+    ]
+  },
+  {
+    "ikGunner": [
+      {
+        "model": "usa_sailor_navy_char"
+      },
+      {
+        "maxHeadHorAngle": 60.0
+      },
+      {
+        "maxHeadDownAngle": 60.0
+      },
+      {
+        "maxHeadUpAngle": 10.0
+      },
+      {
+        "headNode": "Bip01 Head"
+      },
+      {
+        "pelvisNode": "Bip01 Pelvis"
+      },
+      {
+        "pelvisTargetNode": "Bip01 Pelvis_"
+      },
+      {
+        "crouchDelta": [0.0,0.0,0.0]
+      },
+      {
+        "suffix": "8"
+      },
+      {
+        "deadHeadAttitudeMin": -55.0
+      },
+      {
+        "deadHeadAttitudeMax": -40.0
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "lefthand_",
+          "flexionDir": [0.5,-0.5,0.3]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "righthand_",
+          "flexionDir": [-0.5,-0.5,0.3]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [-0.2,1.0,-1.0]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [-0.6,1.0,-1.0]
+        }
+      }
+    ]
+  },
+  {
+    "ikGunner": [
+      {
+        "model": "usa_sailor_navy_char"
+      },
+      {
+        "maxHeadHorAngle": 60.0
+      },
+      {
+        "maxHeadDownAngle": 60.0
+      },
+      {
+        "maxHeadUpAngle": 10.0
+      },
+      {
+        "headNode": "Bip01 Head"
+      },
+      {
+        "pelvisNode": "Bip01 Pelvis"
+      },
+      {
+        "pelvisTargetNode": "Bip01 Pelvis_"
+      },
+      {
+        "crouchDelta": [0.0,0.0,0.0]
+      },
+      {
+        "suffix": "9"
+      },
+      {
+        "deadHeadAttitudeMin": -55.0
+      },
+      {
+        "deadHeadAttitudeMax": -40.0
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "lefthand_",
+          "flexionDir": [0.5,-0.5,0.3]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "righthand_",
+          "flexionDir": [-0.5,-0.5,0.3]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [-0.2,1.0,-1.0]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [-0.6,1.0,-1.0]
+        }
+      }
+    ]
+  },
+  {
+    "attach": {
+      "Bip01 Pelvis_1": "usa_sailor_navy_sit",
+      "Bip01 Pelvis_2": "usa_sailor_navy_sit",
+      "Bip01 Pelvis_3": "usa_sailor_navy_standing",
+      "Bip01 Pelvis_4": "usa_sailor_navy_standing",
+      "Bip01 Pelvis_5": "usa_officer_navy_standing",
+      "Bip01 Pelvis_6": "usa_sailor_navy_standing",
+      "Bip01 Pelvis_7": "usa_sailor_navy_standing",
+      "Bip01 Pelvis_8": "usa_sailor_navy_sit",
+      "Bip01 Pelvis_9": "usa_sailor_navy_sit"
+    }
+  },
+  {
+    "controlDevices": [
+      {
+        "device": {
+          "type": "turretTurnH",
+          "turnSpeed": 0.6,
+          "node": "bone_roll_turret_h",
+          "node_handle": "bone_roll_turret_h_handle"
+        }
+      },
+      {
+        "device": {
+          "type": "turretTurnV",
+          "turnSpeed": -1.0,
+          "node": "bone_roll_turret_v",
+          "node_handle": "bone_roll_turret_v_handle"
+        }
+      },
+      {
+        "device": {
+          "type": "steeringWheel",
+          "turnSpeed": -3.0,
+          "node": "bone_roll_driver",
+          "absoluteValue": true
+        }
+      },
+      {
+        "device": {
+          "type": "engineFan",
+          "turnSpeed": 1.0,
+          "node": "bone_roll_engine_01"
+        }
+      },
+      {
+        "device": {
+          "type": "engineFan",
+          "turnSpeed": 1.0,
+          "node": "bone_roll_engine_02"
+        }
+      },
+      {
+        "device": {
+          "type": "engineFan",
+          "turnSpeed": 1.0,
+          "node": "bone_roll_engine_03"
+        }
+      },
+      {
+        "device": {
+          "type": "engineFan",
+          "turnSpeed": 1.0,
+          "node": "bone_roll_engine_04"
+        }
+      },
+      {
+        "device": {
+          "type": "waterJetShutter",
+          "turnSpeed": 1.5,
+          "maxValue": -1.7,
+          "node": "body_shutter_l",
+          "absoluteValue": true,
+          "progressive": true
+        }
+      },
+      {
+        "device": {
+          "type": "waterJetShutter",
+          "turnSpeed": 1.5,
+          "maxValue": 1.7,
+          "node": "body_shutter_r",
+          "absoluteValue": true,
+          "progressive": true
+        }
+      }
+    ]
+  },
+  {
+    "DamageParts": {
+      "formatVersion": 2,
+      "compartments": {
+        "fireParamsPreset": "ship_cover",
+        "stopChanceOnDeadPart": 0.2,
+        "genericDamageMult": 0.6,
+        "shatterDamageMult": 0.6,
+        "secondaryShatterDamageMult": 1.0,
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 10.0,
+        "compartment_01_dm": {
+          "hp": 500.0
+        },
+        "compartment_02_dm": {
+          "hp": 500.0
+        },
+        "compartment_03_dm": {
+          "hp": 446.0
+        },
+        "bridge_dm": {
+          "shatterDamageMult": 1.5,
+          "armorThickness": 25.0,
+          "hp": 100.0
+        },
+        "radio_station_dm": {
+          "armorThickness": 25.0,
+          "hp": 80.0
+        }
+      },
+      "superstructures": {
+        "fireParamsPreset": "ship_cover",
+        "stopChanceOnDeadPart": 0.2,
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 6.35,
+        "superstructure_front_dm": {
+          "hp": 100.0
+        },
+        "superstructure_bottom_dm": {
+          "hp": 100.0
+        },
+        "superstructure_dm": {
+          "hp": 180.0
+        },
+        "stern_bottom_dm": {
+          "armorThickness": 10.0,
+          "hp": 100.0
+        },
+        "mid_bottom_dm": {
+          "armorThickness": 10.0,
+          "hp": 100.0
+        },
+        "bow_bottom_dm": {
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
+      },
+      "bulkheads": {
+        "genericDamageMult": 0.5,
+        "shatterDamageMult": 0.4,
+        "explosionDamageMult": 1.6,
+        "secondaryShatterDamageMult": 0.1,
+        "stopChanceOnDeadPart": 0.1,
+        "armorClass": "ship_wood",
+        "armorThickness": 25.0,
+        "bulkhead_01_dm": {
+          "hp": 500.0
+        },
+        "bulkhead_02_dm": {
+          "hp": 500.0
+        },
+        "bulkhead_03_dm": {
+          "hp": 500.0
+        },
+        "bulkhead_04_dm": {
+          "hp": 500.0
+        },
+        "bulkhead_05_dm": {
+          "hp": 500.0
+        },
+        "bulkhead_06_dm": {
+          "hp": 500.0
+        },
+        "bulkhead_07_dm": {
+          "hp": 500.0
+        },
+        "bulkhead_08_dm": {
+          "hp": 500.0
+        },
+        "bulkhead_09_dm": {
+          "hp": 500.0
+        }
+      },
+      "masts": {
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 10.0,
+        "mast_01_dm": {
+          "hp": 500.0
+        }
+      },
+      "hydrofoils": {
+        "fireParamsPreset": "ship_cover",
+        "genericDamageMult": 0.1,
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 4.0
+      },
+      "engine": {
+        "armorThrough": 30.0,
+        "genericDamageMult": 1.5,
+        "secondaryShatterDamageMult": 0.05,
+        "fireParamsPreset": "ship_engine",
+        "armorClass": "armor_tank_engine",
+        "armorThickness": 5.0,
+        "engine_01_dm": {
+          "hp": 285.0
+        },
+        "engine_02_dm": {
+          "hp": 302.0
+        },
+        "engine_03_dm": {
+          "hp": 302.0
+        },
+        "engine_04_dm": {
+          "hp": 285.0
+        },
+        "transmission_01_dm": {
+          "hp": 160.0
+        },
+        "transmission_02_dm": {
+          "hp": 160.0
+        },
+        "transmission_03_dm": {
+          "hp": 160.0
+        },
+        "transmission_04_dm": {
+          "hp": 160.0
+        }
+      },
+      "steering_gear": {
+        "genericDamageMult": 1.0,
+        "shatterDamageMult": 0.3,
+        "explosionDamageMult": 1.5,
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 10.0,
+        "steering_gear_01_dm": {
+          "hp": 150.0
+        }
+      },
+      "pumps": {
+        "genericDamageMult": 1.0,
+        "shatterDamageMult": 2.0,
+        "fireParamsPreset": "ship_engine",
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 5.0,
+        "pump_01_dm": {
+          "hp": 70.0
+        },
+        "pump_02_dm": {
+          "hp": 70.0
+        },
+        "pump_03_dm": {
+          "hp": 70.0
+        }
+      },
+      "hull_armor": {
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 10.0,
+        "ex_armor_01_dm": {
+          "hp": 197.0
+        },
+        "ex_armor_02_dm": {
+          "hp": 200.0
+        }
+      },
+      "gun_masks": {
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 5.0
+      },
+      "turrets": {
+        "fireParamsPreset": "ship_turrets",
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 15.0,
+        "turret_01_dm": {
+          "hp": 250.0
+        },
+        "turret_02_dm": {
+          "hp": 250.0
+        },
+        "turret_03_dm": {
+          "hp": 250.0
+        }
+      },
+      "turrets_main_caliber": {
+        "fireParamsPreset": "ship_turrets",
+        "genericDamageMult": 1.4,
+        "shatterDamageMult": 1.1,
+        "explosionDamageMult": 1.0,
+        "secondaryShatterDamageMult": 0.5,
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 12.7,
+        "main_caliber_turret_01_dm": {
+          "hp": 100.0
+        },
+        "main_caliber_turret_02_dm": {
+          "hp": 100.0
+        }
+      },
+      "turrets_aux_caliber": {
+        "fireParamsPreset": "ship_turrets",
+        "genericDamageMult": 1.4,
+        "shatterDamageMult": 1.1,
+        "explosionDamageMult": 1.0,
+        "secondaryShatterDamageMult": 0.5,
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 10.0,
+        "auxiliary_caliber_turret_01_dm": {
+          "hp": 80.0
+        }
+      },
+      "turrets_aa_caliber": {
+        "fireParamsPreset": "ship_turrets",
+        "genericDamageMult": 1.4,
+        "shatterDamageMult": 1.1,
+        "explosionDamageMult": 1.0,
+        "secondaryShatterDamageMult": 0.5,
+        "armorClass": "ship_Wsh",
+        "armorThickness": 9.52,
+        "aa_turret_01_dm": {
+          "hp": 50.0
+        },
+        "aa_turret_02_dm": {
+          "hp": 50.0
+        }
+      },
+      "gun_main_caliber": {
+        "fireParamsPreset": "ship_turrets",
+        "genericDamageMult": 1.7,
+        "shatterDamageMult": 0.8,
+        "explosionDamageMult": 0.5,
+        "secondaryShatterDamageMult": 0.01,
+        "armorClass": "tank_barrel",
+        "armorThickness": 5.0,
+        "main_caliber_gun_01_dm": {
+          "hp": 100.0
+        },
+        "main_caliber_gun_02_dm": {
+          "hp": 100.0
+        }
+      },
+      "gun_aux_caliber": {
+        "fireParamsPreset": "ship_turrets",
+        "genericDamageMult": 1.7,
+        "shatterDamageMult": 0.8,
+        "explosionDamageMult": 0.5,
+        "secondaryShatterDamageMult": 0.01,
+        "armorClass": "tank_barrel",
+        "armorThickness": 4.0,
+        "auxiliary_caliber_gun_01_dm": {
+          "hp": 80.0
+        }
+      },
+      "gun_aa_caliber": {
+        "fireParamsPreset": "ship_turrets",
+        "genericDamageMult": 1.7,
+        "shatterDamageMult": 0.8,
+        "explosionDamageMult": 0.5,
+        "secondaryShatterDamageMult": 0.01,
+        "armorClass": "tank_barrel",
+        "armorThickness": 4.0,
+        "aa_gun_01_dm": {
+          "hp": 40.0
+        },
+        "aa_gun_02_dm": {
+          "hp": 40.0
+        }
+      },
+      "gun_barrels": {
+        "armorClass": "tank_barrel",
+        "armorThickness": 4.0
+      },
+      "explosives_mounts": {
+        "fireParamsPreset": "ship_turrets",
+        "genericDamageMult": 1.0,
+        "shatterDamageMult": 1.7,
+        "explosionDamageMult": 1.5,
+        "secondaryShatterDamageMult": 0.1,
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 10.0,
+        "tt_01_dm": {
+          "hp": 250.0
+        },
+        "tt_02_dm": {
+          "hp": 250.0
+        },
+        "tt_03_dm": {
+          "hp": 250.0
+        },
+        "tt_04_dm": {
+          "hp": 250.0
+        }
+      },
+      "fuel_tanks": {
+        "fireParamsPreset": "ship_fuel_tank",
+        "armorClass": "ships_oil_fuel_tank",
+        "armorThickness": 3.0,
+        "fuel_tank_01_dm": {
+          "hp": 500.0
+        },
+        "fuel_tank_02_dm": {
+          "hp": 500.0
+        }
+      },
+      "ammo": {
+        "fireProtectionHp": 2.0,
+        "fireParamsPreset": "ship_ammo_fire",
+        "genericDamageMult": 0.7,
+        "explosionDamageMult": 0.8,
+        "shatterDamageMult": 0.8,
+        "secondaryShatterDamageMult": 0.8,
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 5.0,
+        "ammunition_storage_01_dm": {
+          "hp": 400.0
+        },
+        "ammunition_storage_02_dm": {
+          "hp": 400.0
+        },
+        "ammunition_storage_03_dm": {
+          "hp": 400.0
+        }
+      },
+      "depth_charges": {
+        "fireProtectionHp": 20.0,
+        "fireParamsPreset": "ship_ammo_fire",
+        "genericDamageMult": 0.5,
+        "shatterDamageMult": 0.5,
+        "explosionDamageMult": 1.5,
+        "secondaryShatterDamageMult": 0.1,
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 5.0
+      },
+      "torpedos": {
+        "fireProtectionHp": 20.0,
+        "fireParamsPreset": "ship_ammo_fire",
+        "genericDamageMult": 1.0,
+        "shatterDamageMult": 1.5,
+        "explosionDamageMult": 2.0,
+        "secondaryShatterDamageMult": 1.0,
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 2.0,
+        "torpedo_01_dm": {
+          "hp": 209.0
+        },
+        "torpedo_02_dm": {
+          "hp": 207.0
+        },
+        "torpedo_03_dm": {
+          "hp": 208.0
+        },
+        "torpedo_04_dm": {
+          "hp": 206.0
+        }
+      }
+    }
+  },
+  {
+    "tank_crew": {
+      "minCrewMemberAliveCount": 5,
+      "sailor1": {
+        "dmPart": "bridge_dm",
+        "role": "sailor",
+        "crew": 3
+      },
+      "sailor2": {
+        "dmPart": "compartment_01_dm",
+        "role": "sailor",
+        "crew": 4
+      },
+      "sailor3": {
+        "dmPart": "compartment_02_dm",
+        "role": "sailor",
+        "crew": 4
+      },
+      "sailor4": {
+        "dmPart": "compartment_03_dm",
+        "role": "sailor",
+        "crew": 4
+      },
+      "sailor5": {
+        "dmPart": "main_caliber_turret_01_dm",
+        "role": "sailor",
+        "crew": 1
+      },
+      "sailor6": {
+        "dmPart": "main_caliber_turret_02_dm",
+        "role": "sailor",
+        "crew": 1
+      }
+    }
+  },
+  {
+    "DamageEffects": [
+      {
+        "part": [
+          {
+            "name": "ammunition_storage_01_dm"
+          },
+          {
+            "name": "ammunition_storage_02_dm"
+          },
+          {
+            "name": "ammunition_storage_03_dm"
+          },
+          {
+            "name": "ammunition_storage_04_dm"
+          },
+          {
+            "onKill": {
+              "expl": 1.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "fire",
+              "fire": 0.5,
+              "expl": 0.1,
+              "damage": 20.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "fire",
+              "fire": 0.8,
+              "expl": 0.2,
+              "damage": 50.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": [
+              {
+                "damageType": "fire"
+              },
+              {
+                "expl": 1.0
+              },
+              {
+                "expl": 0.5
+              },
+              {
+                "damage": 100.0
+              },
+              {
+                "fHitCritical": false
+              }
+            ]
+          },
+          {
+            "onHit": {
+              "damageType": "explosion",
+              "fire": 0.5,
+              "expl": 0.2,
+              "damage": 50.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "explosion",
+              "fire": 1.0,
+              "expl": 0.5,
+              "damage": 100.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "explosion",
+              "fire": 1.0,
+              "expl": 0.7,
+              "damage": 150.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "shatter",
+              "fire": 0.05,
+              "damage": 10.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "shatter",
+              "fire": 0.1,
+              "damage": 20.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "shatter",
+              "fire": 0.2,
+              "damage": 50.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.1,
+              "damage": 20.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.3,
+              "damage": 80.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.5,
+              "damage": 100.0,
+              "fHitCritical": false
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "torpedo_01_dm"
+          },
+          {
+            "name": "torpedo_02_dm"
+          },
+          {
+            "name": "torpedo_03_dm"
+          },
+          {
+            "name": "torpedo_04_dm"
+          },
+          {
+            "onKill": {
+              "expl": 0.03,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "explosion",
+              "expl": 0.01,
+              "damage": 100.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "explosion",
+              "expl": 0.04,
+              "damage": 200.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "explosion",
+              "expl": 0.1,
+              "damage": 500.0,
+              "fHitCritical": false
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "depth_charge_01_dm"
+          },
+          {
+            "name": "depth_charge_02_dm"
+          },
+          {
+            "name": "depth_charge_03_dm"
+          },
+          {
+            "name": "depth_charge_04_dm"
+          },
+          {
+            "name": "depth_charge_05_dm"
+          },
+          {
+            "name": "depth_charge_06_dm"
+          },
+          {
+            "name": "depth_charge_07_dm"
+          },
+          {
+            "name": "depth_charge_08_dm"
+          },
+          {
+            "name": "depth_charge_09_dm"
+          },
+          {
+            "name": "depth_charge_10_dm"
+          },
+          {
+            "name": "depth_charge_11_dm"
+          },
+          {
+            "name": "depth_charge_12_dm"
+          },
+          {
+            "name": "depth_charge_13_dm"
+          },
+          {
+            "name": "depth_charge_14_dm"
+          },
+          {
+            "name": "depth_charge_15_dm"
+          },
+          {
+            "name": "depth_charge_16_dm"
+          },
+          {
+            "name": "depth_charge_17_dm"
+          },
+          {
+            "name": "depth_charge_18_dm"
+          },
+          {
+            "name": "depth_charge_19_dm"
+          },
+          {
+            "name": "depth_charge_20_dm"
+          },
+          {
+            "name": "depth_charge_31_dm"
+          },
+          {
+            "name": "depth_charge_32_dm"
+          },
+          {
+            "name": "depth_charge_33_dm"
+          },
+          {
+            "name": "depth_charge_34_dm"
+          },
+          {
+            "name": "depth_charge_35_dm"
+          },
+          {
+            "name": "depth_charge_36_dm"
+          },
+          {
+            "name": "depth_charge_37_dm"
+          },
+          {
+            "name": "depth_charge_38_dm"
+          },
+          {
+            "name": "depth_charge_39_dm"
+          },
+          {
+            "name": "depth_charge_40_dm"
+          },
+          {
+            "name": "depth_charge_41_dm"
+          },
+          {
+            "name": "depth_charge_42_dm"
+          },
+          {
+            "name": "depth_charge_43_dm"
+          },
+          {
+            "name": "depth_charge_44_dm"
+          },
+          {
+            "name": "depth_charge_45_dm"
+          },
+          {
+            "name": "depth_charge_46_dm"
+          },
+          {
+            "name": "depth_charge_47_dm"
+          },
+          {
+            "name": "depth_charge_48_dm"
+          },
+          {
+            "name": "depth_charge_49_dm"
+          },
+          {
+            "name": "depth_charge_50_dm"
+          },
+          {
+            "name": "depth_charge_61_dm"
+          },
+          {
+            "name": "depth_charge_62_dm"
+          },
+          {
+            "name": "depth_charge_63_dm"
+          },
+          {
+            "name": "depth_charge_64_dm"
+          },
+          {
+            "name": "depth_charge_65_dm"
+          },
+          {
+            "name": "depth_charge_66_dm"
+          },
+          {
+            "name": "depth_charge_67_dm"
+          },
+          {
+            "name": "depth_charge_68_dm"
+          },
+          {
+            "name": "depth_charge_69_dm"
+          },
+          {
+            "name": "depth_charge_l_01_dm"
+          },
+          {
+            "name": "depth_charge_l_02_dm"
+          },
+          {
+            "name": "depth_charge_l_03_dm"
+          },
+          {
+            "name": "depth_charge_l_04_dm"
+          },
+          {
+            "name": "depth_charge_l_05_dm"
+          },
+          {
+            "name": "depth_charge_l_06_dm"
+          },
+          {
+            "name": "depth_charge_l_07_dm"
+          },
+          {
+            "name": "depth_charge_l_08_dm"
+          },
+          {
+            "name": "depth_charge_r_01_dm"
+          },
+          {
+            "name": "depth_charge_r_02_dm"
+          },
+          {
+            "name": "depth_charge_r_03_dm"
+          },
+          {
+            "name": "depth_charge_r_04_dm"
+          },
+          {
+            "name": "depth_charge_r_05_dm"
+          },
+          {
+            "name": "depth_charge_r_06_dm"
+          },
+          {
+            "name": "depth_charge_r_07_dm"
+          },
+          {
+            "name": "depth_charge_r_08_dm"
+          },
+          {
+            "onHit": {
+              "damageType": "fire",
+              "fire": 0.05,
+              "damage": 50.0,
+              "expl": 0.05
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "fire",
+              "fire": 0.15,
+              "damage": 80.0,
+              "expl": 0.15
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "fire",
+              "fire": 0.3,
+              "damage": 100.0,
+              "expl": 0.3
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "expl": 0.05,
+              "damage": 50.0,
+              "fire": 0.05
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "expl": 0.15,
+              "damage": 80.0,
+              "fire": 0.15
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "expl": 0.3,
+              "damage": 100.0,
+              "fire": 0.3
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "explosion",
+              "fire": 0.5,
+              "expl": 0.02,
+              "damage": 50.0
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "explosion",
+              "fire": 0.7,
+              "expl": 0.1,
+              "damage": 80.0
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "explosion",
+              "expl": 1.0,
+              "damage": 100.0
+            }
+          },
+          {
+            "onKill": {
+              "damageType": "fire",
+              "expl": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "damageType": "explosion",
+              "expl": 0.3
+            }
+          },
+          {
+            "onKill": {
+              "damageType": "generic",
+              "expl": 0.0,
+              "fire": 0.1
+            }
+          },
+          {
+            "onKill": {
+              "damageType": "shatter",
+              "expl": 0.0,
+              "fire": 0.25
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "fuel_tank_dm"
+          },
+          {
+            "name": "fuel_tank_01_dm"
+          },
+          {
+            "name": "fuel_tank_02_dm"
+          },
+          {
+            "name": "fuel_tank_03_dm"
+          },
+          {
+            "name": "fuel_tank_04_dm"
+          },
+          {
+            "name": "fuel_tank_05_dm"
+          },
+          {
+            "name": "fuel_tank_r_01_dm"
+          },
+          {
+            "name": "fuel_tank_r_02_dm"
+          },
+          {
+            "name": "fuel_tank_r_03_dm"
+          },
+          {
+            "name": "fuel_tank_r_04_dm"
+          },
+          {
+            "name": "fuel_tank_r_05_dm"
+          },
+          {
+            "name": "fuel_tank_l_01_dm"
+          },
+          {
+            "name": "fuel_tank_l_02_dm"
+          },
+          {
+            "name": "fuel_tank_l_03_dm"
+          },
+          {
+            "name": "fuel_tank_l_04_dm"
+          },
+          {
+            "name": "fuel_tank_l_05_dm"
+          },
+          {
+            "onHit": {
+              "damageType": "explosion",
+              "expl": 0.15,
+              "fire": 0.35,
+              "damage": 50.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "explosion",
+              "expl": 0.25,
+              "fire": 0.45,
+              "damage": 70.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "explosion",
+              "expl": 0.34,
+              "fire": 1.0,
+              "damage": 150.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.03,
+              "damage": 20.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.15,
+              "damage": 70.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.25,
+              "damage": 100.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "fire",
+              "fire": 0.03
+            }
+          },
+          {
+            "onKill": {
+              "fire": 1.0,
+              "fHitCritical": false
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "engine_dm"
+          },
+          {
+            "name": "engine_01_dm"
+          },
+          {
+            "name": "engine_02_dm"
+          },
+          {
+            "name": "engine_03_dm"
+          },
+          {
+            "name": "engine_04_dm"
+          },
+          {
+            "name": "engine_room_01_dm"
+          },
+          {
+            "name": "engine_room_02_dm"
+          },
+          {
+            "name": "engine_room_03_dm"
+          },
+          {
+            "name": "engine_room_04_dm"
+          },
+          {
+            "onHit": {
+              "damageType": "explosion",
+              "fire": 0.2,
+              "damage": 20.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "explosion",
+              "fire": 0.3,
+              "damage": 50.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "explosion",
+              "fire": 0.5,
+              "damage": 100.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.1,
+              "damage": 20.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.2,
+              "damage": 70.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.35,
+              "damage": 200.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "fire",
+              "fire": 0.1
+            }
+          },
+          {
+            "onKill": {
+              "fire": 0.5,
+              "nothing": 0.5,
+              "fHitCritical": false
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "compartment_01_dm"
+          },
+          {
+            "name": "compartment_02_dm"
+          },
+          {
+            "name": "compartment_03_dm"
+          },
+          {
+            "name": "compartment_04_dm"
+          },
+          {
+            "name": "compartment_05_dm"
+          },
+          {
+            "name": "compartment_06_dm"
+          },
+          {
+            "name": "compartment_07_dm"
+          },
+          {
+            "name": "superstructure_dm"
+          },
+          {
+            "name": "deckhouse_dm"
+          },
+          {
+            "onHit": {
+              "damageType": "explosion",
+              "fire": 0.1,
+              "damage": 15.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "explosion",
+              "fire": 0.25,
+              "damage": 50.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "explosion",
+              "fire": 0.5,
+              "damage": 100.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.05,
+              "damage": 50.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.1,
+              "damage": 100.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "fire",
+              "fire": 0.1,
+              "damage": 30.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "fire",
+              "fire": 0.2,
+              "damage": 50.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "fire",
+              "fire": 0.35,
+              "damage": 100.0,
+              "fHitCritical": false
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "MetaParts": [
+      {
+        "cover": [
+          {
+            "part": "compartment_01_dm"
+          },
+          {
+            "effect": {
+              "conditionDamageType": "explosion",
+              "conditionDamage": 200.0,
+              "kill": true,
+              "killEffect": "destruction"
+            }
+          },
+          {
+            "effect": {
+              "conditionDamageType": "shatter",
+              "conditionDamage": 1500.0,
+              "kill": true,
+              "killEffect": "destruction"
+            }
+          }
+        ]
+      },
+      {
+        "cover": [
+          {
+            "part": "compartment_02_dm"
+          },
+          {
+            "effect": {
+              "conditionDamageType": "explosion",
+              "conditionDamage": 200.0,
+              "kill": true,
+              "killEffect": "destruction"
+            }
+          },
+          {
+            "effect": {
+              "conditionDamageType": "shatter",
+              "conditionDamage": 1500.0,
+              "kill": true,
+              "killEffect": "destruction"
+            }
+          }
+        ]
+      },
+      {
+        "cover": [
+          {
+            "part": "compartment_03_dm"
+          },
+          {
+            "effect": {
+              "conditionDamageType": "explosion",
+              "conditionDamage": 200.0,
+              "kill": true,
+              "killEffect": "destruction"
+            }
+          },
+          {
+            "effect": {
+              "conditionDamageType": "shatter",
+              "conditionDamage": 1500.0,
+              "kill": true,
+              "killEffect": "destruction"
+            }
+          }
+        ]
+      },
+      {
+        "bridge": [
+          {
+            "part": "bridge_dm"
+          },
+          {
+            "effect": {
+              "conditionDamageType": "explosion",
+              "conditionDamage": 200.0,
+              "kill": true,
+              "killEffect": "destruction"
+            }
+          },
+          {
+            "effect": {
+              "conditionDamageType": "shatter",
+              "conditionDamage": 1500.0,
+              "kill": true,
+              "killEffect": "destruction"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "tags": {
+      "country_usa": true,
+      "type_ship": true,
+      "ship": true,
+      "type_torpedo_boat": true
+    }
+  },
+  {
+    "ShipPhys": {
+      "mass": {
+        "Empty": 110000.0,
+        "momentOfInertia": [14.0,45.0,31.0],
+        "CenterOfGravity": [-1.8,-0.6,0.0]
+      },
+      "settings": {
+        "speedLossOnManeuver": 0.15
+      },
+      "engines": [
+        {
+          "maxSpeed": 28.29
+        },
+        {
+          "maxReverseSpeed": 9.2
+        },
+        {
+          "speedToTime": [
+            {
+              "row": [5.2,5.3]
+            },
+            {
+              "row": [10.5,8.3]
+            },
+            {
+              "row": [28.29,19.8]
+            }
+          ]
+        },
+        {
+          "reverseSpeedToTime": [
+            {
+              "row": [2.0,2.2]
+            },
+            {
+              "row": [4.0,4.5]
+            },
+            {
+              "row": [9.2,8.5]
+            }
+          ]
+        },
+        {
+          "engine": {
+            "pos": [-12.0,-1.7,1.8],
+            "outputParam": "propeller_rotate_01:CRS",
+            "engineDmPart": "engine_01_dm",
+            "transmissionDmPart": "transmission_01_dm",
+            "propeller": "propeller_01"
+          }
+        },
+        {
+          "engine": {
+            "pos": [-12.0,-1.7,0.6],
+            "outputParam": "propeller_rotate_02:CRS",
+            "engineDmPart": "engine_02_dm",
+            "transmissionDmPart": "transmission_02_dm",
+            "propeller": "propeller_02"
+          }
+        },
+        {
+          "engine": {
+            "pos": [-12.0,-1.7,-0.6],
+            "outputParam": "propeller_rotate_03:CRS",
+            "engineDmPart": "engine_03_dm",
+            "transmissionDmPart": "transmission_03_dm",
+            "propeller": "propeller_03"
+          }
+        },
+        {
+          "engine": {
+            "pos": [-12.0,-1.7,-1.8],
+            "outputParam": "propeller_rotate_04:CRS",
+            "engineDmPart": "engine_04_dm",
+            "transmissionDmPart": "transmission_04_dm",
+            "propeller": "propeller_04"
+          }
+        }
+      ],
+      "collisionProps": {
+        "cls_body_01": "convex_hull",
+        "cls_body_02": "convex_hull",
+        "cls_body_03": "convex_hull"
+      },
+      "hydrodynamics": [
+        {
+          "bodyArea": 0.0
+        },
+        {
+          "rudder": {
+            "pos": [-12.4,-1.1,1.7],
+            "area": 0.7,
+            "deflection": 35.0,
+            "dmPart": "steering_gear_01_dm"
+          }
+        },
+        {
+          "rudder": {
+            "pos": [-12.4,-1.1,0.6],
+            "area": 0.7,
+            "deflection": 35.0,
+            "dmPart": "steering_gear_01_dm"
+          }
+        },
+        {
+          "rudder": {
+            "pos": [-12.4,-1.1,-0.6],
+            "area": 0.7,
+            "deflection": 35.0,
+            "dmPart": "steering_gear_01_dm"
+          }
+        },
+        {
+          "rudder": {
+            "pos": [-12.4,-1.1,-1.7],
+            "area": 0.7,
+            "deflection": 35.0,
+            "dmPart": "steering_gear_01_dm"
+          }
+        },
+        {
+          "hydrofoils": [
+            {
+              "hydrofoil": {
+                "euler": [-1.1,90.0,21.0],
+                "pos": [8.8,-1.05,-0.9],
+                "size": [1.4,2.7],
+                "maxV": 57.0,
+                "polar": {
+                  "Cl0": 0.014,
+                  "CdMin": 0.02,
+                  "lineClCoeff": 0.067,
+                  "ClCritHigh": 0.9,
+                  "ClCritLow": -0.9,
+                  "alphaCritHigh": 11.0,
+                  "alphaCritLow": -11.0
+                }
+              }
+            },
+            {
+              "hydrofoil": {
+                "euler": [1.1,-90.0,21.0],
+                "pos": [8.8,-1.05,0.9],
+                "size": [1.4,2.7],
+                "maxV": 57.0,
+                "polar": {
+                  "Cl0": 0.014,
+                  "CdMin": 0.02,
+                  "lineClCoeff": 0.067,
+                  "ClCritHigh": 0.9,
+                  "ClCritLow": -0.9,
+                  "alphaCritHigh": 11.0,
+                  "alphaCritLow": -11.0
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "commonWeapons": [
+      {
+        "Weapon": {
+          "trigger": "gunner0",
+          "triggerGroup": "primary",
+          "blk": "gameData/Weapons/navalModels_weapons/40mm_l60_bofors_mk3_single_naval_user_cannon.blk",
+          "emitter": "emtr_gun_flame_01",
+          "flash": "emtr_gun_flame_01",
+          "useEmitter": true,
+          "barrelDP": "main_caliber_gun_01_dm",
+          "breechDP": "main_caliber_gun_01_dm",
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "speedYaw": 30.0,
+          "speedPitch": 24.0,
+          "bullets": 2000,
+          "useGunnerTargetingQuality": false,
+          "allowableDelta": 2.0,
+          "ChainfireTime": 60.0,
+          "DelayAfterShoot": 0.0,
+          "aimMinDist": 20.0,
+          "aimMaxDist": 4000.0,
+          "randomAngle": 0.0,
+          "accuracyBotMultAir": 0.55,
+          "accuracyAir": 1.0,
+          "accuracyGnd": 0.5,
+          "errMeasureVel": 0.0,
+          "errTargettingOn100kmph": 0.0,
+          "errMeasureVelFast": 100.0,
+          "errMeasureVelFwdShift": 1.0,
+          "errMeasureVelDir": 3.0,
+          "errTargetting": 1.0,
+          "errExplTime": 0.0,
+          "turret": {
+            "head": "main_caliber_turret_01",
+            "gun": "main_caliber_gun_01",
+            "barrel": "gun_barrel_01",
+            "gunnerDm": "main_caliber_turret_01_dm"
+          },
+          "limits": {
+            "yaw": [-180.0,180.0],
+            "pitch": [-6.0,88.0]
+          },
+          "limitsTable": {
+            "lim1": [-180.0,-157.0,6.0,88.0],
+            "lim2": [-157.0,-137.0,-1.0,88.0],
+            "lim3": [-137.0,-49.0,-6.0,88.0],
+            "lim4": [-49.0,49.0,-5.0,88.0],
+            "lim5": [49.0,137.0,-6.0,88.0],
+            "lim6": [137.0,157.0,-1.0,88.0],
+            "lim7": [157.0,180.0,6.0,88.0]
+          },
+          "gunStabilizer": {
+            "hasVerticalGunFreeMode": true,
+            "hasHorizontal": true,
+            "horizontalOmegaMult": 1.0,
+            "horizontalSpeedLimitKPH": 80.0,
+            "hasVertical": true,
+            "verticalOmegaMult": 1.0,
+            "verticalSpeedLimitKPH": 80.0,
+            "errorKPHToDegrees": [
+              {
+                "row": [5.0,0.01]
+              },
+              {
+                "row": [70.0,0.05]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "Weapon": {
+          "trigger": "gunner1",
+          "triggerGroup": "primary",
+          "blk": "gameData/Weapons/navalModels_weapons/40mm_l60_bofors_mk3_single_naval_user_cannon.blk",
+          "emitter": "emtr_gun_flame_07",
+          "flash": "emtr_gun_flame_07",
+          "useEmitter": true,
+          "barrelDP": "main_caliber_gun_02_dm",
+          "breechDP": "cmain_caliber_gun_02_dm",
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "speedYaw": 30.0,
+          "speedPitch": 24.0,
+          "bullets": 2000,
+          "useGunnerTargetingQuality": false,
+          "allowableDelta": 2.0,
+          "ChainfireTime": 60.0,
+          "DelayAfterShoot": 0.0,
+          "aimMinDist": 20.0,
+          "aimMaxDist": 4000.0,
+          "randomAngle": 0.0,
+          "accuracyBotMultAir": 0.55,
+          "accuracyAir": 1.0,
+          "accuracyGnd": 0.5,
+          "errMeasureVel": 0.0,
+          "errTargettingOn100kmph": 0.0,
+          "errMeasureVelFast": 100.0,
+          "errMeasureVelFwdShift": 1.0,
+          "errMeasureVelDir": 3.0,
+          "errTargetting": 1.0,
+          "errExplTime": 0.0,
+          "turret": {
+            "head": "main_caliber_turret_02",
+            "gun": "main_caliber_gun_02",
+            "barrel": "gun_barrel_07",
+            "gunnerDm": "main_caliber_turret_02_dm"
+          },
+          "limits": {
+            "yaw": [-180.0,180.0],
+            "pitch": [-6.0,88.0]
+          },
+          "limitsTable": {
+            "lim1": [-180.0,-166.0,5.0,88.0],
+            "lim2": [-166.0,-153.0,1.0,88.0],
+            "lim3": [-153.0,-130.0,-4.0,88.0],
+            "lim4": [-130.0,130.0,-6.0,88.0],
+            "lim5": [130.0,153.0,-4.0,88.0],
+            "lim6": [153.0,162.0,1.0,88.0],
+            "lim7": [162.0,180.0,5.0,88.0]
+          },
+          "gunStabilizer": {
+            "hasVerticalGunFreeMode": true,
+            "hasHorizontal": true,
+            "horizontalOmegaMult": 1.0,
+            "horizontalSpeedLimitKPH": 80.0,
+            "hasVertical": true,
+            "verticalOmegaMult": 1.0,
+            "verticalSpeedLimitKPH": 80.0,
+            "errorKPHToDegrees": [
+              {
+                "row": [5.0,0.01]
+              },
+              {
+                "row": [70.0,0.05]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "Weapon": {
+          "trigger": "gunner2",
+          "triggerGroup": "secondary",
+          "blk": "gameData/Weapons/navalModels_weapons/20mm_oerlikon_mk24_twin_mount_naval_user_cannon.blk",
+          "emitter": "emtr_gun_flame_03",
+          "flash": "emtr_gun_flame_03",
+          "useEmitter": true,
+          "barrelDP": "aa_gun_01_dm",
+          "breechDP": "aa_turret_01_dm",
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "speedYaw": 60.0,
+          "speedPitch": 50.0,
+          "bullets": 1800,
+          "useGunnerTargetingQuality": false,
+          "allowableDelta": 2.0,
+          "ChainfireTime": 60.0,
+          "DelayAfterShoot": 0.0,
+          "aimMinDist": 20.0,
+          "aimMaxDist": 4000.0,
+          "randomAngle": 0.0,
+          "accuracyBotMultAir": 0.55,
+          "accuracyAir": 1.0,
+          "accuracyGnd": 0.5,
+          "errMeasureVel": 0.0,
+          "errTargettingOn100kmph": 0.0,
+          "errMeasureVelFast": 100.0,
+          "errMeasureVelFwdShift": 1.0,
+          "errMeasureVelDir": 3.0,
+          "errTargetting": 1.0,
+          "errExplTime": 0.0,
+          "turret": {
+            "head": "aa_turret_01",
+            "gun": "aa_gun_01",
+            "barrel": "gun_barrel_03",
+            "gunnerDm": "aa_turret_01_dm",
+            "linkedAnimPart": {
+              "verNode": "bone_radius_foot_01",
+              "verLimits": [0.0,6.0],
+              "verOriginLimits": [12.0,70.0]
+            }
+          },
+          "limits": {
+            "yaw": [-180.0,180.0],
+            "pitch": [-5.0,70.0]
+          },
+          "limitsTable": {
+            "lim1": [-180.0,-128.0,30.0,70.0],
+            "lim2": [-128.0,-95.0,23.0,70.0],
+            "lim3": [-95.0,-21.0,7.0,70.0],
+            "lim4": [-21.0,173.0,-5.0,70.0],
+            "lim5": [173.0,180.0,0.0,70.0]
+          },
+          "gunStabilizer": {
+            "hasVerticalGunFreeMode": true,
+            "hasHorizontal": true,
+            "horizontalOmegaMult": 1.0,
+            "horizontalSpeedLimitKPH": 80.0,
+            "hasVertical": true,
+            "verticalOmegaMult": 1.0,
+            "verticalSpeedLimitKPH": 80.0,
+            "errorKPHToDegrees": [
+              {
+                "row": [5.0,0.01]
+              },
+              {
+                "row": [70.0,0.05]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "Weapon": {
+          "trigger": "gunner2",
+          "triggerGroup": "secondary",
+          "blk": "gameData/Weapons/navalModels_weapons/20mm_oerlikon_mk24_twin_mount_naval_user_cannon.blk",
+          "emitter": "emtr_gun_flame_04",
+          "flash": "emtr_gun_flame_04",
+          "useEmitter": true,
+          "barrelDP": "aa_gun_01_dm",
+          "breechDP": "aa_turret_01_dm",
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "speedYaw": 60.0,
+          "speedPitch": 50.0,
+          "bullets": 1800,
+          "useGunnerTargetingQuality": false,
+          "allowableDelta": 2.0,
+          "ChainfireTime": 60.0,
+          "DelayAfterShoot": 0.0,
+          "aimMinDist": 20.0,
+          "aimMaxDist": 4000.0,
+          "randomAngle": 0.0,
+          "accuracyBotMultAir": 0.55,
+          "accuracyAir": 1.0,
+          "accuracyGnd": 0.5,
+          "errMeasureVel": 0.0,
+          "errTargettingOn100kmph": 0.0,
+          "errMeasureVelFast": 100.0,
+          "errMeasureVelFwdShift": 1.0,
+          "errMeasureVelDir": 3.0,
+          "errTargetting": 1.0,
+          "errExplTime": 0.0,
+          "turret": {
+            "head": "aa_turret_01",
+            "gun": "aa_gun_01",
+            "barrel": "gun_barrel_04",
+            "gunnerDm": "aa_turret_01_dm"
+          },
+          "limits": {
+            "yaw": [-180.0,180.0],
+            "pitch": [-5.0,70.0]
+          },
+          "limitsTable": {
+            "lim1": [-180.0,-128.0,30.0,70.0],
+            "lim2": [-128.0,-95.0,23.0,70.0],
+            "lim3": [-95.0,-21.0,7.0,70.0],
+            "lim4": [-21.0,173.0,-5.0,70.0],
+            "lim5": [173.0,180.0,0.0,70.0]
+          },
+          "gunStabilizer": {
+            "hasVerticalGunFreeMode": true,
+            "hasHorizontal": true,
+            "horizontalOmegaMult": 1.0,
+            "horizontalSpeedLimitKPH": 80.0,
+            "hasVertical": true,
+            "verticalOmegaMult": 1.0,
+            "verticalSpeedLimitKPH": 80.0,
+            "errorKPHToDegrees": [
+              {
+                "row": [5.0,0.01]
+              },
+              {
+                "row": [70.0,0.05]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "Weapon": {
+          "trigger": "gunner3",
+          "triggerGroup": "secondary",
+          "blk": "gameData/Weapons/navalModels_weapons/20mm_oerlikon_mk24_twin_mount_naval_user_cannon.blk",
+          "emitter": "emtr_gun_flame_05",
+          "flash": "emtr_gun_flame_05",
+          "useEmitter": true,
+          "barrelDP": "aa_gun_02_dm",
+          "breechDP": "aa_turret_02_dm",
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "speedYaw": 60.0,
+          "speedPitch": 50.0,
+          "bullets": 1800,
+          "useGunnerTargetingQuality": false,
+          "allowableDelta": 2.0,
+          "ChainfireTime": 60.0,
+          "DelayAfterShoot": 0.0,
+          "aimMinDist": 20.0,
+          "aimMaxDist": 4000.0,
+          "randomAngle": 0.0,
+          "accuracyBotMultAir": 0.55,
+          "accuracyAir": 1.0,
+          "accuracyGnd": 0.5,
+          "errMeasureVel": 0.0,
+          "errTargettingOn100kmph": 0.0,
+          "errMeasureVelFast": 100.0,
+          "errMeasureVelFwdShift": 1.0,
+          "errMeasureVelDir": 3.0,
+          "errTargetting": 1.0,
+          "errExplTime": 0.0,
+          "turret": {
+            "head": "aa_turret_02",
+            "gun": "aa_gun_02",
+            "barrel": "gun_barrel_05",
+            "gunnerDm": "aa_turret_02_dm",
+            "linkedAnimPart": {
+              "verNode": "bone_radius_foot_02",
+              "verLimits": [0.0,6.0],
+              "verOriginLimits": [12.0,70.0]
+            }
+          },
+          "limits": {
+            "yaw": [-180.0,180.0],
+            "pitch": [-5.0,70.0]
+          },
+          "limitsTable": {
+            "lim1": [-180.0,-40.0,-5.0,70.0],
+            "lim2": [-40.0,-18.0,0.0,70.0],
+            "lim3": [-18.0,45.0,10.0,70.0],
+            "lim4": [45.0,65.0,0.0,70.0],
+            "lim5": [65.0,140.0,-3.0,70.0],
+            "lim6": [140.0,162.0,-1.0,70.0],
+            "lim7": [162.0,180.0,4.0,70.0]
+          },
+          "gunStabilizer": {
+            "hasVerticalGunFreeMode": true,
+            "hasHorizontal": true,
+            "horizontalOmegaMult": 1.0,
+            "horizontalSpeedLimitKPH": 80.0,
+            "hasVertical": true,
+            "verticalOmegaMult": 1.0,
+            "verticalSpeedLimitKPH": 80.0,
+            "errorKPHToDegrees": [
+              {
+                "row": [5.0,0.01]
+              },
+              {
+                "row": [70.0,0.05]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "Weapon": {
+          "trigger": "gunner3",
+          "triggerGroup": "secondary",
+          "blk": "gameData/Weapons/navalModels_weapons/20mm_oerlikon_mk24_twin_mount_naval_user_cannon.blk",
+          "emitter": "emtr_gun_flame_06",
+          "flash": "emtr_gun_flame_06",
+          "useEmitter": true,
+          "barrelDP": "aa_gun_02_dm",
+          "breechDP": "aa_turret_02_dm",
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "speedYaw": 60.0,
+          "speedPitch": 50.0,
+          "bullets": 1800,
+          "useGunnerTargetingQuality": false,
+          "allowableDelta": 2.0,
+          "ChainfireTime": 60.0,
+          "DelayAfterShoot": 0.0,
+          "aimMinDist": 20.0,
+          "aimMaxDist": 4000.0,
+          "randomAngle": 0.0,
+          "accuracyBotMultAir": 0.55,
+          "accuracyAir": 1.0,
+          "accuracyGnd": 0.5,
+          "errMeasureVel": 0.0,
+          "errTargettingOn100kmph": 0.0,
+          "errMeasureVelFast": 100.0,
+          "errMeasureVelFwdShift": 1.0,
+          "errMeasureVelDir": 3.0,
+          "errTargetting": 1.0,
+          "errExplTime": 0.0,
+          "turret": {
+            "head": "aa_turret_02",
+            "gun": "aa_gun_02",
+            "barrel": "gun_barrel_06",
+            "gunnerDm": "aa_turret_02_dm"
+          },
+          "limits": {
+            "yaw": [-180.0,180.0],
+            "pitch": [-5.0,70.0]
+          },
+          "limitsTable": {
+            "lim1": [-180.0,-40.0,-5.0,70.0],
+            "lim2": [-40.0,-18.0,0.0,70.0],
+            "lim3": [-18.0,45.0,10.0,70.0],
+            "lim4": [45.0,65.0,0.0,70.0],
+            "lim5": [65.0,140.0,-3.0,70.0],
+            "lim6": [140.0,162.0,-1.0,70.0],
+            "lim7": [162.0,180.0,4.0,70.0]
+          },
+          "gunStabilizer": {
+            "hasVerticalGunFreeMode": true,
+            "hasHorizontal": true,
+            "horizontalOmegaMult": 1.0,
+            "horizontalSpeedLimitKPH": 80.0,
+            "hasVertical": true,
+            "verticalOmegaMult": 1.0,
+            "verticalSpeedLimitKPH": 80.0,
+            "errorKPHToDegrees": [
+              {
+                "row": [5.0,0.01]
+              },
+              {
+                "row": [70.0,0.05]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "Weapon": {
+          "trigger": "gunner4",
+          "triggerGroup": "machinegun",
+          "blk": "gameData/Weapons/navalModels_weapons/81mm_mk_2_mortar_naval_user_cannon.blk",
+          "emitter": "emtr_gun_flame_02",
+          "flash": "emtr_gun_flame_02",
+          "useEmitter": true,
+          "barrelDP": "auxiliary_caliber_gun_01_dm",
+          "breechDP": "auxiliary_caliber_turret_01_dm",
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "isBulletBelt": true,
+          "speedYaw": 20.0,
+          "speedPitch": 45.0,
+          "bullets": 50,
+          "allowableDelta": 2.0,
+          "ChainfireTime": 60.0,
+          "DelayAfterShoot": 0.0,
+          "aimMinDist": 20.0,
+          "aimMaxDist": 4000.0,
+          "randomAngle": 0.0,
+          "accuracyBotMultAir": 0.55,
+          "accuracyAir": 1.0,
+          "accuracyGnd": 0.5,
+          "errMeasureVel": 0.0,
+          "errTargettingOn100kmph": 0.0,
+          "errMeasureVelFast": 100.0,
+          "errMeasureVelFwdShift": 1.0,
+          "errMeasureVelDir": 3.0,
+          "errTargetting": 1.0,
+          "errExplTime": 0.0,
+          "turret": {
+            "head": "auxiliary_caliber_turret_01",
+            "gun": "auxiliary_caliber_gun_01",
+            "barrel": "gun_barrel_02",
+            "gunnerDm": "auxiliary_caliber_turret_01_dm",
+            "linkedAnimPart": {
+              "verNode": "bone_radius_foot_03",
+              "verLimits": [0.0,4.0],
+              "verOriginLimits": [11.0,40.0]
+            }
+          },
+          "limits": {
+            "yaw": [-180.0,83.0],
+            "pitch": [-5.0,40.0]
+          },
+          "limitsTable": {
+            "lim1": [-180.0,-132.0,0.0,40.0],
+            "lim2": [-132.0,-28.0,-5.0,40.0],
+            "lim3": [-28.0,21.0,3.0,40.0],
+            "lim4": [21.0,52.0,21.0,40.0],
+            "lim5": [52.0,83.0,11.0,40.0]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "weapon_presets": [
+      {
+        "preset": {
+          "name": "torpedoes",
+          "blk": "gameData/units/ships/weaponPresets/us_pt811_torpedoes.blk",
+          "reqModification": "ship_torpedoes"
+        }
+      },
+      {
+        "preset": {
+          "name": "us_pt811_default",
+          "blk": "gameData/units/ships/weaponPresets/us_pt811_default.blk"
+        }
+      }
+    ]
+  },
+  {
+    "cockpit": {
+      "headPos": [0.0,7.0,-25.0],
+      "headPosOnShooting": [4.0,7.3,0.0],
+      "detectionHeight": 8.0
+    }
+  },
+  {
+    "sound": {
+      "EngineName": "engine_shiplight01",
+      "EngineNameAi": "engine_shiplight_ai",
+      "TrackSoundPath": "ships/engines_ships",
+      "TrackSoundPathStudio": "naval/engines",
+      "TrackSoundName": "tracks_light",
+      "TrackSoundNameCockpit": "tracks_light_interior",
+      "TrackSoundNameAi": "tracks_ai_light"
+    }
+  },
+  {
+    "unitFx": [
+      {
+        "event": [
+          {
+            "name": "engine_fire"
+          },
+          {
+            "fx": {
+              "name": "ship_engine_fire",
+              "emitter": "emtr_fire_engine_01"
+            }
+          },
+          {
+            "fx": {
+              "name": "ship_engine_fire",
+              "emitter": "emtr_fire_engine_02"
+            }
+          },
+          {
+            "fx": {
+              "name": "ship_engine_fire",
+              "emitter": "emtr_fire_engine_03"
+            }
+          }
+        ]
+      },
+      {
+        "event": [
+          {
+            "name": "fuel_tank_fire"
+          },
+          {
+            "fx": {
+              "name": "tank_fire_small",
+              "emmiter": "emtr_fire_fuel_01"
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_fire_small",
+              "emmiter": "emtr_fire_fuel_02"
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_fire_small",
+              "emmiter": "emtr_fire_fuel_03"
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_fire_small",
+              "emmiter": "emtr_fire_fuel_04"
+            }
+          }
+        ]
+      },
+      {
+        "event": [
+          {
+            "name": "ammo_fire"
+          },
+          {
+            "fx": {
+              "name": "ship_ammo_fire",
+              "emitter": "emtr_fire_ammo_01"
+            }
+          },
+          {
+            "fx": {
+              "name": "ship_ammo_fire",
+              "emitter": "emtr_fire_ammo_02"
+            }
+          },
+          {
+            "fx": {
+              "name": "ship_ammo_fire",
+              "emitter": "emtr_fire_ammo_03"
+            }
+          },
+          {
+            "fx": {
+              "name": "ship_ammo_fire",
+              "emitter": "emtr_fire_ammo_04"
+            }
+          },
+          {
+            "fx": {
+              "name": "ship_explosion",
+              "emitter": "emtr_fire_ammo_01",
+              "scale": 0.6
+            }
+          },
+          {
+            "fx": {
+              "name": "ship_explosion",
+              "emitter": "emtr_fire_ammo_02",
+              "scale": 0.6
+            }
+          },
+          {
+            "fx": {
+              "name": "ship_explosion",
+              "emitter": "emtr_fire_ammo_03",
+              "scale": 0.6
+            }
+          },
+          {
+            "fx": {
+              "name": "ship_explosion",
+              "emitter": "emtr_fire_ammo_04",
+              "scale": 0.6
+            }
+          }
+        ]
+      },
+      {
+        "event": [
+          {
+            "name": "light_smoke"
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_fire_ammo_01",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_fire_ammo_02",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_fire_ammo_03",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_fire_ammo_04",
+              "scale": 2.0
+            }
+          }
+        ]
+      },
+      {
+        "event": [
+          {
+            "name": "total_smoke"
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_big",
+              "emitter": "emtr_smoke_dmg_01"
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_big",
+              "emitter": "emtr_smoke_dmg_02"
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_01",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_02",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_03",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_04",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_05",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_06",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_07",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_08",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_09",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_10",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_11",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_12",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_13",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_14",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_15",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_16",
+              "scale": 2.0
+            }
+          }
+        ]
+      },
+      {
+        "event": [
+          {
+            "name": "total_fire"
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_big",
+              "emitter": "emtr_smoke_dmg_01"
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_big",
+              "emitter": "emtr_smoke_dmg_02"
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_01",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_02",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_03",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_04",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_05",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_06",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_07",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_08",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_09",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_10",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_11",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_12",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_13",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_14",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_15",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_smoke_small",
+              "emitter": "emtr_smoke_small_dmg_16",
+              "scale": 2.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_fire_big",
+              "emitter": "emtr_fire_dmg_01"
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_fire_big",
+              "emitter": "emtr_fire_dmg_01"
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_fire_small",
+              "emitter": "emtr_fire_small_dmg_01",
+              "scale": 3.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_fire_small",
+              "emitter": "emtr_fire_small_dmg_02",
+              "scale": 3.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_fire_small",
+              "emitter": "emtr_fire_small_dmg_03",
+              "scale": 3.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_fire_small",
+              "emitter": "emtr_fire_small_dmg_04",
+              "scale": 3.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_fire_small",
+              "emitter": "emtr_fire_small_dmg_05",
+              "scale": 3.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_fire_small",
+              "emitter": "emtr_fire_small_dmg_06",
+              "scale": 3.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_fire_small",
+              "emitter": "emtr_fire_small_dmg_07",
+              "scale": 3.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_fire_small",
+              "emitter": "emtr_fire_small_dmg_08",
+              "scale": 3.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_fire_small",
+              "emitter": "emtr_fire_small_dmg_09",
+              "scale": 3.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_fire_small",
+              "emitter": "emtr_fire_small_dmg_10",
+              "scale": 3.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_fire_small",
+              "emitter": "emtr_fire_small_dmg_11",
+              "scale": 3.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_fire_small",
+              "emitter": "emtr_fire_small_dmg_12",
+              "scale": 3.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_fire_small",
+              "emitter": "emtr_fire_small_dmg_13",
+              "scale": 3.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_fire_small",
+              "emitter": "emtr_fire_small_dmg_14",
+              "scale": 3.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_fire_small",
+              "emitter": "emtr_fire_small_dmg_15",
+              "scale": 3.0
+            }
+          },
+          {
+            "fx": {
+              "name": "tank_fire_small",
+              "emitter": "emtr_fire_small_dmg_16",
+              "scale": 3.0
+            }
+          }
+        ]
+      },
+      {
+        "event": [
+          {
+            "name": "big_bang"
+          },
+          {
+            "fx": {
+              "name": "ship_explosion",
+              "emitter": "emtr_explosion_center_01",
+              "scale": 0.9
+            }
+          },
+          {
+            "fx": {
+              "name": "ship_explosion",
+              "emitter": "emtr_explosion_center_02",
+              "scale": 0.7
+            }
+          },
+          {
+            "fx": {
+              "name": "ship_explosion",
+              "emitter": "emtr_explosion_center_03",
+              "scale": 0.6
+            }
+          }
+        ]
+      },
+      {
+        "event": {
+          "name": "ammo_fire_1",
+          "fx": {
+            "name": "ship_ammo_fire",
+            "emitter": "emtr_fire_ammo_01"
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "ammo_fire_2",
+          "fx": {
+            "name": "ship_ammo_fire",
+            "emitter": "emtr_fire_ammo_02"
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "ammo_fire_3",
+          "fx": {
+            "name": "ship_ammo_fire",
+            "emitter": "emtr_fire_ammo_03"
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "ammo_fire_4",
+          "fx": {
+            "name": "ship_ammo_fire",
+            "emitter": "emtr_fire_ammo_04"
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "ammo_explosion_1",
+          "fx": {
+            "name": "ship_ammo_fire",
+            "emitter": "emtr_fire_ammo_01"
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "ammo_explosion_2",
+          "fx": {
+            "name": "ship_ammo_fire",
+            "emitter": "emtr_fire_ammo_02"
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "ammo_explosion_3",
+          "fx": {
+            "name": "ship_ammo_fire",
+            "emitter": "emtr_fire_ammo_03"
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "ammo_explosion_4",
+          "fx": {
+            "name": "ship_ammo_fire",
+            "emitter": "emtr_fire_ammo_04"
+          }
+        }
+      },
+      {
+        "procedural": {
+          "name": "default",
+          "fx": {
+            "name": "ship_hit_fire"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "optics": {
+      "binoculars": "navy_binoculars"
+    }
+  },
+  {
+    "modifications": {
+      "new_ship_hull": [],
+      "new_ship_rudder": {
+        "prevModification": "new_ship_hull"
+      },
+      "new_ship_screw": [],
+      "new_ship_engine": {
+        "prevModification": "new_ship_screw"
+      },
+      "ship_tool_kit": [],
+      "manual_ship_extinguisher": [],
+      "ship_smoke_screen_system_mod": [],
+      "new_ship_pumps": [],
+      "40mm_bofors_l60_navy_universal": [],
+      "40mm_bofors_l60_navy_ap": [],
+      "40mm_bofors_l60_navy_ap_ammo_pack": {
+        "prevModification": "40mm_bofors_l60_navy_he_ammo_pack"
+      },
+      "40mm_bofors_l60_navy_he": [],
+      "40mm_bofors_l60_navy_he_ammo_pack": [],
+      "20mm_oerlikon_universal": [],
+      "20mm_oerlikon_navy_he": [],
+      "20mm_oerlikon_navy_he_ammo_pack": [],
+      "20mm_oerlikon_navy_ap": [],
+      "20mm_oerlikon_navy_ap_ammo_pack": {
+        "prevModification": "20mm_oerlikon_navy_he_ammo_pack"
+      },
+      "ship_torpedoes": [],
+      "new_aa_caliber_turrets": [],
+      "new_aux_caliber_turrets": {
+        "reqModification": "new_aa_caliber_turrets"
+      },
+      "new_main_caliber_turrets": {
+        "reqModification": "new_aux_caliber_turrets"
+      },
+      "ship_main_caliber_support": {
+        "prevModification": "20mm_oerlikon_navy_ap_ammo_pack"
+      }
+    }
+  },
+  {
+    "breaches": {
+      "repairSpeed": 20.0,
+      "waterMassVel": -14000.0,
+      "waterMassMult": 50.0,
+      "sizeToRepair": [0.01,2.0,10.0,300.0],
+      "additionalWaterDeathThreshold": 450000.0,
+      "additionalWaterShouldDiePercent": 0.45,
+      "fatalBreachDrownTime": 35.0,
+      "maxHeelingAngle": 43.0,
+      "maxHeelingTime": 10.0,
+      "criticalHeelingAnglePercent": 0.5,
+      "maxCriticalHeelingTime": 2.0,
+      "heelingDeathHeightOffsetMult": 1.0,
+      "sideCenterOfMassOffsetPercent": 0.5
+    }
+  },
+  {
+    "shipCover": [
+      {
+        "cover": {
+          "part": "compartment_01_dm",
+          "weight": 0.6,
+          "maxWaterAlive": 1.0,
+          "innerParts": {
+            "part": {
+              "partNo": "ammunition_storage_02_dm",
+              "critWaterLevel": 0.8
+            }
+          }
+        }
+      },
+      {
+        "cover": {
+          "part": "compartment_02_dm",
+          "weight": 1.0,
+          "maxWaterAlive": 1.0,
+          "innerParts": [
+            {
+              "part": {
+                "partNo": "ammunition_storage_01_dm",
+                "critWaterLevel": 0.6
+              }
+            },
+            {
+              "part": {
+                "partNo": "engine_01_dm",
+                "critWaterLevel": 0.4
+              }
+            },
+            {
+              "part": {
+                "partNo": "engine_02_dm",
+                "critWaterLevel": 0.5
+              }
+            },
+            {
+              "part": {
+                "partNo": "engine_03_dm",
+                "critWaterLevel": 0.5
+              }
+            },
+            {
+              "part": {
+                "partNo": "engine_04_dm",
+                "critWaterLevel": 0.4
+              }
+            }
+          ]
+        }
+      },
+      {
+        "cover": {
+          "part": "compartment_03_dm",
+          "weight": 0.25,
+          "maxWaterAlive": 1.0
+        }
+      }
+    ]
+  },
+  {
+    "ammo": {
+      "explodeTreshold": 0.0001,
+      "explodeArmorPower": 50.0,
+      "explodeRadius": [50.0,100.0],
+      "explodeHitPower": 50.0
+    }
+  },
+  {
+    "ammoStowages": {
+      "ammo1": {
+        "weaponTrigger": "gunner0",
+        "shells": {
+          "fatalFire": true,
+          "fatalExplosion": true,
+          "fireEvent": "ammo_fire_1",
+          "explosionEvent": "ammo_explosion_1",
+          "ammunition_storage_01_dm": {
+            "count": 2000
+          }
+        }
+      },
+      "ammo2": {
+        "weaponTrigger": "gunner1",
+        "shells": {
+          "fatalFire": true,
+          "fatalExplosion": true,
+          "fireEvent": "ammo_fire_2",
+          "explosionEvent": "ammo_explosion_2",
+          "ammunition_storage_02_dm": {
+            "count": 2000
+          }
+        }
+      },
+      "ammo3": [
+        {
+          "weaponTrigger": "gunner2"
+        },
+        {
+          "weaponTrigger": "gunner3"
+        },
+        {
+          "weaponTrigger": "gunner4"
+        },
+        {
+          "shells": {
+            "fatalFire": true,
+            "fatalExplosion": true,
+            "fireEvent": "ammo_fire_2",
+            "explosionEvent": "ammo_explosion_2",
+            "ammunition_storage_03_dm": {
+              "count": 7250
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "winch": {
+      "length": 70.0
+    }
+  },
+  {
+    "difficulty": {
+      "arcade": {
+        "tankRearmOnCaptureZone": true
+      }
+    }
+  },
+  {
+    "wreckedParts": [
+      {
+        "part": {
+          "node": "main_caliber_turret_01",
+          "idx": 1,
+          "mass": 1100.0,
+          "cutDamage": 350.0,
+          "deviation": 0.6,
+          "rotation": 2.1,
+          "collisionNode": "main_caliber_turret_01_dm"
+        }
+      },
+      {
+        "part": {
+          "node": "main_caliber_turret_02",
+          "idx": 2,
+          "mass": 1200.0,
+          "cutDamage": 350.0,
+          "deviation": 0.6,
+          "rotation": 2.1,
+          "collisionNode": "main_caliber_turret_02_dm"
+        }
+      },
+      {
+        "part": {
+          "node": "aa_turret_01",
+          "idx": 3,
+          "mass": 800.0,
+          "cutDamage": 350.0,
+          "deviation": 0.6,
+          "rotation": 2.1,
+          "collisionNode": "aa_turret_01_dm"
+        }
+      },
+      {
+        "part": {
+          "node": "aa_turret_02",
+          "idx": 4,
+          "mass": 700.0,
+          "cutDamage": 350.0,
+          "deviation": 0.6,
+          "rotation": 2.1,
+          "collisionNode": "aa_turret_02_dm"
+        }
+      },
+      {
+        "part": {
+          "node": "mast_01",
+          "idx": 5,
+          "mass": 1000.0,
+          "cutDamage": 350.0,
+          "deviation": 0.6,
+          "rotation": 2.1,
+          "collisionNode": "mast_01_dm"
+        }
+      },
+      {
+        "part": {
+          "node": "tt_02",
+          "idx": 6,
+          "mass": 800.0,
+          "cutDamage": 350.0,
+          "deviation": 0.6,
+          "rotation": 2.1,
+          "collisionNode": "tt_02_dm"
+        }
+      },
+      {
+        "part": {
+          "node": "tt_03",
+          "idx": 7,
+          "mass": 870.0,
+          "cutDamage": 350.0,
+          "deviation": 0.6,
+          "rotation": 2.1,
+          "collisionNode": "tt_03_dm"
+        }
+      }
+    ]
+  },
+  {
+    "user_skin": [
+      {
+        "name": "pr811"
+      },
+      {
+        "replace_tex": {
+          "from": "camo_darkgrey_5d*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "camo_hazegray*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "camo_navygrey_5*"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "tt_mk16_c*",
+          "param": "camo_skin_tex"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "turret_mk24_oerlikon_c*",
+          "param": "camo_skin_tex"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "turret_mk3_bofors_mod4_c*",
+          "param": "camo_skin_tex"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "pt811_c*",
+          "param": "camo_skin_tex"
+        }
+      }
+    ]
+  }
+]

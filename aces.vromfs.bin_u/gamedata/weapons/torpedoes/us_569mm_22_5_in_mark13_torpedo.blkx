@@ -1,0 +1,84 @@
+{
+  "torpedoGun": true,
+  "preset_cost": 30,
+  "bullets": 1,
+  "shotFreq": 1.5,
+  "external": true,
+  "reloadTime": 60.0,
+  "allowHumanReload": true,
+  "mesh": "torpedo_mk13",
+  "tags": {
+    "antiShipBomb": true
+  },
+  "torpedo": {
+    "armDistance": 50.0,
+    "dropSpeedRange": [-10.0,78.0],
+    "dropHeightRange": [-10.0,105.0],
+    "dropAngleRange": [-90.0,90.0],
+    "distToLive": 5210.0,
+    "maxSpeedInWater": 15.43,
+    "diveDepth": 1.0,
+    "detonationRadius": 0.1,
+    "detonationDepth": 1.0,
+    "caliber": 0.571,
+    "mass": 884.0,
+    "explosiveType": "tnt",
+    "explosiveMass": 178.0,
+    "dragCx": 0.24,
+    "startSpeed": 0.0,
+    "startPropulsionDelay": 0.1,
+    "useStartSpeed": true,
+    "autoaimEnabled": false,
+    "aaMaxAimAngle": 0.0,
+    "aaSpeedPrediction": 0.0,
+    "aaAccelPrediction": 0.0,
+    "aaAngleCorrection": 0.0,
+    "relativeVelArmorShift": [200.0,1000.0],
+    "relativeVelHitShift": [300.0,1000.0],
+    "explodeTreshold": 0.0,
+    "arcadeProp": {
+      "dropSpeedRange": [-10.0,160.0],
+      "dropHeightRange": [-10.0,150.0],
+      "dropAngleRange": [-90.0,90.0]
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 100.0,
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 1.0
+      }
+    },
+    "damage": {
+      "explosive": {
+        "radius": 0.0,
+        "offset": 0.0
+      },
+      "shatter": [
+        {
+          "useRealShatters": true
+        },
+        {
+          "countPortion": 0.01
+        },
+        {
+          "segment": {
+            "radiusScale": 0.5,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [0.0,90.0],
+            "countPortion": 0.5
+          }
+        },
+        {
+          "segment": {
+            "radiusScale": 0.5,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [270.0,359.0],
+            "countPortion": 0.5
+          }
+        }
+      ]
+    }
+  }
+}

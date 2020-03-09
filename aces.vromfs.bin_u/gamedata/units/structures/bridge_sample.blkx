@@ -1,0 +1,36 @@
+{
+  "model": "var_bridge_04_bay_a",
+  "subclass": "fortification",
+  "onRadarAs": "aam",
+  "dynCollisionGeom": true,
+  "hasExpl": true,
+  "hasDmg2": true,
+  "hasDmg": false,
+  "damageableByGun": false,
+  "expClass": "exp_bridge",
+  "renderInWaterReflection": true,
+  "class_tags": {
+    "fortest": true
+  },
+  "DamageParts": {
+    "armor60": {
+      "body_dm": {
+        "hp": 48000.0
+      }
+    },
+    "armor50": {
+      "bodypart0_dm": {
+        "hp": 40.0
+      }
+    },
+    "steel": []
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "bodypart0_dm",
+      "onKill": {
+        "expl": 1.0
+      }
+    }
+  }
+}

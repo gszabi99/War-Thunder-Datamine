@@ -1,0 +1,226 @@
+[
+  {
+    "cannon": true
+  },
+  {
+    "weaponType": -1
+  },
+  {
+    "preset_cost": 10
+  },
+  {
+    "bUseHookAsRel": true
+  },
+  {
+    "emitColor": [1.0,1.0,0.0]
+  },
+  {
+    "emitI": 10.0
+  },
+  {
+    "emitR": 3.0
+  },
+  {
+    "emitTime": 0.03
+  },
+  {
+    "aimMinDist": 0.1
+  },
+  {
+    "aimMaxDist": 2000.0
+  },
+  {
+    "maxDeltaAngle": 0.06
+  },
+  {
+    "maxDeltaAngleVertical": 0.08
+  },
+  {
+    "shotFreq": 2.0
+  },
+  {
+    "reloadTime": 10.0
+  },
+  {
+    "bulletsCartridge": 2
+  },
+  {
+    "traceFreq": 4
+  },
+  {
+    "bEnablePause": false
+  },
+  {
+    "bullets": -1
+  },
+  {
+    "bulletsCluster": 1
+  },
+  {
+    "useSingleIconForBullet": true
+  },
+  {
+    "useSingleIconForBullet": true
+  },
+  {
+    "shouldCollideWithRendinsts": true
+  },
+  {
+    "sound_path": "tanks/weapon_tanks/atgm"
+  },
+  {
+    "sound_pathStudio": "ground/weapon/atgm"
+  },
+  {
+    "sound": "atgm_LPC"
+  },
+  {
+    "sound_inside": "atgm_LPC_interior"
+  },
+  {
+    "reload_sound_path": "tanks/effects_tanks"
+  },
+  {
+    "reload_sound_pathStudio": "ground/effects"
+  },
+  {
+    "reload_sound": "reload_rocket"
+  },
+  {
+    "fxMultipleSpawn": true
+  },
+  {
+    "isBulletBelt": false
+  },
+  {
+    "drawRocketInBullet": true
+  },
+  {
+    "allowRearmOnField": true
+  },
+  {
+    "mesh": "bgm_71_tow_rocket_deployed"
+  },
+  {
+    "animChar": "bgm_71_tow_rocket_char"
+  },
+  {
+    "reloadAnimParam": "rocket_hide"
+  },
+  {
+    "bullet": {
+      "bulletType": "atgm_tank",
+      "bulletName": "127_bgm_71_itow",
+      "mass": 19.0,
+      "caliber": 0.127,
+      "sound_path": "tanks/weapon_tanks/atgm",
+      "sound_pathStudio": "ground/weapon/atgm",
+      "sound": "atgm_LPC",
+      "sound_inside": "atgm_LPC_interior",
+      "mesh": "bgm_71_tow_rocket_deployed",
+      "recoilMultiplier": 0.05,
+      "rocket": {
+        "caliber": 0.127,
+        "mass": 19.0,
+        "explosiveMass": 2.08,
+        "massEnd": 19.0,
+        "bulletType": "atgm_tank",
+        "maxDeltaAngle": 0.03,
+        "dragCx": 0.01,
+        "length": 0.68,
+        "distFromCmToStab": 0.01,
+        "CxK": 0.1,
+        "WdK": [0.1,0.1,0.1],
+        "force": 5000.0,
+        "timeFire": 15.0,
+        "thrustDeviation": 0.0,
+        "operated": true,
+        "operatedDist": 3000.0,
+        "autoLeveling": true,
+        "autoAiming": true,
+        "explosionEffect": "atgm_hit",
+        "defFxScale": [2.2,2.5],
+        "groundCollisionEffect": "art_ground_splash",
+        "groundFxScale": [1.5,1.7],
+        "ricochetEffect": "cannon_hit_apds",
+        "waterCollisionEffect": "120-203_he_water_splash",
+        "waterFxScale": [1.2,1.4],
+        "explosionPatchRadius": 5.0,
+        "smokeEffect": "trail_smoke",
+        "maxDistance": 6500.0,
+        "minDistance": 30.0,
+        "spawnExplosionWreckage": false,
+        "spawnExplosionFx": false,
+        "explosionOffset": 0.05,
+        "hitPowerMult": 1.0,
+        "nearHitPower": [1.0,50.0],
+        "midHitPower": [0.9,400.0],
+        "farHitPower": [0.1,1000.0],
+        "endHitPower": [0.01,1500.0],
+        "relativeVelHitShift": [300.0,1000.0],
+        "nearArmorPower": [10.0,50.0],
+        "midArmorPower": [7.0,400.0],
+        "farArmorPower": [0.2,700.0],
+        "relativeVelArmorShift": [200.0,1000.0],
+        "distanceFuse": false,
+        "explodeTreshold": 0.1,
+        "explodeHitPower": 400.0,
+        "explodeArmorPower": 19.0,
+        "explodeRadius": [0.4,1.07],
+        "rendinstDamageRadius": 4.0,
+        "statType": "hydra",
+        "shutterDamage": true,
+        "shutterDamageRadius": 25.0,
+        "shutterAmount": 1000,
+        "shutterArmorPower": 7.0,
+        "shutterHit": 12.0,
+        "advancedMissiles": false,
+        "useStartSpeed": true,
+        "startSpeed": 100.0,
+        "endSpeed": 296.0,
+        "speedViscosity": 0.1,
+        "timeToLive": 20.0,
+        "price": 3000.0,
+        "mesh": "bgm_71_tow_rocket_deployed",
+        "collisions": {
+          "steel": {
+            "fx": "cannon_hit_armor_cumulative",
+            "fxScale": [4.0,5.0]
+          },
+          "buildings": {
+            "fx": "atgm_hit",
+            "fxScale": [2.2,2.5]
+          },
+          "wood": {
+            "fx": "atgm_hit",
+            "fxScale": [2.2,2.5]
+          }
+        },
+        "DamageParts": {
+          "body": {
+            "hp": 5.0,
+            "armorClass": "tank_structural_steel",
+            "armorThickness": 1.0
+          }
+        },
+        "armorpower": {
+          "ArmorPower0m": [2.0,10.0],
+          "ArmorPower7000m": [1.0,7000.0]
+        },
+        "hitpower": {
+          "HitPower0m": [1.0,500.0],
+          "HitPower1000m": [0.9,1000.0],
+          "HitPower1500m": [0.65,1500.0],
+          "HitPower2500m": [0.5,2500.0],
+          "HitPower7000m": [0.0,7000.0]
+        },
+        "cumulativeDamage": {
+          "armorPower": 630.0,
+          "distance": 7.5,
+          "damage": 600.0,
+          "onHitChanceMultFire": 25.0
+        }
+      }
+    }
+  }
+]

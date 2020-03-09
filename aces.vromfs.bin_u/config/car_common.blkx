@@ -1,0 +1,53 @@
+{
+  "Steer": {
+    "default": {
+      "tLow": 0.15,
+      "tHigh": 0.25,
+      "carVel": [40.0,160.0],
+      "speedLow": [120.0,25.0],
+      "speedHigh": [200.0,50.0],
+      "returnSpeed": 260.0
+    }
+  },
+  "HandBrake": {
+    "tLow": 0.25,
+    "tHigh": 0.35
+  },
+  "commonAttachments": [
+    {
+      "sound": {
+        "eventName": "explosion",
+        "groupName": "sounds/fx",
+        "activateAfterCreate": false,
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [0.0,0.0,0.0]
+        ],
+        "name": "explosion"
+      }
+    },
+    {
+      "sound": {
+        "eventName": "fire",
+        "groupName": "sounds/fx",
+        "activateAfterCreate": false,
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [0.0,0.0,0.0]
+        ],
+        "name": "fire"
+      }
+    }
+  ],
+  "carshadows": {
+    "enable": true,
+    "shadows_ground": 0.0,
+    "neon_z_bias": -0.0001,
+    "neon_z_bias_slope": 0.0,
+    "neon_texture": "neon*"
+  }
+}

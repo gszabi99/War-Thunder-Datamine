@@ -1,0 +1,91 @@
+{
+  "bombGun": true,
+  "preset_cost": 10,
+  "shotFreq": 0.5,
+  "sound": "weapon.bombgun",
+  "reloadTime": 60.0,
+  "mesh": "bomb_82mm_mortar",
+  "bomb": {
+    "mass": 3.31,
+    "explosiveType": "tnt",
+    "explosiveMass": 0.4,
+    "bombType": "he_bomb",
+    "bombName": "82mm_o_832_he",
+    "dragCx": 0.07,
+    "caliber": 0.82,
+    "length": 0.32,
+    "distFromCmToStab": 0.77,
+    "sound": "weapon.bomb_std",
+    "waterExplosionEffect": "bigesplashxplosion_fx",
+    "hitPowerMult": 1.0,
+    "nearHitPower": [1.0,50.0],
+    "midHitPower": [0.9,400.0],
+    "farHitPower": [0.1,1000.0],
+    "endHitPower": [0.01,1500.0],
+    "relativeVelHitShift": [300.0,1000.0],
+    "nearArmorPower": [10.0,50.0],
+    "midArmorPower": [7.0,400.0],
+    "farArmorPower": [0.2,700.0],
+    "relativeVelArmorShift": [200.0,1000.0],
+    "explodeTreshold": 0.1,
+    "explodeHitPower": 400.0,
+    "explodeArmorPower": 100.0,
+    "isDepthCharge": true,
+    "isMortar": true,
+    "DamageParts": {
+      "body": {
+        "hp": 35.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 5.0,
+        "explosionArmorQuality": 45.0,
+        "shatterArmorQuality": 45.0
+      }
+    },
+    "damage": {
+      "shatter": [
+        {
+          "useRealShatters": true
+        },
+        {
+          "countPortion": 0.5
+        },
+        {
+          "segment": {
+            "radiusScale": 2.0,
+            "penetrationScale": 1.0,
+            "damageScale": 2.0,
+            "angles": [0.0,30.0],
+            "countPortion": 0.2
+          }
+        },
+        {
+          "segment": {
+            "radiusScale": 2.0,
+            "penetrationScale": 1.0,
+            "damageScale": 2.2,
+            "angles": [31.0,130.0],
+            "countPortion": 0.3
+          }
+        },
+        {
+          "segment": {
+            "radiusScale": 2.0,
+            "penetrationScale": 1.0,
+            "damageScale": 2.2,
+            "angles": [230.0,330.0],
+            "countPortion": 0.3
+          }
+        },
+        {
+          "segment": {
+            "radiusScale": 2.0,
+            "penetrationScale": 1.0,
+            "damageScale": 2.0,
+            "angles": [331.0,359.0],
+            "countPortion": 0.2
+          }
+        }
+      ]
+    }
+  }
+}

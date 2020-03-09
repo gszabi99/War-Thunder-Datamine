@@ -1,0 +1,115 @@
+{
+  "rocketGun": true,
+  "preset_cost": 2,
+  "bullets": 1,
+  "shotFreq": 3.0,
+  "sound_path": "ships/weapon_common/rockets",
+  "sound_pathStudio": "naval/weapon/rockets",
+  "sound": "75mm_m3",
+  "isBulletBelt": false,
+  "helicopterGroup": 2,
+  "reloadTime": 60.0,
+  "allowHumanReload": true,
+  "mesh": "m_8_rocket",
+  "tags": {
+    "antiTankRocket": true,
+    "antiShipRocket": true
+  },
+  "rocket": {
+    "bulletType": "rocket_tank",
+    "bulletName": "82mm_m_8",
+    "explosiveType": "tnt",
+    "explosiveMass": 0.6,
+    "caliber": 0.082,
+    "mass": 7.92,
+    "massEnd": 6.74,
+    "maxDeltaAngle": 0.5,
+    "dragCx": 0.007,
+    "length": 0.68,
+    "distFromCmToStab": 0.01,
+    "CxK": 0.1,
+    "WdK": [0.1,0.1,0.1],
+    "force": 6500.0,
+    "timeFire": 0.87,
+    "thrustDeviation": 0.003,
+    "explosionEffect": "atgm_hit",
+    "defFxScale": [1.7,2.1],
+    "groundCollisionEffect": "art_ground_splash",
+    "groundFxScale": [1.3,1.5],
+    "ricochetEffect": "cannon_ricochet",
+    "waterCollisionEffect": "120-203_he_water_splash",
+    "waterFxScale": [0.3,0.4],
+    "explosionPatchRadius": 3.4,
+    "smokeEffect": "hydra_smoke",
+    "maxDistance": 5500.0,
+    "minDistance": 30.0,
+    "distanceFuse": false,
+    "relativeVelHitShift": [300.0,1000.0],
+    "relativeVelArmorShift": [200.0,1000.0],
+    "statType": "hydra",
+    "spawnExplosionWreckage": false,
+    "spawnExplosionFx": false,
+    "explosionOffset": 0.05,
+    "explodeTreshold": 0.1,
+    "rendinstDamageRadius": 4.0,
+    "advancedMissiles": false,
+    "useStartSpeed": true,
+    "startSpeed": 50.0,
+    "endSpeed": 315.0,
+    "speedViscosity": 0.05,
+    "timeToLive": 20.0,
+    "price": 3000.0,
+    "collisions": {
+      "steel": {
+        "fx": "cannon_hit_armor_cumulative",
+        "fxScale": [1.0,1.0]
+      },
+      "buildings": {
+        "fx": "atgm_hit",
+        "fxScale": [1.7,2.1]
+      },
+      "wood": {
+        "fx": "atgm_hit",
+        "fxScale": [1.7,2.1]
+      },
+      "armor": {
+        "fx": "cannon_hit_armor_cumulative",
+        "fxScale": [1.0,1.0]
+      }
+    },
+    "damage": {
+      "shatter": [
+        {
+          "useRealShatters": true
+        },
+        {
+          "countPortion": 0.03
+        },
+        {
+          "segment": {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [0.0,100.0],
+            "countPortion": 0.5
+          }
+        },
+        {
+          "segment": {
+            "angles": [101.0,259.0],
+            "countPortion": 0.0
+          }
+        },
+        {
+          "segment": {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [260.0,359.0],
+            "countPortion": 0.5
+          }
+        }
+      ]
+    }
+  }
+}

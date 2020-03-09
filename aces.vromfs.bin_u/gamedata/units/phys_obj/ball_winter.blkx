@@ -1,0 +1,49 @@
+{
+  "model": "football_winter",
+  "node": "ball",
+  "linearDamping": 0.05,
+  "angularDamping": 0.4,
+  "hitEnergyMult": 0.0,
+  "friction": 0.01,
+  "bouncing": 2.0,
+  "limitFriction": 9.81,
+  "frictionGround": 75.0,
+  "bouncingGround": 0.6,
+  "minSpeedForBounce": 0.15,
+  "sendASPeriod": 10.0,
+  "linearErrorReductionViscosity": 0.03,
+  "angularErrorReductionViscosity": 0.01,
+  "mass": 1000.0,
+  "momentOfInertia": [0.5,0.5,0.5],
+  "scale": 1.1,
+  "shouldTraceGround": true,
+  "boundingRadius": 1.5,
+  "isVelocityLimitAbsolute": true,
+  "velocityLimit": [60.0,15.0,60.0],
+  "velocityLimitDampingMult": [0.8,0.8,0.8],
+  "isOmegaLimitAbsolute": true,
+  "omegaLimit": [5.0,5.0,5.0],
+  "omegaLimitDampingMult": [0.8,0.8,0.8],
+  "shouldSleepOnIdle": false,
+  "collisionResource": {
+    "normalizeCenter": true,
+    "margin": 0.05,
+    "scale": 0.7,
+    "props": {
+      "collision": "sphere"
+    }
+  },
+  "ccdSpheres": {
+    "ccd": [0.0,0.0,0.0,0.115]
+  },
+  "sfx": {
+    "pathStudio": "football_event",
+    "nameHitGround": "ball_hit_grass",
+    "nameHitBuilding": "ball_hit_concrete",
+    "nameHitUnit": "ball_hit_tank",
+    "nameRoll": "ball_roll",
+    "minSpeed": 1.0,
+    "maxSpeed": 20.0,
+    "hitCooldown": 0.05
+  }
+}

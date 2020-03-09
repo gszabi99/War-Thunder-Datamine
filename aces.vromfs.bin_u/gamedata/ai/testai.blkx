@@ -1,0 +1,114 @@
+[
+  {
+    "selector": [
+      {
+        "name": "testFighterVsFighter"
+      },
+      {
+        "selectStrategy": "ordered"
+      },
+      {
+        "reaction": {
+          "event": "groundAhead",
+          "parallel": {
+            "turnToEvasiveDir": [],
+            "stayAtSpeed": {
+              "speedMode": "boostOn"
+            }
+          }
+        }
+      },
+      {
+        "reaction": {
+          "event": "collisionAhead",
+          "parallel": {
+            "turnToEvasiveDir": [],
+            "stayAtSpeed": {
+              "speedMode": "boostOn"
+            }
+          }
+        }
+      },
+      {
+        "reaction": {
+          "event": "outsideBattleField",
+          "flyToPos": {
+            "speed": 550.0,
+            "dist": -1.0,
+            "minAlt": 100.0,
+            "destType": "battleField"
+          }
+        }
+      },
+      {
+        "sequencer": {
+          "findUnit": {
+            "searchForAir": true,
+            "onlyMissionTargets": false,
+            "radius": 100000.0
+          },
+          "energyAttack": {
+            "allowSpeedCheat": false
+          }
+        }
+      }
+    ]
+  },
+  {
+    "selector": [
+      {
+        "name": "testFighterVsFighterDM"
+      },
+      {
+        "selectStrategy": "ordered"
+      },
+      {
+        "reaction": {
+          "event": "groundAhead",
+          "parallel": {
+            "turnToEvasiveDir": [],
+            "stayAtSpeed": {
+              "speedMode": "boostOn"
+            }
+          }
+        }
+      },
+      {
+        "reaction": {
+          "event": "collisionAhead",
+          "parallel": {
+            "turnToEvasiveDir": [],
+            "stayAtSpeed": {
+              "speedMode": "boostOn"
+            }
+          }
+        }
+      },
+      {
+        "reaction": {
+          "event": "outsideBattleField",
+          "flyToPos": {
+            "speed": 550.0,
+            "dist": -1.0,
+            "minAlt": 100.0,
+            "destType": "battleField"
+          }
+        }
+      },
+      {
+        "sequencer": {
+          "findUnit": {
+            "searchForAir": true,
+            "onlyMissionTargets": false,
+            "radius": 100000.0
+          },
+          "fighterAttackFighter": {
+            "allowSpeedCheat": false,
+            "avoidCollisions": false,
+            "ignoreDistance": true
+          }
+        }
+      }
+    ]
+  }
+]

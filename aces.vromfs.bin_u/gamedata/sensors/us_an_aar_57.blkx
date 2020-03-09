@@ -1,0 +1,35 @@
+{
+  "type": "mlws",
+  "range": 7500.0,
+  "band0": true,
+  "band1": true,
+  "matchSector": 10.0,
+  "signalHoldTime": 3.0,
+  "closureRateMin": 100.0,
+  "angularRateMax": 10.0,
+  "signalSfxName": "alarm_launch_detected",
+  "automaticFlares": true,
+  "flaresSeriesInterval": 1.0,
+  "numFlares": 4,
+  "flaresInterval": 0.1,
+  "receivers": [
+    {
+      "receiver": {
+        "azimuth": 0.0,
+        "elevation": 0.0,
+        "azimuthWidth": 180.0,
+        "elevationWidth": 90.0,
+        "angleFinder": true
+      }
+    },
+    {
+      "receiver": {
+        "azimuth": -180.0,
+        "elevation": 0.0,
+        "azimuthWidth": 180.0,
+        "elevationWidth": 90.0,
+        "angleFinder": true
+      }
+    }
+  ]
+}

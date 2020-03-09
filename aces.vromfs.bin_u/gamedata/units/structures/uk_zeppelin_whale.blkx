@@ -1,0 +1,30 @@
+{
+  "hasDmg2": false,
+  "hasDmg2Collision": false,
+  "hasDmg": false,
+  "hasExpl": false,
+  "damageableByGun": false,
+  "renderInWaterReflection": true,
+  "expClass": "exp_bridge",
+  "model": "uk_zeppelin_whale",
+  "subclass": "fortification",
+  "dynCollisionGeom": true,
+  "DamageParts": {
+    "armor99": {
+      "body_dm": {
+        "hp": 10000.0
+      }
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body_dm",
+      "onHit": {
+        "fire": 1.0
+      },
+      "onKill": {
+        "expl": 1.0
+      }
+    }
+  }
+}

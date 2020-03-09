@@ -1,0 +1,1322 @@
+[
+  {
+    "ver": 2
+  },
+  {
+    "default": {
+      "vital": false,
+      "hitTestType": "armor",
+      "malfunctionDamage": 0.7,
+      "stopChanceOnDeadPart": 1.0,
+      "castOnKillAfterTankPartDead": true,
+      "fireProtectionHp": -1.0,
+      "externalArmor": false,
+      "minRelHpSelfRepair": 0.5,
+      "maxRelHpSelfRepair": 0.5,
+      "selfRepairDelay": 0.0,
+      "selfRepairTime": -1.0,
+      "ignoreDeadWithSplash": false
+    }
+  },
+  {
+    "body": {
+      "externalArmor": true,
+      "body": [],
+      "body_front": [],
+      "body_back": [],
+      "body_side": [],
+      "body_top": [],
+      "body_bottom": [],
+      "ship_hull": [],
+      "composite_armor_hull_NN": {
+        "template": "composite_armor_hull_#15#"
+      },
+      "composite_armor_turret_NN": {
+        "template": "composite_armor_turret_#15#"
+      },
+      "ex_era_hull_NN": {
+        "template": "ex_era_hull_#50#"
+      },
+      "ex_era_turret_NN": {
+        "template": "ex_era_turret_#50#"
+      },
+      "bow": [],
+      "bow_l": [],
+      "bow_r": [],
+      "bow_back": [],
+      "bow_bottom": [],
+      "bow_front": [],
+      "bow_side": [],
+      "bow_shield": [],
+      "bow_top": [],
+      "mid": [],
+      "mid_l": [],
+      "mid_r": [],
+      "mid_back": [],
+      "mid_bottom": [],
+      "mid_front": [],
+      "mid_side": [],
+      "mid_shield": [],
+      "mid_top": [],
+      "stern": [],
+      "stern_l": [],
+      "stern_r": [],
+      "stern_back": [],
+      "stern_bottom": [],
+      "stern_front": [],
+      "stern_side": [],
+      "stern_shield": [],
+      "stern_top": [],
+      "deckhouse": [],
+      "deckhouse_side": [],
+      "superstructure": [],
+      "compartment": {
+        "compartment_NN": {
+          "template": "compartment_#15#"
+        }
+      },
+      "cover_NN": {
+        "template": "cover_#16#"
+      },
+      "hydrofoil_NN": {
+        "template": "hydrofoil_#10#"
+      },
+      "funnel_NN": {
+        "template": "funnel_#10#"
+      },
+      "armor_belt_NN": {
+        "template": "armor_belt_#16#"
+      },
+      "armor_cit_NN": {
+        "template": "armor_cit_#20#"
+      },
+      "at_bulge_NN": {
+        "template": "at_bulge_#16#"
+      }
+    }
+  },
+  {
+    "superstructure": {
+      "externalArmor": true,
+      "superstructure_front": [],
+      "superstructure_back": [],
+      "superstructure_side": [],
+      "superstructure_top": [],
+      "superstructure_bottom": []
+    }
+  },
+  {
+    "engine": {
+      "vital": true,
+      "movement": true,
+      "fire": true,
+      "hitTestType": "inner",
+      "genName": "tank_engine",
+      "engine": [],
+      "engine_NN": {
+        "template": "engine_#10#"
+      },
+      "engine_l_NN": {
+        "template": "engine_l_#10#"
+      },
+      "engine_r_NN": {
+        "template": "engine_r_#10#"
+      },
+      "engine_room_NN": {
+        "template": "engine_room_#10#"
+      }
+    }
+  },
+  {
+    "emtr_fire_engine": {
+      "genName": "tank_engine_fire",
+      "vital": true
+    }
+  },
+  {
+    "transmission": {
+      "vital": true,
+      "movement": true,
+      "fire": true,
+      "hitTestType": "inner",
+      "genName": "tank_transmission",
+      "transmission": [],
+      "transmission_NN": {
+        "template": "transmission_#10#"
+      },
+      "steering": {
+        "steering_gear_NN": {
+          "template": "steering_gear_#10#"
+        }
+      }
+    }
+  },
+  {
+    "fuel": {
+      "vital": true,
+      "fire": true,
+      "hitTestType": "inner",
+      "genName": "tank_transmission",
+      "fuel_tank": {
+        "hitTestType": "inner",
+        "genName": "tank_fuel_tank",
+        "vital": true,
+        "fire": true
+      },
+      "fuel_tank_NN": {
+        "template": "fuel_tank_#10#",
+        "hitTestType": "inner",
+        "genName": "tank_fuel_tank",
+        "vital": true,
+        "fire": true
+      },
+      "fuel_tank_l_NN": {
+        "template": "fuel_tank_l_#05#",
+        "hitTestType": "inner",
+        "genName": "tank_fuel_tank",
+        "vital": true,
+        "fire": true
+      },
+      "fuel_tank_r_NN": {
+        "template": "fuel_tank_r_#05#",
+        "hitTestType": "inner",
+        "genName": "tank_fuel_tank",
+        "vital": true,
+        "fire": true
+      }
+    }
+  },
+  {
+    "aircraft_gunner": {
+      "gunnerN": {
+        "template": "gunner#1:16#"
+      }
+    }
+  },
+  {
+    "aircraft_gun": {
+      "mgunN": {
+        "template": "mgun#1:24#"
+      },
+      "cannonN": {
+        "template": "cannon#1:10#"
+      },
+      "flaresN": {
+        "template": "flares#1:10#"
+      }
+    }
+  },
+  {
+    "gun": {
+      "gun": [],
+      "gunN": {
+        "template": "gun#0:12#"
+      }
+    }
+  },
+  {
+    "gun_barrel": {
+      "vital": true,
+      "genName": "tank_gun_barrel",
+      "main_caliber_gun_NN": {
+        "template": "main_caliber_gun_#20#"
+      },
+      "main_caliber_turret_NN": {
+        "template": "main_caliber_turret_#20#"
+      },
+      "auxiliary_caliber_gun_NN": {
+        "template": "auxiliary_caliber_gun_#20#"
+      },
+      "auxiliary_caliber_turret_NN": {
+        "template": "auxiliary_caliber_turret_#20#"
+      },
+      "aa_gun_NN": {
+        "template": "aa_gun_#40#"
+      },
+      "aa_turret_NN": {
+        "template": "aa_turret_#40#"
+      },
+      "gun_barrel": [],
+      "gun_barrel_NN": {
+        "template": "gun_barrel_#40#"
+      },
+      "mg_NN": {
+        "template": "mg_#20#"
+      },
+      "mg_l_NN": {
+        "template": "mg_l_#10#"
+      },
+      "mg_r_NN": {
+        "template": "mg_r_#10#"
+      }
+    }
+  },
+  {
+    "cannon_breech": {
+      "vital": true,
+      "hitTestType": "inner",
+      "genName": "tank_cannon_breech",
+      "cannon_breech": [],
+      "cannon_breech_NN": {
+        "template": "cannon_breech_#10#"
+      }
+    }
+  },
+  {
+    "drive_turret_h": {
+      "vital": true,
+      "hitTestType": "inner",
+      "genName": "tank_drive_turret_h",
+      "drive_turret_h": [],
+      "drive_turret_h_NN": {
+        "template": "drive_turret_h_#10#"
+      }
+    }
+  },
+  {
+    "drive_turret_v": {
+      "vital": true,
+      "hitTestType": "inner",
+      "genName": "tank_drive_turret_v",
+      "drive_turret_v": [],
+      "drive_turret_v_NN": {
+        "template": "drive_turret_v_#10#"
+      }
+    }
+  },
+  {
+    "chassis": {
+      "vital": true,
+      "hitTestType": "exclude",
+      "track": {
+        "movement": true,
+        "genName": "tank_track",
+        "track_left": {
+          "track_l": [],
+          "track_l_01": []
+        },
+        "track_right": {
+          "track_r": [],
+          "track_r_01": []
+        }
+      },
+      "wheel": {
+        "genName": "tank_suspension",
+        "wheel_r_NN": {
+          "template": "wheel_r_#18#"
+        },
+        "wheel_l_NN": {
+          "template": "wheel_l_#18#"
+        },
+        "wheel_r_drive": [],
+        "wheel_l_drive": [],
+        "wheel_r_front": [],
+        "wheel_l_front": [],
+        "wheel_r_back": [],
+        "wheel_l_back": [],
+        "wheel_r_top_NN": {
+          "template": "wheel_r_top_#12#"
+        },
+        "wheel_l_top_NN": {
+          "template": "wheel_l_top_#12#"
+        },
+        "wheel_support": [],
+        "suspension": []
+      },
+      "suspension": {
+        "vital": false,
+        "suspension_l_NN": {
+          "template": "suspension_l_#03#"
+        },
+        "suspension_r_NN": {
+          "template": "suspension_r_#03#"
+        }
+      }
+    }
+  },
+  {
+    "crew": {
+      "hitTestType": "inner",
+      "commander": {
+        "commander": {
+          "genName": "tank_commander",
+          "vital": true
+        }
+      },
+      "driver": {
+        "driver": {
+          "genName": "tank_driver",
+          "vital": true,
+          "movement": true
+        }
+      },
+      "gunner": {
+        "gunner": {
+          "genName": "tank_gunner",
+          "vital": true
+        },
+        "gunner_01": {
+          "template": "gunner_#20#",
+          "genName": "tank_gunner",
+          "vital": true
+        }
+      },
+      "loader": {
+        "loader": {
+          "genName": "tank_loader",
+          "vital": true
+        },
+        "loader_01": {
+          "template": "loader_#20#",
+          "genName": "tank_loader",
+          "vital": true
+        }
+      },
+      "machinegunner": {
+        "machine_gunner": {
+          "genName": "tank_machine_gunner",
+          "vital": true
+        },
+        "machine_gunner_NN": {
+          "template": "machine_gunner_#04#",
+          "genName": "tank_machine_gunner",
+          "vital": true
+        }
+      },
+      "bridge": {
+        "bridge": []
+      }
+    }
+  },
+  {
+    "ammo": {
+      "vital": true,
+      "hitTestType": "inner",
+      "genName": "tank_ammo",
+      "ammo_turret": [],
+      "ammo_turret_NN": {
+        "template": "ammo_turret_#70#"
+      },
+      "ammo_body": [],
+      "ammo_body_NN": {
+        "template": "ammo_body_#55#"
+      },
+      "ammo_body_l_NN": {
+        "template": "ammo_body_l_#20#"
+      },
+      "ammo_body_r_NN": {
+        "template": "ammo_body_r_#20#"
+      }
+    }
+  },
+  {
+    "optic": []
+  },
+  {
+    "optic_gun": []
+  },
+  {
+    "optic_gun_NN": {
+      "template": "optic_gun_#2#"
+    }
+  },
+  {
+    "optic_gun_NN": {
+      "template": "optic_gun_#05#"
+    }
+  },
+  {
+    "optic_turret": []
+  },
+  {
+    "optic_turret_NN": {
+      "template": "optic_turret_#14#"
+    }
+  },
+  {
+    "optic_body_mg": []
+  },
+  {
+    "optic_body": []
+  },
+  {
+    "optic_body_r": []
+  },
+  {
+    "optic_body_l": []
+  },
+  {
+    "optic_body_1": []
+  },
+  {
+    "optic_body_2": []
+  },
+  {
+    "optic_body_NN": {
+      "template": "optic_body_#05#"
+    }
+  },
+  {
+    "radiator": {
+      "vital": true,
+      "hitTestType": "inner",
+      "genName": "tank_radiator",
+      "radiator": [],
+      "radiator_l": [],
+      "radiator_r": [],
+      "radiator_l_01": [],
+      "radiator_r_01": []
+    }
+  },
+  {
+    "radio_station": {
+      "hitTestType": "inner"
+    }
+  },
+  {
+    "radio_station_NN": {
+      "template": "radio_station_#10#",
+      "hitTestType": "inner"
+    }
+  },
+  {
+    "sensor": {
+      "radar": [],
+      "radarN": {
+        "template": "radar#1:10#"
+      },
+      "rwr": [],
+      "rwrN": {
+        "template": "rwr#1:10#"
+      },
+      "sonar": [],
+      "sonarN": {
+        "template": "sonar#1:10#"
+      },
+      "antenna_target_location": [],
+      "antenna_target_tagging": [],
+      "antenna_target_location_NN": {
+        "template": "antenna_target_location_#05#"
+      },
+      "antenna_target_tagging_NN": {
+        "template": "antenna_target_tagging_#05#"
+      },
+      "antenna_target_tagging_mount_NN": {
+        "template": "antenna_target_tagging_mount_#05#"
+      }
+    }
+  },
+  {
+    "fire_director_NN": {
+      "template": "fire_director_#05#"
+    }
+  },
+  {
+    "fire_director_mount_NN": {
+      "template": "fire_director_mount_#05#"
+    }
+  },
+  {
+    "counter_measure": {
+      "ircm": {
+        "hitTestType": "inner"
+      },
+      "ircm_NN": {
+        "template": "ircm_#10#",
+        "hitTestType": "inner"
+      },
+      "ecm": {
+        "hitTestType": "inner"
+      },
+      "ecm_NN": {
+        "template": "ecm_#10#",
+        "hitTestType": "inner"
+      }
+    }
+  },
+  {
+    "gun_mask": []
+  },
+  {
+    "gun_mask_NN": {
+      "template": "gun_mask_#20#"
+    }
+  },
+  {
+    "gun_barrel_mount": {
+      "template": "gun_barrel_mount_#10#"
+    }
+  },
+  {
+    "bodypartN": {
+      "template": "bodypart#0:9#"
+    }
+  },
+  {
+    "armor": {
+      "armorN": {
+        "template": "armor#0:30#"
+      }
+    }
+  },
+  {
+    "pump": []
+  },
+  {
+    "pump_NN": {
+      "template": "pump_#05#"
+    }
+  },
+  {
+    "elevator_NN": {
+      "template": "elevator_#20#"
+    }
+  },
+  {
+    "torpedo": {
+      "torpedo_NN": {
+        "template": "torpedo_#30#"
+      },
+      "torpedo_l_NN": {
+        "template": "torpedo_l_#10#"
+      },
+      "torpedo_r_NN": {
+        "template": "torpedo_r_#10#"
+      }
+    }
+  },
+  {
+    "torpedo_hatch": {
+      "torpedo_hatch_NN": {
+        "template": "torpedo_hatch_#02#"
+      },
+      "torpedo_hatch_l": [],
+      "torpedo_hatch_r": []
+    }
+  },
+  {
+    "ammunition_storage_NN": {
+      "template": "ammunition_storage_#20#"
+    }
+  },
+  {
+    "ammunition_storage_shells_NN": {
+      "template": "ammunition_storage_shells_#20#"
+    }
+  },
+  {
+    "ammunition_storage_charges_NN": {
+      "template": "ammunition_storage_charges_#20#"
+    }
+  },
+  {
+    "ammunition_storage_aux_NN": {
+      "template": "ammunition_storage_aux_#20#"
+    }
+  },
+  {
+    "mast_NN": {
+      "template": "mast_#10#"
+    }
+  },
+  {
+    "radar_NN": {
+      "template": "radar_#10#"
+    }
+  },
+  {
+    "depth_charge": {
+      "depth_charge_NN": {
+        "template": "depth_charge_#90#"
+      },
+      "depth_charge_l_NN": {
+        "template": "depth_charge_l_#30#"
+      },
+      "depth_charge_r_NN": {
+        "template": "depth_charge_r_#30#"
+      }
+    }
+  },
+  {
+    "depth_charge_mount_NN": {
+      "template": "depth_charge_mount_#24#"
+    }
+  },
+  {
+    "depth_charge_mount_l_NN": {
+      "template": "depth_charge_mount_l_#20#"
+    }
+  },
+  {
+    "depth_charge_mount_r_NN": {
+      "template": "depth_charge_mount_r_#20#"
+    }
+  },
+  {
+    "holder_NN": {
+      "template": "holder_#20#"
+    }
+  },
+  {
+    "holder_l_NN": {
+      "template": "holder_l_#20#"
+    }
+  },
+  {
+    "holder_r_NN": {
+      "template": "holder_r_#20#"
+    }
+  },
+  {
+    "bulkhead_NN": {
+      "template": "bulkhead_#40#"
+    }
+  },
+  {
+    "torpedo_tube": {
+      "tt_NN": {
+        "template": "tt_#20#"
+      },
+      "tt_l_NN": {
+        "template": "tt_l_#10#"
+      },
+      "tt_r_NN": {
+        "template": "tt_r_#10#"
+      }
+    }
+  },
+  {
+    "turret": {
+      "externalArmor": true,
+      "turret_front": [],
+      "turret_back": [],
+      "turret_side": [],
+      "turret_top": [],
+      "turret_bottom": [],
+      "turret_NN_front": {
+        "template": "turret_#40#_front"
+      },
+      "turret_NN_back": {
+        "template": "turret_#40#_back"
+      },
+      "turret_NN_side": {
+        "template": "turret_#40#_side"
+      },
+      "turret_NN_top": {
+        "template": "turret_#40#_top"
+      },
+      "turret_NN_bottom": {
+        "template": "turret_#40#_bottom"
+      },
+      "turret_NN": {
+        "template": "turret_#40#"
+      }
+    }
+  },
+  {
+    "rudder": {
+      "rudder_l": [],
+      "rudder_r": [],
+      "rudder_NN": {
+        "template": "rudder_#10#"
+      }
+    }
+  },
+  {
+    "ex_armor_NN": {
+      "template": "ex_armor_#30#"
+    }
+  },
+  {
+    "ex_armor_r_NN": {
+      "template": "ex_armor_r_#15#"
+    }
+  },
+  {
+    "ex_armor_l_NN": {
+      "template": "ex_armor_l_#15#"
+    }
+  },
+  {
+    "ex_armor_body_NN": {
+      "template": "ex_armor_body_#10#"
+    }
+  },
+  {
+    "ex_armor_body_r_NN": {
+      "template": "ex_armor_body_r_#11#"
+    }
+  },
+  {
+    "ex_armor_body_l_NN": {
+      "template": "ex_armor_body_l_#11#"
+    }
+  },
+  {
+    "ex_armor_turret_NN": {
+      "template": "ex_armor_turret_#10#"
+    }
+  },
+  {
+    "ex_armor_turret_r_NN": {
+      "template": "ex_armor_turret_r_#10#"
+    }
+  },
+  {
+    "ex_armor_turret_l_NN": {
+      "template": "ex_armor_turret_l_#10#"
+    }
+  },
+  {
+    "ex_decor_body_r_NN": {
+      "template": "ex_decor_body_r_#16#",
+      "externalArmor": true
+    }
+  },
+  {
+    "ex_decor_body_l_NN": {
+      "template": "ex_decor_body_l_#16#",
+      "externalArmor": true
+    }
+  },
+  {
+    "ex_decor_r_NN": {
+      "template": "ex_decor_r_#16#",
+      "externalArmor": true
+    }
+  },
+  {
+    "ex_decor_l_NN": {
+      "template": "ex_decor_l_#16#",
+      "externalArmor": true
+    }
+  },
+  {
+    "ex_decor_NN": {
+      "template": "ex_decor_#16#",
+      "externalArmor": true
+    }
+  },
+  {
+    "fuse": {
+      "fuse": [],
+      "fuseN": {
+        "template": "fuse#4#"
+      }
+    }
+  },
+  {
+    "gun_barrel_armor": {
+      "externalArmor": true
+    }
+  },
+  {
+    "body_shield": {
+      "externalArmor": true
+    }
+  },
+  {
+    "gun_mask_shield": {
+      "externalArmor": true
+    }
+  },
+  {
+    "mg_twin_armor": {
+      "externalArmor": true
+    }
+  },
+  {
+    "mg_aft_mask": {
+      "externalArmor": true
+    }
+  },
+  {
+    "body_front_hatch": []
+  },
+  {
+    "turret_commander": []
+  },
+  {
+    "foremast": []
+  },
+  {
+    "mainmast": []
+  },
+  {
+    "mizzenmast": []
+  },
+  {
+    "foremast_coursesail": []
+  },
+  {
+    "foremast_topsail": []
+  },
+  {
+    "bowsprit_sail": []
+  },
+  {
+    "mainmast_coursesail": []
+  },
+  {
+    "mainmast_topsail": []
+  },
+  {
+    "mizzenmast_sail": []
+  },
+  {
+    "aircraft_engine": {
+      "engineN": {
+        "template": "engine#8#"
+      }
+    }
+  },
+  {
+    "aircraft_transmission": {
+      "transmissionN": {
+        "template": "transmission#2#"
+      }
+    }
+  },
+  {
+    "aircraft_engine_shaft": {
+      "engine_shaftN": {
+        "template": "engine_shaft#8#"
+      }
+    }
+  },
+  {
+    "aircraft_propeller": {
+      "propellerN": {
+        "template": "prop01_#8#"
+      }
+    }
+  },
+  {
+    "aircraft_propeller_disc": {
+      "propellerN": {
+        "template": "prop02_#8#"
+      }
+    }
+  },
+  {
+    "aircraft_propeller_3": {
+      "propellerN": {
+        "template": "prop03_#8#"
+      }
+    }
+  },
+  {
+    "aircraft_propeller_side": {
+      "propellerN": {
+        "template": "prop_side_#8#"
+      }
+    }
+  },
+  {
+    "aircraft_propeller_shaft": {
+      "propeller_shaftN": {
+        "template": "propeller_shaft#8#"
+      }
+    }
+  },
+  {
+    "glass": {
+      "glass": []
+    }
+  },
+  {
+    "holes": []
+  },
+  {
+    "wing_l": {
+      "wing_l": []
+    }
+  },
+  {
+    "wing1_l": {
+      "wing1_l": []
+    }
+  },
+  {
+    "wing2_l": {
+      "wing2_l": []
+    }
+  },
+  {
+    "wing_r": {
+      "wing_r": []
+    }
+  },
+  {
+    "wing1_r": {
+      "wing1_r": []
+    }
+  },
+  {
+    "wing2_r": {
+      "wing2_r": []
+    }
+  },
+  {
+    "tail": {
+      "tail": []
+    }
+  },
+  {
+    "tail_plane": {
+      "hstab": {
+        "stab": [],
+        "stab1": [],
+        "stab2": []
+      },
+      "vstab": {
+        "fin": [],
+        "fin1": [],
+        "fin2": []
+      }
+    }
+  },
+  {
+    "aircraft_control_surface": {
+      "aircraft_aileron": {
+        "aileron_l": [],
+        "aileron1_l": [],
+        "aileron2_l": [],
+        "aileron3_l": [],
+        "aileron_r": [],
+        "aileron1_r": [],
+        "aileron2_r": [],
+        "aileron3_r": [],
+        "elevon_l": [],
+        "elevon_r": [],
+        "flaperon_l": [],
+        "flaperon1_l": [],
+        "flaperon_r": [],
+        "flaperon1_r": [],
+        "aileron_interceptor_l": [],
+        "aileron_interceptor1_l": [],
+        "aileron_interceptor_r": [],
+        "aileron_interceptor1_r": []
+      },
+      "aircraft_elevator": {
+        "elevator": [],
+        "elevator0": [],
+        "elevator1": []
+      },
+      "aircraft_rudder": {
+        "rudder": [],
+        "rudder0": [],
+        "rudder1": [],
+        "rudder_interceptor_l": [],
+        "rudder_interceptor1_l": [],
+        "rudder_interceptor_r": [],
+        "rudder_interceptor1_r": []
+      }
+    }
+  },
+  {
+    "wingcontrol": {
+      "wingcontrol": [],
+      "wingcontrol_l": [],
+      "wingcontrol_r": []
+    }
+  },
+  {
+    "tailcontrol": {
+      "tailcontrol": []
+    }
+  },
+  {
+    "airbrake": {
+      "airbrake_l": [],
+      "airbrake_r": [],
+      "airbrake_c": [],
+      "airbrake_lN": {
+        "template": "airbrake_l#1:4#"
+      },
+      "airbrake_rN": {
+        "template": "airbrake_r#1:4#"
+      },
+      "airbrake_cN": {
+        "template": "airbrake_c#1:4#"
+      },
+      "airbrake1_l": [],
+      "airbrake1_r": [],
+      "airbrake1_c": [],
+      "airbrake1_lN": {
+        "template": "airbrake1_l#1:4#"
+      },
+      "airbrake1_rN": {
+        "template": "airbrake1_r#1:4#"
+      },
+      "airbrake1_cN": {
+        "template": "airbrake1_c#1:4#"
+      }
+    }
+  },
+  {
+    "spar_l": {
+      "spar_l": []
+    }
+  },
+  {
+    "spar1_l": {
+      "spar1_l": []
+    }
+  },
+  {
+    "spar2_l": {
+      "spar2_l": []
+    }
+  },
+  {
+    "spar_r": {
+      "spar_r": []
+    }
+  },
+  {
+    "spar1_r": {
+      "spar1_r": []
+    }
+  },
+  {
+    "spar2_r": {
+      "spar2_r": []
+    }
+  },
+  {
+    "oil": {
+      "oilN": {
+        "template": "oil#1:12#"
+      }
+    }
+  },
+  {
+    "water": {
+      "waterN": {
+        "template": "water#6#"
+      }
+    }
+  },
+  {
+    "tank": {
+      "tankN": {
+        "template": "tank#8#"
+      }
+    }
+  },
+  {
+    "pilot": {
+      "pilot": [],
+      "pilot1": []
+    }
+  },
+  {
+    "bomb": {
+      "bombN": {
+        "template": "bomb#4#"
+      }
+    }
+  },
+  {
+    "gear_l": {
+      "gear_l": []
+    }
+  },
+  {
+    "gear_1l": {
+      "gear_1l": []
+    }
+  },
+  {
+    "gear_r": {
+      "gear_r": []
+    }
+  },
+  {
+    "gear_1r": {
+      "gear_1r": []
+    }
+  },
+  {
+    "gear_c": {
+      "gear_c": []
+    }
+  },
+  {
+    "gear_2c": {
+      "gear_2c": []
+    }
+  },
+  {
+    "gear_3c": {
+      "gear_3c": []
+    }
+  },
+  {
+    "aircraft_wheel": {
+      "wheel_l": [],
+      "wheel1_l": [],
+      "wheel_r": [],
+      "wheel1_r": [],
+      "wheel_c": [],
+      "wheel_2c": [],
+      "wheel_3c": []
+    }
+  },
+  {
+    "rotor01_N": {
+      "template": "rotor01_#6#"
+    }
+  },
+  {
+    "passive_propeller": {
+      "passive_prop01_1": [],
+      "passive_prop02_1": [],
+      "passive_prop01_2": [],
+      "passive_prop02_2": [],
+      "passive_prop01_3": [],
+      "passive_prop02_3": [],
+      "passive_prop01_4": [],
+      "passive_prop02_4": [],
+      "passive_prop01_5": [],
+      "passive_prop02_5": [],
+      "passive_prop01_6": [],
+      "passive_prop02_6": []
+    }
+  },
+  {
+    "fan": {
+      "fan01_1": [],
+      "fan02_1": [],
+      "fan03_1": [],
+      "fan01_2": [],
+      "fan02_2": [],
+      "fan03_2": [],
+      "fan01_3": [],
+      "fan02_3": [],
+      "fan03_3": [],
+      "fan01_4": [],
+      "fan02_4": [],
+      "fan03_4": [],
+      "fan01_5": [],
+      "fan02_5": [],
+      "fan03_5": [],
+      "fan01_6": [],
+      "fan02_6": [],
+      "fan03_6": []
+    }
+  },
+  {
+    "flap": {
+      "flap_l": [],
+      "flap1_l": [],
+      "flap2_l": [],
+      "flap3_l": [],
+      "flap_r": [],
+      "flap1_r": [],
+      "flap2_r": [],
+      "flap3_r": [],
+      "flap_c": [],
+      "flap_airbrake_l": [],
+      "flap_airbrake1_l": [],
+      "flap_airbrake_r": [],
+      "flap_airbrake1_r": []
+    }
+  },
+  {
+    "pylon_bombN": {
+      "template": "pylon_bomb#1:16#"
+    }
+  },
+  {
+    "pylon_rocketN": {
+      "template": "pylon_rocket#1:16#"
+    }
+  },
+  {
+    "rocket": []
+  },
+  {
+    "rocketN": {
+      "template": "rocket#1:4#"
+    }
+  },
+  {
+    "winder_l": []
+  },
+  {
+    "winder_r": []
+  },
+  {
+    "hook": {
+      "hook": [],
+      "hook1": [],
+      "hook_catch": []
+    }
+  },
+  {
+    "cover": {
+      "coverN": {
+        "template": "cover#1:16#"
+      }
+    }
+  },
+  {
+    "prop01_N_dmg": {
+      "template": "prop01_#6#_dmg"
+    }
+  },
+  {
+    "emtr_inversion_l": []
+  },
+  {
+    "emtr_inversion_r": []
+  },
+  {
+    "emtr_oilN": {
+      "template": "emtr_oil#1:12#"
+    }
+  },
+  {
+    "emtr_waterN": {
+      "template": "emtr_water#1:6#"
+    }
+  },
+  {
+    "emtr_fuelN": {
+      "template": "emtr_fuel#1:8#"
+    }
+  },
+  {
+    "emtr_engineN": {
+      "template": "emtr_engine#1:6#"
+    }
+  },
+  {
+    "emtr_exhaustN": {
+      "template": "emtr_exhaust#1:12#"
+    }
+  },
+  {
+    "jet_flame": []
+  },
+  {
+    "jet_flameN": {
+      "template": "jet_flame#5#"
+    }
+  },
+  {
+    "jet_flame_1": []
+  },
+  {
+    "jet_flameN_1": {
+      "template": "jet_flame#5#_1"
+    }
+  },
+  {
+    "ext_armor": {
+      "ext_armor": []
+    }
+  }
+]

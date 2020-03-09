@@ -1,0 +1,134 @@
+{
+  "cannon": true,
+  "weaponType": -1,
+  "bUseHookAsRel": true,
+  "emitColor": [1.0,1.0,0.0],
+  "emitI": 10.0,
+  "emitR": 3.0,
+  "emitTime": 0.03,
+  "aimMinDist": 0.1,
+  "aimMaxDist": 36520.0,
+  "maxDeltaAngle": 0.1,
+  "maxDeltaAngleVertical": 0.2,
+  "shotFreq": 0.044,
+  "traceFreq": 4,
+  "bEnablePause": false,
+  "bullets": -1,
+  "bulletsCluster": 1,
+  "fxType": "400mm_gun_flame",
+  "fxGroundDust": "water_shock_wave",
+  "fxScale": 1.7,
+  "shouldCollideWithRendinsts": true,
+  "sound_path": "ships/weapon_ships/cannons",
+  "sound_pathStudio": "naval/weapon/cannons",
+  "sound": "114mm_8cwt_qf",
+  "sound_inside": "114mm_8cwt_qf_interior",
+  "sfxReloadBullet": "grd_cannon_reload",
+  "fxMultipleSpawn": true,
+  "isBulletBelt": false,
+  "notUseDefaultBulletInGui": true,
+  "bullet": {
+    "bulletCount": 40,
+    "mass": 800.8,
+    "explosiveType": "tnt",
+    "explosiveMass": 60.5,
+    "caliber": 0.38,
+    "speed": 820.0,
+    "maxDistance": 36520.0,
+    "bulletType": "he_frag_tank",
+    "bulletName": "380mm_spr_gr_l_4_6_kz",
+    "hitPowerMult": 2050.0,
+    "nearHitPower": [1.0,50.0],
+    "midHitPower": [0.9,300.0],
+    "farHitPower": [0.1,700.0],
+    "endHitPower": [0.008,1500.0],
+    "relativeVelHitShift": [300.0,1000.0],
+    "nearArmorPower": [100.0,150.0],
+    "midArmorPower": [90.0,600.0],
+    "farArmorPower": [80.0,1000.0],
+    "relativeVelArmorShift": [200.0,1000.0],
+    "fuseDelayDist": 0.0,
+    "groundCollisionEffect": "art_ground_splash",
+    "ricochetEffect": "cannon_ricochet",
+    "waterCollisionEffect": "120-203_he_water_splash",
+    "groundFxScale": [5.2,5.8],
+    "waterFxScale": [1.4,1.5],
+    "visual": {
+      "range_percent_of_ammo": [100.0,0.0],
+      "traceFreq": 1,
+      "tracer": "100mmRed",
+      "trail": "black"
+    },
+    "collisions": {
+      "steel": {
+        "fx": "ps_hit_150mm_cumulative",
+        "fxScale": [5.0,4.2]
+      },
+      "armor": {
+        "fx": "ps_hit_150mm_cumulative",
+        "fxScale": [5.0,4.2]
+      },
+      "wood": {
+        "fx": "cannon_hit_ship_cumulative",
+        "fxScale": [5.0,4.2]
+      },
+      "buildings": {
+        "fx": "122_he_stone_splash",
+        "fxScale": [3.0,3.2]
+      }
+    }
+  },
+  "380mm_skc34_navy_he": {
+    "bullet": {
+      "bulletCount": 40,
+      "mass": 800.8,
+      "explosiveType": "tnt",
+      "explosiveMass": 60.5,
+      "caliber": 0.38,
+      "speed": 820.0,
+      "maxDistance": 36520.0,
+      "bulletType": "he_frag_tank",
+      "bulletName": "380mm_spr_gr_l_4_6_kz",
+      "hitPowerMult": 2050.0,
+      "nearHitPower": [1.0,50.0],
+      "midHitPower": [0.9,300.0],
+      "farHitPower": [0.1,700.0],
+      "endHitPower": [0.008,1500.0],
+      "relativeVelHitShift": [300.0,1000.0],
+      "nearArmorPower": [100.0,150.0],
+      "midArmorPower": [90.0,600.0],
+      "farArmorPower": [80.0,1000.0],
+      "relativeVelArmorShift": [200.0,1000.0],
+      "fuseDelayDist": 0.0,
+      "groundCollisionEffect": "art_ground_splash",
+      "ricochetEffect": "cannon_ricochet",
+      "waterCollisionEffect": "120-203_he_water_splash",
+      "groundFxScale": [5.2,5.8],
+      "waterFxScale": [1.4,1.5],
+      "visual": {
+        "range_percent_of_ammo": [100.0,0.0],
+        "traceFreq": 1,
+        "tracer": "100mmRed",
+        "trail": "black"
+      },
+      "collisions": {
+        "steel": {
+          "fx": "ps_hit_150mm_cumulative",
+          "fxScale": [5.0,4.2]
+        },
+        "armor": {
+          "fx": "ps_hit_150mm_cumulative",
+          "fxScale": [5.0,4.2]
+        },
+        "wood": {
+          "fx": "cannon_hit_ship_cumulative",
+          "fxScale": [5.0,4.2]
+        },
+        "buildings": {
+          "fx": "122_he_stone_splash",
+          "fxScale": [3.0,3.2]
+        }
+      }
+    }
+  }
+}

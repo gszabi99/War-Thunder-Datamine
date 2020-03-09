@@ -1,0 +1,176 @@
+[
+  {
+    "model": "usa_marine01_char"
+  },
+  {
+    "defaultSkin": "usa"
+  },
+  {
+    "subclass": "infantry"
+  },
+  {
+    "expClass": "exp_infantry"
+  },
+  {
+    "walkSpeed": 6.0
+  },
+  {
+    "runSpeed": 14.0
+  },
+  {
+    "rotSpeed": 180.0
+  },
+  {
+    "mass": 200.0
+  },
+  {
+    "bnl_idle": "inf_idle1"
+  },
+  {
+    "bnl_idle": "inf_idle2"
+  },
+  {
+    "bnl_idle": "inf_idle3"
+  },
+  {
+    "bnl_idle": "inf_idle4"
+  },
+  {
+    "bnl_walk": "inf_walk_var01"
+  },
+  {
+    "bnl_walk": "inf_walk_var02"
+  },
+  {
+    "bnl_walk": "inf_walk_var03"
+  },
+  {
+    "bnl_runhide": "inf_shoot_run_gun"
+  },
+  {
+    "bnl_crawl": "inf_shoot_crawl"
+  },
+  {
+    "bnl_die1": "inf_dead1"
+  },
+  {
+    "bnl_die2": "inf_dead2"
+  },
+  {
+    "bnl_die3": "inf_dead3"
+  },
+  {
+    "bnl_swimhold": "inwater_hold"
+  },
+  {
+    "bnl_swimto": "inwater_move"
+  },
+  {
+    "bnl_die1_inwater": "inwater_dead1"
+  },
+  {
+    "bnl_die2_inwater": "inwater_dead2"
+  },
+  {
+    "bnl_die3_inwater": "inwater_dead3"
+  },
+  {
+    "soldier": {
+      "probabilityWt": 1.0,
+      "rocketWeapNode": "RPG18",
+      "rocketWeapProbability": 1.0,
+      "usa": {
+        "animChar": "ger_soldier01a_01_char"
+      },
+      "japan": {
+        "animChar": "ger_soldier01a_01_char"
+      },
+      "ussr": {
+        "animChar": "ger_soldier01a_01_char"
+      },
+      "germany": {
+        "animChar": "ger_soldier01a_01_char"
+      },
+      "britain": {
+        "animChar": "ger_soldier01a_01_char"
+      },
+      "australia": {
+        "animChar": "ger_soldier01a_01_char"
+      },
+      "italy": {
+        "animChar": "ger_soldier01a_01_char"
+      },
+      "groundModels_weapons/common_rifle7mm": {
+        "wt": 1.0
+      },
+      "groundModels_weapons/bazooka": {
+        "wt": 1.0
+      }
+    }
+  },
+  {
+    "damageModel": {
+      "default": {
+        "width": 0.5,
+        "height": 1.8,
+        "offset": [0.0,0.0,0.0]
+      },
+      "crouch": {
+        "width": 0.5,
+        "height": 1.0,
+        "offset": [0.0,0.0,0.0]
+      },
+      "crawl": {
+        "width": 1.0,
+        "height": -0.5,
+        "offset": [0.0,0.0,0.0]
+      }
+    }
+  },
+  {
+    "weapon": {
+      "name": "groundModels_weapons/common_rifle7mm",
+      "primary": true,
+      "emitter": "gun",
+      "flash": "flame",
+      "accuracyAir": 0.4,
+      "accuracyGnd": 0.0,
+      "errTargetting": 10.0,
+      "ChainfireTime": 12.0,
+      "DelayAfterShoot": 3.0,
+      "AttackMaxDistance": 100.0,
+      "AttackMaxRadius": 100.0,
+      "AttackMaxHeight": 100.0,
+      "node": "AKS74U",
+      "bnl_run": "inf_shoot_run_gun",
+      "bnl_run_up": "inf_shoot_run_up_gun",
+      "bnl_shoot": "inf_shoot_gun",
+      "bnl_shoot_up": "inf_shoot_up_gun",
+      "bnl_shoot_crouch": "inf_shootcrouch_gun",
+      "bnl_shoot_crouch_up": "inf_shootcrouch_up_gun"
+    }
+  },
+  {
+    "weapon": {
+      "name": "groundModels_weapons/bazooka",
+      "primary": false,
+      "emitter": "stinger",
+      "accuracyAir": 0.1,
+      "accuracyGnd": 0.5,
+      "accuracyLight": 0.2,
+      "accuracyInfantry": 0.0,
+      "errTargetting": 10.0,
+      "shotFreq": 0.033,
+      "maxCountSimultaneous": 10,
+      "AttackMaxDistance": 50.0,
+      "AttackMaxRadius": 50.0,
+      "AttackMaxHeight": 50.0,
+      "node": "RPG18",
+      "amm_node": "RPG18Raketa",
+      "bnl_shoot": "inf_shoot_rpg",
+      "bnl_shoot_up": "inf_shoot_up_rpg",
+      "bnl_shoot_crouch": "inf_shootcrouch_rpg",
+      "bnl_shoot_crouch_up": "inf_shootcrouch_up_rpg"
+    }
+  }
+]

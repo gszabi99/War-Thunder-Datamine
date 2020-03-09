@@ -1,0 +1,50 @@
+{
+  "cannon": true,
+  "weaponType": -1,
+  "bUseHookAsRel": true,
+  "emitColor": [1.0,1.0,0.0],
+  "emitI": 10.0,
+  "emitR": 3.0,
+  "emitTime": 0.03,
+  "aimMinDist": 10.0,
+  "aimMaxDist": 1000.0,
+  "maxDeltaAngle": 0.0,
+  "shotFreq": 1.0,
+  "shotFreqRndK": 0.0,
+  "traceFreq": 4,
+  "bEnablePause": false,
+  "bullets": 250,
+  "bulletsCluster": 1,
+  "soundLoop": false,
+  "bullet": {
+    "mass": 0.092,
+    "caliber": 0.02,
+    "speed": 5000.0,
+    "maxDistance": 2000.0,
+    "groundCollisionEffect": "cannon_air_hit",
+    "groundFxScale": [0.7,1.2],
+    "bulletType": "he_i_mine",
+    "hitPowerMult": 20.0,
+    "nearHitPower": [1.0,50.0],
+    "midHitPower": [0.9,300.0],
+    "farHitPower": [0.8,700.0],
+    "endHitPower": [0.7,1500.0],
+    "relativeVelHitShift": [300.0,1000.0],
+    "nearArmorPower": [100.0,100.0],
+    "midArmorPower": [90.0,400.0],
+    "farArmorPower": [80.0,1000.0],
+    "visual": {
+      "range_percent_of_ammo": [100.0,0.0],
+      "traceFreq": 1,
+      "tracer": "20mmWhite",
+      "trail": "black_rpg"
+    }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "bk37_gun_outside",
+    "cockpit": "bk37_gun_inside",
+    "ai": "bk37_gun_ai"
+  }
+}

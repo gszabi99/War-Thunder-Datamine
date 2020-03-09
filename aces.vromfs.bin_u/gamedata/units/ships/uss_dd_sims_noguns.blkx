@@ -1,0 +1,96 @@
+{
+  "expClass": "exp_ship",
+  "timeToFire": 60.0,
+  "timeToSmoke": 600.0,
+  "hasExpl": true,
+  "model": "destroyer_anderson_no_guns_a",
+  "subclass": "warShip",
+  "dustFx": "water_units_dust",
+  "dynCollisionGeom": true,
+  "damageableByGun": false,
+  "moveType": "ship",
+  "maxFwdSpeed": 55.0,
+  "maxRevSpeed": 5.0,
+  "maxAngSpeed": 1.0,
+  "maxAccel": 0.5,
+  "maxDecel": 0.5,
+  "maxAngAccel": 0.7,
+  "maxAngAccel0": 0.0,
+  "maxAngAccelV": 0.01,
+  "groundNormSmoothViscosity": 4.5,
+  "customUpdateDiv": 5,
+  "drownGFactor": 0.0,
+  "drownRollSpeed": 0.01,
+  "SoundMove": "models.Ship",
+  "tailStartOffset": 0.0,
+  "DamageParts": {
+    "armor40": {
+      "engine_dm": {
+        "hp": 800.0
+      },
+      "body_dm": {
+        "hp": 800.0
+      },
+      "bodypart1_dm": {
+        "hp": 800.0
+      },
+      "gun1_dm": {
+        "hp": 50.0
+      },
+      "gun2_dm": {
+        "hp": 50.0
+      },
+      "gun3_dm": {
+        "hp": 50.0
+      },
+      "gun4_dm": {
+        "hp": 50.0
+      }
+    }
+  },
+  "DamageEffects": [
+    {
+      "part": {
+        "name": "body_dm",
+        "onHit": {
+          "smoke": 0.01,
+          "fire": 0.01
+        },
+        "onKill": {
+          "expl": 1.0
+        }
+      }
+    },
+    {
+      "part": [
+        {
+          "name": "engine_dm"
+        },
+        {
+          "name": "bodypart1_dm"
+        },
+        {
+          "onHit": {
+            "smoke": 0.1,
+            "fire": 0.01
+          }
+        },
+        {
+          "onKill": {
+            "body_dm": 1.0
+          }
+        }
+      ]
+    }
+  ],
+  "attach": {
+    "flag_front": "flag_usa",
+    "flag_middle": "flag_usa",
+    "flag_back": "flag_usa"
+  },
+  "sound": {
+    "path": "sounds/engines",
+    "pathStudio": "aircraft/engines",
+    "engine": "boat"
+  }
+}

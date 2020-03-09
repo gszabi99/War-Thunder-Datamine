@@ -1,0 +1,42 @@
+{
+  "model": "dummy_airfield_1200x250m_a",
+  "subclass": "fortification",
+  "damageableByGun": false,
+  "expClass": "exp_zero",
+  "bulletTransparent": true,
+  "fireFx": "ground_model_smoke",
+  "timeToFire": 600.0,
+  "timeToSmoke": 600.0,
+  "toGround": true,
+  "moveType": "vehicle",
+  "maxFwdSpeed": 0.0,
+  "maxRevSpeed": 0.0,
+  "maxAngSpeed": 0.0,
+  "maxAccel": 0.0,
+  "maxDecel": 0.0,
+  "maxAngAccel0": 0.0,
+  "maxAngAccelV": 0.0,
+  "maxAngAccel": 0.0,
+  "groundNormSmoothViscosity": 0.1,
+  "mass": 1800.0,
+  "DamageParts": {
+    "armor45": {
+      "body_dm": {
+        "hp": 60000.0
+      }
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body_dm",
+      "onHit": {
+        "smoke": 0.01,
+        "fire": 0.01
+      },
+      "onKill": {
+        "fire": 1.0
+      }
+    }
+  },
+  "class_tags": []
+}

@@ -1,0 +1,46 @@
+{
+  "model": "loudspeaker_post_a",
+  "subclass": "fortification",
+  "dynCollisionGeom": true,
+  "hasExpl": false,
+  "expClass": "exp_zero",
+  "toGround": true,
+  "timeToFire": 5.0,
+  "maxFwdSpeed": 0.0,
+  "maxRevSpeed": 0.0,
+  "maxAngSpeed": 0.0,
+  "maxAccel": 0.0,
+  "maxDecel": 0.0,
+  "maxAngAccel0": 0.0,
+  "maxAngAccelV": 0.0,
+  "maxAngAccel": 0.0,
+  "groundNormSmoothViscosity": 0.1,
+  "useDestrPhysObj": true,
+  "damageCollisionMultiplier": 0.001,
+  "explosionImpulse": 10000.0,
+  "explosionFx": "crash_loudspeaker",
+  "DamageParts": {
+    "steel": {
+      "body_dm": {
+        "hp": 150.0
+      }
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body_dm",
+      "onHit": {
+        "smoke": 0.0,
+        "fire": 0.0
+      },
+      "onKill": {
+        "expl": 0.0
+      }
+    }
+  },
+  "attachedSfx": {
+    "path": "tanks/ambient_tanks",
+    "name": "agitation_translation",
+    "pos": [0.0,5.0,0.0]
+  }
+}

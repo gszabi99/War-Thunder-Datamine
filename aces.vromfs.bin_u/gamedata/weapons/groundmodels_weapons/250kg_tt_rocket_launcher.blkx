@@ -1,0 +1,219 @@
+{
+  "rocketGun": true,
+  "preset_cost": 10,
+  "bullets": 1,
+  "shotFreq": 1.0,
+  "sound_path": "tanks/weapon_tanks/rockets",
+  "sound_pathStudio": "ground/weapon/rockets",
+  "sound": "158mm_nb_wf_41",
+  "sound_inside": "158mm_nb_wf_41_interior",
+  "reload_sound_path": "tanks/effects_tanks",
+  "reload_sound_pathStudio": "ground/effects",
+  "reload_sound": "reload_rocket",
+  "isBulletBelt": false,
+  "helicopterGroup": 2,
+  "allowHumanReload": true,
+  "mesh": "tt_250_rocket",
+  "tags": {
+    "antiTankRocket": true,
+    "antiShipRocket": true
+  },
+  "rocket": [
+    {
+      "bulletType": "rocket_tank"
+    },
+    {
+      "bulletName": "250kg_tt"
+    },
+    {
+      "caliber": 0.425
+    },
+    {
+      "mass": 250.0
+    },
+    {
+      "massEnd": 200.0
+    },
+    {
+      "maxDeltaAngle": 0.5
+    },
+    {
+      "dragCx": 0.01
+    },
+    {
+      "length": 0.68
+    },
+    {
+      "distFromCmToStab": 0.5
+    },
+    {
+      "CxK": 0.2
+    },
+    {
+      "WdK": [0.1,0.1,0.1]
+    },
+    {
+      "force": 7000.0
+    },
+    {
+      "timeFire": 0.85
+    },
+    {
+      "thrustDeviation": 0.1
+    },
+    {
+      "explosionEffect": "big_art_ground_splash"
+    },
+    {
+      "smokeEffect": "hydra_smoke"
+    },
+    {
+      "maxDistance": 6500.0
+    },
+    {
+      "minDistance": 30.0
+    },
+    {
+      "spawnExplosionWreckage": false
+    },
+    {
+      "spawnExplosionFx": false
+    },
+    {
+      "explosionOffset": 0.05
+    },
+    {
+      "hitPowerMult": 1.0
+    },
+    {
+      "nearHitPower": [1.0,50.0]
+    },
+    {
+      "midHitPower": [0.9,400.0]
+    },
+    {
+      "farHitPower": [0.1,1000.0]
+    },
+    {
+      "endHitPower": [0.01,1500.0]
+    },
+    {
+      "relativeVelHitShift": [300.0,1000.0]
+    },
+    {
+      "nearArmorPower": [5.0,50.0]
+    },
+    {
+      "midArmorPower": [4.0,400.0]
+    },
+    {
+      "farArmorPower": [0.2,700.0]
+    },
+    {
+      "relativeVelArmorShift": [200.0,1000.0]
+    },
+    {
+      "distanceFuse": false
+    },
+    {
+      "explosionEffect": "atgm_hit"
+    },
+    {
+      "defFxScale": [2.2,2.5]
+    },
+    {
+      "groundCollisionEffect": "art_ground_splash"
+    },
+    {
+      "groundFxScale": [1.5,1.7]
+    },
+    {
+      "ricochetEffect": "cannon_hit_apds"
+    },
+    {
+      "waterCollisionEffect": "120-203_he_water_splash"
+    },
+    {
+      "waterFxScale": [1.2,1.4]
+    },
+    {
+      "explosionPatchRadius": 5.0
+    },
+    {
+      "explodeTreshold": 0.1
+    },
+    {
+      "explodeHitPower": 450.0
+    },
+    {
+      "explodeArmorPower": 150.0
+    },
+    {
+      "explodeRadius": [2.0,6.0]
+    },
+    {
+      "rendinstDamageRadius": 20.0
+    },
+    {
+      "shutterDamage": true
+    },
+    {
+      "shutterDamageRadius": 45.0
+    },
+    {
+      "shutterAmount": 2000
+    },
+    {
+      "shutterArmorPower": 5.0
+    },
+    {
+      "shutterHit": 12.0
+    },
+    {
+      "advancedMissiles": false
+    },
+    {
+      "useStartSpeed": true
+    },
+    {
+      "startSpeed": 50.0
+    },
+    {
+      "endSpeed": 260.0
+    },
+    {
+      "speedViscosity": 0.1
+    },
+    {
+      "timeToLive": 20.0
+    },
+    {
+      "price": 3000.0
+    },
+    {
+      "collisions": {
+        "steel": {
+          "fx": "cannon_hit_armor_cumulative",
+          "fxScale": [4.0,5.0]
+        },
+        "buildings": {
+          "fx": "atgm_hit",
+          "fxScale": [2.2,2.5]
+        },
+        "wood": {
+          "fx": "atgm_hit",
+          "fxScale": [2.2,2.5]
+        }
+      }
+    },
+    {
+      "DamageParts": {
+        "body": {
+          "hp": 5.0,
+          "armorClass": "tank_structural_steel",
+          "armorThickness": 1.0
+        }
+      }
+    }
+  ]
+}

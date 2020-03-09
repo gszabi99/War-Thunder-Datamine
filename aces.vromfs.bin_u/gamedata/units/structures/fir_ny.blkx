@@ -1,0 +1,40 @@
+{
+  "model": "flag_ctf_fir_ny",
+  "subclass": "fortification",
+  "damageableByGun": false,
+  "expClass": "exp_structure",
+  "loadAnim": true,
+  "forceFastPhysForAI": true,
+  "timeToFire": 5.0,
+  "timeToSmoke": 600.0,
+  "moveType": "vehicle",
+  "maxFwdSpeed": 0.0,
+  "maxRevSpeed": 0.0,
+  "maxAngSpeed": 0.0,
+  "maxAccel": 0.0,
+  "maxDecel": 0.0,
+  "maxAngAccel0": 0.0,
+  "maxAngAccelV": 0.0,
+  "maxAngAccel": 0.0,
+  "groundNormSmoothViscosity": 0.1,
+  "mass": 1800.0,
+  "DamageParts": {
+    "armor10": {
+      "body_dm": {
+        "hp": 12.0
+      }
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "dm",
+      "onHit": {
+        "smoke": 0.01,
+        "fire": 0.01
+      },
+      "onKill": {
+        "smoke": 1.0
+      }
+    }
+  }
+}

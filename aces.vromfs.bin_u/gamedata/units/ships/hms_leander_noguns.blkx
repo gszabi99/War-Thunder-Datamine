@@ -1,0 +1,88 @@
+{
+  "timeToFire": 60.0,
+  "timeToSmoke": 600.0,
+  "hasExpl": true,
+  "damageableByGun": false,
+  "expClass": "exp_ship",
+  "model": "leander_no_guns_a",
+  "subclass": "warShip",
+  "dustFx": "water_units_dust",
+  "dynCollisionGeom": true,
+  "moveType": "ship",
+  "maxFwdSpeed": 55.0,
+  "maxRevSpeed": 5.0,
+  "maxAngSpeed": 1.0,
+  "maxAccel": 0.5,
+  "maxDecel": 0.5,
+  "maxAngAccel": 0.7,
+  "maxAngAccel0": 0.0,
+  "maxAngAccelV": 0.01,
+  "groundNormSmoothViscosity": 4.5,
+  "customUpdateDiv": 5,
+  "drownGFactor": 0.0,
+  "drownRollSpeed": 0.01,
+  "SoundMove": "models.Ship",
+  "tailStartOffset": -10.0,
+  "DamageParts": {
+    "armor40": {
+      "engine_dm": {
+        "hp": 800.0
+      },
+      "body_dm": {
+        "hp": 800.0
+      },
+      "bodypart1_dm": {
+        "hp": 800.0
+      }
+    }
+  },
+  "class_tags": {
+    "mediterran": true,
+    "westernfront": true,
+    "pacific": true,
+    "country_britain": true,
+    "ship": true,
+    "year1940": true,
+    "year1941": true,
+    "year1942": true,
+    "year1943": true,
+    "year1944": true,
+    "year1945": true
+  },
+  "DamageEffects": [
+    {
+      "part": {
+        "name": "body_dm",
+        "onHit": {
+          "smoke": 0.01,
+          "fire": 0.01
+        },
+        "onKill": {
+          "expl": 1.0
+        }
+      }
+    },
+    {
+      "part": {
+        "name": "engine_dm",
+        "onHit": {
+          "smoke": 0.1,
+          "fire": 0.01
+        },
+        "onKill": {
+          "body_dm": 1.0
+        }
+      }
+    }
+  ],
+  "attach": {
+    "flag_front": "flag_brtn",
+    "flag_middle": "flag_brtn",
+    "flag_back": "flag_brtn"
+  },
+  "sound": {
+    "path": "sounds/engines",
+    "pathStudio": "aircraft/engines",
+    "engine": "boat"
+  }
+}

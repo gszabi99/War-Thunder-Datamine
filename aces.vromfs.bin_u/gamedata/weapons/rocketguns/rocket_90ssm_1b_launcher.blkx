@@ -1,0 +1,239 @@
+{
+  "rocketGun": true,
+  "preset_cost": 10,
+  "bullets": 1,
+  "shotFreq": 1.1,
+  "sound_path": "ships/weapon_common/rockets",
+  "sound_pathStudio": "naval/weapon/rockets",
+  "sound": "75mm_m3",
+  "sound_inside": "75mm_m3_interior",
+  "reload_sound_path": "tanks/effects_tanks",
+  "reload_sound_pathStudio": "ground/effects",
+  "reload_sound": "reload_rocket",
+  "isBulletBelt": false,
+  "helicopterGroup": 2,
+  "reloadTime": 60.0,
+  "allowHumanReload": true,
+  "mesh": "rocket_90ssm_1b",
+  "shellAnimChar": "rocket_90ssm_1b_char",
+  "tags": {
+    "antiTankRocket": true,
+    "antiShipRocket": true
+  },
+  "rocket": [
+    {
+      "rotationRocketX": 1.0
+    },
+    {
+      "operated": true
+    },
+    {
+      "operatedDist": 14000.0
+    },
+    {
+      "autoAiming": true
+    },
+    {
+      "autoLeveling": true
+    },
+    {
+      "aimSensitivity": 20.0
+    },
+    {
+      "explosionEffect": "atgm_hit"
+    },
+    {
+      "defFxScale": [1.7,2.1]
+    },
+    {
+      "groundCollisionEffect": "art_ground_splash"
+    },
+    {
+      "groundFxScale": [1.3,1.5]
+    },
+    {
+      "ricochetEffect": "cannon_ricochet"
+    },
+    {
+      "waterCollisionEffect": "120-203_he_water_splash"
+    },
+    {
+      "waterFxScale": [1.1,1.2]
+    },
+    {
+      "explosionPatchRadius": 3.4
+    },
+    {
+      "bulletType": "atgm_tank"
+    },
+    {
+      "bulletName": "114mm_m8"
+    },
+    {
+      "caliber": 0.35
+    },
+    {
+      "explosiveType": "tnt"
+    },
+    {
+      "explosiveMass": 225.0
+    },
+    {
+      "mass": 661.0
+    },
+    {
+      "massEnd": 480.0
+    },
+    {
+      "maxDeltaAngle": 10.0
+    },
+    {
+      "dragCx": 0.02
+    },
+    {
+      "length": 8.0
+    },
+    {
+      "distFromCmToStab": 0.1
+    },
+    {
+      "CxK": 0.01
+    },
+    {
+      "WdK": [0.1,0.1,0.1]
+    },
+    {
+      "force": 25000.0
+    },
+    {
+      "timeFire": 30.0
+    },
+    {
+      "fireDelay": 0.5
+    },
+    {
+      "thrustDeviation": 0.13
+    },
+    {
+      "spawnExplosionFx": false
+    },
+    {
+      "spawnExplosionWreckage": false
+    },
+    {
+      "explosionEffect": "bomb_ground_explosion_med"
+    },
+    {
+      "smokeEffect": "hydra_smoke_cruisemissile"
+    },
+    {
+      "smokeEffect2": "hydra_bubbles"
+    },
+    {
+      "fireEffect": "rocket_fire_cruisemissile"
+    },
+    {
+      "hazeEffect": "haze_cruisemissile"
+    },
+    {
+      "maxDistance": 15000.0
+    },
+    {
+      "minDistance": 3000.0
+    },
+    {
+      "armDistance": 1000.0
+    },
+    {
+      "distanceFuse": false
+    },
+    {
+      "relativeVelHitShift": [300.0,1000.0]
+    },
+    {
+      "relativeVelArmorShift": [200.0,1000.0]
+    },
+    {
+      "statType": "hydra"
+    },
+    {
+      "advancedMissiles": false
+    },
+    {
+      "useStartSpeed": true
+    },
+    {
+      "startSpeed": 200.0
+    },
+    {
+      "endSpeed": 319.4
+    },
+    {
+      "timeToLive": 20.0
+    },
+    {
+      "price": 3000.0
+    },
+    {
+      "collisions": {
+        "steel": {
+          "fx": "cannon_hit_armor_cumulative",
+          "fxScale": [3.0,4.0]
+        },
+        "buildings": {
+          "fx": "atgm_hit",
+          "fxScale": [1.7,2.1]
+        },
+        "wood": {
+          "fx": "atgm_hit",
+          "fxScale": [1.7,2.1]
+        }
+      }
+    },
+    {
+      "DamageParts": {
+        "body": {
+          "hp": 50.0,
+          "armorClass": "ship_structural_steel",
+          "armorThickness": 1.0
+        }
+      }
+    },
+    {
+      "damage": {
+        "shatter": [
+          {
+            "useRealShatters": true
+          },
+          {
+            "countPortion": 0.03
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [0.0,100.0],
+              "countPortion": 0.5
+            }
+          },
+          {
+            "segment": {
+              "angles": [101.0,259.0],
+              "countPortion": 0.0
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [260.0,359.0],
+              "countPortion": 0.5
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

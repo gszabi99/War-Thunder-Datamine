@@ -1,0 +1,27 @@
+{
+  "model": "bridge_mound_a",
+  "subclass": "fortification",
+  "dynCollisionGeom": true,
+  "hasExpl": false,
+  "hasDmg2": false,
+  "hasDmg2Collision": false,
+  "hasDmg": false,
+  "damageableByGun": false,
+  "expClass": "exp_bridge",
+  "renderInWaterReflection": true,
+  "DamageParts": {
+    "steel": {
+      "body_dm": {
+        "hp": 320000.0
+      }
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body_dm",
+      "onKill": {
+        "expl": 1.0
+      }
+    }
+  }
+}

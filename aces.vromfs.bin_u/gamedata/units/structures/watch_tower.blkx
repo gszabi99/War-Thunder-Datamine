@@ -1,0 +1,30 @@
+{
+  "model": "expl_watch_s_tower_a",
+  "subclass": "fortification",
+  "onRadarAs": "aam",
+  "bulletHitFx": "ground_model_hit",
+  "partDamageFx": "part_damage",
+  "explosionFx": "ground_model_expl",
+  "fireFx": "ground_model_fire",
+  "toGround": true,
+  "expClass": "exp_structure",
+  "DamageParts": {
+    "steel": {
+      "body_dm": {
+        "hp": 70.0
+      }
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body_dm",
+      "onHit": {
+        "smoke": 0.5,
+        "fire": 0.5
+      },
+      "onKill": {
+        "expl": 0.3
+      }
+    }
+  }
+}

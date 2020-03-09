@@ -1,0 +1,684 @@
+[
+  {
+    "cannon": true
+  },
+  {
+    "weaponType": 3
+  },
+  {
+    "bUseHookAsRel": true
+  },
+  {
+    "emitColor": [1.0,1.0,0.0]
+  },
+  {
+    "emitI": 10.0
+  },
+  {
+    "emitR": 3.0
+  },
+  {
+    "emitTime": 0.03
+  },
+  {
+    "aimMinDist": 10.0
+  },
+  {
+    "aimMaxDist": 1000.0
+  },
+  {
+    "maxDeltaAngle": 0.24
+  },
+  {
+    "shotFreq": 12.08
+  },
+  {
+    "shotFreqRndK": 0.1
+  },
+  {
+    "traceFreq": 4
+  },
+  {
+    "bEnablePause": false
+  },
+  {
+    "bullets": 250
+  },
+  {
+    "bulletsCluster": 1
+  },
+  {
+    "bullet": {
+      "mass": 0.136,
+      "caliber": 0.02,
+      "speed": 845.0,
+      "maxDistance": 3300.0,
+      "bulletType": "he_frag_t",
+      "hitPowerMult": 5.0,
+      "recoilMultiplier": 0.3,
+      "explosiveType": "petn",
+      "explosiveMass": 0.006,
+      "effectiveDistance": 700.0,
+      "relativeVelHitShift": [300.0,1000.0],
+      "relativeVelArmorShift": [200.0,1000.0],
+      "explodeTreshold": 0.1,
+      "explodeHitPower": 11.0,
+      "explodeArmorPower": 2.0,
+      "explodeRadius": [0.01,0.3],
+      "groundCollisionEffect": "cannon_air_hit",
+      "groundFxScale": [0.4,0.6],
+      "hitpower": {
+        "HitPower10m": [1.0,10.0],
+        "HitPower1000m": [0.85,1000.0],
+        "HitPower1500m": [0.75,1500.0],
+        "HitPower2000m": [0.3,2000.0]
+      },
+      "armorpower": {
+        "ArmorPower0m": [22.0,10.0],
+        "ArmorPower100m": [19.0,100.0],
+        "ArmorPower500m": [13.0,500.0],
+        "ArmorPower1000m": [6.0,1000.0],
+        "ArmorPower1450m": [1.0,1450.0],
+        "ArmorPower1500m": [0.0,1500.0]
+      },
+      "visual": {
+        "range_percent_of_ammo": [100.0,0.0],
+        "traceFreq": 1,
+        "tracer": "20mmLightRed",
+        "trail": "black"
+      },
+      "collisions": {
+        "steel": {
+          "fx": "cannon_air_hit",
+          "fxScale": [0.5,0.8]
+        },
+        "armor": {
+          "fx": "cannon_air_hit",
+          "fxScale": [0.5,0.8]
+        }
+      }
+    }
+  },
+  {
+    "bullet": {
+      "mass": 0.136,
+      "caliber": 0.02,
+      "speed": 845.0,
+      "maxDistance": 3500.0,
+      "bulletType": "ap_t",
+      "recoilMultiplier": 0.3,
+      "effectiveDistance": 700.0,
+      "relativeVelHitShift": [300.0,1000.0],
+      "relativeVelArmorShift": [200.0,1000.0],
+      "groundFxScale": [0.4,0.6],
+      "hitpower": {
+        "HitPower10m": [1.0,10.0],
+        "HitPower1000m": [0.85,1000.0],
+        "HitPower1500m": [0.75,1500.0],
+        "HitPower2000m": [0.3,2000.0]
+      },
+      "armorpower": {
+        "ArmorPower0m": [25.0,10.0],
+        "ArmorPower100m": [23.0,100.0],
+        "ArmorPower500m": [17.0,500.0],
+        "ArmorPower1000m": [14.0,1000.0],
+        "ArmorPower1500m": [8.0,1500.0],
+        "ArmorPower1950m": [3.0,1950.0],
+        "ArmorPower2000m": [1.0,2000.0],
+        "ArmorPower3500m": [0.0,3500.0]
+      },
+      "visual": {
+        "range_percent_of_ammo": [100.0,0.0],
+        "traceFreq": 1,
+        "tracer": "20mmLightRed",
+        "trail": "black"
+      },
+      "collisions": {
+        "steel": {
+          "fx": "air_hit",
+          "fxScale": [0.5,0.8]
+        },
+        "armor": {
+          "fx": "air_hit",
+          "fxScale": [0.5,0.8]
+        }
+      }
+    }
+  },
+  {
+    "bullet": {
+      "mass": 0.136,
+      "caliber": 0.02,
+      "speed": 845.0,
+      "maxDistance": 3300.0,
+      "bulletType": "he_frag_t",
+      "hitPowerMult": 5.0,
+      "recoilMultiplier": 0.3,
+      "explosiveType": "petn",
+      "explosiveMass": 0.006,
+      "effectiveDistance": 700.0,
+      "relativeVelHitShift": [300.0,1000.0],
+      "relativeVelArmorShift": [200.0,1000.0],
+      "explodeTreshold": 0.1,
+      "explodeHitPower": 11.0,
+      "explodeArmorPower": 2.0,
+      "explodeRadius": [0.01,0.3],
+      "groundCollisionEffect": "cannon_air_hit",
+      "groundFxScale": [0.4,0.6],
+      "hitpower": {
+        "HitPower10m": [1.0,10.0],
+        "HitPower1000m": [0.85,1000.0],
+        "HitPower1500m": [0.75,1500.0],
+        "HitPower2000m": [0.3,2000.0]
+      },
+      "armorpower": {
+        "ArmorPower0m": [22.0,10.0],
+        "ArmorPower100m": [19.0,100.0],
+        "ArmorPower500m": [13.0,500.0],
+        "ArmorPower1000m": [6.0,1000.0],
+        "ArmorPower1450m": [1.0,1450.0],
+        "ArmorPower1500m": [0.0,1500.0]
+      },
+      "visual": {
+        "range_percent_of_ammo": [100.0,0.0],
+        "traceFreq": 1,
+        "tracer": "20mmLightRed",
+        "trail": "black"
+      },
+      "collisions": {
+        "steel": {
+          "fx": "cannon_air_hit",
+          "fxScale": [0.5,0.8]
+        },
+        "armor": {
+          "fx": "cannon_air_hit",
+          "fxScale": [0.5,0.8]
+        }
+      }
+    }
+  },
+  {
+    "bullet": {
+      "mass": 0.136,
+      "caliber": 0.02,
+      "speed": 845.0,
+      "maxDistance": 3500.0,
+      "bulletType": "ap_t",
+      "recoilMultiplier": 0.3,
+      "effectiveDistance": 700.0,
+      "relativeVelHitShift": [300.0,1000.0],
+      "relativeVelArmorShift": [200.0,1000.0],
+      "groundFxScale": [0.4,0.6],
+      "hitpower": {
+        "HitPower10m": [1.0,10.0],
+        "HitPower1000m": [0.85,1000.0],
+        "HitPower1500m": [0.75,1500.0],
+        "HitPower2000m": [0.3,2000.0]
+      },
+      "armorpower": {
+        "ArmorPower0m": [25.0,10.0],
+        "ArmorPower100m": [23.0,100.0],
+        "ArmorPower500m": [17.0,500.0],
+        "ArmorPower1000m": [14.0,1000.0],
+        "ArmorPower1500m": [8.0,1500.0],
+        "ArmorPower1950m": [3.0,1950.0],
+        "ArmorPower2000m": [1.0,2000.0],
+        "ArmorPower3500m": [0.0,3500.0]
+      },
+      "visual": {
+        "range_percent_of_ammo": [100.0,0.0],
+        "traceFreq": 1,
+        "tracer": "20mmLightRed",
+        "trail": "black"
+      },
+      "collisions": {
+        "steel": {
+          "fx": "air_hit",
+          "fxScale": [0.5,0.8]
+        },
+        "armor": {
+          "fx": "air_hit",
+          "fxScale": [0.5,0.8]
+        }
+      }
+    }
+  },
+  {
+    "akan_m47_air_targets": [
+      {
+        "bullet": {
+          "mass": 0.133,
+          "caliber": 0.02,
+          "speed": 845.0,
+          "maxDistance": 3500.0,
+          "bulletType": "he_frag_i_t",
+          "hitPowerMult": 5.0,
+          "recoilMultiplier": 0.3,
+          "explosiveType": "tnt",
+          "explosiveMass": 0.006,
+          "onHitChanceMultFire": 5.0,
+          "effectiveDistance": 700.0,
+          "relativeVelHitShift": [300.0,1000.0],
+          "relativeVelArmorShift": [200.0,1000.0],
+          "explodeTreshold": 0.1,
+          "explodeHitPower": 11.0,
+          "explodeArmorPower": 2.0,
+          "explodeRadius": [0.01,0.3],
+          "groundCollisionEffect": "cannon_air_hit",
+          "groundFxScale": [0.4,0.6],
+          "hitpower": {
+            "HitPower10m": [1.0,10.0],
+            "HitPower1000m": [0.85,1000.0],
+            "HitPower1500m": [0.75,1500.0],
+            "HitPower2000m": [0.3,2000.0]
+          },
+          "armorpower": {
+            "ArmorPower0m": [22.0,10.0],
+            "ArmorPower100m": [19.0,100.0],
+            "ArmorPower500m": [13.0,500.0],
+            "ArmorPower1000m": [6.0,1000.0],
+            "ArmorPower1450m": [1.0,1450.0],
+            "ArmorPower1500m": [0.0,1500.0]
+          },
+          "visual": {
+            "range_percent_of_ammo": [100.0,0.0],
+            "traceFreq": 1,
+            "tracer": "20mmLightRed",
+            "trail": "black"
+          },
+          "collisions": {
+            "steel": {
+              "fx": "cannon_air_hit",
+              "fxScale": [0.5,0.8]
+            },
+            "armor": {
+              "fx": "cannon_air_hit",
+              "fxScale": [0.5,0.8]
+            }
+          }
+        }
+      },
+      {
+        "bullet": {
+          "mass": 0.133,
+          "caliber": 0.02,
+          "speed": 845.0,
+          "maxDistance": 3500.0,
+          "bulletType": "he_frag_i_t",
+          "hitPowerMult": 5.0,
+          "recoilMultiplier": 0.3,
+          "explosiveType": "tnt",
+          "explosiveMass": 0.006,
+          "onHitChanceMultFire": 5.0,
+          "effectiveDistance": 700.0,
+          "relativeVelHitShift": [300.0,1000.0],
+          "relativeVelArmorShift": [200.0,1000.0],
+          "explodeTreshold": 0.1,
+          "explodeHitPower": 11.0,
+          "explodeArmorPower": 2.0,
+          "explodeRadius": [0.01,0.3],
+          "groundCollisionEffect": "cannon_air_hit",
+          "groundFxScale": [0.4,0.6],
+          "hitpower": {
+            "HitPower10m": [1.0,10.0],
+            "HitPower1000m": [0.85,1000.0],
+            "HitPower1500m": [0.75,1500.0],
+            "HitPower2000m": [0.3,2000.0]
+          },
+          "armorpower": {
+            "ArmorPower0m": [22.0,10.0],
+            "ArmorPower100m": [19.0,100.0],
+            "ArmorPower500m": [13.0,500.0],
+            "ArmorPower1000m": [6.0,1000.0],
+            "ArmorPower1450m": [1.0,1450.0],
+            "ArmorPower1500m": [0.0,1500.0]
+          },
+          "visual": {
+            "range_percent_of_ammo": [100.0,0.0],
+            "traceFreq": 1,
+            "tracer": "20mmLightRed",
+            "trail": "black"
+          },
+          "collisions": {
+            "steel": {
+              "fx": "cannon_air_hit",
+              "fxScale": [0.5,0.8]
+            },
+            "armor": {
+              "fx": "cannon_air_hit",
+              "fxScale": [0.5,0.8]
+            }
+          }
+        }
+      },
+      {
+        "bullet": {
+          "mass": 0.133,
+          "caliber": 0.02,
+          "speed": 845.0,
+          "maxDistance": 3500.0,
+          "bulletType": "he_frag_i_t",
+          "hitPowerMult": 5.0,
+          "recoilMultiplier": 0.3,
+          "explosiveType": "tnt",
+          "explosiveMass": 0.006,
+          "onHitChanceMultFire": 5.0,
+          "effectiveDistance": 700.0,
+          "relativeVelHitShift": [300.0,1000.0],
+          "relativeVelArmorShift": [200.0,1000.0],
+          "explodeTreshold": 0.1,
+          "explodeHitPower": 11.0,
+          "explodeArmorPower": 2.0,
+          "explodeRadius": [0.01,0.3],
+          "groundCollisionEffect": "cannon_air_hit",
+          "groundFxScale": [0.4,0.6],
+          "hitpower": {
+            "HitPower10m": [1.0,10.0],
+            "HitPower1000m": [0.85,1000.0],
+            "HitPower1500m": [0.75,1500.0],
+            "HitPower2000m": [0.3,2000.0]
+          },
+          "armorpower": {
+            "ArmorPower0m": [22.0,10.0],
+            "ArmorPower100m": [19.0,100.0],
+            "ArmorPower500m": [13.0,500.0],
+            "ArmorPower1000m": [6.0,1000.0],
+            "ArmorPower1450m": [1.0,1450.0],
+            "ArmorPower1500m": [0.0,1500.0]
+          },
+          "visual": {
+            "range_percent_of_ammo": [100.0,0.0],
+            "traceFreq": 1,
+            "tracer": "20mmLightRed",
+            "trail": "black"
+          },
+          "collisions": {
+            "steel": {
+              "fx": "cannon_air_hit",
+              "fxScale": [0.5,0.8]
+            },
+            "armor": {
+              "fx": "cannon_air_hit",
+              "fxScale": [0.5,0.8]
+            }
+          }
+        }
+      },
+      {
+        "bullet": {
+          "mass": 0.136,
+          "caliber": 0.02,
+          "speed": 845.0,
+          "maxDistance": 3500.0,
+          "bulletType": "ap_t",
+          "recoilMultiplier": 0.3,
+          "effectiveDistance": 700.0,
+          "relativeVelHitShift": [300.0,1000.0],
+          "relativeVelArmorShift": [200.0,1000.0],
+          "groundFxScale": [0.4,0.6],
+          "hitpower": {
+            "HitPower10m": [1.0,10.0],
+            "HitPower1000m": [0.85,1000.0],
+            "HitPower1500m": [0.75,1500.0],
+            "HitPower2000m": [0.3,2000.0]
+          },
+          "armorpower": {
+            "ArmorPower0m": [25.0,10.0],
+            "ArmorPower100m": [23.0,100.0],
+            "ArmorPower500m": [17.0,500.0],
+            "ArmorPower1000m": [14.0,1000.0],
+            "ArmorPower1500m": [8.0,1500.0],
+            "ArmorPower1950m": [3.0,1950.0],
+            "ArmorPower2000m": [1.0,2000.0],
+            "ArmorPower3500m": [0.0,3500.0]
+          },
+          "visual": {
+            "range_percent_of_ammo": [100.0,0.0],
+            "traceFreq": 1,
+            "tracer": "20mmLightRed",
+            "trail": "black"
+          },
+          "collisions": {
+            "steel": {
+              "fx": "air_hit",
+              "fxScale": [0.5,0.8]
+            },
+            "armor": {
+              "fx": "air_hit",
+              "fxScale": [0.5,0.8]
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "akan_m47_ground_targets": [
+      {
+        "bullet": {
+          "mass": 0.136,
+          "caliber": 0.02,
+          "speed": 845.0,
+          "maxDistance": 3500.0,
+          "bulletType": "ap_t",
+          "recoilMultiplier": 0.3,
+          "effectiveDistance": 700.0,
+          "relativeVelHitShift": [300.0,1000.0],
+          "relativeVelArmorShift": [200.0,1000.0],
+          "groundFxScale": [0.4,0.6],
+          "hitpower": {
+            "HitPower10m": [1.0,10.0],
+            "HitPower1000m": [0.85,1000.0],
+            "HitPower1500m": [0.75,1500.0],
+            "HitPower2000m": [0.3,2000.0]
+          },
+          "armorpower": {
+            "ArmorPower0m": [25.0,10.0],
+            "ArmorPower100m": [23.0,100.0],
+            "ArmorPower500m": [17.0,500.0],
+            "ArmorPower1000m": [14.0,1000.0],
+            "ArmorPower1500m": [8.0,1500.0],
+            "ArmorPower1950m": [3.0,1950.0],
+            "ArmorPower2000m": [1.0,2000.0],
+            "ArmorPower3500m": [0.0,3500.0]
+          },
+          "visual": {
+            "range_percent_of_ammo": [100.0,0.0],
+            "traceFreq": 1,
+            "tracer": "20mmLightRed",
+            "trail": "black"
+          },
+          "collisions": {
+            "steel": {
+              "fx": "air_hit",
+              "fxScale": [0.5,0.8]
+            },
+            "armor": {
+              "fx": "air_hit",
+              "fxScale": [0.5,0.8]
+            }
+          }
+        }
+      },
+      {
+        "bullet": {
+          "mass": 0.136,
+          "caliber": 0.02,
+          "speed": 845.0,
+          "maxDistance": 3500.0,
+          "bulletType": "ap_t",
+          "recoilMultiplier": 0.3,
+          "effectiveDistance": 700.0,
+          "relativeVelHitShift": [300.0,1000.0],
+          "relativeVelArmorShift": [200.0,1000.0],
+          "groundFxScale": [0.4,0.6],
+          "hitpower": {
+            "HitPower10m": [1.0,10.0],
+            "HitPower1000m": [0.85,1000.0],
+            "HitPower1500m": [0.75,1500.0],
+            "HitPower2000m": [0.3,2000.0]
+          },
+          "armorpower": {
+            "ArmorPower0m": [25.0,10.0],
+            "ArmorPower100m": [23.0,100.0],
+            "ArmorPower500m": [17.0,500.0],
+            "ArmorPower1000m": [14.0,1000.0],
+            "ArmorPower1500m": [8.0,1500.0],
+            "ArmorPower1950m": [3.0,1950.0],
+            "ArmorPower2000m": [1.0,2000.0],
+            "ArmorPower3500m": [0.0,3500.0]
+          },
+          "visual": {
+            "range_percent_of_ammo": [100.0,0.0],
+            "traceFreq": 1,
+            "tracer": "20mmLightRed",
+            "trail": "black"
+          },
+          "collisions": {
+            "steel": {
+              "fx": "air_hit",
+              "fxScale": [0.5,0.8]
+            },
+            "armor": {
+              "fx": "air_hit",
+              "fxScale": [0.5,0.8]
+            }
+          }
+        }
+      },
+      {
+        "bullet": {
+          "mass": 0.136,
+          "caliber": 0.02,
+          "speed": 845.0,
+          "maxDistance": 3500.0,
+          "bulletType": "ap_t",
+          "recoilMultiplier": 0.3,
+          "effectiveDistance": 700.0,
+          "relativeVelHitShift": [300.0,1000.0],
+          "relativeVelArmorShift": [200.0,1000.0],
+          "groundFxScale": [0.4,0.6],
+          "hitpower": {
+            "HitPower10m": [1.0,10.0],
+            "HitPower1000m": [0.85,1000.0],
+            "HitPower1500m": [0.75,1500.0],
+            "HitPower2000m": [0.3,2000.0]
+          },
+          "armorpower": {
+            "ArmorPower0m": [25.0,10.0],
+            "ArmorPower100m": [23.0,100.0],
+            "ArmorPower500m": [17.0,500.0],
+            "ArmorPower1000m": [14.0,1000.0],
+            "ArmorPower1500m": [8.0,1500.0],
+            "ArmorPower1950m": [3.0,1950.0],
+            "ArmorPower2000m": [1.0,2000.0],
+            "ArmorPower3500m": [0.0,3500.0]
+          },
+          "visual": {
+            "range_percent_of_ammo": [100.0,0.0],
+            "traceFreq": 1,
+            "tracer": "20mmLightRed",
+            "trail": "black"
+          },
+          "collisions": {
+            "steel": {
+              "fx": "air_hit",
+              "fxScale": [0.5,0.8]
+            },
+            "armor": {
+              "fx": "air_hit",
+              "fxScale": [0.5,0.8]
+            }
+          }
+        }
+      },
+      {
+        "bullet": {
+          "mass": 0.136,
+          "caliber": 0.02,
+          "speed": 845.0,
+          "maxDistance": 3300.0,
+          "bulletType": "he_frag_t",
+          "hitPowerMult": 5.0,
+          "recoilMultiplier": 0.3,
+          "explosiveType": "petn",
+          "explosiveMass": 0.006,
+          "effectiveDistance": 700.0,
+          "relativeVelHitShift": [300.0,1000.0],
+          "relativeVelArmorShift": [200.0,1000.0],
+          "explodeTreshold": 0.1,
+          "explodeHitPower": 11.0,
+          "explodeArmorPower": 2.0,
+          "explodeRadius": [0.01,0.3],
+          "groundCollisionEffect": "cannon_air_hit",
+          "groundFxScale": [0.4,0.6],
+          "hitpower": {
+            "HitPower10m": [1.0,10.0],
+            "HitPower1000m": [0.85,1000.0],
+            "HitPower1500m": [0.75,1500.0],
+            "HitPower2000m": [0.3,2000.0]
+          },
+          "armorpower": {
+            "ArmorPower0m": [22.0,10.0],
+            "ArmorPower100m": [19.0,100.0],
+            "ArmorPower500m": [13.0,500.0],
+            "ArmorPower1000m": [6.0,1000.0],
+            "ArmorPower1450m": [1.0,1450.0],
+            "ArmorPower1500m": [0.0,1500.0]
+          },
+          "visual": {
+            "range_percent_of_ammo": [100.0,0.0],
+            "traceFreq": 1,
+            "tracer": "20mmLightRed",
+            "trail": "black"
+          },
+          "collisions": {
+            "steel": {
+              "fx": "cannon_air_hit",
+              "fxScale": [0.5,0.8]
+            },
+            "armor": {
+              "fx": "cannon_air_hit",
+              "fxScale": [0.5,0.8]
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "gunSound": {
+      "path": "sounds/guns",
+      "pathStudio": "aircraft/weapon",
+      "outside": "hs_mk5_gun_outside",
+      "cockpit": "hs_mk5_gun_inside",
+      "ai": "hs_mk5_gun_ai"
+    }
+  },
+  {
+    "overheat": [
+      {
+        "overheat": [9.0,0.0]
+      },
+      {
+        "overheat": [11.0,0.02]
+      },
+      {
+        "overheat": [13.0,0.05]
+      }
+    ]
+  },
+  {
+    "akan_m47_new_gun": {
+      "maxDeltaAngle": 0.66,
+      "overheat": [
+        {
+          "overheat": [5.3,0.0]
+        },
+        {
+          "overheat": [9.0,0.05]
+        }
+      ]
+    }
+  }
+]

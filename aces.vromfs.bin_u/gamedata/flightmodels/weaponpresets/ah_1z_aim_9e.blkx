@@ -1,0 +1,121 @@
+[
+  {
+    "Weapon": {
+      "dummy": true,
+      "trigger": "gunner0",
+      "triggerGroup": "primary",
+      "blk": "gameData/Weapons/cannonM197.blk",
+      "emitter": "optic1_gun",
+      "defaultYaw": 0.0,
+      "defaultPitch": 0.0,
+      "speedYaw": 25.0,
+      "speedPitch": 25.0,
+      "bullets": 1,
+      "parkInDeadzone": false,
+      "aimForOperatedShell": true,
+      "turret": {
+        "head": "optic1_turret",
+        "gun": "optic1_gun",
+        "mainTurret": true
+      },
+      "limits": {
+        "yaw": [-115.0,115.0],
+        "pitch": [-50.0,25.0]
+      }
+    }
+  },
+  {
+    "Weapon": [
+      {
+        "trigger": "gunner0"
+      },
+      {
+        "blk": "gameData/Weapons/cannonM197.blk"
+      },
+      {
+        "emitter": "flare1"
+      },
+      {
+        "flash": "flare1"
+      },
+      {
+        "turret": "turret1"
+      },
+      {
+        "shell": "emtr_shellrejection1"
+      },
+      {
+        "dm": "gunner1_dm"
+      },
+      {
+        "gunnerDm": "gunner1_dm"
+      },
+      {
+        "gunDm": "cannon1_dm"
+      },
+      {
+        "partsDP": "cannon1_dm"
+      },
+      {
+        "bullets": 750
+      },
+      {
+        "recoilOffset": 0.0
+      },
+      {
+        "rotationAnimScale": "gun_rotate_01:CRS"
+      },
+      {
+        "parkInDeadzone": false
+      },
+      {
+        "turret": {
+          "head": "turret1",
+          "gun": "gun1",
+          "barrel": "gun_barrel1",
+          "mainTurret": true,
+          "ballisticTargeting": true
+        }
+      },
+      {
+        "limits": {
+          "yaw": [-115.0,115.0],
+          "pitch": [-50.0,25.0]
+        }
+      },
+      {
+        "limitsTable": {
+          "lim1": [-115.0,-103.0,-50.0,15.0],
+          "lim2": [-103.0,-75.0,-50.0,19.0],
+          "lim3": [-75.0,-52.0,-50.0,24.0],
+          "lim4": [-52.0,-35.0,-50.0,25.0],
+          "lim5": [-35.0,-15.0,-50.0,23.0],
+          "lim6": [-15.0,15.0,-50.0,20.0],
+          "lim7": [15.0,35.0,-50.0,23.0],
+          "lim8": [35.0,52.0,-50.0,25.0],
+          "lim9": [52.0,75.0,-50.0,24.0],
+          "lim10": [75.0,103.0,-50.0,19.0],
+          "lim11": [103.0,115.0,-50.0,15.0]
+        }
+      }
+    ]
+  },
+  {
+    "Weapon": {
+      "trigger": "aam",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_aim9e_sidewinder.blk",
+      "emitter": "us_aim_9e_001",
+      "bullets": 1
+    }
+  },
+  {
+    "Weapon": {
+      "trigger": "aam",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_aim9e_sidewinder.blk",
+      "emitter": "us_aim_9e_002",
+      "bullets": 1
+    }
+  }
+]

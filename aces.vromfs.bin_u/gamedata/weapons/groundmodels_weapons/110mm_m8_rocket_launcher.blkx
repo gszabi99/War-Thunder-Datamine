@@ -1,0 +1,103 @@
+{
+  "rocketGun": true,
+  "preset_cost": 10,
+  "bullets": 1,
+  "shotFreq": 2.2,
+  "sound_path": "tanks/weapon_tanks/rockets",
+  "sound_pathStudio": "ground/weapon/rockets",
+  "sound": "75mm_m3",
+  "sound_inside": "75mm_m3_interior",
+  "reload_sound_path": "tanks/effects_tanks",
+  "reload_sound_pathStudio": "ground/effects",
+  "reload_sound": "reload_rocket",
+  "reload_sound_keyoff_timer": 3.0,
+  "isBulletBelt": false,
+  "helicopterGroup": 2,
+  "reloadTime": 8.0,
+  "allowHumanReload": true,
+  "mesh": "m8_rocket",
+  "tags": {
+    "antiTankRocket": true,
+    "antiShipRocket": true
+  },
+  "rocket": {
+    "bulletType": "rocket_tank",
+    "bulletName": "114mm_m8",
+    "caliber": 0.114,
+    "mass": 19.8,
+    "massEnd": 13.0,
+    "maxDeltaAngle": 0.3,
+    "dragCx": 0.027,
+    "length": 0.84,
+    "distFromCmToStab": 0.005,
+    "CxK": 1.5,
+    "WdK": [0.1,0.1,0.1],
+    "force": 5500.0,
+    "timeFire": 0.87,
+    "thrustDeviation": 0.01,
+    "explosionEffect": "atgm_hit",
+    "defFxScale": [1.7,2.1],
+    "groundCollisionEffect": "art_ground_splash",
+    "groundFxScale": [1.3,1.5],
+    "ricochetEffect": "cannon_ricochet",
+    "waterCollisionEffect": "120-203_he_water_splash",
+    "waterFxScale": [0.4,0.5],
+    "explosionPatchRadius": 3.4,
+    "smokeEffect": "hydra_smoke",
+    "maxDistance": 4500.0,
+    "minDistance": 30.0,
+    "spawnExplosionWreckage": false,
+    "spawnExplosionFx": false,
+    "explosionOffset": 0.05,
+    "hitPowerMult": 1.0,
+    "nearHitPower": [1.0,50.0],
+    "midHitPower": [0.9,400.0],
+    "farHitPower": [0.1,1000.0],
+    "endHitPower": [0.01,1500.0],
+    "relativeVelHitShift": [300.0,1000.0],
+    "nearArmorPower": [3.0,50.0],
+    "midArmorPower": [2.0,400.0],
+    "farArmorPower": [0.2,700.0],
+    "relativeVelArmorShift": [200.0,1000.0],
+    "distanceFuse": false,
+    "explodeTreshold": 0.1,
+    "explodeHitPower": 350.0,
+    "explodeArmorPower": 29.0,
+    "explodeRadius": [0.5,1.2],
+    "rendinstDamageRadius": 5.0,
+    "statType": "hydra",
+    "shutterDamage": true,
+    "shutterDamageRadius": 25.0,
+    "shutterAmount": 1000,
+    "shutterArmorPower": 7.0,
+    "shutterHit": 12.0,
+    "advancedMissiles": false,
+    "useStartSpeed": true,
+    "startSpeed": 50.0,
+    "endSpeed": 260.0,
+    "speedViscosity": 0.2,
+    "timeToLive": 20.0,
+    "price": 3000.0,
+    "collisions": {
+      "steel": {
+        "fx": "cannon_hit_armor_cumulative",
+        "fxScale": [3.0,4.0]
+      },
+      "buildings": {
+        "fx": "atgm_hit",
+        "fxScale": [1.7,2.1]
+      },
+      "wood": {
+        "fx": "atgm_hit",
+        "fxScale": [1.7,2.1]
+      }
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 5.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 1.0
+      }
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "model": "tent_barrels01_a",
+  "subclass": "fortification",
+  "dynCollisionGeom": true,
+  "hasExpl": true,
+  "expClass": "exp_structure",
+  "damageableByGun": true,
+  "timeToFire": 5.0,
+  "maxFwdSpeed": 0.0,
+  "maxRevSpeed": 0.0,
+  "maxAngSpeed": 0.0,
+  "maxAccel": 0.0,
+  "maxDecel": 0.0,
+  "maxAngAccel0": 0.0,
+  "maxAngAccelV": 0.0,
+  "maxAngAccel": 0.0,
+  "groundNormSmoothViscosity": 0.1,
+  "DamageParts": {
+    "steel": {
+      "body_dm": {
+        "hp": 150.0
+      }
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body_dm",
+      "onHit": {
+        "smoke": 0.5,
+        "fire": 0.5
+      },
+      "onKill": {
+        "expl": 1.0
+      }
+    }
+  },
+  "explosion": {
+    "expl": {
+      "node": "body",
+      "partNo": 0,
+      "timeToExplode": 1.0,
+      "preEffectName": "ground_model_fire",
+      "postEffectName": "ground_model_fire",
+      "explosionEffectName": "ground_model_expl",
+      "timeForPostEffect": 45.0,
+      "preScale": 4.0,
+      "postScale": 4.0
+    }
+  }
+}

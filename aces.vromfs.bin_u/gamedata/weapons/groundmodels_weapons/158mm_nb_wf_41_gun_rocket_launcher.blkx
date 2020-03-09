@@ -1,0 +1,258 @@
+{
+  "cannon": true,
+  "weaponType": -1,
+  "bUseHookAsRel": true,
+  "emitColor": [1.0,1.0,0.0],
+  "emitI": 10.0,
+  "emitR": 3.0,
+  "emitTime": 0.03,
+  "aimMinDist": 0.1,
+  "aimMaxDist": 2000.0,
+  "maxDeltaAngle": 0.06,
+  "maxDeltaAngleVertical": 0.08,
+  "shotFreq": 2.0,
+  "traceFreq": 4,
+  "bEnablePause": false,
+  "bullets": -1,
+  "bulletsCluster": 1,
+  "useSingleIconForBullet": true,
+  "fxType": "big_gun_flame_recoilless",
+  "fxGroundDust": "ground_shock_wave_dust",
+  "shouldCollideWithRendinsts": true,
+  "sound_path": "tanks/weapon_tanks/rockets",
+  "sound_pathStudio": "ground/weapon/rockets",
+  "sound": "158mm_nb_wf_41",
+  "sound_inside": "158mm_nb_wf_41_interior",
+  "sfxReloadBullet": "grd_cannon_reload",
+  "fxMultipleSpawn": true,
+  "isBulletBelt": false,
+  "reloadTime": 18.0,
+  "bulletsCartridge": 10,
+  "notUseDefaultBulletInGui": true,
+  "drawRocketInBullet": true,
+  "allowRearmOnField": true,
+  "mesh": "nebelwerfer_42_rocket",
+  "bullet": {
+    "bulletCount": 40,
+    "mass": 28.0,
+    "explosiveType": "fp02",
+    "explosiveMass": 3.7,
+    "caliber": 0.128,
+    "speed": 750.0,
+    "maxDistance": 10000.0,
+    "bulletType": "he_frag_tank",
+    "bulletName": "128mm_sprgr",
+    "hitPowerMult": 40.0,
+    "nearHitPower": [1.0,50.0],
+    "midHitPower": [0.9,300.0],
+    "farHitPower": [0.1,700.0],
+    "endHitPower": [0.008,1500.0],
+    "relativeVelHitShift": [300.0,1000.0],
+    "relativeVelArmorShift": [200.0,1000.0],
+    "explodeTreshold": 0.5,
+    "fuseDelayDist": 0.1,
+    "ricochetEffect": "cannon_ricochet",
+    "waterCollisionEffect": "120-203_he_water_splash",
+    "waterFxScale": [1.1,1.2],
+    "explosionPatchRadius": 4.0,
+    "visual": {
+      "range_percent_of_ammo": [100.0,0.0],
+      "traceFreq": 1,
+      "tracer": "76mmBrightRed",
+      "trail": "black"
+    },
+    "collisions": {
+      "default": {
+        "fx": "75_122_he_hit_ground",
+        "fxScale": [0.8,1.0]
+      },
+      "horLandMesh": {
+        "fx": "75_122_he_hit_ground",
+        "fxScale": [0.8,1.0]
+      },
+      "soil": {
+        "fx": "75_122_he_hit_ground",
+        "fxScale": [0.8,1.0]
+      },
+      "dirt": {
+        "fx": "75_122_he_hit_ground",
+        "fxScale": [0.8,1.0]
+      },
+      "road": {
+        "fx": "75_122_he_hit_ground",
+        "fxScale": [0.8,1.0]
+      },
+      "roadSoil": {
+        "fx": "75_122_he_hit_ground",
+        "fxScale": [0.8,1.0]
+      },
+      "sand": {
+        "fx": "75_122_he_hit_ground",
+        "fxScale": [0.8,1.0]
+      },
+      "duneSand": {
+        "fx": "75_122_he_hit_ground",
+        "fxScale": [0.8,1.0]
+      },
+      "roadSand": {
+        "fx": "75_122_he_hit_ground",
+        "fxScale": [0.8,1.0]
+      },
+      "quickSand": {
+        "fx": "75_122_he_hit_ground",
+        "fxScale": [0.8,1.0]
+      },
+      "snow": {
+        "fx": "75_122_he_hit_snow",
+        "fxScale": [0.8,1.0]
+      },
+      "ice": {
+        "fx": "75_122_he_hit_snow",
+        "fxScale": [0.8,1.0]
+      },
+      "roadSnow": {
+        "fx": "75_122_he_hit_snow",
+        "fxScale": [0.8,1.0]
+      },
+      "snowLower": {
+        "fx": "75_122_he_hit_snow",
+        "fxScale": [0.8,1.0]
+      },
+      "wood": {
+        "fx": "122_he_wood_splash",
+        "fxScale": [0.9,1.1]
+      },
+      "steel": {
+        "fx": "bullet_hit_armor_cumulative",
+        "fxScale": [1.8,2.0]
+      },
+      "metal": {
+        "fx": "bullet_hit_armor_cumulative",
+        "fxScale": [1.8,2.0]
+      },
+      "glass": {
+        "fx": "75_122_he_hit_stone",
+        "fxScale": [0.8,1.0]
+      },
+      "buildings": {
+        "fx": "75_122_he_hit_stone",
+        "fxScale": [0.8,1.0]
+      },
+      "verLandMesh": {
+        "fx": "75_122_he_hit_stone",
+        "fxScale": [0.8,1.0]
+      },
+      "beton": {
+        "fx": "75_122_he_hit_stone",
+        "fxScale": [0.8,1.0]
+      },
+      "bricks_red": {
+        "fx": "75_122_he_hit_stone",
+        "fxScale": [0.8,1.0]
+      },
+      "rocks": {
+        "fx": "75_122_he_hit_stone",
+        "fxScale": [0.8,1.0]
+      },
+      "rocksSlippery": {
+        "fx": "75_122_he_hit_stone",
+        "fxScale": [0.8,1.0]
+      },
+      "fabric": {
+        "fx": "75_122_he_hit_stone",
+        "fxScale": [0.8,1.0]
+      },
+      "stone_snow": {
+        "fx": "75_122_he_hit_snow_stone",
+        "fxScale": [0.8,1.0]
+      }
+    }
+  },
+  "158mm_ger_Wf_41_HE": {
+    "bullet": {
+      "bulletType": "rocket_tank",
+      "bulletName": "152mm_wgr_41",
+      "mass": 39.06,
+      "caliber": 0.15,
+      "sound_path": "tanks/weapon_tanks/rockets",
+      "sound_pathStudio": "ground/weapon/rockets",
+      "sound": "158mm_nb_wf_41",
+      "sound_inside": "158mm_nb_wf_41_interior",
+      "recoilMultiplier": 0.01,
+      "rocket": {
+        "bulletType": "rocket_tank",
+        "bulletName": "152mm_wgr_41",
+        "caliber": 0.15,
+        "mass": 39.06,
+        "massEnd": 29.07,
+        "maxDeltaAngle": 0.3,
+        "dragCx": 0.01,
+        "length": 0.68,
+        "mesh": "nebelwerfer_42_rocket",
+        "distFromCmToStab": 0.01,
+        "CxK": 0.1,
+        "WdK": [0.1,0.1,0.1],
+        "force": 7500.0,
+        "timeFire": 0.87,
+        "thrustDeviation": 0.005,
+        "explosionEffect": "atgm_hit",
+        "defFxScale": [2.2,2.5],
+        "groundCollisionEffect": "art_ground_splash",
+        "groundFxScale": [1.5,1.7],
+        "ricochetEffect": "cannon_hit_apds",
+        "waterCollisionEffect": "120-203_he_water_splash",
+        "waterFxScale": [1.2,1.4],
+        "explosionPatchRadius": 5.0,
+        "smokeEffect": "hydra_smoke",
+        "maxDistance": 6500.0,
+        "minDistance": 30.0,
+        "spawnExplosionWreckage": false,
+        "spawnExplosionFx": false,
+        "explosionOffset": 0.05,
+        "hitPowerMult": 1.0,
+        "nearHitPower": [1.0,50.0],
+        "midHitPower": [0.9,400.0],
+        "farHitPower": [0.1,1000.0],
+        "endHitPower": [0.01,1500.0],
+        "relativeVelHitShift": [300.0,1000.0],
+        "nearArmorPower": [10.0,50.0],
+        "midArmorPower": [7.0,400.0],
+        "farArmorPower": [0.2,700.0],
+        "relativeVelArmorShift": [200.0,1000.0],
+        "distanceFuse": false,
+        "explodeTreshold": 0.1,
+        "explodeHitPower": 500.0,
+        "explodeArmorPower": 42.0,
+        "explodeRadius": [0.4,1.3],
+        "rendinstDamageRadius": 4.0,
+        "statType": "hydra",
+        "shutterDamage": true,
+        "shutterDamageRadius": 35.0,
+        "shutterAmount": 1500,
+        "shutterArmorPower": 10.0,
+        "shutterHit": 10.0,
+        "advancedMissiles": false,
+        "useStartSpeed": true,
+        "startSpeed": 50.0,
+        "endSpeed": 340.0,
+        "speedViscosity": 0.1,
+        "timeToLive": 20.0,
+        "price": 3000.0,
+        "collisions": {
+          "steel": {
+            "fx": "cannon_hit_armor_cumulative",
+            "fxScale": [4.0,5.0]
+          },
+          "buildings": {
+            "fx": "atgm_hit",
+            "fxScale": [2.2,2.5]
+          },
+          "wood": {
+            "fx": "atgm_hit",
+            "fxScale": [2.2,2.5]
+          }
+        }
+      }
+    }
+  }
+}

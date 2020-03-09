@@ -1,0 +1,110 @@
+{
+  "rocketGun": true,
+  "preset_cost": 7,
+  "bullets": 1,
+  "shotFreq": 3.0,
+  "sound_path": "ships/weapon_common/rockets",
+  "sound_pathStudio": "naval/weapon/rockets",
+  "sound": "75mm_m3",
+  "isBulletBelt": false,
+  "helicopterGroup": 2,
+  "reloadTime": 8.0,
+  "allowHumanReload": true,
+  "mesh": "rocket_m14",
+  "tags": {
+    "antiTankRocket": true,
+    "antiShipRocket": true
+  },
+  "rocket": {
+    "bulletType": "rocket_tank",
+    "bulletName": "140mm_m_140of",
+    "explosiveType": "tnt",
+    "explosiveMass": 4.2,
+    "caliber": 0.14,
+    "mass": 39.68,
+    "massEnd": 31.95,
+    "maxDeltaAngle": 0.5,
+    "dragCx": 0.007,
+    "length": 1.086,
+    "distFromCmToStab": 0.01,
+    "CxK": 0.1,
+    "WdK": [0.1,0.1,0.1],
+    "force": 4500.0,
+    "timeFire": 2.5,
+    "thrustDeviation": 0.003,
+    "explosionEffect": "atgm_hit",
+    "defFxScale": [1.7,2.1],
+    "groundCollisionEffect": "art_ground_splash",
+    "groundFxScale": [1.3,1.5],
+    "ricochetEffect": "cannon_ricochet",
+    "waterCollisionEffect": "120-203_he_water_splash",
+    "waterFxScale": [0.4,0.5],
+    "explosionPatchRadius": 3.4,
+    "smokeEffect": "hydra_smoke",
+    "maxDistance": 9810.0,
+    "minDistance": 100.0,
+    "statType": "hydra",
+    "relativeVelHitShift": [300.0,1000.0],
+    "relativeVelArmorShift": [200.0,1000.0],
+    "distanceFuse": false,
+    "spawnExplosionWreckage": false,
+    "spawnExplosionFx": false,
+    "explosionOffset": 0.05,
+    "explodeTreshold": 0.1,
+    "advancedMissiles": false,
+    "useStartSpeed": true,
+    "startSpeed": 200.0,
+    "endSpeed": 400.0,
+    "speedViscosity": 0.05,
+    "timeToLive": 20.0,
+    "price": 3000.0,
+    "collisions": {
+      "steel": {
+        "fx": "cannon_hit_armor_cumulative",
+        "fxScale": [3.0,4.0]
+      },
+      "buildings": {
+        "fx": "atgm_hit",
+        "fxScale": [1.7,2.1]
+      },
+      "wood": {
+        "fx": "atgm_hit",
+        "fxScale": [1.7,2.1]
+      }
+    },
+    "damage": {
+      "shatter": [
+        {
+          "useRealShatters": true
+        },
+        {
+          "countPortion": 0.03
+        },
+        {
+          "segment": {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [0.0,100.0],
+            "countPortion": 0.5
+          }
+        },
+        {
+          "segment": {
+            "angles": [101.0,259.0],
+            "countPortion": 0.0
+          }
+        },
+        {
+          "segment": {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [260.0,359.0],
+            "countPortion": 0.5
+          }
+        }
+      ]
+    }
+  }
+}

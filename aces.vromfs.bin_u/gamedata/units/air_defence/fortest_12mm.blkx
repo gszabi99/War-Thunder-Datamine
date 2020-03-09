@@ -1,0 +1,83 @@
+{
+  "model": "40mm_bofors_a",
+  "collisionSphere0": [0.0,-1.5,0.0,5.0],
+  "collisionSphere1": [5.0,2.0,0.0,1.0],
+  "timeToFire": 5.0,
+  "subclass": "fortification",
+  "onRadarAs": "aam",
+  "moveType": "vehicle",
+  "maxFwdSpeed": 0.0,
+  "maxRevSpeed": 0.0,
+  "maxAngSpeed": 0.0,
+  "maxAccel": 0.0,
+  "maxDecel": 0.0,
+  "maxAngAccel0": 0.0,
+  "maxAngAccelV": 0.0,
+  "maxAngAccel": 0.0,
+  "groundNormSmoothViscosity": 0.1,
+  "bulletHitFx": "ground_model_hit",
+  "partDamageFx": "part_damage",
+  "explosionFx": "ground_model_expl",
+  "fireFx": "ground_model_fire",
+  "attach": {
+    "inc_gunner01": "usa_young_gunner_sit1",
+    "inc_gunner00": "usa_young_gunner_sit2",
+    "inc_soldier": "usa_young_stand_soldier"
+  },
+  "DamageParts": {
+    "steel": {
+      "body_dm": {
+        "hp": 10.0
+      }
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body_dm",
+      "onHit": [],
+      "onKill": {
+        "fire": 2.0,
+        "smoke": 5.0,
+        "expl": 5.0
+      }
+    }
+  },
+  "class_tags": {
+    "fortest": true
+  },
+  "weapon": {
+    "trigger": "gunner0",
+    "blk": "gameData/weapons/fortest_mGun12mm.blk",
+    "emitter": "gun1",
+    "flash": "flame1",
+    "defaultYaw": 0.0,
+    "defaultPitch": 30.0,
+    "speedYaw": 180.0,
+    "speedPitch": 120.0,
+    "fireConeAngle": 3.0,
+    "bullets": -1,
+    "salvoAmount": 1.0,
+    "ChainfireTime": 2.0,
+    "DelayAfterShoot": 1.0,
+    "AttackMaxDistance": 10000.0,
+    "AttackMaxRadius": 10000.0,
+    "AttackMaxHeight": 10000.0,
+    "accuracyAir": 0.999,
+    "accuracyGnd": 0.0,
+    "errMeasureVel": 0.0,
+    "errMeasureVelFast": 0.0,
+    "errMeasureVelFwdShift": 0.1,
+    "errMeasureVelDir": 0.1,
+    "errTargettingOn100kmph": 0.01,
+    "errTargetting": 0.01,
+    "errExplTime": 0.1,
+    "turret": {
+      "head": "turret1",
+      "gun": "gun1"
+    },
+    "limits": {
+      "yaw": [-180.0,180.0],
+      "pitch": [10.0,85.0]
+    }
+  }
+}

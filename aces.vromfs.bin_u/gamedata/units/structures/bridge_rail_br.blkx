@@ -1,0 +1,27 @@
+{
+  "model": "bridge_rail_br_a",
+  "subclass": "fortification",
+  "dynCollisionGeom": true,
+  "hasExpl": true,
+  "hasDmg2": true,
+  "hasDmg2Collision": true,
+  "hasDmg": false,
+  "damageableByGun": false,
+  "expClass": "exp_bridge",
+  "renderInWaterReflection": true,
+  "DamageParts": {
+    "armor45": {
+      "body_dm": {
+        "hp": 2000.0
+      }
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body_dm",
+      "onKill": {
+        "expl": 1.0
+      }
+    }
+  }
+}

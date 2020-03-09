@@ -1,0 +1,50 @@
+{
+  "beamGun": true,
+  "beamTracer": "beamGreen",
+  "beamTracerMaxDist": 3000.0,
+  "beamFxType": "ufo_hit",
+  "weaponType": 3,
+  "bUseHookAsRel": true,
+  "shotFreq": 25.0,
+  "bullets": 10000,
+  "bulletsCluster": 1,
+  "soundLoop": true,
+  "bullet": {
+    "mass": 0.0001,
+    "speed": 1.0,
+    "maxDistance": 3000.0,
+    "bulletType": "frag_i_t",
+    "hitpower": {
+      "HitPower0m": [1.0,1000.0],
+      "HitPower10000m": [0.8,10000.0]
+    },
+    "damage": {
+      "beam": {
+        "damageType": "laserBeam",
+        "penetration": 200.0,
+        "damage": 100.0,
+        "dispersion": 0.0001
+      }
+    },
+    "visual": {
+      "range_percent_of_ammo": [100.0,0.0],
+      "traceFreq": 1,
+      "tracer": "noColor"
+    }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "ground/weapon/cannons",
+    "outside": "ufo_laser_gun",
+    "cockpit": "ufo_laser_gun",
+    "ai": "ufo_laser_gun_ai"
+  },
+  "overheat": [
+    {
+      "overheat": [1000.0,0.0]
+    },
+    {
+      "overheat": [10000.0,0.1]
+    }
+  ]
+}

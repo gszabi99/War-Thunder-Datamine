@@ -1,0 +1,149 @@
+{
+  "expClass": "exp_ship",
+  "timeToFire": 60.0,
+  "timeToSmoke": 600.0,
+  "hasExpl": true,
+  "model": "destroyer_anderson_test_a",
+  "subclass": "warShip",
+  "dustFx": "water_units_dust",
+  "dynCollisionGeom": true,
+  "damageableByGun": false,
+  "moveType": "ship",
+  "maxFwdSpeed": 55.0,
+  "maxRevSpeed": 5.0,
+  "maxAngSpeed": 1.0,
+  "maxAccel": 0.5,
+  "maxDecel": 0.5,
+  "maxAngAccel": 0.7,
+  "maxAngAccel0": 0.0,
+  "maxAngAccelV": 0.01,
+  "groundNormSmoothViscosity": 4.5,
+  "customUpdateDiv": 5,
+  "drownGFactor": 0.0,
+  "drownRollSpeed": 0.01,
+  "SoundMove": "models.Ship",
+  "tailStartOffset": 0.0,
+  "DamageParts": [
+    {
+      "steel": {
+        "gun0_dm": {
+          "hp": 2.0
+        },
+        "gun5_dm": {
+          "hp": 2.0
+        },
+        "gun6_dm": {
+          "hp": 2.0
+        },
+        "gun7_dm": {
+          "hp": 2.0
+        },
+        "gun8_dm": {
+          "hp": 2.0
+        }
+      }
+    },
+    {
+      "armor40": {
+        "engine_dm": {
+          "hp": 3500.0
+        },
+        "body_dm": {
+          "hp": 3500.0
+        },
+        "bodypart1_dm": {
+          "hp": 3500.0
+        }
+      }
+    },
+    {
+      "armor40": {
+        "gun1_dm": {
+          "hp": 50.0
+        },
+        "gun2_dm": {
+          "hp": 50.0
+        },
+        "gun3_dm": {
+          "hp": 50.0
+        },
+        "gun4_dm": {
+          "hp": 50.0
+        }
+      }
+    }
+  ],
+  "DamageEffects": [
+    {
+      "part": {
+        "name": "body_dm",
+        "onHit": {
+          "smoke": 0.01,
+          "fire": 0.01
+        },
+        "onKill": {
+          "expl": 1.0
+        }
+      }
+    },
+    {
+      "part": [
+        {
+          "name": "engine_dm"
+        },
+        {
+          "name": "bodypart1_dm"
+        },
+        {
+          "onHit": {
+            "smoke": 0.1,
+            "fire": 0.01
+          }
+        },
+        {
+          "onKill": {
+            "body_dm": 1.0
+          }
+        }
+      ]
+    }
+  ],
+  "attach": {
+    "flag_front": "flag_usa",
+    "flag_middle": "flag_usa",
+    "flag_back": "flag_usa"
+  },
+  "sound": {
+    "path": "sounds/engines",
+    "pathStudio": "aircraft/engines",
+    "engine": "boat"
+  },
+  "ShipPhys": {
+    "mass": {
+      "Empty": 1600000.0,
+      "momentOfInertia": [100.0,250.0,250.0],
+      "CenterOfGravity": [-4.4,-1.0,0.0]
+    },
+    "engines": {
+      "maxThrust": 620000.0
+    },
+    "hydrodynamics": {
+      "keelArea": 1.0,
+      "bodyArea": 191.35,
+      "keelArm": [-50.0,-3.0,0.0],
+      "bodyArm": [-5.0,0.0,0.0]
+    }
+  },
+  "guns_remap": {
+    "turret0": "ships/uss_dd_sims_test_gun_main",
+    "turret1": "ships/uss_dd_sims_test_gun_main",
+    "turret2": "ships/uss_dd_sims_test_gun_main",
+    "turret3": "ships/uss_dd_sims_test_gun_main",
+    "turret4": "ships/uss_dd_sims_test_gun_sec",
+    "turret5": "ships/uss_dd_sims_test_gun_sec",
+    "turret6": "ships/uss_dd_sims_test_gun_sec",
+    "turret7": "ships/uss_dd_sims_test_gun_sec",
+    "turret8": "ships/uss_dd_sims_test_gun_sec",
+    "turret9": "ships/uss_dd_sims_test_gun_sec"
+  }
+}

@@ -1,0 +1,4348 @@
+[
+  {
+    "cutablePart": "aileron_l"
+  },
+  {
+    "cutablePart": "aileron%d_l"
+  },
+  {
+    "cutablePart": "aileron_interceptor_l"
+  },
+  {
+    "cutablePart": "aileron_interceptor%d_l"
+  },
+  {
+    "cutablePart": "elevon_l"
+  },
+  {
+    "cutablePart": "aileron_r"
+  },
+  {
+    "cutablePart": "aileron%d_r"
+  },
+  {
+    "cutablePart": "aileron_interceptor_r"
+  },
+  {
+    "cutablePart": "aileron_interceptor%d_r"
+  },
+  {
+    "cutablePart": "elevon_r"
+  },
+  {
+    "cutablePart": "elevator"
+  },
+  {
+    "cutablePart": "elevator%d"
+  },
+  {
+    "cutablePart": "rudder"
+  },
+  {
+    "cutablePart": "rudder%d"
+  },
+  {
+    "cutablePart": "rudder_interceptor_l"
+  },
+  {
+    "cutablePart": "rudder_interceptor%d_l"
+  },
+  {
+    "cutablePart": "rudder_interceptor_r"
+  },
+  {
+    "cutablePart": "rudder_interceptor%d_r"
+  },
+  {
+    "cutablePart": "flap_l"
+  },
+  {
+    "cutablePart": "flap%d_l"
+  },
+  {
+    "cutablePart": "flap_r"
+  },
+  {
+    "cutablePart": "flap%d_r"
+  },
+  {
+    "cutablePart": "flap_c"
+  },
+  {
+    "cutablePart": "flap_airbrake_l"
+  },
+  {
+    "cutablePart": "flap_airbrake%d_l"
+  },
+  {
+    "cutablePart": "flap_airbrake_r"
+  },
+  {
+    "cutablePart": "flap_airbrake%d_r"
+  },
+  {
+    "cutablePart": "airbrake_l"
+  },
+  {
+    "cutablePart": "airbrake_r"
+  },
+  {
+    "cutablePart": "airbrake_c"
+  },
+  {
+    "damageablePart": "fuse%d"
+  },
+  {
+    "damageablePart": "stab"
+  },
+  {
+    "damageablePart": "stab%d"
+  },
+  {
+    "damageablePart": "fin"
+  },
+  {
+    "damageablePart": "fin%d"
+  },
+  {
+    "visual": [
+      {
+        "type": "min"
+      },
+      {
+        "dependency": [
+          {
+            "dm": "wing_l_dm"
+          },
+          {
+            "dm": "wing1_l_dm"
+          },
+          {
+            "dm": "wing2_l_dm"
+          },
+          {
+            "type": "min"
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "effect": {
+              "part": "wing_l",
+              "model": 0,
+              "type": "visibility",
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "part": "wing_l",
+              "model": 2,
+              "type": "visibility",
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "part": "wing_l",
+              "model": 1,
+              "type": "visibility",
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "part": "wing_l",
+              "model": 3,
+              "type": "visibility",
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "damaged"
+          },
+          {
+            "state": "wrecked"
+          },
+          {
+            "effect": {
+              "part": "wing_l",
+              "model": 0,
+              "type": "visibility",
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "part": "wing_l",
+              "model": 2,
+              "type": "visibility",
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "part": "wing_l",
+              "model": 1,
+              "type": "visibility",
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "part": "wing_l",
+              "model": 3,
+              "type": "visibility",
+              "enabled": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "type": "min"
+      },
+      {
+        "dependency": [
+          {
+            "dm": "wing_l_dm"
+          },
+          {
+            "dm": "wing1_l_dm"
+          },
+          {
+            "dm": "wing2_l_dm"
+          },
+          {
+            "type": "min"
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "state": "damaged"
+          },
+          {
+            "effect": {
+              "type": "cuttingPlanes",
+              "model": 1,
+              "planeIndex1": 0,
+              "plane1": [0.0,0.0,0.0,1.0],
+              "planeIndex2": 3,
+              "plane2": [0.0,0.0,0.0,-1.0],
+              "planeIndex3": 4,
+              "plane3": [0.0,0.0,0.0,-1.0]
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "wrecked",
+              "emitter": 0,
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": {
+          "state": "wrecked",
+          "effect": {
+            "type": "particles",
+            "particles": "wrecked",
+            "emitter": 0,
+            "enabled": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "visual": {
+      "tag": 0,
+      "dm": "wing_l_dm",
+      "state": {
+        "state": "wrecked",
+        "effect": [
+          {
+            "part": "wing_l"
+          },
+          {
+            "model": 1
+          },
+          {
+            "type": "break"
+          },
+          {
+            "rootDm": "wing_l_dm"
+          },
+          {
+            "childDm": "wing1_l_dm"
+          },
+          {
+            "childDm": "wing2_l_dm"
+          },
+          {
+            "massCenter": [0.5,0.5,0.375]
+          },
+          {
+            "attachPoint": [0.25,0.0,1.0]
+          },
+          {
+            "modelCuttingPlanes": {
+              "planeIndex1": 0,
+              "planeAnchor1": "emtr_break_wing0_l_from",
+              "planeAnchorMax1": "emtr_break_wing0_l_to",
+              "planeIndex2": 3,
+              "planeAnchor2": "emtr_break_wing_tail",
+              "planeTmAxisIndex2": 1,
+              "planeIndex3": 4,
+              "planeAnchor3": "emtr_break_wing_biplane",
+              "planeAxis3": [0.0,1.0,0.0]
+            }
+          },
+          {
+            "partCuttingPlanes": {
+              "planeIndex1": 0,
+              "planeAnchor1": "emtr_break_wing0_l_to",
+              "planeAnchorMax1": "emtr_break_wing0_l_from",
+              "planeIndex2": 1,
+              "plane2": [0.0,0.0,0.0,1.0],
+              "planeIndex3": 2,
+              "plane3": [0.0,0.0,0.0,1.0],
+              "planeIndex4": 3,
+              "planeAnchor4": "emtr_break_wing_tail",
+              "planeTmAxisIndex4": -1,
+              "planeIndex5": 4,
+              "plane5": [0.0,0.0,0.0,1.0],
+              "planeIndex6": 4,
+              "planeAnchor6": "emtr_break_wing_biplane",
+              "planeAxis6": [0.0,-1.0,0.0],
+              "planeIndex7": 5,
+              "plane7": [0.0,0.0,0.0,1.0],
+              "planeIndex8": 6,
+              "plane8": [0.0,0.0,0.0,1.0]
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "visual": {
+      "tag": 1,
+      "dm": "wing_l_dm",
+      "state": {
+        "state": "wrecked",
+        "effect": {
+          "part": "wing_l",
+          "model": 1,
+          "type": "break",
+          "rootDm": "wing1_l_dm",
+          "childDm": "wing2_l_dm",
+          "massCenter": [0.5,0.5,0.375],
+          "attachPoint": [0.25,0.0,1.0],
+          "modelCuttingPlanes": {
+            "planeIndex1": 0,
+            "planeAnchor1": "emtr_break_wing0_l_from",
+            "planeAnchorMax1": "emtr_break_wing0_l_to",
+            "planeIndex2": 3,
+            "planeAnchor2": "emtr_break_wing_tail",
+            "planeTmAxisIndex2": 1,
+            "planeIndex3": 4,
+            "planeAnchor3": "emtr_break_wing_biplane",
+            "planeAxis3": [0.0,1.0,0.0]
+          }
+        }
+      }
+    }
+  },
+  {
+    "visual": {
+      "tag": 2,
+      "dm": "wing1_l_dm",
+      "state": {
+        "state": "wrecked",
+        "effect": {
+          "part": "wing_l",
+          "model": 1,
+          "type": "break",
+          "rootDm": "wing1_l_dm",
+          "childDm": "wing2_l_dm",
+          "massCenter": [0.5,0.5,0.375],
+          "attachPoint": [0.25,0.0,1.0],
+          "modelCuttingPlanes": {
+            "planeIndex1": 0,
+            "planeAnchor1": "emtr_break_wing1_l_from",
+            "planeAnchorMax1": "emtr_break_wing1_l_to",
+            "planeIndex2": 3,
+            "planeAnchor2": "emtr_break_wing_tail",
+            "planeTmAxisIndex2": 1,
+            "planeIndex3": 4,
+            "planeAnchor3": "emtr_break_wing_biplane",
+            "planeAxis3": [0.0,1.0,0.0]
+          },
+          "partCuttingPlanes": {
+            "planeIndex1": 0,
+            "planeAnchor1": "emtr_break_wing1_l_to",
+            "planeAnchorMax1": "emtr_break_wing1_l_from",
+            "planeIndex2": 1,
+            "plane2": [0.0,0.0,0.0,1.0],
+            "planeIndex3": 2,
+            "plane3": [0.0,0.0,0.0,1.0],
+            "planeIndex4": 3,
+            "planeAnchor4": "emtr_break_wing_tail",
+            "planeTmAxisIndex4": -1,
+            "planeIndex5": 4,
+            "plane5": [0.0,0.0,0.0,1.0],
+            "planeIndex6": 4,
+            "planeAnchor6": "emtr_break_wing_biplane",
+            "planeAxis6": [0.0,-1.0,0.0],
+            "planeIndex7": 5,
+            "plane7": [0.0,0.0,0.0,1.0],
+            "planeIndex8": 6,
+            "plane8": [0.0,0.0,0.0,1.0]
+          }
+        }
+      }
+    }
+  },
+  {
+    "visual": {
+      "tag": 3,
+      "dm": "wing1_l_dm",
+      "state": {
+        "state": "wrecked",
+        "effect": {
+          "part": "wing_l",
+          "model": 1,
+          "type": "break",
+          "rootDm": "wing2_l_dm",
+          "massCenter": [0.5,0.5,0.375],
+          "attachPoint": [0.25,0.0,1.0],
+          "modelCuttingPlanes": {
+            "planeIndex1": 0,
+            "planeAnchor1": "emtr_break_wing1_l_from",
+            "planeAnchorMax1": "emtr_break_wing1_l_to",
+            "planeIndex2": 3,
+            "planeAnchor2": "emtr_break_wing_tail",
+            "planeTmAxisIndex2": 1,
+            "planeIndex3": 4,
+            "planeAnchor3": "emtr_break_wing_biplane",
+            "planeAxis3": [0.0,1.0,0.0]
+          }
+        }
+      }
+    }
+  },
+  {
+    "visual": {
+      "tag": 4,
+      "dm": "wing2_l_dm",
+      "state": {
+        "state": "wrecked",
+        "effect": {
+          "part": "wing_l",
+          "model": 1,
+          "type": "break",
+          "rootDm": "wing2_l_dm",
+          "massCenter": [0.5,0.5,0.375],
+          "attachPoint": [0.25,0.0,1.0],
+          "modelCuttingPlanes": {
+            "planeIndex1": 0,
+            "planeAnchor1": "emtr_break_wing2_l_from",
+            "planeAnchorMax1": "emtr_break_wing2_l_to",
+            "planeIndex2": 3,
+            "planeAnchor2": "emtr_break_wing_tail",
+            "planeTmAxisIndex2": 1,
+            "planeIndex3": 4,
+            "planeAnchor3": "emtr_break_wing_biplane",
+            "planeAxis3": [0.0,1.0,0.0]
+          },
+          "partCuttingPlanes": {
+            "planeIndex1": 0,
+            "planeAnchor1": "emtr_break_wing2_l_to",
+            "planeAnchorMax1": "emtr_break_wing2_l_from",
+            "planeIndex2": 1,
+            "plane2": [0.0,0.0,0.0,1.0],
+            "planeIndex3": 2,
+            "plane3": [0.0,0.0,0.0,1.0],
+            "planeIndex4": 3,
+            "planeAnchor4": "emtr_break_wing_tail",
+            "planeTmAxisIndex4": -1,
+            "planeIndex5": 4,
+            "plane5": [0.0,0.0,0.0,1.0],
+            "planeIndex6": 4,
+            "planeAnchor6": "emtr_break_wing_biplane",
+            "planeAxis6": [0.0,-1.0,0.0],
+            "planeIndex7": 5,
+            "plane7": [0.0,0.0,0.0,1.0],
+            "planeIndex8": 6,
+            "plane8": [0.0,0.0,0.0,1.0]
+          }
+        }
+      }
+    }
+  },
+  {
+    "visual": {
+      "tag": 5,
+      "dm": "wing2_l_dm",
+      "state": {
+        "state": "wrecked",
+        "effect": {
+          "part": "wing_l",
+          "model": 1,
+          "type": "break",
+          "rootDm": "wing2_l_dm",
+          "massCenter": [0.5,0.5,0.375],
+          "attachPoint": [0.25,0.0,1.0],
+          "modelCuttingPlanes": {
+            "planeIndex1": 0,
+            "planeAnchor1": "emtr_break_wing2_l_from",
+            "planeAnchorMax1": "emtr_break_wing2_l_to",
+            "planeIndex2": 3,
+            "planeAnchor2": "emtr_break_wing_tail",
+            "planeTmAxisIndex2": 1,
+            "planeIndex3": 4,
+            "planeAnchor3": "emtr_break_wing_biplane",
+            "planeAxis3": [0.0,1.0,0.0]
+          }
+        }
+      }
+    }
+  },
+  {
+    "visual": [
+      {
+        "type": "min"
+      },
+      {
+        "dependency": [
+          {
+            "dm": "wing1_l_dm"
+          },
+          {
+            "dm": "wing2_l_dm"
+          },
+          {
+            "type": "min"
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "state": "damaged"
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 0,
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 1,
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "wrecked"
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 0,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 1,
+              "enabled": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "wing2_l_dm"
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "state": "damaged"
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 2,
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 3,
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "wrecked"
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 2,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 3,
+              "enabled": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "wing_l_dm"
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "state": "damaged"
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 2,
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 3,
+              "enabled": true
+            }
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "wrecked"
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 2,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 3,
+              "enabled": false
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "wing1_l_dm"
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "state": "damaged"
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 4,
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 5,
+              "enabled": true
+            }
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "wrecked"
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 4,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 5,
+              "enabled": false
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "type": "min"
+      },
+      {
+        "dependency": [
+          {
+            "dm": "wing_r_dm"
+          },
+          {
+            "dm": "wing1_r_dm"
+          },
+          {
+            "dm": "wing2_r_dm"
+          },
+          {
+            "type": "min"
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "effect": {
+              "part": "wing_r",
+              "model": 0,
+              "type": "visibility",
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "part": "wing_r",
+              "model": 2,
+              "type": "visibility",
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "part": "wing_r",
+              "model": 1,
+              "type": "visibility",
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "part": "wing_r",
+              "model": 3,
+              "type": "visibility",
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "damaged"
+          },
+          {
+            "state": "wrecked"
+          },
+          {
+            "effect": {
+              "part": "wing_r",
+              "model": 0,
+              "type": "visibility",
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "part": "wing_r",
+              "model": 2,
+              "type": "visibility",
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "part": "wing_r",
+              "model": 1,
+              "type": "visibility",
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "part": "wing_r",
+              "model": 3,
+              "type": "visibility",
+              "enabled": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "type": "min"
+      },
+      {
+        "dependency": [
+          {
+            "dm": "wing_r_dm"
+          },
+          {
+            "dm": "wing1_r_dm"
+          },
+          {
+            "dm": "wing2_r_dm"
+          },
+          {
+            "type": "min"
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "state": "damaged"
+          },
+          {
+            "effect": {
+              "type": "cuttingPlanes",
+              "model": 1,
+              "planeIndex1": 1,
+              "plane1": [0.0,0.0,0.0,1.0],
+              "planeIndex2": 5,
+              "plane2": [0.0,0.0,0.0,-1.0],
+              "planeIndex3": 6,
+              "plane3": [0.0,0.0,0.0,-1.0]
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "wrecked",
+              "emitter": 1,
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": {
+          "state": "wrecked",
+          "effect": {
+            "type": "particles",
+            "particles": "wrecked",
+            "emitter": 1,
+            "enabled": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "visual": {
+      "tag": 6,
+      "dm": "wing_r_dm",
+      "state": {
+        "state": "wrecked",
+        "effect": [
+          {
+            "part": "wing_r"
+          },
+          {
+            "model": 1
+          },
+          {
+            "type": "break"
+          },
+          {
+            "rootDm": "wing_r_dm"
+          },
+          {
+            "childDm": "wing1_r_dm"
+          },
+          {
+            "childDm": "wing2_r_dm"
+          },
+          {
+            "massCenter": [0.5,0.5,0.375]
+          },
+          {
+            "attachPoint": [0.25,0.0,1.0]
+          },
+          {
+            "modelCuttingPlanes": {
+              "planeIndex1": 1,
+              "planeAnchor1": "emtr_break_wing0_r_from",
+              "planeAnchorMax1": "emtr_break_wing0_r_to",
+              "planeIndex2": 5,
+              "planeAnchor2": "emtr_break_wing_tail",
+              "planeTmAxisIndex2": 1,
+              "planeIndex3": 6,
+              "planeAnchor3": "emtr_break_wing_biplane",
+              "planeAxis3": [0.0,1.0,0.0]
+            }
+          },
+          {
+            "partCuttingPlanes": {
+              "planeIndex1": 0,
+              "plane1": [0.0,0.0,0.0,1.0],
+              "planeIndex2": 1,
+              "planeAnchor2": "emtr_break_wing0_r_to",
+              "planeAnchorMax2": "emtr_break_wing0_r_from",
+              "planeIndex3": 2,
+              "plane3": [0.0,0.0,0.0,1.0],
+              "planeIndex4": 3,
+              "plane4": [0.0,0.0,0.0,1.0],
+              "planeIndex5": 4,
+              "plane5": [0.0,0.0,0.0,1.0],
+              "planeIndex6": 5,
+              "planeAnchor6": "emtr_break_wing_tail",
+              "planeTmAxisIndex6": -1,
+              "planeIndex7": 6,
+              "plane7": [0.0,0.0,0.0,1.0],
+              "planeIndex8": 6,
+              "planeAnchor8": "emtr_break_wing_biplane",
+              "planeAxis8": [0.0,-1.0,0.0]
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "visual": {
+      "tag": 7,
+      "dm": "wing_r_dm",
+      "state": {
+        "state": "wrecked",
+        "effect": [
+          {
+            "part": "wing_r"
+          },
+          {
+            "model": 1
+          },
+          {
+            "type": "break"
+          },
+          {
+            "rootDm": "wing_r_dm"
+          },
+          {
+            "childDm": "wing1_r_dm"
+          },
+          {
+            "childDm": "wing2_r_dm"
+          },
+          {
+            "massCenter": [0.5,0.5,0.375]
+          },
+          {
+            "attachPoint": [0.25,0.0,1.0]
+          },
+          {
+            "modelCuttingPlanes": {
+              "planeIndex1": 1,
+              "planeAnchor1": "emtr_break_wing0_r_from",
+              "planeAnchorMax1": "emtr_break_wing0_r_to",
+              "planeIndex2": 5,
+              "planeAnchor2": "emtr_break_wing_tail",
+              "planeTmAxisIndex2": 1,
+              "planeIndex3": 6,
+              "planeAnchor3": "emtr_break_wing_biplane",
+              "planeAxis3": [0.0,1.0,0.0]
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "visual": {
+      "tag": 8,
+      "dm": "wing1_r_dm",
+      "state": {
+        "state": "wrecked",
+        "effect": {
+          "part": "wing_r",
+          "model": 1,
+          "type": "break",
+          "rootDm": "wing1_r_dm",
+          "childDm": "wing2_r_dm",
+          "massCenter": [0.5,0.5,0.375],
+          "attachPoint": [0.25,0.0,1.0],
+          "modelCuttingPlanes": {
+            "planeIndex1": 1,
+            "planeAnchor1": "emtr_break_wing1_r_from",
+            "planeAnchorMax1": "emtr_break_wing1_r_to",
+            "planeIndex2": 5,
+            "planeAnchor2": "emtr_break_wing_tail",
+            "planeTmAxisIndex2": 1,
+            "planeIndex3": 6,
+            "planeAnchor3": "emtr_break_wing_biplane",
+            "planeAxis3": [0.0,1.0,0.0]
+          },
+          "partCuttingPlanes": {
+            "planeIndex1": 0,
+            "plane1": [0.0,0.0,0.0,1.0],
+            "planeIndex2": 1,
+            "planeAnchor2": "emtr_break_wing1_r_to",
+            "planeAnchorMax2": "emtr_break_wing1_r_from",
+            "planeIndex3": 2,
+            "plane3": [0.0,0.0,0.0,1.0],
+            "planeIndex4": 3,
+            "plane4": [0.0,0.0,0.0,1.0],
+            "planeIndex5": 4,
+            "plane5": [0.0,0.0,0.0,1.0],
+            "planeIndex6": 5,
+            "planeAnchor6": "emtr_break_wing_tail",
+            "planeTmAxisIndex6": -1,
+            "planeIndex7": 6,
+            "plane7": [0.0,0.0,0.0,1.0],
+            "planeIndex8": 6,
+            "planeAnchor8": "emtr_break_wing_biplane",
+            "planeAxis8": [0.0,-1.0,0.0]
+          }
+        }
+      }
+    }
+  },
+  {
+    "visual": {
+      "tag": 9,
+      "dm": "wing1_r_dm",
+      "state": {
+        "state": "wrecked",
+        "effect": {
+          "part": "wing_r",
+          "model": 1,
+          "type": "break",
+          "rootDm": "wing1_r_dm",
+          "childDm": "wing2_r_dm",
+          "massCenter": [0.5,0.5,0.375],
+          "attachPoint": [0.25,0.0,1.0],
+          "modelCuttingPlanes": {
+            "planeIndex1": 1,
+            "planeAnchor1": "emtr_break_wing1_r_from",
+            "planeAnchorMax1": "emtr_break_wing1_r_to",
+            "planeIndex2": 5,
+            "planeAnchor2": "emtr_break_wing_tail",
+            "planeTmAxisIndex2": 1,
+            "planeIndex3": 6,
+            "planeAnchor3": "emtr_break_wing_biplane",
+            "planeAxis3": [0.0,1.0,0.0]
+          }
+        }
+      }
+    }
+  },
+  {
+    "visual": {
+      "tag": 10,
+      "dm": "wing2_r_dm",
+      "state": {
+        "state": "wrecked",
+        "effect": {
+          "part": "wing_r",
+          "model": 1,
+          "type": "break",
+          "rootDm": "wing2_r_dm",
+          "massCenter": [0.5,0.5,0.375],
+          "attachPoint": [0.25,0.0,1.0],
+          "modelCuttingPlanes": {
+            "planeIndex1": 1,
+            "planeAnchor1": "emtr_break_wing2_r_from",
+            "planeAnchorMax1": "emtr_break_wing2_r_to",
+            "planeIndex2": 5,
+            "planeAnchor2": "emtr_break_wing_tail",
+            "planeTmAxisIndex2": 1,
+            "planeIndex3": 6,
+            "planeAnchor3": "emtr_break_wing_biplane",
+            "planeAxis3": [0.0,1.0,0.0]
+          },
+          "partCuttingPlanes": {
+            "planeIndex1": 0,
+            "plane1": [0.0,0.0,0.0,1.0],
+            "planeIndex2": 1,
+            "planeAnchor2": "emtr_break_wing2_r_to",
+            "planeAnchorMax2": "emtr_break_wing2_r_from",
+            "planeIndex3": 2,
+            "plane3": [0.0,0.0,0.0,1.0],
+            "planeIndex4": 3,
+            "plane4": [0.0,0.0,0.0,1.0],
+            "planeIndex5": 4,
+            "planeAnchor5": "emtr_break_wing_tail",
+            "planeTmAxisIndex5": -1,
+            "planeIndex6": 5,
+            "plane6": [0.0,0.0,0.0,1.0],
+            "planeIndex7": 6,
+            "plane7": [0.0,0.0,0.0,1.0],
+            "planeIndex8": 6,
+            "planeAnchor8": "emtr_break_wing_biplane",
+            "planeAxis8": [0.0,-1.0,0.0]
+          }
+        }
+      }
+    }
+  },
+  {
+    "visual": {
+      "tag": 11,
+      "dm": "wing2_r_dm",
+      "state": {
+        "state": "wrecked",
+        "effect": {
+          "part": "wing_r",
+          "model": 1,
+          "type": "break",
+          "rootDm": "wing2_r_dm",
+          "massCenter": [0.5,0.5,0.375],
+          "attachPoint": [0.25,0.0,1.0],
+          "modelCuttingPlanes": {
+            "planeIndex1": 1,
+            "planeAnchor1": "emtr_break_wing2_r_from",
+            "planeAnchorMax1": "emtr_break_wing2_r_to",
+            "planeIndex2": 5,
+            "planeAnchor2": "emtr_break_wing_tail",
+            "planeTmAxisIndex2": 1,
+            "planeIndex3": 6,
+            "planeAnchor3": "emtr_break_wing_biplane",
+            "planeAxis3": [0.0,1.0,0.0]
+          }
+        }
+      }
+    }
+  },
+  {
+    "visual": [
+      {
+        "type": "min"
+      },
+      {
+        "dependency": [
+          {
+            "dm": "wing1_r_dm"
+          },
+          {
+            "dm": "wing2_r_dm"
+          },
+          {
+            "type": "min"
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "state": "damaged"
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 6,
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 7,
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "wrecked"
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 6,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 7,
+              "enabled": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "wing2_r_dm"
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "state": "damaged"
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 8,
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 9,
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "wrecked"
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 8,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 9,
+              "enabled": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "wing_r_dm"
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "state": "damaged"
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 8,
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 9,
+              "enabled": true
+            }
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "wrecked"
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 8,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 9,
+              "enabled": false
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "wing1_r_dm"
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "state": "damaged"
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 10,
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 11,
+              "enabled": true
+            }
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "wrecked"
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 10,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 11,
+              "enabled": false
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "tail_dm"
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "effect": {
+              "part": "tail",
+              "model": 0,
+              "type": "visibility",
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "part": "tail",
+              "model": 2,
+              "type": "visibility",
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "part": "tail",
+              "model": 1,
+              "type": "visibility",
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "part": "tail",
+              "model": 3,
+              "type": "visibility",
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "cuttingPlanes",
+              "model": 1,
+              "planeIndex1": 2,
+              "plane1": [0.0,0.0,0.0,1.0]
+            }
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 12,
+              "enabled": true
+            }
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "deniedDamageEffect": "any"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "wrecked_smoke",
+              "emitter": 2,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "tail_smoke",
+              "emitter": 0,
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "damaged"
+          },
+          {
+            "effect": {
+              "part": "tail",
+              "model": 1,
+              "type": "visibility",
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "part": "tail",
+              "model": 3,
+              "type": "visibility",
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "part": "tail",
+              "model": 0,
+              "type": "visibility",
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "part": "tail",
+              "model": 2,
+              "type": "visibility",
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "state": "damaged"
+          },
+          {
+            "effect": {
+              "part": "tail",
+              "model": 1,
+              "type": "visibility",
+              "extended": true,
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "wrecked"
+          },
+          {
+            "effect": {
+              "part": "tail",
+              "model": 0,
+              "type": "visibility",
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "part": "tail",
+              "model": 2,
+              "type": "visibility",
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "part": "tail",
+              "model": 1,
+              "type": "visibility",
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "part": "tail",
+              "model": 3,
+              "type": "visibility",
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "wrecked_smoke",
+              "emitter": 2,
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "tail_smoke",
+              "emitter": 0,
+              "enabled": true
+            }
+          },
+          {
+            "effect": [
+              {
+                "part": "tail"
+              },
+              {
+                "model": 1
+              },
+              {
+                "type": "break"
+              },
+              {
+                "rootDm": "tail_dm"
+              },
+              {
+                "childDm": "stab_dm"
+              },
+              {
+                "childDm": "stab1_dm"
+              },
+              {
+                "childDm": "stab2_dm"
+              },
+              {
+                "childDm": "fin_dm"
+              },
+              {
+                "childDm": "fin1_dm"
+              },
+              {
+                "childDm": "fin2_dm"
+              },
+              {
+                "massCenter": [0.25,0.5,0.5]
+              },
+              {
+                "attachPoint": [1.0,0.5,0.5]
+              },
+              {
+                "modelCuttingPlanes": {
+                  "planeIndex1": 2,
+                  "planeAnchor1": "emtr_break_tail_from",
+                  "planeAnchorMax1": "emtr_break_tail_to"
+                }
+              },
+              {
+                "partCuttingPlanes": {
+                  "planeIndex1": 0,
+                  "plane1": [0.0,0.0,0.0,1.0],
+                  "planeIndex2": 1,
+                  "plane2": [0.0,0.0,0.0,1.0],
+                  "planeIndex3": 2,
+                  "planeAnchor3": "emtr_break_tail_to",
+                  "planeAnchorMax3": "emtr_break_tail_from",
+                  "planeIndex4": 3,
+                  "plane4": [0.0,0.0,0.0,1.0],
+                  "planeIndex5": 4,
+                  "plane5": [0.0,0.0,0.0,1.0],
+                  "planeIndex6": 5,
+                  "plane6": [0.0,0.0,0.0,1.0],
+                  "planeIndex7": 6,
+                  "plane7": [0.0,0.0,0.0,1.0]
+                }
+              }
+            ]
+          },
+          {
+            "effect": {
+              "type": "switchTag",
+              "tag": 12,
+              "enabled": false
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "tag": 12
+      },
+      {
+        "dm": "fin_dm"
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "effect": {
+              "part": "tail",
+              "model": 0,
+              "type": "visibility",
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "part": "tail",
+              "model": 2,
+              "type": "visibility",
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "part": "tail",
+              "model": 1,
+              "type": "visibility",
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "part": "tail",
+              "model": 3,
+              "type": "visibility",
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "cuttingPlanes",
+              "model": 1,
+              "planeIndex1": 2,
+              "plane1": [0.0,0.0,0.0,1.0]
+            }
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "deniedDamageEffect": "any"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "wrecked_smoke",
+              "emitter": 2,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "tail_smoke",
+              "emitter": 0,
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "damaged"
+          },
+          {
+            "effect": {
+              "part": "tail",
+              "model": 1,
+              "type": "visibility",
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "part": "tail",
+              "model": 3,
+              "type": "visibility",
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "part": "tail",
+              "model": 0,
+              "type": "visibility",
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "part": "tail",
+              "model": 2,
+              "type": "visibility",
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "state": "damaged"
+          },
+          {
+            "effect": {
+              "part": "fin",
+              "model": 1,
+              "type": "visibility",
+              "extended": true,
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "wrecked"
+          },
+          {
+            "effect": {
+              "part": "tail",
+              "model": 1,
+              "type": "visibility",
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "part": "tail",
+              "model": 3,
+              "type": "visibility",
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "wrecked_smoke",
+              "emitter": 2,
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "part": "tail",
+              "model": 0,
+              "type": "visibility",
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "part": "tail",
+              "model": 2,
+              "type": "visibility",
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "tail_smoke",
+              "emitter": 0,
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "part": "tail",
+              "model": 1,
+              "type": "break",
+              "rootDm": "fin_dm",
+              "childDm": "rudder_dm",
+              "massCenter": [0.25,0.5,0.5],
+              "attachPoint": [1.0,0.5,0.5],
+              "modelCuttingPlanes": {
+                "planeIndex1": 2,
+                "planeAnchor1": "emtr_break_tail_from",
+                "planeAnchorMax1": "emtr_break_tail_to"
+              },
+              "partCuttingPlanes": {
+                "planeIndex1": 0,
+                "plane1": [0.0,0.0,0.0,1.0],
+                "planeIndex2": 1,
+                "plane2": [0.0,0.0,0.0,1.0],
+                "planeIndex3": 2,
+                "planeAnchor3": "emtr_break_tail_to",
+                "planeAnchorMax3": "emtr_break_tail_from",
+                "planeIndex4": 3,
+                "plane4": [0.0,0.0,0.0,1.0],
+                "planeIndex5": 4,
+                "plane5": [0.0,0.0,0.0,1.0],
+                "planeIndex6": 5,
+                "plane6": [0.0,0.0,0.0,1.0],
+                "planeIndex7": 6,
+                "plane7": [0.0,0.0,0.0,1.0]
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "wing_l_dm"
+      },
+      {
+        "dm": "wing1_l_dm"
+      },
+      {
+        "dm": "wing2_l_dm"
+      },
+      {
+        "type": "min"
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "state": "damaged"
+          },
+          {
+            "effect": {
+              "part": "wing_l",
+              "model": 1,
+              "type": "visibility",
+              "extended": true,
+              "enabled": false
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "wing_r_dm"
+      },
+      {
+        "dm": "wing1_r_dm"
+      },
+      {
+        "dm": "wing2_r_dm"
+      },
+      {
+        "type": "min"
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "state": "damaged"
+          },
+          {
+            "effect": {
+              "part": "wing_r",
+              "model": 1,
+              "type": "visibility",
+              "extended": true,
+              "enabled": false
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "type": "min"
+      },
+      {
+        "dependency": {
+          "dm": "fuse_dm"
+        }
+      },
+      {
+        "dependency": {
+          "type": "shift_state_down",
+          "dependency": [
+            {
+              "dm": "wing_l_dm"
+            },
+            {
+              "dm": "wing1_l_dm"
+            },
+            {
+              "dm": "wing2_l_dm"
+            },
+            {
+              "dm": "wing_r_dm"
+            },
+            {
+              "dm": "wing1_r_dm"
+            },
+            {
+              "dm": "wing2_r_dm"
+            },
+            {
+              "type": "min"
+            }
+          ]
+        }
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "effect": {
+              "part": "fuse",
+              "model": 0,
+              "type": "visibility",
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "part": "fuse",
+              "model": 2,
+              "type": "visibility",
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "part": "fuse",
+              "model": 1,
+              "type": "visibility",
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "part": "fuse",
+              "model": 3,
+              "type": "visibility",
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "damaged"
+          },
+          {
+            "effect": {
+              "part": "fuse",
+              "model": 0,
+              "type": "visibility",
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "part": "fuse",
+              "model": 2,
+              "type": "visibility",
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "part": "fuse",
+              "model": 1,
+              "type": "visibility",
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "part": "fuse",
+              "model": 3,
+              "type": "visibility",
+              "enabled": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "engine1_dm"
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "deniedDamageEffect": "any"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_fuel_leak",
+              "emitter": 0,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_oil_leak",
+              "emitter": 0,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "leak_water",
+              "emitter": 0,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_smoke",
+              "emitter": 0,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_fire",
+              "emitter": 0,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "propellerVisibility",
+              "index": 0,
+              "enabled": true
+            }
+          }
+        ]
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak",
+          "effect": {
+            "type": "particles",
+            "particles": "engine_fuel_leak",
+            "emitter": 0,
+            "enabled": true
+          }
+        }
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_oil",
+          "effect": {
+            "type": "particles",
+            "particles": "engine_oil_leak",
+            "emitter": 0,
+            "enabled": true
+          }
+        }
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_water",
+          "effect": {
+            "type": "particles",
+            "particles": "water_leak",
+            "emitter": 0,
+            "enabled": true
+          }
+        }
+      },
+      {
+        "state": [
+          {
+            "state": "damaged"
+          },
+          {
+            "requiredDamageEffect": "fire"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_fire",
+              "emitter": 0,
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_smoke",
+              "emitter": 0,
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "damaged"
+          },
+          {
+            "requiredDamageEffect": "expl"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_fire",
+              "emitter": 0,
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_smoke",
+              "emitter": 0,
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": {
+          "state": "wrecked",
+          "effect": {
+            "type": "propellerVisibility",
+            "index": 0,
+            "enabled": false
+          }
+        }
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "engine2_dm"
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "deniedDamageEffect": "any"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_fuel_leak",
+              "emitter": 1,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_oil_leak",
+              "emitter": 1,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "leak_water",
+              "emitter": 1,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_smoke",
+              "emitter": 1,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_fire",
+              "emitter": 1,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "propellerVisibility",
+              "index": 1,
+              "enabled": true
+            }
+          }
+        ]
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak",
+          "effect": {
+            "type": "particles",
+            "particles": "engine_fuel_leak",
+            "emitter": 1,
+            "enabled": true
+          }
+        }
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_oil",
+          "effect": {
+            "type": "particles",
+            "particles": "engine_oil_leak",
+            "emitter": 1,
+            "enabled": true
+          }
+        }
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_water",
+          "effect": {
+            "type": "particles",
+            "particles": "water_leak",
+            "emitter": 1,
+            "enabled": true
+          }
+        }
+      },
+      {
+        "state": [
+          {
+            "state": "damaged"
+          },
+          {
+            "requiredDamageEffect": "fire"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_fire",
+              "emitter": 1,
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_smoke",
+              "emitter": 1,
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "damaged"
+          },
+          {
+            "requiredDamageEffect": "expl"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_fire",
+              "emitter": 1,
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_smoke",
+              "emitter": 1,
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": {
+          "state": "wrecked",
+          "effect": {
+            "type": "propellerVisibility",
+            "index": 1,
+            "enabled": false
+          }
+        }
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "engine3_dm"
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "deniedDamageEffect": "any"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_fuel_leak",
+              "emitter": 2,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_oil_leak",
+              "emitter": 2,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "leak_water",
+              "emitter": 2,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_smoke",
+              "emitter": 2,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_fire",
+              "emitter": 2,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "propellerVisibility",
+              "index": 2,
+              "enabled": true
+            }
+          }
+        ]
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak",
+          "effect": {
+            "type": "particles",
+            "particles": "engine_fuel_leak",
+            "emitter": 2,
+            "enabled": true
+          }
+        }
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_oil",
+          "effect": {
+            "type": "particles",
+            "particles": "engine_oil_leak",
+            "emitter": 2,
+            "enabled": true
+          }
+        }
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_water",
+          "effect": {
+            "type": "particles",
+            "particles": "water_leak",
+            "emitter": 2,
+            "enabled": true
+          }
+        }
+      },
+      {
+        "state": [
+          {
+            "state": "damaged"
+          },
+          {
+            "requiredDamageEffect": "fire"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_fire",
+              "emitter": 2,
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_smoke",
+              "emitter": 2,
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "damaged"
+          },
+          {
+            "requiredDamageEffect": "expl"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_fire",
+              "emitter": 2,
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_smoke",
+              "emitter": 2,
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": {
+          "state": "wrecked",
+          "effect": {
+            "type": "propellerVisibility",
+            "index": 2,
+            "enabled": false
+          }
+        }
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "engine4_dm"
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "deniedDamageEffect": "any"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_fuel_leak",
+              "emitter": 3,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_oil_leak",
+              "emitter": 3,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "leak_water",
+              "emitter": 3,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_smoke",
+              "emitter": 3,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_fire",
+              "emitter": 3,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "propellerVisibility",
+              "index": 3,
+              "enabled": true
+            }
+          }
+        ]
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak",
+          "effect": {
+            "type": "particles",
+            "particles": "engine_fuel_leak",
+            "emitter": 3,
+            "enabled": true
+          }
+        }
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_oil",
+          "effect": {
+            "type": "particles",
+            "particles": "engine_oil_leak",
+            "emitter": 3,
+            "enabled": true
+          }
+        }
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_water",
+          "effect": {
+            "type": "particles",
+            "particles": "water_leak",
+            "emitter": 3,
+            "enabled": true
+          }
+        }
+      },
+      {
+        "state": [
+          {
+            "state": "damaged"
+          },
+          {
+            "requiredDamageEffect": "fire"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_fire",
+              "emitter": 3,
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_smoke",
+              "emitter": 3,
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "damaged"
+          },
+          {
+            "requiredDamageEffect": "expl"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_fire",
+              "emitter": 3,
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_smoke",
+              "emitter": 3,
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": {
+          "state": "wrecked",
+          "effect": {
+            "type": "propellerVisibility",
+            "index": 3,
+            "enabled": false
+          }
+        }
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "engine5_dm"
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "deniedDamageEffect": "any"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_fuel_leak",
+              "emitter": 4,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_oil_leak",
+              "emitter": 4,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "leak_water",
+              "emitter": 4,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_smoke",
+              "emitter": 4,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_fire",
+              "emitter": 4,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "propellerVisibility",
+              "index": 4,
+              "enabled": true
+            }
+          }
+        ]
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak",
+          "effect": {
+            "type": "particles",
+            "particles": "engine_fuel_leak",
+            "emitter": 4,
+            "enabled": true
+          }
+        }
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_oil",
+          "effect": {
+            "type": "particles",
+            "particles": "engine_oil_leak",
+            "emitter": 4,
+            "enabled": true
+          }
+        }
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_water",
+          "effect": {
+            "type": "particles",
+            "particles": "water_leak",
+            "emitter": 4,
+            "enabled": true
+          }
+        }
+      },
+      {
+        "state": [
+          {
+            "state": "damaged"
+          },
+          {
+            "requiredDamageEffect": "fire"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_fire",
+              "emitter": 4,
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_smoke",
+              "emitter": 4,
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "damaged"
+          },
+          {
+            "requiredDamageEffect": "expl"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_fire",
+              "emitter": 4,
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_smoke",
+              "emitter": 4,
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": {
+          "state": "wrecked",
+          "effect": {
+            "type": "propellerVisibility",
+            "index": 4,
+            "enabled": false
+          }
+        }
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "engine6_dm"
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "deniedDamageEffect": "any"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_fuel_leak",
+              "emitter": 5,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_oil_leak",
+              "emitter": 5,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "leak_water",
+              "emitter": 5,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_smoke",
+              "emitter": 5,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_fire",
+              "emitter": 5,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "propellerVisibility",
+              "index": 5,
+              "enabled": true
+            }
+          }
+        ]
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak",
+          "effect": {
+            "type": "particles",
+            "particles": "engine_fuel_leak",
+            "emitter": 5,
+            "enabled": true
+          }
+        }
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_oil",
+          "effect": {
+            "type": "particles",
+            "particles": "engine_oil_leak",
+            "emitter": 5,
+            "enabled": true
+          }
+        }
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_water",
+          "effect": {
+            "type": "particles",
+            "particles": "water_leak",
+            "emitter": 5,
+            "enabled": true
+          }
+        }
+      },
+      {
+        "state": [
+          {
+            "state": "damaged"
+          },
+          {
+            "requiredDamageEffect": "fire"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_fire",
+              "emitter": 5,
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_smoke",
+              "emitter": 5,
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "damaged"
+          },
+          {
+            "requiredDamageEffect": "expl"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_fire",
+              "emitter": 5,
+              "enabled": true
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "engine_smoke",
+              "emitter": 5,
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": {
+          "state": "wrecked",
+          "effect": {
+            "type": "propellerVisibility",
+            "index": 5,
+            "enabled": false
+          }
+        }
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "oil1_dm"
+      },
+      {
+        "state": {
+          "state": "normal",
+          "deniedDamageEffect": "any",
+          "effect": {
+            "type": "particles",
+            "particles": "oil_leak",
+            "emitter": 0,
+            "enabled": false
+          }
+        }
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_oil",
+          "effect": {
+            "type": "particles",
+            "particles": "oil_leak",
+            "emitter": 0,
+            "enabled": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "oil2_dm"
+      },
+      {
+        "state": {
+          "state": "normal",
+          "deniedDamageEffect": "any",
+          "effect": {
+            "type": "particles",
+            "particles": "oil_leak",
+            "emitter": 1,
+            "enabled": false
+          }
+        }
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_oil",
+          "effect": {
+            "type": "particles",
+            "particles": "oil_leak",
+            "emitter": 1,
+            "enabled": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "oil3_dm"
+      },
+      {
+        "state": {
+          "state": "normal",
+          "deniedDamageEffect": "any",
+          "effect": {
+            "type": "particles",
+            "particles": "oil_leak",
+            "emitter": 2,
+            "enabled": false
+          }
+        }
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_oil",
+          "effect": {
+            "type": "particles",
+            "particles": "oil_leak",
+            "emitter": 2,
+            "enabled": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "oil4_dm"
+      },
+      {
+        "state": {
+          "state": "normal",
+          "deniedDamageEffect": "any",
+          "effect": {
+            "type": "particles",
+            "particles": "oil_leak",
+            "emitter": 3,
+            "enabled": false
+          }
+        }
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_oil",
+          "effect": {
+            "type": "particles",
+            "particles": "oil_leak",
+            "emitter": 3,
+            "enabled": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "oil5_dm"
+      },
+      {
+        "state": {
+          "state": "normal",
+          "deniedDamageEffect": "any",
+          "effect": {
+            "type": "particles",
+            "particles": "oil_leak",
+            "emitter": 4,
+            "enabled": false
+          }
+        }
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_oil",
+          "effect": {
+            "type": "particles",
+            "particles": "oil_leak",
+            "emitter": 4,
+            "enabled": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "oil6_dm"
+      },
+      {
+        "state": {
+          "state": "normal",
+          "deniedDamageEffect": "any",
+          "effect": {
+            "type": "particles",
+            "particles": "oil_leak",
+            "emitter": 5,
+            "enabled": false
+          }
+        }
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_oil",
+          "effect": {
+            "type": "particles",
+            "particles": "oil_leak",
+            "emitter": 5,
+            "enabled": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "oil7_dm"
+      },
+      {
+        "state": {
+          "state": "normal",
+          "deniedDamageEffect": "any",
+          "effect": {
+            "type": "particles",
+            "particles": "oil_leak",
+            "emitter": 6,
+            "enabled": false
+          }
+        }
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_oil",
+          "effect": {
+            "type": "particles",
+            "particles": "oil_leak",
+            "emitter": 6,
+            "enabled": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "oil8_dm"
+      },
+      {
+        "state": {
+          "state": "normal",
+          "deniedDamageEffect": "any",
+          "effect": {
+            "type": "particles",
+            "particles": "oil_leak",
+            "emitter": 7,
+            "enabled": false
+          }
+        }
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_oil",
+          "effect": {
+            "type": "particles",
+            "particles": "oil_leak",
+            "emitter": 7,
+            "enabled": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "oil9_dm"
+      },
+      {
+        "state": {
+          "state": "normal",
+          "deniedDamageEffect": "any",
+          "effect": {
+            "type": "particles",
+            "particles": "oil_leak",
+            "emitter": 8,
+            "enabled": false
+          }
+        }
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_oil",
+          "effect": {
+            "type": "particles",
+            "particles": "oil_leak",
+            "emitter": 8,
+            "enabled": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "oil10_dm"
+      },
+      {
+        "state": {
+          "state": "normal",
+          "deniedDamageEffect": "any",
+          "effect": {
+            "type": "particles",
+            "particles": "oil_leak",
+            "emitter": 9,
+            "enabled": false
+          }
+        }
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_oil",
+          "effect": {
+            "type": "particles",
+            "particles": "oil_leak",
+            "emitter": 9,
+            "enabled": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "oil11_dm"
+      },
+      {
+        "state": {
+          "state": "normal",
+          "deniedDamageEffect": "any",
+          "effect": {
+            "type": "particles",
+            "particles": "oil_leak",
+            "emitter": 10,
+            "enabled": false
+          }
+        }
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_oil",
+          "effect": {
+            "type": "particles",
+            "particles": "oil_leak",
+            "emitter": 10,
+            "enabled": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "oil12_dm"
+      },
+      {
+        "state": {
+          "state": "normal",
+          "deniedDamageEffect": "any",
+          "effect": {
+            "type": "particles",
+            "particles": "oil_leak",
+            "emitter": 11,
+            "enabled": false
+          }
+        }
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_oil",
+          "effect": {
+            "type": "particles",
+            "particles": "oil_leak",
+            "emitter": 11,
+            "enabled": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "water1_dm"
+      },
+      {
+        "state": {
+          "state": "normal",
+          "deniedDamageEffect": "any",
+          "effect": {
+            "type": "particles",
+            "particles": "water_leak",
+            "emitter": 0,
+            "enabled": false
+          }
+        }
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_water",
+          "effect": {
+            "type": "particles",
+            "particles": "water_leak",
+            "emitter": 0,
+            "enabled": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "water2_dm"
+      },
+      {
+        "state": {
+          "state": "normal",
+          "deniedDamageEffect": "any",
+          "effect": {
+            "type": "particles",
+            "particles": "water_leak",
+            "emitter": 1,
+            "enabled": false
+          }
+        }
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_water",
+          "effect": {
+            "type": "particles",
+            "particles": "water_leak",
+            "emitter": 1,
+            "enabled": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "water3_dm"
+      },
+      {
+        "state": {
+          "state": "normal",
+          "deniedDamageEffect": "any",
+          "effect": {
+            "type": "particles",
+            "particles": "water_leak",
+            "emitter": 2,
+            "enabled": false
+          }
+        }
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_water",
+          "effect": {
+            "type": "particles",
+            "particles": "water_leak",
+            "emitter": 2,
+            "enabled": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "water4_dm"
+      },
+      {
+        "state": {
+          "state": "normal",
+          "deniedDamageEffect": "any",
+          "effect": {
+            "type": "particles",
+            "particles": "water_leak",
+            "emitter": 3,
+            "enabled": false
+          }
+        }
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_water",
+          "effect": {
+            "type": "particles",
+            "particles": "water_leak",
+            "emitter": 3,
+            "enabled": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "water5_dm"
+      },
+      {
+        "state": {
+          "state": "normal",
+          "deniedDamageEffect": "any",
+          "effect": {
+            "type": "particles",
+            "particles": "water_leak",
+            "emitter": 4,
+            "enabled": false
+          }
+        }
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_water",
+          "effect": {
+            "type": "particles",
+            "particles": "water_leak",
+            "emitter": 4,
+            "enabled": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "water6_dm"
+      },
+      {
+        "state": {
+          "state": "normal",
+          "deniedDamageEffect": "any",
+          "effect": {
+            "type": "particles",
+            "particles": "water_leak",
+            "emitter": 5,
+            "enabled": false
+          }
+        }
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "leak_water",
+          "effect": {
+            "type": "particles",
+            "particles": "water_leak",
+            "emitter": 5,
+            "enabled": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "tank1_dm"
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "deniedDamageEffect": "any"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "fuel_leak",
+              "emitter": 0,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "fuel_fire",
+              "emitter": 0,
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "fire",
+          "deniedDamageEffect": "expl",
+          "effect": {
+            "type": "particles",
+            "particles": "fuel_fire",
+            "emitter": 0,
+            "enabled": true
+          }
+        }
+      },
+      {
+        "state": [
+          {
+            "state": "damaged"
+          },
+          {
+            "requiredDamageEffect": "leak"
+          },
+          {
+            "deniedDamageEffect": "expl"
+          },
+          {
+            "deniedDamageEffect": "fire"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "fuel_leak",
+              "emitter": 0,
+              "enabled": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "tank2_dm"
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "deniedDamageEffect": "any"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "fuel_leak",
+              "emitter": 1,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "fuel_fire",
+              "emitter": 1,
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "fire",
+          "deniedDamageEffect": "expl",
+          "effect": {
+            "type": "particles",
+            "particles": "fuel_fire",
+            "emitter": 1,
+            "enabled": true
+          }
+        }
+      },
+      {
+        "state": [
+          {
+            "state": "damaged"
+          },
+          {
+            "requiredDamageEffect": "leak"
+          },
+          {
+            "deniedDamageEffect": "expl"
+          },
+          {
+            "deniedDamageEffect": "fire"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "fuel_leak",
+              "emitter": 1,
+              "enabled": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "tank3_dm"
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "deniedDamageEffect": "any"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "fuel_leak",
+              "emitter": 2,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "fuel_fire",
+              "emitter": 2,
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "fire",
+          "deniedDamageEffect": "expl",
+          "effect": {
+            "type": "particles",
+            "particles": "fuel_fire",
+            "emitter": 2,
+            "enabled": true
+          }
+        }
+      },
+      {
+        "state": [
+          {
+            "state": "damaged"
+          },
+          {
+            "requiredDamageEffect": "leak"
+          },
+          {
+            "deniedDamageEffect": "expl"
+          },
+          {
+            "deniedDamageEffect": "fire"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "fuel_leak",
+              "emitter": 2,
+              "enabled": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "tank4_dm"
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "deniedDamageEffect": "any"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "fuel_leak",
+              "emitter": 3,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "fuel_fire",
+              "emitter": 3,
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "fire",
+          "deniedDamageEffect": "expl",
+          "effect": {
+            "type": "particles",
+            "particles": "fuel_fire",
+            "emitter": 3,
+            "enabled": true
+          }
+        }
+      },
+      {
+        "state": [
+          {
+            "state": "damaged"
+          },
+          {
+            "requiredDamageEffect": "leak"
+          },
+          {
+            "deniedDamageEffect": "expl"
+          },
+          {
+            "deniedDamageEffect": "fire"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "fuel_leak",
+              "emitter": 3,
+              "enabled": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "tank5_dm"
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "deniedDamageEffect": "any"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "fuel_leak",
+              "emitter": 4,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "fuel_fire",
+              "emitter": 4,
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "fire",
+          "deniedDamageEffect": "expl",
+          "effect": {
+            "type": "particles",
+            "particles": "fuel_fire",
+            "emitter": 4,
+            "enabled": true
+          }
+        }
+      },
+      {
+        "state": [
+          {
+            "state": "damaged"
+          },
+          {
+            "requiredDamageEffect": "leak"
+          },
+          {
+            "deniedDamageEffect": "expl"
+          },
+          {
+            "deniedDamageEffect": "fire"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "fuel_leak",
+              "emitter": 4,
+              "enabled": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "tank6_dm"
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "deniedDamageEffect": "any"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "fuel_leak",
+              "emitter": 5,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "fuel_fire",
+              "emitter": 5,
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "fire",
+          "deniedDamageEffect": "expl",
+          "effect": {
+            "type": "particles",
+            "particles": "fuel_fire",
+            "emitter": 5,
+            "enabled": true
+          }
+        }
+      },
+      {
+        "state": [
+          {
+            "state": "damaged"
+          },
+          {
+            "requiredDamageEffect": "leak"
+          },
+          {
+            "deniedDamageEffect": "expl"
+          },
+          {
+            "deniedDamageEffect": "fire"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "fuel_leak",
+              "emitter": 5,
+              "enabled": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "tank7_dm"
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "deniedDamageEffect": "any"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "fuel_leak",
+              "emitter": 6,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "fuel_fire",
+              "emitter": 6,
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "fire",
+          "deniedDamageEffect": "expl",
+          "effect": {
+            "type": "particles",
+            "particles": "fuel_fire",
+            "emitter": 6,
+            "enabled": true
+          }
+        }
+      },
+      {
+        "state": [
+          {
+            "state": "damaged"
+          },
+          {
+            "requiredDamageEffect": "leak"
+          },
+          {
+            "deniedDamageEffect": "expl"
+          },
+          {
+            "deniedDamageEffect": "fire"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "fuel_leak",
+              "emitter": 6,
+              "enabled": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "tank8_dm"
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "deniedDamageEffect": "any"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "fuel_leak",
+              "emitter": 7,
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "fuel_fire",
+              "emitter": 7,
+              "enabled": false
+            }
+          }
+        ]
+      },
+      {
+        "state": {
+          "state": "damaged",
+          "requiredDamageEffect": "fire",
+          "deniedDamageEffect": "expl",
+          "effect": {
+            "type": "particles",
+            "particles": "fuel_fire",
+            "emitter": 7,
+            "enabled": true
+          }
+        }
+      },
+      {
+        "state": [
+          {
+            "state": "damaged"
+          },
+          {
+            "requiredDamageEffect": "leak"
+          },
+          {
+            "deniedDamageEffect": "expl"
+          },
+          {
+            "deniedDamageEffect": "fire"
+          },
+          {
+            "effect": {
+              "type": "particles",
+              "particles": "fuel_leak",
+              "emitter": 7,
+              "enabled": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "gear_l_dm"
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "state": "damaged"
+          },
+          {
+            "effect": {
+              "model": 0,
+              "type": "visibility",
+              "part": "gear_l",
+              "dm": "gear_l_dm",
+              "enabled": true
+            }
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "wrecked"
+          },
+          {
+            "effect": {
+              "model": 0,
+              "type": "visibility",
+              "part": "gear_l",
+              "dm": "gear_l_dm",
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "model": 1,
+              "type": "cut",
+              "part": "gear_l",
+              "dm": "gear_l_dm",
+              "multicut": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "gear_r_dm"
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "state": "damaged"
+          },
+          {
+            "effect": {
+              "model": 0,
+              "type": "visibility",
+              "part": "gear_r",
+              "dm": "gear_r_dm",
+              "enabled": true
+            }
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "wrecked"
+          },
+          {
+            "effect": {
+              "model": 0,
+              "type": "visibility",
+              "part": "gear_r",
+              "dm": "gear_r_dm",
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "model": 1,
+              "type": "cut",
+              "part": "gear_r",
+              "dm": "gear_r_dm",
+              "multicut": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "visual": [
+      {
+        "dm": "gear_c_dm"
+      },
+      {
+        "state": [
+          {
+            "state": "normal"
+          },
+          {
+            "state": "damaged"
+          },
+          {
+            "effect": {
+              "model": 0,
+              "type": "visibility",
+              "part": "gear_c",
+              "dm": "gear_c_dm",
+              "enabled": true
+            }
+          }
+        ]
+      },
+      {
+        "state": [
+          {
+            "state": "wrecked"
+          },
+          {
+            "effect": {
+              "model": 0,
+              "type": "visibility",
+              "part": "gear_c",
+              "dm": "gear_c_dm",
+              "enabled": false
+            }
+          },
+          {
+            "effect": {
+              "model": 1,
+              "type": "cut",
+              "part": "gear_c",
+              "dm": "gear_c_dm",
+              "multicut": true
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

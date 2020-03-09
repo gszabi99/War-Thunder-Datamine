@@ -1,0 +1,240 @@
+{
+  "cannon": true,
+  "weaponType": 1,
+  "aimMinDist": 0.05,
+  "aimMaxDist": 2000.0,
+  "maxDeltaAngle": 0.1,
+  "ChainfireTime": 8.0,
+  "DelayAfterShoot": 5.0,
+  "attackMaxDist": 2000.0,
+  "shotFreq": 5.0,
+  "shotFreqRndK": 0.14,
+  "bullets": 500,
+  "bulletsCartridge": 40,
+  "reloadTime": 4.5,
+  "recoilOffset": 0.0,
+  "traceFreq": 4,
+  "bulletsCluster": 1,
+  "shouldCollideWithRendinsts": true,
+  "fxType": "machine_gun_flame",
+  "fxMultipleSpawn": true,
+  "sfxReloadBullet": "naval_gun_reload",
+  "sound_path": "ships/weapon_ships/cannons",
+  "sound_pathStudio": "naval/weapon/cannons",
+  "sound": "20mm_mg_c38",
+  "soundLoop": true,
+  "deviation": [
+    {
+      "deviation": [3.0,3.0]
+    },
+    {
+      "deviation": [5.0,6.0]
+    }
+  ],
+  "bullet": {
+    "bulletCount": 10,
+    "mass": 0.072,
+    "caliber": 0.015,
+    "speed": 850.0,
+    "maxDistance": 3000.0,
+    "bulletType": "ap_i_t",
+    "onHitChanceMultFire": 10.0,
+    "dynamicKv": true,
+    "relativeVelArmorShift": [200.0,1000.0],
+    "waterCollisionEffect": "water_splash",
+    "waterFxScale": [1.0,1.0],
+    "damage": {
+      "kinetic": {
+        "demarrePenetrationK": 1.0,
+        "demarreSpeedPow": 1.43,
+        "demarreMassPow": 0.71,
+        "demarreCaliberPow": 1.07
+      },
+      "shatter": [
+        {
+          "useRealShatters": true
+        },
+        {
+          "countPortion": 0.25
+        },
+        {
+          "segment": {
+            "angles": [0.0,14.0],
+            "countPortion": 0.0
+          }
+        },
+        {
+          "segment": {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [15.0,124.0],
+            "countPortion": 0.5
+          }
+        },
+        {
+          "segment": {
+            "angles": [125.0,234.0],
+            "countPortion": 0.0
+          }
+        },
+        {
+          "segment": {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [235.0,344.0],
+            "countPortion": 0.5
+          }
+        },
+        {
+          "segment": {
+            "angles": [345.0,359.0],
+            "countPortion": 0.0
+          }
+        }
+      ]
+    },
+    "hitpower": {
+      "HitPower0m": [1.0,500.0],
+      "HitPower2500m": [0.5,2500.0],
+      "HitPower3000m": [0.1,3000.0]
+    },
+    "visual": {
+      "range_percent_of_ammo": [100.0,0.0],
+      "traceFreq": 1,
+      "tracer": "12mmWhiteGreen",
+      "trail": "noTrail"
+    },
+    "collisions": {
+      "default": {
+        "fx": "7_20_hit_ground",
+        "fxScale": [1.0,1.0]
+      },
+      "steel": {
+        "fx": "bullet_hit_light",
+        "fxScale": [0.5,0.5]
+      },
+      "armor": {
+        "fx": "bullet_hit_armor",
+        "fxScale": [0.5,0.5]
+      },
+      "wood": {
+        "fx": "bullet_hit_light",
+        "fxScale": [0.5,0.5]
+      },
+      "buildings": {
+        "fx": "7_20_hit_stone",
+        "fxScale": [0.5,0.5]
+      },
+      "beton": {
+        "fx": "7_20_hit_stone",
+        "fxScale": [0.5,0.5]
+      }
+    }
+  },
+  "15mm_ger_universal": {
+    "bullet": {
+      "bulletCount": 10,
+      "mass": 0.072,
+      "caliber": 0.015,
+      "speed": 850.0,
+      "maxDistance": 3000.0,
+      "bulletType": "ap_i_t",
+      "onHitChanceMultFire": 10.0,
+      "dynamicKv": true,
+      "relativeVelArmorShift": [200.0,1000.0],
+      "waterCollisionEffect": "water_splash",
+      "waterFxScale": [1.0,1.0],
+      "damage": {
+        "kinetic": {
+          "demarrePenetrationK": 1.0,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
+        },
+        "shatter": [
+          {
+            "useRealShatters": true
+          },
+          {
+            "countPortion": 0.25
+          },
+          {
+            "segment": {
+              "angles": [0.0,14.0],
+              "countPortion": 0.0
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [15.0,124.0],
+              "countPortion": 0.5
+            }
+          },
+          {
+            "segment": {
+              "angles": [125.0,234.0],
+              "countPortion": 0.0
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [235.0,344.0],
+              "countPortion": 0.5
+            }
+          },
+          {
+            "segment": {
+              "angles": [345.0,359.0],
+              "countPortion": 0.0
+            }
+          }
+        ]
+      },
+      "hitpower": {
+        "HitPower0m": [1.0,500.0],
+        "HitPower2500m": [0.5,2500.0],
+        "HitPower3000m": [0.1,3000.0]
+      },
+      "visual": {
+        "range_percent_of_ammo": [100.0,0.0],
+        "traceFreq": 1,
+        "tracer": "12mmWhiteGreen",
+        "trail": "noTrail"
+      },
+      "collisions": {
+        "default": {
+          "fx": "7_20_hit_ground",
+          "fxScale": [1.0,1.0]
+        },
+        "steel": {
+          "fx": "bullet_hit_light",
+          "fxScale": [0.5,0.5]
+        },
+        "armor": {
+          "fx": "bullet_hit_armor",
+          "fxScale": [0.5,0.5]
+        },
+        "wood": {
+          "fx": "bullet_hit_light",
+          "fxScale": [0.5,0.5]
+        },
+        "buildings": {
+          "fx": "7_20_hit_stone",
+          "fxScale": [0.5,0.5]
+        },
+        "beton": {
+          "fx": "7_20_hit_stone",
+          "fxScale": [0.5,0.5]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "timeToFire": 40.0,
+  "timeToSmoke": 300.0,
+  "hasExpl": true,
+  "damageableByGun": true,
+  "exhaustFx": "boat_exhaust",
+  "expClass": "exp_fortification",
+  "model": "patrol_boat_a",
+  "subclass": "warShip",
+  "dustFx": "water_units_dust",
+  "onRadarAs": "tracked",
+  "moveType": "ship",
+  "maxFwdSpeed": 80.0,
+  "maxRevSpeed": 5.0,
+  "maxAngSpeed": 15.0,
+  "maxAccel": 20.0,
+  "maxDecel": 5.0,
+  "maxAngAccel": 15.0,
+  "maxAngAccel0": 2.0,
+  "maxAngAccelV": 15.0,
+  "groundNormSmoothViscosity": 0.1,
+  "customUpdateDiv": 5,
+  "SoundMove": "models.Ship",
+  "tailStartOffset": 10.0,
+  "DamageParts": [
+    {
+      "steel": {
+        "engine_dm": {
+          "hp": 30.0
+        },
+        "body_dm": {
+          "hp": 240.0
+        }
+      }
+    },
+    {
+      "steel": {
+        "gun1_dm": {
+          "hp": 10.0
+        },
+        "gun2_dm": {
+          "hp": 10.0
+        },
+        "gun0_dm": {
+          "hp": 10.0
+        }
+      }
+    }
+  ],
+  "class_tags": {
+    "pacific": true,
+    "mediterran": true,
+    "westernfront": true
+  },
+  "DamageEffects": [
+    {
+      "part": {
+        "name": "body_dm",
+        "onHit": {
+          "smoke": 0.01,
+          "fire": 0.01
+        },
+        "onKill": {
+          "expl": 1.0
+        }
+      }
+    },
+    {
+      "part": {
+        "name": "engine_dm",
+        "onHit": {
+          "smoke": 0.1,
+          "fire": 0.01
+        },
+        "onKill": {
+          "body_dm": 1.0
+        }
+      }
+    }
+  ],
+  "sound": {
+    "path": "sounds/engines",
+    "pathStudio": "aircraft/engines",
+    "engine": "boat"
+  },
+  "weapon": {
+    "trigger": "gunner0",
+    "blk": "gameData/weapons/groundModels_weapons/common_mGun12mm.blk",
+    "emitter": "gun0",
+    "flash": "flame0",
+    "allowableDelta": 1.0,
+    "speedYaw": 45.0,
+    "speedPitch": 45.0,
+    "fireConeAngle": 20.0,
+    "salvoAmount": 100.0,
+    "ChainfireTime": 3.0,
+    "DelayAfterShoot": 3.0,
+    "AttackMaxDistance": 1000.0,
+    "AttackMaxRadius": 1000.0,
+    "AttackMaxHeight": 1000.0,
+    "accuracyAir": 0.5,
+    "accuracyGnd": 0.1,
+    "errMeasureVel": 0.0,
+    "errTargettingOn100kmph": 0.0,
+    "errMeasureVelFast": 40.0,
+    "errMeasureVelFwdShift": 1.0,
+    "errMeasureVelDir": 3.0,
+    "errTargetting": 1.0,
+    "errExplTime": 0.0,
+    "defaultYaw": 0.0,
+    "defaultPitch": 10.0,
+    "turret": {
+      "head": "turret0",
+      "gun": "gun0"
+    },
+    "limits": {
+      "yaw": [-180.0,180.0],
+      "pitch": [-10.0,90.0]
+    }
+  }
+}

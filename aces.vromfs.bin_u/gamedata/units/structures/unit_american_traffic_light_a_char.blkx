@@ -1,0 +1,41 @@
+{
+  "model": "unit_american_traffic_light_a",
+  "subclass": "fortification",
+  "dynCollisionGeom": true,
+  "hasDmg": true,
+  "damageableByGun": true,
+  "expClass": "exp_zero",
+  "renderInWaterReflection": true,
+  "toGround": true,
+  "forceFastPhysForAI": true,
+  "useDestrPhysObj": true,
+  "substRI": true,
+  "damageCollisionMultiplier": 0.01,
+  "explosionImpulse": 100.0,
+  "hasExpl": false,
+  "timeToFire": 4.0,
+  "DamageParts": {
+    "formatVersion": 2,
+    "american_traffic_light_a": {
+      "armorClass": "RHA_tank",
+      "body_dm": {
+        "armorThickness": 10.0,
+        "armorThrough": 100.0,
+        "hp": 40.0
+      }
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body_dm",
+      "onKill": {
+        "expl": 1.0
+      }
+    }
+  },
+  "explosion": {
+    "expl": {
+      "explosionEffectName": "ad_explosion_big"
+    }
+  }
+}

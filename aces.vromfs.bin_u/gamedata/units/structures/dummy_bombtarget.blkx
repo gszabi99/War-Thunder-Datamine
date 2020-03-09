@@ -1,0 +1,61 @@
+{
+  "model": "dummy_for_missions_a",
+  "subclass": "fortification",
+  "damageableByGun": false,
+  "expClass": "exp_structure",
+  "bulletTransparent": true,
+  "fireFx": "ground_model_smoke",
+  "timeToFire": 600.0,
+  "timeToSmoke": 600.0,
+  "toGround": true,
+  "moveType": "vehicle",
+  "maxFwdSpeed": 0.0,
+  "maxRevSpeed": 0.0,
+  "maxAngSpeed": 0.0,
+  "maxAccel": 0.0,
+  "maxDecel": 0.0,
+  "maxAngAccel0": 0.0,
+  "maxAngAccelV": 0.0,
+  "maxAngAccel": 0.0,
+  "groundNormSmoothViscosity": 0.1,
+  "mass": 1800.0,
+  "DamageParts": {
+    "armor30": {
+      "body_dm": {
+        "hp": 30.0
+      }
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body_dm",
+      "onHit": {
+        "smoke": 0.01,
+        "fire": 0.01
+      },
+      "onKill": {
+        "fire": 1.0
+      }
+    }
+  },
+  "class_tags": {
+    "mediterran": true,
+    "westernfront": true,
+    "easternfront": true,
+    "pacific": true,
+    "country_usa": true,
+    "country_ussr": true,
+    "country_germany": true,
+    "country_japan": true,
+    "country_australia": true,
+    "country_britain": true,
+    "country_italy": true,
+    "bombtarget": true,
+    "year1940": true,
+    "year1941": true,
+    "year1942": true,
+    "year1943": true,
+    "year1944": true,
+    "year1945": true
+  }
+}
