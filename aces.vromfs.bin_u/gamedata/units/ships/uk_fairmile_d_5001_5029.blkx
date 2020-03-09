@@ -66,10 +66,10 @@
     "useSimpleDeathConditionsAndEffects": false
   },
   {
-    "type": "typeGunBoat"
+    "type": "typeTorpedoBoat"
   },
   {
-    "expClass": "exp_gun_boat"
+    "expClass": "exp_torpedo_boat"
   },
   {
     "timeToFire": 40.0
@@ -1112,10 +1112,10 @@
         "armorClass": "ship_wood",
         "armorThickness": 28.0,
         "compartment_01_dm": {
-          "hp": 500.0
+          "hp": 388.0
         },
         "compartment_02_dm": {
-          "hp": 438.0
+          "hp": 423.0
         },
         "compartment_03_dm": {
           "hp": 300.0
@@ -1124,7 +1124,7 @@
           "hp": 500.0
         },
         "compartment_05_dm": {
-          "hp": 483.0
+          "hp": 454.0
         },
         "bridge_dm": {
           "shatterDamageMult": 1.5,
@@ -1141,7 +1141,7 @@
         "stopChanceOnDeadPart": 0.2,
         "armorClass": "ship_wood",
         "armorThickness": 15.0,
-        "superstructure_top_dm": {
+        "superstructure_dm": {
           "hp": 350.0
         },
         "stern_bottom_dm": {
@@ -1224,11 +1224,11 @@
         },
         "funnel_01_dm": {
           "shatterDamageMult": 1.0,
-          "hp": 282.0
+          "hp": 264.0
         },
         "funnel_02_dm": {
           "shatterDamageMult": 1.0,
-          "hp": 290.0
+          "hp": 264.0
         },
         "transmission_01_dm": {
           "hp": 160.0
@@ -1315,10 +1315,10 @@
         "armorClass": "ship_Wsh",
         "armorThickness": 12.7,
         "main_caliber_turret_01_dm": {
-          "hp": 150.0
+          "hp": 100.0
         },
         "main_caliber_turret_02_dm": {
-          "hp": 150.0
+          "hp": 100.0
         }
       },
       "turrets_aux_caliber": {
@@ -1504,6 +1504,7 @@
   },
   {
     "tank_crew": {
+      "minCrewMemberRepairCount": 10,
       "minCrewMemberAliveCount": 9,
       "sailor1": {
         "dmPart": "bridge_dm",
@@ -1513,12 +1514,12 @@
       "sailor2": {
         "dmPart": "compartment_01_dm",
         "role": "sailor",
-        "crew": 5
+        "crew": 4
       },
       "sailor3": {
         "dmPart": "compartment_02_dm",
         "role": "sailor",
-        "crew": 4
+        "crew": 5
       },
       "sailor4": {
         "dmPart": "compartment_03_dm",
@@ -1528,7 +1529,7 @@
       "sailor5": {
         "dmPart": "compartment_04_dm",
         "role": "sailor",
-        "crew": 5
+        "crew": 7
       },
       "sailor6": {
         "dmPart": "compartment_05_dm",
@@ -1538,12 +1539,12 @@
       "sailor7": {
         "dmPart": "main_caliber_turret_01_dm",
         "role": "sailor",
-        "crew": 2
+        "crew": 1
       },
       "sailor8": {
         "dmPart": "main_caliber_turret_02_dm",
         "role": "sailor",
-        "crew": 2
+        "crew": 1
       }
     }
   },
@@ -1562,6 +1563,24 @@
           },
           {
             "name": "ammunition_storage_04_dm"
+          },
+          {
+            "name": "ammunition_storage_05_dm"
+          },
+          {
+            "name": "ammunition_storage_06_dm"
+          },
+          {
+            "name": "ammunition_storage_07_dm"
+          },
+          {
+            "name": "ammunition_storage_08_dm"
+          },
+          {
+            "name": "ammunition_storage_09_dm"
+          },
+          {
+            "name": "ammunition_storage_10_dm"
           },
           {
             "onKill": {
@@ -1684,6 +1703,66 @@
         ]
       },
       {
+        "ammunition_first_stage": [
+          {
+            "onKill": {
+              "fire": 1.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "fire",
+              "fire": 1.0,
+              "damage": 200.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "explosion",
+              "expl": 0.11,
+              "fire": 1.0,
+              "damage": 300.0,
+              "fHitCritical": false
+            }
+          }
+        ]
+      },
+      {
+        "ammunition_depth_charges": {
+          "onKill": {
+            "expl": 0.05,
+            "nothing": 0.95
+          },
+          "onHit": {
+            "damageType": "fire",
+            "damage": 150.0,
+            "expl": 0.1
+          }
+        }
+      },
+      {
+        "ammunition_torpedoes": [
+          {
+            "onHit": {
+              "damageType": "explosion",
+              "expl": 0.01,
+              "damage": 400.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "fire",
+              "expl": 0.1,
+              "damage": 250.0,
+              "fHitCritical": false
+            }
+          }
+        ]
+      },
+      {
         "part": [
           {
             "name": "torpedo_01_dm"
@@ -1696,6 +1775,12 @@
           },
           {
             "name": "torpedo_04_dm"
+          },
+          {
+            "name": "torpedo_05_dm"
+          },
+          {
+            "name": "torpedo_06_dm"
           },
           {
             "onKill": {
@@ -2435,14 +2520,6 @@
         }
       }
     ]
-  },
-  {
-    "tags": {
-      "country_britain": true,
-      "type_ship": true,
-      "ship": true,
-      "type_gun_boat": true
-    }
   },
   {
     "ShipPhys": {
@@ -3722,19 +3799,22 @@
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_01"
+              "emitter": "emtr_fire_engine_01",
+              "scale": 2.0
             }
           },
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_02"
+              "emitter": "emtr_fire_engine_02",
+              "scale": 2.0
             }
           },
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_03"
+              "emitter": "emtr_fire_engine_03",
+              "scale": 2.0
             }
           }
         ]
@@ -4002,13 +4082,13 @@
           },
           {
             "fx": {
-              "name": "tank_smoke_big",
+              "name": "tank_smoke_small",
               "emitter": "emtr_smoke_dmg_01"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_big",
+              "name": "tank_smoke_small",
               "emitter": "emtr_smoke_dmg_02"
             }
           },
@@ -4133,7 +4213,7 @@
           {
             "fx": {
               "name": "tank_fire_big",
-              "emitter": "emtr_fire_dmg_01"
+              "emitter": "emtr_fire_dmg_02"
             }
           },
           {

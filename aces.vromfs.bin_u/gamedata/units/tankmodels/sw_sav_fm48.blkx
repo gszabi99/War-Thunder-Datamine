@@ -2088,24 +2088,6 @@
               "name": "tank_engine_fire",
               "emitter": "emtr_fire_engine_02"
             }
-          },
-          {
-            "fx": {
-              "name": "tank_engine_smoke",
-              "emitter": "emtr_fire_engine"
-            }
-          },
-          {
-            "fx": {
-              "name": "tank_engine_smoke",
-              "emitter": "emtr_fire_engine_01"
-            }
-          },
-          {
-            "fx": {
-              "name": "tank_engine_smoke",
-              "emitter": "emtr_fire_engine_02"
-            }
           }
         ]
       },
@@ -2117,67 +2099,78 @@
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo"
+              "emitter": "emtr_fire_ammo",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_01"
+              "emitter": "emtr_fire_ammo_01",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_02"
+              "emitter": "emtr_fire_ammo_02",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_03"
+              "emitter": "emtr_fire_ammo_03",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_04"
+              "emitter": "emtr_fire_ammo_04",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_05"
+              "emitter": "emtr_fire_ammo_05",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_06"
+              "emitter": "emtr_fire_ammo_06",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_07"
+              "emitter": "emtr_fire_ammo_07",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_08"
+              "emitter": "emtr_fire_ammo_08",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_09"
+              "emitter": "emtr_fire_ammo_09",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_10"
+              "emitter": "emtr_fire_ammo_10",
+              "useVelocity": false
             }
           }
         ]
@@ -2323,7 +2316,7 @@
           },
           {
             "fx": {
-              "name": "tank_smoke_big",
+              "name": "tank_smoke_small",
               "emitter": "emtr_smoke_dmg"
             }
           },
@@ -2552,6 +2545,7 @@
       "zoomInFov": 14.7,
       "sightFov": 10.0,
       "sightName": "sfl_zf_1a",
+      "openedCockpit": true,
       "headPos": [0.0,3.2,-6.5],
       "headPosOnShooting": [-0.1,2.9,-0.6],
       "bone_turret": "",
@@ -2912,34 +2906,23 @@
   },
   {
     "skin": {
-      "name": "se_camo_four_color",
-      "nameLocId": "skin/se_camo_four_color",
-      "descLocId": "skin/se_camo_four_color/desc",
+      "name": "se_camo_black_green_braun_waves",
+      "nameLocId": "skin/se_camo_black_green_braun_waves",
+      "descLocId": "skin/se_camo_black_green_braun_waves/desc",
       "replace_tex": {
         "from": "se_camo_green*",
-        "to": "se_camo_four_color*"
+        "to": "se_camo_black_green_braun_waves*"
       }
     }
   },
   {
     "skin": {
-      "name": "se_camo_desert_three_color",
-      "nameLocId": "skin/se_camo_desert_three_color",
-      "descLocId": "skin/se_camo_desert_three_color/desc",
+      "name": "se_camo_winter_bicolor",
+      "nameLocId": "skin/se_camo_winter_bicolor",
+      "descLocId": "skin/se_camo_winter_bicolor/desc",
       "replace_tex": {
         "from": "se_camo_green*",
-        "to": "se_camo_desert_three_color*"
-      }
-    }
-  },
-  {
-    "skin": {
-      "name": "se_camo_three_color_lines",
-      "nameLocId": "skin/se_camo_three_color_lines",
-      "descLocId": "skin/se_camo_three_color_lines/desc",
-      "replace_tex": {
-        "from": "se_camo_green*",
-        "to": "se_camo_three_color_lines*"
+        "to": "se_camo_winter_bicolor*"
       }
     }
   },
@@ -2951,6 +2934,17 @@
       "replace_tex": {
         "from": "se_camo_green*",
         "to": "fr_camo_winter_green_white*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "se_camo_four_color",
+      "nameLocId": "skin/se_camo_four_color",
+      "descLocId": "skin/se_camo_four_color/desc",
+      "replace_tex": {
+        "from": "se_camo_green*",
+        "to": "se_camo_four_color*"
       }
     }
   },

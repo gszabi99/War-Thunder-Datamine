@@ -884,10 +884,10 @@
           "hp": 100.0
         },
         "mast_02_dm": {
-          "hp": 362.0
+          "hp": 360.0
         },
         "mast_03_dm": {
-          "hp": 136.0
+          "hp": 160.0
         }
       },
       "hydrofoils": {
@@ -904,13 +904,13 @@
         "armorClass": "armor_tank_engine",
         "armorThickness": 5.0,
         "engine_01_dm": {
-          "hp": 275.0
+          "hp": 173.0
         },
         "engine_02_dm": {
-          "hp": 276.0
+          "hp": 175.0
         },
         "engine_03_dm": {
-          "hp": 275.0
+          "hp": 173.0
         },
         "transmission_01_dm": {
           "hp": 160.0
@@ -1075,10 +1075,10 @@
         "armorClass": "ships_oil_fuel_tank",
         "armorThickness": 3.0,
         "fuel_tank_01_dm": {
-          "hp": 398.0
+          "hp": 167.0
         },
         "fuel_tank_02_dm": {
-          "hp": 146.0
+          "hp": 164.0
         }
       },
       "ammo": {
@@ -1114,16 +1114,17 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 2.0,
         "torpedo_01_dm": {
-          "hp": 226.0
+          "hp": 224.0
         },
         "torpedo_02_dm": {
-          "hp": 224.0
+          "hp": 222.0
         }
       }
     }
   },
   {
     "tank_crew": {
+      "minCrewMemberRepairCount": 3,
       "minCrewMemberAliveCount": 3,
       "sailor1": {
         "dmPart": "bridge_dm",
@@ -1984,14 +1985,6 @@
     ]
   },
   {
-    "tags": {
-      "country_britain": true,
-      "type_ship": true,
-      "ship": true,
-      "type_torpedo_boat": true
-    }
-  },
-  {
     "ShipPhys": {
       "mass": {
         "Empty": 34000.0,
@@ -2706,19 +2699,22 @@
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_01"
+              "emitter": "emtr_fire_engine_01",
+              "scale": 2.0
             }
           },
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_02"
+              "emitter": "emtr_fire_engine_02",
+              "scale": 2.0
             }
           },
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_03"
+              "emitter": "emtr_fire_engine_03",
+              "scale": 2.0
             }
           }
         ]
@@ -2986,13 +2982,13 @@
           },
           {
             "fx": {
-              "name": "tank_smoke_big",
+              "name": "tank_smoke_small",
               "emitter": "emtr_smoke_dmg_01"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_big",
+              "name": "tank_smoke_small",
               "emitter": "emtr_smoke_dmg_02"
             }
           },
@@ -3117,7 +3113,7 @@
           {
             "fx": {
               "name": "tank_fire_big",
-              "emitter": "emtr_fire_dmg_01"
+              "emitter": "emtr_fire_dmg_02"
             }
           },
           {

@@ -1,4 +1,7 @@
 {
+  "replicating": {
+    "replication": []
+  },
   "root": {
     "active": true
   },
@@ -106,6 +109,39 @@
   "walker": {
     "_extends": "unit"
   },
+  "suit": {
+    "_extends": "simple_unit",
+    "unit_fire": [],
+    "unit_fire_fx": [],
+    "unit_extinguish": [],
+    "unit_crew": [],
+    "unit_crew:_namespace": {
+      "inited": false
+    },
+    "unit_fx": [],
+    "unit_fx:_namespace": {
+      "inited": false
+    },
+    "ammo_stowage": [],
+    "ammo_stowage:_namespace": {
+      "inited": false
+    },
+    "fire_damage": [],
+    "fire_damage:_namespace": {
+      "update_burn_interval": 1.0,
+      "isBurn": false
+    },
+    "toolkit": [],
+    "toolkit:_namespace": {
+      "name": "tank_tool_kit_expendable",
+      "enabled_without_mod": true
+    },
+    "extinguisher": [],
+    "extinguisher:_namespace": {
+      "name": "manual_extinguisher_expendable",
+      "enabled_without_mod": true
+    }
+  },
   "weapon": {
     "_extends": "root",
     "weapon_ref": [],
@@ -125,5 +161,11 @@
   },
   "torpedo_gun": {
     "_extends": "weapon"
+  },
+  "player": {
+    "player_id": -1,
+    "connId": -1,
+    "_tracked": "connId",
+    "m_player": []
   }
 }

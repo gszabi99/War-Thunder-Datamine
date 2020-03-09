@@ -45,7 +45,7 @@
       "distFromCmToStab": 0.023
     },
     {
-      "CxK": 1.7
+      "CxK": 2.2
     },
     {
       "WdK": [0.1,0.1,0.1]
@@ -133,6 +133,18 @@
     },
     {
       "uncageBeforeLaunch": false
+    },
+    {
+      "loftTime": [0.05,0.5]
+    },
+    {
+      "loftOmegaLimit": 0.1
+    },
+    {
+      "loftAccel": 60.0
+    },
+    {
+      "useThrustVectoringForLoft": true
     },
     {
       "guidanceSfx": "alarm_con_scan"
@@ -350,8 +362,8 @@
         "minAngleToSun": 5.0,
         "lockAngleMax": 40.0,
         "angleMax": 40.0,
-        "rateMax": 20.0,
-        "prolongationTimeMax": 1.0
+        "rateMax": 12.0,
+        "prolongationTimeMax": 3.0
       }
     },
     {
@@ -366,7 +378,7 @@
     {
       "proximityFuse": {
         "timeOut": 0.5,
-        "radius": 3.0,
+        "radius": 1.0,
         "detectAirUnits": true,
         "detectGroundUnits": false,
         "detectGround": false

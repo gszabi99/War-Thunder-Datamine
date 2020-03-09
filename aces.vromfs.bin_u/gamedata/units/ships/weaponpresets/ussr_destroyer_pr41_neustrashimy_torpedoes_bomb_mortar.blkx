@@ -1,0 +1,269 @@
+[
+  {
+    "hideNodes": {
+      "node": "ammunition_storage_aux_02"
+    }
+  },
+  {
+    "Weapon": {
+      "trigger": "gunner6",
+      "triggerGroup": "rockets",
+      "blk": "gameData/Weapons/bombguns/bomb_ussr_rgb25.blk",
+      "weaponType": "rockets",
+      "useEmitter": true,
+      "emitter": "bone_rocket_01",
+      "emitterGenRange": [1,16],
+      "emitterGenFmt": "bone_rocket_%02d",
+      "barrelDP": "auxiliary_caliber_gun_01_dm",
+      "breechDP": "auxiliary_caliber_gun_01_dm",
+      "defaultYaw": 0.0,
+      "defaultPitch": 0.0,
+      "speedYaw": 30.0,
+      "speedPitch": 30.0,
+      "bullets": 48,
+      "allowableDelta": 2.0,
+      "ChainfireTime": 60.0,
+      "DelayAfterShoot": 0.0,
+      "aimMinDist": 20.0,
+      "aimMaxDist": 4000.0,
+      "randomAngle": 0.0,
+      "accuracyBotMultAir": 0.55,
+      "accuracyAir": 1.0,
+      "accuracyGnd": 0.5,
+      "errMeasureVel": 0.0,
+      "errTargettingOn100kmph": 0.0,
+      "errMeasureVelFast": 100.0,
+      "errMeasureVelFwdShift": 1.0,
+      "errMeasureVelDir": 3.0,
+      "errTargetting": 1.0,
+      "errExplTime": 0.0,
+      "turret": {
+        "head": "auxiliary_caliber_turret_01",
+        "gun": "auxiliary_caliber_gun_01",
+        "gunnerDm": "auxiliary_caliber_turret_01_dm"
+      },
+      "limits": {
+        "yaw": [-180.0,180.0],
+        "pitch": [-5.0,55.0]
+      },
+      "limitsTable": {
+        "lim1": [-100.0,-65.0,14.0,85.0],
+        "lim2": [-65.0,-5.0,0.0,85.0],
+        "lim3": [-5.0,160.0,-10.0,85.0]
+      }
+    }
+  },
+  {
+    "Weapon": {
+      "trigger": "gunner7",
+      "triggerGroup": "rockets",
+      "blk": "gameData/Weapons/bombguns/bomb_ussr_rgb25.blk",
+      "weaponType": "rockets",
+      "useEmitter": true,
+      "emitter": "bone_rocket_17",
+      "emitterGenRange": [17,32],
+      "emitterGenFmt": "bone_rocket_%02d",
+      "barrelDP": "auxiliary_caliber_gun_02_dm",
+      "breechDP": "auxiliary_caliber_gun_02_dm",
+      "defaultYaw": 0.0,
+      "defaultPitch": 0.0,
+      "speedYaw": 30.0,
+      "speedPitch": 30.0,
+      "bullets": 48,
+      "allowableDelta": 2.0,
+      "ChainfireTime": 60.0,
+      "DelayAfterShoot": 0.0,
+      "aimMinDist": 20.0,
+      "aimMaxDist": 4000.0,
+      "randomAngle": 0.0,
+      "accuracyBotMultAir": 0.55,
+      "accuracyAir": 1.0,
+      "accuracyGnd": 0.5,
+      "errMeasureVel": 0.0,
+      "errTargettingOn100kmph": 0.0,
+      "errMeasureVelFast": 100.0,
+      "errMeasureVelFwdShift": 1.0,
+      "errMeasureVelDir": 3.0,
+      "errTargetting": 1.0,
+      "errExplTime": 0.0,
+      "turret": {
+        "head": "auxiliary_caliber_turret_02",
+        "gun": "auxiliary_caliber_gun_02",
+        "gunnerDm": "auxiliary_caliber_turret_02_dm"
+      },
+      "limits": {
+        "yaw": [-160.0,110.0],
+        "pitch": [-5.0,55.0]
+      },
+      "limitsTable": {
+        "lim1": [-160.0,5.0,-10.0,85.0],
+        "lim2": [5.0,65.0,0.0,85.0],
+        "lim3": [65.0,100.0,14.0,85.0]
+      }
+    }
+  },
+  {
+    "Weapon": [
+      {
+        "trigger": "gunner8"
+      },
+      {
+        "triggerGroup": "torpedoes"
+      },
+      {
+        "external": true
+      },
+      {
+        "blk": "gameData/Weapons/torpedoes/ussr_533mm_53_39_torpedo.blk"
+      },
+      {
+        "emitter": "bone_torpedo_01"
+      },
+      {
+        "bullets": 5
+      },
+      {
+        "useEmitter": true
+      },
+      {
+        "emitterGenRange": [1,5]
+      },
+      {
+        "emitterGenFmt": "bone_torpedo_%02d"
+      },
+      {
+        "ammoDpGenFmt": "torpedo_%02d_dm"
+      },
+      {
+        "barrelDP": "tt_01_dm"
+      },
+      {
+        "brokenBarrelAllowShoot": false
+      },
+      {
+        "enableCourseCorrection": false
+      },
+      {
+        "startFx": "start_torpedo"
+      },
+      {
+        "startFxOffset": [4.0,0.0,0.0]
+      },
+      {
+        "startSpeed": 20.0
+      },
+      {
+        "useStartSpeed": true
+      },
+      {
+        "allowableDelta": 40.0
+      },
+      {
+        "barrelDP": "tt_01_dm"
+      },
+      {
+        "brokenBarrelAllowShoot": false
+      },
+      {
+        "turret": {
+          "head": "tt_head_01",
+          "gun": "tt_01"
+        }
+      },
+      {
+        "limits": {
+          "yaw": [-125.0,125.0],
+          "pitch": [0.0,0.0]
+        }
+      },
+      {
+        "limitsDeadzone": {
+          "yaw": [-48.0,48.0],
+          "pitch": [0.0,0.0]
+        }
+      }
+    ]
+  },
+  {
+    "Weapon": [
+      {
+        "trigger": "gunner9"
+      },
+      {
+        "triggerGroup": "torpedoes"
+      },
+      {
+        "external": true
+      },
+      {
+        "blk": "gameData/Weapons/torpedoes/ussr_533mm_53_39_torpedo.blk"
+      },
+      {
+        "emitter": "bone_torpedo_06"
+      },
+      {
+        "bullets": 5
+      },
+      {
+        "useEmitter": true
+      },
+      {
+        "emitterGenRange": [6,10]
+      },
+      {
+        "emitterGenFmt": "bone_torpedo_%02d"
+      },
+      {
+        "ammoDpGenFmt": "torpedo_%02d_dm"
+      },
+      {
+        "barrelDP": "tt_02_dm"
+      },
+      {
+        "brokenBarrelAllowShoot": false
+      },
+      {
+        "enableCourseCorrection": false
+      },
+      {
+        "startFx": "start_torpedo"
+      },
+      {
+        "startFxOffset": [4.0,0.0,0.0]
+      },
+      {
+        "startSpeed": 20.0
+      },
+      {
+        "useStartSpeed": true
+      },
+      {
+        "allowableDelta": 40.0
+      },
+      {
+        "barrelDP": "tt_02_dm"
+      },
+      {
+        "brokenBarrelAllowShoot": false
+      },
+      {
+        "turret": {
+          "head": "tt_head_02",
+          "gun": "tt_02"
+        }
+      },
+      {
+        "limits": {
+          "yaw": [-125.0,125.0],
+          "pitch": [0.0,0.0]
+        }
+      },
+      {
+        "limitsDeadzone": {
+          "yaw": [-48.0,48.0],
+          "pitch": [0.0,0.0]
+        }
+      }
+    ]
+  }
+]

@@ -73,13 +73,21 @@
       "stateInit": "init",
       "actionsTemplates": {
         "init": {
+          "setEnabled": {
+            "value": false
+          },
+          "setTransiver": {
+            "transiver": "track"
+          },
           "setSignal": {
             "signal": "track"
           }
         },
         "setStandbyMode": [
           {
-            "setTransiver": []
+            "setEnabled": {
+              "value": false
+            }
           },
           {
             "setScanPattern": {
@@ -115,6 +123,9 @@
           }
         ],
         "setLockMode": {
+          "setEnabled": {
+            "value": true
+          },
           "setScanPattern": {
             "scanPattern": "lock"
           },
@@ -127,9 +138,6 @@
             "fsm": "lock",
             "active": true
           },
-          "setTransiver": {
-            "transiver": "track"
-          },
           "setCenterElevation": {
             "source": "constant",
             "value": 5.0
@@ -140,6 +148,9 @@
           }
         },
         "setLosVisualPreLockMode": {
+          "setEnabled": {
+            "value": true
+          },
           "setScanPattern": {
             "scanPattern": "losLock"
           },
@@ -157,8 +168,8 @@
           }
         },
         "setLosLockMode": {
-          "setTransiver": {
-            "transiver": "track"
+          "setEnabled": {
+            "value": true
           },
           "setDistGatePos": {
             "source": "constRange",
@@ -167,8 +178,8 @@
           }
         },
         "setVisualLockMode": {
-          "setTransiver": {
-            "transiver": "track"
+          "setEnabled": {
+            "value": true
           },
           "setDistGatePos": {
             "source": "targetDesignation",
@@ -176,6 +187,9 @@
           }
         },
         "setTrackMode": {
+          "setEnabled": {
+            "value": true
+          },
           "setScanPattern": {
             "scanPattern": "track"
           },
@@ -196,9 +210,6 @@
           "setFsmActive": {
             "fsm": "track",
             "active": true
-          },
-          "setTransiver": {
-            "transiver": "track"
           }
         }
       },

@@ -742,7 +742,7 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 4.0,
         "compartment_01_dm": {
-          "hp": 469.0
+          "hp": 466.0
         },
         "compartment_02_dm": {
           "hp": 500.0
@@ -772,12 +772,12 @@
           "hp": 100.0
         },
         "superstructure_top_dm": {
-          "hp": 149.0
+          "hp": 152.0
         },
         "mid_bottom_dm": {
           "armorClass": "ship_wood",
           "armorThickness": 20.0,
-          "hp": 106.0
+          "hp": 105.0
         },
         "bow_bottom_dm": {
           "armorClass": "ship_wood",
@@ -786,11 +786,11 @@
         },
         "superstructure_side_dm": {
           "armorThickness": 14.0,
-          "hp": 223.0
+          "hp": 248.0
         },
         "superstructure_front_dm": {
           "armorThickness": 14.0,
-          "hp": 130.0
+          "hp": 154.0
         }
       },
       "bulkheads": {
@@ -845,10 +845,10 @@
           "hp": 200.0
         },
         "hydrofoil_03_dm": {
-          "hp": 190.0
+          "hp": 181.0
         },
         "hydrofoil_04_dm": {
-          "hp": 190.0
+          "hp": 181.0
         }
       },
       "engine": {
@@ -903,6 +903,12 @@
         "fireParamsPreset": "ship_turrets",
         "armorClass": "ship_structural_steel",
         "armorThickness": 15.0,
+        "turret_01_front_dm": {
+          "hp": 250.0
+        },
+        "turret_02_front_dm": {
+          "hp": 250.0
+        },
         "turret_01_bottom_dm": {
           "hp": 250.0
         },
@@ -1006,7 +1012,7 @@
         "armorClass": "ships_oil_fuel_tank",
         "armorThickness": 3.0,
         "fuel_tank_01_dm": {
-          "hp": 500.0
+          "hp": 172.0
         }
       },
       "ammo": {
@@ -1097,6 +1103,7 @@
   },
   {
     "tank_crew": {
+      "minCrewMemberRepairCount": 7,
       "minCrewMemberAliveCount": 6,
       "sailor1": {
         "dmPart": "bridge_dm",
@@ -1106,7 +1113,7 @@
       "sailor2": {
         "dmPart": "compartment_01_dm",
         "role": "sailor",
-        "crew": 6
+        "crew": 5
       },
       "sailor3": {
         "dmPart": "compartment_02_dm",
@@ -1121,7 +1128,7 @@
       "sailor5": {
         "dmPart": "superstructure_side_dm",
         "role": "sailor",
-        "crew": 2
+        "crew": 3
       }
     }
   },
@@ -1973,13 +1980,6 @@
     ]
   },
   {
-    "tags": {
-      "country_germany": true,
-      "type_ship": true,
-      "ship": true
-    }
-  },
-  {
     "ShipPhys": {
       "mass": {
         "Empty": 71000.0,
@@ -2459,19 +2459,22 @@
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_01"
+              "emitter": "emtr_fire_engine_01",
+              "scale": 2.0
             }
           },
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_02"
+              "emitter": "emtr_fire_engine_02",
+              "scale": 2.0
             }
           },
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_03"
+              "emitter": "emtr_fire_engine_03",
+              "scale": 2.0
             }
           }
         ]
@@ -2739,13 +2742,13 @@
           },
           {
             "fx": {
-              "name": "tank_smoke_big",
+              "name": "tank_smoke_small",
               "emitter": "emtr_smoke_dmg_01"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_big",
+              "name": "tank_smoke_small",
               "emitter": "emtr_smoke_dmg_02"
             }
           },
@@ -2870,7 +2873,7 @@
           {
             "fx": {
               "name": "tank_fire_big",
-              "emitter": "emtr_fire_dmg_01"
+              "emitter": "emtr_fire_dmg_02"
             }
           },
           {

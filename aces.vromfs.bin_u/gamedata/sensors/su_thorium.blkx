@@ -52,33 +52,41 @@
       "stateInit": "init",
       "actionsTemplates": {
         "init": {
+          "setEnabled": {
+            "value": false
+          },
+          "setTransiver": {
+            "transiver": "search"
+          },
+          "setSignal": {
+            "signal": "search"
+          },
+          "setScanPattern": {
+            "scanPattern": "search"
+          },
           "setCenterElevation": {
             "source": "constant",
             "value": 5.0
           }
         },
         "setStandbyMode": {
-          "setTransiver": [],
+          "setEnabled": {
+            "value": false
+          },
           "setCenterAzimuth": {
             "source": "constant",
             "value": 0.0
           },
-          "clearTargets": [],
-          "setSignal": {
-            "signal": "search"
-          },
-          "setScanPattern": {
-            "scanPattern": "search"
-          }
+          "clearTargets": []
         },
         "setSearchMode": {
+          "setEnabled": {
+            "value": true
+          },
           "clearTargets": [],
           "setFsmActive": {
             "fsm": "search",
             "active": true
-          },
-          "setTransiver": {
-            "transiver": "search"
           }
         },
         "resetSearchMode": {

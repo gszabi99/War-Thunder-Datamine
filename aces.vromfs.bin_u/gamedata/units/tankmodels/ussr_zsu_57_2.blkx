@@ -2063,7 +2063,7 @@
             "expl": 1.0,
             "conditionDamage": 350.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBrake"
           }
         },
         {
@@ -2072,7 +2072,7 @@
             "expl": 1.0,
             "conditionDamage": 250.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBrake"
           }
         },
         {
@@ -2081,7 +2081,7 @@
             "expl": 1.0,
             "conditionDamage": 750.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBrake"
           }
         },
         {
@@ -2089,7 +2089,7 @@
             "expl": 1.0,
             "conditionDead": true,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBrake"
           }
         }
       ],
@@ -2145,7 +2145,7 @@
             "expl": 1.0,
             "conditionDamage": 400.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -2154,7 +2154,7 @@
             "expl": 1.0,
             "conditionDamage": 400.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         }
       ],
@@ -2183,7 +2183,7 @@
             "expl": 1.0,
             "conditionDamage": 350.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBrake"
           }
         },
         {
@@ -2192,7 +2192,7 @@
             "expl": 1.0,
             "conditionDamage": 250.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBrake"
           }
         },
         {
@@ -2201,7 +2201,7 @@
             "expl": 1.0,
             "conditionDamage": 750.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBrake"
           }
         },
         {
@@ -2209,7 +2209,7 @@
             "expl": 1.0,
             "conditionDead": true,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBrake"
           }
         }
       ]
@@ -2433,24 +2433,6 @@
               "name": "tank_engine_fire",
               "emitter": "emtr_fire_engine_02"
             }
-          },
-          {
-            "fx": {
-              "name": "tank_engine_smoke",
-              "emitter": "emtr_fire_engine"
-            }
-          },
-          {
-            "fx": {
-              "name": "tank_engine_smoke",
-              "emitter": "emtr_fire_engine_01"
-            }
-          },
-          {
-            "fx": {
-              "name": "tank_engine_smoke",
-              "emitter": "emtr_fire_engine_02"
-            }
           }
         ]
       },
@@ -2462,67 +2444,78 @@
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo"
+              "emitter": "emtr_fire_ammo",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_01"
+              "emitter": "emtr_fire_ammo_01",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_02"
+              "emitter": "emtr_fire_ammo_02",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_03"
+              "emitter": "emtr_fire_ammo_03",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_04"
+              "emitter": "emtr_fire_ammo_04",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_05"
+              "emitter": "emtr_fire_ammo_05",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_06"
+              "emitter": "emtr_fire_ammo_06",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_07"
+              "emitter": "emtr_fire_ammo_07",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_08"
+              "emitter": "emtr_fire_ammo_08",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_09"
+              "emitter": "emtr_fire_ammo_09",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_10"
+              "emitter": "emtr_fire_ammo_10",
+              "useVelocity": false
             }
           }
         ]
@@ -2668,7 +2661,7 @@
           },
           {
             "fx": {
-              "name": "tank_smoke_big",
+              "name": "tank_smoke_small",
               "emitter": "emtr_smoke_dmg"
             }
           },

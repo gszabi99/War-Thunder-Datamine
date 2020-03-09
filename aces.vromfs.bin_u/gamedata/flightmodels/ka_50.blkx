@@ -3,8 +3,15 @@
   "fmFile": "fm/ka_50.blk",
   "viewDistKInSight": 2.0,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
+  "haveCCIPForRocket": true,
+  "haveCCRPForRocket": false,
+  "haveCCIPForBombs": true,
+  "haveCCIPForGun": true,
+  "haveCCRPForGun": false,
+  "haveCCRPForTurret": true,
   "gearSinkRangeLR": 0.22,
   "gearSinkRangeC": 0.25,
+  "enginesInfraRedBrightnessMult": 0.7,
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "advancedInstructor": true,
@@ -1891,7 +1898,13 @@
           "dp": "elevon_l_dm"
         },
         {
+          "dp": "elevon%d_l_dm"
+        },
+        {
           "dp": "elevon_r_dm"
+        },
+        {
+          "dp": "elevon%d_r_dm"
         },
         {
           "dp": "airbrake_l_dm"
@@ -2078,7 +2091,13 @@
           "dp": "elevon_l_dm"
         },
         {
+          "dp": "elevon%d_l_dm"
+        },
+        {
           "dp": "elevon_r_dm"
+        },
+        {
+          "dp": "elevon%d_r_dm"
         },
         {
           "dp": "airbrake_l_dm"
@@ -2265,7 +2284,13 @@
           "dp": "elevon_l_dm"
         },
         {
+          "dp": "elevon%d_l_dm"
+        },
+        {
           "dp": "elevon_r_dm"
+        },
+        {
+          "dp": "elevon%d_r_dm"
         },
         {
           "dp": "airbrake_l_dm"
@@ -2452,7 +2477,13 @@
           "dp": "elevon_l_dm"
         },
         {
+          "dp": "elevon%d_l_dm"
+        },
+        {
           "dp": "elevon_r_dm"
+        },
+        {
+          "dp": "elevon%d_r_dm"
         },
         {
           "dp": "airbrake_l_dm"
@@ -2642,7 +2673,13 @@
           "dp": "elevon_l_dm"
         },
         {
+          "dp": "elevon%d_l_dm"
+        },
+        {
           "dp": "elevon_r_dm"
+        },
+        {
+          "dp": "elevon%d_r_dm"
         },
         {
           "dp": "airbrake_l_dm"
@@ -2832,7 +2869,13 @@
           "dp": "elevon_l_dm"
         },
         {
+          "dp": "elevon%d_l_dm"
+        },
+        {
           "dp": "elevon_r_dm"
+        },
+        {
+          "dp": "elevon%d_r_dm"
         },
         {
           "dp": "airbrake_l_dm"
@@ -3022,7 +3065,13 @@
           "dp": "elevon_l_dm"
         },
         {
+          "dp": "elevon%d_l_dm"
+        },
+        {
           "dp": "elevon_r_dm"
+        },
+        {
+          "dp": "elevon%d_r_dm"
         },
         {
           "dp": "airbrake_l_dm"
@@ -3212,7 +3261,13 @@
           "dp": "elevon_l_dm"
         },
         {
+          "dp": "elevon%d_l_dm"
+        },
+        {
           "dp": "elevon_r_dm"
+        },
+        {
+          "dp": "elevon%d_r_dm"
         },
         {
           "dp": "airbrake_l_dm"
@@ -4178,7 +4233,11 @@
       "prevModification": "new_compressor_heli"
     },
     "cd_98_main_rotor": {
-      "tier": 3
+      "tier": 3,
+      "effects": {
+        "mulCdminMainRotor": 0.3,
+        "mulOswEffNumberMainRotor": 0.3
+      }
     },
     "new_heli_cover": [],
     "heli_flak_jacket": [],

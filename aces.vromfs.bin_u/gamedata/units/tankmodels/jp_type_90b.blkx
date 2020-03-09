@@ -42,6 +42,9 @@
     "autoSightDistanceCorrection": true
   },
   {
+    "autoSightDistanceCorrection": true
+  },
+  {
     "subclass": "heavyVehicle"
   },
   {
@@ -324,6 +327,10 @@
           "hp": 20.0
         },
         "optic_turret_04_dm": {
+          "armorThickness": 3.0,
+          "hp": 20.0
+        },
+        "optic_turret_05_dm": {
           "armorThickness": 3.0,
           "hp": 20.0
         },
@@ -1790,6 +1797,15 @@
     }
   },
   {
+    "gunConvergence": {
+      "updateFromRangefinder": true,
+      "minDistance": 200.0,
+      "distance": 1000.0,
+      "vertical": true,
+      "horizontal": true
+    }
+  },
+  {
     "sound": {
       "EngineName": "engine_type90",
       "TrackSoundPath": "tanks/engines_tanks",
@@ -2212,24 +2228,6 @@
               "name": "tank_engine_fire",
               "emitter": "emtr_fire_engine_02"
             }
-          },
-          {
-            "fx": {
-              "name": "tank_engine_smoke",
-              "emitter": "emtr_fire_engine"
-            }
-          },
-          {
-            "fx": {
-              "name": "tank_engine_smoke",
-              "emitter": "emtr_fire_engine_01"
-            }
-          },
-          {
-            "fx": {
-              "name": "tank_engine_smoke",
-              "emitter": "emtr_fire_engine_02"
-            }
           }
         ]
       },
@@ -2241,67 +2239,78 @@
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo"
+              "emitter": "emtr_fire_ammo",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_01"
+              "emitter": "emtr_fire_ammo_01",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_02"
+              "emitter": "emtr_fire_ammo_02",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_03"
+              "emitter": "emtr_fire_ammo_03",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_04"
+              "emitter": "emtr_fire_ammo_04",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_05"
+              "emitter": "emtr_fire_ammo_05",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_06"
+              "emitter": "emtr_fire_ammo_06",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_07"
+              "emitter": "emtr_fire_ammo_07",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_08"
+              "emitter": "emtr_fire_ammo_08",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_09"
+              "emitter": "emtr_fire_ammo_09",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_10"
+              "emitter": "emtr_fire_ammo_10",
+              "useVelocity": false
             }
           }
         ]
@@ -2447,7 +2456,7 @@
           },
           {
             "fx": {
-              "name": "tank_smoke_big",
+              "name": "tank_smoke_small",
               "emitter": "emtr_smoke_dmg"
             }
           },
@@ -2672,10 +2681,10 @@
   },
   {
     "cockpit": {
-      "zoomOutFov": 9.2,
-      "zoomInFov": 4.6,
-      "sightFov": 6.5,
-      "sightName": "tzf_1a",
+      "zoomOutFov": 9.21,
+      "zoomInFov": 6.14,
+      "sightFov": 4.0,
+      "sightName": "emes15",
       "headPos": [0.0,4.2,-8.5],
       "headPosOnShooting": [0.3,3.3,0.65],
       "detectionHeight": 2.63

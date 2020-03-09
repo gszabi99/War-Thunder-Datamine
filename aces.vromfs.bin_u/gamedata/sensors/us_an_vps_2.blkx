@@ -9,37 +9,37 @@
       "rangeMax": 7000.0,
       "backScatteringBandNum": 0,
       "antenna": {
-        "angleHalfSens": 1.5,
-        "sideLobesSensitivity": -35.0
+        "angleHalfSens": 10.0,
+        "sideLobesSensitivity": -28.0
       }
     }
   },
   "scanPatterns": {
     "losLock": {
       "type": "pyramide",
-      "azimuthLimits": [-180.0,180.0],
+      "azimuthLimits": [-20.0,20.0],
       "elevationLimits": [-20.0,85.0],
-      "yawStabLimit": 180.0,
       "pitchStabLimit": 10.0,
       "rollStabLimit": 10.0,
       "period": 0.25,
-      "width": 0.75,
-      "barHeight": 1.5,
+      "width": 0.25,
+      "barHeight": 0.5,
       "barsCount": 1,
       "rowMajor": false
     },
     "track": {
       "type": "no",
-      "yawStabLimit": 180.0,
       "pitchStabLimit": 10.0,
       "rollStabLimit": 10.0,
-      "azimuthLimits": [-180.0,180.0],
+      "azimuthLimits": [-20.0,20.0],
       "elevationLimits": [-20.0,85.0]
     }
   },
   "signals": {
     "track": {
       "groundClutter": false,
+      "angularAccuracy": 0.08,
+      "distanceAccuracy": 5.0,
       "absRelSpeed": true,
       "track": true,
       "distance": {
@@ -61,13 +61,25 @@
       "stateInit": "init",
       "actionsTemplates": {
         "init": {
+          "setEnabled": {
+            "value": false
+          },
+          "setTransiver": {
+            "transiver": "track"
+          },
           "setSignal": {
             "signal": "track"
+          },
+          "setTargetDesignationRange": {
+            "azimuthRange": [-5.75,5.75],
+            "distanceRange": [0.0,7000.0]
           }
         },
         "setStandbyMode": [
           {
-            "setTransiver": []
+            "setEnabled": {
+              "value": false
+            }
           },
           {
             "setScanPattern": {
@@ -97,6 +109,9 @@
           }
         ],
         "setLosVisualPreLockMode": {
+          "setEnabled": {
+            "value": true
+          },
           "setScanPattern": {
             "scanPattern": "losLock"
           },
@@ -114,8 +129,8 @@
           }
         },
         "setLosLockMode": {
-          "setTransiver": {
-            "transiver": "track"
+          "setEnabled": {
+            "value": true
           },
           "setDistGatePos": {
             "source": "constRange",
@@ -124,8 +139,8 @@
           }
         },
         "setVisualLockMode": {
-          "setTransiver": {
-            "transiver": "track"
+          "setEnabled": {
+            "value": true
           },
           "setDistGatePos": {
             "source": "targetDesignation",
@@ -133,6 +148,9 @@
           }
         },
         "setTrackMode": {
+          "setEnabled": {
+            "value": true
+          },
           "setScanPattern": {
             "scanPattern": "track"
           },
@@ -153,9 +171,6 @@
           "setFsmActive": {
             "fsm": "track",
             "active": true
-          },
-          "setTransiver": {
-            "transiver": "track"
           }
         }
       },

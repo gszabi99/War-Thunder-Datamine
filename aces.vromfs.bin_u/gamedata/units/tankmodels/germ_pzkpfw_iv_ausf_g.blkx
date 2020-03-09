@@ -270,24 +270,6 @@
               "name": "tank_engine_fire",
               "emitter": "emtr_fire_engine_02"
             }
-          },
-          {
-            "fx": {
-              "name": "tank_engine_smoke",
-              "emitter": "emtr_fire_engine"
-            }
-          },
-          {
-            "fx": {
-              "name": "tank_engine_smoke",
-              "emitter": "emtr_fire_engine_01"
-            }
-          },
-          {
-            "fx": {
-              "name": "tank_engine_smoke",
-              "emitter": "emtr_fire_engine_02"
-            }
           }
         ]
       },
@@ -299,67 +281,78 @@
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo"
+              "emitter": "emtr_fire_ammo",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_01"
+              "emitter": "emtr_fire_ammo_01",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_02"
+              "emitter": "emtr_fire_ammo_02",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_03"
+              "emitter": "emtr_fire_ammo_03",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_04"
+              "emitter": "emtr_fire_ammo_04",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_05"
+              "emitter": "emtr_fire_ammo_05",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_06"
+              "emitter": "emtr_fire_ammo_06",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_07"
+              "emitter": "emtr_fire_ammo_07",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_08"
+              "emitter": "emtr_fire_ammo_08",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_09"
+              "emitter": "emtr_fire_ammo_09",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_10"
+              "emitter": "emtr_fire_ammo_10",
+              "useVelocity": false
             }
           }
         ]
@@ -505,7 +498,7 @@
           },
           {
             "fx": {
-              "name": "tank_smoke_big",
+              "name": "tank_smoke_small",
               "emitter": "emtr_smoke_dmg"
             }
           },
@@ -737,6 +730,13 @@
       "headPos": [0.0,3.2,-7.0],
       "headPosOnShooting": [-0.53,3.2,-0.06],
       "detectionHeight": 2.68
+    }
+  },
+  {
+    "gunConvergence": {
+      "distance": 800.0,
+      "vertical": true,
+      "horizontal": true
     }
   },
   {
@@ -1705,7 +1705,13 @@
           "armorThickness": 20.0
         },
         "ex_decor_03_dm": [],
-        "ex_decor_04_dm": []
+        "ex_decor_04_dm": [],
+        "ex_decor_06_dm": [],
+        "ex_decor_07_dm": [],
+        "ex_decor_l_01_dm": [],
+        "ex_decor_r_01_dm": [],
+        "ex_decor_l_10_dm": [],
+        "ex_decor_r_07_dm": []
       },
       "mask": {
         "armorClass": "CHA_tank",
@@ -1787,6 +1793,7 @@
         "wheel_r_top_04_dm": [],
         "ex_armor_body_l_02_dm": [],
         "ex_armor_body_l_01_dm": [],
+        "wheel_support_dm": [],
         "submodule": {
           "armorClass": "tank_traks",
           "armorThickness": 20.0,
@@ -2164,6 +2171,20 @@
         "fuel_tank_l_04_dm": [],
         "fuel_tank_l_05_dm": []
       }
+    }
+  },
+  {
+    "attachables": {
+      "ex_decor_l_01_dm": true,
+      "ex_decor_r_01_dm": true,
+      "ex_decor_01_dm": true,
+      "ex_decor_02_dm": true,
+      "ex_decor_03_dm": true,
+      "ex_decor_04_dm": true,
+      "ex_decor_06_dm": true,
+      "ex_decor_07_dm": true,
+      "ex_decor_r_07_dm": true,
+      "ex_decor_l_10_dm": true
     }
   },
   {

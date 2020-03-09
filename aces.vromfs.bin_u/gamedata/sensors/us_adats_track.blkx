@@ -42,7 +42,7 @@
   "signals": {
     "track": {
       "groundClutter": false,
-      "angularAccuracy": 0.07,
+      "angularAccuracy": 0.02,
       "distanceAccuracy": 2.0,
       "distance": {
         "presents": true,
@@ -59,13 +59,21 @@
       "stateInit": "init",
       "actionsTemplates": {
         "init": {
+          "setEnabled": {
+            "value": false
+          },
+          "setTransiver": {
+            "transiver": "track"
+          },
           "setSignal": {
             "signal": "track"
           }
         },
         "setStandbyMode": [
           {
-            "setTransiver": []
+            "setEnabled": {
+              "value": false
+            }
           },
           {
             "setScanPattern": {
@@ -101,6 +109,9 @@
           }
         ],
         "setLosVisualPreLockMode": {
+          "setEnabled": {
+            "value": true
+          },
           "setScanPattern": {
             "scanPattern": "losLock"
           },
@@ -118,8 +129,8 @@
           }
         },
         "setLosLockMode": {
-          "setTransiver": {
-            "transiver": "track"
+          "setEnabled": {
+            "value": true
           },
           "setDistGatePos": {
             "source": "constRange",
@@ -128,8 +139,8 @@
           }
         },
         "setVisualLockMode": {
-          "setTransiver": {
-            "transiver": "track"
+          "setEnabled": {
+            "value": true
           },
           "setDistGatePos": {
             "source": "targetDesignation",
@@ -137,6 +148,9 @@
           }
         },
         "setTrackMode": {
+          "setEnabled": {
+            "value": true
+          },
           "setScanPattern": {
             "scanPattern": "track"
           },
@@ -157,9 +171,6 @@
           "setFsmActive": {
             "fsm": "track",
             "active": true
-          },
-          "setTransiver": {
-            "transiver": "track"
           }
         }
       },

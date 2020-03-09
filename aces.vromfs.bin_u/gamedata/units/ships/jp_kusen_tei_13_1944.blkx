@@ -1599,6 +1599,31 @@
           "hp": 800.0
         }
       },
+      "ammo_storages_shells": {
+        "fireProtectionHp": 20.0,
+        "fireParamsPreset": "ship_ammo_fire",
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 2.0
+      },
+      "ammo_storages_charges": {
+        "fireProtectionHp": 20.0,
+        "fireParamsPreset": "ship_ammo_fire",
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 2.0
+      },
+      "ammo_storages_auxiliary": {
+        "fireProtectionHp": 20.0,
+        "fireParamsPreset": "ship_ammo_fire",
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 2.0
+      },
+      "ammo_first_stage": {
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 2.0,
+        "fireProtectionHp": 20.0,
+        "fireParamsPreset": "ship_ammo_fire",
+        "createSecondaryShatters": false
+      },
       "depth_charges": {
         "fireProtectionHp": 20.0,
         "fireParamsPreset": "ship_ammo_fire",
@@ -1713,6 +1738,7 @@
   },
   {
     "tank_crew": {
+      "minCrewMemberRepairCount": 28,
       "minCrewMemberAliveCount": 24,
       "sailor1": {
         "dmPart": "bridge_dm",
@@ -2716,14 +2742,6 @@
     }
   },
   {
-    "tags": {
-      "country_japan": true,
-      "type_ship": true,
-      "ship": true,
-      "type_submarine_chaser": true
-    }
-  },
-  {
     "sound": {
       "EngineName": "engine_shiplight01",
       "EngineNameAi": "engine_shiplight_ai",
@@ -3523,13 +3541,13 @@
       },
       {
         "part": {
-          "node": "ex_lantern_02",
+          "node": "ex_decor_01",
           "idx": 3,
           "mass": 400.0,
           "cutDamage": 350.0,
           "deviation": 0.6,
           "rotation": 2.1,
-          "collisionNode": "ex_lantern_02_dm"
+          "collisionNode": "ex_decor_01_dm"
         }
       },
       {

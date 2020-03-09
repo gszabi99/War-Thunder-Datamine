@@ -9,6 +9,15 @@
     "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk"
   },
   {
+    "haveCCIPForRocket": true
+  },
+  {
+    "haveCCIPForBombs": true
+  },
+  {
+    "haveCCIPForGun": true
+  },
+  {
     "gearSinkRangeLR": 0.42
   },
   {
@@ -34,9 +43,6 @@
   },
   {
     "gyroscopicSightOverSensors": true
-  },
-  {
-    "hudBombSight": false
   },
   {
     "type": "typeFighter"
@@ -94,6 +100,9 @@
         },
         "cannon3_dm": {
           "hp": 15.0
+        },
+        "radar_dm": {
+          "hp": 15.0
         }
       },
       "armor_engine": {
@@ -104,13 +113,17 @@
         "engine2_dm": {
           "genericDamageMult": 1.6,
           "hp": 50.5
-        },
-        "radar_dm": {
-          "genericDamageMult": 1.6,
-          "hp": 30.5
         }
       },
       "c_dural3": {
+        "aileron_interceptor_l_dm": {
+          "genericDamageMult": 0.3,
+          "hp": 14.5
+        },
+        "aileron_interceptor_r_dm": {
+          "genericDamageMult": 0.3,
+          "hp": 14.5
+        },
         "aileron_l_dm": {
           "genericDamageMult": 0.3,
           "hp": 30.5
@@ -131,22 +144,16 @@
           "hp": 30.5
         },
         "flap1_l_dm": {
-          "hp": 20.7
+          "hp": 14.7
         },
         "flap1_r_dm": {
-          "hp": 20.7
+          "hp": 14.7
         },
         "flap2_l_dm": {
           "hp": 17.6
         },
         "flap2_r_dm": {
           "hp": 17.6
-        },
-        "flap3_l_dm": {
-          "hp": 14.7
-        },
-        "flap3_r_dm": {
-          "hp": 14.7
         },
         "flap_l_dm": {
           "hp": 30.5
@@ -164,7 +171,7 @@
           "hp": 95.5
         },
         "fuse2_dm": {
-          "hp": 64.0
+          "hp": 59.2
         },
         "fuse_dm": {
           "hp": 95.5
@@ -188,22 +195,11 @@
         "wing2_r_dm": {
           "genericDamageMult": 0.3,
           "hp": 80.5
-        },
-        "wing_l_dm": {
-          "genericDamageMult": 0.3,
-          "hp": 80.5
-        },
-        "wing_r_dm": {
-          "genericDamageMult": 0.3,
-          "hp": 80.5
         }
       },
       "dural": {
         "cover1_dm": {
           "hp": 19.5
-        },
-        "cover2_dm": {
-          "hp": 40.5
         }
       },
       "dural40": {
@@ -245,10 +241,10 @@
           "hp": 39.5
         },
         "gear_l_dm": {
-          "hp": 54.0
+          "hp": 51.9
         },
         "gear_r_dm": {
-          "hp": 54.0
+          "hp": 51.9
         }
       },
       "steel_cooling_sys": {
@@ -277,16 +273,16 @@
           "hp": 120.5
         },
         "tank3_dm": {
-          "hp": 111.5
+          "hp": 109.6
         },
         "tank4_dm": {
-          "hp": 117.6
+          "hp": 115.9
         },
         "tank5_dm": {
-          "hp": 95.2
+          "hp": 78.3
         },
         "tank6_dm": {
-          "hp": 66.9
+          "hp": 82.8
         },
         "tank7_dm": {
           "hp": 120.5
@@ -294,11 +290,133 @@
         "tank8_dm": {
           "hp": 120.5
         }
+      },
+      "wood": {
+        "wing_l_dm": {
+          "hp": 111.5
+        },
+        "wing_r_dm": {
+          "hp": 111.5
+        }
       }
     }
   },
   {
     "DamageEffects": [
+      {
+        "part": [
+          {
+            "name": "aileron_interceptor_l_dm"
+          },
+          {
+            "onHit": {
+              "damage": 10.0,
+              "cut": 0.1
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "cut": 0.4
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "cut": 1.0,
+              "nothing": 4.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 20.0,
+              "cut": 1.0,
+              "nothing": 2.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 1.0,
+              "nothing": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "aileron_interceptor_r_dm"
+          },
+          {
+            "onHit": {
+              "damage": 10.0,
+              "cut": 0.1
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "cut": 0.4
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "cut": 1.0,
+              "nothing": 4.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 20.0,
+              "cut": 1.0,
+              "nothing": 2.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 1.0,
+              "nothing": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          }
+        ]
+      },
       {
         "part": [
           {
@@ -431,11 +549,6 @@
       {
         "part": {
           "name": "cover1_dm"
-        }
-      },
-      {
-        "part": {
-          "name": "cover2_dm"
         }
       },
       {
@@ -852,120 +965,6 @@
         "part": [
           {
             "name": "flap2_r_dm"
-          },
-          {
-            "onHit": {
-              "damage": 10.0,
-              "cut": 0.1
-            }
-          },
-          {
-            "onHit": {
-              "damage": 20.0,
-              "cut": 0.4
-            }
-          },
-          {
-            "onHit": {
-              "damage": 30.0,
-              "cut": 0.7
-            }
-          },
-          {
-            "onHit": {
-              "damage": 50.0,
-              "cut": 1.0
-            }
-          },
-          {
-            "onKill": {
-              "cut": 1.0,
-              "nothing": 9.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 10.0,
-              "cut": 1.0,
-              "nothing": 2.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 20.0,
-              "cut": 1.0,
-              "nothing": 1.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 30.0,
-              "cut": 1.0
-            }
-          }
-        ]
-      },
-      {
-        "part": [
-          {
-            "name": "flap3_l_dm"
-          },
-          {
-            "onHit": {
-              "damage": 10.0,
-              "cut": 0.1
-            }
-          },
-          {
-            "onHit": {
-              "damage": 20.0,
-              "cut": 0.4
-            }
-          },
-          {
-            "onHit": {
-              "damage": 30.0,
-              "cut": 0.7
-            }
-          },
-          {
-            "onHit": {
-              "damage": 50.0,
-              "cut": 1.0
-            }
-          },
-          {
-            "onKill": {
-              "cut": 1.0,
-              "nothing": 9.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 10.0,
-              "cut": 1.0,
-              "nothing": 2.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 20.0,
-              "cut": 1.0,
-              "nothing": 1.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 30.0,
-              "cut": 1.0
-            }
-          }
-        ]
-      },
-      {
-        "part": [
-          {
-            "name": "flap3_r_dm"
           },
           {
             "onHit": {
@@ -3022,12 +3021,19 @@
     }
   },
   {
-    "sensors": {
-      "sensor": {
-        "blk": "gameData/sensors/us_an_apq_100.blk",
-        "dmPart": "radar_dm"
+    "sensors": [
+      {
+        "sensor": {
+          "blk": "gameData/sensors/us_an_apq_100.blk",
+          "dmPart": "radar_dm"
+        }
+      },
+      {
+        "sensor": {
+          "blk": "gameData/sensors/us_an_apr_25.blk"
+        }
       }
-    }
+    ]
   },
   {
     "turbulence": {

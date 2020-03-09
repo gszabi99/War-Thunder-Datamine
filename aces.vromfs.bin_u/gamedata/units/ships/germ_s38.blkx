@@ -1004,6 +1004,7 @@
   },
   {
     "tank_crew": {
+      "minCrewMemberRepairCount": 10,
       "minCrewMemberAliveCount": 9,
       "sailor1": {
         "dmPart": "bridge_dm",
@@ -1875,14 +1876,6 @@
     ]
   },
   {
-    "tags": {
-      "country_germany": true,
-      "type_ship": true,
-      "ship": true,
-      "type_torpedo_boat": true
-    }
-  },
-  {
     "ShipPhys": {
       "mass": {
         "Empty": 98700.0,
@@ -2232,19 +2225,22 @@
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_01"
+              "emitter": "emtr_fire_engine_01",
+              "scale": 2.0
             }
           },
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_02"
+              "emitter": "emtr_fire_engine_02",
+              "scale": 2.0
             }
           },
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_03"
+              "emitter": "emtr_fire_engine_03",
+              "scale": 2.0
             }
           }
         ]
@@ -2512,13 +2508,13 @@
           },
           {
             "fx": {
-              "name": "tank_smoke_big",
+              "name": "tank_smoke_small",
               "emitter": "emtr_smoke_dmg_01"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_big",
+              "name": "tank_smoke_small",
               "emitter": "emtr_smoke_dmg_02"
             }
           },
@@ -2643,7 +2639,7 @@
           {
             "fx": {
               "name": "tank_fire_big",
-              "emitter": "emtr_fire_dmg_01"
+              "emitter": "emtr_fire_dmg_02"
             }
           },
           {

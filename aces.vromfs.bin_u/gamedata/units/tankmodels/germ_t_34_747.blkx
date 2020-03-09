@@ -993,6 +993,11 @@
       }
     ]
   },
+  "gunConvergence": {
+    "distance": 800.0,
+    "vertical": true,
+    "horizontal": true
+  },
   "class_tags": [],
   "PhysSys": {
     "find": "^bone_suspension_(._\\d\\d)$",
@@ -1036,24 +1041,6 @@
             "name": "tank_engine_fire",
             "emitter": "emtr_fire_engine_02"
           }
-        },
-        {
-          "fx": {
-            "name": "tank_engine_smoke",
-            "emitter": "emtr_fire_engine"
-          }
-        },
-        {
-          "fx": {
-            "name": "tank_engine_smoke",
-            "emitter": "emtr_fire_engine_01"
-          }
-        },
-        {
-          "fx": {
-            "name": "tank_engine_smoke",
-            "emitter": "emtr_fire_engine_02"
-          }
         }
       ]
     },
@@ -1065,67 +1052,78 @@
         {
           "fx": {
             "name": "tank_ammo_fire",
-            "emitter": "emtr_fire_ammo"
+            "emitter": "emtr_fire_ammo",
+            "useVelocity": false
           }
         },
         {
           "fx": {
             "name": "tank_ammo_fire",
-            "emitter": "emtr_fire_ammo_01"
+            "emitter": "emtr_fire_ammo_01",
+            "useVelocity": false
           }
         },
         {
           "fx": {
             "name": "tank_ammo_fire",
-            "emitter": "emtr_fire_ammo_02"
+            "emitter": "emtr_fire_ammo_02",
+            "useVelocity": false
           }
         },
         {
           "fx": {
             "name": "tank_ammo_fire",
-            "emitter": "emtr_fire_ammo_03"
+            "emitter": "emtr_fire_ammo_03",
+            "useVelocity": false
           }
         },
         {
           "fx": {
             "name": "tank_ammo_fire",
-            "emitter": "emtr_fire_ammo_04"
+            "emitter": "emtr_fire_ammo_04",
+            "useVelocity": false
           }
         },
         {
           "fx": {
             "name": "tank_ammo_fire",
-            "emitter": "emtr_fire_ammo_05"
+            "emitter": "emtr_fire_ammo_05",
+            "useVelocity": false
           }
         },
         {
           "fx": {
             "name": "tank_ammo_fire",
-            "emitter": "emtr_fire_ammo_06"
+            "emitter": "emtr_fire_ammo_06",
+            "useVelocity": false
           }
         },
         {
           "fx": {
             "name": "tank_ammo_fire",
-            "emitter": "emtr_fire_ammo_07"
+            "emitter": "emtr_fire_ammo_07",
+            "useVelocity": false
           }
         },
         {
           "fx": {
             "name": "tank_ammo_fire",
-            "emitter": "emtr_fire_ammo_08"
+            "emitter": "emtr_fire_ammo_08",
+            "useVelocity": false
           }
         },
         {
           "fx": {
             "name": "tank_ammo_fire",
-            "emitter": "emtr_fire_ammo_09"
+            "emitter": "emtr_fire_ammo_09",
+            "useVelocity": false
           }
         },
         {
           "fx": {
             "name": "tank_ammo_fire",
-            "emitter": "emtr_fire_ammo_10"
+            "emitter": "emtr_fire_ammo_10",
+            "useVelocity": false
           }
         }
       ]
@@ -1271,7 +1269,7 @@
         },
         {
           "fx": {
-            "name": "tank_smoke_big",
+            "name": "tank_smoke_small",
             "emitter": "emtr_smoke_dmg"
           }
         },
@@ -1547,16 +1545,44 @@
         "armorThickness": 15.0
       }
     },
+    "body_shields": {
+      "armorClass": "tank_structural_steel",
+      "hp": 1000.0,
+      "armorThickness": 4.0,
+      "stopChanceOnDeadPart": 0.0,
+      "createSecondaryShatters": false,
+      "ex_decor_l_01_dm": [],
+      "ex_decor_r_01_dm": [],
+      "ex_decor_l_02_dm": [],
+      "ex_decor_r_02_dm": [],
+      "ex_decor_l_03_dm": [],
+      "ex_decor_l_04_dm": [],
+      "ex_decor_r_04_dm": []
+    },
     "turret": {
-      "gun_mask_dm": {
-        "armorThickness": 45.0,
-        "hp": 10000.0
-      },
       "turret_top_dm": {
         "armorThickness": 15.0
       },
       "turret_commander_dm": {
         "armorThickness": 53.0
+      }
+    },
+    "mask": {
+      "gun_mask_dm": {
+        "armorThickness": 45.0,
+        "hp": 10000.0
+      },
+      "gun_mask_01_dm": {
+        "armorThickness": 20.0,
+        "hp": 10000.0
+      },
+      "gun_mask_02_dm": {
+        "armorThickness": 40.0,
+        "hp": 10000.0
+      },
+      "gun_mask_03_dm": {
+        "armorThickness": 20.0,
+        "hp": 10000.0
       }
     },
     "CHA_armor": {
@@ -1581,7 +1607,8 @@
       },
       "body_front_hatch_dm": {
         "armorThickness": 75.0,
-        "hp": 300.0
+        "hp": 3000.0,
+        "armorEffectiveThicknessMax": 130.0
       },
       "body_top_dm": {
         "armorThickness": 60.0
@@ -2042,6 +2069,15 @@
         "genericDamageMult": 3.0
       }
     }
+  },
+  "attachables": {
+    "ex_decor_l_01_dm": true,
+    "ex_decor_r_01_dm": true,
+    "ex_decor_l_02_dm": true,
+    "ex_decor_r_02_dm": true,
+    "ex_decor_l_03_dm": true,
+    "ex_decor_l_04_dm": true,
+    "ex_decor_r_04_dm": true
   },
   "commonWeapons": [
     {

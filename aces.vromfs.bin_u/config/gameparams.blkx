@@ -1558,7 +1558,8 @@
       "aircraftFriendlyFireForBanOnly": true,
       "enableLeaveKills": true,
       "airToAirMissileDetection": true,
-      "nightVisionInTPS": true
+      "nightVisionInTPS": true,
+      "hudDetectAlly": false
     },
     "realistic": {
       "baseDifficulty": 1,
@@ -1616,7 +1617,8 @@
       "showShipBulletTimer": true,
       "enableLeaveKills": true,
       "airToAirMissileDetection": true,
-      "nightVisionInTPS": true
+      "nightVisionInTPS": true,
+      "hudDetectAlly": false
     },
     "hardcore": {
       "baseDifficulty": 2,
@@ -1670,7 +1672,8 @@
       "visibleNotTraceableIndicators": true,
       "enableLeaveKills": true,
       "airToAirMissileDetection": false,
-      "nightVisionInTPS": false
+      "nightVisionInTPS": false,
+      "hudDetectAlly": true
     }
   },
   "custom_difficulty": [],
@@ -1908,6 +1911,7 @@
         "PropellerVortexRing": false,
         "PropellerScreenEffect": false,
         "ArcadePropellerTangVelMin": true,
+        "RotorFlapCompensatorEfficiency": false,
         "AutopilotRestrictions": false,
         "autoIgnition": true,
         "autoIgnitionHelicopter": true,
@@ -1929,6 +1933,7 @@
         "PropellerVortexRing": true,
         "PropellerScreenEffect": true,
         "ArcadePropellerTangVelMin": false,
+        "RotorFlapCompensatorEfficiency": true,
         "AutopilotRestrictions": false,
         "autoIgnition": true,
         "autoIgnitionHelicopter": true,
@@ -1950,6 +1955,7 @@
         "PropellerVortexRing": true,
         "PropellerScreenEffect": true,
         "ArcadePropellerTangVelMin": false,
+        "RotorFlapCompensatorEfficiency": true,
         "AutopilotRestrictions": false,
         "autoIgnition": false,
         "autoIgnitionHelicopter": true,
@@ -2931,6 +2937,33 @@
       },
       "on": {
         "nightVisionInTPS": true
+      }
+    },
+    "hudDetectAlly": {
+      "off": {
+        "hudDetectAlly": false
+      },
+      "on": {
+        "hudDetectAlly": true,
+        "hudDetectAllyCooldown": 5.0,
+        "hudDetectAllyTime": 3.0,
+        "hudDetectAllyPrepareTime": 2.0
+      }
+    },
+    "keepDeadTankOnMap": {
+      "off": {
+        "keepDeadTankOnMap": false
+      },
+      "on": {
+        "keepDeadTankOnMap": true
+      }
+    },
+    "keepDeadShipOnMap": {
+      "off": {
+        "keepDeadShipOnMap": false
+      },
+      "on": {
+        "keepDeadShipOnMap": true
       }
     }
   },
@@ -5566,182 +5599,182 @@
     },
     {
       "ammunition_storage_shells_01": {
-        "my": "ship_ammunition_storage_shells",
-        "enemy": "ship_ammunition_storage_shells"
+        "my": "ship_ammunition_storage",
+        "enemy": "ship_ammunition_storage"
       }
     },
     {
       "ammunition_storage_shells_02": {
-        "my": "ship_ammunition_storage_shells",
-        "enemy": "ship_ammunition_storage_shells"
+        "my": "ship_ammunition_storage",
+        "enemy": "ship_ammunition_storage"
       }
     },
     {
       "ammunition_storage_shells_03": {
-        "my": "ship_ammunition_storage_shells",
-        "enemy": "ship_ammunition_storage_shells"
+        "my": "ship_ammunition_storage",
+        "enemy": "ship_ammunition_storage"
       }
     },
     {
       "ammunition_storage_shells_04": {
-        "my": "ship_ammunition_storage_shells",
-        "enemy": "ship_ammunition_storage_shells"
+        "my": "ship_ammunition_storage",
+        "enemy": "ship_ammunition_storage"
       }
     },
     {
       "ammunition_storage_shells_05": {
-        "my": "ship_ammunition_storage_shells",
-        "enemy": "ship_ammunition_storage_shells"
+        "my": "ship_ammunition_storage",
+        "enemy": "ship_ammunition_storage"
       }
     },
     {
       "ammunition_storage_shells_06": {
-        "my": "ship_ammunition_storage_shells",
-        "enemy": "ship_ammunition_storage_shells"
+        "my": "ship_ammunition_storage",
+        "enemy": "ship_ammunition_storage"
       }
     },
     {
       "ammunition_storage_shells_07": {
-        "my": "ship_ammunition_storage_shells",
-        "enemy": "ship_ammunition_storage_shells"
+        "my": "ship_ammunition_storage",
+        "enemy": "ship_ammunition_storage"
       }
     },
     {
       "ammunition_storage_shells_08": {
-        "my": "ship_ammunition_storage_shells",
-        "enemy": "ship_ammunition_storage_shells"
+        "my": "ship_ammunition_storage",
+        "enemy": "ship_ammunition_storage"
       }
     },
     {
       "ammunition_storage_shells_09": {
-        "my": "ship_ammunition_storage_shells",
-        "enemy": "ship_ammunition_storage_shells"
+        "my": "ship_ammunition_storage",
+        "enemy": "ship_ammunition_storage"
       }
     },
     {
       "ammunition_storage_shells_10": {
-        "my": "ship_ammunition_storage_shells",
-        "enemy": "ship_ammunition_storage_shells"
+        "my": "ship_ammunition_storage",
+        "enemy": "ship_ammunition_storage"
       }
     },
     {
       "ammunition_storage_charges_01": {
-        "my": "ship_ammunition_storage_charges",
-        "enemy": "ship_ammunition_storage_charges"
+        "my": "ship_ammunition_storage",
+        "enemy": "ship_ammunition_storage"
       }
     },
     {
       "ammunition_storage_charges_02": {
-        "my": "ship_ammunition_storage_charges",
-        "enemy": "ship_ammunition_storage_charges"
+        "my": "ship_ammunition_storage",
+        "enemy": "ship_ammunition_storage"
       }
     },
     {
       "ammunition_storage_charges_03": {
-        "my": "ship_ammunition_storage_charges",
-        "enemy": "ship_ammunition_storage_charges"
+        "my": "ship_ammunition_storage",
+        "enemy": "ship_ammunition_storage"
       }
     },
     {
       "ammunition_storage_charges_04": {
-        "my": "ship_ammunition_storage_charges",
-        "enemy": "ship_ammunition_storage_charges"
+        "my": "ship_ammunition_storage",
+        "enemy": "ship_ammunition_storage"
       }
     },
     {
       "ammunition_storage_charges_05": {
-        "my": "ship_ammunition_storage_charges",
-        "enemy": "ship_ammunition_storage_charges"
+        "my": "ship_ammunition_storage",
+        "enemy": "ship_ammunition_storage"
       }
     },
     {
       "ammunition_storage_charges_06": {
-        "my": "ship_ammunition_storage_charges",
-        "enemy": "ship_ammunition_storage_charges"
+        "my": "ship_ammunition_storage",
+        "enemy": "ship_ammunition_storage"
       }
     },
     {
       "ammunition_storage_charges_07": {
-        "my": "ship_ammunition_storage_charges",
-        "enemy": "ship_ammunition_storage_charges"
+        "my": "ship_ammunition_storage",
+        "enemy": "ship_ammunition_storage"
       }
     },
     {
       "ammunition_storage_charges_08": {
-        "my": "ship_ammunition_storage_charges",
-        "enemy": "ship_ammunition_storage_charges"
+        "my": "ship_ammunition_storage",
+        "enemy": "ship_ammunition_storage"
       }
     },
     {
       "ammunition_storage_charges_09": {
-        "my": "ship_ammunition_storage_charges",
-        "enemy": "ship_ammunition_storage_charges"
+        "my": "ship_ammunition_storage",
+        "enemy": "ship_ammunition_storage"
       }
     },
     {
       "ammunition_storage_charges_10": {
-        "my": "ship_ammunition_storage_charges",
-        "enemy": "ship_ammunition_storage_charges"
+        "my": "ship_ammunition_storage",
+        "enemy": "ship_ammunition_storage"
       }
     },
     {
       "ammunition_storage_aux_01": {
-        "my": "ship_ammunition_storage_aux",
-        "enemy": "ship_ammunition_storage_aux"
+        "my": "ship_ammunition_storage",
+        "enemy": "ship_ammunition_storage"
       }
     },
     {
       "ammunition_storage_aux_02": {
-        "my": "ship_ammunition_storage_aux",
-        "enemy": "ship_ammunition_storage_aux"
+        "my": "ship_ammunition_storage",
+        "enemy": "ship_ammunition_storage"
       }
     },
     {
       "ammunition_storage_aux_03": {
-        "my": "ship_ammunition_storage_aux",
-        "enemy": "ship_ammunition_storage_aux"
+        "my": "ship_ammunition_storage",
+        "enemy": "ship_ammunition_storage"
       }
     },
     {
       "ammunition_storage_aux_04": {
-        "my": "ship_ammunition_storage_aux",
-        "enemy": "ship_ammunition_storage_aux"
+        "my": "ship_ammunition_storage",
+        "enemy": "ship_ammunition_storage"
       }
     },
     {
       "ammunition_storage_aux_05": {
-        "my": "ship_ammunition_storage_aux",
-        "enemy": "ship_ammunition_storage_aux"
+        "my": "ship_ammunition_storage",
+        "enemy": "ship_ammunition_storage"
       }
     },
     {
       "ammunition_storage_aux_06": {
-        "my": "ship_ammunition_storage_aux",
-        "enemy": "ship_ammunition_storage_aux"
+        "my": "ship_ammunition_storage",
+        "enemy": "ship_ammunition_storage"
       }
     },
     {
       "ammunition_storage_aux_07": {
-        "my": "ship_ammunition_storage_aux",
-        "enemy": "ship_ammunition_storage_aux"
+        "my": "ship_ammunition_storage",
+        "enemy": "ship_ammunition_storage"
       }
     },
     {
       "ammunition_storage_aux_08": {
-        "my": "ship_ammunition_storage_aux",
-        "enemy": "ship_ammunition_storage_aux"
+        "my": "ship_ammunition_storage",
+        "enemy": "ship_ammunition_storage"
       }
     },
     {
       "ammunition_storage_aux_09": {
-        "my": "ship_ammunition_storage_aux",
-        "enemy": "ship_ammunition_storage_aux"
+        "my": "ship_ammunition_storage",
+        "enemy": "ship_ammunition_storage"
       }
     },
     {
       "ammunition_storage_aux_10": {
-        "my": "ship_ammunition_storage_aux",
-        "enemy": "ship_ammunition_storage_aux"
+        "my": "ship_ammunition_storage",
+        "enemy": "ship_ammunition_storage"
       }
     },
     {
@@ -8952,6 +8985,198 @@
         "p": {
           "name": "wheel_l_04_",
           "modelNames": "rooikat_76_mk_1d"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_01_",
+          "modelNames": "rooikat_105_td"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_01_",
+          "modelNames": "rooikat_105_td"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_02_",
+          "modelNames": "rooikat_105_td"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_02_",
+          "modelNames": "rooikat_105_td"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_03_",
+          "modelNames": "rooikat_105_td"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_03_",
+          "modelNames": "rooikat_105_td"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_04_",
+          "modelNames": "rooikat_105_td"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_04_",
+          "modelNames": "rooikat_105_td"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_01_",
+          "modelNames": "landsverk_ush_405"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_01_",
+          "modelNames": "landsverk_ush_405"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_02_",
+          "modelNames": "landsverk_ush_405"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_02_",
+          "modelNames": "landsverk_ush_405"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_01_",
+          "modelNames": "tgdgb_m40_lv"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_01_",
+          "modelNames": "tgdgb_m40_lv"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_02_",
+          "modelNames": "tgdgb_m40_lv"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_02_",
+          "modelNames": "tgdgb_m40_lv"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_01_",
+          "modelNames": "radpanzer_90"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_01_",
+          "modelNames": "radpanzer_90"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_02_",
+          "modelNames": "radpanzer_90"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_02_",
+          "modelNames": "radpanzer_90"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_03_",
+          "modelNames": "radpanzer_90"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_03_",
+          "modelNames": "radpanzer_90"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_04_",
+          "modelNames": "radpanzer_90"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_04_",
+          "modelNames": "radpanzer_90"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_01_",
+          "modelNames": "centauro_mgs_120"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_01_",
+          "modelNames": "centauro_mgs_120"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_02_",
+          "modelNames": "centauro_mgs_120"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_02_",
+          "modelNames": "centauro_mgs_120"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_03_",
+          "modelNames": "centauro_mgs_120"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_03_",
+          "modelNames": "centauro_mgs_120"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_04_",
+          "modelNames": "centauro_mgs_120"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_04_",
+          "modelNames": "centauro_mgs_120"
         }
       }
     ],
@@ -12402,16 +12627,13 @@
     }
   ],
   "holeRenderingRadiusConstants": {
-    "caliberMultiplier": 3.0,
-    "maxCaliberTreshold": 0.2,
-    "minCaliberTreshold": 0.0,
-    "maxSplashRadiusTreshold": 0.2,
-    "randomRadiusAddition": 0.05,
-    "minRadiusCreation": 0.1,
+    "maxRadius": 0.3,
+    "minRadius": 0.025,
     "radiusReplacementTreshold": 0.2,
     "radiusMultiplierForCheck": 0.5,
     "sideMultiplierForCheck": 2.0,
-    "doNotMakeHoleInWreckedPart": true
+    "additionalLength": 0.2,
+    "doNotMakeHoleInWreckedPart": false
   },
   "tpsNightVision": {
     "resolution": [1920,1080],

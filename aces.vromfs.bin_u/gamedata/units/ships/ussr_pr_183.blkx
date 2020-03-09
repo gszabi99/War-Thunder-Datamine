@@ -674,6 +674,24 @@
             "name": "ammunition_storage_04_dm"
           },
           {
+            "name": "ammunition_storage_05_dm"
+          },
+          {
+            "name": "ammunition_storage_06_dm"
+          },
+          {
+            "name": "ammunition_storage_07_dm"
+          },
+          {
+            "name": "ammunition_storage_08_dm"
+          },
+          {
+            "name": "ammunition_storage_09_dm"
+          },
+          {
+            "name": "ammunition_storage_10_dm"
+          },
+          {
             "onKill": {
               "expl": 1.0,
               "fHitCritical": false
@@ -794,6 +812,66 @@
         ]
       },
       {
+        "ammunition_first_stage": [
+          {
+            "onKill": {
+              "fire": 1.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "fire",
+              "fire": 1.0,
+              "damage": 200.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "explosion",
+              "expl": 0.11,
+              "fire": 1.0,
+              "damage": 300.0,
+              "fHitCritical": false
+            }
+          }
+        ]
+      },
+      {
+        "ammunition_depth_charges": {
+          "onKill": {
+            "expl": 0.05,
+            "nothing": 0.95
+          },
+          "onHit": {
+            "damageType": "fire",
+            "damage": 150.0,
+            "expl": 0.1
+          }
+        }
+      },
+      {
+        "ammunition_torpedoes": [
+          {
+            "onHit": {
+              "damageType": "explosion",
+              "expl": 0.01,
+              "damage": 400.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "fire",
+              "expl": 0.1,
+              "damage": 250.0,
+              "fHitCritical": false
+            }
+          }
+        ]
+      },
+      {
         "part": [
           {
             "name": "torpedo_01_dm"
@@ -806,6 +884,12 @@
           },
           {
             "name": "torpedo_04_dm"
+          },
+          {
+            "name": "torpedo_05_dm"
+          },
+          {
+            "name": "torpedo_06_dm"
           },
           {
             "onKill": {
@@ -1942,6 +2026,7 @@
   },
   {
     "tank_crew": {
+      "minCrewMemberRepairCount": 4,
       "minCrewMemberAliveCount": 4,
       "sailor1": {
         "dmPart": "bridge_dm",
@@ -1963,14 +2048,6 @@
         "role": "sailor",
         "crew": 3
       }
-    }
-  },
-  {
-    "tags": {
-      "country_ussr": true,
-      "type_ship": true,
-      "type_torpedo_boat": true,
-      "ship": true
     }
   },
   {
@@ -2487,19 +2564,22 @@
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_01"
+              "emitter": "emtr_fire_engine_01",
+              "scale": 2.0
             }
           },
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_02"
+              "emitter": "emtr_fire_engine_02",
+              "scale": 2.0
             }
           },
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_03"
+              "emitter": "emtr_fire_engine_03",
+              "scale": 2.0
             }
           }
         ]
@@ -2767,13 +2847,13 @@
           },
           {
             "fx": {
-              "name": "tank_smoke_big",
+              "name": "tank_smoke_small",
               "emitter": "emtr_smoke_dmg_01"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_big",
+              "name": "tank_smoke_small",
               "emitter": "emtr_smoke_dmg_02"
             }
           },
@@ -2898,7 +2978,7 @@
           {
             "fx": {
               "name": "tank_fire_big",
-              "emitter": "emtr_fire_dmg_01"
+              "emitter": "emtr_fire_dmg_02"
             }
           },
           {

@@ -674,7 +674,7 @@
         "armorClass": "ship_wood",
         "armorThickness": 40.0,
         "compartment_01_dm": {
-          "hp": 370.0
+          "hp": 369.0
         },
         "compartment_02_dm": {
           "hp": 332.0
@@ -837,6 +837,11 @@
         "armorThickness": 15.0,
         "turret_01_dm": {
           "hp": 250.0
+        },
+        "turret_01_front_dm": {
+          "armorClass": "ship_Wsh",
+          "armorThickness": 12.7,
+          "hp": 250.0
         }
       },
       "turrets_main_caliber": {
@@ -845,7 +850,7 @@
         "shatterDamageMult": 1.1,
         "explosionDamageMult": 1.0,
         "secondaryShatterDamageMult": 0.5,
-        "armorClass": "ship_Wsh",
+        "armorClass": "ship_structural_steel",
         "armorThickness": 12.7,
         "main_caliber_turret_01_dm": {
           "hp": 100.0
@@ -987,6 +992,7 @@
   },
   {
     "tank_crew": {
+      "minCrewMemberRepairCount": 4,
       "minCrewMemberAliveCount": 4,
       "sailor1": {
         "dmPart": "bridge_dm",
@@ -1858,14 +1864,6 @@
     ]
   },
   {
-    "tags": {
-      "country_britain": true,
-      "type_ship": true,
-      "ship": true,
-      "type_gun_boat": true
-    }
-  },
-  {
     "ShipPhys": {
       "mass": {
         "Empty": 33000.0,
@@ -2566,19 +2564,22 @@
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_01"
+              "emitter": "emtr_fire_engine_01",
+              "scale": 2.0
             }
           },
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_02"
+              "emitter": "emtr_fire_engine_02",
+              "scale": 2.0
             }
           },
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_03"
+              "emitter": "emtr_fire_engine_03",
+              "scale": 2.0
             }
           }
         ]
@@ -2846,13 +2847,13 @@
           },
           {
             "fx": {
-              "name": "tank_smoke_big",
+              "name": "tank_smoke_small",
               "emitter": "emtr_smoke_dmg_01"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_big",
+              "name": "tank_smoke_small",
               "emitter": "emtr_smoke_dmg_02"
             }
           },
@@ -2977,7 +2978,7 @@
           {
             "fx": {
               "name": "tank_fire_big",
-              "emitter": "emtr_fire_dmg_01"
+              "emitter": "emtr_fire_dmg_02"
             }
           },
           {

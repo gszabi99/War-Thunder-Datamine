@@ -46,6 +46,12 @@
       "stateInit": "init",
       "actionsTemplates": {
         "init": {
+          "setEnabled": {
+            "value": false
+          },
+          "setTransiver": {
+            "transiver": "ranging"
+          },
           "setSignal": {
             "signal": "ranging"
           },
@@ -69,12 +75,14 @@
           }
         },
         "setStandbyMode": {
-          "setTransiver": [],
+          "setEnabled": {
+            "value": false
+          },
           "clearTargets": []
         },
         "setLockMode": {
-          "setTransiver": {
-            "transiver": "ranging"
+          "setEnabled": {
+            "value": true
           },
           "clearTargets": [],
           "clearTargetsOfInterest": [],
@@ -90,8 +98,8 @@
           }
         },
         "setTrackMode": {
-          "setTransiver": {
-            "transiver": "ranging"
+          "setEnabled": {
+            "value": true
           },
           "clearTargetsOfInterest": [],
           "addTargetOfInterest": [],

@@ -3,7 +3,7 @@
   "transivers": {
     "common": {
       "sideLobesAttenuation": -26.0,
-      "power": 500.0,
+      "power": 300.0,
       "band": 8,
       "rcs": 5.0,
       "range": 55500.0,
@@ -11,14 +11,8 @@
       "backScatteringBandNum": 0,
       "timeGainControl": false,
       "antenna": {
-        "azimuth": {
-          "angleHalfSens": 3.0,
-          "sideLobesSensitivity": -32.0
-        },
-        "elevation": {
-          "angleHalfSens": 4.8,
-          "sideLobesSensitivity": -32.0
-        }
+        "angleHalfSens": 4.7,
+        "sideLobesSensitivity": -32.0
       }
     }
   },
@@ -73,7 +67,7 @@
       "elevationLimits": [-60.0,60.0],
       "period": 0.5,
       "width": 6.2,
-      "barHeight": 3.0,
+      "barHeight": 3.3,
       "barsCount": 2,
       "rowMajor": false,
       "indicate": true
@@ -86,18 +80,19 @@
   },
   "signals": {
     "search": {
-      "dynamicRange": [40.0,5.0],
+      "dynamicRange": [40.0,10.0],
       "groundClutter": true,
       "aircraftAsTarget": true,
       "friendFoeId": true,
       "distance": {
         "presents": true,
-        "minValue": 200.0,
-        "maxValue": 500000.0,
-        "width": 300.0
+        "minValue": 500.0,
+        "maxValue": 370000.0,
+        "width": 600.0
       }
     },
     "track": {
+      "dynamicRange": [40.0,10.0],
       "groundClutter": true,
       "aircraftAsTarget": true,
       "angularAccuracy": 0.06,
@@ -138,6 +133,12 @@
       "stateInit": "init",
       "actionsTemplates": {
         "init": {
+          "setEnabled": {
+            "value": false
+          },
+          "setTransiver": {
+            "transiver": "common"
+          },
           "setSignal": {
             "signal": "search"
           },
@@ -147,7 +148,9 @@
           }
         },
         "setStandbyMode": {
-          "setTransiver": [],
+          "setEnabled": {
+            "value": false
+          },
           "setCenterAzimuth": {
             "source": "constant",
             "value": 0.0
@@ -169,6 +172,9 @@
           }
         },
         "setSearchMode": {
+          "setEnabled": {
+            "value": true
+          },
           "setFsmActive": {
             "fsm": "search",
             "active": true
@@ -183,9 +189,6 @@
           },
           "clearTargets": [],
           "clearTargetsOfInterest": [],
-          "setTransiver": {
-            "transiver": "common"
-          },
           "setSignal": {
             "signal": "search"
           },
@@ -203,6 +206,9 @@
           }
         },
         "setDesignationLockMode": {
+          "setEnabled": {
+            "value": true
+          },
           "clearTargetsOfInterest": [],
           "setCenterAzimuth": {
             "source": "targetDesignation"
@@ -223,15 +229,15 @@
             "fsm": "lock",
             "active": true
           },
-          "setTransiver": {
-            "transiver": "common"
-          },
           "setSignal": {
             "signal": "track"
           },
           "clearTargets": []
         },
         "setBoresightLockMode": {
+          "setEnabled": {
+            "value": true
+          },
           "clearTargets": [],
           "clearTargetsOfInterest": [],
           "setScanPatternSet": {
@@ -253,9 +259,6 @@
             "fsm": "lock",
             "active": true
           },
-          "setTransiver": {
-            "transiver": "common"
-          },
           "setSignal": {
             "signal": "track"
           },
@@ -269,6 +272,9 @@
           }
         },
         "setTrackMode": {
+          "setEnabled": {
+            "value": true
+          },
           "setScanPatternSet": [],
           "setScanPattern": {
             "scanPattern": "track"
@@ -290,9 +296,6 @@
           "setFsmActive": {
             "fsm": "track",
             "active": true
-          },
-          "setTransiver": {
-            "transiver": "common"
           },
           "setSignal": {
             "signal": "track"

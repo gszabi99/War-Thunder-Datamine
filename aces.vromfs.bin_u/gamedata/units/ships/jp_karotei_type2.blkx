@@ -66,10 +66,10 @@
     "useSimpleDeathConditionsAndEffects": false
   },
   {
-    "type": "typeSubmarineChaser"
+    "type": "typeGunBoat"
   },
   {
-    "expClass": "exp_submarine_chaser"
+    "expClass": "exp_gun_boat"
   },
   {
     "timeToFire": 40.0
@@ -822,6 +822,31 @@
           "hp": 800.0
         }
       },
+      "ammo_storages_shells": {
+        "fireProtectionHp": 20.0,
+        "fireParamsPreset": "ship_ammo_fire",
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 2.0
+      },
+      "ammo_storages_charges": {
+        "fireProtectionHp": 20.0,
+        "fireParamsPreset": "ship_ammo_fire",
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 2.0
+      },
+      "ammo_storages_auxiliary": {
+        "fireProtectionHp": 20.0,
+        "fireParamsPreset": "ship_ammo_fire",
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 2.0
+      },
+      "ammo_first_stage": {
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 2.0,
+        "fireProtectionHp": 20.0,
+        "fireParamsPreset": "ship_ammo_fire",
+        "createSecondaryShatters": false
+      },
       "depth_charges": {
         "fireProtectionHp": 20.0,
         "fireParamsPreset": "ship_ammo_fire",
@@ -870,6 +895,7 @@
   },
   {
     "tank_crew": {
+      "minCrewMemberRepairCount": 4,
       "minCrewMemberAliveCount": 3,
       "sailor1": {
         "dmPart": "compartment_01_dm",
@@ -1725,21 +1751,6 @@
     ]
   },
   {
-    "class_tags": {
-      "pacific": true,
-      "mediterran": true,
-      "westernfront": true
-    }
-  },
-  {
-    "tags": {
-      "country_japan": true,
-      "type_ship": true,
-      "ship": true,
-      "type_small_submarine_chaser": true
-    }
-  },
-  {
     "ShipPhys": {
       "mass": {
         "Empty": 19000.0,
@@ -2243,19 +2254,22 @@
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_01"
+              "emitter": "emtr_fire_engine_01",
+              "scale": 2.0
             }
           },
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_02"
+              "emitter": "emtr_fire_engine_02",
+              "scale": 2.0
             }
           },
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_03"
+              "emitter": "emtr_fire_engine_03",
+              "scale": 2.0
             }
           }
         ]
@@ -2523,13 +2537,13 @@
           },
           {
             "fx": {
-              "name": "tank_smoke_big",
+              "name": "tank_smoke_small",
               "emitter": "emtr_smoke_dmg_01"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_big",
+              "name": "tank_smoke_small",
               "emitter": "emtr_smoke_dmg_02"
             }
           },
@@ -2654,7 +2668,7 @@
           {
             "fx": {
               "name": "tank_fire_big",
-              "emitter": "emtr_fire_dmg_01"
+              "emitter": "emtr_fire_dmg_02"
             }
           },
           {

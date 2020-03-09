@@ -2088,76 +2088,130 @@
     "Engine": "engine07",
     "gun": "gun_default"
   },
-  "cockpit": {
-    "headPos": [-2.2,0.967,0.0],
-    "headPosOnShooting": [-2.2,0.967,0.0],
-    "collimatorSize": 0.18,
-    "lightPos": [-1.655842,0.630169,0.143408],
-    "lightColor": [0.55,0.02,0.02],
-    "lightRadius": 0.2,
-    "lightPos1": [-1.648966,0.623694,-0.193467],
-    "lightColor1": [0.55,0.02,0.02],
-    "lightRadius1": 0.18,
-    "lightPos2": [-1.619817,0.456684,-0.411506],
-    "lightColor2": [0.55,0.02,0.02],
-    "lightRadius2": 0.2,
-    "lightPos3": [-1.688937,0.310764,0.365604],
-    "lightColor3": [0.55,0.02,0.02],
-    "lightRadius3": 0.25,
-    "devices": {
-      "speed": [0.0,220.0],
-      "pedals1": [-1.0,1.0],
-      "pedals2": [-1.0,1.0],
-      "stick_ailerons": [-1.9,1.9],
-      "stick_elevator": [-2.5,1.9],
-      "throttle": [-1.0,1.5],
-      "flaps": [0.0,1.0],
-      "flaps_fixed": true,
-      "gears": [0.0,1.0],
-      "gear_fixed": true,
-      "compass": [0.0,360.0],
-      "compass1": [0.0,360.0],
-      "vario": [-30.0,30.0],
-      "altitude_10k": [0.0,40000.0],
-      "altitude_hour": [0.0,10000.0],
-      "altitude_min": [0.0,1000.0],
-      "altitude_koef": 3.28,
-      "bank": [-8.0,8.0],
-      "turn": [-0.23562,0.23562],
-      "clock_hour": [0.0,24.0],
-      "clock_min": [0.0,60.0],
-      "manifold_pressure": [0.3342,2.5],
-      "rpm_hour": [0.0,10000.0],
-      "rpm_min": [0.0,1000.0],
-      "oil_temperature": [20.0,120.0],
-      "oil_pressure": [0.0,150.0],
-      "water_temperature": [0.0,100.0],
-      "head_temperature": [0.0,350.0],
-      "fuel1": [0.0,220.0],
-      "fuel_pressure": [0.0,15.0],
-      "aviahorizon_pitch": [-30.0,30.0],
-      "aviahorizon_roll": [-180.0,180.0],
-      "gears_lamp": [0.0,0.0],
-      "radiator": [0.0,1.0]
+  "cockpit": [
+    {
+      "headPos": [-2.2,0.967,0.0]
     },
-    "parts_holes_dmg": {
-      "part": "fuse"
+    {
+      "headPosOnShooting": [-2.2,0.967,0.0]
     },
-    "parts_oil_dmg": [
-      {
-        "part": "engine1"
-      },
-      {
-        "part": "engine2"
-      },
-      {
-        "part": "engine3"
-      },
-      {
-        "part": "engine4"
+    {
+      "collimatorSize": 0.18
+    },
+    {
+      "mirror": true
+    },
+    {
+      "mirrorPos": [-1.79,0.098,0.0]
+    },
+    {
+      "mirrorNorm": [-1.0,0.0,0.0]
+    },
+    {
+      "mirrorNode": "mirror1"
+    },
+    {
+      "mirrorNode": "mirror2"
+    },
+    {
+      "mirrorNode": "mirror3"
+    },
+    {
+      "lightPos": [-1.655842,0.630169,0.143408]
+    },
+    {
+      "lightColor": [0.55,0.02,0.02]
+    },
+    {
+      "lightRadius": 0.2
+    },
+    {
+      "lightPos1": [-1.648966,0.623694,-0.193467]
+    },
+    {
+      "lightColor1": [0.55,0.02,0.02]
+    },
+    {
+      "lightRadius1": 0.18
+    },
+    {
+      "lightPos2": [-1.619817,0.456684,-0.411506]
+    },
+    {
+      "lightColor2": [0.55,0.02,0.02]
+    },
+    {
+      "lightRadius2": 0.2
+    },
+    {
+      "lightPos3": [-1.688937,0.310764,0.365604]
+    },
+    {
+      "lightColor3": [0.55,0.02,0.02]
+    },
+    {
+      "lightRadius3": 0.25
+    },
+    {
+      "devices": {
+        "speed": [0.0,220.0],
+        "pedals1": [-1.0,1.0],
+        "pedals2": [-1.0,1.0],
+        "stick_ailerons": [-1.9,1.9],
+        "stick_elevator": [-2.5,1.9],
+        "throttle": [-1.0,1.5],
+        "flaps": [0.0,1.0],
+        "flaps_fixed": true,
+        "gears": [0.0,1.0],
+        "gear_fixed": true,
+        "compass": [0.0,360.0],
+        "compass1": [0.0,360.0],
+        "vario": [-30.0,30.0],
+        "altitude_10k": [0.0,40000.0],
+        "altitude_hour": [0.0,10000.0],
+        "altitude_min": [0.0,1000.0],
+        "altitude_koef": 3.28,
+        "bank": [-8.0,8.0],
+        "turn": [-0.23562,0.23562],
+        "clock_hour": [0.0,24.0],
+        "clock_min": [0.0,60.0],
+        "manifold_pressure": [0.3342,2.5],
+        "rpm_hour": [0.0,10000.0],
+        "rpm_min": [0.0,1000.0],
+        "oil_temperature": [20.0,120.0],
+        "oil_pressure": [0.0,150.0],
+        "water_temperature": [0.0,100.0],
+        "head_temperature": [0.0,350.0],
+        "fuel1": [0.0,220.0],
+        "fuel_pressure": [0.0,15.0],
+        "aviahorizon_pitch": [-30.0,30.0],
+        "aviahorizon_roll": [-180.0,180.0],
+        "gears_lamp": [0.0,0.0],
+        "radiator": [0.0,1.0]
       }
-    ]
-  },
+    },
+    {
+      "parts_holes_dmg": {
+        "part": "fuse"
+      }
+    },
+    {
+      "parts_oil_dmg": [
+        {
+          "part": "engine1"
+        },
+        {
+          "part": "engine2"
+        },
+        {
+          "part": "engine3"
+        },
+        {
+          "part": "engine4"
+        }
+      ]
+    }
+  ],
   "commonWeapons": [
     {
       "Weapon": {
@@ -2286,7 +2340,13 @@
           "dp": "elevon_l_dm"
         },
         {
+          "dp": "elevon%d_l_dm"
+        },
+        {
           "dp": "elevon_r_dm"
+        },
+        {
+          "dp": "elevon%d_r_dm"
         },
         {
           "dp": "airbrake_l_dm"
@@ -2488,7 +2548,13 @@
           "dp": "elevon_l_dm"
         },
         {
+          "dp": "elevon%d_l_dm"
+        },
+        {
           "dp": "elevon_r_dm"
+        },
+        {
+          "dp": "elevon%d_r_dm"
         },
         {
           "dp": "airbrake_l_dm"
@@ -2678,7 +2744,13 @@
           "dp": "elevon_l_dm"
         },
         {
+          "dp": "elevon%d_l_dm"
+        },
+        {
           "dp": "elevon_r_dm"
+        },
+        {
+          "dp": "elevon%d_r_dm"
         },
         {
           "dp": "airbrake_l_dm"
@@ -2868,7 +2940,13 @@
           "dp": "elevon_l_dm"
         },
         {
+          "dp": "elevon%d_l_dm"
+        },
+        {
           "dp": "elevon_r_dm"
+        },
+        {
+          "dp": "elevon%d_r_dm"
         },
         {
           "dp": "airbrake_l_dm"
@@ -3067,7 +3145,13 @@
           "dp": "elevon_l_dm"
         },
         {
+          "dp": "elevon%d_l_dm"
+        },
+        {
           "dp": "elevon_r_dm"
+        },
+        {
+          "dp": "elevon%d_r_dm"
         },
         {
           "dp": "airbrake_l_dm"
@@ -3257,7 +3341,13 @@
           "dp": "elevon_l_dm"
         },
         {
+          "dp": "elevon%d_l_dm"
+        },
+        {
           "dp": "elevon_r_dm"
+        },
+        {
+          "dp": "elevon%d_r_dm"
         },
         {
           "dp": "airbrake_l_dm"
@@ -3447,7 +3537,13 @@
           "dp": "elevon_l_dm"
         },
         {
+          "dp": "elevon%d_l_dm"
+        },
+        {
           "dp": "elevon_r_dm"
+        },
+        {
+          "dp": "elevon%d_r_dm"
         },
         {
           "dp": "airbrake_l_dm"
@@ -3634,7 +3730,13 @@
           "dp": "elevon_l_dm"
         },
         {
+          "dp": "elevon%d_l_dm"
+        },
+        {
           "dp": "elevon_r_dm"
+        },
+        {
+          "dp": "elevon%d_r_dm"
         },
         {
           "dp": "airbrake_l_dm"
@@ -3824,7 +3926,13 @@
           "dp": "elevon_l_dm"
         },
         {
+          "dp": "elevon%d_l_dm"
+        },
+        {
           "dp": "elevon_r_dm"
+        },
+        {
+          "dp": "elevon%d_r_dm"
         },
         {
           "dp": "airbrake_l_dm"
@@ -4014,7 +4122,13 @@
           "dp": "elevon_l_dm"
         },
         {
+          "dp": "elevon%d_l_dm"
+        },
+        {
           "dp": "elevon_r_dm"
+        },
+        {
+          "dp": "elevon%d_r_dm"
         },
         {
           "dp": "airbrake_l_dm"
@@ -4204,7 +4318,13 @@
           "dp": "elevon_l_dm"
         },
         {
+          "dp": "elevon%d_l_dm"
+        },
+        {
           "dp": "elevon_r_dm"
+        },
+        {
+          "dp": "elevon%d_r_dm"
         },
         {
           "dp": "airbrake_l_dm"
@@ -4394,7 +4514,13 @@
           "dp": "elevon_l_dm"
         },
         {
+          "dp": "elevon%d_l_dm"
+        },
+        {
           "dp": "elevon_r_dm"
+        },
+        {
+          "dp": "elevon%d_r_dm"
         },
         {
           "dp": "airbrake_l_dm"

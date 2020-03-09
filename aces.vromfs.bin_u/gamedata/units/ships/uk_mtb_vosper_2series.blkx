@@ -1122,14 +1122,6 @@
     ]
   },
   {
-    "tags": {
-      "country_britain": true,
-      "type_ship": true,
-      "ship": true,
-      "type_torpedo_boat": true
-    }
-  },
-  {
     "ShipPhys": {
       "settings": {
         "speedLossOnManeuver": 0.15
@@ -1285,19 +1277,22 @@
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_01"
+              "emitter": "emtr_fire_engine_01",
+              "scale": 2.0
             }
           },
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_02"
+              "emitter": "emtr_fire_engine_02",
+              "scale": 2.0
             }
           },
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_03"
+              "emitter": "emtr_fire_engine_03",
+              "scale": 2.0
             }
           }
         ]
@@ -1565,13 +1560,13 @@
           },
           {
             "fx": {
-              "name": "tank_smoke_big",
+              "name": "tank_smoke_small",
               "emitter": "emtr_smoke_dmg_01"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_big",
+              "name": "tank_smoke_small",
               "emitter": "emtr_smoke_dmg_02"
             }
           },
@@ -1696,7 +1691,7 @@
           {
             "fx": {
               "name": "tank_fire_big",
-              "emitter": "emtr_fire_dmg_01"
+              "emitter": "emtr_fire_dmg_02"
             }
           },
           {
@@ -2489,7 +2484,7 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 10.0,
         "mast_01_dm": {
-          "hp": 226.0
+          "hp": 213.0
         },
         "mast_02_dm": {
           "hp": 100.0
@@ -2614,7 +2609,7 @@
         "armorClass": "tank_barrel",
         "armorThickness": 5.0,
         "main_caliber_gun_01_dm": {
-          "hp": 63.0
+          "hp": 74.0
         }
       },
       "gun_aux_caliber": {
@@ -2674,10 +2669,10 @@
         "armorClass": "ships_oil_fuel_tank",
         "armorThickness": 3.0,
         "fuel_tank_01_dm": {
-          "hp": 290.0
+          "hp": 118.0
         },
         "fuel_tank_02_dm": {
-          "hp": 146.0
+          "hp": 164.0
         }
       },
       "ammo": {
@@ -2725,16 +2720,17 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 2.0,
         "torpedo_01_dm": {
-          "hp": 224.0
+          "hp": 222.0
         },
         "torpedo_02_dm": {
-          "hp": 220.0
+          "hp": 218.0
         }
       }
     }
   },
   {
     "tank_crew": {
+      "minCrewMemberRepairCount": 4,
       "minCrewMemberAliveCount": 3,
       "sailor1": {
         "dmPart": "bridge_dm",

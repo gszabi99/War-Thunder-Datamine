@@ -6743,7 +6743,7 @@
         },
         {
           "condition": {
-            "type": "targetDistance",
+            "type": "hitDistance",
             "distance": 1500.0
           }
         },
@@ -10976,6 +10976,78 @@
         "country": "country_ussr",
         "unitClass": "aircraft_only"
       }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "germ_radpanzer_90/lederbraun",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "tanks_germany",
+      "mode": [
+        {
+          "type": "killedPlayersScore"
+        },
+        {
+          "mulArcade": 1
+        },
+        {
+          "mulRealistic": 2
+        },
+        {
+          "mulHardcore": 2
+        },
+        {
+          "num": 511
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerUnit",
+            "class": "germ_radpanzer_90"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "germ_radpanzer_90/winter",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "tanks_germany",
+      "mode": [
+        {
+          "type": "killedPlayersScore"
+        },
+        {
+          "mulArcade": 1
+        },
+        {
+          "mulRealistic": 2
+        },
+        {
+          "mulHardcore": 2
+        },
+        {
+          "num": 730
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerUnit",
+            "class": "germ_radpanzer_90"
+          }
+        }
+      ]
     }
   },
   {
@@ -95203,7 +95275,7 @@
         {
           "condition": {
             "type": "playerTag",
-            "tag": "type_heavy_bomber"
+            "tag": "type_longrange_bomber"
           }
         },
         {
@@ -96557,8 +96629,8 @@
         },
         {
           "condition": {
-            "type": "playerTag",
-            "tag": "type_biplane"
+            "type": "playerType",
+            "unitType": "aircraft"
           }
         },
         {
@@ -116345,6 +116417,85 @@
   {
     "unlockable": [
       {
+        "id": "ch_kill_sweden_tanks"
+      },
+      {
+        "type": "challenge"
+      },
+      {
+        "amount_exp": 0
+      },
+      {
+        "chapter": "challenges"
+      },
+      {
+        "mode": [
+          {
+            "type": "killedPlayersScore"
+          },
+          {
+            "mulArcade": 1
+          },
+          {
+            "mulRealistic": 2
+          },
+          {
+            "mulHardcore": 2
+          },
+          {
+            "num": 2000
+          },
+          {
+            "condition": {
+              "type": "online"
+            }
+          },
+          {
+            "condition": {
+              "type": "targetTag",
+              "tag": "country_sweden"
+            }
+          },
+          {
+            "condition": {
+              "type": "playerType",
+              "unitType": "tank"
+            }
+          },
+          {
+            "condition": {
+              "type": "targetUnitClass",
+              "unitClass": "tank"
+            }
+          }
+        ]
+      },
+      {
+        "stage": {
+          "param": 50,
+          "amount_warpoints": 100,
+          "amount_exp": 50
+        }
+      },
+      {
+        "stage": {
+          "param": 500,
+          "amount_warpoints": 1000,
+          "amount_exp": 100
+        }
+      },
+      {
+        "stage": {
+          "param": 2000,
+          "amount_warpoints": 10000,
+          "amount_exp": 500
+        }
+      }
+    ]
+  },
+  {
+    "unlockable": [
+      {
         "id": "ch_kill_on_german_tanks"
       },
       {
@@ -116959,6 +117110,88 @@
             "condition": {
               "type": "playerTag",
               "tag": "country_china"
+            }
+          },
+          {
+            "condition": {
+              "type": "playerType",
+              "unitType": "tank"
+            }
+          },
+          {
+            "condition": {
+              "type": "targetUnitClass",
+              "unitClass": "tank"
+            }
+          }
+        ]
+      },
+      {
+        "stage": {
+          "param": 50,
+          "amount_warpoints": 100,
+          "amount_exp": 50
+        }
+      },
+      {
+        "stage": {
+          "param": 500,
+          "amount_warpoints": 1000,
+          "amount_exp": 100
+        }
+      },
+      {
+        "stage": {
+          "param": 2000,
+          "amount_warpoints": 10000,
+          "amount_exp": 500
+        }
+      }
+    ]
+  },
+  {
+    "unlockable": [
+      {
+        "id": "ch_kill_on_sweden_tanks"
+      },
+      {
+        "type": "challenge"
+      },
+      {
+        "amount_exp": 0
+      },
+      {
+        "chapter": "challenges"
+      },
+      {
+        "group": "sweden"
+      },
+      {
+        "mode": [
+          {
+            "type": "killedPlayersScore"
+          },
+          {
+            "mulArcade": 1
+          },
+          {
+            "mulRealistic": 2
+          },
+          {
+            "mulHardcore": 2
+          },
+          {
+            "num": 2000
+          },
+          {
+            "condition": {
+              "type": "online"
+            }
+          },
+          {
+            "condition": {
+              "type": "playerTag",
+              "tag": "country_sweden"
             }
           },
           {
@@ -121895,6 +122128,919 @@
               },
               {
                 "class": "it_b1_centauro_romor"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "stage": {
+          "param": 100,
+          "amount_warpoints": 100,
+          "amount_exp": 50
+        }
+      },
+      {
+        "stage": {
+          "param": 500,
+          "amount_warpoints": 1000,
+          "amount_exp": 100
+        }
+      },
+      {
+        "stage": {
+          "param": 1000,
+          "amount_warpoints": 10000,
+          "amount_exp": 500
+        }
+      }
+    ]
+  },
+  {
+    "unlockable": [
+      {
+        "id": "ch_kill_on_cn_t_34_85"
+      },
+      {
+        "type": "challenge"
+      },
+      {
+        "amount_exp": 0
+      },
+      {
+        "chapter": "challenges"
+      },
+      {
+        "group": "china"
+      },
+      {
+        "mode": [
+          {
+            "type": "killedPlayersScore"
+          },
+          {
+            "mulArcade": 1
+          },
+          {
+            "mulRealistic": 2
+          },
+          {
+            "mulHardcore": 2
+          },
+          {
+            "num": 500
+          },
+          {
+            "condition": {
+              "type": "online"
+            }
+          },
+          {
+            "condition": {
+              "type": "targetUnitClass",
+              "unitClass": "tank"
+            }
+          },
+          {
+            "condition": [
+              {
+                "type": "playerUnit"
+              },
+              {
+                "class": "cn_t_34_85_d_5t"
+              },
+              {
+                "class": "cn_type_58"
+              },
+              {
+                "class": "cn_t_34_85_zis_53_no215"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "stage": {
+          "param": 50,
+          "amount_warpoints": 100,
+          "amount_exp": 50
+        }
+      },
+      {
+        "stage": {
+          "param": 150,
+          "amount_warpoints": 1000,
+          "amount_exp": 100
+        }
+      },
+      {
+        "stage": {
+          "param": 500,
+          "amount_warpoints": 10000,
+          "amount_exp": 500
+        }
+      }
+    ]
+  },
+  {
+    "unlockable": [
+      {
+        "id": "ch_missions_on_cn_t_34_85"
+      },
+      {
+        "type": "challenge"
+      },
+      {
+        "amount_exp": 0
+      },
+      {
+        "chapter": "challenges"
+      },
+      {
+        "group": "china"
+      },
+      {
+        "mode": [
+          {
+            "type": "missionsWonScore"
+          },
+          {
+            "mulArcade": 1
+          },
+          {
+            "mulRealistic": 3
+          },
+          {
+            "mulHardcore": 6
+          },
+          {
+            "num": 500
+          },
+          {
+            "condition": {
+              "type": "online"
+            }
+          },
+          {
+            "condition": [
+              {
+                "type": "playerUnit"
+              },
+              {
+                "class": "cn_t_34_85_d_5t"
+              },
+              {
+                "class": "cn_type_58"
+              },
+              {
+                "class": "cn_t_34_85_zis_53_no215"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "stage": {
+          "param": 50,
+          "amount_warpoints": 100,
+          "amount_exp": 50
+        }
+      },
+      {
+        "stage": {
+          "param": 150,
+          "amount_warpoints": 1000,
+          "amount_exp": 100
+        }
+      },
+      {
+        "stage": {
+          "param": 500,
+          "amount_warpoints": 10000,
+          "amount_exp": 500
+        }
+      }
+    ]
+  },
+  {
+    "unlockable": [
+      {
+        "id": "ch_kill_on_cn_sherman"
+      },
+      {
+        "type": "challenge"
+      },
+      {
+        "amount_exp": 0
+      },
+      {
+        "chapter": "challenges"
+      },
+      {
+        "group": "china"
+      },
+      {
+        "mode": [
+          {
+            "type": "killedPlayersScore"
+          },
+          {
+            "mulArcade": 1
+          },
+          {
+            "mulRealistic": 2
+          },
+          {
+            "mulHardcore": 2
+          },
+          {
+            "num": 500
+          },
+          {
+            "condition": {
+              "type": "online"
+            }
+          },
+          {
+            "condition": {
+              "type": "targetUnitClass",
+              "unitClass": "tank"
+            }
+          },
+          {
+            "condition": [
+              {
+                "type": "playerUnit"
+              },
+              {
+                "class": "cn_m4a4_sherman_1st_ptg"
+              },
+              {
+                "class": "cn_m4a4_sherman"
+              },
+              {
+                "class": "cn_m4a1_76w_sherman"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "stage": {
+          "param": 50,
+          "amount_warpoints": 100,
+          "amount_exp": 50
+        }
+      },
+      {
+        "stage": {
+          "param": 150,
+          "amount_warpoints": 1000,
+          "amount_exp": 100
+        }
+      },
+      {
+        "stage": {
+          "param": 500,
+          "amount_warpoints": 10000,
+          "amount_exp": 500
+        }
+      }
+    ]
+  },
+  {
+    "unlockable": [
+      {
+        "id": "ch_missions_on_cn_sherman"
+      },
+      {
+        "type": "challenge"
+      },
+      {
+        "amount_exp": 0
+      },
+      {
+        "chapter": "challenges"
+      },
+      {
+        "group": "china"
+      },
+      {
+        "mode": [
+          {
+            "type": "missionsWonScore"
+          },
+          {
+            "mulArcade": 1
+          },
+          {
+            "mulRealistic": 3
+          },
+          {
+            "mulHardcore": 6
+          },
+          {
+            "num": 500
+          },
+          {
+            "condition": {
+              "type": "online"
+            }
+          },
+          {
+            "condition": [
+              {
+                "type": "playerUnit"
+              },
+              {
+                "class": "cn_m4a4_sherman_1st_ptg"
+              },
+              {
+                "class": "cn_m4a4_sherman"
+              },
+              {
+                "class": "cn_m4a1_76w_sherman"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "stage": {
+          "param": 50,
+          "amount_warpoints": 100,
+          "amount_exp": 50
+        }
+      },
+      {
+        "stage": {
+          "param": 150,
+          "amount_warpoints": 1000,
+          "amount_exp": 100
+        }
+      },
+      {
+        "stage": {
+          "param": 500,
+          "amount_warpoints": 10000,
+          "amount_exp": 500
+        }
+      }
+    ]
+  },
+  {
+    "unlockable": [
+      {
+        "id": "ch_air_kill_on_type_65_aa"
+      },
+      {
+        "type": "challenge"
+      },
+      {
+        "amount_exp": 0
+      },
+      {
+        "chapter": "challenges"
+      },
+      {
+        "group": "china"
+      },
+      {
+        "mode": [
+          {
+            "type": "killedPlayersScore"
+          },
+          {
+            "mulArcade": 1
+          },
+          {
+            "mulRealistic": 2
+          },
+          {
+            "mulHardcore": 2
+          },
+          {
+            "num": 500
+          },
+          {
+            "condition": {
+              "type": "online"
+            }
+          },
+          {
+            "condition": {
+              "type": "targetUnitClass",
+              "unitClass": "aircraft"
+            }
+          },
+          {
+            "condition": [
+              {
+                "type": "playerUnit"
+              },
+              {
+                "class": "cn_type_65_aa"
+              },
+              {
+                "class": "ussr_type_65_aa"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "stage": {
+          "param": 50,
+          "amount_warpoints": 100,
+          "amount_exp": 50
+        }
+      },
+      {
+        "stage": {
+          "param": 150,
+          "amount_warpoints": 1000,
+          "amount_exp": 100
+        }
+      },
+      {
+        "stage": {
+          "param": 500,
+          "amount_warpoints": 10000,
+          "amount_exp": 500
+        }
+      }
+    ]
+  },
+  {
+    "unlockable": [
+      {
+        "id": "ch_kill_on_cn_type_59"
+      },
+      {
+        "type": "challenge"
+      },
+      {
+        "amount_exp": 0
+      },
+      {
+        "chapter": "challenges"
+      },
+      {
+        "group": "china"
+      },
+      {
+        "mode": [
+          {
+            "type": "killedPlayersScore"
+          },
+          {
+            "mulArcade": 1
+          },
+          {
+            "mulRealistic": 2
+          },
+          {
+            "mulHardcore": 2
+          },
+          {
+            "num": 1000
+          },
+          {
+            "condition": {
+              "type": "online"
+            }
+          },
+          {
+            "condition": {
+              "type": "targetUnitClass",
+              "unitClass": "tank"
+            }
+          },
+          {
+            "condition": [
+              {
+                "type": "playerUnit"
+              },
+              {
+                "class": "cn_type_59"
+              },
+              {
+                "class": "cn_type_59d"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "stage": {
+          "param": 100,
+          "amount_warpoints": 100,
+          "amount_exp": 50
+        }
+      },
+      {
+        "stage": {
+          "param": 500,
+          "amount_warpoints": 1000,
+          "amount_exp": 100
+        }
+      },
+      {
+        "stage": {
+          "param": 1000,
+          "amount_warpoints": 10000,
+          "amount_exp": 500
+        }
+      }
+    ]
+  },
+  {
+    "unlockable": [
+      {
+        "id": "ch_missions_on_cn_type_59"
+      },
+      {
+        "type": "challenge"
+      },
+      {
+        "amount_exp": 0
+      },
+      {
+        "chapter": "challenges"
+      },
+      {
+        "group": "china"
+      },
+      {
+        "mode": [
+          {
+            "type": "missionsWonScore"
+          },
+          {
+            "mulArcade": 1
+          },
+          {
+            "mulRealistic": 3
+          },
+          {
+            "mulHardcore": 6
+          },
+          {
+            "num": 1000
+          },
+          {
+            "condition": {
+              "type": "online"
+            }
+          },
+          {
+            "condition": [
+              {
+                "type": "playerUnit"
+              },
+              {
+                "class": "cn_type_59"
+              },
+              {
+                "class": "cn_type_59d"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "stage": {
+          "param": 100,
+          "amount_warpoints": 100,
+          "amount_exp": 50
+        }
+      },
+      {
+        "stage": {
+          "param": 500,
+          "amount_warpoints": 1000,
+          "amount_exp": 100
+        }
+      },
+      {
+        "stage": {
+          "param": 1000,
+          "amount_warpoints": 10000,
+          "amount_exp": 500
+        }
+      }
+    ]
+  },
+  {
+    "unlockable": [
+      {
+        "id": "ch_kill_on_sw_m43"
+      },
+      {
+        "type": "challenge"
+      },
+      {
+        "amount_exp": 0
+      },
+      {
+        "chapter": "challenges"
+      },
+      {
+        "group": "sweden"
+      },
+      {
+        "mode": [
+          {
+            "type": "killedPlayersScore"
+          },
+          {
+            "mulArcade": 1
+          },
+          {
+            "mulRealistic": 2
+          },
+          {
+            "mulHardcore": 2
+          },
+          {
+            "num": 500
+          },
+          {
+            "condition": {
+              "type": "online"
+            }
+          },
+          {
+            "condition": {
+              "type": "targetUnitClass",
+              "unitClass": "tank"
+            }
+          },
+          {
+            "condition": [
+              {
+                "type": "playerUnit"
+              },
+              {
+                "class": "sw_stormpjas_fm43_44"
+              },
+              {
+                "class": "sw_sav_m43_1944"
+              },
+              {
+                "class": "sw_sav_m43_1946"
+              },
+              {
+                "class": "sw_pvkv_m43_1946"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "stage": {
+          "param": 50,
+          "amount_warpoints": 100,
+          "amount_exp": 50
+        }
+      },
+      {
+        "stage": {
+          "param": 150,
+          "amount_warpoints": 1000,
+          "amount_exp": 100
+        }
+      },
+      {
+        "stage": {
+          "param": 500,
+          "amount_warpoints": 10000,
+          "amount_exp": 500
+        }
+      }
+    ]
+  },
+  {
+    "unlockable": [
+      {
+        "id": "ch_missions_on_sw_m43"
+      },
+      {
+        "type": "challenge"
+      },
+      {
+        "amount_exp": 0
+      },
+      {
+        "chapter": "challenges"
+      },
+      {
+        "group": "sweden"
+      },
+      {
+        "mode": [
+          {
+            "type": "missionsWonScore"
+          },
+          {
+            "mulArcade": 1
+          },
+          {
+            "mulRealistic": 3
+          },
+          {
+            "mulHardcore": 6
+          },
+          {
+            "num": 500
+          },
+          {
+            "condition": {
+              "type": "online"
+            }
+          },
+          {
+            "condition": [
+              {
+                "type": "playerUnit"
+              },
+              {
+                "class": "sw_stormpjas_fm43_44"
+              },
+              {
+                "class": "sw_sav_m43_1944"
+              },
+              {
+                "class": "sw_sav_m43_1946"
+              },
+              {
+                "class": "sw_pvkv_m43_1946"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "stage": {
+          "param": 50,
+          "amount_warpoints": 100,
+          "amount_exp": 50
+        }
+      },
+      {
+        "stage": {
+          "param": 150,
+          "amount_warpoints": 1000,
+          "amount_exp": 100
+        }
+      },
+      {
+        "stage": {
+          "param": 500,
+          "amount_warpoints": 10000,
+          "amount_exp": 500
+        }
+      }
+    ]
+  },
+  {
+    "unlockable": [
+      {
+        "id": "ch_kill_on_sw_strv_103"
+      },
+      {
+        "type": "challenge"
+      },
+      {
+        "amount_exp": 0
+      },
+      {
+        "chapter": "challenges"
+      },
+      {
+        "group": "sweden"
+      },
+      {
+        "mode": [
+          {
+            "type": "killedPlayersScore"
+          },
+          {
+            "mulArcade": 1
+          },
+          {
+            "mulRealistic": 2
+          },
+          {
+            "mulHardcore": 2
+          },
+          {
+            "num": 1000
+          },
+          {
+            "condition": {
+              "type": "online"
+            }
+          },
+          {
+            "condition": {
+              "type": "targetUnitClass",
+              "unitClass": "tank"
+            }
+          },
+          {
+            "condition": [
+              {
+                "type": "playerUnit"
+              },
+              {
+                "class": "sw_strv_103a"
+              },
+              {
+                "class": "sw_strv_103c"
+              },
+              {
+                "class": "sw_strv_103_0"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "stage": {
+          "param": 100,
+          "amount_warpoints": 100,
+          "amount_exp": 50
+        }
+      },
+      {
+        "stage": {
+          "param": 500,
+          "amount_warpoints": 1000,
+          "amount_exp": 100
+        }
+      },
+      {
+        "stage": {
+          "param": 1000,
+          "amount_warpoints": 10000,
+          "amount_exp": 500
+        }
+      }
+    ]
+  },
+  {
+    "unlockable": [
+      {
+        "id": "ch_missions_on_sw_strv_103"
+      },
+      {
+        "type": "challenge"
+      },
+      {
+        "amount_exp": 0
+      },
+      {
+        "chapter": "challenges"
+      },
+      {
+        "group": "sweden"
+      },
+      {
+        "mode": [
+          {
+            "type": "missionsWonScore"
+          },
+          {
+            "mulArcade": 1
+          },
+          {
+            "mulRealistic": 3
+          },
+          {
+            "mulHardcore": 6
+          },
+          {
+            "num": 1000
+          },
+          {
+            "condition": {
+              "type": "online"
+            }
+          },
+          {
+            "condition": [
+              {
+                "type": "playerUnit"
+              },
+              {
+                "class": "sw_strv_103a"
+              },
+              {
+                "class": "sw_strv_103c"
+              },
+              {
+                "class": "sw_strv_103_0"
               }
             ]
           }
@@ -127245,6 +128391,627 @@
   {
     "unlockable": [
       {
+        "id": "ch_kill_on_i_16_china"
+      },
+      {
+        "type": "challenge"
+      },
+      {
+        "amount_exp": 0
+      },
+      {
+        "chapter": "challenges"
+      },
+      {
+        "group": "china"
+      },
+      {
+        "mode": [
+          {
+            "type": "killedPlayersScore"
+          },
+          {
+            "mulArcade": 1
+          },
+          {
+            "mulRealistic": 3
+          },
+          {
+            "mulHardcore": 6
+          },
+          {
+            "num": 30
+          },
+          {
+            "condition": {
+              "type": "online"
+            }
+          },
+          {
+            "condition": [
+              {
+                "type": "playerUnit"
+              },
+              {
+                "class": "i-16_chung_28"
+              },
+              {
+                "class": "i-16_type5_1935_china"
+              },
+              {
+                "class": "i-16_type10_china"
+              },
+              {
+                "class": "i-16_type17_china"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "stage": {
+          "param": 5,
+          "amount_warpoints": 100,
+          "amount_exp": 50
+        }
+      },
+      {
+        "stage": {
+          "param": 15,
+          "amount_warpoints": 1000,
+          "amount_exp": 100
+        }
+      },
+      {
+        "stage": {
+          "param": 30,
+          "amount_warpoints": 10000,
+          "amount_exp": 500
+        }
+      }
+    ]
+  },
+  {
+    "unlockable": [
+      {
+        "id": "ch_missions_on_i_16_chung_28"
+      },
+      {
+        "type": "challenge"
+      },
+      {
+        "amount_exp": 0
+      },
+      {
+        "chapter": "challenges"
+      },
+      {
+        "group": "china"
+      },
+      {
+        "mode": [
+          {
+            "type": "missionsWonScore"
+          },
+          {
+            "mulArcade": 1
+          },
+          {
+            "mulRealistic": 2
+          },
+          {
+            "mulHardcore": 3
+          },
+          {
+            "num": 30
+          },
+          {
+            "condition": {
+              "type": "activity",
+              "percent": 50
+            }
+          },
+          {
+            "condition": {
+              "type": "online"
+            }
+          },
+          {
+            "condition": {
+              "type": "playerUnit",
+              "class": "i-16_chung_28"
+            }
+          }
+        ]
+      },
+      {
+        "stage": {
+          "param": 5,
+          "amount_warpoints": 100,
+          "amount_exp": 50
+        }
+      },
+      {
+        "stage": {
+          "param": 15,
+          "amount_warpoints": 1000,
+          "amount_exp": 100
+        }
+      },
+      {
+        "stage": {
+          "param": 30,
+          "amount_warpoints": 10000,
+          "amount_exp": 500
+        }
+      }
+    ]
+  },
+  {
+    "unlockable": [
+      {
+        "id": "ch_kill_on_p_40_china"
+      },
+      {
+        "type": "challenge"
+      },
+      {
+        "amount_exp": 0
+      },
+      {
+        "chapter": "challenges"
+      },
+      {
+        "group": "china"
+      },
+      {
+        "mode": [
+          {
+            "type": "killedPlayersScore"
+          },
+          {
+            "mulArcade": 1
+          },
+          {
+            "mulRealistic": 3
+          },
+          {
+            "mulHardcore": 6
+          },
+          {
+            "num": 30
+          },
+          {
+            "condition": {
+              "type": "online"
+            }
+          },
+          {
+            "condition": [
+              {
+                "type": "playerUnit"
+              },
+              {
+                "class": "p-40e_china"
+              },
+              {
+                "class": "p-40c_china"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "stage": {
+          "param": 5,
+          "amount_warpoints": 100,
+          "amount_exp": 50
+        }
+      },
+      {
+        "stage": {
+          "param": 15,
+          "amount_warpoints": 1000,
+          "amount_exp": 100
+        }
+      },
+      {
+        "stage": {
+          "param": 30,
+          "amount_warpoints": 10000,
+          "amount_exp": 500
+        }
+      }
+    ]
+  },
+  {
+    "unlockable": [
+      {
+        "id": "ch_missions_on_p_40e_china"
+      },
+      {
+        "type": "challenge"
+      },
+      {
+        "amount_exp": 0
+      },
+      {
+        "chapter": "challenges"
+      },
+      {
+        "group": "china"
+      },
+      {
+        "mode": [
+          {
+            "type": "missionsWonScore"
+          },
+          {
+            "mulArcade": 1
+          },
+          {
+            "mulRealistic": 2
+          },
+          {
+            "mulHardcore": 3
+          },
+          {
+            "num": 30
+          },
+          {
+            "condition": {
+              "type": "activity",
+              "percent": 50
+            }
+          },
+          {
+            "condition": {
+              "type": "online"
+            }
+          },
+          {
+            "condition": {
+              "type": "playerUnit",
+              "class": "p-40e_china"
+            }
+          }
+        ]
+      },
+      {
+        "stage": {
+          "param": 5,
+          "amount_warpoints": 100,
+          "amount_exp": 50
+        }
+      },
+      {
+        "stage": {
+          "param": 15,
+          "amount_warpoints": 1000,
+          "amount_exp": 100
+        }
+      },
+      {
+        "stage": {
+          "param": 30,
+          "amount_warpoints": 10000,
+          "amount_exp": 500
+        }
+      }
+    ]
+  },
+  {
+    "unlockable": [
+      {
+        "id": "ch_kill_on_j22"
+      },
+      {
+        "type": "challenge"
+      },
+      {
+        "amount_exp": 0
+      },
+      {
+        "chapter": "challenges"
+      },
+      {
+        "group": "sweden"
+      },
+      {
+        "mode": [
+          {
+            "type": "killedPlayersScore"
+          },
+          {
+            "mulArcade": 1
+          },
+          {
+            "mulRealistic": 3
+          },
+          {
+            "mulHardcore": 6
+          },
+          {
+            "num": 30
+          },
+          {
+            "condition": {
+              "type": "online"
+            }
+          },
+          {
+            "condition": [
+              {
+                "type": "playerUnit"
+              },
+              {
+                "class": "ffvs_j22_a"
+              },
+              {
+                "class": "ffvs_j22_b"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "stage": {
+          "param": 5,
+          "amount_warpoints": 100,
+          "amount_exp": 50
+        }
+      },
+      {
+        "stage": {
+          "param": 15,
+          "amount_warpoints": 1000,
+          "amount_exp": 100
+        }
+      },
+      {
+        "stage": {
+          "param": 30,
+          "amount_warpoints": 10000,
+          "amount_exp": 500
+        }
+      }
+    ]
+  },
+  {
+    "unlockable": [
+      {
+        "id": "ch_missions_on_ffvs_j22_b"
+      },
+      {
+        "type": "challenge"
+      },
+      {
+        "amount_exp": 0
+      },
+      {
+        "chapter": "challenges"
+      },
+      {
+        "group": "sweden"
+      },
+      {
+        "mode": [
+          {
+            "type": "missionsWonScore"
+          },
+          {
+            "mulArcade": 1
+          },
+          {
+            "mulRealistic": 2
+          },
+          {
+            "mulHardcore": 3
+          },
+          {
+            "num": 30
+          },
+          {
+            "condition": {
+              "type": "activity",
+              "percent": 50
+            }
+          },
+          {
+            "condition": {
+              "type": "online"
+            }
+          },
+          {
+            "condition": {
+              "type": "playerUnit",
+              "class": "ffvs_j22_b"
+            }
+          }
+        ]
+      },
+      {
+        "stage": {
+          "param": 5,
+          "amount_warpoints": 100,
+          "amount_exp": 50
+        }
+      },
+      {
+        "stage": {
+          "param": 15,
+          "amount_warpoints": 1000,
+          "amount_exp": 100
+        }
+      },
+      {
+        "stage": {
+          "param": 30,
+          "amount_warpoints": 10000,
+          "amount_exp": 500
+        }
+      }
+    ]
+  },
+  {
+    "unlockable": [
+      {
+        "id": "ch_kill_on_j21a"
+      },
+      {
+        "type": "challenge"
+      },
+      {
+        "amount_exp": 0
+      },
+      {
+        "chapter": "challenges"
+      },
+      {
+        "group": "sweden"
+      },
+      {
+        "mode": [
+          {
+            "type": "killedPlayersScore"
+          },
+          {
+            "mulArcade": 1
+          },
+          {
+            "mulRealistic": 3
+          },
+          {
+            "mulHardcore": 6
+          },
+          {
+            "num": 30
+          },
+          {
+            "condition": {
+              "type": "online"
+            }
+          },
+          {
+            "condition": [
+              {
+                "type": "playerUnit"
+              },
+              {
+                "class": "saab_j21a_1"
+              },
+              {
+                "class": "saab_j21a_2"
+              },
+              {
+                "class": "saab_j21ra"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "stage": {
+          "param": 5,
+          "amount_warpoints": 100,
+          "amount_exp": 50
+        }
+      },
+      {
+        "stage": {
+          "param": 15,
+          "amount_warpoints": 1000,
+          "amount_exp": 100
+        }
+      },
+      {
+        "stage": {
+          "param": 30,
+          "amount_warpoints": 10000,
+          "amount_exp": 500
+        }
+      }
+    ]
+  },
+  {
+    "unlockable": [
+      {
+        "id": "ch_missions_on_saab_j21a_2"
+      },
+      {
+        "type": "challenge"
+      },
+      {
+        "amount_exp": 0
+      },
+      {
+        "chapter": "challenges"
+      },
+      {
+        "group": "sweden"
+      },
+      {
+        "mode": [
+          {
+            "type": "missionsWonScore"
+          },
+          {
+            "mulArcade": 1
+          },
+          {
+            "mulRealistic": 2
+          },
+          {
+            "mulHardcore": 3
+          },
+          {
+            "num": 30
+          },
+          {
+            "condition": {
+              "type": "activity",
+              "percent": 50
+            }
+          },
+          {
+            "condition": {
+              "type": "online"
+            }
+          },
+          {
+            "condition": {
+              "type": "playerUnit",
+              "class": "saab_j21a_2"
+            }
+          }
+        ]
+      },
+      {
+        "stage": {
+          "param": 5,
+          "amount_warpoints": 100,
+          "amount_exp": 50
+        }
+      },
+      {
+        "stage": {
+          "param": 15,
+          "amount_warpoints": 1000,
+          "amount_exp": 100
+        }
+      },
+      {
+        "stage": {
+          "param": 30,
+          "amount_warpoints": 10000,
+          "amount_exp": 500
+        }
+      }
+    ]
+  },
+  {
+    "unlockable": [
+      {
         "id": "ch_missions_pacific"
       },
       {
@@ -129194,6 +130961,71 @@
     ]
   },
   {
+    "unlockable": [
+      {
+        "id": "ch_sweden_rank_tank"
+      },
+      {
+        "type": "achievement"
+      },
+      {
+        "amount_exp": 0
+      },
+      {
+        "amount_warpoints": 0
+      },
+      {
+        "chapter": "achievements"
+      },
+      {
+        "group": "rank"
+      },
+      {
+        "mode": {
+          "type": "char_player_era",
+          "country": "country_sweden",
+          "era": 6,
+          "unitClass": "tank"
+        }
+      },
+      {
+        "stage": {
+          "param": 2,
+          "amount_warpoints": 0,
+          "amount_exp": 100
+        }
+      },
+      {
+        "stage": {
+          "param": 3,
+          "amount_warpoints": 0,
+          "amount_exp": 250
+        }
+      },
+      {
+        "stage": {
+          "param": 4,
+          "amount_warpoints": 0,
+          "amount_exp": 1000
+        }
+      },
+      {
+        "stage": {
+          "param": 5,
+          "amount_warpoints": 0,
+          "amount_exp": 10000
+        }
+      },
+      {
+        "stage": {
+          "param": 6,
+          "amount_warpoints": 0,
+          "amount_exp": 12000
+        }
+      }
+    ]
+  },
+  {
     "unlockable": {
       "id": "ch_all_rank",
       "type": "achievement",
@@ -129270,6 +131102,9 @@
         },
         {
           "unlock": "ch_china_rank_tank"
+        },
+        {
+          "unlock": "ch_sweden_rank_tank"
         }
       ]
     }
@@ -130242,6 +132077,65 @@
         "mode": {
           "type": "char_aircrafts_in_era",
           "country": "country_china",
+          "num": 20,
+          "elite": 2,
+          "unitClass": "tank"
+        }
+      },
+      {
+        "stage": {
+          "param": 1,
+          "amount_warpoints": 10000,
+          "amount_exp": 0
+        }
+      },
+      {
+        "stage": {
+          "param": 5,
+          "amount_warpoints": 25000,
+          "amount_exp": 0
+        }
+      },
+      {
+        "stage": {
+          "param": 10,
+          "amount_warpoints": 50000,
+          "amount_exp": 0
+        }
+      },
+      {
+        "stage": {
+          "param": 20,
+          "amount_warpoints": 100000,
+          "amount_exp": 50000
+        }
+      }
+    ]
+  },
+  {
+    "unlockable": [
+      {
+        "id": "ch_tank_exp_sweden"
+      },
+      {
+        "type": "achievement"
+      },
+      {
+        "amount_exp": 0
+      },
+      {
+        "amount_warpoints": 0
+      },
+      {
+        "chapter": "achievements"
+      },
+      {
+        "group": "tank"
+      },
+      {
+        "mode": {
+          "type": "char_aircrafts_in_era",
+          "country": "country_sweden",
           "num": 20,
           "elite": 2,
           "unitClass": "tank"
@@ -131917,6 +133811,71 @@
   {
     "unlockable": [
       {
+        "id": "ch_crew_level_sweden_tanks"
+      },
+      {
+        "type": "achievement"
+      },
+      {
+        "amount_exp": 0
+      },
+      {
+        "amount_warpoints": 0
+      },
+      {
+        "chapter": "achievements"
+      },
+      {
+        "group": "crew"
+      },
+      {
+        "mode": {
+          "type": "char_crew_level_float",
+          "country": "country_sweden",
+          "num": 140,
+          "unitClass": "tank"
+        }
+      },
+      {
+        "stage": {
+          "param": 10,
+          "amount_warpoints": 0,
+          "amount_exp": 100
+        }
+      },
+      {
+        "stage": {
+          "param": 30,
+          "amount_warpoints": 0,
+          "amount_exp": 150
+        }
+      },
+      {
+        "stage": {
+          "param": 50,
+          "amount_warpoints": 0,
+          "amount_exp": 500
+        }
+      },
+      {
+        "stage": {
+          "param": 90,
+          "amount_warpoints": 0,
+          "amount_exp": 1250
+        }
+      },
+      {
+        "stage": {
+          "param": 140,
+          "amount_warpoints": 0,
+          "amount_exp": 5000
+        }
+      }
+    ]
+  },
+  {
+    "unlockable": [
+      {
         "id": "ch_crew_level_count_ussr_tanks"
       },
       {
@@ -132302,6 +134261,58 @@
         "mode": {
           "type": "char_crew_level_count_float",
           "country": "country_china",
+          "num": 5,
+          "level": 140,
+          "unitClass": "tank"
+        }
+      },
+      {
+        "stage": {
+          "param": 2,
+          "amount_warpoints": 0,
+          "amount_exp": 10000
+        }
+      },
+      {
+        "stage": {
+          "param": 3,
+          "amount_warpoints": 0,
+          "amount_exp": 25000
+        }
+      },
+      {
+        "stage": {
+          "param": 5,
+          "amount_warpoints": 0,
+          "amount_exp": 50000
+        }
+      }
+    ]
+  },
+  {
+    "unlockable": [
+      {
+        "id": "ch_crew_level_count_sweden_tanks"
+      },
+      {
+        "type": "achievement"
+      },
+      {
+        "amount_exp": 0
+      },
+      {
+        "amount_warpoints": 0
+      },
+      {
+        "chapter": "achievements"
+      },
+      {
+        "group": "crew"
+      },
+      {
+        "mode": {
+          "type": "char_crew_level_count_float",
+          "country": "country_sweden",
           "num": 5,
           "level": 140,
           "unitClass": "tank"
@@ -135514,7 +137525,7 @@
         },
         {
           "condition": {
-            "type": "targetDistance",
+            "type": "hitDistance",
             "distance": 1000.0
           }
         },
@@ -138612,6 +140623,31 @@
   },
   {
     "unlockable": {
+      "id": "sw_strv_m39",
+      "type": "aircraft",
+      "popupImage": "#ui/images/sw_strv_m39.jpg?P1",
+      "popupInDebriefing": true,
+      "mode": [
+        {
+          "type": "char_unlocks"
+        },
+        {
+          "num": 3
+        },
+        {
+          "unlock": "chosen_country_sweden"
+        },
+        {
+          "unlock": "chosen_unit_type_tank"
+        },
+        {
+          "unlock": "first_battle"
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
       "id": "germ_ls4_class",
       "type": "aircraft",
       "popupImage": "#ui/images/germ_ls4_class.jpg?P1",
@@ -139262,6 +141298,15 @@
       "id": "country_france",
       "type": "country",
       "popupImage": "#ui/images/first_battle_france.jpg?P1",
+      "popupInDebriefing": true,
+      "isAllowByClient": true
+    }
+  },
+  {
+    "unlockable": {
+      "id": "country_sweden",
+      "type": "country",
+      "popupImage": "#ui/images/first_battle_sweden.jpg?P1",
       "popupInDebriefing": true,
       "isAllowByClient": true
     }
@@ -144107,9 +146152,6 @@
             },
             {
               "tag": "type_minelayer"
-            },
-            {
-              "tag": "type_minesweeper"
             }
           ]
         },
@@ -145206,17 +147248,10 @@
           "num": 500
         },
         {
-          "condition": [
-            {
-              "type": "playerTag"
-            },
-            {
-              "tag": "type_naval_fighter"
-            },
-            {
-              "tag": "type_naval_bomber"
-            }
-          ]
+          "condition": {
+            "type": "playerTag",
+            "tag": "type_naval_aircraft"
+          }
         },
         {
           "condition": {
@@ -145258,17 +147293,10 @@
           "num": 300
         },
         {
-          "condition": [
-            {
-              "type": "playerTag"
-            },
-            {
-              "tag": "type_naval_fighter"
-            },
-            {
-              "tag": "type_naval_bomber"
-            }
-          ]
+          "condition": {
+            "type": "playerTag",
+            "tag": "type_naval_aircraft"
+          }
         },
         {
           "condition": {

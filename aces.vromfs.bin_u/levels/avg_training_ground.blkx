@@ -45,25 +45,25 @@
     "tankMapColorMult": "#ffffffff"
   },
   {
-    "numBorderCellsXPos": 8
+    "numBorderCellsXPos": 0
   },
   {
-    "numBorderCellsXNeg": 8
+    "numBorderCellsXNeg": 0
   },
   {
-    "numBorderCellsZPos": 8
+    "numBorderCellsZPos": 0
   },
   {
     "numBorderCellsZNeg": 0
   },
   {
-    "mirrorShrinkXPos": 256.0
+    "mirrorShrinkXPos": 0.0
   },
   {
-    "mirrorShrinkXNeg": 256.0
+    "mirrorShrinkXNeg": 0.0
   },
   {
-    "mirrorShrinkZPos": 256.0
+    "mirrorShrinkZPos": 0.0
   },
   {
     "mirrorShrinkZNeg": 0.0
@@ -103,6 +103,18 @@
   },
   {
     "soundAmbientEvent": "global_amb_europe"
+  },
+  {
+    "puddlesPowerScale": 0.9
+  },
+  {
+    "puddlesSpread": 0.75
+  },
+  {
+    "layeredFogThicknessScale100": 240.0
+  },
+  {
+    "layeredFogDensityMul": 0.07
   },
   {
     "layeredFogHeightOffset": 214.2
@@ -165,10 +177,10 @@
   {
     "randomGrass": [
       {
-        "density": 0.85
+        "density": 3.0
       },
       {
-        "maxRadius": 300.0
+        "maxRadius": 600.0
       },
       {
         "sowPerlinFreq": 0.1
@@ -258,7 +270,7 @@
         "stalingrad_village": "stalingrad_village_tex_m"
       },
       {
-        "avg_training_ground_detailed_tex_d": "avg_training_ground_detailed_tex_mask"
+        "avg_training_ground_detailed_tex_d": "avg_training_ground_grass_mask"
       },
       {
         "layer": {
@@ -281,27 +293,27 @@
       {
         "layer": {
           "maskChannel": [1.0,0.0,0.0,0.0],
-          "res": "grass_reed_a",
-          "density": 0.5,
-          "horScale": 1.2,
-          "horMinScale": 0.9,
-          "verScale": 1.2,
-          "verMinScale": 0.9,
+          "res": "grass_sedge_a",
+          "density": 4.5,
+          "horScale": 0.9,
+          "horMinScale": 0.75,
+          "verScale": 0.9,
+          "verMinScale": 0.75,
           "windMul": 0.05,
           "radiusMul": 0.5,
-          "color_mask_r_from": "#e6d087ff",
-          "color_mask_r_to": "#bfa377ff",
-          "color_mask_b_from": "#8db356ff",
-          "color_mask_b_to": "#a8a548ff",
+          "color_mask_r_from": "#9da2027f",
+          "color_mask_r_to": "#1f4b0a7f",
+          "color_mask_b_from": "#10610e7f",
+          "color_mask_b_to": "#0314037f",
           "color_mask_g_from": "#021836ff",
           "color_mask_g_to": "#f7f2baff"
         }
       },
       {
         "layer": {
-          "maskChannel": [0.0,1.0,1.0,0.0],
+          "maskChannel": [0.0,1.0,0.0,0.0],
           "res": "grass_sword_a",
-          "density": 0.05,
+          "density": 0.75,
           "horScale": 1.2,
           "horMinScale": 0.9,
           "verScale": 1.2,
@@ -318,9 +330,9 @@
       },
       {
         "layer": {
-          "maskChannel": [0.0,1.0,0.0,0.0],
+          "maskChannel": [0.0,0.0,1.0,0.0],
           "res": "grass_daisies_a",
-          "density": 1.0,
+          "density": 3.0,
           "horScale": 1.2,
           "horMinScale": 0.9,
           "verScale": 1.2,
@@ -339,7 +351,7 @@
         "layer": {
           "maskChannel": [0.0,0.0,1.0,0.0],
           "res": "grass_platanthera_a",
-          "density": 2.0,
+          "density": 6.0,
           "horScale": 1.2,
           "horMinScale": 0.5,
           "verScale": 1.2,
@@ -358,7 +370,7 @@
         "layer": {
           "maskChannel": [0.0,0.0,1.0,0.0],
           "res": "grass_tavolga_a",
-          "density": 0.5,
+          "density": 1.5,
           "horScale": 1.2,
           "horMinScale": 0.5,
           "verScale": 1.2,
@@ -375,28 +387,9 @@
       },
       {
         "layer": {
-          "maskChannel": [0.0,1.0,0.0,0.0],
-          "res": "grass_paigle_a",
-          "density": 0.5,
-          "horScale": 1.2,
-          "horMinScale": 0.5,
-          "verScale": 1.2,
-          "verMinScale": 0.5,
-          "windMul": 0.05,
-          "radiusMul": 0.4,
-          "color_mask_r_from": "#fad461ff",
-          "color_mask_r_to": "#e3c22dff",
-          "color_mask_b_from": "#459636ff",
-          "color_mask_b_to": "#4e7a3aff",
-          "color_mask_g_from": "#021836ff",
-          "color_mask_g_to": "#f7f2baff"
-        }
-      },
-      {
-        "layer": {
-          "maskChannel": [0.0,1.0,0.0,0.0],
+          "maskChannel": [0.0,0.0,1.0,0.0],
           "res": "grass_tulip_a",
-          "density": 0.1,
+          "density": 0.3,
           "horScale": 1.2,
           "horMinScale": 0.5,
           "verScale": 1.2,
@@ -413,9 +406,9 @@
       },
       {
         "layer": {
-          "maskChannel": [1.0,0.0,0.0,0.0],
+          "maskChannel": [0.0,1.0,0.0,0.0],
           "res": "grass_simple_a",
-          "density": 20.0,
+          "density": 2.0,
           "horScale": 1.7,
           "horMinScale": 0.8,
           "verScale": 1.7,
@@ -432,9 +425,8 @@
       },
       {
         "layer": {
-          "maskChannel": [1.0,1.0,0.0,0.0],
-          "res": "grass_simple_a",
-          "density": 10.0,
+          "res": "grass_simple_b",
+          "density": 1.0,
           "horScale": 1.2,
           "horMinScale": 0.9,
           "verScale": 1.0,

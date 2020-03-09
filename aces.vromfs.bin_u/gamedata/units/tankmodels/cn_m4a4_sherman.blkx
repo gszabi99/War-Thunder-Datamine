@@ -154,6 +154,24 @@
           "armorThickness": 4.0
         }
       },
+      "body_shields": {
+        "armorClass": "tank_structural_steel",
+        "hp": 1000.0,
+        "armorThickness": 4.0,
+        "stopChanceOnDeadPart": 0.0,
+        "createSecondaryShatters": false,
+        "ex_decor_01_dm": [],
+        "ex_decor_r_02_dm": [],
+        "ex_decor_l_02_dm": [],
+        "ex_decor_l_03_dm": [],
+        "ex_decor_r_03_dm": [],
+        "ex_decor_r_04_dm": [],
+        "ex_decor_l_04_dm": [],
+        "ex_decor_r_05_dm": [],
+        "ex_decor_l_05_dm": [],
+        "ex_decor_l_06_dm": [],
+        "ex_decor_r_10_dm": []
+      },
       "turret": {
         "armorClass": "CHA_tank",
         "turret_top_dm": {
@@ -601,6 +619,23 @@
           "hp": 50.0
         }
       }
+    }
+  },
+  {
+    "attachables": {
+      "ex_armor_01_dm": true,
+      "ex_decor_01_dm": true,
+      "ex_decor_r_02_dm": true,
+      "ex_decor_03_dm": true,
+      "ex_decor_l_02_dm": true,
+      "ex_decor_l_03_dm": true,
+      "ex_decor_r_03_dm": true,
+      "ex_decor_r_04_dm": true,
+      "ex_decor_l_04_dm": true,
+      "ex_decor_r_05_dm": true,
+      "ex_decor_l_05_dm": true,
+      "ex_decor_l_06_dm": true,
+      "ex_decor_r_10_dm": true
     }
   },
   {
@@ -1561,6 +1596,13 @@
     }
   },
   {
+    "gunConvergence": {
+      "distance": 800.0,
+      "vertical": true,
+      "horizontal": true
+    }
+  },
+  {
     "class_tags": []
   },
   {
@@ -1719,24 +1761,6 @@
               "name": "tank_engine_fire",
               "emitter": "emtr_fire_engine_02"
             }
-          },
-          {
-            "fx": {
-              "name": "tank_engine_smoke",
-              "emitter": "emtr_fire_engine"
-            }
-          },
-          {
-            "fx": {
-              "name": "tank_engine_smoke",
-              "emitter": "emtr_fire_engine_01"
-            }
-          },
-          {
-            "fx": {
-              "name": "tank_engine_smoke",
-              "emitter": "emtr_fire_engine_02"
-            }
           }
         ]
       },
@@ -1748,67 +1772,78 @@
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo"
+              "emitter": "emtr_fire_ammo",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_01"
+              "emitter": "emtr_fire_ammo_01",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_02"
+              "emitter": "emtr_fire_ammo_02",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_03"
+              "emitter": "emtr_fire_ammo_03",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_04"
+              "emitter": "emtr_fire_ammo_04",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_05"
+              "emitter": "emtr_fire_ammo_05",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_06"
+              "emitter": "emtr_fire_ammo_06",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_07"
+              "emitter": "emtr_fire_ammo_07",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_08"
+              "emitter": "emtr_fire_ammo_08",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_09"
+              "emitter": "emtr_fire_ammo_09",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_10"
+              "emitter": "emtr_fire_ammo_10",
+              "useVelocity": false
             }
           }
         ]
@@ -1954,7 +1989,7 @@
           },
           {
             "fx": {
-              "name": "tank_smoke_big",
+              "name": "tank_smoke_small",
               "emitter": "emtr_smoke_dmg"
             }
           },
@@ -2289,47 +2324,44 @@
         "defaultDampeningForce": [120000.0,120000.0],
         "dampeningRelaxationRatio": 0.4,
         "dampeningCompressionRatio": 0.15
-      },
-      "physNode": [
-        {
-          "type": "verlet_string"
-        },
-        {
-          "stiffness": 1.0
-        },
-        {
-          "straightening": 0.5
-        },
-        {
-          "point": {
-            "name": "antenna",
-            "mass": 1.0,
-            "fixed": true
-          }
-        },
-        {
-          "point": {
-            "name": "bone_phx_antenna",
-            "mass": 3.0
-          }
-        }
-      ]
+      }
     }
   },
   {
-    "ammoLoadDistribution": {
-      "primaryShells": {
-        "ammo_turret_01_dm": {
-          "count": 22
-        },
-        "ammo_turret_02_dm": {
-          "count": 14
-        },
-        "ammo_body_r_01_dm": {
-          "count": 24
-        },
-        "ammo_body_l_01_dm": {
-          "count": 36
+    "ammoStowages": {
+      "ammo1": {
+        "weaponTrigger": "gunner0",
+        "removeLoadedAmmo": true,
+        "fatalFire": true,
+        "fatalExplosion": true,
+        "shells": {
+          "fireEvent": "ammo_fire",
+          "explosionEvent": "ammo_explosion",
+          "wreckedPartId": 0,
+          "ammo_turret_01_dm": {
+            "count": 8
+          },
+          "ammo_turret_04_dm": {
+            "count": 2
+          },
+          "ammo_turret_03_dm": {
+            "count": 3
+          },
+          "ammo_turret_02_dm": {
+            "count": 7
+          },
+          "ammo_body_r_01_dm": {
+            "count": 17
+          },
+          "ammo_body_l_01_dm": {
+            "count": 16
+          },
+          "ammo_body_r_02_dm": {
+            "count": 15
+          },
+          "ammo_body_dm": {
+            "count": 30
+          }
         }
       }
     }

@@ -48,8 +48,7 @@
       "period": 6.0,
       "barHeight": 20.0,
       "barsCount": 1,
-      "rowMajor": true,
-      "preciseMinor": true
+      "rowMajor": true
     },
     "searchMediumATM": {
       "type": "pyramide",
@@ -61,8 +60,7 @@
       "width": 90.0,
       "barHeight": 20.0,
       "barsCount": 1,
-      "rowMajor": true,
-      "preciseMinor": true
+      "rowMajor": true
     },
     "searchNarrowATM": {
       "type": "pyramide",
@@ -74,8 +72,7 @@
       "width": 45.0,
       "barHeight": 20.0,
       "barsCount": 1,
-      "rowMajor": true,
-      "preciseMinor": true
+      "rowMajor": true
     },
     "searchZoomATM": {
       "type": "pyramide",
@@ -87,8 +84,7 @@
       "width": 22.5,
       "barHeight": 20.0,
       "barsCount": 1,
-      "rowMajor": true,
-      "preciseMinor": true
+      "rowMajor": true
     },
     "searchWideGTM": {
       "type": "pyramide",
@@ -101,7 +97,7 @@
       "barHeight": 20.0,
       "barsCount": 1,
       "rowMajor": true,
-      "preciseMinor": true
+      "elevTriangle": true
     },
     "searchMediumGTM": {
       "type": "pyramide",
@@ -114,7 +110,7 @@
       "barHeight": 20.0,
       "barsCount": 1,
       "rowMajor": true,
-      "preciseMinor": true
+      "elevTriangle": true
     },
     "searchNarrowGTM": {
       "type": "pyramide",
@@ -127,7 +123,7 @@
       "barHeight": 20.0,
       "barsCount": 1,
       "rowMajor": true,
-      "preciseMinor": true
+      "elevTriangle": true
     },
     "searchZoomGTM": {
       "type": "pyramide",
@@ -140,7 +136,7 @@
       "barHeight": 20.0,
       "barsCount": 1,
       "rowMajor": true,
-      "preciseMinor": true
+      "elevTriangle": true
     }
   },
   "signals": {
@@ -148,6 +144,8 @@
       "groundClutter": false,
       "aircraftAsTarget": false,
       "groundVehiclesAsTarget": true,
+      "angularAccuracy": 0.02,
+      "distanceAccuracy": 2.0,
       "distance": {
         "presents": true,
         "minValue": 500.0,
@@ -159,6 +157,8 @@
       "groundClutter": false,
       "aircraftAsTarget": true,
       "groundVehiclesAsTarget": false,
+      "angularAccuracy": 0.02,
+      "distanceAccuracy": 5.0,
       "distance": {
         "presents": true,
         "minValue": 500.0,
@@ -192,6 +192,12 @@
       "stateInit": "init",
       "actionsTemplates": {
         "init": {
+          "setEnabled": {
+            "value": false
+          },
+          "setTransiver": {
+            "transiver": "GTM"
+          },
           "setSignal": {
             "signal": "GTM"
           },
@@ -200,7 +206,7 @@
             "value": -6.25
           },
           "setTargetDesignationRange": {
-            "azimuthRange": [-45.0,45.0],
+            "azimuthRange": [-115.0,115.0],
             "elevationRange": [-20.0,20.0],
             "distanceRange": [500.0,8000.0]
           },
@@ -213,23 +219,23 @@
           }
         },
         "setStandbyMode": {
+          "setEnabled": {
+            "value": false
+          },
           "setCenterAzimuth": {
             "source": "constant",
             "value": 0.0
           },
-          "clearTargets": [],
-          "setEnabled": {
-            "value": false
-          }
+          "clearTargets": []
         },
         "setSearchMode": {
+          "setEnabled": {
+            "value": true
+          },
           "clearTargets": [],
           "setFsmActive": {
             "fsm": "search",
             "active": true
-          },
-          "setEnabled": {
-            "value": true
           }
         },
         "resetSearchMode": {

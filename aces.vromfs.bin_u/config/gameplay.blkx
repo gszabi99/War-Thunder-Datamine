@@ -1390,6 +1390,68 @@
     "rollRateToRadialAngleAdd": 0.15,
     "radialAngleAddMax": 0.3
   },
+  "autopilot": {
+    "Ailerons": {
+      "rateDeadZone": 0.0,
+      "angleDeadZone": 0.0,
+      "velDeadZone": 0.0,
+      "posDeadZone": 0.1,
+      "posHoldVelTreshold": 2.0,
+      "posHoldTimeOut": 3.0,
+      "angleLimByRaltitude": [15.0,20.0,50.0,190.0],
+      "angleLim": 190.0,
+      "angleLimFullRateMult": 0.8,
+      "autoRateDeadZone": 0.0,
+      "maxAutoRateMult": 0.85,
+      "limitHalfWingAoa": false,
+      "maxAoaMult": 0.8,
+      "rollTimeMultBase": 4.0
+    },
+    "Elevator": {
+      "rateDeadZone": 0.0,
+      "angleDeadZone": 0.0,
+      "velDeadZone": 0.0,
+      "posDeadZone": 0.1,
+      "posHoldVelTreshold": 2.0,
+      "posHoldTimeOut": 3.0,
+      "angleLimByRaltitude": [15.0,20.0,50.0,190.0],
+      "angleLim": 190.0,
+      "angleLimFullRateMult": 0.8,
+      "aoaFactorDeadZone": 0.0,
+      "loadFactorFilterViscosity": 0.05,
+      "loadFactorDeadZone": 0.0,
+      "maxLoadFactorMult": 0.85,
+      "assistMaxAoaFactorMul": 0.25,
+      "additionalAoaMaxFactorMult": 0.5,
+      "maxAoaFactorMult": 0.8,
+      "limitAoaByLoadFactor": true,
+      "limitStabAoa": false,
+      "loadFactorTimeMultBase": 5.0,
+      "aoaTimeMultBase": 0.2
+    },
+    "Yaw": {
+      "rateDeadZone": 0.0,
+      "headingHoldRateTreshold": 2.0,
+      "headingHoldTimeOut": 0.5
+    },
+    "Throttle": {
+      "climbDeadZone": 0.0,
+      "altDeadZone": 0.1,
+      "altHoldClimbTreshold": 0.5,
+      "altHoldTimeOut": 0.5,
+      "climbMinLimByHorSpeed": [40.0,-3.0,80.0,-15.0],
+      "climbMinLimByRAltitude": [15.0,-3.0,50.0,-15.0]
+    },
+    "Aim": {
+      "axesTreshold": 0.05,
+      "rollLim": 50.0,
+      "rollLimByRaltitude": [15.0,20.0,50.0,190.0],
+      "pitchLim": 20.0,
+      "pitchLimByRaltitude": [15.0,20.0,100.0,190.0],
+      "overridenRollLim": 30.0,
+      "angleLimFullRateMult": 0.8
+    }
+  },
   "mouseJoystick": {
     "minMouseJoystickSensitivity": 0.5,
     "maxMouseJoystickSensitivity": 3.5,
@@ -1702,6 +1764,7 @@
     "propellersRadarCrossSectionSourcesMask": 2,
     "activeSonarReflectionMult": 40000000000.0,
     "radarAntipodEffect": [0.0,1.0,100.0,0.0],
+    "correctRadarAnimation": true,
     "radarDetectedTargetActivityTimeMult": 2.0,
     "radarDetectedTargetSelectionRelSpeedMin": 20.0,
     "radarTargetsMaxTime": 2.0,

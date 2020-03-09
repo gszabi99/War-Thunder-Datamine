@@ -3,7 +3,9 @@
   "transivers": {
     "search": {
       "sideLobesAttenuation": -20.0,
-      "power": 860.0,
+      "pulsePower": 50000.0,
+      "pulseWidth": 0.0,
+      "prf": 3000.0,
       "band": 8,
       "rcs": 3.0,
       "range": 30000.0,
@@ -82,6 +84,12 @@
       "stateInit": "init",
       "actionsTemplates": {
         "init": {
+          "setEnabled": {
+            "value": false
+          },
+          "setTransiver": {
+            "transiver": "search"
+          },
           "setSignal": {
             "signal": "search"
           },
@@ -102,7 +110,9 @@
           }
         },
         "setStandbyMode": {
-          "setTransiver": [],
+          "setEnabled": {
+            "value": false
+          },
           "setCenterAzimuth": {
             "source": "constant",
             "value": 0.0
@@ -110,13 +120,13 @@
           "clearTargets": []
         },
         "setSearchMode": {
+          "setEnabled": {
+            "value": true
+          },
           "clearTargets": [],
           "setFsmActive": {
             "fsm": "search",
             "active": true
-          },
-          "setTransiver": {
-            "transiver": "search"
           }
         },
         "resetSearchMode": {

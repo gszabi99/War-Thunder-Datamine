@@ -103,6 +103,12 @@
       "stateInit": "init",
       "actionsTemplates": {
         "init": {
+          "setEnabled": {
+            "value": false
+          },
+          "setTransiver": {
+            "transiver": "common"
+          },
           "setSignal": {
             "signal": "search"
           },
@@ -119,6 +125,11 @@
           }
         },
         "setLockMode": [
+          {
+            "setEnabled": {
+              "value": true
+            }
+          },
           {
             "clearTargets": []
           },
@@ -143,11 +154,6 @@
             "setFsmActive": {
               "fsm": "lock",
               "active": true
-            }
-          },
-          {
-            "setTransiver": {
-              "transiver": "common"
             }
           },
           {
@@ -181,6 +187,11 @@
           }
         ],
         "setTrackMode": [
+          {
+            "setEnabled": {
+              "value": true
+            }
+          },
           {
             "setScanPatternSet": []
           },
@@ -224,11 +235,6 @@
             "setFsmActive": {
               "fsm": "track",
               "active": true
-            }
-          },
-          {
-            "setTransiver": {
-              "transiver": "common"
             }
           },
           {
@@ -380,7 +386,9 @@
       "stateInit": "init",
       "actionsTemplates": {
         "setStandbyMode": {
-          "setTransiver": [],
+          "setEnabled": {
+            "value": false
+          },
           "clearTargets": [],
           "clearTargetsOfInterest": [],
           "setSignal": {
@@ -402,15 +410,15 @@
           }
         },
         "setSearchMode": {
+          "setEnabled": {
+            "value": true
+          },
           "setFsmActive": {
             "fsm": "search",
             "active": true
           },
           "clearTargets": [],
           "clearTargetsOfInterest": [],
-          "setTransiver": {
-            "transiver": "common"
-          },
           "setSignal": {
             "signal": "search"
           },

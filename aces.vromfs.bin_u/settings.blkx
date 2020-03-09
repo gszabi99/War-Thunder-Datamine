@@ -249,24 +249,28 @@
       "timeoutSec": 0
     }
   },
+  "_gameres": {
+    "basePkgDir": "content/base/res",
+    "patchRoot": "patch"
+  },
   "addons": [
     {
-      "folder": "content/hq_tex"
+      "folder": "content.hq/hq_tex"
     },
     {
-      "folder": "content/pkg_main"
+      "folder": "content.hq/pkg_cockpits"
     },
     {
       "folder": "content/pkg_china"
     },
     {
-      "folder": "content/pkg_china_hq"
+      "folder": "content.hq/pkg_china_hq"
     },
     {
       "folder": "content/pkg_dev"
     },
     {
-      "folder": "content/pkg_dev_hq"
+      "folder": "content.hq/pkg_dev_hq"
     },
     {
       "folder": "content/hc_pacific"
@@ -281,27 +285,27 @@
       "folder": "content/tomoe"
     },
     {
-      "folder": "content/tomoe_hq"
+      "folder": "content.hq/tomoe_hq"
     }
   ],
   "addons_no_check": [
     {
-      "folder": "content/hq_tex"
+      "folder": "content.hq/hq_tex"
     },
     {
-      "folder": "content/pkg_main"
+      "folder": "content.hq/pkg_cockpits"
     },
     {
       "folder": "content/pkg_china"
     },
     {
-      "folder": "content/pkg_china_hq"
+      "folder": "content.hq/pkg_china_hq"
     },
     {
       "folder": "content/pkg_dev"
     },
     {
-      "folder": "content/pkg_dev_hq"
+      "folder": "content.hq/pkg_dev_hq"
     },
     {
       "folder": "content/hc_pacific"
@@ -316,12 +320,12 @@
       "folder": "content/tomoe"
     },
     {
-      "folder": "content/tomoe_hq"
+      "folder": "content.hq/tomoe_hq"
     }
   ],
   "addonToXboxChunk": {
-    "content/hq_tex": 1002,
-    "content/pkg_main": 1002
+    "content.hq/hq_tex": 1002,
+    "content.hq/pkg_cockpits": 1002
   },
   "video": {
     "safeArea": false,
@@ -354,7 +358,8 @@
     "emergency_buffer_pages": 20,
     "enable_deferred_mipgen": true,
     "neo_4k_scale": 167,
-    "guiWebCacheCircuit": "production"
+    "guiWebCacheCircuit": "production",
+    "enable_defrag": true
   },
   "skies": {
     "common": {
@@ -456,7 +461,8 @@
     "disableNvapi": false,
     "nvVbBugWorkaround": false,
     "useGpuDt": false,
-    "flushOnPresent": true
+    "flushOnPresent": true,
+    "enableHdr": false
   },
   "openGL": {
     "nvGLShaderAVWorkaround": true

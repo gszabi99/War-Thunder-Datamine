@@ -171,10 +171,13 @@
         "dm": "elevon_l_dm"
       },
       {
+        "dm": "elevon%d_l_dm"
+      },
+      {
         "dm": "flaperon_l_dm"
       },
       {
-        "dm": "flaperon1_l_dm"
+        "dm": "flaperon%d_l_dm"
       },
       {
         "dm": "aileron_interceptor_l_dm"
@@ -202,10 +205,13 @@
         "dm": "elevon_r_dm"
       },
       {
+        "dm": "elevon%d_r_dm"
+      },
+      {
         "dm": "flaperon_r_dm"
       },
       {
-        "dm": "flaperon1_r_dm"
+        "dm": "flaperon%d_r_dm"
       },
       {
         "dm": "aileron_interceptor_r_dm"
@@ -240,9 +246,14 @@
         ]
       },
       {
-        "dependency": {
-          "dm": "elevon_l_dm"
-        }
+        "dependency": [
+          {
+            "dm": "elevon_l_dm"
+          },
+          {
+            "dm": "elevon%d_l_dm"
+          }
+        ]
       }
     ]
   },
@@ -265,9 +276,14 @@
         ]
       },
       {
-        "dependency": {
-          "dm": "elevon_r_dm"
-        }
+        "dependency": [
+          {
+            "dm": "elevon_r_dm"
+          },
+          {
+            "dm": "elevon%d_r_dm"
+          }
+        ]
       }
     ]
   },

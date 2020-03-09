@@ -141,28 +141,41 @@
           "armorThickness": 60.0,
           "createSecondaryShatters": false,
           "cumulativeArmorQuality": 1.0,
-          "genericArmorQuality": 1.9,
-          "armorEffectiveThicknessMax": 150.0
+          "genericArmorQuality": 0.45,
+          "variableThickness": true
         },
         "composite_armor_hull_01_dm": {
           "armorClass": "tank_textolite",
           "hidableInXrayViewer": true,
           "armorThickness": 105.0,
           "genericArmorQuality": 0.0,
-          "cumulativeArmorQuality": 0.95,
-          "armorEffectiveThicknessMax": 400.0
+          "cumulativeArmorQuality": 0.6,
+          "variableThickness": true
         },
         "turret_01_bottom_dm": {
-          "armorThickness": 50.0,
+          "armorThickness": 45.0,
           "cumulativeArmorQuality": 0.1,
-          "armorEffectiveThicknessMax": 255.0,
-          "genericArmorQuality": 1.73
+          "genericArmorQuality": 0.1,
+          "variableThickness": true
         },
-        "turret_03_front_dm": {
+        "turret_02_back_dm": {
+          "armorThickness": 90.0,
+          "cumulativeArmorQuality": 0.75
+        },
+        "turret_02_front_dm": {
           "armorThickness": 50.0
         },
+        "turret_03_top_dm": {
+          "armorThickness": 50.0,
+          "armorEffectiveThicknessMax": 380.0,
+          "cumulativeArmorQuality": 0.1
+        },
+        "turret_03_front_dm": {
+          "armorThickness": 50.0,
+          "variableThickness": true
+        },
         "turret_04_front_dm": {
-          "armorThickness": 110.0
+          "armorThickness": 10.0
         },
         "ex_armor_05_dm": {
           "armorThickness": 16.0,
@@ -174,7 +187,8 @@
       },
       "hull": {
         "body_front_dm": {
-          "armorThickness": 80.0
+          "armorThickness": 80.0,
+          "variableThickness": true
         },
         "superstructure_side_dm": {
           "armorThickness": 80.0
@@ -205,9 +219,6 @@
         },
         "turret_01_side_dm": {
           "armorThickness": 5.0
-        },
-        "turret_02_front_dm": {
-          "armorThickness": 60.0
         },
         "turret_02_top_dm": {
           "armorThickness": 30.0
@@ -315,18 +326,9 @@
           "cumulativeArmorQuality": 4.0,
           "armorEffectiveThicknessMax": 150.0
         },
-        "turret_02_back_dm": {
-          "armorThickness": 200.0,
-          "cumulativeArmorQuality": 0.75
-        },
         "turret_05_bottom_dm": {
           "armorThickness": 280.0,
           "armorEffectiveThicknessMax": 400.0,
-          "cumulativeArmorQuality": 0.1
-        },
-        "turret_03_top_dm": {
-          "armorThickness": 270.0,
-          "armorEffectiveThicknessMax": 380.0,
           "cumulativeArmorQuality": 0.1
         },
         "turret_08_back_dm": {
@@ -468,10 +470,12 @@
         "ex_decor_12_dm": [],
         "ex_decor_13_dm": [],
         "turret_07_bottom_dm": {
-          "armorThickness": 5.0
+          "armorThickness": 8.0,
+          "secondaryShatterArmorQuality": 0.8
         },
         "turret_07_side_dm": {
-          "armorThickness": 5.0
+          "armorThickness": 5.0,
+          "secondaryShatterArmorQuality": 0.8
         },
         "turret_07_top_dm": {
           "armorThickness": 4.0
@@ -1901,6 +1905,15 @@
     }
   },
   {
+    "gunConvergence": {
+      "updateFromRangefinder": true,
+      "minDistance": 200.0,
+      "distance": 1000.0,
+      "vertical": true,
+      "horizontal": true
+    }
+  },
+  {
     "class_tags": []
   },
   {
@@ -2306,24 +2319,6 @@
               "name": "tank_engine_fire",
               "emitter": "emtr_fire_engine_02"
             }
-          },
-          {
-            "fx": {
-              "name": "tank_engine_smoke",
-              "emitter": "emtr_fire_engine"
-            }
-          },
-          {
-            "fx": {
-              "name": "tank_engine_smoke",
-              "emitter": "emtr_fire_engine_01"
-            }
-          },
-          {
-            "fx": {
-              "name": "tank_engine_smoke",
-              "emitter": "emtr_fire_engine_02"
-            }
           }
         ]
       },
@@ -2335,67 +2330,78 @@
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo"
+              "emitter": "emtr_fire_ammo",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_01"
+              "emitter": "emtr_fire_ammo_01",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_02"
+              "emitter": "emtr_fire_ammo_02",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_03"
+              "emitter": "emtr_fire_ammo_03",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_04"
+              "emitter": "emtr_fire_ammo_04",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_05"
+              "emitter": "emtr_fire_ammo_05",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_06"
+              "emitter": "emtr_fire_ammo_06",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_07"
+              "emitter": "emtr_fire_ammo_07",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_08"
+              "emitter": "emtr_fire_ammo_08",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_09"
+              "emitter": "emtr_fire_ammo_09",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_10"
+              "emitter": "emtr_fire_ammo_10",
+              "useVelocity": false
             }
           }
         ]
@@ -2541,7 +2547,7 @@
           },
           {
             "fx": {
-              "name": "tank_smoke_big",
+              "name": "tank_smoke_small",
               "emitter": "emtr_smoke_dmg"
             }
           },

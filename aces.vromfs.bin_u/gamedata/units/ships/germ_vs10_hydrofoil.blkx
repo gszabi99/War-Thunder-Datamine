@@ -69,7 +69,7 @@
     "type": "typeMinelayer"
   },
   {
-    "expClass": "exp_gun_boat"
+    "expClass": "exp_torpedo_boat"
   },
   {
     "timeToFire": 40.0
@@ -891,7 +891,7 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 5.0,
         "compartment_01_dm": {
-          "hp": 402.0
+          "hp": 398.0
         },
         "compartment_02_dm": {
           "hp": 500.0
@@ -918,7 +918,7 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 4.0,
         "superstructure_back_dm": {
-          "hp": 177.0
+          "hp": 176.0
         },
         "superstructure_front_dm": {
           "hp": 100.0
@@ -927,7 +927,7 @@
           "hp": 100.0
         },
         "superstructure_side_dm": {
-          "hp": 189.0
+          "hp": 191.0
         },
         "superstructure_top_dm": {
           "hp": 100.0
@@ -993,7 +993,7 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 4.0,
         "hydrofoil_01_dm": {
-          "hp": 106.0
+          "hp": 107.0
         },
         "hydrofoil_02_dm": {
           "hp": 107.0
@@ -1013,16 +1013,16 @@
         "armorClass": "armor_tank_engine",
         "armorThickness": 5.0,
         "engine_01_dm": {
-          "hp": 288.0
+          "hp": 289.0
         },
         "engine_02_dm": {
-          "hp": 303.0
+          "hp": 304.0
         },
         "transmission_01_dm": {
-          "hp": 261.0
+          "hp": 259.0
         },
         "transmission_02_dm": {
-          "hp": 263.0
+          "hp": 261.0
         }
       },
       "steering_gear": {
@@ -1079,7 +1079,13 @@
       "turrets": {
         "fireParamsPreset": "ship_turrets",
         "armorClass": "ship_structural_steel",
-        "armorThickness": 15.0
+        "armorThickness": 15.0,
+        "turret_01_front_dm": {
+          "hp": 250.0
+        },
+        "turret_02_front_dm": {
+          "hp": 250.0
+        }
       },
       "turrets_main_caliber": {
         "fireParamsPreset": "ship_turrets",
@@ -1195,10 +1201,10 @@
         "armorClass": "ships_oil_fuel_tank",
         "armorThickness": 3.0,
         "fuel_tank_01_dm": {
-          "hp": 177.0
+          "hp": 229.0
         },
         "fuel_tank_02_dm": {
-          "hp": 180.0
+          "hp": 224.0
         }
       },
       "ammo": {
@@ -1247,6 +1253,7 @@
   },
   {
     "tank_crew": {
+      "minCrewMemberRepairCount": 6,
       "minCrewMemberAliveCount": 5,
       "sailor1": {
         "dmPart": "bridge_dm",
@@ -2128,13 +2135,6 @@
     ]
   },
   {
-    "tags": {
-      "country_germany": true,
-      "type_ship": true,
-      "ship": true
-    }
-  },
-  {
     "ShipPhys": {
       "mass": {
         "Empty": 43000.0,
@@ -2748,19 +2748,22 @@
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_01"
+              "emitter": "emtr_fire_engine_01",
+              "scale": 2.0
             }
           },
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_02"
+              "emitter": "emtr_fire_engine_02",
+              "scale": 2.0
             }
           },
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_03"
+              "emitter": "emtr_fire_engine_03",
+              "scale": 2.0
             }
           }
         ]
@@ -3028,13 +3031,13 @@
           },
           {
             "fx": {
-              "name": "tank_smoke_big",
+              "name": "tank_smoke_small",
               "emitter": "emtr_smoke_dmg_01"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_big",
+              "name": "tank_smoke_small",
               "emitter": "emtr_smoke_dmg_02"
             }
           },
@@ -3159,7 +3162,7 @@
           {
             "fx": {
               "name": "tank_fire_big",
-              "emitter": "emtr_fire_dmg_01"
+              "emitter": "emtr_fire_dmg_02"
             }
           },
           {

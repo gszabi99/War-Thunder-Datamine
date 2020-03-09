@@ -804,33 +804,6 @@
       }
     }
   ],
-  "tps_hover": {
-    "type": "TurretCamera",
-    "fov": 80.0,
-    "zoomFov": 10.0,
-    "transitionSpeed": 4.0,
-    "cameraControlSmoothX": 0.0,
-    "cameraControlSmoothY": 0.0,
-    "cameraControlViewRadius": 14.0,
-    "verticalLimit": 10.0,
-    "verticalSpeed": 1.5,
-    "horizontalSpeed": 1.5,
-    "velocitySmooth": 0.0,
-    "cameraUpOffset": 4.0,
-    "cameraEllipsoidUpOffset": 1.0,
-    "useEllipsoidOffset": true,
-    "clipType": "trace",
-    "fovVertAnglesOffsetPart": -0.1,
-    "cameraShakeMultiplier": 0.18,
-    "transitionFadeInTime": 1.12,
-    "transitionFadeOutTime": 0.05,
-    "viscosity": 0.05,
-    "tiltShakeMultiplierForTanks": 0.0,
-    "tiltShakeMultiplierForShips": 0.0,
-    "condition": {
-      "isHoverMode": []
-    }
-  },
   "camera_binoculars": [
     {
       "type": "TurretCamera"
@@ -4059,14 +4032,6 @@
       {
         "camName": "target_turret"
       }
-    ],
-    "ufo": [
-      {
-        "camName": "tps"
-      },
-      {
-        "camName": "weapon_aim_camera"
-      }
     ]
   },
   "transitions": [
@@ -4140,22 +4105,6 @@
         "to": "tps_ground",
         "smooth": true,
         "blur": false
-      }
-    },
-    {
-      "transition": {
-        "from": "tps",
-        "to": "tps_hover",
-        "smooth": true,
-        "blur": true
-      }
-    },
-    {
-      "transition": {
-        "from": "tps_hover",
-        "to": "tps",
-        "smooth": true,
-        "blur": true
       }
     }
   ]

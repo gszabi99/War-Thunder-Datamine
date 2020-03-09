@@ -39,9 +39,6 @@
     "gyroscopicSightOverSensors": true
   },
   {
-    "hudBombSight": false
-  },
-  {
     "type": "typeFighter"
   },
   {
@@ -97,6 +94,9 @@
         },
         "cannon3_dm": {
           "hp": 15.0
+        },
+        "radar_dm": {
+          "hp": 15.0
         }
       },
       "armor_engine": {
@@ -107,13 +107,17 @@
         "engine2_dm": {
           "genericDamageMult": 1.6,
           "hp": 50.5
-        },
-        "radar_dm": {
-          "genericDamageMult": 1.6,
-          "hp": 30.5
         }
       },
       "c_dural3": {
+        "aileron_interceptor_l_dm": {
+          "genericDamageMult": 0.3,
+          "hp": 14.5
+        },
+        "aileron_interceptor_r_dm": {
+          "genericDamageMult": 0.3,
+          "hp": 14.5
+        },
         "aileron_l_dm": {
           "genericDamageMult": 0.3,
           "hp": 30.5
@@ -189,14 +193,6 @@
           "hp": 80.5
         },
         "wing2_r_dm": {
-          "genericDamageMult": 0.3,
-          "hp": 80.5
-        },
-        "wing_l_dm": {
-          "genericDamageMult": 0.3,
-          "hp": 80.5
-        },
-        "wing_r_dm": {
           "genericDamageMult": 0.3,
           "hp": 80.5
         }
@@ -297,11 +293,133 @@
         "tank8_dm": {
           "hp": 120.5
         }
+      },
+      "wood": {
+        "wing_l_dm": {
+          "hp": 104.4
+        },
+        "wing_r_dm": {
+          "hp": 104.4
+        }
       }
     }
   },
   {
     "DamageEffects": [
+      {
+        "part": [
+          {
+            "name": "aileron_interceptor_l_dm"
+          },
+          {
+            "onHit": {
+              "damage": 10.0,
+              "cut": 0.1
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "cut": 0.4
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "cut": 1.0,
+              "nothing": 4.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 20.0,
+              "cut": 1.0,
+              "nothing": 2.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 1.0,
+              "nothing": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "aileron_interceptor_r_dm"
+          },
+          {
+            "onHit": {
+              "damage": 10.0,
+              "cut": 0.1
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "cut": 0.4
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "cut": 1.0,
+              "nothing": 4.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 20.0,
+              "cut": 1.0,
+              "nothing": 2.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 1.0,
+              "nothing": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          }
+        ]
+      },
       {
         "part": [
           {
@@ -2799,7 +2917,7 @@
         "collimatorSize": 0.15
       },
       {
-        "staticAimPitch": 1.0
+        "staticAimPitch": 0.0
       },
       {
         "mirror": true
@@ -3386,7 +3504,17 @@
         "tier": 4,
         "modClass": "weapon"
       },
+      "Radar_warning_receiver_system": {
+        "tier": 1,
+        "modClass": "weapon",
+        "effects": {
+          "sensor": {
+            "blk": "gameData/sensors/us_an_apr_25.blk"
+          }
+        }
+      },
       "us_aim_9b": {
+        "prevModification": "Radar_warning_receiver_system",
         "tier": 2,
         "modClass": "weapon"
       },

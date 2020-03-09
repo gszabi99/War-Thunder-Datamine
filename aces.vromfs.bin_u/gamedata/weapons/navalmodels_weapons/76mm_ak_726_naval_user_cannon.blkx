@@ -11,6 +11,7 @@
   "reloadTime": 3.0,
   "recoilOffset": 0.535,
   "recoilTimes": [0.12,0.32],
+  "jammedReloadTime": 12.0,
   "traceFreq": 1,
   "bulletsCluster": 1,
   "shouldCollideWithRendinsts": true,
@@ -23,23 +24,20 @@
   "fxMultipleSpawn": true,
   "isBulletBelt": false,
   "notUseDefaultBulletInGui": true,
-  "deviation": [
-    {
-      "deviation": [10.0,0.0]
-    },
-    {
-      "deviation": [18.0,15.0]
-    }
-  ],
   "overheat": [
     {
-      "overheat": [12.0,0.0]
+      "overheat": [28.0,0.0]
     },
     {
-      "overheat": [18.0,0.05]
+      "overheat": [30.0,1.0]
+    }
+  ],
+  "deviation": [
+    {
+      "deviation": [20.0,0.0]
     },
     {
-      "overheat": [22.0,0.25]
+      "deviation": [25.0,5.0]
     }
   ],
   "bullet": {
@@ -515,7 +513,8 @@
         "armDistance": 400.0,
         "detectAirUnits": true,
         "detectGroundUnits": false,
-        "detectGround": false
+        "detectGround": false,
+        "detectShells": false
       },
       "damage": {
         "shatter": [

@@ -179,6 +179,23 @@
           "armorThickness": 20.0
         }
       },
+      "body_shields": {
+        "armorClass": "tank_structural_steel",
+        "hp": 1000.0,
+        "armorThickness": 4.0,
+        "stopChanceOnDeadPart": 0.0,
+        "createSecondaryShatters": false,
+        "ex_decor_l_01_dm": [],
+        "ex_decor_01_dm": [],
+        "ex_decor_02_dm": [],
+        "ex_decor_r_01_dm": [],
+        "ex_decor_r_10_dm": [],
+        "ex_decor_l_10_dm": [],
+        "ex_decor_r_11_dm": [],
+        "ex_decor_l_11_dm": [],
+        "ex_decor_l_15_dm": [],
+        "ex_decor_r_15_dm": []
+      },
       "turret": {
         "armorClass": "CHA_tank",
         "turret_back_dm": {
@@ -306,6 +323,7 @@
         "wheel_r_top_01_dm": [],
         "wheel_r_top_02_dm": [],
         "wheel_r_top_03_dm": [],
+        "wheel_support_dm": [],
         "submodule": {
           "armorClass": "tank_traks",
           "armorThickness": 20.0,
@@ -486,6 +504,28 @@
         "ammo_body_07_dm": [],
         "ammo_body_08_dm": []
       }
+    }
+  },
+  {
+    "attachables": {
+      "ex_decor_l_01_dm": true,
+      "ex_decor_01_dm": true,
+      "ex_decor_02_dm": true,
+      "ex_decor_r_01_dm": true,
+      "ex_decor_r_05_dm": true,
+      "ex_decor_r_06_dm": true,
+      "ex_decor_l_06_dm": true,
+      "ex_decor_r_07_dm": true,
+      "ex_decor_r_10_dm": true,
+      "ex_decor_l_10_dm": true,
+      "ex_decor_r_11_dm": true,
+      "ex_decor_l_11_dm": true,
+      "ex_decor_r_14_dm": true,
+      "ex_decor_l_14_dm": true,
+      "ex_decor_l_15_dm": true,
+      "ex_decor_r_15_dm": true,
+      "ex_decor_r_16_dm": true,
+      "ex_decor_l_16_dm": true
     }
   },
   {
@@ -1049,7 +1089,7 @@
             "expl": 1.0,
             "conditionDamage": 350.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBrake"
           }
         },
         {
@@ -1058,7 +1098,7 @@
             "expl": 1.0,
             "conditionDamage": 250.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBrake"
           }
         },
         {
@@ -1067,7 +1107,7 @@
             "expl": 1.0,
             "conditionDamage": 750.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBrake"
           }
         },
         {
@@ -1075,7 +1115,7 @@
             "expl": 1.0,
             "conditionDead": true,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBrake"
           }
         }
       ],
@@ -1143,7 +1183,7 @@
             "expl": 1.0,
             "conditionDamage": 400.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -1152,7 +1192,7 @@
             "expl": 1.0,
             "conditionDamage": 400.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         }
       ],
@@ -1184,7 +1224,7 @@
             "expl": 1.0,
             "conditionDamage": 350.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBrake"
           }
         },
         {
@@ -1193,7 +1233,7 @@
             "expl": 1.0,
             "conditionDamage": 250.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBrake"
           }
         },
         {
@@ -1202,7 +1242,7 @@
             "expl": 1.0,
             "conditionDamage": 750.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBrake"
           }
         },
         {
@@ -1210,10 +1250,17 @@
             "expl": 1.0,
             "conditionDead": true,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBrake"
           }
         }
       ]
+    }
+  },
+  {
+    "gunConvergence": {
+      "distance": 800.0,
+      "vertical": true,
+      "horizontal": true
     }
   },
   {
@@ -1585,24 +1632,6 @@
               "name": "tank_engine_fire",
               "emitter": "emtr_fire_engine_02"
             }
-          },
-          {
-            "fx": {
-              "name": "tank_engine_smoke",
-              "emitter": "emtr_fire_engine"
-            }
-          },
-          {
-            "fx": {
-              "name": "tank_engine_smoke",
-              "emitter": "emtr_fire_engine_01"
-            }
-          },
-          {
-            "fx": {
-              "name": "tank_engine_smoke",
-              "emitter": "emtr_fire_engine_02"
-            }
           }
         ]
       },
@@ -1614,67 +1643,78 @@
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo"
+              "emitter": "emtr_fire_ammo",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_01"
+              "emitter": "emtr_fire_ammo_01",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_02"
+              "emitter": "emtr_fire_ammo_02",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_03"
+              "emitter": "emtr_fire_ammo_03",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_04"
+              "emitter": "emtr_fire_ammo_04",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_05"
+              "emitter": "emtr_fire_ammo_05",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_06"
+              "emitter": "emtr_fire_ammo_06",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_07"
+              "emitter": "emtr_fire_ammo_07",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_08"
+              "emitter": "emtr_fire_ammo_08",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_09"
+              "emitter": "emtr_fire_ammo_09",
+              "useVelocity": false
             }
           },
           {
             "fx": {
               "name": "tank_ammo_fire",
-              "emitter": "emtr_fire_ammo_10"
+              "emitter": "emtr_fire_ammo_10",
+              "useVelocity": false
             }
           }
         ]
@@ -1820,7 +1860,7 @@
           },
           {
             "fx": {
-              "name": "tank_smoke_big",
+              "name": "tank_smoke_small",
               "emitter": "emtr_smoke_dmg"
             }
           },

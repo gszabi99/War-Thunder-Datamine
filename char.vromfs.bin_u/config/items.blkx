@@ -3526,6 +3526,64 @@
       ]
     }
   },
+  "wager_firstBlood_test": {
+    "type": "wager",
+    "costGold": 10000,
+    "purchase_feature": "devItemShop",
+    "wagerParams": {
+      "maxWins": 3,
+      "maxFails": 2,
+      "minWager": 0,
+      "maxWager": 10000,
+      "wagerStep": 500,
+      "win": {
+        "type": "unlocks",
+        "unlock": "first_blood"
+      },
+      "active": [
+        {
+          "type": "maxUnitsRankOnStartMission"
+        },
+        {
+          "minRank": 3
+        },
+        {
+          "maxRank": 4
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "eventMode",
+            "is_event": false
+          }
+        }
+      ],
+      "winParams": [
+        {
+          "reward": {
+            "param": 1,
+            "wpRewardParams": [1.0,0.0,10000.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 2,
+            "wpRewardParams": [0.0,0.0,0.0]
+          }
+        },
+        {
+          "reward": {
+            "param": 3,
+            "wpRewardParams": [10.0,0.0,100000.0]
+          }
+        }
+      ]
+    }
+  },
   "order_score": {
     "type": "missionOrder",
     "sell_count_step": 10,
@@ -3754,9 +3812,215 @@
       }
     }
   },
+  "booster_wp_500_spentinsessiontime_3min_1mp": {
+    "type": "rateBooster",
+    "costGold": 100,
+    "expiredTimeHAfterActivation": 24.0,
+    "locId": "booster_wp_500_spentinsessiontime_3min_1mp",
+    "purchase_feature": "devItemShop",
+    "rateBoosterParams": {
+      "wpRate": 500,
+      "spentInSessionTimeMin": 3,
+      "stop": {
+        "type": "sessionsStarted",
+        "num": 1
+      }
+    }
+  },
+  "booster_wp_500_spentinsessiontime_3min_10mp": {
+    "type": "rateBooster",
+    "costGold": 100,
+    "expiredTimeHAfterActivation": 24.0,
+    "locId": "booster_wp_500_spentinsessiontime_3min_10mp",
+    "purchase_feature": "devItemShop",
+    "rateBoosterParams": {
+      "wpRate": 300,
+      "spentInSessionTimeMin": 3,
+      "stop": {
+        "type": "sessionsStarted",
+        "num": 10
+      }
+    }
+  },
+  "test_item_not_limited": {
+    "type": "rateBooster",
+    "expiredTimeHAfterActivation": 24.0,
+    "rateBoosterParams": {
+      "wpRate": 500,
+      "spentInSessionTimeMin": 30,
+      "stop": {
+        "type": "sessionsStarted",
+        "num": 1
+      }
+    }
+  },
+  "test_item_limit_personal_total": {
+    "type": "rateBooster",
+    "expiredTimeHAfterActivation": 24.0,
+    "limitPersonalTotal": 15,
+    "rateBoosterParams": {
+      "wpRate": 500,
+      "spentInSessionTimeMin": 30,
+      "stop": {
+        "type": "sessionsStarted",
+        "num": 1
+      }
+    }
+  },
+  "test_item_limit_global": {
+    "type": "rateBooster",
+    "expiredTimeHAfterActivation": 24.0,
+    "limitGlobal": 12,
+    "rateBoosterParams": {
+      "wpRate": 500,
+      "spentInSessionTimeMin": 30,
+      "stop": {
+        "type": "sessionsStarted",
+        "num": 1
+      }
+    }
+  },
+  "test_item_limit_personal_at_time": {
+    "type": "rateBooster",
+    "expiredTimeHAfterActivation": 24.0,
+    "limitPersonalAtTime": 14,
+    "rateBoosterParams": {
+      "wpRate": 500,
+      "spentInSessionTimeMin": 30,
+      "stop": {
+        "type": "sessionsStarted",
+        "num": 1
+      }
+    }
+  },
+  "test_item_limit_all": {
+    "type": "rateBooster",
+    "expiredTimeHAfterActivation": 24.0,
+    "limitGlobal": 20,
+    "limitPersonalTotal": 20,
+    "limitPersonalAtTime": 20,
+    "rateBoosterParams": {
+      "wpRate": 500,
+      "spentInSessionTimeMin": 30,
+      "stop": {
+        "type": "sessionsStarted",
+        "num": 1
+      }
+    }
+  },
+  "ticket_test_linkage_first": {
+    "type": "tournamentTicket",
+    "costGold": 10,
+    "iconStyle": "silver_blue",
+    "purchase_feature": "devItemShop",
+    "locId": "tickets/common_ticket",
+    "tournamentTicketParams": []
+  },
+  "ticket_test_linkage_second": {
+    "type": "tournamentTicket",
+    "cost": 100000,
+    "iconStyle": "silver_blue",
+    "purchase_feature": "devItemShop",
+    "locId": "tickets/common_ticket",
+    "tournamentTicketParams": []
+  },
+  "ticket_test_linkage_third": {
+    "type": "tournamentTicket",
+    "costGold": 111,
+    "iconStyle": "silver_blue",
+    "purchase_feature": "devItemShop",
+    "locId": "tickets/common_ticket",
+    "tournamentTicketParams": []
+  },
+  "item_universal_spare": {
+    "type": "universalSpare",
+    "canPacked": true,
+    "costGold": 20098,
+    "purchase_feature": "devItemShop",
+    "universalSpareParams": {
+      "numSpares": 1
+    }
+  },
+  "item_universal_spare_pack_big": {
+    "type": "universalSpare",
+    "canPacked": true,
+    "costGold": 20421,
+    "sell_count_step": 10,
+    "purchase_feature": "devItemShop",
+    "universalSpareParams": {
+      "numSpares": 1,
+      "minRank": 3,
+      "maxRank": 5
+    }
+  },
+  "item_universal_spare_pack_small": {
+    "type": "universalSpare",
+    "canPacked": true,
+    "costGold": 20421,
+    "sell_count_step": 5,
+    "purchase_feature": "devItemShop",
+    "universalSpareParams": {
+      "numSpares": 1,
+      "minRank": 3,
+      "maxRank": 5
+    }
+  },
+  "universal_spare_aircraft_r16": {
+    "type": "universalSpare",
+    "canPacked": true,
+    "costGold": 12011,
+    "purchase_feature": "devItemShop",
+    "universalSpareParams": {
+      "unitType": "aircraft",
+      "numSpares": 1
+    }
+  },
+  "universal_spare_tank_r16": {
+    "type": "universalSpare",
+    "canPacked": true,
+    "costGold": 12021,
+    "purchase_feature": "devItemShop",
+    "universalSpareParams": {
+      "unitType": "tank",
+      "numSpares": 1
+    }
+  },
+  "universal_spare_ship_r16": {
+    "type": "universalSpare",
+    "canPacked": true,
+    "costGold": 12031,
+    "purchase_feature": "devItemShop",
+    "universalSpareParams": {
+      "unitType": "ship",
+      "numSpares": 1
+    }
+  },
+  "discount_ussr": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 5,
+      "discountsDesc": {
+        "buy": {
+          "country_ussr": 10,
+          "rank2": 20,
+          "rank3_premium": 30,
+          "country_ussr_rank4": 40,
+          "country_ussr_rank5_premium": 50
+        },
+        "specialization": {
+          "all": 36
+        },
+        "expConvert": {
+          "country_ussr": 44
+        }
+      }
+    }
+  },
   "discount_20_p-39n_su": {
-    "expiredTimeH": 72.0,
-    "expiredTimeHAfterActivation": 72.0,
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
     "type": "personalDiscounts",
     "personalDiscountsParams": {
       "purchasesMaxCount": 1,
@@ -3770,8 +4034,8 @@
     }
   },
   "discount_50_p-39n_su": {
-    "expiredTimeH": 72.0,
-    "expiredTimeHAfterActivation": 72.0,
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
     "type": "personalDiscounts",
     "personalDiscountsParams": {
       "purchasesMaxCount": 1,
@@ -4129,90 +4393,9 @@
       }
     }
   },
-  "discount_ussr": {
-    "expiredTimeH": 72.0,
-    "expiredTimeHAfterActivation": 24.0,
-    "type": "personalDiscounts",
-    "personalDiscountsParams": {
-      "purchasesMaxCount": 5,
-      "discountsDesc": {
-        "buy": {
-          "country_ussr": 10,
-          "rank2": 20,
-          "rank3_premium": 30,
-          "country_ussr_rank4": 40,
-          "country_ussr_rank5_premium": 50
-        },
-        "specialization": {
-          "all": 36
-        },
-        "expConvert": {
-          "country_ussr": 44
-        }
-      }
-    }
-  },
-  "wager_firstBlood_test": {
-    "type": "wager",
-    "costGold": 10000,
-    "purchase_feature": "devItemShop",
-    "wagerParams": {
-      "maxWins": 3,
-      "maxFails": 2,
-      "minWager": 0,
-      "maxWager": 10000,
-      "wagerStep": 500,
-      "win": {
-        "type": "unlocks",
-        "unlock": "first_blood"
-      },
-      "active": [
-        {
-          "type": "maxUnitsRankOnStartMission"
-        },
-        {
-          "minRank": 3
-        },
-        {
-          "maxRank": 4
-        },
-        {
-          "condition": {
-            "type": "online"
-          }
-        },
-        {
-          "condition": {
-            "type": "eventMode",
-            "is_event": false
-          }
-        }
-      ],
-      "winParams": [
-        {
-          "reward": {
-            "param": 1,
-            "wpRewardParams": [1.0,0.0,10000.0]
-          }
-        },
-        {
-          "reward": {
-            "param": 2,
-            "wpRewardParams": [0.0,0.0,0.0]
-          }
-        },
-        {
-          "reward": {
-            "param": 3,
-            "wpRewardParams": [10.0,0.0,100000.0]
-          }
-        }
-      ]
-    }
-  },
   "discount_10_d_520": {
-    "expiredTimeH": 72.0,
-    "expiredTimeHAfterActivation": 24.0,
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
     "type": "personalDiscounts",
     "personalDiscountsParams": {
       "purchasesMaxCount": 1,
@@ -4226,8 +4409,8 @@
     }
   },
   "discount_20_d_520": {
-    "expiredTimeH": 72.0,
-    "expiredTimeHAfterActivation": 24.0,
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
     "type": "personalDiscounts",
     "personalDiscountsParams": {
       "purchasesMaxCount": 1,
@@ -4241,8 +4424,8 @@
     }
   },
   "discount_25_boomerang_mki": {
-    "expiredTimeH": 72.0,
-    "expiredTimeHAfterActivation": 24.0,
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
     "type": "personalDiscounts",
     "personalDiscountsParams": {
       "purchasesMaxCount": 1,
@@ -4256,8 +4439,8 @@
     }
   },
   "discount_25_boomerang_mkii": {
-    "expiredTimeH": 72.0,
-    "expiredTimeHAfterActivation": 24.0,
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
     "type": "personalDiscounts",
     "personalDiscountsParams": {
       "purchasesMaxCount": 1,
@@ -8545,6 +8728,4266 @@
       }
     }
   },
+  "discount_5_ju-288c": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ju-288c": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_10_ju-288c": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ju-288c": 10
+          }
+        }
+      }
+    }
+  },
+  "discount_20_ju-288c": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ju-288c": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_ju-288c": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ju-288c": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_ju-288c": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ju-288c": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_20_i-153p": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "i-153p": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_i-16_type28": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "i-16_type28": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_hp52_hampden_tbmk1_ussr_utk1": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "hp52_hampden_tbmk1_ussr_utk1": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_75_hp52_hampden_tbmk1_ussr_utk1": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "hp52_hampden_tbmk1_ussr_utk1": 75
+          }
+        }
+      }
+    }
+  },
+  "discount_20_iar_81c": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "iar_81c": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_iar_81c": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "iar_81c": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_iar_81c": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "iar_81c": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_20_boomerang_mki": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "boomerang_mki": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_boomerang_mkii": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "boomerang_mkii": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_p-39k_1": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "p-39k_1": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_spitfire_mk5b_italy": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "spitfire_mk5b_italy": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_spitfire_mk5b_italy": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "spitfire_mk5b_italy": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_spitfire_mk5b_italy": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "spitfire_mk5b_italy": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_75_spitfire_mk5b_italy": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "spitfire_mk5b_italy": 75
+          }
+        }
+      }
+    }
+  },
+  "discount_20_p-47d_luftwaffe": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "p-47d_luftwaffe": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_la-5fn_luftwaffe": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "la-5fn_luftwaffe": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_spitfire_ix_usa": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "spitfire_ix_usa": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_bf-109e-3_japan": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "bf-109e-3_japan": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_hellcat_fmk1": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "hellcat_fmk1": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_fw-190a-5_japan": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "fw-190a-5_japan": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_pby-5a_ussr": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "pby-5a_ussr": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_a6m2_zero_usa": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "a6m2_zero_usa": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_75_a6m2_zero_usa": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "a6m2_zero_usa": 75
+          }
+        }
+      }
+    }
+  },
+  "discount_20_bf-109f-4_usa": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "bf-109f-4_usa": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_p-63a-5_ussr": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "p-63a-5_ussr": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_f4u-1a_japan": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "f4u-1a_japan": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_wellington_mk1c_luftwaffe": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "wellington_mk1c_luftwaffe": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_b_25j_30_vvs_ussr": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "b_25j_30_vvs_ussr": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_xp-50": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "xp-50": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_xp-55": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "xp-55": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_btd-1": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "btd-1": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_corsair_fmk2": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "corsair_fmk2": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_corsair_fmk2": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "corsair_fmk2": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_corsair_fmk2": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "corsair_fmk2": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_10_yak-3_france": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "yak-3_france": 10
+          }
+        }
+      }
+    }
+  },
+  "discount_20_yak-3_france": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "yak-3_france": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_yak-3_france": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "yak-3_france": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_yak-3_france": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "yak-3_france": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_75_yak-3_france": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "yak-3_france": 75
+          }
+        }
+      }
+    }
+  },
+  "discount_20_ki-96": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ki-96": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_ki_100_2": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ki_100_2": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_75_ki_100_2": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ki_100_2": 75
+          }
+        }
+      }
+    }
+  },
+  "discount_20_fw-190d-9_ussr": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "fw-190d-9_ussr": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_5_f-89b": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "f-89b": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_10_f-89b": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "f-89b": 10
+          }
+        }
+      }
+    }
+  },
+  "discount_20_f-89b": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "f-89b": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_f-89b": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "f-89b": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_5_f-89d": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "f-89d": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_10_f-89d": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "f-89d": 10
+          }
+        }
+      }
+    }
+  },
+  "discount_20_f-89d": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "f-89d": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_f-89d": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "f-89d": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_5_mb_5": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "mb_5": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_10_mb_5": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "mb_5": 10
+          }
+        }
+      }
+    }
+  },
+  "discount_20_mb_5": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "mb_5": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_mb_5": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "mb_5": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_mb_5": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "mb_5": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_20_avenger_mk1": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "avenger_mk1": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_spitfire_mk14c": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "spitfire_mk14c": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_hs-129b-2_romania_italy": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "hs-129b-2_romania_italy": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_hs-129b-2_romania_italy": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "hs-129b-2_romania_italy": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_hs-129b-2_romania_italy": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "hs-129b-2_romania_italy": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_75_hs-129b-2_romania_italy": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "hs-129b-2_romania_italy": 75
+          }
+        }
+      }
+    }
+  },
+  "discount_10_bf-109g-2_hungary": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "bf-109g-2_hungary": 10
+          }
+        }
+      }
+    }
+  },
+  "discount_20_bf-109g-2_hungary": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "bf-109g-2_hungary": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_bf-109g-2_hungary": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "bf-109g-2_hungary": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_bf-109g-2_hungary": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "bf-109g-2_hungary": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_75_bf-109g-2_hungary": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "bf-109g-2_hungary": 75
+          }
+        }
+      }
+    }
+  },
+  "discount_5_g_55s": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "g_55s": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_10_g_55s": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "g_55s": 10
+          }
+        }
+      }
+    }
+  },
+  "discount_20_g_55s": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "g_55s": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_g_55s": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "g_55s": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_g_55s": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "g_55s": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_20_b-17e_japan": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "b-17e_japan": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_yak-1b_luftwaffe": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "yak-1b_luftwaffe": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_5_tempest_mkv_luftwaffe": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "tempest_mkv_luftwaffe": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_20_tempest_mkv_luftwaffe": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "tempest_mkv_luftwaffe": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_pby-5a_raf": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "pby-5a_raf": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_5_fw-190a-8_usa": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "fw-190a-8_usa": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_20_fw-190a-8_usa": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "fw-190a-8_usa": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_p-47d_ussr": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "p-47d_ussr": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_ki_43_2_late": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ki_43_2_late": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_5_j2m4_kai": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "j2m4_kai": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_20_j2m4_kai": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "j2m4_kai": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_bv-238": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "bv-238": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_5_a2d": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "a2d": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_10_a2d": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "a2d": 10
+          }
+        }
+      }
+    }
+  },
+  "discount_20_a2d": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "a2d": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_a2d": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "a2d": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_a2d": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "a2d": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_20_il_2_1942_luftwaffe": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "il_2_1942_luftwaffe": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_5_yak-3_vk107": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "yak-3_vk107": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_20_yak-3_vk107": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "yak-3_vk107": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_5_j2m5_30mm": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "j2m5_30mm": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_20_j2m5_30mm": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "j2m5_30mm": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_5_ki_87": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ki_87": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_10_ki_87": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ki_87": 10
+          }
+        }
+      }
+    }
+  },
+  "discount_20_ki_87": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ki_87": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_ki_87": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ki_87": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_ki_87": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ki_87": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_20_a7m1": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "a7m1": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_5_be_6": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "be_6": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_10_be_6": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "be_6": 10
+          }
+        }
+      }
+    }
+  },
+  "discount_20_be_6": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "be_6": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_be_6": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "be_6": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_be_6": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "be_6": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_20_ki_44_2_otsu": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ki_44_2_otsu": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_p-61a_1": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "p-61a_1": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_5_xa_38": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "xa_38": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_10_xa_38": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "xa_38": 10
+          }
+        }
+      }
+    }
+  },
+  "discount_20_xa_38": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "xa_38": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_xa_38": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "xa_38": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_xa_38": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "xa_38": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_5_do_335b_2": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "do_335b_2": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_20_do_335b_2": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "do_335b_2": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_h8k3": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "h8k3": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_10_he_219a_7": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "he_219a_7": 10
+          }
+        }
+      }
+    }
+  },
+  "discount_20_he_219a_7": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "he_219a_7": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_he_219a_7": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "he_219a_7": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_he_219a_7": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "he_219a_7": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_20_ta_154a_1": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ta_154a_1": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_ta_154a_1": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ta_154a_1": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_ta_154a_1": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ta_154a_1": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_75_ta_154a_1": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ta_154a_1": 75
+          }
+        }
+      }
+    }
+  },
+  "discount_5_mi_24p_german_hfs80": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "mi_24p_german_hfs80": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_10_mi_24p_german_hfs80": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "mi_24p_german_hfs80": 10
+          }
+        }
+      }
+    }
+  },
+  "discount_20_mi_24p_german_hfs80": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "mi_24p_german_hfs80": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_ussr_t_34_57_1943": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_t_34_57_1943": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_ussr_su_122P": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_su_122P": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_germ_kv_2_754r": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_kv_2_754r": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_germ_pzkpfw_III_ausf_N": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_pzkpfw_III_ausf_N": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_10_germ_pz_IV_L70_A": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_pz_IV_L70_A": 10
+          }
+        }
+      }
+    }
+  },
+  "discount_20_germ_pz_IV_L70_A": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_pz_IV_L70_A": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_germ_pz_IV_L70_A": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_pz_IV_L70_A": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_germ_pz_IV_L70_A": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_pz_IV_L70_A": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_75_germ_pz_IV_L70_A": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_pz_IV_L70_A": 75
+          }
+        }
+      }
+    }
+  },
+  "discount_20_germ_sturmpanzer_IV_brummbar": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_sturmpanzer_IV_brummbar": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_germ_kv_1_kwk_40": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_kv_1_kwk_40": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_5_germ_panzerbefelhswagen_jagdpanther": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_panzerbefelhswagen_jagdpanther": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_20_germ_panzerbefelhswagen_jagdpanther": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_panzerbefelhswagen_jagdpanther": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_50_ussr_pzkpfw_III_ausf_J_L42": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_pzkpfw_III_ausf_J_L42": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_20_germ_t_34_747": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_t_34_747": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_ussr_zut_37": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_zut_37": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_ussr_smk": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_smk": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_5_us_t114": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_t114": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_10_us_t114": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_t114": 10
+          }
+        }
+      }
+    }
+  },
+  "discount_20_us_t114": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_t114": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_us_t114": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_t114": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_20_us_t20": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_t20": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_ussr_m4a2_76w_sherman": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_m4a2_76w_sherman": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_10_us_t14": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_t14": 10
+          }
+        }
+      }
+    }
+  },
+  "discount_20_us_t14": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_t14": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_us_t14": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_t14": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_us_t14": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_t14": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_75_us_t14": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_t14": 75
+          }
+        }
+      }
+    }
+  },
+  "discount_5_us_m26e1_pershing": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_m26e1_pershing": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_20_us_m26e1_pershing": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_m26e1_pershing": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_us_mk1_grant": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_mk1_grant": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_us_mk1_grant": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_mk1_grant": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_us_mk1_grant": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_mk1_grant": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_20_us_m4a5_ram_2": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_m4a5_ram_2": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_us_m4a3e2_sherman_jumbo_cobra_king": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_m4a3e2_sherman_jumbo_cobra_king": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_us_m46_patton_73_armor_bat": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_m46_patton_73_armor_bat": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_us_m4_sherman_calliope": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_m4_sherman_calliope": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_germ_panzerbefelhswagen_VI_P": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_panzerbefelhswagen_VI_P": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_10_us_m18_hellcat_black_cat": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_m18_hellcat_black_cat": 10
+          }
+        }
+      }
+    }
+  },
+  "discount_20_us_m18_hellcat_black_cat": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_m18_hellcat_black_cat": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_us_m18_hellcat_black_cat": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_m18_hellcat_black_cat": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_us_m18_hellcat_black_cat": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_m18_hellcat_black_cat": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_75_us_m18_hellcat_black_cat": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_m18_hellcat_black_cat": 75
+          }
+        }
+      }
+    }
+  },
+  "discount_5_us_t28": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_t28": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_20_us_t28": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_t28": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_5_ussr_is_2_1944_revenge": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_is_2_1944_revenge": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_10_ussr_is_2_1944_revenge": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_is_2_1944_revenge": 10
+          }
+        }
+      }
+    }
+  },
+  "discount_20_ussr_is_2_1944_revenge": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_is_2_1944_revenge": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_ussr_is_2_1944_revenge": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_is_2_1944_revenge": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_ussr_is_2_1944_revenge": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_is_2_1944_revenge": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_20_ussr_su_100Y": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_su_100Y": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_germ_nbfz_VI": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_nbfz_VI": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_5_us_t54e1": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_t54e1": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_10_us_t54e1": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_t54e1": 10
+          }
+        }
+      }
+    }
+  },
+  "discount_20_us_t54e1": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_t54e1": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_us_t54e1": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_t54e1": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_5_germ_mkpz_m47": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_mkpz_m47": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_10_germ_mkpz_m47": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_mkpz_m47": 10
+          }
+        }
+      }
+    }
+  },
+  "discount_20_germ_mkpz_m47": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_mkpz_m47": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_germ_mkpz_m47": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_mkpz_m47": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_5_us_m18_super_hellcat": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_m18_super_hellcat": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_20_us_m18_super_hellcat": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_m18_super_hellcat": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_5_ussr_t_34_100": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_t_34_100": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_20_ussr_t_34_100": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_t_34_100": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_5_us_m26_t99": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_m26_t99": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_20_us_m26_t99": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_m26_t99": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_germ_panzerwerfer_42": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_panzerwerfer_42": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_5_germ_ru251": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_ru251": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_10_germ_ru251": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_ru251": 10
+          }
+        }
+      }
+    }
+  },
+  "discount_20_germ_ru251": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_ru251": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_germ_ru251": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_ru251": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_germ_ru251": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_ru251": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_20_ussr_bm_8_24": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_bm_8_24": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_uk_a1e1_independent": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "uk_a1e1_independent": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_5_ussr_t_44_122": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_t_44_122": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_20_ussr_t_44_122": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_t_44_122": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_5_ussr_kv_122": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_kv_122": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_20_ussr_kv_122": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_kv_122": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_uk_ac4_thunderbolt": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "uk_ac4_thunderbolt": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_10_uk_sherman_ic_firefly": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "uk_sherman_ic_firefly": 10
+          }
+        }
+      }
+    }
+  },
+  "discount_20_uk_sherman_ic_firefly": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "uk_sherman_ic_firefly": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_uk_sherman_ic_firefly": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "uk_sherman_ic_firefly": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_uk_sherman_ic_firefly": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "uk_sherman_ic_firefly": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_75_uk_sherman_ic_firefly": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "uk_sherman_ic_firefly": 75
+          }
+        }
+      }
+    }
+  },
+  "discount_20_uk_a27m_cromwell_5_rp3": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "uk_a27m_cromwell_5_rp3": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_10_germ_infanterie_kampfpanzer_churchill": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_infanterie_kampfpanzer_churchill": 10
+          }
+        }
+      }
+    }
+  },
+  "discount_20_germ_infanterie_kampfpanzer_churchill": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_infanterie_kampfpanzer_churchill": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_20_fr_b1_ter": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "fr_b1_ter": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_fr_b1_ter": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "fr_b1_ter": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_fr_b1_ter": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "fr_b1_ter": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_75_fr_b1_ter": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "fr_b1_ter": 75
+          }
+        }
+      }
+    }
+  },
+  "discount_5_fr_pzkpfw_V_panther_dauphine": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "fr_pzkpfw_V_panther_dauphine": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_10_fr_pzkpfw_V_panther_dauphine": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "fr_pzkpfw_V_panther_dauphine": 10
+          }
+        }
+      }
+    }
+  },
+  "discount_20_fr_pzkpfw_V_panther_dauphine": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "fr_pzkpfw_V_panther_dauphine": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_fr_pzkpfw_V_panther_dauphine": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "fr_pzkpfw_V_panther_dauphine": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_fr_pzkpfw_V_panther_dauphine": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "fr_pzkpfw_V_panther_dauphine": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_5_fr_amx_13_75_ss11": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "fr_amx_13_75_ss11": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_10_fr_amx_13_75_ss11": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "fr_amx_13_75_ss11": 10
+          }
+        }
+      }
+    }
+  },
+  "discount_20_fr_amx_13_75_ss11": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "fr_amx_13_75_ss11": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_fr_amx_13_75_ss11": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "fr_amx_13_75_ss11": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_fr_amx_13_75_ss11": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "fr_amx_13_75_ss11": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_20_jp_type_95_heavy": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "jp_type_95_heavy": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_jp_type_95_heavy": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "jp_type_95_heavy": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_jp_type_95_heavy": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "jp_type_95_heavy": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_75_jp_type_95_heavy": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "jp_type_95_heavy": 75
+          }
+        }
+      }
+    }
+  },
+  "discount_20_jp_type_3_chi_nu_75cm_type_5": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "jp_type_3_chi_nu_75cm_type_5": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_5_jp_type_75_mlrs": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "jp_type_75_mlrs": 5
+          }
+        }
+      }
+    }
+  },
+  "discount_10_jp_type_75_mlrs": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "jp_type_75_mlrs": 10
+          }
+        }
+      }
+    }
+  },
+  "discount_20_jp_type_75_mlrs": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "jp_type_75_mlrs": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_jp_type_75_mlrs": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "jp_type_75_mlrs": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_20_jp_type_97_chi_ha_12cm": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "jp_type_97_chi_ha_12cm": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_jp_type_97_chi_ha_12cm": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "jp_type_97_chi_ha_12cm": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_jp_type_97_chi_ha_12cm": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "jp_type_97_chi_ha_12cm": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_10_ussr_destroyer_7y_stroyny": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_destroyer_7y_stroyny": 10
+          }
+        }
+      }
+    }
+  },
+  "discount_20_ussr_destroyer_7y_stroyny": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_destroyer_7y_stroyny": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_ussr_destroyer_7y_stroyny": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_destroyer_7y_stroyny": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_ussr_destroyer_7y_stroyny": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_destroyer_7y_stroyny": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_75_ussr_destroyer_7y_stroyny": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_destroyer_7y_stroyny": 75
+          }
+        }
+      }
+    }
+  },
+  "discount_10_us_elco_80ft_pt_boat_thunderbolt": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_elco_80ft_pt_boat_thunderbolt": 10
+          }
+        }
+      }
+    }
+  },
+  "discount_20_us_elco_80ft_pt_boat_thunderbolt": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_elco_80ft_pt_boat_thunderbolt": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_us_elco_80ft_pt_boat_thunderbolt": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_elco_80ft_pt_boat_thunderbolt": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_us_elco_80ft_pt_boat_thunderbolt": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_elco_80ft_pt_boat_thunderbolt": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_75_us_elco_80ft_pt_boat_thunderbolt": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_elco_80ft_pt_boat_thunderbolt": 75
+          }
+        }
+      }
+    }
+  },
+  "discount_10_ussr_mkl_186_mk85": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_mkl_186_mk85": 10
+          }
+        }
+      }
+    }
+  },
+  "discount_20_ussr_mkl_186_mk85": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_mkl_186_mk85": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_ussr_mkl_186_mk85": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_mkl_186_mk85": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_ussr_mkl_186_mk85": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_mkl_186_mk85": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_75_ussr_mkl_186_mk85": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_mkl_186_mk85": 75
+          }
+        }
+      }
+    }
+  },
+  "discount_20_ussr_pr_123k_hydrofoils": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_pr_123k_hydrofoils": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_ussr_pr_123k_hydrofoils": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_pr_123k_hydrofoils": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_ussr_pr_123k_hydrofoils": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_pr_123k_hydrofoils": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_10_germ_escort_typem1943": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_escort_typem1943": 10
+          }
+        }
+      }
+    }
+  },
+  "discount_20_germ_escort_typem1943": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_escort_typem1943": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_germ_escort_typem1943": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_escort_typem1943": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_germ_escort_typem1943": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_escort_typem1943": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_75_germ_escort_typem1943": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_escort_typem1943": 75
+          }
+        }
+      }
+    }
+  },
+  "discount_20_us_pc_466_carmi": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_pc_466_carmi": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_us_pc_466_carmi": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_pc_466_carmi": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_us_pc_466_carmi": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "us_pc_466_carmi": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_20_ussr_pr_1204": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_pr_1204": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_ussr_pr_1204": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_pr_1204": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_ussr_pr_1204": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "ussr_pr_1204": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_20_uk_71ft_mgb": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "uk_71ft_mgb": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_uk_71ft_mgb": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "uk_71ft_mgb": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_uk_71ft_mgb": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "uk_71ft_mgb": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_20_jp_karotei_type4": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "jp_karotei_type4": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_jp_karotei_type4": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "jp_karotei_type4": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_jp_karotei_type4": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "jp_karotei_type4": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_10_germ_destroyer_class1939_t31": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_destroyer_class1939_t31": 10
+          }
+        }
+      }
+    }
+  },
+  "discount_20_germ_destroyer_class1939_t31": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_destroyer_class1939_t31": 20
+          }
+        }
+      }
+    }
+  },
+  "discount_30_germ_destroyer_class1939_t31": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_destroyer_class1939_t31": 30
+          }
+        }
+      }
+    }
+  },
+  "discount_50_germ_destroyer_class1939_t31": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_destroyer_class1939_t31": 50
+          }
+        }
+      }
+    }
+  },
+  "discount_75_germ_destroyer_class1939_t31": {
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
+    "type": "personalDiscounts",
+    "personalDiscountsParams": {
+      "purchasesMaxCount": 1,
+      "discountsDesc": {
+        "buy": {
+          "aircrafts": {
+            "germ_destroyer_class1939_t31": 75
+          }
+        }
+      }
+    }
+  },
   "discount_30_spitfire_ix_ussr": {
     "expiredTimeH": 48.0,
     "expiredTimeHAfterActivation": 48.0,
@@ -8681,8 +13124,8 @@
     }
   },
   "discount_20_fiat_cr42_marcolin_italy": {
-    "expiredTimeH": 72.0,
-    "expiredTimeHAfterActivation": 72.0,
+    "expiredTimeH": 48.0,
+    "expiredTimeHAfterActivation": 48.0,
     "type": "personalDiscounts",
     "personalDiscountsParams": {
       "purchasesMaxCount": 1,
@@ -9083,189 +13526,6 @@
           "country_japan_rank3_premium": 75
         }
       }
-    }
-  },
-  "booster_wp_500_spentinsessiontime_3min_1mp": {
-    "type": "rateBooster",
-    "costGold": 100,
-    "expiredTimeHAfterActivation": 24.0,
-    "locId": "booster_wp_500_spentinsessiontime_3min_1mp",
-    "purchase_feature": "devItemShop",
-    "rateBoosterParams": {
-      "wpRate": 500,
-      "spentInSessionTimeMin": 3,
-      "stop": {
-        "type": "sessionsStarted",
-        "num": 1
-      }
-    }
-  },
-  "booster_wp_500_spentinsessiontime_3min_10mp": {
-    "type": "rateBooster",
-    "costGold": 100,
-    "expiredTimeHAfterActivation": 24.0,
-    "locId": "booster_wp_500_spentinsessiontime_3min_10mp",
-    "purchase_feature": "devItemShop",
-    "rateBoosterParams": {
-      "wpRate": 300,
-      "spentInSessionTimeMin": 3,
-      "stop": {
-        "type": "sessionsStarted",
-        "num": 10
-      }
-    }
-  },
-  "test_item_not_limited": {
-    "type": "rateBooster",
-    "expiredTimeHAfterActivation": 24.0,
-    "rateBoosterParams": {
-      "wpRate": 500,
-      "spentInSessionTimeMin": 30,
-      "stop": {
-        "type": "sessionsStarted",
-        "num": 1
-      }
-    }
-  },
-  "test_item_limit_personal_total": {
-    "type": "rateBooster",
-    "expiredTimeHAfterActivation": 24.0,
-    "limitPersonalTotal": 15,
-    "rateBoosterParams": {
-      "wpRate": 500,
-      "spentInSessionTimeMin": 30,
-      "stop": {
-        "type": "sessionsStarted",
-        "num": 1
-      }
-    }
-  },
-  "test_item_limit_global": {
-    "type": "rateBooster",
-    "expiredTimeHAfterActivation": 24.0,
-    "limitGlobal": 12,
-    "rateBoosterParams": {
-      "wpRate": 500,
-      "spentInSessionTimeMin": 30,
-      "stop": {
-        "type": "sessionsStarted",
-        "num": 1
-      }
-    }
-  },
-  "test_item_limit_personal_at_time": {
-    "type": "rateBooster",
-    "expiredTimeHAfterActivation": 24.0,
-    "limitPersonalAtTime": 14,
-    "rateBoosterParams": {
-      "wpRate": 500,
-      "spentInSessionTimeMin": 30,
-      "stop": {
-        "type": "sessionsStarted",
-        "num": 1
-      }
-    }
-  },
-  "test_item_limit_all": {
-    "type": "rateBooster",
-    "expiredTimeHAfterActivation": 24.0,
-    "limitGlobal": 20,
-    "limitPersonalTotal": 20,
-    "limitPersonalAtTime": 20,
-    "rateBoosterParams": {
-      "wpRate": 500,
-      "spentInSessionTimeMin": 30,
-      "stop": {
-        "type": "sessionsStarted",
-        "num": 1
-      }
-    }
-  },
-  "ticket_test_linkage_first": {
-    "type": "tournamentTicket",
-    "costGold": 10,
-    "iconStyle": "silver_blue",
-    "purchase_feature": "devItemShop",
-    "locId": "tickets/common_ticket",
-    "tournamentTicketParams": []
-  },
-  "ticket_test_linkage_second": {
-    "type": "tournamentTicket",
-    "cost": 100000,
-    "iconStyle": "silver_blue",
-    "purchase_feature": "devItemShop",
-    "locId": "tickets/common_ticket",
-    "tournamentTicketParams": []
-  },
-  "ticket_test_linkage_third": {
-    "type": "tournamentTicket",
-    "costGold": 111,
-    "iconStyle": "silver_blue",
-    "purchase_feature": "devItemShop",
-    "locId": "tickets/common_ticket",
-    "tournamentTicketParams": []
-  },
-  "item_universal_spare": {
-    "type": "universalSpare",
-    "canPacked": true,
-    "costGold": 20098,
-    "purchase_feature": "devItemShop",
-    "universalSpareParams": {
-      "numSpares": 1
-    }
-  },
-  "item_universal_spare_pack_big": {
-    "type": "universalSpare",
-    "canPacked": true,
-    "costGold": 20421,
-    "sell_count_step": 10,
-    "purchase_feature": "devItemShop",
-    "universalSpareParams": {
-      "numSpares": 1,
-      "minRank": 3,
-      "maxRank": 5
-    }
-  },
-  "item_universal_spare_pack_small": {
-    "type": "universalSpare",
-    "canPacked": true,
-    "costGold": 20421,
-    "sell_count_step": 5,
-    "purchase_feature": "devItemShop",
-    "universalSpareParams": {
-      "numSpares": 1,
-      "minRank": 3,
-      "maxRank": 5
-    }
-  },
-  "universal_spare_aircraft_r16": {
-    "type": "universalSpare",
-    "canPacked": true,
-    "costGold": 12011,
-    "purchase_feature": "devItemShop",
-    "universalSpareParams": {
-      "unitType": "aircraft",
-      "numSpares": 1
-    }
-  },
-  "universal_spare_tank_r16": {
-    "type": "universalSpare",
-    "canPacked": true,
-    "costGold": 12021,
-    "purchase_feature": "devItemShop",
-    "universalSpareParams": {
-      "unitType": "tank",
-      "numSpares": 1
-    }
-  },
-  "universal_spare_ship_r16": {
-    "type": "universalSpare",
-    "canPacked": true,
-    "costGold": 12031,
-    "purchase_feature": "devItemShop",
-    "universalSpareParams": {
-      "unitType": "ship",
-      "numSpares": 1
     }
   }
 }

@@ -69,7 +69,7 @@
     "type": "typeGunBoat"
   },
   {
-    "expClass": "exp_gun_boat"
+    "expClass": "exp_torpedo_boat"
   },
   {
     "timeToFire": 40.0
@@ -1135,14 +1135,6 @@
     }
   },
   {
-    "tags": {
-      "country_britain": true,
-      "type_ship": true,
-      "ship": true,
-      "type_gun_boat": true
-    }
-  },
-  {
     "ShipPhys": {
       "mass": {
         "Empty": 63000.0,
@@ -1389,19 +1381,22 @@
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_01"
+              "emitter": "emtr_fire_engine_01",
+              "scale": 2.0
             }
           },
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_02"
+              "emitter": "emtr_fire_engine_02",
+              "scale": 2.0
             }
           },
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_03"
+              "emitter": "emtr_fire_engine_03",
+              "scale": 2.0
             }
           }
         ]
@@ -1669,13 +1664,13 @@
           },
           {
             "fx": {
-              "name": "tank_smoke_big",
+              "name": "tank_smoke_small",
               "emitter": "emtr_smoke_dmg_01"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_big",
+              "name": "tank_smoke_small",
               "emitter": "emtr_smoke_dmg_02"
             }
           },
@@ -1800,7 +1795,7 @@
           {
             "fx": {
               "name": "tank_fire_big",
-              "emitter": "emtr_fire_dmg_01"
+              "emitter": "emtr_fire_dmg_02"
             }
           },
           {
@@ -2748,6 +2743,7 @@
   },
   {
     "tank_crew": {
+      "minCrewMemberRepairCount": 5,
       "minCrewMemberAliveCount": 4,
       "sailor1": {
         "dmPart": "bridge_dm",

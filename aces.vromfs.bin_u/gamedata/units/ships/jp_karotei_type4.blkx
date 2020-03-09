@@ -66,10 +66,10 @@
     "useSimpleDeathConditionsAndEffects": false
   },
   {
-    "type": "typeSubmarineChaser"
+    "type": "typeGunBoat"
   },
   {
-    "expClass": "exp_submarine_chaser"
+    "expClass": "exp_gun_boat"
   },
   {
     "timeToFire": 40.0
@@ -631,7 +631,7 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 10.0,
         "steering_gear_01_dm": {
-          "hp": 69.0
+          "hp": 71.0
         }
       },
       "pumps": {
@@ -717,7 +717,7 @@
         "armorClass": "tank_barrel",
         "armorThickness": 5.0,
         "main_caliber_gun_01_dm": {
-          "hp": 50.0
+          "hp": 51.0
         }
       },
       "gun_aux_caliber": {
@@ -765,7 +765,7 @@
         "armorClass": "ships_oil_fuel_tank",
         "armorThickness": 3.0,
         "fuel_tank_01_dm": {
-          "hp": 169.0
+          "hp": 177.0
         }
       },
       "ammo": {
@@ -841,6 +841,7 @@
   },
   {
     "tank_crew": {
+      "minCrewMemberRepairCount": 4,
       "minCrewMemberAliveCount": 3,
       "sailor1": {
         "dmPart": "compartment_01_dm",
@@ -1832,21 +1833,6 @@
     }
   },
   {
-    "class_tags": {
-      "pacific": true,
-      "mediterran": true,
-      "westernfront": true
-    }
-  },
-  {
-    "tags": {
-      "country_japan": true,
-      "type_ship": true,
-      "ship": true,
-      "type_small_submarine_chaser": true
-    }
-  },
-  {
     "sound": {
       "EngineName": "engine_ship_karotei",
       "EngineNameAi": "engine_ship_karotei_ai",
@@ -2254,19 +2240,22 @@
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_01"
+              "emitter": "emtr_fire_engine_01",
+              "scale": 2.0
             }
           },
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_02"
+              "emitter": "emtr_fire_engine_02",
+              "scale": 2.0
             }
           },
           {
             "fx": {
               "name": "ship_engine_fire",
-              "emitter": "emtr_fire_engine_03"
+              "emitter": "emtr_fire_engine_03",
+              "scale": 2.0
             }
           }
         ]
@@ -2534,13 +2523,13 @@
           },
           {
             "fx": {
-              "name": "tank_smoke_big",
+              "name": "tank_smoke_small",
               "emitter": "emtr_smoke_dmg_01"
             }
           },
           {
             "fx": {
-              "name": "tank_smoke_big",
+              "name": "tank_smoke_small",
               "emitter": "emtr_smoke_dmg_02"
             }
           },
@@ -2665,7 +2654,7 @@
           {
             "fx": {
               "name": "tank_fire_big",
-              "emitter": "emtr_fire_dmg_01"
+              "emitter": "emtr_fire_dmg_02"
             }
           },
           {
