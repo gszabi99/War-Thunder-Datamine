@@ -1994,13 +1994,19 @@
           "part": "turret_01_side_dm"
         },
         {
-          "part": "turret_01_bottom_dm"
+          "part": "ex_armor_body_01_dm"
         },
         {
-          "part": "turret_01_top_dm"
+          "part": "ex_armor_body_02_dm"
         },
         {
-          "part": "turret_01_back_dm"
+          "part": "ex_armor_body_03_dm"
+        },
+        {
+          "part": "ex_armor_body_04_dm"
+        },
+        {
+          "part": "ex_armor_body_05_dm"
         },
         {
           "effect": {
@@ -2038,6 +2044,80 @@
           }
         }
       ],
+      "suspension": [
+        {
+          "hp": 2000.0
+        },
+        {
+          "part": "wheel_l_back_dm"
+        },
+        {
+          "part": "wheel_l_01_dm"
+        },
+        {
+          "part": "wheel_l_02_dm"
+        },
+        {
+          "part": "wheel_l_03_dm"
+        },
+        {
+          "part": "wheel_l_04_dm"
+        },
+        {
+          "part": "wheel_l_05_dm"
+        },
+        {
+          "part": "wheel_l_drive_dm"
+        },
+        {
+          "part": "wheel_r_back_dm"
+        },
+        {
+          "part": "wheel_r_01_dm"
+        },
+        {
+          "part": "wheel_r_02_dm"
+        },
+        {
+          "part": "wheel_r_03_dm"
+        },
+        {
+          "part": "wheel_r_04_dm"
+        },
+        {
+          "part": "wheel_r_05_dm"
+        },
+        {
+          "part": "wheel_r_drive_dm"
+        },
+        {
+          "part": "track_r_dm"
+        },
+        {
+          "part": "track_l_dm"
+        },
+        {
+          "part": "wheel_support_dm"
+        },
+        {
+          "effect": {
+            "conditionDamageType": "explosion",
+            "expl": 1.0,
+            "conditionDamage": 400.0,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "cumulative",
+            "expl": 1.0,
+            "conditionDamage": 400.0,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
+        }
+      ],
       "mount": [
         {
           "hp": 2000.0
@@ -2059,12 +2139,6 @@
         },
         {
           "part": "turret_front_dm"
-        },
-        {
-          "part": "turret_02_top_dm"
-        },
-        {
-          "part": "gun_barrel_dm"
         },
         {
           "effect": {
@@ -2178,8 +2252,7 @@
       },
       "tracks": {
         "animationMultiplier": 0.6,
-        "height": 0.055,
-        "fricFrontal": [1.0,1.0]
+        "height": 0.055
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -2195,7 +2268,6 @@
         "driveGearRadius": 0.23,
         "mainGearRatio": 1.59,
         "sideGearRatio": 3.4,
-        "neutralGearRatio": 15.0,
         "gearRatios": [
           {
             "ratio": -4.28
