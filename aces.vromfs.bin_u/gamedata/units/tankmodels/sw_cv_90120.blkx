@@ -1936,6 +1936,7 @@
           "defaultPitch": 0.0,
           "barrelDP": "gun_barrel_dm",
           "breechDP": "cannon_breech_dm",
+          "autoLoad": true,
           "speedYaw": 30.0,
           "speedPitch": 8.0,
           "fireConeAngle": 1.0,
@@ -1963,12 +1964,12 @@
           },
           "limits": {
             "yaw": [-180.0,180.0],
-            "pitch": [-7.5,20.0]
+            "pitch": [-8.0,22.0]
           },
           "limitsTable": {
-            "lim1": [-180.0,-140.0,-4.0,20.0],
-            "lim2": [-140.0,140.0,-7.5,20.0],
-            "lim3": [140.0,180.0,-4.0,20.0]
+            "lim1": [-180.0,-140.0,-4.0,22.0],
+            "lim2": [-140.0,140.0,-8.0,22.0],
+            "lim3": [140.0,180.0,-4.0,22.0]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": false,
@@ -1997,7 +1998,7 @@
         "Weapon": {
           "trigger": "gunner1",
           "triggerGroup": "coaxial",
-          "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Ksp_58_Strv_user_machinegun.blk",
+          "blk": "gameData/Weapons/groundModels_weapons/12_7mm_Ksp_m88_user_machinegun.blk",
           "emitter": "bone_mg_gun_twin",
           "flash": "emtr_mg_flame_01",
           "barrelDP": "gun_barrel_01_dm",
@@ -2683,14 +2684,14 @@
           "fatalExplosion": true
         },
         {
-          "replenishmentDelay": 3.0
+          "replenishmentDelay": 4.0
         },
         {
-          "replenishmentTime": 7.0
+          "replenishmentTime": 10.0
         },
         {
           "shells": {
-            "firstStage": true,
+            "autoLoad": true,
             "ammo_body_34_dm": {
               "count": 1
             },
@@ -2871,6 +2872,7 @@
                 "defaultPitch": 0.0,
                 "barrelDP": "gun_barrel_dm",
                 "breechDP": "cannon_breech_dm",
+                "autoLoad": true,
                 "speedYaw": 30.0,
                 "speedPitch": 8.0,
                 "fireConeAngle": 1.0,
@@ -2898,12 +2900,12 @@
                 },
                 "limits": {
                   "yaw": [-180.0,180.0],
-                  "pitch": [-7.5,20.0]
+                  "pitch": [-8.0,22.0]
                 },
                 "limitsTable": {
-                  "lim1": [-180.0,-140.0,-4.0,20.0],
-                  "lim2": [-140.0,140.0,-7.5,20.0],
-                  "lim3": [140.0,180.0,-4.0,20.0]
+                  "lim1": [-180.0,-140.0,-4.0,22.0],
+                  "lim2": [-140.0,140.0,-8.0,22.0],
+                  "lim3": [140.0,180.0,-4.0,22.0]
                 },
                 "gunStabilizer": {
                   "hasVerticalGunFreeMode": false,
@@ -2932,7 +2934,7 @@
               "Weapon": {
                 "trigger": "gunner1",
                 "triggerGroup": "coaxial",
-                "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Ksp_58_Strv_user_machinegun.blk",
+                "blk": "gameData/Weapons/groundModels_weapons/12_7mm_Ksp_m88_user_machinegun.blk",
                 "emitter": "bone_mg_gun_twin",
                 "flash": "emtr_mg_flame_01",
                 "barrelDP": "gun_barrel_01_dm",
