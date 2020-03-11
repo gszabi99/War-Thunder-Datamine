@@ -1,0 +1,185 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/water.bin",
+      "type": "singleMission",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "hazy",
+      "battleAreaColorPreset": "battleArea"
+    },
+    "spectator_points": []
+  },
+  "imports": {
+    "import_record": {
+      "file": "gameData/missions/cta/tanks/normandy_fields/mainareas/template_normandy_02_conq3_hardcore.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "excludes": []
+    }
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "area_squad": {
+        "name": "t1_killarea_hardcore",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2149.42,58.5255,1664.84]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_killarea_hardcore_block01"
+          },
+          {
+            "squad_members": "t1_killarea_hardcore_block02"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "t2_killarea_hardcore",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2159.66,60.75,1523.14]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_killarea_hardcore_block01"
+          },
+          {
+            "squad_members": "t2_killarea_hardcore_block02"
+          }
+        ]
+      }
+    }
+  ],
+  "areas": {
+    "conq_battle_area_hardcore": {
+      "type": "Box",
+      "tm": [
+        [1800.0,0.0,0.0],
+        [0.0,100.0,0.0],
+        [0.0,0.0,1800.0],
+        [2030.44,29.9504,2066.25]
+      ],
+      "objLayer": 6,
+      "props": []
+    },
+    "t1_killarea_hardcore_block01": {
+      "type": "Cylinder",
+      "tm": [
+        [150.0,0.0,0.0],
+        [0.0,100.0,0.0],
+        [0.0,0.0,150.0],
+        [2870.77,29.95,2602.58]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_killarea_hardcore_block02": {
+      "type": "Cylinder",
+      "tm": [
+        [150.0,0.0,0.0],
+        [0.0,100.0,0.0],
+        [0.0,0.0,150.0],
+        [2801.8,29.9503,1389.56]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_killarea_hardcore_block01": {
+      "type": "Cylinder",
+      "tm": [
+        [150.0,0.0,0.0],
+        [0.0,100.0,0.0],
+        [0.0,0.0,150.0],
+        [1499.85,29.9495,2889.76]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_killarea_hardcore_block02": {
+      "type": "Cylinder",
+      "tm": [
+        [150.0,0.0,0.0],
+        [0.0,100.0,0.0],
+        [0.0,0.0,150.0],
+        [1210.03,29.9495,1423.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}

@@ -1,0 +1,205 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "stars": {
+      "latitude": 48.0,
+      "longitude": 44.0,
+      "year": 1940,
+      "month": 1,
+      "day": 15,
+      "time": 12.0
+    },
+    "spectator_points": [],
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "singleMission",
+      "level": "levels/water.bin",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "hazy"
+    }
+  },
+  "imports": {
+    "import_record": {
+      "file": "gameData/missions/cta/ships/mediterranean_port/mainareas/mediterranean_port_NDom_template.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "excludes": []
+    }
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "area_squad": {
+        "name": "t1_spotarea",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3841.79,0.0,-6505.06]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_spotarea_block01"
+          },
+          {
+            "squad_members": "t1_spotarea_block02"
+          },
+          {
+            "squad_members": "t1_spotarea_block03"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "t2_spotarea",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [7007.82,0.0,-4577.14]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_spotarea_block01"
+          },
+          {
+            "squad_members": "t2_spotarea_block02"
+          },
+          {
+            "squad_members": "t2_spotarea_block03"
+          }
+        ]
+      }
+    }
+  ],
+  "areas": {
+    "ndom_battle_area": {
+      "type": "Box",
+      "tm": [
+        [10800.0,0.0,0.0],
+        [0.0,600.0,0.0],
+        [0.0,0.0,10800.0],
+        [3576.3,0.0,-3636.0]
+      ],
+      "objLayer": 3,
+      "props": []
+    },
+    "t1_spotarea_block01": {
+      "type": "Sphere",
+      "tm": [
+        [-3110.5,0.0,1374.0],
+        [0.0,3175.57,0.0],
+        [-611.417,0.0,-1384.15],
+        [943.2,0.0,-4843.75]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_spotarea_block01": {
+      "type": "Sphere",
+      "tm": [
+        [-450.246,0.0,3370.51],
+        [0.0,3175.57,0.0],
+        [-1499.85,0.0,-200.362],
+        [5081.15,0.0,-1199.9]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_spotarea_block02": {
+      "type": "Sphere",
+      "tm": [
+        [21.7966,0.0,1213.53],
+        [0.0,483.653,0.0],
+        [-483.575,0.0,8.68649],
+        [-238.75,0.0,-1601.05]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_spotarea_block02": {
+      "type": "Sphere",
+      "tm": [
+        [-933.729,0.0,-466.054],
+        [0.0,483.653,0.0],
+        [215.996,0.0,-432.742],
+        [1646.15,0.0,479.15]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_spotarea_block03": {
+      "type": "Sphere",
+      "tm": [
+        [-2330.64,0.0,2542.42],
+        [0.0,3175.57,0.0],
+        [-1256.58,0.0,-1151.9],
+        [7077.1,0.0,729.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_spotarea_block03": {
+      "type": "Sphere",
+      "tm": [
+        [-3065.28,0.0,2223.15],
+        [0.0,3175.57,0.0],
+        [-989.749,0.0,-1364.66],
+        [-897.15,0.0,-6783.55]
+      ],
+      "objLayer": 0,
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}

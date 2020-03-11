@@ -1,0 +1,2306 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 0.0
+    },
+    "player": {
+      "army": 1,
+      "wing": "player"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/iwo_jima.bin",
+      "type": "singleMission",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Evening",
+      "weather": "good",
+      "windSpeed": [6.0,7.0]
+    },
+    "spectator_points": [],
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01",
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": [
+          {
+            "map": true
+          },
+          {
+            "minTime": 4
+          },
+          {
+            "picture": ""
+          },
+          {
+            "icon": {
+              "icontype": "fighter",
+              "side": "player",
+              "target": "player",
+              "lookAt": "us_b24_land"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "airfield",
+              "side": "enemy",
+              "target": "jpn_airfield_start_01"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "airfield",
+              "side": "enemy",
+              "target": "jpn_airfield_start_02"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "airfield",
+              "side": "enemy",
+              "target": "jpn_airfield_start_03"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "airfield",
+              "side": "enemy",
+              "target": "jpn_airfield_start_04"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "start_mission": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "addAirfield": {
+            "runwayStart": "airfield_start",
+            "runwayEnd": "airfield_end",
+            "runwayWidth": 10.0,
+            "army": 1,
+            "spawnPoint": "airfield_spawn"
+          }
+        },
+        {
+          "spawnOnAirfield": {
+            "runwayName": "airfield_start",
+            "objects": "player"
+          }
+        },
+        {
+          "addAirfield": [
+            {
+              "runwayStart": "jpn_airfield_start_01"
+            },
+            {
+              "runwayEnd": "jpn_airfield_end_01"
+            },
+            {
+              "runwayWidth": 30.0
+            },
+            {
+              "army": 2
+            },
+            {
+              "spawnPoint": "a01_spawn_01"
+            },
+            {
+              "spawnPoint": "a01_spawn_02"
+            },
+            {
+              "spawnPoint": "a01_spawn_03"
+            },
+            {
+              "spawnPoint": "a01_spawn_04"
+            }
+          ]
+        },
+        {
+          "addAirfield": [
+            {
+              "runwayStart": "jpn_airfield_start_02"
+            },
+            {
+              "runwayEnd": "jpn_airfield_end_02"
+            },
+            {
+              "runwayWidth": 30.0
+            },
+            {
+              "army": 2
+            },
+            {
+              "spawnPoint": "a02_spawn_01"
+            },
+            {
+              "spawnPoint": "a02_spawn_02"
+            },
+            {
+              "spawnPoint": "a02_spawn_03"
+            },
+            {
+              "spawnPoint": "a02_spawn_04"
+            }
+          ]
+        },
+        {
+          "addAirfield": [
+            {
+              "runwayStart": "jpn_airfield_start_03"
+            },
+            {
+              "runwayEnd": "jpn_airfield_end_03"
+            },
+            {
+              "runwayWidth": 30.0
+            },
+            {
+              "army": 2
+            },
+            {
+              "spawnPoint": "a03_spawn_01"
+            },
+            {
+              "spawnPoint": "a03_spawn_02"
+            },
+            {
+              "spawnPoint": "a03_spawn_03"
+            },
+            {
+              "spawnPoint": "a03_spawn_04"
+            }
+          ]
+        },
+        {
+          "addAirfield": [
+            {
+              "runwayStart": "jpn_airfield_start_04"
+            },
+            {
+              "runwayEnd": "jpn_airfield_end_04"
+            },
+            {
+              "runwayWidth": 30.0
+            },
+            {
+              "army": 2
+            },
+            {
+              "spawnPoint": "a04_spawn_01"
+            },
+            {
+              "spawnPoint": "a04_spawn_02"
+            },
+            {
+              "spawnPoint": "a04_spawn_03"
+            },
+            {
+              "spawnPoint": "a04_spawn_04"
+            }
+          ]
+        },
+        {
+          "addAirfield": [
+            {
+              "runwayStart": "jpn_airfield_start_05"
+            },
+            {
+              "runwayEnd": "jpn_airfield_end_05"
+            },
+            {
+              "runwayWidth": 30.0
+            },
+            {
+              "army": 2
+            },
+            {
+              "spawnPoint": "a05_spawn_01"
+            },
+            {
+              "spawnPoint": "a05_spawn_02"
+            },
+            {
+              "spawnPoint": "a05_spawn_03"
+            },
+            {
+              "spawnPoint": "a05_spawn_04"
+            },
+            {
+              "spawnPoint": "a05_spawn_05"
+            },
+            {
+              "spawnPoint": "a05_spawn_06"
+            },
+            {
+              "spawnPoint": "a05_spawn_07"
+            },
+            {
+              "spawnPoint": "a05_spawn_08"
+            },
+            {
+              "spawnPoint": "a05_spawn_09"
+            },
+            {
+              "spawnPoint": "a05_spawn_10"
+            },
+            {
+              "spawnPoint": "a05_spawn_11"
+            },
+            {
+              "spawnPoint": "a05_spawn_12"
+            },
+            {
+              "spawnPoint": "a05_spawn_13"
+            },
+            {
+              "spawnPoint": "a05_spawn_14"
+            },
+            {
+              "spawnPoint": "a05_spawn_15"
+            },
+            {
+              "spawnPoint": "a05_spawn_16"
+            },
+            {
+              "spawnPoint": "a05_spawn_17"
+            },
+            {
+              "spawnPoint": "a05_spawn_18"
+            },
+            {
+              "spawnPoint": "a05_spawn_19"
+            },
+            {
+              "spawnPoint": "a05_spawn_20"
+            },
+            {
+              "spawnPoint": "a05_spawn_21"
+            },
+            {
+              "spawnPoint": "a05_spawn_22"
+            },
+            {
+              "spawnPoint": "a05_spawn_23"
+            },
+            {
+              "spawnPoint": "a05_spawn_24"
+            },
+            {
+              "spawnPoint": "a05_spawn_25"
+            },
+            {
+              "spawnPoint": "a05_spawn_26"
+            },
+            {
+              "spawnPoint": "a05_spawn_27"
+            },
+            {
+              "spawnPoint": "a05_spawn_28"
+            },
+            {
+              "spawnPoint": "a05_spawn_29"
+            },
+            {
+              "spawnPoint": "a05_spawn_30"
+            },
+            {
+              "spawnPoint": "a05_spawn_31"
+            },
+            {
+              "spawnPoint": "a05_spawn_32"
+            }
+          ]
+        },
+        {
+          "spawnOnAirfield": {
+            "runwayName": "jpn_airfield_start_05",
+            "objects": "us_b24_land"
+          }
+        },
+        {
+          "unitSetControls": {
+            "controls": "power",
+            "value": 0.0,
+            "force": true,
+            "objects": "us_b24_land"
+          }
+        },
+        {
+          "unitSetControls": {
+            "controls": "airbrake",
+            "value": 100.0,
+            "force": true,
+            "objects": "us_b24_land"
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object": "us_b24_land",
+            "attack_type": "dont_aim",
+            "speed": 0.0,
+            "lockSpeed": true,
+            "stayOnGround": true
+          }
+        },
+        {
+          "unitPutToSleep": {
+            "target": "us_fighters_05"
+          }
+        },
+        {
+          "spawnOnAirfield": {
+            "runwayName": "jpn_airfield_start_01",
+            "objects": "us_fighters_01"
+          }
+        },
+        {
+          "spawnOnAirfield": {
+            "runwayName": "jpn_airfield_start_02",
+            "objects": "us_fighters_02"
+          }
+        },
+        {
+          "spawnOnAirfield": {
+            "runwayName": "jpn_airfield_start_03",
+            "objects": "us_fighters_03"
+          }
+        },
+        {
+          "spawnOnAirfield": {
+            "runwayName": "jpn_airfield_start_04",
+            "objects": "us_fighters_04"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "stop_the_bombers"
+            },
+            {
+              "target": "stop_the_fighters"
+            }
+          ]
+        },
+        {
+          "unitSetProperties": {
+            "object": "us_air_def_squad",
+            "attack_type": "dont_aim"
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "pkg3_iwo_jima_mission_03_takeoff"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "stop_the_bombers": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "unitSetProperties": {
+          "object": "us_b24_land",
+          "speed": 0.0,
+          "lockSpeed": true,
+          "aiEnabled": false,
+          "stayOnGround": true
+        }
+      },
+      "else_actions": []
+    },
+    "stop_the_fighters": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "unitSetProperties": {
+          "object": "us_fighters_squad",
+          "speed": 0.0,
+          "lockSpeed": true,
+          "aiEnabled": false,
+          "stayOnGround": true
+        }
+      },
+      "else_actions": []
+    },
+    "player_in_air": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "playersWhenStatus": {
+          "players": "isInAir",
+          "check_players": "any"
+        }
+      },
+      "actions": {
+        "moSetObjectiveStatus": {
+          "target": "pkg3_iwo_jima_mission_03_takeoff",
+          "status": 2
+        },
+        "wait": {
+          "time": 3.0
+        },
+        "moAddMissionObjective": {
+          "target": "pkg3_iwo_jima_mission_03_destroy_bombers"
+        },
+        "unitSetIndication": {
+          "set": true,
+          "target": "us_b24_land"
+        },
+        "triggerEnable": [
+          {
+            "target": "bombers_damaged"
+          },
+          {
+            "target": "bombers_destroyed"
+          },
+          {
+            "target": "second_wave_appear"
+          },
+          {
+            "target": "update_indicator"
+          }
+        ]
+      },
+      "else_actions": []
+    },
+    "update_indicator": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "missionSetTargetsIndicator": {
+          "target_type": "isActive",
+          "target_marking": 0,
+          "delta": 0,
+          "icon": "bomber",
+          "icon army": 2,
+          "set": true,
+          "target": "us_b24_land"
+        },
+        "varModify": {
+          "operator": "add",
+          "value": 1.0,
+          "var": "timer"
+        }
+      },
+      "else_actions": []
+    },
+    "bombers_damaged": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [
+        {
+          "unitWhenCountMatches": {
+            "object_type": "isDamagedByPlayer",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object": "us_b24_land"
+          }
+        },
+        {
+          "unitWhenCountMatches": {
+            "object_type": "isKilledByPlayer",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object": "us_b24_land"
+          }
+        },
+        {
+          "unitWhenCountMatches": {
+            "object_type": "isDamagedByPlayer",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object": "us_air_def_squad"
+          }
+        },
+        {
+          "unitWhenCountMatches": {
+            "object_type": "isKilledByPlayer",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object": "us_air_def_squad"
+          }
+        },
+        {
+          "unitWhenCountMatches": {
+            "object_type": "isDamagedByPlayer",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object": "us_fighters_squad"
+          }
+        },
+        {
+          "unitWhenCountMatches": {
+            "object_type": "isKilledByPlayer",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object": "us_fighters_squad"
+          }
+        }
+      ],
+      "actions": [
+        {
+          "triggerDisable": {
+            "target": "stop_the_fighters"
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object": "us_fighters_squad",
+            "speed": 700.0,
+            "lockSpeed": false,
+            "aiEnabled": true,
+            "stayOnGround": false,
+            "plane": {
+              "targetDeviation": {
+                "trigger": "machine gun",
+                "defaultVal": 0.6,
+                "limits": [0.6,1.8]
+              }
+            }
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object": "us_air_def_squad",
+            "attack_type": "fire_at_will",
+            "accuracy": 0.3,
+            "delayForObjects": [5.0,15.0],
+            "effShootingRate": 0.1
+          }
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "us_fighters_squad",
+            "target": "player",
+            "fightInArea": "area_01",
+            "fightAreaRadius": 5000.0,
+            "fightAreaOuterRadius": 7000.0
+          }
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "us_air_def_squad",
+            "target": "player"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "repeat_attack"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "bombers_destroyed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 8,
+          "object": "us_b24_land"
+        }
+      },
+      "actions": {
+        "moSetObjectiveStatus": {
+          "target": "pkg3_iwo_jima_mission_03_destroy_bombers",
+          "status": 2
+        },
+        "unitSetIndication": {
+          "set": false,
+          "target": "us_b24_land"
+        },
+        "triggerDisable": {
+          "target": "update_indicator"
+        },
+        "missionSetTargetsIndicator": {
+          "target_type": "isAlive",
+          "target_marking": 0,
+          "delta": 0,
+          "icon": "bomber",
+          "icon army": 2,
+          "set": false,
+          "target": "us_b24_land"
+        },
+        "wait": {
+          "time": 3.0
+        },
+        "moAddMissionObjective": {
+          "target": "pkg3_iwo_jima_mission_03_retreat"
+        },
+        "missionMarkAsWaypoint": {
+          "visible": true,
+          "primary": true,
+          "oriented": false,
+          "ignoreDifficulty": false,
+          "scale": 1.0,
+          "target": "retreat_point"
+        },
+        "triggerEnable": {
+          "target": "complete_mission"
+        }
+      },
+      "else_actions": []
+    },
+    "complete_mission": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "playersDistanceBetween": {
+          "value": 1500.0,
+          "math": "2D",
+          "players": "isAlive",
+          "target_type": "isAlive",
+          "check_players": "any",
+          "check_targets": "any",
+          "target": "retreat_point"
+        }
+      },
+      "actions": {
+        "missionMarkAsWaypoint": {
+          "visible": false,
+          "primary": true,
+          "oriented": false,
+          "ignoreDifficulty": false,
+          "scale": 1.0,
+          "target": "retreat_point"
+        },
+        "moSetObjectiveStatus": {
+          "target": "pkg3_iwo_jima_mission_03_retreat",
+          "status": 2
+        },
+        "wait": {
+          "time": 3.0
+        },
+        "missionCompleted": {
+          "timer": false
+        }
+      },
+      "else_actions": []
+    },
+    "second_wave_appear": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "timer",
+          "value": 480,
+          "comparasion_func": "more"
+        },
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 4,
+          "object": "us_air_def_squad"
+        }
+      },
+      "actions": {
+        "unitWakeUp": {
+          "target": "us_fighters_05"
+        },
+        "unitAttackTarget": {
+          "playerAttracted": false,
+          "object": "us_fighters_squad",
+          "target": "player",
+          "fightInArea": "area_01",
+          "fightAreaRadius": 5000.0,
+          "fightAreaOuterRadius": 7000.0
+        }
+      },
+      "else_actions": []
+    },
+    "repeat_attack": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "us_fighters_squad",
+            "target": "player",
+            "fightInArea": "area_01",
+            "fightAreaRadius": 5000.0,
+            "fightAreaOuterRadius": 7000.0
+          }
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "us_air_def_squad",
+            "target": "player"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "bomber_chance_for_blow_up_check": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isDamagedByPlayer",
+          "object_marking": 0,
+          "func": "more",
+          "value": 0,
+          "object": "us_b24_land"
+        }
+      },
+      "actions": {
+        "unitMark": {
+          "target_marking": 1,
+          "target": "us_b24_land",
+          "useForTriggerFiltered": true
+        },
+        "varSetRandomInt": {
+          "var": "blowup_check",
+          "from": 0,
+          "to_not_including": 10
+        },
+        "triggerEnable": {
+          "target": "bomber_chance_for_blow_up_done"
+        }
+      },
+      "else_actions": []
+    },
+    "bomber_chance_for_blow_up_done": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.1
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isMarked",
+          "object_marking": 1,
+          "func": "more",
+          "value": 0,
+          "object": "us_b24_land"
+        },
+        "varCompareInt": {
+          "var_value": "blowup_check",
+          "value": 5,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "unitDamage": {
+          "part": 1,
+          "power": 1.0,
+          "useEffect": false,
+          "countEffects": 1,
+          "delay": [1.0,1.0],
+          "offset": [0.0,0.0,0.0],
+          "radiusOffset": [10.0,15.0],
+          "target": "us_b24_land",
+          "randomTargetsCount": 1,
+          "doExplosion": true,
+          "useForTriggerFiltered": true
+        },
+        "unitMark": {
+          "target_marking": 0,
+          "target": "us_b24_land",
+          "useForTriggerFiltered": true
+        }
+      },
+      "else_actions": []
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true,
+    "pkg3_iwo_jima_mission_03_takeoff": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "pkg3_iwo_jima_mission_03_destroy_bombers": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "pkg3_iwo_jima_mission_03_retreat": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    }
+  },
+  "variables": {
+    "timer": 0,
+    "blowup_check": 0
+  },
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "armada": {
+        "name": "player",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-5577.5,583.7,-4320.55]
+        ],
+        "unit_class": "a6m5_zero",
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "targetableByAi": false,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "us_b24_land",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-551.9,593.8,-503.7]
+        ],
+        "unit_class": "b_24d",
+        "closed_waypoints": false,
+        "weapons": "b_24d_20x100lbs",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 32,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "hold_fire",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "us_fighters_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-480.55,760.5,1932.95]
+        ],
+        "unit_class": "f4u-1a",
+        "closed_waypoints": false,
+        "weapons": "f4u-1a_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "us_fighters_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-480.55,885.55,1932.95]
+        ],
+        "unit_class": "f4u-1a",
+        "closed_waypoints": false,
+        "weapons": "f4u-1a_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "us_fighters_03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-480.55,985.95,1932.95]
+        ],
+        "unit_class": "f4u-1a",
+        "closed_waypoints": false,
+        "weapons": "f4u-1a_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "us_fighters_04",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-480.55,1073.3,1932.95]
+        ],
+        "unit_class": "f4u-1a",
+        "closed_waypoints": false,
+        "weapons": "f4u-1a_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "us_fighters_05",
+        "tm": [
+          [0.130526,0.0,-0.991445],
+          [0.0,1.0,0.0],
+          [0.991445,0.0,0.130526],
+          [-1798.2,1156.65,11756.0]
+        ],
+        "unit_class": "f4u-1a",
+        "closed_waypoints": false,
+        "weapons": "f4u-1a_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "us_fighters_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-601.2,360.6,2642.9]
+        ],
+        "props": [
+          {
+            "squad_members": "us_fighters_01"
+          },
+          {
+            "squad_members": "us_fighters_02"
+          },
+          {
+            "squad_members": "us_fighters_03"
+          },
+          {
+            "squad_members": "us_fighters_04"
+          },
+          {
+            "squad_members": "us_fighters_05"
+          }
+        ]
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_defence_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-36.15,266.6,1098.7]
+        ],
+        "unit_class": "us_40mm_bofors",
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_defence_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [565.4,266.6,1445.9]
+        ],
+        "unit_class": "us_40mm_bofors",
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_defence_03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [507.7,266.6,1900.4]
+        ],
+        "unit_class": "us_40mm_bofors",
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_defence_04",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-200.75,266.6,350.5]
+        ],
+        "unit_class": "us_40mm_bofors",
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_defence_05",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-802.5,266.6,1097.4]
+        ],
+        "unit_class": "us_40mm_bofors",
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_defence_06",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1914.95,266.6,-223.7]
+        ],
+        "unit_class": "us_40mm_bofors",
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_defence_07",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-3092.4,266.6,-146.15]
+        ],
+        "unit_class": "us_40mm_bofors",
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_defence_08",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-2294.05,266.6,-1206.05]
+        ],
+        "unit_class": "us_40mm_bofors",
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "us_air_def_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1114.75,346.7,3309.9]
+        ],
+        "props": [
+          {
+            "squad_members": "air_defence_01"
+          },
+          {
+            "squad_members": "air_defence_02"
+          },
+          {
+            "squad_members": "air_defence_03"
+          },
+          {
+            "squad_members": "air_defence_04"
+          },
+          {
+            "squad_members": "air_defence_05"
+          },
+          {
+            "squad_members": "air_defence_06"
+          },
+          {
+            "squad_members": "air_defence_07"
+          },
+          {
+            "squad_members": "air_defence_08"
+          }
+        ]
+      }
+    }
+  ],
+  "areas": {
+    "airfield_start": {
+      "type": "Sphere",
+      "tm": [
+        [-0.677227,0.0,3.84075],
+        [0.0,3.9,0.0],
+        [-3.84075,0.0,-0.677227],
+        [-5868.34,541.25,-4637.44]
+      ],
+      "props": []
+    },
+    "airfield_end": {
+      "type": "Sphere",
+      "tm": [
+        [-0.677227,0.0,3.84075],
+        [0.0,3.9,0.0],
+        [-3.84075,0.0,-0.677227],
+        [-5976.84,539.0,-5213.71]
+      ],
+      "props": []
+    },
+    "airfield_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [-0.677227,0.0,3.84075],
+        [0.0,3.9,0.0],
+        [-3.84075,0.0,-0.677227],
+        [-5871.7,541.25,-4645.75]
+      ],
+      "props": []
+    },
+    "jpn_airfield_start_01": {
+      "type": "Sphere",
+      "tm": [
+        [120.0,0.0,0.0],
+        [0.0,120.0,0.0],
+        [0.0,0.0,120.0],
+        [1665.7,266.85,1287.75]
+      ],
+      "props": []
+    },
+    "jpn_airfield_end_01": {
+      "type": "Sphere",
+      "tm": [
+        [120.0,0.0,0.0],
+        [0.0,120.0,0.0],
+        [0.0,0.0,120.0],
+        [161.95,266.85,1245.45]
+      ],
+      "props": []
+    },
+    "jpn_airfield_start_02": {
+      "type": "Sphere",
+      "tm": [
+        [120.0,0.0,0.0],
+        [0.0,120.0,0.0],
+        [0.0,0.0,120.0],
+        [1467.3,266.85,2139.5]
+      ],
+      "props": []
+    },
+    "jpn_airfield_end_02": {
+      "type": "Sphere",
+      "tm": [
+        [120.0,0.0,0.0],
+        [0.0,120.0,0.0],
+        [0.0,0.0,120.0],
+        [84.2,266.85,1355.4]
+      ],
+      "props": []
+    },
+    "jpn_airfield_start_03": {
+      "type": "Sphere",
+      "tm": [
+        [120.0,0.0,0.0],
+        [0.0,120.0,0.0],
+        [0.0,0.0,120.0],
+        [-1084.3,266.85,92.25]
+      ],
+      "props": []
+    },
+    "jpn_airfield_end_03": {
+      "type": "Sphere",
+      "tm": [
+        [120.0,0.0,0.0],
+        [0.0,120.0,0.0],
+        [0.0,0.0,120.0],
+        [-2839.55,266.85,-1242.2]
+      ],
+      "props": []
+    },
+    "jpn_airfield_start_04": {
+      "type": "Sphere",
+      "tm": [
+        [120.0,0.0,0.0],
+        [0.0,120.0,0.0],
+        [0.0,0.0,120.0],
+        [-2664.6,266.85,602.55]
+      ],
+      "props": []
+    },
+    "jpn_airfield_end_04": {
+      "type": "Sphere",
+      "tm": [
+        [120.0,0.0,0.0],
+        [0.0,120.0,0.0],
+        [0.0,0.0,120.0],
+        [-2988.3,266.85,-1102.65]
+      ],
+      "props": []
+    },
+    "a01_spawn_01": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [1485.55,266.85,1254.45]
+      ],
+      "props": []
+    },
+    "a01_spawn_02": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [1486.05,266.85,1314.5]
+      ],
+      "props": []
+    },
+    "a01_spawn_03": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [1552.35,266.85,1252.5]
+      ],
+      "props": []
+    },
+    "a01_spawn_04": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [1557.95,266.85,1315.6]
+      ],
+      "props": []
+    },
+    "a02_spawn_01": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [1274.9,266.85,1989.9]
+      ],
+      "props": []
+    },
+    "a02_spawn_02": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [1240.35,266.85,2047.6]
+      ],
+      "props": []
+    },
+    "a02_spawn_03": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [1345.55,266.85,2027.2]
+      ],
+      "props": []
+    },
+    "a02_spawn_04": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [1312.65,266.85,2084.45]
+      ],
+      "props": []
+    },
+    "a03_spawn_01": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-1191.4,266.85,-62.75]
+      ],
+      "props": []
+    },
+    "a03_spawn_02": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-1247.55,266.85,8.15]
+      ],
+      "props": []
+    },
+    "a03_spawn_03": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-1123.6,266.85,-5.4]
+      ],
+      "props": []
+    },
+    "a03_spawn_04": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-1177.5,266.85,63.05]
+      ],
+      "props": []
+    },
+    "a04_spawn_01": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-2640.9,266.85,382.55]
+      ],
+      "props": []
+    },
+    "a04_spawn_02": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-2732.5,266.85,391.35]
+      ],
+      "props": []
+    },
+    "a04_spawn_03": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-2634.85,266.85,460.8]
+      ],
+      "props": []
+    },
+    "a04_spawn_04": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-2729.8,266.85,481.5]
+      ],
+      "props": []
+    },
+    "jpn_airfield_start_05": {
+      "type": "Sphere",
+      "tm": [
+        [120.0,0.0,0.0],
+        [0.0,120.0,0.0],
+        [0.0,0.0,120.0],
+        [-1911.35,266.85,-1013.1]
+      ],
+      "props": []
+    },
+    "jpn_airfield_end_05": {
+      "type": "Sphere",
+      "tm": [
+        [120.0,0.0,0.0],
+        [0.0,120.0,0.0],
+        [0.0,0.0,120.0],
+        [-3086.55,266.85,286.45]
+      ],
+      "props": []
+    },
+    "a05_spawn_01": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-2135.25,266.85,-941.55]
+      ],
+      "props": []
+    },
+    "a05_spawn_02": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-2081.7,266.85,-904.25]
+      ],
+      "props": []
+    },
+    "a05_spawn_03": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-2029.65,266.85,-858.85]
+      ],
+      "props": []
+    },
+    "a05_spawn_04": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-1977.45,266.85,-816.35]
+      ],
+      "props": []
+    },
+    "a05_spawn_05": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-2080.65,266.85,-1000.2]
+      ],
+      "props": []
+    },
+    "a05_spawn_06": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-2023.4,266.85,-957.5]
+      ],
+      "props": []
+    },
+    "a05_spawn_07": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-1969.5,266.85,-914.3]
+      ],
+      "props": []
+    },
+    "a05_spawn_08": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-1914.85,266.85,-864.8]
+      ],
+      "props": []
+    },
+    "a05_spawn_09": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-2700.55,266.85,-916.95]
+      ],
+      "props": []
+    },
+    "a05_spawn_10": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-2615.55,266.85,-849.6]
+      ],
+      "props": []
+    },
+    "a05_spawn_11": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-2538.95,266.85,-788.05]
+      ],
+      "props": []
+    },
+    "a05_spawn_12": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-2696.85,266.85,-778.55]
+      ],
+      "props": []
+    },
+    "a05_spawn_13": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-2610.4,266.85,-709.45]
+      ],
+      "props": []
+    },
+    "a05_spawn_14": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-2537.4,266.85,-649.65]
+      ],
+      "props": []
+    },
+    "a05_spawn_15": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-2452.7,266.85,-723.8]
+      ],
+      "props": []
+    },
+    "a05_spawn_16": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-2626.2,266.85,-556.6]
+      ],
+      "props": []
+    },
+    "a05_spawn_17": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-2548.15,266.85,-25.7]
+      ],
+      "props": []
+    },
+    "a05_spawn_18": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-2468.25,266.85,36.35]
+      ],
+      "props": []
+    },
+    "a05_spawn_19": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-2479.2,266.85,-101.45]
+      ],
+      "props": []
+    },
+    "a05_spawn_20": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-2399.05,266.85,-39.65]
+      ],
+      "props": []
+    },
+    "a05_spawn_21": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-546.45,266.85,595.35]
+      ],
+      "props": []
+    },
+    "a05_spawn_22": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-450.35,266.85,648.6]
+      ],
+      "props": []
+    },
+    "a05_spawn_23": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-361.3,266.85,711.4]
+      ],
+      "props": []
+    },
+    "a05_spawn_24": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-280.35,266.85,768.5]
+      ],
+      "props": []
+    },
+    "a05_spawn_25": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-200.35,266.85,817.7]
+      ],
+      "props": []
+    },
+    "a05_spawn_26": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-444.65,266.85,456.8]
+      ],
+      "props": []
+    },
+    "a05_spawn_27": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-353.9,266.85,527.6]
+      ],
+      "props": []
+    },
+    "a05_spawn_28": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-242.05,266.85,593.0]
+      ],
+      "props": []
+    },
+    "a05_spawn_29": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-148.25,266.85,659.2]
+      ],
+      "props": []
+    },
+    "a05_spawn_30": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [-58.35,266.85,722.6]
+      ],
+      "props": []
+    },
+    "a05_spawn_31": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [914.3,266.85,1575.3]
+      ],
+      "props": []
+    },
+    "a05_spawn_32": {
+      "type": "Sphere",
+      "tm": [
+        [56.9,0.0,0.0],
+        [0.0,56.9,0.0],
+        [0.0,0.0,56.9],
+        [1056.55,266.85,1577.25]
+      ],
+      "props": []
+    },
+    "retreat_point": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [9624.75,1500.0,8755.45]
+      ],
+      "props": []
+    },
+    "area_01": {
+      "type": "Sphere",
+      "tm": [
+        [14000.0,0.0,0.0],
+        [0.0,14000.0,0.0],
+        [0.0,0.0,14000.0],
+        [-1531.0,266.4,439.8]
+      ],
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}

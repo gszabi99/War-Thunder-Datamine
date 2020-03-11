@@ -1,0 +1,569 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 0.0
+    },
+    "player": [
+      {
+        "army": 1
+      },
+      {
+        "wing": "t1_player01"
+      },
+      {
+        "wing": "t1_player02"
+      },
+      {
+        "wing": "t1_player03"
+      },
+      {
+        "wing": "t1_player04"
+      },
+      {
+        "wing": "t1_player05"
+      },
+      {
+        "wing": "t1_player06"
+      },
+      {
+        "wing": "t1_player07"
+      },
+      {
+        "wing": "t1_player08"
+      },
+      {
+        "wing": "t1_player09"
+      },
+      {
+        "wing": "t1_player10"
+      },
+      {
+        "wing": "t1_player11"
+      },
+      {
+        "wing": "t1_player12"
+      },
+      {
+        "wing": "t1_player13"
+      },
+      {
+        "wing": "t1_player14"
+      },
+      {
+        "wing": "t1_player15"
+      },
+      {
+        "wing": "t1_player16"
+      }
+    ],
+    "player_teamB": [
+      {
+        "army": 2
+      },
+      {
+        "wing": "t2_player01"
+      },
+      {
+        "wing": "t2_player02"
+      },
+      {
+        "wing": "t2_player03"
+      },
+      {
+        "wing": "t2_player04"
+      },
+      {
+        "wing": "t2_player05"
+      },
+      {
+        "wing": "t2_player06"
+      },
+      {
+        "wing": "t2_player07"
+      },
+      {
+        "wing": "t2_player08"
+      },
+      {
+        "wing": "t2_player09"
+      },
+      {
+        "wing": "t2_player10"
+      },
+      {
+        "wing": "t2_player11"
+      },
+      {
+        "wing": "t2_player12"
+      },
+      {
+        "wing": "t2_player13"
+      },
+      {
+        "wing": "t2_player14"
+      },
+      {
+        "wing": "t2_player15"
+      },
+      {
+        "wing": "t2_player16"
+      },
+      {
+        "wing": "t2_player17"
+      }
+    ],
+    "mission": {
+      "level": "levels/guadalcanal.bin",
+      "type": "domination",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "hazy",
+      "openDiffLevels": true,
+      "scoreLimit": 5000,
+      "difficulty": ""
+    },
+    "spectator_points": []
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "other_move_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": {
+        "gameWhenDifficulty": {
+          "difficulty": "arcade",
+          "is": "notEqual"
+        }
+      },
+      "actions": [
+        {
+          "triggerDisable": {
+            "target": "arcade_move_init"
+          }
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object": "t1_heavy_units_squad"
+            },
+            {
+              "object": "t2_heavy_units_squad"
+            },
+            {
+              "moveSpeedKAtShooting": 0.6
+            },
+            {
+              "slowWhenEnemyNear": 0.6
+            },
+            {
+              "slowWhenEnemyNearDistance": 1000.0
+            },
+            {
+              "minDistBetween": 75.0
+            }
+          ]
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object": "t1_light_units_squad"
+            },
+            {
+              "object": "t2_light_units_squad"
+            },
+            {
+              "moveSpeedKAtShooting": 0.4
+            },
+            {
+              "slowWhenEnemyNear": 0.4
+            },
+            {
+              "slowWhenEnemyNearDistance": 2500.0
+            },
+            {
+              "minDistBetween": 100.0
+            },
+            {
+              "aiEnabled": true
+            }
+          ]
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "t1_nonarcade_enemy_near"
+            },
+            {
+              "target": "t2_nonarcade_enemy_near"
+            }
+          ]
+        }
+      ],
+      "else_actions": []
+    },
+    "arcade_move_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": {
+        "gameWhenDifficulty": {
+          "difficulty": "arcade",
+          "is": "equal"
+        }
+      },
+      "actions": [
+        {
+          "triggerDisable": {
+            "target": "other_move_init"
+          }
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object": "t1_heavy_units_squad"
+            },
+            {
+              "object": "t2_heavy_units_squad"
+            },
+            {
+              "moveSpeedKAtShooting": 0.6
+            },
+            {
+              "slowWhenEnemyNear": 0.6
+            },
+            {
+              "slowWhenEnemyNearDistance": 1000.0
+            },
+            {
+              "minDistBetween": 75.0
+            }
+          ]
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object": "t1_light_units_squad"
+            },
+            {
+              "object": "t2_light_units_squad"
+            },
+            {
+              "moveSpeedKAtShooting": 0.4
+            },
+            {
+              "slowWhenEnemyNear": 0.4
+            },
+            {
+              "slowWhenEnemyNearDistance": 2500.0
+            },
+            {
+              "minDistBetween": 90.0
+            },
+            {
+              "aiEnabled": true
+            }
+          ]
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "t1_arcade_enemy_near"
+            },
+            {
+              "target": "t2_arcade_enemy_near"
+            }
+          ]
+        }
+      ],
+      "else_actions": []
+    },
+    "t1_arcade_enemy_near": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 10.0
+        }
+      },
+      "conditions": {
+        "unitWhenEnemyNear": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "enemy_type": "isActive",
+          "distance": 1500.0,
+          "math": "2D",
+          "check_objects": "any",
+          "object": "t1_movable_units_squad"
+        }
+      },
+      "actions": {
+        "unitSetFormation": {
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [6.0,6.0],
+          "formation_noise": [0.4,0.5],
+          "object": "t1_movable_units_squad",
+          "useForTriggerFiltered": true,
+          "use_splines": true
+        }
+      },
+      "else_actions": []
+    },
+    "t1_nonarcade_enemy_near": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 10.0
+        }
+      },
+      "conditions": {
+        "unitWhenEnemyNear": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "enemy_type": "isActive",
+          "distance": 1500.0,
+          "math": "2D",
+          "check_objects": "any",
+          "object": "t1_movable_units_squad"
+        }
+      },
+      "actions": {
+        "unitSetFormation": {
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.0,6.0],
+          "formation_noise": [0.4,0.5],
+          "object": "t1_movable_units_squad",
+          "useForTriggerFiltered": true,
+          "use_splines": true
+        }
+      },
+      "else_actions": []
+    },
+    "t1_enemy_far": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 20.0
+        }
+      },
+      "conditions": {
+        "unitWhenEnemyNear": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "enemy_type": "isAlive",
+          "distance": 2000.0,
+          "math": "notNear2D",
+          "check_objects": "any",
+          "object": "t1_movable_units_squad"
+        }
+      },
+      "actions": {
+        "unitSetFormation": {
+          "formation_type": "rows",
+          "formation_div": 12,
+          "formation_step": [0.0,8.0],
+          "formation_noise": [0.0,0.0],
+          "object": "t1_movable_units_squad",
+          "useForTriggerFiltered": true,
+          "use_splines": true
+        }
+      },
+      "else_actions": []
+    },
+    "t2_arcade_enemy_near": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 10.0
+        }
+      },
+      "conditions": {
+        "unitWhenEnemyNear": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "enemy_type": "isActive",
+          "distance": 1500.0,
+          "math": "2D",
+          "check_objects": "any",
+          "object": "t2_movable_units_squad"
+        }
+      },
+      "actions": {
+        "unitSetFormation": {
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [6.0,6.0],
+          "formation_noise": [0.4,0.5],
+          "object": "t2_movable_units_squad",
+          "useForTriggerFiltered": true,
+          "use_splines": true
+        }
+      },
+      "else_actions": []
+    },
+    "t2_nonarcade_enemy_near": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 10.0
+        }
+      },
+      "conditions": {
+        "unitWhenEnemyNear": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "enemy_type": "isActive",
+          "distance": 1500.0,
+          "math": "2D",
+          "check_objects": "any",
+          "object": "t2_movable_units_squad"
+        }
+      },
+      "actions": {
+        "unitSetFormation": {
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.0,6.0],
+          "formation_noise": [0.4,0.5],
+          "object": "t2_movable_units_squad",
+          "useForTriggerFiltered": true,
+          "use_splines": true
+        }
+      },
+      "else_actions": []
+    },
+    "t2_enemy_far": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 20.0
+        }
+      },
+      "conditions": {
+        "unitWhenEnemyNear": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "enemy_type": "isAlive",
+          "distance": 2000.0,
+          "math": "notNear2D",
+          "check_objects": "any",
+          "object": "t2_movable_units_squad"
+        }
+      },
+      "actions": {
+        "unitSetFormation": {
+          "formation_type": "rows",
+          "formation_div": 12,
+          "formation_step": [0.0,8.0],
+          "formation_noise": [0.0,0.0],
+          "object": "t2_movable_units_squad",
+          "useForTriggerFiltered": true,
+          "use_splines": true
+        }
+      },
+      "else_actions": []
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [],
+  "areas": [],
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}

@@ -1,0 +1,2496 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": "player_armada"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/avg_poland.bin",
+      "type": "singleMission",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Evening",
+      "weather": "clear",
+      "country_axis": "germany",
+      "country_allies": "ussr"
+    },
+    "spectator_points": []
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "start_mission": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "unitSetProperties": [
+            {
+              "object": "enemy_fighters_01"
+            },
+            {
+              "object": "enemy_fighters_02"
+            },
+            {
+              "object": "enemy_fighters_03"
+            },
+            {
+              "object": "enemy_airfield_01_aaa_squad"
+            },
+            {
+              "object": "enemy_airfield_02_aaa_squad"
+            },
+            {
+              "object": "enemy_airfield_03_aaa_squad"
+            },
+            {
+              "accuracy": 0.1
+            },
+            {
+              "effShootingRate": 0.3
+            },
+            {
+              "airEffShootingRate": 0.3
+            },
+            {
+              "effShootingRateByPlayer": 0.1
+            }
+          ]
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object": "ally_fighters"
+            },
+            {
+              "object": "player_armada"
+            },
+            {
+              "accuracy": 0.3
+            }
+          ]
+        },
+        {
+          "unitAttackTarget": [
+            {
+              "playerAttracted": true
+            },
+            {
+              "object": "enemy_fighters_01"
+            },
+            {
+              "target": "ally_bombers"
+            },
+            {
+              "target": "player_armada"
+            },
+            {
+              "fireRandom": true
+            },
+            {
+              "playerAttractedCount": 2
+            },
+            {
+              "playerAttractedEffRate": 0.1
+            }
+          ]
+        },
+        {
+          "unitAttackTarget": [
+            {
+              "playerAttracted": false
+            },
+            {
+              "object": "enemy_fighters_01_assist"
+            },
+            {
+              "target": "ally_fighters"
+            },
+            {
+              "target": "ally_bombers"
+            },
+            {
+              "fireRandom": true
+            }
+          ]
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "ally_fighters",
+            "target": "enemy_fighters_01",
+            "fireRandom": true
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 1.0,
+            "target": "waypoint_01"
+          }
+        },
+        {
+          "unitPutToSleep": [
+            {
+              "target": "enemy_airfield_01_object"
+            },
+            {
+              "target": "enemy_airfield_02_object"
+            },
+            {
+              "target": "enemy_airfield_03_object"
+            }
+          ]
+        },
+        {
+          "unitMoveTo": {
+            "target": "waypoint_01",
+            "follow_target": false,
+            "teleportHeightType": "relative",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "object": "ally_bombers",
+            "speed": 500.0,
+            "distributionRadius": 40.0
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "waypoint_01_reach": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 750.0,
+          "math": "2D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "target_type": "isAlive",
+          "target_marking": 0,
+          "check_objects": "any",
+          "check_targets": "any",
+          "object": "player_armada",
+          "target": "waypoint_01",
+          "compareCenters": false
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 1.0,
+            "target": "waypoint_01"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 1.0,
+            "target": "waypoint_02"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "reach_waypoint_01",
+            "status": 2
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "reach_waypoint_02"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "waypoint_02",
+            "follow_target": false,
+            "teleportHeightType": "relative",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "object": "ally_bombers",
+            "speed": 500.0,
+            "distributionRadius": 40.0
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint_02_reach"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "waypoint_02_reach": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 750.0,
+          "math": "2D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "target_type": "isAlive",
+          "target_marking": 0,
+          "check_objects": "any",
+          "check_targets": "any",
+          "object": "player_armada",
+          "target": "waypoint_02",
+          "compareCenters": false
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 1.0,
+            "target": "waypoint_02"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "reach_waypoint_02",
+            "status": 2
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "destroy_airfield_planes"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "generate_enemy_airfield"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "generate_enemy_airfield": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "varSetRandomInt": {
+            "var": "enemy_airfield_idx",
+            "from": 1,
+            "to_not_including": 3
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "varSetString": {
+            "value": "enemy_airfield_",
+            "var": "enemy_airfield_name"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "@enemy_airfield_idx",
+            "digits": 2,
+            "var": "enemy_airfield_name"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "_object",
+            "digits": 2,
+            "var": "enemy_airfield_name"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "varSetString": {
+            "value": "enemy_airfield_",
+            "var": "airfield_trigger_name"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "@enemy_airfield_idx",
+            "digits": 2,
+            "var": "airfield_trigger_name"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "_activate",
+            "digits": 2,
+            "var": "airfield_trigger_name"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "varSetString": {
+            "value": "enemy_airfield_",
+            "var": "enemy_aaa_name"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "@enemy_airfield_idx",
+            "digits": 2,
+            "var": "enemy_aaa_name"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "_aaa_squad",
+            "digits": 2,
+            "var": "enemy_aaa_name"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "unitWakeUp": [
+            {
+              "target": "@enemy_airfield_name"
+            },
+            {
+              "target": "enemy_fighters_02"
+            },
+            {
+              "target": "@enemy_aaa_name"
+            }
+          ]
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "@airfield_trigger_name"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object": "enemy_fighters_02",
+            "speed": 0.0,
+            "lockSpeed": true,
+            "enginesEnabled": false,
+            "aiEnabled": false,
+            "takeoffPermission": false
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target": "enemy_fighters_02"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "unitRespawn": {
+            "delay": 0.0,
+            "offset": [0.0,0.0,0.0],
+            "object": "enemy_fighters_03",
+            "target": "enemy_fighters_respawn"
+          }
+        },
+        {
+          "unitAttackTarget": [
+            {
+              "playerAttracted": true
+            },
+            {
+              "object": "enemy_fighters_03"
+            },
+            {
+              "target": "ally_bombers"
+            },
+            {
+              "target": "player_armada"
+            },
+            {
+              "fireRandom": true
+            },
+            {
+              "playerAttractedCount": 2
+            },
+            {
+              "playerAttractedEffRate": 0.1
+            }
+          ]
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "unitAttackTarget": [
+            {
+              "playerAttracted": false
+            },
+            {
+              "object": "ally_fighters"
+            },
+            {
+              "target": "enemy_fighters_01"
+            },
+            {
+              "target": "enemy_fighters_03"
+            },
+            {
+              "fireRandom": true
+            }
+          ]
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "unitLoadBehTree": {
+            "name": "missionAssault",
+            "objects": "ally_bombers"
+          }
+        },
+        {
+          "unitAttackTarget": [
+            {
+              "playerAttracted": false
+            },
+            {
+              "object": "ally_bombers"
+            },
+            {
+              "target": "enemy_fighters_02"
+            },
+            {
+              "target": "@enemy_aaa_name"
+            },
+            {
+              "delayForObjects": [0.0,3.0]
+            },
+            {
+              "fireRandom": true
+            }
+          ]
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "destroy_airfield_fighters_completed"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "enemy_airfield_",
+            "var": "dead_pe2_spawn_name"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "@enemy_airfield_idx",
+            "digits": 2,
+            "var": "dead_pe2_spawn_name"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "_pe2_spawn",
+            "digits": 2,
+            "var": "dead_pe2_spawn_name"
+          }
+        },
+        {
+          "unitRespawn": {
+            "delay": 0.0,
+            "offset": [0.0,0.0,0.0],
+            "object": "dead_pe_2",
+            "target": "@dead_pe2_spawn_name"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "unitDamage": {
+            "part": 0,
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [1.0,1.0],
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [10.0,15.0],
+            "target": "dead_pe_2",
+            "doExplosion": true
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect_type": "specify",
+            "effect": "land_crash_fire",
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [0.0,0.0],
+            "show": true,
+            "attach": false,
+            "scale": 1.0,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "@dead_pe2_spawn_name"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "enemy_airfield_01_activate": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "enemy_airfield_idx",
+          "value": 1,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "addAirfield": [
+          {
+            "runwayStart": "enemy_airfield_01"
+          },
+          {
+            "runwayEnd": "enemy_airfield_01_end"
+          },
+          {
+            "runwayWidth": 500.0
+          },
+          {
+            "army": 2
+          },
+          {
+            "spawnPoint": "enemy_airfield_01_spawn_01"
+          },
+          {
+            "spawnPoint": "enemy_airfield_01_spawn_02"
+          },
+          {
+            "spawnPoint": "enemy_airfield_01_spawn_03"
+          },
+          {
+            "spawnPoint": "enemy_airfield_01_spawn_04"
+          },
+          {
+            "spawnPoint": "enemy_airfield_01_spawn_05"
+          },
+          {
+            "spawnPoint": "enemy_airfield_01_spawn_06"
+          },
+          {
+            "spawnPoint": "enemy_airfield_01_spawn_07"
+          },
+          {
+            "spawnPoint": "enemy_airfield_01_spawn_08"
+          },
+          {
+            "spawnPoint": "enemy_airfield_01_spawn_09"
+          },
+          {
+            "spawnPoint": "enemy_airfield_01_spawn_10"
+          },
+          {
+            "spawnPoint": "enemy_airfield_01_spawn_11"
+          },
+          {
+            "spawnPoint": "enemy_airfield_01_spawn_12"
+          }
+        ],
+        "spawnOnAirfield": {
+          "runwayName": "enemy_airfield_01",
+          "objects": "enemy_fighters_02"
+        }
+      },
+      "else_actions": []
+    },
+    "enemy_airfield_02_activate": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "enemy_airfield_idx",
+          "value": 2,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "addAirfield": [
+          {
+            "runwayStart": "enemy_airfield_02"
+          },
+          {
+            "runwayEnd": "enemy_airfield_02_end"
+          },
+          {
+            "runwayWidth": 500.0
+          },
+          {
+            "army": 2
+          },
+          {
+            "spawnPoint": "enemy_airfield_02_spawn_01"
+          },
+          {
+            "spawnPoint": "enemy_airfield_02_spawn_02"
+          },
+          {
+            "spawnPoint": "enemy_airfield_02_spawn_03"
+          },
+          {
+            "spawnPoint": "enemy_airfield_02_spawn_04"
+          },
+          {
+            "spawnPoint": "enemy_airfield_02_spawn_05"
+          },
+          {
+            "spawnPoint": "enemy_airfield_02_spawn_06"
+          },
+          {
+            "spawnPoint": "enemy_airfield_02_spawn_07"
+          },
+          {
+            "spawnPoint": "enemy_airfield_02_spawn_08"
+          },
+          {
+            "spawnPoint": "enemy_airfield_02_spawn_09"
+          },
+          {
+            "spawnPoint": "enemy_airfield_02_spawn_10"
+          },
+          {
+            "spawnPoint": "enemy_airfield_02_spawn_11"
+          },
+          {
+            "spawnPoint": "enemy_airfield_02_spawn_12"
+          }
+        ],
+        "spawnOnAirfield": {
+          "runwayName": "enemy_airfield_02",
+          "objects": "enemy_fighters_02"
+        }
+      },
+      "else_actions": []
+    },
+    "enemy_airfield_03_activate": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "enemy_airfield_idx",
+          "value": 3,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "addAirfield": [
+          {
+            "runwayStart": "enemy_airfield_03"
+          },
+          {
+            "runwayEnd": "enemy_airfield_03_end"
+          },
+          {
+            "runwayWidth": 500.0
+          },
+          {
+            "army": 2
+          },
+          {
+            "spawnPoint": "enemy_airfield_03_spawn_01"
+          },
+          {
+            "spawnPoint": "enemy_airfield_03_spawn_02"
+          },
+          {
+            "spawnPoint": "enemy_airfield_03_spawn_03"
+          },
+          {
+            "spawnPoint": "enemy_airfield_03_spawn_04"
+          },
+          {
+            "spawnPoint": "enemy_airfield_03_spawn_05"
+          },
+          {
+            "spawnPoint": "enemy_airfield_03_spawn_06"
+          },
+          {
+            "spawnPoint": "enemy_airfield_03_spawn_07"
+          },
+          {
+            "spawnPoint": "enemy_airfield_03_spawn_08"
+          },
+          {
+            "spawnPoint": "enemy_airfield_03_spawn_09"
+          },
+          {
+            "spawnPoint": "enemy_airfield_03_spawn_10"
+          },
+          {
+            "spawnPoint": "enemy_airfield_03_spawn_11"
+          },
+          {
+            "spawnPoint": "enemy_airfield_03_spawn_12"
+          }
+        ],
+        "spawnOnAirfield": {
+          "runwayName": "enemy_airfield_03",
+          "objects": "enemy_fighters_02"
+        }
+      },
+      "else_actions": []
+    },
+    "destroy_airfield_fighters_completed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 60.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object": "enemy_fighters_02"
+        }
+      },
+      "actions": {
+        "moSetObjectiveStatus": {
+          "target": "destroy_airfield_planes",
+          "status": 2
+        },
+        "wait": {
+          "time": 10.0
+        },
+        "missionCompleted": []
+      },
+      "else_actions": []
+    },
+    "update_indicators": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "missionSetTargetsIndicator": {
+          "target_type": "isActive",
+          "target_marking": 0,
+          "delta": 0,
+          "icon": "air",
+          "icon army": 2,
+          "set": true,
+          "target": "enemy_fighters_02"
+        }
+      },
+      "else_actions": []
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true,
+    "reach_waypoint_01": {
+      "is_enabled": true,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "reach_waypoint_02": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "destroy_airfield_planes": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800
+      },
+      "onSuccess": [],
+      "onFailed": []
+    }
+  },
+  "variables": {
+    "enemy_airfield_name": "",
+    "enemy_airfield_idx": 0,
+    "airfield_trigger_name": "",
+    "enemy_aaa_name": "",
+    "dead_pe2_spawn_name": ""
+  },
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "objectGroups": {
+        "name": "enemy_airfield_01_object",
+        "tm": [
+          [0.965926,0.0,-0.258819],
+          [0.0,1.0,0.0],
+          [0.258819,0.0,0.965926],
+          [-2043.05,45.6344,-1735.5]
+        ],
+        "unit_class": "dynAF_kh_gol_airfield_gumrak",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      }
+    },
+    {
+      "armada": {
+        "name": "player_armada",
+        "tm": [
+          [-0.573577,0.0,-0.819152],
+          [0.0,1.0,0.0],
+          [0.819152,0.0,-0.573577],
+          [20258.6,1000.0,20274.8]
+        ],
+        "unit_class": "pe-2-359",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "weapons": "pe_2_4xfab250",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 3,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 3,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 2.0,
+            "super_col_distances": 2.0,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "ally_fighters",
+        "tm": [
+          [-0.573577,0.0,-0.819152],
+          [0.0,1.0,0.0],
+          [0.819152,0.0,-0.573577],
+          [20258.6,1500.0,20274.8]
+        ],
+        "unit_class": "yak-9",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 2.0,
+            "super_col_distances": 2.0,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "enemy_fighters_01",
+        "tm": [
+          [0.996195,0.0,0.0871558],
+          [0.0,1.0,0.0],
+          [-0.0871558,0.0,0.996195],
+          [15348.5,1500.0,19335.8]
+        ],
+        "unit_class": "fw-190a-5",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 8,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "enemy_fighters_02",
+        "tm": [
+          [0.965926,0.0,-0.258819],
+          [0.0,1.0,0.0],
+          [0.258819,0.0,0.965926],
+          [-33304.8,1500.0,-8761.95]
+        ],
+        "unit_class": "fw-190a-5",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 12,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "isDelayed": true,
+          "speed": 0.0,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "enemy_fighters_03",
+        "tm": [
+          [0.965926,0.0,-0.258819],
+          [0.0,1.0,0.0],
+          [0.258819,0.0,0.965926],
+          [-4242.05,1500.0,5122.6]
+        ],
+        "unit_class": "fw-190a-5",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 8,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "isDelayed": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "enemy_airfield_02_object",
+        "tm": [
+          [0.965926,0.0,-0.258819],
+          [0.0,1.0,0.0],
+          [0.258819,0.0,0.965926],
+          [-2246.7,65.0114,-5728.8]
+        ],
+        "unit_class": "dynAF_kh_gol_airfield_gumrak",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "enemy_airfield_03_object",
+        "tm": [
+          [0.965926,0.0,-0.258819],
+          [0.0,1.0,0.0],
+          [0.258819,0.0,0.965926],
+          [1833.65,44.7715,-5737.2]
+        ],
+        "unit_class": "dynAF_kh_gol_airfield_gumrak",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      }
+    },
+    {
+      "armada": {
+        "name": "ally_bombers",
+        "tm": [
+          [-0.573577,0.0,-0.819152],
+          [0.0,1.0,0.0],
+          [0.819152,0.0,-0.573577],
+          [20276.8,1000.0,20298.1]
+        ],
+        "unit_class": "pe-2-359",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "weapons": "pe_2_4xfab250",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 9,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 3,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 2.0,
+            "super_col_distances": 2.0,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "enemy_airfield_01_aaa_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1543.25,46.8,-1644.75]
+        ],
+        "unit_class": "germ_37mm_flak43",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "enemy_airfield_01_aaa_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-2708.1,46.8,-1303.8]
+        ],
+        "unit_class": "germ_37mm_flak43",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "enemy_airfield_01_aaa_03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-2749.35,46.8,-2048.55]
+        ],
+        "unit_class": "germ_37mm_flak43",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "enemy_airfield_01_aaa_04",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1359.45,46.8,-2259.25]
+        ],
+        "unit_class": "germ_37mm_flak43",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "enemy_airfield_03_aaa_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2462.3,108.55,-5731.85]
+        ],
+        "unit_class": "germ_37mm_flak43",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "enemy_airfield_03_aaa_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1297.45,108.55,-5390.9]
+        ],
+        "unit_class": "germ_37mm_flak43",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "enemy_airfield_03_aaa_03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1256.2,108.55,-6135.65]
+        ],
+        "unit_class": "germ_37mm_flak43",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "enemy_airfield_03_aaa_04",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2646.1,108.55,-6346.35]
+        ],
+        "unit_class": "germ_37mm_flak43",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "enemy_airfield_02_aaa_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1737.6,108.55,-5693.7]
+        ],
+        "unit_class": "germ_37mm_flak43",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "enemy_airfield_02_aaa_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-2902.45,108.55,-5352.75]
+        ],
+        "unit_class": "germ_37mm_flak43",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "enemy_airfield_02_aaa_03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-2943.7,108.55,-6097.5]
+        ],
+        "unit_class": "germ_37mm_flak43",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "enemy_airfield_02_aaa_04",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1553.8,108.55,-6308.2]
+        ],
+        "unit_class": "germ_37mm_flak43",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "enemy_airfield_01_aaa_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [398.35,72.8,-11775.3]
+        ],
+        "props": [
+          {
+            "squad_members": "enemy_airfield_01_aaa_01"
+          },
+          {
+            "squad_members": "enemy_airfield_01_aaa_02"
+          },
+          {
+            "squad_members": "enemy_airfield_01_aaa_03"
+          },
+          {
+            "squad_members": "enemy_airfield_01_aaa_04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "enemy_airfield_02_aaa_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-701.55,72.8,-11541.3]
+        ],
+        "props": [
+          {
+            "squad_members": "enemy_airfield_02_aaa_01"
+          },
+          {
+            "squad_members": "enemy_airfield_02_aaa_02"
+          },
+          {
+            "squad_members": "enemy_airfield_02_aaa_03"
+          },
+          {
+            "squad_members": "enemy_airfield_02_aaa_04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "enemy_airfield_03_aaa_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1599.85,72.8,-11148.0]
+        ],
+        "props": [
+          {
+            "squad_members": "enemy_airfield_03_aaa_01"
+          },
+          {
+            "squad_members": "enemy_airfield_03_aaa_02"
+          },
+          {
+            "squad_members": "enemy_airfield_03_aaa_03"
+          },
+          {
+            "squad_members": "enemy_airfield_03_aaa_04"
+          }
+        ]
+      }
+    },
+    {
+      "armada": {
+        "name": "dead_pe_2",
+        "tm": [
+          [0.939693,0.0,0.34202],
+          [0.0,1.0,0.0],
+          [-0.34202,0.0,0.939693],
+          [17821.6,414.95,20970.6]
+        ],
+        "unit_class": "pe-2-359",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "isDelayed": true,
+          "speed": 0.0,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "enemy_fighters_01_assist",
+        "tm": [
+          [0.996195,0.0,0.0871558],
+          [0.0,1.0,0.0],
+          [-0.0871558,0.0,0.996195],
+          [15348.5,1500.7,19335.8]
+        ],
+        "unit_class": "fw-190a-5",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    }
+  ],
+  "areas": {
+    "waypoint_01": {
+      "type": "Point",
+      "tm": [
+        [0.819152,0.0,0.573576],
+        [0.0,1.0,0.0],
+        [-0.573576,0.0,0.819152],
+        [13081.0,1000.0,4552.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "waypoint_02": {
+      "type": "Point",
+      "tm": [
+        [0.819152,0.0,0.573576],
+        [0.0,1.0,0.0],
+        [-0.573576,0.0,0.819152],
+        [4954.7,1000.0,33.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_fighters_respawn": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [-11897.3,3000.0,-4397.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_01": {
+      "type": "Sphere",
+      "tm": [
+        [138.7,0.0,0.0],
+        [0.0,138.7,0.0],
+        [0.0,0.0,138.7],
+        [-2429.6,47.05,-1738.85]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_01_end": {
+      "type": "Sphere",
+      "tm": [
+        [138.7,0.0,0.0],
+        [0.0,138.7,0.0],
+        [0.0,0.0,138.7],
+        [-1521.85,47.05,-1981.1]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_02": {
+      "type": "Sphere",
+      "tm": [
+        [138.7,0.0,0.0],
+        [0.0,138.7,0.0],
+        [0.0,0.0,138.7],
+        [-2666.95,47.05,-5727.5]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_03": {
+      "type": "Sphere",
+      "tm": [
+        [138.7,0.0,0.0],
+        [0.0,138.7,0.0],
+        [0.0,0.0,138.7],
+        [1347.9,47.05,-5667.8]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_02_end": {
+      "type": "Sphere",
+      "tm": [
+        [138.7,0.0,0.0],
+        [0.0,138.7,0.0],
+        [0.0,0.0,138.7],
+        [-1561.3,47.05,-6030.25]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_03_end": {
+      "type": "Sphere",
+      "tm": [
+        [138.7,0.0,0.0],
+        [0.0,138.7,0.0],
+        [0.0,0.0,138.7],
+        [2327.35,47.05,-5943.65]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_01_spawn_01": {
+      "type": "Sphere",
+      "tm": [
+        [9.35,0.0,-16.1947],
+        [0.0,18.7,0.0],
+        [16.1947,0.0,9.35],
+        [-2660.15,47.05,-1586.15]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_01_spawn_02": {
+      "type": "Sphere",
+      "tm": [
+        [9.35,0.0,-16.1947],
+        [0.0,18.7,0.0],
+        [16.1947,0.0,9.35],
+        [-2736.8,47.05,-1536.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_01_spawn_03": {
+      "type": "Sphere",
+      "tm": [
+        [9.35,0.0,-16.1947],
+        [0.0,18.7,0.0],
+        [16.1947,0.0,9.35],
+        [-2687.2,47.05,-1519.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_01_spawn_04": {
+      "type": "Sphere",
+      "tm": [
+        [9.35,0.0,-16.1947],
+        [0.0,18.7,0.0],
+        [16.1947,0.0,9.35],
+        [-2567.65,47.05,-1526.25]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_01_spawn_05": {
+      "type": "Sphere",
+      "tm": [
+        [9.35,0.0,-16.1947],
+        [0.0,18.7,0.0],
+        [16.1947,0.0,9.35],
+        [-2478.45,47.05,-1499.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_01_spawn_06": {
+      "type": "Sphere",
+      "tm": [
+        [9.35,0.0,-16.1947],
+        [0.0,18.7,0.0],
+        [16.1947,0.0,9.35],
+        [-2456.35,47.05,-1568.05]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_01_spawn_07": {
+      "type": "Sphere",
+      "tm": [
+        [9.35,0.0,-16.1947],
+        [0.0,18.7,0.0],
+        [16.1947,0.0,9.35],
+        [-2521.95,47.05,-1552.85]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_01_spawn_08": {
+      "type": "Sphere",
+      "tm": [
+        [9.35,0.0,-16.1947],
+        [0.0,18.7,0.0],
+        [16.1947,0.0,9.35],
+        [-2594.3,47.05,-1585.1]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_01_spawn_09": {
+      "type": "Sphere",
+      "tm": [
+        [16.948,0.0,7.90296],
+        [0.0,18.7,0.0],
+        [-7.90296,0.0,16.948],
+        [-2685.1,47.05,-1870.2]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_01_spawn_10": {
+      "type": "Sphere",
+      "tm": [
+        [16.948,0.0,7.90296],
+        [0.0,18.7,0.0],
+        [-7.90296,0.0,16.948],
+        [-2718.45,47.05,-1838.65]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_01_spawn_11": {
+      "type": "Sphere",
+      "tm": [
+        [16.948,0.0,7.90296],
+        [0.0,18.7,0.0],
+        [-7.90296,0.0,16.948],
+        [-2707.35,47.05,-1778.45]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_01_spawn_12": {
+      "type": "Sphere",
+      "tm": [
+        [16.948,0.0,7.90296],
+        [0.0,18.7,0.0],
+        [-7.90296,0.0,16.948],
+        [-2661.35,47.05,-1801.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_02_spawn_01": {
+      "type": "Sphere",
+      "tm": [
+        [9.35,0.0,-16.1947],
+        [0.0,18.7,0.0],
+        [16.1947,0.0,9.35],
+        [-2852.15,47.05,-5561.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_02_spawn_02": {
+      "type": "Sphere",
+      "tm": [
+        [9.35,0.0,-16.1947],
+        [0.0,18.7,0.0],
+        [16.1947,0.0,9.35],
+        [-2928.8,47.05,-5512.25]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_02_spawn_03": {
+      "type": "Sphere",
+      "tm": [
+        [9.35,0.0,-16.1947],
+        [0.0,18.7,0.0],
+        [16.1947,0.0,9.35],
+        [-2879.2,47.05,-5494.55]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_02_spawn_04": {
+      "type": "Sphere",
+      "tm": [
+        [9.35,0.0,-16.1947],
+        [0.0,18.7,0.0],
+        [16.1947,0.0,9.35],
+        [-2759.65,47.05,-5501.8]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_02_spawn_05": {
+      "type": "Sphere",
+      "tm": [
+        [9.35,0.0,-16.1947],
+        [0.0,18.7,0.0],
+        [16.1947,0.0,9.35],
+        [-2670.45,47.05,-5475.15]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_02_spawn_06": {
+      "type": "Sphere",
+      "tm": [
+        [9.35,0.0,-16.1947],
+        [0.0,18.7,0.0],
+        [16.1947,0.0,9.35],
+        [-2648.35,47.05,-5543.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_02_spawn_07": {
+      "type": "Sphere",
+      "tm": [
+        [9.35,0.0,-16.1947],
+        [0.0,18.7,0.0],
+        [16.1947,0.0,9.35],
+        [-2713.95,47.05,-5528.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_02_spawn_08": {
+      "type": "Sphere",
+      "tm": [
+        [9.35,0.0,-16.1947],
+        [0.0,18.7,0.0],
+        [16.1947,0.0,9.35],
+        [-2786.3,47.05,-5560.65]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_02_spawn_09": {
+      "type": "Sphere",
+      "tm": [
+        [16.948,0.0,7.90296],
+        [0.0,18.7,0.0],
+        [-7.90296,0.0,16.948],
+        [-2877.1,47.05,-5845.75]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_02_spawn_10": {
+      "type": "Sphere",
+      "tm": [
+        [16.948,0.0,7.90296],
+        [0.0,18.7,0.0],
+        [-7.90296,0.0,16.948],
+        [-2910.45,47.05,-5814.2]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_02_spawn_11": {
+      "type": "Sphere",
+      "tm": [
+        [16.948,0.0,7.90296],
+        [0.0,18.7,0.0],
+        [-7.90296,0.0,16.948],
+        [-2899.35,47.05,-5754.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_02_spawn_12": {
+      "type": "Sphere",
+      "tm": [
+        [16.948,0.0,7.90296],
+        [0.0,18.7,0.0],
+        [-7.90296,0.0,16.948],
+        [-2853.35,47.05,-5776.95]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_03_spawn_01": {
+      "type": "Sphere",
+      "tm": [
+        [9.35,0.0,-16.1947],
+        [0.0,18.7,0.0],
+        [16.1947,0.0,9.35],
+        [1101.2,47.05,-5518.1]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_03_spawn_02": {
+      "type": "Sphere",
+      "tm": [
+        [9.35,0.0,-16.1947],
+        [0.0,18.7,0.0],
+        [16.1947,0.0,9.35],
+        [1024.55,47.05,-5468.65]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_03_spawn_03": {
+      "type": "Sphere",
+      "tm": [
+        [9.35,0.0,-16.1947],
+        [0.0,18.7,0.0],
+        [16.1947,0.0,9.35],
+        [1074.15,47.05,-5450.95]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_03_spawn_04": {
+      "type": "Sphere",
+      "tm": [
+        [9.35,0.0,-16.1947],
+        [0.0,18.7,0.0],
+        [16.1947,0.0,9.35],
+        [1193.7,47.05,-5458.2]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_03_spawn_05": {
+      "type": "Sphere",
+      "tm": [
+        [9.35,0.0,-16.1947],
+        [0.0,18.7,0.0],
+        [16.1947,0.0,9.35],
+        [1282.9,47.05,-5431.55]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_03_spawn_06": {
+      "type": "Sphere",
+      "tm": [
+        [9.35,0.0,-16.1947],
+        [0.0,18.7,0.0],
+        [16.1947,0.0,9.35],
+        [1305.0,47.05,-5500.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_03_spawn_07": {
+      "type": "Sphere",
+      "tm": [
+        [9.35,0.0,-16.1947],
+        [0.0,18.7,0.0],
+        [16.1947,0.0,9.35],
+        [1239.4,47.05,-5484.8]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_03_spawn_08": {
+      "type": "Sphere",
+      "tm": [
+        [9.35,0.0,-16.1947],
+        [0.0,18.7,0.0],
+        [16.1947,0.0,9.35],
+        [1167.05,47.05,-5517.05]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_03_spawn_09": {
+      "type": "Sphere",
+      "tm": [
+        [16.948,0.0,7.90296],
+        [0.0,18.7,0.0],
+        [-7.90296,0.0,16.948],
+        [1076.25,47.05,-5802.15]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_03_spawn_10": {
+      "type": "Sphere",
+      "tm": [
+        [16.948,0.0,7.90296],
+        [0.0,18.7,0.0],
+        [-7.90296,0.0,16.948],
+        [1042.9,47.05,-5770.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_03_spawn_11": {
+      "type": "Sphere",
+      "tm": [
+        [16.948,0.0,7.90296],
+        [0.0,18.7,0.0],
+        [-7.90296,0.0,16.948],
+        [1054.0,47.05,-5710.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_03_spawn_12": {
+      "type": "Sphere",
+      "tm": [
+        [16.948,0.0,7.90296],
+        [0.0,18.7,0.0],
+        [-7.90296,0.0,16.948],
+        [1100.0,47.05,-5733.35]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_01_pe2_spawn": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [-2157.1,52.2,-1698.8]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_02_pe2_spawn": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [-2181.4,70.2,-5765.5]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_airfield_03_pe2_spawn": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [1889.05,50.0,-5869.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}

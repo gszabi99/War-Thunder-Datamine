@@ -1,0 +1,1987 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 24.0
+    },
+    "player": {
+      "army": 1,
+      "wing": "player_wing"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/peleliu.bin",
+      "type": "singleMission",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Evening",
+      "weather": "hazy",
+      "windSpeed": [5.0,6.0],
+      "gt_cooperative": true,
+      "gt_reload_explosives": true,
+      "stars": {
+        "year": 1944,
+        "month": 9,
+        "day": 15,
+        "time": 12.0
+      }
+    },
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01",
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": [
+          {
+            "map": true
+          },
+          {
+            "minTime": 4
+          },
+          {
+            "picture": ""
+          },
+          {
+            "arrow": [
+              {
+                "width": 1
+              },
+              {
+                "side": "ally"
+              },
+              {
+                "point": "us_lcvp"
+              },
+              {
+                "point": "lcvp_waypoint"
+              },
+              {
+                "point": "lcvp_waypoint"
+              }
+            ]
+          },
+          {
+            "icon": {
+              "icontype": "bomber",
+              "side": "player",
+              "target": "player_wing",
+              "lookAt": "final_point"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "artillery",
+              "side": "enemy",
+              "target": "jpn_artillery_01"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "artillery",
+              "side": "enemy",
+              "target": "jpn_artillery_02"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "artillery",
+              "side": "enemy",
+              "target": "jpn_artillery_03"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "artillery",
+              "side": "enemy",
+              "target": "jpn_artillery_04"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "transport",
+              "side": "ally",
+              "target": "us_lcvp"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "start_mission": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "unitSetProperties": {
+            "object": "jpn_aaa_squad",
+            "effShootingRate": 0.05
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object": "us_sbd3_ai",
+            "plane": [
+              {
+                "targetDeviation": {
+                  "trigger": "machine gun",
+                  "defaultVal": 1.8,
+                  "limits": [0.6,1.8]
+                }
+              },
+              {
+                "targetDeviation": {
+                  "trigger": "bombs",
+                  "defaultVal": 1.6,
+                  "limits": [0.4,1.6]
+                }
+              },
+              {
+                "targetDeviation": {
+                  "trigger": "gunner",
+                  "defaultVal": 2.4,
+                  "limits": [0.8,2.4]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object": "jpn_fighters_01"
+            },
+            {
+              "object": "jpn_fighters_02"
+            },
+            {
+              "effShootingRate": 0.7
+            },
+            {
+              "plane": {
+                "targetDeviation": {
+                  "trigger": "machine gun",
+                  "defaultVal": 0.7,
+                  "limits": [0.7,2.4]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "unitPutToSleep": [
+            {
+              "target": "us_tanks"
+            },
+            {
+              "target": "jpn_fighters_02"
+            }
+          ]
+        },
+        {
+          "unitAttackTarget": [
+            {
+              "playerAttracted": true
+            },
+            {
+              "object": "jpn_fighters_01"
+            },
+            {
+              "target": "us_sbd3_ai"
+            },
+            {
+              "target": "player_wing"
+            },
+            {
+              "target": "f6f3_ai"
+            },
+            {
+              "playerAttractedCount": 2
+            },
+            {
+              "playerAttractedEffRate": 0.4
+            }
+          ]
+        },
+        {
+          "unitMoveTo": {
+            "target": "us_sbd3_ai",
+            "follow_target": true,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": "f6f3_ai",
+            "follow_offset": [-150.0,250.0,20.0]
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "jpn_patrol_point",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": "us_sbd3_ai",
+            "speed": 220.0
+          }
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object": "destroyed_ship_01"
+            },
+            {
+              "object": "destroyed_ship_02"
+            },
+            {
+              "object": "destroyed_ship_03"
+            },
+            {
+              "object": "destroyed_ship_04"
+            },
+            {
+              "object": "destroyed_ship_05"
+            },
+            {
+              "object": "destroyed_ship_06"
+            },
+            {
+              "object": "destroyed_ship_07"
+            },
+            {
+              "object": "destroyed_ship_08"
+            },
+            {
+              "object": "destroyed_tanks_01"
+            },
+            {
+              "attack_type": "hold_fire"
+            },
+            {
+              "stealthRadius": 0.0
+            }
+          ]
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "pkg3_peleliu_mission_02_flyto"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 1.0,
+            "target": "jpn_patrol_point"
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object": "f6f3_ai",
+            "plane": {
+              "targetDeviation": {
+                "trigger": "machine gun",
+                "defaultVal": 1.8,
+                "limits": [0.6,1.8]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "sbd3_near_bomb_point": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 1500.0,
+          "math": "2D",
+          "object_type": "isAlive",
+          "target_type": "isAlive",
+          "check_objects": "any",
+          "check_targets": "any",
+          "object_marking": 0,
+          "target_marking": 0,
+          "object": "us_sbd3_ai",
+          "target": "jpn_patrol_point"
+        }
+      },
+      "actions": {
+        "unitAttackTarget": [
+          {
+            "playerAttracted": false
+          },
+          {
+            "object": "us_sbd3_ai"
+          },
+          {
+            "target": "jpn_aaa_squad"
+          },
+          {
+            "target": "jpn_artillery_squad"
+          },
+          {
+            "delayForObjects": [5.0,15.0]
+          },
+          {
+            "fireRandom": true
+          }
+        ]
+      }
+    },
+    "jpn_fighetrs_01_near_bombers": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 4500.0,
+          "math": "2D",
+          "object_type": "isAlive",
+          "target_type": "isAlive",
+          "check_objects": "any",
+          "check_targets": "any",
+          "object_marking": 0,
+          "target_marking": 0,
+          "object": "us_sbd3_ai",
+          "target": "jpn_fighters_01"
+        }
+      },
+      "actions": {
+        "unitAttackTarget": {
+          "playerAttracted": false,
+          "object": "f6f3_ai",
+          "target": "jpn_fighters_01",
+          "fireRandom": true
+        }
+      }
+    },
+    "jpn_fighetrs_02_near_bombers": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 4500.0,
+          "math": "2D",
+          "object_type": "isAlive",
+          "target_type": "isAlive",
+          "check_objects": "any",
+          "check_targets": "any",
+          "object_marking": 0,
+          "target_marking": 0,
+          "object": "us_sbd3_ai",
+          "target": "jpn_fighters_02"
+        }
+      },
+      "actions": {
+        "unitAttackTarget": [
+          {
+            "playerAttracted": false
+          },
+          {
+            "object": "f6f3_ai"
+          },
+          {
+            "target": "jpn_fighters_01"
+          },
+          {
+            "target": "jpn_fighters_02"
+          },
+          {
+            "fireRandom": true
+          }
+        ]
+      }
+    },
+    "player_near_bomb_point": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "playersDistanceBetween": {
+          "value": 1500.0,
+          "math": "2D",
+          "players": "isAlive",
+          "target_type": "isAlive",
+          "check_players": "any",
+          "check_targets": "any",
+          "target": "jpn_patrol_point"
+        }
+      },
+      "actions": {
+        "missionMarkAsWaypoint": {
+          "visible": false,
+          "primary": true,
+          "oriented": false,
+          "ignoreDifficulty": false,
+          "scale": 1.0,
+          "target": "jpn_patrol_point"
+        },
+        "moSetObjectiveStatus": {
+          "target": "pkg3_peleliu_mission_02_flyto",
+          "status": 2
+        },
+        "wait": {
+          "time": 3.0
+        },
+        "unitSetIndication": {
+          "set": true,
+          "target": "jpn_artillery_squad"
+        },
+        "moAddMissionObjective": {
+          "target": "pkg3_peleliu_mission_02_artillery"
+        },
+        "triggerEnable": {
+          "target": "run_tanks"
+        }
+      }
+    },
+    "us_lcvp_near_beach": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 50.0,
+          "math": "2D",
+          "object_type": "isAlive",
+          "target_type": "isAlive",
+          "check_objects": "any",
+          "check_targets": "any",
+          "object_marking": 0,
+          "target_marking": 0,
+          "object": "us_lcvp",
+          "target": "lcvp_waypoint"
+        }
+      },
+      "actions": [
+        {
+          "unitWakeUp": [
+            {
+              "target": "us_tanks"
+            },
+            {
+              "target": "jpn_fighters_02"
+            }
+          ]
+        },
+        {
+          "unitAttackTarget": [
+            {
+              "playerAttracted": true
+            },
+            {
+              "object": "jpn_fighters_02"
+            },
+            {
+              "target": "us_sbd3_ai"
+            },
+            {
+              "target": "player_wing"
+            },
+            {
+              "target": "f6f3_ai"
+            },
+            {
+              "fireRandom": true
+            },
+            {
+              "playerAttractedCount": 2
+            },
+            {
+              "playerAttractedEffRate": 0.4
+            }
+          ]
+        },
+        {
+          "unitAttackTarget": [
+            {
+              "playerAttracted": false
+            },
+            {
+              "object": "f6f3_ai"
+            },
+            {
+              "target": "jpn_fighters_01"
+            },
+            {
+              "target": "jpn_fighters_02"
+            },
+            {
+              "fireRandom": true
+            }
+          ]
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target": "us_tanks"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "update_indicators"
+          }
+        }
+      ]
+    },
+    "complete_mission": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 150.0,
+          "math": "2D",
+          "object_type": "isAlive",
+          "target_type": "isAlive",
+          "check_objects": "any",
+          "check_targets": "any",
+          "object_marking": 0,
+          "target_marking": 0,
+          "object": "us_tanks",
+          "target": "final_point"
+        },
+        "unitWhenCountMatches": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object": "jpn_artillery_squad"
+        }
+      },
+      "actions": {
+        "moSetObjectiveStatus": {
+          "target": "pkg3_peleliu_mission_02_artillery",
+          "status": 2
+        },
+        "wait": {
+          "time": 3.0
+        },
+        "missionCompleted": {
+          "timer": false
+        }
+      }
+    },
+    "fail_mission": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 4,
+          "object": "us_tanks"
+        }
+      },
+      "actions": {
+        "moSetObjectiveStatus": {
+          "target": "pkg3_peleliu_mission_02_artillery",
+          "status": 3
+        },
+        "wait": {
+          "time": 3.0
+        },
+        "missionFailed": []
+      }
+    },
+    "run_tanks": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "more",
+          "value": 0,
+          "object": "us_tanks"
+        }
+      },
+      "actions": {
+        "unitSetProperties": {
+          "object": "us_tanks",
+          "speed": 20.0,
+          "effShootingRate": 0.4
+        }
+      }
+    },
+    "update_indicators": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "missionSetTargetsIndicator": {
+          "target_type": "isAlive",
+          "target_marking": 0,
+          "delta": 0,
+          "icon": "tank",
+          "icon army": 1,
+          "set": true,
+          "target": "us_tanks"
+        }
+      }
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true,
+    "pkg3_peleliu_mission_02_flyto": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "pkg3_peleliu_mission_02_artillery": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    }
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": {
+    "effect_01": {
+      "type": "groundFire",
+      "tm": [
+        [41.4,0.0,0.0],
+        [0.0,41.4,0.0],
+        [0.0,0.0,41.4],
+        [-892.55,26.85,-12646.4]
+      ],
+      "density": 10.0
+    },
+    "effect_02": {
+      "type": "groundFire",
+      "tm": [
+        [27.6,0.0,0.0],
+        [0.0,27.6,0.0],
+        [0.0,0.0,27.6],
+        [-583.35,26.85,-12478.7]
+      ],
+      "density": 10.0
+    },
+    "effect_03": {
+      "type": "groundFire",
+      "tm": [
+        [27.6,0.0,0.0],
+        [0.0,27.6,0.0],
+        [0.0,0.0,27.6],
+        [-1022.95,26.85,-13339.4]
+      ],
+      "density": 10.0
+    },
+    "effect_04": {
+      "type": "groundFire",
+      "tm": [
+        [27.6,0.0,0.0],
+        [0.0,27.6,0.0],
+        [0.0,0.0,27.6],
+        [-288.0,14.0024,-12838.2]
+      ],
+      "density": 10.0
+    },
+    "effect_05": {
+      "type": "forestSmoke",
+      "tm": [
+        [269.1,0.0,0.0],
+        [0.0,69.0,0.0],
+        [0.0,0.0,269.1],
+        [-936.4,26.85,-12484.1]
+      ],
+      "density": 10.0
+    },
+    "effect_06": {
+      "type": "forestSmoke",
+      "tm": [
+        [269.1,0.0,0.0],
+        [0.0,69.0,0.0],
+        [0.0,0.0,269.1],
+        [-1154.3,26.85,-13028.4]
+      ],
+      "density": 10.0
+    },
+    "effect_07": {
+      "type": "forestSmoke",
+      "tm": [
+        [269.1,0.0,0.0],
+        [0.0,69.0,0.0],
+        [0.0,0.0,269.1],
+        [-622.45,26.85,-12541.9]
+      ],
+      "density": 10.0
+    },
+    "effect_08": {
+      "type": "groundFire",
+      "tm": [
+        [12.42,0.0,0.0],
+        [0.0,20.7,0.0],
+        [0.0,0.0,12.42],
+        [-832.5,0.55,-13424.5]
+      ],
+      "density": 10.0
+    },
+    "effect_09": {
+      "type": "destroyedTech",
+      "tm": [
+        [12.42,0.0,0.0],
+        [0.0,20.7,0.0],
+        [0.0,0.0,12.42],
+        [-847.5,0.55,-13204.6]
+      ],
+      "density": 10.0
+    }
+  },
+  "units": [
+    {
+      "armada": {
+        "name": "player_wing",
+        "tm": [
+          [0.130526,0.0,0.991445],
+          [0.0,1.0,0.0],
+          [-0.991445,0.0,0.130526],
+          [-960.6,1500.0,-20528.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "sbd-3",
+        "weapons": "sbd_3_default",
+        "props": {
+          "army": 1,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "us_sbd3_ai",
+        "tm": [
+          [0.130526,0.0,0.991445],
+          [0.0,1.0,0.0],
+          [-0.991445,0.0,0.130526],
+          [-940.15,1500.0,-19972.0]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "sbd-3",
+        "weapons": "sbd_3_default",
+        "props": {
+          "army": 1,
+          "count": 12,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "destroyed_ship_01",
+        "tm": [
+          [-0.258819,0.0,0.965926],
+          [0.0,1.0,0.0],
+          [-0.965926,0.0,-0.258819],
+          [-956.9,-1.55,-13592.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uss_lcvp_lite",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "destroyed_ship_02",
+        "tm": [
+          [-0.258819,0.0,0.965926],
+          [0.0,1.0,0.0],
+          [-0.965926,0.0,-0.258819],
+          [-904.45,-1.55,-13556.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uss_lcvp_lite",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "destroyed_ship_03",
+        "tm": [
+          [-0.707107,0.0,0.707107],
+          [0.0,1.0,0.0],
+          [-0.707107,0.0,-0.707107],
+          [-831.15,-1.55,-13426.1]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uss_lcvp_lite",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "destroyed_ship_04",
+        "tm": [
+          [-0.707107,0.0,0.707107],
+          [0.0,1.0,0.0],
+          [-0.707107,0.0,-0.707107],
+          [-750.05,-1.55,-13310.7]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uss_lcvp_lite",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "destroyed_ship_05",
+        "tm": [
+          [-0.258819,0.0,0.965926],
+          [0.0,1.0,0.0],
+          [-0.965926,0.0,-0.258819],
+          [-686.45,-1.55,-12857.7]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uss_lcvp_lite",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "destroyed_ship_06",
+        "tm": [
+          [-0.382683,0.0,0.92388],
+          [0.0,1.0,0.0],
+          [-0.92388,0.0,-0.382683],
+          [-583.65,-1.55,-12819.6]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uss_lcvp_lite",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "destroyed_ship_07",
+        "tm": [
+          [0.258819,0.0,0.965926],
+          [0.0,1.0,0.0],
+          [-0.965926,0.0,0.258819],
+          [-477.4,-1.55,-12946.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uss_lcvp_lite",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "destroyed_ship_08",
+        "tm": [
+          [0.0871557,0.0,0.996195],
+          [0.0,1.0,0.0],
+          [-0.996195,0.0,0.0871557],
+          [-388.1,-1.55,-13039.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uss_lcvp_lite",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "destroyed_tanks_01",
+        "tm": [
+          [0.0436195,0.0,0.999048],
+          [0.0,1.0,0.0],
+          [-0.999048,0.0,0.0436195],
+          [-1079.1,21.75,-13140.4]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "us_m5a1_stuart6",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 8,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [30.0,20.0],
+          "formation_noise": [1.0,1.0],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "us_lcvp",
+        "tm": [
+          [-0.258819,0.0,0.965926],
+          [0.0,1.0,0.0],
+          [-0.965926,0.0,-0.258819],
+          [-279.85,-1.55,-16567.1]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uss_lcvp_lite",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 10,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [10.0,10.0],
+          "formation_noise": [1.0,1.0],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "us_lcpv_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-308.1,-17.2,-14933.0]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "us_lcpv_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-428.6,-11.65,-13765.4]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "us_lcpv_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-674.35,-3.3,-12964.3]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "us_tanks",
+        "tm": [
+          [-0.422618,0.0,0.906308],
+          [0.0,1.0,0.0],
+          [-0.906308,0.0,-0.422618],
+          [-709.5,7.45,-12837.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "us_m5a1_stuart6",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 10,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [10.0,1.0],
+          "formation_noise": [1.0,1.0],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.3
+        },
+        "way": {
+          "us_tanks_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-808.45,32.0,-12327.1]
+            ],
+            "props": {
+              "speed": 0.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "us_tanks_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-830.6,32.9,-11835.0]
+            ],
+            "props": {
+              "speed": 20.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "us_tanks_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-672.8,27.4,-11062.9]
+            ],
+            "props": {
+              "speed": 20.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "us_tanks_wp_04": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-168.65,26.95,-10557.2]
+            ],
+            "props": {
+              "speed": 20.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "air_defence": {
+        "name": "jpn_aaa_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-621.25,26.6,-11414.6]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "jpn_25mm_t96",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "jpn_aaa_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-307.3,26.6,-11102.9]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "jpn_25mm_t96",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "jpn_aaa_03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-653.05,26.6,-10806.6]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "jpn_25mm_t96",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "jpn_aaa_04",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-936.35,26.6,-11180.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "jpn_25mm_t96",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "jpn_aaa_05",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-194.75,26.6,-10887.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "jpn_25mm_t96",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "jpn_aaa_06",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-207.2,26.6,-10425.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "jpn_25mm_t96",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "jpn_aaa_07",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-566.3,26.6,-10386.7]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "jpn_25mm_t96",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "jpn_aaa_08",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1290.25,26.6,-10447.1]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "jpn_25mm_t96",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "jpn_aaa_09",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-445.8,26.6,-10607.1]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "jpn_25mm_t96",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "jpn_artillery_01",
+        "tm": [
+          [0.130526,0.0,-0.991445],
+          [0.0,1.0,0.0],
+          [0.991445,0.0,0.130526],
+          [-807.7,32.75,-11961.1]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "jpn_75mm_t90",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 10,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [6.0,5.0],
+          "formation_noise": [0.3,1.0],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.7
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "jpn_artillery_02",
+        "tm": [
+          [0.130526,0.0,-0.991445],
+          [0.0,1.0,0.0],
+          [0.991445,0.0,0.130526],
+          [-807.7,44.6,-11737.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "jpn_75mm_t90",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 12,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [6.0,5.0],
+          "formation_noise": [0.3,1.0],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.7
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "jpn_artillery_03",
+        "tm": [
+          [-0.976296,0.0,-0.21644],
+          [0.0,1.0,0.0],
+          [0.21644,0.0,-0.976296],
+          [8.4,52.0,-10803.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "jpn_75mm_t90",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 6,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [8.0,2.0],
+          "formation_noise": [0.3,1.0],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.7
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "jpn_artillery_04",
+        "tm": [
+          [-0.0871557,0.0,-0.996195],
+          [0.0,1.0,0.0],
+          [0.996195,0.0,-0.0871557],
+          [-826.2,32.75,-10401.1]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "jpn_75mm_t90",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 6,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [8.0,2.0],
+          "formation_noise": [0.3,1.0],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.7
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "us_ship_01",
+        "tm": [
+          [-0.130526,0.0,0.991445],
+          [0.0,1.0,0.0],
+          [-0.991445,0.0,-0.130526],
+          [-453.85,-17.2,-22004.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uss_cv_lexington",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "us_ship_02",
+        "tm": [
+          [0.0436195,0.0,0.999048],
+          [0.0,1.0,0.0],
+          [-0.999048,0.0,0.0436195],
+          [212.25,-17.2,-21675.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uss_cv_wasp",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "us_ship_03",
+        "tm": [
+          [-0.21644,0.0,0.976296],
+          [0.0,1.0,0.0],
+          [-0.976296,0.0,-0.21644],
+          [953.25,-17.2,-21393.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uss_dd_sims",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "us_ship_04",
+        "tm": [
+          [-0.258819,0.0,0.965926],
+          [0.0,1.0,0.0],
+          [-0.965926,0.0,-0.258819],
+          [118.25,-17.2,-21151.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uss_dd_sims",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "us_ship_05",
+        "tm": [
+          [0.382683,0.0,0.92388],
+          [0.0,1.0,0.0],
+          [-0.92388,0.0,0.382683],
+          [-1037.1,-17.2,-21637.4]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uss_dd_sims",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "jpn_fighters_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-310.2,439.65,-9704.1]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "a6m5_zero",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 8,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "jpn_fighters_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3412.8,439.65,-1844.65]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "a6m5_zero",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 8,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "f6f3_ai",
+        "tm": [
+          [0.130526,0.0,0.991445],
+          [0.0,1.0,0.0],
+          [-0.991445,0.0,0.130526],
+          [-960.6,1827.1,-20140.7]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "f6f-3",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "skin": "us_navy",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "jpn_aaa_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [827.25,35.95,-10729.4]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": [
+          {
+            "squad_members": "jpn_aaa_01"
+          },
+          {
+            "squad_members": "jpn_aaa_02"
+          },
+          {
+            "squad_members": "jpn_aaa_03"
+          },
+          {
+            "squad_members": "jpn_aaa_04"
+          },
+          {
+            "squad_members": "jpn_aaa_05"
+          },
+          {
+            "squad_members": "jpn_aaa_06"
+          },
+          {
+            "squad_members": "jpn_aaa_07"
+          },
+          {
+            "squad_members": "jpn_aaa_08"
+          },
+          {
+            "squad_members": "jpn_aaa_09"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "jpn_artillery_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [446.6,22.8,-10237.2]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": [
+          {
+            "squad_members": "jpn_artillery_01"
+          },
+          {
+            "squad_members": "jpn_artillery_02"
+          },
+          {
+            "squad_members": "jpn_artillery_03"
+          },
+          {
+            "squad_members": "jpn_artillery_04"
+          }
+        ],
+        "way": []
+      }
+    }
+  ],
+  "areas": {
+    "lcvp_waypoint": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [-684.9,-3.5,-12927.7]
+      ],
+      "props": []
+    },
+    "jpn_patrol_point": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [-750.95,1227.45,-12537.5]
+      ],
+      "props": []
+    },
+    "final_point": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [-256.1,27.5,-10629.2]
+      ],
+      "props": []
+    }
+  }
+}

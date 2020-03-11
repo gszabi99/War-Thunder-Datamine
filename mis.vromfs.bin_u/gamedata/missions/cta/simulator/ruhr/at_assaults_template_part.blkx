@@ -1,0 +1,444 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "atmosphere": {
+      "pressure": 761.0,
+      "temperature": 18.0
+    },
+    "player": {
+      "army": 1,
+      "wing": "at_armada"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "singleMission",
+      "level": "levels/water.bin",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "hazy",
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": true,
+        "isTanksAllowed": false,
+        "isShipsAllowed": false
+      }
+    },
+    "spectator_points": []
+  },
+  "imports": [
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/air_templates/jip/air_at_assaults_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/air_templates/jip/assaults_planesets/at_t1_usa_rank_01.blk",
+        "rankRange": [0,3],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/air_templates/jip/assaults_planesets/at_t1_usa_rank_02.blk",
+        "rankRange": [4,7],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/air_templates/jip/assaults_planesets/at_t1_usa_rank_03.blk",
+        "rankRange": [8,11],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/air_templates/jip/assaults_planesets/at_t1_usa_rank_04.blk",
+        "rankRange": [12,16],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/air_templates/jip/assaults_planesets/at_t1_usa_rank_05.blk",
+        "rankRange": [17,20],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/air_templates/jip/assaults_planesets/at_t1_usa_rank_06.blk",
+        "rankRange": [21,50],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/air_templates/jip/assaults_planesets/at_t2_germ_rank_01.blk",
+        "rankRange": [0,3],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/air_templates/jip/assaults_planesets/at_t2_germ_rank_02.blk",
+        "rankRange": [4,7],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/air_templates/jip/assaults_planesets/at_t2_germ_rank_03.blk",
+        "rankRange": [8,11],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/air_templates/jip/assaults_planesets/at_t2_germ_rank_04.blk",
+        "rankRange": [12,16],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/air_templates/jip/assaults_planesets/at_t2_germ_rank_05.blk",
+        "rankRange": [17,20],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/air_templates/jip/assaults_planesets/at_t2_germ_rank_06.blk",
+        "rankRange": [21,50],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    }
+  ],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {
+    "zones_captured_by_t2": 0,
+    "mp_change": 0
+  },
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": {
+    "armada": {
+      "name": "at_armada",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [-13664.0,409.45,-13280.8]
+      ],
+      "unit_class": "a-20g",
+      "objLayer": 1,
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "props": {
+        "army": 2,
+        "count": 1,
+        "free_distance": 70.0,
+        "floating_distance": 50.0,
+        "minimum_distance_to_earth": 20.0,
+        "altLimit": 6000.0,
+        "attack_type": "fire_at_will",
+        "skill": 4,
+        "plane": {
+          "wing_formation": "Diamond",
+          "row_distances": 3.0,
+          "col_distances": 3.0,
+          "super_formation": "Diamond",
+          "super_row_distances": 1.5,
+          "super_col_distances": 1.5,
+          "ai_skill": "NORMAL",
+          "task": "FLY_WAYPOINT"
+        }
+      },
+      "way": []
+    }
+  },
+  "areas": {
+    "at_assaults_t2_spawn_01": {
+      "type": "Point",
+      "tm": [
+        [-0.94719,0.0,-0.320672],
+        [0.0,1.0,0.0],
+        [0.320672,0.0,-0.94719],
+        [26000.0,1500.0,20000.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "at_assaults_t2_spawn_02": {
+      "type": "Point",
+      "tm": [
+        [-0.945215,0.0,0.326448],
+        [0.0,1.0,0.0],
+        [-0.326448,0.0,-0.945215],
+        [26000.0,1500.0,5000.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "at_assaults_t2_spawn_03": {
+      "type": "Point",
+      "tm": [
+        [-0.918931,0.0,0.394418],
+        [0.0,1.0,0.0],
+        [-0.394418,0.0,-0.918931],
+        [26000.0,1500.0,-5000.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "at_assaults_t1_spawn_01": {
+      "type": "Point",
+      "tm": [
+        [0.970636,0.0,0.240551],
+        [0.0,1.0,0.0],
+        [-0.240551,0.0,0.970636],
+        [-26000.0,1500.0,20000.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "at_assaults_t1_spawn_02": {
+      "type": "Point",
+      "tm": [
+        [0.999414,0.0,-0.0342157],
+        [0.0,1.0,0.0],
+        [0.0342157,0.0,0.999414],
+        [-26000.0,1500.0,5000.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "at_assaults_t1_spawn_03": {
+      "type": "Point",
+      "tm": [
+        [0.985473,0.0,0.16983],
+        [0.0,1.0,0.0],
+        [-0.16983,0.0,0.985473],
+        [-26000.0,1500.0,-5000.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "at_assaults_t2_spawn_04": {
+      "type": "Point",
+      "tm": [
+        [-0.918931,0.0,0.394418],
+        [0.0,1.0,0.0],
+        [-0.394418,0.0,-0.918931],
+        [26000.0,1500.0,-20000.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "at_assaults_t1_spawn_04": {
+      "type": "Point",
+      "tm": [
+        [0.985473,0.0,0.16983],
+        [0.0,1.0,0.0],
+        [-0.16983,0.0,0.985473],
+        [-26000.0,1500.0,-20000.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "at_assaults_t1_retreat_point": {
+      "type": "Point",
+      "tm": [
+        [0.985473,0.0,0.16983],
+        [0.0,1.0,0.0],
+        [-0.16983,0.0,0.985473],
+        [-30000.0,1500.0,0.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "at_assaults_t2_retreat_point": {
+      "type": "Point",
+      "tm": [
+        [0.985473,0.0,0.16983],
+        [0.0,1.0,0.0],
+        [-0.16983,0.0,0.985473],
+        [30000.0,1500.0,0.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}

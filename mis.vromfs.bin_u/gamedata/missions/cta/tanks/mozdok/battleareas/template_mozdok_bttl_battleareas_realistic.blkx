@@ -1,0 +1,185 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/water.bin",
+      "type": "singleMission",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "hazy",
+      "battleAreaColorPreset": "battleArea"
+    },
+    "spectator_points": []
+  },
+  "imports": {
+    "import_record": {
+      "file": "gameData/missions/cta/tanks/mozdok/template_mozdok_Bttl_realistic.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "excludes": []
+    }
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "area_squad": {
+        "name": "t1_killarea_realistic",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2241.1,58.5254,1757.05]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_killarea_realistic_block01"
+          },
+          {
+            "squad_members": "t1_killarea_realistic_block02"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "t2_killarea_realistic",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [964.4,60.7494,3048.42]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_killarea_realistic_block01"
+          },
+          {
+            "squad_members": "t2_killarea_realistic_block02"
+          }
+        ]
+      }
+    }
+  ],
+  "areas": {
+    "bttl_battle_area_realistic": {
+      "type": "Box",
+      "tm": [
+        [-2000.0,0.0,0.0],
+        [0.0,166.65,0.0],
+        [0.0,0.0,-2000.0],
+        [1496.65,-0.000244141,2445.5]
+      ],
+      "objLayer": 4,
+      "props": []
+    },
+    "t1_killarea_realistic_block01": {
+      "type": "Cylinder",
+      "tm": [
+        [150.0,0.0,0.0],
+        [0.0,139.269,0.0],
+        [0.0,0.0,150.0],
+        [2430.36,13.0065,2090.91]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_killarea_realistic_block02": {
+      "type": "Cylinder",
+      "tm": [
+        [150.0,0.0,0.0],
+        [0.0,139.269,0.0],
+        [0.0,0.0,150.0],
+        [1970.53,1.84593,1613.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_killarea_realistic_block01": {
+      "type": "Cylinder",
+      "tm": [
+        [150.0,0.0,0.0],
+        [0.0,139.269,0.0],
+        [0.0,0.0,150.0],
+        [1016.04,24.0206,3235.9]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_killarea_realistic_block02": {
+      "type": "Cylinder",
+      "tm": [
+        [150.0,0.0,0.0],
+        [0.0,139.269,0.0],
+        [0.0,0.0,150.0],
+        [652.369,29.6681,2929.05]
+      ],
+      "objLayer": 0,
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}

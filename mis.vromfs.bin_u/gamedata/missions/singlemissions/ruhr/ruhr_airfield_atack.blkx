@@ -1,0 +1,1078 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 0.0
+    },
+    "player": {
+      "army": 1,
+      "wing": "player"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/ruhr.bin",
+      "type": "singleMission",
+      "restoreType": "tactical control",
+      "optionalTakeOff": false,
+      "environment": "Morning",
+      "weather": "hazy",
+      "windDirection": [1.0,0.0,0.0],
+      "gt_cooperative": true
+    },
+    "spectator_points": [],
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01",
+      "viewAreaScale": 2.0,
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": [
+          {
+            "map": true
+          },
+          {
+            "minTime": 4
+          },
+          {
+            "picture": ""
+          },
+          {
+            "showAirMap": false
+          },
+          {
+            "arrow": [
+              {
+                "width": 1
+              },
+              {
+                "side": "enemy"
+              },
+              {
+                "point": "enemy_armada"
+              },
+              {
+                "point": "allied_armada"
+              }
+            ]
+          },
+          {
+            "arrow": [
+              {
+                "width": 4
+              },
+              {
+                "side": "ally"
+              },
+              {
+                "point": "airport_begin"
+              },
+              {
+                "point": "airport_end"
+              }
+            ]
+          },
+          {
+            "icon": {
+              "icontype": "fighter",
+              "side": "player",
+              "target": "player",
+              "lookAt": "airport_end"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "fighter",
+              "side": "enemy",
+              "target": "enemy_armada",
+              "lookAt": "allied_armada"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "fighter",
+              "side": "ally",
+              "target": "allied_armada",
+              "lookAt": "airport_end"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "artillery",
+              "side": "ally",
+              "target": "air_defence_03"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "artillery",
+              "side": "ally",
+              "target": "air_defence_02"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "imports": {
+    "import_record": {
+      "file": "gameData/missions/bridges/ruhr_bridges.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "excludes": []
+    }
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [],
+      "actions": {
+        "addAirfield": [
+          {
+            "runwayStart": "airport_begin"
+          },
+          {
+            "runwayEnd": "airport_end"
+          },
+          {
+            "runwayWidth": 80.0
+          },
+          {
+            "army": 1
+          },
+          {
+            "spawnPoint": "sp_01"
+          },
+          {
+            "spawnPoint": "sp_03"
+          },
+          {
+            "spawnPoint": "sp_04"
+          },
+          {
+            "spawnPoint": "sp_02"
+          },
+          {
+            "spawnPoint": "sp_05"
+          },
+          {
+            "spawnPoint": "sp_06"
+          },
+          {
+            "spawnPoint": "sp_07"
+          },
+          {
+            "spawnPoint": "sp_08"
+          },
+          {
+            "spawnPoint": "sp_09"
+          },
+          {
+            "spawnPoint": "sp_10"
+          },
+          {
+            "spawnPoint": "sp_11"
+          },
+          {
+            "spawnPoint": "sp_12"
+          },
+          {
+            "spawnPoint": "sp_13"
+          },
+          {
+            "spawnPoint": "sp_14"
+          },
+          {
+            "spawnPoint": "sp_15"
+          },
+          {
+            "spawnPoint": "sp_16"
+          }
+        ],
+        "spawnOnAirfield": [
+          {
+            "runwayName": "airport_begin"
+          },
+          {
+            "objects": "player"
+          },
+          {
+            "objects": "allied_armada"
+          },
+          {
+            "takeoffInterval": 10.0
+          }
+        ],
+        "wait": {
+          "time": 1.0
+        },
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "allied_armada",
+          "aiEnabled": false
+        },
+        "unitAttackTarget": {
+          "playerAttracted": false,
+          "object": "enemy_armada",
+          "target": "allied_armada",
+          "fireRandom": true
+        }
+      },
+      "else_actions": []
+    },
+    "take_off": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenStatus": {
+          "object_type": "isInAir",
+          "object_marking": 0,
+          "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object": "player"
+        }
+      },
+      "actions": [
+        {
+          "triggerDisable": {
+            "target": "take_off_failed"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "single_ruhr_air_attack_take_off",
+            "status": 2
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "allied_armada",
+            "aiEnabled": true
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "allied_armada"
+            },
+            {
+              "object": "enemy_armada"
+            },
+            {
+              "plane": {
+                "targetDeviation": {
+                  "trigger": "machine gun",
+                  "defaultVal": 20.0,
+                  "limits": [0.3,5.0]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "allied_armada",
+            "target": "enemy_armada",
+            "fireRandom": true
+          }
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "enemy_armada",
+            "target": "player",
+            "fireRandom": true
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "single_ruhr_air_attack_destroy_fighters"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "destroy_fighters"
+            },
+            {
+              "target": "update_indicator"
+            }
+          ]
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "enemy_armada"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "take_off_failed": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenStatus": {
+          "object_type": "isKilled",
+          "object_marking": 0,
+          "check_objects": "all",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object": "allied_armada"
+        }
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": "take_off"
+        },
+        "moSetObjectiveStatus": {
+          "target": "single_ruhr_air_attack_take_off",
+          "status": 3
+        },
+        "wait": {
+          "time": 2.0
+        },
+        "missionFailed": {
+          "timer": false
+        }
+      },
+      "else_actions": []
+    },
+    "update_indicator": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "missionSetTargetsIndicator": {
+          "target_type": "isAlive",
+          "target_marking": 0,
+          "delta": 0,
+          "icon": "air",
+          "icon army": 2,
+          "set": true,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "enemy_armada"
+        }
+      },
+      "else_actions": []
+    },
+    "destroy_fighters": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 4,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "enemy_armada"
+        }
+      },
+      "actions": [
+        {
+          "unitMoveTo": {
+            "target": "enemy_retreat",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "horizontalDirectionForTeleport": true,
+            "object": "enemy_armada",
+            "move_type": "move"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "single_ruhr_air_attack_destroy_fighters",
+            "status": 2
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "update_indicator"
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "enemy_armada"
+          }
+        },
+        {
+          "missionSetTargetsIndicator": {
+            "target_type": "isAlive",
+            "target_marking": 0,
+            "delta": 0,
+            "icon": "air",
+            "icon army": 2,
+            "set": false,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "enemy_armada"
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "missionCompleted": {
+            "timer": false
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
+          }
+        },
+        {
+          "missionDebriefing": []
+        }
+      ],
+      "else_actions": []
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true,
+    "single_ruhr_air_attack_take_off": {
+      "is_enabled": true,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "single_ruhr_air_attack_destroy_fighters": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    }
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "armada": {
+        "name": "player",
+        "tm": [
+          [0.67559,0.0,0.737277],
+          [-0.719801,0.21644,0.659576],
+          [-0.159576,-0.976296,0.146225],
+          [964.85,86.25,-1926.75]
+        ],
+        "unit_class": "me-262a-1a",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "ME_262A_1A_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 5,
+          "count": 4,
+          "numInWing": 4,
+          "speed": 0.0,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 4.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 4.0,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "enemy_armada",
+        "tm": [
+          [-0.939693,0.0,-0.342021],
+          [-5.73058e-07,1.0,-1.45146e-07],
+          [0.342021,-8.9407e-08,-0.939693],
+          [2956.3,315.5,-829.8]
+        ],
+        "unit_class": "spitfire_xvi",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "spitfire_xvi_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 16,
+          "numInWing": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "allied_armada",
+        "tm": [
+          [0.188488,0.221703,0.956724],
+          [-0.246324,0.953717,-0.172478],
+          [-0.950682,-0.203154,0.234374],
+          [769.05,67.05,-1856.3]
+        ],
+        "unit_class": "me-262a-1a",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "ME_262A_1A_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 5,
+          "count": 12,
+          "numInWing": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "NONE"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_defence_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1052.0,62.0,-2164.55]
+        ],
+        "unit_class": "germ_20mmx4_flak38",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.2
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_defence_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [678.15,102.85,-1590.8]
+        ],
+        "unit_class": "germ_20mmx4_flak38",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.2
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_defence_03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1012.6,59.5,-1237.4]
+        ],
+        "unit_class": "germ_20mmx4_flak38",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.2
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_defence_04",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1736.35,0.0,-1081.05]
+        ],
+        "unit_class": "germ_20mmx4_flak38",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.2
+        },
+        "way": []
+      }
+    }
+  ],
+  "areas": {
+    "airport_begin": {
+      "type": "Point",
+      "tm": [
+        [0.707107,0.0,0.707107],
+        [0.0,1.0,0.0],
+        [-0.707107,0.0,0.707107],
+        [897.9,-11.1,-1951.05]
+      ],
+      "props": []
+    },
+    "airport_end": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [1641.6,84.35,-1026.95]
+      ],
+      "props": []
+    },
+    "enemy_retreat": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [-2086.2,884.7,-10547.1]
+      ],
+      "props": []
+    },
+    "sp_01": {
+      "type": "Point",
+      "tm": [
+        [0.707107,0.0,-0.707107],
+        [0.0,1.0,0.0],
+        [0.707107,0.0,0.707107],
+        [969.15,65.15,-1829.4]
+      ],
+      "props": []
+    },
+    "sp_02": {
+      "type": "Point",
+      "tm": [
+        [0.707107,0.0,-0.707107],
+        [0.0,1.0,0.0],
+        [0.707107,0.0,0.707107],
+        [968.8,64.6,-1852.9]
+      ],
+      "props": []
+    },
+    "sp_03": {
+      "type": "Point",
+      "tm": [
+        [0.707107,0.0,-0.707107],
+        [0.0,1.0,0.0],
+        [0.707107,0.0,0.707107],
+        [990.45,64.7,-1828.7]
+      ],
+      "props": []
+    },
+    "sp_04": {
+      "type": "Point",
+      "tm": [
+        [0.707107,0.0,-0.707107],
+        [0.0,1.0,0.0],
+        [0.707107,0.0,0.707107],
+        [991.65,65.15,-1852.55]
+      ],
+      "props": []
+    },
+    "sp_05": {
+      "type": "Point",
+      "tm": [
+        [0.707107,0.0,-0.707107],
+        [0.0,1.0,0.0],
+        [0.707107,0.0,0.707107],
+        [1248.65,63.75,-1630.9]
+      ],
+      "props": []
+    },
+    "sp_08": {
+      "type": "Point",
+      "tm": [
+        [0.707107,0.0,-0.707107],
+        [0.0,1.0,0.0],
+        [0.707107,0.0,0.707107],
+        [1114.35,63.2,-1555.1]
+      ],
+      "props": []
+    },
+    "sp_06": {
+      "type": "Point",
+      "tm": [
+        [0.707107,0.0,-0.707107],
+        [0.0,1.0,0.0],
+        [0.707107,0.0,0.707107],
+        [1146.35,63.3,-1443.2]
+      ],
+      "props": []
+    },
+    "sp_07": {
+      "type": "Point",
+      "tm": [
+        [0.707107,0.0,-0.707107],
+        [0.0,1.0,0.0],
+        [0.707107,0.0,0.707107],
+        [1204.8,63.75,-1452.8]
+      ],
+      "props": []
+    },
+    "sp_09": {
+      "type": "Point",
+      "tm": [
+        [0.707107,0.0,-0.707107],
+        [0.0,1.0,0.0],
+        [0.707107,0.0,0.707107],
+        [1058.55,62.7,-1600.25]
+      ],
+      "props": []
+    },
+    "sp_12": {
+      "type": "Point",
+      "tm": [
+        [0.707107,0.0,-0.707107],
+        [0.0,1.0,0.0],
+        [0.707107,0.0,0.707107],
+        [1056.1,62.25,-1651.2]
+      ],
+      "props": []
+    },
+    "sp_10": {
+      "type": "Point",
+      "tm": [
+        [0.707107,0.0,-0.707107],
+        [0.0,1.0,0.0],
+        [0.707107,0.0,0.707107],
+        [1058.0,62.15,-1625.3]
+      ],
+      "props": []
+    },
+    "sp_11": {
+      "type": "Point",
+      "tm": [
+        [0.707107,0.0,-0.707107],
+        [0.0,1.0,0.0],
+        [0.707107,0.0,0.707107],
+        [1030.8,62.7,-1601.7]
+      ],
+      "props": []
+    },
+    "sp_13": {
+      "type": "Point",
+      "tm": [
+        [0.707107,0.0,-0.707107],
+        [0.0,1.0,0.0],
+        [0.707107,0.0,0.707107],
+        [1004.25,63.0,-1601.2]
+      ],
+      "props": []
+    },
+    "sp_16": {
+      "type": "Point",
+      "tm": [
+        [0.707107,0.0,-0.707107],
+        [0.0,1.0,0.0],
+        [0.707107,0.0,0.707107],
+        [968.3,62.55,-1726.5]
+      ],
+      "props": []
+    },
+    "sp_14": {
+      "type": "Point",
+      "tm": [
+        [0.707107,0.0,-0.707107],
+        [0.0,1.0,0.0],
+        [0.707107,0.0,0.707107],
+        [1031.35,62.45,-1626.4]
+      ],
+      "props": []
+    },
+    "sp_15": {
+      "type": "Point",
+      "tm": [
+        [0.707107,0.0,-0.707107],
+        [0.0,1.0,0.0],
+        [0.707107,0.0,0.707107],
+        [942.9,127.0,-1709.6]
+      ],
+      "props": []
+    }
+  },
+  "objLayers": [],
+  "wayPoints": []
+}

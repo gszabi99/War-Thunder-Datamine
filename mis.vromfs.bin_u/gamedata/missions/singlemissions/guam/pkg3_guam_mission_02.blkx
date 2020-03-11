@@ -1,0 +1,2516 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 24.0
+    },
+    "player": {
+      "army": 1,
+      "wing": "player_wing"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/guam.bin",
+      "type": "singleMission",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "hazy",
+      "windSpeed": [4.0,6.0],
+      "stars": {
+        "year": 1944,
+        "month": 7,
+        "day": 26,
+        "time": 14.0
+      }
+    },
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01",
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": [
+          {
+            "map": true
+          },
+          {
+            "minTime": 4
+          },
+          {
+            "picture": ""
+          },
+          {
+            "arrow": [
+              {
+                "width": 1
+              },
+              {
+                "side": "enemy"
+              },
+              {
+                "point": "retreat_point"
+              },
+              {
+                "point": "patrol_point"
+              },
+              {
+                "point": "patrol_point"
+              }
+            ]
+          },
+          {
+            "icon": {
+              "icontype": "fighter",
+              "side": "player",
+              "target": "player_wing",
+              "lookAt": "patrol_point"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "artillery",
+              "side": "ally",
+              "target": "jpn_artillery_01"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "artillery",
+              "side": "ally",
+              "target": "jpn_artillery_02"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "artillery",
+              "side": "ally",
+              "target": "jpn_artillery_02"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "artillery",
+              "side": "ally",
+              "target": "jpn_artillery_04"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "bomber",
+              "side": "enemy",
+              "target": "retreat_point",
+              "lookAt": "patrol_point"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "start_mission": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "unitSetProperties": {
+            "object": "usa_bombers_squad",
+            "effShootingRate": 0.8,
+            "plane": [
+              {
+                "targetDeviation": {
+                  "trigger": "machine gun",
+                  "defaultVal": 3.0,
+                  "limits": [1.0,2.0]
+                }
+              },
+              {
+                "targetDeviation": {
+                  "trigger": "bombs",
+                  "defaultVal": 4.0,
+                  "limits": [1.0,2.0]
+                }
+              },
+              {
+                "targetDeviation": {
+                  "trigger": "gunner",
+                  "defaultVal": 3.0,
+                  "limits": [1.0,2.0]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object": "usa_fighters_01"
+            },
+            {
+              "object": "usa_fighters_02"
+            },
+            {
+              "object": "usa_fighters_03"
+            },
+            {
+              "effShootingRate": 0.8
+            },
+            {
+              "plane": {
+                "targetDeviation": {
+                  "trigger": "machine gun",
+                  "defaultVal": 2.0,
+                  "limits": [1.0,4.0]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "addAirfield": [
+            {
+              "runwayStart": "airfield_start_01"
+            },
+            {
+              "runwayEnd": "airfield_end_01"
+            },
+            {
+              "runwayWidth": 30.0
+            },
+            {
+              "army": 1
+            },
+            {
+              "spawnPoint": "airfield_01_spawn_01"
+            },
+            {
+              "spawnPoint": "airfield_01_spawn_02"
+            },
+            {
+              "spawnPoint": "airfield_01_spawn_03"
+            },
+            {
+              "spawnPoint": "airfield_01_spawn_04"
+            }
+          ]
+        },
+        {
+          "spawnOnAirfield": {
+            "runwayName": "airfield_start_01",
+            "objects": "player_wing"
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "triggerDisable": [
+            {
+              "target": "check_1ppl"
+            },
+            {
+              "target": "check_2ppl"
+            },
+            {
+              "target": "check_3ppl"
+            }
+          ]
+        },
+        {
+          "unitPutToSleep": [
+            {
+              "target": "usa_bombers_01"
+            },
+            {
+              "target": "usa_fighters_01"
+            },
+            {
+              "target": "usa_bombers_02"
+            },
+            {
+              "target": "usa_fighters_02"
+            },
+            {
+              "target": "usa_bombers_03"
+            },
+            {
+              "target": "usa_fighters_03"
+            }
+          ]
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "pkg3_guam_mission_02_takeoff"
+          }
+        }
+      ]
+    },
+    "check_real": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "gameWhenDifficulty": {
+          "difficulty": "realistic",
+          "is": "equal"
+        }
+      },
+      "actions": [
+        {
+          "unitDamage": {
+            "part": 1,
+            "power": 1.0,
+            "target": "usa_bombers_01",
+            "randomTargetsCount": 2,
+            "doExplosion": true
+          }
+        },
+        {
+          "unitDamage": {
+            "part": 1,
+            "power": 1.0,
+            "target": "usa_bombers_02",
+            "randomTargetsCount": 2,
+            "doExplosion": true
+          }
+        },
+        {
+          "unitDamage": {
+            "part": 1,
+            "power": 1.0,
+            "target": "usa_bombers_03",
+            "randomTargetsCount": 2,
+            "doExplosion": true
+          }
+        }
+      ]
+    },
+    "check_simul": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "gameWhenDifficulty": {
+          "difficulty": "simulator",
+          "is": "equal"
+        }
+      },
+      "actions": [
+        {
+          "unitDamage": {
+            "part": 1,
+            "power": 1.0,
+            "target": "usa_bombers_01",
+            "randomTargetsCount": 4,
+            "doExplosion": true
+          }
+        },
+        {
+          "unitDamage": {
+            "part": 1,
+            "power": 1.0,
+            "target": "usa_bombers_02",
+            "randomTargetsCount": 4,
+            "doExplosion": true
+          }
+        },
+        {
+          "unitDamage": {
+            "part": 1,
+            "power": 1.0,
+            "target": "usa_bombers_03",
+            "randomTargetsCount": 4,
+            "doExplosion": true
+          }
+        }
+      ]
+    },
+    "check_1ppl": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isOnline",
+          "object_marking": 0,
+          "func": "less",
+          "value": 2,
+          "object": "player_wing"
+        }
+      },
+      "actions": [
+        {
+          "unitDamage": {
+            "part": 1,
+            "power": 1.0,
+            "target": "usa_bombers_01",
+            "randomTargetsCount": 6,
+            "doExplosion": true
+          }
+        },
+        {
+          "unitDamage": {
+            "part": 1,
+            "power": 1.0,
+            "target": "usa_bombers_02",
+            "randomTargetsCount": 6,
+            "doExplosion": true
+          }
+        },
+        {
+          "unitDamage": {
+            "part": 1,
+            "power": 1.0,
+            "target": "usa_bombers_03",
+            "randomTargetsCount": 6,
+            "doExplosion": true
+          }
+        }
+      ]
+    },
+    "check_2ppl": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isOnline",
+          "object_marking": 0,
+          "func": "equal",
+          "value": 2,
+          "object": "player_wing"
+        }
+      },
+      "actions": [
+        {
+          "unitDamage": {
+            "part": 1,
+            "power": 1.0,
+            "target": "usa_bombers_01",
+            "randomTargetsCount": 4,
+            "doExplosion": true
+          }
+        },
+        {
+          "unitDamage": {
+            "part": 1,
+            "power": 1.0,
+            "target": "usa_bombers_02",
+            "randomTargetsCount": 4,
+            "doExplosion": true
+          }
+        },
+        {
+          "unitDamage": {
+            "part": 1,
+            "power": 1.0,
+            "target": "usa_bombers_03",
+            "randomTargetsCount": 4,
+            "doExplosion": true
+          }
+        }
+      ]
+    },
+    "check_3ppl": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isOnline",
+          "object_marking": 0,
+          "func": "equal",
+          "value": 3,
+          "object": "player_wing"
+        }
+      },
+      "actions": [
+        {
+          "unitDamage": {
+            "part": 1,
+            "power": 1.0,
+            "target": "usa_bombers_01",
+            "randomTargetsCount": 2,
+            "doExplosion": true
+          }
+        },
+        {
+          "unitDamage": {
+            "part": 1,
+            "power": 1.0,
+            "target": "usa_bombers_02",
+            "randomTargetsCount": 2,
+            "doExplosion": true
+          }
+        },
+        {
+          "unitDamage": {
+            "part": 1,
+            "power": 1.0,
+            "target": "usa_bombers_03",
+            "randomTargetsCount": 2,
+            "doExplosion": true
+          }
+        }
+      ]
+    },
+    "player_takeoff": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "playersWhenStatus": {
+          "players": "isInAir",
+          "check_players": "any"
+        }
+      },
+      "actions": {
+        "moSetObjectiveStatus": {
+          "target": "pkg3_guam_mission_02_takeoff",
+          "status": 2
+        },
+        "wait": {
+          "time": 3.0
+        },
+        "missionMarkAsWaypoint": {
+          "visible": true,
+          "primary": true,
+          "oriented": false,
+          "ignoreDifficulty": false,
+          "scale": 1.0,
+          "target": "patrol_point"
+        },
+        "moAddMissionObjective": {
+          "target": "pkg3_guam_mission_02_patrol"
+        },
+        "triggerEnable": {
+          "target": "player_near_patrol_point"
+        }
+      }
+    },
+    "player_near_patrol_point": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "playersDistanceBetween": {
+          "value": 1500.0,
+          "math": "2D",
+          "players": "isAlive",
+          "target_type": "isAlive",
+          "check_players": "any",
+          "check_targets": "any",
+          "target": "patrol_point"
+        }
+      },
+      "actions": [
+        {
+          "moSetObjectiveStatus": {
+            "target": "pkg3_guam_mission_02_patrol",
+            "status": 2
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 1.0,
+            "target": "patrol_point"
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "pkg3_guam_mission_02_defend"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "update_indicators"
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target": "jpn_artillery_squad"
+          }
+        },
+        {
+          "wait": {
+            "time": 15.0
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "usa_bombers_01_appear"
+            },
+            {
+              "target": "usa_bombers_destroyed"
+            }
+          ]
+        }
+      ]
+    },
+    "update_indicators": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "missionSetTargetsIndicator": {
+            "target_type": "isAlive",
+            "target_marking": 0,
+            "delta": 0,
+            "icon": "cannon",
+            "icon army": 1,
+            "set": true,
+            "target": "jpn_artillery_squad"
+          }
+        },
+        {
+          "missionSetTargetsIndicator": {
+            "target_type": "isActive",
+            "target_marking": 0,
+            "delta": 0,
+            "icon": "bomber",
+            "icon army": 2,
+            "set": true,
+            "target": "usa_bombers_squad"
+          }
+        },
+        {
+          "varModify": {
+            "var": "timer",
+            "operator": "add",
+            "value": 1.0
+          }
+        }
+      ]
+    },
+    "usa_bombers_01_appear": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "unitWakeUp": [
+            {
+              "target": "usa_bombers_01"
+            },
+            {
+              "target": "usa_fighters_01"
+            }
+          ]
+        },
+        {
+          "unitMoveTo": {
+            "target": "patrol_point",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 1000.0,
+            "object": "usa_bombers_01",
+            "speed": 220.0
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "usa_bombers_01",
+            "follow_target": true,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 1000.0,
+            "object": "usa_fighters_01",
+            "follow_offset": [-150.0,320.0,20.0]
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target": "usa_bombers_01"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "player_near_usa_bombers_01"
+            },
+            {
+              "target": "bombers_01_partialy_detsroyed"
+            },
+            {
+              "target": "bombers_01_near_patrol_point"
+            },
+            {
+              "target": "bombers_01_without_bombs"
+            },
+            {
+              "target": "usa_bombers_02_appear"
+            }
+          ]
+        }
+      ]
+    },
+    "player_near_usa_bombers_01": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "playersDistanceBetween": {
+          "value": 4500.0,
+          "math": "2D",
+          "players": "isAlive",
+          "target_type": "isAlive",
+          "check_players": "any",
+          "check_targets": "any",
+          "target": "usa_bombers_01"
+        }
+      },
+      "actions": {
+        "unitAttackTarget": {
+          "playerAttracted": true,
+          "object": "usa_fighters_01",
+          "target": "player_wing",
+          "fireRandom": true,
+          "playerAttractedCount": 2,
+          "playerAttractedEffRate": 0.8
+        }
+      }
+    },
+    "bombers_01_partialy_detsroyed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 4,
+          "object": "usa_bombers_01"
+        }
+      },
+      "actions": {
+        "unitDropAmmo": {
+          "object": "usa_bombers_01"
+        },
+        "unitMoveTo": {
+          "target": "retreat_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "object": "usa_bombers_01",
+          "delayForObjects": [2.0,5.0]
+        }
+      }
+    },
+    "bombers_01_near_patrol_point": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 1500.0,
+          "math": "2D",
+          "object_type": "isAlive",
+          "target_type": "isAlive",
+          "check_objects": "any",
+          "check_targets": "any",
+          "object_marking": 0,
+          "target_marking": 0,
+          "object": "usa_bombers_01",
+          "target": "patrol_point"
+        }
+      },
+      "actions": {
+        "unitAttackTarget": [
+          {
+            "playerAttracted": false
+          },
+          {
+            "object": "usa_bombers_01"
+          },
+          {
+            "target": "jpn_artillery_squad"
+          },
+          {
+            "target": "jpn_aaa_squad"
+          },
+          {
+            "delayForObjects": [5.0,10.0]
+          },
+          {
+            "fireRandom": true
+          }
+        ]
+      }
+    },
+    "bombers_01_without_bombs": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "canBomb",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object": "usa_bombers_01"
+        }
+      },
+      "actions": {
+        "unitMoveTo": {
+          "target": "retreat_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "object": "usa_bombers_01",
+          "delayForObjects": [2.0,5.0]
+        }
+      }
+    },
+    "usa_bombers_02_appear": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "timer",
+          "value": 240,
+          "comparasion_func": "more"
+        },
+        "unitWhenCountMatches": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 3,
+          "object": "usa_bombers_01"
+        }
+      },
+      "actions": [
+        {
+          "unitWakeUp": [
+            {
+              "target": "usa_bombers_02"
+            },
+            {
+              "target": "usa_fighters_02"
+            }
+          ]
+        },
+        {
+          "unitMoveTo": {
+            "target": "patrol_point",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 1000.0,
+            "object": "usa_bombers_02",
+            "speed": 220.0
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "usa_bombers_02",
+            "follow_target": true,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 1000.0,
+            "object": "usa_fighters_02",
+            "follow_offset": [-150.0,320.0,20.0]
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target": "usa_bombers_02"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "player_near_usa_bombers_02"
+            },
+            {
+              "target": "bombers_02_partialy_detsroyed"
+            },
+            {
+              "target": "bombers_02_near_patrol_point"
+            },
+            {
+              "target": "usa_bombers_03_appear"
+            },
+            {
+              "target": "bombers_02_without_bombs"
+            }
+          ]
+        }
+      ]
+    },
+    "player_near_usa_bombers_02": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "playersDistanceBetween": {
+          "value": 4500.0,
+          "math": "2D",
+          "players": "isAlive",
+          "target_type": "isAlive",
+          "check_players": "any",
+          "check_targets": "any",
+          "target": "usa_bombers_02"
+        }
+      },
+      "actions": {
+        "unitAttackTarget": {
+          "playerAttracted": true,
+          "object": "usa_fighters_02",
+          "target": "player_wing",
+          "fireRandom": true,
+          "playerAttractedCount": 2,
+          "playerAttractedEffRate": 0.8
+        }
+      }
+    },
+    "bombers_02_partialy_detsroyed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 4,
+          "object": "usa_bombers_02"
+        }
+      },
+      "actions": {
+        "unitDropAmmo": {
+          "object": "usa_bombers_02"
+        },
+        "unitMoveTo": {
+          "target": "retreat_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "object": "usa_bombers_02",
+          "delayForObjects": [2.0,5.0]
+        }
+      }
+    },
+    "bombers_02_near_patrol_point": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 1500.0,
+          "math": "2D",
+          "object_type": "isAlive",
+          "target_type": "isAlive",
+          "check_objects": "any",
+          "check_targets": "any",
+          "object_marking": 0,
+          "target_marking": 0,
+          "object": "usa_bombers_02",
+          "target": "patrol_point"
+        }
+      },
+      "actions": {
+        "unitAttackTarget": [
+          {
+            "playerAttracted": false
+          },
+          {
+            "object": "usa_bombers_02"
+          },
+          {
+            "target": "jpn_artillery_squad"
+          },
+          {
+            "target": "jpn_aaa_squad"
+          },
+          {
+            "delayForObjects": [5.0,10.0]
+          },
+          {
+            "fireRandom": true
+          }
+        ]
+      }
+    },
+    "bombers_02_without_bombs": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "canBomb",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object": "usa_bombers_02"
+        }
+      },
+      "actions": {
+        "unitMoveTo": {
+          "target": "retreat_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "object": "usa_bombers_02",
+          "delayForObjects": [2.0,5.0]
+        }
+      }
+    },
+    "usa_bombers_03_appear": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "timer",
+          "value": 480,
+          "comparasion_func": "more"
+        },
+        "unitWhenCountMatches": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 3,
+          "object": "usa_bombers_02"
+        }
+      },
+      "actions": [
+        {
+          "unitWakeUp": [
+            {
+              "target": "usa_bombers_03"
+            },
+            {
+              "target": "usa_fighters_03"
+            }
+          ]
+        },
+        {
+          "unitMoveTo": {
+            "target": "patrol_point",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 1000.0,
+            "object": "usa_bombers_03",
+            "speed": 220.0
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "usa_bombers_03",
+            "follow_target": true,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 1000.0,
+            "object": "usa_fighters_03",
+            "follow_offset": [-150.0,320.0,20.0]
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target": "usa_bombers_03"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "player_near_usa_bombers_03"
+            },
+            {
+              "target": "bombers_03_partialy_detsroyed"
+            },
+            {
+              "target": "bombers_03_near_patrol_point"
+            },
+            {
+              "target": "bombers_03_without_bombs"
+            }
+          ]
+        }
+      ]
+    },
+    "player_near_usa_bombers_03": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "playersDistanceBetween": {
+          "value": 4500.0,
+          "math": "2D",
+          "players": "isAlive",
+          "target_type": "isAlive",
+          "check_players": "any",
+          "check_targets": "any",
+          "target": "usa_bombers_03"
+        }
+      },
+      "actions": {
+        "unitAttackTarget": {
+          "playerAttracted": true,
+          "object": "usa_fighters_03",
+          "target": "player_wing",
+          "fireRandom": true,
+          "playerAttractedCount": 2,
+          "playerAttractedEffRate": 0.8
+        }
+      }
+    },
+    "bombers_03_partialy_detsroyed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 4,
+          "object": "usa_bombers_03"
+        }
+      },
+      "actions": {
+        "unitDropAmmo": {
+          "object": "usa_bombers_03"
+        },
+        "unitMoveTo": {
+          "target": "retreat_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "object": "usa_bombers_03",
+          "delayForObjects": [2.0,5.0]
+        }
+      }
+    },
+    "bombers_03_near_patrol_point": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 1500.0,
+          "math": "2D",
+          "object_type": "isAlive",
+          "target_type": "isAlive",
+          "check_objects": "any",
+          "check_targets": "any",
+          "object_marking": 0,
+          "target_marking": 0,
+          "object": "usa_bombers_03",
+          "target": "patrol_point"
+        }
+      },
+      "actions": {
+        "unitAttackTarget": [
+          {
+            "playerAttracted": false
+          },
+          {
+            "object": "usa_bombers_03"
+          },
+          {
+            "target": "jpn_artillery_squad"
+          },
+          {
+            "target": "jpn_aaa_squad"
+          },
+          {
+            "delayForObjects": [5.0,10.0]
+          },
+          {
+            "fireRandom": true
+          }
+        ]
+      }
+    },
+    "bombers_03_without_bombs": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "canBomb",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object": "usa_bombers_03"
+        }
+      },
+      "actions": {
+        "unitMoveTo": {
+          "target": "retreat_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "object": "usa_bombers_03",
+          "delayForObjects": [2.0,5.0]
+        },
+        "triggerEnable": {
+          "target": "check_for_complete"
+        }
+      }
+    },
+    "fail_mission": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 5,
+          "object": "jpn_artillery_squad"
+        }
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": "check_for_complete"
+        },
+        "moSetObjectiveStatus": {
+          "target": "pkg3_guam_mission_02_defend",
+          "status": 3
+        },
+        "wait": {
+          "time": 3.0
+        },
+        "missionFailed": []
+      }
+    },
+    "check_for_complete": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 30.0
+        }
+      },
+      "conditions": [
+        {
+          "unitWhenCountMatches": {
+            "object_type": "isAlive",
+            "object_marking": 0,
+            "func": "less",
+            "value": 1,
+            "object": "usa_bombers_squad"
+          }
+        },
+        {
+          "unitWhenCountMatches": {
+            "object_type": "canBomb",
+            "object_marking": 0,
+            "func": "less",
+            "value": 1,
+            "object": "usa_bombers_squad"
+          }
+        }
+      ],
+      "actions": {
+        "triggerEnable": {
+          "target": "complete_mission"
+        }
+      }
+    },
+    "complete_mission": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "moSetObjectiveStatus": {
+          "target": "pkg3_guam_mission_02_defend",
+          "status": 2
+        },
+        "wait": {
+          "time": 8.0
+        },
+        "missionCompleted": []
+      }
+    },
+    "usa_bombers_destroyed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isKilledByPlayer",
+          "object_marking": 0,
+          "func": "more",
+          "value": 0,
+          "object": "usa_bombers_squad"
+        }
+      },
+      "actions": {
+        "moAddMissionObjective": {
+          "target": "pkg3_guam_mission_02_kill_all"
+        },
+        "triggerEnable": {
+          "target": "check_for_kill_all"
+        }
+      }
+    },
+    "check_for_kill_all": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object": "usa_bombers_squad"
+        }
+      },
+      "actions": {
+        "moSetObjectiveStatus": {
+          "target": "pkg3_guam_mission_02_kill_all",
+          "status": 2
+        }
+      }
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true,
+    "pkg3_guam_mission_02_takeoff": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "pkg3_guam_mission_02_patrol": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "pkg3_guam_mission_02_defend": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "pkg3_guam_mission_02_kill_all": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": false,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    }
+  },
+  "variables": {
+    "timer": 0
+  },
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "armada": {
+        "name": "player_wing",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-586.6,492.55,4378.9]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "ki_61_1a_hei",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "jpn_artillery_01",
+        "tm": [
+          [-0.991445,0.0,0.130526],
+          [0.0,1.0,0.0],
+          [-0.130526,0.0,-0.991445],
+          [-14517.7,66.35,1341.25]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "jpn_75mm_t90_sandfort",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 5,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [5.0,5.0],
+          "formation_noise": [1.0,1.0],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "jpn_artillery_02",
+        "tm": [
+          [-0.258819,0.0,0.965926],
+          [0.0,1.0,0.0],
+          [-0.965926,0.0,-0.258819],
+          [-13334.8,66.35,1897.45]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "jpn_75mm_t90_sandfort",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 5,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [5.0,5.0],
+          "formation_noise": [1.0,1.0],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "jpn_artillery_03",
+        "tm": [
+          [-0.707107,0.0,0.707107],
+          [0.0,1.0,0.0],
+          [-0.707107,0.0,-0.707107],
+          [-12136.6,66.35,2421.05]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "jpn_75mm_t90_sandfort",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 5,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [5.0,5.0],
+          "formation_noise": [1.0,1.0],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "jpn_artillery_04",
+        "tm": [
+          [2.98023e-08,0.0,1.0],
+          [0.0,1.0,0.0],
+          [-1.0,0.0,2.98023e-08],
+          [-11281.1,66.35,2745.25]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "jpn_75mm_t90_sandfort",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 5,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [5.0,5.0],
+          "formation_noise": [1.0,1.0],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "jpn_aaa_01",
+        "tm": [
+          [-0.953717,0.0,0.300706],
+          [0.0,1.0,0.0],
+          [-0.300706,0.0,-0.953717],
+          [-14283.6,29.4,1197.2]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "jpn_75mm_t88_coastfort",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 750.0,
+          "effShootingRate": 0.1
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "jpn_aaa_02",
+        "tm": [
+          [-0.953717,0.0,0.300706],
+          [0.0,1.0,0.0],
+          [-0.300706,0.0,-0.953717],
+          [-14315.9,29.4,1587.45]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "jpn_75mm_t88_coastfort",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 750.0,
+          "effShootingRate": 0.1
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "jpn_aaa_03",
+        "tm": [
+          [-0.5373,0.0,0.843391],
+          [0.0,1.0,0.0],
+          [-0.843391,0.0,-0.5373],
+          [-13648.6,29.4,1674.9]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "jpn_75mm_t88_coastfort",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 750.0,
+          "effShootingRate": 0.1
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "jpn_aaa_04",
+        "tm": [
+          [-0.5373,0.0,0.843391],
+          [0.0,1.0,0.0],
+          [-0.843391,0.0,-0.5373],
+          [-13032.8,29.4,1870.35]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "jpn_75mm_t88_coastfort",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 750.0,
+          "effShootingRate": 0.1
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "jpn_aaa_05",
+        "tm": [
+          [-0.5373,0.0,0.843391],
+          [0.0,1.0,0.0],
+          [-0.843391,0.0,-0.5373],
+          [-12216.4,29.4,2205.15]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "jpn_75mm_t88_coastfort",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 750.0,
+          "effShootingRate": 0.1
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "jpn_aaa_06",
+        "tm": [
+          [-0.5373,0.0,0.843391],
+          [0.0,1.0,0.0],
+          [-0.843391,0.0,-0.5373],
+          [-11679.6,29.4,2616.05]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "jpn_75mm_t88_coastfort",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 750.0,
+          "effShootingRate": 0.1
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "jpn_aaa_07",
+        "tm": [
+          [-0.5373,0.0,0.843391],
+          [0.0,1.0,0.0],
+          [-0.843391,0.0,-0.5373],
+          [-11142.5,29.4,2622.35]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "jpn_75mm_t88_coastfort",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 750.0,
+          "effShootingRate": 0.1
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "jpn_artillery_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-12474.2,82.85,1623.4]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": [
+          {
+            "squad_members": "jpn_artillery_01"
+          },
+          {
+            "squad_members": "jpn_artillery_02"
+          },
+          {
+            "squad_members": "jpn_artillery_03"
+          },
+          {
+            "squad_members": "jpn_artillery_04"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "jpn_aaa_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-11907.0,66.4,1800.25]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": [
+          {
+            "squad_members": "jpn_aaa_01"
+          },
+          {
+            "squad_members": "jpn_aaa_02"
+          },
+          {
+            "squad_members": "jpn_aaa_03"
+          },
+          {
+            "squad_members": "jpn_aaa_04"
+          },
+          {
+            "squad_members": "jpn_aaa_05"
+          },
+          {
+            "squad_members": "jpn_aaa_06"
+          },
+          {
+            "squad_members": "jpn_aaa_07"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "usa_bombers_01",
+        "tm": [
+          [-0.130526,0.0,-0.991445],
+          [0.0,1.0,0.0],
+          [0.991445,0.0,-0.130526],
+          [-13782.1,387.35,14252.2]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "sbd-3",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 16,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "usa_fighters_01",
+        "tm": [
+          [-0.130526,0.0,-0.991445],
+          [0.0,1.0,0.0],
+          [0.991445,0.0,-0.130526],
+          [-13782.0,1342.7,14252.2]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "f4u-1c",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 6,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "usa_bombers_02",
+        "tm": [
+          [0.67559,0.0,-0.737277],
+          [0.0,1.0,0.0],
+          [0.737277,0.0,0.67559],
+          [-27794.8,387.35,10281.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "sbd-3",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 16,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "usa_fighters_02",
+        "tm": [
+          [0.965926,0.0,-0.258819],
+          [0.0,1.0,0.0],
+          [0.258819,0.0,0.965926],
+          [-28116.1,1342.7,10761.2]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "f4u-1c",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 6,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "usa_bombers_03",
+        "tm": [
+          [0.991445,0.0,-0.130526],
+          [0.0,1.0,0.0],
+          [0.130526,0.0,0.991445],
+          [-32105.3,387.35,-4537.4]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "sbd-3",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 16,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "usa_fighters_03",
+        "tm": [
+          [0.92388,0.0,0.382683],
+          [0.0,1.0,0.0],
+          [-0.382683,0.0,0.92388],
+          [-35058.6,1342.7,-4033.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "f4u-1c",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 6,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "usa_ship_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-23321.2,0.0,11876.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uss_cv_enterprise",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "usa_ship_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-23800.8,0.0,12644.6]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uss_cv_immortal",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "usa_ship_03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-24221.1,0.0,10722.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uss_dd_sims",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "usa_ship_04",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-21940.8,0.0,11451.7]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uss_dd_sims",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "usa_ship_05",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-25000.6,0.0,12167.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uss_dd_sims",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "usa_ships_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-25997.0,0.0,2701.2]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": [
+          {
+            "squad_members": "usa_ship_01"
+          },
+          {
+            "squad_members": "usa_ship_02"
+          },
+          {
+            "squad_members": "usa_ship_03"
+          },
+          {
+            "squad_members": "usa_ship_04"
+          },
+          {
+            "squad_members": "usa_ship_05"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "usa_bombers_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-22453.4,-12.75,5565.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": [
+          {
+            "squad_members": "usa_bombers_01"
+          },
+          {
+            "squad_members": "usa_bombers_02"
+          },
+          {
+            "squad_members": "usa_bombers_03"
+          }
+        ],
+        "way": []
+      }
+    }
+  ],
+  "areas": {
+    "airfield_start_01": {
+      "type": "Sphere",
+      "tm": [
+        [24.1,0.0,0.0],
+        [0.0,24.1,0.0],
+        [0.0,0.0,24.1],
+        [-589.0,92.55,4337.85]
+      ],
+      "props": []
+    },
+    "airfield_end_01": {
+      "type": "Sphere",
+      "tm": [
+        [24.1,0.0,0.0],
+        [0.0,24.1,0.0],
+        [0.0,0.0,24.1],
+        [-1801.75,92.55,3907.85]
+      ],
+      "props": []
+    },
+    "airfield_01_spawn_01": {
+      "type": "Sphere",
+      "tm": [
+        [9.3,0.0,0.0],
+        [0.0,9.3,0.0],
+        [0.0,0.0,9.3],
+        [-637.55,92.55,4313.05]
+      ],
+      "props": []
+    },
+    "airfield_01_spawn_02": {
+      "type": "Sphere",
+      "tm": [
+        [9.3,0.0,0.0],
+        [0.0,9.3,0.0],
+        [0.0,0.0,9.3],
+        [-642.35,92.55,4326.3]
+      ],
+      "props": []
+    },
+    "airfield_01_spawn_03": {
+      "type": "Sphere",
+      "tm": [
+        [9.3,0.0,0.0],
+        [0.0,9.3,0.0],
+        [0.0,0.0,9.3],
+        [-618.3,92.55,4319.55]
+      ],
+      "props": []
+    },
+    "airfield_01_spawn_04": {
+      "type": "Sphere",
+      "tm": [
+        [9.3,0.0,0.0],
+        [0.0,9.3,0.0],
+        [0.0,0.0,9.3],
+        [-623.45,92.55,4334.3]
+      ],
+      "props": []
+    },
+    "patrol_point": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [-11471.3,1200.0,772.0]
+      ],
+      "props": []
+    },
+    "retreat_point": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [-23841.5,1500.0,11773.8]
+      ],
+      "props": []
+    }
+  }
+}

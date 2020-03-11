@@ -1,0 +1,305 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": ""
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/water.bin",
+      "type": "singleMission",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "hazy"
+    },
+    "spectator_points": []
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "aot_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "comment": {
+            "value": "air objectives template"
+          }
+        },
+        {
+          "triggerActivate": {
+            "target": "aot_arcade_init",
+            "activate_type": "checkConidtions",
+            "check_trigger_status": false,
+            "after_activation": "disable"
+          }
+        },
+        {
+          "triggerActivate": {
+            "target": "aot_realistic_init",
+            "activate_type": "checkConidtions",
+            "check_trigger_status": false,
+            "after_activation": "disable"
+          }
+        },
+        {
+          "triggerActivate": {
+            "target": "aot_simulator_init",
+            "activate_type": "checkConidtions",
+            "check_trigger_status": false,
+            "after_activation": "disable"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "aot_arcade_init": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "gameWhenDifficulty": {
+          "difficulty": "arcade",
+          "is": "equal"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "аркадный режим даем максимальное задание"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 24,
+            "var": "aot_planes_to_kill"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 12,
+            "var": "aot_heavy_units_to_kill"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 24,
+            "var": "aot_light_units_to_kill"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "aot_realistic_init": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "gameWhenDifficulty": {
+          "difficulty": "realistic",
+          "is": "equal"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "аркадный режим даем максимальное задание"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 6,
+            "var": "aot_planes_to_kill"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 8,
+            "var": "aot_heavy_units_to_kill"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 16,
+            "var": "aot_light_units_to_kill"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "aot_simulator_init": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "gameWhenDifficulty": {
+          "difficulty": "simulator",
+          "is": "equal"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "аркадный режим даем максимальное задание"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 4,
+            "var": "aot_planes_to_kill"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 6,
+            "var": "aot_heavy_units_to_kill"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 12,
+            "var": "aot_light_units_to_kill"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "aot_rotator": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "aot_cur_army",
+          "value": 1,
+          "comparasion_func": "notEqual"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "последняя проверка была не для 1 армии"
+          }
+        },
+        {
+          "comment": {
+            "value": "меняем армию на 1"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 1,
+            "var": "aot_cur_army"
+          }
+        }
+      ],
+      "else_actions": [
+        {
+          "comment": {
+            "value": "последняя проверка была для 1 армии"
+          }
+        },
+        {
+          "comment": {
+            "value": "меняем армию на 2"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 2,
+            "var": "aot_cur_army"
+          }
+        }
+      ]
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {
+    "aot_planes_to_kill": 12,
+    "aot_heavy_units_to_kill": 6,
+    "aot_light_units_to_kill": 12,
+    "aot_cur_army": 0
+  },
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [],
+  "areas": [],
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}

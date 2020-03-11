@@ -1,0 +1,174 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/avg_finland.bin",
+      "type": "domination",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "hazy",
+      "timeLimit": 25,
+      "deathPenaltyMul": 1.0,
+      "remapAiTankModels": true,
+      "country_axis": "germany",
+      "country_allies": "ussr"
+    },
+    "spectator_points": []
+  },
+  "imports": {
+    "import_record": {
+      "file": "gameData/missions/cta/tanks/eastern_europe/mainareas/template_eastern_europe_Bttl_mainareas_hardcore.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "excludes": []
+    }
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "area_squad": {
+        "name": "t1_killarea_hardcore",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [4335.24,31.4482,1654.5]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_killarea_hardcore_block01"
+          },
+          {
+            "squad_members": "t1_killarea_hardcore_block02"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "t2_killarea_hardcore",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-358.322,24.6926,1619.27]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_killarea_hardcore_block01"
+          },
+          {
+            "squad_members": "t2_killarea_hardcore_block02"
+          }
+        ]
+      }
+    }
+  ],
+  "areas": {
+    "bttl_battle_area_hardcore": {
+      "type": "Box",
+      "tm": [
+        [-3520.0,0.0,0.0],
+        [0.0,659.45,0.0],
+        [0.0,0.0,-3520.0],
+        [1998.3,20.25,1686.15]
+      ],
+      "objLayer": 3,
+      "props": []
+    },
+    "t1_killarea_hardcore_block01": {
+      "type": "Cylinder",
+      "tm": [
+        [150.0,0.0,0.0],
+        [0.0,133.872,0.0],
+        [0.0,0.0,150.0],
+        [3543.17,26.6035,1909.05]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_killarea_hardcore_block02": {
+      "type": "Cylinder",
+      "tm": [
+        [150.0,0.0,0.0],
+        [0.0,133.872,0.0],
+        [0.0,0.0,150.0],
+        [3524.63,26.604,1473.85]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_killarea_hardcore_block01": {
+      "type": "Cylinder",
+      "tm": [
+        [150.0,0.0,0.0],
+        [0.0,133.872,0.0],
+        [0.0,0.0,150.0],
+        [450.987,26.604,1233.22]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_killarea_hardcore_block02": {
+      "type": "Cylinder",
+      "tm": [
+        [150.0,0.0,0.0],
+        [0.0,133.872,0.0],
+        [0.0,0.0,150.0],
+        [487.88,26.6035,1627.35]
+      ],
+      "objLayer": 0,
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": false
+      }
+    }
+  ],
+  "wayPoints": []
+}

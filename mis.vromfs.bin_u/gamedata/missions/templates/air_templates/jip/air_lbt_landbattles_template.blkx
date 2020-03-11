@@ -1,0 +1,6114 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": "lbt_armada"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/water.bin",
+      "type": "singleMission",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "hazy",
+      "scoreLimit": 30000
+    },
+    "spectator_points": []
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "lbt_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "comment": {
+            "value": "ждем 30 секунд и запускаем все процедуры"
+          }
+        },
+        {
+          "wait": {
+            "time": 30.0
+          }
+        },
+        {
+          "comment": {
+            "value": "проверку heat"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "lbt_heat_zone_restart"
+          }
+        },
+        {
+          "comment": {
+            "value": "проверку времени битвы"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "lbt_time_restart"
+          }
+        },
+        {
+          "comment": {
+            "value": "проверку результатов битвы"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "lbt_end_restart"
+          }
+        },
+        {
+          "comment": {
+            "value": "подсчет убитых"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "lbt_damage_restart"
+          }
+        },
+        {
+          "comment": {
+            "value": "подсчет количества активных битв (для других шаблонов)"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "lbt_counter_restart"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "lbt_matching": {
+      "isCategory": true,
+      "is_enabled": true,
+      "lbt_activity_init": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [],
+        "actions": [
+          {
+            "comment": {
+              "value": "получаем балансный уровень миссии"
+            }
+          },
+          {
+            "missionGetBalanceLevel": {
+              "input_var": "lbt_balance_level"
+            }
+          },
+          {
+            "comment": {
+              "value": "назначаем дистанцию проверки от ранга миссии"
+            }
+          },
+          {
+            "triggerActivate": {
+              "target": "lbt_matchning_distance_0_3",
+              "activate_type": "checkConidtions",
+              "check_trigger_status": false,
+              "after_activation": "disable"
+            }
+          },
+          {
+            "triggerActivate": {
+              "target": "lbt_matchning_distance_4_7",
+              "activate_type": "checkConidtions",
+              "check_trigger_status": false,
+              "after_activation": "disable"
+            }
+          },
+          {
+            "triggerActivate": {
+              "target": "lbt_matchning_distance_8_11",
+              "activate_type": "checkConidtions",
+              "check_trigger_status": false,
+              "after_activation": "disable"
+            }
+          },
+          {
+            "triggerActivate": {
+              "target": "lbt_matchning_distance_12_16",
+              "activate_type": "checkConidtions",
+              "check_trigger_status": false,
+              "after_activation": "disable"
+            }
+          },
+          {
+            "triggerActivate": {
+              "target": "lbt_matchning_distance_17_20",
+              "activate_type": "checkConidtions",
+              "check_trigger_status": false,
+              "after_activation": "disable"
+            }
+          }
+        ],
+        "else_actions": []
+      },
+      "lbt_matchning_distance_0_3": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "lbt_matching_rank",
+            "value": 4,
+            "comparasion_func": "less"
+          }
+        },
+        "actions": {
+          "varSetReal": {
+            "value": 3000.0,
+            "var": "lbt_activity_distance"
+          }
+        },
+        "else_actions": []
+      },
+      "lbt_matchning_distance_4_7": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [
+          {
+            "varCompareInt": {
+              "var_value": "lbt_matching_rank",
+              "value": 3,
+              "comparasion_func": "more"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "lbt_matching_rank",
+              "value": 8,
+              "comparasion_func": "less"
+            }
+          }
+        ],
+        "actions": {
+          "varSetReal": {
+            "value": 4500.0,
+            "var": "lbt_activity_distance"
+          }
+        },
+        "else_actions": []
+      },
+      "lbt_matchning_distance_8_11": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [
+          {
+            "varCompareInt": {
+              "var_value": "lbt_matching_rank",
+              "value": 7,
+              "comparasion_func": "more"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "lbt_matching_rank",
+              "value": 12,
+              "comparasion_func": "less"
+            }
+          }
+        ],
+        "actions": {
+          "varSetReal": {
+            "value": 6000.0,
+            "var": "lbt_activity_distance"
+          }
+        },
+        "else_actions": []
+      },
+      "lbt_matchning_distance_12_16": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [
+          {
+            "varCompareInt": {
+              "var_value": "lbt_matching_rank",
+              "value": 11,
+              "comparasion_func": "more"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "lbt_matching_rank",
+              "value": 17,
+              "comparasion_func": "less"
+            }
+          }
+        ],
+        "actions": {
+          "varSetReal": {
+            "value": 7500.0,
+            "var": "lbt_activity_distance"
+          }
+        },
+        "else_actions": []
+      },
+      "lbt_matchning_distance_17_20": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [
+          {
+            "varCompareInt": {
+              "var_value": "lbt_matching_rank",
+              "value": 16,
+              "comparasion_func": "more"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "lbt_matching_rank",
+              "value": 30,
+              "comparasion_func": "less"
+            }
+          }
+        ],
+        "actions": {
+          "varSetReal": {
+            "value": 9000.0,
+            "var": "lbt_activity_distance"
+          }
+        },
+        "else_actions": []
+      }
+    },
+    "lbt_battles": {
+      "isCategory": true,
+      "is_enabled": true,
+      "lbt_start": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [
+          {
+            "varCompareInt": {
+              "var_value": "lbt_heat_attack_from_idx",
+              "value": 0,
+              "comparasion_func": "more"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "lbt_heat_attack_to_idx",
+              "value": 0,
+              "comparasion_func": "more"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "comment": {
+              "value": "проверяем что стартовые индексы не нулевые"
+            }
+          },
+          {
+            "comment": {
+              "value": "и назначаем индексы в свои переменные"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_battles_from_idx",
+              "input_var": "lbt_heat_attack_from_idx"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_battles_to_idx",
+              "input_var": "lbt_heat_attack_to_idx"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_battles_frontline_idx",
+              "input_var": "lbt_heat_attack_to_idx"
+            }
+          },
+          {
+            "comment": {
+              "value": "имя первой зоны для рисования "
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_battles_draw_from_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_battles_from_idx",
+              "digits": 2,
+              "var": "lbt_battles_draw_from_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "имя второй зоны для рисования "
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battle_area_",
+              "var": "lbt_battles_draw_to_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_battles_to_idx",
+              "digits": 2,
+              "var": "lbt_battles_draw_to_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "имя переменной армии атакующих"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_battles_attacker_army_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_battles_from_idx",
+              "digits": 2,
+              "var": "lbt_battles_attacker_army_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_state",
+              "digits": 0,
+              "var": "lbt_battles_attacker_army_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "получаем армию атакующих"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_battles_attacker_army_idx",
+              "input_var": "@lbt_battles_attacker_army_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "имя переменной армии защищающихся"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_battles_deffender_army_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_battles_to_idx",
+              "digits": 2,
+              "var": "lbt_battles_deffender_army_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_state",
+              "digits": 0,
+              "var": "lbt_battles_deffender_army_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "создаем имя боевой зоны"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battle_area_",
+              "var": "lbt_battle_area_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_battles_frontline_idx",
+              "digits": 2,
+              "var": "lbt_battle_area_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "создаем имя зоны в случае успеха атаки"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_battles_frontline_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_battles_frontline_idx",
+              "digits": 2,
+              "var": "lbt_battles_frontline_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "обнуляем текущий индекс битвы для ротации"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_battles_start_idx"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем сквады"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_start_rotator"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "переменные пустые - завершаем шаблон"
+          },
+          "triggerDisable": {
+            "target": "lbt_start"
+          }
+        }
+      },
+      "lbt_start_rotator": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "lbt_battles_start_idx",
+            "value": 0,
+            "comparasion_func": "less",
+            "var_value_other": "lbt_battles_max_battles_num"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "проверили что активных битв меньше 3"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "lbt_battles_start_idx"
+            }
+          },
+          {
+            "comment": {
+              "value": "создаем имя слота активности битвы"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battle_",
+              "var": "lbt_battle_active_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_battles_start_idx",
+              "digits": 2,
+              "var": "lbt_battle_active_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_active",
+              "digits": 0,
+              "var": "lbt_battle_active_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем свободна ли слот битвы"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_start_check_battle_exist"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "все слоты заняты нельзя начать битву"
+          },
+          "triggerEnable": {
+            "target": "lbt_start_end"
+          }
+        }
+      },
+      "lbt_start_check_battle_exist": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "@lbt_battle_active_var_name",
+            "value": false,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "битва с таким слотом не активна"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battles_t1_squad_",
+              "var": "lbt_battles_t1_army_squad_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_battles_start_idx",
+              "digits": 2,
+              "var": "lbt_battles_t1_army_squad_name"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battles_t2_squad_",
+              "var": "lbt_battles_t2_army_squad_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_battles_start_idx",
+              "digits": 2,
+              "var": "lbt_battles_t2_army_squad_name"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battles_t1_tank_",
+              "var": "lbt_battles_t1_tank_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_battles_start_idx",
+              "digits": 2,
+              "var": "lbt_battles_t1_tank_name"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battles_t2_tank_",
+              "var": "lbt_battles_t2_tank_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_battles_start_idx",
+              "digits": 2,
+              "var": "lbt_battles_t2_tank_name"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battles_t1_art_",
+              "var": "lbt_battles_t1_art_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_battles_start_idx",
+              "digits": 2,
+              "var": "lbt_battles_t1_art_name"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battles_t2_art_",
+              "var": "lbt_battles_t2_art_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_battles_start_idx",
+              "digits": 2,
+              "var": "lbt_battles_t2_art_name"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battles_t1_bunker_",
+              "var": "lbt_battles_t1_bunker_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_battles_start_idx",
+              "digits": 2,
+              "var": "lbt_battles_t1_bunker_name"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battles_t2_bunker_",
+              "var": "lbt_battles_t2_bunker_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_battles_start_idx",
+              "digits": 2,
+              "var": "lbt_battles_t2_bunker_name"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_battles_spawn_prepare"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "идем дальше по циклу"
+          },
+          "triggerEnable": {
+            "target": "lbt_start_rotator"
+          }
+        }
+      },
+      "lbt_start_end": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [],
+        "actions": {
+          "comment": {
+            "value": "дизейблим цикл обработки. дальше все делается в heat ротации"
+          },
+          "triggerDisable": {
+            "target": "lbt_start_rotator"
+          }
+        },
+        "else_actions": []
+      },
+      "lbt_draw_arrow": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "lbt_battles_attacker_army_idx",
+            "value": 1,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "missionShowMapLine": {
+            "areaNameFrom": "@lbt_battles_draw_from_name",
+            "areaNameTo": "@lbt_battles_draw_to_name",
+            "show": true,
+            "colorCode": "Team A",
+            "scale": 0.5,
+            "arrow": true
+          }
+        },
+        "else_actions": {
+          "missionShowMapLine": {
+            "areaNameFrom": "@lbt_battles_draw_from_name",
+            "areaNameTo": "@lbt_battles_draw_to_name",
+            "show": true,
+            "colorCode": "Team B",
+            "scale": 0.5,
+            "arrow": true
+          }
+        }
+      },
+      "lbt_start_spawn": {
+        "isCategory": true,
+        "is_enabled": true,
+        "lbt_battles_spawn_prepare": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": [],
+          "actions": [
+            {
+              "comment": {
+                "value": "берем юнитов аткивной битвы, целиком их восстанавливаем и прячем"
+              }
+            },
+            {
+              "unitRestore": [
+                {
+                  "ressurectIfDead": true
+                },
+                {
+                  "fullRestore": true
+                },
+                {
+                  "target": "@lbt_battles_t1_army_squad_name"
+                },
+                {
+                  "target": "@lbt_battles_t2_army_squad_name"
+                }
+              ]
+            },
+            {
+              "unitPutToSleep": [
+                {
+                  "target": "@lbt_battles_t1_army_squad_name"
+                },
+                {
+                  "target": "@lbt_battles_t2_army_squad_name"
+                }
+              ]
+            },
+            {
+              "comment": {
+                "value": "разбиваем процесс спавнана два разных эвента для удобства"
+              }
+            },
+            {
+              "triggerEnable": {
+                "target": "lbt_battles_spawn_continue"
+              }
+            }
+          ],
+          "else_actions": []
+        },
+        "lbt_battles_spawn_continue": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": [],
+          "actions": [
+            {
+              "comment": {
+                "value": "запрещаем стрельбу"
+              }
+            },
+            {
+              "unitSetProperties": [
+                {
+                  "object_marking": 0
+                },
+                {
+                  "object_var_name": ""
+                },
+                {
+                  "object_var_comp_op": "equal"
+                },
+                {
+                  "object_var_value": 0
+                },
+                {
+                  "object": "@lbt_battles_t1_army_squad_name"
+                },
+                {
+                  "object": "@lbt_battles_t2_army_squad_name"
+                },
+                {
+                  "attack_type": "hold_fire"
+                }
+              ]
+            },
+            {
+              "comment": {
+                "value": "создаем имя спавна"
+              }
+            },
+            {
+              "varSetString": {
+                "value": "lbt_t1_battle_area_",
+                "var": "lbt_battles_t1_spawn_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "@lbt_battles_frontline_idx",
+                "digits": 2,
+                "var": "lbt_battles_t1_spawn_name"
+              }
+            },
+            {
+              "varSetString": {
+                "value": "lbt_t2_battle_area_",
+                "var": "lbt_battles_t2_spawn_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "@lbt_battles_frontline_idx",
+                "digits": 2,
+                "var": "lbt_battles_t2_spawn_name"
+              }
+            },
+            {
+              "comment": {
+                "value": "запускаем спавны"
+              }
+            },
+            {
+              "triggerEnable": [
+                {
+                  "target": "lbt_battles_t1_tank_spawn"
+                },
+                {
+                  "target": "lbt_battles_t2_tank_spawn"
+                },
+                {
+                  "target": "lbt_battles_t1_art_spawn"
+                },
+                {
+                  "target": "lbt_battles_t2_art_spawn"
+                },
+                {
+                  "target": "lbt_battles_t1_bunker_spawn"
+                },
+                {
+                  "target": "lbt_battles_t2_bunker_spawn"
+                }
+              ]
+            },
+            {
+              "comment": {
+                "value": "запускаем битву"
+              }
+            },
+            {
+              "wait": {
+                "time": 20.0
+              }
+            },
+            {
+              "triggerEnable": {
+                "target": "lbt_battles_start"
+              }
+            }
+          ],
+          "else_actions": []
+        },
+        "lbt_battles_t1_tank_spawn": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "objectExists": {
+              "target": "@lbt_battles_t1_spawn_name",
+              "type": "area"
+            },
+            "varCompareInt": {
+              "var_value": "lbt_battles_attacker_army_idx",
+              "value": 1,
+              "comparasion_func": "equal"
+            }
+          },
+          "actions": {
+            "unitRespawn": {
+              "delay": 0.0,
+              "offset": [0.0,0.0,0.0],
+              "object": "@lbt_battles_t1_tank_name",
+              "object_type": "isInactive",
+              "target": "@lbt_battles_t1_spawn_name",
+              "isStealth": false,
+              "randomSpawn": true
+            }
+          },
+          "else_actions": []
+        },
+        "lbt_battles_t1_art_spawn": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "objectExists": {
+              "target": "@lbt_battles_t1_spawn_name",
+              "type": "area"
+            }
+          },
+          "actions": {
+            "unitRespawn": {
+              "delay": 0.0,
+              "offset": [0.0,0.0,0.0],
+              "object": "@lbt_battles_t1_art_name",
+              "object_type": "isInactive",
+              "target": "@lbt_battles_t1_spawn_name",
+              "isStealth": false,
+              "randomSpawn": true
+            }
+          },
+          "else_actions": []
+        },
+        "lbt_battles_t1_bunker_spawn": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "objectExists": {
+              "target": "@lbt_battles_t1_spawn_name",
+              "type": "area"
+            },
+            "varCompareInt": {
+              "var_value": "lbt_battles_attacker_army_idx",
+              "value": 2,
+              "comparasion_func": "equal"
+            }
+          },
+          "actions": {
+            "unitRespawn": {
+              "delay": 0.0,
+              "offset": [0.0,0.0,0.0],
+              "object": "@lbt_battles_t1_bunker_name",
+              "object_type": "isInactive",
+              "target": "@lbt_battles_t1_spawn_name",
+              "isStealth": false,
+              "randomSpawn": true
+            }
+          },
+          "else_actions": []
+        },
+        "lbt_battles_t2_tank_spawn": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "objectExists": {
+              "target": "@lbt_battles_t2_spawn_name",
+              "type": "area"
+            },
+            "varCompareInt": {
+              "var_value": "lbt_battles_attacker_army_idx",
+              "value": 2,
+              "comparasion_func": "equal"
+            }
+          },
+          "actions": {
+            "unitRespawn": {
+              "delay": 1.0,
+              "offset": [0.0,0.0,0.0],
+              "object": "@lbt_battles_t2_tank_name",
+              "object_type": "isInactive",
+              "target": "@lbt_battles_t2_spawn_name",
+              "isStealth": false,
+              "randomSpawn": true
+            }
+          },
+          "else_actions": []
+        },
+        "lbt_battles_t2_art_spawn": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "objectExists": {
+              "target": "@lbt_battles_t2_spawn_name",
+              "type": "area"
+            }
+          },
+          "actions": {
+            "unitRespawn": {
+              "delay": 0.0,
+              "offset": [0.0,0.0,0.0],
+              "object": "@lbt_battles_t2_art_name",
+              "object_type": "isInactive",
+              "target": "@lbt_battles_t2_spawn_name",
+              "isStealth": false,
+              "randomSpawn": true
+            }
+          },
+          "else_actions": []
+        },
+        "lbt_battles_t2_bunker_spawn": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "objectExists": {
+              "target": "@lbt_battles_t2_spawn_name",
+              "type": "area"
+            },
+            "varCompareInt": {
+              "var_value": "lbt_battles_attacker_army_idx",
+              "value": 1,
+              "comparasion_func": "equal"
+            }
+          },
+          "actions": {
+            "unitRespawn": {
+              "delay": 0.0,
+              "offset": [0.0,0.0,0.0],
+              "object": "@lbt_battles_t2_bunker_name",
+              "object_type": "isInactive",
+              "target": "@lbt_battles_t2_spawn_name",
+              "isStealth": false,
+              "randomSpawn": true
+            }
+          },
+          "else_actions": []
+        },
+        "lbt_battles_start": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": [],
+          "actions": [
+            {
+              "comment": {
+                "value": "рисуем стрелку"
+              }
+            },
+            {
+              "triggerEnable": {
+                "target": "lbt_draw_arrow"
+              }
+            },
+            {
+              "comment": {
+                "value": "отключаем спавны"
+              }
+            },
+            {
+              "triggerDisable": [
+                {
+                  "target": "lbt_battles_t1_tank_spawn"
+                },
+                {
+                  "target": "lbt_battles_t2_tank_spawn"
+                },
+                {
+                  "target": "lbt_battles_t1_bunker_spawn"
+                },
+                {
+                  "target": "lbt_battles_t2_bunker_spawn"
+                },
+                {
+                  "target": "lbt_battles_t1_art_spawn"
+                },
+                {
+                  "target": "lbt_battles_t2_art_spawn"
+                }
+              ]
+            },
+            {
+              "comment": {
+                "value": "создаем имя переменной хранящей время боя"
+              }
+            },
+            {
+              "varSetString": {
+                "value": "lbt_battle_",
+                "var": "lbt_battle_time_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "@lbt_battles_start_idx",
+                "digits": 2,
+                "var": "lbt_battle_time_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "_time",
+                "digits": 0,
+                "var": "lbt_battle_time_var_name"
+              }
+            },
+            {
+              "comment": {
+                "value": "обнуляем текущее время миссии"
+              }
+            },
+            {
+              "varSetInt": {
+                "value": 1,
+                "var": "@lbt_battle_time_var_name"
+              }
+            },
+            {
+              "comment": {
+                "value": "разрешаем атаковать и ставим видимость"
+              }
+            },
+            {
+              "unitSetProperties": [
+                {
+                  "object_marking": 0
+                },
+                {
+                  "object_var_name": ""
+                },
+                {
+                  "object_var_comp_op": "equal"
+                },
+                {
+                  "object_var_value": 0
+                },
+                {
+                  "object": "@lbt_battles_t1_army_squad_name"
+                },
+                {
+                  "object": "@lbt_battles_t2_army_squad_name"
+                },
+                {
+                  "stealthRadius": 64000.0
+                },
+                {
+                  "attack_type": "fire_at_will"
+                },
+                {
+                  "accuracy": 0.1
+                },
+                {
+                  "checkVisibilityTarget": false
+                },
+                {
+                  "effShootingRate": 0.1
+                }
+              ]
+            },
+            {
+              "unitSetStealth": [
+                {
+                  "set": true
+                },
+                {
+                  "radius": 64000.0
+                },
+                {
+                  "target": "@lbt_battles_t1_army_squad_name"
+                },
+                {
+                  "target": "@lbt_battles_t2_army_squad_name"
+                },
+                {
+                  "team": "Both"
+                }
+              ]
+            },
+            {
+              "comment": {
+                "value": "говорим команду стрелять"
+              }
+            },
+            {
+              "unitAttackTarget": {
+                "playerAttracted": false,
+                "object": "@lbt_battles_t1_army_squad_name",
+                "target": "@lbt_battles_t2_army_squad_name",
+                "fireRandom": true
+              }
+            },
+            {
+              "unitAttackTarget": {
+                "playerAttracted": false,
+                "object": "@lbt_battles_t2_army_squad_name",
+                "target": "@lbt_battles_t1_army_squad_name",
+                "fireRandom": true
+              }
+            },
+            {
+              "comment": {
+                "value": "говорим танкам двигаться"
+              }
+            },
+            {
+              "unitMoveTo": {
+                "target": "@lbt_battles_t2_army_squad_name",
+                "follow_target": false,
+                "teleportHeightType": "absolute",
+                "useUnitHeightForTele": true,
+                "shouldKeepFormation": false,
+                "teleportHeightValue": 1000.0,
+                "horizontalDirectionForTeleport": true,
+                "waypointReachedDist": 10.0,
+                "recalculatePathDist": -1.0,
+                "object_marking": 0,
+                "target_marking": 0,
+                "object_var_name": "",
+                "object_var_comp_op": "equal",
+                "object_var_value": 0,
+                "object": "@lbt_battles_t1_tank_name",
+                "speed": 5.0,
+                "follow_radius": 150.0,
+                "delayForObjects": [5.0,10.0],
+                "distributionRadius": 400.0
+              }
+            },
+            {
+              "unitMoveTo": {
+                "target": "@lbt_battles_t1_army_squad_name",
+                "follow_target": false,
+                "teleportHeightType": "absolute",
+                "useUnitHeightForTele": true,
+                "shouldKeepFormation": false,
+                "teleportHeightValue": 1000.0,
+                "horizontalDirectionForTeleport": true,
+                "waypointReachedDist": 10.0,
+                "recalculatePathDist": -1.0,
+                "object_marking": 0,
+                "target_marking": 0,
+                "object_var_name": "",
+                "object_var_comp_op": "equal",
+                "object_var_value": 0,
+                "object": "@lbt_battles_t2_tank_name",
+                "speed": 5.0,
+                "follow_radius": 150.0,
+                "delayForObjects": [5.0,10.0],
+                "distributionRadius": 400.0
+              }
+            },
+            {
+              "comment": {
+                "value": "мигаем целями для РБ"
+              }
+            },
+            {
+              "unitSetIndication": [
+                {
+                  "set": true
+                },
+                {
+                  "target_marking": 0
+                },
+                {
+                  "object_var_name": ""
+                },
+                {
+                  "object_var_comp_op": "equal"
+                },
+                {
+                  "object_var_value": 0
+                },
+                {
+                  "target": "@lbt_battles_t1_army_squad_name"
+                },
+                {
+                  "target": "@lbt_battles_t2_army_squad_name"
+                }
+              ]
+            },
+            {
+              "comment": {
+                "value": "создаем имя переменной, хранящей активность игроков команды А"
+              }
+            },
+            {
+              "varSetString": {
+                "value": "lbt_activity_",
+                "var": "lbt_activity_players_t1_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "@lbt_battles_start_idx",
+                "digits": 2,
+                "var": "lbt_activity_players_t1_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "_t1_time",
+                "digits": 0,
+                "var": "lbt_activity_players_t1_var_name"
+              }
+            },
+            {
+              "comment": {
+                "value": "создаем имя переменной, хранящей активность игроков команды Б"
+              }
+            },
+            {
+              "varSetString": {
+                "value": "lbt_activity_",
+                "var": "lbt_activity_players_t2_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "@lbt_battles_start_idx",
+                "digits": 2,
+                "var": "lbt_activity_players_t2_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "_t2_time",
+                "digits": 0,
+                "var": "lbt_activity_players_t2_var_name"
+              }
+            },
+            {
+              "comment": {
+                "value": "обнуляем активность обеих команд для этой битвы"
+              }
+            },
+            {
+              "varSetInt": [
+                {
+                  "value": 1
+                },
+                {
+                  "var": "@lbt_activity_players_t1_var_name"
+                },
+                {
+                  "var": "@lbt_activity_players_t2_var_name"
+                }
+              ]
+            },
+            {
+              "comment": {
+                "value": "создаем имя переменной, хранящей количество убитых юнитов команды А"
+              }
+            },
+            {
+              "varSetString": {
+                "value": "lbt_damage_",
+                "var": "lbt_damage_t1_counter_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "@lbt_battles_start_idx",
+                "digits": 2,
+                "var": "lbt_damage_t1_counter_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "_t1_death_counter",
+                "digits": 0,
+                "var": "lbt_activity_players_t1_var_name"
+              }
+            },
+            {
+              "comment": {
+                "value": "создаем имя переменной, хранящей количество убитых юнитов команды Б"
+              }
+            },
+            {
+              "varSetString": {
+                "value": "lbt_damage_",
+                "var": "lbt_damage_t2_counter_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "@lbt_battles_start_idx",
+                "digits": 2,
+                "var": "lbt_damage_t2_counter_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "_t2_death_counter",
+                "digits": 0,
+                "var": "lbt_activity_players_t2_var_name"
+              }
+            },
+            {
+              "comment": {
+                "value": "обнуляем количество мертвых юнитов для этой битвы"
+              }
+            },
+            {
+              "varSetInt": [
+                {
+                  "value": 1
+                },
+                {
+                  "var": "@lbt_damage_t1_counter_var_name"
+                },
+                {
+                  "var": "@lbt_damage_t2_counter_var_name"
+                }
+              ]
+            },
+            {
+              "comment": {
+                "value": "создаем имя переменной активности боя"
+              }
+            },
+            {
+              "varSetString": {
+                "value": "lbt_battle_",
+                "var": "lbt_battle_active_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "@lbt_battles_start_idx",
+                "digits": 2,
+                "var": "lbt_battle_active_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "_active",
+                "digits": 0,
+                "var": "lbt_battle_active_var_name"
+              }
+            },
+            {
+              "comment": {
+                "value": "говорим что битва активна"
+              }
+            },
+            {
+              "varSetBool": {
+                "value": true,
+                "var": "@lbt_battle_active_var_name"
+              }
+            },
+            {
+              "comment": {
+                "value": "создаем имя переменной хранящей откуда напали"
+              }
+            },
+            {
+              "varSetString": {
+                "value": "lbt_battle_",
+                "var": "lbt_battle_from_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "@lbt_battles_start_idx",
+                "digits": 2,
+                "var": "lbt_battle_from_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "_from_name",
+                "digits": 0,
+                "var": "lbt_battle_from_var_name"
+              }
+            },
+            {
+              "comment": {
+                "value": "запоминаем имя сектора с которого напали"
+              }
+            },
+            {
+              "varSetInt": {
+                "value": 0,
+                "var": "@lbt_battle_from_var_name",
+                "input_var": "lbt_battles_from_idx"
+              }
+            },
+            {
+              "comment": {
+                "value": "создаем имя переменной хранящей куда напали"
+              }
+            },
+            {
+              "varSetString": {
+                "value": "lbt_battle_",
+                "var": "lbt_battle_to_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "@lbt_battles_start_idx",
+                "digits": 2,
+                "var": "lbt_battle_to_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "_to_name",
+                "digits": 0,
+                "var": "lbt_battle_to_var_name"
+              }
+            },
+            {
+              "comment": {
+                "value": "запоминаем имя сектора с которого напали"
+              }
+            },
+            {
+              "varSetInt": {
+                "value": 0,
+                "var": "@lbt_battle_to_var_name",
+                "input_var": "lbt_battles_to_idx"
+              }
+            }
+          ],
+          "else_actions": []
+        }
+      },
+      "lbt_death counter": {
+        "isCategory": true,
+        "is_enabled": true,
+        "lbt_damage_restart": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 3.0
+            }
+          },
+          "conditions": [],
+          "actions": {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_damage_cur_idx"
+            },
+            "triggerEnable": {
+              "target": "lbt_damage_rotator"
+            }
+          },
+          "else_actions": []
+        },
+        "lbt_damage_rotator": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "varCompareInt": {
+              "var_value": "lbt_damage_cur_idx",
+              "value": 0,
+              "comparasion_func": "less",
+              "var_value_other": "lbt_battles_max_battles_num"
+            }
+          },
+          "actions": [
+            {
+              "comment": {
+                "value": "индекс внутри диапазона"
+              }
+            },
+            {
+              "varModify": {
+                "operator": "add",
+                "value": 1.0,
+                "var": "lbt_damage_cur_idx"
+              }
+            },
+            {
+              "comment": {
+                "value": "создаем имя переменной хранящей активна ли битва"
+              }
+            },
+            {
+              "varSetString": {
+                "value": "lbt_battle_",
+                "var": "lbt_damage_is_active_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "@lbt_damage_cur_idx",
+                "digits": 2,
+                "var": "lbt_damage_is_active_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "_active",
+                "digits": 0,
+                "var": "lbt_damage_is_active_var_name"
+              }
+            },
+            {
+              "comment": {
+                "value": "проверяем активна ли битва"
+              }
+            },
+            {
+              "triggerEnable": {
+                "target": "lbt_damage_check_active"
+              }
+            }
+          ],
+          "else_actions": {
+            "comment": {
+              "value": "индекс вышел за предел диапазона"
+            },
+            "triggerEnable": {
+              "target": "lbt_damage_restart"
+            }
+          }
+        },
+        "lbt_damage_check_active": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "varCompareBool": {
+              "var_value": "@lbt_damage_is_active_var_name",
+              "value": true,
+              "comparasion_func": "equal"
+            }
+          },
+          "actions": [
+            {
+              "comment": {
+                "value": "создаем имя сквада команды А"
+              }
+            },
+            {
+              "varSetString": {
+                "value": "lbt_battles_t1_squad_",
+                "var": "lbt_damage_t1_battle_squad_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "@lbt_damage_cur_idx",
+                "digits": 2,
+                "var": "lbt_damage_t1_battle_squad_name"
+              }
+            },
+            {
+              "comment": {
+                "value": "создаем имя сквада команды Б"
+              }
+            },
+            {
+              "varSetString": {
+                "value": "lbt_battles_t2_squad_",
+                "var": "lbt_damage_t2_battle_squad_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "@lbt_damage_cur_idx",
+                "digits": 2,
+                "var": "lbt_damage_t2_battle_squad_name"
+              }
+            },
+            {
+              "comment": {
+                "value": "создаем имя переменной, где хранится подсчет мертвых юнитов команды А"
+              }
+            },
+            {
+              "varSetString": {
+                "value": "lbt_damage_",
+                "var": "lbt_damage_t1_counter_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "@lbt_damage_cur_idx",
+                "digits": 2,
+                "var": "lbt_damage_t1_counter_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "_t1_death_counter",
+                "digits": 2,
+                "var": "lbt_damage_t1_counter_var_name"
+              }
+            },
+            {
+              "comment": {
+                "value": "создаем имя переменной, где хранится подсчет мертвых юнитов команды Б"
+              }
+            },
+            {
+              "varSetString": {
+                "value": "lbt_damage_",
+                "var": "lbt_damage_t2_counter_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "@lbt_damage_cur_idx",
+                "digits": 2,
+                "var": "lbt_damage_t2_counter_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "_t2_death_counter",
+                "digits": 2,
+                "var": "lbt_damage_t2_counter_var_name"
+              }
+            },
+            {
+              "comment": {
+                "value": "проверяем юнитов команды А"
+              }
+            },
+            {
+              "triggerEnable": {
+                "target": "lbt_battles_t1_death_counter"
+              }
+            }
+          ],
+          "else_actions": {
+            "comment": {
+              "value": "идем дальше по циклу"
+            },
+            "triggerEnable": {
+              "target": "lbt_damage_rotator"
+            }
+          }
+        },
+        "lbt_battles_t1_death_counter": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": true
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "unitWhenCountMatches": {
+              "object_type": "isKilled",
+              "object_marking": 0,
+              "func": "more",
+              "value": 1,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "@lbt_damage_t1_battle_squad_name",
+              "var": "@lbt_damage_t1_counter_var_name"
+            }
+          },
+          "actions": {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "@lbt_damage_t1_counter_var_name"
+            },
+            "comment": {
+              "value": "проверяем команду Б"
+            },
+            "triggerEnable": {
+              "target": "lbt_battles_t2_death_counter"
+            }
+          },
+          "else_actions": {
+            "comment": {
+              "value": "проверяем команду Б"
+            },
+            "triggerEnable": {
+              "target": "lbt_battles_t2_death_counter"
+            }
+          }
+        },
+        "lbt_battles_t2_death_counter": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": true
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 1.0
+            }
+          },
+          "conditions": {
+            "unitWhenCountMatches": {
+              "object_type": "isKilled",
+              "object_marking": 0,
+              "func": "more",
+              "value": 1,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "@lbt_damage_t2_battle_squad_name",
+              "var": "@lbt_damage_t2_counter_var_name"
+            }
+          },
+          "actions": {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "@lbt_damage_t2_counter_var_name"
+            },
+            "comment": {
+              "value": "дальше по циклу"
+            },
+            "triggerEnable": {
+              "target": "lbt_damage_rotator"
+            }
+          },
+          "else_actions": {
+            "comment": {
+              "value": "дальше по циклу"
+            },
+            "triggerEnable": {
+              "target": "lbt_damage_rotator"
+            }
+          }
+        }
+      }
+    },
+    "lbt_heat_check": {
+      "isCategory": true,
+      "is_enabled": true,
+      "lbt_heat_zone_restart": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 5.0
+          }
+        },
+        "conditions": [],
+        "actions": [
+          {
+            "comment": {
+              "value": "выставляем текущий индекс"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_cur_idx"
+            }
+          },
+          {
+            "comment": {
+              "value": "выставляем строку"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 1,
+              "var": "lbt_heat_col_idx"
+            }
+          },
+          {
+            "comment": {
+              "value": "выставляем максимум"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 49,
+              "var": "lbt_heat_max_cell_num"
+            }
+          },
+          {
+            "comment": {
+              "value": "запускаем цикл"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_heat_zone_rotator"
+            }
+          }
+        ],
+        "else_actions": []
+      },
+      "lbt_heat_zone_rotator": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "lbt_heat_cur_idx",
+            "value": 0,
+            "comparasion_func": "less",
+            "var_value_other": "lbt_heat_max_cell_num"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "считаем строку до увеличения текущего индекса"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 1,
+              "var": "lbt_heat_col_idx",
+              "input_var": "lbt_heat_cur_idx"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "divAB",
+              "value": 1.0,
+              "var": "lbt_heat_col_idx",
+              "use_variable": true,
+              "var_value": "flt_zones_in_col"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "lbt_heat_col_idx"
+            }
+          },
+          {
+            "comment": {
+              "value": "увеличиваем текущий индекс"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "lbt_heat_cur_idx"
+            }
+          },
+          {
+            "comment": {
+              "value": "собираем имя зоны"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_heat_zone_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_heat_cur_idx",
+              "digits": 2,
+              "var": "lbt_heat_zone_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "собираем имя переменой, хранящей армию"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_heat_army_cur_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_heat_cur_idx",
+              "digits": 2,
+              "var": "lbt_heat_army_cur_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_state",
+              "digits": 0,
+              "var": "lbt_heat_army_cur_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "получаем армию зоны"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_cur_army",
+              "input_var": "@lbt_heat_army_cur_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "считаем максимальное значение"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_max_idx",
+              "input_var": "lbt_heat_col_idx"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "mul",
+              "value": 7.0,
+              "var": "lbt_heat_max_idx",
+              "use_variable": true,
+              "var_value": "flt_zones_in_col"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": -1.0,
+              "var": "lbt_heat_max_idx"
+            }
+          },
+          {
+            "comment": {
+              "value": "считаем минимальное значение"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_min_idx",
+              "input_var": "lbt_heat_max_idx"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "subAB",
+              "value": 7.0,
+              "var": "lbt_heat_min_idx",
+              "use_variable": true,
+              "var_value": "flt_zones_in_col"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 2.0,
+              "var": "lbt_heat_min_idx"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем что армия не равна нулю (зона не используется)"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_heat_zero_army_check"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "не получилось ничего найти"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_restart"
+          }
+        }
+      },
+      "lbt_heat_zero_army_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "lbt_heat_cur_army",
+            "value": 0,
+            "comparasion_func": "more"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "проверили, что зона принадлежит какой-то армии"
+            }
+          },
+          {
+            "comment": {
+              "value": "собираем переменную в которой хранится heat зоны"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_heat_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_heat_cur_idx",
+              "digits": 2,
+              "var": "lbt_heat_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_heat",
+              "digits": 0,
+              "var": "lbt_heat_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "получаем значение heat"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_value",
+              "input_var": "@lbt_heat_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем значение heat для команды 1"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_heat_zone_t1_check"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "не принадлежит армии, идем дальше по циклу"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_rotator"
+          }
+        }
+      },
+      "lbt_heat_zone_t1_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "lbt_heat_value",
+            "value": 10000,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "атакует команда А"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 1,
+              "var": "lbt_heat_who_attack"
+            }
+          },
+          {
+            "comment": {
+              "value": "запускаем проверку пограничных зон"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_heat_zones_check"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "проверяем может быть команда Б атакует"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_t2_check"
+          }
+        }
+      },
+      "lbt_heat_zone_t2_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "lbt_heat_value",
+            "value": 20000,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "атакует команда Б"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 2,
+              "var": "lbt_heat_who_attack"
+            }
+          },
+          {
+            "comment": {
+              "value": "запускаем проверку пограничных зон"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_heat_zones_check"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "нет нужного heat идем дальше по циклу"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_rotator"
+          }
+        }
+      },
+      "lbt_heat_zones_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "lbt_heat_cur_army",
+            "value": 0,
+            "comparasion_func": "more"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "зона используется"
+            }
+          },
+          {
+            "comment": {
+              "value": "собираем имя левой зоны"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_left_idx",
+              "input_var": "lbt_heat_cur_idx"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "lbt_heat_left_idx"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_heat_left_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_heat_left_idx",
+              "digits": 2,
+              "var": "lbt_heat_left_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "получаем имя переменной, где хранится армия"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_heat_army_left_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_heat_left_idx",
+              "digits": 2,
+              "var": "lbt_heat_army_left_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_state",
+              "digits": 0,
+              "var": "lbt_heat_army_left_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "собираем имя правой зоны"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_right_idx",
+              "input_var": "lbt_heat_cur_idx"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": -1.0,
+              "var": "lbt_heat_right_idx"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_heat_right_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_heat_right_idx",
+              "digits": 2,
+              "var": "lbt_heat_right_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "получаем имя переменной, где хранится армия"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_heat_army_right_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_heat_right_idx",
+              "digits": 2,
+              "var": "lbt_heat_army_right_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_state",
+              "digits": 0,
+              "var": "lbt_heat_army_right_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "собираем имя верхней зоны"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_upper_idx",
+              "input_var": "lbt_heat_cur_idx"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "subAB",
+              "value": 1.0,
+              "var": "lbt_heat_upper_idx",
+              "use_variable": true,
+              "var_value": "flt_zones_in_col"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_heat_upper_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_heat_upper_idx",
+              "digits": 2,
+              "var": "lbt_heat_upper_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "получаем имя переменной, где хранится армия"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_heat_army_upper_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_heat_upper_idx",
+              "digits": 2,
+              "var": "lbt_heat_army_upper_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_state",
+              "digits": 0,
+              "var": "lbt_heat_army_upper_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "собираем имя нижней зоны"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_bottom_idx",
+              "input_var": "lbt_heat_cur_idx"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "lbt_heat_bottom_idx",
+              "use_variable": true,
+              "var_value": "flt_zones_in_col"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_heat_bottom_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_heat_bottom_idx",
+              "digits": 2,
+              "var": "lbt_heat_bottom_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "получаем имя переменной, где хранится армия"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_heat_army_bottom_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_heat_bottom_idx",
+              "digits": 2,
+              "var": "lbt_heat_army_bottom_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_state",
+              "digits": 0,
+              "var": "lbt_heat_army_bottom_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем левую зону"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_heat_zone_left_exist"
+            }
+          }
+        ],
+        "else_actions": [
+          {
+            "comment": {
+              "value": "зона не используется"
+            }
+          },
+          {
+            "comment": {
+              "value": "идем дальше по циклу"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_heat_zone_rotator"
+            }
+          }
+        ]
+      },
+      "lbt_heat_zone_left_exist": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "lbt_heat_left_idx",
+            "value": 0,
+            "comparasion_func": "notLess",
+            "var_value_other": "lbt_heat_min_idx"
+          },
+          "objectExists": {
+            "target": "@lbt_heat_left_name",
+            "type": "area"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "индекс не вышел за пределы строки"
+            }
+          },
+          {
+            "comment": {
+              "value": "и зона существует"
+            }
+          },
+          {
+            "comment": {
+              "value": "получаем армию левой ячейки"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_left_army",
+              "input_var": "@lbt_heat_army_left_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "сравниваем армии"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_heat_zone_left_army_check"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "идем проверять ячейку справа"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_right_exist"
+          }
+        }
+      },
+      "lbt_heat_zone_left_army_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [
+          {
+            "varCompareInt": {
+              "var_value": "lbt_heat_left_army",
+              "value": 0,
+              "comparasion_func": "more"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "lbt_heat_cur_army",
+              "value": 0,
+              "comparasion_func": "notEqual",
+              "var_value_other": "lbt_heat_left_army"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "comment": {
+              "value": "армия левой зоны больше 0 и не равна армии проверяемой зоны"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем кто собирался атаковать"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_heat_zone_left_army_who_check"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "идем проверять ячейку справа"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_right_exist"
+          }
+        }
+      },
+      "lbt_heat_zone_left_army_who_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "lbt_heat_who_attack",
+            "value": 0,
+            "comparasion_func": "equal",
+            "var_value_other": "lbt_heat_left_army"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "армия правой зоны атакует"
+            }
+          },
+          {
+            "comment": {
+              "value": "запоминаем индексы зон"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_zone_01_idx",
+              "input_var": "lbt_heat_left_idx"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_zone_02_idx",
+              "input_var": "lbt_heat_cur_idx"
+            }
+          },
+          {
+            "comment": {
+              "value": "заполняем поля"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_heat_battle_fill"
+            }
+          }
+        ],
+        "else_actions": [
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_zone_01_idx",
+              "input_var": "lbt_heat_cur_idx"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_zone_02_idx",
+              "input_var": "lbt_heat_left_idx"
+            }
+          },
+          {
+            "comment": {
+              "value": "армия текущей зоны атакует"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_heat_battle_fill"
+            }
+          }
+        ]
+      },
+      "lbt_heat_zone_right_exist": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "lbt_heat_right_idx",
+            "value": 0,
+            "comparasion_func": "notMore",
+            "var_value_other": "lbt_heat_max_idx"
+          },
+          "objectExists": {
+            "target": "@lbt_heat_right_name",
+            "type": "area"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "индекс не вышел за пределы строки"
+            }
+          },
+          {
+            "comment": {
+              "value": "и зона существует"
+            }
+          },
+          {
+            "comment": {
+              "value": "получаем армию левой ячейки"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_right_army",
+              "input_var": "@lbt_heat_army_right_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "сравниваем армии"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_heat_zone_right_army_check"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "идем проверять ячейку сверху"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_upper_exist"
+          }
+        }
+      },
+      "lbt_heat_zone_right_army_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [
+          {
+            "varCompareInt": {
+              "var_value": "lbt_heat_right_army",
+              "value": 0,
+              "comparasion_func": "more"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "lbt_heat_cur_army",
+              "value": 0,
+              "comparasion_func": "notEqual",
+              "var_value_other": "lbt_heat_right_army"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "comment": {
+              "value": "армия правой зоны больше 0 и не равна армии проверяемой зоны"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем кто собирался атаковать"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_heat_zone_right_army_who_check"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "идем проверять ячейку сверху"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_upper_exist"
+          }
+        }
+      },
+      "lbt_heat_zone_right_army_who_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "lbt_heat_who_attack",
+            "value": 0,
+            "comparasion_func": "equal",
+            "var_value_other": "lbt_heat_right_army"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "армия правой зоны атакует"
+            }
+          },
+          {
+            "comment": {
+              "value": "запоминаем индексы зон"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_zone_01_idx",
+              "input_var": "lbt_heat_right_idx"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_zone_02_idx",
+              "input_var": "lbt_heat_cur_idx"
+            }
+          },
+          {
+            "comment": {
+              "value": "заполняем поля"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_heat_battle_fill"
+            }
+          }
+        ],
+        "else_actions": [
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_zone_01_idx",
+              "input_var": "lbt_heat_cur_idx"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_zone_02_idx",
+              "input_var": "lbt_heat_right_idx"
+            }
+          },
+          {
+            "comment": {
+              "value": "армия текущей зоны атакует"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_heat_battle_fill"
+            }
+          }
+        ]
+      },
+      "lbt_heat_zone_upper_exist": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "objectExists": {
+            "target": "@lbt_heat_upper_name",
+            "type": "area"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "зона существует"
+            }
+          },
+          {
+            "comment": {
+              "value": "получаем армию верхней ячейки"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_upper_army",
+              "input_var": "@lbt_heat_army_upper_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "сравниваем армии"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_heat_zone_upper_army_check"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "идем проверять ячейку снизу"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_bottom_exist"
+          }
+        }
+      },
+      "lbt_heat_zone_upper_army_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [
+          {
+            "varCompareInt": {
+              "var_value": "lbt_heat_cur_army",
+              "value": 0,
+              "comparasion_func": "notEqual",
+              "var_value_other": "lbt_heat_upper_army"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "lbt_heat_upper_army",
+              "value": 0,
+              "comparasion_func": "more"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "comment": {
+              "value": "армия верхней зоны больше 0 и не равна армии проверяемой зоны"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем кто собирался атаковать"
+            }
+          },
+          {
+            "comment": {
+              "value": "заполняем поля"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_heat_zone_upper_army_who_check"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "идем проверять ячейку снизу"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_bottom_exist"
+          }
+        }
+      },
+      "lbt_heat_zone_upper_army_who_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "lbt_heat_who_attack",
+            "value": 0,
+            "comparasion_func": "equal",
+            "var_value_other": "lbt_heat_upper_army"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "армия правой зоны атакует"
+            }
+          },
+          {
+            "comment": {
+              "value": "запоминаем индексы зон"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_zone_01_idx",
+              "input_var": "lbt_heat_upper_idx"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_zone_02_idx",
+              "input_var": "lbt_heat_cur_idx"
+            }
+          },
+          {
+            "comment": {
+              "value": "заполняем поля"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_heat_battle_fill"
+            }
+          }
+        ],
+        "else_actions": [
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_zone_01_idx",
+              "input_var": "lbt_heat_cur_idx"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_zone_02_idx",
+              "input_var": "lbt_heat_upper_idx"
+            }
+          },
+          {
+            "comment": {
+              "value": "армия текущей зоны атакует"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_heat_battle_fill"
+            }
+          }
+        ]
+      },
+      "lbt_heat_zone_bottom_exist": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "objectExists": {
+            "target": "@lbt_heat_bottom_name",
+            "type": "area"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "зона существует"
+            }
+          },
+          {
+            "comment": {
+              "value": "получаем армию нижней ячейки"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_bottom_army",
+              "input_var": "@lbt_heat_army_bottom_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "сравниваем армии"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_heat_zone_bottom_army_check"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "идем дальше по циклу"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_rotator"
+          }
+        }
+      },
+      "lbt_heat_zone_bottom_army_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [
+          {
+            "varCompareInt": {
+              "var_value": "lbt_heat_cur_army",
+              "value": 0,
+              "comparasion_func": "notEqual",
+              "var_value_other": "lbt_heat_bottom_army"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "lbt_heat_bottom_army",
+              "value": 0,
+              "comparasion_func": "more"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "lbt_heat_who_attack",
+              "value": 0,
+              "comparasion_func": "notEqual",
+              "var_value_other": "lbt_heat_bottom_army"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "comment": {
+              "value": "армия верхней зоны больше 0 и не равна армии проверяемой зоны"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем кто собирался атаковать"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_heat_zone_bottom_army_who_check"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "идем дальше по циклу"
+          },
+          "triggerEnable": {
+            "target": "lbt_heat_zone_rotator"
+          }
+        }
+      },
+      "lbt_heat_zone_bottom_army_who_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "lbt_heat_who_attack",
+            "value": 0,
+            "comparasion_func": "equal",
+            "var_value_other": "lbt_heat_bottom_army"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "армия правой зоны атакует"
+            }
+          },
+          {
+            "comment": {
+              "value": "запоминаем индексы зон"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_zone_01_idx",
+              "input_var": "lbt_heat_bottom_idx"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_zone_02_idx",
+              "input_var": "lbt_heat_cur_idx"
+            }
+          },
+          {
+            "comment": {
+              "value": "заполняем поля"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_heat_battle_fill"
+            }
+          }
+        ],
+        "else_actions": [
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_zone_01_idx",
+              "input_var": "lbt_heat_cur_idx"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_zone_02_idx",
+              "input_var": "lbt_heat_bottom_idx"
+            }
+          },
+          {
+            "comment": {
+              "value": "армия текущей зоны атакует"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_heat_battle_fill"
+            }
+          }
+        ]
+      },
+      "lbt_heat_battle_fill": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [],
+        "actions": [
+          {
+            "comment": {
+              "value": "заполняем поля"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_attack_from_idx",
+              "input_var": "lbt_heat_zone_01_idx"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_attack_to_idx",
+              "input_var": "lbt_heat_zone_02_idx"
+            }
+          },
+          {
+            "comment": {
+              "value": "ставим heat в 0"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "@lbt_heat_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "запускаем саму битву"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_start"
+            }
+          },
+          {
+            "wait": {
+              "time": 10.0
+            }
+          },
+          {
+            "comment": {
+              "value": "запускаем ротацию дальше"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_heat_zone_rotator"
+            }
+          }
+        ],
+        "else_actions": []
+      }
+    },
+    "lbt_time_update": {
+      "isCategory": true,
+      "is_enabled": true,
+      "lbt_time_restart": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [],
+        "actions": {
+          "comment": {
+            "value": "запускаем раз в 1 секунду для более точных результатов"
+          },
+          "varSetInt": {
+            "value": 0,
+            "var": "lbt_time_cur_idx"
+          },
+          "triggerEnable": {
+            "target": "lbt_time_rotator"
+          }
+        },
+        "else_actions": []
+      },
+      "lbt_time_rotator": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "lbt_time_cur_idx",
+            "value": 0,
+            "comparasion_func": "less",
+            "var_value_other": "lbt_battles_max_battles_num"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "индекс внутри диапазона"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "lbt_time_cur_idx"
+            }
+          },
+          {
+            "comment": {
+              "value": "создаем имя переменной, где харнится активен ли бой"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battle_",
+              "var": "lbt_time_active_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_time_cur_idx",
+              "digits": 2,
+              "var": "lbt_time_active_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_active",
+              "digits": 0,
+              "var": "lbt_time_active_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "запускаем проверку"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_time_rotator_activity_check"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "индекс вышел за диапазон. рестартим цикл"
+          },
+          "triggerEnable": {
+            "target": "lbt_time_restart"
+          }
+        }
+      },
+      "lbt_time_rotator_activity_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "@lbt_time_active_var_name",
+            "value": true,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "битва активна"
+            }
+          },
+          {
+            "comment": {
+              "value": "создаем имя переменной, хранящей время боя"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battle_",
+              "var": "lbt_time_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_time_cur_idx",
+              "digits": 2,
+              "var": "lbt_time_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_time",
+              "digits": 0,
+              "var": "lbt_time_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "увеличиваем время на 1"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "@lbt_time_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "создаем имя переменной хранящей активность игроков команды А"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_activity_",
+              "var": "lbt_time_activity_players_t1_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_time_cur_idx",
+              "digits": 2,
+              "var": "lbt_time_activity_players_t1_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_t1_time",
+              "digits": 0,
+              "var": "lbt_time_activity_players_t1_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "создаем имя переменной хранящей активность игроков команды Б"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_activity_",
+              "var": "lbt_time_activity_players_t2_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_time_cur_idx",
+              "digits": 2,
+              "var": "lbt_time_activity_players_t2_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_t1_time",
+              "digits": 0,
+              "var": "lbt_time_activity_players_t2_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "создаем имя сквада команды А"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battles_t1_squad_",
+              "var": "lbt_time_t1_battle_squad_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_time_cur_idx",
+              "digits": 2,
+              "var": "lbt_time_t1_battle_squad_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "создаем имя сквада команды Б"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battles_t2_squad_",
+              "var": "lbt_time_t2_battle_squad_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_time_cur_idx",
+              "digits": 2,
+              "var": "lbt_time_t2_battle_squad_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем надо ли менять активность"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_time_t1_activity_change"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "битва не активна идем дальше по циклу"
+          },
+          "triggerEnable": {
+            "target": "lbt_time_rotator"
+          }
+        }
+      },
+      "lbt_time_t1_activity_change": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": [
+          {
+            "unitDistanceBetween": {
+              "value": 1500.0,
+              "math": "2D",
+              "object_type": "isActive",
+              "object_marking": 0,
+              "target_type": "isOnline",
+              "target_marking": 0,
+              "check_objects": "any",
+              "check_targets": "any",
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "@lbt_time_t1_battle_squad_name",
+              "target": "t1_players_squad",
+              "var": "lbt_activity_distance",
+              "compareCenters": false,
+              "check_all_units": true
+            }
+          },
+          {
+            "unitDistanceBetween": {
+              "value": 1500.0,
+              "math": "2D",
+              "object_type": "isActive",
+              "object_marking": 0,
+              "target_type": "isOnline",
+              "target_marking": 0,
+              "check_objects": "any",
+              "check_targets": "any",
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "@lbt_time_t2_battle_squad_name",
+              "target": "t1_players_squad",
+              "var": "lbt_activity_distance",
+              "compareCenters": false,
+              "check_all_units": true
+            }
+          }
+        ],
+        "actions": [
+          {
+            "comment": {
+              "value": "рядом есть один из игроков команды А"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "@lbt_time_activity_players_t1_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_time_t2_activity_change"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "рядом нет игроков команды А"
+          },
+          "triggerEnable": {
+            "target": "lbt_time_t2_activity_change"
+          }
+        }
+      },
+      "lbt_time_t2_activity_change": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": [
+          {
+            "unitDistanceBetween": {
+              "value": 1500.0,
+              "math": "2D",
+              "object_type": "isActive",
+              "object_marking": 0,
+              "target_type": "isOnline",
+              "target_marking": 0,
+              "check_objects": "any",
+              "check_targets": "any",
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "@lbt_time_t2_battle_squad_name",
+              "target": "t2_players_squad",
+              "var": "lbt_activity_distance",
+              "compareCenters": false,
+              "check_all_units": true
+            }
+          },
+          {
+            "unitDistanceBetween": {
+              "value": 1500.0,
+              "math": "2D",
+              "object_type": "isActive",
+              "object_marking": 0,
+              "target_type": "isOnline",
+              "target_marking": 0,
+              "check_objects": "any",
+              "check_targets": "any",
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "@lbt_time_t1_battle_squad_name",
+              "target": "t2_players_squad",
+              "var": "lbt_activity_distance",
+              "compareCenters": false,
+              "check_all_units": true
+            }
+          }
+        ],
+        "actions": [
+          {
+            "comment": {
+              "value": "рядом есть один из игроков команды Б"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "@lbt_time_activity_players_t2_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_time_rotator"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "рядом нет игроков команды Б"
+          },
+          "triggerEnable": {
+            "target": "lbt_time_rotator"
+          }
+        }
+      }
+    },
+    "lbt_end": {
+      "isCategory": true,
+      "is_enabled": true,
+      "lbt_end_restart": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 10.0
+          }
+        },
+        "conditions": [],
+        "actions": {
+          "comment": {
+            "value": "запускаем раз в 10 секунд"
+          },
+          "varSetInt": {
+            "value": 0,
+            "var": "lbt_end_cur_idx"
+          },
+          "triggerEnable": {
+            "target": "lbt_end_rotator"
+          }
+        },
+        "else_actions": []
+      },
+      "lbt_end_rotator": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "lbt_end_cur_idx",
+            "value": 0,
+            "comparasion_func": "less",
+            "var_value_other": "lbt_battles_max_battles_num"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "индекс внутри диапазона"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "lbt_end_cur_idx"
+            }
+          },
+          {
+            "comment": {
+              "value": "создаем имя переменной, где харнится активен ли бой"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battle_",
+              "var": "lbt_end_active_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_end_cur_idx",
+              "digits": 2,
+              "var": "lbt_end_active_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_active",
+              "digits": 0,
+              "var": "lbt_end_active_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "запускаем проверку"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_end_rotator_activity_check"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "индекс вышел за диапазон. рестартим цикл"
+          },
+          "triggerEnable": {
+            "target": "lbt_end_restart"
+          }
+        }
+      },
+      "lbt_end_rotator_activity_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "@lbt_end_active_var_name",
+            "value": true,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "битва активна"
+            }
+          },
+          {
+            "comment": {
+              "value": "создаем имя переменной, хранящей время боя"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battle_",
+              "var": "lbt_end_time_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_end_cur_idx",
+              "digits": 2,
+              "var": "lbt_end_time_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_time",
+              "digits": 0,
+              "var": "lbt_end_time_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "создаем имя переменной хранящей активность игроков команды А"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_activity_",
+              "var": "lbt_end_activity_players_t1_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_end_cur_idx",
+              "digits": 2,
+              "var": "lbt_end_activity_players_t1_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_t1_time",
+              "digits": 0,
+              "var": "lbt_end_activity_players_t1_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "создаем имя переменной хранящей активность игроков команды Б"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_activity_",
+              "var": "lbt_end_activity_players_t2_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_end_cur_idx",
+              "digits": 2,
+              "var": "lbt_end_activity_players_t2_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_t1_time",
+              "digits": 0,
+              "var": "lbt_end_activity_players_t2_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "создаем имя сквада команды А"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battles_t1_squad_",
+              "var": "lbt_end_t1_battle_squad_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_end_cur_idx",
+              "digits": 2,
+              "var": "lbt_end_t1_battle_squad_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "создаем имя сквада команды Б"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battles_t2_squad_",
+              "var": "lbt_end_t2_battle_squad_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_end_cur_idx",
+              "digits": 2,
+              "var": "lbt_end_t2_battle_squad_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем не надо ли завершить битву"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_end_battles_end_check"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "битва не активна идем дальше по циклу"
+          },
+          "triggerEnable": {
+            "target": "lbt_end_rotator"
+          }
+        }
+      },
+      "lbt_end_battles_end_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [
+          {
+            "varCompareInt": {
+              "var_value": "@lbt_end_time_var_name",
+              "value": 0,
+              "comparasion_func": "more",
+              "var_value_other": "lbt_max_battle_time"
+            }
+          },
+          {
+            "unitWhenCountMatches": {
+              "object_type": "isActive",
+              "object_marking": 0,
+              "func": "less",
+              "value": 1,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "@lbt_end_t1_battle_squad_name"
+            }
+          },
+          {
+            "unitWhenCountMatches": {
+              "object_type": "isActive",
+              "object_marking": 0,
+              "func": "less",
+              "value": 1,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "@lbt_end_t2_battle_squad_name"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "comment": {
+              "value": "создаем имя переменной, где харнится откуда напали"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battle_",
+              "var": "lbt_end_from_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_end_cur_idx",
+              "digits": 2,
+              "var": "lbt_end_from_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_from_name",
+              "digits": 0,
+              "var": "lbt_end_from_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "создаем имя переменной, где харнится куда напали"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battle_",
+              "var": "lbt_end_to_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_end_cur_idx",
+              "digits": 2,
+              "var": "lbt_end_to_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_to_name",
+              "digits": 0,
+              "var": "lbt_end_to_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "прячем стрелку"
+            }
+          },
+          {
+            "missionShowMapLine": {
+              "areaNameFrom": "@lbt_end_from_var_name",
+              "areaNameTo": "@lbt_end_to_var_name",
+              "colorCode": "Team B",
+              "arrow": true,
+              "clear": true
+            }
+          },
+          {
+            "comment": {
+              "value": "перерисовываем все стрелки"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_end_redraw_restart"
+            }
+          },
+          {
+            "comment": {
+              "value": "перестаем мигать целями для РБ"
+            }
+          },
+          {
+            "unitSetIndication": [
+              {
+                "set": false
+              },
+              {
+                "target_marking": 0
+              },
+              {
+                "object_var_name": ""
+              },
+              {
+                "object_var_comp_op": "equal"
+              },
+              {
+                "object_var_value": 0
+              },
+              {
+                "target": "@lbt_end_t1_battle_squad_name"
+              },
+              {
+                "target": "@lbt_end_t2_battle_squad_name"
+              }
+            ]
+          },
+          {
+            "comment": {
+              "value": "убираем видимость"
+            }
+          },
+          {
+            "unitSetProperties": [
+              {
+                "object_marking": 0
+              },
+              {
+                "object_var_name": ""
+              },
+              {
+                "object_var_comp_op": "equal"
+              },
+              {
+                "object_var_value": 0
+              },
+              {
+                "object": "@lbt_end_t1_battle_squad_name"
+              },
+              {
+                "object": "@lbt_end_t2_battle_squad_name"
+              },
+              {
+                "stealthRadius": 2500.0
+              }
+            ]
+          },
+          {
+            "comment": {
+              "value": "создаем имя переменной, где хранится подсчет мертвых юнитов команды А"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_damage_",
+              "var": "lbt_end_t1_counter_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_end_cur_idx",
+              "digits": 2,
+              "var": "lbt_end_t1_counter_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_t1_death_counter",
+              "digits": 2,
+              "var": "lbt_end_t1_counter_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "создаем имя переменной, где хранится подсчет мертвых юнитов команды Б"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_damage_",
+              "var": "lbt_end_t2_counter_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_end_cur_idx",
+              "digits": 2,
+              "var": "lbt_end_t2_counter_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_t2_death_counter",
+              "digits": 2,
+              "var": "lbt_end_t2_counter_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "получаем переменную, хранящую армию атакующего"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_end_from_army_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "",
+              "digits": 2,
+              "var": "lbt_end_from_army_var_name",
+              "input_var": "@lbt_end_from_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_state",
+              "digits": 0,
+              "var": "lbt_end_from_army_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "получаем армию нападающего"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_end_from_army",
+              "input_var": "@lbt_end_from_army_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "получаем переменную, хранящую армию защищающегося"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_end_to_army_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "",
+              "digits": 2,
+              "var": "lbt_end_to_army_var_name",
+              "input_var": "@lbt_end_to_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_state",
+              "digits": 0,
+              "var": "lbt_end_to_army_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "получаем армию защищающегося"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_end_to_army",
+              "input_var": "@lbt_end_to_army_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "включаем проверку кто выиграл"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_end_check_t1_win"
+            }
+          }
+        ],
+        "else_actions": {
+          "triggerEnable": {
+            "target": "lbt_end_rotator"
+          }
+        }
+      },
+      "lbt_end_check_t1_win": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "@lbt_end_t1_counter_var_name",
+            "value": 0,
+            "comparasion_func": "less",
+            "var_value_other": "@lbt_end_t2_counter_var_name"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "победила команда А"
+            }
+          },
+          {
+            "varSetBool": {
+              "value": false,
+              "var": "@lbt_end_active_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "двигаем линию фронта"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_end_t1_move_frontline"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем активности"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_end_t1_activity_calc"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "проверяем выигрыш команды Б"
+          },
+          "triggerEnable": {
+            "target": "lbt_end_check_t2_win"
+          }
+        }
+      },
+      "lbt_end_check_t2_win": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "@lbt_end_t1_counter_var_name",
+            "value": 0,
+            "comparasion_func": "more",
+            "var_value_other": "@lbt_end_t2_counter_var_name"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "победила команда А"
+            }
+          },
+          {
+            "varSetBool": {
+              "value": false,
+              "var": "@lbt_end_active_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "двигаем линию фронта"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_end_t2_move_frontline"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем активности"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_end_t2_activity_calc"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "проверяем выигрыш команды Б"
+          },
+          "triggerEnable": {
+            "target": "lbt_end_check_no_win"
+          }
+        }
+      },
+      "lbt_end_check_no_win": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": [],
+        "actions": [
+          {
+            "comment": {
+              "value": "никто не победил"
+            }
+          },
+          {
+            "varSetBool": {
+              "value": false,
+              "var": "@lbt_end_active_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "идем дальше по циклу"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_end_rotator"
+            }
+          }
+        ],
+        "else_actions": []
+      },
+      "lbt_end_t1_move_frontline": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "@lbt_end_from_army_var_name",
+            "value": 1,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "двигаем линию фронта"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 1,
+              "var": "@lbt_end_to_army_var_name"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "@lbt_end_from_var_name"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "@lbt_end_to_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "рисуем линию фронта"
+            }
+          },
+          {
+            "triggerEnable": [
+              {
+                "target": "flt_draw_frontline"
+              },
+              {
+                "target": "ft_capture_t2_start"
+              }
+            ]
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "не двигаем линию фронта"
+          },
+          "triggerDisable": {
+            "target": "lbt_end_t1_move_frontline"
+          }
+        }
+      },
+      "lbt_end_t2_move_frontline": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "@lbt_end_from_army_var_name",
+            "value": 2,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "двигаем линию фронта"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 2,
+              "var": "@lbt_end_to_army_var_name"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "@lbt_end_from_var_name"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "@lbt_end_to_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "рисуем линию фронта"
+            }
+          },
+          {
+            "triggerEnable": [
+              {
+                "target": "flt_draw_frontline"
+              },
+              {
+                "target": "ft_capture_t1_start"
+              }
+            ]
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "не двигаем линию фронта"
+          },
+          "triggerDisable": {
+            "target": "lbt_end_t1_move_frontline"
+          }
+        }
+      },
+      "lbt_end_t1_activity_calc": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [],
+        "actions": [
+          {
+            "comment": {
+              "value": "считаем процент активности от обющей активности задания"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_t1_players_activity_calc",
+              "input_var": "@lbt_end_activity_players_t1_var_name"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "mul",
+              "value": 100.0,
+              "var": "lbt_t1_players_activity_calc"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "divAB",
+              "value": 100.0,
+              "var": "lbt_t1_players_activity_calc",
+              "use_variable": true,
+              "var_value": "@lbt_end_time_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем активность"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_end_t1_activity_check"
+            }
+          }
+        ],
+        "else_actions": []
+      },
+      "lbt_end_t1_activity_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "lbt_t1_players_activity_calc",
+            "value": 24,
+            "comparasion_func": "more"
+          },
+          "unitWhenCountMatches": {
+            "object_type": "isKilledByPlayer",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@lbt_end_t2_battle_squad_name"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "активность игроков при выполнении задания была 25% или выше"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "t1_major_task_completed"
+            }
+          },
+          {
+            "comment": {
+              "value": "идем дальше по циклу"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_end_rotator"
+            }
+          }
+        ],
+        "else_actions": [
+          {
+            "comment": {
+              "value": "активность игроков при выполнении задания была ниже 25%"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "t1_tiny_task_completed"
+            }
+          },
+          {
+            "comment": {
+              "value": "идем дальше по циклу"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_end_rotator"
+            }
+          }
+        ]
+      },
+      "lbt_end_t2_activity_calc": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [],
+        "actions": [
+          {
+            "comment": {
+              "value": "считаем процент активности от обющей активности задания"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_t2_players_activity_calc",
+              "input_var": "@lbt_end_activity_players_t2_var_name"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "mul",
+              "value": 100.0,
+              "var": "lbt_t2_players_activity_calc"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "divAB",
+              "value": 100.0,
+              "var": "lbt_t2_players_activity_calc",
+              "use_variable": true,
+              "var_value": "@lbt_end_time_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем активность"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_end_t2_activity_check"
+            }
+          }
+        ],
+        "else_actions": []
+      },
+      "lbt_end_t2_activity_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "lbt_t2_players_activity_calc",
+            "value": 24,
+            "comparasion_func": "more"
+          },
+          "unitWhenCountMatches": {
+            "object_type": "isKilledByPlayer",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@lbt_end_t1_battle_squad_name"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "активность игроков при выполнении задания была 25% или выше"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "t2_major_task_completed"
+            }
+          },
+          {
+            "comment": {
+              "value": "идем дальше по циклу"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_end_rotator"
+            }
+          }
+        ],
+        "else_actions": [
+          {
+            "comment": {
+              "value": "активность игроков при выполнении задания была ниже 25%"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "t2_tiny_task_completed"
+            }
+          },
+          {
+            "comment": {
+              "value": "идем дальше по циклу"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_end_rotator"
+            }
+          }
+        ]
+      },
+      "lbt_end_redraw_restart": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [],
+        "actions": {
+          "varSetInt": {
+            "value": 0,
+            "var": "lbt_end_redraw_cur_idx"
+          },
+          "triggerEnable": {
+            "target": "lbt_end_redraw_rotator"
+          }
+        },
+        "else_actions": []
+      },
+      "lbt_end_redraw_rotator": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "lbt_end_redraw_cur_idx",
+            "value": 0,
+            "comparasion_func": "less",
+            "var_value_other": "lbt_battles_max_battles_num"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "lbt_end_redraw_cur_idx"
+            }
+          },
+          {
+            "comment": {
+              "value": "собираем переменную, хранящую откуда напали"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battle_",
+              "var": "lbt_end_redraw_from_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_end_redraw_cur_idx",
+              "digits": 2,
+              "var": "lbt_end_redraw_from_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_from_name",
+              "digits": 0,
+              "var": "lbt_end_redraw_from_var_name"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_end_redraw_from_idx",
+              "input_var": "@lbt_end_redraw_from_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "собираем переменную, хранящую куда напали"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battle_",
+              "var": "lbt_end_redraw_to_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_end_redraw_cur_idx",
+              "digits": 2,
+              "var": "lbt_end_redraw_to_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_to_name",
+              "digits": 0,
+              "var": "lbt_end_redraw_to_var_name"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_end_redraw_to_idx",
+              "input_var": "@lbt_end_redraw_to_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "получае значения откуда и куда напали"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_end_redraw_from_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_end_redraw_from_idx",
+              "digits": 2,
+              "var": "lbt_end_redraw_from_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_end_redraw_to_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_end_redraw_to_idx",
+              "digits": 2,
+              "var": "lbt_end_redraw_to_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "создаем переменные, хранящие армии"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "",
+              "var": "lbt_end_redraw_from_army_var_name",
+              "input_var": "lbt_end_redraw_from_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_state",
+              "digits": 0,
+              "var": "lbt_end_redraw_from_army_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "создаем переменные, хранящие армии"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "",
+              "var": "lbt_end_redraw_to_army_var_name",
+              "input_var": "lbt_end_redraw_to_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_state",
+              "digits": 0,
+              "var": "lbt_end_redraw_to_army_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "получаем значения армий"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_end_redraw_from_army_idx",
+              "input_var": "@lbt_end_redraw_from_army_var_name"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_end_redraw_to_army_idx",
+              "input_var": "@lbt_end_redraw_to_army_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "получаем имя боевой зоны"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_end_redraw_to_real_zone_idx",
+              "input_var": "@lbt_end_redraw_to_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battle_area_",
+              "var": "lbt_end_redraw_battle_area_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_end_redraw_to_idx",
+              "digits": 2,
+              "var": "lbt_end_redraw_battle_area_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "переменная хранящая активность битвы"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battle_",
+              "var": "lbt_end_redraw_is_active_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_end_redraw_cur_idx",
+              "digits": 2,
+              "var": "lbt_end_redraw_is_active_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_active",
+              "digits": 0,
+              "var": "lbt_end_redraw_is_active_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем что значения армий валидно"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_end_redraw_check"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "по новому циклу не идем"
+          },
+          "triggerDisable": {
+            "target": "lbt_end_redraw_rotator"
+          }
+        }
+      },
+      "lbt_end_redraw_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": [
+          {
+            "varCompareInt": {
+              "var_value": "lbt_end_redraw_from_army_idx",
+              "value": 0,
+              "comparasion_func": "more"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "lbt_end_redraw_to_army_idx",
+              "value": 0,
+              "comparasion_func": "more"
+            }
+          },
+          {
+            "varCompareBool": {
+              "var_value": "@lbt_end_redraw_is_active_var_name",
+              "value": true,
+              "comparasion_func": "equal"
+            }
+          }
+        ],
+        "actions": {
+          "triggerEnable": {
+            "target": "lbt_end_redraw_arrow"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "lbt_end_redraw_rotator"
+          }
+        }
+      },
+      "lbt_end_redraw_arrow": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "lbt_end_redraw_from_army_idx",
+            "value": 1,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "missionShowMapLine": {
+            "areaNameFrom": "@lbt_end_redraw_from_name",
+            "areaNameTo": "@lbt_end_redraw_battle_area_name",
+            "show": true,
+            "colorCode": "Team A",
+            "scale": 0.5,
+            "arrow": true
+          },
+          "triggerEnable": {
+            "target": "lbt_end_redraw_rotator"
+          }
+        },
+        "else_actions": {
+          "missionShowMapLine": {
+            "areaNameFrom": "@lbt_end_redraw_from_name",
+            "areaNameTo": "@lbt_end_redraw_battle_area_name",
+            "show": true,
+            "colorCode": "Team B",
+            "scale": 0.5,
+            "arrow": true
+          },
+          "triggerEnable": {
+            "target": "lbt_end_redraw_rotator"
+          }
+        }
+      }
+    },
+    "lbt_active_battles_counter": {
+      "isCategory": true,
+      "is_enabled": true,
+      "lbt_counter_restart": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 10.0
+          }
+        },
+        "conditions": [],
+        "actions": {
+          "varSetInt": {
+            "value": 0,
+            "var": "lbt_counter_cur_idx"
+          },
+          "varSetBool": {
+            "value": false,
+            "var": "lbt_battles_is_active"
+          },
+          "triggerEnable": {
+            "target": "lbt_counter_rotator"
+          }
+        },
+        "else_actions": []
+      },
+      "lbt_counter_rotator": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "lbt_counter_cur_idx",
+            "value": 0,
+            "comparasion_func": "less",
+            "var_value_other": "lbt_battles_max_battles_num"
+          }
+        },
+        "actions": [
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "lbt_counter_cur_idx"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battle_",
+              "var": "lbt_counter_active_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_counter_cur_idx",
+              "digits": 2,
+              "var": "lbt_counter_active_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_active",
+              "digits": 0,
+              "var": "lbt_counter_active_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "lbt_counter_check"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": ""
+          },
+          "triggerEnable": {
+            "target": "lbt_counter_restart"
+          }
+        }
+      },
+      "lbt_counter_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "@lbt_counter_active_var_name",
+            "value": true,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "varSetBool": {
+            "value": true,
+            "var": "lbt_battles_is_active"
+          },
+          "triggerEnable": {
+            "target": "lbt_counter_rotator"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "lbt_counter_rotator"
+          }
+        }
+      }
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true,
+    "lbt_t1_battle_start": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 10800,
+        "team": "A"
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "lbt_t2_battle_start": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 10800,
+        "team": "B"
+      },
+      "onSuccess": [],
+      "onFailed": []
+    }
+  },
+  "variables": {
+    "lbt_battle_active_var_name": "",
+    "lbt_battle_01_active": false,
+    "lbt_battle_02_active": false,
+    "lbt_battle_03_active": false,
+    "lbt_battle_from_var_name": "",
+    "lbt_battle_to_var_name": "",
+    "lbt_battle_01_from_name": 0,
+    "lbt_battle_01_to_name": 0,
+    "lbt_battle_02_from_name": 0,
+    "lbt_battle_02_to_name": 0,
+    "lbt_battle_03_from_name": 0,
+    "lbt_battle_03_to_name": 0,
+    "lbt_balance_level": 0,
+    "lbt_battle_areas_idx_name": "",
+    "lbt_battle_area_name": "",
+    "lbt_battles_frontline_name": "",
+    "lbt_battles_t1_spawn_name": "",
+    "lbt_battles_t2_spawn_name": "",
+    "lbt_battles_t1_spawn_idx": 0,
+    "lbt_battles_t2_spawn_idx": 0,
+    "lbt_battles_t1_death_counter": 0,
+    "lbt_battles_t2_death_counter": 0,
+    "lbt_battle_time_var_name": "",
+    "lbt_battle_01_time": 0,
+    "lbt_battle_02_time": 0,
+    "lbt_battle_03_time": 0,
+    "lbt_max_battle_time": 1200,
+    "lbt_battles_area_idx": 0,
+    "lbt_draw_unused_name": "",
+    "lbt_t1_tank_num_to_spawn": 0,
+    "lbt_t2_tank_num_to_spawn": 0,
+    "lbt_battles_frontline_idx": 0,
+    "lbt_battles_frontline_new_idx": 0,
+    "lbt_battles_frontline_new_name": "",
+    "lbt_battles_start_idx": 0,
+    "lbt_battles_t1_army_squad_name": "",
+    "lbt_battles_t2_army_squad_name": "",
+    "lbt_battles_t1_tank_name": "",
+    "lbt_battles_t2_tank_name": "",
+    "lbt_battles_t1_art_name": "",
+    "lbt_battles_t2_art_name": "",
+    "lbt_battles_t1_bunker_name": "",
+    "lbt_battles_t2_bunker_name": "",
+    "lbt_battles_last_battle_idx": 0,
+    "lbt_draw_last_draw": 0,
+    "lbt_draw_last_draw_point_num": 0,
+    "lbt_battles_prev_area_name": "",
+    "lbt_activity_players_t1_var_name": "",
+    "lbt_activity_players_t2_var_name": "",
+    "lbt_activity_01_t1_time": 0,
+    "lbt_activity_01_t2_time": 0,
+    "lbt_activity_02_t1_time": 0,
+    "lbt_activity_02_t2_time": 0,
+    "lbt_activity_03_t1_time": 0,
+    "lbt_activity_03_t2_time": 0,
+    "lbt_damage_cur_idx": 0,
+    "lbt_damage_t1_battle_squad_name": "",
+    "lbt_damage_t2_battle_squad_name": "",
+    "lbt_damage_t1_counter_var_name": "",
+    "lbt_damage_t2_counter_var_name": "",
+    "lbt_damage_01_t1_death_counter": 0,
+    "lbt_damage_01_t2_death_counter": 0,
+    "lbt_damage_02_t1_death_counter": 0,
+    "lbt_damage_02_t2_death_counter": 0,
+    "lbt_damage_03_t1_death_counter": 0,
+    "lbt_damage_03_t2_death_counter": 0,
+    "lbt_t1_activity_time": 0,
+    "lbt_t2_activity_time": 0,
+    "lbt_t1_players_activity_time": 0,
+    "lbt_t2_players_activity_time": 0,
+    "lbt_activity_distance": 0.0,
+    "lbt_t1_players_activity_calc": 0,
+    "lbt_t2_players_activity_calc": 0,
+    "lbt_matching_rank": 0,
+    "lbt_battles_from_idx": 0,
+    "lbt_battles_to_idx": 0,
+    "lbt_battles_draw_from_name": "",
+    "lbt_battles_draw_to_name": "",
+    "lbt_battles_attacker_army_var_name": "",
+    "lbt_battles_attacker_army_idx": 0,
+    "lbt_battles_deffender_army_var_name": "",
+    "lbt_heat_col_idx": 0,
+    "lbt_heat_cur_idx": 0,
+    "lbt_heat_min_idx": 0,
+    "lbt_heat_max_idx": 0,
+    "lbt_heat_zone_name": "",
+    "lbt_heat_army_cur_var_name": "",
+    "lbt_heat_cur_army": 0,
+    "lbt_heat_left_idx": 0,
+    "lbt_heat_left_name": "",
+    "lbt_heat_army_left_var_name": "",
+    "lbt_heat_left_army": 0,
+    "lbt_heat_right_idx": 0,
+    "lbt_heat_right_name": "",
+    "lbt_heat_army_right_var_name": "",
+    "lbt_heat_right_army": 0,
+    "lbt_heat_upper_idx": 0,
+    "lbt_heat_upper_name": "",
+    "lbt_heat_army_upper_var_name": "",
+    "lbt_heat_upper_army": 0,
+    "lbt_heat_bottom_idx": 0,
+    "lbt_heat_bottom_name": "",
+    "lbt_heat_army_bottom_var_name": "",
+    "lbt_heat_bottom_army": 0,
+    "lbt_heat_who_attack": 0,
+    "lbt_heat_attack_from_idx": 0,
+    "lbt_heat_attack_to_idx": 0,
+    "lbt_heat_zone_01_idx": 0,
+    "lbt_heat_zone_02_idx": 0,
+    "lbt_heat_var_name": "",
+    "lbt_heat_value": 0,
+    "lbt_battles_heat_var_name": "",
+    "lbt_heat_max_cell_num": 0,
+    "lbt_battles_max_battles_num": 3,
+    "lbt_time_cur_idx": 0,
+    "lbt_time_active_var_name": "",
+    "lbt_time_var_name": "",
+    "lbt_time_activity_players_t1_var_name": "",
+    "lbt_time_activity_players_t2_var_name": "",
+    "lbt_time_t1_battle_squad_name": "",
+    "lbt_time_t2_battle_squad_name": "",
+    "lbt_end_cur_idx": 0,
+    "lbt_end_active_var_name": "",
+    "lbt_end_time_var_name": "",
+    "lbt_end_activity_players_t1_var_name": "",
+    "lbt_end_activity_players_t2_var_name": "",
+    "lbt_end_t1_battle_squad_name": "",
+    "lbt_end_t2_battle_squad_name": "",
+    "lbt_end_from_var_name": "",
+    "lbt_end_to_var_name": "",
+    "lbt_end_t1_counter_var_name": "",
+    "lbt_end_t2_counter_var_name": "",
+    "lbt_end_from_army_var_name": "",
+    "lbt_end_to_army_var_name": "",
+    "lbt_end_from_army": 0,
+    "lbt_end_to_army": 0,
+    "lbt_battles_is_active": false,
+    "lbt_counter_cur_idx": 0,
+    "lbt_counter_active_var_name": "",
+    "lbt_end_redraw_cur_idx": 0,
+    "lbt_end_redraw_from_var_name": "",
+    "lbt_end_redraw_to_var_name": "",
+    "lbt_end_redraw_from_name": "",
+    "lbt_end_redraw_to_name": "",
+    "lbt_end_redraw_from_army_var_name": "",
+    "lbt_end_redraw_to_army_var_name": "",
+    "lbt_end_redraw_from_army_idx": 0,
+    "lbt_end_redraw_to_army_idx": 0,
+    "lbt_end_redraw_to_real_zone_idx": 0,
+    "lbt_end_redraw_battle_area_name": "",
+    "lbt_end_redraw_from_idx": 0,
+    "lbt_end_redraw_to_idx": 0,
+    "lbt_damage_is_active_var_name": "",
+    "lbt_end_redraw_is_active_var_name": ""
+  },
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [],
+  "areas": [],
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}

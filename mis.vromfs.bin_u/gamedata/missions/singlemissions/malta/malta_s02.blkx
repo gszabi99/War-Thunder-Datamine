@@ -1,0 +1,1711 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 0.0
+    },
+    "player": {
+      "army": 1,
+      "wing": "player"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/malta.bin",
+      "type": "singleMission",
+      "restoreType": "tactical control",
+      "optionalTakeOff": false,
+      "environment": "Morning",
+      "weather": "hazy",
+      "windDirection": [1.0,0.0,0.0],
+      "gt_cooperative": true,
+      "fuelAmount": 0.06,
+      "isLimitedFuel": true
+    },
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "britain_main_theme",
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": [
+          {
+            "map": true
+          },
+          {
+            "minTime": 4
+          },
+          {
+            "picture": ""
+          },
+          {
+            "arrow": [
+              {
+                "width": 1
+              },
+              {
+                "side": "player"
+              },
+              {
+                "point": "player"
+              },
+              {
+                "point": "airfield00"
+              }
+            ]
+          },
+          {
+            "arrow": [
+              {
+                "width": 1
+              },
+              {
+                "side": "enemy"
+              },
+              {
+                "point": "for_briefing"
+              },
+              {
+                "point": "airfield00"
+              }
+            ]
+          },
+          {
+            "icon": {
+              "icontype": "fighter",
+              "side": "player",
+              "target": "player",
+              "lookAt": "airfield00"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "airfield",
+              "side": "ally",
+              "target": "airfield00"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "bomber",
+              "side": "enemy",
+              "target": "for_briefing",
+              "lookAt": "airfield00"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "initial": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [],
+      "actions": {
+        "addAirfield": [
+          {
+            "runwayStart": "airfield00"
+          },
+          {
+            "runwayEnd": "airfield01"
+          },
+          {
+            "runwayWidth": 50.0
+          },
+          {
+            "army": 1
+          },
+          {
+            "spawnPoint": "spqwnpoint01"
+          },
+          {
+            "spawnPoint": "spqwnpoint02"
+          },
+          {
+            "spawnPoint": "spqwnpoint03"
+          },
+          {
+            "spawnPoint": "spqwnpoint04"
+          }
+        ],
+        "spawnOnAirfield": {
+          "runwayName": "br_carrier_eagle",
+          "objects": "player"
+        },
+        "unitSetStealth": [
+          {
+            "set": true
+          },
+          {
+            "radius": 0.0
+          },
+          {
+            "target": "target_squad"
+          },
+          {
+            "target": "it_bombers"
+          },
+          {
+            "target": "it_fighters"
+          }
+        ],
+        "unitMoveTo": [
+          {
+            "target": "over_airfield"
+          },
+          {
+            "follow_target": false
+          },
+          {
+            "teleportHeightType": "absolute"
+          },
+          {
+            "useUnitHeightForTele": true
+          },
+          {
+            "shouldKeepFormation": false
+          },
+          {
+            "teleportHeightValue": 1000.0
+          },
+          {
+            "object": "it_bombers"
+          },
+          {
+            "object": "it_fighters"
+          }
+        ],
+        "unitSetProperties": [
+          {
+            "object": "br_fighters"
+          },
+          {
+            "object": "it_bombers"
+          },
+          {
+            "object": "it_fighters"
+          },
+          {
+            "plane": [
+              {
+                "targetDeviation": {
+                  "trigger": "machine gun",
+                  "defaultVal": 0.9,
+                  "limits": [0.2,1.5]
+                }
+              },
+              {
+                "targetDeviation": {
+                  "trigger": "cannon",
+                  "defaultVal": 0.9,
+                  "limits": [0.2,1.5]
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "player_isInAir": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "playersWhenStatus": {
+          "players": "isInAir",
+          "check_players": "any"
+        }
+      },
+      "actions": {
+        "moSetObjectiveStatus": {
+          "target": "single_malta_m02_fly00",
+          "status": 2
+        },
+        "airfieldSetIndication": {
+          "set": true,
+          "target": "airfield00"
+        },
+        "moAddMissionObjective": {
+          "target": "single_malta_m02_fly01"
+        },
+        "triggerEnable": [
+          {
+            "target": "timer_to_fail"
+          },
+          {
+            "target": "mission_failed_00"
+          },
+          {
+            "target": "player_isOnGround"
+          }
+        ]
+      }
+    },
+    "timer_to_fail": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "varModify": {
+          "var": "land_timer",
+          "operator": "subAB",
+          "value": 1.0
+        },
+        "missionSetTimeIndicator": {
+          "var": "land_timer"
+        }
+      }
+    },
+    "mission_failed_00": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "land_timer",
+          "value": 1,
+          "comparasion_func": "less"
+        }
+      },
+      "actions": {
+        "moSetObjectiveStatus": {
+          "target": "single_malta_m02_fly01",
+          "status": 3
+        },
+        "missionFailed": []
+      }
+    },
+    "player_isOnGround": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenOnLZ": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "check_objects": "any",
+          "afterRepaired": false,
+          "object": "player",
+          "target": "airfield00"
+        }
+      },
+      "actions": [
+        {
+          "airfieldSetIndication": {
+            "set": false,
+            "target": "airfield00"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "single_malta_m02_fly01",
+            "status": 2
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "missionSetFade": {
+            "mode": "fadeOut",
+            "color": [0.0,0.0,0.0],
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "spawnOnAirfield": {
+            "runwayName": "airfield00",
+            "objects": "player"
+          }
+        },
+        {
+          "unitRestore": {
+            "ressurectIfDead": true,
+            "fullRestore": true,
+            "target": "player"
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object": "player",
+            "fuel": 100.0
+          }
+        },
+        {
+          "triggerDisable": [
+            {
+              "target": "timer_to_fail"
+            },
+            {
+              "target": "mission_failed_00"
+            }
+          ]
+        },
+        {
+          "missionSetTimeIndicator": {
+            "var": "time_stop"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "unitWakeUp": [
+            {
+              "target": "it_bombers"
+            },
+            {
+              "target": "it_fighters"
+            },
+            {
+              "target": "br_fighters"
+            }
+          ]
+        },
+        {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [1.0,1.0,1.0],
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.2
+          }
+        },
+        {
+          "unitAttackTarget": [
+            {
+              "playerAttracted": false
+            },
+            {
+              "object": "br_fighters"
+            },
+            {
+              "target": "it_fighters"
+            },
+            {
+              "target": "it_bombers"
+            },
+            {
+              "fireRandom": true
+            }
+          ]
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object": "br_fighters"
+            },
+            {
+              "object": "it_fighters"
+            },
+            {
+              "effShootingRate": 0.1
+            }
+          ]
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "single_malta_m02_att00"
+          }
+        },
+        {
+          "unitSetStealth": [
+            {
+              "set": true
+            },
+            {
+              "radius": 20000.0
+            },
+            {
+              "target": "it_bombers"
+            },
+            {
+              "target": "it_fighters"
+            }
+          ]
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target": "it_bombers"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "bombers_attack"
+            },
+            {
+              "target": "mission_completed00"
+            },
+            {
+              "target": "mission_failed_01"
+            },
+            {
+              "target": "mission_completed01"
+            }
+          ]
+        }
+      ]
+    },
+    "bombers_attack": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 2000.0,
+          "math": "2D",
+          "object_type": "isAlive",
+          "target_type": "isAlive",
+          "check_objects": "any",
+          "check_targets": "any",
+          "object": "it_bombers",
+          "target": "over_airfield"
+        }
+      },
+      "actions": {
+        "unitAttackTarget": {
+          "playerAttracted": false,
+          "object": "it_bombers",
+          "target": "target_squad",
+          "fireRandom": true
+        },
+        "triggerEnable": {
+          "target": "bombers_leaving"
+        }
+      }
+    },
+    "bombers_leaving": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "noBombs",
+          "object_marking": 0,
+          "func": "more",
+          "value": 20,
+          "object": "it_bombers"
+        }
+      },
+      "actions": {
+        "unitMoveTo": {
+          "target": "waypoint00",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": true,
+          "teleportHeightValue": 1000.0,
+          "object": "it_bombers",
+          "speed": 250.0,
+          "distributionRadius": 100.0
+        },
+        "unitSetProperties": {
+          "object": "it_bombers",
+          "effShootingRate": 0.01
+        }
+      }
+    },
+    "mission_completed00": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isKilled",
+          "object_marking": 0,
+          "func": "more",
+          "value": 8,
+          "object": "it_bombers"
+        },
+        "unitWhenInArea": {
+          "math": "2D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "check_objects": "any",
+          "object": "it_bombers",
+          "target": "waypoint00"
+        }
+      },
+      "actions": {
+        "triggerDisable": [
+          {
+            "target": "mission_completed01"
+          },
+          {
+            "target": "bombers_indicator"
+          }
+        ],
+        "missionSetTargetsIndicator": {
+          "target_type": "isAlive",
+          "target_marking": 0,
+          "delta": 0,
+          "icon": "air",
+          "icon army": 2,
+          "set": false,
+          "target": "it_bombers"
+        },
+        "unitSetIndication": {
+          "set": false,
+          "target": "it_bombers"
+        },
+        "moSetObjectiveStatus": {
+          "target": "single_malta_m02_att00",
+          "status": 2
+        },
+        "wait": {
+          "time": 2.0
+        },
+        "missionCompleted": {
+          "timer": false,
+          "debriefingTimer": 2
+        }
+      }
+    },
+    "mission_completed01": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isKilled",
+          "object_marking": 0,
+          "func": "more",
+          "value": 19,
+          "object": "it_bombers"
+        }
+      },
+      "actions": {
+        "triggerDisable": [
+          {
+            "target": "mission_completed00"
+          },
+          {
+            "target": "bombers_indicator"
+          }
+        ],
+        "missionSetTargetsIndicator": {
+          "target_type": "isAlive",
+          "target_marking": 0,
+          "delta": 0,
+          "icon": "air",
+          "icon army": 2,
+          "set": false,
+          "target": "it_bombers"
+        },
+        "unitSetIndication": {
+          "set": false,
+          "target": "it_bombers"
+        },
+        "moSetObjectiveStatus": {
+          "target": "single_malta_m02_att00",
+          "status": 2
+        },
+        "wait": {
+          "time": 2.0
+        },
+        "missionCompleted": {
+          "timer": false,
+          "debriefingTimer": 2
+        }
+      }
+    },
+    "mission_failed_01": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "2D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "check_objects": "any",
+          "object": "it_bombers",
+          "target": "waypoint00"
+        },
+        "unitWhenCountMatches": {
+          "object_type": "isKilled",
+          "object_marking": 0,
+          "func": "less",
+          "value": 9,
+          "object": "it_bombers"
+        }
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": "bombers_indicator"
+        },
+        "missionSetTargetsIndicator": {
+          "target_type": "isAlive",
+          "target_marking": 0,
+          "delta": 0,
+          "icon": "air",
+          "icon army": 2,
+          "set": false,
+          "target": "it_bombers"
+        },
+        "unitSetIndication": {
+          "set": false,
+          "target": "it_bombers"
+        },
+        "moSetObjectiveStatus": {
+          "target": "single_malta_m02_att00",
+          "status": 3
+        },
+        "wait": {
+          "time": 2.0
+        },
+        "missionFailed": []
+      }
+    },
+    "bombers_indicator": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "missionSetTargetsIndicator": {
+          "target_type": "isAlive",
+          "target_marking": 0,
+          "delta": 0,
+          "icon": "air",
+          "icon army": 2,
+          "set": true,
+          "target": "it_bombers"
+        }
+      }
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true,
+    "single_malta_m02_fly00": {
+      "is_enabled": true,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "single_malta_m02_fly01": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "single_malta_m02_att00": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    }
+  },
+  "variables": {
+    "land_timer": 300,
+    "time_stop": 0
+  },
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "armada": {
+        "name": "player",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1495.1,-17.75,-19404.4]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "spitfire_mk5c",
+        "weapons": "Spitfire_mk5c_default",
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 4,
+          "numInWing": 2,
+          "targetableByAi": false,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "player_himself",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3983.95,2.0,-17383.9]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": {
+          "squad_members": "player",
+          "object_type": "isPlayer"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "br_carrier_eagle",
+        "tm": [
+          [0.906308,0.0,-0.422618],
+          [0.0,1.0,0.0],
+          [0.422618,0.0,0.906308],
+          [1501.2,2.0,-19389.2]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "hms_cv_illustrious",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "it_bombers",
+        "tm": [
+          [-0.608761,0.0,-0.793353],
+          [0.0,1.0,0.0],
+          [0.793353,0.0,-0.608761],
+          [31726.0,3027.85,18860.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "ju-88a-4",
+        "weapons": "Ju-88A-4_default",
+        "props": {
+          "army": 2,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 30,
+          "numInWing": 3,
+          "isDelayed": false,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "it_fighters",
+        "tm": [
+          [-0.67559,0.0,-0.737277],
+          [0.0,1.0,0.0],
+          [0.737277,0.0,-0.67559],
+          [31974.0,2783.5,18504.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "fiat_g50_seria7as",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 16,
+          "numInWing": 2,
+          "isDelayed": false,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "target00",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [12180.5,174.75,-11365.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "dummy",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "target01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [12144.0,174.75,-11334.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "dummy",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "target02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [12108.2,174.75,-11295.9]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "dummy",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "target03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [12074.7,174.75,-11262.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "dummy",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "target05",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [12011.3,174.75,-11216.9]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "dummy",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "target06",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [11963.3,174.75,-11166.0]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "dummy",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "target09",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [11902.4,174.75,-11103.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "dummy",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "target10",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [11842.8,174.75,-11061.7]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "dummy",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "target13",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [11785.3,174.75,-11002.0]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "dummy",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "target14",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [11720.8,174.75,-10946.0]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "dummy",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "target16",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [11616.0,174.75,-10867.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "dummy",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "target17",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [11521.1,174.75,-10780.6]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "dummy",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "target20",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [11441.0,174.75,-10690.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "dummy",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "target22",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [11356.7,174.75,-10609.0]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "dummy",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "target24",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [11280.3,174.75,-10548.9]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "dummy",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "target26",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [11189.7,174.75,-10461.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "dummy",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "target_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [11859.4,174.5,-10827.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": [
+          {
+            "squad_members": "target00"
+          },
+          {
+            "squad_members": "target01"
+          },
+          {
+            "squad_members": "target02"
+          },
+          {
+            "squad_members": "target03"
+          },
+          {
+            "squad_members": "target05"
+          },
+          {
+            "squad_members": "target06"
+          },
+          {
+            "squad_members": "target09"
+          },
+          {
+            "squad_members": "target10"
+          },
+          {
+            "squad_members": "target13"
+          },
+          {
+            "squad_members": "target14"
+          },
+          {
+            "squad_members": "target16"
+          },
+          {
+            "squad_members": "target17"
+          },
+          {
+            "squad_members": "target20"
+          },
+          {
+            "squad_members": "target22"
+          },
+          {
+            "squad_members": "target24"
+          },
+          {
+            "squad_members": "target26"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "br_fighters",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [6857.25,615.75,-15171.7]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "spitfire_mk5c",
+        "weapons": "Spitfire_mk5c_default",
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 40,
+          "numInWing": 2,
+          "isDelayed": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "br_cruiser01",
+        "tm": [
+          [0.906308,0.0,-0.422618],
+          [0.0,1.0,0.0],
+          [0.422618,0.0,0.906308],
+          [1570.05,2.0,-19716.9]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "hms_leander",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "br_cruiser02",
+        "tm": [
+          [0.906308,0.0,-0.422618],
+          [0.0,1.0,0.0],
+          [0.422618,0.0,0.906308],
+          [2082.2,2.0,-19410.7]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "hms_leander",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "br_destroyer01",
+        "tm": [
+          [0.906308,0.0,-0.422618],
+          [0.0,1.0,0.0],
+          [0.422618,0.0,0.906308],
+          [1080.2,2.0,-19009.9]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uss_dd_georgetown",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "br_destroyer02",
+        "tm": [
+          [0.906308,0.0,-0.422618],
+          [0.0,1.0,0.0],
+          [0.422618,0.0,0.906308],
+          [2054.5,2.0,-19771.6]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uss_dd_georgetown",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    }
+  ],
+  "areas": {
+    "airfield00": {
+      "type": "Sphere",
+      "tm": [
+        [98.1,0.0,0.0],
+        [0.0,98.1,0.0],
+        [0.0,0.0,98.1],
+        [12193.3,174.75,-11356.2]
+      ],
+      "props": []
+    },
+    "airfield01": {
+      "type": "Sphere",
+      "tm": [
+        [98.1,0.0,0.0],
+        [0.0,98.1,0.0],
+        [0.0,0.0,98.1],
+        [11104.0,174.75,-10357.0]
+      ],
+      "props": []
+    },
+    "over_airfield": {
+      "type": "Sphere",
+      "tm": [
+        [1710.8,0.0,0.0],
+        [0.0,1710.8,0.0],
+        [0.0,0.0,1710.8],
+        [11628.7,1805.8,-10751.0]
+      ],
+      "props": []
+    },
+    "spqwnpoint01": {
+      "type": "Sphere",
+      "tm": [
+        [41.7,0.0,0.0],
+        [0.0,41.7,0.0],
+        [0.0,0.0,41.7],
+        [12081.2,174.75,-11253.2]
+      ],
+      "props": []
+    },
+    "spqwnpoint02": {
+      "type": "Sphere",
+      "tm": [
+        [41.7,0.0,0.0],
+        [0.0,41.7,0.0],
+        [0.0,0.0,41.7],
+        [12118.3,174.75,-11285.7]
+      ],
+      "props": []
+    },
+    "spqwnpoint03": {
+      "type": "Sphere",
+      "tm": [
+        [41.7,0.0,0.0],
+        [0.0,41.7,0.0],
+        [0.0,0.0,41.7],
+        [12155.8,174.75,-11319.5]
+      ],
+      "props": []
+    },
+    "spqwnpoint04": {
+      "type": "Sphere",
+      "tm": [
+        [41.7,0.0,0.0],
+        [0.0,41.7,0.0],
+        [0.0,0.0,41.7],
+        [12189.8,174.75,-11355.3]
+      ],
+      "props": []
+    },
+    "waypoint00": {
+      "type": "Sphere",
+      "tm": [
+        [1020.2,0.0,0.0],
+        [0.0,1020.2,0.0],
+        [0.0,0.0,1020.2],
+        [27255.8,1000.0,1806.5]
+      ],
+      "props": []
+    },
+    "airfield": {
+      "type": "Box",
+      "tm": [
+        [-1198.44,0.0,1098.17],
+        [0.0,53.2,0.0],
+        [-66.0053,0.0,-72.0321],
+        [11643.5,163.85,-10850.4]
+      ],
+      "props": []
+    },
+    "for_briefing": {
+      "type": "Sphere",
+      "tm": [
+        [1020.2,0.0,0.0],
+        [0.0,1020.2,0.0],
+        [0.0,0.0,1020.2],
+        [24976.9,1000.0,28685.2]
+      ],
+      "props": []
+    }
+  }
+}

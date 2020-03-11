@@ -1,0 +1,259 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "singleMission",
+      "level": "levels/water.bin",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "hazy",
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": true,
+        "isTanksAllowed": false,
+        "isShipsAllowed": true,
+        "isHelicoptersAllowed": false
+      }
+    },
+    "spectator_points": []
+  },
+  "imports": {
+    "import_record": {
+      "file": "gameData/missions/cta/ships/peleliu_02/mainareas/peleliu_02_NDom_template.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "excludes": []
+    }
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "area_squad": {
+        "name": "t1_spotarea",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2179.5,4.8,686.55]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_spotarea_block01"
+          },
+          {
+            "squad_members": "t1_spotarea_block02"
+          },
+          {
+            "squad_members": "t1_spotarea_block03"
+          },
+          {
+            "squad_members": "t1_spotarea_block04"
+          },
+          {
+            "squad_members": "t1_spotarea_block05"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "t2_spotarea",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [7532.45,0.0,-326.75]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_spotarea_block01"
+          },
+          {
+            "squad_members": "t2_spotarea_block02"
+          },
+          {
+            "squad_members": "t2_spotarea_block03"
+          },
+          {
+            "squad_members": "t2_spotarea_block04"
+          },
+          {
+            "squad_members": "t2_spotarea_block05"
+          }
+        ]
+      }
+    }
+  ],
+  "areas": {
+    "ndom_battle_area": {
+      "type": "Box",
+      "tm": [
+        [16000.0,0.0,0.0],
+        [0.0,983.2,0.0],
+        [0.0,0.0,16000.0],
+        [0.0,0.0,0.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_spotarea_block01": {
+      "type": "Cylinder",
+      "tm": [
+        [5500.0,0.0,0.0],
+        [0.0,605.05,0.0],
+        [0.0,0.0,5500.0],
+        [-8762.66,0.0,8455.37]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_spotarea_block02": {
+      "type": "Cylinder",
+      "tm": [
+        [5500.0,0.0,0.0],
+        [0.0,605.0,0.0],
+        [0.0,0.0,5500.0],
+        [-9455.95,0.0,-9104.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_spotarea_block03": {
+      "type": "Cylinder",
+      "tm": [
+        [334.963,0.0,0.0],
+        [0.0,605.05,0.0],
+        [0.0,0.0,334.963],
+        [-2599.28,0.0,4736.77]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_spotarea_block04": {
+      "type": "Cylinder",
+      "tm": [
+        [292.341,0.0,0.0],
+        [0.0,605.05,0.0],
+        [0.0,0.0,292.341],
+        [-2691.4,0.0,1031.63]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_spotarea_block05": {
+      "type": "Cylinder",
+      "tm": [
+        [278.049,0.0,0.0],
+        [0.0,605.05,0.0],
+        [0.0,0.0,278.049],
+        [-2860.3,0.0,593.323]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_spotarea_block01": {
+      "type": "Cylinder",
+      "tm": [
+        [5500.0,0.0,0.0],
+        [0.0,605.05,0.0],
+        [0.0,0.0,5500.0],
+        [9280.24,0.00292969,8499.26]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_spotarea_block02": {
+      "type": "Cylinder",
+      "tm": [
+        [5500.0,0.0,0.0],
+        [0.0,605.05,0.0],
+        [0.0,0.0,5500.0],
+        [9531.47,0.0,-8424.28]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_spotarea_block03": {
+      "type": "Cylinder",
+      "tm": [
+        [453.299,0.0,0.0],
+        [0.0,605.05,0.0],
+        [0.0,0.0,453.299],
+        [3529.87,0.0,499.535]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_spotarea_block04": {
+      "type": "Cylinder",
+      "tm": [
+        [374.187,0.0,0.0],
+        [0.0,605.05,0.0],
+        [0.0,0.0,374.187],
+        [3153.2,0.000488281,-2765.1]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_spotarea_block05": {
+      "type": "Cylinder",
+      "tm": [
+        [433.405,0.0,0.0],
+        [0.0,605.05,0.0],
+        [0.0,0.0,433.405],
+        [2799.77,-0.000976563,-3317.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": false
+      }
+    }
+  ],
+  "wayPoints": []
+}

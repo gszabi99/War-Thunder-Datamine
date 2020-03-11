@@ -1,0 +1,85 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": ""
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/water.bin",
+      "type": "singleMission",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "hazy"
+    },
+    "spectator_points": []
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "streaks_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "unitPutToSleep": [
+            {
+              "target": "sq_streak_bomber"
+            },
+            {
+              "target": "sq_streak_attacker"
+            },
+            {
+              "target": "sq_streak_fighter"
+            }
+          ]
+        },
+        {
+          "unitMarkForEvent": {
+            "tag": "bomber",
+            "target": "sq_streak_bomber"
+          }
+        },
+        {
+          "unitMarkForEvent": {
+            "tag": "attacker",
+            "target": "sq_streak_attacker"
+          }
+        },
+        {
+          "unitMarkForEvent": {
+            "tag": "fighter",
+            "target": "sq_streak_fighter"
+          }
+        }
+      ],
+      "else_actions": []
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [],
+  "areas": [],
+  "objLayers": []
+}

@@ -1,0 +1,5874 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": "t1_player01"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "singleMission",
+      "level": "levels/korsun.bin",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "hazy"
+    },
+    "spectator_points": []
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "at_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [],
+      "actions": {
+        "missionGetBalanceLevel": {
+          "input_var": "at_matching_rank"
+        }
+      },
+      "else_actions": []
+    },
+    "at_start": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "comment": {
+            "value": "инитим начальные параметры"
+          }
+        },
+        {
+          "comment": {
+            "value": "задаем задержку отдельно для каждой команды"
+          }
+        },
+        {
+          "varSetRandomInt": {
+            "var": "at_assaults_t1_additional_delay_timer",
+            "from": 30,
+            "to_not_including": 120
+          }
+        },
+        {
+          "varSetRandomInt": {
+            "var": "at_assaults_t2_additional_delay_timer",
+            "from": 30,
+            "to_not_including": 120
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "at_assaults_t1_additional_delay_timer",
+            "use_variable": true,
+            "var_value": "at_assaults_delay_timer"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "at_assaults_t2_additional_delay_timer",
+            "use_variable": true,
+            "var_value": "at_assaults_delay_timer"
+          }
+        },
+        {
+          "comment": {
+            "value": "получаем матичнг ранг"
+          }
+        },
+        {
+          "missionGetBalanceLevel": {
+            "input_var": "at_assaults_rank_idx"
+          }
+        },
+        {
+          "comment": {
+            "value": "говорим что нужен спавн ассалтов и охраны"
+          }
+        },
+        {
+          "varSetBool": [
+            {
+              "value": true
+            },
+            {
+              "var": "at_assaults_t1_spawn_need"
+            },
+            {
+              "var": "at_assaults_t2_spawn_need"
+            }
+          ]
+        },
+        {
+          "comment": {
+            "value": "выставляем количество текущих тарев поиска цели в ноль"
+          }
+        },
+        {
+          "varSetInt": [
+            {
+              "value": 0
+            },
+            {
+              "var": "at_assaults_t1_tries_to_finding_target"
+            },
+            {
+              "var": "at_assaults_t2_tries_to_finding_target"
+            }
+          ]
+        },
+        {
+          "comment": {
+            "value": "говорим что ассалты недетекчены"
+          }
+        },
+        {
+          "varSetBool": [
+            {
+              "value": false
+            },
+            {
+              "var": "at_t1_is_detected"
+            },
+            {
+              "var": "at_t2_is_detected"
+            }
+          ]
+        },
+        {
+          "comment": {
+            "value": "проверяем задержку (может быть разной для джипа и бфд)"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_delay_check"
+          }
+        },
+        {
+          "comment": {
+            "value": "закрываем проверку не активности шаблона, на случай если она открыта"
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "at_assaults_check_inactive"
+          }
+        },
+        {
+          "comment": {
+            "value": "закрываем триггера прятанья файтеров"
+          }
+        },
+        {
+          "triggerDisable": [
+            {
+              "target": "at_assaults_t1_fighters_retreat"
+            },
+            {
+              "target": "at_assaults_t2_fighters_retreat"
+            },
+            {
+              "target": "at_assaults_t1_fighters_disable"
+            },
+            {
+              "target": "at_assaults_t2_fighters_disable"
+            }
+          ]
+        }
+      ],
+      "else_actions": []
+    },
+    "at_delay_check": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "at_assaults_delay_timer",
+          "value": 10,
+          "comparasion_func": "less"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "говорим что шаблон активен"
+          }
+        },
+        {
+          "varSetBool": {
+            "value": true,
+            "var": "at_is_template_active"
+          }
+        },
+        {
+          "comment": {
+            "value": "задаем время задержки перед началом запуска от 3 до 5 минут"
+          }
+        },
+        {
+          "varSetRandomInt": {
+            "var": "at_assaults_delay_timer",
+            "from": 18,
+            "to_not_including": 30
+          }
+        },
+        {
+          "comment": {
+            "value": "запускаем начальную настройку первой и второй команд"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "at_assaults_t1_sub_init"
+            },
+            {
+              "target": "at_assaults_t2_sub_init"
+            }
+          ]
+        }
+      ],
+      "else_actions": [
+        {
+          "comment": {
+            "value": "говорим что шаблон активен"
+          }
+        },
+        {
+          "varSetBool": {
+            "value": true,
+            "var": "at_is_template_active"
+          }
+        },
+        {
+          "comment": {
+            "value": "задержка уже задана просто запускаем шаблон дальше"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "at_assaults_t1_sub_init"
+            },
+            {
+              "target": "at_assaults_t2_sub_init"
+            }
+          ]
+        }
+      ]
+    },
+    "at_assaults_t1_sub_init": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [
+        {
+          "varCompareInt": {
+            "var_value": "at_army_both_zero",
+            "value": 2,
+            "comparasion_func": "notEqual"
+          }
+        },
+        {
+          "varCompareInt": {
+            "var_value": "at_assaults_t1_tries_to_finding_target",
+            "value": 10,
+            "comparasion_func": "less"
+          }
+        }
+      ],
+      "actions": [
+        {
+          "comment": {
+            "value": "собираем имя т1 ассалтов и ястребов"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "at_t1_assault",
+            "var": "at_assaults_t1_name"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "at_t1_fighter",
+            "var": "at_assaults_t1_cover_name"
+          }
+        },
+        {
+          "comment": {
+            "value": "выбираем имя случайного спавна для т1 от 1 до 3"
+          }
+        },
+        {
+          "varSetRandomInt": {
+            "var": "at_assaults_t1_spawn_random_idx",
+            "from": 1,
+            "to_not_including": 5
+          }
+        },
+        {
+          "varSetString": {
+            "value": "at_assaults_t1_spawn_",
+            "var": "at_assaults_t1_spawn_name"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "@at_assaults_t1_spawn_random_idx",
+            "digits": 2,
+            "var": "at_assaults_t1_spawn_name"
+          }
+        },
+        {
+          "comment": {
+            "value": "запускаем проверку игрового режима"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_assault_t1_game_type_bfd"
+          }
+        },
+        {
+          "comment": {
+            "value": "говорим что шаблон t1 активен"
+          }
+        },
+        {
+          "varSetBool": {
+            "value": true,
+            "var": "at_t1_is_active"
+          }
+        }
+      ],
+      "else_actions": {
+        "comment": {
+          "value": "что-то пошло не так"
+        },
+        "triggerEnable": {
+          "target": "at_asaults_t1_check_force_evacuation"
+        }
+      }
+    },
+    "at_assaults_t2_sub_init": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [
+        {
+          "varCompareInt": {
+            "var_value": "at_army_both_zero",
+            "value": 1,
+            "comparasion_func": "notEqual"
+          }
+        },
+        {
+          "varCompareInt": {
+            "var_value": "at_assaults_t2_tries_to_finding_target",
+            "value": 10,
+            "comparasion_func": "less"
+          }
+        }
+      ],
+      "actions": [
+        {
+          "comment": {
+            "value": "собираем имя т2 ассалтов и ястребов"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "at_t2_assault",
+            "var": "at_assaults_t2_name"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "at_t2_fighter",
+            "var": "at_assaults_t2_cover_name"
+          }
+        },
+        {
+          "comment": {
+            "value": "выбираем имя случайного спавна для т2 от 1 до 3"
+          }
+        },
+        {
+          "varSetRandomInt": {
+            "var": "at_assaults_t2_spawn_random_idx",
+            "from": 1,
+            "to_not_including": 5
+          }
+        },
+        {
+          "varSetString": {
+            "value": "at_assaults_t2_spawn_",
+            "var": "at_assaults_t2_spawn_name"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "@at_assaults_t2_spawn_random_idx",
+            "digits": 2,
+            "var": "at_assaults_t2_spawn_name"
+          }
+        },
+        {
+          "comment": {
+            "value": "запускаем проверку игрового режима"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_assault_t2_game_type_bfd"
+          }
+        },
+        {
+          "comment": {
+            "value": "говорим что шаблон t2 активен"
+          }
+        },
+        {
+          "varSetBool": {
+            "value": true,
+            "var": "at_t2_is_active"
+          }
+        }
+      ],
+      "else_actions": {
+        "comment": {
+          "value": "что-то пошло не так"
+        },
+        "triggerEnable": {
+          "target": "at_asaults_t2_check_force_evacuation"
+        }
+      }
+    },
+    "at_assault_t1_game_type_bfd": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareString": {
+          "var_value": "at_assault_game_type",
+          "value": "bfd",
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "режим: bfd"
+          }
+        },
+        {
+          "comment": {
+            "value": "пробуем собрать имя цели с использованием групп от 1 до 3"
+          }
+        },
+        {
+          "varSetRandomInt": {
+            "var": "at_assaults_random_idx",
+            "from": 1,
+            "to_not_including": 4
+          }
+        },
+        {
+          "varSetString": {
+            "value": "t2_quest_group_",
+            "var": "at_assaults_t1_target_name"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "@at_assaults_random_idx",
+            "digits": 2,
+            "var": "at_assaults_t1_target_name"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "_squad",
+            "digits": 0,
+            "var": "at_assaults_t1_target_name"
+          }
+        },
+        {
+          "comment": {
+            "value": "увеличиваем количество траев поиска цели"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "at_assaults_t1_tries_to_finding_target"
+          }
+        },
+        {
+          "comment": {
+            "value": "запускаем проверку что есть цель"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_assaults_t1_check_target_name"
+          }
+        }
+      ],
+      "else_actions": {
+        "comment": {
+          "value": "другой режим. делаем проверку на JiP"
+        },
+        "triggerEnable": {
+          "target": "at_assault_t1_game_type_jip"
+        }
+      }
+    },
+    "at_assault_t2_game_type_bfd": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareString": {
+          "var_value": "at_assault_game_type",
+          "value": "bfd",
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "режим: bfd"
+          }
+        },
+        {
+          "comment": {
+            "value": "пробуем собрать имя цели с использованием групп от 1 до 3"
+          }
+        },
+        {
+          "varSetRandomInt": {
+            "var": "at_assaults_random_idx",
+            "from": 1,
+            "to_not_including": 4
+          }
+        },
+        {
+          "varSetString": {
+            "value": "t1_quest_group_",
+            "var": "at_assaults_t2_target_name"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "@at_assaults_random_idx",
+            "digits": 2,
+            "var": "at_assaults_t2_target_name"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "_squad",
+            "digits": 0,
+            "var": "at_assaults_t2_target_name"
+          }
+        },
+        {
+          "comment": {
+            "value": "увеличиваем количество траев поиска цели"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "at_assaults_t2_tries_to_finding_target"
+          }
+        },
+        {
+          "comment": {
+            "value": "запускаем проверку что есть цель"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_assaults_t2_check_target_name"
+          }
+        }
+      ],
+      "else_actions": {
+        "comment": {
+          "value": "другой режим. делаем проверку на JiP"
+        },
+        "triggerEnable": {
+          "target": "at_assault_t2_game_type_jip"
+        }
+      }
+    },
+    "at_assault_t1_game_type_jip": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareString": {
+          "var_value": "at_assault_game_type",
+          "value": "jip",
+          "comparasion_func": "equal"
+        },
+        "varCompareBool": {
+          "var_value": "lbt_battles_is_active",
+          "value": true,
+          "comparasion_func": "equal"
+        },
+        "objectExists": {
+          "target": "@lbt_damage_t2_battle_squad_name",
+          "type": "squad"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "режим: jip и бой активен"
+          }
+        },
+        {
+          "comment": {
+            "value": "пробуем собрать имя цели с использованием текущей битвы"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "",
+            "var": "at_assaults_t1_target_name",
+            "input_var": "lbt_damage_t2_battle_squad_name"
+          }
+        },
+        {
+          "comment": {
+            "value": "увеличиваем количество траев поиска цели"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "at_assaults_t1_tries_to_finding_target"
+          }
+        },
+        {
+          "comment": {
+            "value": "запускаем проверку что есть цель"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_assaults_t1_check_target_name"
+          }
+        }
+      ],
+      "else_actions": {
+        "comment": {
+          "value": "другой режим. "
+        },
+        "varSetBool": {
+          "value": false,
+          "var": "at_t1_is_active"
+        },
+        "triggerEnable": {
+          "target": "at_assaults_check_inactive"
+        }
+      }
+    },
+    "at_assault_t2_game_type_jip": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareString": {
+          "var_value": "at_assault_game_type",
+          "value": "jip",
+          "comparasion_func": "equal"
+        },
+        "varCompareBool": {
+          "var_value": "lbt_battles_is_active",
+          "value": true,
+          "comparasion_func": "equal"
+        },
+        "objectExists": {
+          "target": "@lbt_damage_t1_battle_squad_name",
+          "type": "squad"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "режим: jip"
+          }
+        },
+        {
+          "comment": {
+            "value": "пробуем собрать имя цели с использованием текущей битвы"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "",
+            "var": "at_assaults_t2_target_name",
+            "input_var": "lbt_damage_t1_battle_squad_name"
+          }
+        },
+        {
+          "comment": {
+            "value": "увеличиваем количество траев поиска цели"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "at_assaults_t2_tries_to_finding_target"
+          }
+        },
+        {
+          "comment": {
+            "value": "запускаем проверку что есть цель"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_assaults_t2_check_target_name"
+          }
+        }
+      ],
+      "else_actions": {
+        "comment": {
+          "value": "другой режим. "
+        },
+        "varSetBool": {
+          "value": false,
+          "var": "at_t2_is_active"
+        },
+        "triggerEnable": {
+          "target": "at_assaults_check_inactive"
+        }
+      }
+    },
+    "at_assaults_t1_check_target_name": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "objectExists": {
+          "target": "@at_assaults_t1_target_name",
+          "type": "squad"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "проверили что есть цель с выбранным именем"
+          }
+        },
+        {
+          "comment": {
+            "value": "запускаем проверку валидности цели"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_assaults_t1_check_valid_target"
+          }
+        }
+      ],
+      "else_actions": {
+        "comment": {
+          "value": "пробуем получить дефолтное имя цели если режим bfd"
+        },
+        "triggerEnable": {
+          "target": "at_assaults_t1_default_name_for_bfd"
+        }
+      }
+    },
+    "at_assaults_t2_check_target_name": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "objectExists": {
+          "target": "@at_assaults_t2_target_name",
+          "type": "squad"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "проверили что есть цель с таким именем"
+          }
+        },
+        {
+          "comment": {
+            "value": "запускаем проверку валидности цели"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_assaults_t2_check_valid_target"
+          }
+        }
+      ],
+      "else_actions": {
+        "comment": {
+          "value": "пробуем получить дефолтное имя цели если режим bfd"
+        },
+        "triggerEnable": {
+          "target": "at_assaults_t2_default_name_for_bfd"
+        }
+      }
+    },
+    "at_assaults_t1_default_name_for_bfd": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareString": {
+          "var_value": "at_assault_game_type",
+          "value": "bfd",
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "цели с таким именем нет, и режим: bfd "
+          }
+        },
+        {
+          "comment": {
+            "value": "пробуем просто использовать общую квестовую группу в качестве цели"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "t2_quest_units_squad",
+            "var": "at_assaults_t1_target_name"
+          }
+        },
+        {
+          "comment": {
+            "value": "запускаем проверку валидности цели"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_assaults_t1_check_valid_target"
+          }
+        }
+      ],
+      "else_actions": {
+        "comment": {
+          "value": "режим не bfd и цель не существует. что-то пошло не так"
+        },
+        "varSetBool": {
+          "value": false,
+          "var": "at_t1_is_active"
+        },
+        "triggerActivate": {
+          "target": "at_assaults_check_inactive",
+          "activate_type": "checkConidtions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
+        }
+      }
+    },
+    "at_assaults_t2_default_name_for_bfd": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareString": {
+          "var_value": "at_assault_game_type",
+          "value": "bfd",
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "цели с таким именем нет, и режим: bfd "
+          }
+        },
+        {
+          "comment": {
+            "value": "пробуем просто использовать общую квестовую группу в качестве цели"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "t1_quest_units_squad",
+            "var": "at_assaults_t2_target_name"
+          }
+        },
+        {
+          "comment": {
+            "value": "запускаем проверку валидности цели"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_assaults_t2_check_valid_target"
+          }
+        }
+      ],
+      "else_actions": {
+        "comment": {
+          "value": "режим не bfd и цель не существует. что-то пошло не так"
+        },
+        "varSetBool": {
+          "value": false,
+          "var": "at_t2_is_active"
+        },
+        "triggerActivate": {
+          "target": "at_assaults_check_inactive",
+          "activate_type": "checkConidtions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
+        }
+      }
+    },
+    "at_assaults_t1_check_valid_target": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "more",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "@at_assaults_t1_target_name"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "запускаем проверку того нужен ли спавн или приказ отдается уже отспавненным юнитам"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_assaults_t1_spawn"
+          }
+        },
+        {
+          "comment": {
+            "value": "сбрасываем активность"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_t1_activity_reset"
+          }
+        }
+      ],
+      "else_actions": {
+        "comment": {
+          "value": "цель уже убита - пробуем запустить снова"
+        },
+        "systemLog": {
+          "value": "tried to find target but is not valid",
+          "logtype": "log"
+        },
+        "triggerEnable": {
+          "target": "at_assaults_t1_sub_init"
+        }
+      }
+    },
+    "at_assaults_t2_check_valid_target": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "more",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "@at_assaults_t2_target_name"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "запускаем проверку того нужен ли спавн или приказ отдается уже отспавненным юнитам"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_assaults_t2_spawn"
+          }
+        },
+        {
+          "comment": {
+            "value": "сбрасываем активность"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_t2_activity_reset"
+          }
+        }
+      ],
+      "else_actions": {
+        "comment": {
+          "value": "цель уже убита - пробуем запустить снова"
+        },
+        "systemLog": {
+          "value": "tried to find target but is not valid",
+          "logtype": "log"
+        },
+        "triggerEnable": {
+          "target": "at_assaults_t2_sub_init"
+        }
+      }
+    },
+    "at_assaults_t1_spawn": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0,
+          "var": "at_assaults_t1_additional_delay_timer"
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "at_assaults_t1_spawn_need",
+          "value": true,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": [
+        {
+          "triggerDisable": [
+            {
+              "target": "at_asaults_t1_check_force_evacuation"
+            },
+            {
+              "target": "at_assaults_t1_check_evacuate"
+            },
+            {
+              "target": "at_assaults_t1_check_evacuate_end"
+            },
+            {
+              "target": "at_assaults_t1_fighters_retreat"
+            },
+            {
+              "target": "at_assaults_t1_fighters_disable"
+            }
+          ]
+        },
+        {
+          "comment": {
+            "value": "проверили, что нужен спавн"
+          }
+        },
+        {
+          "comment": {
+            "value": "спавним бомберов"
+          }
+        },
+        {
+          "unitRespawn": {
+            "delay": 0.0,
+            "offset": [0.0,0.0,0.0],
+            "object": "@at_assaults_t1_name",
+            "target": "@at_assaults_t1_spawn_name",
+            "resetFormation": false
+          }
+        },
+        {
+          "unitLoadBehTree": {
+            "name": "missionAssault",
+            "objects": "@at_assaults_t1_name"
+          }
+        },
+        {
+          "comment": {
+            "value": "спавним прикрытие"
+          }
+        },
+        {
+          "unitRespawn": {
+            "delay": 0.0,
+            "offset": [0.0,500.0,0.0],
+            "object": "@at_assaults_t1_cover_name",
+            "target": "@at_assaults_t1_spawn_name",
+            "resetFormation": false
+          }
+        },
+        {
+          "comment": {
+            "value": "запрещаем прикрышке бояться и задаем точность"
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@at_assaults_t1_cover_name",
+            "stealthRadius": 3500.0,
+            "accuracy": 0.6,
+            "effShootingRate": 0.6,
+            "airEffShootingRate": 0.6,
+            "realisticAI": false,
+            "enemyFireEvasion": "off"
+          }
+        },
+        {
+          "comment": {
+            "value": "задаем точность штурмовикам"
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@at_assaults_t1_name",
+            "accuracy": 0.6,
+            "effShootingRate": 0.6,
+            "airEffShootingRate": 0.6
+          }
+        },
+        {
+          "comment": {
+            "value": "запускаем выдачу целей"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_assaults_t1_tasks_gain"
+          }
+        }
+      ],
+      "else_actions": {
+        "comment": {
+          "value": "спавн не нужен. запускаем перевыдачу целей"
+        },
+        "triggerEnable": {
+          "target": "at_assaults_t1_tasks_gain"
+        }
+      }
+    },
+    "at_assaults_t2_spawn": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0,
+          "var": "at_assaults_t2_additional_delay_timer"
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "at_assaults_t2_spawn_need",
+          "value": true,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": [
+        {
+          "triggerDisable": [
+            {
+              "target": "at_asaults_t2_check_force_evacuation"
+            },
+            {
+              "target": "at_assaults_t2_check_evacuate"
+            },
+            {
+              "target": "at_assaults_t2_check_evacuate_end"
+            },
+            {
+              "target": "at_assaults_t2_fighters_retreat"
+            },
+            {
+              "target": "at_assaults_t2_fighters_disable"
+            }
+          ]
+        },
+        {
+          "comment": {
+            "value": "проверили, что нужен спавн"
+          }
+        },
+        {
+          "comment": {
+            "value": "спавним бомберов"
+          }
+        },
+        {
+          "unitRespawn": {
+            "delay": 0.0,
+            "offset": [0.0,0.0,0.0],
+            "object": "@at_assaults_t2_name",
+            "target": "@at_assaults_t2_spawn_name",
+            "resetFormation": false
+          }
+        },
+        {
+          "unitLoadBehTree": {
+            "name": "missionAssault",
+            "objects": "@at_assaults_t2_name"
+          }
+        },
+        {
+          "comment": {
+            "value": "спавним прикрытие"
+          }
+        },
+        {
+          "unitRespawn": {
+            "delay": 0.0,
+            "offset": [0.0,500.0,0.0],
+            "object": "@at_assaults_t2_cover_name",
+            "target": "@at_assaults_t2_spawn_name",
+            "resetFormation": false
+          }
+        },
+        {
+          "comment": {
+            "value": "запрещаем прикрышке бояться и задаем точность"
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@at_assaults_t2_cover_name",
+            "stealthRadius": 3500.0,
+            "accuracy": 0.6,
+            "effShootingRate": 0.6,
+            "airEffShootingRate": 0.6,
+            "realisticAI": false,
+            "enemyFireEvasion": "off"
+          }
+        },
+        {
+          "comment": {
+            "value": "задаем точность штурмовикам"
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@at_assaults_t2_name",
+            "accuracy": 0.6,
+            "effShootingRate": 0.6,
+            "airEffShootingRate": 0.6
+          }
+        },
+        {
+          "comment": {
+            "value": "запускаем выдачу целей"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_assaults_t2_tasks_gain"
+          }
+        }
+      ],
+      "else_actions": {
+        "comment": {
+          "value": "спавн не нужен. запускаем перевыдачу целей"
+        },
+        "triggerEnable": {
+          "target": "at_assaults_t2_tasks_gain"
+        }
+      }
+    },
+    "at_assaults_t1_tasks_gain": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "more",
+          "value": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "@at_assaults_t1_target_name"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "говорим бомберам лететь к цели"
+          }
+        },
+        {
+          "unitMoveTo": {
+            "object_marking": 0,
+            "target": "@at_assaults_t1_target_name",
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@at_assaults_t1_name",
+            "speed": 320.0,
+            "altRange": [1200.0,1500.0]
+          }
+        },
+        {
+          "comment": {
+            "value": "говорим файтерам лететь за бомберами"
+          }
+        },
+        {
+          "unitMoveTo": {
+            "object_marking": 0,
+            "target": "@at_assaults_t1_name",
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": true,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@at_assaults_t1_cover_name",
+            "follow_offset": [0.0,500.0,0.0]
+          }
+        },
+        {
+          "comment": {
+            "value": "говорим файтерам прикрывать бомберов"
+          }
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "@at_assaults_t1_cover_name",
+            "target": "t2_players_squad",
+            "fireRandom": true,
+            "targetTypeName": "airplane",
+            "targetDistMax": 4000.0,
+            "maxNumAttackersPerTarget": 1,
+            "attackAltRange": [250.0,7000.0],
+            "anchorTarget": "@at_assaults_t1_name",
+            "targetToAnchorDist": [3000.0,4000.0],
+            "resetObjectToFollow": false
+          }
+        },
+        {
+          "comment": {
+            "value": "запрещаем проверку на достижение точки эвакуации"
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "at_assaults_t1_check_evacuate"
+          }
+        },
+        {
+          "comment": {
+            "value": "включаем мигание на карте"
+          }
+        },
+        {
+          "unitSetIndication": {
+            "target_marking": 0,
+            "set": true,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "@at_assaults_t1_name",
+            "team": "Both"
+          }
+        },
+        {
+          "comment": {
+            "value": "запускаем отображение индикаторво снизу"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_assaults_t1_indicators"
+          }
+        },
+        {
+          "comment": {
+            "value": "включаем проверку на достижение цели"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "at_assaults_t1_check_distance_target"
+            },
+            {
+              "target": "at_assaults_t1_lost_target"
+            }
+          ]
+        },
+        {
+          "comment": {
+            "value": "выдаем обжектив команде А"
+          }
+        },
+        {
+          "__moAddMissionObjective": {
+            "target": "bfd_t1_assaults_defend",
+            "unit_or_area": "@at_assaults_t1_name",
+            "object_type": "isActive"
+          }
+        },
+        {
+          "comment": {
+            "value": "выдаем обжектив команде Б"
+          }
+        },
+        {
+          "__moAddMissionObjective": {
+            "target": "bfd_t2_assaults_attack",
+            "unit_or_area": "@at_assaults_t1_name",
+            "object_type": "isActive"
+          }
+        },
+        {
+          "comment": {
+            "value": "включаем тригеры отслеживания обжективов"
+          }
+        },
+        {
+          "__triggerEnable": [
+            {
+              "target": "at_assaults_t1_def_objective_update"
+            },
+            {
+              "target": "at_assaults_t2_kill_objective_update"
+            }
+          ]
+        },
+        {
+          "comment": {
+            "value": "включаем триггер на смерть ассалтов"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_assaults_check_t1_dead"
+          }
+        },
+        {
+          "comment": {
+            "value": "включаем проверку на детект"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_t1_is_detect_alowed"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        }
+      ],
+      "else_actions": {
+        "varSetBool": {
+          "value": false,
+          "var": "at_t1_is_active"
+        },
+        "triggerActivate": {
+          "target": "at_assaults_check_inactive",
+          "activate_type": "checkConidtions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
+        }
+      }
+    },
+    "at_assaults_t2_tasks_gain": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "more",
+          "value": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "@at_assaults_t2_target_name"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "говорим бомберам лететь к цели"
+          }
+        },
+        {
+          "unitMoveTo": {
+            "object_marking": 0,
+            "target": "@at_assaults_t2_target_name",
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@at_assaults_t2_name",
+            "speed": 320.0,
+            "altRange": [1200.0,1500.0]
+          }
+        },
+        {
+          "comment": {
+            "value": "говорим файтерам лететь за бомберами"
+          }
+        },
+        {
+          "unitMoveTo": {
+            "object_marking": 0,
+            "target": "@at_assaults_t2_name",
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": true,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@at_assaults_t2_cover_name",
+            "follow_offset": [0.0,500.0,0.0]
+          }
+        },
+        {
+          "comment": {
+            "value": "говорим файтерам прикрывать бомберов"
+          }
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "@at_assaults_t2_cover_name",
+            "target": "t1_players_squad",
+            "fireRandom": true,
+            "targetTypeName": "airplane",
+            "targetDistMax": 4000.0,
+            "maxNumAttackersPerTarget": 1,
+            "attackAltRange": [250.0,7000.0],
+            "anchorTarget": "@at_assaults_t2_name",
+            "targetToAnchorDist": [3000.0,4000.0],
+            "resetObjectToFollow": false
+          }
+        },
+        {
+          "comment": {
+            "value": "запрещаем проверку на достижение точки эвакуации"
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "at_assaults_t2_check_evacuate"
+          }
+        },
+        {
+          "comment": {
+            "value": "включаем мигание на карте"
+          }
+        },
+        {
+          "unitSetIndication": {
+            "target_marking": 0,
+            "set": true,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "@at_assaults_t2_name",
+            "team": "Both"
+          }
+        },
+        {
+          "comment": {
+            "value": "запускаем отображение индикаторво снизу"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_assaults_t2_indicators"
+          }
+        },
+        {
+          "comment": {
+            "value": "включаем проверку на достижение цели"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "at_assaults_t2_check_distance_target"
+            },
+            {
+              "target": "at_assaults_t2_lost_target"
+            }
+          ]
+        },
+        {
+          "comment": {
+            "value": "выдаем обжектив команде А"
+          }
+        },
+        {
+          "__moAddMissionObjective": {
+            "target": "bfd_t1_assaults_attack",
+            "unit_or_area": "@at_assaults_t2_name",
+            "object_type": "isActive"
+          }
+        },
+        {
+          "comment": {
+            "value": "выдаем обжектив команде Б"
+          }
+        },
+        {
+          "__moAddMissionObjective": {
+            "target": "bfd_t2_assaults_defend",
+            "unit_or_area": "@at_assaults_t2_name",
+            "object_type": "isActive"
+          }
+        },
+        {
+          "comment": {
+            "value": "включаем тригеры отслеживания обжективов"
+          }
+        },
+        {
+          "__triggerEnable": [
+            {
+              "target": "at_assaults_t2_def_objective_update"
+            },
+            {
+              "target": "at_assaults_t1_kill_objective_update"
+            }
+          ]
+        },
+        {
+          "comment": {
+            "value": "включаем триггер на смерть ассалтов"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_assaults_check_t2_dead"
+          }
+        },
+        {
+          "comment": {
+            "value": "включаем проверку на детект"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_t2_is_detect_alowed"
+          }
+        }
+      ],
+      "else_actions": {
+        "varSetBool": {
+          "value": false,
+          "var": "at_t2_is_active"
+        },
+        "triggerActivate": {
+          "target": "at_assaults_check_inactive",
+          "activate_type": "checkConidtions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
+        }
+      }
+    },
+    "at_assaults_t1_check_distance_target": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 3500.0,
+          "math": "2D",
+          "object_type": "isActive",
+          "object_marking": 0,
+          "target_type": "isActive",
+          "target_marking": 0,
+          "check_objects": "any",
+          "check_targets": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "@at_assaults_t1_name",
+          "target": "@at_assaults_t1_target_name",
+          "compareCenters": false
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "достигли цели. можно атаковать"
+          }
+        },
+        {
+          "comment": {
+            "value": "прекращаем слежение за потерей цели"
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "at_assaults_t1_lost_target"
+          }
+        },
+        {
+          "comment": {
+            "value": "говорим лететь на базу"
+          }
+        },
+        {
+          "unitMoveTo": {
+            "object_marking": 0,
+            "target": "at_assaults_t1_retreat_point",
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@at_assaults_t1_name",
+            "altRange": [350.0,500.0]
+          }
+        },
+        {
+          "comment": {
+            "value": "говорим атаковать цель"
+          }
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "@at_assaults_t1_name",
+            "target": "@at_assaults_t1_target_name",
+            "fireRandom": true,
+            "attackNumMax": 3
+          }
+        },
+        {
+          "comment": {
+            "value": "включаем проверку на достижение конечной точки"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_assaults_t1_check_evacuate"
+          }
+        },
+        {
+          "comment": {
+            "value": "прекращаем слежение за потерей цели"
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "at_assaults_t1_lost_target"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "at_assaults_t2_check_distance_target": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 3500.0,
+          "math": "2D",
+          "object_type": "isActive",
+          "object_marking": 0,
+          "target_type": "isActive",
+          "target_marking": 0,
+          "check_objects": "any",
+          "check_targets": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "@at_assaults_t2_name",
+          "target": "@at_assaults_t2_target_name",
+          "compareCenters": false
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "достигли цели. можно атаковать"
+          }
+        },
+        {
+          "comment": {
+            "value": "прекращаем слежение за потерей цели"
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "at_assaults_t2_lost_target"
+          }
+        },
+        {
+          "comment": {
+            "value": "говорим лететь на базу"
+          }
+        },
+        {
+          "unitMoveTo": {
+            "object_marking": 0,
+            "target": "at_assaults_t2_retreat_point",
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@at_assaults_t2_name",
+            "altRange": [350.0,500.0]
+          }
+        },
+        {
+          "comment": {
+            "value": "говорим атаковать цель"
+          }
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "@at_assaults_t2_name",
+            "target": "@at_assaults_t2_target_name",
+            "fireRandom": true,
+            "attackNumMax": 3
+          }
+        },
+        {
+          "comment": {
+            "value": "включаем проверку на достижение конечной точки"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_assaults_t2_check_evacuate"
+          }
+        },
+        {
+          "comment": {
+            "value": "прекращаем слежение за потерей цели"
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "at_assaults_t2_lost_target"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "at_assaults_t1_check_evacuate": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 3500.0,
+          "math": "2D",
+          "object_type": "isActive",
+          "object_marking": 0,
+          "target_type": "isAlive",
+          "target_marking": 0,
+          "check_objects": "any",
+          "check_targets": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "@at_assaults_t1_name",
+          "target": "at_assaults_t1_retreat_point",
+          "compareCenters": false
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "бомберы достигли конечной точки"
+          }
+        },
+        {
+          "comment": {
+            "value": "запрещаем проверку на смерть"
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "at_assaults_check_t1_dead"
+          }
+        },
+        {
+          "comment": {
+            "value": "прячем бомберов"
+          }
+        },
+        {
+          "unitPutToSleep": {
+            "target": "@at_assaults_t1_name",
+            "useForTriggerFiltered": true
+          }
+        },
+        {
+          "comment": {
+            "value": "включаем проверку окончания прятанья бобров"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_assaults_t1_check_evacuate_end"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "at_assaults_t1_check_evacuate_end": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "@at_assaults_t1_name"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "бомберы достигли конечной точки"
+          }
+        },
+        {
+          "comment": {
+            "value": "прячем ястребов"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_assaults_t1_fighters_retreat"
+          }
+        },
+        {
+          "comment": {
+            "value": "выключаем апдейт обжективов"
+          }
+        },
+        {
+          "triggerDisable": [
+            {
+              "target": "at_assaults_t1_def_objective_update"
+            },
+            {
+              "target": "at_assaults_t2_kill_objective_update"
+            }
+          ]
+        },
+        {
+          "comment": {
+            "value": "изменяем обжективы"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "bfd_t1_assaults_defend",
+            "status": 2,
+            "extendedEnding": true,
+            "team": "A",
+            "unit_or_area": "@at_assaults_t1_name",
+            "object_type": "any"
+          }
+        },
+        {
+          "comment": {
+            "value": "проверяем активность игроков"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_t1_def_activity_check"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "at_assaults_t1_check_evacuate_complete"
+            },
+            {
+              "target": "at_assaults_t1_fighters_retreat"
+            }
+          ]
+        },
+        {
+          "comment": {
+            "value": "ждем 30 секунд и убираем обжектив"
+          }
+        },
+        {
+          "wait": {
+            "time": 30.0
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "bfd_t1_assaults_defend",
+            "status": 0,
+            "extendedEnding": true,
+            "team": "A",
+            "unit_or_area": "@at_assaults_t1_name",
+            "object_type": "any"
+          }
+        },
+        {
+          "comment": {
+            "value": "говорим что шаблон t1 не активен"
+          }
+        },
+        {
+          "varSetBool": {
+            "value": false,
+            "var": "at_t1_is_active"
+          }
+        },
+        {
+          "triggerActivate": {
+            "target": "at_assaults_check_inactive",
+            "activate_type": "checkConidtions",
+            "check_trigger_status": false,
+            "after_activation": "disable"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "at_assaults_t1_check_evacuate_complete": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "misObjStatus": {
+          "target": "bfd_t2_assaults_attack",
+          "status": "inProgress"
+        }
+      },
+      "actions": [
+        {
+          "triggerDisable": {
+            "target": "at_assaults_t1_check_evacuate"
+          }
+        },
+        {
+          "comment": {
+            "value": "изменяем обжективы"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "bfd_t2_assaults_attack",
+            "status": 3,
+            "extendedEnding": true,
+            "team": "B",
+            "unit_or_area": "@at_assaults_t1_name",
+            "object_type": "any"
+          }
+        },
+        {
+          "comment": {
+            "value": "прекращаем слежение за потерей цели"
+          }
+        },
+        {
+          "comment": {
+            "value": "ждем 30 секунд и убираем обжектив"
+          }
+        },
+        {
+          "wait": {
+            "time": 30.0
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "bfd_t2_assaults_attack",
+            "status": 0,
+            "extendedEnding": true,
+            "team": "B",
+            "unit_or_area": "@at_assaults_t1_name",
+            "object_type": "any"
+          }
+        },
+        {
+          "varSetBool": {
+            "value": false,
+            "var": "at_t1_is_active"
+          }
+        },
+        {
+          "triggerActivate": {
+            "target": "at_assaults_check_inactive",
+            "activate_type": "checkConidtions",
+            "check_trigger_status": false,
+            "after_activation": "disable"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "at_assaults_t2_check_evacuate": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 3500.0,
+          "math": "2D",
+          "object_type": "isActive",
+          "object_marking": 0,
+          "target_type": "isAlive",
+          "target_marking": 0,
+          "check_objects": "any",
+          "check_targets": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "@at_assaults_t2_name",
+          "target": "at_assaults_t2_retreat_point",
+          "compareCenters": false
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "бомберы достигли конечной точки"
+          }
+        },
+        {
+          "comment": {
+            "value": "запрещаем проверку на смерть"
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "at_assaults_check_t2_dead"
+          }
+        },
+        {
+          "comment": {
+            "value": "прячем бомберов"
+          }
+        },
+        {
+          "unitPutToSleep": {
+            "target": "@at_assaults_t2_name",
+            "useForTriggerFiltered": true
+          }
+        },
+        {
+          "comment": {
+            "value": "включаем проверку окончания прятанья бобров"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_assaults_t2_check_evacuate_end"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "at_assaults_t2_check_evacuate_end": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "@at_assaults_t2_name"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "бомберы достигли конечной точки"
+          }
+        },
+        {
+          "comment": {
+            "value": "прячем ястребов"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_assaults_t2_fighters_retreat"
+          }
+        },
+        {
+          "comment": {
+            "value": "выключаем апдейт обжективов"
+          }
+        },
+        {
+          "triggerDisable": [
+            {
+              "target": "at_assaults_t2_def_objective_update"
+            },
+            {
+              "target": "at_assaults_t1_kill_objective_update"
+            }
+          ]
+        },
+        {
+          "comment": {
+            "value": "изменяем обжективы"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "bfd_t2_assaults_defend",
+            "status": 2,
+            "extendedEnding": true,
+            "team": "B",
+            "unit_or_area": "@at_assaults_t2_name",
+            "object_type": "any"
+          }
+        },
+        {
+          "comment": {
+            "value": "проверяем активность игроков"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_t2_def_activity_check"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "at_assaults_t2_check_evacuate_complete"
+            },
+            {
+              "target": "at_assaults_t2_fighters_retreat"
+            }
+          ]
+        },
+        {
+          "comment": {
+            "value": "ждем 30 секунд и убираем обжектив"
+          }
+        },
+        {
+          "wait": {
+            "time": 30.0
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "bfd_t2_assaults_defend",
+            "status": 0,
+            "extendedEnding": true,
+            "team": "B",
+            "unit_or_area": "@at_assaults_t2_name",
+            "object_type": "any"
+          }
+        },
+        {
+          "comment": {
+            "value": "говорим что шаблон t1 не активен"
+          }
+        },
+        {
+          "varSetBool": {
+            "value": false,
+            "var": "at_t2_is_active"
+          }
+        },
+        {
+          "triggerActivate": {
+            "target": "at_assaults_check_inactive",
+            "activate_type": "checkConidtions",
+            "check_trigger_status": false,
+            "after_activation": "disable"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "at_assaults_t2_check_evacuate_complete": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "misObjStatus": {
+          "target": "bfd_t1_assaults_attack",
+          "status": "inProgress"
+        }
+      },
+      "actions": [
+        {
+          "triggerDisable": {
+            "target": "at_assaults_t2_check_evacuate"
+          }
+        },
+        {
+          "comment": {
+            "value": "изменяем обжективы"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "bfd_t1_assaults_attack",
+            "status": 3,
+            "extendedEnding": true,
+            "team": "A",
+            "unit_or_area": "@at_assaults_t2_name",
+            "object_type": "any"
+          }
+        },
+        {
+          "comment": {
+            "value": "прекращаем слежение за потерей цели"
+          }
+        },
+        {
+          "comment": {
+            "value": "ждем 30 секунд и убираем обжектив"
+          }
+        },
+        {
+          "wait": {
+            "time": 30.0
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "bfd_t1_assaults_attack",
+            "status": 0,
+            "team": "A",
+            "unit_or_area": "@at_assaults_t2_name",
+            "object_type": "any"
+          }
+        },
+        {
+          "varSetBool": {
+            "value": false,
+            "var": "at_t2_is_active"
+          }
+        },
+        {
+          "triggerActivate": {
+            "target": "at_assaults_check_inactive",
+            "activate_type": "checkConidtions",
+            "check_trigger_status": false,
+            "after_activation": "disable"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "at_assaults_t1_indicators": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareString": {
+          "var_value": "at_assault_game_type",
+          "value": "bfd",
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "missionSetTargetsIndicator": {
+          "target_type": "isActive",
+          "target_marking": 0,
+          "delta": 0,
+          "icon": "bomber",
+          "icon army": 1,
+          "set": true,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "@at_assaults_t1_name"
+        }
+      },
+      "else_actions": []
+    },
+    "at_assaults_t2_indicators": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareString": {
+          "var_value": "at_assault_game_type",
+          "value": "bfd",
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "missionSetTargetsIndicator": {
+          "target_type": "isActive",
+          "target_marking": 0,
+          "delta": 0,
+          "icon": "bomber",
+          "icon army": 2,
+          "set": true,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "@at_assaults_t2_name"
+        }
+      },
+      "else_actions": []
+    },
+    "at_assaults_t1_def_objective_update": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 10.0
+        }
+      },
+      "conditions": {
+        "misObjStatus": {
+          "target": "bfd_t1_assaults_defend",
+          "status": "inProgress"
+        }
+      },
+      "actions": [
+        {
+          "moSetObjectiveStatus": {
+            "target": "bfd_t1_assaults_defend",
+            "status": 1,
+            "extendedEnding": true,
+            "team": "A",
+            "unit_or_area": "@at_assaults_t1_name",
+            "object_type": "isActive"
+          }
+        },
+        {
+          "comment": {
+            "value": "увеличиваем время активности квеста для команды А"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "at_t1_def_time"
+          }
+        },
+        {
+          "comment": {
+            "value": "проверяем активность игроков"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_t1_def_activity_change"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "at_assaults_t1_kill_objective_update": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 10.0
+        }
+      },
+      "conditions": {
+        "misObjStatus": {
+          "target": "bfd_t1_assaults_attack",
+          "status": "inProgress"
+        }
+      },
+      "actions": [
+        {
+          "moSetObjectiveStatus": {
+            "target": "bfd_t1_assaults_attack",
+            "status": 1,
+            "extendedEnding": true,
+            "team": "A",
+            "unit_or_area": "@at_assaults_t2_name",
+            "object_type": "isActive"
+          }
+        },
+        {
+          "comment": {
+            "value": "увеличиваем время активности квеста для команды А"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "at_t1_kill_time"
+          }
+        },
+        {
+          "comment": {
+            "value": "проверяем активность игроков"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_t1_kill_activity_change"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "at_assaults_t2_def_objective_update": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 10.0
+        }
+      },
+      "conditions": {
+        "misObjStatus": {
+          "target": "bfd_t2_assaults_defend",
+          "status": "inProgress"
+        }
+      },
+      "actions": [
+        {
+          "moSetObjectiveStatus": {
+            "target": "bfd_t2_assaults_defend",
+            "status": 1,
+            "extendedEnding": true,
+            "team": "B",
+            "unit_or_area": "@at_assaults_t2_name",
+            "object_type": "isActive"
+          }
+        },
+        {
+          "comment": {
+            "value": "увеличиваем время активности квеста для команды Б"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "at_t2_def_time"
+          }
+        },
+        {
+          "comment": {
+            "value": "проверяем активность игроков"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_t2_def_activity_change"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "at_assaults_t2_kill_objective_update": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 10.0
+        }
+      },
+      "conditions": {
+        "misObjStatus": {
+          "target": "bfd_t2_assaults_attack",
+          "status": "inProgress"
+        }
+      },
+      "actions": [
+        {
+          "moSetObjectiveStatus": {
+            "target": "bfd_t2_assaults_attack",
+            "status": 1,
+            "extendedEnding": true,
+            "team": "B",
+            "unit_or_area": "@at_assaults_t1_name",
+            "object_type": "isActive"
+          }
+        },
+        {
+          "comment": {
+            "value": "увеличиваем время активности квеста для команды Б"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "at_t2_kill_time"
+          }
+        },
+        {
+          "comment": {
+            "value": "проверяем активность игроков"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_t2_kill_activity_change"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "at_assaults_check_t1_dead": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "@at_assaults_t1_name"
+        }
+      },
+      "actions": [
+        {
+          "triggerEnable": {
+            "target": "at_assaults_t1_fighters_retreat"
+          }
+        },
+        {
+          "comment": {
+            "value": "штурмовики погибли"
+          }
+        },
+        {
+          "comment": {
+            "value": "запрещаем проверку эвакуации"
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "at_assaults_t1_check_evacuate"
+          }
+        },
+        {
+          "comment": {
+            "value": "выключаем апдейт обжективов"
+          }
+        },
+        {
+          "triggerDisable": [
+            {
+              "target": "at_assaults_t1_def_objective_update"
+            },
+            {
+              "target": "at_assaults_t2_kill_objective_update"
+            }
+          ]
+        },
+        {
+          "comment": {
+            "value": "проверяем можно ли закрывать квест команде атакеров"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_assaults_check_t1_dead_complete"
+          }
+        },
+        {
+          "comment": {
+            "value": "выставляем статусы обжективам"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "bfd_t1_assaults_defend",
+            "status": 3,
+            "extendedEnding": true,
+            "team": "A",
+            "unit_or_area": "@at_assaults_t1_name",
+            "object_type": "any"
+          }
+        },
+        {
+          "comment": {
+            "value": "прекращаем слежение за потерей цели"
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "at_assaults_t1_lost_target"
+          }
+        },
+        {
+          "comment": {
+            "value": "ждем 30 секунд и убираем обжектив"
+          }
+        },
+        {
+          "wait": {
+            "time": 30.0
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "bfd_t1_assaults_defend",
+            "status": 0,
+            "team": "A",
+            "unit_or_area": "@at_assaults_t1_name",
+            "object_type": "any"
+          }
+        },
+        {
+          "comment": {
+            "value": "говорим что шаблон t1 не активен"
+          }
+        },
+        {
+          "varSetBool": {
+            "value": false,
+            "var": "at_t1_is_active"
+          }
+        },
+        {
+          "triggerActivate": {
+            "target": "at_assaults_check_inactive",
+            "activate_type": "checkConidtions",
+            "check_trigger_status": false,
+            "after_activation": "disable"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "at_assaults_check_t1_dead_complete": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "misObjStatus": {
+          "target": "bfd_t2_assaults_attack",
+          "status": "inProgress"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "выставляем статусы обжективам"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "bfd_t2_assaults_attack",
+            "status": 2,
+            "extendedEnding": true,
+            "team": "B",
+            "unit_or_area": "@at_assaults_t1_name",
+            "object_type": "any"
+          }
+        },
+        {
+          "comment": {
+            "value": "проверяем финальную активность игроков"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_t2_kill_activity_check"
+          }
+        },
+        {
+          "comment": {
+            "value": "ждем 30 секунд и убираем обжектив"
+          }
+        },
+        {
+          "wait": {
+            "time": 30.0
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "bfd_t2_assaults_attack",
+            "status": 0,
+            "team": "B",
+            "unit_or_area": "@at_assaults_t1_name",
+            "object_type": "any"
+          }
+        },
+        {
+          "comment": {
+            "value": "говорим что шаблон t1 не активен"
+          }
+        },
+        {
+          "varSetBool": {
+            "value": false,
+            "var": "at_t1_is_active"
+          }
+        },
+        {
+          "triggerActivate": {
+            "target": "at_assaults_check_inactive",
+            "activate_type": "checkConidtions",
+            "check_trigger_status": false,
+            "after_activation": "disable"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "at_assaults_check_t2_dead": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "@at_assaults_t2_name"
+        }
+      },
+      "actions": [
+        {
+          "triggerEnable": {
+            "target": "at_assaults_t2_fighters_retreat"
+          }
+        },
+        {
+          "comment": {
+            "value": "штурмовики погибли"
+          }
+        },
+        {
+          "comment": {
+            "value": "запрещаем проверку эвакуации"
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "at_assaults_t2_check_evacuate"
+          }
+        },
+        {
+          "comment": {
+            "value": "выключаем апдейт обжективов"
+          }
+        },
+        {
+          "triggerDisable": [
+            {
+              "target": "at_assaults_t2_def_objective_update"
+            },
+            {
+              "target": "at_assaults_t1_kill_objective_update"
+            }
+          ]
+        },
+        {
+          "comment": {
+            "value": "проверяем можно ли закрывать квест команде атакеров"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_assaults_check_t2_dead_complete"
+          }
+        },
+        {
+          "comment": {
+            "value": "выставляем статусы обжективам"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "bfd_t2_assaults_defend",
+            "status": 3,
+            "extendedEnding": true,
+            "team": "B",
+            "unit_or_area": "@at_assaults_t2_name",
+            "object_type": "any"
+          }
+        },
+        {
+          "comment": {
+            "value": "прекращаем слежение за потерей цели"
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "at_assaults_t2_lost_target"
+          }
+        },
+        {
+          "comment": {
+            "value": "ждем 30 секунд и убираем обжектив"
+          }
+        },
+        {
+          "wait": {
+            "time": 30.0
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "bfd_t2_assaults_defend",
+            "status": 0,
+            "team": "B",
+            "unit_or_area": "@at_assaults_t2_name",
+            "object_type": "any"
+          }
+        },
+        {
+          "comment": {
+            "value": "говорим что шаблон t1 не активен"
+          }
+        },
+        {
+          "varSetBool": {
+            "value": false,
+            "var": "at_t2_is_active"
+          }
+        },
+        {
+          "triggerActivate": {
+            "target": "at_assaults_check_inactive",
+            "activate_type": "checkConidtions",
+            "check_trigger_status": false,
+            "after_activation": "disable"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "at_assaults_check_t2_dead_complete": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "misObjStatus": {
+          "target": "bfd_t1_assaults_attack",
+          "status": "inProgress"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "выставляем статусы обжективам"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "bfd_t1_assaults_attack",
+            "status": 2,
+            "extendedEnding": true,
+            "team": "A",
+            "unit_or_area": "@at_assaults_t2_name",
+            "object_type": "any"
+          }
+        },
+        {
+          "comment": {
+            "value": "проверяем финальную активность игроков"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_t1_kill_activity_check"
+          }
+        },
+        {
+          "comment": {
+            "value": "ждем 30 секунд и убираем обжектив"
+          }
+        },
+        {
+          "wait": {
+            "time": 30.0
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "bfd_t1_assaults_attack",
+            "status": 0,
+            "team": "A",
+            "unit_or_area": "@at_assaults_t2_name",
+            "object_type": "any"
+          }
+        },
+        {
+          "comment": {
+            "value": "говорим что шаблон t2 не активен"
+          }
+        },
+        {
+          "varSetBool": {
+            "value": false,
+            "var": "at_t2_is_active"
+          }
+        },
+        {
+          "triggerActivate": {
+            "target": "at_assaults_check_inactive",
+            "activate_type": "checkConidtions",
+            "check_trigger_status": false,
+            "after_activation": "disable"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "at_assaults_t1_lost_target": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "@at_assaults_t1_target_name"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "говорим что не нужен спавн ассалтов и охраны"
+          }
+        },
+        {
+          "varSetBool": {
+            "value": false,
+            "var": "at_assaults_t1_spawn_need"
+          }
+        },
+        {
+          "comment": {
+            "value": "скидываем счетчик попыток поиска новой цели"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 0,
+            "var": "at_assaults_t1_tries_to_finding_target"
+          }
+        },
+        {
+          "comment": {
+            "value": "убираем начальную задержку респауна"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 1,
+            "var": "at_assaults_t1_additional_delay_timer"
+          }
+        },
+        {
+          "comment": {
+            "value": "цель потеряна. пробуем найти новую"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_assaults_t1_sub_init"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "at_assaults_t2_lost_target": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "@at_assaults_t2_target_name"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "говорим что не нужен спавн ассалтов и охраны"
+          }
+        },
+        {
+          "varSetBool": {
+            "value": false,
+            "var": "at_assaults_t2_spawn_need"
+          }
+        },
+        {
+          "comment": {
+            "value": "скидываем счетчик попыток поиска новой цели"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 0,
+            "var": "at_assaults_t2_tries_to_finding_target"
+          }
+        },
+        {
+          "comment": {
+            "value": "убираем начальную задержку респауна"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 1,
+            "var": "at_assaults_t2_additional_delay_timer"
+          }
+        },
+        {
+          "comment": {
+            "value": "цель потеряна. пробуем найти новую"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_assaults_t2_sub_init"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "at_asaults_t1_check_force_evacuation": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "objectExists": {
+          "target": "@at_assaults_t1_name",
+          "type": "unit"
+        },
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "more",
+          "value": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "@at_assaults_t1_name"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "есть кому эвакуироваться"
+          }
+        },
+        {
+          "unitMoveTo": {
+            "object_marking": 0,
+            "target": "at_assaults_t1_retreat_point",
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@at_assaults_t1_name",
+            "altRange": [350.0,500.0]
+          }
+        },
+        {
+          "comment": {
+            "value": "включаем проверку на достижение конечной точки"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_assaults_t1_check_evacuate"
+          }
+        }
+      ],
+      "else_actions": {
+        "varSetBool": {
+          "value": false,
+          "var": "at_t1_is_active"
+        },
+        "triggerEnable": {
+          "target": "at_assaults_check_inactive"
+        }
+      }
+    },
+    "at_asaults_t2_check_force_evacuation": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "objectExists": {
+          "target": "@at_assaults_t2_name",
+          "type": "unit"
+        },
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "more",
+          "value": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "@at_assaults_t2_name"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "есть кому эвакуироваться"
+          }
+        },
+        {
+          "unitMoveTo": {
+            "object_marking": 0,
+            "target": "at_assaults_t2_retreat_point",
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@at_assaults_t2_name",
+            "altRange": [350.0,500.0]
+          }
+        },
+        {
+          "comment": {
+            "value": "включаем проверку на достижение конечной точки"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "at_assaults_t2_check_evacuate"
+          }
+        }
+      ],
+      "else_actions": {
+        "varSetBool": {
+          "value": false,
+          "var": "at_t2_is_active"
+        },
+        "triggerEnable": {
+          "target": "at_assaults_check_inactive"
+        }
+      }
+    },
+    "at_assaults_check_inactive": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [
+        {
+          "varCompareBool": {
+            "var_value": "at_t1_is_active",
+            "value": false,
+            "comparasion_func": "equal"
+          }
+        },
+        {
+          "varCompareBool": {
+            "var_value": "at_t2_is_active",
+            "value": false,
+            "comparasion_func": "equal"
+          }
+        }
+      ],
+      "actions": {
+        "comment": {
+          "value": "шаблон не активен для обеих команд. говорим что он не активен"
+        },
+        "varSetBool": {
+          "value": false,
+          "var": "at_is_template_active"
+        }
+      },
+      "else_actions": []
+    },
+    "at_detecttion_range_checks": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [
+        {
+          "objectExists": {
+            "target": "lpt_t1_detection_bonus",
+            "type": "var"
+          }
+        },
+        {
+          "objectExists": {
+            "target": "lpt_t2_detection_bonus",
+            "type": "var"
+          }
+        }
+      ],
+      "actions": [
+        {
+          "varSetReal": [
+            {
+              "value": 0.0
+            },
+            {
+              "var": "at_t1_detection_range"
+            },
+            {
+              "var": "at_t1_player_detection_bonus"
+            }
+          ]
+        },
+        {
+          "varModify": [
+            {
+              "operator": "add"
+            },
+            {
+              "value": 3500.0
+            },
+            {
+              "var": "at_t1_detection_range"
+            },
+            {
+              "var": "at_t1_player_detection_bonus"
+            },
+            {
+              "use_variable": true
+            },
+            {
+              "var_value": "at_base_detection_range"
+            }
+          ]
+        },
+        {
+          "varModify": [
+            {
+              "operator": "add"
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "var": "at_t1_detection_range"
+            },
+            {
+              "var": "at_t1_player_detection_bonus"
+            },
+            {
+              "use_variable": true
+            },
+            {
+              "var_value": "lpt_t1_detection_bonus"
+            }
+          ]
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 2000.0,
+            "var": "at_t1_player_detection_bonus"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "varSetReal": [
+            {
+              "value": 0.0
+            },
+            {
+              "var": "at_t2_detection_range"
+            },
+            {
+              "var": "at_t2_player_detection_bonus"
+            }
+          ]
+        },
+        {
+          "varModify": [
+            {
+              "operator": "add"
+            },
+            {
+              "value": 3500.0
+            },
+            {
+              "var": "at_t2_detection_range"
+            },
+            {
+              "var": "at_t2_player_detection_bonus"
+            },
+            {
+              "use_variable": true
+            },
+            {
+              "var_value": "at_base_detection_range"
+            }
+          ]
+        },
+        {
+          "varModify": [
+            {
+              "operator": "add"
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "var": "at_t2_detection_range"
+            },
+            {
+              "var": "at_t2_player_detection_bonus"
+            },
+            {
+              "use_variable": true
+            },
+            {
+              "var_value": "lpt_t2_detection_bonus"
+            }
+          ]
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 2000.0,
+            "var": "at_t2_player_detection_bonus"
+          }
+        }
+      ],
+      "else_actions": [
+        {
+          "varSetReal": [
+            {
+              "value": 0.0
+            },
+            {
+              "var": "at_t1_detection_range"
+            },
+            {
+              "var": "at_t1_player_detection_bonus"
+            }
+          ]
+        },
+        {
+          "varModify": [
+            {
+              "operator": "add"
+            },
+            {
+              "value": 3500.0
+            },
+            {
+              "var": "at_t1_detection_range"
+            },
+            {
+              "var": "at_t1_player_detection_bonus"
+            },
+            {
+              "use_variable": true
+            },
+            {
+              "var_value": "at_base_detection_range"
+            }
+          ]
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 2000.0,
+            "var": "at_t1_player_detection_bonus"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "varSetReal": [
+            {
+              "value": 0.0
+            },
+            {
+              "var": "at_t2_detection_range"
+            },
+            {
+              "var": "at_t2_player_detection_bonus"
+            }
+          ]
+        },
+        {
+          "varModify": [
+            {
+              "operator": "add"
+            },
+            {
+              "value": 3500.0
+            },
+            {
+              "var": "at_t2_detection_range"
+            },
+            {
+              "var": "at_t2_player_detection_bonus"
+            },
+            {
+              "use_variable": true
+            },
+            {
+              "var_value": "at_base_detection_range"
+            }
+          ]
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 2000.0,
+            "var": "at_t2_player_detection_bonus"
+          }
+        }
+      ]
+    },
+    "at_t1_is_detect_alowed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "at_is_detect_on",
+          "value": true,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "говорим что бомберы не обнаружены"
+          }
+        },
+        {
+          "varSetBool": {
+            "value": false,
+            "var": "at_t1_is_detected"
+          }
+        },
+        {
+          "comment": {
+            "value": "сначала надо найти бомберов. прячем их"
+          }
+        },
+        {
+          "unitSetStealth": [
+            {
+              "set": true
+            },
+            {
+              "radius": 3500.0
+            },
+            {
+              "target": "@at_assaults_t1_name"
+            },
+            {
+              "target": "@at_assaults_t1_cover_name"
+            },
+            {
+              "team": "B"
+            }
+          ]
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "@at_assaults_t1_name",
+            "team": "A"
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "@at_assaults_t1_name",
+            "team": "B"
+          }
+        },
+        {
+          "comment": {
+            "value": "выдаем квест на защиту"
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "bfd_t1_assaults_defend",
+            "unit_or_area": "@at_assaults_t1_name",
+            "object_type": "isActive"
+          }
+        },
+        {
+          "comment": {
+            "value": "включаем отслеживание позиции бомберов"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "at_assaults_t1_def_objective_update"
+            },
+            {
+              "target": "at_assaults_t2_kill_objective_update"
+            }
+          ]
+        },
+        {
+          "comment": {
+            "value": "включаем скрипт обнаружения"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "at_t1_assaults_detected"
+            },
+            {
+              "target": "at_detecttion_range_checks"
+            },
+            {
+              "target": "at_t1_assaults_detected_by_players"
+            }
+          ]
+        }
+      ],
+      "else_actions": [
+        {
+          "comment": {
+            "value": "бомберы известны сразу"
+          }
+        },
+        {
+          "unitSetStealth": {
+            "set": true,
+            "radius": 64000.0,
+            "target": "@at_assaults_t1_name"
+          }
+        },
+        {
+          "varSetBool": {
+            "value": true,
+            "var": "at_t1_is_detected"
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "@at_assaults_t1_name",
+            "team": "Both"
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "bfd_t1_assaults_defend",
+            "unit_or_area": "@at_assaults_t1_name",
+            "object_type": "isActive"
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "bfd_t2_assaults_attack",
+            "unit_or_area": "@at_assaults_t1_name",
+            "object_type": "isActive"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "at_assaults_t1_def_objective_update"
+            },
+            {
+              "target": "at_assaults_t2_kill_objective_update"
+            }
+          ]
+        }
+      ]
+    },
+    "at_t1_assaults_detected": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenEnemyNear": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "enemy_type": "isTeamB",
+          "distance": 5500.0,
+          "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "@at_assaults_t1_name",
+          "use_variable": true,
+          "distance_var": "at_t2_detection_range"
+        }
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": "at_t1_assaults_detected_by_players"
+        },
+        "comment": {
+          "value": "враг обнаружил бомберов"
+        },
+        "unitSetStealth": {
+          "set": true,
+          "radius": 64000.0,
+          "target": "@at_assaults_t1_name",
+          "team": "B"
+        },
+        "varSetBool": {
+          "value": true,
+          "var": "at_t1_is_detected"
+        },
+        "unitSetIndication": {
+          "set": true,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "@at_assaults_t1_name"
+        },
+        "moAddMissionObjective": {
+          "target": "bfd_t2_assaults_attack",
+          "unit_or_area": "@at_assaults_t1_name",
+          "object_type": "isActive"
+        }
+      },
+      "else_actions": []
+    },
+    "at_t1_assaults_detected_by_players": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 5500.0,
+          "math": "2D",
+          "object_type": "isActive",
+          "object_marking": 0,
+          "target_type": "isOnline",
+          "target_marking": 0,
+          "check_objects": "any",
+          "check_targets": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "@at_assaults_t1_name",
+          "target": "t2_players_squad",
+          "var": "at_t2_player_detection_bonus",
+          "compareCenters": false
+        }
+      },
+      "actions": [
+        {
+          "triggerDisable": {
+            "target": "at_t1_assaults_detected"
+          }
+        },
+        {
+          "comment": {
+            "value": "враг обнаружил бомберов"
+          }
+        },
+        {
+          "unitSetStealth": {
+            "set": true,
+            "radius": 64000.0,
+            "target": "@at_assaults_t1_name",
+            "team": "B"
+          }
+        },
+        {
+          "varSetBool": {
+            "value": true,
+            "var": "at_t1_is_detected"
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "@at_assaults_t1_name"
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "bfd_t2_assaults_attack",
+            "unit_or_area": "@at_assaults_t1_name",
+            "object_type": "isActive"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "t2_detection_task_completed"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "at_t2_is_detect_alowed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "at_is_detect_on",
+          "value": true,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "говорим что бомберы не обнаружены"
+          }
+        },
+        {
+          "varSetBool": {
+            "value": false,
+            "var": "at_t2_is_detected"
+          }
+        },
+        {
+          "comment": {
+            "value": "сначала надо найти бомберов. прячем их"
+          }
+        },
+        {
+          "unitSetStealth": [
+            {
+              "set": true
+            },
+            {
+              "radius": 3500.0
+            },
+            {
+              "target": "@at_assaults_t2_name"
+            },
+            {
+              "target": "@at_assaults_t2_cover_name"
+            },
+            {
+              "team": "A"
+            }
+          ]
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "@at_assaults_t2_name",
+            "team": "B"
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "@at_assaults_t2_name",
+            "team": "A"
+          }
+        },
+        {
+          "comment": {
+            "value": "выдаем квест на защиту"
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "bfd_t2_assaults_defend",
+            "unit_or_area": "@at_assaults_t2_name",
+            "object_type": "isActive"
+          }
+        },
+        {
+          "comment": {
+            "value": "включаем отслеживание позиции бомберов"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "at_assaults_t2_def_objective_update"
+            },
+            {
+              "target": "at_assaults_t1_kill_objective_update"
+            }
+          ]
+        },
+        {
+          "comment": {
+            "value": "включаем скрипт обнаружения"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "at_t2_assaults_detected"
+            },
+            {
+              "target": "at_detecttion_range_checks"
+            },
+            {
+              "target": "at_t2_assaults_detected_by_players"
+            }
+          ]
+        }
+      ],
+      "else_actions": [
+        {
+          "comment": {
+            "value": "бомберы известны сразу"
+          }
+        },
+        {
+          "unitSetStealth": {
+            "set": true,
+            "radius": 64000.0,
+            "target": "@at_assaults_t2_name"
+          }
+        },
+        {
+          "varSetBool": {
+            "value": true,
+            "var": "at_t2_is_detected"
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "@at_assaults_t2_name",
+            "team": "Both"
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "bfd_t2_assaults_defend",
+            "unit_or_area": "@at_assaults_t2_name",
+            "object_type": "isActive"
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "bfd_t1_assaults_attack",
+            "unit_or_area": "@at_assaults_t2_name",
+            "object_type": "isActive"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "at_assaults_t2_def_objective_update"
+            },
+            {
+              "target": "at_assaults_t1_kill_objective_update"
+            }
+          ]
+        }
+      ]
+    },
+    "at_t2_assaults_detected": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenEnemyNear": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "enemy_type": "isTeamB",
+          "distance": 5500.0,
+          "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "@at_assaults_t2_name",
+          "use_variable": true,
+          "distance_var": "at_t1_detection_range"
+        }
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": "at_t2_assaults_detected_by_players"
+        },
+        "comment": {
+          "value": "враг обнаружил бомберов"
+        },
+        "unitSetStealth": {
+          "set": true,
+          "radius": 64000.0,
+          "target": "@at_assaults_t2_name",
+          "team": "A"
+        },
+        "varSetBool": {
+          "value": true,
+          "var": "at_t2_is_detected"
+        },
+        "unitSetIndication": {
+          "set": true,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "@at_assaults_t2_name"
+        },
+        "moAddMissionObjective": {
+          "target": "bfd_t1_assaults_attack",
+          "unit_or_area": "@at_assaults_t2_name",
+          "object_type": "isActive"
+        }
+      },
+      "else_actions": []
+    },
+    "at_t2_assaults_detected_by_players": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 5500.0,
+          "math": "2D",
+          "object_type": "isActive",
+          "object_marking": 0,
+          "target_type": "isOnline",
+          "target_marking": 0,
+          "check_objects": "any",
+          "check_targets": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "@at_assaults_t2_name",
+          "target": "t1_players_squad",
+          "var": "at_t1_player_detection_bonus",
+          "compareCenters": false
+        }
+      },
+      "actions": [
+        {
+          "triggerDisable": {
+            "target": "at_t2_assaults_detected"
+          }
+        },
+        {
+          "comment": {
+            "value": "враг обнаружил бомберов"
+          }
+        },
+        {
+          "unitSetStealth": {
+            "set": true,
+            "radius": 64000.0,
+            "target": "@at_assaults_t2_name",
+            "team": "A"
+          }
+        },
+        {
+          "varSetBool": {
+            "value": true,
+            "var": "at_t2_is_detected"
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "@at_assaults_t2_name"
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "bfd_t1_assaults_attack",
+            "unit_or_area": "@at_assaults_t2_name",
+            "object_type": "isActive"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "t1_detection_task_completed"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "at_assaults_t1_fighters_retreat": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "unitMoveTo": {
+          "object_marking": 0,
+          "target": "at_assaults_t1_retreat_point",
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "@at_assaults_t1_cover_name"
+        },
+        "triggerEnable": {
+          "target": "at_assaults_t1_fighters_disable"
+        }
+      },
+      "else_actions": []
+    },
+    "at_assaults_t2_fighters_retreat": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "unitMoveTo": {
+          "object_marking": 0,
+          "target": "at_assaults_t2_retreat_point",
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "@at_assaults_t2_cover_name"
+        },
+        "triggerEnable": {
+          "target": "at_assaults_t2_fighters_disable"
+        }
+      },
+      "else_actions": []
+    },
+    "at_assaults_t1_fighters_disable": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 3500.0,
+          "math": "2D",
+          "object_type": "isActive",
+          "object_marking": 0,
+          "target_type": "isAlive",
+          "target_marking": 0,
+          "check_objects": "any",
+          "check_targets": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "@at_assaults_t1_cover_name",
+          "target": "at_assaults_t1_retreat_point",
+          "compareCenters": false
+        }
+      },
+      "actions": {
+        "unitPutToSleep": {
+          "target": "@at_assaults_t1_cover_name",
+          "useForTriggerFiltered": true
+        }
+      },
+      "else_actions": []
+    },
+    "at_assaults_t2_fighters_disable": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 3500.0,
+          "math": "2D",
+          "object_type": "isActive",
+          "object_marking": 0,
+          "target_type": "isAlive",
+          "target_marking": 0,
+          "check_objects": "any",
+          "check_targets": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "@at_assaults_t2_cover_name",
+          "target": "at_assaults_t2_retreat_point",
+          "compareCenters": false
+        }
+      },
+      "actions": {
+        "unitPutToSleep": {
+          "target": "@at_assaults_t2_cover_name",
+          "useForTriggerFiltered": true
+        }
+      },
+      "else_actions": []
+    },
+    "players_activity": {
+      "isCategory": true,
+      "is_enabled": true,
+      "at_activity_start": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [],
+        "actions": [
+          {
+            "comment": {
+              "value": "назначаем дистанцию проверки от ранга миссии"
+            }
+          },
+          {
+            "triggerActivate": {
+              "target": "at_matchning_distance_0_3",
+              "activate_type": "checkConidtions",
+              "check_trigger_status": false,
+              "after_activation": "disable"
+            }
+          },
+          {
+            "triggerActivate": {
+              "target": "at_matchning_distance_4_7",
+              "activate_type": "checkConidtions",
+              "check_trigger_status": false,
+              "after_activation": "disable"
+            }
+          },
+          {
+            "triggerActivate": {
+              "target": "at_matchning_distance_8_11",
+              "activate_type": "checkConidtions",
+              "check_trigger_status": false,
+              "after_activation": "disable"
+            }
+          },
+          {
+            "triggerActivate": {
+              "target": "at_matchning_distance_12_16",
+              "activate_type": "checkConidtions",
+              "check_trigger_status": false,
+              "after_activation": "disable"
+            }
+          },
+          {
+            "triggerActivate": {
+              "target": "at_matchning_distance_17_20",
+              "activate_type": "checkConidtions",
+              "check_trigger_status": false,
+              "after_activation": "disable"
+            }
+          }
+        ],
+        "else_actions": []
+      },
+      "at_matchning_distance_0_3": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "at_matching_rank",
+            "value": 4,
+            "comparasion_func": "less"
+          }
+        },
+        "actions": {
+          "varSetReal": {
+            "value": 3000.0,
+            "var": "at_activity_distance"
+          }
+        },
+        "else_actions": []
+      },
+      "at_matchning_distance_4_7": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [
+          {
+            "varCompareInt": {
+              "var_value": "at_matching_rank",
+              "value": 3,
+              "comparasion_func": "more"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "at_matching_rank",
+              "value": 8,
+              "comparasion_func": "less"
+            }
+          }
+        ],
+        "actions": {
+          "varSetReal": {
+            "value": 4500.0,
+            "var": "at_activity_distance"
+          }
+        },
+        "else_actions": []
+      },
+      "at_matchning_distance_8_11": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [
+          {
+            "varCompareInt": {
+              "var_value": "at_matching_rank",
+              "value": 7,
+              "comparasion_func": "more"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "at_matching_rank",
+              "value": 12,
+              "comparasion_func": "less"
+            }
+          }
+        ],
+        "actions": {
+          "varSetReal": {
+            "value": 6000.0,
+            "var": "at_activity_distance"
+          }
+        },
+        "else_actions": []
+      },
+      "at_matchning_distance_12_16": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [
+          {
+            "varCompareInt": {
+              "var_value": "at_matching_rank",
+              "value": 11,
+              "comparasion_func": "more"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "at_matching_rank",
+              "value": 17,
+              "comparasion_func": "less"
+            }
+          }
+        ],
+        "actions": {
+          "varSetReal": {
+            "value": 7500.0,
+            "var": "at_activity_distance"
+          }
+        },
+        "else_actions": []
+      },
+      "at_matchning_distance_17_20": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [
+          {
+            "varCompareInt": {
+              "var_value": "at_matching_rank",
+              "value": 16,
+              "comparasion_func": "more"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "at_matching_rank",
+              "value": 30,
+              "comparasion_func": "less"
+            }
+          }
+        ],
+        "actions": {
+          "varSetReal": {
+            "value": 9000.0,
+            "var": "at_activity_distance"
+          }
+        },
+        "else_actions": []
+      },
+      "at_t1_def_activity_change": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitDistanceBetween": {
+            "value": 1500.0,
+            "math": "2D",
+            "object_type": "isActive",
+            "object_marking": 0,
+            "target_type": "isOnline",
+            "target_marking": 0,
+            "check_objects": "any",
+            "check_targets": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@at_assaults_t1_name",
+            "target": "t1_players_squad",
+            "var": "at_activity_distance",
+            "compareCenters": false
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "рядом есть один из игроков команды А"
+          },
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "at_t1_def_players_activity_time"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "рядом нет игроков команды А"
+          }
+        }
+      },
+      "at_t1_kill_activity_change": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitDistanceBetween": {
+            "value": 1500.0,
+            "math": "2D",
+            "object_type": "isActive",
+            "object_marking": 0,
+            "target_type": "isOnline",
+            "target_marking": 0,
+            "check_objects": "any",
+            "check_targets": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@at_assaults_t2_name",
+            "target": "t1_players_squad",
+            "var": "at_activity_distance",
+            "compareCenters": false
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "рядом есть один из игроков команды А"
+          },
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "at_t1_kill_players_activity_time"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "рядом нет игроков команды А"
+          }
+        }
+      },
+      "at_t2_def_activity_change": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitDistanceBetween": {
+            "value": 1500.0,
+            "math": "2D",
+            "object_type": "isActive",
+            "object_marking": 0,
+            "target_type": "isOnline",
+            "target_marking": 0,
+            "check_objects": "any",
+            "check_targets": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@at_assaults_t2_name",
+            "target": "t2_players_squad",
+            "var": "at_activity_distance",
+            "compareCenters": false
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "рядом есть один из игроков команды Б"
+          },
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "at_t2_def_players_activity_time"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "рядом нет игроков команды Б"
+          }
+        }
+      },
+      "at_t2_kill_activity_change": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitDistanceBetween": {
+            "value": 1500.0,
+            "math": "2D",
+            "object_type": "isActive",
+            "object_marking": 0,
+            "target_type": "isOnline",
+            "target_marking": 0,
+            "check_objects": "any",
+            "check_targets": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@at_assaults_t1_name",
+            "target": "t2_players_squad",
+            "var": "at_activity_distance",
+            "compareCenters": false
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "рядом есть один из игроков команды Б"
+          },
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "at_t2_kill_players_activity_time"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "рядом нет игроков команды Б"
+          }
+        }
+      },
+      "at_t1_def_activity_calc": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [],
+        "actions": [
+          {
+            "comment": {
+              "value": "считаем процент активности от обющей активности задания"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "at_t1_def_player_activity_calc",
+              "input_var": "at_t1_def_players_activity_time"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "mul",
+              "value": 100.0,
+              "var": "at_t1_def_player_activity_calc"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "divAB",
+              "value": 100.0,
+              "var": "at_t1_def_player_activity_calc",
+              "use_variable": true,
+              "var_value": "at_t1_def_time"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем активность"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "at_t1_def_activity_check"
+            }
+          }
+        ],
+        "else_actions": []
+      },
+      "at_t1_def_activity_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "at_t1_def_player_activity_calc",
+            "value": 24,
+            "comparasion_func": "more"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "активность игроков при выполнении задания была 25% или выше"
+          },
+          "triggerEnable": {
+            "target": "t1_major_task_completed"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "активность игроков при выполнении задания была ниже 25%"
+          },
+          "triggerEnable": {
+            "target": "t1_tiny_task_completed"
+          }
+        }
+      },
+      "at_t2_def_activity_calc": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [],
+        "actions": [
+          {
+            "comment": {
+              "value": "считаем процент активности от обющей активности задания"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "at_t2_def_player_activity_calc",
+              "input_var": "at_t2_def_players_activity_time"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "mul",
+              "value": 100.0,
+              "var": "at_t2_def_player_activity_calc"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "divAB",
+              "value": 100.0,
+              "var": "at_t2_def_player_activity_calc",
+              "use_variable": true,
+              "var_value": "at_t2_def_time"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем активность"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "at_t2_def_activity_check"
+            }
+          }
+        ],
+        "else_actions": []
+      },
+      "at_t2_def_activity_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "at_t2_def_player_activity_calc",
+            "value": 24,
+            "comparasion_func": "more"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "активность игроков при выполнении задания была 25% или выше"
+          },
+          "triggerEnable": {
+            "target": "t2_major_task_completed"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "активность игроков при выполнении задания была ниже 25%"
+          },
+          "triggerEnable": {
+            "target": "t2_tiny_task_completed"
+          }
+        }
+      },
+      "at_t1_kill_activity_calc": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [],
+        "actions": [
+          {
+            "comment": {
+              "value": "считаем процент активности от обющей активности задания"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "at_t1_kill_player_activity_calc",
+              "input_var": "at_t1_kill_players_activity_time"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "mul",
+              "value": 100.0,
+              "var": "at_t1_kill_player_activity_calc"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "divAB",
+              "value": 100.0,
+              "var": "at_t1_kill_player_activity_calc",
+              "use_variable": true,
+              "var_value": "at_t1_kill_time"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем активность"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "at_t1_kill_activity_check"
+            }
+          }
+        ],
+        "else_actions": []
+      },
+      "at_t1_kill_activity_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "at_t1_kill_player_activity_calc",
+            "value": 24,
+            "comparasion_func": "more"
+          },
+          "unitWhenCountMatches": {
+            "object_type": "isKilledByPlayer",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@at_assaults_t2_name"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "активность игроков при выполнении задания была 25% или выше"
+          },
+          "triggerEnable": {
+            "target": "t1_major_task_completed"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "активность игроков при выполнении задания была ниже 25%"
+          },
+          "triggerEnable": {
+            "target": "t1_tiny_task_completed"
+          }
+        }
+      },
+      "at_t2_kill_activity_calc": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [],
+        "actions": [
+          {
+            "comment": {
+              "value": "считаем процент активности от обющей активности задания"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "at_t2_kill_player_activity_calc",
+              "input_var": "at_t2_kill_players_activity_time"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "mul",
+              "value": 100.0,
+              "var": "at_t2_kill_player_activity_calc"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "divAB",
+              "value": 100.0,
+              "var": "at_t2_kill_player_activity_calc",
+              "use_variable": true,
+              "var_value": "at_t2_kill_time"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем активность"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "at_t2_kill_activity_check"
+            }
+          }
+        ],
+        "else_actions": []
+      },
+      "at_t2_kill_activity_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "at_t2_kill_player_activity_calc",
+            "value": 24,
+            "comparasion_func": "more"
+          },
+          "unitWhenCountMatches": {
+            "object_type": "isKilledByPlayer",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@at_assaults_t1_name"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "активность игроков при выполнении задания была 25% или выше"
+          },
+          "triggerEnable": {
+            "target": "t2_major_task_completed"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "активность игроков при выполнении задания была ниже 25%"
+          },
+          "triggerEnable": {
+            "target": "t2_tiny_task_completed"
+          }
+        }
+      }
+    },
+    "at_t1_activity_reset": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "comment": {
+          "value": "задаем начальные значения активности"
+        },
+        "varSetInt": [
+          {
+            "value": 1
+          },
+          {
+            "var": "at_t1_def_time"
+          },
+          {
+            "var": "at_t1_def_players_activity_time"
+          },
+          {
+            "var": "at_t2_kill_time"
+          },
+          {
+            "var": "at_t2_kill_players_activity_time"
+          }
+        ]
+      },
+      "else_actions": []
+    },
+    "at_t2_activity_reset": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "comment": {
+          "value": "задаем начальные значения активности"
+        },
+        "varSetInt": [
+          {
+            "value": 1
+          },
+          {
+            "var": "at_t2_def_time"
+          },
+          {
+            "var": "at_t2_def_players_activity_time"
+          },
+          {
+            "var": "at_t1_kill_time"
+          },
+          {
+            "var": "at_t1_kill_players_activity_time"
+          }
+        ]
+      },
+      "else_actions": []
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true,
+    "bfd_t1_assaults_defend": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 10800,
+        "team": "A"
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "bfd_t2_assaults_defend": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 10800,
+        "team": "B"
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "bfd_t1_assaults_attack": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 10800,
+        "team": "A"
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "bfd_t2_assaults_attack": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 10800,
+        "team": "B"
+      },
+      "onSuccess": [],
+      "onFailed": []
+    }
+  },
+  "variables": {
+    "at_assaults_rank_idx": 0,
+    "at_assaults_t1_name": "",
+    "at_assaults_t2_name": "",
+    "at_assaults_t1_cover_name": "",
+    "at_assaults_t2_cover_name": "",
+    "at_assaults_delay_timer": 240,
+    "at_assaults_t1_spawn_name": "",
+    "at_assaults_t2_spawn_name": "",
+    "at_assaults_t1_spawn_random_idx": 0,
+    "at_assaults_t2_spawn_random_idx": 0,
+    "at_assaults_t1_target_name": "",
+    "at_assaults_t2_target_name": "",
+    "at_assaults_random_idx": 0,
+    "at_assaults_t1_spawn_need": true,
+    "at_assaults_t2_spawn_need": true,
+    "at_assaults_t1_tries_to_finding_target": 0,
+    "at_assaults_t2_tries_to_finding_target": 0,
+    "at_assault_game_type": "",
+    "at_is_template_active": false,
+    "at_t1_is_active": false,
+    "at_t2_is_active": false,
+    "at_is_detect_on": false,
+    "at_t1_is_detected": false,
+    "at_t2_is_detected": false,
+    "at_t1_detection_range": 5500.0,
+    "at_t2_detection_range": 5500.0,
+    "at_base_detection_range": 5500.0,
+    "at_assaults_t1_additional_delay_timer": 0,
+    "at_assaults_t2_additional_delay_timer": 0,
+    "at_t1_player_detection_bonus": 5500.0,
+    "at_t2_player_detection_bonus": 5500.0,
+    "at_t1_def_time": 0,
+    "at_t2_def_time": 0,
+    "at_t1_def_players_activity_time": 0,
+    "at_t2_def_players_activity_time": 0,
+    "at_t1_kill_time": 0,
+    "at_t2_kill_time": 0,
+    "at_t1_kill_players_activity_time": 0,
+    "at_t2_kill_players_activity_time": 0,
+    "at_activity_distance": 0.0,
+    "at_t1_def_player_activity_calc": 0,
+    "at_t2_def_player_activity_calc": 0,
+    "at_t1_kill_player_activity_calc": 0,
+    "at_t2_kill_player_activity_calc": 0,
+    "at_matching_rank": 0,
+    "at_army_both_zero": 0
+  },
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [],
+  "areas": [],
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}

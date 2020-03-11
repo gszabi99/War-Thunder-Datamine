@@ -1,0 +1,2407 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 20.0
+    },
+    "player": {
+      "army": 1,
+      "wing": "player_wing"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/peleliu.bin",
+      "type": "singleMission",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Night",
+      "weather": "hazy",
+      "gt_reload_explosives": true,
+      "windSpeed": [2.0,3.0],
+      "stars": {
+        "year": 1944,
+        "month": 9,
+        "day": 16
+      }
+    },
+    "spectator_points": [],
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01",
+      "viewAreaScale": 2.0,
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": [
+          {
+            "map": true
+          },
+          {
+            "minTime": 4
+          },
+          {
+            "picture": ""
+          },
+          {
+            "showAirMap": false
+          },
+          {
+            "arrow": [
+              {
+                "width": 1
+              },
+              {
+                "side": "enemy"
+              },
+              {
+                "point": "jpn_trucks_01"
+              },
+              {
+                "point": "trucks_point_01"
+              },
+              {
+                "point": "trucks_point_01"
+              }
+            ]
+          },
+          {
+            "icon": {
+              "icontype": "fighter",
+              "side": "player",
+              "target": "player_wing",
+              "lookAt": "patrol_point"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "truck",
+              "side": "enemy",
+              "target": "jpn_trucks_01"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "start_mission": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "jpn_fighters_01",
+            "effShootingRate": 0.8,
+            "plane": {
+              "targetDeviation": {
+                "trigger": "machine gun",
+                "defaultVal": 0.6,
+                "limits": [0.6,1.8]
+              }
+            }
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "jpn_aaa_squad",
+            "effShootingRate": 0.05
+          }
+        },
+        {
+          "addAirfield": [
+            {
+              "runwayStart": "airfield01_start"
+            },
+            {
+              "runwayEnd": "airfield01_end"
+            },
+            {
+              "runwayWidth": 30.0
+            },
+            {
+              "army": 1
+            },
+            {
+              "spawnPoint": "airfield01_spawn01"
+            },
+            {
+              "spawnPoint": "airfield01_spawn02"
+            },
+            {
+              "spawnPoint": "airfield01_spawn03"
+            },
+            {
+              "spawnPoint": "airfield01_spawn04"
+            }
+          ]
+        },
+        {
+          "spawnOnAirfield": {
+            "runwayName": "airfield01_start",
+            "objects": "player_wing"
+          }
+        },
+        {
+          "unitPutToSleep": [
+            {
+              "target": "jpn_trucks_01"
+            },
+            {
+              "target": "jpn_trucks_02"
+            },
+            {
+              "target": "jpn_fighters_01"
+            },
+            {
+              "target": "jpn_aaa_squad"
+            }
+          ]
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 1.0,
+            "target": "patrol_point"
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "pkg3_peleliu_mission_03_patrol"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "player_near_patrol_point": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "playersDistanceBetween": {
+          "value": 750.0,
+          "math": "2D",
+          "players": "isAlive",
+          "target_type": "isAlive",
+          "check_players": "any",
+          "check_targets": "any",
+          "target": "patrol_point"
+        }
+      },
+      "actions": [
+        {
+          "moSetObjectiveStatus": {
+            "target": "pkg3_peleliu_mission_03_patrol",
+            "status": 2
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 1.0,
+            "target": "patrol_point"
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "pkg3_peleliu_mission_03_convoy_01"
+          }
+        },
+        {
+          "unitWakeUp": {
+            "target": "jpn_trucks_01"
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "jpn_trucks_01"
+          }
+        },
+        {
+          "unitMark": {
+            "target_marking": 1,
+            "target": "jpn_trucks_01"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "update_indicators"
+            },
+            {
+              "target": "trucks_01_destroyed"
+            },
+            {
+              "target": "trucks_01_damaged"
+            },
+            {
+              "target": "fail_mission_01"
+            }
+          ]
+        },
+        {
+          "unitWakeUp": {
+            "target": "jpn_aaa_squad",
+            "delayForObjects": [5.0,10.0]
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "update_indicators": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "missionSetTargetsIndicator": [
+            {
+              "target_type": "isMarked"
+            },
+            {
+              "target_marking": 1
+            },
+            {
+              "delta": 0
+            },
+            {
+              "icon": "truck"
+            },
+            {
+              "icon army": 2
+            },
+            {
+              "set": true
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "target": "jpn_trucks_01"
+            },
+            {
+              "target": "jpn_trucks_02"
+            }
+          ]
+        },
+        {
+          "missionSetTargetsIndicator": {
+            "target_type": "isMarked",
+            "target_marking": 1,
+            "delta": 0,
+            "icon": "tank",
+            "icon army": 2,
+            "set": true,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "jpn_tanks"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "timer"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "trucks_01_damaged": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isKilled",
+          "object_marking": 0,
+          "func": "more",
+          "value": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "jpn_trucks_01"
+        }
+      },
+      "actions": {
+        "unitMark": {
+          "target_marking": 2,
+          "target": "jpn_trucks_01",
+          "useForTriggerFiltered": true
+        }
+      },
+      "else_actions": []
+    },
+    "trucks_01_destroyed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "jpn_trucks_01"
+        }
+      },
+      "actions": [
+        {
+          "moSetObjectiveStatus": {
+            "target": "pkg3_peleliu_mission_03_convoy_01",
+            "status": 2
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "jpn_trucks_01"
+          }
+        },
+        {
+          "unitMark": {
+            "target_marking": 0,
+            "target": "jpn_trucks_01"
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "fail_mission_01"
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "unitWakeUp": [
+            {
+              "target": "jpn_trucks_02"
+            },
+            {
+              "target": "jpn_fighters_01"
+            }
+          ]
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "jpn_trucks_02"
+          }
+        },
+        {
+          "unitMark": {
+            "target_marking": 1,
+            "target": "jpn_trucks_02"
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "pkg3_peleliu_mission_03_convoy_02"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "fail_mission_02"
+            },
+            {
+              "target": "trucks_02_damaged"
+            },
+            {
+              "target": "trucks_02_destroyed"
+            },
+            {
+              "target": "repeat_attack"
+            }
+          ]
+        }
+      ],
+      "else_actions": []
+    },
+    "fail_mission_01": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 150.0,
+          "math": "2D",
+          "object_type": "isAlive",
+          "target_type": "isAlive",
+          "check_objects": "any",
+          "check_targets": "any",
+          "object_marking": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "jpn_trucks_01",
+          "target": "trucks_point_01"
+        }
+      },
+      "actions": {
+        "moSetObjectiveStatus": {
+          "target": "pkg3_peleliu_mission_03_convoy_01",
+          "status": 3
+        },
+        "wait": {
+          "time": 3.0
+        },
+        "missionFailed": []
+      },
+      "else_actions": []
+    },
+    "fail_mission_02": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 150.0,
+          "math": "2D",
+          "object_type": "isAlive",
+          "target_type": "isAlive",
+          "check_objects": "any",
+          "check_targets": "any",
+          "object_marking": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "jpn_trucks_02",
+          "target": "trucks_point_02"
+        }
+      },
+      "actions": {
+        "moSetObjectiveStatus": {
+          "target": "pkg3_peleliu_mission_03_convoy_02",
+          "status": 3
+        },
+        "wait": {
+          "time": 3.0
+        },
+        "missionFailed": []
+      },
+      "else_actions": []
+    },
+    "trucks_02_damaged": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isKilled",
+          "object_marking": 0,
+          "func": "more",
+          "value": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "jpn_trucks_02"
+        }
+      },
+      "actions": {
+        "unitMark": {
+          "target_marking": 2,
+          "target": "jpn_trucks_02",
+          "useForTriggerFiltered": true
+        }
+      },
+      "else_actions": []
+    },
+    "trucks_02_destroyed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "jpn_trucks_02"
+        }
+      },
+      "actions": [
+        {
+          "moSetObjectiveStatus": {
+            "target": "pkg3_peleliu_mission_03_convoy_02",
+            "status": 2
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "jpn_trucks_02"
+          }
+        },
+        {
+          "unitMark": {
+            "target_marking": 0,
+            "target": "jpn_trucks_02"
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "fail_mission_02"
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "pkg3_peleliu_mission_03_tanks"
+          }
+        },
+        {
+          "unitMark": {
+            "target_marking": 1,
+            "target": "jpn_tanks"
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "jpn_tanks",
+            "stealthRadius": 7500.0
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "jpn_tanks"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "tanks_damaged"
+            },
+            {
+              "target": "tanks_destroyed"
+            }
+          ]
+        }
+      ],
+      "else_actions": []
+    },
+    "tanks_damaged": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isKilled",
+          "object_marking": 0,
+          "func": "more",
+          "value": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "jpn_tanks"
+        }
+      },
+      "actions": {
+        "unitMark": {
+          "target_marking": 2,
+          "target": "jpn_tanks",
+          "useForTriggerFiltered": true
+        }
+      },
+      "else_actions": []
+    },
+    "tanks_destroyed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "jpn_tanks"
+        }
+      },
+      "actions": {
+        "moSetObjectiveStatus": {
+          "target": "pkg3_peleliu_mission_03_tanks",
+          "status": 2
+        },
+        "wait": {
+          "time": 3.0
+        },
+        "missionMarkAsWaypoint": {
+          "visible": true,
+          "primary": true,
+          "oriented": false,
+          "ignoreDifficulty": false,
+          "scale": 1.0,
+          "target": "patrol_point"
+        },
+        "moAddMissionObjective": {
+          "target": "pkg3_peleliu_mission_03_return"
+        },
+        "triggerEnable": {
+          "target": "complete_mission"
+        }
+      },
+      "else_actions": []
+    },
+    "complete_mission": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "playersDistanceBetween": {
+          "value": 1500.0,
+          "math": "2D",
+          "players": "isAlive",
+          "target_type": "isAlive",
+          "check_players": "any",
+          "check_targets": "any",
+          "target": "patrol_point"
+        }
+      },
+      "actions": {
+        "missionMarkAsWaypoint": {
+          "visible": false,
+          "primary": true,
+          "oriented": false,
+          "ignoreDifficulty": false,
+          "scale": 1.0,
+          "target": "patrol_point"
+        },
+        "moSetObjectiveStatus": {
+          "target": "pkg3_peleliu_mission_03_return",
+          "status": 2
+        },
+        "wait": {
+          "time": 3.0
+        },
+        "missionCompleted": {
+          "timer": false
+        }
+      },
+      "else_actions": []
+    },
+    "repeat_attack": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "unitAttackTarget": {
+          "playerAttracted": true,
+          "object": "jpn_fighters_01",
+          "target": "player_wing",
+          "fireRandom": true,
+          "playerAttractedCount": 2,
+          "playerAttractedEffRate": 0.8
+        }
+      },
+      "else_actions": []
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true,
+    "pkg3_peleliu_mission_03_patrol": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "pkg3_peleliu_mission_03_convoy_01": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "pkg3_peleliu_mission_03_convoy_02": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "pkg3_peleliu_mission_03_tanks": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "pkg3_peleliu_mission_03_return": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    }
+  },
+  "variables": {
+    "timer": 0
+  },
+  "dialogs": [],
+  "airfields": [],
+  "effects": {
+    "effect_01": {
+      "type": "forestSmoke",
+      "tm": [
+        [185.1,0.0,0.0],
+        [0.0,185.1,0.0],
+        [0.0,0.0,185.1],
+        [-680.9,31.65,-12528.0]
+      ],
+      "density": 10.0
+    },
+    "effect_02": {
+      "type": "forestSmoke",
+      "tm": [
+        [185.1,0.0,0.0],
+        [0.0,185.1,0.0],
+        [0.0,0.0,185.1],
+        [-1047.15,31.65,-13221.3]
+      ],
+      "density": 0.0
+    },
+    "effect_03": {
+      "type": "forestSmoke",
+      "tm": [
+        [185.1,0.0,0.0],
+        [0.0,185.1,0.0],
+        [0.0,0.0,185.1],
+        [-1203.1,31.65,-11961.9]
+      ],
+      "density": 10.0
+    },
+    "effect_04": {
+      "type": "forestSmoke",
+      "tm": [
+        [185.1,0.0,0.0],
+        [0.0,185.1,0.0],
+        [0.0,0.0,185.1],
+        [-1350.2,31.65,-9499.1]
+      ],
+      "density": 10.0
+    },
+    "effect_05": {
+      "type": "forestSmoke",
+      "tm": [
+        [185.1,0.0,0.0],
+        [0.0,185.1,0.0],
+        [0.0,0.0,185.1],
+        [918.5,31.65,-10740.3]
+      ],
+      "density": 10.0
+    },
+    "effect_06": {
+      "type": "forestSmoke",
+      "tm": [
+        [185.1,0.0,0.0],
+        [0.0,185.1,0.0],
+        [0.0,0.0,185.1],
+        [-1190.5,31.65,-10941.7]
+      ],
+      "density": 10.0
+    },
+    "effect_07": {
+      "type": "bombedArea",
+      "tm": [
+        [449.793,0.0,0.0],
+        [0.0,449.793,0.0],
+        [0.0,0.0,449.793],
+        [-792.5,31.65,-12173.9]
+      ],
+      "density": 10.0
+    },
+    "effect_08": {
+      "type": "bombedArea",
+      "tm": [
+        [449.793,0.0,0.0],
+        [0.0,449.793,0.0],
+        [0.0,0.0,449.793],
+        [-1169.65,31.65,-9999.65]
+      ],
+      "density": 10.0
+    }
+  },
+  "units": [
+    {
+      "armada": {
+        "name": "player_wing",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-764.2,427.0,-11214.2]
+        ],
+        "unit_class": "f6f-3",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "f6f-3_bombs_rockets",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 6,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "skin": "us_navy",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "jpn_trucks_01",
+        "tm": [
+          [-0.461748,0.0,-0.887011],
+          [0.0,1.0,0.0],
+          [0.887011,0.0,-0.461748],
+          [1698.7,32.55,-6614.85]
+        ],
+        "unit_class": "jpn_truck",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 10,
+          "formation_type": "rows",
+          "formation_div": 10,
+          "formation_step": [2.5,10.0],
+          "formation_noise": [0.1,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "jpn_trucks_01_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1651.25,31.45,-6701.5]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jpn_trucks_01_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1555.7,29.15,-6858.55]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jpn_trucks_01_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1410.2,31.1,-7094.05]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jpn_trucks_01_wp_04": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1295.35,29.9,-7275.8]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jpn_trucks_01_wp_05": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1157.6,27.8,-7462.55]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jpn_trucks_01_wp_06": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [955.3,27.0,-7746.3]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jpn_trucks_01_wp_07": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [734.1,26.1,-7957.9]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jpn_trucks_01_wp_08": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [415.3,21.65,-8237.25]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jpn_trucks_01_wp_09": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [228.45,18.35,-8361.15]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jpn_trucks_01_wp_10": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-77.45,24.3,-8513.55]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jpn_trucks_01_wp_11": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-403.55,29.45,-8702.2]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "jpn_trucks_02",
+        "tm": [
+          [-0.5373,0.0,-0.843391],
+          [0.0,1.0,0.0],
+          [0.843391,0.0,-0.5373],
+          [1871.15,32.5,-6297.35]
+        ],
+        "unit_class": "jpn_truck",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 10,
+          "formation_type": "rows",
+          "formation_div": 10,
+          "formation_step": [2.5,10.0],
+          "formation_noise": [0.1,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "jpn_trucks_02_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1777.75,28.45,-6462.2]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jpn_trucks_02_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1773.3,28.8,-6546.7]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jpn_trucks_02_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1829.45,28.25,-6607.15]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jpn_trucks_02_wp_04": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [2045.55,28.6,-6676.3]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jpn_trucks_02_wp_05": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [2196.2,31.75,-6724.75]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jpn_trucks_02_wp_06": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [2271.75,28.4,-6775.2]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jpn_trucks_02_wp_07": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [2311.6,23.55,-6869.65]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jpn_trucks_02_wp_08": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [2299.3,30.35,-6985.45]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jpn_trucks_02_wp_09": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [2193.35,28.7,-7179.85]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jpn_trucks_02_wp_10": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [2104.7,29.45,-7315.35]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jpn_trucks_02_wp_11": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1914.3,18.2,-7482.7]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jpn_trucks_02_wp_12": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1781.4,19.4,-7574.45]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jpn_trucks_02_wp_13": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1613.55,20.1,-7880.75]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jpn_trucks_02_wp_14": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1556.4,17.3,-8065.55]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jpn_trucks_02_wp_15": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1466.75,17.4,-8183.3]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jpn_trucks_02_wp_16": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1253.85,18.25,-8386.55]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jpn_trucks_02_wp_17": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [843.85,16.2,-8750.25]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jpn_trucks_02_wp_18": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [606.5,14.6,-9186.9]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jpn_trucks_02_wp_19": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [488.0,18.35,-9270.45]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jpn_trucks_02_wp_20": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [404.5,21.6,-9297.45]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jpn_trucks_02_wp_21": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [127.35,29.8,-9343.7]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "air_defence": {
+        "name": "jpn_aaa_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2059.45,30.0,-5882.8]
+        ],
+        "unit_class": "jpn_13mm_hotchkiss",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.05
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "jpn_aaa_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2142.3,30.0,-5837.2]
+        ],
+        "unit_class": "jpn_13mm_hotchkiss",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.05
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "jpn_aaa_03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2033.55,30.0,-5777.3]
+        ],
+        "unit_class": "jpn_13mm_hotchkiss",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.05
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "jpn_aaa_04",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2164.25,30.0,-5692.0]
+        ],
+        "unit_class": "jpn_13mm_hotchkiss",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.05
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "jpn_aaa_05",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2215.65,30.0,-5724.95]
+        ],
+        "unit_class": "jpn_13mm_hotchkiss",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.05
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "jpn_aaa_06",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2244.6,30.0,-5548.05]
+        ],
+        "unit_class": "jpn_13mm_hotchkiss",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.05
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "jpn_aaa_07",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2095.45,30.0,-5616.05]
+        ],
+        "unit_class": "jpn_13mm_hotchkiss",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.05
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "jpn_aaa_08",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2090.15,30.0,-5758.25]
+        ],
+        "unit_class": "jpn_13mm_hotchkiss",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.05
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "jpn_aaa_09",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2486.85,30.0,-5452.4]
+        ],
+        "unit_class": "jpn_13mm_hotchkiss",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.05
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "jpn_aaa_10",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2468.25,30.0,-5326.65]
+        ],
+        "unit_class": "jpn_13mm_hotchkiss",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.05
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "jpn_aaa_11",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2267.55,30.0,-5680.9]
+        ],
+        "unit_class": "searchLight",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.05
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "jpn_aaa_12",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2063.35,30.0,-5703.05]
+        ],
+        "unit_class": "searchLight",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.05
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "jpn_aaa_13",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2147.9,30.0,-5784.25]
+        ],
+        "unit_class": "searchLight",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.05
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "jpn_fighters_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3026.05,425.3,-3984.85]
+        ],
+        "unit_class": "a6m5_zero",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "jpn_tanks",
+        "tm": [
+          [7.54979e-08,0.0,1.0],
+          [0.0,1.0,0.0],
+          [-1.0,0.0,7.54979e-08],
+          [2377.3,20.4,-5424.75]
+        ],
+        "unit_class": "jpn_t97_Shinhoto_ChiHa",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 8,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [13.0,5.0],
+          "formation_noise": [1.0,1.0],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "jpn_aaa_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2564.85,33.5,-5534.1]
+        ],
+        "props": [
+          {
+            "squad_members": "jpn_aaa_01"
+          },
+          {
+            "squad_members": "jpn_aaa_02"
+          },
+          {
+            "squad_members": "jpn_aaa_03"
+          },
+          {
+            "squad_members": "jpn_aaa_04"
+          },
+          {
+            "squad_members": "jpn_aaa_05"
+          },
+          {
+            "squad_members": "jpn_aaa_06"
+          },
+          {
+            "squad_members": "jpn_aaa_07"
+          },
+          {
+            "squad_members": "jpn_aaa_08"
+          },
+          {
+            "squad_members": "jpn_aaa_09"
+          },
+          {
+            "squad_members": "jpn_aaa_10"
+          },
+          {
+            "squad_members": "jpn_aaa_11"
+          },
+          {
+            "squad_members": "jpn_aaa_12"
+          },
+          {
+            "squad_members": "jpn_aaa_13"
+          }
+        ]
+      }
+    }
+  ],
+  "areas": {
+    "airfield01_start": {
+      "type": "Sphere",
+      "tm": [
+        [85.2,0.0,0.0],
+        [0.0,85.2,0.0],
+        [0.0,0.0,85.2],
+        [-1076.15,27.1,-11491.3]
+      ],
+      "props": []
+    },
+    "airfield01_end": {
+      "type": "Sphere",
+      "tm": [
+        [85.2,0.0,0.0],
+        [0.0,85.2,0.0],
+        [0.0,0.0,85.2],
+        [-124.5,27.1,-10523.5]
+      ],
+      "props": []
+    },
+    "airfield01_spawn01": {
+      "type": "Sphere",
+      "tm": [
+        [10.0,0.0,0.0],
+        [0.0,10.0,0.0],
+        [0.0,0.0,10.0],
+        [-1011.6,27.1,-11388.0]
+      ],
+      "props": []
+    },
+    "airfield01_spawn02": {
+      "type": "Sphere",
+      "tm": [
+        [10.0,0.0,0.0],
+        [0.0,10.0,0.0],
+        [0.0,0.0,10.0],
+        [-977.0,27.1,-11422.6]
+      ],
+      "props": []
+    },
+    "airfield01_spawn03": {
+      "type": "Sphere",
+      "tm": [
+        [10.0,0.0,0.0],
+        [0.0,10.0,0.0],
+        [0.0,0.0,10.0],
+        [-1044.35,27.1,-11424.0]
+      ],
+      "props": []
+    },
+    "airfield01_spawn04": {
+      "type": "Sphere",
+      "tm": [
+        [10.0,0.0,0.0],
+        [0.0,10.0,0.0],
+        [0.0,0.0,10.0],
+        [-1011.85,27.1,-11456.5]
+      ],
+      "props": []
+    },
+    "trucks_point_01": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [-407.8,29.75,-8705.85]
+      ],
+      "props": []
+    },
+    "trucks_point_02": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [127.15,29.75,-9345.25]
+      ],
+      "props": []
+    },
+    "patrol_point": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [329.75,592.75,-8624.2]
+      ],
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}

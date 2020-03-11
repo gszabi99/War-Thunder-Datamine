@@ -1,0 +1,1043 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": "armada_01"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/krymsk.bin",
+      "type": "singleMission",
+      "restoreType": "manual",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "good",
+      "windDirection": [1.0,0.0,0.0],
+      "locName": "missions/i180_examination",
+      "locDesc": "missions/i180_examination/desc"
+    },
+    "spectator_points": [],
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01",
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": [
+          {
+            "map": true
+          },
+          {
+            "minTime": 4
+          },
+          {
+            "picture": ""
+          },
+          {
+            "showAirMap": false
+          },
+          {
+            "icon": {
+              "icontype": "fighter",
+              "side": "player",
+              "target": "airfield00",
+              "lookAt": "airfield01"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "airfield",
+              "side": "ally",
+              "target": "airfield01"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "imports": {
+    "import_record": {
+      "file": "gameData/missions/bridges/krymsk_bridges.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "excludes": []
+    }
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [],
+      "actions": {
+        "addAirfield": {
+          "runwayStart": "airfield00",
+          "runwayEnd": "airfield01",
+          "runwayWidth": 50.0,
+          "army": 0,
+          "spawnPoint": "spawnpoint",
+          "visibleOnHud": false
+        },
+        "spawnOnAirfield": {
+          "runwayName": "airfield00",
+          "objects": "armada_01"
+        },
+        "playerControls": {
+          "setStatus": "disable",
+          "control": "ALL"
+        },
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
+        }
+      },
+      "else_actions": []
+    },
+    "respawn": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "playersWhenStatus": {
+          "players": "isKilled",
+          "check_players": "any"
+        }
+      },
+      "actions": {
+        "wait": {
+          "time": 3.0
+        },
+        "spawnOnAirfield": {
+          "runwayName": "airfield00",
+          "objects": "armada_01"
+        },
+        "triggerEnable": [
+          {
+            "target": "do_damage_preset01"
+          },
+          {
+            "target": "do_damage_preset02"
+          },
+          {
+            "target": "do_damage_preset03"
+          },
+          {
+            "target": "do_damage_preset04"
+          },
+          {
+            "target": "do_damage_preset05"
+          },
+          {
+            "target": "do_damage_preset06"
+          },
+          {
+            "target": "do_damage_preset07"
+          }
+        ]
+      },
+      "else_actions": []
+    },
+    "hint_show_warning": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenStatus": {
+          "object_type": "isActive",
+          "check_objects": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object": "armada_01"
+        }
+      },
+      "actions": {
+        "playHint": {
+          "hintType": "standard",
+          "name": "hint/warning_aircraft_is_faulty",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        }
+      },
+      "else_actions": []
+    },
+    "hint_hide_warning": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_CONTINUE"
+        }
+      },
+      "actions": {
+        "missionSetTimeSpeed": {
+          "speed": 1.0,
+          "realtimeTriggers": true
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "hint/warning_aircraft_is_faulty",
+          "action": "hide",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ALL"
+        }
+      },
+      "else_actions": []
+    },
+    "hint_hide_xray": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_SHOW_HERO_MODULES",
+          "pressed": true
+        }
+      },
+      "actions": {
+        "playHint": {
+          "hintType": "standard",
+          "name": "hint/mechanic_should_relies_on_himself",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": 3.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        }
+      },
+      "else_actions": []
+    },
+    "initial_damage_presets": {
+      "isCategory": true,
+      "is_enabled": true,
+      "do_damage_preset01": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "unitWhenStatus": {
+            "object_type": "isActive",
+            "check_objects": "any",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object": "armada_01"
+          },
+          "varCompareInt": {
+            "var_value": "preset_id",
+            "value": 1,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": [
+          {
+            "unitSetProperties": {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "armada_01",
+              "invulnerabilityTimer": 0.0
+            }
+          },
+          {
+            "unitDamage": {
+              "power": 1.0,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [1.0,1.0],
+              "offset": [0.0,0.0,0.0],
+              "radiusOffset": [10.0,15.0],
+              "target": "armada_01",
+              "partName": "wing1_l_dm"
+            }
+          },
+          {
+            "unitDamage": {
+              "power": 0.1,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [1.0,1.0],
+              "offset": [0.0,0.0,0.0],
+              "radiusOffset": [10.0,15.0],
+              "target": "armada_01",
+              "partName": "oil1_dm"
+            }
+          },
+          {
+            "unitDamage": {
+              "power": 1.0,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [1.0,1.0],
+              "offset": [0.0,0.0,0.0],
+              "radiusOffset": [10.0,15.0],
+              "target": "armada_01",
+              "partName": "wingcontrol_l_dm"
+            }
+          }
+        ],
+        "else_actions": []
+      },
+      "do_damage_preset02": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "unitWhenStatus": {
+            "object_type": "isActive",
+            "check_objects": "any",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object": "armada_01"
+          },
+          "varCompareInt": {
+            "var_value": "preset_id",
+            "value": 2,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": [
+          {
+            "unitSetProperties": {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "armada_01",
+              "invulnerabilityTimer": 0.0
+            }
+          },
+          {
+            "unitDamage": {
+              "power": 1.0,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [1.0,1.0],
+              "offset": [0.0,0.0,0.0],
+              "radiusOffset": [10.0,15.0],
+              "target": "armada_01",
+              "partName": "fuse_dm"
+            }
+          },
+          {
+            "unitDamage": {
+              "power": 0.9,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [1.0,1.0],
+              "offset": [0.0,0.0,0.0],
+              "radiusOffset": [10.0,15.0],
+              "target": "armada_01",
+              "partName": "tank1_dm"
+            }
+          },
+          {
+            "unitDamage": {
+              "power": 1.0,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [1.0,1.0],
+              "offset": [0.0,0.0,0.0],
+              "radiusOffset": [10.0,15.0],
+              "target": "armada_01",
+              "partName": "rudder_dm"
+            }
+          }
+        ],
+        "else_actions": []
+      },
+      "do_damage_preset03": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "unitWhenStatus": {
+            "object_type": "isActive",
+            "check_objects": "any",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object": "armada_01"
+          },
+          "varCompareInt": {
+            "var_value": "preset_id",
+            "value": 3,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": [
+          {
+            "unitSetProperties": {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "armada_01",
+              "invulnerabilityTimer": 0.0
+            }
+          },
+          {
+            "unitDamage": {
+              "power": 1.0,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [1.0,1.0],
+              "offset": [0.0,0.0,0.0],
+              "radiusOffset": [10.0,15.0],
+              "target": "armada_01",
+              "partName": "fuse_dm"
+            }
+          },
+          {
+            "unitDamage": {
+              "power": 1.0,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [1.0,1.0],
+              "offset": [0.0,0.0,0.0],
+              "radiusOffset": [10.0,15.0],
+              "target": "armada_01",
+              "partName": "aileron_r_dm"
+            }
+          }
+        ],
+        "else_actions": []
+      },
+      "do_damage_preset04": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "unitWhenStatus": {
+            "object_type": "isActive",
+            "check_objects": "any",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object": "armada_01"
+          },
+          "varCompareInt": {
+            "var_value": "preset_id",
+            "value": 4,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": [
+          {
+            "unitSetProperties": {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "armada_01",
+              "invulnerabilityTimer": 0.0
+            }
+          },
+          {
+            "unitDamage": {
+              "power": 1.0,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [1.0,1.0],
+              "offset": [0.0,0.0,0.0],
+              "radiusOffset": [10.0,15.0],
+              "target": "armada_01",
+              "partName": "wing1_r_dm"
+            }
+          },
+          {
+            "unitDamage": {
+              "power": 0.1,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [1.0,1.0],
+              "offset": [0.0,0.0,0.0],
+              "radiusOffset": [10.0,15.0],
+              "target": "armada_01",
+              "partName": "oil1_dm"
+            }
+          },
+          {
+            "unitDamage": {
+              "power": 1.0,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [1.0,1.0],
+              "offset": [0.0,0.0,0.0],
+              "radiusOffset": [10.0,15.0],
+              "target": "armada_01",
+              "partName": "wingcontrol_r_dm"
+            }
+          }
+        ],
+        "else_actions": []
+      },
+      "do_damage_preset05": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "unitWhenStatus": {
+            "object_type": "isActive",
+            "check_objects": "any",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object": "armada_01"
+          },
+          "varCompareInt": {
+            "var_value": "preset_id",
+            "value": 5,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": [
+          {
+            "unitSetProperties": {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "armada_01",
+              "invulnerabilityTimer": 0.0
+            }
+          },
+          {
+            "unitDamage": {
+              "power": 1.0,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [1.0,1.0],
+              "offset": [0.0,0.0,0.0],
+              "radiusOffset": [10.0,15.0],
+              "target": "armada_01",
+              "partName": "stab_dm"
+            }
+          },
+          {
+            "unitDamage": {
+              "power": 0.9,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [1.0,1.0],
+              "offset": [0.0,0.0,0.0],
+              "radiusOffset": [10.0,15.0],
+              "target": "armada_01",
+              "partName": "tank1_dm"
+            }
+          },
+          {
+            "unitDamage": {
+              "power": 1.0,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [1.0,1.0],
+              "offset": [0.0,0.0,0.0],
+              "radiusOffset": [10.0,15.0],
+              "target": "armada_01",
+              "partName": "rudder_dm"
+            }
+          }
+        ],
+        "else_actions": []
+      },
+      "do_damage_preset06": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "unitWhenStatus": {
+            "object_type": "isActive",
+            "check_objects": "any",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object": "armada_01"
+          },
+          "varCompareInt": {
+            "var_value": "preset_id",
+            "value": 6,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": [
+          {
+            "unitSetProperties": {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "armada_01",
+              "invulnerabilityTimer": 0.0
+            }
+          },
+          {
+            "unitDamage": {
+              "power": 0.9,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [1.0,1.0],
+              "offset": [0.0,0.0,0.0],
+              "radiusOffset": [10.0,15.0],
+              "target": "armada_01",
+              "partName": "tank1_dm"
+            }
+          },
+          {
+            "unitDamage": {
+              "power": 1.0,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [1.0,1.0],
+              "offset": [0.0,0.0,0.0],
+              "radiusOffset": [10.0,15.0],
+              "target": "armada_01",
+              "partName": "aileron_l_dm"
+            }
+          }
+        ],
+        "else_actions": []
+      },
+      "do_damage_preset07": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "unitWhenStatus": {
+            "object_type": "isActive",
+            "check_objects": "any",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object": "armada_01"
+          },
+          "varCompareInt": {
+            "var_value": "preset_id",
+            "value": 7,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": [
+          {
+            "unitSetProperties": {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "armada_01",
+              "invulnerabilityTimer": 0.0
+            }
+          },
+          {
+            "unitDamage": {
+              "power": 1.0,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [1.0,1.0],
+              "offset": [0.0,0.0,0.0],
+              "radiusOffset": [10.0,15.0],
+              "target": "armada_01",
+              "partName": "fin_dm"
+            }
+          },
+          {
+            "unitDamage": {
+              "power": 1.0,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [1.0,1.0],
+              "offset": [0.0,0.0,0.0],
+              "radiusOffset": [10.0,15.0],
+              "target": "armada_01",
+              "partName": "tailcontrol_dm"
+            }
+          }
+        ],
+        "else_actions": []
+      }
+    },
+    "special_damages": {
+      "isCategory": true,
+      "is_enabled": true,
+      "preset06_broke_flaps_01": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.3
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "preset_id",
+            "value": 6,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "playerEmulateShortcut": {
+            "control": "ID_FLAPS_DOWN"
+          }
+        },
+        "else_actions": []
+      },
+      "preset07_broke_engine_01": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.8
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "preset_id",
+            "value": 7,
+            "comparasion_func": "equal"
+          },
+          "unitWhenControls": {
+            "object": "armada_01",
+            "func": "more",
+            "value": 1.0,
+            "property": "power"
+          }
+        },
+        "actions": {
+          "playerEmulateShortcut": {
+            "control": "ID_TOGGLE_ENGINE"
+          }
+        },
+        "else_actions": []
+      },
+      "preset07_broke_engine_02": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 6.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "preset_id",
+            "value": 7,
+            "comparasion_func": "equal"
+          },
+          "unitWhenProperties": {
+            "object": "armada_01",
+            "func": "more",
+            "value": 222.0,
+            "property": "speed",
+            "check_filter": "all",
+            "object_type": "isAlive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          }
+        },
+        "actions": {
+          "playerEmulateShortcut": {
+            "control": "ID_TOGGLE_ENGINE"
+          }
+        },
+        "else_actions": []
+      }
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {
+    "preset_id": 0
+  },
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": {
+    "armada": {
+      "name": "armada_01",
+      "tm": [
+        [0.488996,0.0,0.872286],
+        [0.0,1.0,0.0],
+        [-0.872286,0.0,0.488996],
+        [8171.85,212.2,10492.3]
+      ],
+      "unit_class": "i_180",
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "props": {
+        "army": 1,
+        "free_distance": 70.0,
+        "floating_distance": 50.0,
+        "minimum_distance_to_earth": 20.0,
+        "altLimit": 6000.0,
+        "attack_type": "fire_at_will",
+        "skill": 4,
+        "count": 1,
+        "plane": {
+          "wing_formation": "Diamond",
+          "row_distances": 1.5,
+          "col_distances": 1.5,
+          "super_formation": "Diamond",
+          "super_row_distances": 1.5,
+          "super_col_distances": 1.5,
+          "ai_skill": "NORMAL",
+          "task": "FLY_WAYPOINT"
+        }
+      },
+      "way": []
+    }
+  },
+  "areas": {
+    "airfield00": {
+      "type": "Sphere",
+      "tm": [
+        [-18.382,0.0,229.565],
+        [0.0,230.3,0.0],
+        [-229.565,0.0,-18.382],
+        [8172.95,210.5,10492.0]
+      ],
+      "props": []
+    },
+    "airfield01": {
+      "type": "Sphere",
+      "tm": [
+        [-18.382,0.0,229.565],
+        [0.0,230.3,0.0],
+        [-229.565,0.0,-18.382],
+        [8557.4,210.5,11224.0]
+      ],
+      "props": []
+    },
+    "spawnpoint": {
+      "type": "Sphere",
+      "tm": [
+        [-6.10606,0.0,76.2559],
+        [0.0,76.5,0.0],
+        [-76.2559,0.0,-6.10606],
+        [8169.78,210.5,10492.4]
+      ],
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}

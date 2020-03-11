@@ -1,0 +1,422 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/water.bin",
+      "type": "singleMission",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "hazy"
+    },
+    "spectator_points": []
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "team_killareas_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "varSetString": [
+            {
+              "value": "t1_killarea"
+            },
+            {
+              "var": "t1_killarea"
+            },
+            {
+              "var": "t1_killarea_temp"
+            }
+          ]
+        },
+        {
+          "varSetString": [
+            {
+              "value": "t2_killarea"
+            },
+            {
+              "var": "t2_killarea"
+            },
+            {
+              "var": "t2_killarea_temp"
+            }
+          ]
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "team_killareas_check_arcade"
+            },
+            {
+              "target": "team_killareas_check_realistic"
+            },
+            {
+              "target": "team_killareas_check_hardcore"
+            }
+          ]
+        }
+      ],
+      "else_actions": []
+    },
+    "team_killareas_check_arcade": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": {
+        "gameWhenDifficulty": {
+          "difficulty": "arcade",
+          "is": "equal"
+        }
+      },
+      "actions": {
+        "triggerEnable": [
+          {
+            "target": "t1_killareas_init"
+          },
+          {
+            "target": "t2_killareas_init"
+          }
+        ]
+      },
+      "else_actions": []
+    },
+    "team_killareas_check_realistic": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": {
+        "gameWhenDifficulty": {
+          "difficulty": "realistic",
+          "is": "equal"
+        }
+      },
+      "actions": {
+        "varAddString": [
+          {
+            "value": "_realistic"
+          },
+          {
+            "digits": 0
+          },
+          {
+            "var": "t1_killarea_temp"
+          },
+          {
+            "var": "t2_killarea_temp"
+          }
+        ],
+        "triggerEnable": {
+          "target": "team_killareas_check_realistic_t1_exist"
+        }
+      },
+      "else_actions": []
+    },
+    "team_killareas_check_realistic_t1_exist": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [
+        {
+          "objectExists": {
+            "target": "@t1_killarea_temp",
+            "type": "area"
+          }
+        },
+        {
+          "objectExists": {
+            "target": "@t1_killarea_temp",
+            "type": "squad"
+          }
+        }
+      ],
+      "actions": {
+        "comment": {
+          "value": "��������� ���� �� realistic ������� � �������"
+        },
+        "triggerEnable": {
+          "target": "team_killareas_check_realistic_t2_exist"
+        }
+      },
+      "else_actions": {
+        "comment": {
+          "value": "������� ����� ������"
+        },
+        "triggerEnable": [
+          {
+            "target": "t1_killareas_init"
+          },
+          {
+            "target": "t2_killareas_init"
+          }
+        ]
+      }
+    },
+    "team_killareas_check_realistic_t2_exist": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [
+        {
+          "objectExists": {
+            "target": "@t2_killarea_temp",
+            "type": "area"
+          }
+        },
+        {
+          "objectExists": {
+            "target": "@t2_killarea_temp",
+            "type": "squad"
+          }
+        }
+      ],
+      "actions": {
+        "comment": {
+          "value": "��������� ���� �� realistic ������� � �������"
+        },
+        "varAddString": [
+          {
+            "value": "_realistic"
+          },
+          {
+            "digits": 0
+          },
+          {
+            "var": "t1_killarea"
+          },
+          {
+            "var": "t2_killarea"
+          }
+        ],
+        "triggerEnable": [
+          {
+            "target": "t1_killareas_init"
+          },
+          {
+            "target": "t2_killareas_init"
+          }
+        ]
+      },
+      "else_actions": {
+        "comment": {
+          "value": "������� ����� ������"
+        },
+        "triggerEnable": [
+          {
+            "target": "t1_killareas_init"
+          },
+          {
+            "target": "t2_killareas_init"
+          }
+        ]
+      }
+    },
+    "team_killareas_check_hardcore": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": {
+        "gameWhenDifficulty": {
+          "difficulty": "simulator",
+          "is": "equal"
+        }
+      },
+      "actions": {
+        "varAddString": [
+          {
+            "value": "_hardcore"
+          },
+          {
+            "digits": 0
+          },
+          {
+            "var": "t1_killarea"
+          },
+          {
+            "var": "t2_killarea"
+          }
+        ],
+        "triggerEnable": [
+          {
+            "target": "t1_killareas_init"
+          },
+          {
+            "target": "t2_killareas_init"
+          }
+        ]
+      },
+      "else_actions": []
+    },
+    "t1_killareas_init": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [
+        {
+          "objectExists": {
+            "target": "@t1_killarea",
+            "type": "area"
+          }
+        },
+        {
+          "objectExists": {
+            "target": "@t1_killarea",
+            "type": "squad"
+          }
+        }
+      ],
+      "actions": {
+        "missionBattleArea": {
+          "air": false,
+          "ground": true,
+          "mapArea": false,
+          "killArea": true,
+          "killOutOfBattleArea": false,
+          "newGridHorizontalCellCount": 0,
+          "detectionArea": true,
+          "area": "@t1_killarea",
+          "team": "B"
+        }
+      },
+      "else_actions": []
+    },
+    "t2_killareas_init": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [
+        {
+          "objectExists": {
+            "target": "@t2_killarea",
+            "type": "area"
+          }
+        },
+        {
+          "objectExists": {
+            "target": "@t2_killarea",
+            "type": "squad"
+          }
+        }
+      ],
+      "actions": {
+        "missionBattleArea": {
+          "air": false,
+          "ground": true,
+          "mapArea": false,
+          "killArea": true,
+          "killOutOfBattleArea": false,
+          "newGridHorizontalCellCount": 0,
+          "detectionArea": true,
+          "area": "@t2_killarea",
+          "team": "A"
+        }
+      },
+      "else_actions": []
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {
+    "t1_killarea": "",
+    "t1_killarea_temp": "",
+    "t2_killarea": "",
+    "t2_killarea_temp": ""
+  },
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [],
+  "areas": [],
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}

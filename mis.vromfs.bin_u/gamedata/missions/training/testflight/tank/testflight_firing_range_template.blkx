@@ -1,0 +1,1083 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": "t1_player01"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "singleMission",
+      "level": "levels/avg_training_ground.bin",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "hazy"
+    },
+    "spectator_points": []
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "unit_spawn_assemble": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "varSetString": {
+            "value": "pillar",
+            "var": "pillar"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "firing_tank",
+            "var": "firing_tank"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "firing_tank_spawn",
+            "var": "firing_tank_spawn"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "firing_area",
+            "var": "firing_area"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "units_count"
+          }
+        },
+        {
+          "varAddString": [
+            {
+              "value": "@units_count"
+            },
+            {
+              "digits": 2
+            },
+            {
+              "var": "firing_tank"
+            },
+            {
+              "var": "firing_tank_spawn"
+            },
+            {
+              "var": "firing_area"
+            },
+            {
+              "var": "pillar"
+            }
+          ]
+        },
+        {
+          "triggerEnable": {
+            "target": "areas_and_units_exist"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "areas_and_units_exist": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": [
+        {
+          "objectExists": {
+            "target": "@firing_tank",
+            "type": "unit"
+          }
+        },
+        {
+          "objectExists": {
+            "target": "@firing_tank_spawn",
+            "type": "area"
+          }
+        },
+        {
+          "objectExists": {
+            "target": "@firing_area",
+            "type": "area"
+          }
+        },
+        {
+          "objectExists": {
+            "target": "@pillar",
+            "type": "unit"
+          }
+        }
+      ],
+      "actions": [
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@firing_tank",
+            "stealthRadius": 0.0,
+            "attack_type": "dont_aim"
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@pillar",
+            "army": 1,
+            "stealthRadius": 0.0
+          }
+        },
+        {
+          "unitRespawn": {
+            "delay": 1.0,
+            "offset": [0.0,0.0,0.0],
+            "object": "@firing_tank",
+            "target": "@firing_tank_spawn"
+          }
+        },
+        {
+          "triggerActivate": {
+            "target": "unit_spawn_assemble",
+            "activate_type": "checkConidtions",
+            "check_trigger_status": false,
+            "after_activation": "disable"
+          }
+        }
+      ],
+      "else_actions": {
+        "triggerEnable": {
+          "target": "firing_areas_assemble"
+        }
+      }
+    },
+    "firing_areas_assemble": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "varSetString": {
+            "value": "firing_tank",
+            "var": "firing_tank"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "pillar",
+            "var": "pillar"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "firing_area",
+            "var": "firing_area"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "fiing_areas_count"
+          }
+        },
+        {
+          "varAddString": [
+            {
+              "value": "@fiing_areas_count"
+            },
+            {
+              "digits": 2
+            },
+            {
+              "var": "firing_tank"
+            },
+            {
+              "var": "firing_area"
+            },
+            {
+              "var": "pillar"
+            }
+          ]
+        },
+        {
+          "triggerActivate": {
+            "target": "firing_area_exist",
+            "activate_type": "checkConidtions",
+            "check_trigger_status": false,
+            "after_activation": "disable"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "firing_area_exist": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [
+        {
+          "objectExists": {
+            "target": "@firing_area",
+            "type": "area"
+          }
+        },
+        {
+          "objectExists": {
+            "target": "@firing_tank",
+            "type": "unit"
+          }
+        }
+      ],
+      "actions": {
+        "triggerActivate": {
+          "target": "player_near_firing_area",
+          "activate_type": "checkConidtions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
+        }
+      },
+      "else_actions": {
+        "varSetInt": {
+          "value": 0,
+          "var": "fiing_areas_count"
+        },
+        "triggerActivate": {
+          "target": "firing_areas_assemble",
+          "activate_type": "checkConidtions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
+        }
+      }
+    },
+    "player_near_firing_area": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 20.0,
+          "math": "2D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "target_marking": 0,
+          "check_objects": "any",
+          "check_targets": "any",
+          "object": "t1_player01",
+          "target": "@pillar"
+        }
+      },
+      "actions": {
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "@firing_tank",
+          "stealthRadius": 3000.0,
+          "forceVisibleOnMap": true
+        },
+        "triggerActivate": {
+          "target": "player_inside_firing_area",
+          "activate_type": "checkConidtions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
+        }
+      },
+      "else_actions": {
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "@firing_tank",
+          "stealthRadius": 1.0,
+          "calmDetection": false,
+          "forceVisibleOnMap": false
+        },
+        "triggerActivate": {
+          "target": "player_inside_firing_area",
+          "activate_type": "checkConidtions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
+        }
+      }
+    },
+    "player_inside_firing_area": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "2D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "check_objects": "any",
+          "object": "t1_player01",
+          "target": "@firing_area"
+        }
+      },
+      "actions": {
+        "unitAttackTarget": {
+          "playerAttracted": false,
+          "object": "@firing_tank",
+          "target": "t1_player01",
+          "fireMode": "single"
+        },
+        "wait": {
+          "time": 10.0
+        },
+        "triggerActivate": {
+          "target": "firing_areas_assemble",
+          "activate_type": "checkConidtions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
+        }
+      },
+      "else_actions": {
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "@firing_tank",
+          "attack_type": "hold_fire"
+        },
+        "triggerActivate": {
+          "target": "firing_areas_assemble",
+          "activate_type": "checkConidtions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
+        }
+      }
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {
+    "firing_tank": "",
+    "firing_tank_spawn": "",
+    "firing_area": "",
+    "pillar": "",
+    "units_count": 0,
+    "fiing_areas_count": 0
+  },
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "objectGroups": {
+        "name": "circle01",
+        "tm": [
+          [0.420453,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,0.420453],
+          [-1.1902,94.4864,196.602]
+        ],
+        "unit_class": "capture_zone_circle",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "circle02",
+        "tm": [
+          [0.420453,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,0.420453],
+          [-1.23024,94.4864,223.022]
+        ],
+        "unit_class": "capture_zone_circle",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "circle03",
+        "tm": [
+          [0.420453,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,0.420453],
+          [-1.23024,94.4864,249.632]
+        ],
+        "unit_class": "capture_zone_circle",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "circle04",
+        "tm": [
+          [0.420453,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,0.420453],
+          [-1.23024,94.4864,276.222]
+        ],
+        "unit_class": "capture_zone_circle",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "circle05",
+        "tm": [
+          [0.420453,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,0.420453],
+          [-1.23024,94.4864,302.492]
+        ],
+        "unit_class": "capture_zone_circle",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      }
+    },
+    {
+      "structures": {
+        "name": "pillar01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1.1902,94.4864,196.582]
+        ],
+        "unit_class": "flag_blue",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0,
+          "setStealth": true
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "pillar02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1.1902,94.4864,223.082]
+        ],
+        "unit_class": "flag_blue",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "setStealth": true
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "pillar03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1.1902,94.4864,249.582]
+        ],
+        "unit_class": "flag_blue",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "setStealth": true
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "pillar04",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1.1902,94.4864,276.082]
+        ],
+        "unit_class": "flag_blue",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "setStealth": true
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "pillar05",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1.1902,94.4864,302.592]
+        ],
+        "unit_class": "flag_blue",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "setStealth": true
+        },
+        "way": []
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "circle06",
+        "tm": [
+          [0.420453,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,0.420453],
+          [-1.23024,94.4864,337.082]
+        ],
+        "unit_class": "capture_zone_circle",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "circle07",
+        "tm": [
+          [0.420453,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,0.420453],
+          [-1.23024,94.4864,370.092]
+        ],
+        "unit_class": "capture_zone_circle",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "circle08",
+        "tm": [
+          [0.420453,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,0.420453],
+          [-1.23024,94.4864,413.402]
+        ],
+        "unit_class": "capture_zone_circle",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      }
+    },
+    {
+      "structures": {
+        "name": "pillar06",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1.1902,94.4864,337.212]
+        ],
+        "unit_class": "flag_blue",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "setStealth": true
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "pillar07",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1.1902,94.4864,370.022]
+        ],
+        "unit_class": "flag_blue",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "setStealth": true
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "pillar08",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1.1902,94.4864,413.532]
+        ],
+        "unit_class": "flag_blue",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "setStealth": true
+        },
+        "way": []
+      }
+    }
+  ],
+  "areas": {
+    "firing_area01": {
+      "type": "Cylinder",
+      "tm": [
+        [10.0,0.0,0.0],
+        [0.0,8.53627,0.0],
+        [0.0,0.0,10.0],
+        [-1.1902,94.4864,196.582]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "firing_tank_spawn01": {
+      "type": "Point",
+      "tm": [
+        [-1.0,0.0,2.08616e-07],
+        [0.0,1.0,0.0],
+        [-2.08616e-07,0.0,-1.0],
+        [998.799,94.4864,196.412]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "firing_area02": {
+      "type": "Cylinder",
+      "tm": [
+        [10.0,0.0,0.0],
+        [0.0,8.53627,0.0],
+        [0.0,0.0,10.0],
+        [-1.1902,94.4864,223.082]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "firing_area03": {
+      "type": "Cylinder",
+      "tm": [
+        [10.0,0.0,0.0],
+        [0.0,8.53627,0.0],
+        [0.0,0.0,10.0],
+        [-1.1902,94.4864,249.582]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "firing_area04": {
+      "type": "Cylinder",
+      "tm": [
+        [10.0,0.0,0.0],
+        [0.0,8.53627,0.0],
+        [0.0,0.0,10.0],
+        [-1.1902,94.4864,276.082]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "firing_area05": {
+      "type": "Cylinder",
+      "tm": [
+        [10.0,0.0,0.0],
+        [0.0,8.53627,0.0],
+        [0.0,0.0,10.0],
+        [-1.1902,94.4864,302.592]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "firing_area06": {
+      "type": "Cylinder",
+      "tm": [
+        [10.0,0.0,0.0],
+        [0.0,8.53627,0.0],
+        [0.0,0.0,10.0],
+        [-1.1902,94.4864,337.122]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "firing_area07": {
+      "type": "Cylinder",
+      "tm": [
+        [10.0,0.0,0.0],
+        [0.0,8.53627,0.0],
+        [0.0,0.0,10.0],
+        [-1.1902,94.4864,369.962]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "firing_area08": {
+      "type": "Cylinder",
+      "tm": [
+        [10.0,0.0,0.0],
+        [0.0,8.53627,0.0],
+        [0.0,0.0,10.0],
+        [-1.1902,94.4864,413.732]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "firing_tank_spawn02": {
+      "type": "Point",
+      "tm": [
+        [-1.0,0.0,2.08616e-07],
+        [0.0,1.0,0.0],
+        [-2.08616e-07,0.0,-1.0],
+        [998.799,94.4864,228.824]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "firing_tank_spawn03": {
+      "type": "Point",
+      "tm": [
+        [-1.0,0.0,2.08616e-07],
+        [0.0,1.0,0.0],
+        [-2.08616e-07,0.0,-1.0],
+        [998.799,94.4864,261.235]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "firing_tank_spawn04": {
+      "type": "Point",
+      "tm": [
+        [-1.0,0.0,2.08616e-07],
+        [0.0,1.0,0.0],
+        [-2.08616e-07,0.0,-1.0],
+        [998.799,94.4864,293.647]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "firing_tank_spawn05": {
+      "type": "Point",
+      "tm": [
+        [-1.0,0.0,2.08616e-07],
+        [0.0,1.0,0.0],
+        [-2.08616e-07,0.0,-1.0],
+        [1991.59,94.4864,309.208]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "firing_tank_spawn06": {
+      "type": "Point",
+      "tm": [
+        [-1.0,0.0,2.08616e-07],
+        [0.0,1.0,0.0],
+        [-2.08616e-07,0.0,-1.0],
+        [1991.59,94.4864,341.62]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "firing_tank_spawn07": {
+      "type": "Point",
+      "tm": [
+        [-1.0,0.0,2.08616e-07],
+        [0.0,1.0,0.0],
+        [-2.08616e-07,0.0,-1.0],
+        [1991.59,94.4864,374.031]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "firing_tank_spawn08": {
+      "type": "Point",
+      "tm": [
+        [-1.0,0.0,2.08616e-07],
+        [0.0,1.0,0.0],
+        [-2.08616e-07,0.0,-1.0],
+        [1991.59,94.4864,406.443]
+      ],
+      "objLayer": 0,
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}

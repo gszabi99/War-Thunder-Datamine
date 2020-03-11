@@ -1,0 +1,2054 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "atmosphere": {
+      "pressure": 759.0,
+      "temperature": 16.0
+    },
+    "player": {
+      "army": 1,
+      "wing": "player"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/britain.bin",
+      "type": "singleMission",
+      "restoreType": "tactical control",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "clear",
+      "gt_cooperative": true
+    },
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01",
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": [
+          {
+            "map": true
+          },
+          {
+            "minTime": 4
+          },
+          {
+            "picture": ""
+          },
+          {
+            "arrow": [
+              {
+                "width": 1
+              },
+              {
+                "side": "player"
+              },
+              {
+                "point": "player"
+              },
+              {
+                "point": "waypoint00"
+              }
+            ]
+          },
+          {
+            "arrow": [
+              {
+                "width": 1
+              },
+              {
+                "side": "player"
+              },
+              {
+                "point": "waypoint00"
+              },
+              {
+                "point": "waypoint01"
+              },
+              {
+                "point": "waypoint01"
+              }
+            ]
+          },
+          {
+            "icon": {
+              "icontype": "fighter",
+              "side": "player",
+              "target": "player",
+              "lookAt": "waypoint00"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "building",
+              "side": "ally",
+              "target": "radar_icon"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "waypoint00": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 1.0,
+            "target": "waypoint00"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint01"
+          }
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object": "wave01"
+            },
+            {
+              "object": "wave02"
+            },
+            {
+              "object": "wave03"
+            },
+            {
+              "plane": [
+                {
+                  "targetDeviation": {
+                    "trigger": "machine gun",
+                    "defaultVal": 0.7,
+                    "limits": [0.1,1.0]
+                  }
+                },
+                {
+                  "targetDeviation": {
+                    "trigger": "gunner",
+                    "defaultVal": 0.7,
+                    "limits": [0.1,1.0]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "unitSetProperties": {
+            "object": "radar_icon",
+            "isImmortal": true
+          }
+        },
+        {
+          "unitPutToSleep": [
+            {
+              "target": "wave01"
+            },
+            {
+              "target": "wave02"
+            },
+            {
+              "target": "wave03"
+            }
+          ]
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "single_britain_theHardestDay_fly00"
+          }
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object": "air_def_squad"
+            },
+            {
+              "object": "ships_squad"
+            },
+            {
+              "effShootingRate": 0.01
+            },
+            {
+              "hasExhaust": false
+            }
+          ]
+        }
+      ]
+    },
+    "if_offline": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenStatus": {
+          "object_type": "isOffline",
+          "object_marking": 0,
+          "check_objects": "all",
+          "object": "player"
+        }
+      },
+      "actions": [
+        {
+          "unitSetProperties": {
+            "object": "player",
+            "targetableByAi": false
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object": "player_himself",
+            "targetableByAi": true
+          }
+        }
+      ]
+    },
+    "waypoint01": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "2D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "check_objects": "any",
+          "object": "player",
+          "target": "waypoint00"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 1.0,
+            "target": "waypoint00"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 1.0,
+            "target": "waypoint01"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "wave_arrival"
+          }
+        }
+      ]
+    },
+    "wave_arrival": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 2500.0,
+          "math": "2D",
+          "object_type": "isAlive",
+          "target_type": "isAlive",
+          "check_objects": "any",
+          "check_targets": "any",
+          "object": "player",
+          "target": "waypoint01"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 1.0,
+            "target": "waypoint01"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "single_britain_theHardestDay_fly00",
+            "status": 2
+          }
+        },
+        {
+          "unitWakeUp": {
+            "target": "wave01"
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "radar_area",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 1000.0,
+            "object": "wave01",
+            "speed": 250.0
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target": "luftwaffe_bombers00"
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "single_britain_theHardestDay_att00"
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "single_britain_theHardestDay_att01"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "01wave_turn"
+            },
+            {
+              "target": "01fighters_go_away"
+            }
+          ]
+        },
+        {
+          "wait": {
+            "time": 180.0
+          }
+        },
+        {
+          "unitWakeUp": {
+            "target": "wave02"
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "radar_area",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 1000.0,
+            "object": "wave02"
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target": "luftwaffe_bombers01"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "02wave_turn"
+            },
+            {
+              "target": "02fighters_go_away"
+            }
+          ]
+        },
+        {
+          "wait": {
+            "time": 60.0
+          }
+        },
+        {
+          "unitWakeUp": {
+            "target": "wave03"
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "radar_area",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 1000.0,
+            "object": "wave03"
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target": "luftwaffe_bombers02"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "mission_completed02"
+            },
+            {
+              "target": "03wave_turn"
+            },
+            {
+              "target": "03fighters_go_away"
+            }
+          ]
+        }
+      ]
+    },
+    "01wave_turn": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 8,
+          "object": "luftwaffe_bombers00"
+        }
+      },
+      "actions": [
+        {
+          "triggerDisable": {
+            "target": "01wave_bomb"
+          }
+        },
+        {
+          "unitDropAmmo": {
+            "object": "luftwaffe_bombers00"
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "way_to_france",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 1000.0,
+            "object": "luftwaffe_bombers00"
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": false,
+            "target": "luftwaffe_bombers00"
+          }
+        },
+        {
+          "varModify": {
+            "var": "waves_turned",
+            "operator": "add",
+            "value": 1.0
+          }
+        },
+        {
+          "varModify": {
+            "var": "waves_gone",
+            "operator": "add",
+            "value": 1.0
+          }
+        }
+      ]
+    },
+    "02wave_turn": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 9,
+          "object": "luftwaffe_bombers01"
+        }
+      },
+      "actions": [
+        {
+          "triggerDisable": {
+            "target": "02wave_bomb"
+          }
+        },
+        {
+          "unitDropAmmo": {
+            "object": "luftwaffe_bombers01"
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "way_to_france",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 1000.0,
+            "object": "luftwaffe_bombers01"
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": false,
+            "target": "luftwaffe_bombers01"
+          }
+        },
+        {
+          "varModify": {
+            "var": "waves_turned",
+            "operator": "add",
+            "value": 1.0
+          }
+        },
+        {
+          "varModify": {
+            "var": "waves_gone",
+            "operator": "add",
+            "value": 1.0
+          }
+        }
+      ]
+    },
+    "03wave_turn": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 9,
+          "object": "luftwaffe_bombers02"
+        }
+      },
+      "actions": [
+        {
+          "triggerDisable": {
+            "target": "03wave_bomb"
+          }
+        },
+        {
+          "unitDropAmmo": {
+            "object": "luftwaffe_bombers02"
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "way_to_france",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 1000.0,
+            "object": "luftwaffe_bombers02"
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": false,
+            "target": "luftwaffe_bombers02"
+          }
+        },
+        {
+          "varModify": {
+            "var": "waves_turned",
+            "operator": "add",
+            "value": 1.0
+          }
+        },
+        {
+          "varModify": {
+            "var": "waves_gone",
+            "operator": "add",
+            "value": 1.0
+          }
+        }
+      ]
+    },
+    "01wave_bomb": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "3D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "check_objects": "any",
+          "object": "luftwaffe_bombers00",
+          "target": "radar_area"
+        }
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": "01wave_turn"
+        },
+        "unitMoveTo": {
+          "target": "way_to_france",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "object": "wave01"
+        },
+        "unitAttackTarget": {
+          "playerAttracted": false,
+          "object": "luftwaffe_bombers00",
+          "target": "radar_icon"
+        },
+        "unitSetIndication": {
+          "set": false,
+          "target": "luftwaffe_bombers00"
+        },
+        "varModify": {
+          "var": "waves_gone",
+          "operator": "add",
+          "value": 1.0
+        }
+      }
+    },
+    "02wave_bomb": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "3D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "check_objects": "any",
+          "object": "luftwaffe_bombers01",
+          "target": "radar_area"
+        }
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": "02wave_turn"
+        },
+        "unitMoveTo": {
+          "target": "way_to_france",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "object": "wave02"
+        },
+        "unitAttackTarget": {
+          "playerAttracted": false,
+          "object": "luftwaffe_bombers01",
+          "target": "radar_icon"
+        },
+        "unitSetIndication": {
+          "set": false,
+          "target": "luftwaffe_bombers01"
+        },
+        "varModify": {
+          "var": "waves_gone",
+          "operator": "add",
+          "value": 1.0
+        }
+      }
+    },
+    "03wave_bomb": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "3D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "check_objects": "any",
+          "object": "luftwaffe_bombers02",
+          "target": "radar_area"
+        }
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": "03wave_turn"
+        },
+        "unitMoveTo": {
+          "target": "way_to_france",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "object": "wave03"
+        },
+        "unitAttackTarget": {
+          "playerAttracted": false,
+          "object": "luftwaffe_bombers02",
+          "target": "radar_icon"
+        },
+        "unitSetIndication": {
+          "set": false,
+          "target": "luftwaffe_bombers02"
+        },
+        "varModify": {
+          "var": "waves_gone",
+          "operator": "add",
+          "value": 1.0
+        }
+      }
+    },
+    "mission_completed01": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [
+        {
+          "varCompareInt": {
+            "var_value": "waves_turned",
+            "value": 1,
+            "comparasion_func": "more"
+          }
+        },
+        {
+          "unitWhenStatus": [
+            {
+              "object_type": "isAlive"
+            },
+            {
+              "object_marking": 0
+            },
+            {
+              "check_objects": "any"
+            },
+            {
+              "object": "luftwaffe_bombers00"
+            },
+            {
+              "object": "luftwaffe_bombers01"
+            },
+            {
+              "object": "luftwaffe_bombers02"
+            }
+          ]
+        },
+        {
+          "varCompareInt": {
+            "var_value": "waves_gone",
+            "value": 2,
+            "comparasion_func": "more"
+          }
+        }
+      ],
+      "actions": [
+        {
+          "triggerDisable": [
+            {
+              "target": "mission_failed"
+            },
+            {
+              "target": "mission_completed02"
+            }
+          ]
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "single_britain_theHardestDay_att00",
+            "status": 2
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "single_britain_theHardestDay_att01",
+            "status": 3
+          }
+        },
+        {
+          "unitSetIndication": [
+            {
+              "set": false
+            },
+            {
+              "target": "luftwaffe_bombers00"
+            },
+            {
+              "target": "luftwaffe_bombers01"
+            },
+            {
+              "target": "luftwaffe_bombers02"
+            }
+          ]
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "missionCompleted": {
+            "timer": false
+          }
+        }
+      ]
+    },
+    "mission_completed02": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenStatus": [
+          {
+            "object_type": "isKilled"
+          },
+          {
+            "object_marking": 0
+          },
+          {
+            "check_objects": "all"
+          },
+          {
+            "object": "luftwaffe_bombers00"
+          },
+          {
+            "object": "luftwaffe_bombers01"
+          },
+          {
+            "object": "luftwaffe_bombers02"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "triggerDisable": [
+            {
+              "target": "mission_failed"
+            },
+            {
+              "target": "mission_completed01"
+            }
+          ]
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "single_britain_theHardestDay_att00",
+            "status": 2
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "single_britain_theHardestDay_att01",
+            "status": 2
+          }
+        },
+        {
+          "unitSetIndication": [
+            {
+              "set": false
+            },
+            {
+              "target": "luftwaffe_bombers00"
+            },
+            {
+              "target": "luftwaffe_bombers01"
+            },
+            {
+              "target": "luftwaffe_bombers02"
+            }
+          ]
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "missionCompleted": {
+            "timer": false
+          }
+        }
+      ]
+    },
+    "mission_failed": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [
+        {
+          "varCompareInt": {
+            "var_value": "waves_gone",
+            "value": 2,
+            "comparasion_func": "more"
+          }
+        },
+        {
+          "varCompareInt": {
+            "var_value": "waves_turned",
+            "value": 2,
+            "comparasion_func": "less"
+          }
+        }
+      ],
+      "actions": [
+        {
+          "triggerDisable": [
+            {
+              "target": "mission_completed01"
+            },
+            {
+              "target": "mission_completed02"
+            }
+          ]
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "single_britain_theHardestDay_att00",
+            "status": 3
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "single_britain_theHardestDay_att01",
+            "status": 3
+          }
+        },
+        {
+          "unitSetIndication": [
+            {
+              "set": false
+            },
+            {
+              "target": "luftwaffe_bombers00"
+            },
+            {
+              "target": "luftwaffe_bombers01"
+            },
+            {
+              "target": "luftwaffe_bombers02"
+            }
+          ]
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "missionFailed": {
+            "timer": false
+          }
+        }
+      ]
+    },
+    "01fighters_go_away": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "timeExpires": {
+          "time": 300.0
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "unitSetProperties": {
+          "object": "luftwaffe_fighters00",
+          "attack_type": "hold_fire"
+        },
+        "unitMoveTo": {
+          "target": "way_to_france",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": true,
+          "teleportHeightValue": 1000.0,
+          "object": "luftwaffe_fighters00"
+        }
+      }
+    },
+    "02fighters_go_away": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "timeExpires": {
+          "time": 300.0
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "unitSetProperties": {
+          "object": "luftwaffe_fighters01",
+          "attack_type": "hold_fire"
+        },
+        "unitMoveTo": {
+          "target": "way_to_france",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": true,
+          "teleportHeightValue": 1000.0,
+          "object": "luftwaffe_fighters01"
+        }
+      }
+    },
+    "03fighters_go_away": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "timeExpires": {
+          "time": 300.0
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "unitSetProperties": {
+          "object": "luftwaffe_fighters02",
+          "attack_type": "hold_fire"
+        },
+        "unitMoveTo": {
+          "target": "way_to_france",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": true,
+          "teleportHeightValue": 1000.0,
+          "object": "luftwaffe_fighters02"
+        }
+      }
+    },
+    "00fighters_attack_player": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 5000.0,
+          "math": "2D",
+          "object_type": "isAlive",
+          "target_type": "isAlive",
+          "check_objects": "any",
+          "check_targets": "any",
+          "object": "luftwaffe_bombers00",
+          "target": "player"
+        }
+      },
+      "actions": {
+        "unitAttackTarget": {
+          "playerAttracted": true,
+          "object": "luftwaffe_fighters00",
+          "target": "player",
+          "playerAttractedCount": 1,
+          "playerAttractedEffRate": 0.1
+        }
+      }
+    },
+    "01fighters_attack_player": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 5000.0,
+          "math": "2D",
+          "object_type": "isAlive",
+          "target_type": "isAlive",
+          "check_objects": "any",
+          "check_targets": "any",
+          "object": "luftwaffe_bombers01",
+          "target": "player"
+        }
+      },
+      "actions": {
+        "unitAttackTarget": {
+          "playerAttracted": true,
+          "object": "luftwaffe_fighters01",
+          "target": "player",
+          "playerAttractedCount": 1,
+          "playerAttractedEffRate": 0.1
+        }
+      }
+    },
+    "02fighters_attack_player": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 5000.0,
+          "math": "2D",
+          "object_type": "isAlive",
+          "target_type": "isAlive",
+          "check_objects": "any",
+          "check_targets": "any",
+          "object": "luftwaffe_bombers02",
+          "target": "player"
+        }
+      },
+      "actions": {
+        "unitAttackTarget": {
+          "playerAttracted": true,
+          "object": "luftwaffe_fighters02",
+          "target": "player",
+          "playerAttractedCount": 1,
+          "playerAttractedEffRate": 0.1
+        }
+      }
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true,
+    "single_britain_theHardestDay_fly00": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "single_britain_theHardestDay_att00": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "single_britain_theHardestDay_att01": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": false,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    }
+  },
+  "variables": {
+    "waves_turned": 0,
+    "waves_gone": 0
+  },
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "armada": {
+        "name": "player",
+        "tm": [
+          [-0.707107,0.0,-0.707107],
+          [0.0,1.0,0.0],
+          [0.707107,0.0,-0.707107],
+          [40382.5,2155.05,-2291.4]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "spitfire_mk1",
+        "weapons": "spitfire_mk1_default",
+        "props": {
+          "army": 1,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "luftwaffe_bombers00",
+        "tm": [
+          [-0.866026,0.0,0.5],
+          [0.0,1.0,0.0],
+          [-0.5,0.0,-0.866026],
+          [44243.7,2155.05,-22413.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "ju-87b-2",
+        "weapons": "Ju87_B2_default",
+        "props": {
+          "army": 2,
+          "count": 15,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "luftwaffe_bombers01",
+        "tm": [
+          [-0.382684,0.0,0.92388],
+          [0.0,1.0,0.0],
+          [-0.92388,0.0,-0.382684],
+          [40344.0,3585.3,-29541.6]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "ju-87b-2",
+        "weapons": "Ju87_B2_default",
+        "props": {
+          "army": 2,
+          "count": 15,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "luftwaffe_bombers02",
+        "tm": [
+          [-0.707107,0.0,0.707107],
+          [0.0,1.0,0.0],
+          [-0.707107,0.0,-0.707107],
+          [49083.9,1530.4,-22341.7]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "ju-87b-2",
+        "weapons": "Ju87_B2_default",
+        "props": {
+          "army": 2,
+          "count": 15,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "radar_icon",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [24062.9,177.733,481.25]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "dummy",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "luftwaffe_fighters00",
+        "tm": [
+          [-0.866026,0.0,0.5],
+          [0.0,1.0,0.0],
+          [-0.5,0.0,-0.866026],
+          [45185.1,2237.8,-22957.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "bf-110c-4",
+        "weapons": "Bf-110C-4_default",
+        "props": {
+          "army": 2,
+          "count": 3,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "wave01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [47369.9,-1.0,-22373.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": [
+          {
+            "squad_members": "luftwaffe_bombers00"
+          },
+          {
+            "squad_members": "luftwaffe_fighters00"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "luftwaffe_fighters01",
+        "tm": [
+          [-0.642788,0.0,0.766045],
+          [0.0,1.0,0.0],
+          [-0.766045,0.0,-0.642788],
+          [40156.3,2237.8,-31076.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "bf-110c-4",
+        "weapons": "Bf-110C-4_default",
+        "props": {
+          "army": 2,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "wave02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [40760.0,50.6,-29510.4]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": [
+          {
+            "squad_members": "luftwaffe_bombers01"
+          },
+          {
+            "squad_members": "luftwaffe_fighters01"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "luftwaffe_fighters02",
+        "tm": [
+          [-0.819153,0.0,0.573576],
+          [0.0,1.0,0.0],
+          [-0.573576,0.0,-0.819153],
+          [49993.5,2237.8,-23462.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "bf-110c-4",
+        "weapons": "Bf-110C-4_default",
+        "props": {
+          "army": 2,
+          "count": 5,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "wave03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [49291.2,-1.0,-25881.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": [
+          {
+            "squad_members": "luftwaffe_bombers02"
+          },
+          {
+            "squad_members": "luftwaffe_fighters02"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "player_himself",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [40888.0,-1.0,-10173.7]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": {
+          "squad_members": "player",
+          "object_type": "isPlayer"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "air_def05",
+        "tm": [
+          [0.866025,0.0,-0.5],
+          [0.0,1.0,0.0],
+          [0.5,0.0,0.866025],
+          [22301.1,54.55,-1485.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uk_87mm_mkII",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 2,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [4.0,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "air_def06",
+        "tm": [
+          [0.422618,0.0,-0.906308],
+          [0.0,1.0,0.0],
+          [0.906308,0.0,0.422618],
+          [21046.4,80.1,-2299.6]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uk_87mm_mkII",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 2,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [4.0,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "air_def07",
+        "tm": [
+          [0.422618,0.0,-0.906308],
+          [0.0,1.0,0.0],
+          [0.906308,0.0,0.422618],
+          [23533.7,54.55,-870.45]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uk_87mm_mkII",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 2,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [4.0,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "air_def08",
+        "tm": [
+          [0.0871558,0.0,-0.996195],
+          [0.0,1.0,0.0],
+          [0.996195,0.0,0.0871558],
+          [24108.3,176.8,334.95]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uk_87mm_mkII",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 2,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [2.0,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "crowd_ship00",
+        "tm": [
+          [0.422618,0.0,-0.906308],
+          [0.0,1.0,0.0],
+          [0.906308,0.0,0.422618],
+          [23996.0,-1.0,-975.9]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "hms_cargo_ship",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 3,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [3.0,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "crowd_ship01",
+        "tm": [
+          [0.866025,0.0,-0.5],
+          [0.0,1.0,0.0],
+          [0.5,0.0,0.866025],
+          [22816.4,-1.0,-1899.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "hms_leander",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [3.0,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "crowd_ship02",
+        "tm": [
+          [0.737277,0.0,-0.67559],
+          [0.0,1.0,0.0],
+          [0.67559,0.0,0.737277],
+          [22918.4,-1.0,-1660.15]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uss_dd_georgetown",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [3.0,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "crowd_ship03",
+        "tm": [
+          [0.67559,0.0,-0.737277],
+          [0.0,1.0,0.0],
+          [0.737277,0.0,0.67559],
+          [22990.8,-1.0,-1585.1]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "hms_cargo_ship",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 3,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [3.0,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "crowd_ship04",
+        "tm": [
+          [0.5,0.0,-0.866025],
+          [0.0,1.0,0.0],
+          [0.866025,0.0,0.5],
+          [23734.2,-400.3,-1041.15]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "fishboat2",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 3,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [5.0,3.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "crowd_ship05",
+        "tm": [
+          [0.5,0.0,-0.866025],
+          [0.0,1.0,0.0],
+          [0.866025,0.0,0.5],
+          [23075.7,-400.3,-1461.05]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "fishboat2",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 3,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [5.0,3.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "air_def_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [24281.4,152.1,1270.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": [
+          {
+            "squad_members": "air_def05"
+          },
+          {
+            "squad_members": "air_def06"
+          },
+          {
+            "squad_members": "air_def07"
+          },
+          {
+            "squad_members": "air_def08"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "ships_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [23745.1,169.5,1245.55]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": [
+          {
+            "squad_members": "crowd_ship00"
+          },
+          {
+            "squad_members": "crowd_ship01"
+          },
+          {
+            "squad_members": "crowd_ship02"
+          },
+          {
+            "squad_members": "crowd_ship03"
+          },
+          {
+            "squad_members": "crowd_ship04"
+          },
+          {
+            "squad_members": "crowd_ship05"
+          }
+        ],
+        "way": []
+      }
+    }
+  ],
+  "areas": {
+    "waypoint00": {
+      "type": "Sphere",
+      "tm": [
+        [1078.2,0.0,0.0],
+        [0.0,1078.2,0.0],
+        [0.0,0.0,1078.2],
+        [37534.6,2155.1,-6336.8]
+      ],
+      "props": []
+    },
+    "waypoint01": {
+      "type": "Sphere",
+      "tm": [
+        [1078.2,0.0,0.0],
+        [0.0,1078.2,0.0],
+        [0.0,0.0,1078.2],
+        [33061.6,2155.1,-10743.3]
+      ],
+      "props": []
+    },
+    "radar_area": {
+      "type": "Sphere",
+      "tm": [
+        [4702.5,0.0,0.0],
+        [0.0,4702.5,0.0],
+        [0.0,0.0,4702.5],
+        [24056.2,2150.25,491.5]
+      ],
+      "props": []
+    },
+    "way_to_france": {
+      "type": "Sphere",
+      "tm": [
+        [2194.0,0.0,0.0],
+        [0.0,2194.0,0.0],
+        [0.0,0.0,2194.0],
+        [53220.4,2762.75,-38549.7]
+      ],
+      "props": []
+    }
+  }
+}

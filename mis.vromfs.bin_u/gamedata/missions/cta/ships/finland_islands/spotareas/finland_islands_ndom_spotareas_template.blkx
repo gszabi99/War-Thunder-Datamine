@@ -1,0 +1,218 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "stars": {
+      "latitude": 48.0,
+      "longitude": 44.0,
+      "year": 1940,
+      "month": 1,
+      "day": 15,
+      "time": 12.0
+    },
+    "spectator_points": [],
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "singleMission",
+      "level": "levels/water.bin",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "hazy"
+    }
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "area_squad": {
+        "name": "t1_spotarea",
+        "tm": [
+          [-1.04308e-07,0.0,-1.0],
+          [0.0,1.0,0.0],
+          [1.0,0.0,-1.04308e-07],
+          [1188.86,-0.000244141,-6037.65]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_spotarea_block01"
+          },
+          {
+            "squad_members": "t1_spotarea_block02"
+          },
+          {
+            "squad_members": "t1_spotarea_block03"
+          },
+          {
+            "squad_members": "t1_spotarea_block04"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "t2_spotarea",
+        "tm": [
+          [-1.04308e-07,0.0,-1.0],
+          [0.0,1.0,0.0],
+          [1.0,0.0,-1.04308e-07],
+          [-1706.55,-7.27596e-12,-5781.56]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_spotarea_block01"
+          },
+          {
+            "squad_members": "t2_spotarea_block02"
+          },
+          {
+            "squad_members": "t2_spotarea_block03"
+          },
+          {
+            "squad_members": "t2_spotarea_block04"
+          }
+        ]
+      }
+    }
+  ],
+  "areas": {
+    "ndom_battle_area": {
+      "type": "Box",
+      "tm": [
+        [0.0019226,0.0,18432.0],
+        [0.0,600.0,0.0],
+        [-18432.0,0.0,0.0019226],
+        [0.0,0.0,-4096.0]
+      ],
+      "objLayer": 3,
+      "props": []
+    },
+    "t1_spotarea_block01": {
+      "type": "Sphere",
+      "tm": [
+        [772.842,0.0,-3629.53],
+        [0.0,3175.57,0.0],
+        [1683.84,0.0,358.545],
+        [3782.35,-0.000976569,3234.64]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_spotarea_block01": {
+      "type": "Sphere",
+      "tm": [
+        [-727.594,0.0,-4596.39],
+        [0.0,3175.57,0.0],
+        [1778.53,0.0,-281.535],
+        [-3041.99,-0.00390625,2934.27]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_spotarea_block03": {
+      "type": "Sphere",
+      "tm": [
+        [-0.000580274,0.0,-6000.0],
+        [0.0,6000.0,0.0],
+        [6000.0,0.0,-0.0006517],
+        [7064.52,0.0,-10641.9]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_spotarea_block04": {
+      "type": "Sphere",
+      "tm": [
+        [4698.59,0.0,-3731.38],
+        [0.0,6000.0,0.0],
+        [3731.38,0.0,4698.6],
+        [8092.94,-0.00390625,-4701.61]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_spotarea_block03": {
+      "type": "Sphere",
+      "tm": [
+        [-0.00053089,0.0,-6000.0],
+        [0.0,6000.0,0.0],
+        [6000.0,0.0,-0.000644486],
+        [-7060.8,0.0,-10483.2]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_spotarea_block04": {
+      "type": "Sphere",
+      "tm": [
+        [-4727.71,0.0,-3694.43],
+        [0.0,6000.0,0.0],
+        [3694.42,0.0,-4727.71],
+        [-7156.02,-0.00585938,-4935.39]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_spotarea_block02": {
+      "type": "Sphere",
+      "tm": [
+        [4698.59,0.0,-3731.38],
+        [0.0,6000.0,0.0],
+        [3731.38,0.0,4698.6],
+        [7791.41,-0.00683594,2590.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_spotarea_block02": {
+      "type": "Sphere",
+      "tm": [
+        [-4727.71,0.0,-3694.43],
+        [0.0,6000.0,0.0],
+        [3694.42,0.0,-4727.71],
+        [-7308.23,-0.00976563,1715.06]
+      ],
+      "objLayer": 0,
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": false
+      }
+    }
+  ],
+  "wayPoints": []
+}

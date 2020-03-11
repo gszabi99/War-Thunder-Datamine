@@ -1,0 +1,435 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "singleMission",
+      "level": "levels/water.bin",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "hazy"
+    },
+    "spectator_points": []
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "af_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "addAirfield": [
+            {
+              "runwayStart": "t1_airfield"
+            },
+            {
+              "runwayEnd": "t1_airfield_end"
+            },
+            {
+              "runwayWidth": 90.0
+            },
+            {
+              "army": 1
+            },
+            {
+              "spawnPoint": "t1_airfield_spawn_01"
+            },
+            {
+              "spawnPoint": "t1_airfield_spawn_02"
+            },
+            {
+              "spawnPoint": "t1_airfield_spawn_03"
+            },
+            {
+              "spawnPoint": "t1_airfield_spawn_04"
+            },
+            {
+              "spawnPoint": "t1_airfield_spawn_05"
+            },
+            {
+              "spawnPoint": "t1_airfield_spawn_06"
+            },
+            {
+              "spawnPoint": "t1_airfield_spawn_07"
+            },
+            {
+              "spawnPoint": "t1_airfield_spawn_08"
+            },
+            {
+              "spawnPoint": "t1_airfield_spawn_09"
+            },
+            {
+              "spawnPoint": "t1_airfield_spawn_10"
+            },
+            {
+              "spawnPoint": "t1_airfield_spawn_11"
+            },
+            {
+              "spawnPoint": "t1_airfield_spawn_12"
+            },
+            {
+              "spawnPoint": "t1_airfield_spawn_13"
+            },
+            {
+              "spawnPoint": "t1_airfield_spawn_14"
+            },
+            {
+              "spawnPoint": "t1_airfield_spawn_15"
+            },
+            {
+              "spawnPoint": "t1_airfield_spawn_16"
+            }
+          ]
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "missionMarkAsRespawnPoint": {
+            "loc_name": "missions/airfield_spawn",
+            "spawnEffect": false,
+            "isStrictSpawn": false,
+            "resetStrictSpawnIndex": false,
+            "isAirfield": true,
+            "isUnit": false,
+            "forceCreate": false,
+            "useExisting": false,
+            "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "removeAreas": false,
+            "replaceAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "radius": -1.0,
+            "target": "t1_airfield",
+            "team": "A",
+            "tags": {
+              "type_bomber": true,
+              "type_fighter": true,
+              "type_assault": true
+            }
+          }
+        },
+        {
+          "missionMarkAsRespawnPoint": {
+            "loc_name": "missions/airfield_spawn",
+            "spawnEffect": false,
+            "isStrictSpawn": false,
+            "resetStrictSpawnIndex": false,
+            "isAirfield": true,
+            "isUnit": false,
+            "forceCreate": false,
+            "useExisting": false,
+            "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "removeAreas": false,
+            "replaceAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "radius": -1.0,
+            "target": "t2_airfield",
+            "team": "B",
+            "tags": {
+              "type_bomber": true,
+              "type_fighter": true,
+              "type_assault": true
+            }
+          }
+        }
+      ],
+      "else_actions": []
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": {
+    "objectGroups": {
+      "name": "t2_airfield",
+      "tm": [
+        [-0.965926,0.0,-0.258819],
+        [0.0,1.0,0.0],
+        [0.258819,0.0,-0.965926],
+        [-17591.0,65.0189,-25148.9]
+      ],
+      "unit_class": "dynaf_universal_1line_b",
+      "objLayer": 2,
+      "props": {
+        "army": 2,
+        "active": true
+      }
+    }
+  },
+  "areas": {
+    "t1_airfield": {
+      "type": "Sphere",
+      "tm": [
+        [-61.6218,0.0,19.4293],
+        [0.0,64.6123,0.0],
+        [-19.4293,0.0,-61.6218],
+        [12367.6,54.3997,22624.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_airfield_end": {
+      "type": "Sphere",
+      "tm": [
+        [-61.6218,0.0,19.4293],
+        [0.0,64.6123,0.0],
+        [-19.4293,0.0,-61.6218],
+        [10556.3,54.3997,23193.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_airfield_spawn_01": {
+      "type": "Sphere",
+      "tm": [
+        [-22.8892,0.0,7.21694],
+        [0.0,24.0,0.0],
+        [-7.21694,0.0,-22.8892],
+        [12165.5,54.3997,22652.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_airfield_spawn_02": {
+      "type": "Sphere",
+      "tm": [
+        [-22.8892,0.0,7.21694],
+        [0.0,24.0,0.0],
+        [-7.21694,0.0,-22.8892],
+        [12172.7,54.3997,22675.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_airfield_spawn_03": {
+      "type": "Sphere",
+      "tm": [
+        [-22.8892,0.0,7.21694],
+        [0.0,24.0,0.0],
+        [-7.21694,0.0,-22.8892],
+        [12179.9,54.3997,22698.2]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_airfield_spawn_04": {
+      "type": "Sphere",
+      "tm": [
+        [-22.8892,0.0,7.21694],
+        [0.0,24.0,0.0],
+        [-7.21694,0.0,-22.8892],
+        [12156.7,54.3997,22705.5]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_airfield_spawn_05": {
+      "type": "Sphere",
+      "tm": [
+        [-22.8892,0.0,7.21694],
+        [0.0,24.0,0.0],
+        [-7.21694,0.0,-22.8892],
+        [12142.3,54.3997,22659.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_airfield_spawn_06": {
+      "type": "Sphere",
+      "tm": [
+        [-22.8892,0.0,7.21694],
+        [0.0,24.0,0.0],
+        [-7.21694,0.0,-22.8892],
+        [12149.5,54.3997,22682.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_airfield_spawn_07": {
+      "type": "Sphere",
+      "tm": [
+        [-22.8892,0.0,7.21694],
+        [0.0,24.0,0.0],
+        [-7.21694,0.0,-22.8892],
+        [12133.7,54.3997,22712.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_airfield_spawn_08": {
+      "type": "Sphere",
+      "tm": [
+        [-22.8892,0.0,7.21694],
+        [0.0,24.0,0.0],
+        [-7.21694,0.0,-22.8892],
+        [12119.3,54.3997,22666.9]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_airfield_spawn_09": {
+      "type": "Sphere",
+      "tm": [
+        [-22.8892,0.0,7.21694],
+        [0.0,24.0,0.0],
+        [-7.21694,0.0,-22.8892],
+        [12126.5,54.3997,22689.9]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_airfield_spawn_10": {
+      "type": "Sphere",
+      "tm": [
+        [-22.8892,0.0,7.21694],
+        [0.0,24.0,0.0],
+        [-7.21694,0.0,-22.8892],
+        [12110.5,54.3997,22720.1]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_airfield_spawn_11": {
+      "type": "Sphere",
+      "tm": [
+        [-22.8892,0.0,7.21694],
+        [0.0,24.0,0.0],
+        [-7.21694,0.0,-22.8892],
+        [12096.0,54.3997,22674.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_airfield_spawn_12": {
+      "type": "Sphere",
+      "tm": [
+        [-22.8892,0.0,7.21694],
+        [0.0,24.0,0.0],
+        [-7.21694,0.0,-22.8892],
+        [12103.3,54.3997,22697.2]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_airfield_spawn_13": {
+      "type": "Sphere",
+      "tm": [
+        [-22.8892,0.0,7.21694],
+        [0.0,24.0,0.0],
+        [-7.21694,0.0,-22.8892],
+        [12079.8,54.3997,22704.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_airfield_spawn_14": {
+      "type": "Sphere",
+      "tm": [
+        [-22.8892,0.0,7.21694],
+        [0.0,24.0,0.0],
+        [-7.21694,0.0,-22.8892],
+        [12072.6,54.3997,22681.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_airfield_spawn_15": {
+      "type": "Sphere",
+      "tm": [
+        [-22.8892,0.0,7.21694],
+        [0.0,24.0,0.0],
+        [-7.21694,0.0,-22.8892],
+        [12087.0,54.3997,22727.5]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_airfield_spawn_16": {
+      "type": "Sphere",
+      "tm": [
+        [-22.8892,0.0,7.21694],
+        [0.0,24.0,0.0],
+        [-7.21694,0.0,-22.8892],
+        [12055.4,54.3997,22712.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "ft_t1_backup_air_zone_01": {
+      "type": "Sphere",
+      "tm": [
+        [-353.553,0.0,-353.553],
+        [0.0,500.0,0.0],
+        [353.553,0.0,-353.553],
+        [30000.0,500.0,30000.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "ft_t2_backup_air_zone_01": {
+      "type": "Sphere",
+      "tm": [
+        [353.553,0.0,353.553],
+        [0.0,500.0,0.0],
+        [-353.553,0.0,353.553],
+        [-30000.0,500.0,-30000.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}

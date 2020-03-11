@@ -1,0 +1,1543 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "atmosphere": {
+      "pressure": 759.0,
+      "temperature": 16.0
+    },
+    "player": {
+      "army": 1,
+      "wing": "player"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/britain.bin",
+      "type": "singleMission",
+      "restoreType": "tactical control",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "cloudy",
+      "forceSkiesInitialRandomSeed": true,
+      "skiesInitialRandomSeed": 3,
+      "gt_cooperative": true,
+      "gt_reload_explosives": true,
+      "customWeather": {
+        "windDir": [0.6,0.8],
+        "wind_scale": 1.0,
+        "max_wind_strength": 6.0,
+        "sky": {
+          "mie_height": 1.0,
+          "mieG": 0.4,
+          "betaMScale": 0.55,
+          "clouds_overcast": 0.5
+        },
+        "clouds_gen": {
+          "humidity": 0.5,
+          "persistence": 0.5,
+          "asymmetry": 0.2
+        },
+        "clouds_position": {
+          "start_altitude": 1.0,
+          "thickness": 4.0,
+          "light_extinction": 1.0,
+          "amb_extinction_mul": 1.0
+        },
+        "clouds_render": {
+          "silver_lining": 0.3,
+          "sun_light": 0.5,
+          "ambient": 0.8,
+          "silver_lining_eccentricity": 0.6
+        },
+        "strata_clouds": {
+          "amount": 0.5,
+          "altitude": 11.0
+        },
+        "rain": {
+          "rainFromInvisibleClouds": false,
+          "probability": 0.0
+        }
+      }
+    },
+    "spectator_points": [],
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01",
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": [
+          {
+            "map": true
+          },
+          {
+            "minTime": 4
+          },
+          {
+            "picture": ""
+          },
+          {
+            "arrow": [
+              {
+                "width": 1
+              },
+              {
+                "side": "ally"
+              },
+              {
+                "point": "luftwaffe"
+              },
+              {
+                "point": "ships_start_area"
+              }
+            ]
+          },
+          {
+            "icon": {
+              "icontype": "bomber",
+              "side": "player",
+              "target": "player",
+              "lookAt": "ships_start_area"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "bomber",
+              "side": "ally",
+              "target": "luftwaffe",
+              "lookAt": "ships_start_area"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "transport",
+              "side": "enemy",
+              "target": "convoy_ships_cargo00"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "initial": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target": "leader_of_formation"
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "ships_start_area",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": "luftwaffe"
+          }
+        },
+        {
+          "wait": {
+            "time": 0.01
+          }
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object": "luftwaffe"
+            },
+            {
+              "object": "raf_fighters00"
+            },
+            {
+              "object": "raf_fighters01"
+            },
+            {
+              "plane": [
+                {
+                  "targetDeviation": {
+                    "trigger": "machine gun",
+                    "defaultVal": 3.0,
+                    "limits": [1.0,4.0]
+                  }
+                },
+                {
+                  "targetDeviation": {
+                    "trigger": "gunner",
+                    "defaultVal": 1.0,
+                    "limits": [0.5,2.0]
+                  }
+                },
+                {
+                  "targetDeviation": {
+                    "trigger": "cannon",
+                    "defaultVal": 0.9,
+                    "limits": [2.0,4.0]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "unitAttackTarget": [
+            {
+              "playerAttracted": true
+            },
+            {
+              "object": "raf_fighters00"
+            },
+            {
+              "target": "player"
+            },
+            {
+              "target": "luftwaffe"
+            },
+            {
+              "fireRandom": true
+            },
+            {
+              "playerAttractedCount": 2
+            },
+            {
+              "playerAttractedEffRate": 0.5
+            }
+          ]
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "single_britain_channelBattles_att00"
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "single_britain_channelBattles_fly00"
+          }
+        },
+        {
+          "unitMark": {
+            "target_marking": 1,
+            "target": "convoy_ships_cargo"
+          }
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object": "hms_squad"
+            },
+            {
+              "object": "raf_fighters00"
+            },
+            {
+              "object": "raf_fighters01"
+            },
+            {
+              "effShootingRate": 0.5
+            }
+          ]
+        }
+      ],
+      "else_actions": []
+    },
+    "if_offline": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.2
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "unitDamage": {
+          "part": 0,
+          "power": 0.8,
+          "useEffect": false,
+          "countEffects": 1,
+          "delay": [1.0,1.0],
+          "offset": [0.0,0.0,0.0],
+          "radiusOffset": [10.0,15.0],
+          "target": "convoy_ships_cargo"
+        }
+      },
+      "else_actions": []
+    },
+    "if_offline_properties": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 10.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "unitSetProperties": {
+            "object": "player",
+            "targetableByAi": false
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object": "player_himself",
+            "targetableByAi": true
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "near_ships": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": [
+          {
+            "math": "3D"
+          },
+          {
+            "object_type": "isAlive"
+          },
+          {
+            "object_marking": 0
+          },
+          {
+            "check_objects": "any"
+          },
+          {
+            "object": "luftwaffe"
+          },
+          {
+            "object": "player"
+          },
+          {
+            "target": "ships_start_area"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "unitMoveTo": {
+            "target": "ships_target_area",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": "hms_squad",
+            "move_type": "zigzag_move",
+            "zzPeriod": 8.0,
+            "zzAmp": 2500.0,
+            "speed": 60.0
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": false,
+            "target": "leader_of_formation"
+          }
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "luftwaffe",
+            "target": "hms_squad"
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target": "convoy_ships_cargo"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "mission_failed"
+            },
+            {
+              "target": "players_count_trigger"
+            }
+          ]
+        },
+        {
+          "triggerDisable": [
+            {
+              "target": "secondary_objective_failed"
+            },
+            {
+              "target": "secondary_objective_completed"
+            }
+          ]
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "players_count_trigger"
+          }
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "hms_squad",
+            "target": "luftwaffe",
+            "fireRandom": true
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "ships_counter_trigger"
+            },
+            {
+              "target": "dead_ships_counter"
+            },
+            {
+              "target": "ships_done"
+            }
+          ]
+        },
+        {
+          "unitWakeUp": {
+            "target": "raf_fighters01"
+          }
+        },
+        {
+          "unitAttackTarget": [
+            {
+              "playerAttracted": true
+            },
+            {
+              "object": "raf_fighters01"
+            },
+            {
+              "target": "player"
+            },
+            {
+              "target": "luftwaffe"
+            },
+            {
+              "fireRandom": true
+            },
+            {
+              "playerAttractedCount": 2
+            },
+            {
+              "playerAttractedEffRate": 0.5
+            }
+          ]
+        },
+        {
+          "wait": {
+            "time": 20.0
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object": "hms_squad",
+            "attack_type": "fire_at_will",
+            "effShootingRate": 0.1
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "players_count_trigger": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.1
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isOnline",
+          "object_marking": 0,
+          "func": "more",
+          "value": 0,
+          "object": "player",
+          "var": "players_count_var"
+        }
+      },
+      "actions": {
+        "varModify": {
+          "operator": "add",
+          "value": 1.0,
+          "var": "players_count_var"
+        }
+      },
+      "else_actions": []
+    },
+    "ships_counter_trigger": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "missionSetTargetsIndicator": {
+          "target_type": "isAlive",
+          "target_marking": 0,
+          "delta": 0,
+          "icon": "ship",
+          "icon army": 2,
+          "set": true,
+          "target": "player",
+          "var": "players_count_var"
+        }
+      },
+      "else_actions": []
+    },
+    "dead_ships_counter": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isKilled",
+          "object_marking": 0,
+          "func": "more",
+          "value": 1,
+          "object": "convoy_ships_cargo",
+          "var": "dead_ships_var"
+        }
+      },
+      "actions": [
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "dead_ships_var"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "subAB",
+            "value": 1.0,
+            "var": "players_count_var"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "ships_done": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "players_count_var",
+          "value": 1,
+          "comparasion_func": "less"
+        }
+      },
+      "actions": {
+        "triggerDisable": [
+          {
+            "target": "mission_failed"
+          },
+          {
+            "target": "ships_counter_trigger"
+          }
+        ],
+        "missionSetTargetsIndicator": {
+          "target_type": "isAlive",
+          "target_marking": 0,
+          "delta": 0,
+          "icon": "ship",
+          "icon army": 2,
+          "set": false,
+          "target": "player",
+          "var": "players_count_var"
+        },
+        "moSetObjectiveStatus": {
+          "target": "single_britain_channelBattles_att00",
+          "status": 2
+        },
+        "missionMarkAsWaypoint": {
+          "visible": true,
+          "primary": true,
+          "oriented": false,
+          "ignoreDifficulty": false,
+          "scale": 1.0,
+          "target": "final_area"
+        },
+        "wait": {
+          "time": 2.0
+        },
+        "moAddMissionObjective": {
+          "target": "single_britain_channelBattles_fly01"
+        },
+        "unitSetIndication": {
+          "set": false,
+          "target": "convoy_ships_cargo"
+        },
+        "triggerEnable": {
+          "target": "mission_completed"
+        }
+      },
+      "else_actions": []
+    },
+    "mission_completed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "2D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "check_objects": "any",
+          "object": "player",
+          "target": "final_area"
+        }
+      },
+      "actions": {
+        "missionMarkAsWaypoint": {
+          "visible": false,
+          "primary": true,
+          "oriented": false,
+          "ignoreDifficulty": false,
+          "scale": 1.0,
+          "target": "final_area"
+        },
+        "moSetObjectiveStatus": {
+          "target": "single_britain_channelBattles_fly01",
+          "status": 2
+        },
+        "wait": {
+          "time": 2.0
+        },
+        "missionCompleted": {
+          "timer": false,
+          "debriefingTimer": 3
+        }
+      },
+      "else_actions": []
+    },
+    "mission_failed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "2D",
+          "object_type": "isMarked",
+          "object_marking": 2,
+          "check_objects": "any",
+          "object": "convoy_ships_cargo",
+          "target": "ships_target_area"
+        }
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": "mission_completed"
+        },
+        "moSetObjectiveStatus": {
+          "target": "single_britain_channelBattles_att00",
+          "status": 3
+        },
+        "unitSetIndication": {
+          "set": false,
+          "target": "convoy_ships_cargo"
+        },
+        "wait": {
+          "time": 2.0
+        },
+        "missionFailed": {
+          "debriefingTimer": 3,
+          "timer": false
+        }
+      },
+      "else_actions": []
+    },
+    "secondary_objective_failed": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 3500.0,
+          "math": "notNear2D",
+          "object_type": "isAlive",
+          "target_type": "isAlive",
+          "check_objects": "any",
+          "check_targets": "any",
+          "object_marking": 0,
+          "target_marking": 0,
+          "object": "player_himself",
+          "target": "luftwaffe"
+        }
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": "secondary_objective_completed"
+        },
+        "moSetObjectiveStatus": {
+          "target": "single_britain_channelBattles_fly00",
+          "status": 3
+        }
+      },
+      "else_actions": []
+    },
+    "secondary_objective_completed": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 3500.0,
+          "math": "2D",
+          "object_type": "isAlive",
+          "target_type": "isAlive",
+          "check_objects": "any",
+          "check_targets": "any",
+          "object_marking": 0,
+          "target_marking": 0,
+          "object": "player_himself",
+          "target": "luftwaffe"
+        },
+        "unitWhenInArea": [
+          {
+            "math": "3D"
+          },
+          {
+            "object_type": "isAlive"
+          },
+          {
+            "object_marking": 0
+          },
+          {
+            "check_objects": "any"
+          },
+          {
+            "object": "luftwaffe"
+          },
+          {
+            "object": "player"
+          },
+          {
+            "target": "ships_start_area"
+          }
+        ]
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": "secondary_objective_failed"
+        },
+        "moSetObjectiveStatus": {
+          "target": "single_britain_channelBattles_fly00",
+          "status": 2
+        }
+      },
+      "else_actions": []
+    },
+    "luftwaffe_turning_back": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenStatus": {
+          "object_type": "noBombs",
+          "object_marking": 0,
+          "check_objects": "all",
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object": "luftwaffe"
+        }
+      },
+      "actions": {
+        "unitMoveTo": {
+          "target": "final_area",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": true,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object": "luftwaffe"
+        }
+      },
+      "else_actions": []
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true,
+    "single_britain_channelBattles_att00": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "single_britain_channelBattles_fly00": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": false,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "single_britain_channelBattles_fly01": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    }
+  },
+  "variables": {
+    "players_count_var": 1,
+    "dead_ships_var": 0
+  },
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "armada": {
+        "name": "player",
+        "tm": [
+          [-0.573577,0.0,0.819152],
+          [0.0,1.0,0.0],
+          [-0.819152,0.0,-0.573577],
+          [40208.3,3000.0,-17858.9]
+        ],
+        "unit_class": "ju-87b-2",
+        "closed_waypoints": false,
+        "weapons": "Ju87_B2_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "luftwaffe",
+        "tm": [
+          [-0.608761,0.0,0.793353],
+          [0.0,1.0,0.0],
+          [-0.793353,0.0,-0.608761],
+          [39885.7,3000.0,-17418.9]
+        ],
+        "unit_class": "ju-87b-2",
+        "closed_waypoints": false,
+        "weapons": "Ju87_B2_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 12,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 3,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "player_himself",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [40313.8,-1.0,-16638.1]
+        ],
+        "props": {
+          "squad_members": "player",
+          "object_type": "isPlayer"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "leader_of_formation",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [40174.2,-1.0,-17080.2]
+        ],
+        "props": {
+          "squad_members": "luftwaffe",
+          "object_type": "isFormationLeader"
+        }
+      }
+    },
+    {
+      "ships": {
+        "name": "convoy_ships_cargo00",
+        "tm": [
+          [-0.843392,0.0,-0.5373],
+          [0.0,1.0,0.0],
+          [0.5373,0.0,-0.843392],
+          [29140.8,-1.0,-3778.55]
+        ],
+        "unit_class": "hms_cargo_ship",
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 2,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [15.0,6.0],
+          "formation_noise": [-0.3,-0.2],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "convoy_ships_cruiser00",
+        "tm": [
+          [-0.843392,0.0,-0.5373],
+          [0.0,1.0,0.0],
+          [0.5373,0.0,-0.843392],
+          [29362.8,-1.0,-4249.39]
+        ],
+        "unit_class": "hms_leander",
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [15.0,5.0],
+          "formation_noise": [-0.3,-0.2],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "convoy_ships_cruiser01",
+        "tm": [
+          [-0.843392,0.0,-0.5373],
+          [0.0,1.0,0.0],
+          [0.5373,0.0,-0.843392],
+          [30065.3,-1.0,-3311.2]
+        ],
+        "unit_class": "hms_leander",
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 2,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [15.0,5.0],
+          "formation_noise": [0.2,-0.2],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "convoy_ships_destroyer00",
+        "tm": [
+          [-0.843392,0.0,-0.5373],
+          [0.0,1.0,0.0],
+          [0.5373,0.0,-0.843392],
+          [28775.5,-1.0,-4136.05]
+        ],
+        "unit_class": "uss_dd_georgetown",
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [15.0,5.0],
+          "formation_noise": [-0.3,-0.2],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "raf_fighters00",
+        "tm": [
+          [-0.34202,0.0,-0.939693],
+          [0.0,1.0,0.0],
+          [0.939693,0.0,-0.34202],
+          [42239.0,3000.0,-10559.3]
+        ],
+        "unit_class": "hurricane_mk1",
+        "closed_waypoints": false,
+        "weapons": "hurricane_mk1_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 6,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "hms_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [20034.1,-1.0,-25254.8]
+        ],
+        "props": [
+          {
+            "squad_members": "convoy_ships_cargo00"
+          },
+          {
+            "squad_members": "convoy_ships_cruiser00"
+          },
+          {
+            "squad_members": "convoy_ships_cruiser01"
+          },
+          {
+            "squad_members": "convoy_ships_destroyer00"
+          },
+          {
+            "squad_members": "convoy_ships_cargo01"
+          },
+          {
+            "squad_members": "convoy_ships_cargo02"
+          },
+          {
+            "squad_members": "convoy_ships_destroyer01"
+          },
+          {
+            "squad_members": "convoy_ships_cargo03"
+          }
+        ]
+      }
+    },
+    {
+      "armada": {
+        "name": "raf_fighters01",
+        "tm": [
+          [-0.34202,0.0,-0.939693],
+          [0.0,1.0,0.0],
+          [0.939693,0.0,-0.34202],
+          [28412.6,3000.0,3230.0]
+        ],
+        "unit_class": "spitfire_mk1",
+        "closed_waypoints": false,
+        "weapons": "spitfire_mk1_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 8,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "isDelayed": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "convoy_ships_cargo01",
+        "tm": [
+          [-0.843392,0.0,-0.5373],
+          [0.0,1.0,0.0],
+          [0.5373,0.0,-0.843392],
+          [29847.2,-1.0,-3903.2]
+        ],
+        "unit_class": "hms_cargo_ship",
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [15.0,6.0],
+          "formation_noise": [-0.3,-0.2],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "convoy_ships_cargo02",
+        "tm": [
+          [-0.843392,0.0,-0.5373],
+          [0.0,1.0,0.0],
+          [0.5373,0.0,-0.843392],
+          [30207.5,-1.0,-3820.5]
+        ],
+        "unit_class": "hms_cargo_ship",
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [15.0,6.0],
+          "formation_noise": [-0.3,-0.2],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "convoy_ships_cargo",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [28950.1,-1.0,-4896.3]
+        ],
+        "props": [
+          {
+            "squad_members": "convoy_ships_cargo00"
+          },
+          {
+            "squad_members": "convoy_ships_cargo01"
+          },
+          {
+            "squad_members": "convoy_ships_cargo02"
+          },
+          {
+            "squad_members": "convoy_ships_cargo03"
+          }
+        ]
+      }
+    },
+    {
+      "ships": {
+        "name": "convoy_ships_destroyer01",
+        "tm": [
+          [-0.843392,0.0,-0.5373],
+          [0.0,1.0,0.0],
+          [0.5373,0.0,-0.843392],
+          [28414.6,-1.0,-4593.6]
+        ],
+        "unit_class": "uss_dd_georgetown",
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [15.0,5.0],
+          "formation_noise": [-0.3,-0.2],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "convoy_ships_cargo03",
+        "tm": [
+          [-0.843392,0.0,-0.5373],
+          [0.0,1.0,0.0],
+          [0.5373,0.0,-0.843392],
+          [29308.6,-1.0,-3249.75]
+        ],
+        "unit_class": "hms_cargo_ship",
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    }
+  ],
+  "areas": {
+    "ships_start_area": {
+      "type": "Sphere",
+      "tm": [
+        [4884.6,0.0,0.0],
+        [0.0,4884.6,0.0],
+        [0.0,0.0,4884.6],
+        [29121.6,3000.0,-4106.35]
+      ],
+      "props": []
+    },
+    "ships_target_area": {
+      "type": "Sphere",
+      "tm": [
+        [4173.7,0.0,0.0],
+        [0.0,4173.7,0.0],
+        [0.0,0.0,4173.7],
+        [9861.2,-1.0,-31346.5]
+      ],
+      "props": []
+    },
+    "final_area": {
+      "type": "Sphere",
+      "tm": [
+        [4070.5,0.0,0.0],
+        [0.0,4070.5,0.0],
+        [0.0,0.0,4070.5],
+        [40210.5,1919.95,-20971.6]
+      ],
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}

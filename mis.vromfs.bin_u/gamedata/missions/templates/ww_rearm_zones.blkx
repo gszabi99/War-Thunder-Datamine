@@ -1,0 +1,247 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 30.0
+    },
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/water.bin",
+      "type": "domination",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "clear",
+      "scoreLimit": 6400,
+      "timeLimit": 25,
+      "deathPenaltyMul": 0.0
+    },
+    "spectator_points": []
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "rearm_zones_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "varSetBool": {
+            "value": false,
+            "var": "enableRearmZonesTeamA",
+            "fromDescriptor": "enableRearmZonesTeamA"
+          }
+        },
+        {
+          "varSetBool": {
+            "value": false,
+            "var": "enableRearmZonesTeamB",
+            "fromDescriptor": "enableRearmZonesTeamB"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "rearm_zones_enable_check_t1"
+            },
+            {
+              "target": "rearm_zones_enable_check_t2"
+            }
+          ]
+        }
+      ],
+      "else_actions": []
+    },
+    "rearm_zones_enable_check_t1": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "enableRearmZonesTeamA",
+          "value": true,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "triggerEnable": {
+          "target": "rearm_zone_exist_check_t1"
+        }
+      },
+      "else_actions": []
+    },
+    "rearm_zones_enable_check_t2": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "enableRearmZonesTeamB",
+          "value": true,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "triggerEnable": {
+          "target": "rearm_zone_exist_check_t2"
+        }
+      },
+      "else_actions": []
+    },
+    "rearm_zone_exist_check_t1": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [
+        {
+          "objectExists": {
+            "target": "@t1_rearmZoneName",
+            "type": "area"
+          }
+        },
+        {
+          "objectExists": {
+            "target": "@t1_rearmZoneName",
+            "type": "squad"
+          }
+        }
+      ],
+      "actions": {
+        "missionMarkAsRearmZone": {
+          "army": 1,
+          "area_name": "@t1_rearmZoneName",
+          "enabled": true,
+          "tags": {
+            "air": false,
+            "tank": true,
+            "ship": true
+          }
+        }
+      },
+      "else_actions": []
+    },
+    "rearm_zone_exist_check_t2": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [
+        {
+          "objectExists": {
+            "target": "@t2_rearmZoneName",
+            "type": "area"
+          }
+        },
+        {
+          "objectExists": {
+            "target": "@t2_rearmZoneName",
+            "type": "squad"
+          }
+        }
+      ],
+      "actions": {
+        "missionMarkAsRearmZone": {
+          "army": 2,
+          "area_name": "@t2_rearmZoneName",
+          "enabled": true,
+          "tags": {
+            "air": false,
+            "tank": true,
+            "ship": true
+          }
+        }
+      },
+      "else_actions": []
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {
+    "enableRearmZonesTeamA": false,
+    "enableRearmZonesTeamB": false,
+    "t1_rearmZoneName": "t1_rearm_zone",
+    "t2_rearmZoneName": "t2_rearm_zone"
+  },
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [],
+  "areas": [],
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}
