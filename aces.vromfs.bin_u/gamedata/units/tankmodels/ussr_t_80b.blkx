@@ -136,31 +136,27 @@
       "hull_composite_armor": {
         "turret_01_top_dm": {
           "armorThickness": 30.0,
-          "cumulativeArmorQuality": 0.8,
+          "cumulativeArmorQuality": 0.7,
           "createSecondaryShatters": false,
-          "hidableInViewer": true,
-          "variableThickness": true
+          "hidableInViewer": true
         },
         "superstructure_front_dm": {
           "armorThickness": 60.0,
           "createSecondaryShatters": false,
-          "cumulativeArmorQuality": 1.0,
-          "genericArmorQuality": 0.2,
-          "variableThickness": true
+          "cumulativeArmorQuality": 0.01,
+          "genericArmorQuality": 1.0
         },
         "composite_armor_hull_01_dm": {
           "armorClass": "tank_textolite",
           "hidableInXrayViewer": true,
           "armorThickness": 100.0,
           "genericArmorQuality": 0.01,
-          "cumulativeArmorQuality": 1.1,
-          "variableThickness": true
+          "cumulativeArmorQuality": 1.3
         },
         "turret_10_front_dm": {
           "armorThickness": 45.0,
-          "cumulativeArmorQuality": 0.1,
-          "genericArmorQuality": 0.1,
-          "variableThickness": true
+          "cumulativeArmorQuality": 0.01,
+          "genericArmorQuality": 1.5
         },
         "turret_01_bottom_dm": {
           "armorThickness": 40.0,
@@ -177,14 +173,15 @@
         },
         "turret_06_front_dm": {
           "armorThickness": 50.0,
-          "variableThickness": true
+          "cumulativeArmorQuality": 0.01,
+          "genericArmorQuality": 0.01,
+          "createSecondaryShatters": false
         },
         "turret_02_front_dm": {
           "armorThickness": 50.0,
-          "cumulativeArmorQuality": 0.79,
-          "genericArmorQuality": 1.2,
-          "createSecondaryShatters": false,
-          "variableThickness": true
+          "cumulativeArmorQuality": 0.01,
+          "genericArmorQuality": 0.01,
+          "createSecondaryShatters": false
         }
       },
       "hull": {
@@ -994,7 +991,8 @@
         "armorArrayText": [
           {
             "layer": {
-              "dmPart": "turret_02_front_dm"
+              "dmPart": "turret_01_front_dm",
+              "xrayTextThickness": 180.0
             }
           },
           {

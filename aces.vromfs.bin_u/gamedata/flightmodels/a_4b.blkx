@@ -16,7 +16,7 @@
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
-  "fireParamsPreset": "1000kph",
+  "fireParamsPreset": "900kph",
   "fightAiBehaviour": "assault",
   "DamageParts": {
     "armor10": {
@@ -2081,6 +2081,26 @@
         "spread": 1.2,
         "traceOffset": 1
       }
+    },
+    {
+      "Weapon": {
+        "trigger": "boosters",
+        "blk": "gameData/Weapons/payloadguns/a4b_rocket_booster_l.blk",
+        "emitter": "5ks_4500_jato_l",
+        "bullets": 1,
+        "external": true,
+        "airbrakeRange": [0.0,0.0]
+      }
+    },
+    {
+      "Weapon": {
+        "trigger": "boosters",
+        "blk": "gameData/Weapons/payloadguns/a4b_rocket_booster_r.blk",
+        "emitter": "5ks_4500_jato_r",
+        "bullets": 1,
+        "external": true,
+        "airbrakeRange": [0.0,0.0]
+      }
     }
   ],
   "weapon_presets": [
@@ -2355,7 +2375,7 @@
     "radiusSpeed": 2.0
   },
   "fireParams": {
-    "engineExtinguishFireSpeed": [221.0,306.0],
+    "engineExtinguishFireSpeed": [193.0,277.0],
     "engineExtinguishFireSpeedChance": [0.01,0.1],
     "fireDamagePowerRel": 0.05,
     "nonExtinguishFireTime": 5.0

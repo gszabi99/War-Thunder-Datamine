@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 0.0
-    },
     "player": {
       "army": 1,
       "wing": "player"
@@ -17,13 +13,13 @@
       "level": "levels/honolulu.bin",
       "type": "training",
       "gt_training": false,
-      "restoreType": "manual",
-      "optionalTakeOff": false,
       "environment": "Morning",
       "weather": "good",
       "windDirection": [1.0,0.0,0.0],
       "isLimitedFuel": false,
       "isLimitedAmmo": false,
+      "restoreType": "manual",
+      "optionalTakeOff": false,
       "forceSkiesInitialRandomSeed": true,
       "skiesInitialRandomSeed": 1,
       "customWeather": {
@@ -62,6 +58,10 @@
           "probability": 0.0
         }
       }
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 0.0
     },
     "spectator_points": [],
     "briefing": {
@@ -218,6 +218,8 @@
             "shouldKeepFormation": false,
             "teleportHeightValue": 1000.0,
             "horizontalDirectionForTeleport": true,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport"
           }
@@ -238,6 +240,8 @@
             "shouldKeepFormation": false,
             "teleportHeightValue": 1000.0,
             "horizontalDirectionForTeleport": true,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "instructor",
             "move_type": "teleport"
           }
@@ -468,9 +472,9 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "stabInfluenceEnabled": true,
             "object": "player",
-            "speed": 0.0,
-            "stabInfluenceEnabled": true
+            "speed": 0.0
           }
         },
         {
@@ -592,6 +596,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "instructor"
           }
         },
@@ -795,6 +801,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "instructor",
             "move_type": "teleport",
             "speed": 300.0,
@@ -817,6 +825,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "instructor"
           }
         },
@@ -853,7 +863,9 @@
       "actions": [
         {
           "moAddMissionObjective": {
-            "target": "tutorial_mission1_groundControls"
+            "target": "tutorial_mission1_groundControls",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -1741,10 +1753,14 @@
         ],
         "moSetObjectiveStatus": {
           "target": "tutorial_mission1_groundControls",
-          "status": 2
+          "status": 2,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "moAddMissionObjective": {
-          "target": "tutorial_mission1_takeoff"
+          "target": "tutorial_mission1_takeoff",
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "wait": {
           "time": 5.0
@@ -2478,7 +2494,9 @@
         {
           "moSetObjectiveStatus": {
             "target": "tutorial_mission1_takeoff",
-            "status": 2
+            "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -2488,7 +2506,9 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "tutorial_mission1_airControls"
+            "target": "tutorial_mission1_airControls",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -2507,6 +2527,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "instructor"
           }
         },
@@ -2539,7 +2561,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "item": "elevator=max",
-            "shouldBlink": false
+            "shouldBlink": false,
+            "showKeyBoardShortcutsForMouseAim": true
           }
         },
         {
@@ -2688,6 +2711,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "instructor",
             "move_type": "teleport"
           }
@@ -2763,7 +2788,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "item": "ailerons",
-            "shouldBlink": false
+            "shouldBlink": false,
+            "showKeyBoardShortcutsForMouseAim": true
           }
         },
         {
@@ -3512,7 +3538,8 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0,
           "item": "ailerons",
-          "shouldBlink": false
+          "shouldBlink": false,
+          "showKeyBoardShortcutsForMouseAim": true
         },
         "triggerEnable": {
           "target": "aerialTest_turn02"
@@ -3587,7 +3614,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "item": "elevator=max",
-            "shouldBlink": false
+            "shouldBlink": false,
+            "showKeyBoardShortcutsForMouseAim": true
           }
         },
         {
@@ -4057,6 +4085,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "lookat": "instructor",
@@ -4079,6 +4109,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "instructor",
             "move_type": "teleport",
             "lookat": "instructor",
@@ -4673,7 +4705,9 @@
         {
           "moSetObjectiveStatus": {
             "target": "tutorial_mission1_airControls",
-            "status": 2
+            "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -4711,6 +4745,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "lookat": "way01",
@@ -4727,7 +4763,9 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "tutorial_mission1_testFlight"
+            "target": "tutorial_mission1_testFlight",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -4769,6 +4807,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "instructor"
           }
         },
@@ -4965,6 +5005,8 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "player",
           "move_type": "teleport",
           "lookat": "way01",
@@ -5090,6 +5132,8 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "player",
           "move_type": "teleport",
           "lookat": "way02",
@@ -5215,6 +5259,8 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "player",
           "move_type": "teleport",
           "lookat": "way03",
@@ -5340,6 +5386,8 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "player",
           "move_type": "teleport",
           "lookat": "way04",
@@ -5389,7 +5437,9 @@
         },
         "moSetObjectiveStatus": {
           "target": "tutorial_mission1_testFlight",
-          "status": 2
+          "status": 2,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "missionPlayDialogue": {
           "dialog": "tutorial_m1_d16",
@@ -5702,6 +5752,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "lookat": "instructor_way00",
@@ -5848,6 +5900,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "speed": 300.0,
@@ -6015,6 +6069,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "lookat": "instructor",
@@ -7427,6 +7483,9 @@
           [-1488.05,2.0,-11547.8]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "ships_01"
           },

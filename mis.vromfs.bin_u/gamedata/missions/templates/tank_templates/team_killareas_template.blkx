@@ -11,10 +11,10 @@
     "mission": {
       "level": "levels/water.bin",
       "type": "singleMission",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
-      "weather": "hazy"
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
     },
     "spectator_points": []
   },
@@ -330,13 +330,22 @@
           "air": false,
           "ground": true,
           "mapArea": false,
-          "killArea": true,
+          "killArea": false,
           "killOutOfBattleArea": false,
           "newGridHorizontalCellCount": 0,
           "detectionArea": true,
+          "airMapArea": false,
           "area": "@t1_killarea",
           "team": "B"
-        }
+        },
+        "triggerEnable": [
+          {
+            "target": "t1_enable_crewlock"
+          },
+          {
+            "target": "t1_disable_crewlock"
+          }
+        ]
       },
       "else_actions": []
     },
@@ -370,12 +379,197 @@
           "air": false,
           "ground": true,
           "mapArea": false,
-          "killArea": true,
+          "killArea": false,
           "killOutOfBattleArea": false,
           "newGridHorizontalCellCount": 0,
           "detectionArea": true,
+          "airMapArea": false,
           "area": "@t2_killarea",
           "team": "A"
+        },
+        "triggerEnable": [
+          {
+            "target": "t2_enable_crewlock"
+          },
+          {
+            "target": "t2_disable_crewlock"
+          }
+        ]
+      },
+      "else_actions": []
+    },
+    "t1_enable_crewlock": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "t1_spawn_locked",
+          "value": false,
+          "comparasion_func": "equal"
+        },
+        "unitWhenInArea": {
+          "math": "2D",
+          "object_type": "isTeamB",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "check_objects": "any",
+          "object": "all_players_squad",
+          "target": "@t1_killarea",
+          "expand": 150.0,
+          "unit_type_ex": "isAlive"
+        }
+      },
+      "actions": {
+        "varSetBool": {
+          "value": true,
+          "var": "t1_spawn_locked"
+        },
+        "missionSetCrewLock": {
+          "needLockCrew": false,
+          "team": "A"
+        }
+      },
+      "else_actions": []
+    },
+    "t1_disable_crewlock": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "t1_spawn_locked",
+          "value": true,
+          "comparasion_func": "equal"
+        },
+        "unitWhenInArea": {
+          "math": "notNear2D",
+          "object_type": "isTeamB",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "check_objects": "all",
+          "object": "all_players_squad",
+          "target": "@t1_killarea",
+          "expand": 150.0,
+          "unit_type_ex": "isAlive"
+        }
+      },
+      "actions": {
+        "varSetBool": {
+          "value": false,
+          "var": "t1_spawn_locked"
+        },
+        "missionSetCrewLock": {
+          "needLockCrew": true,
+          "team": "A"
+        }
+      },
+      "else_actions": []
+    },
+    "t2_enable_crewlock": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "t2_spawn_locked",
+          "value": false,
+          "comparasion_func": "equal"
+        },
+        "unitWhenInArea": {
+          "math": "2D",
+          "object_type": "isTeamA",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "check_objects": "any",
+          "object": "all_players_squad",
+          "target": "@t2_killarea",
+          "expand": 150.0,
+          "unit_type_ex": "isAlive"
+        }
+      },
+      "actions": {
+        "varSetBool": {
+          "value": true,
+          "var": "t2_spawn_locked"
+        },
+        "missionSetCrewLock": {
+          "needLockCrew": false,
+          "team": "B"
+        }
+      },
+      "else_actions": []
+    },
+    "t2_disable_crewlock": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "t2_spawn_locked",
+          "value": true,
+          "comparasion_func": "equal"
+        },
+        "unitWhenInArea": {
+          "math": "notNear2D",
+          "object_type": "isTeamA",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "check_objects": "all",
+          "object": "all_players_squad",
+          "target": "@t2_killarea",
+          "expand": 150.0,
+          "unit_type_ex": "isAlive"
+        }
+      },
+      "actions": {
+        "varSetBool": {
+          "value": false,
+          "var": "t2_spawn_locked"
+        },
+        "missionSetCrewLock": {
+          "needLockCrew": true,
+          "team": "B"
         }
       },
       "else_actions": []
@@ -389,7 +583,9 @@
     "t1_killarea": "",
     "t1_killarea_temp": "",
     "t2_killarea": "",
-    "t2_killarea_temp": ""
+    "t2_killarea_temp": "",
+    "t1_spawn_locked": false,
+    "t2_spawn_locked": false
   },
   "dialogs": [],
   "airfields": [],

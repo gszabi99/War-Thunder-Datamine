@@ -11,10 +11,10 @@
     "mission": {
       "level": "levels/water.bin",
       "type": "singleMission",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
-      "weather": "hazy"
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
     },
     "spectator_points": []
   },
@@ -160,37 +160,32 @@
         },
         {
           "varSetString": {
-            "value": "t1_heli_spawn_arcade",
-            "var": "t1_helispawn_str"
-          }
-        },
-        {
-          "varSetString": {
-            "value": "t2_heli_spawn_arcade",
-            "var": "t2_helispawn_str"
-          }
-        },
-        {
-          "varSetString": {
             "value": "t1_helipad_farspawn",
-            "var": "t1_helipad_str"
+            "var": "t1_helipad_farspawn"
           }
         },
         {
           "varSetString": {
             "value": "t2_helipad_farspawn",
+            "var": "t2_helipad_farspawn"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "t1_helipad",
+            "var": "t1_helipad_str"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "t2_helipad",
             "var": "t2_helipad_str"
           }
         },
         {
-          "triggerEnable": [
-            {
-              "target": "helicopter_spawn_force_check"
-            },
-            {
-              "target": "helipad_exist"
-            }
-          ]
+          "triggerEnable": {
+            "target": "rb_air_spawn"
+          }
         }
       ],
       "else_actions": [
@@ -224,14 +219,9 @@
           }
         },
         {
-          "triggerEnable": [
-            {
-              "target": "sb_air_spawn"
-            },
-            {
-              "target": "helipad_exist_hardcore"
-            }
-          ]
+          "triggerEnable": {
+            "target": "sb_air_spawn"
+          }
         }
       ]
     },
@@ -1122,14 +1112,9 @@
           }
         },
         {
-          "triggerEnable": [
-            {
-              "target": "airfields_init"
-            },
-            {
-              "target": "helipad_exist_hardcore"
-            }
-          ]
+          "triggerEnable": {
+            "target": "airfields_init"
+          }
         }
       ],
       "else_actions": []
@@ -1182,9 +1167,17 @@
             }
           },
           {
-            "triggerEnable": {
-              "target": "airfields_disable_check"
-            }
+            "triggerEnable": [
+              {
+                "target": "airfields_disable_check"
+              },
+              {
+                "target": "helipad_farspawn_exist"
+              },
+              {
+                "target": "helipad_exist"
+              }
+            ]
           }
         ],
         "else_actions": []
@@ -1476,46 +1469,7 @@
     "heli_spawn_logic": {
       "isCategory": true,
       "is_enabled": true,
-      "helicopter_spawn_force_check": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "initMission": []
-        },
-        "conditions": {
-          "varCompareBool": {
-            "var_value": "force_helicopter_pad_spawn",
-            "value": true,
-            "comparasion_func": "equal"
-          },
-          "gameWhenDifficulty": {
-            "difficulty": "arcade",
-            "is": "notEqual"
-          }
-        },
-        "actions": {
-          "comment": {
-            "value": "forced spawn on the pad, skip air helispawn creatings"
-          },
-          "triggerEnable": {
-            "target": "rb_air_spawn"
-          }
-        },
-        "else_actions": {
-          "comment": {
-            "value": "no forced spawn. let's spawn in the usual way"
-          },
-          "triggerEnable": {
-            "target": "helispawn_exist_arcade"
-          }
-        }
-      },
-      "helispawn_exist_arcade": {
+      "helipad_farspawn_exist": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -1529,24 +1483,49 @@
         "conditions": [
           {
             "objectExists": {
-              "target": "@t1_helispawn_str",
-              "type": "area"
+              "target": "@t1_helipad_farspawn",
+              "type": "objectGroup"
             }
           },
           {
             "objectExists": {
-              "target": "@t2_helispawn_str",
-              "type": "area"
+              "target": "@t2_helipad_farspawn",
+              "type": "objectGroup"
             }
           }
         ],
         "actions": [
           {
+            "unitSetProperties": [
+              {
+                "object_marking": 0
+              },
+              {
+                "object_var_name": ""
+              },
+              {
+                "object_var_comp_op": "equal"
+              },
+              {
+                "object_var_value": 0
+              },
+              {
+                "object": "@t1_helipad_farspawn"
+              },
+              {
+                "object": "@t2_helipad_farspawn"
+              },
+              {
+                "calmDetection": true
+              }
+            ]
+          },
+          {
             "missionMarkAsRespawnPoint": {
-              "loc_name": "missions/air_spawn1",
+              "loc_name": "missions/helipad_spawn1",
               "spawnEffect": false,
               "isStrictSpawn": false,
-              "isAirfield": false,
+              "isAirfield": true,
               "isUnit": false,
               "useExisting": false,
               "isIndividual": false,
@@ -1558,10 +1537,9 @@
               "onlyOnePlayerPerSpawnPoint": false,
               "replaceAreas": false,
               "forceCreate": false,
-              "target": "@t1_helispawn_str",
+              "target": "@t1_helipad_farspawn",
               "team": "A",
               "tags": {
-                "type_longrange_bomber": false,
                 "helicopter": true,
                 "type_attack_helicopter": true,
                 "type_utility_helicopter": true,
@@ -1574,10 +1552,10 @@
           },
           {
             "missionMarkAsRespawnPoint": {
-              "loc_name": "missions/air_spawn1",
+              "loc_name": "missions/helipad_spawn1",
               "spawnEffect": false,
               "isStrictSpawn": false,
-              "isAirfield": false,
+              "isAirfield": true,
               "isUnit": false,
               "useExisting": false,
               "isIndividual": false,
@@ -1589,7 +1567,7 @@
               "onlyOnePlayerPerSpawnPoint": false,
               "replaceAreas": false,
               "forceCreate": false,
-              "target": "@t2_helispawn_str",
+              "target": "@t2_helipad_farspawn",
               "team": "B",
               "tags": {
                 "helicopter": true,
@@ -1601,18 +1579,9 @@
                 "ship": false
               }
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "rb_air_spawn"
-            }
           }
         ],
-        "else_actions": {
-          "triggerEnable": {
-            "target": "rb_air_spawn_with_heli"
-          }
-        }
+        "else_actions": []
       },
       "helipad_exist": {
         "is_enabled": false,
@@ -1637,219 +1606,11 @@
               "target": "@t2_helipad_str",
               "type": "objectGroup"
             }
-          }
-        ],
-        "actions": [
-          {
-            "unitSetProperties": [
-              {
-                "object_marking": 0
-              },
-              {
-                "object_var_name": ""
-              },
-              {
-                "object_var_comp_op": "equal"
-              },
-              {
-                "object_var_value": 0
-              },
-              {
-                "object": "@t1_helipad_str"
-              },
-              {
-                "object": "@t2_helipad_str"
-              },
-              {
-                "calmDetection": true
-              }
-            ]
           },
           {
-            "missionMarkAsRespawnPoint": {
-              "loc_name": "missions/helipad_spawn",
-              "spawnEffect": false,
-              "isStrictSpawn": false,
-              "isAirfield": true,
-              "isUnit": false,
-              "useExisting": false,
-              "isIndividual": false,
-              "removeAreas": false,
-              "canSpawnOnNeutral": false,
-              "showOnMap": true,
-              "radius": -1.0,
-              "resetStrictSpawnIndex": false,
-              "onlyOnePlayerPerSpawnPoint": false,
-              "replaceAreas": false,
-              "forceCreate": false,
-              "target": "@t1_helipad_str",
-              "team": "A",
-              "tags": {
-                "helicopter": true,
-                "type_attack_helicopter": true,
-                "type_utility_helicopter": true,
-                "tank": false,
-                "artillery": false,
-                "aaa": false,
-                "ship": false
-              }
-            }
-          },
-          {
-            "missionMarkAsRespawnPoint": {
-              "loc_name": "missions/helipad_spawn",
-              "spawnEffect": false,
-              "isStrictSpawn": false,
-              "isAirfield": true,
-              "isUnit": false,
-              "useExisting": false,
-              "isIndividual": false,
-              "removeAreas": false,
-              "canSpawnOnNeutral": false,
-              "showOnMap": true,
-              "radius": -1.0,
-              "resetStrictSpawnIndex": false,
-              "onlyOnePlayerPerSpawnPoint": false,
-              "replaceAreas": false,
-              "forceCreate": false,
-              "target": "@t2_helipad_str",
-              "team": "B",
-              "tags": {
-                "helicopter": true,
-                "type_attack_helicopter": true,
-                "type_utility_helicopter": true,
-                "tank": false,
-                "artillery": false,
-                "aaa": false,
-                "ship": false
-              }
-            }
-          }
-        ],
-        "else_actions": []
-      },
-      "helipad_disable_hardcore_helipads": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "initMission": []
-        },
-        "conditions": [
-          {
-            "objectExists": {
-              "target": "@t1_helipad_str",
-              "type": "objectGroup"
-            }
-          },
-          {
-            "objectExists": {
-              "target": "@t2_helipad_str",
-              "type": "objectGroup"
-            }
-          }
-        ],
-        "actions": {
-          "unitPutToSleep": [
-            {
-              "target": "@t1_helipad_str"
-            },
-            {
-              "target": "@t2_helipad_str"
-            }
-          ],
-          "airfieldSetVisibility": [
-            {
-              "target": "@t1_helipad_str"
-            },
-            {
-              "target": "@t2_helipad_str"
-            },
-            {
-              "team": "None"
-            }
-          ]
-        },
-        "else_actions": {
-          "triggerEnable": {
-            "target": "helipad_squad_disable_hardcore_helipads"
-          }
-        }
-      },
-      "helipad_squad_disable_hardcore_helipads": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "initMission": []
-        },
-        "conditions": [
-          {
-            "objectExists": {
-              "target": "@t1_helipad_str",
-              "type": "squad"
-            }
-          },
-          {
-            "objectExists": {
-              "target": "@t2_helipad_str",
-              "type": "squad"
-            }
-          }
-        ],
-        "actions": {
-          "unitPutToSleep": [
-            {
-              "target": "@t1_helipad_str"
-            },
-            {
-              "target": "@t2_helipad_str"
-            }
-          ],
-          "airfieldSetVisibility": [
-            {
-              "target": "@t1_helipad_str"
-            },
-            {
-              "target": "@t2_helipad_str"
-            },
-            {
-              "team": "None"
-            }
-          ]
-        },
-        "else_actions": []
-      },
-      "helipad_exist_hardcore": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "initMission": []
-        },
-        "conditions": [
-          {
-            "objectExists": {
-              "target": "@t1_helipad_str",
-              "type": "objectGroup"
-            }
-          },
-          {
-            "objectExists": {
-              "target": "@t2_helipad_str",
-              "type": "objectGroup"
+            "gameWhenDifficulty": {
+              "difficulty": "simulator",
+              "is": "notEqual"
             }
           }
         ],
@@ -1881,7 +1642,7 @@
           },
           {
             "missionMarkAsRespawnPoint": {
-              "loc_name": "missions/helipad_spawn",
+              "loc_name": "missions/helipad_spawn2",
               "spawnEffect": false,
               "isStrictSpawn": false,
               "isAirfield": true,
@@ -1911,7 +1672,7 @@
           },
           {
             "missionMarkAsRespawnPoint": {
-              "loc_name": "missions/helipad_spawn",
+              "loc_name": "missions/helipad_spawn2",
               "spawnEffect": false,
               "isStrictSpawn": false,
               "isAirfield": true,
@@ -1937,213 +1698,18 @@
                 "aaa": false,
                 "ship": false
               }
-            }
-          },
-          {
-            "varSetString": {
-              "value": "t1_helipad",
-              "var": "t1_helipad_str"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "t2_helipad",
-              "var": "t2_helipad_str"
             }
           },
           {
             "triggerEnable": {
-              "target": "helipad_disable_arcade_helipads"
+              "target": "helipad_defence_exist"
             }
           }
         ],
-        "else_actions": {
-          "triggerEnable": {
-            "target": "helipad_squad_exist_hardcore"
-          }
-        }
-      },
-      "helipad_squad_exist_hardcore": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "initMission": []
-        },
-        "conditions": [
-          {
-            "objectExists": {
-              "target": "@t1_helipad_str",
-              "type": "squad"
-            }
-          },
-          {
-            "objectExists": {
-              "target": "@t2_helipad_str",
-              "type": "squad"
-            }
-          }
-        ],
-        "actions": [
-          {
-            "unitSetProperties": [
-              {
-                "object_marking": 0
-              },
-              {
-                "object_var_name": ""
-              },
-              {
-                "object_var_comp_op": "equal"
-              },
-              {
-                "object_var_value": 0
-              },
-              {
-                "object": "@t1_helipad_str"
-              },
-              {
-                "object": "@t2_helipad_str"
-              },
-              {
-                "calmDetection": true
-              }
-            ]
-          },
-          {
-            "missionMarkAsRespawnPoint": {
-              "loc_name": "missions/helipad_spawn",
-              "spawnEffect": false,
-              "isStrictSpawn": false,
-              "isAirfield": true,
-              "isUnit": false,
-              "useExisting": false,
-              "isIndividual": false,
-              "removeAreas": false,
-              "canSpawnOnNeutral": false,
-              "showOnMap": true,
-              "radius": -1.0,
-              "resetStrictSpawnIndex": false,
-              "onlyOnePlayerPerSpawnPoint": false,
-              "replaceAreas": false,
-              "forceCreate": false,
-              "target": "@t1_helipad_str",
-              "team": "A",
-              "tags": {
-                "helicopter": true,
-                "type_attack_helicopter": true,
-                "type_utility_helicopter": true,
-                "tank": false,
-                "artillery": false,
-                "aaa": false,
-                "ship": false
-              }
-            }
-          },
-          {
-            "missionMarkAsRespawnPoint": {
-              "loc_name": "missions/helipad_spawn",
-              "spawnEffect": false,
-              "isStrictSpawn": false,
-              "isAirfield": true,
-              "isUnit": false,
-              "useExisting": false,
-              "isIndividual": false,
-              "removeAreas": false,
-              "canSpawnOnNeutral": false,
-              "showOnMap": true,
-              "radius": -1.0,
-              "resetStrictSpawnIndex": false,
-              "onlyOnePlayerPerSpawnPoint": false,
-              "replaceAreas": false,
-              "forceCreate": false,
-              "target": "@t2_helipad_str",
-              "team": "B",
-              "tags": {
-                "helicopter": true,
-                "type_attack_helicopter": true,
-                "type_utility_helicopter": true,
-                "tank": false,
-                "artillery": false,
-                "aaa": false,
-                "ship": false
-              }
-            }
-          },
-          {
-            "varSetString": {
-              "value": "t1_helipad",
-              "var": "t1_helipad_str"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "t2_helipad",
-              "var": "t2_helipad_str"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "helipad_disable_arcade_helipads"
-            }
-          }
-        ],
-        "else_actions": []
-      },
-      "helipad_disable_arcade_helipads": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "initMission": []
-        },
-        "conditions": [
-          {
-            "objectExists": {
-              "target": "@t1_helipad_str",
-              "type": "objectGroup"
-            }
-          },
-          {
-            "objectExists": {
-              "target": "@t2_helipad_str",
-              "type": "objectGroup"
-            }
-          }
-        ],
-        "actions": {
-          "unitPutToSleep": [
-            {
-              "target": "@t1_helipad_str"
-            },
-            {
-              "target": "@t2_helipad_str"
-            }
-          ],
-          "airfieldSetVisibility": [
-            {
-              "target": "@t1_helipad_str"
-            },
-            {
-              "target": "@t2_helipad_str"
-            },
-            {
-              "team": "None"
-            }
-          ]
-        },
         "else_actions": []
       },
       "helipad_defence_exist": {
-        "is_enabled": true,
+        "is_enabled": false,
         "comments": "",
         "props": {
           "actionsType": "PERFORM_ONE_BY_ONE",
@@ -2191,9 +1757,7 @@
           "enableAfterComplete": false
         },
         "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
+          "initMission": []
         },
         "conditions": {
           "gameWhenDifficulty": {
@@ -2336,8 +1900,8 @@
     "t2_bombers_spawn_str": "",
     "t1_helipad_str": "",
     "t2_helipad_str": "",
-    "t1_helispawn_str": "",
-    "t2_helispawn_str": "",
+    "t1_helipad_farspawn": "",
+    "t2_helipad_farspawn": "",
     "defence_team_variable": "defenseMissionTeam",
     "disableAirfields": false,
     "force_plane_airfield_spawn": false,
