@@ -120,6 +120,15 @@
     "arcadeTurnPowerMult": 1.1
   },
   {
+    "customClassIco": "!#ui/gameuiskin#image_in_progress_ico"
+  },
+  {
+    "customImage": "!#ui/unitskin#image_in_progress"
+  },
+  {
+    "customTooltipImage": "ui/aircrafts/image_in_progress"
+  },
+  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "RHA_tank_modern",
@@ -233,12 +242,6 @@
         },
         "turret_front_dm": {
           "armorThickness": 45.0
-        },
-        "ex_decor_r_03_dm": {
-          "armorThickness": 10.0
-        },
-        "ex_decor_l_03_dm": {
-          "armorThickness": 10.0
         }
       },
       "turret": {
@@ -413,7 +416,8 @@
           "armorThickness": 14.0
         },
         "composite_armor_turret_04_dm": {
-          "armorThickness": 0.1
+          "armorThickness": 0.1,
+          "createSecondaryShatters": false
         },
         "composite_armor_turret_07_dm": {
           "armorThickness": 35.0,
@@ -535,6 +539,30 @@
           "armorThickness": 35.0
         },
         "turret_01_front_dm": {
+          "armorThickness": 35.0
+        },
+        "turret_11_back_dm": {
+          "armorThickness": 45.0
+        },
+        "turret_12_back_dm": {
+          "armorThickness": 35.0
+        },
+        "turret_12_bottom_dm": {
+          "armorThickness": 35.0
+        },
+        "turret_12_front_dm": {
+          "armorThickness": 35.0
+        },
+        "turret_12_side_dm": {
+          "armorThickness": 35.0
+        },
+        "turret_12_top_dm": {
+          "armorThickness": 35.0
+        },
+        "turret_13_back_dm": {
+          "armorThickness": 45.0
+        },
+        "turret_13_bottom_dm": {
           "armorThickness": 35.0
         }
       },
@@ -673,7 +701,15 @@
           "hp": 200.0,
           "ex_decor_03_dm": [],
           "ex_decor_04_dm": [],
-          "ex_decor_l_06_dm": [],
+          "ex_decor_r_03_dm": {
+            "armorThickness": 10.0
+          },
+          "ex_decor_l_03_dm": {
+            "armorThickness": 10.0
+          },
+          "ex_decor_l_06_dm": {
+            "armorThickness": 10.0
+          },
           "ex_decor_l_11_dm": {
             "armorThickness": 10.0
           },
@@ -3247,8 +3283,6 @@
       },
       "120mm_DM_HEAT_FS": [],
       "120mm_DM_APDS_FS": [],
-      "120mm_DM_HE_FS": [],
-      "120mm_DM_HE_FS_ammo_pack": [],
       "120mm_DM_APDS_FS_ammo_pack": [],
       "120mm_DM_HEAT_FS_ammo_pack": [],
       "modern_tank_laser_rangefinder": [],

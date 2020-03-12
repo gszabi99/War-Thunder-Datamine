@@ -1559,7 +1559,8 @@
       "airToAirMissileDetection": true,
       "nightVisionInTPS": true,
       "hudDetectAlly": false,
-      "keepDeadShipOnMap": true
+      "keepDeadShipOnMap": true,
+      "hudSendSquare": false
     },
     "realistic": {
       "baseDifficulty": 1,
@@ -1619,9 +1620,7 @@
       "nightVisionInTPS": true,
       "hudDetectAlly": false,
       "keepDeadShipOnMap": true,
-      "hudSendSquareTimeInterval": 45,
-      "hudSendSquareNumPlayers": 3,
-      "hudSendSquareTimeFromStart": 900
+      "hudSendSquare": false
     },
     "hardcore": {
       "baseDifficulty": 2,
@@ -1680,7 +1679,8 @@
       "airToAirMissileDetection": false,
       "nightVisionInTPS": false,
       "hudDetectAlly": false,
-      "keepDeadShipOnMap": true
+      "keepDeadShipOnMap": true,
+      "hudSendSquare": false
     }
   },
   "custom_difficulty": {
@@ -1742,6 +1742,7 @@
       "nightVisionInTPS": true,
       "hudDetectAlly": false,
       "keepDeadShipOnMap": true,
+      "hudSendSquare": false,
       "setDifficulty": 1
     },
     "tank_hardcore": {
@@ -1802,6 +1803,7 @@
       "nightVisionInTPS": false,
       "hudDetectAlly": false,
       "keepDeadShipOnMap": true,
+      "hudSendSquare": false,
       "setDifficulty": 2
     },
     "ship_arcade": {
@@ -1862,6 +1864,7 @@
       "nightVisionInTPS": true,
       "hudDetectAlly": false,
       "keepDeadShipOnMap": true,
+      "hudSendSquare": false,
       "setDifficulty": 0
     },
     "ship_realistic": {
@@ -1922,6 +1925,7 @@
       "nightVisionInTPS": true,
       "hudDetectAlly": false,
       "keepDeadShipOnMap": true,
+      "hudSendSquare": false,
       "setDifficulty": 1
     }
   },
@@ -3173,6 +3177,18 @@
       },
       "on": {
         "keepDeadShipOnMap": true
+      }
+    },
+    "hudSendSquare": {
+      "off": {
+        "hudSendSquareTimeInterval": 0,
+        "hudSendSquareNumPlayers": 0,
+        "hudSendSquareTimeFromStart": 900
+      },
+      "on": {
+        "hudSendSquareTimeInterval": 30,
+        "hudSendSquareNumPlayers": 2,
+        "hudSendSquareTimeFromStart": 90
       }
     }
   },

@@ -1833,23 +1833,21 @@
         },
         {
           "limits": {
-            "yaw": [-115.0,115.0],
-            "pitch": [-50.0,25.0]
+            "yaw": [-86.0,86.0],
+            "pitch": [-60.0,11.0]
           }
         },
         {
           "limitsTable": {
-            "lim1": [-115.0,-103.0,-50.0,15.0],
-            "lim2": [-103.0,-75.0,-50.0,19.0],
-            "lim3": [-75.0,-52.0,-50.0,24.0],
-            "lim4": [-52.0,-35.0,-50.0,25.0],
-            "lim5": [-35.0,-15.0,-50.0,23.0],
-            "lim6": [-15.0,15.0,-50.0,20.0],
-            "lim7": [15.0,35.0,-50.0,23.0],
-            "lim8": [35.0,52.0,-50.0,25.0],
-            "lim9": [52.0,75.0,-50.0,24.0],
-            "lim10": [75.0,103.0,-50.0,19.0],
-            "lim11": [103.0,115.0,-50.0,15.0]
+            "lim1": [-86.0,-75.0,-50.0,19.0],
+            "lim2": [-75.0,-52.0,-50.0,24.0],
+            "lim3": [-52.0,-35.0,-50.0,25.0],
+            "lim4": [-35.0,-15.0,-50.0,23.0],
+            "lim5": [-15.0,15.0,-50.0,20.0],
+            "lim6": [15.0,35.0,-50.0,23.0],
+            "lim7": [35.0,52.0,-50.0,25.0],
+            "lim8": [52.0,75.0,-50.0,24.0],
+            "lim9": [75.0,86.0,-50.0,19.0]
           }
         }
       ]
@@ -1963,179 +1961,10 @@
       "modClass": "weapon",
       "tier": 4
     },
-    "MAW_system_heli_false_thermal_targets": {
-      "turn_it_off": false,
-      "tier": 1,
-      "invertEnableLogic": false,
-      "group": "mi-24_EVU",
-      "effects": {
-        "commonWeapons": [
-          {
-            "hideNodes": [
-              {
-                "node": "aim92_stinger_pod_001"
-              },
-              {
-                "node": "aim92_stinger_cap_001"
-              },
-              {
-                "node": "aim92_stinger_cap_002"
-              },
-              {
-                "node": "aim92_stinger_pod_002"
-              },
-              {
-                "node": "aim92_stinger_cap_003"
-              },
-              {
-                "node": "aim92_stinger_cap_004"
-              },
-              {
-                "node": "adase_pod_l"
-              },
-              {
-                "node": "adase_pod_r"
-              },
-              {
-                "node": "lipa"
-              }
-            ]
-          },
-          {
-            "Weapon": {
-              "dummy": true,
-              "trigger": "gunner0",
-              "triggerGroup": "primary",
-              "blk": "gameData/Weapons/cannonM230E1.blk",
-              "emitter": "optic1_gun",
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "speedYaw": 25.0,
-              "speedPitch": 25.0,
-              "bullets": 1,
-              "parkInDeadzone": false,
-              "aimForOperatedShell": true,
-              "turret": {
-                "head": "optic1_turret",
-                "gun": "optic1_gun",
-                "mainTurret": true
-              },
-              "limits": {
-                "yaw": [-115.0,115.0],
-                "pitch": [-50.0,25.0]
-              }
-            }
-          },
-          {
-            "Weapon": [
-              {
-                "trigger": "gunner0"
-              },
-              {
-                "blk": "gameData/Weapons/cannonM230E1.blk"
-              },
-              {
-                "emitter": "flare1"
-              },
-              {
-                "flash": "flare1"
-              },
-              {
-                "turret": "turret1"
-              },
-              {
-                "dm": "gunner1_dm"
-              },
-              {
-                "gunnerDm": "gunner1_dm"
-              },
-              {
-                "gunDm": "cannon1_dm"
-              },
-              {
-                "partsDP": "cannon1_dm"
-              },
-              {
-                "bullets": 1200
-              },
-              {
-                "recoilOffset": 0.0
-              },
-              {
-                "parkInDeadzone": false
-              },
-              {
-                "turret": {
-                  "head": "turret1",
-                  "gun": "gun1",
-                  "mainTurret": true,
-                  "ballisticTargeting": true
-                }
-              },
-              {
-                "limits": {
-                  "yaw": [-115.0,115.0],
-                  "pitch": [-50.0,25.0]
-                }
-              },
-              {
-                "limitsTable": {
-                  "lim1": [-115.0,-103.0,-50.0,15.0],
-                  "lim2": [-103.0,-75.0,-50.0,19.0],
-                  "lim3": [-75.0,-52.0,-50.0,24.0],
-                  "lim4": [-52.0,-35.0,-50.0,25.0],
-                  "lim5": [-35.0,-15.0,-50.0,23.0],
-                  "lim6": [-15.0,15.0,-50.0,20.0],
-                  "lim7": [15.0,35.0,-50.0,23.0],
-                  "lim8": [35.0,52.0,-50.0,25.0],
-                  "lim9": [52.0,75.0,-50.0,24.0],
-                  "lim10": [75.0,103.0,-50.0,19.0],
-                  "lim11": [103.0,115.0,-50.0,15.0]
-                }
-              }
-            ]
-          },
-          {
-            "Weapon": {
-              "trigger": "flares",
-              "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
-              "emitter": "emtr_flare1",
-              "bullets": 30,
-              "external": true,
-              "separate": false
-            }
-          }
-        ],
-        "sensors": [
-          {
-            "sensor": {
-              "blk": "gameData/sensors/us_an_apg_78.blk",
-              "dmPart": "radar_dm"
-            }
-          },
-          {
-            "sensor": {
-              "blk": "gameData/sensors/tv_tracker.blk"
-            }
-          },
-          {
-            "sensor": {
-              "blk": "gameData/sensors/us_an_apr_39.blk"
-            }
-          },
-          {
-            "sensor": {
-              "blk": "gameData/sensors/us_an_aar_47.blk"
-            }
-          }
-        ]
-      }
-    },
     "heli_counterMeasures": {
       "turn_it_off": false,
       "invertEnableLogic": false,
-      "reqModification": "MAW_system_heli_false_thermal_targets",
-      "tier": 2,
+      "tier": 1,
       "group": "mi-24_EVU",
       "effects": {
         "commonWeapons": [
@@ -2247,23 +2076,21 @@
               },
               {
                 "limits": {
-                  "yaw": [-115.0,115.0],
-                  "pitch": [-50.0,25.0]
+                  "yaw": [-86.0,86.0],
+                  "pitch": [-60.0,11.0]
                 }
               },
               {
                 "limitsTable": {
-                  "lim1": [-115.0,-103.0,-50.0,15.0],
-                  "lim2": [-103.0,-75.0,-50.0,19.0],
-                  "lim3": [-75.0,-52.0,-50.0,24.0],
-                  "lim4": [-52.0,-35.0,-50.0,25.0],
-                  "lim5": [-35.0,-15.0,-50.0,23.0],
-                  "lim6": [-15.0,15.0,-50.0,20.0],
-                  "lim7": [15.0,35.0,-50.0,23.0],
-                  "lim8": [35.0,52.0,-50.0,25.0],
-                  "lim9": [52.0,75.0,-50.0,24.0],
-                  "lim10": [75.0,103.0,-50.0,19.0],
-                  "lim11": [103.0,115.0,-50.0,15.0]
+                  "lim1": [-86.0,-75.0,-50.0,19.0],
+                  "lim2": [-75.0,-52.0,-50.0,24.0],
+                  "lim3": [-52.0,-35.0,-50.0,25.0],
+                  "lim4": [-35.0,-15.0,-50.0,23.0],
+                  "lim5": [-15.0,15.0,-50.0,20.0],
+                  "lim6": [15.0,35.0,-50.0,23.0],
+                  "lim7": [35.0,52.0,-50.0,25.0],
+                  "lim8": [52.0,75.0,-50.0,24.0],
+                  "lim9": [75.0,86.0,-50.0,19.0]
                 }
               }
             ]
@@ -2305,7 +2132,7 @@
     },
     "AMASE_heli_false_thermal_targets": {
       "turn_it_off": false,
-      "tier": 3,
+      "tier": 2,
       "invertEnableLogic": false,
       "reqModification": "heli_counterMeasures",
       "group": "mi-24_EVU",
@@ -2413,23 +2240,21 @@
               },
               {
                 "limits": {
-                  "yaw": [-115.0,115.0],
-                  "pitch": [-50.0,25.0]
+                  "yaw": [-86.0,86.0],
+                  "pitch": [-60.0,11.0]
                 }
               },
               {
                 "limitsTable": {
-                  "lim1": [-115.0,-103.0,-50.0,15.0],
-                  "lim2": [-103.0,-75.0,-50.0,19.0],
-                  "lim3": [-75.0,-52.0,-50.0,24.0],
-                  "lim4": [-52.0,-35.0,-50.0,25.0],
-                  "lim5": [-35.0,-15.0,-50.0,23.0],
-                  "lim6": [-15.0,15.0,-50.0,20.0],
-                  "lim7": [15.0,35.0,-50.0,23.0],
-                  "lim8": [35.0,52.0,-50.0,25.0],
-                  "lim9": [52.0,75.0,-50.0,24.0],
-                  "lim10": [75.0,103.0,-50.0,19.0],
-                  "lim11": [103.0,115.0,-50.0,15.0]
+                  "lim1": [-86.0,-75.0,-50.0,19.0],
+                  "lim2": [-75.0,-52.0,-50.0,24.0],
+                  "lim3": [-52.0,-35.0,-50.0,25.0],
+                  "lim4": [-35.0,-15.0,-50.0,23.0],
+                  "lim5": [-15.0,15.0,-50.0,20.0],
+                  "lim6": [15.0,35.0,-50.0,23.0],
+                  "lim7": [35.0,52.0,-50.0,25.0],
+                  "lim8": [52.0,75.0,-50.0,24.0],
+                  "lim9": [75.0,86.0,-50.0,19.0]
                 }
               }
             ]
@@ -2508,7 +2333,7 @@
     },
     "stinger_heli_false_thermal_targets": {
       "turn_it_off": false,
-      "tier": 4,
+      "tier": 3,
       "invertEnableLogic": false,
       "reqModification": "AMASE_heli_false_thermal_targets",
       "group": "mi-24_EVU",
@@ -2604,23 +2429,21 @@
               },
               {
                 "limits": {
-                  "yaw": [-115.0,115.0],
+                  "yaw": [-86.0,86.0],
                   "pitch": [-50.0,25.0]
                 }
               },
               {
                 "limitsTable": {
-                  "lim1": [-115.0,-103.0,-50.0,15.0],
-                  "lim2": [-103.0,-75.0,-50.0,19.0],
-                  "lim3": [-75.0,-52.0,-50.0,24.0],
-                  "lim4": [-52.0,-35.0,-50.0,25.0],
-                  "lim5": [-35.0,-15.0,-50.0,23.0],
-                  "lim6": [-15.0,15.0,-50.0,20.0],
-                  "lim7": [15.0,35.0,-50.0,23.0],
-                  "lim8": [35.0,52.0,-50.0,25.0],
-                  "lim9": [52.0,75.0,-50.0,24.0],
-                  "lim10": [75.0,103.0,-50.0,19.0],
-                  "lim11": [103.0,115.0,-50.0,15.0]
+                  "lim1": [-86.0,-75.0,-50.0,19.0],
+                  "lim2": [-75.0,-52.0,-50.0,24.0],
+                  "lim3": [-52.0,-35.0,-50.0,25.0],
+                  "lim4": [-35.0,-15.0,-50.0,23.0],
+                  "lim5": [-15.0,15.0,-50.0,20.0],
+                  "lim6": [15.0,35.0,-50.0,23.0],
+                  "lim7": [35.0,52.0,-50.0,25.0],
+                  "lim8": [52.0,75.0,-50.0,24.0],
+                  "lim9": [75.0,86.0,-50.0,19.0]
                 }
               }
             ]

@@ -162,7 +162,7 @@
           "armorThickness": 20.0
         },
         "turret_01_front_dm": {
-          "armorThickness": 20.0
+          "armorThickness": 6.0
         },
         "turret_02_bottom_dm": {
           "armorThickness": 20.0
@@ -227,10 +227,12 @@
       "hull_turret_spaced_armor": {
         "armorClass": "RHA_tank",
         "composite_armor_hull_01_dm": {
-          "armorThickness": 10.0
+          "armorThickness": 10.0,
+          "hidableInViewer": true
         },
         "composite_armor_hull_02_dm": {
-          "armorThickness": 10.0
+          "armorThickness": 10.0,
+          "hidableInViewer": true
         }
       },
       "turret": {
@@ -297,8 +299,9 @@
       },
       "body_shields": {
         "armorClass": "tank_structural_steel",
-        "hp": 100.0,
-        "armorThickness": 12.0,
+        "armorThickness": 5.0,
+        "hp": 1000.0,
+        "stopChanceOnDeadPart": 0.0,
         "createSecondaryShatters": false,
         "ex_armor_l_01_dm": [],
         "ex_armor_r_01_dm": [],
@@ -308,8 +311,14 @@
         "ex_armor_r_03_dm": [],
         "ex_armor_l_04_dm": [],
         "ex_armor_r_04_dm": [],
-        "ex_decor_l_01_dm": [],
-        "ex_decor_r_01_dm": [],
+        "ex_decor_l_01_dm": {
+          "armorClass": "t_90_rubber_fabric_screens",
+          "armorThickness": 5.0
+        },
+        "ex_decor_r_01_dm": {
+          "armorClass": "t_90_rubber_fabric_screens",
+          "armorThickness": 5.0
+        },
         "ex_decor_l_04_dm": [],
         "ex_decor_r_04_dm": []
       },
@@ -2659,10 +2668,10 @@
   },
   {
     "cockpit": {
-      "zoomOutFov": 10.21,
-      "zoomInFov": 9.21,
-      "sightFov": 4.0,
-      "sightName": "90c_sight",
+      "zoomOutFov": 24.743,
+      "zoomInFov": 7.02,
+      "sightFov": 10.0,
+      "sightName": "strv_103_sight",
       "headPos": [0.0,3.2,-6.7],
       "headPosOnShooting": [-1.23,3.0,0.67],
       "detectionHeight": 2.9

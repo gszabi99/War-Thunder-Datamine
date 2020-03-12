@@ -162,7 +162,7 @@
           "armorThickness": 20.0
         },
         "turret_04_front_dm": {
-          "armorThickness": 20.0
+          "armorThickness": 6.0
         },
         "turret_05_back_dm": {
           "armorThickness": 5.0
@@ -222,10 +222,12 @@
       "hull_turret_spaced_armor": {
         "armorClass": "RHA_tank",
         "composite_armor_hull_01_dm": {
-          "armorThickness": 10.0
+          "armorThickness": 10.0,
+          "hidableInViewer": true
         },
         "composite_armor_hull_02_dm": {
-          "armorThickness": 10.0
+          "armorThickness": 10.0,
+          "hidableInViewer": true
         }
       },
       "additional_armor_plate": {
@@ -484,7 +486,8 @@
         "armorClass": "tank_structural_steel",
         "armorThickness": 15.0,
         "hp": 200.0,
-        "antenna_target_tagging_dm": []
+        "antenna_target_tagging_dm": [],
+        "antenna_target_location_dm": []
       },
       "chassis": {
         "armorClass": "tank_steel_wheels",
@@ -2177,6 +2180,7 @@
           "defaultPitch": 0.0,
           "barrelDP": "gun_barrel_dm",
           "breechDP": "cannon_breech_dm",
+          "autoLoad": true,
           "speedYaw": 22.9,
           "speedPitch": 34.3,
           "fireConeAngle": 1.0,
@@ -2328,7 +2332,7 @@
         "type": "auto",
         "gearRatios": [
           {
-            "ratio": -1.665
+            "ratio": -1.6
           },
           {
             "ratio": -4.054
@@ -2906,7 +2910,7 @@
       "sightFov": 6.5,
       "sightName": "tzf_1a",
       "headPos": [0.0,4.2,-8.5],
-      "headPosOnShooting": [-0.4,3.1,-0.8],
+      "headPosOnShooting": [0.2,3.45,-0.8],
       "detectionHeight": 2.613
     }
   },
@@ -3300,6 +3304,7 @@
                 "defaultPitch": 0.0,
                 "barrelDP": "gun_barrel_dm",
                 "breechDP": "cannon_breech_dm",
+                "autoLoad": true,
                 "speedYaw": 22.9,
                 "speedPitch": 34.3,
                 "fireConeAngle": 1.0,
@@ -3609,7 +3614,7 @@
           "turretIndex": 0,
           "designationFromBody": true,
           "designationTurretIndex": 0,
-          "dmPart": "antenna_target_location_dm"
+          "dmPart": "antenna_target_tagging_dm"
         }
       },
       {
