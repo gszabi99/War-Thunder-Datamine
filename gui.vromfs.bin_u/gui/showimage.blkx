@@ -1,0 +1,25 @@
+{
+  "root": {
+    "background-color": "@modalShadeColor",
+    "transparent": "0",
+    "behavior": "button",
+    "on_click": "onBack",
+    "accessKey": "J:A | Space | Enter | NumEnter | J:B | Esc | Backspace",
+    "imgFrame": {
+      "id": "imgFrame",
+      "position": "absolute",
+      "img": {
+        "id": "image"
+      },
+      "Button_close": {
+        "id": "btn_back",
+        "display": "hide",
+        "_on_click": "goBack"
+      }
+    },
+    "timer": {
+      "id": "image_update",
+      "timer_handler_func": "onUpdate"
+    }
+  }
+}

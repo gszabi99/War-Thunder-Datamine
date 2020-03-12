@@ -1,0 +1,3 @@
+return {
+  playSound = @(...) null
+}

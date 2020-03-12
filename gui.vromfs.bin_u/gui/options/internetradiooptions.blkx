@@ -1,0 +1,298 @@
+{
+  "tdiv": {
+    "width": "pw",
+    "pos": "0.5pw-0.5w, 0",
+    "position": "relative",
+    "height": "@bigOptionsHeight",
+    "flow": "vertical",
+    "overflow-y": "auto",
+    "tdiv": [
+      {
+        "width": "pw"
+      },
+      {
+        "pos": "0.5pw-0.5w, 0.5ph-0.5h"
+      },
+      {
+        "max-height": "@bigOptionsHeight"
+      },
+      {
+        "flow": "vertical"
+      },
+      {
+        "optionsBoxRightScroll": {
+          "id": "internetRadioOptions"
+        }
+      },
+      {
+        "tdiv": [
+          {
+            "pos": "50%pw- 50%w"
+          },
+          {
+            "position": "relative"
+          },
+          {
+            "Button_text": {
+              "_on_click": "onDialogAddRadio",
+              "text": "#options/internet_radio_add",
+              "tooltip": "#guiHints/internet_radio_add"
+            }
+          },
+          {
+            "Button_text": {
+              "enable": "no",
+              "id": "btn_edit_radio",
+              "_on_click": "onDialogEditRadio",
+              "text": "#options/internet_radio_edit",
+              "tooltip": "#guiHints/internet_radio_edit"
+            }
+          },
+          {
+            "Button_text": {
+              "enable": "no",
+              "id": "btn_remove_radio",
+              "_on_click": "onRemoveRadio",
+              "text": "#options/internet_radio_remove",
+              "tooltip": "#guiHints/internet_radio_remove"
+            }
+          }
+        ]
+      },
+      {
+        "tdiv": [
+          {
+            "width": "pw"
+          },
+          {
+            "flow": "vertical"
+          },
+          {
+            "padding-top": "0.01@sf"
+          },
+          {
+            "tdiv": [
+              {
+                "width": "pw"
+              },
+              {
+                "td": {
+                  "cellType": "left",
+                  "width": "0.5pw",
+                  "optiontext": {
+                    "text": "#options/internet_radio_shortcut"
+                  }
+                }
+              },
+              {
+                "td": {
+                  "cellType": "right",
+                  "width": "0.5pw",
+                  "padding-left": "@optPad",
+                  "Button_text": {
+                    "_on_click": "onAssignInternetRadioButton",
+                    "tooltip": "#guiHints/internet_radio_shortcut",
+                    "textarea": {
+                      "id": "internet_radio_shortcut",
+                      "voiceShortcut": "yes",
+                      "pos": "0, 0.5ph-0.5h",
+                      "position": "relative",
+                      "min-width": "@buttonWidth-@buttonTextPadding",
+                      "input-transparent": "yes",
+                      "text-align": "center",
+                      "text": ""
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "tdiv": [
+              {
+                "width": "pw"
+              },
+              {
+                "padding-top": "0.005@sf"
+              },
+              {
+                "td": {
+                  "cellType": "left",
+                  "width": "0.5pw"
+                }
+              },
+              {
+                "td": {
+                  "cellType": "right",
+                  "width": "0.5pw",
+                  "padding-left": "@optPad",
+                  "Button_text": {
+                    "_on_click": "onClearInternetRadioButton",
+                    "text": "#mainmenu/btnReset",
+                    "tooltip": "#mainmenu/btnReset"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tdiv": [
+          {
+            "width": "pw"
+          },
+          {
+            "flow": "vertical"
+          },
+          {
+            "padding-top": "0.015@sf"
+          },
+          {
+            "tdiv": [
+              {
+                "width": "pw"
+              },
+              {
+                "td": {
+                  "cellType": "left",
+                  "width": "0.5pw",
+                  "optiontext": {
+                    "text": "#options/internet_radio_prev_shortcut"
+                  }
+                }
+              },
+              {
+                "td": {
+                  "cellType": "right",
+                  "width": "0.5pw",
+                  "padding-left": "@optPad",
+                  "Button_text": {
+                    "_on_click": "onAssignInternetRadioPrevButton",
+                    "tooltip": "#guiHints/internet_radio_prev_shortcut",
+                    "textarea": {
+                      "id": "internet_radio_prev_shortcut",
+                      "voiceShortcut": "yes",
+                      "pos": "0, 0.5ph-0.5h",
+                      "position": "relative",
+                      "min-width": "@buttonWidth-@buttonTextPadding",
+                      "input-transparent": "yes",
+                      "text-align": "center",
+                      "text": ""
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "tdiv": [
+              {
+                "width": "pw"
+              },
+              {
+                "padding-top": "0.005@sf"
+              },
+              {
+                "td": {
+                  "cellType": "left",
+                  "width": "0.5pw"
+                }
+              },
+              {
+                "td": {
+                  "cellType": "right",
+                  "width": "0.5pw",
+                  "padding-left": "@optPad",
+                  "Button_text": {
+                    "_on_click": "onClearInternetRadioPrevButton",
+                    "text": "#mainmenu/btnReset",
+                    "tooltip": "#mainmenu/btnReset"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tdiv": [
+          {
+            "width": "pw"
+          },
+          {
+            "flow": "vertical"
+          },
+          {
+            "padding-top": "0.015@sf"
+          },
+          {
+            "tdiv": [
+              {
+                "width": "pw"
+              },
+              {
+                "td": {
+                  "cellType": "left",
+                  "width": "0.5pw",
+                  "optiontext": {
+                    "text": "#options/internet_radio_next_shortcut"
+                  }
+                }
+              },
+              {
+                "td": {
+                  "cellType": "right",
+                  "width": "0.5pw",
+                  "padding-left": "@optPad",
+                  "Button_text": {
+                    "_on_click": "onAssignInternetRadioNextButton",
+                    "tooltip": "#guiHints/internet_radio_next_shortcut",
+                    "textarea": {
+                      "id": "internet_radio_next_shortcut",
+                      "voiceShortcut": "yes",
+                      "pos": "0, 0.5ph-0.5h",
+                      "position": "relative",
+                      "min-width": "@buttonWidth-@buttonTextPadding",
+                      "input-transparent": "yes",
+                      "text-align": "center",
+                      "text": ""
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "tdiv": [
+              {
+                "width": "pw"
+              },
+              {
+                "padding-top": "0.005@sf"
+              },
+              {
+                "td": {
+                  "cellType": "left",
+                  "width": "0.5pw"
+                }
+              },
+              {
+                "td": {
+                  "cellType": "right",
+                  "width": "0.5pw",
+                  "padding-left": "@optPad",
+                  "Button_text": {
+                    "_on_click": "onClearInternetRadioNextButton",
+                    "text": "#mainmenu/btnReset",
+                    "tooltip": "#mainmenu/btnReset"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

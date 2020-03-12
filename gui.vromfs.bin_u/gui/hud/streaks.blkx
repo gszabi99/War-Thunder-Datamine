@@ -1,0 +1,79 @@
+{
+  "animSizeObj": {
+    "id": "hud_streaks",
+    "position": "relative",
+    "pos": "pw/2 - w/2, 0",
+    "width": "45%@rwHud",
+    "animation": "hide",
+    "height-base": "1",
+    "height-end": "100",
+    "height": "1",
+    "_size-timer": "0",
+    "tdiv": [
+      {
+        "id": "streak_content"
+      },
+      {
+        "width": "pw"
+      },
+      {
+        "flow": "vertical"
+      },
+      {
+        "display": "hide"
+      },
+      {
+        "enable": "no"
+      },
+      {
+        "behaviour": "massTransparency"
+      },
+      {
+        "transp-base": "255"
+      },
+      {
+        "transp-end": "0"
+      },
+      {
+        "transp-func": "cube"
+      },
+      {
+        "transp-time": "2000"
+      },
+      {
+        "_transp-timer": "1"
+      },
+      {
+        "_blink": "no"
+      },
+      {
+        "img": {
+          "id": "streak_icon",
+          "size": "0.06@shHud, 0.06@shHud",
+          "pos": "pw/2-w/2, 0",
+          "position": "relative"
+        }
+      },
+      {
+        "textareaNoTab": {
+          "id": "streak_header",
+          "width": "pw",
+          "style": "color:@streakTextColor; font:@fontHudMedium; text-align:center;",
+          "text": "",
+          "shadeStyle": "HudHeader3D",
+          "pos": "0, -0.004*@shHud",
+          "position": "relative"
+        }
+      },
+      {
+        "textareaNoTab": {
+          "id": "streak_score",
+          "width": "pw",
+          "style": "color:@white; font:@fontHudSmall; text-align:center;",
+          "shadeStyle": "HudTinyLight",
+          "text": ""
+        }
+      }
+    ]
+  }
+}

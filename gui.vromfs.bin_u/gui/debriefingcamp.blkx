@@ -1,0 +1,396 @@
+{
+  "img": {
+    "position": "absolute",
+    "size": "3sw, sh/3+1",
+    "pos": "-sw,sh-h-1@bh",
+    "background-image": "#ui/gameuiskin#optionlist_background_down"
+  },
+  "root": {
+    "type": "big",
+    "menutitle": {
+      "id": "scene-title",
+      "text": "",
+      "pos": "50%pw-50%w, @bh",
+      "position": "absolute",
+      "style": "valign:center"
+    },
+    "optionlist_container": [
+      {
+        "flow": "vertical"
+      },
+      {
+        "overflow-y": "auto"
+      },
+      {
+        "scrollbarShortcuts": "yes"
+      },
+      {
+        "dyncampresult": {
+          "id": "campaign-status",
+          "text": "",
+          "width": "70%pw",
+          "pos": "50%pw-50%w, 0",
+          "position": "relative"
+        }
+      },
+      {
+        "textAreaCentered": {
+          "id": "campaign-result",
+          "text": "",
+          "width": "70%pw",
+          "pos": "50%pw-50%w, 5%ph",
+          "position": "relative"
+        }
+      },
+      {
+        "tdiv": [
+          {
+            "pos": "50%pw-50%w, 0"
+          },
+          {
+            "position": "relative"
+          },
+          {
+            "activeText": {
+              "id": "info-dc-text",
+              "text": "",
+              "tdalign": "right"
+            }
+          },
+          {
+            "activeText": {
+              "id": "info-dc-wp",
+              "text": "",
+              "tdalign": "left"
+            }
+          }
+        ]
+      },
+      {
+        "textAreaCentered": {
+          "text": "#multiplayer/tableLosses",
+          "width": "30%pw",
+          "pos": "50%pw-50%w, 5%ph",
+          "position": "relative"
+        }
+      },
+      {
+        "table": [
+          {
+            "width": "50%pw"
+          },
+          {
+            "pos": "50%pw-50%w, 0"
+          },
+          {
+            "position": "relative"
+          },
+          {
+            "baseRow": "yes"
+          },
+          {
+            "css-hier-invalidate": "all"
+          },
+          {
+            "tr": [
+              {
+                "td": {
+                  "width": "@baseTrHeight-5%pw"
+                }
+              },
+              {
+                "td": []
+              },
+              {
+                "td": {
+                  "width": "18%sh",
+                  "activeText": {
+                    "text": "#multiplayer/yours",
+                    "tdalign": "right"
+                  }
+                }
+              },
+              {
+                "td": {
+                  "width": "15%sh",
+                  "activeText": {
+                    "text": "#multiplayer/enemy",
+                    "tdalign": "right"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "tr": [
+              {
+                "td": []
+              },
+              {
+                "td": {
+                  "activeText": {
+                    "text": "#multiplayer/BattlesWon"
+                  }
+                }
+              },
+              {
+                "td": {
+                  "activeText": {
+                    "id": "info-dc-wins",
+                    "text": "0",
+                    "tdalign": "right"
+                  }
+                }
+              },
+              {
+                "td": {
+                  "activeText": {
+                    "id": "info-dc-fails",
+                    "text": "0",
+                    "tdalign": "right"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "tr": [
+              {
+                "td": {
+                  "tdIcon45x25": {
+                    "background-image": "#ui/gameuiskin#objective_bomber"
+                  }
+                }
+              },
+              {
+                "td": {
+                  "activeText": {
+                    "text": "#debriefing_dyn/bombers"
+                  }
+                }
+              },
+              {
+                "td": {
+                  "activeText": {
+                    "id": "info-bombers0",
+                    "text": "0",
+                    "tdalign": "right"
+                  }
+                }
+              },
+              {
+                "td": {
+                  "activeText": {
+                    "id": "info-bombers1",
+                    "text": "0",
+                    "tdalign": "right"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "tr": [
+              {
+                "td": {
+                  "tdIcon45x25": {
+                    "background-image": "#ui/gameuiskin#objective_fighter"
+                  }
+                }
+              },
+              {
+                "td": {
+                  "activeText": {
+                    "text": "#debriefing_dyn/fighters"
+                  }
+                }
+              },
+              {
+                "td": {
+                  "activeText": {
+                    "id": "info-fighters0",
+                    "text": "0",
+                    "tdalign": "right"
+                  }
+                }
+              },
+              {
+                "td": {
+                  "activeText": {
+                    "id": "info-fighters1",
+                    "text": "0",
+                    "tdalign": "right"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "tr": [
+              {
+                "td": {
+                  "tdIcon45x25": {
+                    "background-image": "#ui/gameuiskin#objective_troops"
+                  }
+                }
+              },
+              {
+                "td": {
+                  "activeText": {
+                    "text": "#debriefing_dyn/infantry"
+                  }
+                }
+              },
+              {
+                "td": {
+                  "activeText": {
+                    "id": "info-infantry0",
+                    "text": "0",
+                    "tdalign": "right"
+                  }
+                }
+              },
+              {
+                "td": {
+                  "activeText": {
+                    "id": "info-infantry1",
+                    "text": "0",
+                    "tdalign": "right"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "tr": [
+              {
+                "td": {
+                  "tdIcon45x25": {
+                    "background-image": "#ui/gameuiskin#objective_tank"
+                  }
+                }
+              },
+              {
+                "td": {
+                  "activeText": {
+                    "text": "#debriefing_dyn/tanks"
+                  }
+                }
+              },
+              {
+                "td": {
+                  "activeText": {
+                    "id": "info-tanks0",
+                    "text": "0",
+                    "tdalign": "right"
+                  }
+                }
+              },
+              {
+                "td": {
+                  "activeText": {
+                    "id": "info-tanks1",
+                    "text": "0",
+                    "tdalign": "right"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "tr": [
+              {
+                "td": {
+                  "tdIcon45x25": {
+                    "background-image": "#ui/gameuiskin#objective_aa"
+                  }
+                }
+              },
+              {
+                "td": {
+                  "activeText": {
+                    "text": "#debriefing_dyn/artillery"
+                  }
+                }
+              },
+              {
+                "td": {
+                  "activeText": {
+                    "id": "info-artillery0",
+                    "text": "0",
+                    "tdalign": "right"
+                  }
+                }
+              },
+              {
+                "td": {
+                  "activeText": {
+                    "id": "info-artillery1",
+                    "text": "0",
+                    "tdalign": "right"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "tr": [
+              {
+                "td": {
+                  "tdIcon45x25": {
+                    "background-image": "#ui/gameuiskin#objective_destroyer"
+                  }
+                }
+              },
+              {
+                "td": {
+                  "activeText": {
+                    "text": "#debriefing_dyn/ships"
+                  }
+                }
+              },
+              {
+                "td": {
+                  "activeText": {
+                    "id": "info-ships0",
+                    "text": "0",
+                    "tdalign": "right"
+                  }
+                }
+              },
+              {
+                "td": {
+                  "activeText": {
+                    "id": "info-ships1",
+                    "text": "0",
+                    "tdalign": "right"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "navBar": {
+      "navLeft": {
+        "Button_text": {
+          "id": "btn_back",
+          "text": "#mainmenu/btnBack",
+          "btnName": "B",
+          "_on_click": "onBack",
+          "ButtonImg": []
+        }
+      },
+      "navRight": {
+        "Button_text": {
+          "id": "btn_apply",
+          "text": "#mainmenu/btnOk",
+          "btnName": "A",
+          "_on_click": "onSelect",
+          "ButtonImg": []
+        }
+      }
+    }
+  }
+}

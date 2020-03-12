@@ -1,0 +1,101 @@
+{
+  "hintDiv": {
+    "modalPos": "left",
+    "hintText": []
+  },
+  "navLeft": [
+    {
+      "Button_text": {
+        "id": "btn_reveal_notifications",
+        "text": "#mainmenu/btnRevealNotifications",
+        "_on_click": "onRevealNotifications",
+        "btnName": "LT",
+        "ButtonImg": []
+      }
+    },
+    {
+      "Button_text": {
+        "id": "btn_postfx_settings",
+        "text": "#mainmenu/btnPostFxSettings",
+        "_on_click": "onPostFxSettings",
+        "display": "hide",
+        "enable": "no",
+        "btnName": "X",
+        "ButtonImg": []
+      }
+    },
+    {
+      "Button_text": {
+        "id": "web_ui_button",
+        "text": "#mainmenu/webui_map",
+        "hideText": "yes",
+        "_on_click": "onWebUiMap",
+        "display": "hide",
+        "enable": "no",
+        "externalLink": "yes",
+        "btnName": "Y",
+        "ButtonImg": [],
+        "activeText": {
+          "text": "#mainmenu/webui_map",
+          "pos": "0, 50%ph-50%h",
+          "position": "relative",
+          "underline": []
+        }
+      }
+    },
+    {
+      "Button_text": {
+        "id": "btn_hdr_settings",
+        "text": "#mainmenu/btnHdrSettings",
+        "_on_click": "onHdrSettings",
+        "display": "hide",
+        "enable": "no",
+        "btnName": "RB",
+        "ButtonImg": []
+      }
+    }
+  ],
+  "navRight": [
+    {
+      "text": {
+        "id": "restart_suggestion",
+        "position": "relative",
+        "pos": "0, 50%ph-50%h",
+        "padding-right": "5*@sf/@pf_outdated",
+        "text": "#msgbox/client_restart_pending",
+        "display": "hide"
+      }
+    },
+    {
+      "Button_text": {
+        "id": "btn_restart",
+        "btnName": "L3",
+        "text": "#msgbox/btn_restart",
+        "_on_click": "onSystemOptionsRestartClient",
+        "class": "battle",
+        "navButtonFont": "yes",
+        "css-hier-invalidate": "yes",
+        "display": "hide",
+        "pattern": [],
+        "buttonWink": {
+          "_transp-timer": "0"
+        },
+        "buttonGlance": [],
+        "btnText": {
+          "id": "btn_restart_text",
+          "text": "#msgbox/btn_restart"
+        },
+        "ButtonImg": []
+      }
+    },
+    {
+      "Button_text": {
+        "id": "btn_apply",
+        "text": "#mainmenu/btnClose",
+        "btnName": "B",
+        "_on_click": "onApply",
+        "ButtonImg": []
+      }
+    }
+  ]
+}

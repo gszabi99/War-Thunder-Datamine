@@ -1,0 +1,313 @@
+@const mis_chapter_font:          @fontMedium;
+@const mis_chapter_selected_font: @fontMedium;
+@const mis_item_font:             @fontNormal;
+@const mis_item_selected_font:    @fontNormal;
+@const shopItemFont:              @fontSmall;
+@const slotItemFont:              @fontSmall;
+
+@const missionBoxImageOffsetX: 12*@sf/@pf_outdated;
+@const missionItemTextPaddingLeft: 3@sf/@pf;
+@const unlockConditionHeaderLeftPadding: @unlockHeaderIconSize+@scrn_tgt/100.0;
+@const bigMedalPlaceYpos: 2@scrn_tgt/100.0;
+
+mission_item_text
+{
+  behaviour:textArea;
+  re-type:textarea;
+
+  background-color:@transparent;
+  tabStop:no;
+  font:@mis_item_font;
+  text-align:left;
+    padding:1@blockInterval,0,0,0;
+  position:relative;
+}
+
+:current mission_item_text, :hover mission_item_text {
+  behaviour:OverflowScroller;
+  move-pixel-per-sec:20*@scrn_tgt/100.0;
+  move-sleep-time:2000;
+  move-delay-time:2000;
+}
+
+mission_item_completed, mission_item_unlocked, mission_item_locked,
+chapter_item_unlocked, chapter_item_locked, campaign_item
+{
+  width:pw;
+  color:@white;
+  background-color:@transparent;
+  height:@baseTrHeight;
+  tabStop:yes;
+  css-hier-invalidate:yes;
+  selected-border:none;
+  total-input-transparent:yes;
+}
+
+mission_item_completed:hover, mission_item_unlocked:hover, mission_item_locked:hover,
+chapter_item_unlocked:hover, chapter_item_locked:hover, campaign_item:hover {
+  background-color:@listboxHoverOptionColor;
+}
+mission_item_completed:current, mission_item_unlocked:current, mission_item_locked:current,
+chapter_item_unlocked:current, chapter_item_locked:current, campaign_item:current {
+  background-color:@listboxSelOptionColor;
+}
+
+[show_console_buttons=yes] :focus > mission_item_completed:current,
+[show_console_buttons=yes] :focus > mission_item_unlocked:current,
+[show_console_buttons=yes] :focus > mission_item_locked:current,
+[show_console_buttons=yes] :focus > chapter_item_unlocked:current,
+[show_console_buttons=yes] :focus > chapter_item_locked:current,
+[show_console_buttons=yes] :focus > campaign_item:current
+{
+  re-type:9rect;
+  foreground-color: @gamepadFocusFrameColor;
+  foreground-image: #ui/gameuiskin#item_selection;
+  foreground-position: 6;
+  foreground-repeat: expand;
+  behavior:focusFrameTarget;
+  focusImageSource:foreground;
+}
+
+mission_item_completed mission_item_text, mission_item_unlocked mission_item_text
+{
+  color:@missionUnlockedColor;
+}
+
+mission_item_completed:hover mission_item_text, mission_item_unlocked:hover mission_item_text {
+  color:@missionUnlockedHoverColor;
+}
+mission_item_completed:current mission_item_text, mission_item_unlocked:current mission_item_text {
+  color:@missionUnlockedSelectColor;
+
+  font:@mis_item_selected_font;
+}
+mission_item_unlocked, mission_item_locked{
+  margin-left:3*@sf/@pf_outdated;
+}
+mission_item_locked mission_item_text
+{
+  color:@missionLockedColor;
+}
+
+mission_item_locked:hover mission_item_text {
+  color:@missionLockedHoverColor;
+}
+mission_item_locked:current mission_item_text {
+  color:@missionLockedSelectColor;
+  font:@mis_item_selected_font;
+}
+
+chapter_item_unlocked mission_item_text
+{
+  color:@chapterUnlockedColor;
+  padding:@missionItemTextPaddingLeft,0,0,0;
+  font:@mis_item_font;
+}
+
+chapter_item_unlocked:current mission_item_text
+{
+  color:@chapterUnlockedSelectColor;
+
+  font:@mis_chapter_selected_font;
+}
+
+chapter_item_locked mission_item_text
+{
+
+  color:@chapterLockedColor;
+  font:@mis_item_font;
+}
+
+chapter_item_locked:current mission_item_text
+{
+
+  color:@chapterLockedSelectColor;
+  font:@mis_chapter_selected_font;
+}
+
+mission_item_unlocked > discount {
+  pos:pw-w, -30%h;
+  position:absolute;
+  rotation:-10;
+}
+
+campaign_item {
+  margin-top:10*@sf/@pf_outdated;
+  margin-left:3*@sf/@pf_outdated;
+}
+campaign_item mission_item_text
+{
+  color:@campaignColor;
+  padding:0;
+  font:@mis_chapter_font;
+}
+
+missionDiv {
+  width:pw - @bw - 40*@sf/@pf_outdated;
+  pos:@bw + 25*@sf/@pf_outdated,0.5ph-0.5h;
+  overflow:hidden;
+  position:absolute;
+  padding-left:5*@sf/@pf_outdated;
+  input-transparent:yes;
+}
+
+frame missionDiv {
+  pos:0,50%ph-50%h;
+  padding-left:ph;
+  width:pw;
+}
+
+missionDiv.fullWidth {
+  width:pw;
+  padding-left:0;
+}
+
+[hasItemPrefixText] > missionDiv {
+  width:fw;
+  pos:0, 0.5ph-0.5h;
+  position: relative;
+  padding-left: 1@blockInterval;
+  margin-right: 1@framePadding;
+}
+
+img[medalIcon], wwBattleIcon[medalIcon] {
+  height:1@cIco;
+  max-height:@unlockStageIconSize;
+  width:h;
+  position:absolute;
+  pos:@bw + 0.2%sw, 50%ph-50%h;
+  background-svg-size:@cIco, @cIco;
+  background-repeat:aspect-ratio;
+}
+
+img[medalIcon][isLastPlayedIcon]
+{
+  height:ph-12*@sf/@pf_outdated;
+}
+
+frame img[medalIcon], frame animated_wait_icon.missionBox, frame wwBattleIcon[medalIcon] {
+  pos:@missionBoxImageOffsetX - 50%w, 50%ph-50%h;
+  position:absolute;
+}
+
+chapter_item_unlocked img[medalIcon] {
+  pos:@bw-0.5*@scrn_tgt/100.0, 50%ph-50%h;
+}
+
+img[medalIcon=dlc] {
+  background-image:#ui/gameuiskin#dlc;
+  background-color:@white;
+}
+
+[hasItemPrefixText] > img[medalIcon],
+[hasItemPrefixText] > wwBattleIcon[medalIcon] {
+  pos:@blockInterval, 50%ph-50%h;
+  position:relative;
+}
+
+img[difficulty=0] {
+  background-image:#ui/gameuiskin#mission_complete_arcade;
+}
+
+img[difficulty=1] {
+  background-image:#ui/gameuiskin#mission_complete_realistic;
+}
+
+img[difficulty=2] {
+  background-image:#ui/gameuiskin#mission_complete_simulator;
+}
+
+@const unlockIconSize: 4.44*@scrn_tgt/100.0;
+@const unlockHeaderIconSize: 4.44*@scrn_tgt/100.0;
+@const unlockBlockInterval: (12@sf/@pf) \ 1;
+
+unlockConditionHeader {
+  width:pw;
+  padding-left:@unlockConditionHeaderLeftPadding;
+  margin-bottom:1*@scrn_tgt/100.0;
+
+  input-transparent:no;
+  flow:vertical;
+}
+
+unlockCondition {
+  width:pw-@unlockHeaderIconSize;
+  margin-left:@unlockHeaderIconSize;
+  margin-bottom:1@unlockBlockInterval;
+  padding-left:@unlockIconSize + 0.5*@scrn_tgt/100.0;
+  min-height:0.6@unlockIconSize;
+
+  input-transparent:no;
+  flow:vertical;
+}
+
+unlockCondition > textarea, unlockConditionHeader > textarea {
+  position:relative;
+  width:pw;
+  paragraph-indent:0;
+  overflow-y:visible;
+}
+
+unlockConditionHeader > textarea {
+  pos:0, 0.35@unlockHeaderIconSize;
+}
+
+unlockCondition[unlocked=no] > textarea {
+  color:@fadedTextColor;
+}
+
+unlockImg {
+  position:absolute;
+  pos:0, 0.4ph - 0.5h;
+  size:@unlockHeaderIconSize, @unlockHeaderIconSize;
+}
+
+unlockCondition[unlocked=yes] > unlockImg {
+  size:@unlockIconSize, @unlockIconSize;
+  background-image:#ui/gameuiskin#favorite;
+}
+
+hiddenDiv[isSmallView=yes] > unlockCondition > unlockImg {
+  size:0.6*@unlockIconSize, 0.6*@unlockIconSize;
+}
+
+unlockConditionHeader[unlocked=yes] > unlockImg {
+  background-image:#ui/gameuiskin#favorite;
+}
+
+unlockImg[background-image] {
+  background-color:@white;
+}
+
+bigMedalPlace {
+  height:1@profileMedalSize;
+  width:h;
+  pos:50%pw-50%w, @bigMedalPlaceYpos;
+  position:relative;
+}
+bigMedalPlace[double=yes] {
+  height:1@profileMedalSizeBig;
+  pos:50%pw-50%w, 0.5@bigMedalPlaceYpos;
+}
+
+bigMedalImg {
+  size:pw, ph;
+  pos:50%pw-50%w, 50%ph-50%h;
+  position:absolute;
+  background-color:@white;
+}
+
+bigMedalImg[status=locked] {
+  background-color:@lockedDecal;
+}
+
+optiontext[shopStat=owned] {
+  color:@textItemOwned;
+}
+
+optiontext[shopStat=broken] {
+  color:@textItemBroken;
+}
+optiontext[shopStat=locked] {
+  color:@textItemLocked;
+}

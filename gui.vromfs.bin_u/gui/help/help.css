@@ -1,0 +1,197 @@
+controlsHelpFrame {
+  padding:5*@sf/@pf_outdated, 2*@sf/@pf_outdated;
+  border:yes;  border-color:@commonTextColor;
+  background-color:@shadeBackgroundColor3;
+  css-hier-invalidate:yes;
+}
+
+controlsHelpFrame[verticalFlow=yes] {
+  flow:vertical;
+}
+
+controlsHelpFrame[verticalFlow=yes] > keyDiv {
+  left:0.5pw-0.5w;
+  position:relative;
+}
+
+controlsHelpFrame[verticalFlow=no] > keyDiv {
+  margin-right:0.01@sf;
+}
+
+controlsHelpFrame > textareaNoTab {
+  max-width:pw;
+  width:pw;
+  text-align:left;
+  font:@fontTiny;
+}
+controlsHelpFrame[verticalFlow=yes] > textareaNoTab {
+  text-align:center;
+}
+controlsHelpFrame[verticalFlow=no] > textareaNoTab {
+  width:fw;
+  top:0.5ph-0.5h;
+  position:relative;
+}
+
+controlsHelpFrame.inFrame {
+  background-color:@transparent;
+}
+
+controlsHelpFrame > tdiv > line {
+  border:yes;
+  border-color:@commonTextColor;
+  width:pw;
+  padding:2;
+  overflow:hidden;
+}
+
+controlsHelpFrame keyboardButton {
+  height:0.8@kbh;
+  min-width:0.8@kbh;
+  min-height:0.8@kbh;
+}
+
+controlsHelpFrame keyboardButtonText {
+  font:@fontTiny;
+}
+
+controlsHelpFrame gamepadButton,
+controlsHelpFrame shortcutAxis {
+  size: 0.9@kbh, 0.9@kbh;
+}
+
+controlsHelpText {
+  re-type:text;
+  background-color:@transparent;
+  tabStop:no;
+  font:@fontSmall;
+  color:@white;
+}
+
+controlsHelpTextArea {
+  behaviour:textArea;
+  re-type:textarea;
+  font:@fontTiny;
+  color:@white;
+  padding:5*@sf/@pf_outdated;
+  border:yes;
+  border-color:@commonTextColor;
+  background-color:@shadeBackgroundColor3;
+  color:@commonTextColor;
+  input-transparent:yes;
+}
+
+helpLine, helpLineDot {
+  background-color:@white;
+  input-transparent:yes;
+}
+
+helpLineDot {
+  size:5@dp, 5@dp;
+}
+
+helpLineDotTest {
+  size:5@dp, 5@dp;
+  background-color:@red;
+}
+
+controlsHelpBtn {
+  re-type:9rect;
+  background-image:#ui/gameuiskin#key;
+  background-color:@keyBgColor;
+  background-position:4;
+  background-repeat:expand;
+  border:yes;
+
+  color:@hotkeyColor;
+  padding:2*@sf/@pf_outdated;
+  margin:0,3*@sf/@pf_outdated;
+  height:0.8@kbh;
+  min-width:0.8@kbh;
+  min-height:0.8@kbh;
+  position:relative;
+  input-transparent:yes;
+}
+
+controlsHelpMouseBtn {
+  background-color:@white;
+  margin:0,3*@sf/@pf_outdated;
+  height:0.9@kbh;
+  width:0.708h;
+  input-transparent:yes;
+}
+
+controlsHelpJoystickBtn {
+  background-repeat:aspect-ratio;
+  background-color:@white;
+  margin:0,3*@sf/@pf_outdated;
+  height:0.9@kbh;
+  width:1.0h-6*@sf/@pf_outdated;
+  min-height:0.9@kbh;
+  position:relative;
+  input-transparent:yes;
+}
+
+controlsHelpHint {
+  behaviour:textArea;
+  re-type:textarea;
+  color:@activeTextColor;
+  font:@fontNormal;
+  text-align:left;
+  top:ph/2-h/2;
+  position:relative;
+  margin:10*@sf/@pf_outdated, 0;
+  input-transparent:yes;
+}
+
+controlsHelpPs4Dot {
+  size:8*@sf/@pf_outdated, 8*@sf/@pf_outdated;
+  position:absolute;
+  background-image:#ui/gameuiskin#ps4_controls_help_point;
+  background-color:@white;
+}
+
+controlsHelpPs4Bubble {
+  position:absolute;
+  background-image:#ui/gameuiskin#ps4_controls_help_bubble;
+  background-color:@white;
+  background-position:10;
+  background-repeat:expand;
+}
+controlsHelpPs4Bubble, controlsHelpPs4Bubble > tdiv {
+  behaviour:textArea;
+  re-type:textarea;
+  font:@fontNormal;
+  color:@white;
+  text-align:left;
+  padding:8*@sf/@pf_outdated;
+  padding-left:40*@sf/@pf_outdated;
+  input-transparent:yes;
+}
+
+controlsHelpPs4Bubble > tdiv {
+  width:pw;
+  position:absolute;
+  input-transparent:yes;
+}
+
+controlsHelpPs4Bubble img, controlsHelpPs4Bubble > tdiv > img {
+  position:absolute;
+  size:28*@sf/@pf_outdated, 28*@sf/@pf_outdated;
+  pos:8*@sf/@pf_outdated, ph/2-h/2;
+}
+
+textareaNoTab[controlsHelp=yes] {
+  min-width:35%pw;
+  font:@fontTiny;
+  color:@commonTextColor;
+  width:fw;
+  text-align:center;
+    }
+
+textarea[controlsHelpTitle=yes] {
+  width:35%pw;
+  position:absolute;
+  font:@fontTiny;
+  color:@white;
+}

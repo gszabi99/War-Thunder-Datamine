@@ -1,0 +1,655 @@
+@const itemPadding:        (5/720@sf)\1;
+@const itemSpacing:        (0.5@smallButtonHeight)\1;
+@const itemIconWidth:      1@itemIconHeight;
+@const itemHeight:         1@itemIconHeight + 2@itemPadding;
+@const itemWidth:          1@itemIconWidth + 2@itemPadding;
+@const periodRewardIconWidth: 0.75@itemWidth;
+@const periodRewardIconWidthInItem: 0.6@itemWidth;
+@const periodRewardProgressBarIconWidth: 36@sf/@pf;
+@const periodRewardProgressBarIconHeight: 30@sf/@pf;
+
+@const awardItemHeaderHeight : 70@sf/@pf;
+@const arrowOfEveryDayLoginAwardWidth : 44@sf/@pf;
+@const arrowOfEveryDayLoginAwardHeight: 19@sf/@pf;
+
+@const itemInfoWidth:  0.5@sf;
+@const itemsSeparatorSize: 1@dp;
+@const recipeInterval: (14@sf/@pf) \ 1;
+
+@const rewardItemDesc: 0.15@sf;
+@const rewardItemWidth: 1@itemWidth + 0.4@sf;
+
+
+@const itemNumWidth: 0.13@itemIconWidth;
+@const itemNumHeight: 0.2@itemIconHeight;
+@const itemPercentWidth: 0.18@itemIconWidth;
+@const itemPercentHeight: 0.18@itemIconHeight;
+@const wagerTypeIconWidth: 0.17@itemIconWidth;
+@const wagerTypeIconHeight: 0.204@itemIconHeight;
+
+@const loopProgressHeight: 0.03@sf;
+
+@const trophiesGroupAvailableWidth: 1@maxWindowWidth - 1@trophiesGroupItemsInfoBlockWidth;
+@const trophiesGroupItemsInfoBlockWidth: 1@itemInfoWidth + 2@framePadding + 2@itemSpacing + 1@scrollBarSize + 1@blockInterval;
+@const requiredItemsInColumnInPixels: 1@rh - 1@titleLogoPlateHeight - 1@frameFooterHeight - 1@frameHeaderHeight - 2@framePadding - 1@itemSpacing - 1@gamercardHeight;
+
+@const warbondShopLevelProgressHeight: 0.025@sf;
+@const warbondShopLevelItemHeight: 1@warbondShopLevelProgressHeight + 0.02@sf;
+
+@const battleTasksHardMedalWidth: 0.045@sf;
+
+@const trophyWndWidth: 0.85@sf + 2@framePadding;
+@const trophyWndPad: (1@trophyWndWidth - 5@itemWidth)/2;
+@const rewardInTrophyWndTopPos: 0.035@scrn_tgt;
+
+@const compactItemHeight: (0.75@itemHeight) \ 1;
+@const smallItemHeight: (0.5@itemHeight) \ 1;
+
+@const craftTreeBlockInterval: (60@sf/@pf) \ 1;
+@const compactCraftTreeBlockInterval: (1@craftTreeBlockInterval + 0.25@itemHeight) \ 1;
+@const smallCraftTreeBlockInterval: (1@craftTreeBlockInterval + 0.5@itemHeight) \ 1;
+@const headerAndCraftTreeBlockInterval: (0.5@craftTreeBlockInterval) \ 1;
+
+@const craftTreeItemInterval: (50@sf/@pf) \ 1;
+@const compactCraftTreeItemInterval: (0.75@craftTreeItemInterval) \ 1;
+@const smallCraftTreeItemInterval: (0.5@craftTreeItemInterval) \ 1;
+
+@const craftTreeItemWidthWithMargin: 1@itemHeight + 1@craftTreeItemInterval;
+@const compactCraftTreeItemWidthWithMargin: 1@compactItemHeight + 1@compactCraftTreeItemInterval;
+@const smallCraftTreeItemWidthWithMargin: 1@smallItemHeight + 1@smallCraftTreeItemInterval;
+
+@const craftTreeResourceWidth: (110@sf/@pf) \ 1;
+@const subsetComboBoxWidth: (0.3@sf) \ 1;
+
+@const workshoPreviewHeight: 770@sf/@pf $min 1@rh;
+
+@const warbondMedalImgColor: #ffffff;
+@const inactiveWarbondMedalImgColor: #808080;
+
+
+itemDiv {
+  re-type:9rect;
+  height:1@itemHeight;
+  padding:1@itemPadding;
+}
+
+itemDiv[enableBackground=yes] {
+  background-image:#ui/gameuiskin#lr_frame_bg;
+  background-color:@white;
+  background-repeat:expand;
+  background-position:3,4,3,3;
+}
+
+itemDiv[enableBackground=yes][active=yes] {
+  background-image:#ui/gameuiskin#lr_frame_bg_active;
+}
+
+itemDiv[enableBackground=yes][today=yes] {
+  background-image:#ui/gameuiskin#lr_red_frame_bg;
+}
+
+recipe[isRecipeLocked = no] > itemDiv {
+  item_locked: no;
+}
+
+recipe[isRecipeLocked = yes] > itemDiv {
+  item_locked: yes;
+}
+
+itemDiv[item_locked = yes] {
+  background-image:"";
+  background-color:@frameBackgroundColor;
+  border-color:@frameBorderColor;
+  border:yes;
+}
+itemDiv[item_locked = yes] iconLayer,
+itemDiv[previousDay = yes] iconLayer {
+  background-color: @itemLockedColor;
+}
+
+itemDiv > wink {
+  size:pw, ph+2px;
+  position:absolute;
+  input-transparent:yes;
+  background-repeat:expand;
+  background-image:#ui/gameuiskin#item_glow;
+  background-position:3, 0, 3, 4;
+  background-color:@shopItemWinkColor;
+
+  behaviour:basicTransparency;
+  transp-base:255;
+  transp-end:64;
+  transp-time:3000;
+  transp-func:sin;
+  transp-cycled:yes;
+}
+
+awardItemDiv, itemDiv {
+  width:1@itemWidth;
+}
+
+craftBranchBody[itemsSize = small] > itemBlock {
+  smallItems:yes;
+}
+
+[smallItems=yes] > itemDiv {
+  height:1@smallItemHeight;
+  width:1@smallItemHeight;
+}
+
+itemDiv[trophyRewardSize=yes] {
+  width:1@chestRewardWidth;
+  height:1@chestRewardHeight;
+}
+
+itemDiv[ticketBuyWindow=yes] {
+  padding:3@itemPadding;
+  width:1@itemWidth + 4@itemPadding;
+  height:1@itemHeight + 4@itemPadding;
+}
+
+[itemShopList=yes] > itemDiv,
+[itemShopList=yes] > iconLayer {
+  margin:1@itemSpacing;
+  pos:0,0;
+}
+
+frameBlock[ticketsWindow=yes] > itemDiv {
+  margin:4@itemSpacing, 2@itemSpacing;
+}
+
+awardItemDiv[emptyBlock=yes],
+awardItemDiv[emptyBlock=yes] > itemDiv {
+  width:7@dp;
+}
+
+itemDiv > arrowNext {
+  re-type:9rect;
+  pos:-2@dp, 50%ph-50%h;
+  position:absolute;
+  size:1@arrowOfEveryDayLoginAwardHeight,1@arrowOfEveryDayLoginAwardWidth;
+  background-image:#ui/gameuiskin#lr_arrow_frame_bg;
+  background-color:@white;
+  background-repeat:expand;
+  css-hier-invalidate:yes;
+}
+
+itemDiv > arrowNext[arrowType=double] {
+  background-image:#ui/gameuiskin#lr_duble_arrow_frame_bg;
+  size:27@sf/@pf,1@arrowOfEveryDayLoginAwardWidth;
+  pos:-11@sf/@pf, 50%ph-50%h;
+}
+itemDiv > arrowNext[arrowType=triple] {
+  background-image:#ui/gameuiskin#lr_triple_arrow_frame_bg;
+  size:35@sf/@pf,1@arrowOfEveryDayLoginAwardWidth;
+  pos:-19@sf/@pf, 50%ph-50%h;
+}
+
+awardItemDiv > itemDiv > arrowNext[colored=yes] {
+  background-image:#ui/gameuiskin#lr_red_arrow_frame_bg;
+}
+
+itemDiv > Button_text {
+  display:hide;
+  enable:no;
+}
+
+itemDiv[showButtonAlways=yes] > Button_text {
+  display:show;
+  enable:yes;
+}
+
+[show_console_buttons=yes] :focus > itemDiv[selected=yes] > Button_text,
+[show_console_buttons=yes] craftBranchBody:focus > itemBlock[selected=yes] > itemDiv > Button_text,
+itemDiv:hover > Button_text, itemDiv > Button_text:hover {
+  display:show;
+  enable:yes;
+}
+
+itemDiv:hover > hoverBorder
+{
+  display:show;
+}
+
+itemDiv:pushed > pushedBorder
+{
+  display:show;
+}
+
+awardItemDiv > awardItemHeader {
+  background-color:@shadeBackgroundColor2;
+}
+
+awardItemDiv > awardItemHeader[today=yes] {
+  re-type:9rect;
+  background-image:#ui/gameuiskin#lr_red_marker_bg;
+  background-color:@white;
+  background-repeat:expand;
+  background-position:3;
+}
+
+awardItemDiv > awardItemHeader[havePeriodReward=yes] {
+  re-type:9rect;
+  background-image:#ui/gameuiskin#lr_red_marker_bg;
+  background-color:@white;
+  background-repeat:expand;
+  background-position:3;
+  foreground-color:#66666666;
+  foreground-image:#ui/gameuiskin#pattern_dark_diag_lines;
+  foreground-repeat:repeat;
+  foreground-position:2;
+}
+
+awardItemDiv > periodicRewardImage {
+  re-type:9rect;
+  background-color:@white;
+  background-repeat:expand;
+
+  width:1@periodRewardIconWidthInItem;
+  height:0.8w;
+  pos:50%pw-50%w, 1@frameHeaderHeight + 0.4@itemHeight-50%h;
+  position:absolute;
+
+  input-transparent:yes;
+}
+
+awardItemDiv > periodicRewardImage[opened=yes] {
+  background-color: @itemLockedColor;
+}
+
+itemDiv > tdiv > contentCorner {
+  re-type:fgPict;
+  pos:-1@itemPadding, ph-h +1@itemPadding;
+  position:absolute;
+  size:1@dIco + 2@dp, 1@dIco + 2@dp;
+  background-color:@white;
+  background-image:#ui/gameuiskin#item_type_bg;
+  background-position:4;
+  background-repeat:expand;
+  foreground-color:@white;
+  foreground-position:2@dp;
+  foreground-repeat:aspect-ratio;
+}
+itemDiv > tdiv > contentCorner[contentType=unit] {
+  size:1.7@dIco + 2@dp, 1@dIco + 2@dp;
+  foreground-align:left;
+}
+itemDiv > tdiv > contentCorner[contentType=flag] {
+  foreground-position:(@dIco+2@dp -@cIco)\2, (@dIco+2@dp -@cIco)\2, (@dIco+2@dp -@cIco +1)\2, (@dIco+2@dp -@cIco +1)\2;
+  foreground-svg-size:@cIco, @cIco;
+}
+
+progressBoxPlace warbondShopLevel {
+  top:50%ph - 50%h;
+  position:absolute;
+}
+
+awardItemHeader > arrowCurrent {
+  re-type:9rect;
+  pos:50%pw-50%w, ph-4@sf/@pf;
+  position:absolute;
+  size:1@arrowOfEveryDayLoginAwardWidth,1@arrowOfEveryDayLoginAwardHeight;
+  background-image:#ui/gameuiskin#lr_red_marker_arrow;
+  background-color:@white;
+  background-repeat:expand;
+  order-popup:yes;
+}
+
+itemHighlight {
+  re-type:9rect;
+  size:pw, ph;
+  position:absolute;
+  pos:50%pw-50%w, 50%ph-50%h;
+  background-position:0;
+  background-repeat:expand;
+  background-color:@white;
+  background-image:#ui/gameuiskin#spot_w;
+  foreground-repeat:repeat;
+  foreground-color:#0F0F0F0F;
+  foreground-position:0;
+  foreground-image:#ui/gameuiskin#pattern_b;
+}
+
+itemHighlight[highlight=none] {
+  display:hide;
+}
+
+itemHighlight[highlight=black] {
+  background-color:@black;
+}
+
+itemIconBlock {
+  input-transparent:yes;
+  size:2@itemWidth-4@itemPadding, 2@itemHeight-4@itemPadding;
+}
+
+itemIconBlock[doubleSize=no] {
+  size:1@itemWidth-2@itemPadding, 1@itemHeight-2@itemPadding;
+}
+itemIconBlock[wideSize=yes] {
+  size:2@itemWidth-4@itemPadding, 1@itemHeight-2@itemPadding;
+}
+
+itemIconBlock[debriefingSize=yes] {
+  size:1@debrWagerHeight, 1@debrWagerHeight;
+}
+
+openAnim {
+  input-transparent:yes;
+  animation:show;
+  animated:yes;
+}
+
+[animation=hide] > openAnim {
+  animation:hide;
+}
+
+openAnim[animation=hide][_transp-timer=0],
+openAnim[animation=show][_transp-timer=1] {
+  animated:no;
+  display:hide;
+}
+
+openAnim[animated=yes] {
+  behaviour:basicTransparency;
+  behaviour:basicSize;
+  behaviour:basicRotation;
+}
+
+openAnim[animation=hide] {
+  transp-time:-1;
+  size-time:-1;
+  rot-time:-1;
+}
+
+roulette {
+  re-type:9rect;
+  background-image:#ui/gameuiskin#lr_frame_bg;
+  background-color:#CCCCCCCC;
+  background-repeat:expand;
+  background-position:3,4,3,3;
+}
+
+recieved_reward_indicator {
+  re-type:9rect;
+  size:20@sf/@pf, 10@sf/@pf;
+  background-image:#ui/gameuiskin#roulette_arrow;
+  background-color:@white;
+  background-repeat:expand;
+  input-transparent:yes;
+}
+
+rewards_fade {
+  re-type:9rect;
+  background-color:@white;
+  background-repeat:expand;
+  background-image:#ui/gameuiskin#horizontal_fade;
+  input-transparent:yes;
+}
+
+[animation=show] > roulette roulette_scroll{
+  behaviour:bhvRoulette;
+}
+
+everyDayRewardProgress {
+  re-type:progress;
+  behaviour:progress;
+  background-position:6,6;
+  background-repeat:expand;
+  background-image:#ui/gameuiskin#selectbox_bg;
+  background-color:@white;
+  foreground-position:4,4;
+  foreground-repeat:expand;
+  foreground-image:#ui/gameuiskin#progress_bar;
+  min:0;
+  max:10000;
+
+  padding:2@dp;
+}
+
+everyDayRewardProgress > filledRewardProgressBox {
+  re-type:9rect;
+  background-position:4,4;
+  background-repeat:expand;
+  background-image:#ui/gameuiskin#progress_bar;
+}
+
+everyDayRewardProgress > additionalProgress {
+  re-type:progress;
+  behaviour:progress;
+  foreground-position:4,4;
+  foreground-repeat:expand;
+  foreground-image:#ui/gameuiskin#progress_bar;
+  min:0;
+  max:10000;
+
+  padding:2@dp;
+}
+
+everyDayRewardProgress > progressBoxFraming {
+  background-repeat:stretch;
+  background-color:@white;
+
+  height:ph+18@sf/@pf;
+  width:1.77h;
+  input-transparent:yes;
+}
+
+everyDayRewardProgress > progressBoxFraming[background-image=""] {
+  background-color:@transparent;
+  display:hide;
+}
+
+everyDayRewardProgress > progressBoxFraming[type=right] {
+  background-position:w,0;
+}
+
+warbondShopLevel {
+  re-type:9rect;
+  background-position:4;
+  background-repeat:expand;
+  background-color:@white;
+  foreground-repeat:expand;
+  foreground-position:6;
+  foreground-color:@transparent;
+
+  height:1@warbondShopLevelItemHeight;
+  width:h;
+}
+
+warbondShopLevel[status=locked] {
+  background-color:@gray60;
+}
+
+warbondShopLevel[status=locked] > textareaNoTab {
+  color:@minorTextColor;
+}
+
+warbondShopLevel[status=received] {
+  background-color:@gray;
+}
+
+warbondShopLevel[status=received] > textareaNoTab {
+  color:@commonTextColor;
+}
+
+warbondShopLevel[status=current] {
+  background-color:@white;
+  foreground-color:@white;
+}
+
+warbondShopLevel[status=current] > textareaNoTab {
+  color:@userlogColoredText;
+}
+
+itemAmountText {
+  pos:pw-w-1@itemPadding, 1@itemPadding;
+  position:absolute;
+
+  behaviour:textArea;
+  re-type:textarea;
+  font:@fontSmall;
+  color:@activeTextColor;
+  shadeStyle:textOnIcon;
+}
+
+[smallItems=yes] itemAmountText {
+  pos:pw-w, 0;
+}
+
+amountIcon {
+  pos:pw-w, 0;
+  position:absolute;
+  size: 1@cIco, 1@cIco;
+  background-svg-size: 1@cIco, 1@cIco;
+}
+
+[smallItems=yes] amountIcon {
+  pos:pw-w, -0.5@itemPadding;
+  size: 1@sIco, 1@sIco;
+  background-svg-size: 1@sIco, 1@sIco;
+}
+
+itemsSeparator {
+  width:@itemsSeparatorSize;
+  pos:0, 50%ph-50%h;
+  position:relative;
+  background-color:@frameSeparatorColor;
+  input-transparent:yes;
+  enable:no;
+}
+
+itemAmountText[overlayTextColor = goodTextColor] {
+  color: @goodTextColor;
+}
+
+itemAmountText[overlayTextColor = badTextColor] {
+  color: @badTextColor;
+}
+
+recipe[isRecipeLocked = yes] > itemDiv itemAmountText {
+  color: @itemLockedColor;
+}
+
+itemTimerPlace {
+  pos: pw-w-1@itemPadding, ph - h;
+  position: absolute;
+  flow: vertical;
+}
+
+[smallItems=yes] itemTimerPlace {
+  pos: pw-w, ph - h;
+}
+
+itemTimerPlace > textareaNoTab[overlayTextColor = goodTextColor] {
+  color: @goodTextColor;
+}
+
+recipe[isRecipeLocked = yes] > itemDiv itemTimerPlace > textareaNoTab {
+  color: @lockedTextColor;
+}
+
+markIcon {
+  re-type:text;
+  font:@fontMedium;
+  padding:0.5@itemPadding, 0;
+}
+
+[smallItems=yes] markIcon {
+  font:@fontSmall;
+  padding: 0;
+}
+
+craftBranchHeader {
+  re-type:text;
+  color:@commonTextColor;
+  font:@fontNormal;
+  height:@buttonHeight;
+  background-color:@tableHeaderBgColor;
+  background-image:"";
+  background-position:0;
+}
+
+craftTreeSeparator {
+  position:absolute;
+  background-color:@tableHeaderSeparatorColor;
+  enable:no;
+}
+
+craftTreeSeparator[located = left] {
+  size:1@dp, ph - 6@dp;
+  pos:0, ph/2 - h/2;
+}
+
+craftTreeSeparator[located = bottom] {
+  size:pw, 1@dp;
+  pos:pw/2-w/2, ph;
+}
+
+craftTreeSeparator[located = top] {
+  size:pw, 1@dp;
+  pos:pw/2-w/2, 0;
+}
+
+craftBranchBody > itemBlock {
+  width:1@itemHeight;
+  height:1@itemHeight;
+  css-hier-invalidate:yes;
+}
+
+craftBranchBody > itemBlock[hasComponent = yes] {
+  width:1@itemHeight + 1@craftTreeResourceWidth;
+}
+
+craftBranchBody[itemsSize = compact] > itemBlock,
+craftBranchBody[itemsSize = compact] > itemBlock > itemDiv {
+  width:1@compactItemHeight;
+  height:1@compactItemHeight;
+}
+
+craftBranchBody[itemsSize = compact] > itemBlock[hasComponent = yes] {
+  width:1@compactItemHeight + 1@craftTreeResourceWidth;
+}
+
+craftBranchBody[itemsSize = small] > itemBlock {
+  width:1@smallItemHeight;
+  height:1@smallItemHeight;
+}
+
+craftBranchBody[itemsSize = small] > itemBlock[hasComponent = yes] {
+  width:1@smallItemHeight + 1@craftTreeResourceWidth;
+}
+
+craftHeaderRow {
+  width: pw;
+  min-height:1@smallItemHeight + 4@headerAndCraftTreeBlockInterval;
+  padding:0, 1@headerAndCraftTreeBlockInterval;
+  margin: 0;
+}
+
+craftHeaderRow itemsBlock > itemDiv {
+  margin:1@craftTreeItemInterval, 0;
+}
+
+craftHeaderRow[itemsSize = compact] itemsBlock > itemDiv {
+  margin:1@compactCraftTreeItemInterval, 0;
+}
+
+craftHeaderRow[itemsSize = small] itemsBlock > itemDiv {
+  margin:1@smallCraftTreeItemInterval, 0;
+}
+
+craftBranchBody > itemBlock[isFullSize],
+craftBranchBody > itemBlock[isFullSize] > itemDiv {
+  width:1@itemHeight;
+  height:1@itemHeight;
+}
+
+itemBlock[isDisabled = yes] > itemDiv {
+  background-color:@shopFrameLockedColor;
+}
+
+itemBlock[isDisabled = yes] > itemDiv iconLayer {
+  background-color: @shopUnitLocked;
+}
+

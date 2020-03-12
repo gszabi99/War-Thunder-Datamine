@@ -1,0 +1,35 @@
+@const focusFrameAnimOffsetMin: 0.01@sf;
+@const focusFrameAnimOffsetMax: 0.05@sf;
+
+focusFrameAnimBlock {
+  order-popup:yes;
+  input-transparent:yes;
+  behaviour:FocusFrameAnim;
+}
+
+focusFrameAnimObj {
+  pos:50%pw-50%w,50%ph-50%h;
+  position:absolute;
+  input-transparent:yes;
+
+  size-time:200;
+  size-func:square;
+  blend-time:0;
+
+  transp-time:200;
+  transp-end:255;
+  transp-func:squareInv;
+  transp-cycled:no;
+
+  display:hide;
+}
+
+focusFrameAnimObj[_blink=yes],
+focusFrameAnimObj[_blink=now] {
+  behaviour:basicSize;
+  display:show;
+}
+
+focusFrameAnimObj[_blink=now] {
+  behaviour:basicTransparency;
+}

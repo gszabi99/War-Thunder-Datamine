@@ -1,0 +1,50 @@
+{
+  "root": {
+    "background-color": "@modalShadeColor",
+    "frame": {
+      "pos": "0.5sw-0.5w, 0.5sh-0.5h",
+      "position": "absolute",
+      "width": "0.85sw",
+      "height": "0.8sh",
+      "textarea": {
+        "id": "eulaText",
+        "width": "pw",
+        "height": "fh",
+        "overflow-y": "auto",
+        "padding": "0.01@sf, 0.01@sf, 0, 1@frameTopPadding",
+        "text-align": "left"
+      },
+      "navBar": {
+        "navMiddle": [
+          {
+            "Button_text": {
+              "id": "accept",
+              "text": "#msgbox/btn_haveReadAndAgree",
+              "on_click": "onAcceptEula",
+              "btnName": "A",
+              "ButtonImg": []
+            }
+          },
+          {
+            "Button_text": {
+              "id": "decline",
+              "text": "#msgbox/btn_cancel",
+              "_on_click": "onExit",
+              "btnName": "B",
+              "ButtonImg": []
+            }
+          },
+          {
+            "Button_text": {
+              "id": "close",
+              "text": "#mainmenu/btnClose",
+              "_on_click": "goBack",
+              "btnName": "B",
+              "ButtonImg": []
+            }
+          }
+        ]
+      }
+    }
+  }
+}

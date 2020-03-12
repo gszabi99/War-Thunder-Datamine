@@ -1,0 +1,71 @@
+emptyButton {
+  min-width:'h';
+  background-color:'@transparent';
+  css-hier-invalidate:'yes';
+  snd_click:'click';
+  padding:'0.1h, 0';
+}
+
+emptyButton:hover {
+  background-color:'@menuButtonColorHover';
+}
+
+emptyButton:pushed {
+  background-color:'@menuButtonColorPushed';
+}
+
+emptyButton.navigationExpand {
+  order-popup:'yes';
+}
+
+
+emptyButton.navigationCollapse > icon,
+emptyButton.navigationExpand > icon {
+  size:@cIco, @cIco;
+  valign:'center';
+  background-image:'#ui/gameuiskin#spinnerListBox_arrow_up.svg';
+  background-svg-size:@cIco, @cIco;
+  background-color:'@gray';
+  input-transparent:'yes';
+}
+
+[show_console_buttons=no] emptyButton.navigationCollapse > icon,
+[show_console_buttons=no] emptyButton.navigationExpand > icon {
+  position:'absolute';
+  pos:'(pw-w)/2, (ph-h)/2';
+}
+
+emptyButton.navigationExpand:hover > icon,
+emptyButton.navigationCollapse:hover > icon {
+  background-color:'@white';
+}
+
+
+[show_console_buttons=yes] emptyButton.navigationExpand > ButtonImg,
+[show_console_buttons=yes] emptyButton.navigationCollapse > ButtonImg {
+  valign:center;
+}
+
+
+listbox.navigationItemList > mission_item_unlocked > img {
+  size: ph, ph;
+  display: hide;
+  background-color: @white;
+  background-svg-size: ph, ph;
+}
+
+[show_console_buttons=yes] listbox.navigationItemList > mission_item_unlocked:current > img {
+  display:'show';
+}
+
+listbox.navigationItemList[nav_btn_group=RS] > mission_item_unlocked > img {
+  background-image:'@control_r_stick_to_up_n_down';
+}
+
+listbox.navigationItemList[nav_btn_group=LS] > mission_item_unlocked > img {
+  background-image:'@control_l_stick_to_up_n_down';
+}
+
+listbox.navigationItemList[nav_btn_group=Dpad] > mission_item_unlocked > img {
+  background-image:'@control_dirpad';
+}

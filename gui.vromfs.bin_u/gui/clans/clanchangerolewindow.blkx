@@ -1,0 +1,44 @@
+{
+  "root": {
+    "background-color": "@shadeBackgroundColor",
+    "type": "big",
+    "frame": {
+      "width": "0.7*@sf",
+      "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+      "position": "absolute",
+      "flow": "vertical",
+      "class": "wndNav",
+      "frame_header": {
+        "Button_close": {
+          "id": "btn_back"
+        },
+        "activeText": {
+          "id": "title_text",
+          "caption": "yes",
+          "text": "#clan/changeRoleTitle"
+        }
+      },
+      "VerticalListBox": {
+        "id": "change_role_list",
+        "width": "pw",
+        "padding": "0, 0.02@scrn_tgt, 0, 0.02@scrn_tgt",
+        "navigatorShortcuts": "yes"
+      },
+      "navBar": {
+        "navRight": {
+          "Button_text": {
+            "pos": "pw-w, 0",
+            "position": "relative",
+            "text": "#clan/btnChangeRole",
+            "tooltip": "#clan/btnChangeRole",
+            "_on_click": "onApply",
+            "btnName": "A",
+            "visualStyle": "secondary",
+            "buttonWink": [],
+            "ButtonImg": []
+          }
+        }
+      }
+    }
+  }
+}

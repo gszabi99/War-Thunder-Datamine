@@ -1,0 +1,153 @@
+@const multiCountryBgColor:          #353a3e;
+@const multiCountryChosenBgColor:    #e0e0e0;
+@const multiCountryTextColor:        @commonTextColor;
+@const multiCountryChosenTextColor:  @black;
+
+@const countryOptionWidth:  138@sf/@pf;
+@const countryOptionLineHeight: 28@sf/@pf;
+@const countryOptionHeight: 100@sf/@pf + 1@dp;
+
+MultiSelect {
+  behaviour:MultiSelect;
+  total-input-transparent:yes;
+}
+
+MultiSelect[optionsShortcuts] > multiOption {
+  height:ph;
+}
+
+MultiSelect[flow=horizontal] > multiOption {
+  min-height:@checkboxSize + 2@dp;
+  padding:1*@sf/@pf_outdated;
+  padding-left:20%h;
+  margin-right:0.5*@scrn_tgt/100.0;
+  background-color:@frameBackgroundColor;
+  border-color:@frameBorderColor;
+  border:yes;
+}
+
+multiOption {
+  min-width: pw;
+  re-type:9rect;
+  css-hier-invalidate:yes;
+  input-transparent:yes;
+  color:@commonTextColor;
+  font:@fontNormal;
+  text-align:left;
+}
+
+multiOption[filter_multi_option=yes] {
+  min-width: 0;
+}
+
+multiOption > CheckBoxImg {
+  pos:0, ph/2-h/2;
+  position:relative;
+  margin-right:@blockInterval + 0.33h;
+}
+
+multiOption[filter_multi_option=yes] > CheckBoxImg {
+  margin-left:@blockInterval;
+  margin-right:0.33h;
+}
+
+multiOptionText {
+  re-type:9rect;
+  input-transparent:yes;
+  color:@commonTextColor;
+  font:@fontNormal;
+  margin:@blockInterval, 0;
+}
+
+multiOptionText[textStyle=textarea] {
+  behaviour:textArea;
+  re-type:textarea;
+}
+
+multiOption:hover,
+:hover > multiOptionText {
+  color:@hoverTextColor;
+}
+
+multiOption[chosen=yes],
+multiOption[chosen=yes] > multiOptionText {
+  color:@activeTextColor;
+}
+
+multiOption > ButtonImg {
+  size:@checkboxSize, @checkboxSize;
+  margin-left:@blockInterval;
+}
+
+
+MultiSelect.countries {
+  height:@countryOptionHeight;
+}
+
+.countries > multiOption {
+  height:@countryOptionHeight;
+  width:@countryOptionWidth;
+  min-width:0;
+  margin:@blockInterval, 0;
+  background-color:@multiCountryBgColor;
+  background-position:0, h - 1@countryOptionLineHeight, 0, 0;
+  border:no;
+  flow:vertical;
+  text-align:center;
+}
+
+.countries > multiOption[chosen=yes] {
+  background-color:@multiCountryChosenBgColor;
+}
+
+.countries multiOptionImg {
+  height:0.52pw;
+  width:pw;
+  position:relative;
+  background-color:@imageNotSelCountryColor;
+}
+
+.countries > multiOption[chosen=yes] > multiOptionImg {
+  background-color:@white;
+}
+
+.countries > :hover > multiOptionImg {
+  background-color:@imageHoverCountryColor;
+}
+
+.countries multiOptionText {
+  position:absolute;
+  pos:@blockInterval, ph - 0.5@countryOptionLineHeight - 0.5h;
+  margin:0;
+  text-align:left;
+  color:@multiCountryTextColor;
+}
+
+.countries > multiOption[chosen=yes] > multiOptionText {
+  color:@multiCountryChosenTextColor;
+}
+
+.countries multiOption > CheckBoxImg {
+  position: absolute;
+  top:ph - 0.5@countryOptionLineHeight - 0.5h;
+  left:pw-w-1@blockInterval;
+  margin-right:0;
+}
+
+.countries multiOption > ButtonImg {
+  position:absolute;
+  pos:pw-w, ph-h;
+  margin-left:0;
+}
+
+
+
+multiOption[cluster_option=yes] {
+  padding-left:@checkboxSize + 6*@sf/@pf_outdated;
+  padding-top:4*@sf/@pf_outdated;
+}
+
+multiOption[cluster_option=yes] > CheckBoxImg {
+  position:absolute;
+  left:0;
+}

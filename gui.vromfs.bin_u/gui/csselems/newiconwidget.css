@@ -1,0 +1,115 @@
+@const warningIconColor :#FF8300;
+
+newIconWidget {
+  height:1@newWidgetIconHeight;
+  background-repeat:expand;
+  background-image:#ui/gameuiskin#new_icon_bg;
+  background-position:5, 5, 5, 5;
+  input-transparent:yes;
+  css-hier-invalidate:yes;
+}
+
+newIconWidgetText {
+  re-type:text;
+  color:@black;
+  font:@fontSmall;
+  input-transparent:yes;
+  top:50%ph-50%h;
+  position:relative;
+}
+
+newIconWidgetText[text=""] {
+  display:hide;
+}
+
+newIconWidgetImg {
+  size:ph, ph;
+  background-color:@white;
+  input-transparent:yes;
+}
+
+newIconWidget[widgetClass=text], [widgetClass=text] > newIconWidget {
+  background-color:@white;
+}
+
+[widgetClass=text] > newIconWidget > newIconWidgetText, [widgetClass=text] > newIconWidgetText {
+  padding:0.5@newWidgetIconHeight + 4*@sf/@pf, 9@sf/@pf, 12*@sf/@pf, 5@sf/@pf;
+}
+
+newIconWidget[widgetClass=text] > newIconWidgetImg, [widgetClass=text] > newIconWidgetImg {
+  position:absolute;
+  left:-50%w;
+}
+
+[valign=center] > newIconWidget {
+  pos:0, 50%ph-50%h;
+  position:relative;
+}
+
+
+unseenIcon {
+  behaviour:bhvUnseen;
+  height:1@newWidgetIconHeight;
+  min-width:1@newWidgetIconHeight;
+  margin:@blockInterval;
+  padding:0.5h, 0, 0, 0;
+  re-type:fgPict;
+  foreground-color:@white;
+  foreground-image:#ui/gameuiskin#new_icon;
+  foreground-repeat:aspect-ratio;
+  foreground-align:left;
+  display:hide;
+}
+
+unseenIcon[valign=center] {
+  pos:0, 50%ph-50%h;
+  position:relative;
+  margin:@blockInterval, 0;
+}
+
+unseenIcon[position=absolute],
+unseenIcon[noMargin=yes] {
+  margin:0;
+}
+
+activateSelect > shopFilter > unseenIcon,
+HorizontalListBox > shopFilter > unseenIcon {
+  pos: - 1@listboxHPadding, 50%ph-50%h;
+  position:absolute;
+  margin:@blockInterval, 0;
+}
+
+unseenIcon[isActive=yes] {
+  display:show;
+}
+
+unseenText {
+  height:ph;
+  re-type:text;
+  padding:0.5h + 3@sf/@pf, 3@dp + 3@sf/@pf, 6@dp + 3@sf/@pf, 3@dp;
+  background-color:@white;
+  background-image:#ui/gameuiskin#new_icon_bg;
+  background-repeat:expand;
+  background-position:5;
+
+  color:@black;
+  font:@fontSmall;
+  display:hide;
+}
+
+unseenText[isActive=yes] {
+  display:show;
+}
+
+ComboBox > option > unseenIcon {
+  margin:0, 0, @blockInterval, 0;
+}
+
+
+warningIcon[type=warning] {
+  size:1@newWidgetIconHeight, 1@newWidgetIconHeight;
+  background-image:#ui/gameuiskin#new_icon_not_colored;
+  background-color:@warningIconColor;
+  background-repeat:expand;
+  input-transparent:yes;
+}

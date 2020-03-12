@@ -1,0 +1,57 @@
+{
+  "root": {
+    "background-color": "@shadeBackgroundColor",
+    "type": "big",
+    "frame": {
+      "width": "0.9*@sf",
+      "height": "0.4*@sf",
+      "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+      "position": "absolute",
+      "flow": "vertical",
+      "class": "wndNav",
+      "frame_header": {
+        "Button_close": {
+          "id": "btn_back"
+        },
+        "activeText": {
+          "id": "title_text",
+          "caption": "yes",
+          "text": "#clan/changeMembershipRequirementsTitle"
+        }
+      },
+      "tdiv": {
+        "size": "pw, fh",
+        "flow": "vertical",
+        "id": "contentBody"
+      },
+      "navBar": {
+        "navLeft": {
+          "CheckBox": {
+            "id": "membership_acceptance_checkbox",
+            "margin-left": "1@buttonMargin",
+            "text": "#caln/log/membership_applications",
+            "value": "no",
+            "btnName": "Y",
+            "on_change_value": "onMembershipAcceptanceClick",
+            "tooltip": "#clan/open_close_new_req",
+            "CheckBoxImg": [],
+            "ButtonImg": []
+          }
+        },
+        "navRight": {
+          "Button_text": {
+            "visualStyle": "secondary",
+            "pos": "pw-w, 0",
+            "position": "relative",
+            "text": "#clan/btnSaveMembershipRequirements",
+            "tooltip": "#clan/btnSaveMembershipRequirements",
+            "_on_click": "onApply",
+            "btnName": "A",
+            "buttonWink": [],
+            "ButtonImg": []
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "navLeft": {
+    "Button_text": {
+      "id": "btn_user_options",
+      "text": "#mainmenu/btnUserAction",
+      "btnName": "A",
+      "on_click": "onUserOptions",
+      "ButtonImg": []
+    }
+  },
+  "navBottomLeft": [],
+  "navMiddle": {
+    "activeText": {
+      "id": "time_to_kick_alert_text",
+      "text": "#respawn/timeToKickAlert",
+      "_blink": "no",
+      "titleFont": "yes",
+      "style": "color:@warningTextColor;",
+      "behaviour": "basicFontSize",
+      "font-ht": "28",
+      "font-ht-base": "28",
+      "font-ht-end": "36",
+      "size-time": "200",
+      "size-func": "sin",
+      "_size-timer": "1"
+    }
+  },
+  "navRight": [
+    {
+      "Button_text": {
+        "id": "btn_activateorder",
+        "text": "#flightmenu/btnActivateOrder",
+        "display": "hide",
+        "enable": "no",
+        "btnName": "R3",
+        "_on_click": "onActivateOrder",
+        "behavior": "Timer",
+        "timer_handler_func": "onOrderTimerUpdate",
+        "timer_interval_msec": "1000",
+        "ButtonImg": []
+      }
+    },
+    {
+      "Button_text": {
+        "id": "btn_back",
+        "text": "#mainmenu/btnBack",
+        "btnName": "B",
+        "_on_click": "goBack",
+        "display": "hide",
+        "ButtonImg": []
+      }
+    }
+  ]
+}

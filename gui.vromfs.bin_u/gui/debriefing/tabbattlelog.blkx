@@ -1,0 +1,50 @@
+{
+  "debriefingTab": {
+    "id": "battle_log_tab",
+    "tdiv": [
+      {
+        "size": "pw, ph"
+      },
+      {
+        "flow": "vertical"
+      },
+      {
+        "debrBlock": {
+          "width": "pw",
+          "padding": "1@debrPad",
+          "RadioButtonList": {
+            "id": "battle_log_filter",
+            "navigatorShortcuts": "yes",
+            "on_select": "onChangeBattlelogFilter",
+            "on_wrap_up": "onWrapUp",
+            "on_wrap_down": "onWrapDown"
+          },
+          "debrSeparator": {
+            "class": "bottom"
+          }
+        }
+      },
+      {
+        "debrBlock": {
+          "id": "battle_log_div",
+          "size": "pw, fh",
+          "overflow-y": "auto",
+          "scrollbarShortcuts": "yes",
+          "tdiv": {
+            "width": "pw",
+            "min-height": "ph",
+            "margin": "1@debrPad",
+            "chatLog": {
+              "width": "pw",
+              "id": "battle_log",
+              "style": "color:@white",
+              "text": "",
+              "on_link_click": "onChatLinkClick",
+              "on_link_rclick": "onChatLinkRClick"
+            }
+          }
+        }
+      }
+    ]
+  }
+}

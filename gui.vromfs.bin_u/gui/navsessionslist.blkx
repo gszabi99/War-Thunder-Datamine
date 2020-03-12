@@ -1,0 +1,52 @@
+{
+  "navLeft": {
+    "Button_text": {
+      "id": "btn_back",
+      "text": "#mainmenu/btnBack",
+      "btnName": "B",
+      "_on_click": "goBack",
+      "ButtonImg": []
+    }
+  },
+  "navMiddle": {
+    "id": "paginator_place"
+  },
+  "navRight": [
+    {
+      "Button_text": {
+        "id": "btn_skirmish",
+        "text": "#mainmenu/btnCreateSession",
+        "btnName": "X",
+        "on_click": "onSkirmish",
+        "display": "hide",
+        "enable": "no",
+        "visualStyle": "secondary",
+        "buttonWink": [],
+        "ButtonImg": []
+      }
+    },
+    {
+      "Button_text": {
+        "id": "btn_select",
+        "class": "battle",
+        "navButtonFont": "yes",
+        "text": "#mainmenu/btnSelect",
+        "_on_click": "onStart",
+        "css-hier-invalidate": "yes",
+        "btnName": "A",
+        "pattern": {
+          "type": "bright_texture"
+        },
+        "buttonWink": {
+          "_transp-timer": "0"
+        },
+        "buttonGlance": [],
+        "ButtonImg": [],
+        "btnText": {
+          "id": "btn_select_text",
+          "text": "#mainmenu/btnSelect"
+        }
+      }
+    }
+  ]
+}

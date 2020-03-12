@@ -1,0 +1,696 @@
+@const wwMapActiveWidth: 1@_safearea_menu_w*sw;
+@const wwMapOffset: ((sw - 1@wwMapActiveWidth) / 2) \ 1;
+@const wwMapQueueInfoYpos: 1@topBarHeight + 3@sf/@pf;
+
+@const headerIndent: 0.02@scrn_tgt;
+@const bigArmyGroupIconSize: 48*@sf/@pf_outdated;
+
+@const objectiveBlockHeaderHeight: 1@sIco + 8*@sf/@pf_outdated + 2*@sf/@pf_outdated;
+@const logBlockHeaderHeight: 1@objectiveBlockHeaderHeight;
+@const objectiveHeight: 0.06@sf + 2@wwMapInterlinePadding;
+@const unitStringHeight: 0.026@sf + 1@wwMapInterlinePadding;
+
+@const wwArmyIco: (36*@sf/@pf_outdated) \ 1;
+
+@const statusPanelHeight: 0.035@sf;
+@const ownerPanelHeight: 0.03@sf;
+@const flyOutSliderWidth: 0.2@scrn_tgt;
+@const wwBattleTacticalMapSize: 0.3@sf;
+
+@const wwBattleBlocksMargin: 0;
+@const wwBattleBackgroundShadowLedge: 0.2@sf;
+
+@const wwWindowListBackgroundPadding: 0.01@scrn_tgt;
+@const wwOperationMapMinSize: 0.4@scrn_tgt;
+
+@const wwLogTimeColumnWidth: 78@sf/@pf;
+@const wwLogZoneColumnWidth: 36*@sf/@pf_outdated;
+
+@const wwBattleInfoMapMaxSize: 0.33@scrn_tgt+0.2@wwBattleInfoScreenIncHeight;
+@const wwBattleMapShadowPadding: 6*@sf/@pf_outdated;
+@const wwBlockTabMinWidth: 22*@sf/@pf_outdated;
+
+@const wwMapBlockStretcher: (sh - 1@sf) * 0.15;
+@const content2BlockHeight: 0.305@sf + 1@wwMapBlockStretcher;
+@const content3BlockHeight: 0.275@sf + 1@wwMapBlockStretcher;
+
+@const wwMapInterlinePadding: (sh - 1@sf) * 0.03;
+@const wwMapInterlineStrengthPadding: (sh - 1@sf) * 0.01;
+@const wwOperationClanListMinHeight:0.17@sf + 1@wwMapBlockStretcher;
+@const wwOperationDescSideStrenghtHeight:0.25@sf + 1@wwMapBlockStretcher;
+
+@const wwBattleInfoScreenIncHeight: sh - 1@sf;
+@const wwFlyOutAirTypeTitleHeight: 44@sf/@pf;
+@const wwFlyOutScreenInfoWidth: 1@slot_interval +1@flyOutSliderWidth +2@sliderButtonSquareHeight +1@buttonWidth +1@slot_button_fullWidth +2@slot_interval +1@modItemWidth +1@modItemHeight;
+@const roleArmyWidth: 240@sf/@pf;
+@const wwFlyOutScreenInfoWidthByGroup: 1@wwFlyOutScreenInfoWidth - 1@modItemWidth + 1@roleArmyWidth;
+
+@const wwArmySmallIconWidth: 36*@sf/@pf;
+@const wwSmallCountryFlagWidth: 67*@sf/@pf;
+@const wwSmallCountryFlagHeight: 35*@sf/@pf;
+
+@const wwGlobeTooltipPadding: 15@sf/@pf;
+
+
+
+@const objectiveLightTdBackground: #10101010;
+@const objectiveHeaderBackground: #22222222;
+@const armyForegroundImageHover: #99999999;
+@const armyForegroundImageSelect: #FFE451;
+
+@const armyEntrencheColor: #738595;
+
+@const wwNoTeamColor: #c0c0c0;
+@const wwTeamAllyColor: #00A8DF;
+@const wwTeamEnemyColor: #B63A3E;
+@const ownedArmyColor: #54AF56;
+@const wwNoTeamColorHover: @white;
+@const wwTeamAllyColorHover: #99CBFF;
+@const wwTeamEnemyColorHover: #F96D6F;
+
+@const battleColorActive: #ffe451;
+@const battleColorInactive: @white;
+@const battleColorFull: @white;
+@const battleColorOnServer: @red;
+@const battleColorFinished: #555555;
+
+@const surrenderPanelColorBG: #7e2627;
+@const windowBackgroudDarkColor: #151b21;
+@const statusBlockSeparatorColor: #161A22;
+@const armyGroupSeparatorColor: @objectiveHeaderBackground;
+
+@const operationLogSystemMessage: #7987a9;
+@const operationLogBattleInProgress: #ffde43;
+@const operationLogBattleCompleted: #ff8921;
+@const operationLogArmyInfo: #89e451;
+@const operationLogSectorInfo: #34dfbd;
+@const operationLogFilterBar: #010101;
+@const operationLogZoneCaptured: @operationLogBattleCompleted;
+
+@const isOperationClanParticipateColor: #FFe9c65c;
+@const armySurroundedColor: #fb5952;
+
+
+objectiveBlock > header {
+  width:pw;
+  height:1@objectiveBlockHeaderHeight;
+  color:@white;
+  background-color:@objectiveHeaderBackground;
+}
+
+objectiveBlock objectiveSeparator {
+  pos: 50%pw-50%w, ph-h;
+  position: absolute;
+  size: 90%pw, 1;
+  background-color: @objectiveHeaderBackground;
+}
+
+objectiveBlock objectiveTextSeparator {
+  width: 90%pw;
+  pos: 50%pw-50%w, ph-50%h;
+  position: absolute;
+}
+
+objectiveBlock objectiveTextSeparator > textareaNoTab {
+  margin: 1@blockInterval, 0;
+  text-align: center;
+  font: @fontTiny;
+  color: @fadedTextColor;
+}
+
+separatorLine {
+  width: pw;
+  height: 1;
+  background-color: @objectiveHeaderBackground;
+}
+
+objectiveBlock objectiveTextSeparator > separatorLine {
+  width: fw;
+  top: 50%ph-50%h;
+  position: relative;
+}
+
+massTransp[isWorldWarFrame=yes] {
+  pos:50%pw-50%w, 50%ph-50%h;
+  position:absolute;
+  total-input-transparent:yes;
+  re-type:9rect;
+  background-color:@gray;
+  background-position:0, 3, 0, 4;
+  background-repeat:expand;
+  background-image:#ui/gameuiskin#expandable_item_sym;
+  padding:0.2@sf, 0.03@sf;
+}
+
+wwObjectiveName,
+objectiveBlock wwObjective desc {
+  behaviour:textArea;
+  re-type:textarea;
+}
+
+wwObjectiveName {
+  font:@fontNormal;
+  color:@commonTextColor;
+  text-align:center;
+}
+
+objectiveBlock wwObjective desc {
+  font:@fontSmall;
+  color:@minorTextColor;
+}
+
+objectiveBlock wwObjective taskIcon {
+  size:1@cIco, 1@cIco;
+  margin-right:0.005@sf;
+
+  re-type:9rect;
+  background-color:@white;
+  background-position:0;
+  background-repeat:expand;
+}
+
+objectiveBlock wwObjective taskIcon[background-image=""] {
+  display:hide;
+}
+
+imageButton[type=wwAirfield] {
+  background-image:#ui/gameuiskin#map_airfield;
+}
+
+imageButton[type=wwAirfield]:hover {
+  background-image:#ui/gameuiskin#map_airfield_hover;
+}
+
+imageButton[type=wwAirfield]:hover > textarea {
+  color:@hoverTextColor;
+}
+
+imageButton[type=wwAirfield][selected=yes] {
+  background-color:@white;
+  background-image:#ui/gameuiskin#map_airfield_selected;
+}
+
+imageButton[type=wwAirfield][selected=yes] > textarea {
+  color:@userlogColoredText;
+}
+
+armyBlock {
+  css-hier-invalidate:yes;
+  total-input-transparent:yes;
+}
+
+wwBattleIcon {
+  size:1@cIco, 1@cIco;
+  css-hier-invalidate:yes;
+  pos:50%pw-50%w, 50%ph-50%h;
+  position:absolute;
+  background-image:#ui/gameuiskin#battles_open;
+  background-color:@battleColorInactive;
+  background-position:0;
+  background-repeat:expand;
+}
+
+wwBattleIcon[isTooltipIcon=yes] {
+  size:1@mIco, 1@mIco;
+  position:relative;
+}
+
+wwBattleIcon[status=Active] {
+  background-color:@battleColorActive;
+}
+
+wwBattleIcon[status=Fake] {
+  background-image:#ui/gameuiskin#battles_closed;
+}
+
+wwBattleIcon[status=OnServer] {
+  background-color:@battleColorOnServer;
+}
+
+wwBattleIcon[status=Finished] {
+  background-color:@battleColorFinished;
+}
+
+wwBattleIcon[status=Full] {
+  background-image:#ui/gameuiskin#battles_closed;
+}
+
+wwBattleIcon[medalIcon] {
+  height:1@cIco;
+  max-height:@unlockStageIconSize;
+  width:h;
+  position:absolute;
+  pos:@bw + 0.2%sw, 50%ph-50%h;
+  background-svg-size:@cIco, @cIco;
+  background-repeat:aspect-ratio;
+}
+
+frame wwBattleIcon[medalIcon] {
+  pos:@missionBoxImageOffsetX - 50%w, 50%ph-50%h;
+  position:absolute;
+}
+
+[hasItemPrefixText] > wwBattleIcon[medalIcon] {
+  pos:@blockInterval, 50%ph-50%h;
+  position:relative;
+}
+
+armyIcon {
+  size:1@wwArmyIco, 1@wwArmyIco;
+  css-hier-invalidate:yes;
+}
+
+armyIcon[battleDescriptionIconSize=medium] {
+  size:1@bigArmyGroupIconSize, 1@bigArmyGroupIconSize;
+}
+
+armyIcon[battleDescriptionIconSize=small] {
+  size:@wwArmySmallIconWidth, @wwArmySmallIconWidth;
+}
+
+armyIcon > background {
+  re-type:9rect;
+  background-color:@white;
+  background-position:0;
+  background-repeat:expand;
+  foreground-color:@transparent;
+  foreground-position:0;
+  foreground-repeat:expand;
+  size:pw, ph;
+}
+
+armyIcon > entrenchIcon {
+  size:pw, ph;
+}
+
+armyIcon[team=blue] > background {
+  background-color:@wwTeamAllyColor;
+}
+
+armyIcon[team=red] > background {
+  background-color:@wwTeamEnemyColor;
+}
+
+armyIcon[team=blue][isBelongsToMyClan=yes] > background {
+  background-color:@ownedArmyColor;
+}
+
+armyBlock[surrounded=yes] > armyIcon > background {
+  foreground-color:@teamRedColor;
+}
+
+armyBlock[canBeHovered=yes]:hover > armyIcon > background,
+armyBlock[isForceHovered=yes] > armyIcon > background {
+  foreground-color:@armyForegroundImageHover;
+}
+
+armyBlock[selected=yes] > armyIcon > background {
+  foreground-color:@armyForegroundImageSelect;
+}
+
+armyIcon > armyUnitType,
+armyIcon > armyGroupText,
+armyBlock > textAfterIcon
+{
+  behaviour:textArea;
+  re-type:textarea;
+  font:@fontNormal;
+  color:@userlogColoredText;
+}
+
+armyUnitType[battleDescriptionIconSize=medium] {
+  font:@fontMedium;
+  color:@activeTextColor;
+}
+
+armyUnitType[battleDescriptionIconSize=small] {
+  font:@fontSmall;
+  color:@activeTextColor;
+}
+
+textAfterIcon[battleDescriptionIconSize=medium] {
+  font:@fontMedium;
+}
+
+armyIcon[managerAccess=yes] > armyGroupText {
+  display:hide;
+}
+
+armyIcon > armyUnitType {
+  color:@black;
+}
+
+armyBlock:hover > armyIcon > armyGroupText {
+  color:@highlightedTextColor;
+}
+
+armyAlertPanel {
+  background-color:@objectiveHeaderBackground;
+}
+
+armyAlertPanel[isAlert=yes] {
+  background-color:@surrenderPanelColorBG;
+}
+
+ownerPanel clanTag,
+armyGroup clanTag,
+armyBlock > textarea,
+armyBlock > arrivalTime {
+  behaviour:textArea;
+  re-type:textarea;
+  font:@fontNormal;
+  color:@commonTextColor;
+}
+
+ownerPanel clanTag,
+armyGroup clanTag {
+  color:@activeTextColor;
+}
+
+statusPanel > block {
+  height:ph;
+  text-valign:center;
+  text-halign:center;
+  css-hier-invalidate:yes;
+}
+
+statusPanel > block > activeText {
+  hideEmptyText:yes;
+  width:0.25@wwMapPanelInfoWidth;
+  height:ph;
+}
+
+statusPanel[needSmallSize=yes] > block > activeText {
+  width:0.19@wwMapPanelInfoWidth;
+}
+
+statusPanel[needSmallSize=yes] > block[hasTimer=yes] > activeText {
+  width:0.225@wwMapPanelInfoWidth;
+}
+
+statusPanel blockSeparator {
+  pos: 0, 50%ph-50%h;
+  position: relative;
+  size: 1, 90%ph;
+  background-color: @statusBlockSeparatorColor;
+}
+
+armyGroup blockSeparator,
+teamInfoPanel blockSeparator {
+  pos:50%pw-50%w, 1@framePadding;
+  position:absolute;
+  size:1, ph - 2@framePadding;
+  background-color: @armyGroupSeparatorColor;
+}
+
+armyBlock:hover > textarea,
+armyBlock:hover > arrivalTime {
+  color:@hoverTextColor;
+}
+
+ReinforcementsRadioButtonsList > armyBlock,
+FormationRadioButtonsList > armyBlock {
+  behaviour:radiobutton;
+  re-type:select;
+  snd_select:choose;
+  snd_set_focus:focus;
+  snd_dbl_click:click;
+}
+
+ReinforcementsRadioButtonsList > armyBlock:current > armyIcon > armyGroupText,
+ReinforcementsRadioButtonsList > armyBlock:current > icon > armyGroupText,
+FormationRadioButtonsList > armyBlock:current > armyIcon > armyGroupText,
+FormationRadioButtonsList > armyBlock:current > icon > armyGroupText {
+  color:@activeTextColor;
+}
+
+ww_map_item {
+  size:pw, @baseTrHeight;
+  re-type:9rect;
+  background-position:4,5;
+  background-repeat:expand;
+  background-image:#ui/gameuiskin#expandable_item_sub_transp;
+  background-color:@transparent;
+  css-hier-invalidate:yes;
+  tabStop:yes;
+}
+ww_map_item[isReflected=yes] {
+  re-type:rotation;
+  background-rotation:180;
+}
+
+ww_map_item.header {
+  size:pw, @leaderboardHeaderHeight;
+  background-image:#ui/gameuiskin#expandable_item_sub_transp_selected;
+  background-color:#aaaaaa;
+}
+ww_map_item:hover,
+ww_map_item[selected=yes] {
+  background-image:#ui/gameuiskin#expandable_item_sub_transp_selected;
+  background-color:@white;
+}
+
+ww_map_item mission_item_text {
+  color:@commonTextColor;
+  font:@fontNormal;
+}
+ww_map_item mission_item_text[overlayTextColor=disabled] {
+  color:@disabledTextColor;
+}
+ww_map_item.header mission_item_text {
+  font:@fontMedium;
+}
+ww_map_item[selected=yes] mission_item_text, ww_map_item:hover mission_item_text {
+  color:@activeTextColor;
+}
+ww_map_item[selected=yes] mission_item_text[overlayTextColor=disabled],
+ww_map_item:hover mission_item_text[overlayTextColor=disabled] {
+  color:@disabledTextColor;
+}
+
+ww_map_item.header mission_item_text {
+  color:#999999;
+}
+
+ww_map_item > missionDiv {
+  pos:0, 50%ph-50%h;
+  padding-left:25*@sf/@pf_outdated;
+  width:pw;
+}
+ww_map_item.header > missionDiv {
+  padding-left:15*@sf/@pf_outdated;
+}
+
+ww_map_item img[medalIcon] {
+  pos:20*@sf/@pf_outdated-50%w, 50%ph-50%h;
+}
+
+ww_operation_list_place {  width:0.2@sf;
+}
+
+wwWindowListBackground {
+  background-repeat:expand;
+  background-position:2;
+  background-color:@white;
+
+  transparent:50;
+}
+
+wwWindowListBackground[type=left] {
+  background-image:#ui/gameuiskin#expandable_item_ww_transp_reflect;
+}
+
+wwWindowListBackground[type=right] {
+  background-image:#ui/gameuiskin#expandable_item_ww_transp;
+}
+
+operationResultText {
+  behaviour:textArea;
+  re-type:textarea;
+  text-align:center;
+  font: @fontBigBold;
+  color: @white;
+
+  text-shade:smooth;
+  text-shade-x:1;
+  text-shade-y:1;
+  text-shade-color:#CC000000;
+
+  pare-text:yes;
+  hideEmptyText:yes;
+}
+
+operationResultText[hideText=yes] {
+  text-shade-color:@transparent;
+}
+
+wwBattleBackgroundBlock {
+  size:pw-2@blockInterval, ph-2@blockInterval;
+  position:absolute;
+  pos:50%pw-50%w, 50%ph-50%h;
+  overflow:hidden;
+}
+
+wwBattleBackgroundBlock > wwBattleBackground {
+  size:pw, 50%w;
+  min-width:2ph;
+  position:absolute;
+  pos:50%pw-50%w, 50%ph-50%h;
+  background-color:@white;
+}
+
+wwMainMenuBackgroundShadow,
+wwBattleBackgroundShadow {
+  re-type:rotation;
+  background-repeat:expand;
+  background-color:@white;
+  background-position:6,6;
+  position:absolute;
+}
+wwMainMenuBackgroundShadow {
+  padding: 0, 2@dp;
+}
+
+wwMainMenuBackgroundShadow {
+  height:ph -1@navBarBattleButtonHeight -9@sf/@pf_outdated;
+}
+wwBattleBackgroundShadow {
+  size:3@wwBattleBackgroundShadowLedge, ph;
+}
+
+wwMainMenuBackgroundShadow[type=left],
+wwBattleBackgroundShadow[type=left] {
+  background-image:#ui/gameuiskin#shadow_left;
+}
+wwMainMenuBackgroundShadow[type=right],
+wwBattleBackgroundShadow[type=right] {
+  background-rotation:180;
+  background-image:#ui/gameuiskin#shadow_left;
+  left:pw-w;
+}
+
+wwBattleBackgroundShadow[type=top] {
+  background-image:#ui/images/worldwar_window_shadow_bg_image_vert;
+  background-rotation:180;
+  size:pw, 3@wwBattleBackgroundShadowLedge;
+}
+wwBattleBackgroundShadow[type=bottom] {
+  background-image:#ui/images/worldwar_window_shadow_bg_image_vert;
+  size:pw, 1@wwBattleBackgroundShadowLedge;
+}
+
+textareaNoTab[isOperationClanParticipateColor=yes] {
+  color:@isOperationClanParticipateColor;
+  font:@fontMedium;
+}
+
+ww_operation_list_place > listbox > mission_item_unlocked > img[medalIcon] {
+  background-color:@missionUnlockedColor;
+}
+ww_operation_list_place > listbox > mission_item_unlocked:hover > img[medalIcon] {
+  background-color:@missionUnlockedHoverColor;
+}
+ww_operation_list_place > listbox > mission_item_unlocked:current > img[medalIcon] {
+  background-color:@missionUnlockedSelectColor;
+}
+
+textareaNoTab[isYourZone=yes] {
+  color:@wwTeamAllyColor;
+}
+textareaNoTab[isYourZone=no] {
+  color:@wwTeamEnemyColor;
+}
+textareaNoTab:hover[isYourZone=yes] {
+  color:@wwTeamAllyColorHover;
+}
+textareaNoTab:hover[isYourZone=no] {
+  color:@wwTeamEnemyColorHover;
+}
+
+objectiveZones > textareaNoTab[team=none] {
+  color:@wwNoTeamColor;
+}
+objectiveZones > textareaNoTab[team=blue] {
+  color:@wwTeamAllyColor;
+}
+objectiveZones > textareaNoTab[team=red] {
+  color:@wwTeamEnemyColor;
+}
+objectiveZones:hover > textareaNoTab[team=none] {
+  color:@wwNoTeamColorHover;
+}
+objectiveZones:hover > textareaNoTab[team=blue] {
+  color:@wwTeamAllyColorHover;
+}
+objectiveZones:hover > textareaNoTab[team=red] {
+  color:@wwTeamEnemyColorHover;
+}
+
+cardImg[logCategoryName=system]
+{
+  background-color:@operationLogSystemMessage;
+}
+cardImg[logCategoryName=existing_battles]
+{
+  background-color:@operationLogBattleInProgress;
+}
+cardImg[logCategoryName=finished_battles]
+{
+  background-color:@operationLogBattleCompleted;
+}
+cardImg[logCategoryName=army_activity]
+{
+  background-color:@operationLogArmyInfo;
+}
+cardImg[logCategoryName=zone_capture]
+{
+  background-color:@operationLogZoneCaptured;
+}
+
+wwUnitActiveBlock
+{
+  padding: 1@buttonTextPadding, 0;
+  css-hier-invalidate: yes;
+  total-input-transparent: yes;
+  behavior: button;
+  on_click: onUnitClick;
+}
+wwUnitActiveBlock:hover
+{
+  background-color:#ff2d3841;
+}
+
+wwUnitClassNest
+{
+  css-hier-invalidate:yes;
+}
+wwUnitClassNest[isEnabled=no] textareaNoTab
+{
+  color:@disabledTextColor;
+}
+
+wwUnitClass
+{
+  css-hier-invalidate:yes;
+}
+wwUnitClass > classIcon
+{
+  font: @fontBigBold;
+}
+wwUnitClass > classIcon[zeroPos=yes]
+{
+  pos: 0, 0;
+  position: relative;
+}
+
+wwUnitClass > classIcon[unitType=fighter]  { color: @medium_fighterColor; }
+wwUnitClass > classIcon[unitType=assault]  { color: @common_assaultColor; }
+wwUnitClass > classIcon[unitType=bomber]   { color: @medium_bomberColor; }
+[isEnabled=no] wwUnitClass > classIcon     { color: @fadedTextColor; }
+
+wwTopNest {
+  width:pw;
+  margin-top:1@blockInterval;
+  flow:vertical;
+  css-hier-invalidate:yes;
+}

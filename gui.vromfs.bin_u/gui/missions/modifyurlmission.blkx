@@ -1,0 +1,84 @@
+{
+  "root": {
+    "size": "sw, sh",
+    "position": "root",
+    "background-color": "@shadeBackgroundColor",
+    "frame": [
+      {
+        "width": "0.4@scrn_tgt"
+      },
+      {
+        "pos": "50%pw-50%w, 50%ph-50%h"
+      },
+      {
+        "position": "absolute"
+      },
+      {
+        "class": "wndNav"
+      },
+      {
+        "frame_header": {
+          "activeText": {
+            "id": "title",
+            "text": "",
+            "caption": "yes"
+          },
+          "Button_close": []
+        }
+      },
+      {
+        "text": {
+          "text": "#urlMissions/name"
+        }
+      },
+      {
+        "EditBox": {
+          "id": "name_editbox",
+          "width": "pw",
+          "pos": "0, 1@blockInterval",
+          "position": "relative",
+          "mouse-focusable": "yes",
+          "max-len": "24",
+          "_on_cancel_edit": "goBack",
+          "on_change_value": "onChangeName",
+          "on_wrap_down": "onWrapDown",
+          "on_activate": "onWrapDown"
+        }
+      },
+      {
+        "text": {
+          "pos": "0, 1@blockInterval",
+          "position": "relative",
+          "text": "#urlMissions/url"
+        }
+      },
+      {
+        "EditBox": {
+          "id": "url_editbox",
+          "width": "pw",
+          "pos": "0, 1@blockInterval",
+          "position": "relative",
+          "mouse-focusable": "yes",
+          "_on_cancel_edit": "goBack",
+          "on_change_value": "onChangeUrl",
+          "on_wrap_up": "onWrapUp",
+          "_on_activate": "onApply"
+        }
+      },
+      {
+        "navBar": {
+          "navMiddle": {
+            "Button_text": {
+              "id": "btn_apply",
+              "text": "#mainmenu/btnApply",
+              "enable": "no",
+              "btnName": "A",
+              "_on_click": "onApply",
+              "ButtonImg": []
+            }
+          }
+        }
+      }
+    ]
+  }
+}

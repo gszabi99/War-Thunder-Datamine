@@ -1,0 +1,49 @@
+{
+  "tdiv": {
+    "id": "postfx_settings",
+    "pos": "30,50",
+    "size": "sw,sh",
+    "frame": {
+      "pos": "30,50",
+      "behaviour": "moveObj",
+      "class": "wndNav",
+      "flow": "vertical",
+      "width": "0.7@sf",
+      "min-width": "2@sliderWidth + 7@optPad",
+      "total-input-transparent": "yes",
+      "frame_header": {
+        "activeText": {
+          "text": "#mainmenu/btnPostFxSettings",
+          "caption": "yes"
+        },
+        "Button_close": {
+          "id": "button_close"
+        }
+      },
+      "table": {
+        "id": "postfx_table",
+        "behavior": "OptionsNavigator",
+        "class": "optionsTable",
+        "width": "pw",
+        "margin": "5",
+        "baseRow": "yes",
+        "selfFocusBorder": "yes",
+        "smallFont": "yes",
+        "cur_col": "0",
+        "cur_row": "0",
+        "num_rows": "-1"
+      },
+      "navBar": {
+        "navLeft": {
+          "Button_text": {
+            "id": "button_reset",
+            "text": "#options/resetToDefaults",
+            "_on_click": "onResetToDefaults",
+            "btnName": "X",
+            "ButtonImg": []
+          }
+        }
+      }
+    }
+  }
+}

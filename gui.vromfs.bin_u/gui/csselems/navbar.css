@@ -1,0 +1,169 @@
+navBar {
+  id:'nav-help';
+  width:1@rw;
+  height:2*@buttonHeight+4*@sf/@pf_outdated;
+  pos:50%sw-50%w, 84.5%sh;
+  position:absolute;
+  input-transparent: yes;
+  if_target_pc:@target_pc;
+}
+
+navBar[type=slotbar] {
+  width:1@slotbarWidthFull;
+  height:1@navBarBattleButtonHeight;
+  pos:50%sw-50%w, sh -h -1@shopBottomOffset;
+  background-position:0, @blockInterval, 0, h - 1@blockInterval - 1@dp;
+  background-color:@frameSeparatorColor;
+}
+
+navBar[type=shop] {
+  width:1@shopWndWidth - 2@framePadding;
+  height:1@frameFooterHeight;
+  pos:50%sw-50%w, 1@shopYPos-h;
+}
+
+navBar[hasMaxWindowSize=yes]{
+  width:1@maxWindowWidth - 2@framePadding;
+  height:1@frameFooterHeight;
+  pos:0.5sw-0.5w, 1@minYposWindow +1@maxWindowHeight -h;
+}
+
+navBarStatic {
+  width:@rw;
+  height:10*@scrn_tgt/100.0;
+  pos:50%sw-50%w, 92.5%@rh-h;
+  position:absolute;
+  input-transparent: yes;
+  if_target_pc:@target_pc;
+}
+
+frame > navBar,
+navBar.relative,
+navBar.embedded {
+  re-type:9rect;
+  width:pw - 2@framePadding;
+  height:1@frameFooterHeight;
+  pos:50%pw-50%w, ph-h;
+
+  background-position:0, @blockInterval, 0, h - 1@blockInterval - 1@dp;
+  background-color:@frameSeparatorColor;
+}
+
+navBar.relative {
+  width:pw;
+  pos:50%pw-50%w, 0;
+  position:relative;
+}
+
+navBar.embedded{
+  pos:50%pw-50%w, ph;
+  width:pw;
+}
+
+navBar[isTransparent=yes] {
+  background-color:@transparent;
+}
+
+frame[largeNavBarHeight=yes] > navBar,
+navBar[largeNavBarHeight=yes] {
+  height:1@frameFooterHeightLarge;
+}
+
+frame[largeNavBarHeight=battle] > navBar,
+navBar[largeNavBarHeight=battle] {
+  height:1@frameFooterHeightBigBattle;
+}
+
+navLeft {
+  position:absolute;
+  padding:-1@buttonMargin, 0;
+  input-transparent: yes;
+}
+
+navRight {
+  left:pw - w;
+  position:absolute;
+  padding:-1@buttonMargin, 0;
+  input-transparent: yes;
+}
+
+navMiddle {
+  left:0.5pw-0.5w;
+  position:absolute;
+  input-transparent: yes;
+}
+
+bottomNavPlace > navLeft,
+bottomNavPlace  > navRight,
+bottomNavPlace > navMiddle,
+{
+  top:50%ph-50%h;
+}
+
+navBottomLeft {
+  position:absolute;
+  input-transparent: yes;
+}
+
+navBottomRight {
+  pos:pw - w + 1@buttonMargin, 60%ph;
+  position:absolute;
+  input-transparent: yes;
+}
+
+navBar[type=slotbar] > navLeft,
+navBar[type=slotbar] > navRight,
+navBar[type=slotbar] > navMiddle {
+  height:ph;
+}
+
+frame > navBar > navRight,
+navBar.embedded > navRight,
+navBar.relative > navRight,
+[type=shop] > navRight,
+frame > navBar > navLeft,
+navBar.embedded > navLeft,
+navBar.relative > navLeft,
+[type=shop] > navLeft,
+frame > navBar > navMiddle,
+navBar.embedded > navMiddle,
+navBar.relative > navMiddle,
+[type=shop] > navMiddle
+{
+  top:0.5ph + 0.5@navBarTopPadding - 0.5h;
+}
+
+hintDiv {
+  id:'hint_box_div';
+  size:@rw-2%sw, 4*@scrn_tgt/100.0;
+  pos:50%pw-50%w, ph-h;
+  position:absolute;
+  overflow:hidden;
+  input-transparent:yes;
+}
+
+hintDiv.upper, frame > navBar > hintDiv {
+  pos:50%pw-50%w, 0;
+}
+
+frame > navBar > hintDiv[modalPos=left]
+{
+  size:pw-21*@scrn_tgt/100.0;
+  pos:0.5*@scrn_tgt/100.0, 0;
+}
+
+hintText {
+  id:'hint_box';
+  behaviour:textArea;
+  re-type:textarea;
+  min-width:pw-0.5*@scrn_tgt/100.0;
+  font:@fontNormal;
+  color:@commonTextColor;
+  text-align:center;
+  auto-scroll:yes;
+  input-transparent:yes;
+}
+
+frame > navBar > hintDiv[modalPos=left] > hintText {
+  text-align:left;
+}

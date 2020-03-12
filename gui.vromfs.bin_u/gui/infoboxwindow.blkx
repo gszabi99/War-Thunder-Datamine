@@ -1,0 +1,52 @@
+{
+  "root": {
+    "background-color": "@shadeBackgroundColor2",
+    "frame": {
+      "width": "1.1@sf",
+      "position": "root",
+      "pos": "50%pw-50%w, 50%ph-50%h",
+      "flow": "vertical",
+      "class": "wndNav",
+      "frame_header": {
+        "activeText": {
+          "id": "message_box_header",
+          "text": "",
+          "caption": "yes"
+        },
+        "Button_close": []
+      },
+      "textarea": {
+        "id": "message_box_body",
+        "width": "pw",
+        "max-height": "85%sh",
+        "padding": "0, 0.01@sf",
+        "position": "relative",
+        "pos": "50%pw-50%w, 0",
+        "overflow-y": "auto"
+      },
+      "navBar": {
+        "navLeft": {
+          "button": {
+            "id": "wiki_link",
+            "pos": "50%pw-50%w, 0",
+            "position": "relative",
+            "behavior": "button",
+            "text": "#profile/wiki_link",
+            "_on_click": "onWiki",
+            "underline": []
+          }
+        },
+        "navRight": {
+          "Button_text": {
+            "text": "#msgbox/btn_ok",
+            "btnName": "A",
+            "_on_click": "goBack",
+            "pos": "50%pw-50%w, 0",
+            "position": "relative",
+            "ButtonImg": []
+          }
+        }
+      }
+    }
+  }
+}

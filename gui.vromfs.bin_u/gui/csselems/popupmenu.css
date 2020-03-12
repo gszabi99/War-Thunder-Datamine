@@ -1,0 +1,59 @@
+@const popupArrowWidth: 22@dp;
+@const popupArrowHeight: 12@dp;
+@const popupOffset: 0.7@popupArrowHeight;
+
+@const popupMenuBgColor: #12181d;
+@const popupMenuBorderColor: #3d4a52;
+
+popup_menu {
+  background-color:@popupMenuBgColor;
+  border-color:@popupMenuBorderColor;
+  border:yes;
+  border-offset:@dp;
+  padding:1@framePadding;
+  css-hier-invalidate: yes;
+}
+
+popup_menu[hasNavBar=yes] {
+  padding:1@framePadding, 1@framePadding, 1@framePadding, 0;
+}
+
+popup_menu_arrow {
+  id: popup_menu_arrow;
+  position: absolute;
+  size: @popupArrowWidth, @popupArrowHeight;
+  background-color: @white;
+  background-image: #ui/gameuiskin#popup_menu_arrow.svg;
+  background-svg-size:@popupArrowWidth, @popupArrowHeight;
+  background-repeat: expand;
+}
+
+popup_menu_arrow {
+  re-type:rotation;
+  background-rotation:0;
+}
+
+[menu_align=top] > popup_menu_arrow {
+  pos: 0.5pw - 0.5w, ph - 1@dp;
+}
+
+[menu_align=bottom] > popup_menu_arrow {
+  background-rotation:180;
+  pos: 0.5pw - 0.5w, -h + 1@dp;
+}
+
+[menu_align=left] > popup_menu_arrow {
+  background-rotation:270;
+  pos: pw - 0.5h, 0.5ph - 0.5h;
+}
+[menu_align=right] > popup_menu_arrow {
+  background-rotation:90;
+  pos: -w + 0.5h, 0.5ph - 0.5h;
+}
+
+rootUnderPopupMenu {
+  size:sw, sh;
+  position:root;
+  pos:0, 0;
+  behavior:button;
+}

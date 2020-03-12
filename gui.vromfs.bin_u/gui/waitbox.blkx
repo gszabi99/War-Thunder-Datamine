@@ -1,0 +1,70 @@
+{
+  "center": "0,0",
+  "position": "absolute",
+  "left": "0",
+  "top": "0",
+  "size": "sw, sh",
+  "background-color": "@shadeBackgroundColor",
+  "img": {
+    "position": "absolute",
+    "size": "3sw, sh/3+1",
+    "pos": "-sw,sh-h-1@bh",
+    "background-image": "#ui/gameuiskin#optionlist_background_down"
+  },
+  "optionlist_container": [],
+  "div": [
+    {
+      "position": "absolute"
+    },
+    {
+      "width": "pw"
+    },
+    {
+      "top": "0.5sh-0.5h"
+    },
+    {
+      "flow": "vertical"
+    },
+    {
+      "div": {
+        "pos": "50%pw-50%w,0",
+        "position": "relative",
+        "activeText": {
+          "id": "wait_screen_msg"
+        }
+      }
+    },
+    {
+      "animated_wait_icon": {
+        "id": "wait_animation",
+        "pos": "50%pw-50%w,3%sh",
+        "position": "relative",
+        "background-rotation": "0"
+      }
+    },
+    {
+      "timer": {
+        "id": "wait_box_update_timer",
+        "timer_handler_func": "update"
+      }
+    },
+    {
+      "timer": {
+        "id": "wait_box_tag",
+        "timer_handler_func": "update"
+      }
+    }
+  ],
+  "loadingTip": {
+    "pos": "(pw-w)/2, 83%sh-50%h",
+    "position": "absolute",
+    "width": "75%sw",
+    "behaviour": "bhvLoadingTip",
+    "loadingHint": {
+      "id": "tip_hint",
+      "width": "pw",
+      "behaviour": "bhvHint",
+      "isWrapInRowAllowed": "yes"
+    }
+  }
+}

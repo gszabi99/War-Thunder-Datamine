@@ -1,0 +1,52 @@
+{
+  "root": {
+    "behaviour": "button",
+    "class": "button",
+    "background-color": "@modalShadeColor",
+    "frame": {
+      "id": "wnd_frame",
+      "size": "1.2@sf, 1@maxWindowHeight - 0.1@sh",
+      "pos": "50%pw-50%w, 1@minYposWindow + 0.2*(sh - 1@minYposWindow - h)",
+      "position": "relative",
+      "class": "wndNav",
+      "css-hier-invalidate": "yes",
+      "frame_header": {
+        "css-hier-invalidate": "yes",
+        "activeText": {
+          "id": "wnd_title",
+          "caption": "yes",
+          "text": "#options/profilePilot"
+        },
+        "Button_close": {
+          "id": "btn_back"
+        }
+      },
+      "tdiv": {
+        "id": "images_list",
+        "flow": "h-flow",
+        "width": "pw",
+        "height": "ph",
+        "behavior": "posNavigator",
+        "navigatorShortcuts": "yes",
+        "showSelect": "always",
+        "on_select": "onImageSelect"
+      },
+      "navBar": {
+        "navMiddle": {
+          "id": "paginator_place"
+        },
+        "navRight": {
+          "Button_text": {
+            "id": "btn_select",
+            "text": "#mainmenu/btnSelect",
+            "btnName": "A",
+            "_on_click": "onChoose",
+            "visualStyle": "secondary",
+            "buttonWink": [],
+            "ButtonImg": []
+          }
+        }
+      }
+    }
+  }
+}

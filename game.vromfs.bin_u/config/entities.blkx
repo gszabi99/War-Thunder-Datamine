@@ -1,0 +1,171 @@
+{
+  "replicating": {
+    "replication": []
+  },
+  "root": {
+    "active": true
+  },
+  "simple_unit": {
+    "_extends": "root",
+    "aim_component": [],
+    "aim_component:_namespace": {
+      "inited": false
+    },
+    "unit_ref": [],
+    "unit_ref:_namespace": {
+      "id": -1
+    }
+  },
+  "unit": {
+    "_extends": "simple_unit",
+    "unit_fire": [],
+    "unit_fire_fx": [],
+    "unit_extinguish": [],
+    "unit_crew": [],
+    "unit_crew:_namespace": {
+      "inited": false
+    },
+    "unit_repair": [],
+    "unit_repair:_namespace": {
+      "inited": false
+    },
+    "unit_fx": [],
+    "unit_fx:_namespace": {
+      "inited": false
+    },
+    "fuel_tanks": [],
+    "fuel_tanks:_namespace": {
+      "inited": false
+    },
+    "ammo_stowage": [],
+    "ammo_stowage:_namespace": {
+      "inited": false
+    },
+    "fire_damage": [],
+    "fire_damage:_namespace": {
+      "update_burn_interval": 1.0,
+      "isBurn": false
+    },
+    "toolkit": [],
+    "toolkit:_namespace": {
+      "name": "tank_tool_kit_expendable",
+      "enabled_without_mod": true
+    },
+    "extinguisher": [],
+    "extinguisher:_namespace": {
+      "name": "manual_extinguisher_expendable",
+      "enabled_without_mod": true
+    }
+  },
+  "light_vehicle": {
+    "_extends": "simple_unit"
+  },
+  "fortification": {
+    "_extends": "simple_unit"
+  },
+  "simple_tank": {
+    "_extends": "simple_unit"
+  },
+  "tank": {
+    "_extends": "unit",
+    "medicalkit": [],
+    "medicalkit:_namespace": {
+      "name": "tank_medical_kit_expendable",
+      "enabled_without_mod": false
+    },
+    "track_sound_outside": [],
+    "track_sound_outside:_namespace": {
+      "inited": false
+    }
+  },
+  "player_tank": {
+    "_extends": "tank",
+    "track_sound_cockpit": [],
+    "track_sound_cockpit:_namespace": {
+      "inited": false
+    }
+  },
+  "simple_ship": {
+    "_extends": "simple_unit"
+  },
+  "ship": {
+    "_extends": "unit",
+    "extinguisher.enabled_without_mod": false,
+    "track_sound_outside": [],
+    "track_sound_outside:_namespace": {
+      "inited": false
+    }
+  },
+  "player_ship": {
+    "_extends": "ship",
+    "track_sound_cockpit": [],
+    "track_sound_cockpit:_namespace": {
+      "inited": false
+    }
+  },
+  "helicopter": {
+    "_extends": "unit"
+  },
+  "walker": {
+    "_extends": "unit"
+  },
+  "suit": {
+    "_extends": "simple_unit",
+    "unit_fire": [],
+    "unit_fire_fx": [],
+    "unit_extinguish": [],
+    "unit_crew": [],
+    "unit_crew:_namespace": {
+      "inited": false
+    },
+    "unit_fx": [],
+    "unit_fx:_namespace": {
+      "inited": false
+    },
+    "ammo_stowage": [],
+    "ammo_stowage:_namespace": {
+      "inited": false
+    },
+    "fire_damage": [],
+    "fire_damage:_namespace": {
+      "update_burn_interval": 1.0,
+      "isBurn": false
+    },
+    "toolkit": [],
+    "toolkit:_namespace": {
+      "name": "tank_tool_kit_expendable",
+      "enabled_without_mod": true
+    },
+    "extinguisher": [],
+    "extinguisher:_namespace": {
+      "name": "manual_extinguisher_expendable",
+      "enabled_without_mod": true
+    }
+  },
+  "weapon": {
+    "_extends": "root",
+    "weapon_ref": [],
+    "weapon_ref:_namespace": {
+      "ptr": 0
+    }
+  },
+  "gun": {
+    "_extends": "weapon",
+    "weapon_proj_bullet": []
+  },
+  "bomb_gun": {
+    "_extends": "weapon"
+  },
+  "rocket_gun": {
+    "_extends": "weapon"
+  },
+  "torpedo_gun": {
+    "_extends": "weapon"
+  },
+  "player": {
+    "player_id": -1,
+    "connId": -1,
+    "_tracked": "connId",
+    "m_player": []
+  }
+}

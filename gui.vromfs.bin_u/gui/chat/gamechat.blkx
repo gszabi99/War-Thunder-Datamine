@@ -1,0 +1,155 @@
+[
+  {
+    "tdiv": [
+      {
+        "id": "gamechat"
+      },
+      {
+        "width": "1@gameChatWidth"
+      },
+      {
+        "max-width": "1@gameChatWidth"
+      },
+      {
+        "flow": "vertical"
+      },
+      {
+        "tdiv": {
+          "id": "voice_chat_nest",
+          "pos": "0, -h-0.5*@scrn_tgt/100.0",
+          "position": "absolute"
+        }
+      },
+      {
+        "HorizontalListBox": [
+          {
+            "id": "chat_tabs"
+          },
+          {
+            "width": "pw"
+          },
+          {
+            "class": "tabs"
+          },
+          {
+            "smallFont": "yes"
+          },
+          {
+            "navigatorShortcuts": "yes"
+          },
+          {
+            "on_select": "onChatTabChange"
+          },
+          {
+            "on_wrap_up": "onWrapUp"
+          },
+          {
+            "on_wrap_down": "onWrapDown"
+          },
+          {
+            "display": "hide"
+          },
+          {
+            "shopFilter": {
+              "id": "mpchat",
+              "shopFilterText": {
+                "text": "#mainmenu/chat"
+              }
+            }
+          },
+          {
+            "shopFilter": {
+              "id": "battlelog",
+              "shopFilterText": {
+                "text": "#options/_Bttl"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "tdiv": {
+          "id": "chat_log_tdiv",
+          "position": "relative",
+          "width": "pw",
+          "max-height": "13.5*@scrn_tgt/100.0",
+          "min-height": "4*@scrn_tgt/100.0",
+          "background-color": "@hudTextBgShade",
+          "overflow-y": "auto",
+          "auto-scroll": "yes",
+          "css-hier-invalidate": "yes",
+          "scroll-align": "left",
+          "scrollType": "hidden",
+          "transparent": "100",
+          "chatLog": {
+            "id": "chat_log",
+            "width": "pw",
+            "padding": "0.5*@scrn_tgt/100.0",
+            "text": "",
+            "on_link_click": "onChatLinkClick",
+            "on_link_rclick": "onChatLinkRClick"
+          }
+        }
+      },
+      {
+        "div": {
+          "id": "chat_input_back",
+          "display": "show",
+          "width": "pw",
+          "pos": "0, 8@sf/@pf",
+          "position": "relative",
+          "flow": "vertical",
+          "background-color": "@hudTextBgShade",
+          "padding": "8@sf/@pf",
+          "EditBox": {
+            "id": "chat_input",
+            "width": "pw",
+            "max-len": "250",
+            "selected": "yes",
+            "focus": "yes",
+            "mouse-focusable": "yes",
+            "on_activate": "onChatEntered",
+            "on_cancel_edit": "onChatCancel",
+            "on_change_value": "onChatChanged",
+            "on_wrap_up": "onWrapUp",
+            "on_wrap_down": "onWrapDown",
+            "text": ""
+          },
+          "chatHint": {
+            "id": "chat_hint",
+            "behaviour": "BhvHint"
+          },
+          "text": {
+            "id": "chat_prompt",
+            "position": "absolute",
+            "pos": "pw - w - 2/720@scrn_tgt, ph - h - 2/720@scrn_tgt",
+            "tooltip": "#chat/to",
+            "text": ""
+          }
+        }
+      }
+    ]
+  },
+  {
+    "timer": {
+      "id": "chat_update",
+      "timer_handler_func": "onUpdate"
+    }
+  },
+  {
+    "dummy": {
+      "id": "chat_mod_accesskey",
+      "behavior": "button",
+      "_on_click": "onChatMode",
+      "accesskey": "Tab"
+    }
+  },
+  {
+    "dummy": {
+      "id": "show_chat_input_accesskey",
+      "behavior": "button",
+      "_on_click": "onShowChatInput",
+      "accesskey": "Enter | NumEnter | J:A"
+    }
+  }
+]

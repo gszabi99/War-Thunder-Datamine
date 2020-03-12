@@ -1,0 +1,50 @@
+blockSeparator {
+  size: 1@dp, ph;
+  pos: 0, 50%ph-50%h;
+  position: relative;
+  background-color: @separatorBlockColor;
+}
+
+gamercard blockSeparator {
+  margin:1@bigButtonTextPadding, 0;
+  display:show;
+}
+
+chapterSeparator {
+  width:@chapterSeparatorSize;
+  height:ph;
+  input-transparent:yes;
+  background-repeat:expand;
+  background-position:0, 3;
+  background-color:@white;
+  background-image:#ui/gameuiskin#separator_vertical;
+}
+
+chapterSeparator.notFull {
+  height:ph-0.04@sf;
+}
+
+chapterSeparator.inTheMiddle {
+  pos: 50%pw-50%w, 50%ph-50%h;
+  position:absolute;
+}
+
+trSeparator {
+  size:40%p.p.w, 2*@sf/@pf_outdated;
+  background-color:@white;
+  background-image:#ui/gameuiskin#double_line;
+  pos:-50%w, -2*@sf/@pf_outdated;
+  position:absolute;
+}
+
+rowSeparator {
+  size: pw, 1@dp;
+  pos: 50%pw-50%w, 0;
+  position: relative;
+  background-color: @separatorBlockColor;
+}
+
+rowSeparator.inset {
+  pos: 0, ph - h;
+  position: absolute;
+}

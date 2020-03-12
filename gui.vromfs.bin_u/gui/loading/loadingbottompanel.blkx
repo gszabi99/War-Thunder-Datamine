@@ -1,0 +1,50 @@
+{
+  "BottomMenuPanel": {
+    "shadowSafeArea": [],
+    "line": [],
+    "Red_shadow_light": {
+      "pos": "50%pw-50%w, 0",
+      "position": "absolute",
+      "size": "25%pw, ph"
+    },
+    "GameLogoPlate": {
+      "pos": "50%pw - 50%w, 50%ph-50%h",
+      "position": "absolute",
+      "Shadow": {
+        "redPlate": {
+          "pattern": {
+            "type": "dark_diag_lines",
+            "tdiv": {
+              "height": "1@titleLogoPlateHeight + 0.5@bh",
+              "min-width": "1@titleLogoPlateWidth",
+              "tdiv": {
+                "pos": "50%pw-50%w, 50%ph-50%h",
+                "position": "relative",
+                "padding": "0.01@scrn_tgt, 0",
+                "animated_wait_icon": {
+                  "id": "rot",
+                  "pos": "0, 50%ph-50%h",
+                  "position": "relative",
+                  "background-rotation": "0"
+                },
+                "textarea": {
+                  "id": "loading",
+                  "pos": "0, 50%ph-50%h",
+                  "position": "relative",
+                  "text": "#loading",
+                  "mediumFont": "yes",
+                  "overlayTextColor": "active",
+                  "textShade": "yes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "copyright": {
+      "pos": "pw-w-1@bw, 50%ph - 50%h",
+      "position": "absolute"
+    }
+  }
+}

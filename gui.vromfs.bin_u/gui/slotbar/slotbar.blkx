@@ -1,0 +1,169 @@
+{
+  "SlotbarBackground": {
+    "id": "slotbar_background",
+    "size": "pw, 1@slotbarHeight + 1@slotbarOffset",
+    "display": "hide",
+    "pos": "50%pw-50%w, 0",
+    "position": "absolute",
+    "slotbarEdge": {
+      "size": "pw, 1@slotbarHeight+1@slotbarOffset",
+      "pos": "0, 0",
+      "position": "absolute"
+    },
+    "slotbarTop": [
+      {
+        "id": "slotbar_buttons_place"
+      },
+      {
+        "size": "pw, 1@slotbarTop"
+      },
+      {
+        "pos": "0,-h"
+      },
+      {
+        "position": "absolute"
+      },
+      {
+        "display": "hide"
+      },
+      {
+        "behavior": "Timer"
+      },
+      {
+        "tdiv": [
+          {
+            "id": "header_countries_nest"
+          },
+          {
+            "height": "ph"
+          },
+          {
+            "css-hier-invalidate": "yes"
+          },
+          {
+            "DummyButton": {
+              "id": "prev_country_btn",
+              "padding": "1@blockInterval, 0",
+              "btnName": "LB",
+              "on_click": "prevCountry",
+              "ButtonImg": {
+                "class": "independent",
+                "fullSizeIcons": "yes"
+              }
+            }
+          },
+          {
+            "activateSelect": {
+              "id": "header_countries",
+              "height": "ph",
+              "class": "slotsHeader",
+              "normalFont": "yes",
+              "isShort": "no",
+              "on_select": "onHeaderCountry",
+              "css-hier-invalidate": "yes",
+              "total-input-transparent": "yes",
+              "navigatorShortcuts": "active",
+              "on_wrap_up": "onWrapUp",
+              "on_wrap_down": "onWrapDown",
+              "on_wrap_right": "onWrapUp",
+              "on_dbl_click": "onCountriesListDblClick"
+            }
+          },
+          {
+            "DummyButton": {
+              "id": "next_country_btn",
+              "padding": "1@blockInterval, 0",
+              "btnName": "RB",
+              "on_click": "nextCountry",
+              "ButtonImg": {
+                "class": "independent",
+                "fullSizeIcons": "yes"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "tdiv": [
+          {
+            "id": "autorefill-settings"
+          },
+          {
+            "left": "pw-w"
+          },
+          {
+            "top": "50%(ph-h)"
+          },
+          {
+            "position": "absolute"
+          },
+          {
+            "padding-left": "3@dp"
+          },
+          {
+            "display": "hide"
+          },
+          {
+            "behavior": "wrapNavigator"
+          },
+          {
+            "navigatorShortcuts": "yes"
+          },
+          {
+            "childsActivate": "yes"
+          },
+          {
+            "on_wrap_up": "onWrapUp"
+          },
+          {
+            "on_wrap_down": "onWrapDown"
+          },
+          {
+            "on_wrap_left": "onWrapDown"
+          },
+          {
+            "CheckBox": {
+              "id": "slots-autorepair",
+              "margin-right": "0.5h",
+              "class": "with_image",
+              "tooltip": "#shop/auto_repair",
+              "on_change_value": "onSlotsChangeAutoRefill",
+              "infoImg": {
+                "background-image": "#ui/gameuiskin#slot_repair.svg"
+              },
+              "CheckBoxImg": []
+            }
+          },
+          {
+            "CheckBox": {
+              "id": "slots-autoweapon",
+              "margin-right": "0.5h",
+              "class": "with_image",
+              "tooltip": "#shop/auto_buy_weapons",
+              "on_change_value": "onSlotsChangeAutoRefill",
+              "infoImg": {
+                "background-image": "#ui/gameuiskin#btn_weapons.svg"
+              },
+              "CheckBoxImg": []
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "CountriesCrews": {
+    "id": "countries_crews"
+  },
+  "animShow": {
+    "id": "slotbar_shade",
+    "size": "pw, 1@slotbarHeight + 1@slotbarOffset + 1@slotbarTop",
+    "pos": "50%pw-50%w, -1@slotbarTop",
+    "position": "absolute",
+    "background-color": "@shadeBackgroundColor",
+    "animation": "hide",
+    "color-factor": "0"
+  },
+  "timer": {
+    "id": "slotbar_timer"
+  }
+}

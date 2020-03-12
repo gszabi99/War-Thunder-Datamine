@@ -1,0 +1,1 @@
+::dagor.debug($"onScriptLoad: wt")

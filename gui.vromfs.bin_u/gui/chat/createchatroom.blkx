@@ -1,0 +1,187 @@
+{
+  "root": {
+    "size": "sw, sh",
+    "position": "root",
+    "background-color": "@shadeBackgroundColor",
+    "frame": [
+      {
+        "id": "create_room"
+      },
+      {
+        "size": "0.62@scrn_tgt, 0.35@scrn_tgt"
+      },
+      {
+        "pos": "50%pw-50%w, 50%ph-50%h"
+      },
+      {
+        "position": "absolute"
+      },
+      {
+        "class": "wndNav"
+      },
+      {
+        "frame_header": {
+          "HorizontalListBox": {
+            "id": "tabs_list",
+            "height": "ph",
+            "class": "header",
+            "normalFont": "yes",
+            "activeAccesskeys": "RS",
+            "on_select": "onTabChange",
+            "display": "hide",
+            "enable": "no"
+          },
+          "activeText": {
+            "id": "caption_text",
+            "caption": "yes",
+            "text": "#chat/roomCreating",
+            "textHide": "yes"
+          },
+          "Button_close": [],
+          "top_right_holder": {
+            "id": "header_buttons"
+          }
+        }
+      },
+      {
+        "div": [
+          {
+            "id": "room_tab"
+          },
+          {
+            "size": "pw, ph"
+          },
+          {
+            "flow": "vertical"
+          },
+          {
+            "textareaNoTab": {
+              "id": "chat_room_name_text",
+              "pos": "0, 1@blockInterval",
+              "position": "relative",
+              "text": ""
+            }
+          },
+          {
+            "EditBox": {
+              "id": "room_name",
+              "position": "relative",
+              "width": "pw",
+              "max-len": "15",
+              "mouse-focusable": "yes",
+              "tooltip": "#chat/roomName",
+              "text": "",
+              "_on_cancel_edit": "goBack",
+              "on_change_value": "onChangeRoomName",
+              "_on_activate": "onCreateRoom",
+              "on_wrap_down": "onWrapDown"
+            }
+          },
+          {
+            "textareaNoTab": {
+              "pos": "0, 1@blockInterval",
+              "position": "relative",
+              "text": "#chat/roomPassword"
+            }
+          },
+          {
+            "EditBox": {
+              "id": "room_password",
+              "position": "relative",
+              "width": "pw",
+              "max-len": "16",
+              "mouse-focusable": "yes",
+              "text": "",
+              "_on_cancel_edit": "goBack",
+              "_on_activate": "onCreateRoom",
+              "on_wrap_up": "onWrapUp"
+            }
+          },
+          {
+            "CheckBox": {
+              "id": "room_invitation",
+              "pos": "0, 7",
+              "position": "relative",
+              "width": "fw",
+              "text": "#chat/invitationsOnly",
+              "value": "no",
+              "btnName": "X",
+              "CheckBoxImg": [],
+              "ButtonImg": []
+            }
+          },
+          {
+            "activeText": {
+              "pos": "50%pw-50%w, ph-h",
+              "position": "absolute",
+              "overlayTextColor": "warning",
+              "smallFont": "yes",
+              "text": "#chat/createRoom/info"
+            }
+          }
+        ]
+      },
+      {
+        "div": [
+          {
+            "id": "thread_tab"
+          },
+          {
+            "size": "pw, ph"
+          },
+          {
+            "flow": "vertical"
+          },
+          {
+            "textareaNoTab": {
+              "id": "thread_category_header",
+              "pos": "0, 1@blockInterval",
+              "position": "relative",
+              "text": "#chat/categoryHeader"
+            }
+          },
+          {
+            "ComboBox": {
+              "id": "categories_list",
+              "position": "relative",
+              "width": "pw",
+              "btnName": "X"
+            }
+          },
+          {
+            "textareaNoTab": {
+              "id": "thread_title_header",
+              "pos": "0, 1@blockInterval",
+              "position": "relative"
+            }
+          },
+          {
+            "EditBox": {
+              "id": "thread_title",
+              "size": "pw, fh",
+              "multiline": "yes",
+              "mouse-focusable": "yes",
+              "_on_cancel_edit": "goBack",
+              "on_change_value": "onChangeThreadTitle"
+            }
+          }
+        ]
+      },
+      {
+        "navBar": {
+          "navMiddle": {
+            "Button_text": {
+              "id": "btn_create_room",
+              "text": "#chat/create",
+              "tooltip": "#chat/noRoomCreating",
+              "enable": "no",
+              "btnName": "A",
+              "_on_click": "onCreateRoom",
+              "ButtonImg": []
+            }
+          }
+        }
+      }
+    ]
+  }
+}

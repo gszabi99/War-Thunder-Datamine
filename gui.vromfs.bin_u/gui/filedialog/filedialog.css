@@ -1,0 +1,23 @@
+fileDialogPathPart {
+  behaviour:button;
+  padding:'0.005@sf';
+  input-transparent:no;
+  snd_click:click;
+}
+
+fileDialogPathPart:hover {
+  color:@activeTextColor;
+  background-image:#ui/gameuiskin#block_bg_rounded_gray;
+  background-repeat:expand;
+  background-position:2;
+  background-color:@hoverMenuButtonColor;
+}
+
+fileDialogPathPart:pushed {
+  color:@activeTextColor;
+  background-color:@pushedMenuButtonColor;
+}
+
+listbox.fileDialogNavList > chapter_item_unlocked {
+  margin-top:'0.015@sf';
+}

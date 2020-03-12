@@ -1,0 +1,198 @@
+@const menubutton_font:           @fontMedium;
+@const menubutton_selected_font:  @fontMedium;
+
+button {
+  behaviour:button;
+  re-type:9rect;
+  selected-border:none;
+  input-sensitive:yes;
+
+  font:@fontNormal;
+
+  text-align:center;
+
+  color:@commonMenuButtonColor;
+  snd_click:click;
+  css-hier-invalidate:yes;
+}
+
+emptyButton {
+  behaviour:button;
+  input-sensitive:yes;
+}
+
+menu_button, menu_button_inactive, area > button
+{
+  behaviour:button;
+  re-type:9rect;
+  background-color:@transparent;
+
+  selected-border:none;
+  border:none;
+  font:@menubutton_font;
+  color:@commonMenuButtonColor;
+  snd_click:click;
+  snd_set_focus:focus;
+  text-align:left;
+
+  position:relative;
+  padding:40@sf/@pf, @blockInterval;
+
+  transition:none;
+
+  css-hier-invalidate:current;
+}
+
+menu_button, menu_button_inactive {
+  text-align:center;
+  left:50%pw-50%w;
+  position:relative;
+  height:@mainMenuButtonHeight;
+  min-width:pw;
+  padding-top:2*@sf/@pf_outdated;
+  padding-bottom:2*@sf/@pf_outdated;
+  mouse-focusable:yes;
+}
+
+menu_button, menu_button_inactive {
+  behaviour:navigator;
+  tabStop:yes;
+}
+
+menu_button_inactive
+{
+  color:@inactiveButtonTextColor;
+}
+
+menu_button:current, menu_button:active, menu_button:focus
+{
+  color:@hoverMenuButtonColor;
+  font:@menubutton_selected_font;
+}
+
+area > button:focus {
+  color:@hoverMenuButtonColor;
+}
+
+menu_button:hover, button:hover
+{
+  color:@hoverMenuButtonColor;
+}
+
+menu_button:pushed
+{
+  color:@hoverMenuButtonColor;
+}
+
+button:pushed
+{
+  color:@pushedMenuButtonColor;
+}
+
+menu_button_inactive:current, menu_button_inactive:focus
+{
+  color:@inactiveButtonFocusTextColor;
+  font:@menubutton_selected_font;
+}
+
+menu_button_inactive:hover, menu_button_inactive:hover
+{
+  color:@inactiveButtonHoverTextColor;
+}
+
+menu_button_inactive:pushed
+{
+  color:@inactiveButtonFocusTextColor;
+}
+
+menu_button:hover, menu_button_inactive:hover
+{
+  background-image:#ui/gameuiskin#bottom_bar_straight;
+  background-color:#1E1E1E1E;
+}
+
+menu_button:current, menu_button:active, menu_button:focus,
+menu_button_inactive:current, menu_button_inactive:active, menu_button_inactive:focus
+{
+  background-image:#ui/gameuiskin#bottom_bar_straight;
+  background-color:#48484848;
+}
+
+[toggled=yes] airInfoButton {
+  background-color:@transparent;
+}
+[toggled=no] airInfoButton, airInfoButton:hover {
+  background-color:#99999999;
+}
+
+underline {
+  width:pw;
+  height:(@sf/@pf_outdated*0.75) $max 1;
+  top:ph-h;
+  left:50%pw-50%w;
+  position:absolute;
+  background-color:@commonMenuButtonColor;
+}
+:hover > underline
+{
+  background-color:@hoverMenuButtonColor;
+}
+:pushed > underline
+{
+  background-color:@pushedMenuButtonColor;
+}
+
+[show_console_buttons=yes] button.link[btnName] > underline {
+  width:pw-ph;
+  left:0.5*(pw - w + ph);
+}
+
+hoverBgButton {
+  behaviour:button;
+  re-type:fgPict;
+  background-position:6;
+  background-repeat:expand;
+  foreground-color:@white;
+  foreground-repeat:aspect-ratio;
+}
+
+hoverBgButton[foreground-image=""] {
+  foreground-color:@transparent;
+}
+
+hoverBgButton:hover {
+  background-image:#ui/gameuiskin#header_button_;
+  background-color:@white;
+}
+
+hoverBgButton:pushed {
+  background-image:#ui/gameuiskin#header_button_active;
+  background-color:@white;
+}
+
+hoverBgButton:disabled {
+  background-image:#ui/gameuiskin#header_button_active;
+  background-color:@transparent;
+  foreground-color:@navButtonDisabledImgColor;
+}
+
+imageButton {
+  behaviour:button;
+  re-type:fgPict;
+  background-position:0;
+  background-repeat:expand;
+  background-color:@commonMenuButtonColor;
+  css-hier-invalidate:yes;
+}
+
+imageButton:hover {
+  background-color:@hoverMenuButtonColor;
+}
+
+imageButton:pushed {
+  background-color:@pushedMenuButtonColor;
+}
+
+imageButton:disabled {
+  background-color:@inactiveButtonBgColor;
+}

@@ -1,0 +1,622 @@
+@const shHud: sh $min (0.75sw);
+@const bwHud: 0.5*(sw * (1 - 1@_safearea_hud_w)) $max 1@debugRowHeight;
+@const bhHud: 0.5*(sh * (1 - 1@_safearea_hud_h)) $max 1@debugRowHeight;
+@const rwHud: sw - 2@bwHud;
+@const rhHud: sh - 2@bhHud;
+
+@const nhsf: ((sh / 1080) $max 1) * @pf; 
+
+@const fontHudTiny:     very_tiny_text_hud;
+@const fontHudSmall:    tiny_text_hud;
+@const fontHudNormal:   small_text_hud;
+@const fontHudMedium:   medium_text_hud;
+@const fontHudBigBold:  big_text_hud;
+
+@const rewardValueColor: @white;
+@const rewardTextColor:  @white;
+@const penaltyTextColor: #ba0101;
+@const hudGreenTextColor: #22ff22;
+
+@const defaultRewardTextGlowColor:     #aa333333;
+@const hitRewardTextGlowColor:         #aa333333;
+@const criticalHitRewardTextGlowColor: #aa333333;
+@const killRewardTextGlowColor:        #aae02500;
+@const penaltyTextGlowColor:           #aa000000;
+
+@const hitCamRenderAspectRatio: 2.0;
+@const hitCameraWidth: 0.4*@shHud;
+@const hitCameraHeight: @hitCameraWidth / @hitCamRenderAspectRatio;
+@const hitCamFadedColor: #a0a0a0;
+
+@const artilleryTargetArcSize: (20/1080@shHud+1)\2*2;
+@const artilleryTargetArcOffset: (16/1080@shHud+1)\2*2;
+@const artilleryTargetInnerDiameterMin: (2/1080@shHud+1px)\2*2 $max 4@dp;
+
+@const hudMisObjIconsSize: 32@nhsf/@pf;
+
+@const sizeTacticalMap:          0.3*@shHud;
+@const sizeDamageIndicatorFull:  0.3*@shHud;
+@const sizeDamageIndicator:      0.62@sizeDamageIndicatorFull;
+@const sizeTouchShortcut:        0.09*@shHud;
+@const multiplayerScoreHeight:   36@dp;
+@const missionProgressHeight:    @hudMisObjIconsSize + 1@blockInterval;
+
+@const tranTouchShortcutColor:   #80808080;
+@const pushedTouchShortcutColor: #efe7a4;
+
+@const topCenterMessagesTopPos          0.06@shHud;
+@const topCenterMainMessagesMinHeight   0.15@shHud;
+@const bottomHudMessagesLeftPos: 1@gameChatWidth +8@sf/@pf;
+
+hud_touch_shortcut {
+  behavior:touchArea;
+}
+
+hud_touch_shortcut[shortcut_id]  {
+  behavior:button;
+  background-color:@tranTouchShortcutColor;
+  on_click:"::gcb.onShortcutOff";
+  on_pushed:"::gcb.onShortcutOn";
+}
+
+hud_touch_shortcut:pushed {
+  background-color:@pushedTouchShortcutColor;
+}
+
+
+
+
+
+
+hudMessages[message_style=center_main_notification] {
+  flow: vertical;
+  re-type: 9rect;
+  padding: 0.01*@shHud;
+
+  background-image: #ui/gameuiskin#subtitles_backgr_middle;
+  background-color: @white;
+  background-position: 0, 0, 0, 0;
+  background-repeat: expand;
+}
+
+hudMessages[message_style=center_main_notification] > message {
+  pos:50%pw-50%w, 0;
+  position:relative;
+  size-func:cube;
+  blend-time:0;
+  overflow: hidden;
+}
+
+hudMessages[message_style=center_main_notification] > message[slideDown=yes]
+{
+  size-time: 300;
+  behaviour: basicSize;
+}
+
+hudMessages[message_style=center_main_notification] > message[remove=yes]
+{
+  size-time:-500;
+  behaviour: basicSize;
+  selfRemoveOnFinish:-1;
+}
+
+hudMessages[message_style=center_main_notification] > message >  msgText {
+  behaviour:textArea;
+  re-type:textarea;
+  color: @white;
+  text-align:center;
+  font:@fontHudBigBold;
+
+  transp-base:128;
+  transp-end:255;
+}
+
+hudMessages[message_style=center_main_notification] > message[state=new] > msgText {
+  behaviour:basicTransparency;
+  transp-time:1500;
+  transp-func:doubleCos;
+}
+
+hudMessages[message_style=center_main_notification] > message[remove=yes] > msgText {
+  behaviour:basicTransparency;
+  transp-base:0;
+  transp-time:-500;
+  transp-func:linear;
+}
+
+
+
+hudMessages[message_style=zone_capture_notification] {
+  flow: vertical;
+}
+
+hudMessages[message_style=zone_capture_notification] > message {
+  size-func: cube;
+  overflow: hidden;
+  position: relative;
+  pos:pw/2 - w/2;
+}
+
+hudMessages[message_style=zone_capture_notification] > message[slideDown=yes]
+{
+  size-time: 300;
+  behaviour: basicSize;
+}
+
+hudMessages[message_style=zone_capture_notification] > message textareaNoTab {
+  text-align: center;
+  font: @fontHudMedium;
+  color: @white;
+  shadeStyle:HudHeader3D;
+}
+
+hudMessages[message_style=zone_capture_notification] >
+message[event_team=ally] > textareaNoTab {
+  color: @hudColorBlue;
+}
+
+hudMessages[message_style=zone_capture_notification] >
+message[event_team=enemy] > textareaNoTab {
+  color: @hudColorRed;
+}
+
+hudMessages[message_style=zone_capture_notification] >
+message[hero_action=yes] > textareaNoTab {
+  color: @white;
+}
+
+hudMessages[message_style=zone_capture_notification] > message[remove=yes] {
+  size-time: -300;
+  behaviour: basicSize;
+  selfRemoveOnFinish:-1;
+}
+
+hudMessages[message_style=zone_capture_notification] tdiv[zone_owner=ally] {
+  background-color:@hudColorBlue;
+}
+
+hudMessages[message_style=zone_capture_notification] tdiv[zone_owner=enemy] {
+  background-color:@hudColorRed;
+}
+
+
+
+hudMessages[message_style=player_damage_notification] > message,
+hudMessages[message_style=death_reason_notification] > message {
+  size-func: cube;
+  size-cycled: no;
+  overflow: hidden;
+}
+
+hudMessages[message_style=player_damage_notification] > message[slideDown=yes],
+hudMessages[message_style=death_reason_notification] > message[slideDown=yes]
+{
+  size-time: 300;
+  behaviour: basicSize;
+}
+
+hudMessages[message_style=player_damage_notification] > message[remove=yes],
+hudMessages[message_style=death_reason_notification] > message[remove=yes] {
+  size-time: -300;
+  behaviour: basicSize;
+  selfRemoveOnFinish:-1;
+}
+
+hudMessages[message_style=player_damage_notification] > message > textareaNoTab {
+  width: pw;
+  text-align: left;
+  font: @fontHudSmall;
+  color: @white;
+  shadeStyle:outline33pct;
+}
+
+hudMessages[message_style=death_reason_notification] > message {
+  pos:50%pw-50%w, 0;
+  position:relative;
+}
+
+hudMessages[message_style=death_reason_notification] > message >  textareaNoTab {
+  text-align:center;
+  color: @white;
+  font: @fontHudMedium;
+  shadeStyle:'HudHeader3D';
+}
+
+
+
+
+
+hudMessages[message_style=kill_log_notification] > message {
+  overflow: hidden;
+  position: relative;
+  pos:pw - w, 0;
+
+  size-func: cube;
+  size-cycled: no;
+
+  transp-base:0;
+  transp-end:255;
+  transp-func:square;
+  transp-cycled:no;
+}
+
+hudMessages[message_style=kill_log_notification] > message[appear=yes]
+{
+  size-time: 100;
+  behaviour: basicSize;
+}
+
+hudMessages[message_style=kill_log_notification] > message[remove=yes] {
+  behaviour:basicTransparency;
+  behaviour:massTransparency;
+  _transp-timer:1;
+  transp-time: -10000;
+  selfRemoveOnFinish:-1;
+}
+
+hudMessages[message_style=kill_log_notification] > message > textareaNoTab {
+  width: pw;
+  text-align: right;
+  font: @fontHudSmall;
+  color: @white;
+  textShade:no;
+  text-shade:"smooth:24";
+  text-shade-x:1;
+  text-shade-y:1;
+  text-shade-color:#80000000;
+}
+
+
+
+
+
+missionResultText {
+  behaviour:textArea;
+  re-type:textarea;
+  width: pw;
+  font: @fontHudBigBold;
+  color: @white;
+  text-shade:"smooth:24";
+  text-shade-x:1;
+  text-shade-y:1;
+  text-shade-color:#A0000000;
+}
+
+moveObjSizeDiv missionResultText {
+  font-ht:ph;
+}
+
+
+
+
+rewardMessageText {
+  font: @fontHudMedium;
+  text-align:center;
+}
+
+rewardMessageValue {
+  font: @fontHudSmall;
+  text-align:center;
+}
+
+rewardMessageValueContainer {
+  input-transparent: yes;
+  size-scale:parent;
+  width-base:100;
+  height-base:100;
+  width-end:125;
+  height-end:125;
+  size-func:blinkSin;
+  size-time: 150;
+}
+
+rewardMessageValueContainer[_blink=yes],
+rewardMessageValueContainer[_blink=now] {
+  behaviour:basicSize;
+}
+
+rewardMessageValueContainer[_blink=yes] > rewardMessageValue,
+rewardMessageValueContainer[_blink=now] > rewardMessageValue {
+  size:1.2pw, ph;
+  font-ht:ph;
+}
+
+rewardMessageValue {
+  behaviour:textArea;
+  re-type:textarea;
+  font:@fontHudSmall;
+  text-align:center;
+  color: @rewardValueColor;
+  text-shade:"blur:24";
+  text-shade-x:0;
+  text-shade-y:0;
+  text-shade-color:#55000000;
+  text-align:center;
+}
+
+rewardMessageText {
+  re-type:text;
+  text-shade:"blur:48";
+  text-shade-x:1;
+  text-shade-y:0;
+  text-shade-color: @defaultRewardTextGlowColor;
+  color: @rewardTextColor;
+}
+
+rewardMessageText[text=''] {
+  display:hide;
+}
+
+rewardMessageText[view_class=hit] {
+  text-shade-color: @hitRewardTextGlowColor;
+}
+rewardMessageText[view_class=critical_hit] {
+  text-shade-color: @criticalHitRewardTextGlowColor;
+}
+rewardMessageText[view_class=scout] {
+  text-shade-color: @criticalHitRewardTextGlowColor;
+}
+rewardMessageText[view_class=kill] {
+  text-shade-color: @killRewardTextGlowColor;
+}
+rewardMessageText[view_class=penalty] {
+  text-shade-color: @penaltyTextGlowColor;
+  color: @penaltyTextColor;
+}
+
+
+
+
+hudMessages[message_style=race_notification] textareaNoTab {
+  textShade:no;
+  text-shade:"blur:24";
+  text-shade-x:1;
+  text-shade-y:1;
+  text-shade-color:#80000000;
+}
+
+hudMessages[message_style=race_notification] > [isPlayer=no] textareaNoTab {
+  overlayTextColor:silver;
+}
+
+hudMessages[message_style=race_notification] > [isPlayer=no][isLeader=yes] textareaNoTab {
+  overlayTextColor:userlog;
+}
+
+hudMessages[message_style=race_notification] >[isPlayer=yes] textareaNoTab {
+  overlayTextColor:mainPlayer;
+}
+
+
+
+
+
+hudEnemyDamage > damagePart {
+  behaviour:textArea;
+  re-type:textarea;
+  font:@fontNormal;
+  text-align: right;
+  right: 0;
+  position:relative;
+  input-transparent:yes;
+  display:hide;
+
+  text-shade:"smooth:24";
+  text-shade-x:1;
+  text-shade-y:1;
+  text-shade-color:#33000000;
+
+  transp-base:0;
+  transp-end:255;
+  transp-func:cubeInv;
+  transp-time: -6000;
+}
+
+hudEnemyDamage > damagePart[partKilled=yes] {
+  text-shade-color:#66000000;
+}
+
+hudEnemyDamage > damagePart[_blink=yes],
+hudEnemyDamage > damagePart[_blink=now] {
+  behaviour:basicTransparency;
+  display:show;
+}
+
+hudEnemyDamage > damagePart[_blink=no] {
+  display:hide;
+}
+
+
+
+multiplayerScore {
+  re-type:hud_multiplayer_score;
+}
+
+
+
+hitCamera {
+  background-color:#D4606060;
+  border:yes;
+  border-color:#CC606060;
+  flow:vertical;
+  width:@hitCameraWidth;
+  css-hier-invalidate:yes;
+}
+
+hitCameraRender {
+  behaviour:hitcamera;
+  size:pw, pw/2;
+}
+
+hitCameraLine {
+  size:pw, 2px;
+}
+
+hitCameraTitle {
+  behaviour:textArea;
+  re-type:textarea;
+  font:@fontHudNormal;
+  text-align:center;
+  text-shade:"smooth:24";
+  text-shade-x:0;
+  text-shade-y:0;
+  text-shade-color:#19000000;
+  width:pw;
+  background-color:#80202020;
+}
+
+hitCameraInfo {
+  width:pw;
+  pos:0, ph-h;
+  position:absolute;
+  background-color:#80202020;
+}
+
+hitCamera[result=none] hitCameraLine, hitCamera[result=ricochet] hitCameraLine, hitCamera[result=bounce] hitCameraLine {
+  background-color:#A0A0A0;
+}
+hitCamera[result=none] hitCameraTitle, hitCamera[result=ricochet] hitCameraTitle, hitCamera[result=bounce] hitCameraTitle {
+  color:#A0A0A0;
+  text-shade-color:#10000000;
+}
+
+hitCamera[result=hit] hitCameraLine {
+  background-color:#9EE000;
+}
+hitCamera[result=hit] hitCameraTitle {
+  color:#9EE000;
+}
+
+hitCamera[result=burn] hitCameraLine, hitCamera[result=critical] hitCameraLine {
+  background-color:#FFC000;
+}
+hitCamera[result=burn] hitCameraTitle, hitCamera[result=critical] hitCameraTitle {
+  color:#FFC000;
+}
+
+hitCamera[result=kill] hitCameraLine, hitCamera[result=hull] hitCameraLine, hitCamera[result=ammo] hitCameraLine,
+hitCamera[result=fuel] hitCameraLine, hitCamera[result=crew] hitCameraLine, hitCamera[result=torpedo] hitCameraLine {
+  background-color:#ff4040;
+}
+hitCamera[result=kill] hitCameraTitle, hitCamera[result=hull] hitCameraTitle, hitCamera[result=ammo] hitCameraTitle,
+hitCamera[result=fuel] hitCameraTitle, hitCamera[result=crew] hitCameraTitle, hitCamera[result=torpedo] hitCameraTitle {
+  color:#ff4040;
+  text-shade-color:#32000000;
+}
+
+hitCamDebuff {
+  css-hier-invalidate:yes;
+}
+
+hitCamDebuffIcon {
+  background-color:#64646464;
+}
+
+hitCamDebuffLabel {
+  behaviour:textArea;
+  re-type:textarea;
+  font:@fontNormal;
+}
+
+hitCamDebuff[state=off]       > hitCamDebuffIcon { background-color:#500C0E11; }
+hitCamDebuff[state=killed]    > hitCamDebuffIcon { background-color:#ff4040;   }
+
+hitCamDebuff[state=off]       > hitCamDebuffLabel { color:#500C0E11; }
+hitCamDebuff[state=healthy]   > hitCamDebuffLabel { color:#A0A0A0;   }
+hitCamDebuff[state=good]      > hitCamDebuffLabel { color:#FFFFFF;   }
+hitCamDebuff[state=critical]  > hitCamDebuffLabel { color:#FFC000;   }
+hitCamDebuff[state=killed]    > hitCamDebuffLabel { color:#ff4040;   }
+
+
+
+targetArc {
+  size:@artilleryTargetArcSize, @artilleryTargetArcSize;
+  position:absolute;
+  background-image:#ui/gameuiskin#artillery_target_arc.svg;
+  background-svg-size:@artilleryTargetArcSize, @artilleryTargetArcSize;
+  background-color:@goodTextColor;
+}
+
+artillery_target:disabled targetArc {
+  background-color:@badTextColor;
+}
+
+targetShade {
+  size:@artilleryTargetArcSize, @artilleryTargetArcSize;
+  position:absolute;
+  background-image:#ui/gameuiskin#artillery_target_arc_bg;
+  background-color:@white;
+}
+
+
+
+textAreaCentered[shadeStyle=HudHeader3D],
+textareaNoTab[shadeStyle=HudHeader3D],
+[shadeStyle=HudHeader3D] > textareaNoTab,
+msgText[shadeStyle=HudHeader3D] {
+  text-shade:smooth;
+  text-shade-x:1;
+  text-shade-y:1;
+  text-shade-color:#CC000000;
+}
+
+textareaNoTab[shadeStyle=HudTinyLight] {
+  text-shade:"blur:24";
+  text-shade-x:0;
+  text-shade-y:0;
+  text-shade-color:#55000000;
+}
+
+text[shadeStyle=LiveStats],
+textareaNoTab[shadeStyle=LiveStats] {
+  text-shade:"blur:24";
+  text-shade-x:0;
+  text-shade-y:1;
+  text-shade-color:#55000000;
+}
+
+
+[hintStyle=hudMinor] hintRow > timeBar textareaNoTab,
+[hintStyle=hudMinor] hintRow > textareaNoTab,
+[hintStyle=hudMinor] keyboardButtonText {
+  font:@fontHudNormal;
+}
+
+[hintStyle=hudMinor] keyboardButton {
+  min-width:0.03@shHud;
+  height:0.03@shHud;
+}
+
+[hintStyle=hudMinor] gamepadButton {
+  size: 0.03@shHud, 0.03@shHud;
+}
+
+[hintStyle=hudHintCommon] hintRow textareaNoTab,
+[hintStyle=hudMinor] hintRow textareaNoTab {
+  color: @white;
+
+}
+
+[hintStyle=hudHintYellow] hintRow textareaNoTab {
+  color: @yellow;
+}
+
+[hintStyle=hudHintCommon] hintRow > img {
+  size:0.06sh, 0.06sh;
+  background-svg-size:0.06sh, 0.06sh;
+}
+
+[hintStyle=hudMinor] hintRow > img {
+  size:0.04sh, 0.04sh;
+  background-svg-size:0.04sh, 0.04sh;
+}
+
+[hintStyle=hudHintCommon] hintRow > img[sizeStyle=small] {
+  size:0.04sh, 0.04sh;
+  background-svg-size:0.04sh, 0.04sh;
+}
+
+[hintStyle=hudMinor] hintRow > img[sizeStyle=small] {
+  size:0.030sh, 0.030sh;
+  background-svg-size:0.030sh, 0.030sh;
+}

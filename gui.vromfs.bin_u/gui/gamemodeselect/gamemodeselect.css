@@ -1,0 +1,232 @@
+@const gameModeChangeButtonHeight: 0.028@sf;
+@const gameModeSelectWindowBlockMargin: 2@dp;
+@const gameModeSelectWindowBlockWidth: 2*(0.2@scrn_tgt \ 1); 
+@const gameModeSelectWindowBlockWidthWide: 3@gameModeSelectWindowBlockWidth + 2@gameModeSelectWindowBlockMargin;
+@const gameModeSelectWindowBlockWidthHalf: 1.5@gameModeSelectWindowBlockWidth + 0.5@gameModeSelectWindowBlockMargin;
+@const gameModeSelectWindowWidth: 3@gameModeSelectWindowBlockWidth + 4@gameModeSelectWindowBlockMargin + 1@scrollBarSize;
+
+gameModeChangeButton {
+  behavior:button;
+  snd_click:click;
+  css-hier-invalidate: yes;
+  height:1@gameModeChangeButtonHeight;
+  total-input-transparent:yes;
+}
+
+gameModeChangeButton > activeText {
+  color:@commonMenuButtonColor;
+  input-transparent: yes;
+}
+
+gameModeChangeButton:hover > activeText,
+[show_console_buttons=yes] gameModeChangeButton:focus > activeText {
+  color:@hoverMenuButtonColor;
+}
+
+gameModeChangeButton:pushed > activeText {
+  color:@pushedMenuButtonColor;
+}
+
+dropMenuArrow {
+  size:11@dp, 8@dp;
+  background-color: @white;
+  background-image:#ui/gameuiskin#drop_menu_icon.svg;
+  background-svg-size:11@dp, 8@dp;
+  background-repeat: expand;
+}
+
+[direction=up] dropMenuArrow {
+  rotation:180;
+}
+
+dropMenuSeparator {
+  size:5@dp, ph;
+  background-color: @white;
+  background-image:#ui/gameuiskin#drop_menu_separator;
+  background-repeat: expand;
+}
+
+gameModeChangeButton > dropMenuArrow,
+gameModeChangeButton > dropMenuSeparator {
+  pos:0, ph/2 - h/2;
+  position:relative;
+}
+
+
+gameModeSelect separator {
+  width: 0.9pw;
+  height: 1@dp;
+  margin: 0, 0.01@scrn_tgt;
+  left: 0.5(pw-w);
+  position: relative;
+  background-color: @gameModesSeparatorColor;
+}
+
+generalGameModes {
+  position: relative;
+  width:pw;
+  flow: h-flow;
+  total-input-transparent: yes;
+  css-hier-invalidate:yes;
+}
+
+gameModeBlock {
+  width: 1@gameModeSelectWindowBlockWidthHalf;
+  height: 0.094@scrn_tgt;
+  margin: 1@gameModeSelectWindowBlockMargin;
+  padding: 0.0014@scrn_tgt;
+  font:@fontNormal;
+  color:@commonMenuButtonColor;
+  css-hier-invalidate:yes;
+}
+
+gameModeBlock[wide=yes] {
+  width: 1@gameModeSelectWindowBlockWidthWide;
+}
+
+gameModeBlock[narrow=yes] {
+  width: 1@gameModeSelectWindowBlockWidth;
+}
+
+glow {
+  position: absolute;
+  pos: 0, 0;
+  size: pw, ph;
+  input-transparent: yes;
+  background-repeat: expand;
+  background-image: #ui/gameuiskin#item_glow;
+  background-position: 4, 4, 4, 9;
+}
+
+gameModeBlock[current_mode=yes] > glow {
+  background-color: #e99777;
+}
+
+gameModeBlock:hover > glow,
+[show_console_buttons=yes] gameModeBlock[selected=yes] > glow {
+  background-color: #daad9c;
+}
+
+gameModeBlock > movie {
+  position: absolute;
+  pos: 2, 3;
+  size: pw - 4, ph - 7;
+  display: hide;
+}
+[show_console_buttons=no] gameModeBlock:hover > movie {
+  display: show;
+}
+
+[show_console_buttons=yes] gameModeBlock[selected=yes] > movie {
+  display: show;
+}
+
+[show_console_buttons=no] gameModeBlock:hover[inactiveColor=yes] > movie {
+  display: hide;
+}
+
+[show_console_buttons=yes] gameModeBlock[selected=yes][inactiveColor=yes] > movie {
+  display: hide;
+}
+
+gameModeBlock > img {
+  position: absolute;
+  pos: 2, 3;
+  size: pw - 4, ph - 7;
+  color-factor: 100;
+  background-color: @gray60;
+}
+
+gameModeBlock:hover > img,
+[show_console_buttons=yes] gameModeBlock[selected=yes] > img,
+gameModeBlock[current_mode=yes] > img {
+  color-factor: 255;
+}
+
+gameModeBlock[inactiveColor=yes] {
+  background-color: #505050;
+}
+
+gameModeBlock[inactiveColor=yes] img {
+  color-factor:50;
+}
+
+gameModeBlock[current_mode=yes][inactiveColor=yes] {
+  background-color: @inactiveButtonBgColor;
+}
+
+gameModeBlock[inactiveColor=yes]:hover img,
+gameModeBlock[current_mode=yes][inactiveColor=yes] img {
+  color-factor:50;
+}
+
+gameModeBlock > title {
+  background-color: #80111111;
+  width: pw;
+  position: absolute;
+  pos: 0, ph - h;
+  padding: 0.0125@scrn_tgt, 0.003@scrn_tgt;
+}
+
+gameModeBlock[featured=yes] > title {
+  background-color: #00000000;
+}
+
+gameModeBlock > title > tdiv > textarea {
+  width: pw;
+  color: @commonTextColor;
+  paragraph-indent:0;
+  wrap-indent:0;
+  pare-text:yes;
+}
+
+gameModeBlock[current_mode=yes] > title > tdiv > textarea {
+  color: @activeTextColor;
+}
+
+gameModeBlock:hover > title > tdiv > textarea,
+[show_console_buttons=yes] gameModeBlock[selected=yes] > title > tdiv > textarea {
+  color: @highlightedTextColor;
+}
+
+gameModeBlock[inactiveColor=yes] > title > tdiv > textarea,
+gameModeBlock[inactiveColor=yes] > tdiv > textareaNoTab {
+  color:@disabledActiveTextColor;
+}
+
+gameModeBlock > CheckBoxImg {
+  pos: pw - w - @blockInterval, ph - h - @blockInterval;
+  display: hide;
+}
+
+gameModeBlock[current_mode=yes] > CheckBoxImg {
+  display: show;
+}
+
+gameModeBlock:hover > CheckBoxImg,
+[show_console_buttons=yes] gameModeBlock[selected=yes] > CheckBoxImg {
+  display: show;
+}
+
+link_icon {
+  size: 0.022@scrn_tgt, 0.028@scrn_tgt;
+  position: absolute;
+  top: ph/2 - h/2;
+  right: ph/2 - h/2; 
+  background-image: #ui/gameuiskin#icon_shortcut;
+  background-color: #99ffffff;
+}
+
+dark_corner {
+  position: absolute;
+  pos: pw - w, 0;
+  size: 0.033@scrn_tgt, 0.033@scrn_tgt;
+
+  background-image: #ui/gameuiskin#block_angle_bg;
+  background-color: #99ffffff;
+}
+
+textarea[game_mode_textarea=yes] {
+  width:"";
+  padding-right:11;
+}

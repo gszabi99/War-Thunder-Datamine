@@ -1,0 +1,116 @@
+{
+  "div": [
+    {
+      "id": "queue_box"
+    },
+    {
+      "size": "pw, ph"
+    },
+    {
+      "position": "relative"
+    },
+    {
+      "padding": "4*@sf/@pf_outdated"
+    },
+    {
+      "flow": "vertical"
+    },
+    {
+      "overflow-y": "auto"
+    },
+    {
+      "behavior": "Timer"
+    },
+    {
+      "timer_interval_msec": "1000"
+    },
+    {
+      "HorizontalListBox": {
+        "id": "clusters_list",
+        "width": "pw",
+        "min-height": "1@buttonHeight",
+        "smallFont": "yes",
+        "class": "tabs",
+        "flow": "h-flow",
+        "on_select": "onClusterChange"
+      }
+    },
+    {
+      "table": {
+        "id": "stats_table",
+        "width": "pw",
+        "position": "relative",
+        "text-halign": "center"
+      }
+    },
+    {
+      "tdiv": {
+        "id": "wait_time_block",
+        "padding": "10*@sf/@pf_outdated, 5*@sf/@pf_outdated",
+        "size": "pw, 80*@sf/@pf_outdated",
+        "tdiv": {
+          "pos": "50%pw-50%w, 50%ph-50%h",
+          "position": "absolute",
+          "textAreaCentered": {
+            "id": "waitText",
+            "pos": "0, 50%ph-50%h",
+            "position": "relative",
+            "max-width": "180*@sf/@pf_outdated",
+            "text-align": "center",
+            "class": "active",
+            "text": ""
+          },
+          "animated_wait_icon": {
+            "pos": "0, 50%ph-50%h",
+            "position": "relative",
+            "background-rotation": "0"
+          }
+        }
+      }
+    },
+    {
+      "text": {
+        "id": "countries_sets_header",
+        "pos": "50%pw - 50%w, 1@blockInterval",
+        "position": "relative",
+        "text": "#multiplayer/countriesSets",
+        "text-align": "center",
+        "display": "hide"
+      }
+    },
+    {
+      "tdiv": {
+        "id": "countries_sets",
+        "width": "pw",
+        "flow": "vertical"
+      }
+    },
+    {
+      "text": {
+        "id": "custom_mode_header",
+        "pos": "50%pw - 50%w, 1@blockInterval",
+        "position": "relative",
+        "text": "#events/playersRooms",
+        "tooltip": "#events/playersRooms/tooltip",
+        "text-align": "center",
+        "display": "hide"
+      }
+    },
+    {
+      "SwitchBox": {
+        "id": "custom_mode_checkbox",
+        "halign": "center",
+        "textChecked": "#options/enabled",
+        "textUnchecked": "#options/disabled",
+        "tooltip": "#events/playersRooms/tooltip",
+        "display": "hide",
+        "enable": "no",
+        "on_change_value": "onCustomModeCheckbox",
+        "SwitchSliderBg": {
+          "SwitchSliderBgOn": [],
+          "SwitchSlider": []
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,280 @@
+@const checkboxSize: (30@sf/@pf) \ 1;
+@const checkboxImgSize: (24@sf/@pf) \ 1;
+
+@const checkboxBgColor:                 #0d1116;
+@const checkboxBorderColor:             #3e4b52;
+@const checkboxPushedBgColor:           #435158;
+@const checkboxPushedBorderColor:       #999b8c;
+@const checkboxHoveredBgColor:          #0d1116;
+@const checkboxHoveredBorderColor:      #6d7974;
+@const checkboxDisabledBgColor:         #0d1116;
+@const checkboxDisabledBorderColor:     #242e36;
+
+@const checkboxCheckColor:                   #FFFFFFFF;
+@const checkboxCheckPushedColor:             #80808080;
+@const checkboxCheckHoveredColor:            #C0C0C0C0;
+@const checkboxCheckHoveredUncheckedColor:   #40404040;
+@const checkboxCheckDisabledColor:           #FF4b636c;
+
+
+CheckBox {
+  height:@checkboxSize;
+  re-type:9rect;
+  behaviour:check;
+  color:@commonMenuButtonColor;
+  font:@fontNormal;
+  text-align:left;
+  padding-left:h+4*@sf/@pf_outdated;
+  css-hier-invalidate:yes;
+  snd_change_value:check;
+}
+
+CheckBox[type=sortOrder] {
+  tooltip:"#items/sort/ascending";
+}
+
+CheckBox[type=sortOrder]:checked {
+  tooltip:"#items/sort/descending";
+}
+
+CheckBox:pushed[value=yes] {
+  snd_change_value:uncheck;
+}
+
+CheckBox[inactiveColor=yes] {
+  color:@inactiveButtonTextColor;
+}
+
+CheckBox:hover {
+  color:@hoverMenuButtonColor;
+}
+
+CheckBox:pushed {
+  color:@pushedMenuButtonColor;
+}
+
+CheckBox:disabled {
+  color:@inactiveButtonTextColor;
+}
+
+CheckBoxImg {
+  re-type:rotationFg;
+  size:@checkboxImgSize, @checkboxImgSize;
+  top:50%ph-50%h;
+  left:50%ph-50%w;
+  position:absolute;
+  border:yes;
+  background-color:@checkboxBgColor;
+  border-color:@checkboxBorderColor;
+  foreground-image:#ui/gameuiskin#check.svg;
+  foreground-repeat:aspect-ratio;
+  foreground-position:0, -0.33h, -0.33w, 0;
+  foreground-color:@transparent;
+  foreground-svg-size:@checkboxImgSize, @checkboxImgSize;
+  input-transparent:yes;
+}
+
+[inactiveColor=yes] > CheckBoxImg {
+  background-color:@checkboxDisabledBgColor;
+  border-color:@checkboxDisabledBorderColor;
+}
+
+:hover > CheckBoxImg {
+  background-color:@checkboxHoveredBgColor;
+  border-color:@checkboxHoveredBorderColor;
+}
+:pushed > CheckBoxImg {
+  background-color:@checkboxPushedBgColor;
+  border-color:@checkboxPushedBorderColor;
+}
+:disabled > CheckBoxImg {
+  background-color:@checkboxDisabledBgColor;
+  border-color:@checkboxDisabledBorderColor;
+}
+
+:checked                           > CheckBoxImg,
+multiOption[chosen=yes]            > CheckBoxImg,
+gameModeBlock[current_mode=yes]  > CheckBoxImg
+  { foreground-color:@checkboxCheckColor; }
+
+:hover                             > CheckBoxImg
+  { foreground-color:@checkboxCheckHoveredUncheckedColor; }
+
+:checked:hover                     > CheckBoxImg,
+multiOption[chosen=yes]:hover      > CheckBoxImg,
+gameModeBlock[current_mode=yes]:hover > CheckBoxImg
+  { foreground-color:@checkboxCheckHoveredColor; }
+
+:pushed                            > CheckBoxImg
+  { foreground-color:@checkboxCheckPushedColor; }
+
+:checked:disabled                  > CheckBoxImg,
+multiOption[chosen=yes]:disabled   > CheckBoxImg
+  { foreground-color:@checkboxCheckDisabledColor; }
+
+[type=sortOrder] > CheckBoxImg {
+  foreground-position:0;
+  foreground-image:#ui/gameuiskin#arrow.svg;
+  foreground-color:@white;
+}
+
+[type=sortOrder]:hover > CheckBoxImg {
+  foreground-color:@gray;
+}
+
+[type=sortOrder]:checked > CheckBoxImg {
+  foreground-rotation:180;
+}
+
+[type=sortOrder]:hover:checked > CheckBoxImg {
+  foreground-color:@gray;
+}
+
+CheckBox.empty {
+  width:h;
+}
+
+CheckBox.with_image {
+  padding-left:0;
+  padding-right:h+2*@sf/@pf_outdated;
+}
+CheckBox.with_image > CheckBoxImg {
+  left:pw -50%ph - 50%h;
+}
+CheckBox.with_image > infoImg {
+  size:@cIco, @cIco;
+  pos:0, ph/2-h/2;
+  position:relative;
+  background-color:#999999;
+  background-svg-size:@cIco, @cIco;
+  input-transparent:yes;
+}
+
+CheckBox.with_image[text] {
+  padding-left:2h+2*@sf/@pf_outdated;
+  padding-right:0;
+}
+CheckBox.with_image[text] > CheckBoxImg {
+  left:1.5ph - 0.5h;
+}
+CheckBox.with_image[text] > infoImg {
+  position:absolute;
+}
+
+CheckBox.with_image:checked > infoImg {
+  background-color:#eeeeee;
+}
+
+CheckBox.with_image:hover > infoImg {
+  background-color:@white;
+}
+
+CheckBox.with_image:pushed > infoImg {
+  background-color:#cccccc;
+}
+
+CheckBox[smallFont=yes] {
+  font:@fontSmall;
+}
+
+[show_console_buttons=yes] CheckBox[btnName]
+{
+  padding-left:h + 1@cIco + 0.005*@sf;
+}
+
+[show_console_buttons=yes] CheckBox[btnName=RB],
+[show_console_buttons=yes] CheckBox[btnName=LB]
+{
+  fullSizeIcons:yes;
+  padding-left:h + 1@buttonIconHeight + 0.01*@sf;
+}
+
+.checkBoxRow > CheckBox {
+  height:@checkboxSize + 2@blockInterval;
+  min-width:15*@scrn_tgt/100.0;
+  padding:1@blockInterval;
+  margin-right:1@blockInterval;
+  background-color:@frameBackgroundColor;
+  border-color:@frameBorderColor;
+  border:yes;
+}
+
+.checkBoxRow > CheckBox > CheckBoxImg {
+  left:1@blockInterval;
+}
+
+.checkBoxRow > CheckBox[isLastCheckBox=yes] {
+  margin-right:0;
+}
+
+playbackCheckbox {
+  re-type:9rect;
+  behaviour:check;
+  css-hier-invalidate:yes;
+  snd_change_value:check;
+  tooltip:#mainmenu/sound/play;
+}
+
+playbackCheckbox:pushed[value=yes] {
+  snd_change_value:uncheck;
+}
+
+playbackCheckbox:checked {
+  tooltip:#mainmenu/sound/stop;
+}
+
+playbackCheckbox > descImg {
+  re-type:9rect;
+  background-repeat:expand;
+  background-color:@playbackButtonColor;
+  background-position:0;
+  size:1@mIco, 1@mIco;
+}
+
+playbackCheckbox > playbackImg {
+  size:1@mIco, 1@mIco;
+  position:relative;
+  background-image:#ui/gameuiskin#replay_play.svg;
+  background-position:0;
+  background-repeat:expand;
+  background-color:@playbackButtonColor;
+  background-svg-size:@mIco, @mIco;
+  input-transparent:yes;
+}
+
+playbackCheckbox > animated_wait_icon {
+  position: relative;
+  display:hide;
+}
+
+playbackCheckbox[downloading=yes] > animated_wait_icon {
+  display:show;
+}
+
+playbackCheckbox:checked > playbackImg {
+  background-image:#ui/gameuiskin#replay_stop.svg;
+}
+
+playbackCheckbox:hover > playbackImg,
+playbackCheckbox:hover > descImg {
+  background-color:@playbackButtonHoverColor;
+}
+
+playbackCheckbox:pushed > playbackImg,
+playbackCheckbox:pushed > descImg {
+  background-color:@playbackButtonPushedColor;
+}
+
+playbackCheckbox:disabled > playbackImg,
+playbackCheckbox:disabled > descImg {
+  background-color:@playbackButtonDisabledColor;
+}
+
+playbackCheckbox[btnName] > ButtonImg
+{
+  size:1@mIco, 1@mIco;
+  left:0;
+  margin-right:0.002@scrn_tgt;
+  top:50%ph-50%h;
+  position:relative;
+}

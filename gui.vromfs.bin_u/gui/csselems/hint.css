@@ -1,0 +1,187 @@
+@const hintRowCenterOffsetY:0.0185@shHud;
+
+hint {
+  flow: vertical;
+  position: relative;
+  pos: pw/2 - w/2, 0;
+}
+
+[flow-align=right] > hint {
+  pos:pw-w, 0;
+}
+
+hintRow {
+  position: relative;
+  pos: pw/2 - w/2, 0;
+
+  max-width: p.p.w;
+}
+
+hintRow > textareaNoTab {
+  max-width: p.p.p.w;
+
+  text-align: center;
+}
+
+hintRow > gamepadButton,
+hintRow > shortcutAxis {
+  background-repeat:aspect-ratio;
+}
+
+hintRow > gamepadButton,
+hintRow > shortcutAxis,
+hintRow > keyboardButton,
+hintRow > combination,
+hintRow > timeBar,
+hintRow > keyboardAxis {
+  position: relative;
+  top: @hintRowCenterOffsetY - 50%h;
+}
+
+
+hintRow > combination > gamepadButton,
+hintRow > combination > shortcutAxis,
+hintRow > combination > keyboardButton {
+  position: relative;
+  top: 50%ph - 50%h;
+}
+
+hintRow arrowImage {
+  re-type:9rect;
+  position:absolute;
+  pos: 50%pw-50%w, 50%ph-50%h;
+  size: 1@cIco, 1@cIco;
+  background-svg-size:1@cIco, 1@cIco;
+  background-image:#ui/gameuiskin#cursor_size_hor;
+  background-color:@white;
+  background-repeat:expand;
+}
+
+hintRow arrowImage[direction = 1] {
+  background-image:#ui/gameuiskin#cursor_size_vert;
+}
+
+
+hintRow > keyboardAxis > keyPlace[posPlace = left],
+hintRow > keyboardAxis > keyPlace[posPlace = right] {
+  position:relative;
+  top:ph-h;
+}
+
+hintRow > keyboardAxis[hasArrow = yes] > keyPlace[posPlace = left],
+hintRow > keyboardAxis[hasArrow = yes] > keyPlace[posPlace = right] {
+  top:50%ph-50%h;
+}
+
+hintRow > keyboardAxis keyPlace[posPlace = top],
+hintRow > keyboardAxis keyPlace[posPlace = bottom] {
+  position:relative;
+  left:50%pw-50%w;
+}
+
+hintRow textareaNoTab {
+  font: @fontHudMedium;
+  shadeStyle:'HudHeader3D';
+}
+
+hintRow > combination > textareaNoTab {
+  font: @fontHudMedium;
+  margin: 0.01@shHud,0;
+}
+
+hintRow > timeBar textareaNoTab {
+  font: @fontHudMedium;
+}
+
+loadingHint hintRow textareaNoTab,
+subtitlesHint hintRow textareaNoTab {
+  font: @fontNormal;
+  color:@activeTextColor;
+  shadeStyle:'';
+}
+
+loadingHint[commonTextColor=yes] hintRow textareaNoTab {
+  color:@commonMenuButtonColor;
+}
+
+loadingHint hintRow > combination > textareaNoTab,
+subtitlesHint hintRow > combination > textareaNoTab {
+  margin: 1@blockInterval,0;
+}
+
+loadingHint hintRow > gamepadButton,
+loadingHint hintRow > shortcutAxis,
+loadingHint hintRow > keyboardButton,
+loadingHint hintRow > combination,
+loadingHint hintRow > timeBar,
+subtitlesHint hintRow > gamepadButton,
+subtitlesHint hintRow > shortcutAxis,
+subtitlesHint hintRow > keyboardButton,
+subtitlesHint hintRow > combination,
+subtitlesHint hintRow > timeBar {
+  top: 0;
+}
+
+chatHint hintRow textareaNoTab {
+  font: @fontSmall;
+  max-width: p.p.p.p.w;
+}
+
+chatHint hintRow  > combination > textareaNoTab {
+  margin: 1@blockInterval,0;
+}
+
+action_item_content hintRow > combination > textareaNoTab {
+  font: @fontHudTiny;
+  margin: 0;
+}
+
+chatHint hintRow > gamepadButton,
+chatHint hintRow > shortcutAxis,
+chatHint hintRow > keyboardButton,
+chatHint hintRow > combination,
+chatHint hintRow > timeBar {
+  top: 40%ph - 50%h;
+}
+
+
+
+hint[animation=show],
+hint[animation=hide] {
+  transp-base:0;
+  transp-end:255;
+  transp-func:square;
+  _needAnim:yes;
+}
+
+hint[animation=show] {
+  transp-time:300;
+  blend-time:0;
+}
+
+hint[animation=hide] {
+  transp-time:-600;
+  blend-time:200;
+}
+
+hint[animation=wink] {
+  transp-base:170;
+  transp-end:255;
+  transp-time:1500;
+  transp-func:sin;
+  transp-cycled:yes;
+  _needAnim:yes;
+}
+
+hint[_transp-timer=0][animation=hide] {
+  _needAnim:no;
+  display:hide;
+}
+
+hint[_transp-timer=1][animation=show] {
+  _needAnim:no;
+}
+
+hint[_needAnim=yes] {
+  behaviour:massTransparency;
+}

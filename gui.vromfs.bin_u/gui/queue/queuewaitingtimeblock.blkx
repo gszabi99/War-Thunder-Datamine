@@ -1,0 +1,133 @@
+{
+  "tdiv": [
+    {
+      "id": "waiting_time"
+    },
+    {
+      "width": "pw"
+    },
+    {
+      "padding": "10*@sf/@pf_outdated"
+    },
+    {
+      "flow": "vertical"
+    },
+    {
+      "tdiv": {
+        "id": "available_countries",
+        "pos": "50%pw-50%w, 0",
+        "position": "relative",
+        "padding-bottom": "0.01@scrn_tgt",
+        "flow": "vertical",
+        "activeText": {
+          "id": "countries_header",
+          "pos": "50%pw-50%w, 0",
+          "position": "relative",
+          "text-align": "center",
+          "smallFont": "yes",
+          "text": ""
+        },
+        "tdiv": {
+          "id": "countries_icons",
+          "pos": "50%pw-50%w, 0",
+          "position": "relative"
+        }
+      }
+    },
+    {
+      "tdiv": {
+        "pos": "pw/2-w/2, 0",
+        "position": "relative",
+        "size": "180@sf/@pf, 180@sf/@pf",
+        "tdiv": {
+          "id": "queue_wait_icon_block",
+          "position": "absolute",
+          "size": "pw, ph"
+        },
+        "centerBlock": {
+          "position": "absolute",
+          "pos": "50%pw-50%w, 50%ph-50%h",
+          "flow": "vertical",
+          "activeText": {
+            "text": "#multiplayer/currentWaitTime",
+            "smallFont": "yes",
+            "style": "color:@commonMenuButtonColor;"
+          },
+          "textAreaCentered": {
+            "id": "msgText",
+            "text-halign": "center",
+            "class": "active",
+            "text": "00:00:00",
+            "titleFont": "yes",
+            "pos": "50%pw-50%w,0",
+            "position": "relative"
+          }
+        }
+      }
+    },
+    {
+      "activeText": [
+        {
+          "id": "inQueue-topmenu-text"
+        },
+        {
+          "display": "hide"
+        },
+        {
+          "wink": "no"
+        },
+        {
+          "text": "#yn1/waiting_for_game_query"
+        },
+        {
+          "style": "color:@userlogColoredText;"
+        },
+        {
+          "pos": "50%pw-50%w, 10*@sf/@pf_outdated"
+        },
+        {
+          "position": "relative"
+        },
+        {
+          "hideEmptyText": "yes"
+        },
+        {
+          "text": ""
+        }
+      ]
+    },
+    {
+      "activeText": [
+        {
+          "id": "queue_players_total"
+        },
+        {
+          "text": ""
+        },
+        {
+          "style": "color:@commonMenuButtonColor;"
+        },
+        {
+          "pos": "50%pw-50%w, 10*@sf/@pf_outdated"
+        },
+        {
+          "position": "relative"
+        },
+        {
+          "smallFont": "yes"
+        },
+        {
+          "hideEmptyText": "yes"
+        },
+        {
+          "text": ""
+        }
+      ]
+    }
+  ],
+  "timer": {
+    "id": "queue_update_timer",
+    "timer_handler_func": "onUpdate",
+    "timer_interval_msec": "1000"
+  }
+}

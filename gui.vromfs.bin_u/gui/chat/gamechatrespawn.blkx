@@ -1,0 +1,121 @@
+{
+  "tdiv": {
+    "id": "chat",
+    "position": "relative",
+    "flow": "vertical",
+    "width": "pw",
+    "height": "fh",
+    "pos": "1,1",
+    "HorizontalListBox": [
+      {
+        "id": "chat_tabs"
+      },
+      {
+        "width": "pw"
+      },
+      {
+        "class": "tabs"
+      },
+      {
+        "smallFont": "yes"
+      },
+      {
+        "navigatorShortcuts": "yes"
+      },
+      {
+        "on_select": "onChatTabChange"
+      },
+      {
+        "on_wrap_up": "onWrapUp"
+      },
+      {
+        "on_wrap_down": "onWrapDown"
+      },
+      {
+        "shopFilter": {
+          "id": "mpchat",
+          "shopFilterText": {
+            "text": "#mainmenu/chat"
+          }
+        }
+      },
+      {
+        "shopFilter": {
+          "id": "battlelog",
+          "shopFilterText": {
+            "text": "#options/_Bttl"
+          }
+        }
+      }
+    ],
+    "EditBoxBG": {
+      "position": "relative",
+      "width": "pw",
+      "height": "fh",
+      "overflow-y": "auto",
+      "auto-scroll": "yes",
+      "padding": "0.5*@scrn_tgt/100.0",
+      "chatLog": {
+        "width": "pw",
+        "id": "chat_log",
+        "text": "",
+        "on_link_click": "onChatLinkClick",
+        "on_link_rclick": "onChatLinkRClick"
+      }
+    },
+    "div": {
+      "id": "chat_input_back",
+      "display": "show",
+      "flow": "horizontal",
+      "position": "relative",
+      "margin-top": "1@blockInterval",
+      "size": "pw, @buttonHeight",
+      "tdiv": {
+        "id": "chat_prompt_place",
+        "behaviour": "wrapNavigator",
+        "navigatorShortcuts": "yes",
+        "childsActivate": "yes",
+        "on_wrap_up": "onWrapUp",
+        "on_wrap_down": "onWrapDown",
+        "on_wrap_right": "onWrapDown",
+        "Button_text": {
+          "id": "chat_prompt",
+          "text": "",
+          "width": "15*@scrn_tgt/100.0",
+          "pos": "0, ph/2-h/2",
+          "position": "relative",
+          "style": "padding-left:1*@scrn_tgt/100.0; min-width:15*@scrn_tgt/100.0;",
+          "showConsoleImage": "no",
+          "_on_click": "onChatMode",
+          "accesskey": "Tab",
+          "noMargin": "yes"
+        }
+      },
+      "EditBox": {
+        "text": "",
+        "id": "chat_input",
+        "pos": "1@blockInterval, ph/2-h/2",
+        "position": "relative",
+        "width": "pw -30@scrn_tgt/100.0 -2@blockInterval",
+        "max-len": "250",
+        "on_activate": "onChatEntered",
+        "on_cancel_edit": "onChatCancel",
+        "on_change_value": "onChatChanged",
+        "on_wrap_up": "onWrapUp",
+        "on_wrap_down": "onWrapDown",
+        "mouse-focusable": "yes"
+      },
+      "Button_text": {
+        "id": "btn_send",
+        "width": "15*@scrn_tgt/100.0",
+        "pos": "1@blockInterval, ph/2-h/2",
+        "position": "relative",
+        "text": "#chat/send",
+        "_on_click": "onChatSend",
+        "showConsoleImage": "no",
+        "style": "padding-left:1*@scrn_tgt/100.0; min-width:15*@scrn_tgt/100.0;",
+        "noMargin": "yes"
+      }
+    }
+  }
+}

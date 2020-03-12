@@ -1,0 +1,119 @@
+{
+  "root": {
+    "background-color": "@modalShadeColor",
+    "type": "big",
+    "frame": {
+      "id": "clan_activity_modal",
+      "size": "70*@scrn_tgt/100, 70*@scrn_tgt/100.0",
+      "pos": "0.5pw-0.5w, 1@titleLogoPlateHeight + 0.3*(sh - 1@titleLogoPlateHeight - h)",
+      "position": "absolute",
+      "class": "wnd",
+      "frame_header": {
+        "activeText": {
+          "id": "clan_activity_header_text",
+          "caption": "yes",
+          "text": "#clan/activity"
+        },
+        "Button_close": []
+      },
+      "tdiv": [
+        {
+          "size": "pw, ph"
+        },
+        {
+          "id": "clan_activity_container"
+        },
+        {
+          "padding": "0.01*@scrn_tgt"
+        },
+        {
+          "flow": "vertical"
+        },
+        {
+          "tdiv": {
+            "left": "pw-w-0.02@scrn_tgt",
+            "position": "relative",
+            "textareaNoTab": {
+              "id": "clan_activity_today_text",
+              "overlayTextColor": "active",
+              "text": "#clan/activity_current",
+              "caption": "yes"
+            },
+            "tdiv": {
+              "padding-left": "0.01@scrn_tgt",
+              "cardImg": {
+                "id": "clan_activity_today_icon",
+                "background-image": "#ui/gameuiskin#lb_activity.svg",
+                "type": "medium",
+                "tooltip": "#clan/activity"
+              },
+              "textarea": {
+                "id": "clan_activity_today_value",
+                "top": "50%ph-50%h",
+                "position": "relative",
+                "text": "",
+                "overlayTextColor": "userlog",
+                "caption": "yes"
+              }
+            }
+          }
+        },
+        {
+          "tdiv": {
+            "left": "pw-w-0.02@scrn_tgt",
+            "position": "relative",
+            "textareaNoTab": {
+              "id": "clan_activity_total_text",
+              "overlayTextColor": "active",
+              "text": "#clan/activity_total",
+              "caption": "yes"
+            },
+            "tdiv": {
+              "padding-left": "0.01@scrn_tgt",
+              "cardImg": {
+                "id": "clan_activity_total_icon",
+                "background-image": "#ui/gameuiskin#lb_activity.svg",
+                "tooltip": "#clan/activity",
+                "type": "medium"
+              },
+              "textarea": {
+                "id": "clan_activity_total_value",
+                "top": "50%ph-50%h",
+                "position": "relative",
+                "text": "",
+                "overlayTextColor": "userlog",
+                "caption": "yes"
+              }
+            }
+          }
+        },
+        {
+          "tdiv": {
+            "width": "pw",
+            "table": {
+              "id": "clan_member_activity_history_table_header",
+              "width": "fw",
+              "class": "lbTable",
+              "text-valign": "center",
+              "text-halign": "center"
+            }
+          }
+        },
+        {
+          "tdiv": {
+            "size": "pw, fh",
+            "overflow-y": "auto",
+            "scrollbarShortcuts": "yes",
+            "table": {
+              "id": "clan_member_activity_history_table",
+              "width": "fw",
+              "class": "lbTable",
+              "text-valign": "center",
+              "text-halign": "center"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

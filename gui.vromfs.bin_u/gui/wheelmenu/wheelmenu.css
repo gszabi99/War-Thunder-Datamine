@@ -1,0 +1,111 @@
+@const wheelmenuBtnHeight: 75(@sf/1080);
+
+wheelmenu wheelmenuItem {
+  behavior:button;
+  on_click:onWheelmenuItemClick;
+  snd_click:click;
+  position:absolute;
+  css-hier-invalidate:yes;
+}
+
+wheelmenu wheelmenuItem > content {
+  height:@wheelmenuBtnHeight;
+  position:absolute;
+  input-transparent: yes;
+  css-hier-invalidate: yes;
+}
+
+wheelmenu wheelmenuItem > content > tdiv > textareaNoTab {
+  position:relative;
+  left:50%pw-50%w;
+  input-transparent: yes;
+}
+
+wheelmenu wheelmenuItem > content > tdiv > tdiv > textareaNoTab {
+  shadeStyle:HudHeader3D;
+}
+
+wheelmenu wheelmenuItem:disabled > content > tdiv > tdiv > textareaNoTab {
+  overlayTextColor:faded;
+  shadeStyle:none;
+}
+
+wheelmenu wheelmenuItem > content > action_bar_item {
+  size:ph - 0.02@shHud, ph - 0.02@shHud;
+  pos:h/5, ph/2-h/2;
+}
+
+wheelmenu wheelmenuItem > content > textareaNoTab[killstreak=yes] {
+  color: @streakTextColor;
+}
+
+wheelmenu wheelmenuItem > content > textareaNoTab[killstreak=yes][enabled=no] {
+  color: @disabledTextColor;
+}
+
+wheelmenu wheelmenuItem > bg {
+  position:absolute;
+  input-transparent: yes;
+  background-color:#D0303030;
+  background-repeat:stretch;
+}
+
+wheelmenu wheelmenuItem:hover > bg,
+wheelmenu wheelmenuItem[selected=yes] > bg {
+  background-color:@gray;
+}
+
+wheelmenu wheelmenuItem:pushed > bg {
+  background-color:@white;
+}
+
+wheelmenu wheelmenuItem[selected=yes]:disabled > bg {
+  background-color:#C0848484;
+}
+
+wheelmenu shortcut {
+  position:absolute;
+  input-transparent: yes;
+  background-color:@white;
+  background-repeat:stretch;
+  display:hide;
+}
+
+wheelmenu > shortcut {
+  background-image:@control_l_stick_4;
+  size:54(@sf/1080), 54(@sf/1080);
+  background-svg-size: 54(@sf/1080), 54(@sf/1080);
+}
+
+wheelmenu > wheelmenuItem > shortcut {
+  background-image:@control_button_a;
+  size:40(@sf/1080), 40(@sf/1080);
+  background-svg-size: 40(@sf/1080), 40(@sf/1080);
+}
+
+[swap_ab=yes] wheelmenu > wheelmenuItem > shortcut {
+  background-image:@control_button_b;
+}
+
+[show_console_buttons=yes] wheelmenu > shortcut,
+[show_console_buttons=yes] wheelmenu > wheelmenuItem[selected=yes] > shortcut {
+  display:show;
+}
+
+wheelmenuDummy { behaviour:button; }
+
+wheelmenuDummy[type=activate] {
+  accessKey: "J:RT | J:A | J:Start | Space | Enter | NumEnter";
+}
+
+[swap_ab=yes] wheelmenuDummy[type=activate] {
+  accessKey: "J:RT | J:B | J:Start | Space | Enter | NumEnter";
+}
+
+wheelmenuDummy[type=cancel] {
+  accessKey: "J:B | J:Back | Esc | Backspace";
+}
+
+[swap_ab=yes] wheelmenuDummy[type=cancel] {
+  accessKey: "J:A | J:Back | Esc | Backspace";
+}

@@ -1,0 +1,161 @@
+{
+  "id": "msg_box_root",
+  "position": "absolute",
+  "size": "sw, sh",
+  "background-color": "@shadeBackgroundColor2",
+  "menutitle": {
+    "id": "msgbox-title"
+  },
+  "div": {
+    "width": "pw",
+    "top": "0.5(ph-h)",
+    "position": "absolute",
+    "flow": "vertical",
+    "min-height": "0.5@scrn_tgt",
+    "max-height": "0.9@scrn_tgt",
+    "optionlist_container": {
+      "width": "pw",
+      "style": "height:ph + 0.02@scrn_tgt;",
+      "position": "absolute",
+      "text": {
+        "id": "msg_debug_string",
+        "pos": "0.5(pw-w), ph +0.01@scrn_tgt",
+        "position": "absolute",
+        "input-transparent": "yes",
+        "overlayTextColor": "faded",
+        "smallFont": "yes",
+        "display": "hide",
+        "text": ""
+      }
+    },
+    "div": [
+      {
+        "id": "msgTextRoot"
+      },
+      {
+        "width": "pw"
+      },
+      {
+        "pos": "0, ph/2-h/2"
+      },
+      {
+        "position": "relative"
+      },
+      {
+        "flow": "vertical"
+      },
+      {
+        "overflow-y": "auto"
+      },
+      {
+        "textarea": {
+          "id": "msgText",
+          "width": "1.1@sf",
+          "left": "0.5(pw-w)",
+          "position": "relative",
+          "text-align": "center",
+          "overflow-y": "auto",
+          "mediumFont": "yes",
+          "font-bold": "@fontSmall",
+          "padding-left": "0.5*@scrn_tgt/100.0",
+          "border-color": "@commonTextColor"
+        }
+      },
+      {
+        "div": {
+          "id": "msg_div_after_text",
+          "max-height": "0.4@scrn_tgt",
+          "pos": "0.5(pw-w), 0.01@scrn_tgt",
+          "position": "relative",
+          "overflow-y": "auto",
+          "display": "hide"
+        }
+      },
+      {
+        "animated_wait_icon": {
+          "id": "msgWaitAnimation",
+          "display": "hide",
+          "pos": "0.5(pw-w), 3*@scrn_tgt/100.0",
+          "position": "relative",
+          "background-rotation": "0",
+          "behavior": "increment",
+          "inc-target": "background-rotation",
+          "inc-factor": "120"
+        }
+      },
+      {
+        "msgBoxButtonsHolder": {
+          "id": "buttons_holder",
+          "pos": "0.5(pw-w), 0.03@scrn_tgt",
+          "position": "relative",
+          "childsActivate": "yes"
+        }
+      },
+      {
+        "div": {
+          "id": "msg_bottom_div",
+          "pos": "0.5(pw-w), 0.01@scrn_tgt",
+          "position": "relative",
+          "display": "hide"
+        }
+      }
+    ]
+  },
+  "navBar": {
+    "style": "id:msg-nav-bar"
+  },
+  "timer": {
+    "id": "msg_box_timer",
+    "timer_handler_func": "onUpdate"
+  },
+  "focusFrameAnimBlock": {
+    "focusFrameAnimObj": []
+  },
+  "widgets": {
+    "voiceChatWidgetNest": [
+      {
+        "isClanOnly": "no"
+      },
+      {
+        "blockSeparator": {
+          "display": "hide"
+        }
+      },
+      {
+        "emptyVoiceChat": {
+          "tooltip": "#clan/voice_chat/widget",
+          "usertalk": {
+            "id": "voice_chat_no_activity",
+            "type": "noTalk",
+            "fade": "in",
+            "height-end": "1",
+            "_size-timer": "0",
+            "img": {
+              "color-factor": "255",
+              "inacive": "yes",
+              "position": "relative"
+            },
+            "activeText": {
+              "text": "...",
+              "color-factor": "255",
+              "position": "relative"
+            }
+          }
+        }
+      },
+      {
+        "voiceChatWidgetContainer": {
+          "isSmall": "no",
+          "voiceChatWidget": {
+            "value": "{\"viewId\": \"VOICE_CHAT\"}"
+          }
+        }
+      },
+      {
+        "blockSeparator": {
+          "display": "hide"
+        }
+      }
+    ]
+  }
+}

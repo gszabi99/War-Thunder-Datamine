@@ -1,0 +1,709 @@
+{
+  "tdiv": {
+    "id": "help_background_image",
+    "width": "pw",
+    "height": "ph",
+    "background-repeat": "expand",
+    "background-color": "@white",
+    "background-image": "#ui/images/help/help_radar_air_usa.jpg?P1",
+    "tdiv": [
+      {
+        "size": "pw, 0.511w"
+      },
+      {
+        "pos": "0.5pw-0.5w, 0.5ph-0.5h"
+      },
+      {
+        "position": "relative"
+      },
+      {
+        "textareaNoTab": {
+          "max-width": "580/1760pw",
+          "pos": "277/1760pw-w/2, 110/900ph-h/2",
+          "position": "absolute",
+          "caption": "yes",
+          "text": "#controls/help/radar/display/b_scope"
+        }
+      },
+      {
+        "textareaNoTab": {
+          "max-width": "580/1760pw",
+          "pos": "277/1760pw-w/2, 480/900ph-h/2",
+          "position": "absolute",
+          "caption": "yes",
+          "text": "#controls/help/radar/display/c_scope",
+          "textareaNoTab": {
+            "max-width": "pw",
+            "pos": "pw/2-w/2, ph",
+            "position": "absolute",
+            "tinyFont": "yes",
+            "text": "#controls/help/available_in/few_aircrafts_only"
+          }
+        }
+      },
+      {
+        "textareaNoTab": {
+          "max-width": "450/1760pw",
+          "pos": "1700/1760pw-w, 564/900ph-h",
+          "position": "absolute",
+          "caption": "yes",
+          "text": "#controls/help/radar/display/rwr",
+          "textareaNoTab": {
+            "max-width": "pw",
+            "pos": "pw/2-w/2, ph",
+            "position": "absolute",
+            "tinyFont": "yes",
+            "text": "#controls/help/available_in/helicopters_only"
+          }
+        }
+      },
+      {
+        "controlsHelpText": {
+          "id": "bscope_active_value",
+          "pos": "277/1760pw-w/2, 209/900ph-h/2",
+          "position": "absolute",
+          "padding-top": "10@dp",
+          "style": "font:@fontHudSmall; color:#0aca0a",
+          "text": "╎"
+        }
+      },
+      {
+        "controlsHelpText": {
+          "pos": "448/1760pw, 375/900ph-h/2",
+          "position": "absolute",
+          "style": "font:@fontHudSmall; color:#0aca0a",
+          "text": "20km*",
+          "tdiv": {
+            "id": "bscope_range_scale_point",
+            "pos": "45%pw-w/2, ph +5@dp",
+            "position": "absolute",
+            "size": "@dp, @dp"
+          }
+        }
+      },
+      {
+        "controlsHelpText": {
+          "pos": "131/1760pw-w/2, 629/900ph-h/2",
+          "position": "absolute",
+          "style": "font:@fontHudSmall; color:#0aca0a",
+          "text": "-85°"
+        }
+      },
+      {
+        "controlsHelpText": {
+          "id": "cscope_gimbal_limits_x_value",
+          "pos": "420/1760pw-w/2, 629/900ph-h/2",
+          "position": "absolute",
+          "padding-left": "5@dp",
+          "style": "font:@fontHudSmall; color:#0aca0a",
+          "text": "85°"
+        }
+      },
+      {
+        "controlsHelpText": {
+          "id": "cscope_gimbal_limits_y_value",
+          "pos": "448/1760pw, 624/900ph-h/2",
+          "position": "absolute",
+          "padding-top": "10@dp",
+          "style": "font:@fontHudSmall; color:#0aca0a",
+          "text": "60°"
+        }
+      },
+      {
+        "controlsHelpText": {
+          "pos": "448/1760pw, 711/900ph-h/2",
+          "position": "absolute",
+          "style": "font:@fontHudSmall; color:#0aca0a",
+          "text": "0°"
+        }
+      },
+      {
+        "controlsHelpText": {
+          "pos": "448/1760pw, 746/900ph-h/2",
+          "position": "absolute",
+          "style": "font:@fontHudSmall; color:#0aca0a",
+          "text": "-30°"
+        }
+      },
+      {
+        "controlsHelpText": {
+          "id": "marker_distance_value",
+          "pos": "1192/1760pw, 330/900ph-h/2",
+          "position": "absolute",
+          "padding-right": "5@dp",
+          "style": "font:@fontHudSmall; color:#0aca0a",
+          "text": "D 3.9km"
+        }
+      },
+      {
+        "controlsHelpText": {
+          "id": "marker_approach_speed_value",
+          "pos": "1192/1760pw, 354/900ph-h/2",
+          "position": "absolute",
+          "padding-right": "5@dp",
+          "style": "font:@fontHudSmall; color:#0aca0a",
+          "text": "Vr 118m/s"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "bscope_active_label",
+          "min-width": "200/1760pw",
+          "pos": "240/1760pw-w, 177/900ph-h",
+          "position": "absolute",
+          "text": "#controls/help/radar/active"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "bscope_search_beam_point",
+          "pos": "212/1760pw-w, 243/900ph",
+          "position": "absolute",
+          "size": "@dp, @dp"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "bscope_search_beam_label",
+          "min-width": "200/1760pw",
+          "pos": "240/1760pw-w, 213/900ph-h",
+          "position": "absolute",
+          "text": "#controls/help/radar/search_beam"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "bscope_scan_area_point",
+          "pos": "354/1760pw, 251/900ph",
+          "position": "absolute",
+          "size": "@dp, @dp"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "bscope_scan_area_label",
+          "min-width": "200/1760pw",
+          "pos": "330/1760pw, 213/900ph-h",
+          "position": "absolute",
+          "text": "#controls/help/radar/scan_area"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "bscope_target_lock_area_point",
+          "pos": "206/1760pw, 345/900ph",
+          "position": "absolute",
+          "size": "@dp, @dp"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "bscope_target_lock_area_label",
+          "min-width": "200/1760pw",
+          "pos": "240/1760pw-w, 400/900ph",
+          "position": "absolute",
+          "text": "#controls/help/radar/target_lock_area"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "bscope_gimbal_limits_point",
+          "pos": "359/1760pw, 380/900ph",
+          "position": "absolute",
+          "size": "@dp, @dp"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "bscope_gimbal_limits_label",
+          "min-width": "200/1760pw",
+          "pos": "260/1760pw, 400/900ph",
+          "position": "absolute",
+          "text": "#controls/help/radar/gimbal_limits"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "bscope_target_detected_point",
+          "pos": "320/1760pw, 263/900ph",
+          "position": "absolute",
+          "size": "@dp, @dp"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "bscope_target_detected_label",
+          "min-width": "200/1760pw",
+          "pos": "500/1760pw, 252/900ph-h/2",
+          "position": "absolute",
+          "text": "#controls/help/radar/target/detected"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "bscope_target_selected_point",
+          "pos": "280/1760pw, 284/900ph",
+          "position": "absolute",
+          "size": "@dp, @dp"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "bscope_target_selected_label",
+          "min-width": "200/1760pw",
+          "pos": "500/1760pw, 287/900ph-h/2",
+          "position": "absolute",
+          "text": "#controls/help/radar/target/selected"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "bscope_target_tracking_point",
+          "pos": "299/1760pw, 326/900ph",
+          "position": "absolute",
+          "size": "@dp, @dp"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "bscope_target_tracking_label",
+          "min-width": "200/1760pw",
+          "pos": "500/1760pw, 322/900ph-h/2",
+          "position": "absolute",
+          "text": "#controls/help/radar/target/tracking"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "bscope_tracking_beam_point",
+          "pos": "281/1760pw, 348/900ph",
+          "position": "absolute",
+          "size": "@dp, @dp"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "bscope_tracking_beam_label",
+          "min-width": "200/1760pw",
+          "pos": "500/1760pw, 357/900ph-h/2",
+          "position": "absolute",
+          "text": "#controls/help/radar/tracking_beam"
+        }
+      },
+      {
+        "controlsHelpFrame": [
+          {
+            "id": "bscope_range_scale_label"
+          },
+          {
+            "width": "200/1760pw"
+          },
+          {
+            "pos": "500/1760pw, 385/900ph"
+          },
+          {
+            "position": "absolute"
+          },
+          {
+            "textareaNoTab": {
+              "text": "#controls/help/radar/range_scale"
+            }
+          },
+          {
+            "_newline": {
+              "size": "0"
+            }
+          },
+          {
+            "textareaNoTab": {
+              "text": "*",
+              "style": "width:0; color:#0aca0a"
+            }
+          },
+          {
+            "textareaNoTab": {
+              "text": " = ",
+              "style": "width:0"
+            }
+          },
+          {
+            "textareaNoTab": {
+              "text": "#controls/help/radar/range_scale/variable",
+              "style": "width:fw"
+            }
+          }
+        ]
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "cscope_gimbal_limits_y_label",
+          "min-width": "250/1760pw",
+          "pos": "290/1760pw-w, 560/900ph-h",
+          "position": "absolute",
+          "text": "#controls/help/radar/gimbal_limits/elevation"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "cscope_gimbal_limits_x_label",
+          "min-width": "250/1760pw",
+          "pos": "290/1760pw-w, 595/900ph-h",
+          "position": "absolute",
+          "text": "#controls/help/radar/gimbal_limits/azimuth"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "cscope_target_tracking_point",
+          "pos": "291/1760pw, 683/900ph",
+          "position": "absolute",
+          "size": "@dp, @dp"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "cscope_target_tracking_label",
+          "min-width": "200/1760pw",
+          "pos": "500/1760pw, 663/900ph-h/2",
+          "position": "absolute",
+          "text": "#controls/help/radar/target/tracking"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "cscope_target_selected_point",
+          "pos": "263/1760pw, 700/900ph",
+          "position": "absolute",
+          "size": "@dp, @dp"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "cscope_target_selected_label",
+          "min-width": "200/1760pw",
+          "pos": "500/1760pw, 698/900ph-h/2",
+          "position": "absolute",
+          "text": "#controls/help/radar/target/selected"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "cscope_target_detected_point",
+          "pos": "311/1760pw, 714/900ph",
+          "position": "absolute",
+          "size": "@dp, @dp"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "cscope_target_detected_label",
+          "min-width": "200/1760pw",
+          "pos": "500/1760pw, 733/900ph-h/2",
+          "position": "absolute",
+          "text": "#controls/help/radar/target/detected"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "cscope_search_beam_point",
+          "pos": "234/1760pw-w, 718/900ph",
+          "position": "absolute",
+          "size": "@dp, @dp"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "cscope_search_beam_label",
+          "min-width": "200/1760pw",
+          "pos": "240/1760pw-w, 766/900ph",
+          "position": "absolute",
+          "text": "#controls/help/radar/search_beam"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "cscope_scan_area_point",
+          "pos": "264/1760pw, 724/900ph",
+          "position": "absolute",
+          "size": "@dp, @dp"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "cscope_scan_area_label",
+          "min-width": "200/1760pw",
+          "pos": "240/1760pw-w, 801/900ph",
+          "position": "absolute",
+          "text": "#controls/help/radar/scan_area"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "cscope_gimbal_limits_point",
+          "pos": "296/1760pw, 752/900ph",
+          "position": "absolute",
+          "size": "@dp, @dp"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "cscope_gimbal_limits_label",
+          "min-width": "200/1760pw",
+          "pos": "240/1760pw-w, 836/900ph",
+          "position": "absolute",
+          "text": "#controls/help/radar/gimbal_limits"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "compass_target_detected_point",
+          "pos": "954/1760pw, 156/900ph",
+          "position": "absolute",
+          "size": "@dp, @dp"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "compass_target_detected_label",
+          "min-width": "200/1760pw",
+          "pos": "880/1760pw-w/2, 185/900ph-h/2",
+          "position": "absolute",
+          "text": "#controls/help/radar/target/detected"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "compass_target_selected_point",
+          "pos": "675/1760pw, 156/900ph",
+          "position": "absolute",
+          "size": "@dp, @dp"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "compass_target_selected_label",
+          "min-width": "200/1760pw",
+          "pos": "880/1760pw-w/2, 220/900ph-h/2",
+          "position": "absolute",
+          "text": "#controls/help/radar/target/selected"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "compass_target_tracking_point",
+          "pos": "1011/1760pw, 156/900ph",
+          "position": "absolute",
+          "size": "@dp, @dp"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "compass_target_tracking_label",
+          "min-width": "200/1760pw",
+          "pos": "880/1760pw-w/2, 255/900ph-h/2",
+          "position": "absolute",
+          "text": "#controls/help/radar/target/tracking"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "marker_target_tracking_point",
+          "pos": "1153/1760pw, 368/900ph",
+          "position": "absolute",
+          "size": "@dp, @dp"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "marker_target_tracking_label",
+          "min-width": "200/1760pw",
+          "pos": "1153/1760pw-w/2, 398/900ph",
+          "position": "absolute",
+          "text": "#controls/help/radar/target/tracking"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "marker_distance_label",
+          "min-width": "200/1760pw",
+          "pos": "1317/1760pw, 336/900ph-h",
+          "position": "absolute",
+          "text": "#distance"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "marker_approach_speed_label",
+          "min-width": "200/1760pw",
+          "pos": "1317/1760pw, 342/900ph",
+          "position": "absolute",
+          "text": "#controls/help/radar/approach_speed"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "rwr_enemy_tracking_point",
+          "pos": "1550/1760pw, 627/900ph",
+          "position": "absolute",
+          "size": "@dp, @dp"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "rwr_enemy_tracking_label",
+          "min-width": "300/1760pw",
+          "pos": "1400/1760pw-w, 615/900ph",
+          "position": "absolute",
+          "text": "#controls/help/radar/rwr/enemy_is_tracking"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "rwr_enemy_detected_point",
+          "pos": "1446/1760pw, 700/900ph",
+          "position": "absolute",
+          "size": "@dp, @dp"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "rwr_enemy_detected_label",
+          "min-width": "300/1760pw",
+          "pos": "1400/1760pw-w, 686/900ph",
+          "position": "absolute",
+          "text": "#controls/help/radar/rwr/enemy_is_searching"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "rwr_ally_detected_point",
+          "pos": "1474/1760pw, 742/900ph",
+          "position": "absolute",
+          "size": "@dp, @dp"
+        }
+      },
+      {
+        "controlsHelpFrame": [
+          {
+            "id": "rwr_ally_detected_label"
+          },
+          {
+            "width": "300/1760pw"
+          },
+          {
+            "pos": "1400/1760pw-w, 721/900ph"
+          },
+          {
+            "position": "absolute"
+          },
+          {
+            "padding-bottom": "8@sf/@pf"
+          },
+          {
+            "padding-top": "8@sf/@pf"
+          },
+          {
+            "textareaNoTab": {
+              "text": "#controls/help/radar/rwr/ally_is_searching"
+            }
+          },
+          {
+            "_newline": {
+              "size": "0"
+            }
+          },
+          {
+            "textareaNoTab": {
+              "text": "#controls/help/available_in/arcade_battles_only",
+              "style": "width:fw"
+            }
+          }
+        ]
+      },
+      {
+        "tdiv": [
+          {
+            "pos": "1515/1760pw-w/2, 60/900ph"
+          },
+          {
+            "position": "absolute"
+          },
+          {
+            "width": "350/1760pw"
+          },
+          {
+            "flow": "vertical"
+          },
+          {
+            "controlsHelpFrame": {
+              "width": "pw",
+              "padding-bottom": "8@sf/@pf",
+              "padding-top": "8@sf/@pf",
+              "keyDiv": {
+                "behaviour": "bhvHelpFrame",
+                "value": "{{ID_SENSOR_SWITCH}}"
+              },
+              "textareaNoTab": {
+                "text": "#hotkeys/ID_SENSOR_SWITCH"
+              }
+            }
+          },
+          {
+            "controlsHelpFrame": {
+              "width": "pw",
+              "padding-bottom": "8@sf/@pf",
+              "padding-top": "8@sf/@pf",
+              "keyDiv": {
+                "behaviour": "bhvHelpFrame",
+                "value": "{{ID_SENSOR_TARGET_SWITCH}}"
+              },
+              "tdiv": [
+                {
+                  "width": "fw"
+                },
+                {
+                  "pos": "0, ph/2-h/2"
+                },
+                {
+                  "position": "relative"
+                },
+                {
+                  "flow": "vertical"
+                },
+                {
+                  "textareaNoTab": {
+                    "width": "pw",
+                    "style": "font:@fontTiny",
+                    "text": "#hotkeys/ID_SENSOR_TARGET_SWITCH"
+                  }
+                },
+                {
+                  "textareaNoTab": {
+                    "width": "pw",
+                    "style": "font:@fontTiny",
+                    "overlayTextColor": "warning",
+                    "text": "#controls/help/available_in/few_aircrafts_only"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "controlsHelpFrame": {
+              "width": "pw",
+              "padding-bottom": "8@sf/@pf",
+              "padding-top": "8@sf/@pf",
+              "keyDiv": {
+                "behaviour": "bhvHelpFrame",
+                "value": "{{ID_SENSOR_TARGET_LOCK}}"
+              },
+              "textareaNoTab": {
+                "text": "#hotkeys/ID_SENSOR_TARGET_LOCK"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

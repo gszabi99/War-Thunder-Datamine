@@ -1,0 +1,334 @@
+@const comboListPadding:0;
+@const comboOptionPadding:5@sf/@pf_outdated;
+@const comboBtnWidth:@baseTrHeight - 4@dp;
+@const comboBtnHeight: 11@sf/@pf;
+
+@const comboBgColor:               #000000;
+@const comboHoveredBgColor:        #303030;
+@const comboExpanedBgColor:        #505050;
+@const comboOptionColor:           #585858;
+@const comboSelOptionColor:        #f1f1f1;
+@const comboListBgColor:           #212121;
+
+@const comboExpandedTextColor:       #e0e0e0;
+@const comboExpandedSelTextColor:    #3b3b3b;
+@const comboExpandedHoverTextColor:  #3b3b3b;
+
+@const comboExpandedLockedTextColor: #ff5c41;
+
+@const option_font:           @fontNormal;
+@const option_selected_font:  @fontNormal;
+
+ComboBox {
+  behaviour:dropdown-select;
+  re-type:dropdown-select;
+  css-hier-invalidate:yes;
+  total-input-transparent:yes;
+
+  _needBtnPos:yes;
+  screen-offset:@bh;
+
+  background-color:@comboBgColor;
+  min-height:@baseTrHeight - 4@dp;
+}
+
+.optionsTable > tr > td > ComboBox,
+.optionsMultiColumn > tr > td > ComboBox,
+.optionsTable > cell > td > ComboBox {
+  height:ph-4@dp;
+  width:0.3@scrn_tgt;
+  max-width:pw;
+  pos:0, 50%ph-50%h;
+  position:relative;
+}
+
+tr[optionWidthInc=double] > td > ComboBox {
+  width:0.6@scrn_tgt;
+}
+
+tr[optionWidthInc=half] > td > ComboBox {
+  width:0.45@scrn_tgt;
+}
+
+tr[optionWidthInc=triple] > td > ComboBox {
+  width:0.9@scrn_tgt;
+}
+
+tr > tdiv > ComboBox {
+  width:pw;
+}
+[fullWidthOptions=yes] > * > * > ComboBox {
+  width:fw;
+}
+
+[show_console_buttons=yes] .optionsTable > tr > td > ComboBox {
+  btnPos:left;
+  btnType:leftOpen;
+}
+
+[show_console_buttons=yes] ComboBox[btnName] {
+  btnPos:left;
+}
+
+[show_console_buttons=yes] weaponry_item weaponsSelectorNest > tdiv > ComboBox {
+  btnPos:left;
+  btnName:none;
+}
+
+[show_console_buttons=yes] :focus > weaponry_item[selected=yes] weaponsSelectorNest > tdiv > ComboBox,
+[show_console_buttons=yes] weaponry_item weaponsSelectorNest > tdiv > ComboBox:expanded {
+  btnName:X;
+}
+
+ComboBox[btnPos] {
+  _needBtnPos:no;
+}
+
+ComboBox[_needBtnPos=yes] {
+  btnPos:right;
+}
+
+ComboBox[btnPos=left] {
+  padding-left:@comboBtnWidth;
+}
+ComboBox[btnPos=right] {
+  padding-right:@comboBtnWidth;
+}
+
+ComboBox:hover {
+  background-color:@comboHoveredBgColor;
+}
+
+ComboBox:expanded {
+  background-color:@comboExpanedBgColor;
+}
+
+ComboBox > button {
+  width:@comboBtnWidth;
+  height:@comboBtnHeight;
+  top:0.5ph-0.5h;
+  background-color:@navButtonImgColor;
+  background-image:#ui/gameuiskin#drop_menu_icon.svg;
+  background-svg-size: 1@buttonImgSvgHeight, 1@buttonImgSvgHeight;
+  background-repeat:aspect-ratio;
+  color-factor:127;
+}
+
+ComboBox:focus > button,
+ComboBox:hover > button {
+  color-factor:255;
+}
+
+ComboBox[btnType=leftOpen] > button {
+  rotation:270;
+}
+
+ComboBox:expanded > button {
+  rotation:180;
+}
+
+ComboBox:expanded[btnType=leftOpen] > button {
+  rotation:90;
+}
+
+ComboBox[btnPos=left] > button {
+  left:0;
+}
+
+ComboBox[btnPos=left]:expanded > button {
+  left:0;
+}
+
+ComboBox[btnPos=leftOutside] > button {
+  left:-w;
+}
+
+[show_console_buttons=yes] ComboBox[btnName=X] > button {
+  _hasBtnImage:yes;
+  background-image:@control_button_x;
+}
+[show_console_buttons=yes] ComboBox[btnName=X]:pushed > button {
+  background-image:@control_button_x_pressed;
+}
+
+[show_console_buttons=yes] ComboBox[btnName=Y] > button {
+  _hasBtnImage:yes;
+  background-image:@control_button_y;
+}
+[show_console_buttons=yes] ComboBox[btnName=Y]:pushed > button {
+  background-image:@control_button_y_pressed;
+}
+
+[show_console_buttons=yes] ComboBox[btnName=R3] > button {
+  _hasBtnImage:yes;
+  background-image:@control_r_stick;
+}
+[show_console_buttons=yes] ComboBox[btnName=R3]:pushed > button {
+  background-image:@control_r_stick_pressed;
+}
+
+[show_console_buttons=yes] ComboBox[btnName=RB] > button {
+  _hasBtnImage:yes;
+  background-image:@control_r_shoulder;
+}
+[show_console_buttons=yes] ComboBox[btnName=RB]:pushed > button {
+  background-image:@control_r_shoulder_pressed;
+}
+
+[show_console_buttons=yes] ComboBox[btnName=LT] > button {
+  _hasBtnImage:yes;
+  background-image:@control_l_trigger;
+}
+[show_console_buttons=yes] ComboBox[btnName=LT]:pushed > button {
+  background-image:@control_l_trigger_pressed;
+}
+
+[show_console_buttons=yes] ComboBox[btnName=L3] > button {
+  _hasBtnImage:yes;
+  background-image:@control_l_stick;
+}
+[show_console_buttons=yes] ComboBox[btnName=L3]:pushed > button {
+  background-image:@control_l_stick_pressed;
+}
+
+
+[show_console_buttons=yes] ComboBox[_hasBtnImage=yes]:expanded > button,
+[show_console_buttons=yes] PosOptionsNavigator > * > * > ComboBox:focus > button,
+[show_console_buttons=yes] .optionsMultiColumn > tr > td > ComboBox:focus > button,
+[show_console_buttons=yes] ComboBox[focusFrame=yes]:focus > button {
+  _hasBtnImage:yes;
+  background-image:@control_button_a;
+}
+
+[swap_ab=yes][show_console_buttons=yes] ComboBox[_hasBtnImage=yes]:expanded > button,
+[swap_ab=yes][show_console_buttons=yes] PosOptionsNavigator > * > * > ComboBox:focus > button,
+[swap_ab=yes][show_console_buttons=yes] .optionsMultiColumn > tr > td > ComboBox:focus > button,
+[swap_ab=yes][show_console_buttons=yes] ComboBox[focusFrame=yes]:focus > button {
+  background-image:@control_button_b;
+}
+
+[show_console_buttons=yes] PosOptionsNavigator > * > * > ComboBox:focus:pushed > button,
+[show_console_buttons=yes] .optionsMultiColumn > tr > td > ComboBox:focus:pushed > button {
+  background-image:@control_button_a_pressed;
+}
+
+[swap_ab=yes][show_console_buttons=yes] PosOptionsNavigator > * > * > ComboBox:focus:pushed > button,
+[swap_ab=yes][show_console_buttons=yes] .optionsMultiColumn > tr > td > ComboBox:focus:pushed > button {
+  background-image:@control_button_b_pressed;
+}
+
+ComboBox:disabled > button, ComboBox > button:disabled {
+  display:hide;
+}
+
+ComboBox > button[_hasBtnImage=yes] {
+  height:@buttonIconHeight;
+  color-factor:255;
+}
+
+ComboBox[btnPos=left] > button[_hasBtnImage=yes] {
+  left:1@buttonImgMargin;
+}
+
+ComboBox[btnPos=right] > button[_hasBtnImage=yes] {
+  left:pw - w - 1@buttonImgMargin;
+}
+
+
+ComboBox:expanded[btnPos=left] > button[_hasBtnImage=yes],
+ComboBox:expanded[btnPos=right] > button[_hasBtnImage=yes] {
+  rotation:0;
+}
+
+ComboBox > listBox {
+  width:pw + 2@comboListPadding;
+  left:50%pw-50%w;
+  padding:1@comboListPadding;
+  overflow-y:auto;
+
+  background-color:@comboListBgColor;
+
+  not-input-transparent:yes;
+  notify:~;   navigatorShortcuts:active; }
+
+ComboBox > option,
+ComboBox > listBox > option {
+  padding:1@comboOptionPadding, 1@dp;
+  font:@option_font;
+  color:@commonTextColor;
+  css-hier-invalidate:yes;
+  overflow:hidden;
+}
+
+ComboBox.moveleft option {
+ text-align:right;
+}
+
+ComboBox > option {
+  size:pw, ph;
+}
+
+ComboBox > listBox > option {
+  size:pw, p.p.h;
+  background-color:@comboOptionColor;
+}
+
+ComboBox > listBox[listboxAlign=top] > option {
+  margin-bottom:@dp;
+}
+ComboBox > listBox[listboxAlign=bottom] > option {
+  margin-top:@dp;
+}
+
+ComboBox > listBox > option:current,
+ComboBox > listBox > option:hover {
+  background-color:@comboSelOptionColor;
+}
+
+ComboBox > option > optiontext,
+ComboBox > listBox > option > optiontext {
+  height:ph;
+  min-width:fw;
+  input-transparent:yes;
+}
+
+ComboBox:hover > option > optiontext,
+ComboBox:focus > option > optiontext,
+ComboBox > listBox > option:hover > optiontext,
+ComboBox > listBox > option:current > optiontext {
+  auto-scroll:slow;
+}
+
+ComboBox:hover > option,
+ComboBox:hover > option > optiontext,
+tr:hover > td > ComboBox > option > optiontext {
+  color:@hoverTextColor;
+}
+
+ComboBox:expanded > option,
+ComboBox:expanded > option > optiontext,
+ComboBox > listBox > option,
+ComboBox > listBox > option > optiontext {
+  color:@comboExpandedTextColor;
+}
+
+ComboBox > listBox > option:hover,
+ComboBox > listBox > option:hover > optiontext {
+  color:@comboExpandedHoverTextColor;
+}
+
+ComboBox:focus > option > optiontext {
+  color:@activeTextColor;
+  font:@option_selected_font;
+}
+
+ComboBox > listBox > option:current > optiontext,
+ComboBox > listBox > option:current {
+  color:@comboExpandedSelTextColor;
+  font:@option_selected_font;
+}
+
+ComboBox > listBox > option:disabled > optiontext
+{
+  color:#000000;
+}

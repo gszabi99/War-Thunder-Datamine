@@ -1,0 +1,58 @@
+paginator{
+  id:paginator_container;
+  min-width: 0.27*@sf;
+  min-height: 1@buttonHeight;
+  padding:0,7, 0, 3;
+  height:ph;
+}
+
+paginatorPlace[smallPaginatorWidth=yes] > paginator {
+  min-width: 0.23*@sf;
+}
+
+paginator > pages{
+  position: relative;
+  pos: pw/2-w/2, 50%ph-50%h;
+}
+
+paginator > pages > button {
+  pos: 0, 0;
+  position: relative;
+  padding: 0;
+  margin:3@sf/@pf, 0;
+  min-width: 0;
+  text-align: center;
+  font:@fontSmall;
+}
+
+paginator > pages > button > underline {
+  size: pw + 1, (@sf/@pf_outdated*0.75) $max 1;
+}
+
+paginator > pages > activeText{
+  font:@fontSmall;
+}
+
+paginator > pages > button[mainPlayer = yes],
+paginator > pages > activeText[mainPlayer = yes]
+{
+  color: @mainPlayerColor;
+}
+
+paginator > [nav="left"] {
+  position:absolute;
+  pos:-w, 50%ph-50%h;
+}
+
+paginator > [nav="right"] {
+  position:absolute;
+  pos:pw, 50%ph-50%h;
+}
+
+paginator > button > img {
+  background-color:@imageNotSelectedColor;
+}
+
+paginator > button:hover > img {
+  background-color:@imageHoverColor;
+}

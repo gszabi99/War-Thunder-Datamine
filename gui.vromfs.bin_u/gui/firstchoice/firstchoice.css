@@ -1,0 +1,112 @@
+@const unitChoiceImageWidth: (450*@sf/@pf)\1; @const unitChoiceImageHeight: 1@unitChoiceImageWidth/2;
+@const countryChoiceImageWidth: (348@sf/@pf)\1;
+@const countryChoiceImageHeight: 248@sf/@pf;
+@const countryChoiceInterval: (10@sf/@pf)\1;
+@const firstChoiceTextBlockHeight: 70@sf/@pf;
+@const firstChoiceSelSizeInc: (5@sf/@pf)\1;
+
+@const firstChoiceColor         : #cccccc;
+@const firstChoiceColorDisabled : #444444;
+
+@const firstChoiceTextColor             : @commonTextColor;
+@const firstChoiceTextSelectedColor     : @textInWhiteBlockColor;
+@const firstChoiceTextBgColor           : #040910;
+@const firstChoiceTextBgSelectedColor   : #e0e0e0;
+
+firstChoiceItem {
+  margin:@countryChoiceInterval;
+  flow:vertical;
+  css-hier-invalidate:yes;
+}
+
+firstChoiceItem.unit {
+  width:@unitChoiceImageWidth;
+  height:1@unitChoiceImageHeight + 1@dp + 1@firstChoiceTextBlockHeight;
+}
+
+firstChoiceItem.country {
+  width:@countryChoiceImageWidth;
+  height:1@countryChoiceImageHeight + 1@dp + 1@firstChoiceTextBlockHeight;
+}
+
+firstChoiceImage {
+  position:relative;
+  background-repeat:expand;
+  background-color:@firstChoiceColor;
+  input-transparent: yes;
+  css-hier-invalidate:yes;
+}
+
+.unit > firstChoiceImage {
+  size:@unitChoiceImageWidth, @unitChoiceImageHeight;
+  pos:0.5pw - 0.5w, 0.5@unitChoiceImageHeight - 0.5h;
+}
+
+[show_console_buttons=yes] .unit[selected=yes] > firstChoiceImage,
+[show_console_buttons=no] .unit:hover > firstChoiceImage
+{
+  size:@unitChoiceImageWidth + 2@firstChoiceSelSizeInc, @unitChoiceImageHeight + 2@firstChoiceSelSizeInc;
+}
+
+.country > firstChoiceImage {
+  size:@countryChoiceImageWidth, @countryChoiceImageHeight;
+  pos:0.5pw - 0.5w, 0.5@countryChoiceImageHeight - 0.5h;
+}
+
+[show_console_buttons=yes] .country[selected=yes] > firstChoiceImage,
+[show_console_buttons=no] .country:hover > firstChoiceImage
+{
+  size:@countryChoiceImageWidth + 2@firstChoiceSelSizeInc, @countryChoiceImageHeight + 2@firstChoiceSelSizeInc;
+}
+
+[show_console_buttons=yes] [selected=yes] > firstChoiceImage,
+[show_console_buttons=no] :hover > firstChoiceImage
+{
+  background-color:@white;
+}
+
+:disabled > firstChoiceImage {
+  background-color:@firstChoiceColorDisabled;
+}
+
+firstChoiceImage > movie {
+  position: absolute;
+  size: pw, ph;
+  display: hide;
+  input-transparent: yes;
+}
+
+[show_console_buttons=yes] [selected=yes] > firstChoiceImage > movie,
+[show_console_buttons=no] :hover > firstChoiceImage > movie {
+  display: show;
+}
+
+firstChoiceText {
+  re-type:text;
+  width:pw;
+  height:@firstChoiceTextBlockHeight;
+  pos:0.5pw-0.5w, @dp;
+  position:relative;
+
+  background-color:@firstChoiceTextBgColor;
+  color:@firstChoiceTextColor;
+  font:@fontMedium;
+}
+
+[show_console_buttons=yes] [selected=yes] > firstChoiceText,
+[show_console_buttons=no] :hover > firstChoiceText
+{
+  width:pw + 2@firstChoiceSelSizeInc;
+  padding:1@firstChoiceSelSizeInc, 0;
+}
+
+[show_console_buttons=yes] [selected=yes] > firstChoiceText,
+[show_console_buttons=no] :hover > firstChoiceText
+{
+  background-color:@firstChoiceTextBgSelectedColor;
+  color:@firstChoiceTextSelectedColor;
+}
+
+:disabled > firstChoiceText {
+  color:@disabledTextColor;
+}

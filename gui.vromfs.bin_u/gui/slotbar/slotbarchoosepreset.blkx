@@ -1,0 +1,273 @@
+{
+  "root": {
+    "background-color": "@modalShadeColor",
+    "on_click": "goBack",
+    "frame": {
+      "id": "wnd_frame",
+      "pos": "50%pw-50%w, 1@minYposWindow + 50%(ph-h-1@minYposWindow-1@slotbarHeight-1@slotbarOffset-1@slotbarTop)",
+      "size": "4@framePadding + 0.02*@scrn_tgt + 0.32@sf + 3@slot_width, 420*@sf/@pf_outdated",
+      "position": "relative",
+      "class": "wnd",
+      "css-hier-invalidate": "yes",
+      "input-transparent": "no",
+      "frame_header": {
+        "activeText": {
+          "id": "wnd_title",
+          "caption": "yes",
+          "text": "#shop/slotbarPresets/title"
+        },
+        "Button_close": {
+          "id": "btn_back"
+        }
+      },
+      "tdiv": {
+        "id": "wnd_content",
+        "size": "fw, ph - 1@frameFooterHeight",
+        "chapterListPlace": [
+          {
+            "id": "chapter_place"
+          },
+          {
+            "height": "ph"
+          },
+          {
+            "flow": "vertical"
+          },
+          {
+            "tdiv": {
+              "id": "div_before_chapters_list",
+              "width": "pw",
+              "display": "hide"
+            }
+          },
+          {
+            "tdiv": {
+              "id": "chapters_list_place",
+              "size": "pw, fh",
+              "flow": "vertical",
+              "tdiv": {
+                "id": "listbox_filter_holder",
+                "width": "pw",
+                "pos": "1@blockInterval, 0",
+                "position": "relative"
+              },
+              "listbox": {
+                "id": "items_list",
+                "size": "pw, fh",
+                "flow": "vertical",
+                "focus": "yes",
+                "on_select": "onItemSelect",
+                "_on_dbl_click": "onStart",
+                "on_wrap_up": "onWrapUp",
+                "on_wrap_down": "onWrapDown",
+                "on_set_focus": "onListItemsFocusChange"
+              },
+              "textAreaCentered": {
+                "id": "items_list_msg",
+                "width": "80%pw",
+                "pos": "50%pw-50%w, 40%ph-40%h",
+                "position": "absolute",
+                "hideEmptyText": "yes",
+                "text": ""
+              },
+              "animated_wait_icon": {
+                "id": "items_list_wait_icon",
+                "pos": "50%pw-50%w, 40%ph-40%h",
+                "position": "absolute",
+                "background-rotation": "0",
+                "display": "hide"
+              }
+            }
+          }
+        ],
+        "chapterSeparator": {
+          "margin": "0.01*@scrn_tgt, 0"
+        },
+        "tdiv": [
+          {
+            "id": "item_desc"
+          },
+          {
+            "flow": "vertical"
+          },
+          {
+            "size": "fw, ph"
+          },
+          {
+            "overflow-y": "auto"
+          },
+          {
+            "total-input-transparent": "yes"
+          },
+          {
+            "text": {
+              "left": "(pw-w)/2",
+              "id": "item_name",
+              "position": "relative",
+              "style": "font:@fontMedium;color:@titleTextColor;",
+              "textHide": "yes",
+              "text": ""
+            }
+          },
+          {
+            "tdiv": {
+              "id": "mission_desc",
+              "size": "pw,ph",
+              "position": "absolute",
+              "flow": "vertical"
+            }
+          },
+          {
+            "tdiv": [
+              {
+                "id": "chapter_include_block"
+              },
+              {
+                "size": "pw, fh"
+              },
+              {
+                "flow": "vertical"
+              },
+              {
+                "display": "hide"
+              },
+              {
+                "img": {
+                  "id": "item_desc_header_img",
+                  "width": "pw",
+                  "height": "w*128/1024",
+                  "background-repeat": "expand",
+                  "background-image": ""
+                }
+              },
+              {
+                "tdiv": {
+                  "id": "div_before_text",
+                  "width": "pw",
+                  "flow": "h-flow",
+                  "flow-align": "center"
+                }
+              },
+              {
+                "tdiv": {
+                  "height": "fh",
+                  "width": "pw",
+                  "overflow-y": "auto",
+                  "flow": "vertical",
+                  "scrollbarShortcuts": "yes",
+                  "total-input-transparent": "yes",
+                  "textarea": {
+                    "id": "item_desc_text",
+                    "width": "pw",
+                    "chapterTextAreaStyle": "yes",
+                    "hideEmptyText": "yes",
+                    "text": "",
+                    "font-bold": "@fontMedium"
+                  },
+                  "tdiv": {
+                    "id": "session_results",
+                    "width": "pw",
+                    "padding-top": "0.01@scrn_tgt",
+                    "flow": "vertical",
+                    "display": "hide",
+                    "textarea": {
+                      "chapterTextAreaStyle": "yes",
+                      "font-bold": "@fontMedium",
+                      "text": "#mainmenu/sessionResults"
+                    },
+                    "tdiv": {
+                      "id": "results_table_place",
+                      "width": "pw",
+                      "flow": "vertical"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "tdiv": {
+              "id": "after_desc_block",
+              "width": "pw"
+            }
+          },
+          {
+            "tdiv": {
+              "id": "item_misc",
+              "flow": "vertical"
+            }
+          }
+        ]
+      },
+      "navBar": {
+        "navLeft": [
+          {
+            "Button_text": {
+              "id": "btn_preset_create",
+              "text": "#msgbox/btn_add",
+              "on_click": "onBtnPresetAdd",
+              "btnName": "X",
+              "ButtonImg": []
+            }
+          },
+          {
+            "Button_text": {
+              "id": "btn_preset_rename",
+              "text": "#msgbox/btn_rename",
+              "on_click": "onBtnPresetRename",
+              "btnName": "Y",
+              "ButtonImg": []
+            }
+          },
+          {
+            "Button_text": {
+              "id": "btn_preset_move_up",
+              "text": "",
+              "on_click": "onBtnPresetMoveUp",
+              "tooltip": "#msgbox/btn_move_up",
+              "class": "image",
+              "btnName": "LB",
+              "img": {
+                "background-image": "#ui/gameuiskin#spinnerListBox_arrow_up.svg"
+              },
+              "ButtonImg": []
+            }
+          },
+          {
+            "Button_text": {
+              "id": "btn_preset_move_dn",
+              "text": "",
+              "on_click": "onBtnPresetMoveDown",
+              "tooltip": "#msgbox/btn_move_down",
+              "class": "image",
+              "btnName": "RB",
+              "img": {
+                "background-image": "#ui/gameuiskin#spinnerListBox_arrow_up.svg",
+                "rotation": "180"
+              },
+              "ButtonImg": []
+            }
+          },
+          {
+            "Button_text": {
+              "id": "btn_preset_delete",
+              "text": "#msgbox/btn_delete",
+              "btnName": "R3",
+              "on_click": "onBtnPresetDelete",
+              "ButtonImg": []
+            }
+          }
+        ],
+        "navRight": {
+          "Button_text": {
+            "id": "btn_preset_load",
+            "text": "#mainmenu/btnApply",
+            "btnName": "A",
+            "on_click": "onBtnPresetLoad",
+            "ButtonImg": []
+          }
+        }
+      }
+    }
+  }
+}

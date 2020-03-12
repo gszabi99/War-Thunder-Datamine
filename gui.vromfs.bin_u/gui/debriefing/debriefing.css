@@ -1,0 +1,38 @@
+@const debrPad: 25@sf/@pf;
+@const debrWndPad: 4@dp;
+@const debrMyPlaceBlockOffset: 0.5@debrPad;
+@const debrBonusHeight: 85@sf/@pf;
+@const debrBonusWidth: 42/64@debrBonusHeight;
+@const debrWagerHeight: 95@sf/@pf;
+@const debrSepWidth: 1@dp;
+
+debrBlock {
+  input-transparent:yes;
+}
+
+debrWndSeparator {
+  size:pw -2@debrWndPad, 1@dp;
+  left:pw/2-w/2;
+  position:absolute;
+  background-color:@debrSepColor;
+}
+
+debrSeparator {
+  position:absolute;
+  background-color:@debrSepColor;
+  input-transparent:yes;
+}
+debrSeparator.left, debrSeparator.right {
+  width:1@debrSepWidth;
+  height:ph-2@debrPad;
+  top:ph/2-h/2;
+}
+debrSeparator.top, debrSeparator.bottom {
+  width:pw-2@debrPad;
+  height:1@debrSepWidth;
+  left:pw/2-w/2;
+}
+debrSeparator.left { left:-w/2; }
+debrSeparator.right { left:pw-w/2; }
+debrSeparator.top { top:-h/2; }
+debrSeparator.bottom { top:ph-h/2; }

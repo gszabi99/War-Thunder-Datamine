@@ -1,0 +1,130 @@
+{
+  "rootUnderPopupMenu": {
+    "on_click": "goBack",
+    "on_r_click": "goBack"
+  },
+  "popup_menu": [
+    {
+      "id": "squad_invites"
+    },
+    {
+      "position": "root"
+    },
+    {
+      "not-input-transparent": "yes"
+    },
+    {
+      "css-hier-invalidate": "yes"
+    },
+    {
+      "flow": "vertical"
+    },
+    {
+      "menu_align": "top"
+    },
+    {
+      "div": {
+        "id": "options_block",
+        "width": "0.35@sf",
+        "padding-bottom": "1@blockInterval",
+        "flow": "vertical",
+        "activeText": {
+          "pos": "50%pw - 50%w, 0",
+          "position": "relative",
+          "text": "#options/squadSize",
+          "text-align": "center"
+        },
+        "ComboBox": {
+          "id": "squad_size_option",
+          "size": "pw, @buttonHeight",
+          "pos": "50%pw - 50%w, 1@blockInterval",
+          "position": "relative",
+          "btnName": "X",
+          "on_select": "onSquadSizeChange"
+        },
+        "textAreaCentered": {
+          "width": "pw",
+          "pos": "50%pw - 50%w, 1@blockInterval",
+          "position": "relative",
+          "smallFont": "yes",
+          "text": "#guiHints/squadSize"
+        }
+      }
+    },
+    {
+      "CheckBox": {
+        "id": "receive_applications",
+        "width": "fw",
+        "text": "#squad/receiveApplications",
+        "value": "yes",
+        "btnName": "Y",
+        "on_change_value": "onReceiveApplications",
+        "CheckBoxImg": [],
+        "ButtonImg": []
+      }
+    },
+    {
+      "activeText": {
+        "id": "invited_players_header",
+        "pos": "50%pw - 50%w, 1@blockInterval",
+        "position": "relative",
+        "text": "#squad/invitedPlayers",
+        "text-align": "center",
+        "margin": "0.01@sf, 0"
+      }
+    },
+    {
+      "div": {
+        "id": "invites_list",
+        "pos": "50%pw-50%w, 0",
+        "position": "relative",
+        "padding-bottom": "1@blockInterval",
+        "flow": "h-flow",
+        "flow-align": "center",
+        "behavior": "posNavigator",
+        "navigatorShortcuts": "active",
+        "on_wrap_up": "onWrapUp",
+        "on_wrap_down": "onWrapDown",
+        "childsActivate": "yes",
+        "on_activate": "onInviteMemberMenu"
+      }
+    },
+    {
+      "activeText": {
+        "id": "applications_list_header",
+        "pos": "50%pw - 50%w, 1@blockInterval",
+        "position": "relative",
+        "text": "#squad/applications",
+        "text-align": "center",
+        "margin": "0.01@sf, 0"
+      }
+    },
+    {
+      "div": {
+        "id": "applications_list",
+        "pos": "50%pw-50%w, 0",
+        "position": "relative",
+        "padding-bottom": "1@blockInterval",
+        "flow": "h-flow",
+        "flow-align": "center",
+        "behavior": "posNavigator",
+        "navigatorShortcuts": "active",
+        "on_wrap_up": "onWrapUp",
+        "on_wrap_down": "onWrapDown",
+        "childsActivate": "yes",
+        "on_activate": "onInviteMemberMenu"
+      }
+    },
+    {
+      "popup_menu_arrow": []
+    }
+  ],
+  "gamercard_div": [],
+  "tdiv": {
+    "id": "chatPopupNest",
+    "size": "0.4@sf+10, 0.075*@sf+10",
+    "position": "absolute",
+    "pos": "0.5@rw-w-0.55@titleLogoPlateWidth-0.019@scrn_tgt, @topBarHeight",
+    "flow": "vertical"
+  }
+}

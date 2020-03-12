@@ -1,0 +1,73 @@
+@const kbh: 0.040*@scrn_tgt\1 + 0.005*@scrn_tgt\1*1@isWide;
+@const kbPad: 0.005*@scrn_tgt\1;
+@const keyBgColor:       #606060;
+@const keyActiveBgColor: #808080;
+@const keyMainBgColor:   #c0c0c0;
+@const keyHoverBgColor:  #909090;
+@const mousekeyBgColor:       #b0b0b0;
+@const mousekeyActiveBgColor: #eeeeee;
+@const mousekeyHoverBgColor:  #d0d0d0;
+@const hotkeyKeyColor:    #a4830c;
+@const mouseKeyColor:     #000000;
+
+kb,bgk,dblk{
+  re-type:9rect;
+  background-image:#ui/gameuiskin#key;
+  background-color:@keyBgColor;
+  background-position:4;
+  background-repeat:expand;
+  border:yes;
+
+  color:@commonTextColor;
+  font:@fontNormal;
+  margin:1@kbPad;
+  height:@kbh;
+  min-width:@kbh;
+  position:relative;
+}
+keyboard > tdiv > row {
+  height:@kbh+1@kbPad;
+}
+kb {
+  width:@kbh;
+}
+dblk {
+  height:2@kbh+1@kbPad;
+  width:@kbh;
+  top:-50%h - 0.5@kbPad;
+}
+kb[tooltip], bgk[tooltip], dblk[tooltip] {
+  background-color:@keyActiveBgColor;
+  color:@hotkeyKeyColor;
+}
+kb[mainKey], bgk[mainKey], dblk[mainKey] {
+  background-color:@keyMainBgColor;
+}
+kb:hover, bgk:hover, dblk:hover {
+  background-color:@keyHoverBgColor;
+}
+
+mouseKey {
+  re-type:9rect;
+  background-color:@mousekeyBgColor;
+  color:@black;
+  font:@fontNormal;
+}
+mouseKey[tooltip] {
+  background-color:@mousekeyActiveBgColor;
+  color:@mouseKeyColor;
+}
+mouseKey:hover {
+  background-color:@mousekeyHoverBgColor;
+}
+
+kb.smallFont, dblk.smallFont, mouseKey.smallFont, text.smallFont, bgk.smallFont {
+  font:@fontTiny;
+}
+
+
+kb > tooltip, bgk > tooltip, dblk > tooltip, mouseKey > tooltip
+{
+  max-width:0;
+}
+

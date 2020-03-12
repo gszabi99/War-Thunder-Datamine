@@ -1,0 +1,333 @@
+@const spectatorTopOffset: 45@sf/@pf;
+@const spectatorTableWidth: 1@nameWidth +1.5@tableIcoSize +1@tablePad +2 + 2@scrollBarSize;
+@const spectatorRowWidth: 1.4@spectatorTableWidth;
+@const spectatorRowHeight: 1.4@baseTrHeight;
+@const spectatorToolbarBtnSize: 1.5@sIco;
+@const spectatorToolbarPadding: 0.25@sIco;
+@const spectatorUnitBlockWidth: 1.375@tableIcoSize;
+@const spectatorIconBlockWidth: 2@cIco + 1@spectatorUnitBlockWidth;
+
+spectatorFrame {
+  background-color: @frameSpectatorBackgroundColor;
+  border-color: @frameSpectatorBorderColor;
+  border:yes;
+  border-offset:@dp;
+}
+
+table.spectatorTeamTable {
+  width:pw;
+  css-hier-invalidate:yes;
+  total-input-transparent:yes;
+}
+
+table.spectatorTeamTable > tr {
+  height:1@spectatorRowHeight;
+  background-position:1,5;
+  background-repeat:expand;
+  css-hier-invalidate:yes;
+}
+
+table.spectatorTeamTable > tr[dead=yes] > td > textareaNoTab {
+  color-factor:150;
+}
+table.spectatorTeamTable[team=blue] > tr > td > textareaNoTab {
+  color:@teamBlueLightColor;
+}
+table.spectatorTeamTable[team=blue] > tr[squad=yes] > td > textareaNoTab {
+  color:@mySquadLightColor;
+}
+table.spectatorTeamTable[team=blue] > tr[hero=yes] > td > textareaNoTab {
+  color:@userlogColoredText;
+}
+table.spectatorTeamTable[team=red] > tr > td > textareaNoTab {
+  color:@teamRedLightColor;
+}
+table.spectatorTeamTable[side=left] > tr > td {
+  class:spectatorTeamCell;
+  side:left;
+}
+
+table.spectatorTeamTable[side=right] > tr > td {
+  class:spectatorTeamCell;
+  side:right;
+}
+
+td.spectatorTeamCell {
+  padding-left:1@tablePad;
+  padding-right:1@tablePad;
+  flow:vertical;
+  css-hier-invalidate:yes;
+}
+
+table.spectatorTeamTable > tr > td > highlight {
+  size:1@spectatorTableWidth, ph;
+  position:absolute;
+  re-type:9rect;
+  background-image:#ui/gameuiskin#expandable_item_sub_transp_sym;
+  background-position:0, 4;
+  background-repeat:expand;
+  background-color:@switchButtonOnColor;
+  input-transparent:yes;
+  display:hide;
+}
+table.spectatorTeamTable > tr[selected=yes] > td > highlight {
+  display:show;
+}
+
+td.spectatorTeamCell > hr {
+  size:1@spectatorTableWidth, 1@dp;
+  position:absolute;
+  background-image:#ui/gameuiskin#expandable_item_sub_transp;
+  background-position:1;
+  background-repeat:expand;
+  background-color:#30000000;
+}
+td.spectatorTeamCell[side=left] > hr {
+  rotation:180;
+}
+
+td.spectatorTeamCell[side=left] > highlight,
+td.spectatorTeamCell[side=left] > hr {
+  pos:0, ph-h;
+}
+td.spectatorTeamCell[side=right] > highlight,
+td.spectatorTeamCell[side=right] > hr {
+  pos:pw-w, ph-h;
+}
+
+td.spectatorTeamCell > icon > battleStateIco {
+  size:@cIco, @cIco;
+  position:relative;
+  background-svg-size:@cIco, @cIco;
+  background-color:@transparent;
+  input-transparent:yes;
+  css-hier-invalidate:yes;
+}
+td.spectatorTeamCell[side=left] > icon > battleStateIco {
+  pos:0, ph/2-h/2;
+}
+td.spectatorTeamCell[side=right] > icon > battleStateIco {
+  pos:0, ph/2-h/2;
+}
+
+td.spectatorTeamCell > icon > battleStateIco.ExtinguisherActive {
+  background-image:#ui/gameuiskin#fire_indicator.svg;
+  background-color:#11bedd;
+}
+td.spectatorTeamCell > icon > battleStateIco.IsBurning {
+  background-image:#ui/gameuiskin#fire_indicator.svg;
+  background-color:#ddb711;
+}
+td.spectatorTeamCell > icon > battleStateIco.BrokenEngine {
+  background-image:#ui/gameuiskin#engine_state_indicator.svg;
+  background-color:#dd1111;
+}
+td.spectatorTeamCell > icon > battleStateIco.BrokenGun {
+  background-image:#ui/gameuiskin#gun_state_indicator.svg;
+  background-color:#dd1111;
+}
+td.spectatorTeamCell > icon > battleStateIco.BrokenTrack {
+  background-image:#ui/gameuiskin#track_state_indicator.svg;
+  background-color:#dd1111;
+}
+td.spectatorTeamCell > icon > battleStateIco.OutOfAmmo {
+  background-image:#ui/gameuiskin#btn_weapons.svg;
+  background-color:#dd1111;
+}
+
+td.spectatorTeamCell > icon {
+  height:@tableIcoSize;
+  position:absolute;
+  css-hier-invalidate:yes;
+}
+td.spectatorTeamCell[side=left] > icon {
+  pos:1@spectatorIconBlockWidth - w, 0.5ph-0.5h;
+}
+td.spectatorTeamCell[side=right] > icon {
+  pos:pw - 1@spectatorIconBlockWidth, 0.5ph-0.5h;
+}
+
+td.spectatorTeamCell > icon > unitContainer {
+  size:1@spectatorUnitBlockWidth, 1@tableIcoSize;
+}
+
+td.spectatorTeamCell > icon > unitContainer > img.unit {
+  size:1@tableIcoSize, ph;
+}
+
+td.spectatorTeamCell > icon > unitContainer > img.weapon {
+  size:0.375@tableIcoSize, ph;
+}
+
+td.spectatorTeamCell > icon > unitContainer > img.weapon[reloading=yes] {
+  background-color:@inactiveButtonBgColor;
+}
+
+td.spectatorTeamCell > textareaNoTab {
+  position:relative;
+  halign:center;
+  text-shade:"smooth:24";
+  text-shade-x:0;
+  text-shade-y:0;
+  text-shade-color:#A0000000;
+}
+td.spectatorTeamCell[side=left] > textareaNoTab {
+  pos:0, 0;
+  padding-left:1@spectatorIconBlockWidth;
+  text-align:left;
+}
+td.spectatorTeamCell[side=right] > textareaNoTab {
+  pos:pw-w, 0;
+  padding-right:1@spectatorIconBlockWidth;
+  text-align:right;
+}
+td.spectatorTeamCell[side=left] > textareaNoTab[id=name] {
+  pos:0, 3@sf/@pf;
+}
+td.spectatorTeamCell[side=right] > textareaNoTab[id=name] {
+  pos:pw-w, 3@sf/@pf;
+}
+
+td.spectatorTeamCell > icon > ButtonContainer {
+  size:@cIco, @cIco;
+  pos:0, 50%ph-50%h;
+  position:relative;
+  css-hier-invalidate:yes;
+}
+
+td.spectatorTeamCell > icon > ButtonContainer > ButtonImg {
+  size:pw, ph;
+  showOnSelect:yes;
+  btnName:A;
+}
+
+td.spectatorTeamCell > textareaNoTab[id=unit] {
+  size:pw, 0.5@baseTrHeight;
+  smallFont:yes;
+}
+td.spectatorTeamCell > textareaNoTab[id=name] {
+  size:pw, 0.75@baseTrHeight;
+  color:@activeTextColor;
+}
+table.spectatorTeamTable > tr[hero=yes] > td > textareaNoTab[id=name] {
+  color:@userlogColoredText;
+}
+
+buttons_block, hoverButton {
+  input-transparent:yes;
+  margin:0.25@spectatorToolbarBtnSize, 0;
+}
+
+hoverButton[withSeparation=yes] {
+  margin:1@spectatorToolbarBtnSize, 0;
+}
+
+hoverButton, toggleButton
+{
+  behaviour:button;
+  re-type:9rect;
+  snd_click:click;
+  css-hier-invalidate:yes;
+}
+
+toggleButton {
+  size:@mIco, @mIco;
+}
+
+hoverButton
+{
+  height:@spectatorToolbarBtnSize;
+  min-width:h;
+  class:header;
+  color:@gray;
+  font:@fontNormal;
+}
+
+hoverButton > icon, toggleButton > icon
+{
+  pos:(pw-w)/2, (ph-h)/2;
+  position:absolute;
+  size:@sIco, @sIco;
+  background-svg-size:@sIco, @sIco;
+  background-color:@gray;
+  input-transparent:yes;
+}
+
+hoverButton:hover
+{
+  background-color:@switchButtonOnColor;
+  color:@buttonFontColorHover;
+}
+hoverButton:hover > icon
+{
+  background-color:@buttonFontColorHover;
+}
+
+hoverButton:disabled
+{
+  color:#30303030;
+}
+hoverButton:disabled > icon
+{
+  background-color:#30303030;
+}
+
+hoverButton[isTextBtn=yes]
+{
+  height:@spectatorToolbarBtnSize;
+  color:@gray;
+  color-factor:127;
+  padding:0.3@sIco, 0;
+}
+hoverButton[isTextBtn=yes]:hover
+{
+  color:@white;
+  color-factor:255;
+  background-color:@menuButtonColorHover;
+}
+hoverButton[highlighted=yes]
+{
+  color:@userlogColoredText;
+}
+hoverButton[highlighted=yes] > icon
+{
+  background-color:@userlogColoredText;
+}
+
+toggleButton:hover
+{
+  background-color:@menuButtonColorHover;
+  color:@white;
+}
+toggleButton:hover > icon
+{
+  background-color:@white;
+}
+
+toggleButton[toggled=yes] {
+  tooltip:#mainmenu/btnCollapse;
+}
+toggleButton[toggled=no] {
+  tooltip:#mainmenu/btnExpand;
+}
+
+toggleButton > icon {
+  background-image:#ui/gameuiskin#spinnerListBox_arrow_up.svg;
+}
+toggleButton[attachSide=left][toggled=yes] > icon,
+toggleButton[attachSide=right][toggled=no] > icon {
+  rotation:270;
+}
+toggleButton[attachSide=right][toggled=yes] > icon,
+toggleButton[attachSide=left][toggled=no]   > icon {
+  rotation:90;
+}
+
+historyLog {
+  behaviour:textArea;
+  re-type:textarea;
+  color:@commonTextColor;
+  font:@fontSmall;
+  paragraph-indent:0;
+  padding:0;
+}

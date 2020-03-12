@@ -1,0 +1,115 @@
+@const sliderThumbWidth: 9@sf/@pf_outdated;
+@const sliderThumbHeight: 22@sf/@pf_outdated;
+@const sliderValueButtonHeight: 1@cIco+4;
+@const sliderButtonSquareHeight: 0.025@scrn_tgt;
+@const sliderVisualHeight: 5*@sf/@pf_outdated;
+@const sliderHeight: 7*@sf/@pf_outdated;
+@const sliderIncHeight: 5*@sf/@pf_outdated; @const sliderWidth: (0.3@sf) \ 1; 
+@const sliderBgColor: #606060;
+@const sliderFgColor: #A0A0A0;
+@const sliderActiveBgColor: #808080;
+@const sliderActiveFgColor: #E0E0E0;
+
+slider {
+  height:@sliderHeight + 2@sliderIncHeight;
+  width:@sliderWidth;
+  top:50%ph-50%h;
+  position:relative;
+
+  behaviour:slider;
+  re-type:progress;
+  background-color:@sliderBgColor;
+  background-position:0, @sliderIncHeight;
+  foreground-color:@sliderFgColor;
+  foreground-position:0, @sliderIncHeight;
+  sliderButtonAlign:center;
+
+  css-hier-invalidate:yes;
+  snd_change_value:choose;
+  disable_wheel:yes;
+}
+
+.optionsTable slider {
+  max-width:pw;
+}
+
+slider:focus, slider:hover {
+  background-color:@sliderActiveBgColor;
+  foreground-color:@sliderActiveFgColor;
+}
+
+slider:disabled,
+.optionsTable > tr[inactiveColor=yes] slider,
+slider[inactiveColor=yes]
+{
+  background-color:@black;
+  foreground-color:@controlDisabledColor;
+}
+
+sliderButton {
+  size:@sliderThumbWidth, @sliderThumbHeight;
+  background-image:#ui/gameuiskin#slider_thumb.svg;
+  background-svg-size:@sliderThumbWidth, @sliderThumbHeight;
+  background-repeat:stretch;
+  background-color:@commonTextColor;
+}
+
+sliderButton:hover,
+slider:focus > sliderButton,
+sliderButton:pushed {
+  background-color:@white;
+  background-image:#ui/gameuiskin#slider_thumb_hover.svg;
+}
+
+sliderButton:disabled {
+  background-color:@fadedTextColor;
+}
+
+invisSlider {
+  behaviour:slider;
+  behaviour:accesskey;
+  css-hier-invalidate:yes;
+  disable_wheel:yes;
+  sliderButtonAlign:center;
+  total-input-transparent:yes;
+}
+invisSlider > sliderButton {
+  size:0.3ph,ph;
+  background-svg-size:0.3ph,ph;
+}
+invisSlider > sliderButton[type=various] {
+  size: @sliderThumbWidth, @sliderThumbHeight;
+  background-svg-size:@sliderThumbWidth, @sliderThumbHeight;
+  css-hier-invalidate:yes;
+}
+
+sliderButton[type=various] > img {
+  id:"slider_button";
+  size:@sliderThumbWidth, @sliderThumbHeight;
+  pos:50%pw-50%w, 50%ph-50%h;
+  position:absolute;
+  background-repeat:expand;
+  background-image:#ui/gameuiskin#slider_thumb.svg;
+  background-color:@commonTextColor;
+  background-svg-size:@sliderThumbWidth, @sliderThumbHeight;
+}
+
+sliderButton[type=various]:hover > img {
+  background-image:#ui/gameuiskin#slider_thumb_hover.svg;
+  background-color:@activeTextColor;
+}
+
+tr[selected=no] > td > tdiv > invisSlider > sliderButton[type=various] > img[showWhenSelected=yes] {
+  display:hide;
+}
+
+tr[selected=yes] > td > tdiv > invisSlider > sliderButton[type=various] > img[showWhenSelected=yes],
+tr[selected=no]:hover > td > tdiv > invisSlider > sliderButton[type=various] > img[showWhenSelected=yes] {
+  display:show;
+}
+
+[class=optionsTable] > tr:disabled invisSlider > sliderButton > img,
+[class=optionsTable] > tr[inactiveColor=yes] invisSlider > sliderButton > img,
+invisSlider:disabled > sliderButton > img {
+  background-color:@fadedTextColor;
+}

@@ -1,0 +1,26 @@
+{
+  "debriefingTab": {
+    "id": "chat_history_tab",
+    "flow": "vertical",
+    "debrBlock": {
+      "id": "chat_history_scroll_block",
+      "size": "pw, ph",
+      "overflow-y": "auto",
+      "scrollbarShortcuts": "yes",
+      "tdiv": {
+        "id": "chat_history_div",
+        "width": "pw",
+        "min-height": "ph",
+        "margin": "1@debrPad",
+        "chatLog": {
+          "width": "pw",
+          "id": "chat_log",
+          "style": "color:@white",
+          "text": "",
+          "on_link_click": "onChatLinkClick",
+          "on_link_rclick": "onChatLinkRClick"
+        }
+      }
+    }
+  }
+}

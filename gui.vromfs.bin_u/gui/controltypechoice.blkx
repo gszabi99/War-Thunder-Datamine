@@ -1,0 +1,150 @@
+{
+  "root": {
+    "background-color": "@modalShadeColor",
+    "size": "sw,sh",
+    "pos": "0,0",
+    "position": "root",
+    "menutitle": {
+      "id": "controlChoice-title"
+    },
+    "frame": [
+      {
+        "pos": "50%pw-50%w, 50%ph-50%h"
+      },
+      {
+        "position": "absolute"
+      },
+      {
+        "class": "wndNav"
+      },
+      {
+        "width": "1@scrn_tgt"
+      },
+      {
+        "flow": "vertical"
+      },
+      {
+        "frame_header": {
+          "Button_close": {
+            "id": "btn_back",
+            "style": "_on_click:onBack"
+          }
+        }
+      },
+      {
+        "textAreaCentered": {
+          "id": "txt_icon",
+          "display": "hide",
+          "width": "pw",
+          "pos": "50%pw-50%w, 0",
+          "position": "relative",
+          "text": "#options/chooseProfileImage"
+        }
+      },
+      {
+        "Button_text": {
+          "id": "btn_pref_img",
+          "pos": "50%pw-50%w, 0.005@scrn_tgt",
+          "margin-bottom": "0.04@scrn_tgt",
+          "position": "relative",
+          "_on_click": "onChangePilotIcon",
+          "class": "profileImg",
+          "btnName": "X",
+          "div": {
+            "id": "prefIcon",
+            "size": "pw,ph",
+            "behavior": "bhvAvatar",
+            "isFull": "yes"
+          },
+          "ButtonImg": [],
+          "unseenIcon": {
+            "id": "unseen_avatar",
+            "pos": "4@dp, 4@dp",
+            "position": "absolute",
+            "unseenText": []
+          }
+        }
+      },
+      {
+        "textAreaCentered": {
+          "width": "pw",
+          "pos": "50%pw-50%w, 0",
+          "position": "relative",
+          "text": "#options/chooseControllerType"
+        }
+      },
+      {
+        "HorizontalListBox": [
+          {
+            "id": "controlType"
+          },
+          {
+            "pos": "50%pw-50%w, 0.005@scrn_tgt"
+          },
+          {
+            "position": "relative"
+          },
+          {
+            "height": "13.5*@scrn_tgt/100.0"
+          },
+          {
+            "class": "choice3"
+          },
+          {
+            "navigatorShortcuts": "yes"
+          },
+          {
+            "shopFilter": {
+              "id": "ct_mouse",
+              "selected": "yes",
+              "useParentHeight": "yes",
+              "shopFilterImg": {
+                "background-image": "#ui/gameuiskin#ct_mouse"
+              },
+              "shopFilterText": {
+                "text": "#controlType/mouse"
+              }
+            }
+          },
+          {
+            "shopFilter": {
+              "id": "ct_xinput",
+              "useParentHeight": "yes",
+              "shopFilterImg": {
+                "background-image": "#ui/gameuiskin#ct_xinput"
+              },
+              "shopFilterText": {
+                "text": "#controlType/xinput"
+              }
+            }
+          },
+          {
+            "shopFilter": {
+              "id": "ct_own",
+              "useParentHeight": "yes",
+              "shopFilterImg": {
+                "background-image": "#ui/gameuiskin#ct_own"
+              },
+              "shopFilterText": {
+                "text": "#controlType/own"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "navBar": {
+          "navRight": {
+            "Button_text": {
+              "text": "#mainmenu/btnApply",
+              "position": "absolute",
+              "btnName": "A",
+              "on_click": "onControlTypeApply",
+              "ButtonImg": []
+            }
+          }
+        }
+      }
+    ]
+  }
+}

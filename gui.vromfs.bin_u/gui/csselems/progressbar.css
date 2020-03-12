@@ -1,0 +1,221 @@
+@const progressHeight: 8@sf/@pf;
+@const progressHeightSlot: 5@sf/@pf;
+@const progressHeightSmall: 3@sf/@pf;
+@const referenceProgressHeight:3@dp;
+@const referenceProgressOffset:0@dp;
+
+@const skillProgressBgIncSize: 0;
+@const skillProgressHeightMul: 0.5;
+@const skillProgressWidthMul: 2; 
+skillProgress {
+  behaviour:progress;
+  re-type:progress;
+  foreground-color:@white;
+  foreground-image:#ui/gameuiskin#skill_star_new;
+  foreground-repeat:repeat-x;
+  min:0;
+}
+skillProgress[type=old] {
+  foreground-image:#ui/gameuiskin#skill_star;
+}
+skillProgress[type=available] {
+  background-color:#FF808080;
+  background-image:#ui/gameuiskin#skill_star_place;
+  background-repeat:repeat-x;
+  foreground-image:#ui/gameuiskin#skill_star_place;
+}
+skillProgress[type=glow] {
+  foreground-image:#ui/gameuiskin#skill_star_new_glow;
+  foreground-color:#00FFFFFF;
+}
+skillProgress[type=shade] {
+  foreground-image:#ui/gameuiskin#skill_star_shadow;
+}
+
+skillProgressBg {
+    pos:0.5*(pw-1)-0.5w, 0.5ph - 0.5h;
+  position:absolute;
+  re-type:9rect;
+  background-image:#ui/gameuiskin#block_bg_rounded_flat@@vs;
+  background-color:#454c53;
+  background-position:0;
+  background-repeat:expand;
+}
+
+optionProgress {
+  height:@progressHeight;
+  behaviour:progress;
+  re-type:progress;
+  background-color:#000000;
+  foreground-color:#A0A0A0;
+  border:yes;
+  border-color:#C0C0C0;
+}
+
+expProgress, referenceProgress, crewSpecProgressBar {
+  behaviour:progress;
+  re-type:progress;
+  background-color:@cardProgressBGColor;
+  foreground-color:@cardProgressFGColor;
+}
+
+expProgress {
+  height:1@progressHeight;
+  min:0;
+  needMax:yes;
+}
+expProgress[max] {
+  needMax:no;
+}
+expProgress[needMax=yes] {
+  max:1000;
+}
+expProgress[small=yes] {
+  height:1@progressHeightSmall;
+}
+expProgress[type=old], crewSpecProgressBar[type=old] {
+  background-color:@transparent;
+}
+expProgress[type=new], crewSpecProgressBar[type=new] {
+  foreground-color:@cardProgressChangeColor;
+}
+country_exp_div[isForSquadVehicle=yes] expProgress[type=new] {
+  foreground-color:@cardProgressChangeSquadronColor;
+}
+
+expProgress[paused=yes], crewSpecProgressBar[paused=yes] {
+  background-color:@cardProgressDisabledBGColor;
+  foreground-color:@cardProgressDisabledFGColor;
+}
+expProgress[type=bonus] {
+  foreground-color:@cardProgressBonusColor;
+}
+expProgress[type=inactive] {
+  foreground-color:@cardProgressDisabledFGColor;
+}
+expProgress[transpBG=yes] {
+  background-color:@transparent;
+}
+expProgress.slider {
+  behaviour:slider;
+  input-transparent:no;
+}
+expProgress.slider sliderButton {
+  width:1*@scrn_tgt/100.0;
+  height:1.5ph;
+}
+
+[class=optionsTable] > tr:disabled expProgress,
+[class=optionsTable] > tr[inactiveColor=yes] expProgress,
+expProgress[inactiveColor=yes] {
+  background-color:@fadedTextColor;
+  foreground-color:@controlDisabledColor;
+}
+
+country_exp_div, exp_div {
+  input-transparent:yes;
+}
+
+country_exp_div {
+  min-height:3@sf/100.0;
+  flow:horizontal;
+}
+
+[countryExpType=vertical] country_exp_div {
+  flow:vertical;
+  width:30*@sf/100.0;
+}
+[countryExpType=centered] country_exp_div, [countryExpType=noNames] country_exp_div {
+  width:41*@sf/100.0;
+  pos:50%pw-50%w,0;
+  position:relative;
+}
+[countryExpType=noNames] country_exp_div {
+  width:33*@sf/100.0;
+}
+exp_div {
+  width:20*@sf/100.0;
+}
+.short > exp_div, .short > exp_div > expProgress {
+  width:15*@sf/100.0;
+}
+
+country_exp_div[flow=vertical] > exp_div {
+  pos:50%pw-50%w, 0;
+  position:relative;
+}
+
+country_exp_div[flow=horizontal] > exp_div {
+  pos:1*@scrn_tgt/100.0, 50%ph-50%h;
+  position:relative;
+}
+
+[countryExpType=wide] country_exp_div > exp_div {
+  size:pw, ph;
+  pos:0,0;
+  position:absolute;
+}
+
+[countryExpType=wide] country_exp_div > exp_div > expProgress {
+  width:pw;
+  pos:0, ph-h;
+}
+
+[countryExpType=wide] country_exp_div > exp_div > activeText {
+  pos:50%pw-50%w, 0;
+  position:absolute;
+  height:ph;
+}
+
+challengeDescriptionProgress {
+  behaviour:progress;
+  re-type:progress;
+  height:1@progressHeight;
+  width:300@sf/@pf;
+  margin-top:0.01@sf;
+  background-color:@cardProgressBGColor;
+  foreground-color:@cardProgressFGColor;
+  min:0;
+  max:1000;
+}
+
+battleTaskProgress {
+  behaviour:progress;
+  re-type:progress;
+  height:1@progressHeight;
+  border:yes;
+  border-offset:@dp;
+  border-color:@gray60;
+  background-color:@cardProgressBGColor;
+  foreground-color:@cardProgressFGColor;
+  min:0;
+  max:1000;
+}
+
+referenceProgress{
+  height:@referenceProgressHeight;
+  width:8*@sf/100;
+  pos:0, ph+@referenceProgressOffset;
+  position:absolute;
+  min:0;
+  max:1000;
+}
+
+.airInfoPanel referenceProgress {
+  width:0.5@airInfoPanelWidth;
+}
+
+referenceMarker{
+  height: 0.02@sf;
+  width: 9/22*h;
+  top: 0.5ph - 0.5h;
+  background-repeat:expand;
+  background-color:@white;
+  background-image: #ui/gameuiskin#slider_thumb.svg;
+  background-svg-size: 9/22*0.02@sf, 0.02@sf;
+  position: absolute;
+}
+
+table.pbarTable tr{
+  height:@baseTrHeaderHeight;
+}

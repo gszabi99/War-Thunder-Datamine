@@ -1,0 +1,73 @@
+tacticalItemText
+{
+  re-type:text;
+  background-color:@transparent;
+  padding-top:-8*@sf/@pf_outdated;  
+  margin-bottom:16*@sf/@pf_outdated;
+  textShade:yes;
+
+  font:@option_font;
+  tabStop:no;
+}
+
+tacticalMap
+{
+  tabStop:no;
+  behaviour:tacticalmap;
+  border:yes;
+  border-color:#CC606060;
+}
+
+radar3d
+{
+  tabStop:no;
+  behaviour:radar3d;
+  border:no;
+}
+
+dmgIndicator
+{
+  tabStop:no;
+  behaviour:dmgIndicator;
+}
+
+taskIcon {
+  re-type:9rect;
+  background-color:@white;
+  background-position:0;
+  padding:0;
+  background-repeat:expand;
+}
+
+objectiveText
+{
+  font:@fontNormal;
+  behaviour:textArea;
+  border:no;
+  re-type:textarea;
+  color:@activeTextColor;
+  textShade:yes;
+  overflow:none;
+}
+
+objective {
+  width:pw;
+  margin-bottom:0.5*@scrn_tgt/100.0;
+  background-color:@activeMenuButtonBGColor;
+  background-position:16,12;
+  background-repeat:expand;
+}
+
+objective > objectiveText {
+  width:pw-4*@scrn_tgt/100.0;
+  pos:2*@sf/@pf_outdated, 3*@sf/@pf_outdated;
+  position:relative;
+}
+
+objective > taskIcon {
+  size:0.029@scrn_tgt, 0.029@scrn_tgt;
+  pos:0.5*@scrn_tgt/100.0, 50%ph-50%h;
+  position:relative;
+  background-repeat:aspect-ratio;
+  background-svg-size:0.029@scrn_tgt, 0.029@scrn_tgt;
+}

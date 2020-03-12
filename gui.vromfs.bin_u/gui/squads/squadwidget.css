@@ -1,0 +1,148 @@
+@const squadInvitesWidgetPadding: 6@sf/@pf;
+@const squadMemberCrossPlaySize: (9@sf/@pf) \1 * 2;
+@const squadMemberStatusSize: (3@sf/@pf) \1 * 2;
+@const squadMemberLeaderStatusSize: (6@sf/@pf) \1 * 2;
+
+Button_text.squadWidgetMember[isMe=yes] > mainPlayerHighlight {
+  re-type:fgPict;
+  foreground-position:0, h+3@dp, 0, -1@dp;
+  background-position:0, -1@dp, 0, h+3@dp;
+  foreground-color:@mainPlayerColor;
+  background-color:@mainPlayerColor;
+}
+
+squadButtonImg {
+  size:@dIco, @dIco;
+  background-svg-size:@dIco, @dIco;
+  background-color:#00a0a0a0;
+}
+
+Button_text[type=squadInvites] > squadButtonImg {
+  background-color:@gray;
+  background-image:#ui/gameuiskin#lb_members_cnt.svg;
+  background-repeat:aspect-ratio;
+}
+
+Button_text:hover > squadButtonImg {
+  background-color:@white;
+}
+
+Button_text[type=squadDisband] > squadButtonImg {
+  size:@mIco, @mIco;
+  background-color:#aad04637;
+}
+
+squadMemberStatus {
+  left:50%pw-50%w;
+  top:50%ph-50%h;
+  position:absolute;
+  size: 1@squadMemberStatusSize, 1@squadMemberStatusSize;
+  background-svg-size: 1@squadMemberStatusSize, 1@squadMemberStatusSize;
+  background-image:#ui/gameuiskin#squad_status.svg;
+}
+
+squadMemberCrossPlayStatus {
+  size:1@squadMemberCrossPlaySize, 1@squadMemberCrossPlaySize;
+  background-svg-size:1@squadMemberCrossPlaySize, 1@squadMemberCrossPlaySize;
+  background-color:@imageNotSelectedColor;
+  background-image:#ui/gameuiskin#cross_play_icon.svg;
+}
+
+squadMemberCrossPlayStatus[isEnabledCrossPlay=yes] {
+  background-color:@white;
+}
+
+[showCrossplayIcon=no] > squadMemberCrossPlayStatus {
+  display:hide;
+}
+
+[showCrossplayIcon=no] > squadMemberStatus {
+  position:relative;
+  top: 0.5@squadMemberStatusSize;
+  margin:1@dp, 0, 4@dp, 0;
+}
+
+squadMemberVoipStatus {
+  size:(5@sf/@pf) \1 * 2, (7@sf/@pf) \ 1 * 2;
+  position:relative;
+  margin-left:2@dp;
+  background-svg-size:(5@sf/@pf) \1 * 2, (7@sf/@pf) \ 1 * 3;
+  background-image:#ui/gameuiskin#voip_status.svg;
+}
+
+Button_text.squadWidgetMember[status=offline] squadMemberStatus, squadMemberVoipStatus[isVoipActive=no] {
+  background-color:@voiceChatIconMuteColor;
+}
+
+Button_text.squadWidgetMember[status=ready] squadMemberStatus, squadMemberVoipStatus[isVoipActive=yes] {
+  background-color:@voiceChatIconActiveColor;
+}
+
+Button_text.squadWidgetMember[status=notReady] squadMemberStatus {
+  background-color:#ff7e00;
+}
+
+Button_text.squadWidgetMember[status=leader] squadMemberStatus {
+  size: 1@squadMemberLeaderStatusSize, 1@squadMemberLeaderStatusSize;
+  background-svg-size: 1@squadMemberLeaderStatusSize, 1@squadMemberLeaderStatusSize;
+  background-image:#ui/gameuiskin#squad_leader_star.svg;
+  background-color:#fdcf17;
+}
+
+Button_text.squadWidgetMember[status=leader] [showCrossplayIcon=no] > squadMemberStatus {
+  position:relative;
+  top: 0;
+  margin:0, 0, 1@dp, 0;
+}
+
+memberIcon {
+  behavior:bhvAvatar;
+}
+
+Button_text.squadWidgetMember memberIcon {
+  size:@dIco, @dIco;
+  pos:1@buttonImgPadding, 50%ph-50%h;
+  position:relative;
+}
+
+emptyButton.squadWidgetInvite {
+  size:@mIco, @mIco;
+}
+
+.squadWidgetInvite  > memberIcon {
+  size:pw-@squadInvitesWidgetPadding, ph-@squadInvitesWidgetPadding;
+  pos:0.5*(pw-w), 0.5*(ph-h);
+  position:absolute;
+  border:yes;
+  border-color:@black;
+}
+
+Button_text.squadWidgetMember > squadMemberNick {
+  display:hide;
+  input-transparent:yes;
+  background-color:@white;
+  background-image:#ui/gameuiskin#block_bg_rounded_gray;
+  background-repeat:expand;
+  background-position:2;
+}
+
+Button_text.squadWidgetMember:focus  > squadMemberNick{
+  display:show;
+}
+
+memberReadyIcon {
+  size:@dIco,@dIco;
+  left:50%pw-50%w;
+  position:relative;
+  bgcolor:@white;
+  background-repeat:aspect-ratio;
+  background-svg-size:@dIco, @dIco;
+}
+
+memberReadyIcon[isReady=no] {
+  background-image:#ui/gameuiskin#icon_primary_fail.svg;
+}
+
+memberReadyIcon[isReady=yes] {
+  background-image:#ui/gameuiskin#favorite;
+}

@@ -1,0 +1,142 @@
+{
+  "tdiv": [
+    {
+      "id": "gamechat"
+    },
+    {
+      "size": "pw, ph"
+    },
+    {
+      "flow": "vertical"
+    },
+    {
+      "div": {
+        "id": "chat_log_tdiv",
+        "position": "absolute",
+        "size": "pw + 1@scrollBarSize, ph",
+        "sizeWithInput": "pw + 1@scrollBarSize, ph - @spectatorToolbarBtnSize - 5*@sf/@pf_outdated",
+        "sizeWithoutInput": "pw + 1@scrollBarSize, ph",
+        "padding-left": "@scrollBarSize + 0.5*@scrn_tgt/100.0",
+        "overflow-y": "auto",
+        "scroll-align": "left",
+        "auto-scroll": "yes",
+        "css-hier-invalidate": "yes",
+        "chatLog": {
+          "id": "chat_log",
+          "width": "pw",
+          "on_link_click": "onChatLinkClick",
+          "on_link_rclick": "onChatLinkRClick",
+          "punctuation-exception": "-.,'\"():/\\@[]=^+",
+          "text": ""
+        }
+      }
+    },
+    {
+      "div": [
+        {
+          "id": "chat_input_div"
+        },
+        {
+          "pos": "0, ph-h"
+        },
+        {
+          "position": "absolute"
+        },
+        {
+          "size": "pw, @spectatorToolbarBtnSize"
+        },
+        {
+          "div": {
+            "id": "chat_input_placeholder",
+            "display": "show",
+            "position": "absolute",
+            "size": "pw, ph",
+            "hoverButton": {
+              "id": "btn_activate",
+              "text": "#chat/help/spectator",
+              "tooltip": "#chat/help/spectator",
+              "_on_click": "onChatIngameRequestActivate",
+              "isTextBtn": "yes",
+              "style": "margin:0; width:pw;"
+            }
+          }
+        },
+        {
+          "div": [
+            {
+              "id": "chat_input_back"
+            },
+            {
+              "display": "hide"
+            },
+            {
+              "flow": "horizontal"
+            },
+            {
+              "position": "absolute"
+            },
+            {
+              "size": "pw, ph"
+            },
+            {
+              "hoverButton": {
+                "id": "chat_prompt",
+                "tooltip": "#chat/team",
+                "_on_click": "onChatMode",
+                "no_text": "yes",
+                "style": "margin:0;",
+                "icon": {
+                  "id": "icon",
+                  "background-image": "#ui/gameuiskin#player_in_queue",
+                  "input-transparent": "yes"
+                }
+              }
+            },
+            {
+              "EditBox": {
+                "id": "chat_input",
+                "width": "fw",
+                "max-len": "250",
+                "focus": "yes",
+                "on_activate": "onChatEntered",
+                "on_cancel_edit": "onChatCancel",
+                "on_change_value": "onChatChanged",
+                "on_wrap_up": "onWrapUp",
+                "on_wrap_down": "onWrapDown",
+                "mouse-focusable": "yes",
+                "style": "height:@spectatorToolbarBtnSize;",
+                "text": ""
+              }
+            },
+            {
+              "hoverButton": {
+                "id": "btn_send",
+                "tooltip": "#chat/send",
+                "on_click": "onChatIngameRequestEnter",
+                "style": "margin:0;",
+                "icon": {
+                  "background-image": "#ui/gameuiskin#ok"
+                }
+              }
+            },
+            {
+              "hoverButton": {
+                "id": "btn_cancel",
+                "tooltip": "#msgbox/btn_cancel",
+                "_on_click": "onChatIngameRequestCancel",
+                "style": "margin:0;",
+                "icon": {
+                  "background-image": "#ui/gameuiskin#btn_close.svg"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "timer": {
+    "id": "chat_update",
+    "timer_handler_func": "onUpdate"
+  }
+}

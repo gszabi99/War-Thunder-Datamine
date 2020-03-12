@@ -1,0 +1,186 @@
+{
+  "root": {
+    "background-color": "@shadeBackgroundColor",
+    "frame": {
+      "pos": "50%pw-50%w, 50%ph-50%h",
+      "position": "absolute",
+      "width": "80%sh",
+      "max-width": "800*@sf/@pf_outdated + 2@framePadding",
+      "max-height": "sh",
+      "class": "wndNav",
+      "frame_header": {
+        "activeText": {
+          "id": "award_name",
+          "width": "p.p.w-2@buttonHeight",
+          "caption": "yes",
+          "pare-text": "yes"
+        },
+        "Button_close": {
+          "id": "btn_close"
+        }
+      },
+      "img": {
+        "id": "award_image",
+        "width": "pw",
+        "height": "0.75w",
+        "max-width": "800*@sf/@pf_outdated",
+        "max-height": "600*@sf/@pf_outdated",
+        "pos": "50%pw-50%w, 0",
+        "position": "relative",
+        "background-image": "#ui/images/login_reward.jpg?P1",
+        "dummy": {
+          "id": "award_image_button",
+          "link": "",
+          "on_click": "onMsgLink",
+          "bqKey": "show_unlock_window",
+          "size": "pw, ph"
+        }
+      },
+      "tdiv": [
+        {
+          "width": "pw"
+        },
+        {
+          "max-height": "fh"
+        },
+        {
+          "pos": "0, 1@framePadding"
+        },
+        {
+          "position": "relative"
+        },
+        {
+          "flow": "vertical"
+        },
+        {
+          "overflow-y": "auto"
+        },
+        {
+          "textarea": {
+            "id": "award_desc",
+            "pos": "50%pw-50%w, 0",
+            "position": "relative",
+            "max-width": "pw",
+            "removeParagraphIndent": "yes",
+            "text": "",
+            "font-bold": "@fontMedium",
+            "on_link_click": "proccessLinkFromText"
+          }
+        },
+        {
+          "textarea": {
+            "id": "award_reward",
+            "pos": "50%pw-50%w, 0",
+            "position": "relative",
+            "max-width": "pw",
+            "overlayTextColor": "userlog",
+            "removeParagraphIndent": "yes",
+            "text": "",
+            "on_link_click": "proccessLinkFromText"
+          }
+        },
+        {
+          "tdiv": {
+            "id": "reward_aircrafts",
+            "max-width": "pw",
+            "pos": "0.5pw-0.5w,0",
+            "position": "relative",
+            "flow": "h-flow",
+            "class": "rankUpList"
+          }
+        },
+        {
+          "textAreaCentered": {
+            "id": "next_award",
+            "max-width": "pw",
+            "pos": "50%pw-50%w, 0.03@sf",
+            "position": "relative",
+            "textHide": "yes",
+            "text": ""
+          }
+        }
+      ],
+      "navBar": {
+        "navLeft": [
+          {
+            "Button_text": {
+              "id": "btn_postLink",
+              "_on_click": "onFacebookPostLink",
+              "display": "hide",
+              "cardImg": {
+                "background-image": "#ui/gameuiskin#facebook_logo",
+                "input-transparent": "yes"
+              },
+              "text": {
+                "id": "text_facebook_action",
+                "pos": "0,50%ph-50%h",
+                "position": "relative",
+                "text": "#facebook/postLink",
+                "input-transparent": "yes"
+              }
+            }
+          },
+          {
+            "Button_text": {
+              "id": "btn_upload_facebook_scrn",
+              "display": "hide",
+              "pressAction": "share",
+              "on_click": "onFacebookLoginAndPostScrnshot",
+              "tooltip": "",
+              "cardImg": {
+                "background-image": "#ui/gameuiskin#facebook_logo",
+                "input-transparent": "yes"
+              },
+              "text": {
+                "id": "text_facebook_action",
+                "pos": "0,50%ph-50%h",
+                "position": "relative",
+                "text": "#mainmenu/btnUploadFacebookScreenshot",
+                "input-transparent": "yes"
+              }
+            }
+          },
+          {
+            "Button_text": {
+              "id": "btn_upload_facebook_wallPost",
+              "display": "hide",
+              "pressAction": "share",
+              "on_click": "onFacebookLoginAndPostMessage",
+              "tooltip": "",
+              "btnName": "X",
+              "ButtonImg": [],
+              "cardImg": {
+                "background-image": "#ui/gameuiskin#facebook_logo",
+                "input-transparent": "yes"
+              },
+              "text": {
+                "id": "text_facebook_action",
+                "pos": "0,50%ph-50%h",
+                "position": "relative",
+                "text": "#facebook/postLink",
+                "input-transparent": "yes"
+              }
+            }
+          },
+          {
+            "Button_text": {
+              "id": "btn_sendEmail",
+              "display": "hide",
+              "text": "#mainmenu/btnSendEmail",
+              "on_click": "sendInvitation"
+            }
+          }
+        ],
+        "navRight": {
+          "Button_text": {
+            "id": "btn_ok",
+            "text": "#mainmenu/btnOk",
+            "btnName": "A",
+            "_on_click": "onOk",
+            "ButtonImg": []
+          }
+        }
+      }
+    }
+  }
+}

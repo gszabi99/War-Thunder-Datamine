@@ -1,0 +1,194 @@
+spinnerListBox {
+  behaviour:spinnerListBox;
+  flow:horizontal;
+  padding:0;
+  margin:0;
+  top:(ph-h)/2;
+  left:0;
+  interval:0;
+  slideTime:200;   tabStop:yes;
+  width:0.5pw;
+  selected-border:none;
+    snd_set_focus:focus;
+  snd_click:click;
+  snd_select:choose;
+  optionAlign:left;
+  color:@commonTextColor;
+  disable_wheel:yes;
+}
+
+spinnerListBox > button.next, spinnerListBox > button.prev {
+  re-type:9rect;
+  size:3.2*@scrn_tgt/100.0,3.75*@scrn_tgt/100.0;  
+  min-width:2*@sf/@pf_outdated;
+  max-width:23*@sf/@pf_outdated;
+  max-height:27*@sf/@pf_outdated;
+
+  background-image:#ui/gameuiskin#spinnerListBox_arrow_up.svg;
+  background-svg-size:@scrollArrowsSize, @scrollArrowsSize;
+  background-color:@transparent;
+  background-position:0;
+  background-repeat:expand;
+  snd_click:click;
+}
+[cellType=bottom] > spinnerListBox > button.next, [cellType=bottom] > spinnerListBox > button.prev {
+  margin-top:p.p.p.h-p.p.h;
+}
+
+spinnerListBox > button.next{
+  rotation:270;
+}
+spinnerListBox > button.prev{
+  rotation:90;
+}
+
+spinnerListBox:hover > button.prev, spinnerListBox:hover > button.next {
+  background-color:@controlColor;
+  color-factor:127;
+}
+
+spinnerListBox:focus > button.prev, spinnerListBox:focus > button.next,
+spinnerListBox > button.prev:hover, spinnerListBox > button.next:hover {
+  background-color:@controlColor;
+  color-factor:255;
+}
+
+spinnerListBox > button.next:pushed, spinnerListBox > button.prev:pushed {
+  padding:1*@sf/@pf_outdated,1*@sf/@pf_outdated;
+  background-color:@controlPushedColor;
+  color-factor:255;
+}
+
+spinnerListBox option {
+  height:ph;
+  font:@option_font;
+  color:@commonTextColor;
+  background-color:@transparent;
+  border:none;
+  margin:0;
+  css-hier-invalidate:yes;
+}
+
+.skinsList > spinnerListBox {
+  css-hier-invalidate:yes;
+}
+
+spinnerListBox:focus option, spinnerListBox:focus optiontext {
+  color:@activeTextColor;
+}
+
+spinnerListBox optiontext{
+  auto-scroll:no;
+}
+
+spinnerListBox:focus optiontext{
+}
+
+.skinsList option > optiontext {
+  width:pw;
+  input-transparent:yes;
+  pare-text:yes;
+  text-align:left;
+  padding-left:0;
+  color:@commonTextColor;
+}
+
+.skinsList > spinnerListBox > button.prev, .skinsList > spinnerListBox > button.next {
+  background-color:@white;
+}
+
+tr:hover > td > spinnerListBox optiontext,
+.skinsList > spinnerListBox:hover option > optiontext {
+  color:@hoverTextColor;
+}
+spinnerListBox > button.prev:disabled, spinnerListBox > button.next:disabled {
+  input-transparent:yes;
+  background-color:@transparent;
+}
+
+spinnerListBox:disabled > button.next, spinnerListBox:disabled > button.prev {
+  input-transparent:yes;
+  background-color:@transparent;
+}
+
+
+[class=optionsTable] spinnerListBox {
+  position:relative;
+  left:-23*@sf/@pf_outdated; }
+
+optionImg {
+  size:ph,ph;
+  background-repeat:aspect-ratio;
+}
+
+[iconType=small] optionImg {
+  size:@cIco, @cIco;
+  pos:0, 50%ph-50%h;
+  position:relative;
+  background-svg-size:@cIco, @cIco;
+}
+
+[iconType=aircraft] optionImg {
+  size:@shopAirWidth,@shopAirHeight;
+  pos:0, 50%ph-50%h;
+  position:relative;
+}
+
+[iconType=country] optionImg {
+  size:100*@sf/@pf_outdated, 52*@sf/@pf_outdated;
+  pos:0, 50%ph-50%h;
+  position:relative;
+}
+img[iconType=country] {
+  size:100*@sf/@pf_outdated, 52*@sf/@pf_outdated;
+}
+img[iconType=medium_country] {
+  size:75*@sf/@pf_outdated, 39*@sf/@pf_outdated;
+}
+img[iconType=small_country] {
+  size:50*@sf/@pf_outdated, 26*@sf/@pf_outdated;
+}
+
+img[iconType=country_battle] {
+  size:@cIco, @cIco;
+  background-color:@imageHoverCountryColor;
+  background-svg-size:@cIco, @cIco;
+}
+
+optionImg[background-image] {
+  background-color:@white;
+  margin-right:1@blockInterval;
+}
+
+optionImg[noMargin=yes] {
+  margin-right:0;
+}
+
+option:disabled optionImg[background-image], optionImg[background-image]:disabled {
+  background-color:#80808080;
+}
+
+optionImg[dlcIcon=yes] {
+  size:3.5*@scrn_tgt/100.0,3.5*@scrn_tgt/100.0;
+  pos:-50%w, 0;
+  background-image:#ui/gameuiskin#dlc;
+  background-color:@white;
+  margin-right:0;
+}
+
+optionImg[airExpIcon=yes] {
+  size:2.78*@scrn_tgt/100.0, 2.78*@scrn_tgt/100.0;
+  pos:0, ph-h;
+  position:absolute;
+  background-image:#ui/gameuiskin#shop_exp_on;
+  background-color:@white;
+}
+
+option > colorBlock {
+  size:3ph, ph-6;
+  pos:0, 50%ph-50%h;
+  position:relative;
+  margin-right:3@dp;
+  border:yes;
+  border-color:@grayOptionColor;
+}

@@ -1,0 +1,184 @@
+[smallFont=yes] text, text[smallFont=yes], textarea[smallFont=yes],
+textareaNoTab[smallFont=yes], textAreaCentered[smallFont=yes],
+[smallFont=yes] optiontext, hintText[smallFont=yes],
+[smallFont=yes] activeText, activeText[smallFont=yes],
+[smallFont=yes] textAreaCentered,
+[smallFont=yes] optionValueText,
+[smallFont=yes] textareaNoTab, textareaNoTab[smallFont=yes],
+button[smallFont=yes],
+[smallFont=yes] CheckBox, CheckBox[smallFont=yes], modBlockHeader[smallFont=yes], [smallFont=yes] multiOption {
+  font:@fontSmall;
+}
+
+[tinyFont=yes] text, text[tinyFont=yes], textarea[tinyFont=yes],
+[tinyFont=yes] optiontext, hintText[tinyFont=yes],
+[tinyFont=yes] activeText, activeText[tinyFont=yes],
+[tinyFont=yes] textAreaCentered, textAreaCentered[tinyFont=yes],
+[tinyFont=yes] textareaNoTab, textareaNoTab[tinyFont=yes]
+button[tinyFont=yes], [tinyFont=yes] CheckBox, CheckBox[tinyFont=yes] {
+  font:@fontTiny;
+}
+
+textarea[hudFont=normal],
+dmgIndicatorNest text {
+  font:@fontHudNormal;
+}
+
+textarea[hudFont=tiny],
+dmgIndicatorNest[fontSize=tiny] text {
+  font:@fontHudTiny;
+}
+
+dmgIndicatorNest[fontSize=extraTiny] text {
+  font:@fontHudTiny;
+  font-ht:0.01@shHud;
+}
+
+textarea[hudFont=small],
+dmgIndicatorNest[fontSize=small] text {
+  font:@fontHudSmall;
+}
+
+activeText[hudFont=medium],
+dmgIndicatorNest[fontSize=medium] text {
+  font:@fontHudMedium;
+}
+
+[wink=slow] {
+  behaviour:basicTransparency;
+  transp-base:255;
+  transp-end:40;
+  transp-time:6000;
+  transp-func:sin;
+  transp-cycled:yes;
+  display:show;
+}
+[wink=fast] {
+  behaviour:basicTransparency;
+  transp-base:255;
+  transp-end:100;
+  transp-time:1500;
+  transp-func:sin;
+  transp-cycled:yes;
+  display:show;
+}
+[wink=yes] {
+  behaviour:basicTransparency;
+  transp-base:255;
+  transp-end:170;
+  transp-time:3000;
+  transp-func:sin;
+  transp-cycled:yes;
+  display:show;
+}
+[syncWink=yes] {
+  behaviour:syncTransparency;
+  transp-base:255;
+  transp-end:170;
+  transp-time:3000;
+  transp-func:sin;
+  transp-cycled:yes;
+  display:show;
+}
+[wink=no],
+[syncWink=no] {
+  color-factor:255;
+}
+
+[mediumFont=yes] {
+  font:@fontMedium;
+}
+
+[bigBoldFont=yes] {
+  font:@fontBigBold;
+}
+
+[textShade=yes] {
+  text-shade:"smooth:24";
+  text-shade-x:0;
+  text-shade-y:0;
+  text-shade-color:#A0000000;
+}
+
+text[shadeStyle=outline33pct],
+textarea[shadeStyle=outline33pct],
+textareaNoTab[shadeStyle=outline33pct],
+controlsHelpText {
+  text-shade:"blur:24";
+  text-shade-x:0;
+  text-shade-y:0;
+  text-shade-color:#55000000;
+}
+
+blankTextArea[shadeStyle=textOnIcon],
+textareaNoTab[shadeStyle=textOnIcon],
+itemAmountText[shadeStyle=textOnIcon],
+shopItemText[shadeStyle=textOnIcon], shopItemPrice {
+  text-shade:"blur:24";
+  text-shade-x:0;
+  text-shade-y:0;
+  text-shade-color:#AA000000;
+}
+
+textareaNoTab[order-status-text-shade=yes],
+textarea[order-status-text-shade=yes] {
+  text-shade:"smooth:24";
+  text-shade-x:1;
+  text-shade-y:1;
+  text-shade-color:#FF000000;
+}
+
+[hideEmptyText=yes][text=""] {
+  display:hide;
+}
+
+[hideText=yes] {
+  color:@transparent;
+}
+
+[removeParagraphIndent=yes] {
+  paragraph-indent:0;
+}
+
+[auto-scroll=slow] {
+  behaviour:OverflowScroller;
+  move-pixel-per-sec:15*@scrn_tgt/100.0;
+  move-sleep-time:8000;
+  move-delay-time:8000;
+}
+
+[auto-scroll=medium] {
+  behaviour:OverflowScroller;
+  move-pixel-per-sec:30*@scrn_tgt/100.0;
+  move-sleep-time:4000;
+  move-delay-time:4000;
+}
+
+[auto-scroll=no] {
+  move-pixel-per-sec:0;
+}
+
+div[application-window], frame[application-window] {
+  behaviour:window-size;
+  window-size-offset-area:5;
+}
+
+hoverPopup:hover {
+  order-popup:yes;
+}
+
+[flow=h-flow], [flow=v-flow] {
+  behaviour:flow;
+}
+
+
+[total-input-transparent=yes] * {
+  input-transparent: yes;
+}
+[not-input-transparent=yes] {
+  input-transparent:no;
+}
+
+[accessKey] {
+  behaviour:accesskey;
+}

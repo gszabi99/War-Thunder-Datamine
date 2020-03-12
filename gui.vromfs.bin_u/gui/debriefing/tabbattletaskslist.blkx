@@ -1,0 +1,35 @@
+{
+  "debriefingTab": {
+    "id": "battle_tasks_list_tab",
+    "debrBlock": {
+      "size": "pw, ph",
+      "tdiv": {
+        "id": "battle_tasks_list_div",
+        "size": "pw, fh",
+        "position": "relative",
+        "flow": "vertical",
+        "listbox": {
+          "id": "battle_tasks_list_scroll_block",
+          "size": "pw, fh",
+          "overflow-y": "auto",
+          "flow": "vertical",
+          "scrollBox-dontResendShortcut": "yes",
+          "on_select": "onSelectTask",
+          "navigatorShortcuts": "yes",
+          "childsActivate": "yes",
+          "on_wrap_up": "onWrapUp",
+          "on_wrap_down": "onWrapDown",
+          "selImgType": "gamepadFocused"
+        },
+        "textAreaCentered": {
+          "id": "battle_tasks_list_msg",
+          "width": "80%pw",
+          "pos": "50%pw-50%w, 40%ph-40%h",
+          "position": "absolute",
+          "hideEmptyText": "yes",
+          "text": "#mainmenu/battleTasks/noBattleTasks"
+        }
+      }
+    }
+  }
+}

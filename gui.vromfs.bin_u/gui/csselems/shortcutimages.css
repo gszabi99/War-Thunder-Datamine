@@ -1,0 +1,99 @@
+@const shortcutImageHeight: 0.04@shHud;
+
+keyboardButton {
+  re-type:9rect;
+  min-width:1@shortcutImageHeight;
+  height:1@shortcutImageHeight;
+  background-color:@white;
+  background-image:#ui/gameuiskin#keyboardBtn;
+  background-position:13, 0;
+  background-repeat:expand;
+  padding:13, 0;
+}
+
+keyboardButtonText {
+  re-type:text;
+  font:@fontHudMedium;
+  color:@black;
+}
+
+gamepadButton {
+  size: 1@shortcutImageHeight, 1@shortcutImageHeight;
+  background-svg-size: 1@shortcutImageHeight, 1@shortcutImageHeight;
+  background-color:@white;
+  background-repeat:aspect-ratio;
+}
+
+.fastshortcut gamepadButton {
+  size: 1@cIco, 1@cIco;
+  background-svg-size: 1@cIco, 1@cIco;
+}
+
+
+shortcutAxis {
+  size: 0.06@shHud, 0.06@shHud;
+  background-svg-size: 0.06@shHud, 0.06@shHud;
+  background-color:@white;
+}
+
+loadingHint keyboardButton,
+subtitlesHint keyboardButton {
+  min-width:1@cIco;
+  height:1@cIco;
+  background-position:6, 0;
+  padding: 6@dp, 0;
+}
+
+loadingHint keyboardButtonText,
+subtitlesHint keyboardButtonText {
+  font: @fontSmall;
+  pos:pw/2 - w/2, ph/2 - h/2;
+}
+
+chatHint keyboardButton,
+loadingHint[smallFont=yes] keyboardButton {
+  min-width:1@sIco;
+  height:1@sIco;
+  background-position:6, 0;
+  padding: 6@dp, 0;
+}
+
+chatHint gamepadButton,
+chatHint shortcutAxis,
+loadingHint gamepadButton,
+loadingHint shortcutAxis,
+subtitlesHint gamepadButton,
+subtitlesHint shortcutAxis {
+  size: 1@cIco, 1@cIco;
+  background-svg-size: 1@cIco, 1@cIco;
+}
+
+loadingHint[smallFont=yes] gamepadButton,
+loadingHint[smallFont=yes] shortcutAxis {
+  size: 1@sIco, 1@sIco;
+  background-svg-size: 1@sIco, 1@sIco;
+}
+
+chatHint keyboardButtonText,
+loadingHint[smallFont=yes] keyboardButtonText {
+  font: @fontTiny;
+  pos:pw/2 - w/2, ph/2 - h/2;
+}
+
+action_item_content keyboardButton {
+  min-width:0.02@shHud;
+  height:0.02@shHud;
+  background-position:5, 0;
+  padding: 5, 0;
+}
+
+action_item_content keyboardButtonText {
+  font: @fontHudTiny;
+  pos:pw/2 - w/2, ph/2 - h/2;
+}
+
+action_item_content gamepadButton,
+action_item_content shortcutAxis {
+  size: 0.03@shHud, 0.03@shHud;
+  background-svg-size: 0.03@shHud, 0.03@shHud;
+}

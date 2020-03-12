@@ -1,0 +1,65 @@
+action_bar_item {
+  total-input-transparent: yes;
+}
+
+action_bar_item textarea {
+  color: @white;
+}
+
+action_bar_item[active=yes] action_item_content {
+  background-color: #bb000000;
+}
+
+action_bar_item[selected=yes][active=no] action_item_content {
+  border: yes;
+  border-color: #eeb717;
+}
+
+action_bar_item[selected=yes][active=yes] action_item_content {
+  border: yes;
+  border-color: @white;
+}
+
+action_bar_item > action_item_content > textarea {
+  color: @white;
+}
+
+action_bar_item[enabled=no] > action_item_content > textarea {
+  color: @disabledTextColor;
+}
+
+action_bar_item textarea[shortcut=yes] {
+  color: @hotkeyColor;
+}
+
+changeAmount {
+  behaviour:textArea;
+  re-type:textarea;
+
+  width: pw;
+  text-align: center;
+  position:absolute;
+  top-base:0;
+  top-end:-100;
+  pos-func:square;
+  pos-time:1000;
+  pos-scale:parent;
+  transp-base: 255;
+  transp-end: 0;
+  transp-func: square;
+  transp-time: 1000;
+  selfRemoveOnFinish: 1;
+
+  text-shade:"blur:24";
+  text-shade-x:1;
+  text-shade-y:1;
+  text-shade-color:#A0000000;
+}
+
+changeAmount[increase_amount=yes] {
+  color:@goodTextColor;
+}
+
+changeAmount[increase_amount=no] {
+  color:@badTextColor;
+}

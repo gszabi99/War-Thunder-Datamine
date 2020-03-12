@@ -1,0 +1,49 @@
+{
+  "root": {
+    "background-color": "@shadeBackgroundColor",
+    "type": "big",
+    "frame": {
+      "width": "0.7*@scrn_tgt",
+      "pos": "0.5pw-0.5w, 1@titleLogoPlateHeight + 0.3*(sh - 1@titleLogoPlateHeight - h)",
+      "position": "absolute",
+      "flow": "vertical",
+      "class": "wndNav",
+      "frame_header": {
+        "activeText": {
+          "id": "comment_wnd_title",
+          "caption": "yes",
+          "text": "#clan/writeCommentary"
+        },
+        "Button_close": {
+          "id": "btn_back"
+        }
+      },
+      "EditBox": {
+        "id": "comment_editbox",
+        "size": "pw, 0.2@scrn_tgt",
+        "margin-top": "0.005@scrn_tgt",
+        "focus": "yes",
+        "mouse-focusable": "yes",
+        "multiline": "yes",
+        "max-len": "250",
+        "font": "@fontNormal",
+        "text": "",
+        "on_change_value": "onChangeComment",
+        "on_cancel_edit": "goBack"
+      },
+      "navBar": {
+        "navRight": {
+          "Button_text": {
+            "id": "ok_btn",
+            "pos": "pw-w, 0",
+            "position": "relative",
+            "text": "#msgbox/btn_ok",
+            "_on_click": "onOk",
+            "btnName": "A",
+            "ButtonImg": []
+          }
+        }
+      }
+    }
+  }
+}

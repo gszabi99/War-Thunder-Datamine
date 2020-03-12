@@ -1,0 +1,202 @@
+@const posOptionCellPadding:3; 
+ingame_menu{
+  input-transparent: yes;
+  re-type:9rect;
+}
+
+optionlist_container {
+  input-transparent: yes;
+  re-type:9rect;
+  background-color:@white;
+  background-position:1,5;
+  background-repeat:expand;
+  background-image:#ui/gameuiskin#option_select_odd;
+  height:50*@scrn_tgt/100.0;
+  position:absolute;
+  padding:0, 0.01*@scrn_tgt;
+  width:1@rw;
+
+  pos:50%pw-50%w,50%ph-50%h;
+  selected-border:none;
+  border:none;
+  font:@fontMedium;
+}
+
+frame > optionlist_container, frame > container {
+  width:pw;
+  height:fh;
+  pos:50%pw-50%w, 0;
+  position:relative;
+}
+
+frame > optionlist_container[noPad=yes] {
+  padding:0, 0.01*@scrn_tgt;
+}
+
+frame.wndNav > optionlist_container, frame.wnd > optionlist_container {
+  width:pw+0.5*@scrn_tgt/100.0;
+  pos:pw-w, 1*@scrn_tgt/100.0;
+}
+
+frame.wndNav > optionlist_container[noPad=yes] {
+  width:pw;
+  pos:50%pw-50%w, 1*@scrn_tgt/100.0;
+}
+
+optionlist_container[type=big], [type=big] > optionlist_container {
+  height:66*@scrn_tgt/100.0;
+}
+
+[type=big] > container {
+  min-height:66*@scrn_tgt/100.0;
+  height:ph;
+}
+
+optionlist_container[type=mpstatistics] {
+  height:(66*@scrn_tgt/100.0) $min (sh -2(1@bh + 1@titleLogoPlateHeight + 0.02@scrn_tgt + 1@multiplayerScoreHeight));
+}
+
+optionlist_container[type=artillerymap] {
+  height:@rh - 30%sh;
+}
+
+
+[type=shop] > optionlist_container {
+  height:9*@shop_height+3*@scrn_tgt/100.0;
+  pos:50%pw-50%w,83*@scrn_tgt/100.0-h;
+  padding-top:0;
+}
+
+optionlist_container[type=respawn] {
+  pos:50%pw-50%w, 50%ph-50%h +0.08@scrn_tgt -1@bottomBarHeight;
+  height: 1@rh -0.08@scrn_tgt -(1@bottomBarHeight+3*@sf/@pf_outdated);
+  max-height:1@respawnOptListContainerWidth -3@modCellWidth +1@slotbarHeight;
+}
+
+optionsBox {
+  pos:50%pw-50%w, 0;
+  position:relative;
+  width:pw;
+  height: fh;   margin-top: @scrollArrowsSize;
+  margin-bottom: @scrollArrowsSize;
+  overflow-y:auto;
+  total-input-transparent:yes;
+}
+
+optionsBoxRightScroll {
+  pos:50%pw-50%w, 0;
+  position:relative;
+  width:pw;
+  max-height:@bigOptionsHeight;
+  overflow-y:auto;
+  total-input-transparent:yes;
+}
+
+optionsBox[noTopPos=yes] {
+  pos:50%pw-50%w, 0;
+}
+
+optionsBoxRightScroll {
+  max-height:ph;
+}
+
+optionsBox table.optionsTable, optionsBoxRightScroll table.optionsTable {
+  pos:50%pw-50%w,0;
+  position:relative;
+}
+
+optionsBox table.optionsTable[disablePosition=yes], optionsBoxRightScroll table.optionsTable[disablePosition=yes] {
+  pos:0,0;
+}
+
+optionlist_line, optionlist_line_right, optionlist_line_left {
+  input-transparent:yes;
+  re-type:9rect;
+  background-color:@optionListLineColor;
+  background-position:0,4;
+  background-repeat:expand;
+  background-image:#ui/gameuiskin#optionlist_background_middle;
+  text-valign:center;
+}
+
+optionlist_line_right {
+  background-image:#ui/gameuiskin#optionlist_background_right;
+  padding-left:1*@scrn_tgt/100.0;
+}
+
+optionlist_line_left {
+  re-type:rotation;
+  background-rotation:180;
+  background-image:#ui/gameuiskin#optionlist_background_right;
+  padding-right:2*@scrn_tgt/100.0;
+}
+
+optionlist_background_top {
+  re-type:9rect;
+    background-color:@white;
+  background-position:0,2;
+  background-repeat:expand;
+  background-image:#ui/gameuiskin#optionlist_background_top;
+    selected-border:none;
+  border:none;
+  font:@fontMedium;
+}
+optionlist_background_down{
+  re-type:9rect;
+    background-color:@white;
+  background-position:0,2;
+  background-repeat:expand;
+  background-image:#ui/gameuiskin#optionlist_background_down;
+    selected-border:none;
+  border:none;
+  font:@fontMedium;
+}
+
+gamercard {
+  left:sw-w-1@bw;
+  top:5.5*@scrn_tgt/100.0;
+  position:absolute;
+  input-transparent:yes;
+}
+
+gamercard_div {
+  id:gamercard_div;
+  input-transparent:yes;
+}
+
+gamercard_div[type=top] {
+  top:1*@scrn_tgt/100.0;
+}
+
+[type=shop] gamercard_div, gamercard_div[type=shop] {
+  top:1@sf/100.0;
+}
+
+gamercard {
+
+  input-transparent:yes;
+
+}
+
+[short=yes] > gamercard {
+  background-color:@transparent;
+}
+
+gamercard activeText[text=""]
+{
+  display:hide;
+}
+
+PosOptionsNavigator {
+  behavior:PosOptionsNavigator;
+  flow:h-flow;
+}
+
+PosOptionsNavigator > cell {
+  padding:@posOptionCellPadding;
+  flow:vertical;
+}
+
+gamercard_div[isRespawnBottomGamercard=yes] > gamercard > BottomMenuPanel > tdiv {
+  width:@respawnOptListContainerWidth;
+}

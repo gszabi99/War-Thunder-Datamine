@@ -1,0 +1,194 @@
+{
+  "div": [
+    {
+      "id": "queue_box"
+    },
+    {
+      "size": "pw, ph"
+    },
+    {
+      "pos": "0,0"
+    },
+    {
+      "position": "relative"
+    },
+    {
+      "padding": "4*@sf/@pf_outdated"
+    },
+    {
+      "flow": "vertical"
+    },
+    {
+      "overflow-y": "auto"
+    },
+    {
+      "behavior": "Timer"
+    },
+    {
+      "timer_interval_msec": "1000"
+    },
+    {
+      "tdiv": [
+        {
+          "size": "pw, fh"
+        },
+        {
+          "flow": "vertical"
+        },
+        {
+          "overflow-y": "auto"
+        },
+        {
+          "frameBlock_dark": [
+            {
+              "id": "1_block"
+            },
+            {
+              "pos": "0,0"
+            },
+            {
+              "position": "relative"
+            },
+            {
+              "width": "pw"
+            },
+            {
+              "padding": "3*@sf/@pf_outdated"
+            },
+            {
+              "flow": "vertical"
+            },
+            {
+              "display": "hide"
+            },
+            {
+              "css-hier-invalidate": "yes"
+            },
+            {
+              "bgTeamColor": "blue"
+            },
+            {
+              "activeText": {
+                "id": "team_name",
+                "text": "#events/teamA",
+                "position": "relative",
+                "pos": "0, 0"
+              }
+            },
+            {
+              "tdiv": {
+                "id": "countries",
+                "width": "pw",
+                "position": "relative",
+                "pos": "0, 0"
+              }
+            },
+            {
+              "tdiv": {
+                "margin-left": "0.01*@sf",
+                "activeText": {
+                  "id": "players_count",
+                  "text": ""
+                }
+              }
+            },
+            {
+              "table": {
+                "id": "table_queue_stat",
+                "width": "pw",
+                "smallFont": "yes"
+              }
+            }
+          ]
+        },
+        {
+          "frameBlock_dark": [
+            {
+              "id": "2_block"
+            },
+            {
+              "pos": "0, @blockInterval"
+            },
+            {
+              "position": "relative"
+            },
+            {
+              "width": "pw"
+            },
+            {
+              "padding": "3*@sf/@pf_outdated"
+            },
+            {
+              "flow": "vertical"
+            },
+            {
+              "display": "hide"
+            },
+            {
+              "css-hier-invalidate": "yes"
+            },
+            {
+              "bgTeamColor": "red"
+            },
+            {
+              "activeText": {
+                "id": "team_name",
+                "text": "#events/teamB",
+                "position": "relative",
+                "pos": "0, 0"
+              }
+            },
+            {
+              "tdiv": {
+                "id": "countries",
+                "width": "pw",
+                "position": "relative",
+                "pos": "0, 0"
+              }
+            },
+            {
+              "tdiv": {
+                "margin-left": "0.01*@sf",
+                "activeText": {
+                  "id": "players_count",
+                  "text": ""
+                }
+              }
+            },
+            {
+              "table": {
+                "id": "table_queue_stat",
+                "width": "pw",
+                "smallFont": "yes"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tdiv": {
+        "padding": "10*@sf/@pf_outdated, 5*@sf/@pf_outdated",
+        "size": "pw, 80*@sf/@pf_outdated",
+        "tdiv": {
+          "pos": "50%pw-50%w, 50%ph-50%h",
+          "position": "absolute",
+          "textAreaCentered": {
+            "id": "waitText",
+            "pos": "0, 50%ph-50%h",
+            "position": "relative",
+            "max-width": "180*@sf/@pf_outdated",
+            "text-align": "center",
+            "class": "active",
+            "text": ""
+          },
+          "animated_wait_icon": {
+            "pos": "0, 50%ph-50%h",
+            "position": "relative",
+            "background-rotation": "0"
+          }
+        }
+      }
+    }
+  ]
+}

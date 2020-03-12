@@ -1,0 +1,434 @@
+hoverSize {
+  moveOut:no;
+  move:yes;
+
+  size-time:-250;
+  size-func:squareInv;
+  size-backfunc:delayedSquareInv;
+
+  total-input-transparent:yes;
+  not-input-transparent:yes;
+  on_activate:onHoverSizeMove;
+  snd_activate:menu_appear;
+  css-hier-invalidate:yes;
+}
+
+:hover > hoverSize,
+hoverSize:hover,
+[show_console_buttons=yes] :focus > hoverSize,
+[stickHover=yes] > hoverSize {
+  moveOut:yes;
+  size-time:250;
+}
+
+[stickHover=yes]:disabled > hoverSize {
+  moveOut:no;
+  size-time:-750;
+}
+
+hoverSize[moveOut=no][width=0], hoverSize[moveOut=no][height=0]
+{
+  move:no;
+  display:hide;
+}
+
+hoverSize[move=yes] {
+  behaviour:basicSize;
+  order-popup:yes;
+}
+
+[stickHover=yes][noOrderPopupOnStick=yes] > hoverSize {
+  order-popup:no;
+}
+
+shopWnd {
+  size-time:-250;
+  size-func:squareInv;
+  size-backfunc:square;
+
+  height-base:0;
+  height-end:100;
+  size-scale:sh;
+  css-hier-invalidate:yes;
+}
+
+shopWnd[moveOut] {
+  move:yes;
+}
+
+shopWnd[moveOut=yes] {
+  size-time:250;
+}
+
+shopWnd[moveOut=no][height=0] {
+  move:no;
+}
+shopWnd[moveOut=yes][_size-timer=1] {
+  height:sh;
+  move:no;
+}
+
+shopWnd[move=yes] {
+  behaviour:basicSize;
+}
+
+shopWnd > tdiv {
+  css-hier-invalidate:yes;
+}
+
+shopWnd[moveOut=no][height=0] > tdiv > frame {
+  display:hide;
+}
+
+hideSize {
+  size-time:-250;
+  size-func:squareInv;
+  size-backfunc:square;
+  css-hier-invalidate:yes;
+}
+hideSize[moveOut] {
+  move:yes;
+}
+hideSize[moveOut=yes] {
+  size-time:250;
+}
+hideSize[moveOut=no][height=0], hideSize[moveOut=yes][_size-timer=1], hoverSize[moveOut=yes][_size-timer=1] {
+  move:no;
+}
+hideSize[move=yes] {
+  behaviour:basicSize;
+}
+
+imgLayer {
+  size:pw, ph;
+  position:absolute;
+  input-transparent:yes;
+}
+imgLayer["rotation-sensitivity"] {
+  css-hier-invalidate:yes;
+}
+
+testCorner {
+  border:yes;
+  size:50%pw, 50%ph;
+  position:absolute;
+  input-transparent:yes;
+}
+
+usertalk {
+  width: pw;
+  background-color: @transparent;
+  flow: horisontal;
+  css-hier-invalidate:yes;
+  behaviour:basicSize;
+  height-base: 0;
+  size-time: 400;
+  size-func:delayed;
+}
+
+usertalk > activeText, usertalk > img {
+  behaviour:basicTransparency;
+  transp-base:0;
+  transp-end:255;
+  transp-func:square;
+  position:absolute;
+}
+
+usertalk[fade=out] {
+  size-time: -400;
+}
+
+usertalk[fade=out][_size-timer=0] {
+  display:hide;
+}
+
+usertalk[fade=in] > activeText, usertalk[fade=in] > img {
+  transp-time:300;
+}
+usertalk[fade=in][type=noTalk] > activeText,
+usertalk[fade=in][type=noTalk] > img {
+  transp-time:3000;
+}
+
+usertalk[fade=out] > activeText,  usertalk[fade=out] > img{
+  transp-time:-300;
+}
+
+usertalk > img {
+  size: 1@voiceChatBaseIconWidth, 1@voiceChatBaseIconHeight;
+  background-image: #ui/gameuiskin#voip_status.svg;
+  background-color: @voiceChatIconActiveColor;
+  background-svg-size: 1@voiceChatBaseIconWidth, 1@voiceChatBaseIconHeight;
+}
+
+usertalk > img[inacive=yes] {
+  background-color: @voiceChatIconMuteColor;
+}
+
+[isSmall=yes] usertalk > img {
+  size: 1@voiceChatSmallIconWidth, 1@voiceChatSmallIconHeight;
+  background-svg-size: 1@voiceChatSmallIconWidth, 1@voiceChatSmallIconHeight;
+}
+
+usertalk > activeText {
+  left: 1@voiceChatBaseIconWidth + 1@blockInterval;
+  input-transparent:yes;
+}
+
+[isSmall=yes] usertalk > activeText {
+  left: 1@voiceChatSmallIconWidth + 1@blockInterval;
+  smallFont:yes;
+}
+
+popup {
+  behaviour:button;
+  height-base: 0;
+  height-end: 100;
+  behaviour: basicSize;
+  size-time: 300;
+  size-scale: parent;
+  size-func: cube;
+  behaviour:Timer;
+  css-hier-invalidate:yes;
+  selfRemoveOnFinish: -1;
+}
+
+popup[fade=out] {
+  size-time: -300;
+}
+
+popup:hover {
+  size-time: 300;
+}
+popup[fade=forced] {
+  size-time: -300;
+}
+
+popupWrap > textAreaNoScroll {
+  position: relative;
+  paragraph-indent: 0;
+  wrap-indent: 0;
+  overflow: hidden;
+  font: @fontSmall;
+  size: pw-1@smallButtonCloseHeight-1@framePadding, fh;
+}
+
+awardPlace {
+  width:@debriefingUnlockIconSize;
+  padding:1*@sf/@pf_outdated;
+  position:relative;
+
+  move:yes;
+  size-scale:selfsize;
+  height-base:0;
+  height-end:100;
+  size-time:100;
+  size-func:square;
+  css-hier-invalidate:yes;
+}
+[awardsAbsolute=yes] > awardPlace {
+  position:absolute;
+}
+awardPlace[_size-timer=1] {
+  height:@debriefingUnlockIconSize;
+  move:no;
+}
+awardPlace[move=yes] {
+  behaviour:basicSize;
+}
+awardPlace[even=no] {
+  pos:-0.5w, 0;
+}
+awardPlace[even=yes] {
+  pos:-0.5w, h;
+}
+
+animShow {
+  transp-base:0;
+  transp-end:255;
+  transp-func:square;
+  transp-time:-100;
+  needAnim:yes;
+  input-transparent:yes;
+}
+animShow[color-factor=0][animation=hide] {
+  display:hide;
+  needAnim:no;
+}
+animShow[animation=show] {
+  transp-time:300;
+  needAnim:yes;
+}
+animShow[animation=show][_transp-timer=1][color-factor=255] {
+  needAnim:no;
+}
+animShow[needAnim=yes] {
+  behaviour:basicTransparency;
+}
+
+
+[anim_transparency=yes]{
+  behaviour: basicTransparency;
+  transp-base: 0;
+  transp-end: 255;
+  transp-func: cube;
+  transp-backfunc: cubeInv;
+  transp-time: 300;
+}
+
+[anim_transparency=yes][move_out=yes]{
+  transp-time: -300;
+  pos-time: -300;
+  selfRemoveOnFinish:-1;
+}
+
+
+gamercardDrawer {
+  size-time:-250;
+  size-func:squareInv;
+  size-backfunc:square;
+
+  height-base:0;
+  height-end:100;
+  size-scale:sh;
+  css-hier-invalidate:yes;
+}
+
+gamercardDrawer[moveOut] {
+  move:yes;
+}
+
+gamercardDrawer[moveOut=yes] {
+  size-time:250;
+}
+
+gamercardDrawer[moveOut=no][height=0][_size-timer=0] {
+  move:no;
+  display:hide;
+}
+gamercardDrawer[moveOut=yes][_size-timer=1] {
+  height:sh;
+  move:no;
+}
+
+gamercardDrawer[move=yes] {
+  behaviour:basicSize;
+}
+
+
+massTransp {
+  transp-base:0;
+  transp-end:255;
+  transp-func:square;
+  transp-time:150;
+  blend-time:0;   needAnim:yes;
+}
+
+animSizeObj[animation=show] > massTransp {
+  animation:show;
+}
+
+animSizeObj[animation=hide] > massTransp {
+  animation:hide;
+}
+
+massTransp[type=roulette] {
+  transp-time:700;
+}
+
+massTransp[type=framedMessageBox] {
+  transp-time:250;
+}
+massTransp[type=slotbar] {
+  position:absolute;
+  transp-time:300;
+}
+
+massTransp[animation=hide] {
+  transp-time:-150;
+}
+massTransp[type=slotbar][animation=hide] {
+  transp-time:-200;
+}
+
+massTransp[_transp-timer=0][animation=hide] {
+  needAnim:no;
+  display:hide;
+}
+
+massTransp[_transp-timer=1][animation=show] {
+  needAnim:no;
+}
+
+massTransp[needAnim=yes] {
+  behaviour:massTransparency;
+}
+
+
+transpBlinkAnimation {
+  transp-base:0;
+  transp-end:255;
+  transp-cycled:no;
+}
+
+transpBlinkAnimation[_blink=yes],
+transpBlinkAnimation[_blink=now] {
+  behaviour:basicTransparency;
+}
+
+
+animSizeObj {
+  needAnim:no;
+  blend-time:0;   input-transparent:yes;
+  css-hier-invalidate:yes;
+}
+
+animSizeObj[animation=show] {
+  needAnim:yes;
+  size-time:150;
+}
+animSizeObj[_size-timer=1][animation=show] {
+  needAnim:no;
+}
+
+animSizeObj[animation=hide] {
+  needAnim:yes;
+  size-time:-150;
+}
+animSizeObj[_size-timer=0][animation=hide] {
+  needAnim:no;
+}
+
+animSizeObj[needAnim=yes] {
+  behaviour:basicSize;
+}
+
+animText,
+animWaitMsg > animated_wait_icon {
+  behaviour:basicTransparency;
+  transp-base:0;
+  transp-end:255;
+  transp-func:square;
+  transp-backfunc: squareInv;
+}
+
+animText[fade=in] {
+  transp-time:100;
+}
+
+animText[fade=out] {
+  transp-time:-300;
+}
+
+animWaitMsg[fade=in] > animated_wait_icon,
+animWaitMsg[fade=in] animText {
+  fade:in;
+  transp-time:300;
+}
+
+animWaitMsg[fade=out] > animated_wait_icon,
+animWaitMsg[fade=out] animText {
+  fade:out;
+  transp-time:-50;
+}
+

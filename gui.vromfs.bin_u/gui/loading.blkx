@@ -1,0 +1,139 @@
+{
+  "root": [
+    {
+      "tdiv": {
+        "id": "bg_picture_container",
+        "size": "sw, sh",
+        "position": "root",
+        "background-color": "@black",
+        "tdiv": [
+          {
+            "pos": "50%sw-50%w,50%sh-50%h"
+          },
+          {
+            "position": "absolute"
+          },
+          {
+            "size": "2.333sh, sh"
+          },
+          {
+            "overflow": "hidden"
+          },
+          {
+            "tdiv": {
+              "id": "animated_bg_picture",
+              "pos": "pw/2-w/2, ph/2-h/2",
+              "position": "absolute",
+              "size": "2.5sh, sh",
+              "behaviour": "multiLayerImage",
+              "blend-time": "500"
+            }
+          },
+          {
+            "tdiv": {
+              "size": "0.333sh, sh",
+              "pos": "-w/2, 0",
+              "position": "absolute",
+              "background-image": "!ui/gameuiskin#debriefing_bg_grad@@ss",
+              "background-color": "@black"
+            }
+          },
+          {
+            "tdiv": {
+              "size": "0.333sh, sh",
+              "pos": "pw -w/2, 0",
+              "position": "absolute",
+              "background-image": "!ui/gameuiskin#debriefing_bg_grad@@ss",
+              "background-color": "@black"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "BottomMenuPanel": {
+        "shadowSafeArea": [],
+        "line": [],
+        "Red_shadow_light": {
+          "pos": "50%pw-50%w, 0",
+          "position": "absolute",
+          "size": "25%pw, ph"
+        },
+        "GameLogoPlate": {
+          "pos": "50%pw - 50%w, 50%ph-50%h",
+          "position": "absolute",
+          "Shadow": {
+            "redPlate": {
+              "pattern": {
+                "type": "dark_diag_lines",
+                "tdiv": {
+                  "height": "1@titleLogoPlateHeight + 0.5@bh",
+                  "min-width": "1@titleLogoPlateWidth",
+                  "tdiv": {
+                    "pos": "50%pw-50%w, 50%ph-50%h",
+                    "position": "relative",
+                    "padding": "0.01@scrn_tgt, 0",
+                    "animated_wait_icon": {
+                      "id": "rot",
+                      "pos": "0, 50%ph-50%h",
+                      "position": "relative",
+                      "background-rotation": "0"
+                    },
+                    "textarea": {
+                      "id": "loading",
+                      "pos": "0, 50%ph-50%h",
+                      "position": "relative",
+                      "text": "#loading",
+                      "mediumFont": "yes",
+                      "overlayTextColor": "active",
+                      "textShade": "yes"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "copyright": {
+          "pos": "pw-w-1@bw, 50%ph - 50%h",
+          "position": "absolute"
+        }
+      }
+    },
+    {
+      "tdiv": {
+        "width": "0.67@rw $min 2@rh",
+        "pos": "50%pw-50%w, 83%sh - 1@bh -50%h",
+        "position": "absolute",
+        "flow": "vertical",
+        "background-color": "@shadeBackgroundColor4",
+        "background-repeat": "expand",
+        "padding": "0.005sw, 0.01sh, 0.005sw, 0.02sh",
+        "textAreaCentered": {
+          "id": "help_text",
+          "text": "",
+          "style": "color:@helpF1Color;",
+          "pos": "(pw-w)/2, 0",
+          "position": "relative",
+          "width": "pw"
+        },
+        "loadingTip": {
+          "pos": "(pw-w)/2, 10",
+          "position": "relative",
+          "width": "pw",
+          "behaviour": "bhvLoadingTip",
+          "loadingHint": {
+            "id": "tip_hint",
+            "width": "pw",
+            "behaviour": "bhvHint",
+            "isWrapInRowAllowed": "yes"
+          }
+        }
+      }
+    }
+  ],
+  "timer": {
+    "id": "cutscene_update",
+    "timer_handler_func": "onUpdate"
+  }
+}

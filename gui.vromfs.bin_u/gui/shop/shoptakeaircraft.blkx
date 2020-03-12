@@ -1,0 +1,97 @@
+{
+  "div": [
+    {
+      "id": "shop-take-aircraft-root"
+    },
+    {
+      "size": "sw, sh"
+    },
+    {
+      "position": "root"
+    },
+    {
+      "background-color": "@shadeBackgroundColor2"
+    },
+    {
+      "behaviour": "button"
+    },
+    {
+      "behaviour": "accesskey"
+    },
+    {
+      "accessKey": "Esc"
+    },
+    {
+      "on_click": "onTakeCancel"
+    },
+    {
+      "textAreaCentered": {
+        "id": "take-aircraft-text",
+        "class": "active",
+        "textHide": "yes",
+        "titleFont": "yes",
+        "text": "",
+        "left": "50%pw-50%w",
+        "top": "50%ph-50%h",
+        "position": "root"
+      }
+    },
+    {
+      "div": {
+        "id": "slotbar_with_buttons",
+        "width": "1@slotbarWidthFullExt",
+        "left": "50%pw-50%w-0.5@slot_hdr_width",
+        "top": "50%ph-50%h",
+        "position": "root",
+        "flow": "vertical",
+        "slotbarNest": {
+          "id": "take-aircraft-slotbar",
+          "pos": "50%pw-50%w, 0",
+          "position": "relative"
+        },
+        "tdiv": [
+          {
+            "pos": "50%pw-50%w, @itemsIntervalBig"
+          },
+          {
+            "position": "relative"
+          },
+          {
+            "padding-left": "0.5*@scrn_tgt/100.0"
+          },
+          {
+            "Button_text": {
+              "id": "btn_set_cancel",
+              "text": "#mainmenu/btnCancel",
+              "btnName": "B",
+              "_on_click": "onTakeCancel",
+              "ButtonImg": []
+            }
+          },
+          {
+            "Button_text": {
+              "id": "btn_set_air",
+              "text": "#mainmenu/btnApply",
+              "hideText": "yes",
+              "btnName": "A",
+              "_on_click": "onApply",
+              "ButtonImg": [],
+              "textarea": {
+                "id": "btn_set_air_text",
+                "class": "buttonText",
+                "text": "#mainmenu/btnApply"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "frame": {
+        "id": "qualification_legend",
+        "left": "50%pw-50%w",
+        "position": "root"
+      }
+    }
+  ]
+}

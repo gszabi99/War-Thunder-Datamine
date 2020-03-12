@@ -1,0 +1,98 @@
+{
+  "root": {
+    "size": "sw, sh",
+    "position": "root",
+    "background-color": "@shadeBackgroundColor",
+    "frame": [
+      {
+        "id": "create_room"
+      },
+      {
+        "width": "0.4@scrn_tgt"
+      },
+      {
+        "pos": "50%pw-50%w, 50%ph-50%h"
+      },
+      {
+        "position": "absolute"
+      },
+      {
+        "class": "wndNav"
+      },
+      {
+        "frame_header": {
+          "activeText": {
+            "id": "internet_radio_title",
+            "text": "#options/internet_radio_add",
+            "caption": "yes"
+          },
+          "Button_close": []
+        }
+      },
+      {
+        "text": {
+          "pos": "0, 0",
+          "position": "relative",
+          "text": "#options/internet_radio_name"
+        }
+      },
+      {
+        "EditBox": {
+          "withTab": "yes",
+          "_on_activate": "onFocusUrl",
+          "id": "newradio_name",
+          "pos": "0, 5",
+          "position": "relative",
+          "width": "pw",
+          "max-len": "24",
+          "selected": "yes",
+          "focus": "yes",
+          "mouse-focusable": "yes",
+          "tooltip": "#guiHints/internet_radio_name",
+          "text": "",
+          "_on_cancel_edit": "goBack",
+          "_on_change_value": "onChanged",
+          "on_wrap_down": "onWrapDown"
+        }
+      },
+      {
+        "text": {
+          "pos": "0, 7",
+          "position": "relative",
+          "text": "#options/internet_radio_url"
+        }
+      },
+      {
+        "EditBox": {
+          "_on_activate": "onAddRadio",
+          "id": "newradio_url",
+          "pos": "0, 5",
+          "position": "relative",
+          "width": "pw",
+          "selected": "yes",
+          "mouse-focusable": "yes",
+          "tooltip": "#guiHints/internet_radio_url",
+          "text": "",
+          "_on_cancel_edit": "goBack",
+          "_on_change_value": "onChanged",
+          "on_wrap_up": "onWrapUp"
+        }
+      },
+      {
+        "navBar": {
+          "navMiddle": {
+            "Button_text": {
+              "id": "btn_add_radio",
+              "text": "#options/internet_radio_btn_add",
+              "tooltip": "#options/internet_radio_btn_add",
+              "enable": "no",
+              "btnName": "A",
+              "_on_click": "onAddRadio",
+              "ButtonImg": []
+            }
+          }
+        }
+      }
+    ]
+  }
+}

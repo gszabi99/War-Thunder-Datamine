@@ -1,0 +1,124 @@
+@const crewTransferColor:#dd1111;
+@const crewStateOkColor:#252e35;
+
+crew > icon[hudCrewStatus=yes] {
+  position: absolute;
+  size: ph/7, ph/7;
+  background-svg-size: ph/7, ph/7;
+  background-color: @white;
+}
+
+debuffs > icon {
+  position: absolute;
+  size: ph/7, ph/7;
+  background-svg-size: ph/7, ph/7;
+}
+
+icon[hudTankDebuff=yes],
+icon[hudCrewStatus=yes] {
+  css-hier-invalidate: yes;
+}
+
+icon[hudTankDebuff=yes] > repair_indicator {
+  display:hide;
+}
+
+icon[hudTankDebuff=yes][state=ok] {
+  background-color:@crewStateOkColor;
+  color-factor:80;
+}
+
+debuffs > text[hudTankDebuff=yes] {
+  textShade:yes;
+}
+
+debuffs > text[hudTankDebuff=yes][state=off] {
+  color:@crewStateOkColor;
+  color-factor:180;
+}
+
+debuffs > text[hudTankDebuff=yes][state=on] {
+  color:@white;
+  color-factor:255;
+}
+
+icon[hudTankDebuff=yes][state=damaged] {
+  background-color:#fab025;
+  color-factor:255;
+}
+
+icon[hudTankDebuff=yes][state=bad] {
+  background-color:#dd1111;
+  color-factor:255;
+}
+
+icon[hudTankDebuff=yes][state=dead] {
+  background-color:@black;
+  color-factor:255;
+}
+
+icon[hudTankDebuff=yes][state=repair] {
+  background-color:#dd1111;
+  wink:fast;
+}
+
+icon[hudTankDebuff=yes][state=repair] > repair_indicator {
+  display:show;
+}
+
+icon[hudCrewStatus=yes][state=ok] {
+  background-color:@crewStateOkColor;
+  color-factor:80;
+}
+
+icon[hudCrewStatus=yes][state=ok] > timeBar,
+icon[hudCrewStatus=yes][state=dead] > timeBar,
+icon[hudCrewStatus=yes][state=none]  > timeBar{
+  display:hide;
+}
+
+icon[hudCrewStatus=yes][state=transfere] {
+  background-color:@crewTransferColor;
+  wink:fast;
+}
+
+icon[hudCrewStatus=yes][state=dead] {
+  background-color:#586269;
+}
+
+icon[hudCrewStatus=yes][state=none] {
+  display:hide;
+}
+
+icon[hudCrewStatus=yes] timeBar {
+  position: absolute;
+  pos: 0, 0;
+  size: pw, ph;
+  background-svg-size: pw, ph;
+  background-color: @white;
+  background-image: #ui/gameuiskin#timebar.svg;
+}
+
+dmgIndicatorBg {
+  position: absolute;
+  size: pw, ph;
+  background-svg-size: pw, ph;
+  background-color: @white;
+  background-image: ui/gameuiskin/bg_dmg_board.svg;
+  color-factor: 200;
+}
+
+drivingDirectionModeStatus {
+  size: 0.17ph, 0.17ph;
+  position:absolute;
+  pos:pw - w, 0;
+  background-svg-size: 0.17ph, 0.17ph;
+  background-image:#ui/gameuiskin#squad_status.svg;
+  background-color:@crewStateOkColor;
+  css-hier-invalidate:yes;
+}
+
+drivingDirectionModeStatus[state=on] {
+  background-color:#86d808;
+}
+

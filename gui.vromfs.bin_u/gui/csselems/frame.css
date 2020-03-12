@@ -1,0 +1,117 @@
+frame {
+  re-type:9rect;
+  padding:@framePadding;
+  flow:vertical;
+
+  background-color: @frameBackgroundColor;
+  border:yes;
+  border-color: @frameBorderColor;
+  border-offset:@dp;
+  tooltip:'';
+}
+
+frame[type=dark] {
+  background-color: @frameDarkBackgroundColor;
+  border-color: @frameDarkBorderColor;
+}
+
+frame[type=blue] {
+  background-color: @frameBlueBackgroundColor;
+  border-color: @frameBlueBorderColor;
+}
+
+frame.wndNav {
+  padding:1@framePadding, 1@frameTopPadding, 1@framePadding, 1@frameFooterHeight;
+}
+frame.wndNav[largeNavBarHeight=yes] {
+  padding:1@framePadding, 1@frameTopPadding, 1@framePadding, 1@frameFooterHeightLarge;
+}
+frame.wndNav[largeNavBarHeight=battle] {
+  padding:1@framePadding, 1@frameTopPadding, 1@framePadding, 1@frameFooterHeightBigBattle;
+}
+frame.wndNav[largeNavBarHeight=help] {
+  padding:1@framePadding, 1@frameTopPadding, 1@framePadding, 1@framePadding;
+}
+frame.wndNav[padByLine=yes] {
+  padding:1@frameHeaderPad, 1@frameHeaderHeight +1@dp, 1@frameHeaderPad, 1@frameFooterHeight;
+}
+frame.wndNav[isHeaderHidden=yes] {
+  padding:1@framePadding, 1@framePadding, 1@framePadding, 1@frameFooterHeight;
+}
+
+frame.leaderboard {
+  padding:0.025@scrn_tgt, 1@frameTopPadding, 0.025@scrn_tgt, 1@frameFooterHeight;
+}
+frame.small {
+  padding:1@framePadding, 1@framePadding, 1@framePadding, 1@frameFooterHeight;
+}
+frame.wnd {
+  padding:1@framePadding, 1@frameTopPadding, 1@framePadding, 1@framePadding;
+}
+frame.wnd[padByLine=yes] {
+  padding:1@frameHeaderPad, 1@frameHeaderHeight +1@dp, 1@frameHeaderPad, 1@frameHeaderPad;
+}
+
+
+frame_header {
+  re-type:9rect;
+  width:pw;
+  height:1@frameHeaderHeight;
+  position:absolute;
+  padding:1@frameHeaderPad, 1@frameHeaderPad, 1@frameHeaderPad + 1@buttonCloseHeight, 0;
+
+  background-position:@frameHeaderPad, @frameHeaderPad, @frameHeaderPad, 0;
+  background-color:@frameHeaderColor;
+}
+
+frame.wndNav[isHeaderHidden=yes] > frame_header {
+  display: hide;
+}
+
+frame_header[smallIcon=yes] {
+  height:1@frameHeaderHeight;
+}
+
+frame_header[scaleable=yes] {
+  height:0;
+  min-height:1@buttonHeight;
+  position:relative;
+  pading:0;
+  margin:-1@framePadding;
+}
+
+frame > activeText[caption=yes],
+frame_header > activeText,
+frame_header > textareaNoTab {
+  pos:15@sf/@pf, ph/2-h/2;
+  position:relative;
+}
+
+frame.scaleable, div.scaleable {
+  application-window:yes;
+  input-transparent:no;
+  border-color: @frameScaleableBorderColor;
+}
+
+moveElem {
+  behaviour:moveObj;
+}
+
+frame.scaleable > moveElem {
+  size:pw-10*@sf/@pf_outdated, ph-5*@sf/@pf_outdated;
+  pos:50%pw-50%w, 50%ph-50%h;
+  position:absolute;
+}
+
+frame[tank_not_default_controls_frame=yes] {
+  bgcolor:#88000000;
+  background-image:"";
+  padding:0;
+}
+
+frame[side=left] {
+  pos:-((w-(@slot_width-(25*@sf/@pf_outdated)))-2*@sf/@pf_outdated), -h-1*@scrn_tgt/100.0;
+}
+frame[side=right] {
+  pos:2*@sf/@pf_outdated, -h-1*@scrn_tgt/100.0;
+}

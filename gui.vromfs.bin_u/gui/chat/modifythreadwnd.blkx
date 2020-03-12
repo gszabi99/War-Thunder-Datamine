@@ -1,0 +1,230 @@
+{
+  "root": {
+    "size": "sw, sh",
+    "position": "root",
+    "background-color": "@shadeBackgroundColor",
+    "frame": [
+      {
+        "width": "0.55@scrn_tgt"
+      },
+      {
+        "pos": "50%pw-50%w, 50%ph-50%h"
+      },
+      {
+        "position": "absolute"
+      },
+      {
+        "class": "wndNav"
+      },
+      {
+        "frame_header": {
+          "activeText": {
+            "text": "#chat/editThread",
+            "caption": "yes"
+          },
+          "Button_close": []
+        }
+      },
+      {
+        "textareaNoTab": {
+          "id": "created_by_text",
+          "text": ""
+        }
+      },
+      {
+        "tdiv": [
+          {
+            "id": "language_block"
+          },
+          {
+            "pos": "0, 1@blockInterval"
+          },
+          {
+            "position": "relative"
+          },
+          {
+            "width": "pw"
+          },
+          {
+            "textareaNoTab": {
+              "valign": "center",
+              "text": "#profile/language"
+            }
+          },
+          {
+            "textareaNoTab": {
+              "valign": "center",
+              "text": "#ui/colon"
+            }
+          },
+          {
+            "tdiv": {
+              "width": "fw",
+              "Button_text": {
+                "id": "language_btn",
+                "class": "image",
+                "position": "relative",
+                "max-width": "pw",
+                "noMargin": "yes",
+                "noWidth": "yes",
+                "overflow": "hidden",
+                "showConsoleImage": "no",
+                "isColoredImg": "yes",
+                "on_click": "onLangBtn"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "textareaNoTab": {
+          "id": "thread_category_header",
+          "pos": "0, 1@blockInterval",
+          "position": "relative",
+          "text": "#chat/categoryHeader"
+        }
+      },
+      {
+        "ComboBox": {
+          "id": "categories_list",
+          "position": "relative",
+          "width": "pw"
+        }
+      },
+      {
+        "textareaNoTab": {
+          "id": "thread_title_header",
+          "pos": "0, 1@blockInterval",
+          "position": "relative"
+        }
+      },
+      {
+        "EditBox": {
+          "id": "thread_title_editbox",
+          "size": "pw, 4@buttonHeight",
+          "multiline": "yes",
+          "mouse-focusable": "yes",
+          "_on_cancel_edit": "goBack",
+          "on_change_value": "onChangeTitle"
+        }
+      },
+      {
+        "tdiv": [
+          {
+            "width": "pw"
+          },
+          {
+            "pos": "0, 1@blockInterval"
+          },
+          {
+            "position": "relative"
+          },
+          {
+            "CheckBox": {
+              "id": "is_hidden_checkbox",
+              "text": "#chat/hideThread",
+              "on_change_value": "onChangeHidden",
+              "CheckBoxImg": []
+            }
+          },
+          {
+            "CheckBox": {
+              "id": "is_pinned_checkbox",
+              "pos": "1@blockInterval, 0",
+              "position": "relative",
+              "text": "#chat/pinThread",
+              "on_change_value": "onChangePinned",
+              "CheckBoxImg": []
+            }
+          }
+        ]
+      },
+      {
+        "tdiv": [
+          {
+            "width": "pw"
+          },
+          {
+            "pos": "0, 1@blockInterval"
+          },
+          {
+            "position": "relative"
+          },
+          {
+            "flow": "h-flow"
+          },
+          {
+            "textareaNoTab": {
+              "id": "thread_time_header",
+              "text": ""
+            }
+          },
+          {
+            "textareaNoTab": {
+              "id": "new_time_text",
+              "overlayTextColor": "active",
+              "text": " "
+            }
+          }
+        ]
+      },
+      {
+        "tdiv": [
+          {
+            "width": "pw"
+          },
+          {
+            "EditBox": {
+              "id": "timestamp_editbox",
+              "width": "fw",
+              "margin-top": "1@buttonMargin",
+              "mouse-focusable": "yes",
+              "char-mask": "0123456789:- ",
+              "text": "",
+              "on_cancel_edit": "goCancelTimeStamp",
+              "on_change_value": "onChangeTimeStamp"
+            }
+          },
+          {
+            "Button_text": {
+              "size": "1@buttonHeight, 1@buttonHeight",
+              "class": "image",
+              "showConsoleImage": "no",
+              "tooltip": "#chat/moveThreadToPosition/tooltip",
+              "_on_click": "onMoveChatMenu",
+              "img": {
+                "background-image": "#ui/gameuiskin#btn_modifications.svg"
+              }
+            }
+          },
+          {
+            "Button_text": {
+              "size": "1@buttonHeight, 1@buttonHeight",
+              "class": "image",
+              "showConsoleImage": "no",
+              "tooltip": "#chat/pinThreadForTime/tooltip",
+              "_on_click": "onPinChatMenu",
+              "img": {
+                "background-image": "#ui/gameuiskin#hourglass"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "navBar": {
+          "navMiddle": {
+            "Button_text": {
+              "id": "btn_apply",
+              "text": "#mainmenu/btnApply",
+              "enable": "no",
+              "btnName": "A",
+              "_on_click": "onApply",
+              "ButtonImg": []
+            }
+          }
+        }
+      }
+    ]
+  }
+}

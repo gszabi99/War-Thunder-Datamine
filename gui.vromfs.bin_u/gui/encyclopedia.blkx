@@ -1,0 +1,51 @@
+{
+  "img": {
+    "position": "absolute",
+    "size": "3sw, sh/3+1",
+    "pos": "-sw,sh-h-1@bh",
+    "background-image": "#ui/gameuiskin#optionlist_background_down"
+  },
+  "_newline": [],
+  "root": {
+    "flow": "vertical",
+    "titletext": {
+      "id": "campaign_name",
+      "text": "#mainmenu/btnEncyclopedia"
+    },
+    "table": {
+      "id": "pedia_box",
+      "width": "80%sw",
+      "height": "sh",
+      "position": "absolute",
+      "top": "20*@scrn_tgt/100.0",
+      "left": "10%sw",
+      "tr": [
+        {
+          "td": {
+            "width": "10%pw",
+            "pedia_navigate_bar": {
+              "id": "articles_list",
+              "position": "relative",
+              "flow": "vertical",
+              "left": "3%pw",
+              "size": "200, 200",
+              "style": "overflow-x:none;overflow-y:auto;",
+              "focus": "yes",
+              "_on_select": "onArticleSelect"
+            }
+          }
+        },
+        {
+          "td": {
+            "tdiv": {
+              "id": "article_page",
+              "width": "600",
+              "height": "600"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "navBar": []
+}

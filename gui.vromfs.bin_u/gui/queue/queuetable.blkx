@@ -1,0 +1,322 @@
+{
+  "frame": {
+    "id": "queue_table",
+    "position": "relative",
+    "text-halign": "center",
+    "tdiv": {
+      "id": "ia_tooltip",
+      "width": "(1@slotbarCountries+1) * 1@queueTableColumnWidth",
+      "pos": "0.5pw-0.5w, 0",
+      "position": "relative",
+      "tdiv": {
+        "width": "pw",
+        "pos": "pw-w, 0",
+        "position": "relative",
+        "padding": "2",
+        "tdiv": [
+          {
+            "width": "pw"
+          },
+          {
+            "flow": "vertical"
+          },
+          {
+            "HorizontalListBox": {
+              "id": "ia_table_clusters_list",
+              "width": "pw",
+              "min-height": "1@buttonHeight",
+              "smallFont": "yes",
+              "class": "tabs",
+              "flow": "h-flow",
+              "input-transparent": "yes",
+              "navigatorShortcuts": "active",
+              "activateBy": "Y",
+              "on_select": "onClustersTabChange",
+              "on_wrap_up": "onWrapUp",
+              "on_wrap_down": "onWrapDown"
+            }
+          },
+          {
+            "table": {
+              "id": "ia_tooltip_table",
+              "width": "pw",
+              "pos": "50%pw-50%w",
+              "position": "relative",
+              "display": "hide"
+            }
+          },
+          {
+            "div": {
+              "id": "queue_box_container",
+              "width": "pw"
+            }
+          },
+          {
+            "tdiv": [
+              {
+                "id": "waiting_time"
+              },
+              {
+                "width": "pw"
+              },
+              {
+                "padding": "10*@sf/@pf_outdated"
+              },
+              {
+                "flow": "vertical"
+              },
+              {
+                "tdiv": {
+                  "id": "available_countries",
+                  "pos": "50%pw-50%w, 0",
+                  "position": "relative",
+                  "padding-bottom": "0.01@scrn_tgt",
+                  "flow": "vertical",
+                  "activeText": {
+                    "id": "countries_header",
+                    "pos": "50%pw-50%w, 0",
+                    "position": "relative",
+                    "text-align": "center",
+                    "smallFont": "yes",
+                    "text": ""
+                  },
+                  "tdiv": {
+                    "id": "countries_icons",
+                    "pos": "50%pw-50%w, 0",
+                    "position": "relative"
+                  }
+                }
+              },
+              {
+                "tdiv": {
+                  "pos": "pw/2-w/2, 0",
+                  "position": "relative",
+                  "size": "180@sf/@pf, 180@sf/@pf",
+                  "tdiv": {
+                    "id": "queue_wait_icon_block",
+                    "position": "absolute",
+                    "size": "pw, ph"
+                  },
+                  "centerBlock": {
+                    "position": "absolute",
+                    "pos": "50%pw-50%w, 50%ph-50%h",
+                    "flow": "vertical",
+                    "activeText": {
+                      "text": "#multiplayer/currentWaitTime",
+                      "smallFont": "yes",
+                      "style": "color:@commonMenuButtonColor;"
+                    },
+                    "textAreaCentered": {
+                      "id": "msgText",
+                      "text-halign": "center",
+                      "class": "active",
+                      "text": "00:00:00",
+                      "titleFont": "yes",
+                      "pos": "50%pw-50%w,0",
+                      "position": "relative"
+                    }
+                  }
+                }
+              },
+              {
+                "activeText": [
+                  {
+                    "id": "inQueue-topmenu-text"
+                  },
+                  {
+                    "display": "hide"
+                  },
+                  {
+                    "wink": "no"
+                  },
+                  {
+                    "text": "#yn1/waiting_for_game_query"
+                  },
+                  {
+                    "style": "color:@userlogColoredText;"
+                  },
+                  {
+                    "pos": "50%pw-50%w, 10*@sf/@pf_outdated"
+                  },
+                  {
+                    "position": "relative"
+                  },
+                  {
+                    "hideEmptyText": "yes"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "activeText": [
+                  {
+                    "id": "queue_players_total"
+                  },
+                  {
+                    "text": ""
+                  },
+                  {
+                    "style": "color:@commonMenuButtonColor;"
+                  },
+                  {
+                    "pos": "50%pw-50%w, 10*@sf/@pf_outdated"
+                  },
+                  {
+                    "position": "relative"
+                  },
+                  {
+                    "smallFont": "yes"
+                  },
+                  {
+                    "hideEmptyText": "yes"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "timer": {
+              "id": "queue_update_timer",
+              "timer_handler_func": "onUpdate",
+              "timer_interval_msec": "1000"
+            }
+          },
+          {
+            "tdiv": {
+              "width": "pw",
+              "margin-bottom": "14@sf/@pf",
+              "flow": "vertical",
+              "activeText": {
+                "id": "battle_rating",
+                "commonButtonColor": "yes",
+                "pos": "50%pw-50%w, 0",
+                "position": "relative",
+                "smallFont": "yes",
+                "hideEmptyText": "yes"
+              }
+            }
+          },
+          {
+            "tdiv": [
+              {
+                "flow": "horizontal"
+              },
+              {
+                "width": "pw"
+              },
+              {
+                "height": "0.02@sf"
+              },
+              {
+                "tdiv": {
+                  "size": "0.35pw, 3@sf/@pf",
+                  "bgcolor": "#0E1114",
+                  "position": "absolute",
+                  "top": "0.5ph-0.5h"
+                }
+              },
+              {
+                "activeText": {
+                  "text": "#multiplayer/hint",
+                  "commonButtonColor": "yes",
+                  "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+                  "position": "absolute",
+                  "smallFont": "yes"
+                }
+              },
+              {
+                "tdiv": {
+                  "size": "0.35pw, 3@sf/@pf",
+                  "bgcolor": "#0E1114",
+                  "position": "absolute",
+                  "top": "0.5ph-0.5h",
+                  "right": "0"
+                }
+              }
+            ]
+          },
+          {
+            "loadingTip": {
+              "id": "queue_tip",
+              "width": "pw",
+              "padding": "0, 0.5*@scrn_tgt/100.0",
+              "behaviour": "bhvLoadingTip",
+              "loadingHint": {
+                "id": "tip_hint",
+                "width": "pw",
+                "commonTextColor": "yes",
+                "smallFont": "yes",
+                "behaviour": "bhvHint",
+                "isWrapInRowAllowed": "yes"
+              }
+            }
+          },
+          {
+            "tdiv": {
+              "id": "crossplay_tip",
+              "display": "hide",
+              "flow": "vertical",
+              "width": "pw",
+              "tdiv": [
+                {
+                  "width": "pw"
+                },
+                {
+                  "height": "0.02@sf"
+                },
+                {
+                  "flow": "horizontal"
+                },
+                {
+                  "tdiv": {
+                    "size": "0.35pw, 3@sf/@pf",
+                    "bgcolor": "#0E1114",
+                    "position": "absolute",
+                    "top": "0.5ph-0.5h"
+                  }
+                },
+                {
+                  "activeText": {
+                    "text": "#options/ps4_crossplay",
+                    "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+                    "position": "absolute",
+                    "smallFont": "yes",
+                    "overlayTextColor": "warning"
+                  }
+                },
+                {
+                  "tdiv": {
+                    "size": "0.35pw, 3@sf/@pf",
+                    "bgcolor": "#0E1114",
+                    "position": "absolute",
+                    "top": "0.5ph-0.5h",
+                    "right": "0"
+                  }
+                }
+              ],
+              "textareaNoTab": {
+                "width": "pw",
+                "smallFont": "yes",
+                "overflow-y": "auto",
+                "padding": "0.01@scrn_tgt, 0.005@scrn_tgt",
+                "text": "#queue/crossPlay",
+                "overlayTextColor": "warning"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "div": {
+      "id": "queue_table_timer",
+      "behavior": "Timer",
+      "timer_handler_func": "onUpdate",
+      "timer_interval_msec": "1000"
+    }
+  }
+}

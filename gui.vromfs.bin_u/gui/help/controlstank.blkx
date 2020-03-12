@@ -1,0 +1,771 @@
+{
+  "tdiv": {
+    "id": "help_background_image",
+    "width": "pw",
+    "height": "ph",
+    "background-repeat": "expand",
+    "background-color": "@white",
+    "tdiv": [
+      {
+        "size": "pw, 0.511w"
+      },
+      {
+        "pos": "0.5pw-0.5w, 0.5ph-0.5h"
+      },
+      {
+        "position": "relative"
+      },
+      {
+        "tdiv": [
+          {
+            "pos": "20/1760pw, 20/900ph"
+          },
+          {
+            "position": "absolute"
+          },
+          {
+            "tdiv": [
+              {
+                "flow": "vertical"
+              },
+              {
+                "controlsHelpText": {
+                  "text": "#HUD/GEAR_SHORT"
+                }
+              },
+              {
+                "controlsHelpText": {
+                  "text": "#HUD/RPM_SHORT"
+                }
+              },
+              {
+                "controlsHelpText": {
+                  "text": "#HUD/REAL_SPEED_SHORT"
+                }
+              }
+            ]
+          },
+          {
+            "tdiv": [
+              {
+                "flow": "vertical"
+              },
+              {
+                "padding-left": "10@sf/@pf"
+              },
+              {
+                "controlsHelpText": {
+                  "text": "4",
+                  "padding-right": "5@sf/@pf",
+                  "id": "gear_value"
+                }
+              },
+              {
+                "controlsHelpText": {
+                  "text": "2500",
+                  "padding-right": "5@sf/@pf",
+                  "id": "rpm_value"
+                }
+              },
+              {
+                "controlsHelpText": {
+                  "text": "13km/h",
+                  "padding-right": "5@sf/@pf",
+                  "id": "real_speed_value"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "base_hud_param_label",
+          "max-width": "250/1760pw",
+          "min-height": "60/900ph",
+          "pos": "150/1760pw, 20/900ph",
+          "position": "absolute",
+          "text": "#controls/help/tank_throttle_hud"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "throttle_target_point",
+          "pos": "305/1760pw, 133/900ph",
+          "position": "absolute",
+          "size": "1*@sf/@pf_outdated, 1*@sf/@pf_outdated"
+        }
+      },
+      {
+        "controlsHelpFrame": {
+          "id": "throttle_label",
+          "pos": "20/1760pw, 100/900ph",
+          "position": "absolute",
+          "width": "210/1760pw",
+          "keyDiv": {
+            "behaviour": "bhvHelpFrame",
+            "value": "{{gm_throttle=max}}"
+          },
+          "textareaNoTab": {
+            "text": "#controls/help/tank_forward"
+          }
+        }
+      },
+      {
+        "tdiv": {
+          "id": "turn_left_target_point",
+          "pos": "305/1760pw, 230/900ph",
+          "position": "absolute",
+          "size": "1*@sf/@pf_outdated, 1*@sf/@pf_outdated"
+        }
+      },
+      {
+        "controlsHelpFrame": {
+          "id": "turn_left_frame",
+          "pos": "20/1760pw, 165/900ph",
+          "position": "absolute",
+          "width": "210/1760pw",
+          "keyDiv": {
+            "behaviour": "bhvHelpFrame",
+            "value": "{{gm_steering=max}}"
+          },
+          "textareaNoTab": {
+            "text": "#controls/help/tank_left"
+          }
+        }
+      },
+      {
+        "tdiv": {
+          "id": "turn_right_target_point",
+          "pos": "500/1760pw, 120/900ph",
+          "position": "absolute",
+          "size": "1*@sf/@pf_outdated, 1*@sf/@pf_outdated"
+        }
+      },
+      {
+        "controlsHelpFrame": {
+          "id": "turn_right_label",
+          "pos": "470/1760pw, 20/900ph",
+          "position": "absolute",
+          "width": "210/1760pw",
+          "keyDiv": {
+            "behaviour": "bhvHelpFrame",
+            "value": "{{gm_steering=min}}"
+          },
+          "textareaNoTab": {
+            "text": "#controls/help/tank_right"
+          }
+        }
+      },
+      {
+        "tdiv": {
+          "id": "backward_target_point",
+          "pos": "555/1760pw, 270/900ph",
+          "position": "absolute",
+          "size": "1*@sf/@pf_outdated, 1*@sf/@pf_outdated"
+        }
+      },
+      {
+        "controlsHelpFrame": {
+          "id": "backward_label",
+          "pos": "550/1760pw, 180/900ph-h",
+          "position": "absolute",
+          "width": "210/1760pw",
+          "keyDiv": {
+            "behaviour": "bhvHelpFrame",
+            "value": "{{gm_throttle=min}}"
+          },
+          "textareaNoTab": {
+            "text": "#controls/help/tank_backward"
+          }
+        }
+      },
+      {
+        "tdiv": {
+          "id": "action_bar_place",
+          "pos": "350/1760pw, 410/900ph",
+          "position": "absolute",
+          "height": "30/900ph"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "action_bar_texts_frame_1",
+          "pos": "20/1760pw, 405/900ph-h",
+          "position": "absolute",
+          "tdiv": [
+            {
+              "flow": "vertical"
+            },
+            {
+              "width": "340*@sf/@pf"
+            },
+            {
+              "controlsHelpFrame": {
+                "id": "call_artillery_strike_label",
+                "width": "pw",
+                "keyDiv": {
+                  "behaviour": "bhvHelpFrame",
+                  "value": "{{ID_ACTION_BAR_ITEM_5}}"
+                },
+                "textareaNoTab": {
+                  "text": "#controls/help/tank_call_artillery_strike"
+                }
+              }
+            },
+            {
+              "controlsHelpFrame": {
+                "id": "scout_label",
+                "width": "pw",
+                "keyDiv": {
+                  "behaviour": "bhvHelpFrame",
+                  "value": "{{ID_SCOUT}}"
+                },
+                "textareaNoTab": {
+                  "text": "#hotkeys/ID_SCOUT"
+                }
+              }
+            },
+            {
+              "controlsHelpFrame": {
+                "id": "controller_switching_ammo",
+                "width": "pw",
+                "keyDiv": {
+                  "behaviour": "bhvHelpFrame",
+                  "controlsHelpJoystickBtn": {
+                    "background-image": "@control_dirpad"
+                  }
+                },
+                "textareaNoTab": {
+                  "text": "#controls/help/tank_switching_ammo"
+                }
+              }
+            },
+            {
+              "controlsHelpFrame": {
+                "id": "keyboard_switching_ammo",
+                "width": "pw",
+                "keyDiv": {
+                  "behaviour": "bhvHelpFrame",
+                  "blockFlow": "yes",
+                  "value": "{{ID_ACTION_BAR_ITEM_1}} {{ID_ACTION_BAR_ITEM_2}} {{ID_ACTION_BAR_ITEM_3}} {{ID_ACTION_BAR_ITEM_4}}"
+                },
+                "textareaNoTab": {
+                  "text": "#controls/help/tank_switching_ammo"
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "tdiv": {
+          "id": "action_bar_texts_frame_2",
+          "pos": "850/1760pw-w, 405/900ph-h",
+          "position": "absolute",
+          "tdiv": [
+            {
+              "flow": "vertical"
+            },
+            {
+              "width": "270*@sf/@pf"
+            },
+            {
+              "controlsHelpFrame": {
+                "id": "smoke_grenade_lable",
+                "width": "pw",
+                "keyDiv": {
+                  "behaviour": "bhvHelpFrame",
+                  "value": "{{ID_SMOKE_SCREEN}}"
+                },
+                "textareaNoTab": {
+                  "text": "#hotkeys/ID_SMOKE_SCREEN"
+                }
+              }
+            },
+            {
+              "controlsHelpFrame": {
+                "id": "controller_smoke_screen_label",
+                "width": "pw",
+                "keyDiv": {
+                  "behaviour": "bhvHelpFrame",
+                  "value": "{{ID_ACTION_BAR_ITEM_5}}"
+                },
+                "textareaNoTab": {
+                  "text": "#hotkeys/ID_SMOKE_SCREEN_GENERATOR"
+                }
+              }
+            },
+            {
+              "controlsHelpFrame": {
+                "id": "smoke_screen_label",
+                "width": "pw",
+                "keyDiv": {
+                  "behaviour": "bhvHelpFrame",
+                  "value": "{{ID_SMOKE_SCREEN_GENERATOR}}"
+                },
+                "textareaNoTab": {
+                  "text": "#hotkeys/ID_SMOKE_SCREEN_GENERATOR"
+                }
+              }
+            },
+            {
+              "controlsHelpFrame": {
+                "id": "controller_medicalkit_label",
+                "width": "pw",
+                "keyDiv": {
+                  "behaviour": "bhvHelpFrame",
+                  "value": "{{ID_ACTION_BAR_ITEM_5}}"
+                },
+                "textareaNoTab": {
+                  "text": "#hotkeys/ID_ACTION_BAR_ITEM_12"
+                }
+              }
+            },
+            {
+              "controlsHelpFrame": {
+                "id": "medicalkit_label",
+                "width": "pw",
+                "keyDiv": {
+                  "behaviour": "bhvHelpFrame",
+                  "value": "{{ID_ACTION_BAR_ITEM_12}}"
+                },
+                "textareaNoTab": {
+                  "text": "#hotkeys/ID_ACTION_BAR_ITEM_12"
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "tank_sight_label",
+          "max-width": "210*@sf/@pf_outdated",
+          "min-height": "50*@sf/@pf_outdated",
+          "pos": "35/1760pw, 485/900ph",
+          "position": "absolute",
+          "text": "#controls/help/tank_sight"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "tank_cannon_direction_target_point",
+          "pos": "425/1760pw, 502/900ph",
+          "position": "absolute",
+          "size": "1*@sf/@pf_outdated, 1*@sf/@pf_outdated"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "tank_cannon_realy_target_point",
+          "pos": "425/1760pw, 534/900ph",
+          "position": "absolute",
+          "size": "1*@sf/@pf_outdated, 1*@sf/@pf_outdated"
+        }
+      },
+      {
+        "controlsHelpFrame": {
+          "pos": "850/1760pw-w, 485/900ph",
+          "position": "absolute",
+          "width": "270*@sf/@pf",
+          "id": "tank_cursor_frame",
+          "keyDiv": {
+            "behaviour": "bhvHelpFrame",
+            "value": "{{gm_mouse_aim_x+gm_mouse_aim_y}}"
+          },
+          "textareaNoTab": {
+            "text": "#controls/help/tank_cursor_control"
+          }
+        }
+      },
+      {
+        "tdiv": {
+          "id": "tank_cursor_target_point",
+          "pos": "565/1760pw, 516/900ph",
+          "position": "absolute",
+          "size": "1*@sf/@pf_outdated, 1*@sf/@pf_outdated"
+        }
+      },
+      {
+        "controlsHelpFrame": {
+          "pos": "850/1760pw-w, 870/900ph-h",
+          "position": "absolute",
+          "width": "270*@sf/@pf",
+          "keyDiv": {
+            "behaviour": "bhvHelpFrame",
+            "value": "{{gm_camx+gm_camy}}"
+          },
+          "textareaNoTab": {
+            "text": "#controls/help/tank_mouse_look"
+          }
+        }
+      },
+      {
+        "controlsHelpFrame": {
+          "pos": "35/1760pw, 870/900ph-h",
+          "position": "absolute",
+          "width": "270*@sf/@pf",
+          "keyDiv": {
+            "behaviour": "bhvHelpFrame",
+            "value": "{{ID_SHOW_VOICE_MESSAGE_LIST}}"
+          },
+          "textareaNoTab": {
+            "text": "#controls/help/tank_team_voice_messages"
+          }
+        }
+      },
+      {
+        "textarea": {
+          "pos": "900/1760pw, 30/900ph",
+          "text": "#controls/help/tank_main_title",
+          "controlsHelpTitle": "yes"
+        }
+      },
+      {
+        "textarea": {
+          "pos": "900/1760pw, 45/900ph",
+          "text": "#controls/help/tank_title",
+          "controlsHelpTitle": "yes"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "place_loader_label",
+          "max-width": "260/1760pw",
+          "pos": "1129/1760pw-w, 115/900ph",
+          "position": "absolute",
+          "text": "#controls/help/tank_place_loader"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "place_loader_target_point_1",
+          "pos": "1189/1760pw-w, 125/900ph",
+          "position": "absolute",
+          "size": "1*@sf/@pf_outdated, 1*@sf/@pf_outdated"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "place_loader_target_point_2",
+          "pos": "1155/1760pw-w, 130/900ph",
+          "position": "absolute",
+          "size": "1*@sf/@pf_outdated, 1*@sf/@pf_outdated"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "place_shooter_radio_operator_label",
+          "max-width": "340/1760pw",
+          "pos": "1140/1760pw-w, 188/900ph-h",
+          "position": "absolute",
+          "text": "#controls/help/tank_place_shooter_radioman"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "place_shooter_radio_operator_target_point_2",
+          "pos": "1095/1760pw, 215/900ph-h",
+          "position": "absolute",
+          "size": "1*@sf/@pf_outdated, 1*@sf/@pf_outdated"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "place_mechanics_driver_label",
+          "max-width": "251/1760pw",
+          "pos": "1150/1760pw-w, 305/900ph",
+          "position": "absolute",
+          "text": "#controls/help/tank_place_mechanics"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "place_mechanics_driver_target_point",
+          "pos": "1130/1760pw, 213/900ph-h",
+          "position": "absolute",
+          "size": "1*@sf/@pf_outdated, 1*@sf/@pf_outdated"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "place_commander_label",
+          "max-width": "203/1760pw",
+          "pos": "1319/1760pw,90/900ph",
+          "position": "absolute",
+          "text": "#controls/help/tank_place_commander"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "place_commander_target_point_1",
+          "pos": "1248/1760pw, 142/900ph",
+          "position": "absolute",
+          "size": "1*@sf/@pf_outdated, 1*@sf/@pf_outdated"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "place_commander_target_point_2",
+          "pos": "1220/1760pw, 145/900ph-h",
+          "position": "absolute",
+          "size": "1*@sf/@pf_outdated, 1*@sf/@pf_outdated"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "place_gunner_label",
+          "max-width": "215/1760pw",
+          "pos": "1298/1760pw, 153/900ph",
+          "position": "absolute",
+          "text": "#controls/help/tank_place_gunner"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "place_gunner_target_point_1",
+          "pos": "1215/1760pw, 163/900ph",
+          "position": "absolute",
+          "size": "1*@sf/@pf_outdated, 1*@sf/@pf_outdated"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "place_gunner_target_point_2",
+          "pos": "1175/1760pw, 162/900ph",
+          "position": "absolute",
+          "size": "1*@sf/@pf_outdated, 1*@sf/@pf_outdated"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "stowage_area_label_1",
+          "max-width": "172/1760pw",
+          "pos": "1280/1760pw, 244/900ph",
+          "position": "absolute",
+          "text": "#controls/help/tank_stowage_area"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "stowage_area_target_point_1",
+          "pos": "1222/1760pw, 186/900ph",
+          "position": "absolute",
+          "size": "1*@sf/@pf_outdated, 1*@sf/@pf_outdated"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "stowage_area_label_2",
+          "max-width": "172/1760pw",
+          "pos": "1500/1760pw, 220/900ph",
+          "position": "absolute",
+          "text": "#controls/help/tank_stowage_area"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "stowage_area_target_point_2",
+          "pos": "1222/1760pw, 206/900ph",
+          "position": "absolute",
+          "size": "1*@sf/@pf_outdated, 1*@sf/@pf_outdated"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "stowage_area_target_point_3",
+          "pos": "1541/1760pw, 175/900ph-h",
+          "position": "absolute",
+          "size": "1*@sf/@pf_outdated, 1*@sf/@pf_outdated"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "diesel_engine_label_1",
+          "max-width": "166/1760pw",
+          "pos": "1373/1760pw-w, 295/900ph",
+          "position": "absolute",
+          "text": "#controls/help/tank_diesel_engine"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "diesel_engine_target_point_1",
+          "pos": "1491/1760pw, 244/900ph-h",
+          "position": "absolute",
+          "size": "1*@sf/@pf_outdated, 1*@sf/@pf_outdated"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "diesel_engine_label_2",
+          "max-width": "166/1760pw",
+          "pos": "1400/1760pw-w, 190/900ph",
+          "position": "absolute",
+          "text": "#controls/help/tank_diesel_engine"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "diesel_engine_target_point_2",
+          "pos": "1521/1760pw, 196/900ph-h",
+          "position": "absolute",
+          "size": "1*@sf/@pf_outdated, 1*@sf/@pf_outdated"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "transmission_label_1",
+          "max-width": "177/1760pw",
+          "pos": "1035/1760pw-w, 220/900ph",
+          "position": "absolute",
+          "text": "#controls/help/tank_transmission"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "transmission_target_point_1",
+          "pos": "1074/1760pw, 228/900ph",
+          "position": "absolute",
+          "size": "1*@sf/@pf_outdated, 1*@sf/@pf_outdated"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "transmission_label_2",
+          "max-width": "177/1760pw",
+          "pos": "1525/1760pw-w, 320/900ph",
+          "position": "absolute",
+          "text": "#controls/help/tank_transmission"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "transmission_target_point_2",
+          "pos": "1490/1760pw, 247/900ph",
+          "position": "absolute",
+          "size": "1*@sf/@pf_outdated, 1*@sf/@pf_outdated"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "traversing_label",
+          "max-width": "163/1760pw",
+          "pos": "1230/1760pw-w, 366/900ph",
+          "position": "absolute",
+          "text": "#controls/help/tank_traversing"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "traversing_target_point_1",
+          "pos": "1184/1760pw, 273/900ph-h",
+          "position": "absolute",
+          "size": "1*@sf/@pf_outdated, 1*@sf/@pf_outdated"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "traversing_target_point_2",
+          "pos": "1570/1760pw, 318/900ph-h",
+          "position": "absolute",
+          "size": "1*@sf/@pf_outdated, 1*@sf/@pf_outdated"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "main_gun_tube_label",
+          "max-width": "242/1760pw",
+          "pos": "1500/1760pw, 64/900ph-h",
+          "position": "absolute",
+          "text": "#controls/help/tank_main_gun"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "main_gun_target_point",
+          "pos": "1600/1760pw, 114/900ph",
+          "position": "absolute",
+          "size": "1*@sf/@pf_outdated, 1*@sf/@pf_outdated"
+        }
+      },
+      {
+        "tdiv": {
+          "width": "295/1760pw",
+          "pos": "1190/1760pw - w, 465/900ph",
+          "position": "absolute",
+          "flow": "vertical",
+          "controlsHelpTextArea": {
+            "width": "pw",
+            "text": "#controls/help/tank_green_cross"
+          },
+          "controlsHelpFrame": {
+            "width": "pw",
+            "keyDiv": {
+              "behaviour": "bhvHelpFrame",
+              "value": "{{ID_TARGETING_HOLD_GM}}"
+            },
+            "textareaNoTab": {
+              "text": "#controls/help/ID_TARGETING_HOLD_GM"
+            }
+          }
+        }
+      },
+      {
+        "controlsHelpFrame": {
+          "pos": "1300/1760pw, 465/900ph",
+          "position": "absolute",
+          "width": "210/1760pw",
+          "keyDiv": {
+            "behaviour": "bhvHelpFrame",
+            "value": "{{ID_FIRE_GM}}"
+          },
+          "textareaNoTab": {
+            "text": "#controls/help/tank_shooting_main_gun"
+          }
+        }
+      },
+      {
+        "controlsHelpFrame": {
+          "pos": "1535/1760pw, 668/900ph",
+          "position": "absolute",
+          "width": "210/1760pw",
+          "keyDiv": {
+            "behaviour": "bhvHelpFrame",
+            "value": "{{ID_TOGGLE_VIEW_GM}}"
+          },
+          "textareaNoTab": {
+            "text": "#controls/help/tank_sniper_mode"
+          }
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "max-width": "240/1760pw",
+          "pos": "1080/1760pw, 771/900ph",
+          "position": "absolute",
+          "text": "#controls/help/tank_yellow_cross"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "max-width": "250/1760pw",
+          "pos": "1490/1760pw, 771/900ph",
+          "position": "absolute",
+          "text": "#controls/help/tank_red_cross"
+        }
+      },
+      {
+        "frame": {
+          "id": "not_default_controls_frame",
+          "pos": "0.5pw-w, 0.5ph-h",
+          "position": "absolute",
+          "width": "0.2pw",
+          "flow": "vertical",
+          "tank_not_default_controls_frame": "yes"
+        }
+      }
+    ]
+  }
+}

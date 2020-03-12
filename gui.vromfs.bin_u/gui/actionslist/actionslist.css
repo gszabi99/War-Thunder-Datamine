@@ -1,0 +1,230 @@
+@const actionsListPadding: 3@dp;
+@const actionsListLineSize: 11@dp;
+
+popup_actions_list {
+  re-type:rotation;
+  position: absolute;
+  css-hier-invalidate:yes;
+  input-transparent: no;
+  order-popup:yes;
+  background-color:@white;
+  background-image:#ui/gameuiskin#popup_menu_bg.svg;
+  background-svg-size:15@dp, 15@dp;
+  background-position:3@dp, 10@dp, 3@dp, 2@dp;
+  background-repeat:expand-svg;
+  background-rotation:0;
+  padding:1@actionsListPadding, 1@actionsListLineSize + 1@actionsListPadding, 1@actionsListPadding, 1@actionsListPadding;
+  
+  behaviour:massTransparency;
+  transp-base:0;
+  transp-end:255;
+  transp-time:300;
+}
+
+popup_actions_list {
+  move_out: no;
+}
+
+popup_actions_list[closeOnUnhover=yes]{
+  move_out: yes;
+}
+
+:hover > popup_actions_list[closeOnUnhover=yes],
+popup_actions_list:hover[closeOnUnhover=yes] {
+  move_out: no;
+}
+
+popup_actions_list[close=yes] {
+  move_out: yes;
+}
+
+popup_actions_list[move_out=yes] {
+  transp-time:-300;
+  selfRemoveOnFinish:-1;
+}
+
+popup_actions_list[al_align=top] {
+  menu_align:top;
+  left:0.5pw - 0.5w;
+  top: -h;
+  top-base: -99;
+  top-end: -100;
+}
+
+
+
+popup_actions_list[al_align=bottom] {
+  menu_align:bottom;
+  left:0.5pw - 0.5w;
+  top: ph;
+  bottom-base: -90;
+  bottom-end: -100;
+  background-rotation:180;
+  padding:1@actionsListPadding, 1@actionsListPadding, 1@actionsListPadding, 1@actionsListLineSize + 1@actionsListPadding;
+}
+
+
+
+popup_actions_list[al_align=left] {
+  menu_align:left;
+}
+
+
+
+popup_actions_list[al_align=right] {
+  menu_align:right;
+}
+
+
+popup_actions_list[menu_align=bottom] {
+  background-rotation:180;
+  padding:1@actionsListPadding, 1@actionsListPadding, 1@actionsListPadding, 1@actionsListLineSize + 1@actionsListPadding;
+}
+
+popup_actions_list > itemsList {
+  flow: vertical;
+  css-hier-invalidate:yes;
+}
+
+popup_actions_list > itemsList > actionListItem,
+popup_actions_list > itemsList > button {
+  border: yes;
+  border-color:@transparent;
+  padding: 5*@sf/@pf_outdated;
+  min-width: pw;
+  css-hier-invalidate: yes;
+}
+
+popup_actions_list[iconed=yes] > itemsList > actionListItem,
+popup_actions_list[iconed=yes] > itemsList > button {
+  padding: 5*@sf/@pf_outdated + @cIco, 5*@sf/@pf_outdated;
+}
+
+popup_actions_list > itemsList > actionListItem > text,
+popup_actions_list > itemsList > button > text {
+  background-color: @transparent;
+  border-color:@transparent;
+  re-type:textarea;
+  pos:3@sf/@pf_outdated, ph/2-h/2;
+  position:relative;
+  color: @menuButtonTextColor;
+  font:@fontNormal;
+  css-hier-invalidate: yes;
+}
+
+popup_actions_list > itemsList > button > text[isLink="yes"] {
+  color: @linkTextColor;
+}
+
+popup_actions_list > itemsList > button > text[isLink="yes"] > underline {
+  bgcolor: @linkTextColor;
+}
+
+popup_actions_list > itemsList > actionListItem > warning_icon,
+popup_actions_list > itemsList > button > warning_icon {
+  size:1@cIco, 1@cIco;
+  pos:-2@sf/@pf_outdated, ph/2-h/2;
+  position:relative;
+  background-color:@white;
+  background-image:#ui/gameuiskin#new_icon;
+}
+
+popup_actions_list > itemsList > actionListItem > discount_notification,
+popup_actions_list > itemsList > button > discount_notification {
+  pos:p.p.w - @cIco + 3*@sf/@pf_outdated, 50%ph-50%h;
+  position:absolute;
+}
+
+popup_actions_list > itemsList > actionListItem[selected=yes],
+popup_actions_list > itemsList > actionListItem:focus,
+popup_actions_list > itemsList > actionListItem:hover,
+popup_actions_list > itemsList > button[selected=yes],
+popup_actions_list > itemsList > button:focus,
+popup_actions_list > itemsList > button:hover {
+  background-color: @menuButtonColorHover;
+  border-color:@menuButtonBorderColorHover;
+  color: @menuButtonTextColorHover;
+}
+
+popup_actions_list > itemsList > actionListItem[selected=yes] > text,
+popup_actions_list > itemsList > actionListItem:focus > text,
+popup_actions_list > itemsList > actionListItem:hover > text {
+  color: @menuButtonTextColorHover;
+}
+
+popup_actions_list > itemsList > button:hover > text[isLink="yes"] {
+  color: @linkTextHoverColorLight;
+}
+
+popup_actions_list > itemsList > button:hover > text[isLink="yes"] > underline {
+  bgcolor: @linkTextHoverColorLight;
+}
+
+popup_actions_list > itemsList > button:pushed > text[isLink="yes"] {
+  color: @linkTextHoverColor;
+}
+
+popup_actions_list > itemsList > button:pushed > text[isLink="yes"] > underline {
+  bgcolor: @linkTextHoverColor;
+}
+
+popup_actions_list > itemsList > actionListItem:pushed {
+  background-color: @menuButtonColorPushed;
+  border-color:@menuButtonBorderColorPushed;
+  color: @menuButtonTextColorPushed;
+}
+
+popup_actions_list > itemsList > actionListItem:pushed > text {
+  color: @menuButtonTextColorPushed;
+}
+
+popup_actions_list > itemsList > button:pushed {
+  background-color: @menuButtonColorPushed;
+  border-color:@menuButtonBorderColorPushed;
+  color: @linkTextHoverColor;
+}
+
+popup_actions_list > itemsList > button:pushed > text {
+  color: @linkTextHoverColor;
+}
+
+popup_actions_list > itemsList > actionListItem > icon,
+popup_actions_list > itemsList > button > icon {
+  background-color: @menuButtonTextColor;
+  background-svg-size:@cIco, @cIco;
+  size: @cIco, @cIco;
+  input-transparent:yes;
+  re-type: fgPict;
+  position: relative;
+  pos: -w - 3*@sf/@pf_outdated;
+}
+
+[popupMenuBrightIcons=yes] popup_actions_list > itemsList > actionListItem > icon,
+popup_actions_list > itemsList > actionListItem[selected=yes] > icon,
+popup_actions_list > itemsList > actionListItem:focus > icon,
+popup_actions_list > itemsList > actionListItem:hover > icon,
+popup_actions_list > itemsList > button[selected=yes] > icon,
+popup_actions_list > itemsList > button:focus > icon,
+popup_actions_list > itemsList > button:hover > icon {
+  background-color: @menuButtonTextColorHover;
+}
+
+popup_actions_list > itemsList > actionListItem:pushed > icon,
+popup_actions_list > itemsList > button:pushed > icon {
+  background-color: @menuButtonTextColorPushed;
+}
+
+popup_actions_list > itemsList > actionListItem > icon[background-image=""],
+popup_actions_list > itemsList > button > icon[background-image=""] {
+  display:hide;
+}
+
+popup_actions_list > itemsList > actionListItem,
+popup_actions_list > itemsList > button {
+  shortcutActivate: "Space | J:A";
+}
+
+[swap_ab=yes] popup_actions_list > itemsList > actionListItem,
+[swap_ab=yes] popup_actions_list > itemsList > button {
+  shortcutActivate: "Space | J:B";
+}

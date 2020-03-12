@@ -1,0 +1,112 @@
+{
+  "root": {
+    "background-color": "@modalShadeColor",
+    "frame": [
+      {
+        "width": "0.75@scrn_tgt+10"
+      },
+      {
+        "pos": "50%pw-50%w, 45%ph-40%h"
+      },
+      {
+        "position": "absolute"
+      },
+      {
+        "class": "wnd"
+      },
+      {
+        "frame_header": {
+          "Button_close": [],
+          "top_right_holder": {
+            "hasRightIndent": "yes",
+            "CheckBox": {
+              "id": "skip_this",
+              "pos": "0, 50%ph-50%h",
+              "position": "relative",
+              "text": "#options/doNotAskMeAgain",
+              "on_change_value": "onSkipMessageBox",
+              "btnName": "X",
+              "CheckBoxImg": [],
+              "ButtonImg": []
+            }
+          }
+        }
+      },
+      {
+        "textAreaCentered": {
+          "id": "msgText",
+          "width": "pw",
+          "text": ""
+        }
+      },
+      {
+        "textAreaCentered": {
+          "id": "listText",
+          "width": "pw",
+          "text": "",
+          "margin-top": "2*@sf/100.0"
+        }
+      },
+      {
+        "div": [
+          {
+            "pos": "50%pw-50%w, 0.03@sf"
+          },
+          {
+            "position": "relative"
+          },
+          {
+            "flow": "horizontal"
+          },
+          {
+            "Button_text": {
+              "id": "btn_cancel",
+              "text": "",
+              "btnName": "B",
+              "_on_click": "goBack",
+              "style": "accessKey:J:B | Esc | Backspace | Tab | J:Back;",
+              "ButtonImg": []
+            }
+          },
+          {
+            "Button_text": {
+              "id": "btn_select",
+              "btnName": "A",
+              "text": "",
+              "_on_click": "onStart",
+              "class": "battle",
+              "navButtonFont": "yes",
+              "css-hier-invalidate": "yes",
+              "pattern": [],
+              "buttonWink": {
+                "_transp-timer": "0"
+              },
+              "buttonGlance": [],
+              "btnText": {
+                "id": "btn_select_text",
+                "text": "#mainmenu/toBattle"
+              },
+              "ButtonImg": []
+            }
+          }
+        ]
+      },
+      {
+        "CheckBox": {
+          "id": "slots-autoweapon",
+          "pos": "50%pw-50%w, 0.01@sf",
+          "position": "relative",
+          "class": "with_image",
+          "text": "#shop/auto_buy_weapons",
+          "smallFont": "yes",
+          "display": "hide",
+          "on_change_value": "onSlotsChangeAutoRefill",
+          "infoImg": {
+            "background-image": "#ui/gameuiskin#btn_weapons.svg"
+          },
+          "CheckBoxImg": []
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "img": {
+    "position": "absolute",
+    "size": "3sw, sh/3+1",
+    "pos": "-sw,sh-h-1@bh",
+    "background-image": "#ui/gameuiskin#optionlist_background_down"
+  },
+  "root": [
+    {
+      "tdiv": {
+        "id": "bg_picture_container",
+        "size": "sw, sh",
+        "position": "root",
+        "background-color": "@black",
+        "tdiv": [
+          {
+            "pos": "50%sw-50%w,50%sh-50%h"
+          },
+          {
+            "position": "absolute"
+          },
+          {
+            "size": "2.333sh, sh"
+          },
+          {
+            "overflow": "hidden"
+          },
+          {
+            "tdiv": {
+              "id": "animated_bg_picture",
+              "pos": "pw/2-w/2, ph/2-h/2",
+              "position": "absolute",
+              "size": "2.5sh, sh",
+              "behaviour": "multiLayerImage",
+              "blend-time": "500"
+            }
+          },
+          {
+            "tdiv": {
+              "size": "0.333sh, sh",
+              "pos": "-w/2, 0",
+              "position": "absolute",
+              "background-image": "!ui/gameuiskin#debriefing_bg_grad@@ss",
+              "background-color": "@black"
+            }
+          },
+          {
+            "tdiv": {
+              "size": "0.333sh, sh",
+              "pos": "pw -w/2, 0",
+              "position": "absolute",
+              "background-image": "!ui/gameuiskin#debriefing_bg_grad@@ss",
+              "background-color": "@black"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "TopMenuPanel": {
+        "shadowSafeArea": [],
+        "TopMenuPanelBGPlace": {
+          "id": "top_gamercard_bg",
+          "TopMenuPanelBg": {
+            "width": "pw",
+            "Red_shadow_light": {
+              "pos": "50%pw-50%w, 0",
+              "position": "absolute",
+              "size": "50%pw, ph"
+            },
+            "tdiv": {
+              "pos": "50%pw-50%w, -0.5@bh",
+              "position": "absolute",
+              "padding": "1@titleLogoPlatePadding",
+              "GameLogoPlate": {
+                "id": "gamercard_logo",
+                "Shadow": {
+                  "redPlate": {
+                    "pattern": {
+                      "type": "dark_diag_lines",
+                      "padding-top": "0.5@bh",
+                      "img": {
+                        "id": "titleLogo",
+                        "size": "256*@loginLogoScale,128*@loginLogoScale",
+                        "background-image": "ui/title128"
+                      }
+                    }
+                  }
+                }
+              },
+              "tdiv": {
+                "pos": "pw, 1@topBarHeight",
+                "position": "absolute",
+                "versionText": {
+                  "padding-left": "0.02@scrn_tgt"
+                }
+              }
+            }
+          },
+          "tdiv": {
+            "pos": "pw-w, ph-h",
+            "position": "absolute",
+            "Button_close": {
+              "id": "button_exit",
+              "_on_click": "goBack",
+              "relative": "yes",
+              "display": "hide",
+              "enable": "no"
+            }
+          }
+        }
+      }
+    },
+    {
+      "BottomMenuPanel": {
+        "shadowSafeArea": [],
+        "line": [],
+        "pattern": {
+          "type": "bright_texture"
+        },
+        "copyright": {
+          "pos": "pw-w-1@bw, 50%ph - 50%h",
+          "position": "absolute"
+        },
+        "CompanyLogo": {
+          "pos": "pw-w-1@bw -1@companyLogoPadW, -h -1@companyLogoPadH",
+          "position": "absolute"
+        }
+      }
+    },
+    {
+      "tdiv": {
+        "id": "authorization_block",
+        "pos": "50%sw-50%w, 70%sh - 50%h",
+        "position": "absolute",
+        "flow": "vertical",
+        "tdiv": {
+          "pos": "50%pw-50%w, 0",
+          "position": "relative",
+          "background-color": "@shadeBackgroundColor3",
+          "textAreaCentered": {
+            "id": "xbox_active_usertag",
+            "caption": "yes",
+            "margin": "0.01@scrn_tgt, 0.005@scrn_tgt",
+            "hideEmptyText": "yes",
+            "text": ""
+          }
+        },
+        "authorizationBlock": {
+          "id": "authorization_button_place",
+          "pos": "50%pw-50%w, 0",
+          "position": "relative",
+          "flow": "vertical"
+        },
+        "textAreaCentered": {
+          "id": "user_notify_text",
+          "pos": "50%pw-50%w, 0",
+          "position": "relative",
+          "max-width": "50%sw",
+          "text": "",
+          "hideEmptyText": "yes"
+        }
+      }
+    }
+  ]
+}

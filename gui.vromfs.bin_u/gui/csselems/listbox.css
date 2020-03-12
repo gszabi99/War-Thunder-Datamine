@@ -1,0 +1,624 @@
+@const shopFilterHFlowHeight: 0.04*@sf;
+@const shopFilterTextCountryHeight: 28@sf/@pf;
+@const listboxItemsInterval:1@dp;
+@const listboxHPadding: 0.015@sf;
+@const slotsHeaderBoxPadding: 0.01@sf;
+
+@const listboxBgColor:              #CC03070C;
+
+@const listboxHoverOptionColor:     #7d868e;
+@const listboxHoverTextColor:       @textInWhiteBlockColor;
+@const listboxHoverOptionLineColor: #e8e8e8;
+
+@const listboxSelOptionColor:       #28333c;
+@const listboxSelTextColor:         #e0e0e0;
+@const listboxSelOptionLineColor:   #96b1b1;
+
+@const headerOptionTextColor:       #908f8f;
+
+@const headerOptionHoverColor:      #996a2211;
+@const headerOptionSelectedColor:   #ffb2391d;
+
+@const headerOptionSelectedTextColor: #e0e0e0;
+
+listbox,
+listboxNoScroll {
+  behaviour:select;
+  re-type:select;
+  shortcutUp:'@shortcutUpGamepad | Up';
+  shortcutDown:'@shortcutDownGamepad | Down';
+  shortcutRight:'';
+  shortcutLeft:'';
+  shortcutActivate:'';
+  snd_select:choose;
+  snd_set_focus:focus;
+  snd_dbl_click:click;
+  scrollBox-dontResendShortcut:yes;
+  total-input-transparent:yes;
+}
+
+listbox {
+  overflow-y:auto;
+  overflow-x:hidden;
+}
+
+HorizontalListBox, VerticalListBox{
+  re-type:9rect;
+  background-color:@listboxBgColor;
+  padding:@listboxPad-1@listboxItemsInterval;
+  snd_select:choose;
+  snd_set_focus:focus;
+  snd_dbl_click:click;
+  need_flow:yes;
+  _has_navigator:no;
+  total-input-transparent:yes;
+}
+
+shopFilter {
+  re-type:fgPict;
+  padding:0.02@scrn_tgt, 0;
+  foreground-position:0, 0, 0, h - 2@dp;
+  css-hier-invalidate:yes;
+  color:@commonTextColor;
+  height: @buttonHeight;
+}
+
+shopFilter[useParentHeight=yes] {
+  height: ph;
+}
+
+SlotbarBackground {
+  background-color: @slotbarBgColor;
+  background-position: 1, 0;
+}
+
+VerticalListBox > shopFilter,
+HorizontalListBox > shopFilter {
+  margin:1@listboxItemsInterval;
+}
+
+VerticalListBox[navigator=posNavigator],
+HorizontalListBox[navigator=posNavigator] {
+  behaviour:posNavigator;
+  _has_navigator:yes;
+}
+
+HorizontalListBox[_has_navigator=no],
+VerticalListBox[_has_navigator=no] {
+  behaviour:select;
+}
+
+HorizontalListBox[flow] {
+  need_flow:no;
+}
+
+HorizontalListBox[need_flow=yes] {
+  flow:horizontal;
+}
+
+VerticalListBox {
+  flow:vertical;
+}
+
+VerticalListBox.options {
+  height:0.05@scrn_tgt;
+  width:pw;
+}
+
+HorizontalListBox[isTransparentBg=yes],
+HorizontalListBox.header {
+  background-color:@transparent;
+  padding: 0;
+}
+
+HorizontalListBox.countries {
+  padding: -1@listboxItemsInterval;
+}
+
+VerticalListBox.header {
+  padding: 0;
+}
+
+VerticalListBox.header > shopFilter,
+HorizontalListBox.header > shopFilter {
+  margin-right:0;
+}
+
+HorizontalListBox.options {
+  height:0.7ph-6*@sf/@pf_outdated;
+}
+
+HorizontalListBox.choice3 {
+  background-color:@transparent;
+}
+
+HorizontalListBox.hflow {
+  flow:h-flow;
+  min-height:@shopFilterHFlowHeight;
+}
+
+shopFilter, shopFilterText {
+  font:@fontNormal;
+  color:@commonTextColor;
+  text-align:center;
+}
+
+VerticalListBox > shopFilter {
+  _needHeight:yes;
+}
+VerticalListBox > shopFilter[height] {
+  _needHeight:no;
+}
+VerticalListBox > shopFilter[_needHeight=yes] {
+  height:@shopFilterHFlowHeight;
+}
+
+shopFilter > img {
+  background-color:@commonTextColor;
+}
+
+shopFilterText {
+  re-type:textarea;
+  behavior:textArea;
+  input-transparent:yes;
+  pos:0, 50%ph-50%h;
+  position:relative;
+}
+shopFilter:disabled shopFilterText,
+shopFilter[inactive=yes] shopFilterText {
+  color:@disabledTextColor;
+}
+
+HorizontalListBox > shopFilter {
+  padding:1@listboxHPadding, 0;
+}
+
+[onlyImages=yes] > shopFilter {
+  width:ph;
+  flow:vertical;
+}
+
+.countries > shopFilter {
+  width:1.5h;
+  height: 0.1@sf;
+  flow:vertical;
+  padding:0,0;
+}
+
+.countryChoice > shopFilter {
+  padding:4*@sf/@pf_outdated;
+}
+
+.hflow > shopFilter {
+  height:1@shopFilterHFlowHeight;
+  color:@listboxHoverTextColor;
+}
+
+.tabs > shopFilter {
+  background-position:0, 0, 0, 2@dp;
+  foreground-position:0, h - 2@dp, 0, 0;
+  height:ph;
+  margin:1@listboxItemsInterval, 0, 1@listboxItemsInterval, 0;
+}
+
+shopFilter:hover {
+  background-color:@listboxHoverOptionColor;
+  foreground-color:@listboxHoverOptionLineColor;
+  color:@listboxHoverTextColor;
+}
+
+shopFilter:hover, shopFilter:hover shopFilterText {
+  color:@listboxHoverTextColor;
+}
+
+shopFilter[selected=yes] {
+  background-color:@listboxSelOptionColor;
+  foreground-color:@listboxSelOptionLineColor;
+  color:@activeTextColor;
+}
+
+shopFilter[selected=yes] > img {
+  background-color:@white;
+}
+
+HorizontalListBox.inset{
+  background-color:@transparent;
+  padding:0, -1@dp;
+}
+
+.inset > shopFilter{
+  border:yes; border-color:@frameBorderColor; border-offset: 1@dp;
+}
+
+.inset > shopFilter:hover {
+  background-color:@transparent;
+  foreground-color:@transparent;
+}
+
+.inset > shopFilter:hover > shopFilterText {
+  color:@activeTextColor;
+}
+
+.inset > shopFilter[selected=yes]{
+  background-color:@insetColor;
+  foreground-color:@insetColor;
+  background-position:0, 0, 0, 1@dp;
+  foreground-position:0, h - 1@dp, 0, 0;
+}
+
+.choice3 > shopFilter {
+  width:30*@scrn_tgt/100.0;
+  flow:vertical;
+}
+
+.options > shopFilter {
+  width:29*@scrn_tgt/100.0;
+  height:ph;
+}
+
+.countries > shopFilter {
+  foreground-color:@transparent;
+}
+
+.header > shopFilter {
+  background-color:@transparent;
+  foreground-color:@transparent;
+  color:@headerOptionTextColor;
+  height:ph;
+  css-hier-invalidate:yes;
+}
+
+.header > shopFilter > shopFilterText {
+  color:@headerOptionTextColor;
+}
+
+.header > shopFilter {
+  foreground-position:0, h, 0, 0;
+}
+
+.header > shopFilter:hover,.tabs > shopFilter:hover {
+  foreground-color:@headerOptionHoverColor;
+  color:@headerOptionSelectedTextColor;
+}
+
+.tabs > shopFilter:hover {
+  background-color:@transparent;
+}
+
+.header > shopFilter:hover > shopFilterText,
+.tabs > shopFilter:hover > shopFilterText {
+  color:@headerOptionSelectedTextColor;
+}
+
+.header > shopFilter:pushed,.tabs > shopFilter:pushed {
+  foreground-color:@headerOptionSelectedColor; }
+
+.header > shopFilter[selected=yes],
+.tabs > shopFilter[selected=yes] {
+  foreground-color:@headerOptionSelectedColor;
+  color:@headerOptionSelectedTextColor;
+}
+.header > shopFilter[selected=yes] > shopFilterText,
+.tabs > shopFilter[selected=yes] > shopFilterText {
+  color:@headerOptionSelectedTextColor;
+}
+
+.tabs[smallFont=yes] > shopFilter {
+  height:1@buttonHeight;
+}
+
+.tabs[normalFont=yes] > shopFilter {
+  padding:0.5*@scrn_tgt/100.0, 0;
+}
+[smallFont=yes] > shopFilter {
+  padding:@scrn_tgt/100.0, 2*@sf/@pf_outdated+0.5*@scrn_tgt/100.0, @scrn_tgt/100.0, 0.5*@scrn_tgt/100.0;
+}
+.tabs[smallFont=yes] > shopFilter[canClose=yes] {
+  padding:@scrn_tgt/100.0, 2*@sf/@pf_outdated+0.5*@scrn_tgt/100.0, 3*@scrn_tgt/100.0, 0.5*@scrn_tgt/100.0;
+}
+
+.countries > shopFilter > textAreaCentered {
+  width:pw-1*@scrn_tgt/100.0;
+  pos:50%pw-50%w, ph;
+  position:absolute;
+  overflow-y:show;
+}
+
+.countries > shopFilter > discount {
+  pos:pw-w, -50%h;
+  position:absolute;
+  rotation:-10;
+}
+
+[onlyImages=yes] > shopFilter > shopFilterText {
+  font:@fontMedium;
+  pos:50%pw-50%w, 0;
+  position:relative;
+  color:@transparent;
+}
+
+.choice3 > shopFilter > shopFilterText {
+  font:@fontMedium;
+  pos:50%pw-50%w, ph-h;
+  position:absolute;
+}
+
+.options > shopFilter > shopFilterText {
+  behaviour:textArea;
+  re-type:textarea;
+  font:@fontNormal;
+  width:pw;
+  pos:50%pw-50%w, 50%ph-50%h;
+  position:relative;
+  css-hier-invalidate:yes;
+}
+
+VerticalListBox.options > shopFilter > shopFilterText {
+  text-align:left;
+}
+
+[coloredTexts=yes] > shopFilter > shopFilterText {
+  behaviour:textArea;
+  re-type:textarea;
+}
+
+[smallFont=yes] > shopFilter shopFilterText,
+shopFilterText[smallFont=yes] {
+  font:@fontSmall;
+}
+
+[onlyImages=yes] > shopFilter > shopFilterText {
+  color:@transparent;
+}
+shopFilter[selected=yes], shopFilter[selected=yes] shopFilterText {
+  color:@activeTextColor;
+}
+shopFilter:disabled[selected=yes] shopFilterText {
+  color:@disabledActiveTextColor;
+}
+
+[type=header] > shopFilter > shopFilterText {
+  color:@listboxSelTextColor;
+}
+
+shopFilterText[colorTag=squad]                   { color:@mChatSenderMySquadColorDark; }
+:hover > shopFilterText[colorTag=squad],
+[selected=yes] > shopFilterText[colorTag=squad]  { color:@mChatSenderMySquadColor; }
+
+shopFilterText[colorTag=friend]                  { color:@mChatSenderFriendColorDark;}
+::hover > shopFilterText[colorTag=friend],
+[selected=yes] > shopFilterText[colorTag=friend] { color:@mChatSenderFriendColor;}
+
+shopFilterImg {
+  height:1@cIco;
+  width:h;
+  pos:50%pw-50%w, 50%ph-50%h;
+  position:relative;
+  color:@commonTextColor;
+  background-repeat:aspect-ratio;
+  background-color:@commonTextColor;
+  background-svg-size:@cIco, @cIco;
+  input-transparent:yes;
+}
+
+:hover > shopFilterImg {
+  background-color:@listboxHoverTextColor;
+}
+
+.header :hover > shopFilterImg {
+  background-color:@imageHoverColor;
+}
+
+.countries > shopFilter > shopFilterImg {
+  pos:0, 0;
+  position:relative;
+  width:pw;
+  height:ph - @shopFilterTextCountryHeight;
+  background-color:@imageNotSelCountryColor;
+}
+
+.countries > shopFilter > shopFilterText {
+  font:@fontNormal;
+  pos:0, 0;
+  position:relative;
+  width:pw;
+  height: @shopFilterTextCountryHeight;
+}
+
+.countries_small shopFilterImg {
+  pos:50%pw-50%w, 50%ph-50%h;
+  size:@cIco, @cIco;
+  background-svg-size:@cIco, @cIco;
+}
+
+.countryChoice :hover shopFilterImg,
+.countries :hover shopFilterImg,
+.countries_small :hover shopFilterImg {
+  background-color:@imageHoverCountryColor;
+}
+
+.choice3 > shopFilter > shopFilterImg {
+  pos:50%pw-50%w, 1.0*@scrn_tgt/100.0;
+  height:7.32*@scrn_tgt/100.0;
+  width:1.893h;
+}
+
+shopFilter[selected=yes] > shopFilterImg {
+  background-color:@white;
+}
+
+.countryChoice shopFilter[selected=yes] > shopFilterImg {
+  height:128*@sf/@pf_outdated;
+}
+
+.choice3 > shopFilter > shopFilterImg {
+  height:8.0*@scrn_tgt/100.0;
+}
+
+shopFilterImg:disabled {
+  background-color:@fadedImageColor;
+}
+
+cornerImg {
+  height:0.035@scrn_tgt;
+  width:h;
+  left:pw-0.9h;
+  top:-0.45h;
+  position:absolute;
+  background-repeat:aspect-ratio;
+  background-svg-size:@cIco, @cIco;
+  input-transparent:yes;
+}
+
+cornerImg[imgSmall=yes] {
+  height:1@cIco;
+  background-svg-size:@cIco, @cIco;
+}
+
+cornerImg[background-image] {
+  _needColor:yes;
+}
+
+cornerImg[background-color] {
+  _needColor:no;
+}
+
+cornerImg[_needColor=yes] {
+  background-color:@white;
+}
+
+cornerImg[foreground-image] {
+  re-type: fgPict;
+  foreground-repeat:aspect-ratio;
+  foreground-color:@white;
+}
+
+cornerImgGlow {
+  size:1.4pw, 1.4ph;
+  pos:pw/2-w/2, ph/2-h/2; position:absolute;
+  background-image:#ui/gameuiskin#mail_new_glow;
+  background-color:@textureGlowColor;
+  background-repeat:aspect-ratio;
+  input-transparent:yes;
+}
+
+[show_console_buttons:yes] [selected=yes][navImgStyle=all] > cornerImg,
+[show_console_buttons:yes] [selected=yes][navImgStyle=right] > cornerImg {
+  left:pw -0.9h -ph;
+}
+
+.tabs[smallFont=yes] cornerImg {
+  height:1@cIco;
+  pos:pw-w-6@sf/@pf, -0.5h;
+}
+
+.tabs[smallFont=yes] cornerImg[imgTiny=yes] {
+  height:1@tIco;
+  pos:pw-w, 0.5h;
+}
+
+navigationImage {
+  re-type:9rect;
+  size:ph,ph;
+  pos:0.005@scrn_tgt, 50%ph-50%h;
+  position:absolute;
+  padding:3*@sf/@pf_outdated, 0;
+  background-color:@white;
+  background-repeat:expand;
+  background-position:0;
+  background-image:@control_r_stick_left;
+  background-svg-size: 1@buttonImgSvgHeight, 1@buttonImgSvgHeight;
+  input-transparent:yes;
+  display:hide;
+}
+navigationImage[type=right] {
+  pos:pw-w-0.005@scrn_tgt, 50%ph-50%h;
+  background-image:@control_r_stick_right;
+}
+
+[show_console_buttons:yes] shopFilter[selected=yes][navImgStyle] > navigationImage {
+  display:show;
+}
+shopFilter[selected=yes][navImgStyle=left] > navigationImage[type=right],
+shopFilter[selected=yes][navImgStyle=right] > navigationImage[type=left] {
+  display:hide;
+}
+
+[show_console_buttons:yes] shopFilter[selected=yes][navImgStyle=left],
+[show_console_buttons:yes] shopFilter[selected=yes][navImgStyle=all] {
+  padding-left:1@scrn_tgt/100.0 + h;
+}
+[show_console_buttons:yes] shopFilter[selected=yes][navImgStyle=right],
+[show_console_buttons:yes] shopFilter[selected=yes][navImgStyle=all] {
+  padding-right:1@scrn_tgt/100.0 + h;
+}
+
+.tabs[withImages=yes] > shopFilter > shopFilterImg,
+.header[withImages=yes] > shopFilter > shopFilterImg,
+HorizontalListBox[withImages=yes] > shopFilter > shopFilterImg {
+  height:@cIco;
+  background-svg-size:@cIco, @cIco;
+  pos:0, ph/2-h/2;
+  position:relative;
+  margin-right:1@blockInterval;
+}
+
+VerticalListBox.options > shopFilter {
+  width:pw;
+}
+
+
+CountriesCrews {
+  size: pw, 1@slotbarHeight;
+  css-hier-invalidate: yes;
+  background-color:@transparent;
+  background-position:1, 2, 1, 0;
+  margin-top: 2;
+  padding-top: 2;
+}
+
+CountriesCrews > massTransp {
+  size: pw, ph;
+}
+
+CountriesCrews[hasBackground=yes] {
+  background-color:@slotbarBgColor;
+}
+
+shopFilter.slotsHeader:hover {
+  background-color: @slotsHeaderBtnHoverColor;
+}
+
+shopFilter.slotsHeader[selected=yes] {
+  background-color: @slotsHeaderBtnSelectedColor;
+}
+
+slotsCountryText {
+  re-type:text;
+  top:0.5(ph-h);
+  position:relative;
+  padding-left:1@blockInterval;
+  font:@fontNormal;
+  color:@minorTextColor;
+}
+activateSelect[isShort=no] > shopFilter.slotsHeader {
+  tooltip:'';
+}
+activateSelect[isShort=yes] slotsCountryText.short {
+  display: show;
+}
+activateSelect[isShort=yes] slotsCountryText.full {
+  display: hide;
+}
+
+shopFilter[selected=yes] > slotsCountryText,
+shopFilter[chosen=yes] > slotsCountryText {
+  color:@activeTextColor;
+}
+shopFilter:disabled > slotsCountryText {
+  color:@itemLockedColor;
+}
+
+shopFilter.slotsHeader:disabled > img {
+  background-color: @countryLockedColor;
+}

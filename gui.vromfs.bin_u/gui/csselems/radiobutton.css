@@ -1,0 +1,89 @@
+@const promoRadiobuttonSize: 8@sf/@pf;
+@const promoRadiobuttonBgColor: #3D3D3D3D;
+@const promoRadiobuttonBgColorHover: #99999999;
+
+RadioButtonList {
+  behaviour:select;
+  re-type:select;
+  snd_select:choose;
+  snd_set_focus:focus;
+  snd_dbl_click:click;
+  flow: horizontal;
+  total-input-transparent:yes;
+}
+
+RadioButton {
+  re-type:9rect;
+  min-width: @checkboxSize;
+  height:@checkboxSize;
+  padding:@checkboxSize, 0, 4@sf/@pf_outdated, 0;
+  color:@commonMenuButtonColor;
+  font:@fontNormal;
+  css-hier-invalidate:yes;
+  text-align:left;
+}
+
+RadioButtonList[highlightSelected=yes] > RadioButton[selected=yes] {
+  color:@activeTextColor;
+}
+
+RadioButtonImg {
+  size:@checkboxSize, @checkboxSize;
+  position:absolute;
+  background-image:#ui/gameuiskin#radiobutton_unchecked_.svg;
+  background-svg-size:@checkboxSize, @checkboxSize;
+  background-position:0;
+  background-repeat:expand;
+  background-color:@white;
+  input-transparent:yes;
+}
+
+RadioButton:hover >            RadioButtonImg { background-image:#ui/gameuiskin#radiobutton_unchecked_hover.svg; }
+
+RadioButton:current >          RadioButtonImg { background-image:#ui/gameuiskin#radiobutton_checked_.svg; }
+
+RadioButton:pushed >           RadioButtonImg { background-image:#ui/gameuiskin#radiobutton_unchecked_active.svg; }
+
+RadioButton:disabled >         RadioButtonImg { background-image:#ui/gameuiskin#radiobutton_unchecked_disabled.svg; }
+
+RadioButton:current:disabled > RadioButtonImg { background-image:#ui/gameuiskin#radiobutton_checked_disabled.svg; }
+
+RadioButton:current:hover >    RadioButtonImg { background-image:#ui/gameuiskin#radiobutton_checked_hover.svg; }
+
+RadioButton:current:pushed >   RadioButtonImg { background-image:#ui/gameuiskin#radiobutton_checked_active.svg; }
+
+RadioButtonList.promo {
+  itemInterval:3@promoRadiobuttonSize;
+  left:pw/2-w/2;
+  top:0;
+}
+
+.promo > RadioButton {
+  min-width: @promoRadiobuttonSize;
+  height: @promoRadiobuttonSize;
+  padding: 0;
+}
+
+.promo > RadioButton > RadioButtonImg {
+  size:@promoRadiobuttonSize, @promoRadiobuttonSize;
+  background-color:@promoRadiobuttonBgColor;
+  background-image:#ui/gameuiskin#radiobutton_promo.svg;
+  background-svg-size:@promoRadiobuttonSize, @promoRadiobuttonSize;
+}
+
+.promo > RadioButton:hover > RadioButtonImg {
+  background-color:@promoRadiobuttonBgColorHover;
+}
+
+.promo > RadioButton:current > RadioButtonImg {
+  background-color:@white;
+}
+
+RadioButton > RadioButtonDescImg {
+  size:@dIco, @dIco;
+  pos:0, 50%ph-50%h;
+  position:relative;
+  background-color:@white;
+  background-svg-size:@dIco, @dIco;
+  background-repeat:aspect-ratio;
+}

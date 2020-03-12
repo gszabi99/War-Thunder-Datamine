@@ -1,0 +1,67 @@
+[
+  {
+    "root": {
+      "background-color": "@modalShadeColor",
+      "behaviour": "button",
+      "on_click": "goBack",
+      "frame": {
+        "id": "wnd_frame",
+        "size": "0.7@sf, 0.7@sf",
+        "pos": "50%pw-50%w, 1@minYposWindow + 0.1*(sh - 1@minYposWindow - h)",
+        "position": "absolute",
+        "class": "wndNav",
+        "behaviour": "button",
+        "frame_header": {
+          "activeText": {
+            "caption": "yes",
+            "text": "#mainmenu/invites"
+          },
+          "Button_close": {
+            "id": "btn_back"
+          }
+        },
+        "listbox": {
+          "id": "invites_list",
+          "size": "pw, fh",
+          "flow": "vertical",
+          "selImgType": "gamepadFocused",
+          "navigatorShortcuts": "active",
+          "on_dbl_click": "onAccept"
+        },
+        "textareaNoTab": {
+          "id": "now_new_invites",
+          "width": "pw",
+          "pos": "50%pw-50%w, 40%ph-50%h",
+          "position": "absolute",
+          "text-align": "center",
+          "text": "#invite/noNewInvites"
+        },
+        "navBar": {
+          "navLeft": {
+            "CheckBox": {
+              "id": "auto_close",
+              "text": "#invite/closeWndOnAccept",
+              "value": "no",
+              "btnName": "RB",
+              "on_change_value": "onAutoCloseChange",
+              "CheckBoxImg": [],
+              "ButtonImg": []
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "DummyButton": {
+      "btnName": "X",
+      "on_click": "onInviterInfoAccessKey"
+    }
+  },
+  {
+    "DummyButton": {
+      "btnName": "Y",
+      "on_click": "onReject"
+    }
+  }
+]

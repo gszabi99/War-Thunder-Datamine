@@ -1,0 +1,165 @@
+{
+  "group": "",
+  "DummyButton": {
+    "id": "slotb-aircraft-choose-root",
+    "size": "sw, sh",
+    "position": "root",
+    "background-color": "@shadeBackgroundColor",
+    "btnName": "B",
+    "on_click": "onCancelSlotChoose",
+    "tooltip": ""
+  },
+  "div": {
+    "id": "tablePlace",
+    "position": "root",
+    "behaviour": "basicSize",
+    "size-time": "300",
+    "size-func": "squareInv",
+    "blend-time": "0",
+    "css-hier-invalidate": "yes",
+    "max-height": "@rh",
+    "slotsScrollDiv": {
+      "id": "slots_scroll_div",
+      "height": "ph",
+      "pos": "0, -h-1*@scrn_tgt/100.0",
+      "position": "relative",
+      "class": "shopDiv",
+      "flow": "vertical",
+      "overflow": "hidden",
+      "tooltip": "",
+      "background-image": "#ui/gameuiskin#item_table_block_bg_grad",
+      "background-color": "@commonTextColor",
+      "background-position": "4",
+      "background-repeat": "expand",
+      "padding": "4,4",
+      "tdiv": {
+        "id": "arrows_nest",
+        "position": "absolute",
+        "pos": "0.5*pw - 0.5*w, 2*@sf/@pf_outdated",
+        "size": "@shop_width, ph"
+      },
+      "table": {
+        "id": "airs_table",
+        "left": "50%pw-50%w",
+        "position": "relative",
+        "margin": "0,1",
+        "class": "slotbarTable",
+        "slotDiscountsPos": "rightInside",
+        "behavior": "columnNavigator",
+        "navigatorShortcuts": "active",
+        "cur_col": "0",
+        "cur_row": "0",
+        "fixed_row": "0",
+        "on_click": "onAircraftClick",
+        "on_select": "onUnitSelect",
+        "on_dbl_click": "onDoubleClick"
+      }
+    }
+  },
+  "navBar": {
+    "style": "id:nav-help-group;",
+    "type": "shop",
+    "navLeft": {
+      "tdiv": {
+        "height": "1@buttonHeight",
+        "textareaNoTab": {
+          "id": "excess_exp_text",
+          "caption": "yes",
+          "pos": "1@buttonMargin, ph/2-h/2",
+          "position": "absolute"
+        }
+      }
+    },
+    "navRight": [
+      {
+        "Button_text": {
+          "id": "btn_repairall",
+          "hideText": "yes",
+          "btnName": "L3",
+          "display": "hide",
+          "_on_click": "onRepairAll",
+          "visualStyle": "purchase",
+          "buttonWink": [],
+          "buttonGlance": [],
+          "ButtonImg": [],
+          "textarea": {
+            "id": "btn_repairall_text",
+            "class": "buttonText",
+            "text": "#mainmenu/btnRepairAll"
+          }
+        }
+      },
+      {
+        "Button_text": [
+          {
+            "id": "btn_spend_exp"
+          },
+          {
+            "navButtonFont": "yes"
+          },
+          {
+            "display": "hide"
+          },
+          {
+            "_on_click": "onSpendExcessExp"
+          },
+          {
+            "css-hier-invalidate": "yes"
+          },
+          {
+            "btnName": "X"
+          },
+          {
+            "visualStyle": "secondary"
+          },
+          {
+            "css-hier-invalidate": "yes"
+          },
+          {
+            "buttonWink": []
+          },
+          {
+            "textarea": {
+              "id": "btn_spend_exp_text",
+              "class": "buttonText",
+              "text": "#weaponry/research"
+            }
+          },
+          {
+            "ButtonImg": []
+          }
+        ]
+      },
+      {
+        "Button_text": {
+          "id": "btn_buy_unit",
+          "navButtonFont": "yes",
+          "css-hier-invalidate": "yes",
+          "_on_click": "onBuy",
+          "display": "hide",
+          "btnName": "X",
+          "visualStyle": "purchase",
+          "text": "#shop/btnOrderUnit",
+          "buttonWink": [],
+          "buttonGlance": [],
+          "ButtonImg": []
+        }
+      },
+      {
+        "tdiv": {
+          "margin": "1@buttonMargin",
+          "ComboBox": {
+            "id": "show_mode",
+            "width": "300@sf/@pf",
+            "on_select": "onChangeShowMode",
+            "tooltip": "#mainmenu/showModesInfo/tooltip",
+            "btnName": "R3"
+          }
+        }
+      }
+    ]
+  },
+  "focusFrameAnimBlock": {
+    "focusFrameAnimObj": []
+  }
+}

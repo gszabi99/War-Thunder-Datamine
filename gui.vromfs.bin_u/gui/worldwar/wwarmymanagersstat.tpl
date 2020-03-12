@@ -1,0 +1,26 @@
+<<#hasManagersStat>>
+tdiv{
+  id:t='managersList'
+  flow:t='vertical'
+  width:t='0.5@wwMapPanelInfoWidth-2@blockInterval'
+  padding-left:t='1@blockInterval'
+  textareaNoTab{
+    width:t='pw'
+    <<#isInvert>>
+    text-align:t='right'
+    <</isInvert>>
+    smallFont:t='yes'
+    text:t='#worldwar/armyManagers'
+  }
+  <<#getManagersInfoLines>>
+  textareaNoTab {
+    width:t='pw'
+    <<#isInvert>>
+    text-align:t='right'
+    <</isInvert>>
+    smallFont:t='yes'
+    text:t='<<managerInfo>>'
+  }
+  <</getManagersInfoLines>>
+}
+<</hasManagersStat>>

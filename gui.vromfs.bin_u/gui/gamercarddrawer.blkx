@@ -1,0 +1,37 @@
+{
+  "gamercardDrawer": {
+    "id": "gamercard_drawer",
+    "position": "root",
+    "pos": "0.5sw-0.5w, 0",
+    "width": "sw",
+    "overflow": "hidden",
+    "class": "gamercardDrawer",
+    "height": "0",
+    "_size-timer": "0",
+    "moveOut": "no",
+    "on_deactivate": "onDrawerDeactivate",
+    "input-transparent": "yes",
+    "tdiv": {
+      "position": "absolute",
+      "height": "sh",
+      "width": "sw",
+      "pos": "0.5pw-0.5w, ph-sh",
+      "flow": "vertical",
+      "tdiv": {
+        "id": "gamercard_drawer_content",
+        "width": "pw",
+        "height": "sh - 1@gamercardDrawerPosY",
+        "pos": "0.5pw-0.5w, 1@gamercardDrawerPosY",
+        "position": "absolute",
+        "flow": "vertical",
+        "tdiv": {
+          "id": "queue_table_container",
+          "height": "ph",
+          "position": "relative",
+          "pos": "0.5pw-0.5w, 0",
+          "display": "hide"
+        }
+      }
+    }
+  }
+}

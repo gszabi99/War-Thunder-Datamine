@@ -1,0 +1,269 @@
+@const selImgLeftPadding: 14*@sf/@pf;
+@const selImgRightPadding: 11*@sf/@pf;
+@const selImgBottomPadding: 8*@sf/@pf;
+@const unlockSimplifiedDescPadding: 1@sf/100.0;
+@const unlockSimplifiedHeight: 0.5*@profileUnlockIconSize + 2@unlockSimplifiedDescPadding + 2@selImgBottomPadding;
+
+expandable {
+  re-type:9rect;
+  width:pw-10*@sf/@pf_outdated;
+  pos:50%pw-50%w, 0;
+  position:relative;
+  background-color:@frameDarkBackgroundColor;
+  border-color:@frameDarkBorderColor;
+  border:yes;
+  border-offset:@dp;
+  flow:vertical;
+  margin-top:0.5*@scrn_tgt/100.0+2*@sf/@pf_outdated;
+  total-input-transparent:yes;
+}
+
+expandable > selImg {
+  width:pw+2*@sf/@pf_outdated;
+  re-type:9rect;
+  padding:1@selImgLeftPadding, 1@selImgBottomPadding, 1@selImgRightPadding ,1@selImgBottomPadding;
+  flow:vertical;
+}
+
+promoButton expandable > selImg {
+  padding:1@selImgLeftPadding, 2*@sf/@pf_outdated, 4*@sf/@pf_outdated,2*@sf/@pf_outdated;
+}
+
+expandable.simple {
+  padding: 0;
+  margin-top: 1@blockInterval;
+  margin:1@blockInterval;
+  width:pw-2@framePadding;
+  pos:1@dp, 1@dp;
+}
+
+expandable.unlock {
+  width:pw;
+  margin-top:0;
+}
+
+expandable.simple > selImg {
+  width:pw;
+  padding:1@framePadding;
+}
+
+expandable.simple[fullSize=yes] {
+  pos:0, 0;
+  width:pw;
+  margin-top:0;
+  margin-bottom:1@blockInterval;
+  margin:0;
+}
+
+expandable[selected=yes] > selImg {
+  background-color:@white;
+}
+
+[selImgType=gamepadFocused] > expandable > selImg,  expandable > selImg {
+  background-color:@transparent;
+}
+
+[show_console_buttons=yes] [selImgType=gamepadFocused]:focus > expandable[selected=yes] > selImg {
+  background-color:@white;
+}
+
+[show_console_buttons=yes] [selImgType=gamepadFocused]:focus > expandable.simple > selImg {
+  background-color:@transparent;
+}
+
+listbox > expandable > selImg {
+  background-color:@transparent;
+}
+
+expandable {
+  css-hier-invalidate:yes;
+}
+
+expandable[equipped=yes] statusImg {
+  background-image:#ui/gameuiskin#ok;
+}
+expandable[status=locked] statusImg {
+  background-image:#ui/gameuiskin#locked;
+}
+
+expandable statusImg[background-image] {
+  background-color:@commonTextColor;
+}
+
+expandable:hover {
+  background-color:@frameDarkHoverBgColor;
+}
+expandable:hover statusImg[background-image] {
+  background-color:@hoverTextColor;
+}
+
+expandable:focus,
+expandable.simple[active=yes],
+expandable[selected=yes] {
+  background-color:@frameDarkActiveBgColor;
+  border-color:@frameDarkSelectedBorderColor;
+}
+
+expandable[selected=yes] statusImg[background-image] {
+  background-color:@activeTextColor;
+}
+
+expandable[clickable=yes] {
+  behaviour:button;
+}
+expandable[clickable=yes]:hover {
+  background-color:@white;
+}
+
+expandable.simple:hover {
+  background-color:@frameDarkHoverBgColor;
+}
+
+expandable[status=owned] {
+  background-color:@frameDarkActiveBgColor;
+  border:no;
+}
+
+expandable[status=owned][selected=yes] {
+  background-color:@frameDarkActiveBgColor;
+  border-color:@frameDarkSelectedBorderColor;
+  border:yes;
+}
+
+expandable[status=owned]:hover {
+  background-color:@frameDarkHoverBgColor;
+  border-color:@frameDarkSelectedBorderColor;
+}
+
+expandable[status=locked], expandable[status=locked] statusImg[background-image] {
+  background-color:@shopItemLocked;
+}
+expandable[status=locked]:hover, expandable[status=locked]:hover statusImg[background-image],
+expandable[status=locked][selected=yes], expandable[status=locked][selected=yes] statusImg[background-image] {
+  background-color:@shopItemLockedFocus;
+}
+
+expandable[haveHeader=first] {
+  margin-top:5*@scrn_tgt/100.0;
+}
+expandable[haveHeader=yes] {
+  margin-top:8*@scrn_tgt/100.0;
+}
+
+expandable[battleTaskStatus=done] {
+  background-image:"";
+  background-color:@frameDarkBackgroundColor;
+  border-color:@frameDarkBorderColor;
+  border:yes;
+}
+
+promoButton > expandable {
+  border: no;
+}
+
+expandable[battleTaskStatus=done] textareaNoTab {
+  color-factor:128;
+}
+
+expandable[selected=yes] > fgLine {
+  size:pw, 2@dp;
+  pos:0, 0;
+  position:absolute;
+  background-color:@frameDarkLineColor;
+}
+
+promoButton[type=battleTask] expandable {
+  margin-top:0;
+  padding:0;
+}
+
+promoButton[type=battleTask] statusImg,
+expandable statusImg,
+shortInfoBlock statusImg {
+  size:1@modStatusHeight, 1@modStatusHeight;
+  background-color:@transparent;
+  pos:0, 50%ph-50%h;
+  position:relative;
+}
+
+expandable[type=battleTask][selected=yes] {
+  border-color:@frameDarkLineColor;
+}
+
+tooltipObj > expandable[type=battleTask] {
+  border:no;
+  background-color:@transparent;
+  width:pw;
+  min-width: 1@battleTaskTooltipMinWidth - 1@framePadding;
+  pos: 0, 0;
+  position: relative;
+  padding:0;
+}
+
+tooltipObj > expandable[type=battleTask] > selImg {
+  width: pw;
+  padding : 0;
+}
+
+tooltipObj > expandable[type=battleTask] hiddenDiv {
+  min-width: 1@battleTaskTooltipMinWidth - 1@framePadding;
+}
+
+promoButton[type=battleTask] [battleTaskStatus=complete] statusImg,
+expandable[battleTaskStatus=complete] statusImg,
+shortInfoBlock[battleTaskStatus=complete] statusImg {
+  background-image:#ui/gameuiskin#new_reward_icon;
+  background-color:@white;
+}
+
+promoButton[type=battleTask] [battleTaskStatus=done] statusImg,
+expandable[battleTaskStatus=done] statusImg {
+  background-image:#ui/gameuiskin#favorite;
+  background-color:@white;
+}
+
+promoButton[type=battleTask] [battleTaskStatus=failed] statusImg,
+expandable[battleTaskStatus=failed] statusImg {
+  background-image:#ui/gameuiskin#icon_primary_fail.svg;
+  background-color:@white;
+}
+
+expandable > selImg > activeText[caption=yes] {
+  pos:0, -h;
+  position:absolute;
+}
+
+expandable hiddenDiv {
+  input-transparent:yes;
+  display:hide;
+}
+
+expandable[selected=yes] hiddenDiv,
+promoButton expandable hiddenDiv,
+hiddenDiv[showHidden=yes] {
+  display:show;
+}
+
+expandable expandImg {
+  input-transparent:yes;
+}
+
+expandable[selected=yes] expandImg,
+promoButton expandable expandImg,
+expandImg[hideExpandImg=yes] {
+  display:hide;
+}
+
+highlightedRowLine {
+  position: absolute;
+  size:pw, 3@dp;
+  background-color:@transparent;
+}
+
+expandable[status=owned] > highlightedRowLine {
+  background-color:@frameDarkSelectedBorderColor;
+}
+
+expandable.simple[active=yes] > highlightedRowLine {
+  background-color:@frameDarkSelectedBorderColor;
+}

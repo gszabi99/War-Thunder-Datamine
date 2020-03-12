@@ -1,0 +1,155 @@
+@const scrollbarBgColor: #332c2c2c;
+@const scrollbarSliderColor: #908f8f;
+@const scrollbarSliderColorHover: #E0E0E0;
+
+@const contAreaScrlOffset: 2px; 
+
+@const scrollBarVisibleSize: (8@sf/@pf) \ 1;
+@const scrollBarSize: 1@scrollBarVisibleSize + 1@contAreaScrlOffset;
+@const scrollArrowsSize: 3.5*@scrn_tgt/100.0;
+
+[overflow=visible] {
+  overflow-x:visible;
+  overflow-y:visible;
+}
+
+[overflow=auto],   [overflow=scroll],
+[overflow-x=auto], [overflow-x=scroll],
+[overflow-y=auto], [overflow-y=scroll] {
+  behaviour:scrollBox;
+}
+
+
+
+ScrollBar {
+  margin:0;
+  padding:0;
+  background-color:@scrollbarBgColor;
+  behaviour:ScrollBar;
+  total-input-transparent:yes;
+}
+
+ScrollBar[flow=vertical] {
+  width:@scrollBarVisibleSize;
+}
+ScrollBar[flow=horizontal] {
+  height:@scrollBarVisibleSize;
+}
+
+ScrollSlider {
+  background-color:@scrollbarSliderColor;
+}
+ScrollSlider:hover {
+  background-color:@scrollbarSliderColorHover;
+}
+
+ScrollButtonUp, ScrollButtonDown {
+  size:0, 0;
+  display:none;
+}
+
+
+
+
+slotsScrollDiv {
+  total-input-transparent:yes;
+}
+
+slotsScrollDiv > ScrollBar {
+  position:absolute;
+  pos:0.5(pw-w),0.5(ph-h);
+  background-color:@transparent;
+}
+slotsScrollDiv > ScrollBar[flow=horizontal] {
+  height:1;
+}
+slotsScrollDiv > ScrollBar[flow=vertical] {
+  width:1;
+}
+
+slotsScrollDiv > ScrollBar ScrollSlider {
+  input-transparent:yes;
+  display:none;
+}
+
+slotsScrollDiv > ScrollBar ScrollButtonUp,
+slotsScrollDiv > ScrollBar ScrollButtonDown {
+  re-type:rotation;
+  size:@scrollArrowsSize, @scrollArrowsSize;
+  position:absolute;
+  background-image:#ui/gameuiskin#spinnerListBox_arrow_up.svg;
+  background-svg-size:@scrollArrowsSize, @scrollArrowsSize;
+  background-repeat:expand;
+  background-color:@commonTextColor;
+  input-transparent:no;
+  display:show;
+  tooltip:'';
+}
+
+slotsScrollDiv > ScrollBar ScrollButtonUp{
+  pos:-0.7w, 50%ph-50%h;
+  background-rotation:270;
+}
+slotsScrollDiv > ScrollBar ScrollButtonDown {
+  pos:pw-0.25w, 50%ph-50%h;
+  background-rotation:90;
+}
+
+slotsScrollDiv > ScrollBar[flow=vertical] ScrollButtonUp {
+  pos:50%pw-50%w, -0.8h;
+  background-rotation:0;
+}
+slotsScrollDiv > ScrollBar[flow=vertical] ScrollButtonDown {
+  pos:50%pw-50%w, ph-0.1h;
+  background-rotation:180;
+}
+
+slotsScrollDiv > ScrollBar ScrollButtonUp:disabled, slotsScrollDiv > ScrollBar ScrollButtonDown:disabled {
+  background-color:@transparent;
+}
+
+
+
+
+[scrollType=hidden] > ScrollBar,
+[scrollType=hidden] > ScrollBar > ScrollSlider,
+[scrollType=hidden] > ScrollBar > ScrollButtonUp,
+[scrollType=hidden] > ScrollBar > ScrollButtonDown {
+  input-transparent:yes;
+  display:none;
+}
+
+ScrollBar {
+  step:12*@scrn_tgt/100.0;
+}
+tdiv.rankUpList ScrollBar {
+  step:@slot_height+2@slot_vert_pad;
+}
+
+optionsBox > ScrollBar {
+  step:@bigOptionsScrollStep;
+}
+
+slotsScrollDiv > ScrollBar {
+  step:@slot_width;
+}
+slotsScrollDiv > ScrollBar[flow=vertical] {
+  step:1@slot_height+2@slot_vert_pad;
+}
+
+[scroll-align=left] > ScrollBar[flow=vertical] {
+  pos:0,50%ph-50%h;
+  position:absolute;
+}
+tdiv[scroll-align=left] {
+  padding-left:@scrollBarSize;
+}
+tdiv[scroll-align=left][scroll-padding=no] {
+  padding-left:0;
+}
+tdiv.decalsList ScrollBar{
+  step:1@customizationDecoratorBlockWidth;
+}
+.misObjectives > ScrollBar {
+  step:0.035@scrn_tgt;
+}

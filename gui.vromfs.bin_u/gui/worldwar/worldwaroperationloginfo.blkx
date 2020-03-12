@@ -1,0 +1,189 @@
+{
+  "tdiv": [
+    {
+      "id": "ww_operation_log_info"
+    },
+    {
+      "width": "pw"
+    },
+    {
+      "height": "fh"
+    },
+    {
+      "position": "relative"
+    },
+    {
+      "flow": "vertical"
+    },
+    {
+      "tdiv": {
+        "id": "ww_operation_empty_log",
+        "width": "pw",
+        "height": "0.04@scrn_tgt",
+        "background-color": "@objectiveHeaderBackground",
+        "display": "hide",
+        "textareaNoTab": {
+          "pos": "50%pw-50%w, 50%ph-50%h",
+          "position": "relative",
+          "text": "#worldwar/log/is_empty"
+        }
+      }
+    },
+    {
+      "tdiv": [
+        {
+          "id": "ww_operation_log_frame"
+        },
+        {
+          "width": "pw"
+        },
+        {
+          "height": "fh"
+        },
+        {
+          "flow": "vertical"
+        },
+        {
+          "overflow-y": "auto"
+        },
+        {
+          "tdiv": {
+            "id": "show_prev_logs",
+            "width": "pw",
+            "height": "1@logBlockHeaderHeight",
+            "background-color": "@objectiveHeaderBackground",
+            "margin-bottom": "0.01@scrn_tgt",
+            "textareaNoTab": {
+              "id": "show_prev_logs_text",
+              "behavior": "button",
+              "width": "fw",
+              "padding-left": "1@framePadding",
+              "position": "relative",
+              "top": "(ph-h)/2",
+              "text": "#userlog/showMore",
+              "on_click": "onClickShowPrevLogs"
+            },
+            "frameBlock_dark": {
+              "id": "show_prev_logs_btn_nest",
+              "height": "ph",
+              "hasBorder": "no",
+              "padding": "1@dp, 0",
+              "margin-right": "2@blockInterval",
+              "Button_text": {
+                "id": "show_prev_logs_btn",
+                "position": "relative",
+                "top": "(ph-h)/2",
+                "reduceWidthToHeight": "yes",
+                "showConsoleImage": "no",
+                "useParentHeight": "yes",
+                "noMargin": "yes",
+                "text": "#keysPlus",
+                "_on_click": "onClickShowPrevLogs",
+                "animated_wait_icon": {
+                  "id": "show_prev_logs_btn_wait_anim",
+                  "pos": "50%pw-50%w,50%ph-50%h",
+                  "position": "absolute",
+                  "background-rotation": "0"
+                }
+              }
+            }
+          }
+        },
+        {
+          "tdiv": {
+            "id": "ww_operation_log",
+            "width": "pw",
+            "flow": "vertical",
+            "total-input-transparent": "yes"
+          }
+        },
+        {
+          "tdiv": [
+            {
+              "id": "show_next_logs"
+            },
+            {
+              "width": "pw"
+            },
+            {
+              "height": "1@logBlockHeaderHeight"
+            },
+            {
+              "background-color": "@objectiveHeaderBackground"
+            },
+            {
+              "textareaNoTab": {
+                "id": "show_next_logs_text",
+                "behavior": "button",
+                "width": "fw",
+                "padding-left": "1@framePadding",
+                "position": "relative",
+                "top": "(ph-h)/2",
+                "text": "#userlog/showMore",
+                "on_click": "onClickShowNextLogs"
+              }
+            },
+            {
+              "frameBlock_dark": {
+                "height": "ph",
+                "hasBorder": "no",
+                "padding": "1@dp, 0",
+                "margin-right": "2@blockInterval",
+                "Button_text": {
+                  "id": "show_next_logs_btn",
+                  "reduceWidthToHeight": "yes",
+                  "position": "relative",
+                  "top": "(ph-h)/2",
+                  "text": "#keysPlus",
+                  "_on_click": "onClickShowNextLogs",
+                  "showConsoleImage": "no",
+                  "noMargin": "yes",
+                  "useParentHeight": "yes"
+                }
+              }
+            },
+            {
+              "frameBlock_dark": {
+                "height": "ph",
+                "hasBorder": "no",
+                "padding": "1@dp, 0",
+                "margin-right": "2@blockInterval",
+                "Button_text": {
+                  "id": "show_first_logs_btn",
+                  "reduceWidthToHeight": "yes",
+                  "position": "relative",
+                  "top": "(ph-h)/2",
+                  "text": "#keysScrollToBottom",
+                  "_on_click": "onClickShowFirstLogs",
+                  "showConsoleImage": "no",
+                  "useParentHeight": "yes",
+                  "noMargin": "yes"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tdiv": {
+        "width": "pw",
+        "flow-align": "left",
+        "background-color": "@operationLogFilterBar",
+        "Button_text": {
+          "id": "ww_log_filters",
+          "text": "#worldwar/logFilters",
+          "_on_click": "onShowOperationLogFilters"
+        },
+        "textareaNoTab": {
+          "id": "hidden_logs_text",
+          "padding-left": "1@framePadding",
+          "position": "relative",
+          "top": "(ph-h)/2",
+          "smallFont": "yes",
+          "text": "#userlog/showMore"
+        }
+      }
+    }
+  ]
+}

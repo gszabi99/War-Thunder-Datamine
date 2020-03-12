@@ -1,0 +1,152 @@
+{
+  "navLeft": [
+    {
+      "Button_text": {
+        "id": "btn_postLink",
+        "_on_click": "onFacebookPostLink",
+        "display": "hide",
+        "cardImg": {
+          "background-image": "#ui/gameuiskin#facebook_logo",
+          "input-transparent": "yes"
+        },
+        "text": {
+          "id": "text_facebook_action",
+          "pos": "0,50%ph-50%h",
+          "position": "relative",
+          "text": "#facebook/postLink",
+          "input-transparent": "yes"
+        }
+      }
+    },
+    {
+      "Button_text": {
+        "id": "btn_upload_facebook_scrn",
+        "display": "hide",
+        "pressAction": "share",
+        "on_click": "onFacebookLoginAndPostScrnshot",
+        "tooltip": "",
+        "cardImg": {
+          "background-image": "#ui/gameuiskin#facebook_logo",
+          "input-transparent": "yes"
+        },
+        "text": {
+          "id": "text_facebook_action",
+          "pos": "0,50%ph-50%h",
+          "position": "relative",
+          "text": "#mainmenu/btnUploadFacebookScreenshot",
+          "input-transparent": "yes"
+        }
+      }
+    },
+    {
+      "Button_text": {
+        "id": "btn_upload_facebook_wallPost",
+        "display": "hide",
+        "pressAction": "share",
+        "on_click": "onFacebookLoginAndPostMessage",
+        "tooltip": "",
+        "btnName": "X",
+        "ButtonImg": [],
+        "cardImg": {
+          "background-image": "#ui/gameuiskin#facebook_logo",
+          "input-transparent": "yes"
+        },
+        "text": {
+          "id": "text_facebook_action",
+          "pos": "0,50%ph-50%h",
+          "position": "relative",
+          "text": "#facebook/postLink",
+          "input-transparent": "yes"
+        }
+      }
+    },
+    {
+      "Button_text": {
+        "id": "btn_sendEmail",
+        "display": "hide",
+        "text": "#mainmenu/btnSendEmail",
+        "on_click": "sendInvitation"
+      }
+    },
+    {
+      "Button_text": {
+        "id": "btn_link_to_site",
+        "btnName": "Y",
+        "display": "hide",
+        "enable": "no",
+        "text": "#msgbox/btn_browse",
+        "hideText": "yes",
+        "externalLink": "yes",
+        "on_click": "onMsgLink",
+        "bqKey": "air_unlock_bar",
+        "ButtonImg": [],
+        "activeText": {
+          "id": "btn_link_to_site_text",
+          "position": "absolute",
+          "pos": "0.5pw-0.5w, 0.5ph-0.5h - 2@sf/@pf_outdated",
+          "text": "#msgbox/btn_browse",
+          "underline": []
+        }
+      }
+    },
+    {
+      "Button_text": {
+        "id": "btn_action",
+        "text": "#mainmenu/btnAirAction",
+        "btnName": "X",
+        "_on_click": "onAction",
+        "display": "hide",
+        "enable": "no",
+        "ButtonImg": []
+      }
+    }
+  ],
+  "navRight": [
+    {
+      "Button_text": {
+        "id": "btn_post_ps4_activity_feed",
+        "text": "#mainmenu/btnPostPs4ActivityFeed",
+        "btnName": "X",
+        "_on_click": "onPostPs4ActivityFeed",
+        "ButtonImg": []
+      }
+    },
+    {
+      "Button_text": {
+        "id": "btn_buy_unit",
+        "navButtonFont": "yes",
+        "_on_click": "buyUnit",
+        "display": "hide",
+        "btnName": "X",
+        "visualStyle": "purchase",
+        "buttonWink": [],
+        "buttonGlance": [],
+        "ButtonImg": []
+      }
+    },
+    {
+      "Button_text": {
+        "id": "btn_set_air",
+        "btnName": "X",
+        "text": "#mainmenu/btnTakeAircraft",
+        "on_click": "onTakeNavBar",
+        "navButtonFont": "yes",
+        "css-hier-invalidate": "yes",
+        "display": "hide",
+        "enable": "no",
+        "visualStyle": "secondary",
+        "buttonWink": [],
+        "ButtonImg": []
+      }
+    },
+    {
+      "Button_text": {
+        "id": "btn_ok",
+        "text": "#mainmenu/btnClose",
+        "btnName": "A",
+        "_on_click": "onOk",
+        "ButtonImg": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "root": {
+    "background-color": "@shadeBackgroundColor",
+    "frame": {
+      "pos": "50%pw-50%w, 50%ph-50%h",
+      "position": "absolute",
+      "width": "0.6@sf, 0.28@sf",
+      "class": "wndNav",
+      "frame_header": {
+        "activeText": {
+          "text": "#chapters/benchmark",
+          "caption": "yes"
+        },
+        "Button_close": []
+      },
+      "tdiv": [
+        {
+          "flow": "vertical"
+        },
+        {
+          "width": "pw - 0.01@scrn_tgt"
+        },
+        {
+          "pos": "50%pw-50%w, 0"
+        },
+        {
+          "position": "relative"
+        },
+        {
+          "margin-top": "0.01@scrn_tgt"
+        },
+        {
+          "margin-bottom": "0.005@scrn_tgt"
+        },
+        {
+          "frameBlock": {
+            "width": "pw",
+            "margin-bottom": "0.005@scrn_tgt",
+            "textarea": {
+              "id": "mission_title",
+              "width": "pw"
+            }
+          }
+        },
+        {
+          "frameBlock": {
+            "width": "pw",
+            "padding": "0.01@scrn_tgt, 0.01@scrn_tgt",
+            "table": {
+              "id": "results_list",
+              "width": "pw"
+            }
+          }
+        }
+      ],
+      "navBar": {
+        "navMiddle": {
+          "Button_text": {
+            "text": "#msgbox/btn_ok",
+            "btnName": "A",
+            "_on_click": "goBack",
+            "ButtonImg": []
+          }
+        }
+      }
+    }
+  }
+}

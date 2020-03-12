@@ -1,0 +1,50 @@
+{
+  "root": [
+    {
+      "background-color": "@shadeBlurredHangarColor"
+    },
+    {
+      "div": {
+        "id": "countryChoice-root",
+        "width": "1@countryChoiceImageWidth+2@framePadding",
+        "max-height": "1@rh",
+        "pos": "50%pw-50%w, 50%ph-50%h",
+        "position": "absolute",
+        "flow": "vertical",
+        "activeText": {
+          "id": "choice_header",
+          "caption": "yes",
+          "text": ""
+        },
+        "div": {
+          "id": "first_choices_block",
+          "margin": "0, 60@sf/@pf, 0, 30@sf/@pf",
+          "padding": "-1@countryChoiceInterval - 1",
+          "width": "pw"
+        },
+        "navBar": {
+          "class": "relative",
+          "isTransparent": "yes",
+          "navLeft": {
+            "Button_text": {
+              "id": "back_button",
+              "text": "#mainmenu/btnBack",
+              "on_click": "onBack",
+              "display": "hide",
+              "enable": "no",
+              "btnName": "B",
+              "ButtonImg": []
+            }
+          }
+        }
+      }
+    },
+    {
+      "div": {
+        "id": "scene_timer",
+        "behavior": "Timer",
+        "timer_handler_func": "onUpdate"
+      }
+    }
+  ]
+}

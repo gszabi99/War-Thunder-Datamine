@@ -1,0 +1,472 @@
+@const promoButtonPadding: (@bw $max @blockInterval);
+@const maxPromoButtonWidth: 1@promoButtonPadding + 1@arrowButtonWidth + 1@arrowBaseBtnWidth + 1@newWidgetIconHeight + 1@scrollBarSize + 0.13@sf;
+
+@const arrowButtonHeight: 0.042@sf;
+@const arrowButtonWidth: 0.4@sf;
+@const baseToggleButtonWidth: 1@dIco;
+
+@const arrowButtonWithImageHeight: 0.17@sf;
+
+@const promoButtonTextPadding: 2@dp;
+@const arrowBaseBtnWidth: 1/3@mIco;
+
+@const promoButtonSizeWithOffsets: 1@mIco;
+@const promoBtnNotCollapsedBgVPadding: 20@sf/@pf;
+
+@const imageRouletteTextAreaHeigth: 48@sf/@pf;
+
+@const promoButtonMinHeight: 45@sf/@pf;
+
+@const airInfoToggleButtonSize: @mIco + 2@buttonImgPadding;
+
+promoButton {
+  css-hier-invalidate:yes;
+  total-input-transparent:yes;
+
+  pos: pw - w, 0;
+  position: relative;
+
+  margin-bottom: 1@blockInterval;
+
+  min-height: @promoButtonMinHeight;
+
+  padding-right:1@promoButtonPadding;
+}
+
+promoButton[type=battleTask] {
+  flow:vertical;
+}
+
+promoButton > bgGradientRight {
+  size:pw - 0.5(sw - @swMain), ph;
+  position:absolute;
+  re-type:9rect;
+  background-image: #ui/gameuiskin#expandable_item_ww_transp;
+  background-position: 5,2;
+  background-color: @white;
+  background-repeat: expand;
+  color-factor:200;
+}
+promoButton:hover > bgGradientRight {
+  color-factor:255;
+  background-image: #ui/gameuiskin#expandable_item_sub_transp;
+}
+
+promoButton > uncollapsedContainer {
+  css-hier-invalidate:yes;
+  position:relative;
+}
+
+promoButton[type=battleTask] > expandable {
+  behaviour: button;
+  background-color:@transparent;
+  width:1@arrowButtonWidth;
+  pos: 0, 0;
+  position: relative;
+  padding:0, 1@blockInterval, 0, 0;
+  padding-right:1@baseToggleButtonWidth + 1@blockInterval;
+}
+
+promoButton[collapsed=no][type=imageButton],
+promoButton[collapsed=no][type=imageRoulette] {
+  padding-top:@promoBtnNotCollapsedBgVPadding;
+  padding-bottom:@promoBtnNotCollapsedBgVPadding;
+}
+
+promoButton[collapsed=no][type=arrowButton] {
+  padding-top:0;
+  padding-bottom:0;
+}
+
+promoButton[type=recentItems] fillBlock {
+  height: 0.5@itemHeight + 0.038@scrn_tgt;
+  margin-left:0.25@itemHeight;
+}
+
+promoButton[inactiveColor=yes] {
+  btnHover:no;
+}
+
+promoButton fillBlock {
+  behaviour: button;
+  css-hier-invalidate:yes;
+  position: relative;
+  flow:vertical;
+}
+
+promoButton[type=imageRoulette] fillBlock {
+  position:absolute;
+  transp-base:0;
+  transp-end:255;
+  transp-func:square;
+}
+
+promoButton fillBlock[animation=show] {
+  transp-time:1500;
+  needAnim:yes;
+}
+
+promoButton fillBlock[animation=hide] {
+  transp-time:-1500;
+  needAnim:yes;
+}
+
+promoButton fillBlock[_transp-timer=1][color-factor=255][animation=show] {
+  needAnim:no;
+}
+
+promoButton fillBlock[_transp-timer=0][animation=hide] {
+  needAnim:no;
+  display:hide;
+}
+
+promoButton fillBlock[needAnim=yes] {
+  behaviour:massTransparency;
+}
+
+promoButton[type=arrowButton] fillBlock,
+promoButton[type=battleTask] expandable[setStandartWidth=yes] {
+  height:1@arrowButtonHeight;
+  width: 1@arrowButtonWidth;
+}
+
+promoButton[type=battleTask] expandable[setStandartWidth=yes] > selImg,
+promoButton[type=battleTask] expandable[setStandartWidth=yes] > selImg > header {
+  height:ph;
+}
+
+promoButton[type=simpleList] {
+  height:1@arrowButtonHeight;
+  width:1@arrowButtonWidth + 1@promoButtonPadding;
+  padding-right:1@promoButtonPadding;
+}
+
+promoButton > collapsedContainer {
+  behaviour: button;
+  padding-left:h;
+  flow:vertical;
+}
+
+promoButton[hasSafeAreaPadding=no] {
+  padding-right:0;
+}
+
+promoButton[type=battleTask] > collapsedContainer {
+  position:relative;
+  pos:pw-w;
+  padding-right:1@baseToggleButtonWidth + 1@blockInterval;
+}
+
+promoButton[collapsed=no] > collapsedContainer {
+  width:1@arrowButtonWidth;
+}
+
+promoButton > collapsedContainer > shortInfoBlock {
+  height:1@arrowButtonHeight;
+  pos:pw-w, 0.5@arrowButtonHeight - 0.5h;
+  position:relative;
+}
+
+promoButton fillBlock > textareaFade,
+promoButton > textareaFade {
+  top: ph/2-h/2;
+  position: absolute;
+  width:pw;
+  css-hier-invalidate:yes;
+}
+
+promoButton[type=imageButton] fillBlock > textareaFade,
+promoButton[type=imageRoulette] fillBlock > textareaFade {
+  top: ph-h;
+  padding:1@promoButtonTextPadding;
+  background-color:@modalShadeColor;
+  min-height: @imageRouletteTextAreaHeigth;
+}
+
+promoButton fillBlock > textareaFade > textarea,
+promoButton > textareaFade > textarea {
+  left: pw-w;
+  top: 50%ph-50%h;
+  position: relative;
+
+  max-width:pw;
+  text-align:center;
+
+  removeParagraphIndent:yes;
+  css-hier-invalidate:yes;
+
+  pare-text:yes;
+  overflow-y:none;
+}
+
+promoButton > textareaFade > textarea {
+  left:"";
+  width:fw;
+}
+
+promoButton[type=imageButton] fillBlock > textareaFade > textarea,
+promoButton[type=imageRoulette] fillBlock > textareaFade > textarea {
+  left: pw/2-w/2;
+}
+
+promoButton fillBlock > imageFade {
+  pos:0;
+  position:relative;
+  css-hier-invalidate:yes;
+}
+
+promoButton fillBlock > imageFade > img {
+  size:pw, ph;
+  background-position:0;
+  background-repeat:expand;
+}
+
+promoButton:hover[type=imageButton] fillBlock > imageFade,
+promoButton:hover[type=imageRoulette] fillBlock > imageFade,
+promoButton:hover[type=arrowButton] fillBlock > imageFade {
+}
+
+promoButton:hover[type=imageButton] fillBlock > imageFade > img,
+promoButton:hover[type=imageRoulette] fillBlock > imageFade > img,
+promoButton:hover[type=arrowButton] fillBlock > imageFade > img {
+  background-color:@white;
+}
+
+promoButton[collapsed=yes] > expandable,
+promoButton[collapsed=yes] > fillBlock,
+promoButton[collapsed=yes] > uncollapsedContainer,
+promoButton[collapsed=no] > collapsedContainer {
+  display:hide;
+}
+
+shortHeaderText, shortHeaderIcon {
+  behaviour:textArea;
+  re-type:textarea;
+
+  pos:0, 50%ph-50%h;
+  position:relative;
+
+  font:@fontNormal;
+  pare-text:yes;
+  color:@commonPromoButtonTextColor;
+  hideEmptyText:yes;
+  text-align:right;
+}
+
+promoButton > collapsedContainer > shortHeaderText {
+  margin-right:1@promoButtonTextPadding;
+}
+
+collapsedContainer {
+  css-hier-invalidate:yes;
+}
+
+promoButton[type=arrowButton] fillBlock > textareaFade > textarea,
+promoButton > textareaFade > textarea,
+promoButton fillBlock > textareaNoTab {
+  color: @commonPromoButtonTextColor;
+}
+
+promoButton:hover fillBlock > textareaFade > textarea,
+promoButton:hover > textareaFade > textarea,
+promoButton[type=simpleList][selected=yes] > textareaFade > textarea,
+promoButton:hover expandable > selImg > header > textareaNoTab,
+promoButton:hover expandable > selImg > textareaNoTab,
+promoButton:hover fillBlock > textareaNoTab,
+promoButton:hover collapsedContainer > shortHeaderText {
+  color: @buttonColorHover;
+}
+
+promoButton.withImage:hover fillBlock > textareaFade > textarea {
+  color: @buttonFontColorHover;
+}
+
+promoButton:hover fillBlock > textareaFade {
+  background-color:@hoverPromoButtonTextColor;
+}
+
+promoButton:hover[type=arrowButton] fillBlock > textareaFade,
+promoButton:hover[invisibleHover=yes] fillBlock > textareaFade {
+  background-color:@transparent;
+}
+
+promoButton[inactiveColor=yes] fillBlock > textareaFade > textarea,
+promoButton:disabled fillBlock > textareaFade > textarea,
+promoButton[inactiveColor=yes] expandable > selImg > header > textareaNoTab,
+promoButton:disabled expandable > selImg > header > textareaNoTab,
+promoButton[inactiveColor=yes] collapsedContainer > shortHeaderText,
+promoButton[inactiveColor=yes] collapsedContainer > shortHeaderIcon {
+  color:@inactiveButtonTextColor;
+}
+
+promoButton:hover[inactiveColor=yes] fillBlock > textareaFade > textarea,
+promoButton:hover[inactiveColor=yes] expandable > selImg > header > textareaNoTab,
+promoButton:hover[inactiveColor=yes] collapsedContainer > shortHeaderText,
+promoButton:hover[inactiveColor=yes] collapsedContainer > shortHeaderIcon {
+  color:@inactiveButtonHoverTextColor;
+}
+
+promoButton[invisibleHover=yes] collapsedContainer > shortHeaderText,
+promoButton[invisibleHover=yes] > uncollapsedContainer > fillBlock > textareaFade > textarea {
+  color: @commonPromoButtonTextColor;
+}
+
+
+promoButton fillBlock[link] > textareaFade > textarea {
+  color:@linkTextColor;
+}
+
+promoButton fillBlock[link] > textareaFade > textarea > underline {
+  background-color:@linkTextColor;
+}
+
+promoButton:hover fillBlock[link] > textareaFade > textarea,
+[show_console_buttons=yes] promoButton:focus fillBlock[link] > textareaFade > textarea {
+  color:@linkTextHoverColor;
+}
+
+promoButton:hover fillBlock[link] > textareaFade > textarea > underline,
+[show_console_buttons=yes] promoButton:focus fillBlock[link] > textareaFade > textarea > underline {
+  background-color:@linkTextHoverColor;
+}
+
+promoButton[type=autoWidth] {
+  pos:pw-w, 0;
+}
+
+promoButton[type=autoWidth] > collapsedContainer,
+promoButton[type=autoWidth] > uncollapsedContainer > fillBlock > textareaFade {
+  width:0;
+  position: relative;
+}
+
+promoButton[type=autoWidth] > collapsedContainer > shortHeaderText {
+  max-width:p.p.p.w - 1@promoButtonSizeWithOffsets;
+}
+
+promoButton[type=autoWidth] > uncollapsedContainer > fillBlock > textareaFade > textarea {
+  max-width:p.p.p.p.p.w - 1@promoButtonSizeWithOffsets;
+}
+
+shortHeaderText[animation]
+{
+  pos:pw-w, 50%ph-50%h;
+  position:absolute;
+
+  transp-base:0;
+  transp-end:255;
+  transp-func:square;
+  transp-time:500;
+  blend-time:0;   needAnim:yes;
+}
+
+shortHeaderText[animation=hide] {
+  transp-time:-150;
+}
+
+shortHeaderText[_transp-timer=0][animation=hide] {
+  needAnim:no;
+  display:hide;
+}
+
+shortHeaderText[_transp-timer=1][animation=show] {
+  needAnim:no;
+}
+
+shortHeaderText[needAnim=yes] {
+  behaviour:basicTransparency;
+}
+
+baseToggleButton {
+  behaviour:button;
+  size:1@baseToggleButtonWidth, 1@baseToggleButtonWidth;
+  snd_click:click;
+  tooltip:"#mainmenu/btnCollapse";
+  display:show;
+  enable:yes;
+  css-hier-invalidate:yes;
+
+  position:relative;
+}
+
+baseToggleButton[isHidden=yes] {
+  display:hide;
+}
+
+baseToggleButton[alwaysShow=yes] {
+  size:@airInfoToggleButtonSize, @airInfoToggleButtonSize;
+  background-image:'';
+}
+
+promoButton > baseToggleButton {
+  margin-left: 1@blockInterval;
+}
+
+promoButton[type=battleTask] > baseToggleButton {
+  pos: pw - w - 1@promoButtonPadding - 1@blockInterval,1@promoButtonMinHeight/2 - h/2;
+  position:absolute;
+}
+
+promoButton[invisibleHover=yes] > baseToggleButton {
+  not-input-transparent:yes;
+}
+
+baseToggleButton:hover, baseToggleButton:focus {
+  background-color:@menuButtonColorHover;
+}
+
+baseToggleButton:pushed {
+  background-color:@menuButtonColorPushed;
+}
+
+promoButton[collapsed=yes] > baseToggleButton,
+promoButton[collapsed=no][type=arrowButton] > baseToggleButton,
+promoButton[collapsed=no][type=autoWidth] > baseToggleButton,
+promoButton[collapsed=no][type=battleTask] > baseToggleButton {
+  top: @promoButtonMinHeight/2 - h/2;
+}
+
+promoButton[type=recentItems] > baseToggleButton {
+  bottom: @promoButtonMinHeight/2 - h/2;
+}
+
+[collapsed=yes] > baseToggleButton {
+  tooltip:"#mainmenu/btnExpand";
+}
+
+baseToggleButton > directionImg {
+  background-repeat:aspect-ratio;
+  background-image:#ui/gameuiskin#spinnerListBox_arrow_up.svg;
+  background-svg-size:@cIco, @cIco;
+  pos:(pw-w)/2, (ph-h)/2;
+  position:absolute;
+  size:@cIco, @cIco;
+  rotation:270;
+  input-transparent:yes;
+  background-color:@commonTextColor;
+}
+
+promoButton:hover[collapsed=no] > baseToggleButton > directionImg,
+[show_console_buttons=yes] promoButton:focus[collapsed=no] > baseToggleButton > directionImg,
+promoButton[collapsed=yes] > baseToggleButton > directionImg,
+promoButton[invisibleHover=yes] > baseToggleButton > directionImg,
+baseToggleButton[alwaysShow=yes] > directionImg {
+  background-color:@commonTextColor;
+}
+
+baseToggleButton:hover > directionImg, baseToggleButton:focus > directionImg {
+  background-color:@white;
+}
+
+baseToggleButton[type=right] > directionImg { rotation:90; }
+[collapsed=yes] > baseToggleButton > directionImg { rotation:90; }
+[collapsed=yes] > baseToggleButton[type=right] > directionImg { rotation:270; }
+
+promoButton[type=battleTask] > RadioButtonList {
+  position:relative;
+  pos:pw-w - 1@baseToggleButtonWidth - 1@blockInterval, 0;
+  margin-bottom: 0.01@scrn_tgt;
+  navigatorShortcuts:yes;
+  on_wrap_up:onWrapUp;
+  on_wrap_down:onWrapDown;
+}

@@ -1,0 +1,43 @@
+contactItem {
+  re-type:text;
+  size: pw, 0.04@scrn_tgt;
+  padding:1@blockInterval, 0;
+  css-hier-invalidate:yes;
+  not-input-transparent:yes;
+}
+
+contactItem:current {
+  background-color:@contactSelColor;
+}
+
+contactItem:current > text {
+  color:@activeTextColor;
+}
+
+contactItem > text {
+  position: relative;
+  top: ph/2 - h/2;
+}
+
+contactItem textareaNoTab[contact_presence=yes] {
+  font:@fontSmall;
+}
+
+contactItem:hover > tdiv[contact_buttons_holder=yes] {
+  display: show;
+}
+
+[show_console_buttons=yes] :focus > contactItem:current {
+  re-type:9rect;
+  foreground-color: @gamepadFocusFrameColor;
+  foreground-image: #ui/gameuiskin#item_selection;
+  foreground-position: 6;
+  foreground-repeat: expand;
+  behavior:focusFrameTarget;
+  focusImageSource:foreground;
+}
+
+contactStatusImg {
+  size:1@sIco, 1@sIco;
+  input-transparent:yes;
+}

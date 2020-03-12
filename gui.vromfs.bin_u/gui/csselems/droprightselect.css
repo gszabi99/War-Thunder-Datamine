@@ -1,0 +1,352 @@
+
+
+@const dropPad:1*@scrn_tgt/100.0;
+
+dropright
+{
+  behaviour:dropright-select;
+  root-modal:yes;
+  border:no;
+  selected-border:none;
+  tabStop:yes;
+  css-hier-invalidate:current;
+  min-height:@baseTrHeight;
+  snd_click:click;
+  snd_select:choose;
+  snd_r_click:click; 
+}
+
+dropright > button {
+  re-type:9rect;
+  width:0.032@scrn_tgt;
+  height:0.0375@scrn_tgt;  
+  max-width:23*@sf/@pf_outdated;
+  max-height:27*@sf/@pf_outdated;
+  pos:-w, 50%ph-50%h; position:absolute;
+  background-position:0;
+  background-repeat:expand;
+  background-color:@controlColor;
+  background-image:#ui/gameuiskin#spinnerListBox_arrow_up.svg;
+  background-svg-size:@scrollArrowsSize, @scrollArrowsSize;
+  rotation:90;
+  color-factor:127;
+  snd_click:click;
+}
+
+dropright:focus > button {
+  color-factor:255;
+}
+
+dropright:hover > button {
+  color-factor:255;
+}
+
+[show_console_buttons=yes] dropright[btnName=X] > button {
+  width:h;
+  color-factor:255;
+  background-image:@control_button_x;
+}
+[show_console_buttons=yes] dropright[btnName=X] > button:pushed {
+  background-image:@control_button_x_pressed;
+}
+
+tr[enable=no] > td > dropright > button, tr[enable=no] > td > dropright:hover > button {
+  color-factor:31;
+}
+
+dropright:expanded > button {
+  display:hide;
+}
+
+dropright > button:disabled {
+  background-color:@transparent;
+}
+
+dropright > fadePlane > area > SlideListBox {
+
+  re-type:9rect;
+  shortcutActivate:' ';
+  slide-time:200;
+  flow:vertical;
+
+  height:ph;
+  pos:-1*@sf/@pf_outdated, 50%ph-50%h;
+  position:absolute;
+  width:p.p.p.w + 1@optPad;
+  padding:0,0;
+  snd_click:click;
+  snd_select:choose;
+
+  border:none;
+  selected-border:none;
+  overflow:visible;
+  color:@transparent;  
+}
+
+dropright > fadePlane > area {
+  input-transparent:yes;
+  size:pw,ph;
+  position:absolute;
+  pos:0,0;
+
+  background-color:@white;
+  background-image:#ui/gameuiskin#window;
+
+  background-repeat:expand;
+  background-position:5;
+}
+
+dropright > fadePlane > area > SlideListBox > SlideListBoxButton[no-more-scroll] {
+  display:none;
+}
+
+dropright > fadePlane > area > SlideListBox > SlideListBoxButton {
+  size:2.5*@scrn_tgt/100.0,2.5*@scrn_tgt/100.0;
+}
+
+dropright > fadePlane {
+  width:pw + 1@optPad - 1@dropPad;
+  height:sh - 2@bh - 2@titleLogoPlateHeight;
+  left:sw - w - 1@bw;
+  top:50%sh-50%h;
+  position:root;
+  background-color:@shadeBackgroundColor2;
+  background-position:2*@sf/@pf_outdated,2*@sf/@pf_outdated,0,2*@sf/@pf_outdated;
+
+}
+
+
+[type=bottom] dropright > fadePlane {
+  height:73*@scrn_tgt/100.0-4;
+  top:17*@scrn_tgt/100.0+2;
+}
+
+frame fadePlane {
+  height:sh - 2@bh - 2@titleLogoPlateHeight;
+  left:50%sw + 1@optPad - 1@dropPad;
+}
+
+
+
+
+
+
+dropright option {
+  font:@option_font;
+  width:pw;
+  color:@commonTextColor;
+  background-color:@transparent;
+  border:none;
+  css-hier-invalidate:yes;
+}
+
+dropright:hover > option {
+  color:@hoverTextColor;
+}
+
+dropright > option {
+  height:ph;
+  overflow:hidden;
+}
+
+dropright optiontext{
+  auto-scroll:no;
+}
+
+dropright:focus > option > optiontext{
+  auto-scroll:yes;
+}
+
+
+
+
+dropright:expanded > option {
+  display:hide;
+}
+
+dropright:expanded option:current > optiontext {
+  auto-scroll:yes;
+}
+
+dropright > fadePlane > area > SlideListBox option {
+  text-align:left;
+  height:p.p.p.p.p.h;
+  padding-left:1@dropPad-1*@sf/@pf_outdated;
+}
+
+dropright > fadePlane > area > SlideListBox option:current > optiontext,
+dropright:focus > option > optiontext {
+  color:@activeTextColor;
+  font:@option_selected_font;
+}
+
+dropright > fadePlane > area > SlideListBox option:hover > optiontext,
+tr:hover > td > dropright > option > optiontext,
+dropright > fadePlane > area > SlideListBox option > optiontext:hover,
+dropright > option > optiontext:hover {
+  color:@hoverTextColor;
+}
+
+dropright > fadePlane > area > SlideListBox option {
+  re-type:9rect;
+  background-position:6;
+  background-repeat:expand;
+  background-image:#ui/gameuiskin#option_select_right;
+}
+
+dropright > fadePlane > area > SlideListBox option:hover {
+  background-color:@selImgHoverColor;
+  color:@hoverTextColor;
+}
+dropright > fadePlane > area > SlideListBox option:current {
+  background-color:@white;
+
+  font:@option_selected_font;
+}
+
+dropright > fadePlane > area > button#accept {
+  display:none;
+}
+
+dropright > fadePlane > area > button#cancel {
+  text:"";
+  tooltip:"";
+  pos:0,0;
+  position:root;
+  size:sw,sh;
+  background-color:@transparent;
+}
+
+dropright > fadePlane > area > header {
+  color:@transparent;
+  pos:50%pw-50%w, -h;
+  position:absolute;
+  background-color:@transparent;
+  input-transparent:yes;  
+}
+
+dropright > fadePlane > selectedObject {
+  display:hide;
+}
+
+.optionsTable dropright {
+  position:relative;
+  top:50%ph-50%h;
+  input-transparent:yes;
+}
+.optionsTable dropright {
+  total-input-transparent:yes;
+}
+dropright:focus {
+  input-transparent:no;
+}
+
+dropright:expanded option:disabled > optiontext
+{
+  color:@disabledTextColor;
+}
+
+dropright.complaint > fadePlane {
+  height:75*@scrn_tgt/100.0-2-1@bh;
+  pos:50%sw+50%p.p.w-pw, @bh;
+}
+
+dropright.complaint > button {
+  pos:-3*@scrn_tgt/100.0, 50%ph-50%h;
+}
+
+[cellType=bottom] > dropright > fadePlane {    width:pw+1*@scrn_tgt/100.0+2*@sf/@pf_outdated;
+  height:75%sh;
+  left:50%sw-w-4*@sf/@pf_outdated;
+}
+
+optionsBox.frameRight dropright > fadePlane {
+  width:pw + 1@optPad - 1@dropPad;
+  left:50%sw+50%p.p.p.p.p.p.p.w-w;
+}
+
+optionsBox.framePostFX dropright > fadePlane {
+  width:pw + 1@optPad - 1@dropPad;
+  left:50%sw+50%p.p.p.p.p.p.w-w;
+}
+
+dropright.moveleft  > fadePlane {
+  pos:50%sw + 0.5@slotbarWidthFull - w, sh-h-1@shopBottomOffset + 2*@sf/@pf_outdated;
+  width:pw;
+}
+
+dropright.moveleft > fadePlane > area > SlideListBox {
+ width:pw;
+}
+
+dropright.moveleft option {
+ text-align:right;
+ padding-right:0.025@scrn_tgt;
+}
+
+dropright.moveleft > fadePlane > area > SlideListBox option {
+  padding-left:0;
+}
+
+.skinsList > dropright > option {
+  max-width:p.p.w;
+}
+
+.skinsList > dropright > fadePlane > area > SlideListBox option {
+  max-width:p.p.p.w;
+}
+
+.skinsList > dropright > fadePlane {
+  left: 1@bw + 0.75@baseTrHeight;
+  top: sh -1@bh -h;
+}
+
+dropright.dropRightNavBar:hover > button {
+  background-color:@white;
+}
+
+.dropRightNavBar > fadePlane {
+  size: pw + 1@optPad - 1@dropPad + 1@bw, sh;
+  position: root;
+  pos: 1@sbw + pw + 0.01@sf, 0;
+}
+
+table[optionsParallellTable=0] > tr > td > dropright > fadePlane {
+  left: 1@sbw + 50%p.p.p.w + 1@optPad;
+}
+table[optionsParallellTable=1] > tr > td > dropright > fadePlane {
+  left: 1@sbw + 150%p.p.p.w + 1@optPad;
+}
+table[optionsParallellTable=2] > tr > td > dropright > fadePlane {
+  left: 1@sbw + 250%p.p.p.w + 1@optPad;
+}
+
+.circuitDropright dropright > fadePlane {
+  width:0.35@sf;
+  height:65%sh;
+  pos:10%sw, sh-h;
+}
+
+.circuitDropright dropright > fadePlane > area > SlideListBox {
+  width:pw;
+}
+
+.circuitDropright dropright > option {
+  left:0;
+  max-width:pw;
+  pos:pw-w, 0;
+  position:relative;
+}
+
+.circuitDropright dropright > fadePlane > area > SlideListBox option {
+  pos:90%pw-w, 0;
+  position:relative;
+}
+
+.circuitDropright dropright optiontext {
+  input-transparent:yes;
+}
+
+dropright[fadePlaneParam=leaderboard] > fadePlane {
+  left:50%sw-50%p.p.w + 20*@sf/@pf_outdated;
+}

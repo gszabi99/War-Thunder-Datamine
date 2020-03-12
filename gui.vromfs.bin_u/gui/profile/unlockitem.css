@@ -1,0 +1,59 @@
+substrateImg{
+  background-image: "#ui/gameuiskin#stage_substrate";
+  position: absolute;
+  pos: 0, 0;
+  display: hide;
+}
+
+:hover > substrateImg{
+  display: show;
+}
+
+unlockStages > locked > img,
+unlockStages > unlocked > img,
+unlockStages > locked > substrateImg,
+unlockStages > unlocked > substrateImg{
+  size: @unlockStageIconSize, @unlockStageIconSize;
+  background-color: @white;
+}
+
+locked, unlocked{
+  size: @unlockStageIconSize, @unlockStageIconSize;
+}
+
+locked.even, unlocked.even{
+  position: relative;
+  pos: -w/2, 0;
+}
+
+locked.odd, unlocked.odd{
+  position: relative;
+  pos: -w/2, 0.86h;
+}
+
+hiddenDiv > unlockCondition {
+  width:pw/2-1;   margin-left:0;
+}
+
+layeredIconContainer{
+  css-hier-invalidate: yes;
+}
+
+iconLayer {
+  background-color: @white;
+  background-repeat:aspect-ratio;
+  input-transparent:yes;
+  css-hier-invalidate:yes;
+}
+
+iconLayer[background-image=""] {
+  background-color:@transparent;
+}
+
+layeredIconContainer[decal_locked = yes] > iconLayer{
+  background-color: @lockedDecal;
+}
+
+layeredIconContainer[achievement_locked = yes] > iconLayer {
+  background-color: @gray;
+}

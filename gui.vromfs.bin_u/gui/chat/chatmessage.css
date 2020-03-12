@@ -1,0 +1,35 @@
+chatMessage[messageType=my] {
+  pos:pw-w-@blockInterval,0;
+  position:relative;
+
+  re-type:9rect;
+  background-color:@outgoingMessageColor;
+  background-image:#ui/gameuiskin#notification_bubble_down_flip;
+  background-position:8;
+  background-repeat: expand;
+  padding:2@blockInterval, 2@blockInterval;
+}
+
+chatMessage[messageType=incomming] {
+  re-type:9rect;
+  background-color: @incommingMessageColor;
+  background-image: #ui/gameuiskin#notification_bubble_down;
+  background-position:8;
+  background-repeat: expand;
+  padding:2@blockInterval, 2@blockInterval;
+}
+
+chatMessage[messageType=system] {
+  margin-top:@blockInterval;
+  padding:@blockInterval,0;
+}
+
+chatMessage > textareaNoTab {
+  max-width:p.p.w-@chatIndent;
+  text-align:left;
+  smallFont:yes;
+  on_link_click:onChatLinkClick;
+  on_link_rclick:onChatLinkRClick;
+}
+
+

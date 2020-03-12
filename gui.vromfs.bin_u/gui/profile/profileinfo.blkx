@@ -1,0 +1,370 @@
+{
+  "tdiv": [
+    {
+      "size": "pw, fh"
+    },
+    {
+      "tdiv": [
+        {
+          "flow": "vertical"
+        },
+        {
+          "size": "0.55@scrn_tgt, ph"
+        },
+        {
+          "pos": "0, 0"
+        },
+        {
+          "position": "relative"
+        },
+        {
+          "frameBlock": {
+            "width": "pw",
+            "pos": "50%pw-50%w, 0",
+            "position": "relative",
+            "padding": "1@blockInterval",
+            "Button_text": {
+              "id": "btn_profile_icon",
+              "_on_click": "onChangePilotIcon",
+              "class": "profileImg",
+              "div": {
+                "id": "profile-icon",
+                "size": "pw,ph",
+                "behavior": "bhvAvatar",
+                "isFull": "yes"
+              },
+              "ButtonImg": [],
+              "unseenIcon": {
+                "id": "unseen_avatar",
+                "pos": "4@dp, 4@dp",
+                "position": "absolute",
+                "unseenText": []
+              }
+            },
+            "tdiv": [
+              {
+                "height": "ph"
+              },
+              {
+                "pos": "0, 50%ph-50%h"
+              },
+              {
+                "position": "relative"
+              },
+              {
+                "padding": "1@blockInterval"
+              },
+              {
+                "flow": "vertical"
+              },
+              {
+                "width": "fw"
+              },
+              {
+                "tdiv": {
+                  "textareaNoTab": {
+                    "id": "profile-clanTag",
+                    "max-width": "pw",
+                    "tooltip": "",
+                    "padding-right": "1@blockInterval",
+                    "hideEmptyText": "yes"
+                  },
+                  "activeText": {
+                    "id": "profile-name",
+                    "talign": "left",
+                    "style": "color:@mainPlayerColor"
+                  }
+                }
+              },
+              {
+                "textareaNoTab": {
+                  "id": "profile-currentUser-title",
+                  "showAsButton": "yes",
+                  "smallFont": "yes",
+                  "on_click": "openChooseTitleWnd",
+                  "margin-top": "3@dp",
+                  "max-width": "pw",
+                  "hideEmptyText": "yes",
+                  "text": "",
+                  "css-hier-invalidate": "yes",
+                  "ButtonImg": {
+                    "style": "top:50%ph-50%h;"
+                  },
+                  "unseenIcon": {
+                    "id": "unseen_titles",
+                    "pos": "pw + 1@blockInterval, 50%ph-50%h",
+                    "position": "absolute",
+                    "unseenText": []
+                  }
+                }
+              },
+              {
+                "textareaNoTab": {
+                  "id": "profile-currentUser-steamName",
+                  "width": "pw",
+                  "smallFont": "yes"
+                }
+              },
+              {
+                "textareaNoTab": {
+                  "id": "profile-currentUser-facebookName",
+                  "width": "pw",
+                  "smallFont": "yes"
+                }
+              },
+              {
+                "tdiv": [
+                  {
+                    "padding-top": "1@blockInterval"
+                  },
+                  {
+                    "activeText": {
+                      "smallFont": "yes",
+                      "text": "#mainmenu/rank",
+                      "position": "relative",
+                      "pos": "0, ph/2-h/2"
+                    }
+                  },
+                  {
+                    "activeText": {
+                      "id": "profile-rank",
+                      "smallFont": "yes",
+                      "position": "relative",
+                      "pos": "@blockInterval, ph/2-h/2"
+                    }
+                  },
+                  {
+                    "cardImg": {
+                      "id": "profile-prestige",
+                      "position": "relative",
+                      "pos": "@blockInterval, ph/2-h/2"
+                    }
+                  },
+                  {
+                    "activeText": {
+                      "id": "profile-prestige_title",
+                      "smallFont": "yes",
+                      "position": "relative",
+                      "pos": "@blockInterval, ph/2-h/2"
+                    }
+                  }
+                ]
+              },
+              {
+                "tdiv": {
+                  "width": "pw",
+                  "expProgress": {
+                    "id": "profile-rankProgress",
+                    "width": "fw",
+                    "position": "relative",
+                    "pos": "0, ph/2-h/2",
+                    "value": "0"
+                  },
+                  "text": {
+                    "id": "profile-exp",
+                    "tinyFont": "yes",
+                    "position": "relative",
+                    "pos": "@blockInterval, ph/2-h/2"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "frameBlock": {
+            "id": "medals_block",
+            "size": "pw, fh",
+            "pos": "0, @blockInterval",
+            "position": "relative",
+            "padding": "@blockInterval",
+            "flow": "vertical",
+            "activeText": {
+              "id": "medals_title",
+              "pos": "pw/2-w/2, 0",
+              "position": "relative",
+              "padding-bottom": "@blockInterval",
+              "text": "#mainmenu/rewards"
+            },
+            "HorizontalListBox": {
+              "id": "medals_country_tabs",
+              "pos": "pw/2-w/2, 0",
+              "position": "relative",
+              "class": "countries_small",
+              "on_select": "onMedalsCountrySelect",
+              "navigatorShortcuts": "yes",
+              "on_wrap_up": "onWrapUp",
+              "on_wrap_down": "onWrapDown",
+              "focus": "yes"
+            },
+            "tdiv": {
+              "id": "medals_nest",
+              "size": "4@usercardMedalRibbonW + @scrollBarSize + @blockInterval, fh",
+              "pos": "pw/2-w/2, 40@sf/@pf",
+              "position": "relative",
+              "flow": "h-flow",
+              "flow-align": "center",
+              "overflow-y": "auto"
+            },
+            "text": {
+              "id": "medals_empty",
+              "pos": "pw/2-w/2, 58%ph-h/2",
+              "position": "absolute",
+              "text": "#ui/empty"
+            }
+          }
+        },
+        {
+          "frameBlock": {
+            "id": "titles_block",
+            "size": "pw, fh",
+            "pos": "0, @blockInterval",
+            "position": "relative",
+            "padding": "@blockInterval",
+            "flow": "vertical",
+            "display": "hide",
+            "activeText": {
+              "pos": "pw/2-w/2, 0",
+              "position": "relative",
+              "padding-bottom": "@blockInterval",
+              "text": "#unlocks/chapter/title"
+            },
+            "table": {
+              "id": "titles_table",
+              "width": "pw",
+              "max-height": "fh",
+              "overflow-y": "auto"
+            },
+            "text": {
+              "id": "titles_empty",
+              "pos": "pw/2-w/2, ph/2-h/2",
+              "position": "absolute",
+              "text": "#ui/empty"
+            }
+          }
+        },
+        {
+          "frameBlock": {
+            "size": "pw, 1@usercardLeaderboardHeight",
+            "pos": "0, @blockInterval",
+            "position": "relative",
+            "padding": "@blockInterval",
+            "flow": "vertical",
+            "activeText": {
+              "pos": "pw/2-w/2, 0",
+              "position": "relative",
+              "padding-bottom": "@blockInterval",
+              "text": "#lobby/vehicles"
+            },
+            "tdiv": {
+              "id": "country_stats_nest",
+              "width": "pw"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "tdiv": [
+        {
+          "size": "fw, ph"
+        },
+        {
+          "padding-left": "1@blockInterval"
+        },
+        {
+          "flow": "vertical"
+        },
+        {
+          "tdiv": {
+            "id": "stats-container",
+            "size": "pw, fh",
+            "flow": "vertical",
+            "total-input-transparent": "yes",
+            "HorizontalListBox": {
+              "id": "modes_list",
+              "position": "relative",
+              "navigatorShortcuts": "yes",
+              "on_select": "onProfileStatsModeChange",
+              "on_wrap_up": "onWrapUp",
+              "on_wrap_down": "onWrapDown",
+              "focus": "yes"
+            },
+            "frameBlock": {
+              "size": "pw, fh",
+              "position": "relative",
+              "pos": "0, 1@blockInterval",
+              "padding": "1@blockInterval",
+              "overflow-y": "auto",
+              "scrollbarShortcuts": "yes",
+              "table": {
+                "id": "stats_table",
+                "class": "lbTable",
+                "text-halign": "center",
+                "width": "pw"
+              }
+            }
+          }
+        },
+        {
+          "tdiv": {
+            "width": "pw",
+            "pos": "0, 0",
+            "position": "relative",
+            "padding-top": "1@blockInterval",
+            "flow": "vertical",
+            "tdiv": {
+              "width": "pw",
+              "margin-bottom": "1@blockInterval",
+              "ComboBox": {
+                "id": "leaderboard_modes_list",
+                "position": "relative",
+                "pos": "0, 50%ph-50%h",
+                "width": "0.3@sf",
+                "display": "hide",
+                "enable": "no",
+                "on_select": "onLbModeSelect",
+                "behaviour": "wrapBroadcast",
+                "focusFrame": "yes",
+                "navigatorShortcuts": "yes",
+                "on_wrap_up": "onWrapUp",
+                "on_wrap_down": "onWrapDown"
+              },
+              "CheckBox": {
+                "id": "stats_type_profile",
+                "display": "hide",
+                "pos": "pw-w-@blockInterval, 50%ph-50%h",
+                "position": "absolute",
+                "text": "#mainmenu/btnMonthLb",
+                "on_change_value": "onStatsTypeChange",
+                "value": "yes",
+                "btnName": "LT",
+                "CheckBoxImg": [],
+                "ButtonImg": []
+              }
+            },
+            "frameBlock": {
+              "size": "pw, 1@usercardLeaderboardHeight",
+              "table": {
+                "id": "profile_leaderboard",
+                "width": "pw",
+                "class": "lbTable",
+                "text-halign": "center"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "animated_wait_icon": {
+    "id": "profile_loading",
+    "pos": "0.5(pw-w),0.4(ph-h)",
+    "position": "absolute",
+    "background-rotation": "0"
+  },
+  "timer": {
+    "id": "profile_update",
+    "timer_handler_func": "onUpdate"
+  }
+}

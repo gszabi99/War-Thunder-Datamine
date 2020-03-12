@@ -1,0 +1,112 @@
+@const checkedTextColor     :@commonTextColor;
+@const uncheckedTextColor   :#909090;
+
+@const switchBoxBgColor          :#99020509; @const switchBoxOnBgColor        :#404e55;
+@const switchButtonColor         :#28333c;
+@const switchButtonOnColor       :#7d868e;
+@const switchButtonLineColor     :#96b1b1;
+@const switchButtonLineOnColor   :#e8e8e8;
+@const switchHoverBorderColor    :#995A6A6A;
+@const switchHoverBorderOnColor  :#E5D0D0D0;
+
+@const switchBoxHeight:28@sf/@pf; @const switchBoxWidth:80@sf/@pf;
+@const switchBoxBorderSize: 3@dp;
+@const switchButtonLineHeight: 2@dp;
+
+SwitchBox {
+  re-type:9rect;
+  behaviour:check;
+  height:@switchBoxHeight;
+  padding-left:@switchBoxWidth + @blockInterval;
+  color:@uncheckedTextColor;
+  font:@fontNormal;
+  text-align:left;
+  css-hier-invalidate:yes;
+  total-input-transparent:yes;
+  snd_change_value:check;
+}
+
+top_right_holder > SwitchBox {
+ valign: center;
+}
+
+SwitchBox:checked {
+  color:@checkedTextColor;
+}
+
+SwitchBox:focus {
+  color:@activeTextColor;
+}
+
+[class=optionsTable] SwitchBox {
+  pos:0, 50%ph-50%h;
+  position:relative;
+}
+
+SwitchSliderBg {
+  size:@switchBoxWidth, @switchBoxHeight;
+  pos:0, 50%ph-50%h;
+  position:absolute;
+  padding:@switchBoxBorderSize;
+  background-color:@switchBoxBgColor;
+  css-hier-invalidate:yes;
+}
+
+SwitchSliderBgOn {
+  position:relative;
+}
+
+[show_console_buttons=yes] SwitchBox[btnName] > SwitchSliderBg {
+  pos: 1@cIco + 1@buttonImgMargin, 50%ph-50%h;
+}
+
+SwitchBox:checked > SwitchSliderBg > SwitchSliderBgOn {
+  size:pw-ph, ph;
+  background-color:@switchBoxOnBgColor;
+}
+
+SwitchSlider {
+  size:ph, ph;
+  position:relative;
+  re-type:fgPict;
+  background-color:@switchButtonColor;
+  foreground-color:@switchButtonLineColor;
+  foreground-position:0, 0, 0, h - @switchButtonLineHeight;
+}
+
+SwitchBox:checked > SwitchSliderBg > SwitchSlider {
+  background-color:@switchButtonOnColor;
+  foreground-color:@switchButtonLineOnColor;
+}
+
+SwitchBox:hover > SwitchSliderBg > SwitchSlider {
+  foreground-position:0, 0, 0, h - @switchButtonLineHeight;
+  border:yes;
+  border-offset:1@dp;
+  border-color:@switchHoverBorderColor;
+}
+
+SwitchBox:checked:hover > SwitchSliderBg > SwitchSlider {
+  border-color:@switchHoverBorderOnColor;
+}
+
+:disabled > SwitchSliderBg,
+:disabled > SwitchSliderBg > SwitchSlider,
+:disabled > SwitchSliderBg > SwitchSliderBgOn,
+SwitchBox:disabled
+{
+  color-factor:127;
+}
+
+[show_console_buttons=yes] SwitchBox[btnName]
+{
+  padding-left:@switchBoxWidth + 1@buttonImgMargin + 1@cIco + 1@blockInterval;
+}
+
+SwitchBox[btnName] > ButtonImg
+{
+  size:@cIco, @cIco;
+  left: 1@buttonImgMargin;
+  top:50%ph-50%h;
+  position:'absolute';
+}

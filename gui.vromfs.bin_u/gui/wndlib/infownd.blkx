@@ -1,0 +1,49 @@
+{
+  "root": {
+    "background-color": "@modalShadeColor",
+    "frame": {
+      "id": "info_wnd_frame",
+      "width": "0.75@scrn_tgt+10",
+      "pos": "50%pw-50%w, 45%ph-40%h",
+      "position": "absolute",
+      "class": "wndNav",
+      "css-hier-invalidate": "yes",
+      "frame_header": {
+        "activeText": {
+          "id": "header",
+          "caption": "yes",
+          "text": ""
+        },
+        "Button_close": {
+          "id": "close_btn"
+        },
+        "top_right_holder": {
+          "hasRightIndent": "yes",
+          "CheckBox": {
+            "id": "do_not_show_me_again",
+            "pos": "0, 50%ph-50%h",
+            "position": "relative",
+            "text": "#options/doNotAskMeAgain",
+            "tooltip": "#options/doNotAskMeAgain/tutorial/hint",
+            "on_change_value": "onDoNotShowMeAgain",
+            "btnName": "X",
+            "CheckBoxImg": [],
+            "ButtonImg": []
+          }
+        }
+      },
+      "textAreaCentered": {
+        "id": "message",
+        "width": "pw",
+        "padding": "0.02@sf",
+        "mediumFont": "yes",
+        "text": ""
+      },
+      "navBar": {
+        "navMiddle": {
+          "id": "buttons_place"
+        }
+      }
+    }
+  }
+}

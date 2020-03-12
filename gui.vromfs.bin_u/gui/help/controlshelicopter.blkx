@@ -1,0 +1,711 @@
+{
+  "tdiv": {
+    "id": "help_background_image",
+    "width": "pw",
+    "height": "ph",
+    "background-repeat": "expand",
+    "background-color": "@white",
+    "tdiv": [
+      {
+        "size": "pw, 0.511w"
+      },
+      {
+        "pos": "0.5pw-0.5w, 0.5ph-0.5h"
+      },
+      {
+        "position": "relative"
+      },
+      {
+        "tdiv": [
+          {
+            "pos": "20/1760pw, 20/900ph"
+          },
+          {
+            "position": "absolute"
+          },
+          {
+            "controlsHelpText": {
+              "text": "#HUD/PROP_RPM_SHORT"
+            }
+          },
+          {
+            "_newline": {
+              "size": "0"
+            }
+          },
+          {
+            "controlsHelpText": {
+              "text": "#HUD/PROP_PITCH_SHORT"
+            }
+          },
+          {
+            "_newline": {
+              "size": "0"
+            }
+          },
+          {
+            "controlsHelpText": {
+              "text": "#HUD/CLIMB_SHORT"
+            }
+          },
+          {
+            "_newline": {
+              "size": "0"
+            }
+          },
+          {
+            "controlsHelpText": {
+              "text": "#HUD/REAL_SPEED_SHORT"
+            }
+          }
+        ]
+      },
+      {
+        "tdiv": [
+          {
+            "pos": "90/1760pw, 20/900ph"
+          },
+          {
+            "position": "absolute"
+          },
+          {
+            "controlsHelpText": {
+              "text": "97%",
+              "padding-right": "@blockInterval",
+              "id": "rpm_value"
+            }
+          },
+          {
+            "_newline": {
+              "size": "0"
+            }
+          },
+          {
+            "controlsHelpText": {
+              "text": "100%",
+              "padding-right": "@blockInterval",
+              "id": "throttle_value"
+            }
+          },
+          {
+            "_newline": {
+              "size": "0"
+            }
+          },
+          {
+            "controlsHelpText": {
+              "text": "0%",
+              "padding-right": "@blockInterval",
+              "id": "climb_value"
+            }
+          },
+          {
+            "_newline": {
+              "size": "0"
+            }
+          },
+          {
+            "controlsHelpText": {
+              "text": "265 km/h",
+              "padding-right": "@blockInterval",
+              "id": "speed_value"
+            }
+          }
+        ]
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "hud_movement_indicators_label",
+          "max-width": "580/1760pw",
+          "pos": "245/1760pw, 20/900ph",
+          "position": "absolute",
+          "text": "#controls/help/helicopter/movenent_hud_indicators"
+        }
+      },
+      {
+        "tdiv": [
+          {
+            "pos": "20/1760pw, 120/900ph"
+          },
+          {
+            "position": "absolute"
+          },
+          {
+            "controlsHelpText": {
+              "text": "#HUD/CANNONS_SHORT"
+            }
+          },
+          {
+            "_newline": {
+              "size": "0"
+            }
+          },
+          {
+            "controlsHelpText": {
+              "text": "#HUD/ADDITIONAL_GUNS_SHORT"
+            }
+          },
+          {
+            "_newline": {
+              "size": "0"
+            }
+          },
+          {
+            "controlsHelpText": {
+              "text": "#HUD/BOMBS_SHORT"
+            }
+          },
+          {
+            "_newline": {
+              "size": "0"
+            }
+          },
+          {
+            "controlsHelpText": {
+              "text": "#HUD/RKT"
+            }
+          },
+          {
+            "_newline": {
+              "size": "0"
+            }
+          },
+          {
+            "controlsHelpText": {
+              "text": "#HUD/MISSILES_SHORT"
+            }
+          },
+          {
+            "_newline": {
+              "size": "0"
+            }
+          },
+          {
+            "controlsHelpText": {
+              "text": "#HUD/RATE_OF_FIRE_SHORT"
+            }
+          }
+        ]
+      },
+      {
+        "tdiv": [
+          {
+            "pos": "90/1760pw, 120/900ph"
+          },
+          {
+            "position": "absolute"
+          },
+          {
+            "controlsHelpText": {
+              "text": "1470",
+              "padding-right": "@blockInterval",
+              "id": "cannons_value"
+            }
+          },
+          {
+            "_newline": {
+              "size": "0"
+            }
+          },
+          {
+            "controlsHelpText": {
+              "text": "1000",
+              "padding-right": "@blockInterval",
+              "id": "additional_guns_value"
+            }
+          },
+          {
+            "_newline": {
+              "size": "0"
+            }
+          },
+          {
+            "controlsHelpText": {
+              "text": "2",
+              "padding-right": "@blockInterval",
+              "id": "bombs_value"
+            }
+          },
+          {
+            "_newline": {
+              "size": "0"
+            }
+          },
+          {
+            "controlsHelpText": {
+              "text": "80",
+              "padding-right": "@blockInterval",
+              "id": "rockets_value"
+            }
+          },
+          {
+            "_newline": {
+              "size": "0"
+            }
+          },
+          {
+            "controlsHelpText": {
+              "text": "4",
+              "padding-right": "@blockInterval",
+              "id": "missiles_value"
+            }
+          },
+          {
+            "_newline": {
+              "size": "0"
+            }
+          },
+          {
+            "controlsHelpText": {
+              "text": "#HUD/HIGHFREQ_SHORT",
+              "padding-right": "@blockInterval",
+              "id": "rate_of_fire_value"
+            }
+          }
+        ]
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "hud_ammo_indicators_label",
+          "max-width": "580/1760pw",
+          "pos": "245/1760pw, 120/900ph",
+          "position": "absolute",
+          "text": "#controls/help/helicopter/ammo_hud_indicators"
+        }
+      },
+      {
+        "tdiv": [
+          {
+            "pos": "245/1760pw-w/2, 580/900ph-h/2"
+          },
+          {
+            "position": "absolute"
+          },
+          {
+            "width": "300/1760pw"
+          },
+          {
+            "flow": "vertical"
+          },
+          {
+            "controlsHelpFrame": {
+              "width": "pw",
+              "padding-top": "0.01@sf",
+              "padding-bottom": "0.01@sf",
+              "margin-bottom": "0.01@sf",
+              "keyDiv": {
+                "behaviour": "bhvHelpFrame",
+                "value": "{{ID_CONTROL_MODE_HELICOPTER}}"
+              },
+              "textareaNoTab": {
+                "text": "#hotkeys/ID_CONTROL_MODE_HELICOPTER"
+              }
+            }
+          },
+          {
+            "controlsHelpFrame": {
+              "width": "pw",
+              "padding-top": "0.01@sf",
+              "padding-bottom": "0.01@sf",
+              "keyDiv": [
+                {
+                  "behaviour": "bhvHelpFrame"
+                },
+                {
+                  "flow": "vertical"
+                },
+                {
+                  "keyDiv": {
+                    "behaviour": "bhvHelpFrame",
+                    "value": "{{helicopter_collective=max_hold}}"
+                  }
+                },
+                {
+                  "keyDiv": {
+                    "behaviour": "bhvHelpFrame",
+                    "value": "{{helicopter_collective=min_hold}}"
+                  }
+                }
+              ],
+              "textareaNoTab": {
+                "text": "#controls/helicopter_collective"
+              }
+            }
+          },
+          {
+            "controlsHelpFrame": {
+              "width": "pw",
+              "padding-top": "0.01@sf",
+              "padding-bottom": "0.01@sf",
+              "keyDiv": [
+                {
+                  "behaviour": "bhvHelpFrame"
+                },
+                {
+                  "keyDiv": {
+                    "behaviour": "bhvHelpFrame",
+                    "value": "{{helicopter_cyclic_roll=min}}"
+                  }
+                },
+                {
+                  "keyDiv": {
+                    "behaviour": "bhvHelpFrame",
+                    "value": "{{helicopter_cyclic_roll=max}}"
+                  }
+                }
+              ],
+              "textareaNoTab": {
+                "text": "#controls/helicopter_cyclic_roll"
+              }
+            }
+          },
+          {
+            "controlsHelpFrame": {
+              "width": "pw",
+              "padding-top": "0.01@sf",
+              "padding-bottom": "0.01@sf",
+              "keyDiv": [
+                {
+                  "behaviour": "bhvHelpFrame"
+                },
+                {
+                  "keyDiv": {
+                    "behaviour": "bhvHelpFrame",
+                    "value": "{{helicopter_pedals=min}}"
+                  }
+                },
+                {
+                  "keyDiv": {
+                    "behaviour": "bhvHelpFrame",
+                    "value": "{{helicopter_pedals=max}}"
+                  }
+                }
+              ],
+              "textareaNoTab": {
+                "text": "#controls/helicopter_pedals"
+              }
+            }
+          },
+          {
+            "controlsHelpFrame": {
+              "width": "pw",
+              "padding-top": "0.01@sf",
+              "padding-bottom": "0.01@sf",
+              "keyDiv": [
+                {
+                  "behaviour": "bhvHelpFrame"
+                },
+                {
+                  "flow": "vertical"
+                },
+                {
+                  "keyDiv": {
+                    "behaviour": "bhvHelpFrame",
+                    "value": "{{helicopter_cyclic_pitch=min}}"
+                  }
+                },
+                {
+                  "keyDiv": {
+                    "behaviour": "bhvHelpFrame",
+                    "value": "{{helicopter_cyclic_pitch=max}}"
+                  }
+                }
+              ],
+              "textareaNoTab": {
+                "text": "#controls/helicopter_cyclic_pitch"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "tdiv": [
+          {
+            "pos": "1515/1760pw-w/2, 300/900ph"
+          },
+          {
+            "position": "absolute"
+          },
+          {
+            "width": "350/1760pw"
+          },
+          {
+            "flow": "vertical"
+          },
+          {
+            "controlsHelpFrame": {
+              "width": "pw",
+              "padding-top": "0.01@sf",
+              "padding-bottom": "0.01@sf",
+              "keyDiv": {
+                "behaviour": "bhvHelpFrame",
+                "value": "{{ID_CAMERA_GUNNER_HELICOPTER}}"
+              },
+              "textareaNoTab": {
+                "text": "#hotkeys/ID_CAMERA_GUNNER_HELICOPTER"
+              }
+            }
+          },
+          {
+            "controlsHelpFrame": {
+              "width": "pw",
+              "padding-top": "0.01@sf",
+              "padding-bottom": "0.01@sf",
+              "keyDiv": {
+                "behaviour": "bhvHelpFrame",
+                "value": "{{ID_TOGGLE_VIEW_HELICOPTER}}"
+              },
+              "textareaNoTab": {
+                "text": "#hotkeys/ID_TOGGLE_VIEW_HELICOPTER"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "tdiv": [
+          {
+            "pos": "1515/1760pw-w/2, 650/900ph-h/2"
+          },
+          {
+            "position": "absolute"
+          },
+          {
+            "width": "350/1760pw"
+          },
+          {
+            "flow": "vertical"
+          },
+          {
+            "padding-top": "0.02@sf"
+          },
+          {
+            "controlsHelpFrame": {
+              "width": "pw",
+              "padding-bottom": "0.01@sf",
+              "padding-top": "0.01@sf",
+              "keyDiv": {
+                "behaviour": "bhvHelpFrame",
+                "value": "{{ID_FIRE_MGUNS_HELICOPTER}}"
+              },
+              "textareaNoTab": {
+                "text": "#hotkeys/ID_FIRE_HELICOPTER"
+              }
+            }
+          },
+          {
+            "controlsHelpFrame": {
+              "width": "pw",
+              "padding-bottom": "0.01@sf",
+              "padding-top": "0.01@sf",
+              "keyDiv": {
+                "behaviour": "bhvHelpFrame",
+                "value": "{{ID_BOMBS_HELICOPTER}}"
+              },
+              "textareaNoTab": {
+                "text": "#hotkeys/ID_BOMBS_HELICOPTER"
+              }
+            }
+          },
+          {
+            "controlsHelpFrame": {
+              "width": "pw",
+              "padding-bottom": "0.01@sf",
+              "padding-top": "0.01@sf",
+              "keyDiv": {
+                "behaviour": "bhvHelpFrame",
+                "value": "{{ID_ROCKETS_HELICOPTER}}"
+              },
+              "textareaNoTab": {
+                "text": "#hotkeys/ID_ROCKETS_HELICOPTER"
+              }
+            }
+          },
+          {
+            "controlsHelpFrame": {
+              "width": "pw",
+              "padding-bottom": "0.01@sf",
+              "padding-top": "0.01@sf",
+              "keyDiv": {
+                "behaviour": "bhvHelpFrame",
+                "value": "{{ID_ATGM_HELICOPTER}}"
+              },
+              "textareaNoTab": {
+                "text": "#hotkeys/ID_ATGM_HELICOPTER"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "tdiv": {
+          "id": "cursor_control_point",
+          "pos": "717/1760pw, 152/900ph",
+          "position": "absolute",
+          "size": "@dp, @dp"
+        }
+      },
+      {
+        "controlsHelpFrame": {
+          "id": "CURSOR_controls_frame",
+          "pos": "752/1760pw, 148/900ph-h/2",
+          "position": "absolute",
+          "width": "300/1760pw",
+          "padding-top": "0.01@sf",
+          "padding-bottom": "0.01@sf",
+          "keyDiv": {
+            "behaviour": "bhvHelpFrame",
+            "value": "{{helicopter_mouse_aim_x+helicopter_mouse_aim_y}}"
+          },
+          "textareaNoTab": {
+            "text": "#controls/help/cannon_aim_marker"
+          }
+        }
+      },
+      {
+        "tdiv": {
+          "id": "secondary_cannons_aim_marker_point",
+          "pos": "901/1760pw, 222/900ph",
+          "position": "absolute",
+          "size": "@dp, @dp"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "secondary_cannons_aim_marker_label",
+          "max-width": "200/1760pw",
+          "pos": "866/1760pw-w, 222/900ph-h/2",
+          "position": "absolute",
+          "padding-top": "0.01@sf",
+          "padding-bottom": "0.01@sf",
+          "text": "#controls/help/secondary_cannons_aim_marker"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "rocket_aim_marker_point",
+          "pos": "901/1760pw, 289/900ph",
+          "position": "absolute",
+          "size": "@dp, @dp"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "rocket_aim_marker_label",
+          "max-width": "200/1760pw",
+          "pos": "866/1760pw-w, 289/900ph-h/2",
+          "position": "absolute",
+          "padding-top": "0.01@sf",
+          "padding-bottom": "0.01@sf",
+          "text": "#controls/help/rocket_aim_marker"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "missile_aim_marker_label",
+          "max-width": "200/1760pw",
+          "pos": "1523/1760pw-w/2, 230/900ph",
+          "position": "absolute",
+          "padding-top": "0.01@sf",
+          "padding-bottom": "0.01@sf",
+          "text": "#controls/help/missile_aim_marker"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "bombs_aim_marker_point",
+          "pos": "570/1760pw, 593/900ph",
+          "position": "absolute",
+          "size": "@dp, @dp"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "bombs_aim_marker_label",
+          "max-width": "200/1760pw",
+          "pos": "570/1760pw-w/2, 530/900ph-h",
+          "position": "absolute",
+          "padding-top": "0.01@sf",
+          "padding-bottom": "0.01@sf",
+          "text": "#controls/help/bomb_crosshairs"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "attitude_indicator_point",
+          "pos": "816/1760pw, 439/900ph",
+          "position": "absolute",
+          "size": "@dp, @dp"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "attitude_indicator_label",
+          "max-width": "200/1760pw",
+          "pos": "830/1760pw-w, 394/900ph-h/2",
+          "position": "absolute",
+          "padding-top": "0.01@sf",
+          "padding-bottom": "0.01@sf",
+          "text": "#controls/help/attitude_indicator"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "velocity_vector_indicator_point",
+          "pos": "872/1760pw, 394/900ph",
+          "position": "absolute",
+          "size": "@dp, @dp"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "velocity_vector_indicator_label",
+          "max-width": "200/1760pw",
+          "pos": "930/1760pw, 394/900ph-h/2",
+          "position": "absolute",
+          "padding-top": "0.01@sf",
+          "padding-bottom": "0.01@sf",
+          "text": "#controls/help/velocity_vector_marker"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "altimeter_indicator_point",
+          "pos": "1186/1760pw, 440/900ph",
+          "position": "absolute",
+          "size": "@dp, @dp"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "altimeter_indicator_label",
+          "max-width": "200/1760pw",
+          "pos": "1186/1760pw-w/2, 350/900ph-h",
+          "position": "absolute",
+          "padding-top": "0.01@sf",
+          "padding-bottom": "0.01@sf",
+          "text": "#controls/help/altimeter"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "vertical_speed_indicator_point",
+          "pos": "1275/1760pw, 524/900ph",
+          "position": "absolute",
+          "size": "@dp, @dp"
+        }
+      },
+      {
+        "controlsHelpTextArea": {
+          "id": "vertical_speed_indicator_label",
+          "max-width": "200/1760pw",
+          "pos": "1292/1760pw-w, 555/900ph",
+          "position": "absolute",
+          "padding-top": "0.01@sf",
+          "padding-bottom": "0.01@sf",
+          "text": "#controls/help/vertical_speed"
+        }
+      }
+    ]
+  }
+}

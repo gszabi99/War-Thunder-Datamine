@@ -1,0 +1,99 @@
+@import "chatMessage.css"
+
+@const incommingMessageColor: #445766;
+@const outgoingMessageColor:  #5e778c;
+
+EditBox[chatMode=team], text[chatMode=team],
+textareaNoTab[chatMode=team], Button_text[chatMode=team],
+hoverButton[chatMode=team] > icon
+{
+  color:@chatTextTeamColor;
+}
+EditBox[chatMode=all], text[chatMode=all],
+textareaNoTab[chatMode=all], Button_text[chatMode=all],
+hoverButton[chatMode=all] > icon
+{
+  color:@chatTextAllColor;
+}
+EditBox[chatMode=squad], text[chatMode=squad],
+textareaNoTab[chatMode=squad], Button_text[chatMode=squad],
+hoverButton[chatMode=squad] > icon
+{
+  color:@chatTextSquadColor;
+}
+EditBox[chatMode=private], text[chatMode=private],
+textareaNoTab[chatMode=private], Button_text[chatMode=private],
+hoverButton[chatMode=private] > icon
+{
+  color:@chatTextPrivateColor;
+}
+
+Button_text[chatMode]:hover
+{
+  color:@buttonFontColorHover;
+}
+
+Button_text[chatMode=team]:pushed
+{
+  color:@chatTextTeamColor;
+}
+
+Button_text[chatMode=squad]:pushed
+{
+  color:@chatTextSquadColor;
+}
+
+Button_text[chatMode=all]:pushed
+{
+  color:@buttonFontColorPushed;
+}
+
+voiceChatWidgetNest > voiceChatWidgetContainer {
+  id:base_voice_chat_widget;
+  isSmall:no;
+}
+
+widgets voiceChatWidgetNest > voiceChatWidgetContainer {
+  position:root;
+  pos:@bw, sh-h-1@blockInterval-@bh;
+}
+
+gamercard voiceChatWidgetNest {
+  height:ph;
+  isClanOnly:yes;
+}
+
+gamercard voiceChatWidgetNest > voiceChatWidgetContainer,
+gamercard voiceChatWidgetNest > emptyVoiceChat {
+  width:1@gamercardVoiceChatWidth;
+  position:relative;
+  pos:0, ph-h;
+}
+
+voiceChatWidgetNest > emptyVoiceChat {
+  display:hide;
+}
+
+gamercard voiceChatWidgetNest > emptyVoiceChat {
+  height:50%ph;
+  pos:50%pw-50%w, 50%ph-50%h;
+  position:absolute;
+  display:show;
+}
+
+gamercard voiceChatWidgetNest > voiceChatWidgetContainer {
+  id:gamercard_voice_chat_widget;
+  isSmall:yes;
+}
+
+voiceChatWidget
+{
+  padding:1@blockInterval;
+  flow:vertical;
+  behavior:bhvUpdater;
+}
+
+[isSmall=yes] voiceChatWidget
+{
+  padding:0;
+}

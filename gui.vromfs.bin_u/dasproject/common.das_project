@@ -1,0 +1,13 @@
+options indenting = 2
+
+var
+  DAS_PAK_ROOT = "."
+
+[export]
+def module_get(req, from:string) : tuple<string;string;string> const
+  let rs <- split(req,".")
+  let mod_name = rs[length(rs)-1]
+  let path_name = join(rs,"/") + ".das"
+  let alias_name = rs[length(rs)-1]
+  return [[auto mod_name, DAS_PAK_ROOT + "/" + path_name, alias_name]]
+

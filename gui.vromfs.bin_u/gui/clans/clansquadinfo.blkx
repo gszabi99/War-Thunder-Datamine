@@ -1,0 +1,37 @@
+{
+  "rootUnderPopupMenu": {
+    "on_click": "goBack",
+    "on_r_click": "goBack"
+  },
+  "popup_menu": {
+    "id": "squad_info",
+    "position": "root",
+    "not-input-transparent": "yes",
+    "css-hier-invalidate": "yes",
+    "flow": "vertical",
+    "menu_align": "bottom",
+    "activeText": {
+      "id": "invited_players_header",
+      "position": "relative",
+      "text": "#squad/memberListTitle",
+      "halign": "center"
+    },
+    "listbox": {
+      "id": "members",
+      "width": "0.35@sf",
+      "flow": "vertical",
+      "showSelect": "yes",
+      "navigatorShortcuts": "active",
+      "on_select": "onItemSelect",
+      "on_wrap_up": "onWrapUp",
+      "on_wrap_down": "onWrapDown",
+      "on_dbl_click": "onMemberClick"
+    },
+    "popup_menu_arrow": []
+  },
+  "timer": {
+    "id": "squad_info_update",
+    "timer_handler_func": "onUpdate",
+    "timer_interval_msec": "1000"
+  }
+}

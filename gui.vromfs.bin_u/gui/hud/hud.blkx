@@ -1,0 +1,93 @@
+[
+  {
+    "tdiv": {
+      "id": "hud_obj",
+      "position": "absolute",
+      "pos": "@bwHud, @bhHud",
+      "size": "@rwHud, @rhHud"
+    }
+  },
+  {
+    "systemMsg": {
+      "pos": "1@systemMsgIndent, 0",
+      "position": "root",
+      "flow": "vertical",
+      "dlDataStat": {
+        "behavior": "bhvUpdater",
+        "pos": "50%pw-50%w,0",
+        "position": "relative",
+        "value": "{\"viewId\": \"DL_DATA_STATE_TEXT\"}",
+        "css-hier-invalidate": "yes",
+        "animText": {
+          "text": "",
+          "font": "@fontTiny",
+          "color-factor": "0",
+          "fade": "out"
+        }
+      }
+    }
+  },
+  {
+    "textareaNoTab": {
+      "id": "unmapped_shortcuts_warning",
+      "position": "root",
+      "width": "45%@rwHud",
+      "pos": "50%sw-50%w, 60%sh-50%h",
+      "display": "hide",
+      "wink": "no",
+      "style": "transp-time:750; color:@warningTextColor; font:@fontHudMedium; text-align:center;",
+      "text": "",
+      "shadeStyle": "HudHeader3D"
+    }
+  },
+  {
+    "textareaNoTab": {
+      "id": "server_message",
+      "position": "root",
+      "width": "45%@rwHud",
+      "pos": "50%sw-50%w, 60%sh-50%h",
+      "wink": "no",
+      "style": "transp-time:750; color:@warningTextColor; font:@fontHudMedium; text-align:center;",
+      "text": "",
+      "timer": {
+        "id": "server_message_timer",
+        "timer_handler_func": "onServerMessageTimerUpdate",
+        "timer_interval_msec": "200"
+      }
+    }
+  },
+  {
+    "activeText": {
+      "id": "time_to_kick_alert_text",
+      "text": "",
+      "_blink": "no",
+      "titleFont": "yes",
+      "style": "color:@warningTextColor;",
+      "behaviour": "basicFontSize",
+      "pos": "50%sw-50%w, 40%sh-50%h",
+      "position": "root",
+      "font-ht": "28",
+      "font-ht-base": "28",
+      "font-ht-end": "36",
+      "size-time": "200",
+      "size-func": "sin",
+      "_size-timer": "1"
+    }
+  },
+  {
+    "timer": {
+      "id": "hud_update",
+      "timer_handler_func": "onHudUpdate",
+      "timer_interval_msec": "1000"
+    }
+  },
+  {
+    "hudFade": {
+      "id": "hud_fade",
+      "position": "root",
+      "size": "sw, sh",
+      "behavior": "screenFade",
+      "input-transparent": "yes"
+    }
+  }
+]

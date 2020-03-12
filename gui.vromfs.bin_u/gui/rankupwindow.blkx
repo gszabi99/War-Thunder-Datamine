@@ -1,0 +1,132 @@
+{
+  "root": {
+    "background-color": "@modalShadeColor",
+    "frame": {
+      "width": "4@slot_width+2@slot_interval + 20",
+      "max-height": "ph",
+      "pos": "0.5sw-0.5w,0.5sh-0.5h",
+      "position": "absolute",
+      "flow": "vertical",
+      "class": "wndNav",
+      "frame_header": {
+        "textarea": {
+          "id": "rankup_country_title",
+          "text": "#new_rank_country"
+        },
+        "Button_close": {
+          "id": "btn_back"
+        }
+      },
+      "img": {
+        "id": "background_country",
+        "width": "pw",
+        "height": "0.5w",
+        "max-width": "800",
+        "max-height": "400",
+        "pos": "0.5pw-0.5w, 0",
+        "position": "relative",
+        "background-color": "@white",
+        "background-image": "",
+        "overflow": "hidden"
+      },
+      "tdiv": [
+        {
+          "width": "pw"
+        },
+        {
+          "flow": "vertical"
+        },
+        {
+          "tdiv": {
+            "pos": "50%pw-50%w, 0.015@scrn_tgt",
+            "position": "relative",
+            "cardImg": {
+              "id": "country_icon",
+              "background-image": "#ui/gameuiskin#country_0.svg"
+            },
+            "textareaNoTab": {
+              "id": "player_rank",
+              "pos": "0.005@sf, 0",
+              "position": "relative",
+              "text-align": "left",
+              "max-width": "p.p.w-0.05@scrn_tgt",
+              "padding-top": "-0.01@sf",
+              "caption": "yes"
+            }
+          }
+        },
+        {
+          "textarea": {
+            "id": "availableNewAirText",
+            "max-width": "pw",
+            "pos": "0.5pw-0.5w",
+            "position": "relative",
+            "padding": "0, 0.005@sf",
+            "text-align": "center",
+            "text": ""
+          }
+        },
+        {
+          "tdiv": {
+            "id": "rankup_aircraft_holder",
+            "width": "pw",
+            "max-height": "4(1@slot_height+2@slot_vert_pad)",
+            "decreased-height": "3(1@slot_height+2@slot_vert_pad)",
+            "overflow-y": "auto",
+            "scrollbarShortcuts": "yes",
+            "class": "rankUpList",
+            "tdiv": {
+              "id": "rankup_aircraft_table",
+              "max-width": "pw",
+              "pos": "0.5pw-0.5w",
+              "position": "relative",
+              "flow": "h-flow"
+            }
+          }
+        },
+        {
+          "textAreaCentered": {
+            "id": "next_award",
+            "width": "pw",
+            "pos": "50%pw-50%w, 0.01@sf",
+            "position": "relative",
+            "text": ""
+          }
+        }
+      ],
+      "navBar": {
+        "navMiddle": [
+          {
+            "Button_text": {
+              "id": "btn_close",
+              "text": "#mainmenu/btnOk",
+              "btnName": "A",
+              "_on_click": "goBack",
+              "ButtonImg": []
+            }
+          },
+          {
+            "Button_text": {
+              "id": "btn_upload_facebook_scrn",
+              "pressAction": "share",
+              "on_click": "onFacebookLoginAndPostScrnshot",
+              "display": "hide",
+              "tooltip": "",
+              "cardImg": {
+                "background-image": "#ui/gameuiskin#facebook_logo",
+                "input-transparent": "yes"
+              },
+              "text": {
+                "id": "text_facebook_action",
+                "pos": "0,50%ph-50%h",
+                "position": "relative",
+                "text": "#mainmenu/btnUploadFacebookScreenshot",
+                "input-transparent": "yes"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

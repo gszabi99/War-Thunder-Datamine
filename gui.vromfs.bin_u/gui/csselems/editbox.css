@@ -1,0 +1,106 @@
+@const editboxColor: #91020509;
+@const editboxBorderColor: #243640;
+@const editboxHintColor: #555555;
+
+@const editboxColorFocus: #99020509;
+@const editboxFontColorFocus: #e0e0e0;
+@const editboxBorderColorFocus: #3e4b52;
+@const editboxFgColorFocus: #788890;
+
+
+EditBoxBG {
+  background-color:@editboxColor;
+  border-color:@editboxBorderColor;
+  border:yes;
+  border-offset:@dp;
+}
+
+EditBox
+{
+  behaviour:edit;
+  re-type:edit;
+  text-align:left;
+  selected-border:none;
+  font:@fontSmall;
+
+  background-color:@editboxColor;
+  border-color:@editboxBorderColor;
+  border:yes;
+  border-offset:@dp;
+
+  tabStop:yes;
+  color:@commonTextColor;
+  cursor-color:@activeTextColor;
+  height:@buttonHeight;
+  padding:8@sf/@pf, 5@sf/@pf;
+  margin-bottom:8@sf/@pf;
+  multiShortcuts:no;
+
+  edit-hint-back-color:@transparent;
+  edit-hint-color: @editboxHintColor;
+
+  overflow:hidden;
+}
+
+EditBox[noMargin="yes"]
+{
+  margin-bottom:0;
+}
+
+EditBox:focus, EditBox[select="yes"]
+{
+  background-color: @editboxColorFocus;
+  foreground-color:@editboxFgColorFocus;
+  foreground-position: 0, h-2@dp, 0, 0;
+  color: @editboxFontColorFocus;
+  border-color:@editboxBorderColorFocus;
+  edit-hint:"";
+}
+
+[has_ime=yes] EditBox:focus {
+  edit-hint:"#default_editbox_hint_message";
+}
+
+EditBox[multiline] {
+  re-type:multiEdit;
+  overflow-x:hidden;
+  overflow-y:auto;
+  overflow:hidden;
+  auto-scroll:yes;
+  multiShortcuts:yes;
+  padding:8@sf/@pf;
+}
+
+EditBox:hover, EditBox:focus, EditBox[select="yes"]
+{
+  color:@activeTextColor;
+}
+
+[show_console_buttons=yes] EditBox:focus {
+  background-color: @gamepadFocusFrameColor;
+  background-image: #ui/gameuiskin#item_selection;
+  background-position: 6;
+  background-repeat: expand;
+  foreground-color:@transparent;
+  border:no;
+  behavior:focusFrameTarget;
+  focusImageSource:background;
+}
+
+EditBox:disabled {
+  background-color:@transparent;
+}
+
+EditBox[btnName] > ButtonImg {
+  position:'absolute';
+  pos:'pw-w-0.25ph, (ph-h)/2';
+  size:'0.75ph, 0.75ph';
+}
+
+EditBox[warning=yes] {
+  border-color:@warningTextColor;
+}
+
+EditBox[warningText=yes] {
+  color:@warningTextColor;
+}

@@ -1,0 +1,83 @@
+switch_unit_button {
+  behaviour:button;
+  re-type:9rect;
+  font:@nav_button_font;
+  color:@commonMenuButtonColor;
+  width: fw;
+  height: 0.05@sf;
+  margin: 0;
+  padding: 0;
+  padding-left: 0;
+  margin-right: 0;
+  snd_click:click;
+  css-hier-invalidate:yes;
+}
+
+switch_unit_button > ButtonImg {
+  position:absolute;
+  pos:5*@sf/@pf_outdated, 50%ph-50%h;
+  size:1@buttonHeight, 1@buttonHeight;
+}
+
+switch_unit_button[selected=yes] > ButtonImg {
+  display:hide;
+}
+
+switch_unit_button[selected=no] {
+  behaviour:accesskey;
+  accessKey:'J:Y';
+}
+
+switch_unit_button:hover {
+  color:@white;
+}
+
+switch_unit_button:pushed {
+  padding-top:5*@sf/@pf_outdated;
+  padding-bottom:3*@sf/@pf_outdated;
+}
+
+switch_unit_button[selected=yes] {
+  background-image: #ui/gameuiskin#selectbox_select;
+  background-position:6;
+  background-repeat:expand;
+  background-color:@white;
+}
+
+convertUnitList {
+  height-base:0;
+  height-end:100;
+  size-time:-250;
+  size-func:squareInv;
+  size-backfunc:square;
+  size-scale:0.3@scrn_tgt;
+  css-hier-invalidate:yes;
+}
+
+convertUnitList[moveOut] {
+  move:yes;
+}
+
+convertUnitList[moveOut=yes] {
+  size-time:250;
+}
+
+convertUnitList[moveOut=no][height=0] {
+  move:no;
+}
+convertUnitList[moveOut=no][height=0] > td {
+  display:hide;
+}
+
+convertUnitList[moveOut=yes][_size-timer=1] {
+  height:0.3@scrn_tgt;
+  move:no;
+}
+
+convertUnitList[move=yes] {
+  behaviour:basicSize;
+}
+
+convertUnitList > shopItem {
+  css-hier-invalidate:yes;
+}

@@ -1,0 +1,1408 @@
+{
+  "div": [
+    {
+      "id": "air_info_tooltip"
+    },
+    {
+      "flow": "vertical"
+    },
+    {
+      "smallFont": "yes"
+    },
+    {
+      "countryExpType": "wide"
+    },
+    {
+      "behavior": "Timer"
+    },
+    {
+      "tdiv": {
+        "id": "aircraft-crew_info",
+        "pos": "pw/2-w/2, 0",
+        "position": "relative",
+        "padding-bottom": "10@sf/@pf_outdated",
+        "flow": "vertical",
+        "display": "hide",
+        "activeText": {
+          "id": "aircraft-crew_name",
+          "pos": "pw/2-w/2, 0",
+          "position": "relative",
+          "caption": "yes",
+          "text-align": "center"
+        },
+        "tdiv": [
+          {
+            "pos": "pw/2-w/2, 0"
+          },
+          {
+            "position": "relative"
+          },
+          {
+            "tdiv": {
+              "tooltip": "#crew/usedSkills/tooltip",
+              "textareaNoTab": {
+                "id": "aircraft-crew_level"
+              }
+            }
+          },
+          {
+            "tdiv": [
+              {
+                "tooltip": "#crew/qualification/tooltip"
+              },
+              {
+                "margin-left": "0.02@sf"
+              },
+              {
+                "textareaNoTab": {
+                  "id": "aircraft-crew_spec-label"
+                }
+              },
+              {
+                "img": {
+                  "id": "aircraft-crew_spec-icon",
+                  "size": "@sIco, @sIco",
+                  "pos": "-2@sf/@pf_outdated, -2@sf/@pf_outdated",
+                  "position": "relative"
+                }
+              },
+              {
+                "textareaNoTab": {
+                  "id": "aircraft-crew_spec"
+                }
+              }
+            ]
+          }
+        ],
+        "textAreaCentered": {
+          "id": "aircraft-crew_points",
+          "tooltip": "#crew/availablePoints/tooltip",
+          "pos": "pw/2-w/2, 0",
+          "position": "relative",
+          "text-align": "center",
+          "crewStatus": "",
+          "display": "hide"
+        }
+      }
+    },
+    {
+      "activeText": {
+        "id": "aircraft-name",
+        "pos": "50%pw-50%w, 0",
+        "position": "relative",
+        "caption": "yes",
+        "text-align": "center"
+      }
+    },
+    {
+      "textAreaCentered": {
+        "id": "aircraft-type",
+        "pos": "50%pw-50%w, 0",
+        "position": "relative",
+        "text-align": "center"
+      }
+    },
+    {
+      "tdiv": [
+        {
+          "pos": "50%pw-50%w, 0"
+        },
+        {
+          "position": "relative"
+        },
+        {
+          "cardImg": {
+            "id": "aircraft-countryImg",
+            "pos": "0, 33%ph-h/2",
+            "position": "relative",
+            "tooltip": ""
+          }
+        },
+        {
+          "tdiv": [
+            {
+              "id": "aircraft-age"
+            },
+            {
+              "tooltip": "#shop/age/tooltip"
+            },
+            {
+              "margin-left": "0.02@sf"
+            },
+            {
+              "textareaNoTab": {
+                "id": "age_number"
+              }
+            },
+            {
+              "textareaNoTab": {
+                "id": "age_years",
+                "overlayTextColor": "active"
+              }
+            }
+          ]
+        },
+        {
+          "tdiv": [
+            {
+              "tooltip": "#shop/battle_rating/tooltip"
+            },
+            {
+              "margin-left": "0.02@sf"
+            },
+            {
+              "textareaNoTab": {
+                "id": "aircraft-battle_rating-header"
+              }
+            },
+            {
+              "textareaNoTab": {
+                "id": "aircraft-battle_rating",
+                "overlayTextColor": "active"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "img": {
+        "id": "aircraft-image",
+        "pos": "50%pw-50%w, 0",
+        "position": "relative",
+        "height": "25%sh",
+        "max-height": "200*@sf/@pf_outdated",
+        "width": "1.56h",
+        "max-width": "312*@sf/@pf_outdated",
+        "background-image": ""
+      }
+    },
+    {
+      "country_exp_div": {
+        "id": "player_country_exp",
+        "pos": "50%pw-50%w, 10@sf/@pf_outdated",
+        "position": "relative",
+        "width": "0.4@sf",
+        "display": "hide"
+      }
+    },
+    {
+      "textAreaCentered": {
+        "id": "unit_rent_time",
+        "pos": "50%pw-50%w, 0",
+        "position": "relative",
+        "margin": "0, 0.01@scrn_tgt",
+        "max-width": "0.5@sf"
+      }
+    },
+    {
+      "textAreaCentered": {
+        "id": "aircraft-addInfo",
+        "pos": "50%pw-50%w, 0",
+        "position": "relative",
+        "margin": "0, 0.01@scrn_tgt",
+        "max-width": "0.5@sf",
+        "hideEmptyText": "yes"
+      }
+    },
+    {
+      "textAreaCentered": {
+        "id": "aircraft-cant_buy_info",
+        "pos": "50%pw-50%w, 0",
+        "position": "relative",
+        "margin": "0, 0.01@scrn_tgt",
+        "max-width": "0.5@sf"
+      }
+    },
+    {
+      "tdiv": {
+        "id": "prev_unit_nest",
+        "pos": "50%pw-50%w, -0.01@scrn_tgt",
+        "position": "relative",
+        "class": "rankUpList"
+      }
+    },
+    {
+      "textareaNoTab": {
+        "id": "weaponsInfo",
+        "pos": "50%pw-50%w, 10@sf/@pf_outdated",
+        "position": "relative"
+      }
+    },
+    {
+      "table": [
+        {
+          "pos": "50%pw-50%w, 10@sf/@pf_outdated"
+        },
+        {
+          "position": "relative"
+        },
+        {
+          "class": "normalFont"
+        },
+        {
+          "allAlignLeft": "yes"
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-turnTurretTime-tr"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#shop/turnTurretTime"
+                }
+              }
+            },
+            {
+              "td": {
+                "textareaNoTab": {
+                  "id": "aircraft-turnTurretTime"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-angleVerticalGuidance-tr"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#shop/angleVerticalGuidance"
+                }
+              }
+            },
+            {
+              "td": {
+                "textareaNoTab": {
+                  "id": "aircraft-angleVerticalGuidance"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-shotFreq-tr"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#shop/shotFreq"
+                }
+              }
+            },
+            {
+              "td": {
+                "textareaNoTab": {
+                  "id": "aircraft-shotFreq"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-reloadTime-tr"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#shop/reloadTime"
+                }
+              }
+            },
+            {
+              "td": {
+                "textareaNoTab": {
+                  "id": "aircraft-reloadTime"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-weaponPresets-tr"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#shop/weaponPresets"
+                }
+              }
+            },
+            {
+              "td": {
+                "text": {
+                  "id": "aircraft-weaponPresets"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-massPerSec-tr"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#shop/massPerSec"
+                }
+              }
+            },
+            {
+              "td": {
+                "text": {
+                  "id": "aircraft-massPerSec"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": {
+            "style": "size:pw, 0.01@scrn_tgt;"
+          }
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-armorThicknessHull-tr"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#shop/armorThicknessHull"
+                }
+              }
+            },
+            {
+              "td": {
+                "textareaNoTab": {
+                  "id": "aircraft-armorThicknessHull"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-armorThicknessTurret-tr"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#shop/armorThicknessTurret"
+                }
+              }
+            },
+            {
+              "td": {
+                "textareaNoTab": {
+                  "id": "aircraft-armorThicknessTurret"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "ship-citadelArmor-tr"
+            },
+            {
+              "display": "hide"
+            },
+            {
+              "td": {
+                "text": {
+                  "id": "ship-citadelArmor-title"
+                }
+              }
+            },
+            {
+              "td": {
+                "textareaNoTab": {
+                  "id": "ship-citadelArmor-value"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "ship-mainFireTower-tr"
+            },
+            {
+              "display": "hide"
+            },
+            {
+              "td": {
+                "text": {
+                  "id": "ship-mainFireTower-title"
+                }
+              }
+            },
+            {
+              "td": {
+                "textareaNoTab": {
+                  "id": "ship-mainFireTower-value"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "ship-hullMaterial-tr"
+            },
+            {
+              "display": "hide"
+            },
+            {
+              "td": {
+                "text": {
+                  "id": "ship-hullMaterial-title"
+                }
+              }
+            },
+            {
+              "td": {
+                "textareaNoTab": {
+                  "id": "ship-hullMaterial-value"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "ship-superstructureMaterial-tr"
+            },
+            {
+              "display": "hide"
+            },
+            {
+              "td": {
+                "text": {
+                  "id": "ship-superstructureMaterial-title"
+                }
+              }
+            },
+            {
+              "td": {
+                "textareaNoTab": {
+                  "id": "ship-superstructureMaterial-value"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-armorPiercing-tr"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#shop/armorPiercing"
+                }
+              }
+            },
+            {
+              "td": {
+                "textareaNoTab": {
+                  "id": "aircraft-armorPiercing"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-armorPiercingDist-tr"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#shop/armorPiercingDist"
+                }
+              }
+            },
+            {
+              "td": {
+                "textareaNoTab": {
+                  "id": "aircraft-armorPiercingDist"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": {
+            "style": "size:pw, 0.01@scrn_tgt;"
+          }
+        },
+        {
+          "tr": [
+            {
+              "id": "total-crew-tr"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#crew/totalCrew"
+                }
+              }
+            },
+            {
+              "td": {
+                "textareaNoTab": {
+                  "id": "total-crew"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-mass-tr"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#shop/tank_mass"
+                }
+              }
+            },
+            {
+              "td": {
+                "textareaNoTab": {
+                  "id": "aircraft-mass"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-horsePowers-tr"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#shop/horsePowers"
+                }
+              }
+            },
+            {
+              "td": {
+                "textareaNoTab": {
+                  "id": "aircraft-horsePowers"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-maxSpeed-tr"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#shop/max_speed"
+                }
+              }
+            },
+            {
+              "td": [
+                {
+                  "textareaNoTab": {
+                    "id": "aircraft-maxSpeed"
+                  }
+                },
+                {
+                  "textareaNoTab": {
+                    "id": "aircraft-weaponmod-maxSpeed"
+                  }
+                },
+                {
+                  "animated_wait_icon": {
+                    "id": "aircraft-maxSpeed-wait",
+                    "display": "hide",
+                    "class": "inTextRow",
+                    "background-rotation": "0"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-maxDepth-tr"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#shop/max_depth"
+                }
+              }
+            },
+            {
+              "td": {
+                "text": {
+                  "id": "aircraft-maxDepth"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-speedAlt-tr"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#shop/max_speed_alt"
+                }
+              }
+            },
+            {
+              "td": {
+                "text": {
+                  "id": "aircraft-speedAlt"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-altitude-tr"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#shop/max_altitude"
+                }
+              }
+            },
+            {
+              "td": {
+                "text": {
+                  "id": "aircraft-altitude"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-turnTime-tr"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#shop/turn_time"
+                }
+              }
+            },
+            {
+              "td": [
+                {
+                  "textareaNoTab": {
+                    "id": "aircraft-turnTime"
+                  }
+                },
+                {
+                  "textareaNoTab": {
+                    "id": "aircraft-weaponmod-turnTime"
+                  }
+                },
+                {
+                  "animated_wait_icon": {
+                    "id": "aircraft-turnTime-wait",
+                    "display": "hide",
+                    "class": "inTextRow",
+                    "background-rotation": "0"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-climbSpeed-tr"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#shop/max_climbSpeed"
+                }
+              }
+            },
+            {
+              "td": [
+                {
+                  "textareaNoTab": {
+                    "id": "aircraft-climbSpeed"
+                  }
+                },
+                {
+                  "textareaNoTab": {
+                    "id": "aircraft-weaponmod-climbSpeed"
+                  }
+                },
+                {
+                  "animated_wait_icon": {
+                    "id": "aircraft-climbSpeed-wait",
+                    "display": "hide",
+                    "class": "inTextRow",
+                    "background-rotation": "0"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-airfieldLen-tr"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#shop/airfieldLen"
+                }
+              }
+            },
+            {
+              "td": {
+                "text": {
+                  "id": "aircraft-airfieldLen"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-wingLoading-tr"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#shop/wing_loading"
+                }
+              }
+            },
+            {
+              "td": {
+                "text": {
+                  "id": "aircraft-wingLoading"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-powerToWeightRatio-tr"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#shop/power_to_weight_ratio"
+                }
+              }
+            },
+            {
+              "td": {
+                "text": {
+                  "id": "aircraft-powerToWeightRatio"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-thrustToWeightRatio-tr"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#shop/thrust_to_weight_ratio"
+                }
+              }
+            },
+            {
+              "td": {
+                "text": {
+                  "id": "aircraft-thrustToWeightRatio"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-visibilityFactor-tr"
+            },
+            {
+              "td": {
+                "text": {
+                  "id": "aircraft-visibilityFactor-title"
+                }
+              }
+            },
+            {
+              "td": {
+                "textareaNoTab": {
+                  "id": "aircraft-visibilityFactor-value"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "ship-displacement-tr"
+            },
+            {
+              "display": "hide"
+            },
+            {
+              "td": {
+                "text": {
+                  "id": "ship-displacement-title"
+                }
+              }
+            },
+            {
+              "td": {
+                "textareaNoTab": {
+                  "id": "ship-displacement-value"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": {
+            "style": "size:pw, 0.01@scrn_tgt;"
+          }
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-lockedCrew"
+            },
+            {
+              "behavior": "Timer"
+            },
+            {
+              "display": "hide"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#mainmenu/crewLockLeftTable",
+                  "style": "color:@redMenuButtonColor;"
+                }
+              }
+            },
+            {
+              "td": {
+                "text": {
+                  "id": "time",
+                  "style": "color:@redMenuButtonColor;"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-chance_to_met_tr"
+            },
+            {
+              "td": {
+                "textareaNoTab": {
+                  "text": "#shop/chance_to_met"
+                }
+              }
+            },
+            {
+              "td": {
+                "textareaNoTab": {
+                  "id": "aircraft-chance_to_met"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-require_rp_tr"
+            },
+            {
+              "tooltip": "#shop/required_rp/tooltip"
+            },
+            {
+              "display": "hide"
+            },
+            {
+              "td": {
+                "textareaNoTab": {
+                  "text": "#shop/required_rp"
+                }
+              }
+            },
+            {
+              "td": {
+                "textareaNoTab": {
+                  "id": "aircraft-require_rp"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-prevUnit_bonus_tr"
+            },
+            {
+              "display": "hide"
+            },
+            {
+              "td": {
+                "textareaNoTab": {
+                  "id": "aircraft-prevUnit"
+                }
+              }
+            },
+            {
+              "td": {
+                "textareaNoTab": {
+                  "id": "aircraft-prevUnit_bonus"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-price-tr"
+            },
+            {
+              "display": "hide"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#ugm/price"
+                }
+              }
+            },
+            {
+              "td": {
+                "textareaNoTab": {
+                  "smallFont": "yes",
+                  "id": "aircraft-price"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-train_cost-tr"
+            },
+            {
+              "display": "hide"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#shop/crew_train_cost"
+                }
+              }
+            },
+            {
+              "td": {
+                "textareaNoTab": {
+                  "smallFont": "yes",
+                  "id": "aircraft-train_cost"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": {
+            "style": "size:pw,1*@scrn_tgt/100.0;"
+          }
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-spare-tr"
+            },
+            {
+              "display": "hide"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#multiAward/type/spare"
+                }
+              }
+            },
+            {
+              "td": {
+                "text": {
+                  "id": "aircraft-spare"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-repair_cost-tr"
+            },
+            {
+              "display": "hide"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#shop/repair_cost"
+                }
+              }
+            },
+            {
+              "td": {
+                "textareaNoTab": {
+                  "smallFont": "yes",
+                  "id": "aircraft-repair_cost"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-free_repairs-tr"
+            },
+            {
+              "tooltip": "#shop/free_repairs/tooltip"
+            },
+            {
+              "display": "hide"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#shop/free_repairs"
+                }
+              }
+            },
+            {
+              "td": {
+                "text": {
+                  "id": "aircraft-free_repairs"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "td": {
+                "text": {
+                  "text": "#shop/avg_repair_cost"
+                }
+              }
+            },
+            {
+              "td": {
+                "id": "aircraft-full_repair_cost-td",
+                "tdiv": {
+                  "textareaNoTab": {
+                    "smallFont": "yes",
+                    "id": "aircraft-full_repair_cost"
+                  },
+                  "discount": {
+                    "id": "aircraft-full_repair_cost-discount",
+                    "text": "",
+                    "pos": "-1*@scrn_tgt/100.0, 50%ph-55%h",
+                    "position": "relative",
+                    "rotation": "8"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-full_repair_time_crew-tr"
+            },
+            {
+              "display": "hide"
+            },
+            {
+              "td": {
+                "text": {
+                  "id": "aircraft-full_repair_time_label",
+                  "text": "#shop/full_repair_time_crew"
+                }
+              }
+            },
+            {
+              "td": {
+                "text": {
+                  "id": "aircraft-full_repair_time_crew"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-condition-tr"
+            },
+            {
+              "display": "hide"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#shop/condition"
+                }
+              }
+            },
+            {
+              "td": {
+                "text": {
+                  "id": "aircraft-condition"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": {
+            "style": "size:pw,1*@scrn_tgt/100.0;"
+          }
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-surviveRating-tr"
+            },
+            {
+              "display": "hide"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#shop/surviveRating",
+                  "overlayTextColor": "shopStats"
+                }
+              }
+            },
+            {
+              "td": {
+                "text": {
+                  "id": "aircraft-surviveRating",
+                  "overlayTextColor": "shopStats"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-winsRating-tr"
+            },
+            {
+              "display": "hide"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#shop/winsRating",
+                  "overlayTextColor": "shopStats"
+                }
+              }
+            },
+            {
+              "td": {
+                "text": {
+                  "id": "aircraft-winsRating",
+                  "overlayTextColor": "shopStats"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-usageRating-tr"
+            },
+            {
+              "display": "hide"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#shop/usageRating",
+                  "overlayTextColor": "shopStats"
+                }
+              }
+            },
+            {
+              "td": {
+                "text": {
+                  "id": "aircraft-usageRating",
+                  "overlayTextColor": "shopStats"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-research-efficiency-tr"
+            },
+            {
+              "td": {
+                "text": {
+                  "text": "#shop/most_effective_research_tr"
+                }
+              }
+            },
+            {
+              "td": {
+                "textareaNoTab": {
+                  "id": "aircraft-research-efficiency"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-reward_rp-tr"
+            },
+            {
+              "td": {
+                "textareaNoTab": {
+                  "id": "aircraft-reward_rp-label",
+                  "text": ""
+                }
+              }
+            },
+            {
+              "td": {
+                "tdiv": {
+                  "id": "aircraft-reward_rp"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "tr": [
+            {
+              "id": "aircraft-reward_wp-tr"
+            },
+            {
+              "td": {
+                "textareaNoTab": {
+                  "id": "aircraft-reward_wp-label",
+                  "text": ""
+                }
+              }
+            },
+            {
+              "td": {
+                "tdiv": {
+                  "id": "aircraft-reward_wp"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "textareaNoTab": {
+        "id": "references_text",
+        "display": "hide",
+        "text": "#shop/reference_footnote",
+        "text-align": "left"
+      }
+    },
+    {
+      "textareaNoTab": {
+        "id": "current_game_mode_footnote_text",
+        "pos": "pw/2-w/2, 8@sf/@pf_outdated",
+        "position": "relative",
+        "text-align": "center",
+        "overlayTextColor": "faded"
+      }
+    }
+  ]
+}

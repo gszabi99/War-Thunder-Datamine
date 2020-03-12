@@ -1,0 +1,50 @@
+{
+  "tdiv": {
+    "id": "bg_picture_container",
+    "size": "sw, sh",
+    "position": "root",
+    "background-color": "@black",
+    "tdiv": [
+      {
+        "pos": "50%sw-50%w,50%sh-50%h"
+      },
+      {
+        "position": "absolute"
+      },
+      {
+        "size": "2.333sh, sh"
+      },
+      {
+        "overflow": "hidden"
+      },
+      {
+        "tdiv": {
+          "id": "animated_bg_picture",
+          "pos": "pw/2-w/2, ph/2-h/2",
+          "position": "absolute",
+          "size": "2.5sh, sh",
+          "behaviour": "multiLayerImage",
+          "blend-time": "500"
+        }
+      },
+      {
+        "tdiv": {
+          "size": "0.333sh, sh",
+          "pos": "-w/2, 0",
+          "position": "absolute",
+          "background-image": "!ui/gameuiskin#debriefing_bg_grad@@ss",
+          "background-color": "@black"
+        }
+      },
+      {
+        "tdiv": {
+          "size": "0.333sh, sh",
+          "pos": "pw -w/2, 0",
+          "position": "absolute",
+          "background-image": "!ui/gameuiskin#debriefing_bg_grad@@ss",
+          "background-color": "@black"
+        }
+      }
+    ]
+  }
+}
