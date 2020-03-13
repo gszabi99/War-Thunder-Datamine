@@ -48,6 +48,9 @@
         "ship_steering_gear"
         "ship_funnel"
         "ship_hydrofoil"
+        "ship_elevator"
+        "ship_fuel_tank"
+        "ship_coal_bunker"
       ]
     },
     {
@@ -68,6 +71,10 @@
         "ship_torpedo"
         "ship_depth_charge"
         "ship_ammunition_storage"
+        "ship_ammunition_storage_charges"
+        "ship_ammunition_storage_shells"
+        "ship_ammunition_storage_aux"
+        "ship_ammo"
       ]
     },
   ]
