@@ -123,7 +123,7 @@ class ::gui_handlers.WeaponrySelectModal extends ::gui_handlers.BaseGuiHandlerWT
 
       params.posX = rows ? (idx / rows) : 0
       params.posY = rows ? (idx % rows) : 0
-      weaponryListMarkup += ::weaponVisual.createItemLayout(idx, weaponryItem, weaponryItem.type, params)
+      weaponryListMarkup += ::weaponVisual.createItemLayout(idx, unit, weaponryItem, weaponryItem.type, params)
     }
 
     selIdx = ::max(wasSelIdx, 0)

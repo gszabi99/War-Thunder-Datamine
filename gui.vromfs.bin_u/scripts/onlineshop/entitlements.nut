@@ -32,6 +32,15 @@ local function getEntitlementAmount(item)
   return 1
 }
 
+local function getEntitlementTimeText(item)
+{
+  if ("ttl" in item)
+    return item.ttl + ::loc("measureUnits/days")
+  if ("httl" in item)
+    return item.httl + ::loc("measureUnits/hours")
+  return ""
+}
+
 local function getEntitlementName(item)
 {
   local name = ""
@@ -47,7 +56,7 @@ local function getEntitlementName(item)
   else
     name = ::loc("charServer/entitlement/" + getEntitlementLocId(item))
 
-  local timeText = getEntitlementAmount(item)
+  local timeText = getEntitlementTimeText(item)
   if (timeText!="")
     name += " " + timeText
   return name
@@ -59,15 +68,6 @@ local function getFirstPurchaseAdditionalAmount(item)
     return ::getTblValue("goldIncomeFirstBuy", item, 0)
 
   return 0
-}
-
-local function getEntitlementTimeText(item)
-{
-  if ("ttl" in item)
-    return item.ttl + ::loc("measureUnits/days")
-  if ("httl" in item)
-    return item.httl + ::loc("measureUnits/hours")
-  return ""
 }
 
 local function getEntitlementPrice(item)

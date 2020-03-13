@@ -40,10 +40,18 @@ local function getParametersByCrewId(crewId, unitName) {
   return parameters
 }
 
-local function onEventCrewSkillsChanged(params) {
+local function removeParametersByCrew(params) {
   local crewId = params.crew.id
   if (crewId in parametersByCrewId)
     delete parametersByCrewId[crewId]
+}
+
+local function onEventCrewSkillsChanged(params) {
+  removeParametersByCrew(params)
+}
+
+local function onEventQualificationIncreased(params) {
+  removeParametersByCrew(params)
 }
 
 local function onEventSignOut(params) {
@@ -288,6 +296,7 @@ local function getSkillDescriptionView(crew, difficulty, memberName, skillName, 
 
 subscriptions.addListenersWithoutEnv({
   CrewSkillsChanged = onEventCrewSkillsChanged
+  QualificationIncreased = onEventQualificationIncreased
   SignOut = onEventSignOut
 })
 

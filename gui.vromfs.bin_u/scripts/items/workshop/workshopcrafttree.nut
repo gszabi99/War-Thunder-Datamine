@@ -3,9 +3,7 @@ local inventoryClient = require("scripts/inventory/inventoryClient.nut")
 local DEFAULT_BRANCH_CONFIG = {
   locId = ""
   minPosX = 1
-  minPosY = 1
   itemsCountX = 1
-  itemsCountY = 1
   columnWithResourcesCount = 0
   headerItems = []
   branchItems = {}
@@ -50,8 +48,6 @@ local function generateRows(branchBlk, treeRows)
   local notFoundReqForItems = {}
   local minPosX = null
   local maxPosX = null
-  local minPosY = null
-  local maxPosY = null
   local resourcesInColumn = {}
   local reqItemsWithDownOutArrows = {}
   local bodyIdx = branchBlk?.bodyItemIdx ?? 0
@@ -73,6 +69,8 @@ local function generateRows(branchBlk, treeRows)
       posXY = iBlk.posXY
       showResources = iBlk?.showResources ?? false
       reqItems = (iBlk % "reqItem").map(@(itemId)itemId.tointeger())
+      reqItemForDisplaying = (iBlk % "reqItemForDisplaying").map(@(itemId)itemId.tointeger())
+      reqItemForIdentification = (iBlk % "reqItemForIdentification").map(@(itemId)itemId.tointeger())
       arrows = []
     }
 
@@ -80,8 +78,6 @@ local function generateRows(branchBlk, treeRows)
     local posY = itemConfig.posXY.y.tointeger()
     minPosX = ::min(minPosX ?? posX, posX)
     maxPosX = ::max(maxPosX ?? posX, posX)
-    minPosY = ::min(minPosY ?? posY, posY)
-    maxPosY = ::max(maxPosY ?? posY, posY)
     if (itemConfig.showResources && resourcesInColumn?[posX] == null)
       resourcesInColumn[posX] <- 1
 
@@ -144,17 +140,13 @@ local function generateRows(branchBlk, treeRows)
 
   minPosX = minPosX ?? 0
   maxPosX = maxPosX ?? 0
-  minPosY = minPosY ?? 0
-  maxPosY = maxPosY ?? 0
   return {
     treeRows = treeRows
     branch = DEFAULT_BRANCH_CONFIG.__merge({
       locId = branchBlk?.locId
       headerItems = getHeaderItems(branchBlk)
       minPosX = minPosX
-      minPosY = minPosY
       itemsCountX = maxPosX - minPosX + 1
-      itemsCountY = maxPosY - minPosY + 1
       branchItems = branchItems
       resourcesInColumn = resourcesInColumn
       columnWithResourcesCount = resourcesInColumn.reduce(@(res, value) res + value, 0)
@@ -225,8 +217,6 @@ local function generateTreeConfig(blk)
          bodyIdx = bodyIdx
          branchesCount = 0
          itemsCountX = 0
-         itemsCountY = 0
-         minPosY = null
          columnWithResourcesCount = 0
          title = bodyTitle
          hasBranchesTitles = false
@@ -239,8 +229,6 @@ local function generateTreeConfig(blk)
      local hasBranchTitle = branch?.locId != null
      curBodyConfig.branchesCount++
      curBodyConfig.itemsCountX += branch.itemsCountX
-     curBodyConfig.itemsCountY = ::max(curBodyConfig.itemsCountY, branch.itemsCountY)
-     curBodyConfig.minPosY = ::min(curBodyConfig.minPosY ?? branch.minPosY, branch.minPosY)
      curBodyConfig.columnWithResourcesCount += branch.columnWithResourcesCount
      curBodyConfig.bodyTitlesCount += !hasBranchesTitlesInBody && hasBranchTitle ? 1 : 0
      curBodyConfig.hasBranchesTitles = hasBranchesTitlesInBody || hasBranchTitle

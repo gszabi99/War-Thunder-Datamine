@@ -228,7 +228,7 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
         item = getCurBullet(cell.bulGroupIdx)
 
       if (item)
-        res += ::weaponVisual.createItemLayout(cell.id, item, cell.itemType, params)
+        res += ::weaponVisual.createItemLayout(cell.id, unit, item, cell.itemType, params)
     }
     return res
   }

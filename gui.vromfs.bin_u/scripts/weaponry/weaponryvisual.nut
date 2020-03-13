@@ -1,7 +1,9 @@
 local time = require("scripts/time.nut")
 local stdMath = require("std/math.nut")
+local modUpgradeElem = ::require("scripts/weaponry/elems/modUpgradeElem.nut")
 local { countMeasure } = require("scripts/options/optionsMeasureUnits.nut")
-local { getBulletsSetData,
+local { isFakeBullet,
+        getBulletsSetData,
         getModificationBulletsGroup } = require("scripts/weaponry/bulletsInfo.nut")
 local { WEAPON_TEXT_PARAMS,
         WEAPON_TYPE,
@@ -17,13 +19,12 @@ local function getWeaponInfoText(air, p = WEAPON_TEXT_PARAMS)
   if (!air)
     return text
 
-  p = WEAPON_TEXT_PARAMS.__merge(p)
-
-  local unitType = ::get_es_unit_type(air)
   local weapons = getPresetsWeaponry(air, p)
   if (weapons == null)
     return text
 
+  p = WEAPON_TEXT_PARAMS.__merge(p)
+  local unitType = ::get_es_unit_type(air)
   if (::u.isEmpty(weapons) && p.needTextWhenNoWeapons)
       text += ::loc("weapon/noPrimaryWeapon")
   local weaponTypeList = [ "cannons", "guns", "aam", "agm", "rockets", "turrets", "torpedoes",
@@ -324,6 +325,276 @@ local function getBulletsListHeader(unit, bulletsList)
   return ::format(::loc(locId), bulletsList.caliber.tostring())
 }
 
+local function getWeaponItemViewParams(id, unit, item, params = {})
+{
+  local res = {
+    id                        = id
+    itemWidth                 = params?.itemWidth ?? 1
+    posX                      = params?.posX ?? 0
+    posY                      = params?.posY ?? 0
+    hideStatus                = item?.hideStatus ?? false
+    useGenericTooltip         = params?.useGenericTooltip ?? false
+    needSliderButtons         = params?.needSliderButtons ?? false
+    wideItemWithSlider        = params?.wideItemWithSlider ?? false
+    modUpgradeIcon            = ::has_feature("ItemModUpgrade") ?
+      modUpgradeElem.createMarkup("mod_upgrade_icon") : null
+    collapsable               = params?.collapsable ? "yes" : "no"
+    modUpgradeIconValue       = null
+    bulletImg                 = null
+    shortcutIcon              = params?.shortcutIcon
+    isSelected                = params?.selected
+    isShowStatusImg           = true
+    hideStatusRadio           = false
+    isShowDiscount            = true
+    hideProgressBlock         = false
+    hideOldResearchProgress   = false
+    hideBulletsChoiceBlock    = true
+    hideVisualHasMenu         = false
+    hideWarningIcon           = false
+    isShowPrice               = true
+    modUpgradeStatus          = ""
+    nameText                  = ""
+    genericTooltipId          = ""
+    iconBulletName            = ""
+    itemImg                   = ""
+    discountText              = ""
+    discountTooltip           = ""
+    researchProgress          = ""
+    progressType              = ""
+    progressPaused            = ""
+    oldResearchProgress       = ""
+    priceText                 = ""
+    optEquipped               = ""
+    optStatus                 = ""
+    amountText                = ""
+    amountTextColor           = ""
+    bulletsCountText          = ""
+    decBulletsLimit           = ""
+    incBulletsLimit           = ""
+    sliderMax                 = ""
+    sliderValue               = ""
+    sliderGroupIdx            = ""
+    invSliderMax              = ""
+    invSliderValue            = ""
+    statusIconImg             = ""
+    actionBtnCanShow          = ""
+    actionBtnText             = ""
+    altBtnCanShow             = ""
+    altBtnTooltip             = ""
+    altBtnBuyText             = ""
+  }
+
+  local isOwn = ::isUnitUsable(unit)
+  local visualItem = item
+  local isBundle = item.type == weaponsItem.bundle
+  if (isBundle)
+  {
+    visualItem = ::weaponVisual.getBundleCurItem(unit, item) || visualItem
+    if (!("type" in visualItem))
+      visualItem.type <- weaponsItem.bundle
+  }
+  res.nameText = ::weaponVisual.getItemName(unit, visualItem, params?.limitedName ?? true)
+  local isForceHidePlayerInfo = params?.isForceHidePlayerInfo ?? false
+  if (res.useGenericTooltip)
+  {
+    local genericTooltipId = ""
+    if (item.type == weaponsItem.modification)
+      genericTooltipId = ::g_tooltip_type.MODIFICATION.getTooltipId(unit.name, item.name)
+    else if (item.type == weaponsItem.weapon)
+      genericTooltipId = ::g_tooltip_type.WEAPON.getTooltipId(unit.name, item.name, params)
+    else if (item.type == weaponsItem.spare)
+      genericTooltipId = ::g_tooltip_type.SPARE.getTooltipId(unit.name)
+
+    res.genericTooltipId = genericTooltipId
+  }
+  local bIcoItem = ::weaponVisual.getBulletsIconItem(unit, visualItem)
+  if (bIcoItem)
+  {
+    local bulletsSet = getBulletsSetData(unit, bIcoItem.name)
+    dagor.assertf(isTank(unit) || bulletsSet!=null, "No bullets in bullets set " + visualItem.name + " for " + unit.name)
+
+    res.iconBulletName = bIcoItem.name
+    res.bulletImg = ::weaponVisual.getBulletsIconView(bulletsSet)
+  }
+  res.itemImg = ::weaponVisual.getItemImage(unit, visualItem)
+  local statusTbl = ::weaponVisual.getItemStatusTbl(unit, visualItem)
+  local canBeDisabled = ::weaponVisual.isCanBeDisabled(item)
+  local isSwitcher = ::weaponVisual.isItemSwitcher(visualItem)
+  local discount = ::getDiscountByPath(
+    ::weaponVisual.getDiscountPath(unit, visualItem, statusTbl.discountType))
+  local itemCostText = ::weaponVisual.getFullItemCostText(unit, item)
+  local priceText = statusTbl.showPrice && (params?.canShowPrice ?? true) ? itemCostText : ""
+  local flushExp = params?.flushExp ?? 0
+  local canShowResearch = params?.canShowResearch ?? true
+  local canResearch = ::weaponVisual.canResearchItem(unit, visualItem, false)
+  local itemReqExp = visualItem?.reqExp ?? 0
+  local isModResearching = canShowResearch &&
+                               canResearch &&
+                               statusTbl.modExp >= 0 &&
+                               statusTbl.modExp < itemReqExp &&
+                               !statusTbl.amount
+  local isModInResearch = ::weaponVisual.isModInResearch(unit, visualItem)
+  local isResearchInProgress = isModResearching && isModInResearch
+  local isResearchPaused = isModResearching && statusTbl.modExp > 0 && !isModInResearch
+  local showStatus = false
+  res.optEquipped = isForceHidePlayerInfo || statusTbl.equipped ? "yes" : "no"
+  if (params?.canShowStatusImage ?? true)
+    if (visualItem.type == weaponsItem.weapon || isBullets(visualItem))
+      showStatus = true
+    else if (visualItem.type == weaponsItem.modification ||
+      visualItem.type == weaponsItem.expendables)
+        showStatus = canBeDisabled && statusTbl.amount
+  res.isShowStatusImg = showStatus && (! statusTbl.unlocked || ! isSwitcher)
+  res.hideStatusRadio = !showStatus || !statusTbl.unlocked ||
+    !isSwitcher || isFakeBullet(visualItem.name)
+  res.hideStatus = isResearchInProgress
+  res.isShowDiscount = discount > 1
+  local haveDiscount = discount > 0 && statusTbl.canShowDiscount && itemCostText != ""
+  if (haveDiscount)
+  {
+    if (!res.hideDiscount)
+    {
+      res.discountText = "".concat("-", discount, "%")
+      res.discountTooltip = ::format(
+        ::loc("".concat("discount/", statusTbl.discountType, "/tooltip")), discount.tostring())
+    }
+    if (priceText != "")
+      priceText = "<color=@goodTextColor>" + priceText +"</color>"
+  }
+  local showProgress = isResearchInProgress || isResearchPaused
+  res.isShowPrice = !showProgress && (statusTbl.showPrice || canResearch)
+  res.hideProgressBlock = !showProgress
+  if (showProgress)
+  {
+    local diffExp = params?.diffExp ?? 0
+    local paused = isResearchPaused? "yes" : "no"
+    res.researchProgress = (itemReqExp ? statusTbl.modExp.tofloat() / itemReqExp : 1) * 1000
+    res.progressType = diffExp ? "new" : ""
+    res.progressPaused = paused
+    local oldExp = max(0, statusTbl.modExp - diffExp)
+    res.hideOldResearchProgress = oldExp == 0
+    res.oldResearchProgress = (itemReqExp ? oldExp.tofloat() / itemReqExp : 1) * 1000
+  }
+  else
+  {
+    if (statusTbl.showPrice)
+      res.priceText = priceText
+    else if (canResearch && !isResearchInProgress && !isResearchPaused)
+    {
+      local showExp = itemReqExp - statusTbl.modExp
+      local rpText = ::Cost().setRp(showExp).tostring()
+      if (flushExp > 0 && flushExp > showExp)
+        rpText = ::colorize("goodTextColor", rpText)
+      res.priceText = rpText
+    }
+  }
+  local optStatus = "locked"
+  if (params?.visualDisabled ?? false)
+    optStatus = "disabled"
+  else if (statusTbl.amount)
+    optStatus = "owned"
+  else if (isForceHidePlayerInfo || statusTbl.unlocked)
+    optStatus = "unlocked"
+  else if (isModInResearch && visualItem.type == weaponsItem.modification)
+    optStatus = canShowResearch ? "research" : "researchable"
+  else if (::weaponVisual.canResearchItem(unit, visualItem))
+    optStatus = "researchable"
+  res.optStatus = optStatus
+  if (!isForceHidePlayerInfo)
+  {
+    res.amountText = ::getAmountAndMaxAmountText(statusTbl.amount,
+      statusTbl.maxAmount, statusTbl.showMaxAmount)
+    res.amountTextColor = statusTbl.amount < statusTbl.amountWarningValue ? "weaponWarning" : ""
+  }
+  res.hideWarningIcon = isForceHidePlayerInfo || !statusTbl.unlocked || !statusTbl.showMaxAmount ||
+    statusTbl.amount >= statusTbl.amountWarningValue
+  local bulletsManager = params?.selectBulletsByManager
+  local bulGroup = bulletsManager?.canChangeBulletsCount() ?
+    bulletsManager.getBulletGroupBySelectedMod(visualItem) : null
+  res.hideBulletsChoiceBlock = bulGroup == null
+  if(!res.hideBulletsChoiceBlock)
+  {
+    local guns = bulGroup.guns
+    local maxVal = bulGroup.maxBulletsCount
+    local curVal = bulGroup.bulletsCount
+    local unallocated = bulletsManager.getUnallocatedBulletCount(bulGroup)
+    local restText = ""
+    if (unallocated && curVal < maxVal)
+      restText = ::colorize("userlogColoredText",
+        ::loc("ui/parentheses", { text = "+" + min(unallocated * guns,maxVal - curVal ) }))
+    local valColor = "activeTextColor"
+    if (!curVal || maxVal == 0)
+      valColor = "badTextColor"
+    else if (curVal == maxVal)
+      valColor = "goodTextColor"
+    local valText = ::colorize(valColor, curVal*guns)
+    res.bulletsCountText = ::format("%s/%s %s", valText, (maxVal*guns).tostring(), restText)
+    if(res.needSliderButtons)
+    {
+      res.decBulletsLimit = curVal != 0? "no" : "yes"
+      res.incBulletsLimit = (curVal != maxVal && unallocated != 0)? "no" : "yes"
+    }
+    res.sliderMax = maxVal.tostring()
+    res.sliderValue = curVal
+    res.sliderGroupIdx = bulGroup.groupIndex
+    res.invSliderMax = maxVal.tostring()
+    res.invSliderValue = curVal
+  }
+  res.hideVisualHasMenu = !isBundle && !params?.hasMenu
+  res.modUpgradeStatus = ::weaponVisual.getItemUpgradesStatus(unit, visualItem)
+  res.statusIconImg = ::weaponVisual.getStatusIcon(unit, item)
+  if (params?.showButtons)
+  {
+    local btnText = ""
+    if (isBundle)
+      btnText = ::loc("mainmenu/btnAirGroupOpen")
+    else if (isOwn && statusTbl.unlocked)
+    {
+      if (!statusTbl.amount || (visualItem.type == weaponsItem.spare && statusTbl.canBuyMore))
+        btnText = ::loc("mainmenu/btnBuy")
+      else if (isSwitcher && !statusTbl.equipped)
+        btnText = ::loc("mainmenu/btnSelect")
+      else if (visualItem.type == weaponsItem.modification)
+        btnText = statusTbl.equipped ?
+          (canBeDisabled ? ::loc("mod/disable") : "") : ::loc("mod/enable")
+    }
+    else if (::weaponVisual.canResearchItem(unit, visualItem) ||
+      (::weaponVisual.canResearchItem(unit, visualItem, false) &&
+      (flushExp > 0 || !canShowResearch)))
+      btnText = ::loc("mainmenu/btnResearch")
+    res.actionBtnCanShow = btnText == "" ? "no"
+      : !isBundle ? "yes" : "console"
+    res.actionBtnText = btnText
+    local altBtnText = ""
+    local altBtnTooltip = ""
+    if (statusTbl.goldUnlockable && !((params?.researchMode ?? false) && flushExp > 0))
+      altBtnText = ::weaponVisual.getItemUnlockCost(unit, item).tostring()
+    if (altBtnText != "")
+      altBtnText = ::loc("mainmenu/btnBuy") + ::loc("ui/parentheses/space", {text = altBtnText})
+    else if (visualItem.type == weaponsItem.spare && isOwn)
+    {
+      if (::ItemsManager.getInventoryList(itemType.UNIVERSAL_SPARE).len() && statusTbl.canBuyMore)
+      {
+        altBtnText = ::loc("items/universalSpare/activate", { icon = ::loc("icon/universalSpare") })
+        altBtnTooltip = ::loc("items/universalSpare/activate/tooltip")
+      }
+    }
+    else if (statusTbl.amount && statusTbl.maxAmount > 1 && statusTbl.amount < statusTbl.maxAmount
+      && !isBundle)
+        altBtnText = ::loc("mainmenu/btnBuy")
+    else if (visualItem.type == weaponsItem.modification
+      && isOwn
+      && statusTbl.curUpgrade < statusTbl.maxUpgrade
+      && ::ItemsManager.getInventoryList(itemType.MOD_UPGRADE).len())
+        altBtnText = ::loc("mainmenu/btnUpgrade")
+    res.altBtnCanShow = (altBtnText == "") ? "no" : "yes"
+    res.altBtnTooltip = altBtnTooltip
+    res.altBtnBuyText = altBtnText
+  }
+
+  return res
+}
+
 return {
   getWeaponInfoText               = getWeaponInfoText
   getWeaponNameText               = getWeaponNameText
@@ -332,4 +603,5 @@ return {
   getWeaponShortTypeFromWpName    = getWeaponShortTypeFromWpName
   getDefaultBulletName            = getDefaultBulletName
   getBulletsListHeader            = getBulletsListHeader
+  getWeaponItemViewParams         = getWeaponItemViewParams
 }

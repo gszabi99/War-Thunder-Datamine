@@ -143,7 +143,10 @@ local function mkPieMenu(params=defParams){
     return {
       watch = [curIdx]
       size = size
-      children = curIdx.value!=null ? [sector, nullSector] : null
+      children = [
+        objs?[curIdx.value] != null ? sector : null,
+        curIdx.value != null ? nullSector : null,
+      ]
       transform = {
         rotate = (curIdx.value ?? 0) * 2*sangle
         pivot = [0.5,0.5]

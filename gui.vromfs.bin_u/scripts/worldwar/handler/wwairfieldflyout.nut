@@ -681,22 +681,21 @@ class ::gui_handlers.WwAirfieldFlyOut extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     local modItemObj = containerObj.findObject(unit.name)
+    local params = {
+      canShowStatusImage = false
+      canShowResearch = false
+      canShowPrice = false
+      isForceHidePlayerInfo = true
+      useGenericTooltip = true
+      hasMenu = hasPresetToChoose(unit)
+    }
     if (!::check_obj(modItemObj))
       modItemObj = ::weaponVisual.createItem(
-        unit.name, weapon, weapon.type, containerObj, this, {
-          useGenericTooltip = true
-          shortcutIcon = "X"
-        })
-
-    ::weaponVisual.updateItem(
-      unit, weapon, modItemObj, false, this, {
-        canShowStatusImage = false
-        canShowResearch = false
-        canShowPrice = false
-        isForceHidePlayerInfo = true
-        useGenericTooltip = true
-        hasMenu = hasPresetToChoose(unit)
-      })
+        unit.name, unit, weapon, weapon.type, containerObj, this,
+        params.__merge({shortcutIcon = "X"}))
+    else
+      ::weaponVisual.updateItem(
+        unit, weapon, modItemObj, false, this, params)
     modItemObj.pos = "0, 2"
 
     local centralBlockObj = modItemObj.findObject("centralBlock")

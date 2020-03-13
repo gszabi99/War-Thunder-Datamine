@@ -75,44 +75,18 @@
       {
         "dmgIndicatorNest": {
           "id": "hud_tank_damage_indicator",
-          "size": "@sizeDamageIndicatorFull, @sizeDamageIndicatorFull",
+          "size": "@sizeDamageIndicator, @sizeDamageIndicator",
           "pos": "0, 0.03@shHud",
           "position": "relative",
           "fontSize": "small",
           "css-hier-invalidate": "yes",
-          "background": {
-            "id": "tank_background",
-            "size": "ph, ph",
+          "tdiv": {
             "position": "absolute",
-            "pos": "0, 0",
-            "css-hier-invalidate": "yes",
-            "dmgIndicatorBg": [],
-            "debuffs": {
-              "id": "tank_debuffs",
-              "width": "ph",
-              "height": "w",
-              "position": "absolute",
-              "pos": "pw/2 - w/2, ph/2 - h/2",
-              "flow": "v-flow",
-              "css-hier-invalidate": "yes"
-            },
-            "crew": {
-              "id": "crew_state",
-              "unit_type": "tank",
-              "width": "ph",
-              "height": "w",
-              "position": "absolute",
-              "pos": "pw/2 - w/2, ph/2 - h/2",
-              "flow": "v-flow",
-              "css-hier-invalidate": "yes"
-            },
-            "tdiv": {
-              "id": "hud_movement_info",
-              "position": "absolute",
-              "pos": "0.006@shHud, ph - h - 0.003@shHud",
-              "flow": "vertical",
-              "css-hier-invalidate": "yes"
-            }
+            "size": "pw, ph",
+            "background-color": "@black",
+            "border": "yes",
+            "border-color": "#90909090",
+            "color-factor": "80"
           },
           "dmgIndicator": {
             "id": "xray_render_dmg_indicator",

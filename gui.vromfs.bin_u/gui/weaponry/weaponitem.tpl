@@ -10,18 +10,27 @@ weaponry_item {
   flow:t='vertical'
   total-input-transparent:t='yes'
   css-hier-invalidate:t='yes'
+  equipped:t='<<optEquipped>>'
+  status:t= '<<optStatus>>'
 
   tdiv {
-    id:t='modItem_discount';
-    pos:t='pw-w, -1@discountBoxDownHeight + 8*@sf/@pf_outdated';
-    position:t='absolute';
+    id:t='modItem_discount'
+    pos:t='pw-w, -1@discountBoxDownHeight + 10@sf/@pf'
+    position:t='absolute'
+    <<#isShowDiscount>>
+    discount{
+      id:t='discount'
+      type:t='weaponryItem'
+      tooltip:t='<<discountTooltip>>'
+      text:t='<<discountText>>'
+    }
+    <</isShowDiscount>>
   }
-
   weaponBody{
     id:t='centralBlock'
     holderId:t='<<id>>'
     size:t='pw, 1@modItemHeight'
-    pos:t='50%pw-50%w, 0';
+    pos:t='50%pw-50%w, 0'
     position:t='absolute'
     behaviour:t='button'
     on_click:t='onModItemClick'
@@ -34,7 +43,7 @@ weaponry_item {
       size:t='1@weaponStatusIconSize, 1@weaponStatusIconSize'
       pos:t='1@weaponIconPadding, 1@weaponIconPadding'
       position:t='absolute'
-      background-image:t=''
+      background-image:t='<<statusIconImg>>'
       background-svg-size:t='1@weaponStatusIconSize, 1@weaponStatusIconSize'
     }
 
@@ -50,24 +59,26 @@ weaponry_item {
         size:t='pw, fh'
         css-hier-invalidate:t='yes'
         textareaNoTab {
-          id:t='name';
+          id:t='name'
           width:t='fw'
           height:t='ph'
           smallFont:t='yes'
           pare-text:t='yes'
           position:t='relative'
+          text:t='<<nameText>>'
         }
 
         <<#wideItemWithSlider>>
         textareaNoTab {
-          id:t='price';
+          id:t='price'
           smallFont:t='yes'
-          text:t='';
+          text:t='<<priceText>>'
           hideEmptyText:t='yes'
-          padding-right:t='2*@sf/@pf_outdated'
+          padding-right:t='3@sf/@pf'
+          <<^isShowPrice>>display:t='hide'<</isShowPrice>>
         }
         tdiv{
-          id:t='modItem_statusBlock';
+          id:t='modItem_statusBlock'
           pos:t='0,0'
           position:t='relative'
           css-hier-invalidate:t='yes'
@@ -75,32 +86,33 @@ weaponry_item {
           statusImg {
             id:t='status_image'
             holderId:t='<<id>>'
-            size:t='1@modStatusHeight, 1@modStatusHeight';
+            size:t='1@modStatusHeight, 1@modStatusHeight'
             pos:t='0,0'
             position:t='relative'
             behaviour:t='button'
             on_click:t='onModCheckboxClick'
+            <<^isShowStatusImg>>display:t='hide'<</isShowStatusImg>>
           }
         }
         <</wideItemWithSlider>>
       }
-
       tdiv {
         id:t='bullets_amount_choice_block'
         width:t='pw'
         padding-bottom:t='1@dp'
         flow:t='vertical'
         css-hier-invalidate:t='yes'
-
+        <<#hideBulletsChoiceBlock>>
         display:t='hide'
         enable:t='no'
+        <</hideBulletsChoiceBlock>>
 
         textAreaCentered {
           id:t='bulletsCountText'
-          pos:t='50%pw-50%w, 0';
+          pos:t='50%pw-50%w, 0'
           position:t='relative'
           tinyFont:t='yes'
-          text:t='12 / <color=@red>7</color>'
+          text:t='<<bulletsCountText>>'
         }
 
         tdiv {
@@ -119,7 +131,7 @@ weaponry_item {
             text:t='-'
             tooltip:t='#unit/bulletsDecrease'
             btnName:t='LB'
-            bulletsLimit:t='no'
+            bulletsLimit:t='<<decBulletsLimit>>'
             on_click:t='onModDecreaseBullets'
 
             ButtonImg{}
@@ -132,17 +144,20 @@ weaponry_item {
             margin:t='0.5@sliderThumbWidth, 0'
             pos:t='0, 50%ph-50%h'
             position:t='relative'
-            value:t='300'; min:t='0'; max:t='1000'
+            value:t='<<invSliderValue>>'
+            min:t='0'
+            max:t='<<invSliderMax>>'
             on_change_value:t='onModChangeBulletsSlider'
-            groupIdx:t = '-1'
+            groupIdx:t = '<<sliderGroupIdx>>'
 
             expProgress {
               id:t='bulletsSlider'
               width:t='pw'
-              pos:t='50%pw-50%w, 50%ph-50%h';
+              pos:t='50%pw-50%w, 50%ph-50%h'
               position:t="absolute"
               type:t='new'
-              value:t='100'
+              value:t='<<sliderValue>>'
+              max:t='<<sliderMax>>'
             }
 
             sliderButton {
@@ -162,7 +177,7 @@ weaponry_item {
             text:t='+'
             tooltip:t='#unit/bulletsIncrease'
             btnName:t='RB'
-            bulletsLimit:t='no'
+            bulletsLimit:t='<<incBulletsLimit>>'
             on_click:t='onModIncreaseBullets'
 
             ButtonImg{}
@@ -170,24 +185,23 @@ weaponry_item {
           <</needSliderButtons>>
         }
       }
-
       tdiv{
-        pos:t='pw-w, 0';
-        position:t='relative';
+        pos:t='pw-w, 0'
+        position:t='relative'
         max-width:t='pw'
         css-hier-invalidate:t='yes'
-
         tdiv {
-          id:t='mod_research_block';
+          id:t='mod_research_block'
           width:t='p.p.w - 4@dp'
-          pos:t='pw-w-1@dp, ph-h-3@dp';
-          position:t='relative';
-          flow:t='vertical';
+          pos:t='pw-w-1@dp, ph-h-3@dp'
+          position:t='relative'
+          flow:t='vertical'
+          <<#hideProgressBlock>>display:t='hide'<</hideProgressBlock>>
 
           textareaNoTab {
-            id:t='mod_research_text';
-            pos:t='0.5pw - 0.5w, 0';
-            position:t='relative';
+            id:t='mod_research_text'
+            pos:t='0.5pw - 0.5w, 0'
+            position:t='relative'
             tinyFont:t='yes'
             text:t=''
           }
@@ -195,30 +209,34 @@ weaponry_item {
             width:t='pw'
 
             modResearchProgress {
-              id:t='mod_research_progress';
-              paused:t='no';
+              id:t='mod_research_progress'
+              value:t='<<researchProgress>>'
+              type:t='<<progressType>>'
+              paused:t='<<progressPaused>>'
             }
             modResearchProgress {
-              id:t='mod_research_progress_old';
+              id:t='mod_research_progress_old'
               type:t='old'
               position:t='absolute'
-              value:t='500'
-              paused:t='no';
+              value:t='<<oldResearchProgress>>'
+              paused:t='<<progressPaused>>'
+              <<#isShowOldResearchProgress>>display:t='hide'<</isShowOldResearchProgress>>
             }
           }
         }
         <<^wideItemWithSlider>>
         textareaNoTab {
-          id:t='price';
+          id:t='price'
           smallFont:t='yes'
-          text:t='';
-          pos:t='0, ph-h';
+          text:t='<<priceText>>'
+          pos:t='0, ph-h'
           position:t='relative'
           hideEmptyText:t='yes'
-          padding-right:t='2*@sf/@pf_outdated'
+          padding-right:t='3@sf/@pf'
+          <<^isShowPrice>>display:t='hide'<</isShowPrice>>
         }
         tdiv{
-          id:t='modItem_statusBlock';
+          id:t='modItem_statusBlock'
           pos:t='0,0'
           position:t='relative'
           css-hier-invalidate:t='yes'
@@ -226,14 +244,16 @@ weaponry_item {
           statusImg {
             id:t='status_image'
             holderId:t='<<id>>'
-            size:t='1@modStatusHeight, 1@modStatusHeight';
+            size:t='1@modStatusHeight, 1@modStatusHeight'
             pos:t='0,0'
             position:t='relative'
             behaviour:t='button'
             on_click:t='onModCheckboxClick'
+            <<^isShowStatusImg>>display:t='hide'<</isShowStatusImg>>
           }
           RadioButton {
             id:t='status_radio'
+            <<#hideStatusRadio>>display:t='hide'<</hideStatusRadio>>
             RadioButtonImg {
               holderId:t='<<id>>'
               on_click:t='onModCheckboxClick'
@@ -245,40 +265,40 @@ weaponry_item {
     }
     tdiv{
       id:t='modItem_visualHasMenu'
-      size:t='19, 10';
-      position:t='absolute';
-      pos:t='0.5pw - 0.5w, ph';
-      <<^isBundle>>display:t='hide'<</isBundle>>
+      size:t='19, 10'
+      position:t='absolute'
+      pos:t='0.5pw - 0.5w, ph'
+      <<#hideVisualHasMenu>>display:t='hide'<</hideVisualHasMenu>>
 
       background-repeat:t='expand'
       background-position:t='0, 0'
-      background-image:t='#ui/gameuiskin#drop_menu_arrow_black_bg';
-      background-color:t='@white';
+      background-image:t='#ui/gameuiskin#drop_menu_arrow_black_bg'
+      background-color:t='@white'
 
       tdiv{
-        size:t='11*@sf/@pf_outdated, 8*@sf/@pf_outdated'
-        pos:t='50%pw-50%w, -1*@sf/@pf_outdated'
+        size:t='15@sf/@pf, 10@sf/@pf'
+        pos:t='50%pw-50%w, -1.4@sf/@pf'
         position:t='absolute'
         background-repeat:t='expand'
         background-image:t='#ui/gameuiskin#drop_menu_icon.svg'
-        background-svg-size:t='11*@sf/@pf_outdated, 8*@sf/@pf_outdated'
-        background-color:t='@gray';
+        background-svg-size:t='15@sf/@pf, 10@sf/@pf'
+        background-color:t='@gray'
       }
     }
   }
 
-  title:t='$tooltipObj';
+  title:t='$tooltipObj'
   tooltipObj {
     id:t='tooltip_<<id>>'
     <<^useGenericTooltip>>
     on_tooltip_open:t='onModificationTooltipOpen'
     <</useGenericTooltip>>
     <<#useGenericTooltip>>
-    tooltipId:t=''
+    tooltipId:t='<<genericTooltipId>>'
     on_tooltip_open:t='onGenericTooltipOpen'
     <</useGenericTooltip>>
     on_tooltip_close:t='onTooltipObjClose'
-    display:t='hide';
+    display:t='hide'
   }
 
   modSlotButtonsNest {
@@ -286,19 +306,20 @@ weaponry_item {
       id:t='altActionBtn'
       holderId:t='<<id>>'
       class:t='additional'
-      text:t='';
+      text:t=''
       display:t='hide'
-      canShow:t='no'
+      canShow:t='<<altBtnCanShow>>'
+      tooltip:t='<<altBtnTooltip>>'
       btnName:t='X'
       on_click:t='onAltModAction'
       visualStyle:t='purchase'
       buttonWink {}
       buttonGlance{}
       textarea {
-        id:t='item_buy_text'
-        text:t='';
-        class:t='buttonText';
-        text-align:t='center';
+        id:t='altBtnBuyText'
+        text:t='<<altBtnBuyText>>'
+        class:t='buttonText'
+        text-align:t='center'
         smallFont:t='yes'
       }
       ButtonImg {}
@@ -308,8 +329,9 @@ weaponry_item {
       id:t='actionBtn'
       holderId:t='<<id>>'
       class:t='additional'
+      canShow:t='<<actionBtnCanShow>>'
       visualStyle:t='common'
-      text:t='#weaponry/research';
+      text:t='<<actionBtnText>>'
       on_click:t='onModActionBtn'
       display:t='hide'
       btnName:t='A'

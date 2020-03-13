@@ -20,7 +20,8 @@ local { AMMO,
 local { WEAPON_TYPE,
         getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 local { getWeaponInfoText,
-        getWeaponNameText } = require("scripts/weaponry/weaponryVisual.nut")
+        getWeaponNameText,
+        getWeaponItemViewParams } = require("scripts/weaponry/weaponryVisual.nut")
 
 /*
   weaponVisual API
@@ -56,34 +57,22 @@ local { getWeaponInfoText,
   }
 }
 
-weaponVisual.createItemLayout <- function createItemLayout(id, item, iType, params = {})
+weaponVisual.createItemLayout <- function createItemLayout(id, unit, item, iType, params = {})
 {
   if (!("type" in item))
     item.type <- iType
-  local view = {
-    id = id
-    itemWidth = ::getTblValue("itemWidth", params, 1)
-    posX = ::getTblValue("posX", params, 0)
-    posY = ::getTblValue("posY", params, 0)
-    isBundle = item.type == weaponsItem.bundle
-    hideStatus = ::getTblValue("hideStatus", item, false)
-    useGenericTooltip = ::getTblValue("useGenericTooltip", params, false)
-    needSliderButtons = ::getTblValue("needSliderButtons", params, false)
-    wideItemWithSlider = ::getTblValue("wideItemWithSlider", params, false)
-    modUpgradeIcon = ::has_feature("ItemModUpgrade") ? modUpgradeElem.createMarkup("mod_upgrade_icon") : null
-    shortcutIcon = params?.shortcutIcon
-  }
-  return ::handyman.renderCached("gui/weaponry/weaponItem", view)
+
+  return ::handyman.renderCached("gui/weaponry/weaponItem", getWeaponItemViewParams(id, unit, item, params))
 }
 
-weaponVisual.createItem <- function createItem(id, item, iType, holderObj, handler, params = {})
+weaponVisual.createItem <- function createItem(id, unit, item, iType, holderObj, handler, params = {})
 {
-  local data = createItemLayout(id, item, iType, params)
+  local data = createItemLayout(id, unit, item, iType, params)
   holderObj.getScene().appendWithBlk(holderObj, data, handler)
   return holderObj.findObject(id)
 }
 
-weaponVisual.createBundle <- function createBundle(id, itemsList, itemsType, holderObj, handler, params = {})
+weaponVisual.createBundle <- function createBundle(id, unit, itemsList, itemsType, holderObj, handler, params = {})
 {
   if (itemsList.len()==0)
     return null
@@ -104,11 +93,11 @@ weaponVisual.createBundle <- function createBundle(id, itemsList, itemsType, hol
   if (itemsList.len()==1)
   {
     itemsList[0].hideStatus <- true
-    createItemFunc.call(handler, id, itemsList[0], itemsType, holderObj, handler, params)
+    createItemFunc.call(handler, id, unit, itemsList[0], itemsType, holderObj, handler, params)
     return itemsList[0]
   }
 
-  local bundleObj = createItemFunc.call(handler, id, bundleItem, bundleItem.type, holderObj, handler, params)
+  local bundleObj = createItemFunc.call(handler, id, unit, bundleItem, bundleItem.type, holderObj, handler, params)
   bundleObj["class"] = "dropDown"
 
   local guiScene = holderObj.getScene()
@@ -118,7 +107,7 @@ weaponVisual.createBundle <- function createBundle(id, itemsList, itemsType, hol
   local rows = ((itemsList.len()-1)/cols + 1).tointeger()
   local itemsObj = hoverObj.findObject("items_field")
   foreach(idx, item in itemsList)
-    createItemFunc.call(handler, id + "_" + idx, item, itemsType, itemsObj, handler, { posX = (idx/rows).tointeger(), posY = idx%rows })
+    createItemFunc.call(handler, id + "_" + idx, unit, item, itemsType, itemsObj, handler, { posX = (idx/rows).tointeger(), posY = idx%rows })
   itemsObj.width = cols + "@modCellWidth"
   itemsObj.height = rows + "@modCellHeight"
 
@@ -366,7 +355,7 @@ weaponVisual.updateItem <- function updateItem(air, item, itemObj, showButtons, 
   altBtn.canShow = (altBtnText == "") ? "no" : "yes"
   if (altBtnTooltip != "")
     altBtn.tooltip = altBtnTooltip
-  local textObj = altBtn.findObject("item_buy_text")
+  local textObj = altBtn.findObject("altBtnBuyText")
   if (::checkObj(textObj))
     textObj.setValue(altBtnText)
 }

@@ -188,6 +188,9 @@
         "turret_05_front_dm": {
           "armorThickness": 20.0
         },
+        "turret_05_top_dm": {
+          "armorThickness": 6.0
+        },
         "ex_decor_03_dm": {
           "armorThickness": 5.0
         },
@@ -856,7 +859,11 @@
         "ammo_body_r_12_dm": [],
         "ammo_body_r_13_dm": [],
         "ammo_body_r_14_dm": [],
-        "ammo_body_r_15_dm": []
+        "ammo_body_r_15_dm": [],
+        "ammo_body_r_16_dm": [],
+        "ammo_body_r_17_dm": [],
+        "ammo_body_r_18_dm": [],
+        "ammo_body_r_19_dm": []
       },
       "fuel_tanks": {
         "armorClass": "tank_structural_steel",
@@ -1857,15 +1864,29 @@
           "role": "tank_gunner"
         },
         {
-          "role": "loader"
+          "substitute": "commander"
+        },
+        {
+          "substitute": "loader"
+        }
+      ],
+      "driver": [
+        {
+          "dmPart": "driver_dm"
+        },
+        {
+          "role": "driver"
         },
         {
           "substitute": "commander"
+        },
+        {
+          "substitute": "loader"
         }
       ],
-      "driver": {
-        "dmPart": "driver_dm",
-        "role": "driver",
+      "loader": {
+        "dmPart": "loader_dm",
+        "role": "loader",
         "substitute": "commander"
       },
       "commander": {
@@ -2111,6 +2132,7 @@
           "sleevesLifeTime": 7.0,
           "sleeveImpulse": [12.0,0.0,-5.0],
           "linkSleeveToGun": false,
+          "sleevesImpulseOffset": 0.05,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
           "barrelDP": "gun_barrel_dm",
@@ -2850,7 +2872,7 @@
     "ammoStowages": {
       "ammo1": [
         {
-          "removeLoadedAmmo": true
+          "removeLoadedAmmo": false
         },
         {
           "weaponTrigger": "gunner0"
@@ -3224,6 +3246,7 @@
                 "sleevesLifeTime": 7.0,
                 "sleeveImpulse": [12.0,0.0,-5.0],
                 "linkSleeveToGun": false,
+                "sleevesImpulseOffset": 0.05,
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
                 "barrelDP": "gun_barrel_dm",

@@ -491,7 +491,7 @@ g_crew._upgradeUnitSpec <- function _upgradeUnitSpec(crew, unit, upgradesAmount 
   local onTaskSuccess = (@(crew, unit, upgradesAmount) function() {
     ::updateAirAfterSwitchMod(unit)
     ::update_gamercards()
-    ::broadcastEvent("QualificationIncreased", { unit = unit})
+    ::broadcastEvent("QualificationIncreased", { unit = unit, crew = crew })
 
     if (upgradesAmount > 0)
       return ::g_crew._upgradeUnitSpec(crew, unit, upgradesAmount)

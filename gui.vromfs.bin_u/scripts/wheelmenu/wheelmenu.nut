@@ -196,7 +196,7 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     local index = obj.index.tointeger()
-    if (index in menu && menu[index].tostring() != "")
+    if (isItemAvailable(index))
       sendAnswerAndClose(index)
   }
 
@@ -237,7 +237,7 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     local bObj = scene.findObject("wheelmenuItem" + joystickSelection)
     local index = bObj && bObj.index.tointeger()
-    if (index in menu && menu[index].tostring() != "")
+    if (isItemAvailable(index))
       sendAnswerAndClose(index)
   }
 
@@ -247,6 +247,11 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function onVoiceMessageSwitchChannel(obj) {}
+
+  function isItemAvailable(index)
+  {
+    return (menu?[index].tostring() ?? "") != "" && (menu?[index].wheelmenuEnabled ?? true)
+  }
 
   function sendAnswerAndClose(index)
   {

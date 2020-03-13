@@ -122,6 +122,7 @@ local { hasAllFeatures } = require("scripts/user/features.nut")
     rowsInPage = 1
     pos = 0
     lbMode = ""
+    consolePostfix = ""
   }
 
   function reset()
@@ -187,15 +188,15 @@ local { hasAllFeatures } = require("scripts/user/features.nut")
 
     canRequestLb = false
 
-    local taskId = ::request_page_of_leaderboard(requestData.lbType,
-                                                 requestData.lbField,
-                                                 requestData.rowsInPage,
-                                                 requestData.pos,
-                                                 requestData.lbMode)
+    local taskId = ::request_page_of_leaderboard(
+      requestData.lbType,
+      requestData.lbField,
+      requestData.rowsInPage,
+      requestData.pos,
+      $"{requestData.lbMode}{requestData.consolePostfix}"
+    )
 
-    ::add_bg_task_cb(taskId, (@(requestData) function() {
-      ::leaderboardModel.handleLbRequest(requestData)
-    })(requestData))
+    ::add_bg_task_cb(taskId, @() ::leaderboardModel.handleLbRequest(requestData))
   }
 
   function loadSeflRow(requestData)
@@ -205,14 +206,14 @@ local { hasAllFeatures } = require("scripts/user/features.nut")
       return
     canRequestLb = false
 
-    local taskId = ::request_me_in_leaderboard(requestData.lbType,
-                                               requestData.lbField,
-                                               0,
-                                               requestData.lbMode)
+    local taskId = ::request_me_in_leaderboard(
+      requestData.lbType,
+      requestData.lbField,
+      0,
+      $"{requestData.lbMode}{requestData.consolePostfix}"
+    )
 
-    ::add_bg_task_cb(taskId, (@(requestData) function() {
-      ::leaderboardModel.handleSelfRowLbRequest(requestData)
-    })(requestData))
+    ::add_bg_task_cb(taskId, @() ::leaderboardModel.handleSelfRowLbRequest(requestData))
   }
 
   function handleLbRequest(requestData)
@@ -406,12 +407,14 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
   rowsInPage  = 16
   maxRows     = 1000
 
+  consolePostfix = ""
   request = {
     lbType     = null
     lbField    = null
     rowsInPage = null
     pos        = null
     lbMode     = ""
+    consolePostfix = ""
   }
   pageData    = null
   selfRowData = null
@@ -434,6 +437,7 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
 
     curLbCategory = lb_presets[0]
     lbType = ::loadLocalByAccount("leaderboards_type", ::ETTI_VALUE_INHISORY)
+    consolePostfix = ::has_feature("PS4SeparateLeaderboards")? ::loadLocalByAccount("leaderboards_postfix", "") : ""
     pos = 0
     rowsInPage = 16
 
@@ -643,11 +647,15 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
 
   function onChangeType(obj)
   {
-    if (!::checkObj(obj))
-      return
-
     lbType = obj.getValue() ? ::ETTI_VALUE_INHISORY : ::ETTI_VALUE_TOTAL
     ::saveLocalByAccount("leaderboards_type", lbType)
+    fetchLbData()
+  }
+
+  function onChangePsnFilter(obj)
+  {
+    consolePostfix = obj.getValue() ? "__ps4" : ""
+    ::saveLocalByAccount("leaderboards_postfix", consolePostfix)
     fetchLbData()
   }
 
@@ -675,7 +683,17 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
 
   function getMainFocusObj()
   {
-    return scene.findObject("btn_type")
+    local obj = scene.findObject("top_checkboxes")
+    if (!::check_obj(obj) || !obj.childrenCount())
+      return null
+
+    for (local i = 0; i < obj.childrenCount(); i++)
+    {
+      local chObj = obj.getChild(i)
+      if (chObj.isVisible() && chObj.isEnabled())
+        return obj
+    }
+    return null
   }
 
   function getMainFocusObj2()
@@ -737,12 +755,21 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
   function getTopItemsTplView()
   {
     local res = {
-      monthCheckbox = [
-        {
-          monthCbValue = ((lbType == ::ETTI_VALUE_INHISORY) ? "yes" : "no")
-        }
-      ]
+      filter = [{
+        id = "month_filter"
+        text = "#mainmenu/btnMonthLb"
+        cb = "onChangeType"
+        cbValue = lbType == ::ETTI_VALUE_INHISORY ? "yes" : "no"
+      }]
     }
+
+    if (::has_feature("PS4SeparateLeaderboards"))
+      res.filter.append({
+        id = "psn_filter"
+        text = "#mainmenu/leaderboards/onlyPS4"
+        cb = "onChangePsnFilter"
+        cbValue = consolePostfix == "" ? "no" : "yes"
+      })
     return res
   }
 
@@ -878,10 +905,7 @@ class ::gui_handlers.EventsLeaderboardWindow extends ::gui_handlers.LeaderboardW
   function getTopItemsTplView()
   {
     local res = {
-      updateTime = [
-        {
-        }
-      ]
+      updateTime = [{}]
     }
     return res
   }

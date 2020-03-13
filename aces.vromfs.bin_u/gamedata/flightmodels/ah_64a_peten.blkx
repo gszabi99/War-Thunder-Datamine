@@ -1818,6 +1818,36 @@
           "blk": "gameData/flightModels/weaponPresets/ah_64a_16_hellfire.blk",
           "reqModification": "ah_1_AGM_114_16"
         }
+      },
+      {
+        "preset": {
+          "name": "ah_64a_stinger",
+          "blk": "gameData/flightModels/weaponPresets/ah_64a_stinger.blk",
+          "reqModification": "stinger_aam"
+        }
+      },
+      {
+        "preset": {
+          "name": "ah_64a_hydra_70_m247_stinger",
+          "blk": "gameData/flightModels/weaponPresets/ah_64a_hydra_70_m247_stinger.blk",
+          "reqModification": "stinger_aam"
+        }
+      },
+      {
+        "preset": [
+          {
+            "name": "ah_64a_8_hellfire_stinger"
+          },
+          {
+            "blk": "gameData/flightModels/weaponPresets/ah_64a_8_hellfire_stinger.blk"
+          },
+          {
+            "reqModification": "ah_1_AGM_114_16"
+          },
+          {
+            "reqModification": "stinger_aam"
+          }
+        ]
       }
     ]
   },
@@ -1971,6 +2001,126 @@
           ]
         }
       },
+      "heli_counterMeasures": {
+        "turn_it_off": false,
+        "invertEnableLogic": false,
+        "reqModification": "heli_false_thermal_targets",
+        "tier": 2,
+        "group": "mi-24_EVU",
+        "effects": {
+          "commonWeapons": [
+            {
+              "counterMeasures": {
+                "counterMeasure": {
+                  "blk": "gameData/counterMeasures/l_166.blk"
+                }
+              }
+            },
+            {
+              "Weapon": {
+                "dummy": true,
+                "trigger": "gunner0",
+                "triggerGroup": "primary",
+                "blk": "gameData/Weapons/cannonM230E1.blk",
+                "emitter": "optic1_gun",
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "speedYaw": 25.0,
+                "speedPitch": 25.0,
+                "bullets": 1,
+                "parkInDeadzone": false,
+                "aimForOperatedShell": true,
+                "turret": {
+                  "head": "optic1_turret",
+                  "gun": "optic1_gun",
+                  "mainTurret": true
+                },
+                "limits": {
+                  "yaw": [-115.0,115.0],
+                  "pitch": [-50.0,25.0]
+                }
+              }
+            },
+            {
+              "Weapon": [
+                {
+                  "trigger": "gunner0"
+                },
+                {
+                  "blk": "gameData/Weapons/cannonM230E1.blk"
+                },
+                {
+                  "emitter": "flare1"
+                },
+                {
+                  "flash": "flare1"
+                },
+                {
+                  "turret": "turret1"
+                },
+                {
+                  "dm": "gunner1_dm"
+                },
+                {
+                  "gunnerDm": "gunner1_dm"
+                },
+                {
+                  "gunDm": "cannon1_dm"
+                },
+                {
+                  "partsDP": "cannon1_dm"
+                },
+                {
+                  "bullets": 1200
+                },
+                {
+                  "recoilOffset": 0.0
+                },
+                {
+                  "parkInDeadzone": false
+                },
+                {
+                  "turret": {
+                    "head": "turret1",
+                    "gun": "gun1",
+                    "mainTurret": true,
+                    "ballisticTargeting": true
+                  }
+                },
+                {
+                  "limits": {
+                    "yaw": [-86.0,86.0],
+                    "pitch": [-60.0,11.0]
+                  }
+                },
+                {
+                  "limitsTable": {
+                    "lim1": [-86.0,-75.0,-50.0,19.0],
+                    "lim2": [-75.0,-52.0,-50.0,24.0],
+                    "lim3": [-52.0,-35.0,-50.0,25.0],
+                    "lim4": [-35.0,-15.0,-50.0,23.0],
+                    "lim5": [-15.0,15.0,-50.0,20.0],
+                    "lim6": [15.0,35.0,-50.0,23.0],
+                    "lim7": [35.0,52.0,-50.0,25.0],
+                    "lim8": [52.0,75.0,-50.0,24.0],
+                    "lim9": [75.0,86.0,-50.0,19.0]
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": {
+                "trigger": "flares",
+                "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
+                "emitter": "emtr_flare1",
+                "bullets": 30,
+                "external": true,
+                "separate": false
+              }
+            }
+          ]
+        }
+      },
       "aden_new_gun": {
         "tier": 3
       },
@@ -1982,6 +2132,11 @@
       "ah_1_AGM_114_16": {
         "deactivationIsAllowed": false,
         "reqModification": "ah_1_AGM_114_8",
+        "modClass": "weapon",
+        "tier": 3
+      },
+      "stinger_aam": {
+        "deactivationIsAllowed": false,
         "modClass": "weapon",
         "tier": 4
       },

@@ -443,7 +443,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (isItemTypeUnit(iType))
       return createUnitItemObj(id, item, holderObj, posX, posY)
 
-    return ::weaponVisual.createItem(id, item, iType, holderObj, this, { posX = posX, posY = posY })
+    return ::weaponVisual.createItem(id, air, item, iType, holderObj, this, { posX = posX, posY = posY })
   }
 
   function wrapUnitToItem(unit)
@@ -470,15 +470,15 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     return unitObj
   }
 
-  function createItemForBundle(id, item, iType, holderObj, handler, params = {})
+  function createItemForBundle(id, unit, item, iType, holderObj, handler, params = {})
   {
     id = addItemToList(item, iType)
-    return ::weaponVisual.createItem(id, item, iType, holderObj, handler, params)
+    return ::weaponVisual.createItem(id, unit, item, iType, holderObj, handler, params)
   }
 
   function createBundle(itemsList, itemsType, subType, holderObj, posX, posY)
   {
-    ::weaponVisual.createBundle("bundle_" + items.len(), itemsList, itemsType, holderObj, this,
+    ::weaponVisual.createBundle("bundle_" + items.len(), air, itemsList, itemsType, holderObj, this,
       { posX = posX, posY = posY, subType = subType,
         maxItemsInColumn = 5, createItemFunc = createItemForBundle
         cellSizeObj = scene.findObject("cell_size")
@@ -1627,8 +1627,7 @@ class ::gui_handlers.MultiplePurchase extends ::gui_handlers.BaseGuiHandlerWT
     scene.findObject("item_name_header").setValue(::weaponVisual.getItemName(unit, item))
 
     updateSlider()
-    ::weaponVisual.createItem("mod_" + item.name, item, item.type, scene.findObject("icon"), this)
-    ::weaponVisual.updateItem(unit, item, scene.findObject("icon"), false, this)
+    ::weaponVisual.createItem("mod_" + item.name, unit, item, item.type, scene.findObject("icon"), this)
 
     local discountType = item.type == weaponsItem.spare? "spare" : (item.type == weaponsItem.weapon)? "weapons" : "mods"
     ::showAirDiscount(scene.findObject("multPurch_discount"), unit.name, discountType, item.name, true)

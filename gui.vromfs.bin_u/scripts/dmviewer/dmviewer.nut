@@ -1055,6 +1055,10 @@ const AFTERBURNER_CHAMBER = 3
     if (isDebugMode)
       desc.append("\n" + ::colorize("badTextColor", partName))
 
+    local rawPartName = ::getTblValue("raw_name", params)
+    if (rawPartName)
+      desc.append(rawPartName)
+
     local description = ::g_string.implode(desc, "\n")
     return description
   }

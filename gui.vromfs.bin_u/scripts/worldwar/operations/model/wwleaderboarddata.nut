@@ -7,6 +7,7 @@ local modes = [
     isInLeaderboardModes = true
     hasDaysData = true
     rewardsTableName = "user_leaderboards"
+    needShowConsoleFilter = true
   },
   {
     mode  = "ww_users_manager"
@@ -14,6 +15,7 @@ local modes = [
     isInLeaderboardModes = true
     hasDaysData = true
     rewardsTableName = "user_leaderboards"
+    needShowConsoleFilter = true
   },
   {
     mode  = "ww_clans"

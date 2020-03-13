@@ -33,6 +33,8 @@ g_unit_crew_cache.initCache <- function initCache()
 {
   ::add_event_listener("CrewSkillsChanged", onEventCrewSkillsChanged,
     this, ::g_listener_priority.UNIT_CREW_CACHE_UPDATE)
+  ::add_event_listener("QualificationIncreased", @(p) invalidateCache(),
+    this, ::g_listener_priority.UNIT_CREW_CACHE_UPDATE)
   ::add_event_listener("CrewChanged", onEventCrewChanged,
     this, ::g_listener_priority.UNIT_CREW_CACHE_UPDATE)
 }

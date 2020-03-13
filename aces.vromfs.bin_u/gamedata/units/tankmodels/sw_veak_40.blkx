@@ -39,6 +39,12 @@
     "useSimpleDeathConditionsAndEffects": false
   },
   {
+    "radarAnimVar": "radar_drive"
+  },
+  {
+    "radarAnimPitchVar": "radar_drive2"
+  },
+  {
     "subclass": "heavyVehicle"
   },
   {
@@ -222,8 +228,7 @@
         "armorClass": "tank_structural_steel",
         "armorThickness": 15.0,
         "hp": 200.0,
-        "antenna_target_tagging_dm": [],
-        "antenna_target_location_dm": []
+        "antenna_target_tagging_dm": []
       },
       "hull_inner_armor": {
         "armorClass": "RHA_tank",
@@ -2092,13 +2097,13 @@
       {
         "animatedBones": [
           {
-            "node": "antenna_target_location"
-          },
-          {
             "node": "antenna_target_tagging"
           },
           {
             "node": "antenna_target_tagging_mount"
+          },
+          {
+            "node": "ex_armor_01"
           }
         ]
       },

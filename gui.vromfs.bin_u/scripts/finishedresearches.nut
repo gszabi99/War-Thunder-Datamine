@@ -363,9 +363,12 @@ class ::gui_handlers.showAllResearchedItems extends ::gui_handlers.BaseGuiHandle
       return
 
     local modObj = obj.findObject(id)
+    local params = { canShowResearch = canShowResearch }
     if (!modObj)
-      modObj = ::weaponVisual.createItem(id, mod, weaponsItem.modification, obj, this)
-    ::weaponVisual.updateItem(unit, mod, modObj, false, this, { canShowResearch = canShowResearch })
+      modObj = ::weaponVisual.createItem(id, unit, mod, weaponsItem.modification, obj,
+        this, params)
+    else
+      ::weaponVisual.updateItem(unit, mod, modObj, false, this, params)
   }
 
   function updateButtons()
@@ -1230,8 +1233,9 @@ class ::gui_handlers.nextResearchChoice extends ::gui_handlers.showAllResearched
     local id = "mod_" + mod.name
     local modObj = finishedModObj.findObject(id)
     if (!modObj)
-      modObj = ::weaponVisual.createItem(id, mod, weaponsItem.modification, finishedModObj, this)
-    ::weaponVisual.updateItem(unit, mod, modObj, false, this)
+      modObj = ::weaponVisual.createItem(id, unit, mod, weaponsItem.modification, finishedModObj, this)
+    else
+      ::weaponVisual.updateItem(unit, mod, modObj, false, this)
   }
 
   function onRepair()
@@ -1290,11 +1294,11 @@ class ::gui_handlers.nextResearchChoice extends ::gui_handlers.showAllResearched
       if (!::checkObj(obj))
         continue
 
-      local modObj = ::weaponVisual.createItem("mod_" + mod.name, mod, weaponsItem.modification, obj, this)
-      ::weaponVisual.updateItem(unit, mod, modObj, false, this, {
-                                  canShowResearch = false,
-                                  flushExp = flushExpNum
-                                })
+      ::weaponVisual.createItem("mod_" + mod.name, unit, mod,
+        weaponsItem.modification, obj, this, {
+          canShowResearch = false,
+          flushExp = flushExpNum
+        })
 
       local row = idx/unitsInTr
       local col = idx - row*unitsInTr

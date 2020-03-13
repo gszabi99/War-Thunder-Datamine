@@ -1,5 +1,7 @@
 local string = require("std/string.nut")
 
+local STEAM_PLAYER_POSTFIX = "@steam"
+
 local XBOX_ONE_PLAYER_PREFIX = "^"
 local XBOX_ONE_PLAYER_POSTFIX = "@live"
 
@@ -27,7 +29,8 @@ local isPS4PlayerName = @(name) ps4PrefixNameRegexp.match(name) || ps4PostfixNam
 local cutPlayerNamePrefix = @(name) string.cutPrefix(name, PS4_PLAYER_PREFIX,
                                     string.cutPrefix(name, XBOX_ONE_PLAYER_PREFIX, name))
 local cutPlayerNamePostfix = @(name) string.cutPostfix(name, PS4_PLAYER_POSTFIX,
-                                     string.cutPostfix(name, XBOX_ONE_PLAYER_POSTFIX, name))
+                                     string.cutPostfix(name, XBOX_ONE_PLAYER_POSTFIX,
+                                     string.cutPostfix(name, STEAM_PLAYER_POSTFIX, name)))
 
 local getPlayerName = function(name)
 {
@@ -41,7 +44,20 @@ local getPlayerName = function(name)
   if (isPlatformXboxOne)
     return cutPlayerNamePrefix(cutPlayerNamePostfix(name))
   else if (isPlatformPS4)
-    return isPS4PlayerName(name)? name : cutPlayerNamePostfix(name)
+  {
+    if (isPS4PlayerName(name))
+    {
+      //Requirement for PSN, that player must have prefix only.
+      // So if he have postfix, we need to cut it down and add prefix.
+      // No need to check on prefix before add, as it cannot be.
+      // Otherwise it is char server error.
+
+      if (ps4PostfixNameRegexp.match(name))
+        name = PS4_PLAYER_PREFIX + name
+    }
+
+    return cutPlayerNamePostfix(name)
+  }
 
   return name
 }

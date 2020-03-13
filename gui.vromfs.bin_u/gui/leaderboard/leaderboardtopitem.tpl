@@ -8,17 +8,22 @@ activeText {
   textHide:t='no'
 }
 <</updateTime>>
-<<#monthCheckbox>>
-CheckBox {
-  id:t='btn_type'
-  behaviour:t='wrapBroadcast'
+tdiv {
+  id:t='top_checkboxes'
   pos:t='0, 50%ph-50%h'; position:t='relative'
-  text:t='#mainmenu/btnMonthLb'
-  on_change_value:t='onChangeType'
-  value:t='<<monthCbValue>>'
-  navigatorShortcuts:t='yes'
+  behaviour:t='wrapNavigator'
+  navigatorShortcuts:t='active'
+  childsActivate:t='yes'
   on_wrap_up:t='onWrapUp'
   on_wrap_down:t='onWrapDown'
-  CheckBoxImg{}
+  <<#filter>>
+  CheckBox {
+    id:t='<<id>>'
+    text:t='<<text>>'
+    on_change_value:t='<<cb>>'
+    value:t='<<filterCbValue>>'
+    margin:t='0.5@framePadding, 0'
+    CheckBoxImg{}
+  }
+  <</filter>>
 }
-<</monthCheckbox>>

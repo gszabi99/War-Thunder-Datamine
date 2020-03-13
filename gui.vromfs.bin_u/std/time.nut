@@ -148,6 +148,28 @@ local function getSecondsFromTemplate (str, errorValue = null) {
   return seconds
 }
 
+local function buildDateStr(timeTable) {
+  local year = timeTable?.year ?? -1
+  local locId = year > 0 ? "date_format" : "date_format_short"
+  return ::loc(locId, {
+    year = year
+    day = timeTable?.day ?? -1
+    month = ::loc("sm_month_{0}".subst((timeTable?.month ?? -1)+1))
+    dayOfWeek = ::loc("weekday_{0}".subst((timeTable?.dayOfWeek ?? -1)+1))
+  })
+}
+
+local function buildTimeStr(timeTable, showZeroSeconds = false, showSeconds = true) {
+  local sec = timeTable?.sec ?? -1
+  if (showSeconds && (sec > 0 || (showZeroSeconds && sec == 0)))
+    return stdStr.format("%d:%02d:%02d", timeTable.hour, timeTable.min, timeTable.sec)
+  else
+    return stdStr.format("%d:%02d", timeTable.hour, timeTable.min)
+}
+
+local buildDateTimeStr = @(timeTable, showZeroSeconds = false, showSeconds = true, formatStr = "{date}.{time}") //warning disable: -forgot-subst
+  formatStr.subst({ date = buildDateStr(timeTable), time = buildTimeStr(timeTable, showZeroSeconds, showSeconds)})
+
 
 local export = {
   millisecondsToSeconds = millisecondsToSeconds
@@ -162,6 +184,10 @@ local export = {
   hoursToString = hoursToString
   secondsToString = secondsToString
   getSecondsFromTemplate = getSecondsFromTemplate
+
+  buildDateTimeStr = buildDateTimeStr
+  buildDateStr = buildDateStr
+  buildTimeStr = buildTimeStr
 
   TIME_SECOND_IN_MSEC = TIME_SECOND_IN_MSEC
   TIME_SECOND_IN_MSEC_F = TIME_SECOND_IN_MSEC_F

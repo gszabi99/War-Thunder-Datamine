@@ -20,8 +20,9 @@ return [
   {
     id = "ID_SHOW_MULTIFUNC_WHEEL_MENU"
     checkGroup = ctrlGroups.COMMON
+    checkAssign = ::is_platform_pc
     needShowInHelp = true
-    showFunc = @() ::has_feature("HudMultifuncMenu")
+    showFunc = @() ::has_feature("HudMultifuncMenu") && ::is_platform_pc
   }
   {
     id = "ID_BAILOUT"
