@@ -51,10 +51,11 @@ class ::gui_handlers.LoginWndHandlerPs4 extends ::BaseGuiHandler
             onFinishCallback = ::ps4_load_after_login
           })
       }
-      else if (ret == -1)
+      else
       {
         isLoggingIn = false
-        msgBox("no_internet_connection", ::loc("ps4/noInternetConnection"), [["ok", function() {} ]], "ok")
+        if (ret == -1)
+          msgBox("no_internet_connection", ::loc("ps4/noInternetConnection"), [["ok", function() {} ]], "ok")
       }
     }
   }

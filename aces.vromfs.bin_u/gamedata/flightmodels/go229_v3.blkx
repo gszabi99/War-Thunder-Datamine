@@ -33,9 +33,6 @@
     "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk"
   },
   {
-    "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk"
-  },
-  {
     "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk"
   },
   {
@@ -6416,65 +6413,6 @@
       {
         "fm": [
           {
-            "fm": "aileron_control_l"
-          },
-          {
-            "dm": "wingcontrol_dm"
-          },
-          {
-            "dm": "wingcontrol_l_dm"
-          },
-          {
-            "type": "min"
-          },
-          {
-            "cutHealth": 0.0
-          }
-        ]
-      },
-      {
-        "fm": [
-          {
-            "fm": "aileron_control_r"
-          },
-          {
-            "dm": "wingcontrol_dm"
-          },
-          {
-            "dm": "wingcontrol_r_dm"
-          },
-          {
-            "type": "min"
-          },
-          {
-            "cutHealth": 0.0
-          }
-        ]
-      },
-      {
-        "fm": {
-          "fm": "elevator_control_l",
-          "dm": "tailcontrol_dm",
-          "cutHealth": 0.0
-        }
-      },
-      {
-        "fm": {
-          "fm": "elevator_control_r",
-          "dm": "tailcontrol_dm",
-          "cutHealth": 0.0
-        }
-      },
-      {
-        "fm": {
-          "fm": "rudder_control",
-          "dm": "tailcontrol_dm",
-          "cutHealth": 0.0
-        }
-      },
-      {
-        "fm": [
-          {
             "fm": "gear_l"
           },
           {
@@ -6786,6 +6724,142 @@
           "fm": "elevator_r",
           "dm": "aileron_r_dm"
         }
+      },
+      {
+        "fm": [
+          {
+            "fm": "aileron_control_l"
+          },
+          {
+            "dm": "tailcontrol_dm"
+          },
+          {
+            "dm": "wingcontrol_dm"
+          },
+          {
+            "dm": "wingcontrol_l_dm"
+          },
+          {
+            "type": "min"
+          },
+          {
+            "cutHealth": 0.0
+          }
+        ]
+      },
+      {
+        "fm": [
+          {
+            "fm": "aileron_control_r"
+          },
+          {
+            "dm": "tailcontrol_dm"
+          },
+          {
+            "dm": "wingcontrol_dm"
+          },
+          {
+            "dm": "wingcontrol_r_dm"
+          },
+          {
+            "type": "min"
+          },
+          {
+            "cutHealth": 0.0
+          }
+        ]
+      },
+      {
+        "fm": [
+          {
+            "fm": "elevator_control_l"
+          },
+          {
+            "dm": "tailcontrol_dm"
+          },
+          {
+            "dm": "wingcontrol_dm"
+          },
+          {
+            "dm": "wingcontrol_l_dm"
+          },
+          {
+            "type": "min"
+          },
+          {
+            "cutHealth": 0.0
+          }
+        ]
+      },
+      {
+        "fm": [
+          {
+            "fm": "elevator_control_r"
+          },
+          {
+            "dm": "tailcontrol_dm"
+          },
+          {
+            "dm": "wingcontrol_dm"
+          },
+          {
+            "dm": "wingcontrol_r_dm"
+          },
+          {
+            "type": "min"
+          },
+          {
+            "cutHealth": 0.0
+          }
+        ]
+      },
+      {
+        "fm": [
+          {
+            "fm": "rudder_control"
+          },
+          {
+            "type": "max"
+          },
+          {
+            "dependency": [
+              {
+                "dm": "tailcontrol_dm"
+              },
+              {
+                "dm": "wingcontrol_dm"
+              },
+              {
+                "dm": "wingcontrol_l_dm"
+              },
+              {
+                "type": "min"
+              },
+              {
+                "cutHealth": 0.0
+              }
+            ]
+          },
+          {
+            "dependency": [
+              {
+                "dm": "tailcontrol_dm"
+              },
+              {
+                "dm": "wingcontrol_dm"
+              },
+              {
+                "dm": "wingcontrol_r_dm"
+              },
+              {
+                "type": "min"
+              },
+              {
+                "cutHealth": 0.0
+              }
+            ]
+          }
+        ]
       }
     ]
   },
