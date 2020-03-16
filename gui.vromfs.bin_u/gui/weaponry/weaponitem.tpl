@@ -240,7 +240,10 @@ weaponry_item {
           pos:t='0,0'
           position:t='relative'
           css-hier-invalidate:t='yes'
-          <<#hideStatus>>display:t='hide'<</hideStatus>>
+          <<#hideStatus>>
+          display:t='hide'
+          enable:t='no'
+          <</hideStatus>>
           statusImg {
             id:t='status_image'
             holderId:t='<<id>>'
@@ -249,14 +252,20 @@ weaponry_item {
             position:t='relative'
             behaviour:t='button'
             on_click:t='onModCheckboxClick'
-            <<^isShowStatusImg>>display:t='hide'<</isShowStatusImg>>
+            <<^isShowStatusImg>>
+            display:t='hide'
+            enable:t='no'
+            <</isShowStatusImg>>
           }
           RadioButton {
             id:t='status_radio'
-            <<#hideStatusRadio>>display:t='hide'<</hideStatusRadio>>
             RadioButtonImg {
               holderId:t='<<id>>'
               on_click:t='onModCheckboxClick'
+              <<#hideStatusRadio>>
+              display:t='hide'
+              enable:t='no'
+              <</hideStatusRadio>>
             }
           }
         }

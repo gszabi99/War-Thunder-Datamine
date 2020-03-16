@@ -447,7 +447,7 @@ local function getWeaponItemViewParams(id, unit, item, params = {})
   res.isShowStatusImg = showStatus && (! statusTbl.unlocked || ! isSwitcher)
   res.hideStatusRadio = !showStatus || !statusTbl.unlocked ||
     !isSwitcher || isFakeBullet(visualItem.name)
-  res.hideStatus = isResearchInProgress
+  res.hideStatus = isResearchInProgress || res.hideStatus
   res.isShowDiscount = discount > 1
   local haveDiscount = discount > 0 && statusTbl.canShowDiscount && itemCostText != ""
   if (haveDiscount)

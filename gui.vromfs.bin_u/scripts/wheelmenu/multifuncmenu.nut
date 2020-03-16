@@ -1,4 +1,5 @@
 local cfg = require("scripts/wheelmenu/multifuncmenuCfg.nut")
+local { isMultifuncMenuAvailable } = require("scripts/wheelmenu/multifuncmenuShared.nut")
 
 local getHandler = @() ::handlersManager.findHandlerClassInScene(::gui_handlers.multifuncMenuHandler)
 local callbackFunc = null
@@ -7,7 +8,7 @@ local getSectionTitle = @(id) cfg[id]?.getTitle() ?? ::loc(cfg[id]?.title ?? id)
 
 local function open(curSectionId = null, isForward = true)
 {
-  if (!::has_feature("HudMultifuncMenu"))
+  if (!isMultifuncMenuAvailable())
     return false
 
   local joyParams = ::joystick_get_cur_settings()
