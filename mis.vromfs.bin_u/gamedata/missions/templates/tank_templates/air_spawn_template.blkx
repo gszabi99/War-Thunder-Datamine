@@ -209,12 +209,24 @@
         {
           "varSetString": {
             "value": "t1_helipad_farspawn",
-            "var": "t1_helipad_str"
+            "var": "t1_helipad_farspawn"
           }
         },
         {
           "varSetString": {
             "value": "t2_helipad_farspawn",
+            "var": "t2_helipad_farspawn"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "t1_helipad",
+            "var": "t1_helipad_str"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "t2_helipad",
             "var": "t2_helipad_str"
           }
         },
@@ -1100,18 +1112,6 @@
           }
         },
         {
-          "varSetString": {
-            "value": "t1_helipad_farspawn",
-            "var": "t1_helipad_str"
-          }
-        },
-        {
-          "varSetString": {
-            "value": "t2_helipad_farspawn",
-            "var": "t2_helipad_str"
-          }
-        },
-        {
           "triggerEnable": {
             "target": "airfields_init"
           }
@@ -1167,17 +1167,9 @@
             }
           },
           {
-            "triggerEnable": [
-              {
-                "target": "airfields_disable_check"
-              },
-              {
-                "target": "helipad_farspawn_exist"
-              },
-              {
-                "target": "helipad_exist"
-              }
-            ]
+            "triggerEnable": {
+              "target": "airfields_disable_check"
+            }
           }
         ],
         "else_actions": []
@@ -1469,8 +1461,8 @@
     "heli_spawn_logic": {
       "isCategory": true,
       "is_enabled": true,
-      "helipad_farspawn_exist": {
-        "is_enabled": false,
+      "helipad_check_exist": {
+        "is_enabled": true,
         "comments": "",
         "props": {
           "actionsType": "PERFORM_ONE_BY_ONE",
@@ -1492,9 +1484,69 @@
               "target": "@t2_helipad_farspawn",
               "type": "objectGroup"
             }
+          },
+          {
+            "objectExists": {
+              "target": "@t1_helipad_str",
+              "type": "objectGroup"
+            }
+          },
+          {
+            "objectExists": {
+              "target": "@t2_helipad_str",
+              "type": "objectGroup"
+            }
           }
         ],
+        "actions": {
+          "unitPutToSleep": [
+            {
+              "target": "@t1_helipad_str"
+            },
+            {
+              "target": "@t2_helipad_str"
+            },
+            {
+              "target": "@t1_helipad_farspawn"
+            },
+            {
+              "target": "@t2_helipad_farspawn"
+            }
+          ],
+          "triggerEnable": [
+            {
+              "target": "helipad_farspawn_init"
+            },
+            {
+              "target": "helipad_init"
+            }
+          ]
+        },
+        "else_actions": []
+      },
+      "helipad_farspawn_init": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": []
+        },
+        "conditions": [],
         "actions": [
+          {
+            "unitWakeUp": [
+              {
+                "target": "@t1_helipad_farspawn"
+              },
+              {
+                "target": "@t2_helipad_farspawn"
+              }
+            ]
+          },
           {
             "unitSetProperties": [
               {
@@ -1583,7 +1635,7 @@
         ],
         "else_actions": []
       },
-      "helipad_exist": {
+      "helipad_init": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -1594,27 +1646,23 @@
         "events": {
           "initMission": []
         },
-        "conditions": [
-          {
-            "objectExists": {
-              "target": "@t1_helipad_str",
-              "type": "objectGroup"
-            }
-          },
-          {
-            "objectExists": {
-              "target": "@t2_helipad_str",
-              "type": "objectGroup"
-            }
-          },
-          {
-            "gameWhenDifficulty": {
-              "difficulty": "simulator",
-              "is": "notEqual"
-            }
+        "conditions": {
+          "gameWhenDifficulty": {
+            "difficulty": "simulator",
+            "is": "notEqual"
           }
-        ],
+        },
         "actions": [
+          {
+            "unitWakeUp": [
+              {
+                "target": "@t1_helipad_str"
+              },
+              {
+                "target": "@t2_helipad_str"
+              }
+            ]
+          },
           {
             "unitSetProperties": [
               {
@@ -1699,17 +1747,12 @@
                 "ship": false
               }
             }
-          },
-          {
-            "triggerEnable": {
-              "target": "helipad_defence_exist"
-            }
           }
         ],
         "else_actions": []
       },
       "helipad_defence_exist": {
-        "is_enabled": false,
+        "is_enabled": true,
         "comments": "",
         "props": {
           "actionsType": "PERFORM_ONE_BY_ONE",
@@ -1762,11 +1805,10 @@
         "conditions": {
           "gameWhenDifficulty": {
             "difficulty": "simulator",
-            "is": "equal"
+            "is": "notEqual"
           }
         },
-        "actions": [],
-        "else_actions": [
+        "actions": [
           {
             "unitWakeUp": [
               {
@@ -1809,7 +1851,8 @@
               }
             ]
           }
-        ]
+        ],
+        "else_actions": []
       },
       "t1_restore_heli_defence": {
         "is_enabled": false,

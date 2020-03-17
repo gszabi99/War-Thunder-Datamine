@@ -138,7 +138,7 @@ g_tips.loadTipsKeysByUnitType <- function loadTipsKeysByUnitType(unitType, isNee
     }
     notExistInARow = 0
 
-    if (isShow && (::g_login.isProfileReceived() || tip.indexof("{{") == null)) // Not show tip with shortcuts while not profile recived
+    if (isShow && (::g_login.isLoggedIn() || tip.indexof("{{") == null)) // Not show tip with shortcuts while not profile recived
       res.append(key)
   }
   return res
@@ -252,7 +252,7 @@ g_tips.genNewTip <- function genNewTip(unitTypeMask = 0)
   }
 }
 
-g_tips.onEventAuthorizeComplete <- function onEventAuthorizeComplete(p) { isTipsValid = false }
+g_tips.onEventLoginComplete <- function onEventLoginComplete(p) { isTipsValid = false }
 g_tips.onEventGameLocalizationChanged <- function onEventGameLocalizationChanged(p) { isTipsValid = false }
 
 ::subscribe_handler(::g_tips, ::g_listener_priority.DEFAULT_HANDLER)

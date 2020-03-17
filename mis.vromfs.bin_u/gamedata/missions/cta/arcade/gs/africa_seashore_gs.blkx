@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 0.0
-    },
     "player": [
       {
         "army": 1
@@ -118,23 +114,27 @@
     "mission": {
       "level": "levels/arcade_africa_seashore.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
+      "locName": "missions/_GS/heavy_tank_ship;location/arcade_africa_seashore",
+      "locDesc": "missions/_GS/desc",
       "scoreLimit": 2400,
       "timeLimit": 25,
       "deathPenaltyMul": 0.0,
       "country_axis": "germany",
       "country_allies": "ussr",
-      "locName": "missions/_GS/heavy_tank_ship;location/arcade_africa_seashore",
-      "locDesc": "missions/_GS/desc",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": false,
         "isShipsAllowed": false,
         "isHelicoptersAllowed": false
       }
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 0.0
     },
     "spectator_points": [
       {
@@ -301,22 +301,6 @@
     }
   },
   "imports": [
-    {
-      "import_record": {
-        "file": "gameData/missions/bridges/africa_seashore_bridges.blk",
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": []
-      }
-    },
     {
       "import_record": {
         "file": "gameData/missions/templates/base_logic_template.blk",

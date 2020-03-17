@@ -2815,9 +2815,9 @@ foreach (notificationName, callback in
      ::SessionLobby.checkSessionReconnect()
     },
 
-    ["match.notify_wait_for_session_join"] = @() ::SessionLobby.setWaitForQueueRoom(true),
+    ["match.notify_wait_for_session_join"] = @(params) ::SessionLobby.setWaitForQueueRoom(true),
 
-    ["match.notify_join_session_aborted"] = @() ::SessionLobby.leaveWaitForQueueRoom()
+    ["match.notify_join_session_aborted"] = @(params) ::SessionLobby.leaveWaitForQueueRoom()
   }
 )
   ::matching_rpc_subscribe(notificationName, callback)

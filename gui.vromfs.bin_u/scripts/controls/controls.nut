@@ -2548,7 +2548,10 @@ local function getWeaponFeatures(weaponsBlkList)
     local option = ::get_option_in_mode(::USEROPT_INSTRUCTOR_GEAR_CONTROL, ::OPTIONS_MODE_GAMEPLAY)
     local instructorGearControl = gotInstructor && option.value
 
-    controls = [ "ID_TOGGLE_ENGINE", "throttle" ]
+    controls = [ "throttle" ]
+
+    if (::get_mission_difficulty_int() == ::g_difficulty.SIMULATOR.diffCode)
+      controls.append("ID_TOGGLE_ENGINE")
 
     if (isMouseAimMode)
       controls.append("mouse_aim_x", "mouse_aim_y")

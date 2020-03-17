@@ -68,7 +68,7 @@ hint {
     <</image>>
     <<#text>>
     textareaNoTab {
-      text:t='<<text>>'
+      text:t='<<textValue>>'
     }
     <</text>>
     <</slices>>

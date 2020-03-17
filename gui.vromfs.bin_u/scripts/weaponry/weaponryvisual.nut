@@ -352,6 +352,7 @@ local function getWeaponItemViewParams(id, unit, item, params = {})
     hideVisualHasMenu         = false
     hideWarningIcon           = false
     isShowPrice               = true
+    isBundle                  = false
     modUpgradeStatus          = ""
     nameText                  = ""
     genericTooltipId          = ""
@@ -386,8 +387,8 @@ local function getWeaponItemViewParams(id, unit, item, params = {})
 
   local isOwn = ::isUnitUsable(unit)
   local visualItem = item
-  local isBundle = item.type == weaponsItem.bundle
-  if (isBundle)
+  res.isBundle = item.type == weaponsItem.bundle
+  if (res.isBundle)
   {
     visualItem = ::weaponVisual.getBundleCurItem(unit, item) || visualItem
     if (!("type" in visualItem))
@@ -540,13 +541,13 @@ local function getWeaponItemViewParams(id, unit, item, params = {})
     res.invSliderMax = maxVal.tostring()
     res.invSliderValue = curVal
   }
-  res.hideVisualHasMenu = !isBundle && !params?.hasMenu
+  res.hideVisualHasMenu = !res.isBundle && !params?.hasMenu
   res.modUpgradeStatus = ::weaponVisual.getItemUpgradesStatus(unit, visualItem)
   res.statusIconImg = ::weaponVisual.getStatusIcon(unit, item)
   if (params?.showButtons)
   {
     local btnText = ""
-    if (isBundle)
+    if (res.isBundle)
       btnText = ::loc("mainmenu/btnAirGroupOpen")
     else if (isOwn && statusTbl.unlocked)
     {
@@ -563,7 +564,7 @@ local function getWeaponItemViewParams(id, unit, item, params = {})
       (flushExp > 0 || !canShowResearch)))
       btnText = ::loc("mainmenu/btnResearch")
     res.actionBtnCanShow = btnText == "" ? "no"
-      : !isBundle ? "yes" : "console"
+      : !res.isBundle ? "yes" : "console"
     res.actionBtnText = btnText
     local altBtnText = ""
     local altBtnTooltip = ""
@@ -580,7 +581,7 @@ local function getWeaponItemViewParams(id, unit, item, params = {})
       }
     }
     else if (statusTbl.amount && statusTbl.maxAmount > 1 && statusTbl.amount < statusTbl.maxAmount
-      && !isBundle)
+      && !res.isBundle)
         altBtnText = ::loc("mainmenu/btnBuy")
     else if (visualItem.type == weaponsItem.modification
       && isOwn

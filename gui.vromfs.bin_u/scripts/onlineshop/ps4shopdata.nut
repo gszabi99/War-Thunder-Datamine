@@ -109,20 +109,21 @@ local fillLinkFullInfo = @(category = "") makeRequestForNextCategory(requestLink
 
 local itemIndex = 0
 local onReceivedResponeOnFullInfo = function(response, category, linksList) {
-  response.each(function(linkBlock, idx) {
-    local label = linkBlock.label
+  if (response != null)
+    response.each(function(linkBlock, idx) {
+      local label = linkBlock.label
 
-    // Received full info, we don't need short
-    persist.categoriesData[category].links.removeBlock(label)
+      // Received full info, we don't need short
+      persist.categoriesData[category].links.removeBlock(label)
 
-    fillBlock(label, persist.categoriesData[category].links, linkBlock)
-    persist.categoriesData[category].links[label].setStr("category", category)
-    persist.itemsList[label] <- Ps4ShopPurchasableItem(persist.categoriesData[category].links[label], itemIndex++)
+      fillBlock(label, persist.categoriesData[category].links, linkBlock)
+      persist.categoriesData[category].links[label].setStr("category", category)
+      persist.itemsList[label] <- Ps4ShopPurchasableItem(persist.categoriesData[category].links[label], itemIndex++)
 
-    local linkIdx = linksList.findindex(@(p) p == label)
-    if (linkIdx != null)
-      linksList.remove(linkIdx)
-  })
+      local linkIdx = linksList.findindex(@(p) p == label)
+      if (linkIdx != null)
+        linksList.remove(linkIdx)
+    })
 
   if (linksList.len())
     ::dagor.debug("PSN: Shop data: onReceivedResponeOnFullInfo: Didn't recieved info for {0}".subst(linksList.tostring()))
@@ -169,7 +170,7 @@ requestLinksFullInfo = function(category) {
       if (err)
       {
         ::statsd_counter($"ingame_store.error_request_category_data.{category}.{err}")
-        ::debug.debug("PSN: Shop Data: requestLinksFullInfo: on send linksList: Error " + ::toString(err))
+        ::dagor.debug("PSN: Shop Data: requestLinksFullInfo: on send linksList: Error " + ::toString(err))
         ::debugTableData(linksList)
         return
       }

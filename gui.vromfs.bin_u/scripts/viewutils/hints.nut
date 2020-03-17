@@ -25,11 +25,12 @@ g_hints.buildHintMarkup <- function buildHintMarkup(text, params = {}) {
 g_hints.getHintSlices <- function getHintSlices(text, params = {})
 {
   local rows = ::split(text, "\n")
+  local isWrapInRowAllowed = params?.isWrapInRowAllowed ?? false
   local view = {
     id = ::getTblValue("id", params)
     style = ::getTblValue("style", params, "")
     isOrderPopup = ::getTblValue("isOrderPopup", params, false)
-    isWrapInRowAllowed = ::getTblValue("isWrapInRowAllowed", params, false)
+    isWrapInRowAllowed = isWrapInRowAllowed
     flowAlign = ::getTblValue("flowAlign", params, "center")
     animation = ::getTblValue("animation", params)
     rows = []
@@ -41,6 +42,7 @@ g_hints.getHintSlices <- function getHintSlices(text, params = {})
   {
     local slices = []
     local rawRowPieces = splitRowToPieces(row)
+    local needSplitByWords = isWrapInRowAllowed && rawRowPieces.len() > 1
 
     foreach (rawRowPiece in rawRowPieces)
     {
@@ -49,6 +51,8 @@ g_hints.getHintSlices <- function getHintSlices(text, params = {})
         local piece = rawRowPiece.piece
         local carriage = 0
         local unclosedTags = 0
+        local textsArray = []
+        local lastIdxOfSlicedPiece = 0
 
         while (true)
         {
@@ -83,6 +87,10 @@ g_hints.getHintSlices <- function getHintSlices(text, params = {})
             }
 
             colors.pop()
+            if (needSplitByWords && colors.len() == 0) {
+              textsArray.append(piece.slice(lastIdxOfSlicedPiece, carriage))
+              lastIdxOfSlicedPiece = carriage
+            }
           }
 
           //opening tag found, add color to stack, increment unclosedTags counter
@@ -103,8 +111,17 @@ g_hints.getHintSlices <- function getHintSlices(text, params = {})
         if (colors.len() > 0)
           piece = ::colorize(colors.top(), piece)
 
-        if (piece.len())
-          slices.append(getTextSlice(piece))
+        if (piece.len()) {
+          if (colors.len() > 0 || !needSplitByWords)
+            textsArray = [piece]
+          else {
+            local lastPiece = piece.slice(lastIdxOfSlicedPiece, piece.len())
+            if (lastPiece != "")
+              textsArray.extend(lastPiece.split(" "))
+          }
+
+          slices.append(getTextSlice(textsArray))
+        }
       }
       else if (rawRowPiece.type == HINT_PIECE_TYPE.TAG)
       {
@@ -174,9 +191,10 @@ g_hints.splitRowToPieces <- function splitRowToPieces(row)
   return slices
 }
 
-g_hints.getTextSlice <- function getTextSlice(text)
+g_hints.getTextSlice <- function getTextSlice(textsArray)
 {
-  return { text = text }
+  return { text = textsArray.map(
+    @(text, idx) { textValue = textsArray?[idx+1] != null ? $"{text} " : text }) }
 }
 
 ::cross_call_api.getHintConfig <- @(text) ::g_hints.getHintSlices(text, { needConfig = true })
