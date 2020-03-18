@@ -8,11 +8,15 @@ local hintTags = {
 
   text = function(config, override){
     return {
-      rendObj = ROBJ_DTEXT
-      color = colors.menu.commonTextColor
-      font = Fonts.medium_text_hud
-      text = config.text
-    }.__update(override)
+      size = [SIZE_TO_CONTENT, SIZE_TO_CONTENT]
+      flow = FLOW_HORIZONTAL
+      children = config.text.map(@(text) {
+        rendObj = ROBJ_DTEXT
+        color = colors.menu.commonTextColor
+        font = Fonts.medium_text_hud
+        text = text.textValue
+      }.__update(override))
+    }
   }
 }
 

@@ -14,6 +14,10 @@ actionListItem {
 
   on_click:t='onAction';
 
+  <<#disabled>>
+  enable:t='no'
+  <</disabled>>
+
   <<#icon>>
   icon {
     <<#iconRotation>>

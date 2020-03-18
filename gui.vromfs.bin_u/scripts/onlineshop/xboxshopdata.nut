@@ -158,6 +158,7 @@ return {
   canUseIngameShop = canUseIngameShop
   requestData = requestData
   xboxProceedItems = xboxProceedItems
+  getShopItemsTable = @() xboxProceedItems
   haveDiscount = haveDiscount
   getShopItem = function(id) {
     foreach (cat, list in xboxProceedItems)

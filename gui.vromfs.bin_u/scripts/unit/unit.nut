@@ -640,6 +640,14 @@ local Unit = class
     return availableWeapons
   }
 
+  function getEntitlements()
+  {
+    if (gift == null)
+      return []
+
+    return ::OnlineShopModel.searchEntitlement({unitName = name})
+  }
+
   isSquadronVehicle       = @() researchType == "clanVehicle"
   getOpenCost             = @() ::Cost(0, ::clan_get_unit_open_cost_gold(name))
 }

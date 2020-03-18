@@ -848,7 +848,7 @@ local noiseSignal = function(size, pos1, pos2)
 
   return @(){
     size = SIZE_TO_CONTENT
-    children = getChildren()
+    children = !radarState.MfdRadarEnabled.value ? getChildren() : []
     watch = [
       radarState.IsRadarVisible,
       radarState.IsRadar2Visible,
@@ -863,6 +863,8 @@ local radToDeg = 180.0 / 3.14159
 
 local makeRadarModeText = function ()
 {
+  if (radarState.MfdRadarEnabled.value)
+    return ""
   local text = ""
   if (radarState.RadarModeNameId.value >= 0)
     text += ::loc(modeNames[radarState.RadarModeNameId.value])
@@ -873,6 +875,8 @@ local makeRadarModeText = function ()
 
 local makeRadar2ModeText = function ()
 {
+  if (radarState.MfdRadarEnabled.value)
+    return ""
   local text = ""
   if (radarState.Radar2ModeNameId.value >= 0)
     text += ::loc(modeNames[radarState.Radar2ModeNameId.value])
@@ -981,9 +985,10 @@ local B_ScopeSquare = function(width, height) {
   }
 
   return @() {
-    watch = [ radarState.IsRadarVisible, radarState.RadarModeNameId,
+    watch = [ radarState.MfdRadarEnabled,
+              radarState.IsRadarVisible, radarState.RadarModeNameId,
               radarState.IsRadar2Visible, radarState.Radar2ModeNameId,
-              radarState.IsAamLaunchZoneVisible, radarState.HasDistanceScale]
+              radarState.IsAamLaunchZoneVisible, radarState.HasDistanceScale ]
     children = [
       {
         size = SIZE_TO_CONTENT
@@ -1393,7 +1398,7 @@ local B_Scope = function(width, height) {
   }
 
   return @() {
-    watch = [ radarState.IsRadarVisible, radarState.RadarModeNameId,
+    watch = [ radarState.MfdRadarEnabled, radarState.IsRadarVisible, radarState.RadarModeNameId,
               radarState.IsRadar2Visible, radarState.Radar2ModeNameId, radarState.HasDistanceScale]
     children = [
       {
@@ -1596,7 +1601,7 @@ local B_ScopeHalf = function(width, height, pos) {
   }
 
   return @() {
-    watch = [ radarState.IsRadarVisible, radarState.RadarModeNameId,
+    watch = [ radarState.MfdRadarEnabled, radarState.IsRadarVisible, radarState.RadarModeNameId,
               radarState.IsRadar2Visible, radarState.Radar2ModeNameId, radarState.IsAamLaunchZoneVisible]
     children = [
       {
@@ -2436,19 +2441,19 @@ local radar = function(posX, posY){
 
       local scopeChild = null
       local cScope = null
-      if (radarState.ViewMode.value == RadarViewMode.B_SCOPE_ROUND)
-      {
-        if (getAzimuthRange() > math.PI)
-          scopeChild = B_Scope(width, height)
-        else
-          scopeChild = B_ScopeHalf(width, height, pos)
-      }
-      else if (radarState.ViewMode.value == RadarViewMode.B_SCOPE_SQUARE)
+      if (radarState.ViewMode.value == RadarViewMode.B_SCOPE_SQUARE || radarState.MfdRadarEnabled.value)
       {
         if (getAzimuthRange() > math.PI)
           scopeChild = B_Scope(width, height)
         else
           scopeChild = B_ScopeSquare(radarState.HasAzimuthScale.value ? width : 0.2 * width, height)
+      }
+      else if (radarState.ViewMode.value == RadarViewMode.B_SCOPE_ROUND)
+      {
+        if (getAzimuthRange() > math.PI)
+          scopeChild = B_Scope(width, height)
+        else
+          scopeChild = B_ScopeHalf(width, height, pos)
       }
       if (radarState.IsCScopeVisible.value && !hudState.isPlayingReplay.value && getAzimuthRange() <= math.PI)
       {
@@ -2460,7 +2465,7 @@ local radar = function(posX, posY){
       }
       return {
         size = SIZE_TO_CONTENT
-        watch = [radarState.ViewMode, radarState.AzimuthMax, radarState.AzimuthMin, radarState.IsCScopeVisible, radarState.HasAzimuthScale]
+        watch = [radarState.ViewMode, radarState.MfdRadarEnabled, radarState.AzimuthMax, radarState.AzimuthMin, radarState.IsCScopeVisible, radarState.HasAzimuthScale]
         children = [scopeChild, cScope]
       }
     }

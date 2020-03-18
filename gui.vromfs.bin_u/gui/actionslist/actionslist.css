@@ -188,6 +188,10 @@ popup_actions_list > itemsList > button:pushed > text {
   color: @linkTextHoverColor;
 }
 
+popup_actions_list > itemsList > actionListItem:disabled > text {
+  color:@buttonFontColorDisabled;
+}
+
 popup_actions_list > itemsList > actionListItem > icon,
 popup_actions_list > itemsList > button > icon {
   background-color: @menuButtonTextColor;
@@ -197,6 +201,10 @@ popup_actions_list > itemsList > button > icon {
   re-type: fgPict;
   position: relative;
   pos: -w - 3*@sf/@pf_outdated;
+}
+
+popup_actions_list > itemsList > actionListItem:disabled > icon {
+  background-color:@inactiveButtonBgColor;
 }
 
 [popupMenuBrightIcons=yes] popup_actions_list > itemsList > actionListItem > icon,
