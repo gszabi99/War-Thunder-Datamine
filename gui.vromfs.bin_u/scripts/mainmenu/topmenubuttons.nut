@@ -265,7 +265,7 @@ local list = {
   }
   PS4_ONLINE_SHOP = {
     text = ps4Shop.canUseIngameShop()? "#topmenu/ps4IngameShop" : "#msgbox/btn_onlineShop"
-    onClickFunc = @(...) ps4Shop.openIngameStore({statsdMetric = "topmenu"})
+    onClickFunc = @(...) ps4Shop.openIngameStore({openedFrom = "topmenu"})
     link = ""
     isLink = @() !ps4Shop.canUseIngameShop()
     isFeatured = @() !ps4Shop.canUseIngameShop()

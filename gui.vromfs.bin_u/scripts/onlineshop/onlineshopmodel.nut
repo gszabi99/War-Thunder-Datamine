@@ -31,7 +31,7 @@ local { getBundleId } = require("scripts/onlineShop/onlineBundles.nut")
 }
 
 /*API methods*/
-OnlineShopModel.showGoods <- function showGoods(searchRequest, metric)
+OnlineShopModel.showGoods <- function showGoods(searchRequest, requestOrigin)
 {
   if (!::has_feature("OnlineShopPacks"))
     return ::showInfoMsgBox(::loc("msgbox/notAvailbleYet"))
@@ -52,7 +52,7 @@ OnlineShopModel.showGoods <- function showGoods(searchRequest, metric)
         if (bundleId != "")
         {
           if (::is_ps4_or_xbox)
-            openIngameStore({ curItemId = bundleId, statsdMetric = metric })
+            openIngameStore({ curItemId = bundleId, openedFrom = requestOrigin })
           else
             doBrowserPurchase(goodsName)
           return
@@ -60,7 +60,7 @@ OnlineShopModel.showGoods <- function showGoods(searchRequest, metric)
       }
 
       if (::is_ps4_or_xbox)
-        return openIngameStore({ statsdMetric = metric })
+        return openIngameStore({ openedFrom = requestOrigin })
 
       return ::gui_modal_onlineShop()
     }.bindenv(OnlineShopModel))
@@ -452,12 +452,12 @@ OnlineShopModel.startEntitlementsUpdater <- function startEntitlementsUpdater()
   )
 }
 
-OnlineShopModel.launchOnlineShop <- function launchOnlineShop(owner=null, chapter=null, afterCloseFunc=null, metric = "unknown")
+OnlineShopModel.launchOnlineShop <- function launchOnlineShop(owner=null, chapter=null, afterCloseFunc=null, launchedFrom = "unknown")
 {
   if (!::isInMenu())
     return afterCloseFunc && afterCloseFunc()
 
-  if (openIngameStore({chapter = chapter, afterCloseFunc = afterCloseFunc, statsdMetric = metric}))
+  if (openIngameStore({chapter = chapter, afterCloseFunc = afterCloseFunc, openedFrom = launchedFrom}))
     return
 
   ::gui_modal_onlineShop(owner, chapter, afterCloseFunc)

@@ -103,10 +103,11 @@ class ::gui_handlers.Ps4Shop extends ::gui_handlers.IngameConsoleStore
     {
       psnStore.show_icon(psnStore.IconPosition.CENTER)
       base.initScreen()
+      ::statsd_counter("ingame_store.contents.initScreen.ok")
       return
     }
 
-    ::statsd_counter("ingame_store.empty_catalog.on_open_window")
+    ::statsd_counter("ingame_store.contents.initScreen.empty")
     goBack()
   }
 
@@ -143,10 +144,11 @@ class ::gui_handlers.Ps4Shop extends ::gui_handlers.IngameConsoleStore
     isLoadingInProgress = p?.isLoadingInProgress ?? false
     if (!canDisplayStoreContents())
     {
-      ::statsd_counter("ingame_store.empty_catalog.on_finish_update_data")
+      ::statsd_counter("ingame_store.contents.onEventShopSheetsInited.empty")
       goBack()
       return
     }
+    ::statsd_counter("ingame_store.contents.onEventShopSheetsInited.ok")
 
     fillItemsList()
     restoreFocus()
@@ -169,13 +171,13 @@ class ::gui_handlers.Ps4Shop extends ::gui_handlers.IngameConsoleStore
 
 return shopData.__merge({
   openIngameStore = ::kwarg(
-    function (chapter = null, curItemId = "", afterCloseFunc = null, statsdMetric = "unknown") {
+    function (chapter = null, curItemId = "", afterCloseFunc = null, openedFrom = "unknown") {
       if (!::isInArray(chapter, [null, "", "eagles"]))
         return false
 
       if (shopData.canUseIngameShop())
       {
-        ::statsd_counter($"ingame_store.open.{statsdMetric}")
+        ::statsd_counter($"ingame_store.open.{openedFrom}")
         local item = shopData.getShopItem(curItemId)
         ::handlersManager.loadHandler(::gui_handlers.Ps4Shop, {
           itemsCatalog = shopData.getShopItemsTable()

@@ -169,11 +169,11 @@ local Ps4ShopPurchasableItem = class
   canBeUnseen = @() isBought
   showDetails = function(metricPlaceCall = "ingame_store") {
     local itemId = id
-    sendBqRecord([metricPlaceCall, "open_checkout"], itemId)
+    sendBqRecord([metricPlaceCall, "checkout.open"], itemId)
     psnStore.open_checkout(
       [itemId],
       function(result) {
-        sendBqRecord([metricPlaceCall, "close_checkout"], itemId, result)
+        sendBqRecord([metricPlaceCall, "checkout.close"], itemId, result)
         if (result.action == psnStore.Action.PURCHASED)
           handleNewPurchase(itemId)
       }
@@ -182,11 +182,11 @@ local Ps4ShopPurchasableItem = class
 
   showDescription = function(metricPlaceCall = "ingame_store") {
     local itemId = id
-    sendBqRecord([metricPlaceCall, "open_product"], itemId)
+    sendBqRecord([metricPlaceCall, "description.open"], itemId)
     psnStore.open_product(
       itemId,
       function(result) {
-        sendBqRecord([metricPlaceCall, "close_product"], itemId, result)
+        sendBqRecord([metricPlaceCall, "description.close"], itemId, result)
         if (result.action == psnStore.Action.PURCHASED)
           handleNewPurchase(itemId)
       }
