@@ -69,8 +69,12 @@ local { isChatEnabled } = require("scripts/chat/chatStates.nut")
     local urlMission =  ::g_url_missions.findMissionByUrl(url)
     local missionName = urlMission ? urlMission.name : url
     setTextToObj(mapNameObj, ::loc("urlMissions/sessionInfoHeader") + ::loc("ui/colon"), missionName)
-  } else
-    setTextToObj(mapNameObj, ::loc("options/mp_mission") + ::loc("ui/colon"), get_combine_loc_name_mission(missionInfo))
+  }
+  else
+  {
+    local missionName = ::SessionLobby.getMissionNameLoc(sessionInfo)
+    setTextToObj(mapNameObj, "".concat(::loc("options/mp_mission"), ::loc("ui/colon")), missionName)
+  }
 
   local pasObj = scene.findObject("session_hasPassword")
   setTextToObj(pasObj, ::loc("options/session_password") + ::loc("ui/colon"),

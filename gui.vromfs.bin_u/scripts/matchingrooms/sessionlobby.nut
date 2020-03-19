@@ -737,7 +737,7 @@ SessionLobby.getMissionNameLoc <- function getMissionNameLoc(room = null)
 {
   local misData = getMissionData(room)
   if ("name" in misData)
-    return get_combine_loc_name_mission(misData)
+    return ::get_combine_loc_name_mission(::get_mission_meta_info(misData.name))
   return ""
 }
 
@@ -2196,8 +2196,8 @@ SessionLobby.getRoomsInfoTbl <- function getRoomsInfoTbl(roomsList)
       local missionName = urlMission ? urlMission.name : url
       item.mission <- missionName
     }
-    else if ("name" in misData)
-      item.mission <- get_combine_loc_name_mission(misData)
+    else
+      item.mission <- getMissionNameLoc(public)
     if ("creator" in public)
       item.name <- ::getTblValue("creator", public, "") || ""
     if ("difficulty" in misData)
