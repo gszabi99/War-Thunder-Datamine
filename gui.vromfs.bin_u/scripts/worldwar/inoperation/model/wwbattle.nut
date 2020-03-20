@@ -1138,7 +1138,7 @@ class ::WwBattle
       return 0
 
     local maxBattleWaitTimeSec = time.minutesToSeconds(
-      ::g_world_war.getWWConfigurableValue("maxBattleWaitTimeMin", MAX_BATTLE_WAIT_TIME_MIN_DEFAULT)).tointeger()
+      ::g_world_war.getWWConfigurableValue("maxBattleWaitTimeMin", MAX_BATTLE_WAIT_TIME_MIN_DEFAULT))
     if (maxBattleWaitTimeSec <= 0)
       return 0
 

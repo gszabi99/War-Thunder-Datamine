@@ -898,7 +898,8 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onPlayerRClick(obj)
   {
-    if (!obj || !checkScene()) return
+    if (!checkScene() || !::check_obj(obj))
+      return
 
     local id = obj.id
     local prefix = "player_" + curGroup + "_"

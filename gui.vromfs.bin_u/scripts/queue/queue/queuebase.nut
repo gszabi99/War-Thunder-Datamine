@@ -94,7 +94,7 @@ class ::queue_classes.Base
     if (waitTime > 0)
     {
       local minutes = time.secondsToMinutes(waitTime).tointeger()
-      local seconds = waitTime - time.minutesToSeconds(minutes).tointeger()
+      local seconds = waitTime - time.minutesToSeconds(minutes)
       return ::format(::loc("yn1/wait_time"), minutes, seconds)
     }
     return ""

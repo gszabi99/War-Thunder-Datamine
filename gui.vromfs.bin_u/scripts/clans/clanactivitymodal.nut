@@ -97,7 +97,7 @@ class ::gui_handlers.clanActivityModal extends ::gui_handlers.BaseGuiHandlerWT
     foreach(entry in historyArr)
     {
       local rowParams = [
-        { text = time.buildDateStr(time.daysToSeconds(entry.day).tointeger()) },
+        { text = time.buildDateStr(time.daysToSeconds(entry.day)) },
         { text = (::u.isInteger(entry.data) ? entry.data : entry.data?.activity ?? 0).tostring() }
       ]
 

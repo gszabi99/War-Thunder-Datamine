@@ -32,6 +32,7 @@ local getActionDescByWeaponTriggerGroup = function(actionItem, triggerGroup)
    */
   isForWheelMenu = @() false
   isForSelectWeaponMenu = @() false
+  canSwitchAutomaticMode =@() false
 
   _name = ""
   _icon = ""
@@ -278,6 +279,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
   EXTINGUISHER = {
     code = ::EII_EXTINGUISHER
     isForWheelMenu = @() ::isShip(::getAircraftByName(::get_action_bar_unit_name()))
+    canSwitchAutomaticMode = @() ::isShip(::getAircraftByName(::get_action_bar_unit_name()))
     _name = "extinguisher"
     _icon = "#ui/gameuiskin#extinguisher"
     _title = ::loc("hotkeys/ID_ACTION_BAR_ITEM_6")
@@ -291,6 +293,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
   TOOLKIT = {
     code = ::EII_TOOLKIT
     isForWheelMenu = @() ::isShip(::getAircraftByName(::get_action_bar_unit_name()))
+    canSwitchAutomaticMode = @() ::isShip(::getAircraftByName(::get_action_bar_unit_name()))
     _name = "toolkit"
     _icon = "#ui/gameuiskin#tank_tool_kit"
     _title = ::loc("hotkeys/ID_SHIP_ACTION_BAR_ITEM_11")
@@ -385,6 +388,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
   REPAIR_BREACHES = {
     code = ::EII_REPAIR_BREACHES
     isForWheelMenu = @() true
+    canSwitchAutomaticMode = @() true
     _name = "repair_breaches"
     _icon = "#ui/gameuiskin#unwatering"
     _title = ::loc("hotkeys/ID_REPAIR_BREACHES")

@@ -84,7 +84,7 @@ g_partner_unlocks.isPartnerUnlockAvailable <- function isPartnerUnlockAvailable(
   if (!::is_numeric(durationMin))
     return false
 
-  local durationSec = time.minutesToSeconds(durationMin).tointeger()
+  local durationSec = time.minutesToSeconds(durationMin)
   local endSec = startSec + durationSec
   return endSec > ::get_charserver_time_sec()
 }

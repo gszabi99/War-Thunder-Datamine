@@ -1904,9 +1904,9 @@ g_unlocks.isVisibleByTime <- function isVisibleByTime(id, hasIncludTimeBefore = 
       local startTime = getTimestampFromStringUtc(cond.beginDate) -
         daysToSeconds(hasIncludTimeBefore
         ? unlock?.visibleDaysBefore ?? unlock?.visibleDays ?? 0
-        : 0).tointeger()
+        : 0)
       local endTime = getTimestampFromStringUtc(cond.endDate) +
-        daysToSeconds(unlock?.visibleDaysAfter ?? unlock?.visibleDays ?? 0).tointeger()
+        daysToSeconds(unlock?.visibleDaysAfter ?? unlock?.visibleDays ?? 0)
       local currentTime = get_charserver_time_sec()
 
       isVisibleUnlock = (currentTime > startTime && currentTime < endTime)
@@ -1932,9 +1932,9 @@ g_unlocks.debugLogVisibleByTimeInfo <- function debugLogVisibleByTimeInfo(id)
         continue
 
       local startTime = getTimestampFromStringUtc(cond.beginDate) -
-        daysToSeconds(unlock?.visibleDaysBefore ?? unlock?.visibleDays ?? 0).tointeger()
+        daysToSeconds(unlock?.visibleDaysBefore ?? unlock?.visibleDays ?? 0)
       local endTime = getTimestampFromStringUtc(cond.endDate) +
-        daysToSeconds(unlock?.visibleDaysAfter ?? unlock?.visibleDays ?? 0).tointeger()
+        daysToSeconds(unlock?.visibleDaysAfter ?? unlock?.visibleDays ?? 0)
       local currentTime = get_charserver_time_sec()
       local isVisibleUnlock = (currentTime > startTime && currentTime < endTime)
 

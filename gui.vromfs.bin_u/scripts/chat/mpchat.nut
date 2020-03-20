@@ -57,6 +57,7 @@ class ::ChatHandler
   isActive = false // While it is true, in-game unit control shortcuts are disabled in client.
   visibleTime = 0
   chatInputText = ""
+  modeInited = false
 
   constructor()
   {
@@ -499,6 +500,14 @@ class ::ChatHandler
 
   function validateCurMode()
   {
+    if (!modeInited)
+    {
+      modeInited = true
+      // On mp session start mode is reset to TEAM
+      if (::g_mp_chat_mode.SQUAD.isEnabled())
+        setMode(::g_mp_chat_mode.SQUAD)
+    }
+
     if (curMode.isEnabled())
       return
 
@@ -728,6 +737,7 @@ class ::ChatHandler
   function onEventLoadingStateChange(params)
   {
     clearInputChat()
+    modeInited = false
   }
 
   function clearInputChat()

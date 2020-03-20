@@ -128,7 +128,7 @@ class ::gui_handlers.QueueTable extends ::gui_handlers.BaseGuiHandlerWT
     if (waitTime > 0)
     {
       local minutes = time.secondsToMinutes(waitTime).tointeger()
-      local seconds = waitTime - time.minutesToSeconds(minutes).tointeger()
+      local seconds = waitTime - time.minutesToSeconds(minutes)
       txtWaitTime = ::format("%d:%02d", minutes, seconds)
     }
 

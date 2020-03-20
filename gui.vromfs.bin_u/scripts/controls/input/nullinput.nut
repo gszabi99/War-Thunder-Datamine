@@ -6,7 +6,9 @@ class ::Input.NullInput extends ::Input.InputBase
 
   function getMarkup()
   {
-    return showPlaceholder ? "textareaNoTab { text:t='{0}' }".subst(getText()) : null
+    return showPlaceholder
+      ? ::handyman.renderCached("gui/controls/input/nullInput", { text = getText() })
+      : null
   }
 
   function getText()

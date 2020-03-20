@@ -21,13 +21,13 @@ const DAYS_TO_YEAR_1970 = 719528
 
 
 local millisecondsToSeconds = @(time) time / TIME_SECOND_IN_MSEC_F
-local secondsToMilliseconds = @(time) time * TIME_SECOND_IN_MSEC_F
+local secondsToMilliseconds = @(time) time * TIME_SECOND_IN_MSEC
 local millisecondsToSecondsInt = @(time) time / TIME_SECOND_IN_MSEC
 local secondsToMinutes = @(time) time / TIME_MINUTE_IN_SECONDS_F
-local minutesToSeconds = @(time) time * TIME_MINUTE_IN_SECONDS_F
+local minutesToSeconds = @(time) time * TIME_MINUTE_IN_SECONDS
 local secondsToHours = @(seconds) seconds / TIME_HOUR_IN_SECONDS_F
-local hoursToSeconds = @(seconds) seconds * TIME_HOUR_IN_SECONDS_F
-local daysToSeconds = @(days) days * TIME_DAY_IN_SECONDS_F
+local hoursToSeconds = @(seconds) seconds * TIME_HOUR_IN_SECONDS
+local daysToSeconds = @(days) days * TIME_DAY_IN_SECONDS
 
 local function hoursToString(time, full = true, useSeconds = false, dontShowZeroParam = false, fullUnits = false, i18n = ::loc) {
   local res = []

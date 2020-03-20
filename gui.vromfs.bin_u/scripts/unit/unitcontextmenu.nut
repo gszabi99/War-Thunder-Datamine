@@ -168,7 +168,7 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
           //Because of external error.
           canBuyOnline = false
         }
-        else if (unit.getEntitlements().map(
+        else if (!unit.isBought() && unit.getEntitlements().map(
             @(id) getBundleId(id)
           ).filter(
             @(bundleId) bundleId != "" && getShopItem(bundleId) != null

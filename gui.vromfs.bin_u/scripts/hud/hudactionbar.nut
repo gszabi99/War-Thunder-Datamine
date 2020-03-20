@@ -125,7 +125,7 @@ class ActionBar
     viewItem.selected           <- item.selected ? "yes" : "no"
     viewItem.active             <- item.active ? "yes" : "no"
     viewItem.enabled            <- isReady ? "yes" : "no"
-    viewItem.wheelmenuEnabled   <- isReady
+    viewItem.wheelmenuEnabled   <- isReady || actionBarType.canSwitchAutomaticMode()
     viewItem.shortcutText       <- shortcutText
     viewItem.isLongScText       <- ::utf8_strlen(shortcutText) >= LONG_ACTIONBAR_TEXT_LEN
     viewItem.mainShortcutId     <- shortcutId
