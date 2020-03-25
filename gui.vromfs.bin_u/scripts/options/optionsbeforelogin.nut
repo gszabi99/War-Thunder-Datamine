@@ -2,6 +2,8 @@ const AUTOLOGIN_SAVE_ID = "autologin"
 
 ::is_autologin_enabled <- function is_autologin_enabled()
 {
+  if (::need_force_autologin())
+    return true
   local res = ::load_local_shared_settings(AUTOLOGIN_SAVE_ID)
   if (res != null)
     return res

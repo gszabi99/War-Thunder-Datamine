@@ -539,6 +539,8 @@ local isWaitMeasureEvent = false
       optionsUtils.fillBoolOption(descr, "fixGunInMouseLook", ::OPTION_FIX_GUN_IN_MOUSE_LOOK); break;
     case ::USEROPT_ENABLE_SOUND_SPEED:
       optionsUtils.fillBoolOption(descr, "enableSoundSpeed", ::OPTION_ENABLE_SOUND_SPEED); break;
+    case ::USEROPT_PITCH_BLOCKER_WHILE_BRACKING:
+      optionsUtils.fillBoolOption(descr, "pitchBlockerWhileBraking", ::OPTION_PITCH_BLOCKER_WHILE_BRACKING); break;
 
     case ::USEROPT_VIEWTYPE:
       descr.id = "viewtype"
@@ -4488,6 +4490,7 @@ local isWaitMeasureEvent = false
     case ::USEROPT_INSTRUCTOR_SIMPLE_JOY:
     case ::USEROPT_MAP_ZOOM_BY_LEVEL:
     case ::USEROPT_SHOW_COMPASS_IN_TANK_HUD:
+    case ::USEROPT_PITCH_BLOCKER_WHILE_BRACKING:
     case ::USEROPT_HIDE_MOUSE_SPECTATOR:
     case ::USEROPT_FIX_GUN_IN_MOUSE_LOOK:
     case ::USEROPT_ENABLE_SOUND_SPEED:

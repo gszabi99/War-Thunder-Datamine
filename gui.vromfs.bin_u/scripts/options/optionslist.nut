@@ -93,6 +93,7 @@ local getMainOptions = function()
       // TODO: remove after 1_93_0_X
       [::USEROPT_SHOW_COMPASS_IN_TANK_HUD, "spinner", OPTION_SHOW_COMPASS_IN_TANK_HUD != -1],
       [::USEROPT_HUE_TANK_THERMOVISION, "spinner"],
+      [::USEROPT_PITCH_BLOCKER_WHILE_BRACKING, "spinner"],
 
       ["options/header/ship"],
       [::USEROPT_DEPTHCHARGE_ACTIVATION_TIME, "spinner", ! ::is_in_flight()],

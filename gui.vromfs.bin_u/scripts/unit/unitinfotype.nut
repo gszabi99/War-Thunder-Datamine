@@ -754,7 +754,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
     addToExportTankDataBlockValues = function(blk, params, mode)
     {
-      if(blk.hide)
+      if(blk?.hide ?? false)
         return
       local armorPiercing = params.armorPiercing;
       if(armorPiercing.len() > 2)
@@ -784,7 +784,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
     addToExportTankDataBlockValues = function(blk, params, mode)
     {
-      if(blk.hide)
+      if(blk?.hide ?? false)
         return
       local armorPiercing = params.armorPiercing;
       if(armorPiercing.len() > 2)
@@ -815,7 +815,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
     addToExportTankDataBlockValues = function(blk, params, mode)
     {
-      if(blk.hide)
+      if(blk?.hide ?? false)
         return
       local armorPiercing = params.armorPiercing;
       if(armorPiercing.len() > 2)
@@ -842,7 +842,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
     addToExportTankDataBlockValues = function(blk, params, mode)
     {
-      if(blk.hide)
+      if(blk?.hide ?? false)
         return
       local shotFreq = params.shotFreq;
       if(shotFreq > 0)
@@ -873,7 +873,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
     addToExportTankDataBlockValues = function(blk, params, mode)
     {
-      if(blk.hide)
+      if(blk?.hide ?? false)
         return
       local reloadTime = params.reloadTime;
       if(reloadTime > 0)
@@ -921,7 +921,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
     addToExportTankDataBlockValues = function(blk, params, mode)
     {
-      if(blk.hide)
+      if(blk?.hide ?? false)
         return
       if(!("visibilityFactor" in params) || params.visibilityFactor <= 0)
       {

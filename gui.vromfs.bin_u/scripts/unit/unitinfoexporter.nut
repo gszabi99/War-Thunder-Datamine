@@ -229,7 +229,7 @@ class UnitInfoExporter
     foreach(infoType in ::g_unit_info_type.types)
     {
       local blk = infoType.exportToDataBlock(curUnit)
-      if(blk.hide)
+      if(blk?.hide ?? false)
         continue
       unitBlk[infoType.id] = blk
     }

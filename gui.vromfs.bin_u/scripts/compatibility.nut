@@ -92,3 +92,8 @@
   set_thermovision_index = @(idx) null
   UT_SuitVehicle = 14
 })
+//----------------------------wop_1_97_0_X---------------------------------//
+::apply_compatibilities({
+  OPTION_PITCH_BLOCKER_WHILE_BRACKING = -1
+  need_force_autologin = @() false
+})
