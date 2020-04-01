@@ -905,7 +905,8 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
       countryIdx = countryData.idx
       needSkipAnim = countriesCount == 0
       alwaysShowBorder = alwaysShowBorder
-      countryImage = ::get_country_icon(countryData.country, false)
+      countryImage = ::is_suit_mission() ? "#ui/gameuiskin#cursor_invisible.svg"
+        : ::get_country_icon(countryData.country, false)
     })
     guiScene.appendWithBlk(crewsObj, blk, this)
   }
@@ -1398,6 +1399,8 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
   function getDefaultDblClickFunc()
   {
     return ::Callback(function(crew) {
+      if (::g_crews_list.isSlotbarOverrided)
+        return
       local unit = getCrewUnit(crew)
       if (unit)
         ::open_weapons_for_unit(unit, { curEdiff = getCurrentEdiff() })

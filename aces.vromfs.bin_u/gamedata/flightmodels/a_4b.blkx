@@ -2,6 +2,7 @@
   "model": "a_4b",
   "fmFile": "fm/a_4b.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
+  "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.318,
   "gearSinkRangeC": 0.355,
   "type": "typeFighter",
@@ -181,6 +182,9 @@
       }
     },
     "protected_controls": {
+      "tailcontrol_dm": {
+        "hp": 60.5
+      },
       "wingcontrol_dm": {
         "hp": 60.5
       },
@@ -1244,6 +1248,11 @@
           }
         }
       ]
+    },
+    {
+      "part": {
+        "name": "tailcontrol_dm"
+      }
     },
     {
       "part": [
@@ -2530,6 +2539,32 @@
     {
       "replace_tex": {
         "from": "a_4b_n_dmg*"
+      }
+    }
+  ],
+  "default_skin_tomoe": [
+    {
+      "replace_tex": {
+        "from": "a_4b_c*",
+        "to": "a_4b_c_tomoe*"
+      }
+    },
+    {
+      "replace_tex": {
+        "from": "a_4b_c_dmg*",
+        "to": "a_4b_c_tomoe_dmg*"
+      }
+    },
+    {
+      "replace_tex": {
+        "from": "a_4b_n*",
+        "to": "a_4b_n_tomoe*"
+      }
+    },
+    {
+      "replace_tex": {
+        "from": "a_4b_n_dmg*",
+        "to": "a_4b_n_tomoe_dmg*"
       }
     }
   ],

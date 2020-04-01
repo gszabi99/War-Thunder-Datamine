@@ -310,6 +310,9 @@ class ::gui_handlers.Tutor extends ::gui_handlers.BaseGuiHandlerWT
 
   function checkCb()
   {
+    if (canceled)
+      return
+
     local stepData = ::getTblValue(stepIdx, config)
     local cb = ::getTblValue("cb", stepData)
     if (!cb)

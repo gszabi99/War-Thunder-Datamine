@@ -1,3 +1,5 @@
+local unitTypes = require("scripts/unit/unitTypesList.nut")
+
 enum CChoiceState {
   UNIT_TYPE_SELECT
   COUNTRY_SELECT
@@ -38,7 +40,7 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
   {
     unitTypesList = []
     local visibleCountries = {}
-    foreach(unitType in ::g_unit_type.types)
+    foreach(unitType in unitTypes.types)
     {
       local isAvailable = false
       foreach(country in ::get_countries_by_unit_type(unitType.esUnitType))
@@ -157,7 +159,7 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
 
     local data = ::handyman.renderCached("gui/firstChoice/unitTypeChoice", view)
     if (selectedUnitType == null)
-      selectedUnitType = ::g_unit_type.TANK
+      selectedUnitType = unitTypes.TANK
 
     fillChoiceScene(data, ::find_in_array(unitTypesList, selectedUnitType, 0), "firstUnit")
   }
@@ -183,7 +185,7 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
   function getNotAvailableCountryMsg(country)
   {
     local availUnitTypes = []
-    foreach(unitType in ::g_unit_type.types)
+    foreach(unitType in unitTypes.types)
       if (unitType.isAvailableForFirstChoice(country)
         && ::isInArray(country, ::get_countries_by_unit_type(unitType.esUnitType)))
         availUnitTypes.append(unitType)
@@ -207,12 +209,12 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
     local view = {
       countries = function () {
         local res = []
-        local curArmyName = selectedUnitType ? selectedUnitType.armyId  : ::g_unit_type.AIRCRAFT.armyId
+        local curArmyName = selectedUnitType ? selectedUnitType.armyId  : unitTypes.AIRCRAFT.armyId
         foreach(country in countries)
         {
           local image = ::get_country_flag_img("first_choice_" + country + "_" + curArmyName)
           if (image == "")
-            image = ::get_country_flag_img("first_choice_" + country + "_" + ::g_unit_type.AIRCRAFT.armyId)
+            image = ::get_country_flag_img("first_choice_" + country + "_" + unitTypes.AIRCRAFT.armyId)
 
           local cData = {
             countryName = ::loc(country)
@@ -335,7 +337,7 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
     foreach (crewData in ::g_crews_list.get())
     {
       local country = crewData.country
-      foreach(unitType in ::g_unit_type.types)
+      foreach(unitType in unitTypes.types)
       {
         if (!unitType.isAvailable()
             || !::get_countries_by_unit_type(unitType.esUnitType).len())

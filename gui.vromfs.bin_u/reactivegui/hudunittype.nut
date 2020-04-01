@@ -9,5 +9,5 @@ return {
   //
 
 
-
+  isSuit       = @() hudState.unitType.value == "suit"
 }

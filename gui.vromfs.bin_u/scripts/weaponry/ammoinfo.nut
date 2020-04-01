@@ -1,4 +1,5 @@
 local { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 local AMMO = {
   PRIMARY      = 0, //bullets, modifications
@@ -58,7 +59,7 @@ local function isAmmoFree(unit, ammoName, ammoType)
 
 local function getAmmoWarningMinimum(ammoType, unit, maxAmount)
 {
-  if (unit.unitType == ::g_unit_type.SHIP)
+  if (unit.unitType == unitTypes.SHIP)
     return max(1, maxAmount / 10)
   return (ammoType == AMMO.MODIFICATION) ? ::weaponsWarningMinimumPrimary
     : ::weaponsWarningMinimumSecondary

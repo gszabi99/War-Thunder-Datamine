@@ -1,3 +1,5 @@
+local unitTypes = require("scripts/unit/unitTypesList.nut")
+
 class ::items_classes.Ticket extends ::BaseItem
 {
   static iType = itemType.TICKET
@@ -133,7 +135,7 @@ class ::items_classes.Ticket extends ::BaseItem
     local unitTypeMask = ::events.getEventUnitTypesMask(event)
 
     local unitsString = ""
-    foreach(unitType in ::g_unit_type.types)
+    foreach(unitType in unitTypes.types)
       if (unitType.bit & unitTypeMask)
         unitsString += "_" + unitType.name
 

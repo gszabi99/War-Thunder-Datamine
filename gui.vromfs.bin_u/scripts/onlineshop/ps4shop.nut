@@ -167,6 +167,11 @@ class ::gui_handlers.Ps4Shop extends ::gui_handlers.IngameConsoleStore
     fillItemsList()
     ::g_discount.updateOnlineShopDiscounts()
   }
+
+  function onEventSignOut(p)
+  {
+    psnStore.hide_icon()
+  }
 }
 
 return shopData.__merge({

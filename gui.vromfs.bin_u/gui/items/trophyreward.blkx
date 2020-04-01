@@ -26,11 +26,18 @@
         "class": "button",
         "_on_click": "onViewRewards",
         "overflow": "visible",
-        "img": {
-          "id": "reward_image",
-          "pos": "0, 0",
+        "div": {
+          "id": "reward_image_place",
           "position": "relative",
-          "size": "1@chestRewardWidth, 1@chestRewardHeight"
+          "size": "pw, ph",
+          "img": {
+            "id": "reward_image",
+            "pos": "50%pw-50%w, -0.5@rewardInTrophyWndTopPos",
+            "position": "relative",
+            "width": "pw",
+            "height": "ph",
+            "display": "hide"
+          }
         },
         "tdiv": [
           {

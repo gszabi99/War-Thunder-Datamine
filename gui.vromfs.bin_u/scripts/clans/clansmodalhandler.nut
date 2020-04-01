@@ -1,3 +1,4 @@
+local { clearBorderSymbols } = require("std/string.nut")
 local time = require("scripts/time.nut")
 local clanContextMenu = ::require("scripts/clans/clanContextMenu.nut")
 local clanInfoView = require("scripts/clans/clanInfoView.nut")
@@ -513,7 +514,7 @@ class ::gui_handlers.ClansModalHandler extends ::gui_handlers.clanPageModal
   {
     curClanLbPage = 0
     searchRequest = scene.findObject("search_edit").getValue()
-    searchRequest = searchRequest.len() > 0 ? ::clearBorderSymbols(searchRequest, [" "]) : ""
+    searchRequest = searchRequest.len() > 0 ? clearBorderSymbols(searchRequest, [" "]) : ""
     isSearchMode = searchRequest.len() > 0
     showEmptySearchResult(false)
     if(isSearchMode)

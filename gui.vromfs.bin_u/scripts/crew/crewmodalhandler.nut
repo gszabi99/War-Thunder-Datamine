@@ -4,6 +4,7 @@ local { getUnitBasicRole, getRoleText } = require("scripts/unit/unitInfoTexts.nu
 local crewSkillsPageHandler = require("scripts/crew/crewSkillsPageHandler.nut")
 local { getSkillValue } = require("scripts/crew/crewSkills.nut")
 local tutorAction = require("scripts/tutorials/tutorialActions.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 ::gui_modal_crew <- function gui_modal_crew(params = {})
 {
@@ -191,7 +192,7 @@ class ::gui_handlers.CrewModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     local data = ""
     local crewUnitTypes = []
-    foreach(unitType in ::g_unit_type.types)
+    foreach(unitType in unitTypes.types)
     {
       if (!unitType.isVisibleInShop())
         continue

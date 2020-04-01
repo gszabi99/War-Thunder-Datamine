@@ -6,16 +6,17 @@ local { getUnitRole, getUnitBasicRole, getRoleText, getUnitTooltipImage,
 local { countMeasure } = ::require("scripts/options/optionsMeasureUnits.nut")
 local { getWeaponInfoText } = require("scripts/weaponry/weaponryVisual.nut")
 local { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 local UNIT_INFO_ARMY_TYPE  = {
-  AIR        = ::g_unit_type.AIRCRAFT.bit
-  TANK       = ::g_unit_type.TANK.bit
-  SHIP       = ::g_unit_type.SHIP.bit
-  HELICOPTER = ::g_unit_type.HELICOPTER.bit
+  AIR        = unitTypes.AIRCRAFT.bit
+  TANK       = unitTypes.TANK.bit
+  SHIP       = unitTypes.SHIP.bit
+  HELICOPTER = unitTypes.HELICOPTER.bit
 
-  AIR_TANK   = ::g_unit_type.AIRCRAFT.bit | ::g_unit_type.TANK.bit
-  ALL        = ::g_unit_type.AIRCRAFT.bit | ::g_unit_type.TANK.bit
-               | ::g_unit_type.SHIP.bit | ::g_unit_type.HELICOPTER.bit
+  AIR_TANK   = unitTypes.AIRCRAFT.bit | unitTypes.TANK.bit
+  ALL        = unitTypes.AIRCRAFT.bit | unitTypes.TANK.bit
+               | unitTypes.SHIP.bit | unitTypes.HELICOPTER.bit
 }
 enum UNIT_INFO_ORDER{
   TRAIN_COST = 0,

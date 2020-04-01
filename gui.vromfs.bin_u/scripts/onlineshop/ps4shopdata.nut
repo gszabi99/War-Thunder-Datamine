@@ -109,6 +109,9 @@ local fillLinkFullInfo = @(category = "") makeRequestForNextCategory(requestLink
 
 local itemIndex = 0
 local onReceivedResponeOnFullInfo = function(response, category, linksList) {
+  if (!(category in persist.categoriesData))
+    return
+
   if (response != null)
     response.each(function(linkBlock, idx) {
       local label = linkBlock.label
@@ -194,7 +197,14 @@ requestCategoryFullLinksList = @(category) psn.fetch(psn.commerce.listCategory(c
       ::dagor.debug("PSN: Shop Data: requestCategoryFullLinksList: Category " + category + ", Error receieved: " + ::toString(err))
       return
     }
+
+    if (!(category in persist.categoriesData))
+      return
+
     ::statsd_counter($"ingame_store.request.CategoryFullLinksList.{category}.success")
+
+    if (typeof response != "array") //Inconsistent response, can be table
+      response = [response]
 
     fillBlock("links", persist.categoriesData[category], response[0].links)
 
@@ -297,12 +307,16 @@ local updateSpecificItemInfo = function(id)
         ::dagor.debug("PSN: Shop Data: updateSpecificItemInfo: items: " + ::toString(linksArray) + "; Error: " + ::toString(err))
         return
       }
+
       ::statsd_counter($"ingame_store.request.updateSpecificItemInfo.success")
 
       foreach (idx, itemData in response)
       {
         local itemId = linksArray[idx]
         local shopItem = getShopItem(itemId)
+
+        if (!(shopItem.category in persist.categoriesData))
+          continue
 
         local linksBlock = persist.categoriesData[shopItem.category].links
         // No need old info, remove block, and fill with new one

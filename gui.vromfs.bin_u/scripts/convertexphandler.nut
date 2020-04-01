@@ -1,3 +1,5 @@
+local unitTypes = require("scripts/unit/unitTypesList.nut")
+
 enum windowState
 {
   research,
@@ -212,7 +214,7 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::check_obj(listObj))
       return
 
-    unitTypesList = ::u.filter(::g_unit_type.types, @(unitType) unitType.isVisibleInShop())
+    unitTypesList = ::u.filter(unitTypes.types, @(unitType) unitType.isVisibleInShop())
     local view = { items = [] }
     foreach (idx, unitType in unitTypesList)
       view.items.append({
@@ -460,8 +462,8 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     local selObj = obj.getChild(value)
 
-    local unitType = ::g_unit_type.getByArmyId(selObj?.id)
-    if (unitType != ::g_unit_type.INVALID)
+    local unitType = unitTypes.getByArmyId(selObj?.id)
+    if (unitType != unitTypes.INVALID)
       handleSwitchUnitList(unitType.esUnitType)
   }
 
@@ -492,7 +494,7 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
       newUnit = ::getCountryResearchUnit(country, ::get_es_unit_type(unit))
     if (!newUnit)
     {
-      foreach (unitType in ::g_unit_type.types)
+      foreach (unitType in unitTypes.types)
       {
         if (!unitType.canSpendGold())
           continue
@@ -589,7 +591,7 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
   function onEventUnitBought(params)
   {
     local unitName = ::getTblValue("unitName", params)
-    if (!unitName || unit.name != unitName)
+    if (!unitName || unit?.name != unitName)
       return
 
     local handler = this

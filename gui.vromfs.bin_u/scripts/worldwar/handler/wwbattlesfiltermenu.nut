@@ -1,4 +1,5 @@
 local stdMath = require("std/math.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 local battlesFilters = [
   {
@@ -8,9 +9,9 @@ local battlesFilters = [
     onCancelEdit = "goBack"
     needWrapNavigation = true
     list = []
-    visibleFilterByUnitTypeMasks = [::g_unit_type.AIRCRAFT.bit, ::g_unit_type.TANK.bit,
-      ::g_unit_type.SHIP.bit, ::g_unit_type.AIRCRAFT.bit | ::g_unit_type.TANK.bit,
-      ::g_unit_type.AIRCRAFT.bit | ::g_unit_type.SHIP.bit]
+    visibleFilterByUnitTypeMasks = [unitTypes.AIRCRAFT.bit, unitTypes.TANK.bit,
+      unitTypes.SHIP.bit, unitTypes.AIRCRAFT.bit | unitTypes.TANK.bit,
+      unitTypes.AIRCRAFT.bit | unitTypes.SHIP.bit]
     checkChangeValue = function(filterBitMasks, newFilterBitMasks, apply, cancel) {
       local id = "by_unit_type"
       local filterMasks = filterBitMasks?[id] ?? {}
@@ -141,7 +142,7 @@ class ::gui_handlers.wwBattlesFilterMenu extends ::gui_handlers.BaseGuiHandlerWT
       local option = {}
       local isSelected = filterMasks?[unitTypeMask.tostring()] ?? true
       option.text <- ::g_string.implode(
-        ::g_unit_type.getArrayBybitMask(unitTypeMask).map(@(u) u.getArmyLocName()),
+        unitTypes.getArrayBybitMask(unitTypeMask).map(@(u) u.getArmyLocName()),
         " + ")
       option.show <- option.text != ""
       categoryMask = stdMath.change_bit(categoryMask, idx, isSelected)

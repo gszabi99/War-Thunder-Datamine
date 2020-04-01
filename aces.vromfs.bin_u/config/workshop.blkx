@@ -2094,9 +2094,110 @@
         "id": 2900236,
         "trueRecipe": 2900237
       }
+    },
+    {
+      "item": [
+        {
+          "id": 2900240
+        },
+        {
+          "trueRecipe": 2900241
+        },
+        {
+          "trueRecipe": 2900245
+        },
+        {
+          "trueRecipe": 2900249
+        },
+        {
+          "trueRecipe": 2900253
+        }
+      ]
+    },
+    {
+      "item": [
+        {
+          "id": 2900256
+        },
+        {
+          "trueRecipe": 2900257
+        },
+        {
+          "trueRecipe": 2900261
+        },
+        {
+          "trueRecipe": 2900265
+        },
+        {
+          "trueRecipe": 2900269
+        }
+      ]
+    },
+    {
+      "item": [
+        {
+          "id": 2900272
+        },
+        {
+          "trueRecipe": 2900273
+        },
+        {
+          "trueRecipe": 2900277
+        },
+        {
+          "trueRecipe": 2900281
+        },
+        {
+          "trueRecipe": 2900285
+        }
+      ]
+    },
+    {
+      "item": {
+        "id": 2900018,
+        "trueRecipe": 2900037
+      }
+    },
+    {
+      "item": {
+        "id": 2900023,
+        "trueRecipe": 2900040
+      }
+    },
+    {
+      "item": {
+        "id": 2900024,
+        "trueRecipe": 2900043
+      }
     }
   ],
+  "effectOnStartCraftPresets": {
+    "rocketLaunch": {
+      "showImage": "https://static-ggc.gaijin.net/events/craft_space_race/main_rocket_launch.jpg",
+      "imageRatio": 1.333,
+      "playSound": "craft_event_rocket_launch",
+      "showTimeSec": 5
+    }
+  },
+  "effectOnOpenChestPresets": {
+    "capsuleLanding": {
+      "showImage": "https://static-ggc.gaijin.net/events/craft_space_race/main_capsule_landing.jpg",
+      "imageRatio": 1.333,
+      "playSound": "craft_event_capsule_landing",
+      "showTimeSec": 4
+    }
+  },
   "itemMarkingPresets": {
+    "rocketWithoutFuel": {
+      "color": "#ff4b38",
+      "markIconLocId": "",
+      "additionalDesc": "workshop/itemMarkingPresets/rocketWithoutFuel/desc"
+    },
+    "rocketReadyToLaunch": {
+      "color": "#20F020",
+      "markIconLocId": "",
+      "additionalDesc": "workshop/itemMarkingPresets/rocketReadyToLaunch/desc"
+    },
     "shipStructures": {
       "color": "#808000",
       "markIconLocId": "workshop/itemMarkingPresets/shipStructures/icon",
@@ -2158,6 +2259,30 @@
       "msgBoxConfirmWhithItemName": "msgBox/assembleItem/confirm",
       "actionButton": "item/assemble"
     },
+    "spaceFlightMaxSdKfz": {
+      "reachedMaxAmount": "spaceFlight/reachedMaxAmount/sdkfz_234_1"
+    },
+    "spaceFlightMaxSgb": {
+      "reachedMaxAmount": "spaceFlight/reachedMaxAmount/sgb_309"
+    },
+    "spaceFlight": {
+      "assemble": "spaceFlight/item/recipes",
+      "recipes": "spaceFlight/item/recipes",
+      "descReceipesListHeaderPrefix": "spaceFlight/item/requires/",
+      "msgBoxCantUse": "spaceFlight/msgBox/assembleItem/cant",
+      "msgBoxConfirmWhithItemName": "spaceFlight/msgBox/assembleItem/confirm",
+      "craftCountdown": "spaceFlight/items/craft_process/countdown",
+      "headerRecipesList": "spaceFlight/item/create_header",
+      "craftingIconInAmmount": "icon/hud_msg_mp_dmg/rocket",
+      "createRecipes": "spaceFlight/item/create_recipes"
+    },
+    "spaceFlightCraftProcess": {
+      "cancelTitle": "spaceFlight/mainmenu/craftCanceled/title",
+      "craftTime": "spaceFlight/msgBox/assembleItem/time",
+      "rewardTitle": "spaceFlight/mainmenu/itemAssembled/title",
+      "msgBoxCantUse": "spaceFlight/msgBox/cancelCraftProcess/cant",
+      "msgBoxConfirm": "spaceFlight/msgBox/cancelCraftProcess/confirm"
+    },
     "instantCraft": {
       "msgBoxConfirmWhithItemName": "msgBox/assembleItem/confirm/instant",
       "actionButton": "item/assemble/instant"
@@ -2192,5 +2317,938 @@
       "markTooltipPrefix": "item/quiz_answers/markTooltip/",
       "craftFinishedTitlePrefix": "mainmenu/quiz_answered/title/"
     }
+  },
+  "craft_event_2020_spring": {
+    "locId": "unlocks/chapter/craft_2020_spring",
+    "hasSubsets": false,
+    "reqFeature": "spring2020Craft",
+    "eventPreview": [
+      {
+        "main_header": "unlocks/chapter/craft_2020_spring"
+      },
+      {
+        "main_image": "https://static-ggc.gaijin.net/events/craft_space_race/main_event_preview.jpg"
+      },
+      {
+        "main_image_scale": 1.333
+      },
+      {
+        "text": "workshop/craft_event_2020_spring_preview_1"
+      },
+      {
+        "space": 1.0
+      },
+      {
+        "text": "workshop/craft_event_2020_spring_preview_2"
+      },
+      {
+        "space": 0.5
+      },
+      {
+        "text": "workshop/craft_event_2020_spring_preview_3"
+      },
+      {
+        "image": "https://static-ggc.gaijin.net/events/craft_space_race/preview_craft_scheme.png"
+      },
+      {
+        "imageScale": 2.0
+      },
+      {
+        "space": 0.5
+      },
+      {
+        "text": "workshop/craft_event_2020_spring_preview_4"
+      },
+      {
+        "space": 0.75
+      },
+      {
+        "text": "workshop/craft_event_2020_spring_preview_5"
+      }
+    ],
+    "craftTree": [
+      {
+        "main_header": "workshop/craft_event_2019_autumn/craft_tree/open_button"
+      },
+      {
+        "openButtonLocId": "workshop/craft_event_2019_autumn/craft_tree/open_button"
+      },
+      {
+        "bodyItemsTitle": "workshop/craft_event_2020_spring/craft_tree/materials"
+      },
+      {
+        "bodyItemsTitle": "workshop/craft_event_2020_spring/craft_tree/rocket"
+      },
+      {
+        "bodyItemsTitle": "workshop/craft_event_2020_spring/craft_tree/rocket_launch"
+      },
+      {
+        "allowableResources": [
+          {
+            "allowableResource": 2900001
+          },
+          {
+            "allowableResource": 2900002
+          },
+          {
+            "allowableResource": 2900003
+          },
+          {
+            "allowableResource": 2900004
+          },
+          {
+            "allowableResource": 2900005
+          },
+          {
+            "allowableResource": 2900006
+          },
+          {
+            "allowableResource": 2900007
+          },
+          {
+            "allowableResource": 2900008
+          },
+          {
+            "allowableResource": 2900009
+          },
+          {
+            "allowableResource": 2900010
+          },
+          {
+            "allowableResource": 2900012
+          }
+        ]
+      },
+      {
+        "allowableResources": [
+          {
+            "allowableResource": 2900011
+          },
+          {
+            "allowableResource": 2900012
+          },
+          {
+            "allowableResource": 2900013
+          },
+          {
+            "allowableResource": 2900014
+          },
+          {
+            "allowableResource": 2900015
+          }
+        ]
+      },
+      {
+        "treeBlock": {
+          "bodyItemIdx": 0,
+          "conectionInRowText": "",
+          "2900001": {
+            "posXY": [1,1]
+          },
+          "2900007": {
+            "posXY": [1,2],
+            "reqItem": "2900001",
+            "showResources": true
+          },
+          "2900008": {
+            "posXY": [1,3],
+            "reqItem": "2900007",
+            "showResources": true
+          },
+          "2900011": [
+            {
+              "posXY": [1,4]
+            },
+            {
+              "reqItem": "2900008"
+            },
+            {
+              "reqItem": "2900012"
+            },
+            {
+              "showResources": true
+            }
+          ],
+          "2900002": {
+            "posXY": [2,1]
+          },
+          "2900012": [
+            {
+              "posXY": [2,3]
+            },
+            {
+              "reqItem": "2900002"
+            },
+            {
+              "reqItem": "2900009"
+            },
+            {
+              "showResources": true
+            }
+          ],
+          "2900003": {
+            "posXY": [3,1]
+          },
+          "2900009": {
+            "posXY": [3,2],
+            "reqItem": "2900003",
+            "showResources": true
+          },
+          "2900013": {
+            "posXY": [3,4],
+            "reqItem": "2900009",
+            "showResources": true
+          },
+          "2900004": {
+            "posXY": [4,1]
+          },
+          "2900010": [
+            {
+              "posXY": [4,3]
+            },
+            {
+              "reqItem": "2900004"
+            },
+            {
+              "reqItem": "2900009"
+            },
+            {
+              "showResources": true
+            }
+          ],
+          "2900014": {
+            "posXY": [4,4],
+            "reqItem": "2900010",
+            "showResources": true
+          },
+          "2900005": {
+            "posXY": [5,1]
+          },
+          "2900006": {
+            "posXY": [5,2]
+          },
+          "2900015": [
+            {
+              "posXY": [5,4]
+            },
+            {
+              "reqItem": "2900010"
+            },
+            {
+              "reqItem": "2900006"
+            },
+            {
+              "showResources": true
+            }
+          ]
+        }
+      },
+      {
+        "treeBlock": {
+          "bodyItemIdx": 1,
+          "locId": "workshop/craft_event_2020_spring/craft_tree/first_stage",
+          "conectionInRowText": "",
+          "2900100": {
+            "posXY": [1,1],
+            "showResources": true,
+            "reqItemForCrafting": "!2900220,!2900221,!2900222,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          },
+          "2900104": {
+            "posXY": [1,2],
+            "reqItem": "2900100",
+            "reqItemForIdentification": "2900100",
+            "showResources": true,
+            "reqItemForCrafting": "!2900220,!2900221,!2900222,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          },
+          "2900108": {
+            "posXY": [1,3],
+            "reqItem": "2900104",
+            "reqItemForIdentification": "2900104",
+            "reqItemForDisplaying": "2900100",
+            "showResources": true,
+            "reqItemForCrafting": "!2900220,!2900221,!2900222,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          },
+          "2900112": {
+            "posXY": [1,4],
+            "reqItem": "2900108",
+            "reqItemForIdentification": "2900108",
+            "reqItemForDisplaying": "2900104",
+            "showResources": true,
+            "reqItemForCrafting": "!2900220,!2900221,!2900222,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          },
+          "2900116": {
+            "posXY": [1,5],
+            "reqItem": "2900112",
+            "reqItemForIdentification": "2900112",
+            "reqItemForDisplaying": "2900108",
+            "showResources": true,
+            "reqItemForCrafting": "!2900220,!2900221,!2900222,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          },
+          "2900120": {
+            "posXY": [1,6],
+            "reqItem": "2900116",
+            "reqItemForIdentification": "2900116",
+            "reqItemForDisplaying": "2900112",
+            "showResources": true,
+            "reqItemForCrafting": "!2900220,!2900221,!2900222,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          },
+          "2900220": {
+            "posXY": [1,7],
+            "reqItem": "2900120",
+            "reqItemForIdentification": "2900120",
+            "reqItemForDisplaying": "2900116",
+            "reqItemForCrafting": "!2900220,!2900221,!2900222,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          }
+        }
+      },
+      {
+        "treeBlock": {
+          "bodyItemIdx": 1,
+          "locId": "workshop/craft_event_2020_spring/craft_tree/second_stage",
+          "conectionInRowText": "",
+          "2900124": {
+            "posXY": [2,1],
+            "showResources": true,
+            "reqItemForCrafting": "!2900224,!2900225,!2900226,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          },
+          "2900128": {
+            "posXY": [2,2],
+            "reqItem": "2900124",
+            "reqItemForIdentification": "2900124",
+            "showResources": true,
+            "reqItemForCrafting": "!2900224,!2900225,!2900226,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          },
+          "2900132": {
+            "posXY": [2,3],
+            "reqItem": "2900128",
+            "reqItemForIdentification": "2900128",
+            "reqItemForDisplaying": "2900124",
+            "showResources": true,
+            "reqItemForCrafting": "!2900224,!2900225,!2900226,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          },
+          "2900136": {
+            "posXY": [2,4],
+            "reqItem": "2900132",
+            "reqItemForIdentification": "2900132",
+            "reqItemForDisplaying": "2900128",
+            "showResources": true,
+            "reqItemForCrafting": "!2900224,!2900225,!2900226,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          },
+          "2900140": {
+            "posXY": [2,5],
+            "reqItem": "2900136",
+            "reqItemForIdentification": "2900136",
+            "reqItemForDisplaying": "2900132",
+            "showResources": true,
+            "reqItemForCrafting": "!2900224,!2900225,!2900226,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          },
+          "2900144": {
+            "posXY": [2,6],
+            "reqItem": "2900140",
+            "reqItemForIdentification": "2900140",
+            "reqItemForDisplaying": "2900136",
+            "showResources": true,
+            "reqItemForCrafting": "!2900224,!2900225,!2900226,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          },
+          "2900224": {
+            "posXY": [2,7],
+            "reqItem": "2900144",
+            "reqItemForIdentification": "2900144",
+            "reqItemForDisplaying": "2900140",
+            "reqItemForCrafting": "!2900224,!2900225,!2900226,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          }
+        }
+      },
+      {
+        "treeBlock": {
+          "bodyItemIdx": 1,
+          "locId": "workshop/craft_event_2020_spring/craft_tree/third_stage",
+          "conectionInRowText": "",
+          "2900148": {
+            "posXY": [3,1],
+            "showResources": true,
+            "reqItemForCrafting": "!2900228,!2900229,!2900230,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          },
+          "2900152": {
+            "posXY": [3,2],
+            "reqItem": "2900148",
+            "reqItemForIdentification": "2900148",
+            "showResources": true,
+            "reqItemForCrafting": "!2900228,!2900229,!2900230,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          },
+          "2900156": {
+            "posXY": [3,3],
+            "reqItem": "2900152",
+            "reqItemForIdentification": "2900152",
+            "reqItemForDisplaying": "2900148",
+            "showResources": true,
+            "reqItemForCrafting": "!2900228,!2900229,!2900230,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          },
+          "2900160": {
+            "posXY": [3,4],
+            "reqItem": "2900156",
+            "reqItemForIdentification": "2900156",
+            "reqItemForDisplaying": "2900152",
+            "showResources": true,
+            "reqItemForCrafting": "!2900228,!2900229,!2900230,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          },
+          "2900164": {
+            "posXY": [3,5],
+            "reqItem": "2900160",
+            "reqItemForIdentification": "2900160",
+            "reqItemForDisplaying": "2900156",
+            "showResources": true,
+            "reqItemForCrafting": "!2900228,!2900229,!2900230,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          },
+          "2900168": {
+            "posXY": [3,6],
+            "reqItem": "2900164",
+            "reqItemForIdentification": "2900164",
+            "reqItemForDisplaying": "2900160",
+            "showResources": true,
+            "reqItemForCrafting": "!2900228,!2900229,!2900230,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          },
+          "2900228": {
+            "posXY": [3,7],
+            "reqItem": "2900168",
+            "reqItemForIdentification": "2900168",
+            "reqItemForDisplaying": "2900164",
+            "reqItemForCrafting": "!2900228,!2900229,!2900230,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          }
+        }
+      },
+      {
+        "treeBlock": {
+          "bodyItemIdx": 1,
+          "locId": "workshop/craft_event_2020_spring/craft_tree/instrument_unit",
+          "conectionInRowText": "",
+          "2900172": {
+            "posXY": [4,1],
+            "showResources": true,
+            "reqItemForCrafting": "!2900232,!2900233,!2900234,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          },
+          "2900176": {
+            "posXY": [4,2],
+            "reqItem": "2900172",
+            "reqItemForIdentification": "2900172",
+            "showResources": true,
+            "reqItemForCrafting": "!2900232,!2900233,!2900234,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          },
+          "2900180": {
+            "posXY": [4,3],
+            "reqItem": "2900176",
+            "reqItemForIdentification": "2900176",
+            "reqItemForDisplaying": "2900172",
+            "showResources": true,
+            "reqItemForCrafting": "!2900232,!2900233,!2900234,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          },
+          "2900184": {
+            "posXY": [4,4],
+            "reqItem": "2900180",
+            "reqItemForIdentification": "2900180",
+            "reqItemForDisplaying": "2900176",
+            "showResources": true,
+            "reqItemForCrafting": "!2900232,!2900233,!2900234,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          },
+          "2900188": {
+            "posXY": [4,5],
+            "reqItem": "2900184",
+            "reqItemForIdentification": "2900184",
+            "reqItemForDisplaying": "2900180",
+            "showResources": true,
+            "reqItemForCrafting": "!2900232,!2900233,!2900234,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          },
+          "2900192": {
+            "posXY": [4,6],
+            "reqItem": "2900188",
+            "reqItemForIdentification": "2900188",
+            "reqItemForDisplaying": "2900184",
+            "showResources": true,
+            "reqItemForCrafting": "!2900232,!2900233,!2900234,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          },
+          "2900232": {
+            "posXY": [4,7],
+            "reqItem": "2900192",
+            "reqItemForIdentification": "2900192",
+            "reqItemForDisplaying": "2900188",
+            "reqItemForCrafting": "!2900232,!2900233,!2900234,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          }
+        }
+      },
+      {
+        "treeBlock": {
+          "bodyItemIdx": 1,
+          "locId": "workshop/craft_event_2020_spring/craft_tree/spacecraft",
+          "conectionInRowText": "",
+          "2900196": {
+            "posXY": [5,1],
+            "showResources": true,
+            "reqItemForCrafting": "!2900236,!2900237,!2900238,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          },
+          "2900200": {
+            "posXY": [5,2],
+            "reqItem": "2900196",
+            "reqItemForIdentification": "2900196",
+            "showResources": true,
+            "reqItemForCrafting": "!2900236,!2900237,!2900238,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          },
+          "2900204": {
+            "posXY": [5,3],
+            "reqItem": "2900200",
+            "reqItemForIdentification": "2900200",
+            "reqItemForDisplaying": "2900196",
+            "showResources": true,
+            "reqItemForCrafting": "!2900236,!2900237,!2900238,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          },
+          "2900208": {
+            "posXY": [5,4],
+            "reqItem": "2900204",
+            "reqItemForIdentification": "2900204",
+            "reqItemForDisplaying": "2900200",
+            "showResources": true,
+            "reqItemForCrafting": "!2900236,!2900237,!2900238,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          },
+          "2900212": {
+            "posXY": [5,5],
+            "reqItem": "2900208",
+            "reqItemForIdentification": "2900208",
+            "reqItemForDisplaying": "2900204",
+            "showResources": true,
+            "reqItemForCrafting": "!2900236,!2900237,!2900238,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          },
+          "2900216": {
+            "posXY": [5,6],
+            "reqItem": "2900212",
+            "reqItemForIdentification": "2900212",
+            "reqItemForDisplaying": "2900208",
+            "showResources": true,
+            "reqItemForCrafting": "!2900236,!2900237,!2900238,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          },
+          "2900236": {
+            "posXY": [5,7],
+            "reqItem": "2900216",
+            "reqItemForIdentification": "2900216",
+            "reqItemForDisplaying": "2900212",
+            "reqItemForCrafting": "!2900236,!2900237,!2900238,!2900023,!2900040,!2900041,!2900024,!2900043,!2900044"
+          }
+        }
+      },
+      {
+        "treeBlock": [
+          {
+            "bodyItemIdx": 2
+          },
+          {
+            "conectionInRowText": ""
+          },
+          {
+            "2900016": {
+              "posXY": [1,1]
+            }
+          },
+          {
+            "2900017": {
+              "posXY": [2,1]
+            }
+          },
+          {
+            "2900018": [
+              {
+                "posXY": [2,2]
+              },
+              {
+                "reqItem": "2900016"
+              },
+              {
+                "reqItem": "2900017"
+              }
+            ]
+          },
+          {
+            "2900023": {
+              "posXY": [3,1]
+            }
+          },
+          {
+            "2900024": [
+              {
+                "posXY": [3,2]
+              },
+              {
+                "reqItem": "2900018"
+              },
+              {
+                "reqItem": "2900023"
+              }
+            ]
+          },
+          {
+            "2900240": {
+              "posXY": [2,3],
+              "reqItem": "2900024"
+            }
+          },
+          {
+            "2900256": {
+              "posXY": [3,3],
+              "reqItem": "2900024",
+              "reqItemForIdentification": "2900240",
+              "reqItemForCrafting": "2900240"
+            }
+          },
+          {
+            "2900272": {
+              "posXY": [4,3],
+              "reqItem": "2900024",
+              "reqItemForIdentification": "2900256",
+              "reqItemForCrafting": "2900240,2900256"
+            }
+          },
+          {
+            "50091": {
+              "posXY": [1,4],
+              "reqItem": "2900240"
+            }
+          },
+          {
+            "50092": {
+              "posXY": [2,4],
+              "reqItem": "2900240"
+            }
+          },
+          {
+            "50094": [
+              {
+                "posXY": [3,4]
+              },
+              {
+                "reqItem": "2900240"
+              },
+              {
+                "reqItem": "2900256"
+              },
+              {
+                "reqItem": "2900272"
+              }
+            ]
+          },
+          {
+            "50093": {
+              "posXY": [3,5],
+              "reqItem": "50094"
+            }
+          },
+          {
+            "textArea": {
+              "posXYFrom": [4.0,1.0],
+              "posXYTo": [5.0,1.0],
+              "text": "workshop/craft_event_2020_spring_help_1"
+            }
+          },
+          {
+            "textArea": {
+              "posXYFrom": [4.0,2.0],
+              "posXYTo": [5.0,2.0],
+              "text": "workshop/craft_event_2020_spring_help_2"
+            }
+          },
+          {
+            "textArea": [
+              {
+                "posXYFrom": [4.0,4.0]
+              },
+              {
+                "posXYTo": [5.0,5.0]
+              },
+              {
+                "text": "workshop/craft_event_2020_spring_help_3"
+              },
+              {
+                "text": "workshop/craft_event_2020_spring_help_4"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "itemBlock": [
+          {
+            "alwaysVisibleItem": 2900000
+          },
+          {
+            "alwaysVisibleItem": 2900026
+          },
+          {
+            "alwaysVisibleItem": 2900001
+          },
+          {
+            "alwaysVisibleItem": 2900002
+          },
+          {
+            "alwaysVisibleItem": 2900003
+          },
+          {
+            "alwaysVisibleItem": 2900004
+          },
+          {
+            "alwaysVisibleItem": 2900005
+          },
+          {
+            "alwaysVisibleItem": 2900006
+          },
+          {
+            "alwaysVisibleItem": 2900011
+          },
+          {
+            "alwaysVisibleItem": 2900012
+          },
+          {
+            "alwaysVisibleItem": 2900013
+          },
+          {
+            "alwaysVisibleItem": 2900014
+          },
+          {
+            "alwaysVisibleItem": 2900015
+          }
+        ]
+      },
+      {
+        "itemBlock": [
+          {
+            "alwaysVisibleItem": 2900025
+          },
+          {
+            "item": 2900055
+          },
+          {
+            "alwaysVisibleItem": 2900016
+          },
+          {
+            "alwaysVisibleItem": 2900017
+          },
+          {
+            "alwaysVisibleItem": 2900019
+          }
+        ]
+      },
+      {
+        "itemBlock": [
+          {
+            "passBySavedReqItems": false
+          },
+          {
+            "reqItems": "2900019"
+          },
+          {
+            "alwaysVisibleItem": 2900020
+          },
+          {
+            "alwaysVisibleItem": 2900021
+          },
+          {
+            "alwaysVisibleItem": 2900022
+          }
+        ]
+      },
+      {
+        "itemBlock": {
+          "passBySavedReqItems": false,
+          "reqItems": "50094",
+          "alwaysVisibleItem": 50094
+        }
+      },
+      {
+        "itemBlock": {
+          "passBySavedReqItems": false,
+          "reqItems": "50093",
+          "alwaysVisibleItem": 50093
+        }
+      },
+      {
+        "itemBlock": {
+          "passBySavedReqItems": false,
+          "reqItems": "50091",
+          "alwaysVisibleItem": 50091
+        }
+      },
+      {
+        "itemBlock": {
+          "passBySavedReqItems": false,
+          "reqItems": "50092",
+          "alwaysVisibleItem": 50092
+        }
+      },
+      {
+        "itemBlock": [
+          {
+            "alwaysVisibleItem": 2900051
+          },
+          {
+            "alwaysVisibleItem": 40139
+          },
+          {
+            "alwaysVisibleItem": 40140
+          },
+          {
+            "alwaysVisibleItem": 40141
+          },
+          {
+            "alwaysVisibleItem": 40142
+          }
+        ]
+      },
+      {
+        "itemBlock": {
+          "passBySavedReqItems": false,
+          "reqItems": "40135",
+          "alwaysVisibleItem": 40135
+        }
+      },
+      {
+        "itemBlock": {
+          "passBySavedReqItems": false,
+          "reqItems": "40136",
+          "alwaysVisibleItem": 40136
+        }
+      },
+      {
+        "itemBlock": {
+          "passBySavedReqItems": false,
+          "reqItems": "40137",
+          "alwaysVisibleItem": 40137
+        }
+      },
+      {
+        "itemBlock": {
+          "passBySavedReqItems": false,
+          "reqItems": "40138",
+          "alwaysVisibleItem": 40138
+        }
+      },
+      {
+        "itemBlock": [
+          {
+            "showOnlyInCraftTree": true
+          },
+          {
+            "item": 2900100
+          },
+          {
+            "item": 2900104
+          },
+          {
+            "item": 2900108
+          },
+          {
+            "item": 2900112
+          },
+          {
+            "item": 2900116
+          },
+          {
+            "item": 2900120
+          },
+          {
+            "item": 2900124
+          },
+          {
+            "item": 2900128
+          },
+          {
+            "item": 2900132
+          },
+          {
+            "item": 2900136
+          },
+          {
+            "item": 2900140
+          },
+          {
+            "item": 2900144
+          },
+          {
+            "item": 2900148
+          },
+          {
+            "item": 2900152
+          },
+          {
+            "item": 2900156
+          },
+          {
+            "item": 2900160
+          },
+          {
+            "item": 2900164
+          },
+          {
+            "item": 2900168
+          },
+          {
+            "item": 2900172
+          },
+          {
+            "item": 2900176
+          },
+          {
+            "item": 2900180
+          },
+          {
+            "item": 2900184
+          },
+          {
+            "item": 2900188
+          },
+          {
+            "item": 2900192
+          },
+          {
+            "item": 2900196
+          },
+          {
+            "item": 2900200
+          },
+          {
+            "item": 2900204
+          },
+          {
+            "item": 2900208
+          },
+          {
+            "item": 2900212
+          },
+          {
+            "item": 2900216
+          },
+          {
+            "item": 2900220
+          },
+          {
+            "item": 2900224
+          },
+          {
+            "item": 2900228
+          },
+          {
+            "item": 2900232
+          },
+          {
+            "item": 2900236
+          },
+          {
+            "item": 2900240
+          },
+          {
+            "item": 2900256
+          },
+          {
+            "item": 2900272
+          }
+        ]
+      }
+    ]
   }
 }

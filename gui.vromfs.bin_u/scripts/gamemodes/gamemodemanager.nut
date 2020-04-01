@@ -1,5 +1,6 @@
 local RB_GM_TYPE = require("scripts/gameModes/rbGmTypes.nut")
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 ::featured_modes <- [
   {
@@ -597,7 +598,7 @@ class GameModeManager
     if (!inactiveColor)
       foreach(esUnitType in reqUnitTypes)
       {
-        inactiveColor = !::g_unit_type.getByEsUnitType(esUnitType).isAvailable()
+        inactiveColor = !unitTypes.getByEsUnitType(esUnitType).isAvailable()
         if (inactiveColor)
           break
       }
@@ -638,7 +639,7 @@ class GameModeManager
     _clearGameModes()
 
     local newbieGmByUnitType = {}
-    foreach (unitType in ::g_unit_type.types)
+    foreach (unitType in unitTypes.types)
     {
       local event = ::my_stats.getNextNewbieEvent(null, unitType.esUnitType, false)
       if (event)
@@ -689,7 +690,7 @@ class GameModeManager
     if (!gameMode)
       return []
 
-    local filteredUnitTypes = ::u.filter(::g_unit_type.types,
+    local filteredUnitTypes = ::u.filter(unitTypes.types,
       @(unitType) isOnlyAvailable ? unitType.isAvailable() : unitType)
     if (gameMode.type != RB_GM_TYPE.EVENT)
       return ::u.map(filteredUnitTypes, @(unitType) unitType.esUnitType)

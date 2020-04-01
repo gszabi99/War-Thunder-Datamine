@@ -1,3 +1,4 @@
+local { clearBorderSymbolsMultiline } = require("std/string.nut")
 local { getWeaponNameText } = require("scripts/weaponry/weaponryVisual.nut")
 local changeStartMission = require("scripts/missions/changeStartMission.nut")
 
@@ -447,7 +448,7 @@ class ::gui_handlers.LoadingBrief extends ::gui_handlers.BaseGuiHandlerWT
           misObj += (misObj.len() ? "\n\n" : "") + misObj_add
 
         misObj = ::colorize("userlogColoredText", ::loc_current_mission_name(false)) +
-          "\n\n" + ::clearBorderSymbolsMultiline(misObj)
+          "\n\n" + clearBorderSymbolsMultiline(misObj)
         setMissionObjective(misObj)
       }
 

@@ -259,7 +259,7 @@
         }
       },
       "turret_cha": {
-        "armorClass": "CHA_tank_modern",
+        "armorClass": "RHA_tank_modern",
         "gun_mask_01_dm": {
           "armorThickness": 30.0,
           "solidArmorTestDepth": 50.0
@@ -328,8 +328,9 @@
           "armorThickness": 15.0
         },
         "turret_04_back_dm": {
-          "armorThickness": 25.0,
-          "createSecondaryShatters": false
+          "armorThickness": 10.0,
+          "createSecondaryShatters": false,
+          "armorClass": "aluminium"
         },
         "turret_01_back_dm": {
           "armorThickness": 10.0
@@ -407,7 +408,9 @@
           "armorThickness": 20.0
         },
         "turret_03_side_dm": {
-          "armorThickness": 20.0
+          "armorThickness": 10.0,
+          "createSecondaryShatters": false,
+          "armorClass": "aluminium"
         },
         "turret_02_side_dm": {
           "armorThickness": 45.0,
@@ -554,6 +557,8 @@
         "hp": 100.0,
         "armorThickness": 3.0,
         "createSecondaryShatters": false,
+        "ex_decor_l_04_dm": [],
+        "ex_decor_r_04_dm": [],
         "ex_decor_r_05_dm": [],
         "ex_decor_l_05_dm": [],
         "ex_decor_r_06_dm": [],
@@ -600,6 +605,8 @@
         "ex_era_hull_12_dm": [],
         "ex_era_hull_13_dm": [],
         "ex_era_hull_14_dm": [],
+        "ex_era_hull_28_dm": [],
+        "ex_era_hull_31_dm": [],
         "ex_armor_l_02_dm": [],
         "ex_armor_r_02_dm": []
       },
@@ -2192,6 +2199,32 @@
       },
       {
         "armorArrayERA": {
+          "xrayDmPart": "ex_era_hull_31_dm",
+          "titleLoc": "leopard_2a5_turret_nera",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 400.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_31_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayERA": {
+          "xrayDmPart": "ex_era_hull_28_dm",
+          "titleLoc": "leopard_2a5_turret_nera",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 400.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_28_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayERA": {
           "xrayDmPart": "ex_era_hull_26_dm",
           "titleLoc": "uk_era_romor_a",
           "kineticProtectionEquivalent": 30.0,
@@ -3675,6 +3708,24 @@
             },
             {
               "node": "ex_era_hull_26"
+            },
+            {
+              "node": "ex_era_hull_27"
+            },
+            {
+              "node": "ex_era_hull_28"
+            },
+            {
+              "node": "ex_era_hull_29"
+            },
+            {
+              "node": "ex_era_hull_30"
+            },
+            {
+              "node": "ex_era_hull_31"
+            },
+            {
+              "node": "ex_era_hull_32"
             },
             {
               "node": "ex_armor_02"

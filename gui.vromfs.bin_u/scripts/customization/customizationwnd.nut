@@ -2,7 +2,12 @@ local time = require("scripts/time.nut")
 local penalty = require_native("penalty")
 local decorLayoutPresets = require("scripts/customization/decorLayoutPresetsWnd.nut")
 local unitActions = require("scripts/unit/unitActions.nut")
+local unitStatus = require("scripts/unit/unitStatus.nut")
 local contentPreview = require("scripts/customization/contentPreview.nut")
+
+local { canUseIngameShop, getShopItemsTable } = ::is_platform_ps4? require("scripts/onlineShop/ps4ShopData.nut")
+  : ::is_platform_xboxone? require("scripts/onlineShop/xboxShopData.nut")
+    : { canUseIngameShop = @() false, getShopItemsTable = @() {} }
 
 enum decoratorEditState
 {
@@ -718,13 +723,23 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateButtons(decoratorType = null, needUpdateSlotDivs = true)
   {
-    local can_buyUnitOnline = ::canBuyUnitOnline(unit)
-    local can_buyUnitIngame = !can_buyUnitOnline && ::canBuyUnit(unit)
+    local isGift   = ::isUnitGift(unit)
+    local canBuyOnline = ::canBuyUnitOnline(unit)
+    local canBuyNotResearchedUnit = unitStatus.canBuyNotResearched(unit)
+    local canBuyIngame = !canBuyOnline && (::canBuyUnit(unit) || canBuyNotResearchedUnit)
+
+    if (isGift && canUseIngameShop() && getShopItemsTable().len() == 0)
+    {
+      //Override for ingameShop.
+      //There is rare posibility, that shop data is empty.
+      //Because of external error.
+      canBuyOnline = false
+    }
 
     guiScene.setUpdatesEnabled(false, false)
 
-    local bObj = showSceneBtn("btn_buy", can_buyUnitIngame)
-    if (::checkObj(bObj) && can_buyUnitIngame)
+    local bObj = showSceneBtn("btn_buy", canBuyIngame)
+    if (::checkObj(bObj) && canBuyIngame)
     {
       ::placePriceTextToButton(scene,
                                "btn_buy",
@@ -734,8 +749,8 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       ::showUnitDiscount(bObj.findObject("buy_discount"), unit)
     }
 
-    local bOnlineObj = showSceneBtn("btn_buy_online", can_buyUnitOnline)
-    if (::checkObj(bOnlineObj) && can_buyUnitOnline)
+    local bOnlineObj = showSceneBtn("btn_buy_online", canBuyOnline)
+    if (::checkObj(bOnlineObj) && canBuyOnline)
       ::showUnitDiscount(bOnlineObj.findObject("buy_online_discount"), unit)
 
     local skinDecorator = null

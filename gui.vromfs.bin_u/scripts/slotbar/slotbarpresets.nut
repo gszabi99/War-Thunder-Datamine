@@ -1,3 +1,6 @@
+local { clearBorderSymbols } = require("std/string.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
+
 ::slotbarPresets <- {
   [PERSISTENT_DATA_PARAMS] = ["presets", "selected"]
 
@@ -160,8 +163,8 @@
   {
     if ( ! country)
       country = ::get_profile_country_sq()
-    local unitTypes = getUnitTypesWithNotActivePresetBonus(country)
-    local typeNames = ::u.map(unitTypes, function(u) { return u.getArmyLocName()})
+    local types = getUnitTypesWithNotActivePresetBonus(country)
+    local typeNames = ::u.map(types, function(u) { return u.getArmyLocName()})
     return ::g_string.implode(typeNames, ", ")
   }
 
@@ -186,7 +189,7 @@
 
   function getTotalPresetsCount()
   {
-    return baseCountryPresetsAmount + ::g_unit_type.types.len() * eraBonusPresetsAmount
+    return baseCountryPresetsAmount + unitTypes.types.len() * eraBonusPresetsAmount
   }
 
   function getUnitTypesWithNotActivePresetBonus(country = null)
@@ -313,13 +316,13 @@
                       value = oldName,
                       owner = this,
                       checkButtonFunc = function (value) {
-                        return value != null && ::clearBorderSymbols(value).len() > 0
+                        return value != null && clearBorderSymbols(value).len() > 0
                       },
                       validateFunc = function (value) {
                         return ::slotbarPresets.validatePresetName(value)
                       },
                       okFunc = (@(idx, countryId) function(newName) {
-                        onChangePresetName(idx, ::clearBorderSymbols(newName), countryId)
+                        onChangePresetName(idx, clearBorderSymbols(newName), countryId)
                       })(idx, countryId)
                     })
   }

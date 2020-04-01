@@ -3,6 +3,20 @@ local { hasAllFeatures } = require("scripts/user/features.nut")
 local bhvUnseen = ::require("scripts/seen/bhvUnseen.nut")
 local promoConditions = require("scripts/promo/promoConditions.nut")
 local { getPollIdByFullUrl, invalidateTokensCache } = require("scripts/web/webpoll.nut")
+local { canUseIngameShop = @() false,
+        openIngameStore = @() null
+} = ::is_platform_ps4? require("scripts/onlineShop/ps4Shop.nut")
+  : ::is_platform_xboxone? require("scripts/onlineShop/xboxShop.nut")
+  : null
+
+local { getBundleId } = require("scripts/onlineShop/onlineBundles.nut")
+
+enum ONLINE_SHOP_TYPES {
+  WARPOINTS = "warpoints"
+  PREMIUM = "premium"
+  BUNDLE = "bundle"
+  EAGLES = "eagles"
+}
 
 local function openLink(owner, params = [], source = "promo_open_link")
 {
@@ -170,7 +184,25 @@ local openProfileSheetParams = {
       else
         showUnitInShop()
     }
-    email_registration = function(handler, params, obj) { return onLaunchEmailRegistration(params) }
+    email_registration = @(handler, params, obj) onLaunchEmailRegistration(params)
+    online_shop = function(handler, params, obj) {
+      local shopType = params?[0]
+      if (shopType == ONLINE_SHOP_TYPES.BUNDLE
+        || (shopType == ONLINE_SHOP_TYPES.EAGLES && canUseIngameShop()))
+      {
+        local bundleId = getBundleId(params?[1])
+        if (bundleId != "")
+        {
+          if (::is_ps4_or_xbox)
+            openIngameStore({ curItemId = bundleId, openedFrom = "promo" })
+          else
+            ::OnlineShopModel.doBrowserPurchaseByGuid(bundleId, params?[1])
+          return
+        }
+      }
+      else
+        handler.startOnlineShop(shopType, null, "promo")
+    }
   }
 
   collapsedParams = {

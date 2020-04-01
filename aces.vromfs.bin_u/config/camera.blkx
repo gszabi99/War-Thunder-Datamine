@@ -1,6 +1,7 @@
 {
   "cameraHeightOnGround": 3.5,
   "globalCameraShakeLimit": 0.2,
+  "weaponAimCameraHideTimeOut": 0.5,
   "tps": {
     "type": "TpsFlightCamera",
     "fov": 90.0,
@@ -804,6 +805,49 @@
       }
     }
   ],
+  "fps_suit": {
+    "type": "FpsFlightCamera",
+    "fov": 85.0,
+    "zoomFov": 10.0,
+    "targetOffset": [500.0,0.0,0.0],
+    "transitionSpeed": 40.0,
+    "cameraFpXSmoothing": 0.05,
+    "cameraFpYSmoothing": 0.05,
+    "angleFpHorizontal": 160.0,
+    "angleFpVerticalUp": 90.0,
+    "angleFpVerticalDown": 90.0,
+    "angleFpRoll": 45.0,
+    "headAccelScale": [0.03,0.03,0.1],
+    "headMoveLimits": [0.12,0.1,0.12],
+    "headFovLimits": [8.0,30.0],
+    "headPosLookingDown": [0.0,0.0,0.0],
+    "headPosLookingBack": [0.0,0.0,0.12],
+    "startDofDist": 2.0,
+    "maxDofDist": 0.5,
+    "maxDofEffect": 2.0,
+    "useDof": true,
+    "headAccelRotScale": [0.25,0.25,0.25],
+    "headAccelRotGravScale": [0.025,0.045],
+    "headAccelRotLimits": [0.3,0.3,0.78],
+    "immediateToRotVisc": 0.07,
+    "cameraShakePosInfluence": [0.0,0.5,0.03],
+    "cameraShakeDirInfluence": [0.3,0.0,0.0],
+    "shootingTrigger": 0.95,
+    "shootingFov": 10.0,
+    "shootingFovTransitionSpeedTo": 10.0,
+    "shootingFovTransitionSpeedFrom": 50.0,
+    "cameraShakeMultiplier": 0.35,
+    "cameraShakeMultiplierOnShooting": 0.1,
+    "transitionFadeInTime": 0.12,
+    "transitionFadeOutTime": 0.2,
+    "viscosity": 0.0001,
+    "cameraControlSmooth": 0.15,
+    "accelAdaptationVisc": 0.94,
+    "schraegeMusikCameraScreenPart": 0.25,
+    "condition": {
+      "isSuit": []
+    }
+  },
   "camera_binoculars": [
     {
       "type": "TurretCamera"
@@ -3968,6 +4012,9 @@
     ],
     "ground_model": [
       {
+        "camName": "fps_suit"
+      },
+      {
         "camName": "tps_ground"
       },
       {
@@ -3975,6 +4022,9 @@
       },
       {
         "camName": "aim_ground_from_sight"
+      },
+      {
+        "camName": "weapon_aim_camera"
       }
     ],
     "ship": [

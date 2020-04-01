@@ -13,8 +13,6 @@
       "level": "levels/avn_africa_gulf.bin",
       "type": "training",
       "gt_training": false,
-      "restoreType": "manual",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "good",
       "forceSimulInitialRandomSeed": true,
@@ -27,7 +25,9 @@
       "openDiffLevels": false,
       "scoreLimit": 10000,
       "ctaCaptureZoneEqualPenaltyMul": 0.0,
+      "restoreType": "manual",
       "difficulty": "arcade",
+      "optionalTakeOff": false,
       "tutorialObjectsFile": "config/tutorial_hud_elements/tutorial_boat_hud_elements.blk"
     },
     "spectator_points": []
@@ -553,6 +553,12 @@
           }
         },
         {
+          "varSetInt": {
+            "value": 7,
+            "var": "waypoint_number"
+          }
+        },
+        {
           "playerOptions": {
             "stateAIGun": 0
           }
@@ -563,7 +569,7 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "target": "player_centering_point02",
+            "target": "waypoint07",
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
@@ -4313,7 +4319,7 @@
             "show": true,
             "attach": true,
             "scale": 1.0,
-            "target": "waypoint04.5",
+            "target": "waypoint05",
             "radiusOffset": [0.0,0.0]
           }
         },
@@ -4347,7 +4353,7 @@
           "object_var_comp_op": "equal",
           "check_objects": "any",
           "object": "player",
-          "target": "waypoint04.5",
+          "target": "waypoint05",
           "object_var_value": 0
         }
       },
@@ -4387,7 +4393,7 @@
             "show": false,
             "attach": false,
             "scale": 1.0,
-            "target": "waypoint04.5",
+            "target": "waypoint05",
             "radiusOffset": [0.0,0.0]
           }
         },
@@ -4601,7 +4607,7 @@
             "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
-            "lookat": "waypoint05"
+            "lookat": "waypoint06"
           }
         },
         {
@@ -5990,7 +5996,7 @@
             "show": true,
             "attach": true,
             "scale": 1.0,
-            "target": "waypoint05",
+            "target": "waypoint06",
             "radiusOffset": [0.0,0.0]
           }
         },
@@ -6045,7 +6051,7 @@
           "object_var_comp_op": "equal",
           "check_objects": "any",
           "object": "player",
-          "target": "waypoint05",
+          "target": "waypoint06",
           "object_var_value": 0
         }
       },
@@ -6070,7 +6076,7 @@
             "show": false,
             "attach": false,
             "scale": 1.0,
-            "target": "waypoint05",
+            "target": "waypoint06",
             "radiusOffset": [0.0,0.0]
           }
         },
@@ -6094,7 +6100,7 @@
             "show": true,
             "attach": true,
             "scale": 1.0,
-            "target": "waypoint06",
+            "target": "waypoint07",
             "radiusOffset": [0.0,0.0]
           }
         },
@@ -6128,7 +6134,7 @@
           "object_var_comp_op": "equal",
           "check_objects": "any",
           "object": "player",
-          "target": "waypoint06",
+          "target": "waypoint07",
           "object_var_value": 0
         }
       },
@@ -6153,7 +6159,7 @@
             "show": false,
             "attach": false,
             "scale": 1.0,
-            "target": "waypoint06",
+            "target": "waypoint07",
             "radiusOffset": [0.0,0.0]
           }
         },
@@ -6177,7 +6183,7 @@
             "show": true,
             "attach": true,
             "scale": 1.0,
-            "target": "waypoint07",
+            "target": "waypoint08",
             "radiusOffset": [0.0,0.0]
           }
         },
@@ -6275,13 +6281,13 @@
               "scale": 1.0
             },
             {
-              "target": "waypoint06"
-            },
-            {
               "target": "waypoint07"
             },
             {
-              "target": "waypoint05"
+              "target": "waypoint08"
+            },
+            {
+              "target": "waypoint06"
             },
             {
               "radiusOffset": [0.0,0.0]
@@ -6412,7 +6418,7 @@
             "show": false,
             "attach": false,
             "scale": 1.0,
-            "target": "waypoint07",
+            "target": "waypoint08",
             "radiusOffset": [0.0,0.0],
             "mustExist": false
           }
@@ -7684,6 +7690,11 @@
         }
       },
       "conditions": {
+        "varCompareInt": {
+          "var_value": "waypoint_number",
+          "value": 9,
+          "comparasion_func": "less"
+        },
         "unitWhenInArea": {
           "math": "2D",
           "object_type": "isAlive",
@@ -7692,8 +7703,7 @@
           "object_var_comp_op": "equal",
           "check_objects": "any",
           "object": "player",
-          "target": "@waypoint_name",
-          "object_var_value": 0
+          "target": "@waypoint_name"
         }
       },
       "actions": [
@@ -8956,7 +8966,7 @@
       "objLayer": 0,
       "props": []
     },
-    "waypoint05": {
+    "waypoint06": {
       "type": "Box",
       "tm": [
         [73.5785,0.0,-30.2522],
@@ -8967,7 +8977,7 @@
       "objLayer": 0,
       "props": []
     },
-    "waypoint06": {
+    "waypoint07": {
       "type": "Box",
       "tm": [
         [73.5893,0.0,-30.226],
@@ -8978,7 +8988,7 @@
       "objLayer": 0,
       "props": []
     },
-    "waypoint07": {
+    "waypoint08": {
       "type": "Box",
       "tm": [
         [70.1885,0.0,-37.451],
@@ -9000,7 +9010,7 @@
       "objLayer": 0,
       "props": []
     },
-    "waypoint04.5": {
+    "waypoint05": {
       "type": "Box",
       "tm": [
         [72.615,0.0,-32.4971],

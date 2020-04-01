@@ -3,6 +3,7 @@ local time = require("scripts/time.nut")
 local { hasAllFeatures } = require("scripts/user/features.nut")
 local externalIDsService = require("scripts/user/externalIdsService.nut")
 local avatars = ::require("scripts/user/avatars.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 local getAirsStatsFromBlk = function (blk)
 {
@@ -779,7 +780,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     local unitsObj = sObj.findObject("units_boxes")
     local unitsView = { checkBoxes = [] }
-    foreach(unitType in ::g_unit_type.types)
+    foreach(unitType in unitTypes.types)
     {
       if (!unitType.isAvailable())
         continue

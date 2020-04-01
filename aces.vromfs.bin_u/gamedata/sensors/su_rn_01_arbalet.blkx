@@ -100,7 +100,7 @@
       "distance": {
         "presents": true,
         "minValue": 500.0,
-        "maxValue": 12000.0,
+        "maxValue": 8000.0,
         "width": 15.0
       }
     },
@@ -113,7 +113,7 @@
       "distance": {
         "presents": true,
         "minValue": 500.0,
-        "maxValue": 12000.0,
+        "maxValue": 8000.0,
         "width": 15.0
       }
     }
@@ -159,10 +159,6 @@
           },
           "setScopeRangeSet": {
             "scopeRangeSet": "common"
-          },
-          "setFsmActive": {
-            "fsm": "mode",
-            "active": true
           }
         },
         "setStandbyMode": {
@@ -370,7 +366,6 @@
         "showGTM": {
           "stateFrom": "gtm",
           "event": "fsmActivate",
-          "stateTo": "gtm",
           "actions": {
             "setGTMMode": []
           }
@@ -378,7 +373,6 @@
         "showATM": {
           "stateFrom": "atm",
           "event": "fsmActivate",
-          "stateTo": "atm",
           "actions": {
             "setATMMode": []
           }

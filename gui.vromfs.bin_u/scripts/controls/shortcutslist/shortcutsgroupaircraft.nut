@@ -1,12 +1,13 @@
 local globalEnv = require_native("globalEnv")
 local controlsOperations = require("scripts/controls/controlsOperations.nut")
 local { unitClassType } = require("scripts/unit/unitClassType.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 return [
   {
     id = "ID_PLANE_CONTROL_HEADER"
     type = CONTROL_TYPE.HEADER
-    unitType = ::g_unit_type.AIRCRAFT
+    unitType = unitTypes.AIRCRAFT
     unitClassTypes = [
       unitClassType.FIGHTER
       unitClassType.BOMBER

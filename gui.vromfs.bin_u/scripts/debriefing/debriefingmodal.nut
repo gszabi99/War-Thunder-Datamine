@@ -3,6 +3,7 @@ local workshop = ::require("scripts/items/workshop/workshop.nut")
 local workshopPreview = ::require("scripts/items/workshop/workshopPreview.nut")
 local stdMath = require("std/math.nut")
 local { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/entitlements.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -1367,7 +1368,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     local obj = scene.findObject("air_item_place")
     local data = ""
     local unitItems = []
-    foreach (ut in ::g_unit_type.types)
+    foreach (ut in unitTypes.types)
     {
       local unitItem = getResearchUnitMarkupData(ut.name)
       if (unitItem)
@@ -1417,7 +1418,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
   {
     if (!::debriefing_result)
       return false
-    foreach (ut in ::g_unit_type.types)
+    foreach (ut in unitTypes.types)
     {
       local unit = ::getTblValue("unit", getResearchUnitInfo(ut.name))
       if (unit && !::isUnitInResearch(unit))
@@ -1817,7 +1818,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     {
       local title = ""
       if (isShow)
-        title = col == "value" ? ::loc(tRow.icon, "")
+        title = col == "value" ? tRow.getIcon()
           : col == "time" ? ::loc("icon/timer")
           : ""
       headerRow[col] <- ::colorize("fadedTextColor", title)
@@ -2587,7 +2588,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     foreach (unitId, unitData in ::debriefing_result.exp.aircrafts)
       if (isShowUnitInModsResearch(unitId))
         return true
-    foreach (ut in ::g_unit_type.types)
+    foreach (ut in unitTypes.types)
       if(getResearchUnitInfo(ut.name))
         return true
     if (getExpInvestUnitTotal() > 0)

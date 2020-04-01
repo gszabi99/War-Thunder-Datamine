@@ -141,6 +141,26 @@ local sizeAndPosViewConfig = {
       itemSizes.itemsOffsetByBodies[bodyIdx]
         + itemPosY * itemSizes.itemBlockHeight + itemSizes.headerBlockInterval)
   })
+  textBlock = ::kwarg(function textBlock(itemSizes, bodyIdx, posX, posY, endPosX, endPosY, sizeX, sizeY, texts) {
+    local countBranches = itemSizes.columnBranchsCount[endPosX]- itemSizes.columnBranchsCount[posX]
+    local w = (countBranches - 1) * itemSizes.itemInterval
+      + sizeX * (itemSizes.itemBlockWidth + itemSizes.resourceWidth)
+
+    return {
+      textBlockSize = posFormatString.subst(
+        w,
+        sizeY * itemSizes.itemBlockHeight - itemSizes.itemBlockInterval
+      )
+      textBlockPos = posFormatString.subst(
+        posX * itemSizes.itemBlockWidth + itemSizes.itemInterval
+          + itemSizes.columnOffests[posX],
+        itemSizes.itemsOffsetByBodies[bodyIdx]
+          + posY * itemSizes.itemBlockHeight + itemSizes.headerBlockInterval
+      )
+      textInBlock = "\n".join(texts.map(@(text) ::loc(text)))
+      textSize = itemSizes.textInTextBlockSize
+    }
+  })
 }
 
 local sucessItemCraftIconParam = {
@@ -148,17 +168,43 @@ local sucessItemCraftIconParam = {
   amountIconColor = "@goodTextColor"
 }
 
-local function needReqItemsForCraft(itemBlock, itemsList)
-{
-  local reqItems = itemBlock?.reqItem != null ? [itemBlock.reqItem] : itemBlock?.reqItems
-  if (!reqItems)
-    return false
+local function getSucessItemCraftIcon(item) {
+  return item.maxAmount != 0
+    ? sucessItemCraftIconParam
+    : {
+      amountIcon = ""
+      amountIconColor = ""
+    }
+}
 
-  foreach(reqItemId in reqItems)
+local function needReqItems(itemBlock, itemsList) {
+  foreach(reqItemId in (itemBlock?.reqItems ?? []))
     if (reqItemId != null && (itemsList?[reqItemId].getAmount() ?? 0) == 0)
       return true
 
   return false
+}
+
+local function needReqItemsForCraft(itemBlock, itemsList) {
+  local needCondForCraft = false
+  foreach (reqItemBlock in (itemBlock?.reqItemForCrafting ?? [])) {
+    local canCraft = true
+    foreach (itemId, needHave in reqItemBlock) {
+      local amount = itemsList?[itemId].getAmount() ?? 0
+      if ((needHave && amount > 0) || (!needHave && amount == 0))
+        continue
+
+      canCraft = false
+      break
+    }
+
+    if (canCraft)
+      return false
+
+    needCondForCraft = true
+  }
+
+  return needCondForCraft
 }
 
 local function getConfigByItemBlock(itemBlock, itemsList, workshopSet)
@@ -166,18 +212,25 @@ local function getConfigByItemBlock(itemBlock, itemsList, workshopSet)
   local item = itemsList?[itemBlock?.id]
   local hasComponent = itemBlock?.showResources
   local itemId = item?.id ?? "-1"
-  local needReqItem = needReqItemsForCraft(itemBlock, itemsList)
+  local isCraftingOrHasCraftResult = item != null && (item.isCrafting() || item.hasCraftResult())
+  local needReqItemForCraft = needReqItemsForCraft(itemBlock, itemsList)
+  local isDisabledAction = !isCraftingOrHasCraftResult
+    && (needReqItemForCraft || needReqItems(itemBlock, itemsList))
+  local isDisguised = (itemBlock?.reqItemForIdentification ?? []).findindex(
+    @(itemId) !workshopSet.isItemIdKnown(itemId)) != null
+  local hasReachedMaxAmount = item?.hasReachedMaxAmount() ?? false
   return {
     item = item
     hasComponent = hasComponent
+    isHiddenResource = !hasComponent || isDisguised || hasReachedMaxAmount || needReqItemForCraft
+      || (((item?.maxAmount ?? -1) == 1) && isCraftingOrHasCraftResult)
     itemId = itemId
-    needReqItem = needReqItem
-    isDisabled = item != null && item.getAmount() == 0
-      && (!item.hasUsableRecipeOrNotRecipes() || needReqItem)
-    iconInsteadAmount = item?.hasReachedMaxAmount() ? sucessItemCraftIconParam : null
+    isDisabledAction = isDisabledAction
+    isDisabled = item != null && item.getAmount() == 0 && !isCraftingOrHasCraftResult
+      && (!item.hasUsableRecipeOrNotRecipes() || isDisabledAction)
+    iconInsteadAmount = hasReachedMaxAmount ? getSucessItemCraftIcon(item) : null
     conectionInRowText = itemBlock?.conectionInRowText
-    isDisguised = (itemBlock?.reqItemForIdentification ?? []).findindex(
-      @(itemId) !workshopSet.isItemIdKnown(itemId)) != null
+    isDisguised = isDisguised
     isHidden = (itemBlock?.reqItemForDisplaying ?? []).findindex(
       @(itemId) !workshopSet.isItemIdKnown(itemId)) != null
   }
@@ -226,9 +279,9 @@ local getItemBlockView = ::kwarg(
       itemId = itemConfig.itemId
       items = [item.getViewData(viewItemsParams.__merge({
         itemIndex = itemConfig.itemId,
-        showAction = !itemConfig.needReqItem
+        showAction = !itemConfig.isDisabledAction
         iconInsteadAmount = itemConfig.iconInsteadAmount
-        count = item.getAdditionalTextInAmmount(true, true)
+        count = item.maxAmount == 1 ? item.getAdditionalTextInAmmount(true, true) : null
         showTooltip = !itemConfig.isDisguised
       }))]
       blockPos = overridePos ?? sizeAndPosViewConfig.itemPos({
@@ -239,15 +292,15 @@ local getItemBlockView = ::kwarg(
       })
       hasComponent = itemConfig.hasComponent
       isFullSize = itemBlock?.isFullSize ?? false
-      component = itemConfig.hasComponent && !itemConfig.isDisguised
-        ? item.getDescRecipesMarkup({
+      component = itemConfig.isHiddenResource
+        ? null
+        : item.getDescRecipesMarkup({
             maxRecipes = 1
             needShowItemName = false
             needShowHeader = false
             isShowItemIconInsteadItemType = true
             visibleResources = allowableResources
           })
-        : null
     }
 })
 
@@ -317,16 +370,19 @@ local sizePrefixNames = {
     name = ""
     itemPrefix = "i"
     intervalPrefix = "c"
+    textInTextBlockSize = ""
   },
   compact = {
     name = "compact"
     itemPrefix = "compactI"
     intervalPrefix = "compactC"
+    textInTextBlockSize = "smallFont:t='yes'"
   },
   small = {
     name = "small"
     itemPrefix = "smallI"
     intervalPrefix = "smallC"
+    textInTextBlockSize = "smallFont:t='yes'"
   }
 }
 
@@ -389,18 +445,22 @@ local function getBodyItemsTitles(titlesConfig, itemSizes) {
   return titlesView
 }
 
+local getTextBlocksView = function getTextBlocksView(textBlocks, itemSizes) {
+  return textBlocks.map(@(textBlock) sizeAndPosViewConfig.textBlock(textBlock.__merge({ itemSizes = itemSizes})))
+}
+
 local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType          = handlerType.MODAL
   sceneTplName     = "gui/items/craftTreeWnd"
   focusArray       = ["craft_body"]
-  currentFocusItem = 0
   branches         = null
   workshopSet      = null
   craftTree        = null
   itemsList        = null
   itemSizes        = null
   itemsListObj     = null
+  showItemOnInit   = null
 
   function getSceneTplView()
   {
@@ -423,7 +483,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     scene.findObject("update_timer").setUserData(this)
     itemsListObj = scene.findObject("craft_body")
     restoreFocus()
-    setFocusItem()
+    setFocusItem(showItemOnInit)
   }
 
   function getItemSizes() {
@@ -478,6 +538,10 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
           visibleItemsCountY = i
           break
         }
+      local textBlocks = bodiesConfig[idx].textBlocks
+      textBlocks.sort(@(a, b) a.endPosY <=> b.endPosY)
+      visibleItemsCountY = ::max(visibleItemsCountY,
+        textBlocks.len() > 0 ? (textBlocks.top().endPosY + 1) : 0)
       curBodiesOffset += isShowHeaderPlace || idx == 0 ? 0
         : bodiesConfig[idx-1].bodyTitlesCount * titleHeight
           + visibleItemsCountYByBodies[idx-1] * itemBlockHeight + headerBlockInterval
@@ -548,18 +612,20 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function getBodyView()
   {
-    local allowableResources = craftTree.allowableResources
     local itemBlocksArr = []
     local shopArrows = []
     local conectionsInRow = []
-    foreach (rows in craftTree.treeRowsByBodies) {
-      local connectingElements = getRowsElementsView(rows, itemSizes, itemsList, allowableResources, workshopSet)
+    local textBlocks = []
+    local bodiesConfig = craftTree.bodiesConfig
+    foreach (idx, rows in craftTree.treeRowsByBodies) {
+      local connectingElements = getRowsElementsView(rows, itemSizes, itemsList,
+        bodiesConfig[idx].allowableResources, workshopSet)
       shopArrows.extend(connectingElements.shopArrows)
       conectionsInRow.extend(connectingElements.conectionsInRow)
       itemBlocksArr.extend(connectingElements.itemBlocksArr)
+      textBlocks.extend(getTextBlocksView(bodiesConfig[idx].textBlocks, itemSizes))
     }
 
-    local bodiesConfig = craftTree.bodiesConfig
     local bodyWidth = itemSizes.maxItemsCountX * itemSizes.itemBlockWidth
       + itemSizes.maxBranchesCount * itemSizes.itemInterval + itemSizes.allColumnResourceWidth
       + itemSizes.scrollBarSize
@@ -601,7 +667,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
         itemBlock = itemBlock,
         itemConfig = getConfigByItemBlock(itemBlock, itemsList, workshopSet),
         itemSizes = itemSizes,
-        allowableResources = craftTree.allowableResources
+        allowableResources = craftTree.allowableResourcesForCraftResult
       }))
 
       separators.append({
@@ -620,6 +686,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
       itemBlock = itemBlocksArr
       shopArrows = shopArrows
       conectionsInRow = conectionsInRow
+      textBlocks = textBlocks
     }
   }
 
@@ -656,7 +723,9 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
           break
       }
 
-    if (needReqItemsForCraft(itemBlock, itemsList))
+    if (!(item.isCrafting() || item.hasCraftResult())
+        && (needReqItems(itemBlock, itemsList)
+          || needReqItemsForCraft(itemBlock, itemsList)))
       return
 
     doMainAction(item, itemObj)
@@ -723,6 +792,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     guiScene.replaceContentFromText(scene.findObject("craft_header"), data, data.len(), this)
 
     view = getBodyView()
+    itemsListObj.size = posFormatString.subst(view.bodyWidth, view.bodyHeight)
     data = ::handyman.renderCached("gui/items/craftTreeBody", view)
     guiScene.replaceContentFromText(itemsListObj, data, data.len(), this)
     setFocusItem(curItemParam.item)

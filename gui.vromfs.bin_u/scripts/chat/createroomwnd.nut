@@ -1,3 +1,5 @@
+local { clearBorderSymbols } = require("std/string.nut")
+
 class ::gui_handlers.CreateRoomWnd extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
@@ -174,10 +176,10 @@ class ::gui_handlers.CreateRoomWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function createChatRoom()
   {
-    local name = "#" + ::clearBorderSymbols(curName, [" "])
+    local name = "#" + clearBorderSymbols(curName, [" "])
     local pass = scene.findObject("room_password").getValue()
     if(pass != "")
-      pass = ::clearBorderSymbols(pass, [" "])
+      pass = clearBorderSymbols(pass, [" "])
     local invitationsOnly = guiScene["room_invitation"].getValue()
     if (::menu_chat_handler)
     {

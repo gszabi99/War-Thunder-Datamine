@@ -2,6 +2,7 @@ local time = require("scripts/time.nut")
 local crossplayModule = require("scripts/social/crossplay.nut")
 local { topMenuShopActive } = require("scripts/mainmenu/topMenuStates.nut")
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 ::dagui_propid.add_name_id("_queueTableGenCode")
 
@@ -524,7 +525,7 @@ class ::gui_handlers.QueueTable extends ::gui_handlers.BaseGuiHandlerWT
     foreach (esUnitType in esUnitTypesOrder)
       if (::isInArray(esUnitType, esUnitTypes))
         view.icons.append({
-          unittag = ::g_unit_type.getByEsUnitType(esUnitType).tag
+          unittag = unitTypes.getByEsUnitType(esUnitType).tag
           rotation = rotationStart
         })
 

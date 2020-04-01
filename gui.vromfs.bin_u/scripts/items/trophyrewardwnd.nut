@@ -9,7 +9,8 @@ local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
 
   local params = {}
   foreach (paramName in [ "rewardTitle", "rewardListLocId", "isDisassemble",
-    "isHidePrizeActionBtn" ])
+    "isHidePrizeActionBtn", "singleAnimationGuiSound", "rewardImage", "rewardImageRatio",
+    "rewardImageShowTimeSec" ])
   {
     if (!(paramName in configsTable))
       continue
@@ -66,6 +67,10 @@ class ::gui_handlers.trophyRewardWnd extends ::gui_handlers.BaseGuiHandlerWT
   rewardTitle = null
   rewardListLocId = null
   isHidePrizeActionBtn = false
+  singleAnimationGuiSound = null
+  rewardImage = null
+  rewardImageRatio = null
+  rewardImageShowTimeSec = -1
 
   function initScreen()
   {
@@ -125,7 +130,7 @@ class ::gui_handlers.trophyRewardWnd extends ::gui_handlers.BaseGuiHandlerWT
       animObj.animation = "show"
       if (useSingleAnimation)
       {
-        ::play_gui_sound("chest_open")
+        ::play_gui_sound(singleAnimationGuiSound ?? "chest_open")
         local delay = ::to_integer_safe(animObj?.chestReplaceDelay, 0)
         ::Timer(animObj, 0.001 * delay, openChest, this)
         ::Timer(animObj, 1.0, onOpenAnimFinish, this) //!!FIX ME: Some times animation finish not apply css, and we miss onOpenAnimFinish
@@ -155,29 +160,44 @@ class ::gui_handlers.trophyRewardWnd extends ::gui_handlers.BaseGuiHandlerWT
     updateButtons()
   }
 
-  function updateImage()
-  {
-    local imageObj = scene.findObject("reward_image")
-    if (!::checkObj(imageObj))
+  function updateTrophyImage() {
+    local imageObjPlace = scene.findObject("reward_image_place")
+    if (!::check_obj(imageObjPlace))
       return
 
     local itemToShow = trophyItem
     if (shouldShowRewardItem && configsArray[0]?.item)
       itemToShow = ::ItemsManager.findItemById(configsArray[0].item)
 
-    if (itemToShow == null)
-      return
-
     local layersData = ""
-    if (isBoxOpening && (opened || useSingleAnimation))
-    {
+    if (isBoxOpening && (opened || useSingleAnimation)) {
       layersData = itemToShow.getOpenedBigIcon()
       if (opened && useSingleAnimation)
         layersData += getRewardImage(itemToShow.iconStyle)
     } else
       layersData = itemToShow.getBigIcon()
 
-    guiScene.replaceContentFromText(imageObj, layersData, layersData.len(), this)
+    guiScene.replaceContentFromText(imageObjPlace, layersData, layersData.len(), this)
+  }
+
+  function updateImage()
+  {
+    if (rewardImage == null) {
+      updateTrophyImage()
+      return
+    }
+
+    local imageObj = showSceneBtn("reward_image", true)
+    imageObj["background-image"] = rewardImage
+    imageObj.width = $"{rewardImageRatio ?? 1}@chestRewardHeight"
+    if (rewardImageShowTimeSec > 0)
+      ::Timer(scene, rewardImageShowTimeSec, function() {
+          if (!isValid())
+            return
+
+          showSceneBtn("reward_image", false)
+          updateTrophyImage()
+        }, this)
   }
 
   function updateRewardPostscript()

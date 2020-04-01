@@ -2,6 +2,7 @@ local dbg_dump = require("scripts/debugTools/dbgDump.nut")
 local inventoryClient = require("scripts/inventory/inventoryClient.nut")
 local g_path = require("std/path.nut")
 local dagor_fs = require("dagor.fs")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 ::debug_dump_unload <- dbg_dump.unload
 ::debug_dump_is_loaded <- dbg_dump.isLoaded
@@ -64,7 +65,7 @@ local dagor_fs = require("dagor.fs")
   local units = []
   local mods  = []
   local exp = ::getTblValue("expDump", ::debriefing_result, {})
-  foreach (ut in ::g_unit_type.types)
+  foreach (ut in unitTypes.types)
   {
     local unitId = ::getTblValue("investUnitName" + ut.name, exp, "")
     if (unitId != "")

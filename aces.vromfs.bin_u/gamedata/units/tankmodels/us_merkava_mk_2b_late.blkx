@@ -205,6 +205,9 @@
         "ex_armor_body_08_dm": {
           "armorThickness": 30.0
         },
+        "ex_armor_body_10_dm": {
+          "armorThickness": 30.0
+        },
         "composite_armor_hull_01_dm": {
           "armorThickness": 30.0,
           "hidableInXrayViewer": true
@@ -331,11 +334,15 @@
           "armorThickness": 30.0,
           "armorClass": "RHA_tank"
         },
+        "turret_08_front_dm": {
+          "armorThickness": 25.0
+        },
         "turret_09_back_dm": {
           "armorThickness": 60.0
         },
         "turret_09_top_dm": {
-          "armorThickness": 10.0
+          "armorThickness": 10.0,
+          "armorClass": "RHA_tank"
         },
         "composite_armor_turret_03_dm": {
           "armorThickness": 100.0,
@@ -394,10 +401,6 @@
           "hidableInViewer": true
         },
         "turret_09_side_dm": {
-          "armorThickness": 25.0,
-          "hidableInViewer": true
-        },
-        "turret_08_front_dm": {
           "armorThickness": 25.0,
           "hidableInViewer": true
         },
@@ -3176,9 +3179,9 @@
     "cockpit": {
       "zoomOutFov": 10.21,
       "zoomInFov": 9.21,
-      "sightFov": 9.0,
+      "sightFov": 5.0,
       "sightName": "merkava_sight",
-      "headPos": [0.0,3.7,-7.3],
+      "headPos": [0.0,3.7,-8.8],
       "headPosOnShooting": [-1.5,3.35,0.36],
       "detectionHeight": 2.75,
       "bone_turret": "bone_turret"
@@ -3292,7 +3295,7 @@
             },
             {
               "layer": {
-                "dmPart": "ex_armor_body_06_dm"
+                "dmPart": "ex_armor_body_10_dm"
               }
             }
           ]

@@ -217,3 +217,4 @@ g_crews_list.getSlotbarOverrideCountriesByMissionName <- function getSlotbarOver
 }
 
 ::subscribe_handler(::g_crews_list, ::g_listener_priority.DEFAULT_HANDLER)
+::g_script_reloader.registerPersistentData("g_crews_list", ::g_crews_list, [ "isSlotbarOverrided" ])

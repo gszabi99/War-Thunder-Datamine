@@ -1042,19 +1042,6 @@ foreach (i, v in ::cssColorsMapDark)
   return obj!=null && obj.isValid()
 }
 
-::clearBorderSymbols <- function clearBorderSymbols(value, symList = [" "])
-{
-  while(value!="" && ::isInArray(value.slice(0,1), symList))
-    value = value.slice(1)
-  while(value!="" && ::isInArray(value.slice(value.len()-1,value.len()), symList))
-    value = value.slice(0, value.len()-1)
-  return value
-}
-
-::clearBorderSymbolsMultiline <- function clearBorderSymbolsMultiline(str) {
-  return clearBorderSymbols(str, [" ", 0x0A.tochar(), 0x0D.tochar()])
-}
-
 ::get_mission_name <- function get_mission_name(missionId, config, locNameKey = "locName")
 {
   local locNameValue = getTblValue(locNameKey, config, null)

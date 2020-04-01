@@ -3,6 +3,7 @@ local time = require("scripts/time.nut")
 local unitStatus = require("scripts/unit/unitStatus.nut")
 local { getUnitRole, getUnitRoleIcon } = require("scripts/unit/unitInfoTexts.nut")
 local { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 /*
 if need - put commented in array above
@@ -457,7 +458,7 @@ if need - put commented in array above
     local isReqForFakeUnit  = air?.isReqForFakeUnit ?? false
     local isLocalState      = params?.isLocalState ?? true
     local isFakeAirRankOpen = isLocalState && get_units_count_at_rank(air?.rank,
-      ::g_unit_type.getByName(air.name, false).esUnitType, air?.country, true)
+      unitTypes.getByName(air.name, false).esUnitType, air?.country, true)
     local bitStatus = isReqForFakeUnit ? bit_unit_status.disabled
       : (isFakeAirRankOpen || !isLocalState ? bit_unit_status.owned
         : bit_unit_status.locked)

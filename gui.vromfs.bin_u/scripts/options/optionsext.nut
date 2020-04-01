@@ -12,6 +12,7 @@ local soundDevice = require_native("soundDevice")
 local { getBulletsListHeader } = require("scripts/weaponry/weaponryVisual.nut")
 local { setUnitLastBullets,
         getOptionsBulletsList } = require("scripts/weaponry/bulletsInfo.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 global const TANK_ALT_CROSSHAIR_ADD_NEW = -2
 global const TANK_CAMO_SCALE_SLIDER_FACTOR = 0.1
@@ -48,8 +49,6 @@ global enum misCountries
   MissionTypeLocal = 1,
   MissionTypeOnline = 2,
 };
-::gunner_view_min_sens <- 0.25
-::gunner_view_max_sens <- 1.75
 
 ::unit_year_selection_min <- 1940
 ::unit_year_selection_max <- 1945
@@ -830,12 +829,12 @@ local isWaitMeasureEvent = false
 
 
 
-
-
-
-
-
-
+    case ::USEROPT_INVERTY_SUIT:
+      descr.id = "invertY_suit"
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      descr.value = ::get_option_invertY(AxisInvertOption.INVERT_SUIT_Y) != 0
+      break
 
     case ::USEROPT_INVERTY_SUBMARINE:
       descr.id = "invertY_submarine"
@@ -1193,11 +1192,7 @@ local isWaitMeasureEvent = false
 
     case ::USEROPT_GUNNER_VIEW_SENSE:
       descr.id = "multiplier_gunner_view"
-      descr.value = (100.0*(::get_option_multiplier(::OPTION_GUNNER_VIEW_SENSE) - ::gunner_view_min_sens) / (::gunner_view_max_sens - ::gunner_view_min_sens)).tointeger()
-      if (descr.value < 0)
-        descr.value = 0
-      else if (descr.value > 100)
-        descr.value = 100
+      descr.value = (::get_option_multiplier(::OPTION_GUNNER_VIEW_SENSE) * 100.0).tointeger()
       break
 
     case ::USEROPT_MOUSE_SMOOTH:
@@ -2457,7 +2452,7 @@ local isWaitMeasureEvent = false
       descr.values = []
       descr.hint = descr.title
 
-      defaultValue = ::g_unit_type.types.reduce(@(res, v) res = res | v.bit, 0)
+      defaultValue = unitTypes.types.reduce(@(res, v) res = res | v.bit, 0)
       prevValue = ::get_gui_option(optionId) ?? defaultValue
 
       local missionBlk = ::get_mission_meta_info(context?.missionName ?? "")
@@ -2468,7 +2463,7 @@ local isWaitMeasureEvent = false
 
       descr.availableUnitTypesMask <- availableUnitTypesMask
 
-      foreach (unitType in ::g_unit_type.types)
+      foreach (unitType in unitTypes.types)
       {
         local isVisible = !!(availableUnitTypesMask & unitType.bit)
         descr.values.append(unitType.esUnitType)
@@ -2592,9 +2587,9 @@ local isWaitMeasureEvent = false
       descr.controlType = optionControlType.BIT_LIST
       descr.items = []
       descr.values = []
-      for(local i = 0; i < ::g_unit_type.types.len(); i++)
+      for(local i = 0; i < unitTypes.types.len(); i++)
       {
-        local unitType = ::g_unit_type.types[i]
+        local unitType = unitTypes.types[i]
         if (!unitType.isAvailable())
           continue
         descr.items.append(unitType.getArmyLocName())
@@ -3915,9 +3910,9 @@ local isWaitMeasureEvent = false
 
 
 
-
-
-
+    case ::USEROPT_INVERTY_SUIT:
+      ::set_option_invertY(AxisInvertOption.INVERT_SUIT_Y, value ? 1 : 0)
+      break
     case ::USEROPT_INVERTY_SUBMARINE:
       ::set_option_invertY(AxisInvertOption.INVERT_SUBMARINE_Y, value ? 1 : 0)
       break
@@ -4127,7 +4122,7 @@ local isWaitMeasureEvent = false
       break
 
     case ::USEROPT_GUNNER_VIEW_SENSE:
-      local val = ::gunner_view_min_sens + (value / 100.0) * (::gunner_view_max_sens - ::gunner_view_min_sens)
+      local val = value / 100.0
       ::set_option_multiplier(::OPTION_GUNNER_VIEW_SENSE, val)
       break
 
@@ -5053,5 +5048,5 @@ local isWaitMeasureEvent = false
 ::is_tencent_unit_image_reqired <- function is_tencent_unit_image_reqired(unit)
 {
   return ::is_vendor_tencent() && unit.shopCountry == "country_japan"
-         && unit.unitType == ::g_unit_type.AIRCRAFT
+         && unit.unitType == unitTypes.AIRCRAFT
 }

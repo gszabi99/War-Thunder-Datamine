@@ -1,10 +1,11 @@
 local controlsOperations = require("scripts/controls/controlsOperations.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 return [
   {
     id = "ID_SUBMARINE_CONTROL_HEADER"
     type = CONTROL_TYPE.HEADER
-    unitType = ::g_unit_type.SHIP
+    unitType = unitTypes.SHIP
     unitTag = "submarine"
     showFunc = @() ::has_feature("SpecialShips") || ::is_submarine(::get_player_cur_unit())
     needShowInHelp = true

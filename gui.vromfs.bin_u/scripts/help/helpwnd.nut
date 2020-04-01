@@ -3,6 +3,7 @@ local gamepadIcons = require("scripts/controls/gamepadIcons.nut")
 local helpTabs = require("scripts/controls/help/controlsHelpTabs.nut")
 local helpMarkup = require("scripts/controls/help/controlsHelpMarkup.nut")
 local shortcutsAxisListModule = require("scripts/controls/shortcutsList/shortcutsAxis.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 ::require("scripts/viewUtils/bhvHelpFrame.nut")
 
@@ -13,8 +14,11 @@ local shortcutsAxisListModule = require("scripts/controls/shortcutsList/shortcut
     contentSet = contentSet
   })
 
-  if (::is_in_flight())
+  if (::is_in_flight() && ::get_player_cur_unit()?.isSuit())
+  {
+    ::should_offer_controls_help = false
     ::g_hud_event_manager.onHudEvent("hint:controlsHelp:remove", {})
+  }
 }
 
 ::gui_start_flight_menu_help <- function gui_start_flight_menu_help()
@@ -165,7 +169,7 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!tab)
       return
 
-    pageUnitType = ::g_unit_type.getByBit(tab?.pageUnitTypeBit)
+    pageUnitType = unitTypes.getByBit(tab?.pageUnitTypeBit)
     pageUnitTag = tab?.pageUnitTag
 
     local sheetObj = scene.findObject("help_sheet")
@@ -449,7 +453,7 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateGamepadTexts()
   {
-    local forceButtons = (pageUnitType == ::g_unit_type.AIRCRAFT) ? ["camx"] : (pageUnitType == ::g_unit_type.TANK) ? ["ID_ACTION_BAR_ITEM_5"] : []
+    local forceButtons = (pageUnitType == unitTypes.AIRCRAFT) ? ["camx"] : (pageUnitType == unitTypes.TANK) ? ["ID_ACTION_BAR_ITEM_5"] : []
     local ignoreButtons = ["ID_CONTINUE_SETUP"]
     local ignoreAxis = ["camx", "camy"]
     local customLocalization = { ["camx"] = "controls/help/camx" }
@@ -609,8 +613,8 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     local mouseObj = scene.findObject("joy_mouse")
     if (::checkObj(mouseObj))
     {
-      local mouse_aim_x = (pageUnitType == ::g_unit_type.AIRCRAFT) ? "controls/mouse_aim_x" : "controls/gm_mouse_aim_x"
-      local mouse_aim_y = (pageUnitType == ::g_unit_type.AIRCRAFT) ? "controls/mouse_aim_y" : "controls/gm_mouse_aim_y"
+      local mouse_aim_x = (pageUnitType == unitTypes.AIRCRAFT) ? "controls/mouse_aim_x" : "controls/gm_mouse_aim_x"
+      local mouse_aim_y = (pageUnitType == unitTypes.AIRCRAFT) ? "controls/mouse_aim_y" : "controls/gm_mouse_aim_y"
 
       local titleX = ::loc(mouse_aim_x)
       local titleY = ::loc(mouse_aim_y)

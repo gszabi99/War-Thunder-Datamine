@@ -1,4 +1,5 @@
 local mapPreferences = ::require_native("mapPreferences")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 local sortIdxByMissionType = {
   ["Dom"]   = 0,
@@ -117,7 +118,7 @@ local function getMapsList(curEvent, isBanParamsOnly = false)
   local likeList = banData.liked
   local list = []
   local hasTankOrShip =  (::events.getEventUnitTypesMask(curEvent)
-    & (::g_unit_type.TANK.bit | ::g_unit_type.SHIP.bit)) != 0
+    & (unitTypes.TANK.bit | unitTypes.SHIP.bit)) != 0
   local missionToLevelTable = {}
   if (isLevelBanMode)
     foreach(inst in curEvent?.missions_info ?? {})

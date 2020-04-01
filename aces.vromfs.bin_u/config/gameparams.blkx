@@ -20,6 +20,11 @@
   "tankInvulnerabilityTime": 20.0,
   "tankInvulnerabilityRadius": 20.0,
   "shipInvulnerabilityRadius": 200.0,
+  "suitInvulnerabilityTime": 10.0,
+  "suitInvulnerabilityRadius": 100.0,
+  "killDistFromBattleAreaForSuit": 50.0,
+  "maxTimeToReturnToMapForSuit": 3.0,
+  "outOfBattleAreaTimeBetweenShots": 1.0,
   "noCollisionDurationForTankRespawn": 1.5,
   "screenshotAsJpeg": false,
   "unit_attachments_enabled": true,
@@ -3375,6 +3380,8 @@
     "calmWindThreshold": [1.0,2.0]
   },
   "shadows": {
+    "suitShadowDist": 1500.0,
+    "suitPowWeight": 0.97,
     "hangarShadowDist": 200.0,
     "hangarShadowStart": 1.0,
     "hangarPowWeight": 0.9,
@@ -7921,6 +7928,7 @@
     "whiteCircle": "white_circle_hi",
     "spikeCircle": "searchlight_earth_flare",
     "noiseTexture": "snow_noise_mask",
+    "sourceTex": "source_tex",
     "armorThicknessMax": 300.0,
     "hsvRange": [160.0,0.0],
     "damageOutlineEnabled": false,
@@ -9914,6 +9922,54 @@
           "name": "wheel_l_04_",
           "modelNames": "centauro_mgs_120"
         }
+      },
+      {
+        "p": {
+          "name": "wheel_r_01_",
+          "modelNames": "sdkfz_234_1"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_01_",
+          "modelNames": "sdkfz_234_1"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_02_",
+          "modelNames": "sdkfz_234_1"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_02_",
+          "modelNames": "sdkfz_234_1"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_03_",
+          "modelNames": "sdkfz_234_1"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_03_",
+          "modelNames": "sdkfz_234_1"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_04_",
+          "modelNames": "sdkfz_234_1"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_04_",
+          "modelNames": "sdkfz_234_1"
+        }
       }
     ],
     "crew": [
@@ -10266,6 +10322,120 @@
       {
         "p": {
           "name": "ex_era_turret_",
+          "hideIfDead": true
+        }
+      },
+      {
+        "p": {
+          "name": "ex_armor_01",
+          "hideIfDead": true
+        }
+      },
+      {
+        "p": {
+          "name": "ex_armor_02",
+          "hideIfDead": true
+        }
+      },
+      {
+        "p": {
+          "name": "ex_armor_03",
+          "hideIfDead": true
+        }
+      },
+      {
+        "p": {
+          "name": "ex_armor_04",
+          "hideIfDead": true
+        }
+      },
+      {
+        "p": {
+          "name": "ex_armor_05",
+          "hideIfDead": true
+        }
+      },
+      {
+        "p": {
+          "name": "ex_armor_06",
+          "hideIfDead": true
+        }
+      },
+      {
+        "p": {
+          "name": "ex_armor_07",
+          "hideIfDead": true
+        }
+      },
+      {
+        "p": {
+          "name": "ex_armor_08",
+          "hideIfDead": true
+        }
+      },
+      {
+        "p": {
+          "name": "ex_armor_09",
+          "hideIfDead": true
+        }
+      },
+      {
+        "p": {
+          "name": "ex_armor_10",
+          "hideIfDead": true
+        }
+      },
+      {
+        "p": {
+          "name": "ex_armor_11",
+          "hideIfDead": true
+        }
+      },
+      {
+        "p": {
+          "name": "ex_armor_12",
+          "hideIfDead": true
+        }
+      },
+      {
+        "p": {
+          "name": "ex_armor_13",
+          "hideIfDead": true
+        }
+      },
+      {
+        "p": {
+          "name": "ex_armor_14",
+          "hideIfDead": true
+        }
+      },
+      {
+        "p": {
+          "name": "ex_armor_15",
+          "hideIfDead": true
+        }
+      },
+      {
+        "p": {
+          "name": "ex_armor_16",
+          "hideIfDead": true
+        }
+      },
+      {
+        "p": {
+          "name": "ex_armor_17",
+          "hideIfDead": true
+        }
+      },
+      {
+        "p": {
+          "name": "ex_armor_18",
+          "hideIfDead": true
+        }
+      },
+      {
+        "p": {
+          "name": "ex_armor_19",
           "hideIfDead": true
         }
       }
@@ -12995,20 +13165,62 @@
     "maxStr": 2000.0
   },
   "globe": {
+    "globeLightMul": 1.0,
+    "globeSunLightMul": 1.0,
+    "globeCloudsColor": [1.0,1.0,1.0,1.0],
+    "globeInitialAngle": 0.0,
+    "posOffset": [0.0,0.0,0.0],
+    "useGmtTime": true,
+    "starsIntensity": 10.0,
+    "globeSaturateColor": [1.0,1.0,1.0,0.0],
+    "useKmRadiusScale": true,
     "globeMinCameraDistance": 15000.0,
     "globeCameraViscosity": [0.4,0.2],
     "globeMouseRotSpeed": 0.002,
     "globeMinSunAngle": 90.0,
     "globeSunViscosity": 0.3,
     "globeCameraZFar": 100000.0,
-    "colorTex": "land_ocean_ice",
-    "normalsTex": "earth_bump_n",
+    "shadowsTex": "globe_shadows",
+    "cloudsTex": "globe_clouds_ocean_8k",
     "markerIconFx": "world_map_marker",
     "markerClickFx": "world_map_click",
     "markerHoverFx": "world_map_hover",
     "markerFxScale": 200.0,
     "markerFxColor": [1.0,1.0,1.0,1.0],
-    "markerHoverFxColor": [0.9,0.6,0.1,1.0]
+    "markerHoverFxColor": [0.9,0.6,0.1,1.0],
+    "slices": {
+      "item": {
+        "colorTex": "land_ocean_ice",
+        "normalsTex": "earth_bump_n"
+      }
+    }
+  },
+  "se_globe": {
+    "globeLightMul": 1.0,
+    "globeSunLightMul": 1.0,
+    "globeCloudsColor": [0.26,0.255,0.277,1.0],
+    "globeInitialAngle": 0.52,
+    "posOffset": [0.0,0.0,7300.0],
+    "useGmtTime": false,
+    "starsIntensity": 1.0,
+    "globeSaturateColor": [1.0,1.0,1.0,0.0],
+    "useKmRadiusScale": false,
+    "shadowsTex": "globe_shadows",
+    "cloudsTex": "globe_clouds_ocean_8k",
+    "slices": [
+      {
+        "item": {
+          "colorTex": "globe_albedo_02",
+          "normalsTex": "globe_norm_02"
+        }
+      },
+      {
+        "item": {
+          "colorTex": "globe_albedo_13",
+          "normalsTex": "globe_norm_13"
+        }
+      }
+    ]
   },
   "shipCommonSettings": {
     "shipSpawnThrottle": 1.0,

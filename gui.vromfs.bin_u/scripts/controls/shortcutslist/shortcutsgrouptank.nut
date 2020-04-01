@@ -1,10 +1,11 @@
 local controlsOperations = require("scripts/controls/controlsOperations.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 return [
   {
     id = "ID_TANK_CONTROL_HEADER"
     type = CONTROL_TYPE.HEADER
-    unitType = ::g_unit_type.TANK
+    unitType = unitTypes.TANK
     showFunc = @() ::has_feature("Tanks")
     needShowInHelp = true
   }

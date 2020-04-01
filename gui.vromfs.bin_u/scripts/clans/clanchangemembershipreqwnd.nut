@@ -1,4 +1,5 @@
 local clanMembershipAcceptance = ::require("scripts/clans/clanMembershipAcceptance.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 class ::gui_handlers.clanChangeMembershipReqWnd extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -83,7 +84,7 @@ class ::gui_handlers.clanChangeMembershipReqWnd extends ::gui_handlers.BaseGuiHa
   function loadRequirementsRanks( rawClanMemberRequirementsBlk )
   {
     local rawRanksCond = rawClanMemberRequirementsBlk.getBlockByName("ranks") || ::DataBlock()
-    foreach (unitType in ::g_unit_type.types)
+    foreach (unitType in unitTypes.types)
     {
       if (!unitType.isAvailable())
         continue
@@ -106,7 +107,7 @@ class ::gui_handlers.clanChangeMembershipReqWnd extends ::gui_handlers.BaseGuiHa
   function getNonEmptyRankReqCount()
   {
     local nonEmptyRankReqCount = 0
-    foreach (unitType in ::g_unit_type.types)
+    foreach (unitType in unitTypes.types)
     {
       if (!unitType.isAvailable())
         continue
@@ -198,7 +199,7 @@ class ::gui_handlers.clanChangeMembershipReqWnd extends ::gui_handlers.BaseGuiHa
     local rankCondType = minRankCondTypeObject.getValue() ? "and" : "or"
     local ranksSubBlk = null
 
-    foreach (unitType in ::g_unit_type.types)
+    foreach (unitType in unitTypes.types)
     {
       if (!unitType.isAvailable())
         continue

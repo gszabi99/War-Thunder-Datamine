@@ -1,5 +1,6 @@
 local shopSearchCore = require("scripts/shop/shopSearchCore.nut")
 local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 class ::gui_handlers.ShopSearchWnd extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -47,7 +48,7 @@ class ::gui_handlers.ShopSearchWnd extends ::gui_handlers.BaseGuiHandlerWT
         continue
 
       data[countryId] <- {}
-      foreach (unitType in ::g_unit_type.types)
+      foreach (unitType in unitTypes.types)
       {
         local armyUnits = countryUnits.filter(@(unit) unitType == unit.unitType)
         if (!armyUnits.len())
@@ -76,7 +77,7 @@ class ::gui_handlers.ShopSearchWnd extends ::gui_handlers.BaseGuiHandlerWT
         armyTypes = []
       }
 
-      foreach (unitType in ::g_unit_type.types)
+      foreach (unitType in unitTypes.types)
       {
         local unitsList = unitsData[countryId]?[unitType.armyId]
         if (!unitsList)

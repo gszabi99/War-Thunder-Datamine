@@ -1,5 +1,7 @@
 local enums = ::require("sqStdlibs/helpers/enums.nut")
 local stdMath = require("std/math.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
+
 enum PART_STATE
 {
   OFF      = "off"
@@ -101,7 +103,7 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
   }
 
   TANK_ENGINE = {
-    unitTypesMask = ::g_unit_type.TANK.bit
+    unitTypesMask = unitTypes.TANK.bit
     parts    = [ "tank_engine", "tank_transmission" ]
     getInfo  = @(camInfo, unitInfo, partName = null, dmgParams = null) {
       state = getStateByBrokenDmAny(unitInfo, partName, parts)
@@ -110,7 +112,7 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
    }
 
   TANK_GUN = {
-    unitTypesMask = ::g_unit_type.TANK.bit
+    unitTypesMask = unitTypes.TANK.bit
     parts    = [ "tank_gun_barrel", "tank_cannon_breech" ]
     mainDm   = [ "gun_barrel_dm", "gun_barrel_01_dm", "cannon_breech_dm", "cannon_breech_01_dm" ]
     getInfo  = @(camInfo, unitInfo, partName = null, dmgParams = null) {
@@ -120,7 +122,7 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
   }
 
   TANK_DRIVE_TURRET = {
-    unitTypesMask = ::g_unit_type.TANK.bit
+    unitTypesMask = unitTypes.TANK.bit
     parts    = [ "tank_drive_turret_h", "tank_drive_turret_v" ]
     mainDm   = [ "drive_turret_h_dm", "drive_turret_h_01_dm", "drive_turret_v_dm", "drive_turret_v_01_dm" ]
     getInfo  = @(camInfo, unitInfo, partName = null, dmgParams = null) {
@@ -130,7 +132,7 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
   }
 
   TANK_TRACKS = {
-    unitTypesMask = ::g_unit_type.TANK.bit
+    unitTypesMask = unitTypes.TANK.bit
     parts    = [ "tank_track" ]
     getInfo  = @(camInfo, unitInfo, partName = null, dmgParams = null) {
       state = getStateByBrokenDmAny(unitInfo, partName, parts)
@@ -139,7 +141,7 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
   }
 
   TANK_CREW = {
-    unitTypesMask = ::g_unit_type.TANK.bit
+    unitTypesMask = unitTypes.TANK.bit
     parts    = [ "tank_commander", "tank_driver", "tank_gunner", "tank_loader", "tank_machine_gunner" ]
     getInfo = function(camInfo, unitInfo, partName = null, dmgParams = null)
     {
@@ -163,7 +165,7 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
   }
 
   SHIP_BUOYANCY = {
-    unitTypesMask = ::g_unit_type.SHIP.bit
+    unitTypesMask = unitTypes.SHIP.bit
     getInfo = function(camInfo, unitInfo, partName = null, dmgParams = null)
     {
       local value = ::getTblValue("buoyancy", camInfo)
@@ -179,7 +181,7 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
   }
 
   SHIP_COMPARTMENTS = {
-    unitTypesMask = ::g_unit_type.SHIP.bit
+    unitTypesMask = unitTypes.SHIP.bit
     parts = [ "ship_compartment" ]
     getInfo = function(camInfo, unitInfo, partName = null, dmgParams = null)
     {
@@ -202,7 +204,7 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
   }
 
   SHIP_CREW = {
-    unitTypesMask = ::g_unit_type.SHIP.bit
+    unitTypesMask = unitTypes.SHIP.bit
     isUpdateOnKnownPartKillsOnly = false
     getInfo = function(camInfo, unitInfo, partName = null, dmgParams = null)
     {
@@ -231,7 +233,7 @@ g_hud_enemy_debuffs.getTypeById <- function getTypeById(id)
 
 g_hud_enemy_debuffs.getTypesArrayByUnitType <- function getTypesArrayByUnitType(unitType)
 {
-  local unitTypeBit = ::g_unit_type.getByEsUnitType(unitType).bit
+  local unitTypeBit = unitTypes.getByEsUnitType(unitType).bit
   local list = []
   foreach (item in types)
     if (unitTypeBit & item.unitTypesMask)
@@ -241,7 +243,7 @@ g_hud_enemy_debuffs.getTypesArrayByUnitType <- function getTypesArrayByUnitType(
 
 g_hud_enemy_debuffs.getTrackedPartNamesByUnitType <- function getTrackedPartNamesByUnitType(unitType)
 {
-  local unitTypeBit = ::g_unit_type.getByEsUnitType(unitType).bit
+  local unitTypeBit = unitTypes.getByEsUnitType(unitType).bit
   local list = []
   foreach (item in types)
     if (unitTypeBit & item.unitTypesMask)

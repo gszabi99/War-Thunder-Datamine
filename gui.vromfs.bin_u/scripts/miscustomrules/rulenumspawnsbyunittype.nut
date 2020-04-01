@@ -1,4 +1,5 @@
 local { unitClassType } = require("scripts/unit/unitClassType.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 class ::mission_rules.NumSpawnsByUnitType extends ::mission_rules.Base
 {
@@ -279,7 +280,7 @@ class ::mission_rules.NumSpawnsByUnitType extends ::mission_rules.Base
 
     local checkedDsUnitTypes = []
 
-    foreach(unitType in ::g_unit_type.types)
+    foreach(unitType in unitTypes.types)
     {
       if (!unitType.isAvailable())
         continue

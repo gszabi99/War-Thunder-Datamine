@@ -22,6 +22,13 @@ local tabGroups = [
     ]
   }
   {
+    title = "#controls/help/suit_simpleControls"
+    list = [
+      helpTypes.IMAGE_SUIT
+      helpTypes.KEYBOARD_SUIT
+    ]
+  }
+  {
     title = "#controls/help/ship_simpleControls"
     list = [
       helpTypes.IMAGE_SHIP
@@ -78,7 +85,12 @@ local tabGroups = [
     return helpTypes.MISSION_OBJECTIVES
 
   local unit = ::get_player_cur_unit()
-  local unitTag = ::is_submarine(unit) ? "submarine" : null
+  if (::is_suit_mission())
+    unit = ::getAircraftByName("assault_combat_space_suit")
+
+  local unitTag = ::is_submarine(unit) ? "submarine"
+    : unit.isSuit() ? "suit"
+    : null
 
   foreach (pattern in [
     CONTROL_HELP_PATTERN.HOTAS4,

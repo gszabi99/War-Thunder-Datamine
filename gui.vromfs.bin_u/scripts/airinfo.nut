@@ -9,6 +9,7 @@ local { getCrewPoints } = require("scripts/crew/crewSkills.nut")
 local { getWeaponInfoText } = require("scripts/weaponry/weaponryVisual.nut")
 local { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 local { getModificationBulletsGroup } = require("scripts/weaponry/bulletsInfo.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000
 
@@ -2069,6 +2070,82 @@ global enum CheckFeatureLockAction
     ::setCrewUnlockTime(holderObj.findObject("aircraft-lockedCrew"), air)
     ::fillAirInfoTimers(holderObj, air, needShopInfo)
   }
+
+  // April Fools Day 2020 start
+  local isSuit = air?.isSuit() ?? false
+
+  for (local i  = 1; i <= 6; i++) {
+    local suitDescObj = holderObj.findObject($"suit-desc{i}-tr")
+    if (::check_obj(suitDescObj))
+      suitDescObj.show(isSuit)
+  }
+  ::showBtn("aircraft-maxSpeedSuit-tr", isSuit, holderObj)
+  ::showBtn("aircraft-armorThicknessHullSuit-tr", isSuit, holderObj)
+
+  if (isSuit)
+  {
+    local unitBlk = ::get_full_unit_blk(air.name) ?? ::DataBlock()
+
+    local speed = unitBlk?.SuitPhys.suitProps.maxSpeed ?? 0
+    local speedLevel = ::clamp((speed.tointeger() / 25) + 1, 1, 3)
+
+    local armorBlk = unitBlk?.DamageParts.armor ?? ::DataBlock()
+    local defArmorThickness = armorBlk?.armorThickness ?? 0
+    local mmToKilojoule = 1.6
+    local armorArray = []
+    foreach (partIdx in [ 3, 8, 14 ]) {
+      local partBlk = armorBlk?[::format("ex_armor_%02d_dm", partIdx)]
+      local thicknessMm = partBlk ? (partBlk?.armorThickness ?? defArmorThickness) : 0
+      armorArray.append(::round(thicknessMm * mmToKilojoule).tointeger().tostring())
+    }
+    if (air.name == "scout_combat_space_suit")
+      armorArray[2] = "0"
+
+    local rows = {
+      country_and_level       = "",
+      turnTurretTime          = "",
+      angleVerticalGuidance   = "",
+      armorThicknessHull      = ""
+      armorThicknessHullSuit  = " ".concat(::loc("ui/slash").join(armorArray), ::loc("measureUnits/kilojoule"))
+      armorThicknessTurret    = "",
+      armorPiercing           = "",
+      armorPiercingDist       = "",
+      mass                    = "",
+      horsePowers             = "",
+      maxSpeed                = "",
+      maxSpeedSuit            = ::loc($"april_fools_day_2020/maxSpeed/{speedLevel}"),
+      visibilityFactor        = "",
+      ["total-crew-tr"]       = "",
+      require_rp              = "",
+      price                   = "",
+      free_repairs            = "",
+      max_repair_cost         = "",
+      full_repair_cost        = "",
+      full_repair_time_crew   = "",
+      ["research-efficiency"] = "",
+      reward_rp               = "",
+      reward_wp               = "",
+      separator1              = "",
+      separator2              = "",
+      references_text         = "",
+      current_game_mode_footnote_text = "".concat(::loc("april_fools_day_2020/footer1"),
+        "\n", ::loc("april_fools_day_2020/footer2"))
+    }
+    foreach (id, val in rows)
+    {
+      local rowObj = holderObj.findObject("aircraft-" + id + "-tr")
+                  ?? holderObj.findObject("aircraft-" + id + "_tr")
+                  ?? holderObj.findObject(id)
+      if (::check_obj(rowObj))
+        rowObj.show(val != "")
+      local valObj = holderObj.findObject("aircraft-" + id)
+                  ?? holderObj.findObject(id)
+      if (::check_obj(valObj))
+        valObj.setValue(val)
+    }
+  }
+  // April Fools Day 2020 end
+
 }
 
 ::get_max_era_available_by_country <- function get_max_era_available_by_country(country, unitType = ::ES_UNIT_TYPE_INVALID)
@@ -2114,7 +2191,7 @@ global enum CheckFeatureLockAction
     return ::__types_for_coutries
 
   local defaultCountryData = {}
-  foreach(unitType in ::g_unit_type.types)
+  foreach(unitType in unitTypes.types)
     defaultCountryData[unitType.esUnitType] <- false
 
   ::__types_for_coutries = {}

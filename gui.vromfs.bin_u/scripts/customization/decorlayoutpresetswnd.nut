@@ -1,3 +1,5 @@
+local { clearBorderSymbols } = require("std/string.nut")
+
 const PRESET_MIN_USAGE = 2
 
 class ::gui_handlers.DecorLayoutPresets extends ::gui_handlers.BaseGuiHandlerWT
@@ -126,7 +128,7 @@ class ::gui_handlers.DecorLayoutPresets extends ::gui_handlers.BaseGuiHandlerWT
       maxLen = 16
       value = oldName
       owner = this
-      checkButtonFunc = @(val) val != null && ::clearBorderSymbols(val).len() > 0
+      checkButtonFunc = @(val) val != null && clearBorderSymbols(val).len() > 0
       validateFunc = @(val) validatePresetNameRegexp.replace("", val)
       okFunc = @(val) doRenamePreset(oldName, val)
     })

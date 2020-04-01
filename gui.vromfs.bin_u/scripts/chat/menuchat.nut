@@ -1,3 +1,4 @@
+local { clearBorderSymbols } = require("std/string.nut")
 local penalties = require("scripts/penitentiary/penalties.nut")
 local platformModule = require("scripts/clientState/platform.nut")
 local menuChatRoom = require("scripts/chat/menuChatRoom.nut")
@@ -2511,7 +2512,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!value || ::is_chat_message_empty(value))
       return
 
-    value = "#" + ::clearBorderSymbols(value, [" ", "*"]) + "*"
+    value = "#" + clearBorderSymbols(value, [" ", "*"]) + "*"
     searchInProgress = true
     defaultRoomsInSearch = false
     searchRoomList = []

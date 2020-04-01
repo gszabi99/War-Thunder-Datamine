@@ -9,6 +9,9 @@ local { getMaxSkillValue } = require("scripts/crew/crewSkills.nut")
 
 g_skill_parameters_request_type._getParameters <- function _getParameters(crewId, unit)
 {
+  if (unit == null)
+    return null
+
   local cacheUid = getCachePrefix() + "Current"
   local res = ::g_crew_short_cache.getData(crewId, unit, cacheUid)
   if (res)

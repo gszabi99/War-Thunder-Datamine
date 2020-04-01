@@ -1,4 +1,5 @@
 local { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/entitlements.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 class ::gui_handlers.VehicleRequireFeatureWindow extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -36,7 +37,7 @@ class ::gui_handlers.VehicleRequireFeatureWindow extends ::gui_handlers.BaseGuiH
   {
     local locPrefix = "shop/featureLock/"
     if (unit)
-      if (unit.unitType == ::g_unit_type.TANK)
+      if (unit.unitType == unitTypes.TANK)
         locPrefix += "USATanks/" //here is usual tanks texts
       else
         locPrefix += unit.unitType.name + "/"

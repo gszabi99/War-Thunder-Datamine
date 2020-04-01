@@ -1672,6 +1672,9 @@
         },
         "body_back_dm": {
           "armorThickness": 22.0
+        },
+        "turret_01_front_dm": {
+          "armorThickness": 20.0
         }
       },
       "body_shields": {
@@ -2277,7 +2280,7 @@
             "ratio": 1.5
           },
           {
-            "ratio": 1.0
+            "ratio": 1.15
           }
         ]
       },
@@ -2300,6 +2303,7 @@
           "blk": "gameData/Weapons/groundModels_weapons/75mm_PaK42_user_cannon.blk",
           "emitter": "bone_gun_barrel",
           "flash": "emtr_gun_flame",
+          "recoilOffset": 0.05,
           "allowableDelta": 20.0,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
@@ -2330,8 +2334,8 @@
             "barrel": "bone_gun_barrel"
           },
           "limits": {
-            "yaw": [-10.0,10.0],
-            "pitch": [-5.0,15.0]
+            "yaw": [-12.0,12.0],
+            "pitch": [-7.0,15.0]
           }
         }
       },
@@ -2515,6 +2519,8 @@
         "image": "#ui/gameuiskin#tank_reinforcement_ger"
       },
       "75mm_ger_kwk42_HE": [],
+      "75mm_ger_kwk42_APCR": [],
+      "75mm_kwk_42_APCR_ammo_pack": [],
       "tank_smoke_screen_system_mod": {
         "tier": 4,
         "effects": {
@@ -2525,6 +2531,7 @@
                 "blk": "gameData/Weapons/groundModels_weapons/75mm_PaK42_user_cannon.blk",
                 "emitter": "bone_gun_barrel",
                 "flash": "emtr_gun_flame",
+                "recoilOffset": 0.05,
                 "allowableDelta": 20.0,
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
@@ -2555,8 +2562,8 @@
                   "barrel": "bone_gun_barrel"
                 },
                 "limits": {
-                  "yaw": [-10.0,10.0],
-                  "pitch": [-5.0,15.0]
+                  "yaw": [-12.0,12.0],
+                  "pitch": [-7.0,15.0]
                 }
               }
             },

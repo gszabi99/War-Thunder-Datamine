@@ -4,6 +4,7 @@ local clustersModule = require("scripts/clusterSelect.nut")
 local crossplayModule = require("scripts/social/crossplay.nut")
 local u = ::require("sqStdLibs/helpers/u.nut")
 local Callback = require("sqStdLibs/helpers/callback.nut").Callback
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 ::dagui_propid.add_name_id("modeId")
 
@@ -179,7 +180,7 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
   function sortByUnitType(gameModeViews)
   {
     gameModeViews.sort(function(a, b) { // warning disable: -return-different-types
-      foreach(unitType in ::g_unit_type.types)
+      foreach(unitType in unitTypes.types)
       {
         if(b.isWide != a.isWide)
           return b.isWide <=> a.isWide

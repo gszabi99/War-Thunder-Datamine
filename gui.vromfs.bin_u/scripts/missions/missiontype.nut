@@ -4,6 +4,7 @@ global enum MISSION_OBJECTIVE
   KILLS_AIR           = 0x0001
   KILLS_GROUND        = 0x0002
   KILLS_NAVAL         = 0x0004
+  KILLS_SUIT          = 0x0008 // !!! TEMP MISSION_OBJECTIVE - DELETE AFTER SPACE APRIL EVENT
 
   KILLS_AIR_AI        = 0x0010
   KILLS_GROUND_AI     = 0x0020
@@ -190,6 +191,13 @@ enums.addTypesByGlobalName("g_mission_type", {
     reMisName = ::regexp2(@"_N2M(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_ANY_AI | MISSION_OBJECTIVE.KILLS_NAVAL
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_ANY_AI | MISSION_OBJECTIVE.KILLS_NAVAL
+  }
+
+  // !!! TEMP MISSION TYPE - DELETE AFTER SPACE APRIL EVENT
+  S_TDM = {  // Space: Team Deathmatch
+    reMisName = ::regexp2(@"_stdm(_|$)")
+    objectives = MISSION_OBJECTIVE.KILLS_SUIT
+    objectivesWw = MISSION_OBJECTIVE.KILLS_SUIT
   }
 
   PvE = {

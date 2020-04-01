@@ -33,7 +33,7 @@ if (::is_platform_xboxone)
 
       if (sc.type == CONTROL_TYPE.HEADER) //unitType and other params below exist only in header
       {
-        isHeaderPassed = sc?.unitType == null || unitType == sc?.unitType
+        isHeaderPassed = sc?.unitType == null || unitType?.bit == sc.unitType?.bit
         isSectionPassed = true // reset previous sectino setting
 
         if (isHeaderPassed && classType != null)

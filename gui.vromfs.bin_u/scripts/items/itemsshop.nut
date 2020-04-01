@@ -4,8 +4,7 @@ local seenList = require("scripts/seen/seenList.nut")
 local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
 local workshopCraftTreeWnd = require("scripts/items/workshop/workshopCraftTreeWnd.nut")
 local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
-
-::dagui_propid.add_name_id("hasUnseenIcon")
+local tutorAction = require("scripts/tutorials/tutorialActions.nut")
 
 ::gui_start_itemsShop <- function gui_start_itemsShop(params = null)
 {
@@ -352,6 +351,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     local pageStartIndex = curPage * itemsPerPage
     local pageEndIndex = min((curPage + 1) * itemsPerPage, itemsList.len())
     local seenListId = getTabSeenId(curTab)
+    local craftTree = curSheet?.getSet().getCraftTree()
     for(local i=pageStartIndex; i < pageEndIndex; i++)
     {
       local item = itemsList[i]
@@ -364,6 +364,13 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
         unseenIcon = bhvUnseen.makeConfigStr(seenListId, item.getSeenId())
         isItemLocked = isItemLocked(item)
         showButtonInactiveIfNeed = true
+        overrideMainActionData = craftTree != null && item.canCraftOnlyInCraftTree()
+          ? {
+            isInactive = false
+            btnName = ::loc(craftTree?.openButtonLocId ?? "")
+            needShowActionButtonAlways = false
+          }
+          : null
       }))
     }
     ::g_item_limits.requestLimits()
@@ -549,12 +556,20 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     local limitsCheckResult = ::getTblValue("result", limitsCheckData, true)
     local showMainAction = mainActionData && limitsCheckResult
     local buttonObj = showSceneBtn("btn_main_action", showMainAction)
+    local curSet = curSheet?.getSet()
+    local craftTree = curSet?.getCraftTree()
+    local needShowCraftTree = craftTree != null
+    local openCraftTreeBtnText = ::loc(craftTree?.openButtonLocId ?? "")
+    local canCraftOnlyInCraftTree = needShowCraftTree && (item?.canCraftOnlyInCraftTree() ?? false)
     if (showMainAction)
     {
       buttonObj.visualStyle = curTab == itemsTab.INVENTORY? "secondary" : "purchase"
-      buttonObj.inactiveColor = mainActionData?.isInactive ? "yes" : "no"
-      ::setDoubleTextToButton(scene, "btn_main_action", mainActionData.btnName,
-                              mainActionData?.btnColoredName || mainActionData.btnName)
+      buttonObj.inactiveColor = mainActionData?.isInactive && !canCraftOnlyInCraftTree ? "yes" : "no"
+      local btnText = canCraftOnlyInCraftTree ? openCraftTreeBtnText : mainActionData.btnName
+      local btnColoredText = canCraftOnlyInCraftTree
+        ? openCraftTreeBtnText
+        : mainActionData?.btnColoredName ?? mainActionData.btnName
+      ::setDoubleTextToButton(scene, "btn_main_action", btnText, btnColoredText)
     }
 
     local activateText = !showMainAction && item?.isInventoryItem && item.amount ? item.getActivateInfo() : ""
@@ -583,16 +598,12 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
       }
     }
 
-    local curSet = curSheet?.getSet()
-    local craftTree = curSet?.getCraftTree()
-    local needShowCraftTree = craftTree != null
     local craftTreeBtnObj = showSceneBtn("btn_open_craft_tree", needShowCraftTree)
     if (curSet != null && needShowCraftTree)
     {
-      craftTreeBtnObj.setValue(::loc(craftTree?.openButtonLocId ?? ""))
-      local needShowUnseenIcon = curSet.needShowUnseenIconCraftTree()
-      craftTreeBtnObj.hasUnseenIcon = needShowUnseenIcon ? "yes" : "no"
-      craftTreeBtnObj.findObject("craft_tree_unseen_icon").show(needShowUnseenIcon)
+      craftTreeBtnObj.setValue(openCraftTreeBtnText)
+      if (curSet.needShowAccentToCraftTreeBtn())
+        showAccentToCraftTreeBtn(curSet, craftTreeBtnObj)
     }
   }
 
@@ -633,10 +644,14 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     obj = obj || getCurItemObj()
-    item.doMainAction(
-      ::Callback(@(result) updateItemInfo(), this),
-      this,
-      { obj = obj })
+    if (item.canCraftOnlyInCraftTree() && curSheet?.getSet().getCraftTree() != null)
+      openCraftTree(item)
+    else
+      item.doMainAction(
+        ::Callback(@(result) updateItemInfo(), this),
+        this,
+        { obj = obj })
+
     markItemSeen(item)
   }
 
@@ -817,20 +832,21 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
       updateItemInfo()
   }
 
-  function onOpenCraftTree(obj)
+  function onOpenCraftTree()
+  {
+    openCraftTree()
+  }
+
+  function openCraftTree(showItem = null)
   {
     local curSet = curSheet?.getSet()
     if (curSet?.getCraftTree() == null)
       return
 
-    workshopCraftTreeWnd.open({workshopSet = curSet})
-    if (!curSet.needShowUnseenIconCraftTree())
-      return
-
-    curSet.saveSeenCraftTree()
-    local craftTreeBtnObj = scene.findObject("btn_open_craft_tree")
-    craftTreeBtnObj.hasUnseenIcon = "no"
-    craftTreeBtnObj.findObject("craft_tree_unseen_icon").show(false)
+    workshopCraftTreeWnd.open({
+      workshopSet = curSet
+      showItemOnInit = showItem
+    })
   }
 
   function getSubsetListView()
@@ -886,4 +902,18 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   onShowSpecialTasks = @(obj) null
+
+  function showAccentToCraftTreeBtn(curSet, craftTreeBtnObj) {
+    curSet.saveShowedAccentCraftTreeBtn()
+    local steps = [{
+      obj = [craftTreeBtnObj]
+      text = ::loc("workshop/accentCraftTreeButton", {
+        buttonName = ::loc(curSet.getCraftTree()?.openButtonLocId ?? "")
+      })
+      shortcut = ::SHORTCUT.GAMEPAD_RSTICK_PRESS
+      actionType = tutorAction.OBJ_CLICK
+      cb = openCraftTree
+    }]
+    ::gui_modal_tutor(steps, this, true)
+  }
 }

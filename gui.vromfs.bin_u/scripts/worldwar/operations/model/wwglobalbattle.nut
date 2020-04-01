@@ -1,5 +1,6 @@
 local u = require("sqStdLibs/helpers/u.nut")
 local wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 local WwGlobalBattle = class extends ::WwBattle
 {
@@ -70,7 +71,7 @@ local WwGlobalBattle = class extends ::WwBattle
         if (!unit.isControlledByAI())
         {
           u.appendOnce(unit.wwUnitType.code, teamUnitTypes)
-          unitTypeMask = unitTypeMask | ::g_unit_type.getByEsUnitType(unit.wwUnitType.esUnitCode).bit
+          unitTypeMask = unitTypeMask | unitTypes.getByEsUnitType(unit.wwUnitType.esUnitCode).bit
         }
       local teamInfo = {name = teamName
                         players = numPlayers

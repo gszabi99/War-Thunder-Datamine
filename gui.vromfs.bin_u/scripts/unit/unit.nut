@@ -7,6 +7,7 @@ local stdMath = require("std/math.nut")
 local platform = require("scripts/clientState/platform.nut")
 local { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 local { unitClassType, getUnitClassTypeByExpClass } = require("scripts/unit/unitClassType.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 local MOD_TIERS_COUNT = 4
 
@@ -34,7 +35,7 @@ local Unit = class
    isInited = false //is inited by wpCost, warpoints, and unitTags
 
    expClass = unitClassType.UNKNOWN
-   unitType = ::g_unit_type.INVALID
+   unitType = unitTypes.INVALID
    esUnitType = ::ES_UNIT_TYPE_INVALID
    isPkgDev = false
 
@@ -160,7 +161,7 @@ local Unit = class
     local expClassStr = uWpCost?.unitClass
     expClass = getUnitClassTypeByExpClass(expClassStr)
     esUnitType = expClass.unitTypeCode
-    unitType = ::g_unit_type.getByEsUnitType(esUnitType)
+    unitType = unitTypes.getByEsUnitType(esUnitType)
 
     foreach(p in [
       "costGold", "rank", "reqExp",
@@ -276,7 +277,7 @@ local Unit = class
   //
 
 
-
+  isSuit                = @() esUnitType == ::ES_UNIT_TYPE_TANK && tags.indexof("suit") != null
 
   getUnitWpCostBlk      = @() ::get_wpcost_blk()?[name] ?? ::DataBlock()
   isBought              = @() ::shop_is_aircraft_purchased(name)

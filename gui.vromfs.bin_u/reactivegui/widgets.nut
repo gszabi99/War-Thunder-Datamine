@@ -8,7 +8,7 @@ local shipExHud = require("shipExHud.nut")
 local tankExHud = require("tankExHud.nut")
 local shipObstacleRf = require("shipObstacleRangefinder.nut")
 local shipDeathTimer = require("shipDeathTimer.nut")
-local footballHud = require("footballHud.nut")
+local scoreboard = require("hud/scoreboard/scoreboard.nut")
 local screenState = require("style/screenState.nut")
 local airHud = require("airHud.nut")
 local tankHud = require("tankHud.nut")
@@ -53,10 +53,10 @@ local widgetsMap = {
     }
   },
 
-  [DargWidgets.FOOTBALL] = @ () {
+  [DargWidgets.SCOREBOARD] = @ () {
     size = flex()
     halign = ALIGN_CENTER
-    children = footballHud
+    children = scoreboard
   }
 }
 

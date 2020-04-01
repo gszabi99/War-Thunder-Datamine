@@ -288,6 +288,7 @@
     "pathAITanks": "ground/effects/ai",
     "pathShips": "naval/effects",
     "pathAIShips": "naval/effects/ai",
+    "pathSuit": "space_program/effects",
     "eventBulletHitGround": "bullethit_ground",
     "eventBulletHitGroundDist": 200.0,
     "eventBulletHitWater": "bullethit_water",
@@ -381,6 +382,14 @@
     "eventBulletHitTankRicochetSmallAi": "ai/rico_small",
     "eventBulletHitTankRicochetMidAi": "ai/rico_mid",
     "eventBulletHitTankRicochetBigAi": "ai/rico",
+    "eventSuitHitBig": "hit_big_interior",
+    "eventSuitHitMid": "hit_big_interior",
+    "eventSuitHitSmall": "bullet_hit_suit_interior",
+    "eventSuitHitMgun": "bullet_hit_suit_interior",
+    "eventSuitHitSignal": "enemy_destroyed",
+    "eventSuitCollision": "collision_suit",
+    "eventSuitUnitCollision": "collision_unit",
+    "eventSuitGunOverheat": "mgun_overheat",
     "eventTankRepairTracks": "track_repair",
     "eventTankRepairTracksCockpit": "track_repair",
     "eventTankGearShift": "transmission",
@@ -509,7 +518,8 @@
     "torpedo_explosion_ship": "torpedo_explosion_unit",
     "plane_explosion_air": "parts_explosion",
     "plane_explosion_water": "plane_explosion_water",
-    "explosion_big_ship": "explosion_naval"
+    "explosion_big_ship": "explosion_naval",
+    "explosion_suit_destroyed": "suit_destroyed"
   },
   "hud": {
     "path": "aircraft/gui",
@@ -5896,6 +5906,39 @@
       }
     }
   },
+  "engine_exp_mk1": {
+    "effects": {
+      "path": "space_program/engines",
+      "wep": "",
+      "overheatOutside": "",
+      "overheatCockpit": "",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_start",
+      "eventStop": "engine_stop"
+    },
+    "outside": {
+      "path": "space_program/engines",
+      "eventFront": "",
+      "eventBack": "engine",
+      "eventSurround": "",
+      "eventLod1": "engine",
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0,
+      "offsetPos": [1.0,1.0,0.0]
+    },
+    "cockpit": {
+      "path": "space_program/engines",
+      "event_cockpit_l": "engine_interior",
+      "event_start_cockpit_l": "engine_start_interior",
+      "event_stop_cockpit_l": "engine_stop_interior",
+      "leftPos": [1.0,1.0,0.0]
+    }
+  },
   "rattle05": {
     "effects": {
       "path": "ground/effects/rattle05",
@@ -6415,6 +6458,21 @@
       "path": "aircraft/gui",
       "event": "bombs_reload",
       "time": 1.5
+    },
+    "suit_mgun_reload": {
+      "path": "space_program/effects",
+      "event": "reload_mgun",
+      "time": 3.0
+    },
+    "suit_cannon_reload": {
+      "path": "space_program/effects",
+      "event": "reload_cannon",
+      "time": 4.0
+    },
+    "suit_launcher_reload": {
+      "path": "space_program/effects",
+      "event": "reload_launcher",
+      "time": 4.0
     },
     "grd_gun_reload": {
       "path": "ground/effects",

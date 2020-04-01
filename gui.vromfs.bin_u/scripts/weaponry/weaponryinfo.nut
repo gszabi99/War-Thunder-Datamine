@@ -1,3 +1,5 @@
+local unitTypes = require("scripts/unit/unitTypesList.nut")
+
 global const KGF_TO_NEWTON        = 9.807
 global const UNIT_WEAPONS_ZERO    = 0
 global const UNIT_WEAPONS_WARNING = 1
@@ -351,7 +353,7 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
       res += newLine + ::loc("bullet_properties/explosiveMassInTNTEquivalent") + ::loc("ui/colon") + tntEqText
   }
 
-  if (/*weaponType == "rockets" || */ (weaponType == "bombs" && unit.unitType != ::g_unit_type.SHIP))
+  if (/*weaponType == "rockets" || */ (weaponType == "bombs" && unit.unitType != unitTypes.SHIP))
   {
     local destrTexts = ::g_dmg_model.getDestructionInfoTexts(weapon.explosiveType, weapon.explosiveMass, weapon.massKg)
     foreach(name in ["maxArmorPenetration", "destroyRadiusArmored", "destroyRadiusNotArmored"])

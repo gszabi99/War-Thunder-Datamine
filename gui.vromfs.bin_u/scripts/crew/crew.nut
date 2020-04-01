@@ -1,6 +1,7 @@
 local stdMath = require("std/math.nut")
 local { getSkillValue } = require("scripts/crew/crewSkills.nut")
 local { trainCrewUnitWithoutSwitchCurrUnit } = require("scripts/crew/crewActions.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 const UPGR_CREW_TUTORIAL_SKILL_NUMBER = 2
 
@@ -23,7 +24,7 @@ g_crew.isAllCrewsMinLevel <- function isAllCrewsMinLevel()
 {
   foreach (checkedCountrys in ::g_crews_list.get())
     foreach (crew in checkedCountrys.crews)
-      foreach (unitType in ::g_unit_type.types)
+      foreach (unitType in unitTypes.types)
         if (unitType.isAvailable()
             && ::g_crew.getCrewLevel(crew, getCrewUnit(crew), unitType.crewUnitType) > ::g_crew.getMinCrewLevel(unitType.crewUnitType))
           return false
@@ -192,7 +193,7 @@ g_crew.isCrewMaxLevel <- function isCrewMaxLevel(crew, unit, country, crewUnitTy
     foreach(skillItem in page.items)
       if ((crewUnitType < 0 || skillItem.isVisible(crewUnitType))
           && ::is_country_has_any_es_unit_type(country,
-            ::g_unit_type.getEsUnitTypeMaskByCrewUnitTypeMask(skillItem.crewUnitTypeMask))
+            unitTypes.getEsUnitTypeMaskByCrewUnitTypeMask(skillItem.crewUnitTypeMask))
           && getMaxSkillValue(skillItem) > getSkillValue(crew.id, unit, page.id, skillItem.name))
         return false
   }
@@ -307,7 +308,7 @@ g_crew.doWithAllSkills <- function doWithAllSkills(crew, crewUnitType, action)
     foreach(skillItem in page.items)
       if ((crewUnitType < 0 || skillItem.isVisible(crewUnitType))
           && ::is_country_has_any_es_unit_type(country,
-            ::g_unit_type.getEsUnitTypeMaskByCrewUnitTypeMask(skillItem.crewUnitTypeMask)))
+            unitTypes.getEsUnitTypeMaskByCrewUnitTypeMask(skillItem.crewUnitTypeMask)))
         action(page, skillItem)
   }
 }
@@ -660,7 +661,7 @@ g_crew.hasSkillPointsToRunTutorial <- function hasSkillPointsToRunTutorial(crew,
     foreach (pName, pageBlk in dataBlk)
     {
       local unitTypeTag = pageBlk?.type ?? ""
-      local defaultCrewUnitTypeMask = ::g_unit_type.getTypeMaskByTagsString(unitTypeTag, "; ", "bitCrewType")
+      local defaultCrewUnitTypeMask = unitTypes.getTypeMaskByTagsString(unitTypeTag, "; ", "bitCrewType")
       local page = {
         id = pName,
         crewUnitTypeMask = defaultCrewUnitTypeMask
@@ -674,7 +675,7 @@ g_crew.hasSkillPointsToRunTutorial <- function hasSkillPointsToRunTutorial(crew,
         local item = {
           name = sName,
           memberName = page.id
-          crewUnitTypeMask = ::g_unit_type.getTypeMaskByTagsString(itemBlk?.type ?? "", "; ", "bitCrewType")
+          crewUnitTypeMask = unitTypes.getTypeMaskByTagsString(itemBlk?.type ?? "", "; ", "bitCrewType")
                          || defaultCrewUnitTypeMask
           costTbl = []
           isVisible = function(crewUnitType) { return (crewUnitTypeMask & (1 << crewUnitType)) != 0 }
@@ -703,7 +704,7 @@ g_crew.hasSkillPointsToRunTutorial <- function hasSkillPointsToRunTutorial(crew,
   if (reqBlk == null)
     return
 
-  foreach (t in ::g_unit_type.types)
+  foreach (t in unitTypes.types)
   {
     if (!t.isAvailable() || ::crew_air_train_req?[t.crewUnitType] != null)
       continue
@@ -797,7 +798,7 @@ g_crew.hasSkillPointsToRunTutorial <- function hasSkillPointsToRunTutorial(crew,
     foreach(idx, crew in cList?.crews || [])
     {
       local data = {}
-      foreach (unitType in ::g_unit_type.types)
+      foreach (unitType in unitTypes.types)
       {
         local crewUnitType = unitType.crewUnitType
         if (!data?[crewUnitType])

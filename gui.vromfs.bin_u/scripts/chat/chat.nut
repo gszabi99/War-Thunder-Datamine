@@ -1,7 +1,8 @@
-local penalties = ::require("scripts/penitentiary/penalties.nut")
-local systemMsg = ::require("scripts/utils/systemMsg.nut")
-local playerContextMenu = ::require("scripts/user/playerContextMenu.nut")
+local penalties = require("scripts/penitentiary/penalties.nut")
+local systemMsg = require("scripts/utils/systemMsg.nut")
+local playerContextMenu = require("scripts/user/playerContextMenu.nut")
 local dirtyWordsFilter = require("scripts/dirtyWords/dirtyWords.nut")
+local { clearBorderSymbolsMultiline } = require("std/string.nut")
 
 global enum chatUpdateState {
   OUTDATED
@@ -412,7 +413,7 @@ g_chat.validateChatMessage <- function validateChatMessage(text, multilineAllowe
 g_chat.validateThreadTitle <- function validateThreadTitle(title)
 {
   local res = ::stringReplace(title, "\\n", "\n")
-  res = ::clearBorderSymbolsMultiline(res)
+  res = clearBorderSymbolsMultiline(res)
   res = validateChatMessage(res, true)
   return res
 }
@@ -427,7 +428,7 @@ g_chat.restoreReceivedThreadTitle <- function restoreReceivedThreadTitle(title)
 {
   local res = ::stringReplace(title, "\\n", "\n")
   res = ::stringReplace(res, "<br>", "\n")
-  res = ::clearBorderSymbolsMultiline(res)
+  res = clearBorderSymbolsMultiline(res)
   res = validateChatMessage(res, true)
   return res
 }

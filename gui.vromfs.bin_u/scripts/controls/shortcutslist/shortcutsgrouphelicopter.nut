@@ -1,11 +1,12 @@
 local globalEnv = require_native("globalEnv")
 local controlsOperations = require("scripts/controls/controlsOperations.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 return [
   {
     id = "ID_HELICOPTER_CONTROL_HEADER"
     type = CONTROL_TYPE.HEADER
-    unitType = ::g_unit_type.HELICOPTER
+    unitType = unitTypes.HELICOPTER
     isHelpersVisible = true
     needShowInHelp = true
   }

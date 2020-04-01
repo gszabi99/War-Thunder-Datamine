@@ -16,6 +16,8 @@ local seenIdCanBeNew = {}
 local additionalRecipes = {}
 
 local customLocalizationPresets = {}
+local effectOnStartCraftPresets = {}
+local effectOnOpenChestPresets = {}
 
 local function initOnce()
 {
@@ -57,6 +59,8 @@ local function initOnce()
 
   markingPresetsList = ::buildTableFromBlk(wBlk?.itemMarkingPresets)
   customLocalizationPresets = ::buildTableFromBlk(wBlk?.customLocalizationPresets)
+  effectOnStartCraftPresets = ::buildTableFromBlk(wBlk?.effectOnStartCraftPresets)
+  effectOnOpenChestPresets = ::buildTableFromBlk(wBlk?.effectOnOpenChestPresets)
 }
 
 local function invalidateCache()
@@ -64,6 +68,8 @@ local function invalidateCache()
   setsList.clear()
   markingPresetsList = {}
   customLocalizationPresets = {}
+  effectOnStartCraftPresets = {}
+  effectOnOpenChestPresets = {}
   additionalRecipes = {}
   isInited = false
 }
@@ -133,6 +139,16 @@ local function getItemAdditionalRecipesById(id)
   return additionalRecipes?[id] ?? []
 }
 
+local getEffectOnStartCraftPresetById = function(name) {
+  initOnce()
+  return effectOnStartCraftPresets?[name] ?? {}
+}
+
+local getEffectOnOpenChestPresetById = function(name) {
+  initOnce()
+  return effectOnOpenChestPresets?[name] ?? {}
+}
+
 subscriptions.addListenersWithoutEnv({
   SignOut = @(p) invalidateCache()
   InventoryUpdate = @(p) invalidateItemsCache()
@@ -153,4 +169,6 @@ return {
   getSetByItemId = @(itemId) u.search(getSetsList(), @(s) s.isItemIdInSet(itemId))
   getCustomLocalizationPresets = getCustomLocalizationPresets
   getItemAdditionalRecipesById = getItemAdditionalRecipesById
+  getEffectOnStartCraftPresetById = getEffectOnStartCraftPresetById
+  getEffectOnOpenChestPresetById = getEffectOnOpenChestPresetById
 }

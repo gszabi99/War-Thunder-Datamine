@@ -1,0 +1,123 @@
+{
+  "rocketGun": true,
+  "preset_cost": 10,
+  "bullets": 1,
+  "shotFreq": 1.0,
+  "sound_path": "tanks/weapon_tanks/atgm",
+  "sound_pathStudio": "space_program/weapon/atgm",
+  "sound": "atgm",
+  "sound_inside": "atgm_interior",
+  "reload_sound_path": "tanks/effects_tanks",
+  "reload_sound_pathStudio": "space_program/effects",
+  "reload_sound": "reload_rocket",
+  "isBulletBelt": false,
+  "helicopterGroup": 2,
+  "allowHumanReload": true,
+  "reloadTime": 10.0,
+  "mesh": "space_missile",
+  "tags": {
+    "antiTankRocket": true,
+    "antiShipRocket": true
+  },
+  "rocket": {
+    "operated": true,
+    "operatedDist": 1000.0,
+    "autoAiming": true,
+    "autoLeveling": true,
+    "controlSensitivity": 0.2,
+    "aimSensitivity": 2.0,
+    "explosionEffect": "hit_rocket_zero_gravity",
+    "groundCollisionEffect": "hit_rocket_zero_gravity",
+    "ricochetEffect": "cannon_ricochet",
+    "explosionPatchRadius": 3.4,
+    "bulletType": "atgm_tank",
+    "bulletName": "152mm_19m220",
+    "caliber": 0.152,
+    "explosiveType": "comp_b",
+    "explosiveMass": 3.47,
+    "mass": 15.0,
+    "massEnd": 10.0,
+    "maxDeltaAngle": 0.03,
+    "dragCx": 0.01,
+    "length": 0.68,
+    "distFromCmToStab": 0.01,
+    "CxK": 0.1,
+    "WdK": [0.1,0.1,0.1],
+    "force": 1000.0,
+    "timeFire": 100.0,
+    "thrustDeviation": 0.0,
+    "rotationRocket": 0.0,
+    "autoAimingFirstPerson": true,
+    "smokeEffect": "",
+    "fireEffect": "unit_exhaust_zero_gravity",
+    "maxDistance": 1000.0,
+    "minDistance": 30.0,
+    "distanceFuse": false,
+    "spawnExplosionWreckage": false,
+    "spawnExplosionFx": false,
+    "hasProximityFuse": true,
+    "hitPowerMult": 1.0,
+    "nearHitPower": [1.0,50.0],
+    "midHitPower": [0.9,400.0],
+    "farHitPower": [0.1,1000.0],
+    "endHitPower": [0.01,1500.0],
+    "relativeVelHitShift": [300.0,1000.0],
+    "nearArmorPower": [10.0,50.0],
+    "midArmorPower": [7.0,400.0],
+    "farArmorPower": [0.2,700.0],
+    "relativeVelArmorShift": [200.0,1000.0],
+    "rendinstDamageRadius": 4.0,
+    "statType": "hydra",
+    "shutterDamage": true,
+    "shutterDamageRadius": 35.0,
+    "shutterAmount": 1500,
+    "shutterArmorPower": 10.0,
+    "shutterHit": 10.0,
+    "advancedMissiles": false,
+    "useStartSpeed": true,
+    "startSpeed": 0.0,
+    "endSpeed": 70.0,
+    "speedViscosity": 0.1,
+    "timeLife": 10.0,
+    "price": 3000.0,
+    "collisions": {
+      "steel": {
+        "fx": "hit_rocket_zero_gravity"
+      },
+      "armor": {
+        "fx": "hit_rocket_zero_gravity"
+      },
+      "buildings": {
+        "fx": "hit_rocket_zero_gravity"
+      },
+      "wood": {
+        "fx": "hit_rocket_zero_gravity"
+      }
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 1.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 1.0
+      }
+    },
+    "proximityFuse": {
+      "radius": 1.5,
+      "armDistance": 20.0,
+      "detectAirUnits": true,
+      "detectGroundUnits": true,
+      "detectGround": false
+    },
+    "cumulativeDamage": {
+      "armorPower": 600.0,
+      "distance": 5.5,
+      "damage": 600.0,
+      "onHitChanceMultFire": 25.0,
+      "cumulativeFragmentsDamageRadius": 4.5,
+      "cumulativeFragmentsDamageAngle": 20.0,
+      "cumulativeFragmentsAmount": 40,
+      "cumulativeFragmentsArmorPower": 5.0,
+      "cumulativeFragmentsHit": 9.0
+    }
+  }
+}

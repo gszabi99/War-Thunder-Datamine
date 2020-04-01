@@ -7,7 +7,8 @@ local time = require("scripts/time.nut")
 local chooseAmountWnd = ::require("scripts/wndLib/chooseAmountWnd.nut")
 local recipesListWnd = ::require("scripts/items/listPopupWnd/recipesListWnd.nut")
 local itemTransfer = require("scripts/items/itemsTransfer.nut")
-local workshop = ::require("scripts/items/workshop/workshop.nut")
+local { getMarkingPresetsById, getCustomLocalizationPresets,
+  getEffectOnOpenChestPresetById } = require("scripts/items/workshop/workshop.nut")
 
 local emptyBlk = ::DataBlock()
 
@@ -27,6 +28,7 @@ local defaultLocIdsList = {
   tryCreateRecipes                      = "item/try_create_recipes"
   createRecipes                         = "item/create_recipes"
   cancelTitle                           = ""
+  reachedMaxAmount                      = "item/reached_max_amount"
 }
 
 local ItemExternal = class extends ::BaseItem
@@ -313,7 +315,7 @@ local ItemExternal = class extends ::BaseItem
       }
     }
     else if(hasReachedMaxAmount())
-      headers.append({ header = ::loc("item/reached_max_amount") })
+      headers.append({ header = ::loc(getLocIdsList().reachedMaxAmount) })
     else
       recipes = getMyRecipes()
     return ::PrizesView.getPrizesListView(content, params)
@@ -977,7 +979,7 @@ local ItemExternal = class extends ::BaseItem
     if (!markPresetName)
       return res
 
-    local data = workshop.getMarkingPresetsById(markPresetName)
+    local data = getMarkingPresetsById(markPresetName)
     if(!data)
       return res
 
@@ -1023,7 +1025,7 @@ local ItemExternal = class extends ::BaseItem
     if (!markPresetName || isDisguised)
       return ""
 
-    local data = workshop.getMarkingPresetsById(markPresetName)
+    local data = getMarkingPresetsById(markPresetName)
     if (!data)
       return ""
 
@@ -1037,7 +1039,7 @@ local ItemExternal = class extends ::BaseItem
     locIdsList = getLocIdsListImpl()
     local localizationPreset = itemDef?.tags?.customLocalizationPreset
     if (localizationPreset)
-      locIdsList.__update(workshop.getCustomLocalizationPresets(localizationPreset))
+      locIdsList.__update(getCustomLocalizationPresets(localizationPreset))
 
     return locIdsList
   }
@@ -1082,6 +1084,9 @@ local ItemExternal = class extends ::BaseItem
       ? substitutionItem.getBoostEfficiency()
       : itemDef?.tags?.boostEfficiency.tointeger()
   }
+
+  getEffectOnOpenChest = @() getEffectOnOpenChestPresetById(itemDef?.tags?.effectOnOpenChest ?? "")
+  canCraftOnlyInCraftTree = @() itemDef?.tags?.canCraftOnlyInCraftTree ?? false
 }
 
 return ItemExternal

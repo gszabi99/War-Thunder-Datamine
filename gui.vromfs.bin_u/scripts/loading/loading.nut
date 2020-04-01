@@ -13,7 +13,7 @@ local { animBgLoad } = require("scripts/loading/animBg.nut")
     ::handlersManager.loadHandler(::gui_handlers.LoadingBrief, { briefing = briefing })
   }
   else if (::g_login.isLoggedIn())
-    ::handlersManager.loadHandler(::gui_handlers.LoadingHangarHandler)
+    ::handlersManager.loadHandler(::gui_handlers.LoadingHangarHandler, { isEnteringMission = isMissionLoading })
   else
     ::handlersManager.loadHandler(::gui_handlers.LoadingHandler)
 

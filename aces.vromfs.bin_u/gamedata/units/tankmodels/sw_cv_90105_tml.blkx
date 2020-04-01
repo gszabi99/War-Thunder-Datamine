@@ -108,6 +108,12 @@
     "type": "typeLightTank"
   },
   {
+    "rearmSmokeTimeOnField": 60.0
+  },
+  {
+    "canReloadNonGuns": true
+  },
+  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "RHA_tank",
@@ -273,11 +279,13 @@
       "RHAHH_add": {
         "armorClass": "RHAHH_tank",
         "hp": 10000.0,
+        "hidableInViewer": true,
         "turret_02_back_dm": {
           "armorThickness": 5.0
         },
         "turret_01_side_dm": {
-          "armorThickness": 5.0
+          "armorThickness": 5.0,
+          "hidableInViewer": false
         },
         "turret_03_top_dm": {
           "armorThickness": 5.0
@@ -3117,6 +3125,17 @@
   },
   {
     "default_skin": {
+      "replace_tex": {
+        "from": "se_camo_green*",
+        "to": "se_camo_modern_m90*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "se_camo_modern_m90",
+      "nameLocId": "skin/se_camo_modern_m90",
+      "descLocId": "skin/se_camo_modern_m90/desc",
       "replace_tex": {
         "from": "se_camo_green*",
         "to": "se_camo_modern_m90*"

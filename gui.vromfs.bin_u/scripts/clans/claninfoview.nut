@@ -1,3 +1,5 @@
+local unitTypes = require("scripts/unit/unitTypesList.nut")
+
 local function getClanRequirementsText(membershipRequirements)
 {
   if (!membershipRequirements)
@@ -9,7 +11,7 @@ local function getClanRequirementsText(membershipRequirements)
     : ::loc("clan/rankReqInfoCondType_and")
 
   local ranksReqTextArray = []
-  foreach (unitType in ::g_unit_type.types)
+  foreach (unitType in unitTypes.types)
   {
     local req = rawRanksCond.getBlockByName("rank_" + unitType.name)
     if (req?.type != "rank" || req?.unitType != unitType.name)

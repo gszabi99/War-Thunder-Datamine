@@ -2,6 +2,7 @@ local time = require("scripts/time.nut")
 local externalIDsService = require("scripts/user/externalIdsService.nut")
 local avatars = require("scripts/user/avatars.nut")
 local platformModule = require("scripts/clientState/platform.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
@@ -468,7 +469,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     if (::check_obj(subSwitch))
     {
       local value = subSwitch.getValue()
-      local unitType = ::g_unit_type.getByEsUnitType(value)
+      local unitType = unitTypes.getByEsUnitType(value)
       curSubFilter = unitType.esUnitType
       refreshOwnUnitControl(value)
     }
@@ -488,12 +489,12 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
 
     if ( ! unitypeListObj.childrenCount())
     {
-      local filterUnitType = ::g_unit_type.getByTag(filterUnitTag)
+      local filterUnitType = unitTypes.getByTag(filterUnitTag)
       if (!filterUnitType.isAvailable())
-        filterUnitType = ::g_unit_type.getByEsUnitType(::get_es_unit_type(::get_cur_slotbar_unit()))
+        filterUnitType = unitTypes.getByEsUnitType(::get_es_unit_type(::get_cur_slotbar_unit()))
 
       local view = { items = [] }
-      foreach(unitType in ::g_unit_type.types)
+      foreach(unitType in unitTypes.types)
         if (unitType.isAvailable())
           view.items.append(
             {
@@ -513,7 +514,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     for(local i = 0; i < total; i++)
     {
       local obj = unitypeListObj.getChild(i)
-      local unitType = ::g_unit_type.getByEsUnitType(i)
+      local unitType = unitTypes.getByEsUnitType(i)
       local isVisible = getSkinsCache(curFilter, unitType.esUnitType, OwnUnitsType.ALL).len() > 0
       if (isVisible && (indexForSelection == -1 || previousSelectedIndex == i))
         indexForSelection = i;

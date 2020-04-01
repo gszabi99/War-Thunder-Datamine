@@ -157,13 +157,13 @@ class ::gui_handlers.multifuncMenuHandler extends ::gui_handlers.wheelMenuHandle
   function toggleShortcut(shortcutId)
   {
     switchControlsAllowMask(wndControlsAllowMaskOnShortcut)
-    ::handlersManager.doDelayed(function() {
+    ::handlersManager.doDelayed(::Callback(function() {
       ::toggle_shortcut(shortcutId)
-      ::handlersManager.doDelayed(function() {
+      ::handlersManager.doDelayed(::Callback(function() {
         switchControlsAllowMask(isActive ? wndControlsAllowMaskWhenActive
                                          : wndControlsAllowMaskWhenInactive)
-      }.bindenv(this))
-    }.bindenv(this))
+      }, this))
+    }, this))
   }
 
   function gotoPrevMenuOrQuit()

@@ -177,6 +177,11 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
 
   function initScreen()
   {
+    // April Fools Day 2020 temporary hack:
+    local shouldShowMap = !::is_suit_mission()
+    showSceneBtn("tactical-map-box", shouldShowMap)
+    showSceneBtn("tactical-map", shouldShowMap)
+
     missionRules = ::g_mis_custom_state.getCurMissionRules()
 
     checkFirstInit()

@@ -1,5 +1,6 @@
 local { getRoleText, getUnitRoleIcon } = require("scripts/unit/unitInfoTexts.nut")
 local { getUnitClassTypeByExpClass } = require("scripts/unit/unitClassType.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 ::g_unit_limit_classes <- {
 }
@@ -107,7 +108,7 @@ class ::g_unit_limit_classes.LimitByUnitType extends ::g_unit_limit_classes.Limi
 {
   function getText()
   {
-    local unitType = ::g_unit_type[name]
+    local unitType = unitTypes[name]
     local fontIcon = ::colorize("activeTextColor", unitType.fontIcon)
     return fontIcon + unitType.getArmyLocName() + ::loc("ui/colon") + ::colorize("activeTextColor", getRespawnsLeftText())
   }

@@ -1,4 +1,5 @@
 local { getUnitClassTypeByExpClass } = require("scripts/unit/unitClassType.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 class ::mission_rules.SharedPool extends ::mission_rules.Base
 {
@@ -141,8 +142,8 @@ class ::mission_rules.SharedPool extends ::mission_rules.Base
         local tag = limitedTags.getParamName(i)
         local respLeft = limitedTags.getParamValue(i)
 
-        local unitType = ::g_unit_type.getByTag(tag)
-        if (unitType != ::g_unit_type.INVALID)
+        local unitType = unitTypes.getByTag(tag)
+        if (unitType != unitTypes.INVALID)
         {
           res.unitLimits.append(::g_unit_limit_classes.LimitByUnitType(unitType.typeName, respLeft))
           continue

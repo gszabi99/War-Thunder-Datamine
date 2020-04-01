@@ -470,6 +470,10 @@ local unlockConditionUnitclasses = {
   foreach (feature in unlockBlk % "reqFeature")
     if (!::has_feature(feature))
       return false
+  if (unlockBlk?.mode != null && unlockBlk.mode.blockCount() > 0)
+    foreach (cond in unlockBlk.mode % "condition")
+      if (cond?.type == "playerHasFeature" && cond?.feature != null && !::has_feature(cond.feature))
+        return false
   if (!hasFeatureBasic("Tanks") && ::is_unlock_tanks_related(unlockId, unlockBlk))
     return false
   if (!::g_unlocks.checkDependingUnlocks(unlockBlk))

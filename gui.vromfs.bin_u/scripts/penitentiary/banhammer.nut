@@ -1,4 +1,5 @@
 local platformModule = require("scripts/clientState/platform.nut")
+local { clearBorderSymbolsMultiline } = require("std/string.nut")
 
 ::gui_modal_ban <- function gui_modal_ban(playerInfo, cLog = null)
 {
@@ -166,7 +167,7 @@ class ::gui_handlers.BanHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!canBan())
       return goBack()
 
-    local comment = ::clearBorderSymbolsMultiline(  scene.findObject("complaint_text").getValue()  )
+    local comment = clearBorderSymbolsMultiline(  scene.findObject("complaint_text").getValue()  )
     if (comment.len() < 10)
     {
       msgBox("need_text", ::loc("msg/complain/needDetailedComment"),
@@ -324,7 +325,7 @@ class ::gui_handlers.ComplainHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!isValid())
       return
 
-    local user_comment = ::clearBorderSymbolsMultiline( scene.findObject("complaint_text").getValue() )
+    local user_comment = clearBorderSymbolsMultiline( scene.findObject("complaint_text").getValue() )
     if (user_comment.len() < 10)
     {
       msgBox("need_text", ::loc("msg/complain/needDetailedComment"),

@@ -1,5 +1,6 @@
 local enums = ::require("sqStdlibs/helpers/enums.nut")
 local helpMarkup = require("scripts/controls/help/controlsHelpMarkup.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 local result = {
   types = []
@@ -56,8 +57,8 @@ enums.addTypes(result, {
     helpPattern = CONTROL_HELP_PATTERN.HOTAS4
 
     specificCheck = @() ::check_joystick_thustmaster_hotas(false)
-    checkFeature = ::g_unit_type.AIRCRAFT.isAvailable
-    pageUnitTypeBit = ::g_unit_type.AIRCRAFT.bit
+    checkFeature = unitTypes.AIRCRAFT.isAvailable
+    pageUnitTypeBit = unitTypes.AIRCRAFT.bit
 
     pageFillfuncName = "fillHotas4Image"
     pageBlkName = "gui/help/internalHelp.blk"
@@ -68,8 +69,8 @@ enums.addTypes(result, {
     showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
     helpPattern = CONTROL_HELP_PATTERN.IMAGE
 
-    checkFeature = ::g_unit_type.AIRCRAFT.isAvailable
-    pageUnitTypeBit = ::g_unit_type.AIRCRAFT.bit
+    checkFeature = unitTypes.AIRCRAFT.isAvailable
+    pageUnitTypeBit = unitTypes.AIRCRAFT.bit
 
     pageBlkName = "gui/help/controlsAircraft.blk"
     imagePattern = "#ui/images/country_%s_controls_help.jpg?P1"
@@ -127,8 +128,8 @@ enums.addTypes(result, {
     showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
     helpPattern = CONTROL_HELP_PATTERN.IMAGE
 
-    checkFeature = ::g_unit_type.TANK.isAvailable
-    pageUnitTypeBit = ::g_unit_type.TANK.bit
+    checkFeature = unitTypes.TANK.isAvailable
+    pageUnitTypeBit = unitTypes.TANK.bit
 
     pageBlkName = "gui/help/controlsTank.blk"
 
@@ -245,8 +246,8 @@ enums.addTypes(result, {
     showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
     helpPattern = CONTROL_HELP_PATTERN.IMAGE
 
-    checkFeature = ::g_unit_type.SHIP.isAvailable
-    pageUnitTypeBit = ::g_unit_type.SHIP.bit
+    checkFeature = unitTypes.SHIP.isAvailable
+    pageUnitTypeBit = unitTypes.SHIP.bit
 
     pageBlkName = "gui/help/controlsShip.blk"
 
@@ -328,8 +329,8 @@ enums.addTypes(result, {
     showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
     helpPattern = CONTROL_HELP_PATTERN.IMAGE
 
-    checkFeature = ::g_unit_type.HELICOPTER.isAvailable
-    pageUnitTypeBit = ::g_unit_type.HELICOPTER.bit
+    checkFeature = unitTypes.HELICOPTER.isAvailable
+    pageUnitTypeBit = unitTypes.HELICOPTER.bit
 
     pageBlkName = "gui/help/controlsHelicopter.blk"
 
@@ -369,8 +370,8 @@ enums.addTypes(result, {
     showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
     helpPattern = CONTROL_HELP_PATTERN.IMAGE
 
-    checkFeature = @() ::g_unit_type.SHIP.isAvailable() && ::has_feature("SpecialShips")
-    pageUnitTypeBit = ::g_unit_type.SHIP.bit
+    checkFeature = @() unitTypes.SHIP.isAvailable() && ::has_feature("SpecialShips")
+    pageUnitTypeBit = unitTypes.SHIP.bit
     pageUnitTag = "submarine"
 
     pageBlkName = "gui/help/controlsSubmarine.blk"
@@ -400,14 +401,31 @@ enums.addTypes(result, {
       ]
     }
   }
+  IMAGE_SUIT = {
+    subTabName = "#hotkeys/ID_COMMON_CONTROL_HEADER"
+
+    showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS, HELP_CONTENT_SET.CONTROLS_SUIT ]
+    helpPattern = CONTROL_HELP_PATTERN.IMAGE
+
+    checkFeature = @() unitTypes.TANK.isAvailable()
+    pageUnitTypeBit = unitTypes.TANK.bit
+    pageUnitTag = "suit"
+
+    pageBlkName = "gui/help/controlsSuit.blk"
+    defaultValues = { country = "ussr" }
+    imagePattern = "#ui/images/help/help_controls_suit_%s.jpg?P1"
+    hasImageByCountries = ["ussr"]
+    countryRelatedObjs = { ussr = [] }
+    linkLines = { links = [] }
+  }
   CONTROLLER_AIRCRAFT = {
     subTabName = helpMarkup.title
     showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
     helpPattern = CONTROL_HELP_PATTERN.GAMEPAD
 
     specificCheck = @() ::show_console_buttons
-    checkFeature = ::g_unit_type.AIRCRAFT.isAvailable
-    pageUnitTypeBit = ::g_unit_type.AIRCRAFT.bit
+    checkFeature = unitTypes.AIRCRAFT.isAvailable
+    pageUnitTypeBit = unitTypes.AIRCRAFT.bit
 
     pageBlkName = helpMarkup.blk
     pageFillfuncName = "initGamepadPage"
@@ -419,8 +437,8 @@ enums.addTypes(result, {
     helpPattern = CONTROL_HELP_PATTERN.GAMEPAD
 
     specificCheck = @() ::show_console_buttons
-    checkFeature = ::g_unit_type.TANK.isAvailable
-    pageUnitTypeBit = ::g_unit_type.TANK.bit
+    checkFeature = unitTypes.TANK.isAvailable
+    pageUnitTypeBit = unitTypes.TANK.bit
 
     pageBlkName = helpMarkup.blk
     pageFillfuncName = "initGamepadPage"
@@ -432,8 +450,8 @@ enums.addTypes(result, {
     helpPattern = CONTROL_HELP_PATTERN.GAMEPAD
 
     specificCheck = @() ::show_console_buttons
-    checkFeature = ::g_unit_type.SHIP.isAvailable
-    pageUnitTypeBit = ::g_unit_type.SHIP.bit
+    checkFeature = unitTypes.SHIP.isAvailable
+    pageUnitTypeBit = unitTypes.SHIP.bit
 
     pageBlkName = helpMarkup.blk
     pageFillfuncName = "initGamepadPage"
@@ -445,8 +463,8 @@ enums.addTypes(result, {
     helpPattern = CONTROL_HELP_PATTERN.GAMEPAD
 
     specificCheck = @() ::show_console_buttons
-    checkFeature = ::g_unit_type.HELICOPTER.isAvailable
-    pageUnitTypeBit = ::g_unit_type.HELICOPTER.bit
+    checkFeature = unitTypes.HELICOPTER.isAvailable
+    pageUnitTypeBit = unitTypes.HELICOPTER.bit
 
     pageBlkName = helpMarkup.blk
     pageFillfuncName = "initGamepadPage"
@@ -458,9 +476,24 @@ enums.addTypes(result, {
     helpPattern = CONTROL_HELP_PATTERN.GAMEPAD
 
     specificCheck = @() ::show_console_buttons
-    checkFeature = @() ::g_unit_type.SHIP.isAvailable() && ::has_feature("SpecialShips")
-    pageUnitTypeBit = ::g_unit_type.SHIP.bit
+    checkFeature = @() unitTypes.SHIP.isAvailable() && ::has_feature("SpecialShips")
+    pageUnitTypeBit = unitTypes.SHIP.bit
     pageUnitTag = "submarine"
+
+    pageBlkName = helpMarkup.blk
+    pageFillfuncName = "initGamepadPage"
+  }
+  CONTROLLER_SUIT = {
+    subTabName = helpMarkup.title
+
+    showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
+    helpPattern = CONTROL_HELP_PATTERN.GAMEPAD
+
+    specificCheck = @() ::show_console_buttons
+    checkFeature = @() unitTypes.TANK.isAvailable()
+    pageUnitTypeBit = unitTypes.TANK.bit
+    pageUnitTag = "suit"
+    needShow = @(...) true
 
     pageBlkName = helpMarkup.blk
     pageFillfuncName = "initGamepadPage"
@@ -479,7 +512,7 @@ enums.addTypes(result, {
       local basePresets = ::g_controls_manager.getCurPreset().getBasePresetNames()
       return ::is_platform_ps4 && ::u.search(basePresets, @(val) val == "default"|| val == "dualshock4") != null
     }
-    pageUnitTypeBit = ::g_unit_type.AIRCRAFT.bit
+    pageUnitTypeBit = unitTypes.AIRCRAFT.bit
 
     pageBlkName = "gui/help/controllerKeyboard.blk"
     pageFillfuncName = "fillAllTexts"
@@ -498,8 +531,8 @@ enums.addTypes(result, {
       local basePresets = ::g_controls_manager.getCurPreset().getBasePresetNames()
       return ::is_platform_ps4 && ::u.search(basePresets, @(val) val == "default"|| val == "dualshock4") != null
     }
-    checkFeature = ::g_unit_type.TANK.isAvailable
-    pageUnitTypeBit = ::g_unit_type.TANK.bit
+    checkFeature = unitTypes.TANK.isAvailable
+    pageUnitTypeBit = unitTypes.TANK.bit
 
     pageBlkName = "gui/help/controllerKeyboard.blk"
     pageFillfuncName = "fillAllTexts"
@@ -518,8 +551,8 @@ enums.addTypes(result, {
       local basePresets = ::g_controls_manager.getCurPreset().getBasePresetNames()
       return ::is_platform_ps4 && ::u.search(basePresets, @(val) val == "default"|| val == "dualshock4") != null
     }
-    checkFeature = ::g_unit_type.SHIP.isAvailable
-    pageUnitTypeBit = ::g_unit_type.SHIP.bit
+    checkFeature = unitTypes.SHIP.isAvailable
+    pageUnitTypeBit = unitTypes.SHIP.bit
 
     pageBlkName = "gui/help/controllerKeyboard.blk"
     pageFillfuncName = "fillAllTexts"
@@ -538,8 +571,8 @@ enums.addTypes(result, {
       local basePresets = ::g_controls_manager.getCurPreset().getBasePresetNames()
       return ::is_platform_ps4 && ::u.search(basePresets, @(val) val == "default"|| val == "dualshock4") != null
     }
-    checkFeature = ::g_unit_type.HELICOPTER.isAvailable
-    pageUnitTypeBit = ::g_unit_type.HELICOPTER.bit
+    checkFeature = unitTypes.HELICOPTER.isAvailable
+    pageUnitTypeBit = unitTypes.HELICOPTER.bit
 
     pageBlkName = "gui/help/controllerKeyboard.blk"
     pageFillfuncName = "fillAllTexts"
@@ -558,9 +591,29 @@ enums.addTypes(result, {
       local basePresets = ::g_controls_manager.getCurPreset().getBasePresetNames()
       return ::is_platform_ps4 && ::u.search(basePresets, @(val) val == "default"|| val == "dualshock4") != null
     }
-    checkFeature = @() ::g_unit_type.SHIP.isAvailable() && ::has_feature("SpecialShips")
-    pageUnitTypeBit = ::g_unit_type.SHIP.bit
+    checkFeature = @() unitTypes.SHIP.isAvailable() && ::has_feature("SpecialShips")
+    pageUnitTypeBit = unitTypes.SHIP.bit
     pageUnitTag = "submarine"
+
+    pageBlkName = "gui/help/controllerKeyboard.blk"
+    pageFillfuncName = "fillAllTexts"
+  }
+  KEYBOARD_SUIT = {
+    subTabName = "#controlType/mouse"
+
+    showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS, HELP_CONTENT_SET.CONTROLS_SUIT ]
+    helpPattern = CONTROL_HELP_PATTERN.KEYBOARD_MOUSE
+
+    specificCheck = function() {
+      if (::is_platform_pc)
+        return true
+
+      local basePresets = ::g_controls_manager.getCurPreset().getBasePresetNames()
+      return ::is_platform_ps4 && ::u.search(basePresets, @(val) val == "default"|| val == "dualshock4") != null
+    }
+    checkFeature = @() unitTypes.TANK.isAvailable()
+    pageUnitTypeBit = unitTypes.TANK.bit
+    pageUnitTag = "suit"
 
     pageBlkName = "gui/help/controllerKeyboard.blk"
     pageFillfuncName = "fillAllTexts"
@@ -572,8 +625,8 @@ enums.addTypes(result, {
     helpPattern = CONTROL_HELP_PATTERN.RADAR
 
     specificCheck = @() !::is_in_flight() || isUnitWithRadarOrRwr(::get_player_cur_unit())
-    checkFeature = @() ::g_unit_type.AIRCRAFT.isAvailable && ::has_feature("Sensors")
-    pageUnitTypeBit = ::g_unit_type.AIRCRAFT.bit
+    checkFeature = @() unitTypes.AIRCRAFT.isAvailable && ::has_feature("Sensors")
+    pageUnitTypeBit = unitTypes.AIRCRAFT.bit
 
     pageBlkName = "gui/help/radarAircraft.blk"
     imagePattern = "#ui/images/help/help_radar_air_%s.jpg?P1"
@@ -619,8 +672,8 @@ enums.addTypes(result, {
     helpPattern = CONTROL_HELP_PATTERN.RADAR
 
     specificCheck = @() !::is_in_flight() || isUnitWithRadarOrRwr(::get_player_cur_unit())
-    checkFeature = @() ::g_unit_type.TANK.isAvailable && ::has_feature("Sensors")
-    pageUnitTypeBit = ::g_unit_type.TANK.bit
+    checkFeature = @() unitTypes.TANK.isAvailable && ::has_feature("Sensors")
+    pageUnitTypeBit = unitTypes.TANK.bit
 
     pageBlkName = "gui/help/radarTank.blk"
     imagePattern = "#ui/images/help/help_radar_tank_%s.jpg?P1"

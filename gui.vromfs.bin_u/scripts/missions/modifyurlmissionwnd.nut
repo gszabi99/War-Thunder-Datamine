@@ -1,3 +1,5 @@
+local { clearBorderSymbols } = require("std/string.nut")
+
 class ::gui_handlers.modifyUrlMissionWnd extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
@@ -72,8 +74,8 @@ class ::gui_handlers.modifyUrlMissionWnd extends ::gui_handlers.BaseGuiHandlerWT
       return ::showInfoMsgBox(::loc("msg/allFieldsMustBeFilled"))
 
     local res = true
-    local name = ::clearBorderSymbols(curName, [" "])
-    local url = ::clearBorderSymbols(curUrl, [" "])
+    local name = clearBorderSymbols(curName, [" "])
+    local url = clearBorderSymbols(curUrl, [" "])
     if (urlMission)
       res = ::g_url_missions.modifyMission(urlMission, name, url)
     else

@@ -125,6 +125,7 @@
   additionalIconsDiv {
     input-transparent:t='yes'
     css-hier-invalidate:t='yes'
+    height:t='ph'
 
     <<#newIconWidget>>
       tdiv {

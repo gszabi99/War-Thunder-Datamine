@@ -39,6 +39,16 @@
     enable:t='no'
   }
 <</conectionsInRow>>
+<<#textBlocks>>
+  textareaNoTab {
+    size:t='<<textBlockSize>>'
+    position:t='absolute'
+    pos:t='<<textBlockPos>>'
+    text:t='<<textInBlock>>'
+    <<@textSize>>
+    enable:t='no'
+  }
+<</textBlocks>>
 <<#separators>>
   <<#separatorPos>>
   craftTreeSeparator {

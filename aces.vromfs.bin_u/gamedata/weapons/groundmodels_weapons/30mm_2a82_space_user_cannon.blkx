@@ -1,0 +1,169 @@
+{
+  "cannon": true,
+  "weaponType": 3,
+  "bUseHookAsRel": true,
+  "emitColor": [1.0,1.0,0.0],
+  "emitI": 10.0,
+  "emitR": 3.0,
+  "emitTime": 0.03,
+  "aimMinDist": 0.1,
+  "aimMaxDist": 4000.0,
+  "maxDeltaAngle": 0.02,
+  "maxDeltaAngleVertical": 0.02,
+  "shotFreq": 0.25,
+  "shotFreqRndK": 0.0,
+  "traceFreq": 3,
+  "bEnablePause": false,
+  "bullets": 400,
+  "bulletsCluster": 1,
+  "reloadTime": 5.0,
+  "bulletsCartridge": 20,
+  "fxType": "30mm_gun_flame_zero_gravity",
+  "fxMultipleSpawn": true,
+  "shouldCollideWithRendinsts": true,
+  "sound_path": "tanks/weapon_tanks/cannons",
+  "sound_pathStudio": "space_program/weapon/cannons",
+  "sound": "cannon_mk1",
+  "sound_inside": "cannon_mk1_interior",
+  "soundLoop": false,
+  "sfxReloadBullet": "suit_cannon_reload",
+  "isBulletBelt": true,
+  "bullet": {
+    "bulletCount": 30,
+    "mass": 1.2,
+    "explosiveType": "pbxn_5",
+    "explosiveMass": 0.9,
+    "caliber": 0.03,
+    "speed": 1500.0,
+    "maxDistance": 1500.0,
+    "bulletType": "heat_fs_tank",
+    "bulletName": "30mm_m789",
+    "hitPowerMult": 10.0,
+    "effectiveDistance": 2500.0,
+    "relativeVelHitShift": [300.0,1000.0],
+    "shutterDamage": true,
+    "shutterDamageRadius": 3.0,
+    "shutterAmount": 40,
+    "shutterArmorPower": 4.0,
+    "shutterHit": 20.0,
+    "waterCollisionEffect": "water_splash",
+    "waterFxScale": [0.4,0.6],
+    "hitpower": {
+      "HitPower0m": [1.0,500.0],
+      "HitPower1000m": [0.9,1000.0],
+      "HitPower1500m": [0.65,1500.0],
+      "HitPower2500m": [0.5,2500.0],
+      "HitPower7000m": [0.0,7000.0]
+    },
+    "cumulativeDamage": {
+      "armorPower": 150.0,
+      "distance": 2.5,
+      "damage": 500.0,
+      "onHitChanceMultFire": 10.0
+    },
+    "collisions": {
+      "default": {
+        "fx": "30_hit_ground_zero_gravity",
+        "fxScale": [0.5,0.7]
+      },
+      "horLandMesh": {
+        "fx": "30_hit_ground_zero_gravity",
+        "fxScale": [0.5,0.7]
+      },
+      "soil": {
+        "fx": "30_hit_ground_zero_gravity",
+        "fxScale": [0.5,0.7]
+      },
+      "dirt": {
+        "fx": "30_hit_ground_zero_gravity",
+        "fxScale": [0.5,0.7]
+      },
+      "road": {
+        "fx": "30_hit_ground_zero_gravity",
+        "fxScale": [0.5,0.7]
+      },
+      "roadSoil": {
+        "fx": "30_hit_ground_zero_gravity",
+        "fxScale": [0.5,0.7]
+      },
+      "sand": {
+        "fx": "30_hit_ground_zero_gravity",
+        "fxScale": [0.5,0.7]
+      },
+      "duneSand": {
+        "fx": "30_hit_ground_zero_gravity",
+        "fxScale": [0.5,0.7]
+      },
+      "roadSand": {
+        "fx": "30_hit_ground_zero_gravity",
+        "fxScale": [0.5,0.7]
+      },
+      "quickSand": {
+        "fx": "30_hit_ground_zero_gravity",
+        "fxScale": [0.5,0.7]
+      },
+      "ice": {
+        "fx": "30_hit_ground_zero_gravity",
+        "fxScale": [0.5,0.7]
+      },
+      "roadSnow": {
+        "fx": "30_hit_ground_zero_gravity",
+        "fxScale": [0.5,0.7]
+      },
+      "snowLower": {
+        "fx": "30_hit_ground_zero_gravity",
+        "fxScale": [0.5,0.7]
+      },
+      "glass": {
+        "fx": "30_hit_ground_zero_gravity",
+        "fxScale": [0.1,0.2]
+      },
+      "wood": {
+        "fx": "30_hit_ground_zero_gravity",
+        "fxScale": [0.1,0.2]
+      },
+      "buildings": {
+        "fx": "30_hit_ground_zero_gravity",
+        "fxScale": [0.3,0.4]
+      },
+      "verLandMesh": {
+        "fx": "30_hit_ground_zero_gravity",
+        "fxScale": [0.3,0.4]
+      },
+      "beton": {
+        "fx": "30_hit_ground_zero_gravity",
+        "fxScale": [0.3,0.4]
+      },
+      "rocks": {
+        "fx": "30_hit_ground_zero_gravity",
+        "fxScale": [0.3,0.4]
+      },
+      "rocksSlippery": {
+        "fx": "30_hit_ground_zero_gravity",
+        "fxScale": [0.3,0.4]
+      },
+      "fabric": {
+        "fx": "30_hit_ground_zero_gravity",
+        "fxScale": [0.3,0.4]
+      },
+      "stone_snow": {
+        "fx": "30_hit_ground_zero_gravity",
+        "fxScale": [0.3,0.4]
+      },
+      "steel": {
+        "fx": "30_hit_metal_zero_gravity",
+        "fxScale": [0.1,0.3]
+      },
+      "metal": {
+        "fx": "30_hit_metal_zero_gravity",
+        "fxScale": [0.1,0.3]
+      }
+    },
+    "visual": {
+      "range_percent_of_ammo": [100.0,0.0],
+      "traceFreq": 1,
+      "tracer": "76mmGreen",
+      "trail": "black"
+    }
+  }
+}

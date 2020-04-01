@@ -61,12 +61,14 @@ local ItemGenerator = class {
       local parsedRecipes = inventoryClient.parseRecipesString(exchange)
       local isDisassemble = tags?.isDisassemble ?? false
       local localizationPresetName = tags?.customLocalizationPreset
+      local effectOnStartCraftPresetName = tags?.effectOnStartCraft
       _exchangeRecipes = ::u.map(parsedRecipes, @(parsedRecipe) ExchangeRecipes({
          parsedRecipe = parsedRecipe,
          generatorId = generatorId
          craftTime = generatorCraftTime
          isDisassemble = isDisassemble
          localizationPresetName = localizationPresetName
+         effectOnStartCraftPresetName = effectOnStartCraftPresetName
       }))
 
       // Adding additional recipes
@@ -86,6 +88,7 @@ local ItemGenerator = class {
               isFake = paramName != "trueRecipe"
               isDisassemble = isDisassemble
               localizationPresetName = gen?.tags?.customLocalizationPreset ?? localizationPresetName
+              effectOnStartCraftPresetName = gen?.tags?.effectOnStartCraft
             })))
             hasAdditionalRecipes = hasAdditionalRecipes || additionalParsedRecipes.len() > 0
           }

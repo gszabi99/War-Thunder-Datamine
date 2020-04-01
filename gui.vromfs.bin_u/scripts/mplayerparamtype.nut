@@ -121,9 +121,10 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
 
   GROUND_KILLS = {
     id = "groundKills"
-    fontIcon = "#icon/mpstats/groundKills"
-    tooltip = "#multiplayer/ground_kills"
-    missionObjective = MISSION_OBJECTIVE.KILLS_GROUND
+    // !!! TEMP HACK - REVERT AFTER SPACE APRIL EVENT
+    fontIcon = @() ::is_suit_mission() ? "#icon/mpstats/suitKills" : "#icon/mpstats/groundKills"
+    tooltip = @() ::is_suit_mission() ? "#multiplayer/suit_kills" : "#multiplayer/ground_kills"
+    missionObjective = MISSION_OBJECTIVE.KILLS_GROUND | MISSION_OBJECTIVE.KILLS_SUIT
   }
 
   NAVAL_DAMAGE = {

@@ -1,6 +1,7 @@
 local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
 local { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
 local tutorAction = require("scripts/tutorials/tutorialActions.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 class SlotbarPresetsTutorial
 {
@@ -194,8 +195,8 @@ class SlotbarPresetsTutorial
 
   function createMessageWhithUnitType(partLocId = "selectPreset")
   {
-    local unitTypes = ::game_mode_manager.getRequiredUnitTypes(tutorialGameMode)
-    local unitType = ::g_unit_type.getByEsUnitType(::u.max(unitTypes))
+    local types = ::game_mode_manager.getRequiredUnitTypes(tutorialGameMode)
+    local unitType = unitTypes.getByEsUnitType(::u.max(types))
     local unitTypeLocId = "options/chooseUnitsType/" + unitType.lowerName
     return ::loc("slotbarPresetsTutorial/" + partLocId, { unitType = ::loc(unitTypeLocId) })
   }

@@ -47,8 +47,6 @@ local InventoryClient = class {
   firstProfileLoadComplete = false
 
   needRefreshItems = false
-  hasInventoryChanges = false
-  hasItemDefChanges = false
 
   haveInitializedPublicKeys = false
 
@@ -269,9 +267,10 @@ local InventoryClient = class {
 
   function addInventoryItem(item)
   {
-    local shouldUpdateItemdDefs = addItemDefIdToRequest(item.itemdef)
-    item.itemdefid <- item.itemdef
-    item.itemdef = itemdefs[item.itemdefid] //fix me: why we use same field name for other purposes?
+    local itemdefid = item.itemdef
+    local shouldUpdateItemdDefs = addItemDefIdToRequest(itemdefid)
+    item.itemdefid <- itemdefid
+    item.itemdef = itemdefs[itemdefid] //fix me: why we use same field name for other purposes?
     items[item.itemid] <- item
     return shouldUpdateItemdDefs
   }
@@ -309,6 +308,7 @@ local InventoryClient = class {
     lastRequestTime = ::dagor.getCurTime()
     requestInventory(function(result) {
       lastUpdateTime = ::dagor.getCurTime()
+      local hasInventoryChanges = false
       if (wasWaitForInventory)
         hasInventoryChanges = true //need event about we received inventory once, even if it empty.
 
@@ -316,7 +316,7 @@ local InventoryClient = class {
       if (!itemJson)
       {
         if (wasWaitForInventory)
-          notifyInventoryUpdate()
+          notifyInventoryUpdate(hasInventoryChanges)
         return
       }
 
@@ -348,10 +348,10 @@ local InventoryClient = class {
       }
 
       if (shouldUpdateItemdefs) {
-        requestItemDefs(notifyInventoryUpdate);
+        requestItemDefs()
       }
       else {
-        notifyInventoryUpdate()
+        notifyInventoryUpdate(hasInventoryChanges)
       }
     })
   }
@@ -430,6 +430,7 @@ local InventoryClient = class {
           return
         }
 
+        local hasItemDefChanges = false
         foreach (itemdef in itemdef_json) {
           local itemdefid = itemdef.itemdefid
           if (itemdefid in itemdefidsRequested)
@@ -438,7 +439,7 @@ local InventoryClient = class {
           addItemDef(itemdef)
         }
 
-        notifyInventoryUpdate()
+        notifyInventoryUpdate(true, hasItemDefChanges)
         requestData.fireCb()
         requestItemDefsImpl()
       })
@@ -447,18 +448,15 @@ local InventoryClient = class {
   function removeItem(itemid) {
     if (itemid in items)
       delete items[itemid]
-    hasInventoryChanges = true
-    notifyInventoryUpdate()
+    notifyInventoryUpdate(true)
   }
 
-  function notifyInventoryUpdate() {
+  function notifyInventoryUpdate(hasInventoryChanges = false, hasItemDefChanges = false) {
     if (hasItemDefChanges) {
-      hasItemDefChanges = false
       ::dagor.debug("ExtInventory itemDef changed")
       ::broadcastEvent("ItemDefChanged")
     }
     if (hasInventoryChanges) {
-      hasInventoryChanges = false
       ::dagor.debug("ExtInventory changed")
       ::broadcastEvent("ExtInventoryChanged")
     }
@@ -549,6 +547,7 @@ local InventoryClient = class {
 
     local newItems = []
     local shouldUpdateItemdefs = false
+    local hasInventoryChanges = false
     foreach (item in itemJson) {
       local oldItem = ::getTblValue(item.itemid, items)
       if (item.quantity == 0) {
@@ -588,7 +587,7 @@ local InventoryClient = class {
       })
     }
     else {
-      notifyInventoryUpdate()
+      notifyInventoryUpdate(hasInventoryChanges)
       if (cb) {
         cb(newItems)
       }
@@ -667,7 +666,7 @@ local InventoryClient = class {
   function forceRefreshItemDefs()
   {
     requestItemDefs(function() {
-      notifyInventoryUpdate()
+      notifyInventoryUpdate(true, true)
     }, true)
   }
 

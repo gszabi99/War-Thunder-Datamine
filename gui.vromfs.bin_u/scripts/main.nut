@@ -197,6 +197,7 @@ global enum HELP_CONTENT_SET
   MISSION
   LOADING
   CONTROLS
+  CONTROLS_SUIT
 }
 
 global enum HUD_TYPE {

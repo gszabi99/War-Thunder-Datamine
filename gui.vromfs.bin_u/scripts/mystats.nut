@@ -1,5 +1,6 @@
 local seenTitles = require("scripts/seen/seenList.nut").get(SEEN.TITLES)
 local { getUnitClassTypesByEsUnitType } = require("scripts/unit/unitClassType.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 /*
 my_stats API
@@ -133,7 +134,7 @@ local summaryNameArray = [
     if (!blk)
       return
 
-    foreach (unitType in ::g_unit_type.types)
+    foreach (unitType in unitTypes.types)
     {
       local data = {
         minKills = 0
@@ -177,7 +178,7 @@ local summaryNameArray = [
     _needRecountNewbie = false
 
     newbieByUnitType.clear()
-    foreach (unitType in ::g_unit_type.types)
+    foreach (unitType in unitTypes.types)
     {
       if (!unitType.isAvailable())
         continue
@@ -378,9 +379,9 @@ local summaryNameArray = [
       unitType = ::get_first_chosen_unit_type(::ES_UNIT_TYPE_AIRCRAFT)
       if (checkSlotbar)
       {
-        local unitTypes = getSlotbarUnitTypes(country)
-        if (unitTypes.len() && !::isInArray(unitType, unitTypes))
-          unitType = unitTypes[0]
+        local types = getSlotbarUnitTypes(country)
+        if (types.len() && !::isInArray(unitType, types))
+          unitType = types[0]
       }
     }
     return ::getTblValue(unitType, newbieNextEvent)
@@ -404,7 +405,7 @@ local summaryNameArray = [
   {
     local needRecalculate = false
     local loadedBlk = ::loadLocalByAccount("tutor/newbieBattles/unitsRank", ::DataBlock())
-    foreach (unitType in ::g_unit_type.types)
+    foreach (unitType in unitTypes.types)
       if (unitType.isAvailable()
         && (loadedBlk?[unitType.esUnitType.tostring()] ?? 0) < ::max_country_rank)
       {

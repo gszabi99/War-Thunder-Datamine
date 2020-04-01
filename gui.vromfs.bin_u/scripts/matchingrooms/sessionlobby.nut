@@ -1,4 +1,5 @@
 local antiCheat = require("scripts/penitentiary/antiCheat.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 /*
 SessionLobby API
@@ -453,7 +454,7 @@ SessionLobby.prepareSettings <- function prepareSettings(missionSettings)
 
   local userAllowedUnitTypesMask = missionSettings?.userAllowedUnitTypesMask ?? 0
   if (userAllowedUnitTypesMask)
-    foreach (unitType in ::g_unit_type.types)
+    foreach (unitType in unitTypes.types)
       if (unitType.isAvailableByMissionSettings(_settings.mission) && !(userAllowedUnitTypesMask & unitType.bit))
         _settings.mission[unitType.missionSettingsAvailabilityFlag] = false
 
@@ -601,7 +602,7 @@ SessionLobby.fillTeamsInfo <- function fillTeamsInfo(_settings, misBlk)
   local teamData = {}
   teamData.allowedCrafts <- []
 
-  foreach (unitType in ::g_unit_type.types)
+  foreach (unitType in unitTypes.types)
     if (unitType.isAvailableByMissionSettings(_settings.mission))
     {
       local rule = { ["class"] = unitType.getMissionAllowedCraftsClassName() }

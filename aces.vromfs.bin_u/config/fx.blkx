@@ -139,6 +139,154 @@
     "sfxEvent": "bullethit_ground",
     "soundEnableDistance": 100.0
   },
+  "hit_rocket_zero_gravity": {
+    "fx": "hit_rocket_zero_gravity_composite_fx",
+    "lifeTime": 0.0,
+    "softnessDepth": 2.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "onePointNumber": 50,
+    "minScale": 0.6,
+    "maxScale": 1.2,
+    "sfxPathStudio": "space_program/effects",
+    "sfxEvent": "explosion_s_zero_grav",
+    "soundEnableDistance": 10.0
+  },
+  "bullet_self_expl_zero_gravity": {
+    "fx": "hit_40mm_self_expl_zero_gravity_composite_fx",
+    "lifeTime": 0.0,
+    "softnessDepth": 2.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "onePointNumber": 50,
+    "minScale": 0.6,
+    "maxScale": 1.2,
+    "sfxPathStudio": "space_program/effects",
+    "sfxEvent": "explosion_s_zero_grav",
+    "soundEnableDistance": 10.0
+  },
+  "7_20_hit_ground_zero_gravity": {
+    "fx": "hit_7mm_ground_zero_gravity_composite_fx",
+    "lifeTime": 0.0,
+    "softnessDepth": 0.6,
+    "numInstances": 300,
+    "numReserved": 30,
+    "minScale": 0.5,
+    "maxScale": 0.9,
+    "onePointNumber": 50
+  },
+  "7_20_hit_metal_zero_gravity": [
+    {
+      "fx": "hit_7mm_metal_zero_gravity_composite_fx"
+    },
+    {
+      "lifeTime": 10.0
+    },
+    {
+      "numInstances": 80
+    },
+    {
+      "numReserved": 3
+    },
+    {
+      "onePointNumber": 50
+    },
+    {
+      "softnessDepth": 0.3
+    },
+    {
+      "softnessDepth": 0.3
+    }
+  ],
+  "30_hit_ground_zero_gravity": {
+    "fx": "hit_30mm_ground_zero_gravity_composite_fx",
+    "lifeTime": 0.0,
+    "softnessDepth": 0.6,
+    "numInstances": 300,
+    "numReserved": 30,
+    "minScale": 0.5,
+    "maxScale": 0.9,
+    "onePointNumber": 10
+  },
+  "30_hit_metal_zero_gravity": [
+    {
+      "fx": "hit_30mm_metal_zero_gravity_composite_fx"
+    },
+    {
+      "lifeTime": 10.0
+    },
+    {
+      "numInstances": 80
+    },
+    {
+      "numReserved": 3
+    },
+    {
+      "onePointNumber": 10
+    },
+    {
+      "softnessDepth": 0.3
+    },
+    {
+      "softnessDepth": 0.3
+    },
+    {
+      "sfxPathStudio": "space_program/effects"
+    },
+    {
+      "sfxEvent": "explosion_zero_gravity"
+    },
+    {
+      "soundEnableDistance": 10.0
+    }
+  ],
+  "40_hit_ground_zero_gravity": {
+    "fx": "hit_40mm_ground_zero_gravity_composite_fx",
+    "lifeTime": 0.0,
+    "softnessDepth": 0.6,
+    "numInstances": 300,
+    "numReserved": 30,
+    "minScale": 0.5,
+    "maxScale": 0.9,
+    "onePointNumber": 20,
+    "sfxPathStudio": "space_program/effects",
+    "sfxEvent": "explosion_zero_gravity",
+    "soundEnableDistance": 10.0
+  },
+  "40_hit_metal_zero_gravity": [
+    {
+      "fx": "hit_40mm_metal_zero_gravity_composite_fx"
+    },
+    {
+      "lifeTime": 10.0
+    },
+    {
+      "numInstances": 80
+    },
+    {
+      "numReserved": 3
+    },
+    {
+      "onePointNumber": 20
+    },
+    {
+      "softnessDepth": 0.3
+    },
+    {
+      "softnessDepth": 0.3
+    },
+    {
+      "sfxPathStudio": "space_program/effects"
+    },
+    {
+      "sfxEvent": "explosion_zero_gravity"
+    },
+    {
+      "soundEnableDistance": 10.0
+    }
+  ],
   "7_20_hit_stone": {
     "fx": "7_20_stone_composite_fx",
     "lifeTime": 2.0,
@@ -2911,6 +3059,16 @@
     "soundEnableDistance": 200.0,
     "lightColor": [10.0,2.0,2.0,100.0]
   },
+  "unit_explosion_zero_gravity": {
+    "fx": "unit_explosion_zero_gravity_composite_fx",
+    "numInstances": 50,
+    "farPlane": 10000.0,
+    "numReserved": 8,
+    "sfxPathStudio": "space_program/effects",
+    "sfxEvent": "explosion_zero_gravity",
+    "soundEnableDistance": 3.0,
+    "lightColor": [10.0,2.0,2.0,100.0]
+  },
   "slug_explosion": {
     "fx": "slug_expl_splash_composite_fx",
     "numInstances": 50,
@@ -2940,6 +3098,15 @@
     "fx": "pv_exhaust_composite_fx",
     "numInstances": 50,
     "numReserved": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "unit_exhaust_zero_gravity": {
+    "fx": "pv_air_discharge_composite_fx",
+    "numInstances": 350,
+    "numReserved": 100,
+    "onePointNumber": 0,
+    "group": "highres",
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
@@ -3001,6 +3168,50 @@
     "fx": "pv_gun_flame_20mm_gatling_composite_fx",
     "lifeTime": 1.0,
     "softnessDepth": 5.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 75,
+    "numReserved": 1,
+    "onePointNumber": 30,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "7mm_gun_flame_zero_gravity": {
+    "fx": "gun_flame_7mm_zero_gravity_composite_fx",
+    "lifeTime": 1.0,
+    "softnessDepth": 1.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 75,
+    "numReserved": 1,
+    "onePointNumber": 50,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "13mm_gun_flame_zero_gravity": {
+    "fx": "gun_flame_13mm_zero_gravity_composite_fx",
+    "lifeTime": 1.0,
+    "softnessDepth": 1.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 75,
+    "numReserved": 1,
+    "onePointNumber": 50,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "30mm_gun_flame_zero_gravity": {
+    "fx": "gun_flame_30mm_zero_gravity_composite_fx",
+    "lifeTime": 1.0,
+    "softnessDepth": 1.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 75,
+    "numReserved": 1,
+    "onePointNumber": 30,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "40mm_gun_flame_zero_gravity": {
+    "fx": "gun_flame_40mm_zero_gravity_composite_fx",
+    "lifeTime": 1.0,
+    "softnessDepth": 1.0,
     "sortDistanceOffset": 0.0,
     "numInstances": 75,
     "numReserved": 1,
@@ -3304,6 +3515,16 @@
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "ammo_explode",
     "soundEnableDistance": 1000.0
+  },
+  "fire_small_zero_gravity": {
+    "fx": "fire_zero_gravity_composite_fx",
+    "lifeTime": 10.0,
+    "farPlane": 2000.0,
+    "numInstances": 30,
+    "numReserved": 3,
+    "sfxPathStudio": "aircraft/explosions",
+    "sfxEvent": "suit_destroyed",
+    "soundEnableDistance": 100.0
   },
   "tank_fire_small": {
     "fx": "pv_fire_small_composite_fx",

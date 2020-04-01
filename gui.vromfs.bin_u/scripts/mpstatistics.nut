@@ -966,7 +966,10 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
     if (::checkObj(teamImgObj))
       teamImgObj.show(teamIco != null)
     if (teamIco != null)
+    {
       teamObj.teamIco = teamIco
+      teamObj.isSuitTeam = ::is_suit_mission() ? "yes" : "no"
+    }
   }
 
   function setTeamInfoText(teamObj, text)

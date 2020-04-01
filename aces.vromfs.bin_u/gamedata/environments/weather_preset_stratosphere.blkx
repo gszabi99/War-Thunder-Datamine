@@ -1,0 +1,195 @@
+{
+  "common": {
+    "condensation_type": "rain",
+    "dirt_type": "ground",
+    "water": {
+      "L_inv_white": 0.3
+    },
+    "hdr": {
+      "useAdaptation": true,
+      "adaptationTimeHighToNorm": 0.25,
+      "adaptationTimeNormToHigh": 0.65,
+      "adaptationMultiplier": 2.0,
+      "targetBrightnessUp": 1.005,
+      "targetBrightnessEffect": 0.0,
+      "perceptionLinear": 0.85,
+      "perceptionPower": 0.8,
+      "fake": {
+        "adaptationMax": 3.2,
+        "adaptationMin": 0.65,
+        "lumMin": 0.68,
+        "lumMax": 0.95
+      }
+    },
+    "DemonPostFx": {
+      "use": true,
+      "showAlpha": false,
+      "glowRadius": 0.1,
+      "useBetterGlow": true,
+      "glowFadeK": 2.0,
+      "glowEdgeK": 0.0,
+      "glowAngleU": 44.0,
+      "glowAngleV": 144.0,
+      "useRawSkyMask": true,
+      "hdrStarThreshold": 61.75,
+      "hdrDarkThreshold": 1000.0,
+      "hdrGlowPower": 0.3,
+      "hdrGlowMul": 0.002,
+      "hdrStarPowerMul": 0.932,
+      "starGlow": {
+        "numRays": 3,
+        "defaultRayParams": {
+          "radius": 0.03,
+          "power": 1.0,
+          "fadeK": [5.0,1.5,0.0],
+          "color": "#ffd296ff"
+        },
+        "ray01": {
+          "angle": 99.0,
+          "useCustom": false,
+          "radius": 0.03,
+          "power": 2.0,
+          "fadeK": [2.0,2.0,1.0],
+          "color": "#ffffffff"
+        },
+        "ray02": {
+          "angle": 39.0,
+          "useCustom": false,
+          "radius": 0.051,
+          "power": 4.0,
+          "fadeK": [2.0,2.0,1.0],
+          "color": "#ffffffff"
+        },
+        "ray03": {
+          "angle": -21.0,
+          "useCustom": false,
+          "radius": 0.047,
+          "power": 4.0,
+          "fadeK": [2.0,2.0,1.0],
+          "color": "#ffffffff"
+        },
+        "ray04": {
+          "angle": 0.0,
+          "useCustom": true,
+          "radius": 0.061,
+          "power": 1.0,
+          "fadeK": [2.0,2.0,1.0],
+          "color": "#ffffffff"
+        },
+        "override:defaultRayParams": {
+          "override:radius": 0.09,
+          "override:power": 0.7
+        }
+      }
+    },
+    "tonemapping": {
+      "tonemapContrast": 1.19,
+      "tonemapShoulder": 0.95,
+      "tonemapMidIn": 0.25,
+      "tonemapMidOut": 0.18,
+      "tonemapHdrMax": 4.0
+    },
+    "tonemapping_hdr": {
+      "tonemapContrast": 1.0,
+      "tonemapShoulder": 1.0,
+      "tonemapMidIn": 0.5,
+      "tonemapMidOut": 0.5,
+      "tonemapHdrMax": 1.0
+    },
+    "colorgrading": {
+      "default": {
+        "colorSaturation": [1.0,1.0,1.0,0.702],
+        "colorContrast": [1.0,1.0,1.0,1.0],
+        "colorGamma": [1.0,1.0,1.0,1.0],
+        "colorGain": [1.0,1.0,1.0,1.47],
+        "colorOffset": [0.0,0.0,0.0,0.0],
+        "shadows_colorSaturation": [1.0,1.0,1.0,1.0],
+        "shadows_colorContrast": [1.0,1.0,1.0,1.0],
+        "shadows_colorGamma": [1.0,1.0,1.0,1.0],
+        "shadows_colorGain": [1.0,1.0,1.0,1.0],
+        "shadows_colorOffset": [0.0,0.0,0.0,0.0],
+        "midtones_colorSaturation": [1.0,1.0,1.0,1.0],
+        "midtones_colorContrast": [1.0,1.0,1.0,1.0],
+        "midtones_colorGamma": [1.0,1.0,1.0,1.0],
+        "midtones_colorGain": [1.0,1.0,1.0,1.0],
+        "midtones_colorOffset": [0.0,0.0,0.0,0.0],
+        "highlights_colorSaturation": [1.0,1.0,1.0,1.0],
+        "highlights_colorContrast": [1.0,1.0,1.0,1.0],
+        "highlights_colorGamma": [1.0,1.0,1.0,1.0],
+        "highlights_colorGain": [1.0,1.0,1.0,1.0],
+        "highlights_colorOffset": [0.0,0.0,0.0,0.0],
+        "colorCorrectionShadowsMax": 0.1,
+        "colorCorrectionHighlightsMin": 0.8,
+        "hueToSaturationKey": [1.0,0.0,0.0,0.0],
+        "hueToSaturationKeyFalloff": 0.001,
+        "hueToSaturationValueMul": [1.0,1.0,1.0,1.0],
+        "hueToSaturationValueAdd": [0.0,0.0,0.0,0.0],
+        "baseWhiteTemp": 6500.0
+      },
+      "none": [],
+      "contrast": {
+        "colorContrast": [1.0,1.0,1.0,1.4]
+      },
+      "fall_colors": {
+        "shadows_colorContrast": [0.769,0.902,1.0,0.78],
+        "midtones_colorOffset": [0.161,0.051,0.012,0.0],
+        "colorContrast": [1.0,1.0,1.0,1.33],
+        "colorOffset": [0.02,0.004,0.0,0.0]
+      },
+      "filmstock": {
+        "colorContrast": [1.0,1.0,1.0,1.4],
+        "shadows_colorOffset": [0.0,0.0,0.005,0.0],
+        "midtones_colorSaturation": [1.0,1.0,1.0,0.922],
+        "midtones_colorGain": [1.0,1.0,1.0,1.5],
+        "midtones_colorOffset": [0.02,0.004,0.0,0.02]
+      },
+      "greyscale": {
+        "colorSaturation": [1.0,1.0,1.0,0.694],
+        "colorContrast": [1.0,1.0,1.0,1.4],
+        "shadows_colorGamma": [1.0,1.0,1.0,1.13],
+        "highlights_colorSaturation": [1.0,1.0,1.0,0.22]
+      },
+      "night_from_day": {
+        "colorSaturation": [0.184,0.502,1.0,0.749],
+        "colorContrast": [1.2,0.9,1.0,1.0],
+        "colorGamma": [1.0,1.0,1.0,0.906],
+        "colorGain": [0.427,0.639,1.0,0.322],
+        "colorOffset": [0.0,0.0,0.004,0.0]
+      },
+      "sepia": {
+        "colorSaturation": [1.0,1.0,1.0,0.859],
+        "colorContrast": [1.0,1.0,1.0,1.3],
+        "colorGamma": [1.0,1.0,1.0,1.3],
+        "colorGain": [1.0,0.627,0.404,1.0]
+      },
+      "timed": {
+        "addWhiteTempBySunPath": [
+          {
+            "type": "curve"
+          },
+          {
+            "point": [-1.1,6000.0]
+          },
+          {
+            "point": [-1.0,1000.0]
+          },
+          {
+            "point": [-0.9,750.0]
+          },
+          {
+            "point": [0.0,-50.0]
+          },
+          {
+            "point": [0.9,-500.0]
+          },
+          {
+            "point": [1.0,-750.0]
+          },
+          {
+            "point": [1.1,6000.0]
+          }
+        ]
+      }
+    }
+  }
+}

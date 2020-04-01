@@ -1,5 +1,6 @@
 local skinLocations = ::require("scripts/customization/skinLocations.nut")
 local guidParser = require("scripts/guidParser.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 const DEFAULT_SKIN_NAME = "default"
 
@@ -218,7 +219,7 @@ g_decorator.getSkinSaveId <- function getSkinSaveId(unitName)
 
 g_decorator.isAutoSkinAvailable <- function isAutoSkinAvailable(unitName)
 {
-  return ::g_unit_type.getByUnitName(unitName).isSkinAutoSelectAvailable()
+  return unitTypes.getByUnitName(unitName).isSkinAutoSelectAvailable()
 }
 
 g_decorator.getLastSkin <- function getLastSkin(unitName)

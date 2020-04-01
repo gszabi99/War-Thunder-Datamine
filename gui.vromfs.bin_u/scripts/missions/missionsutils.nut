@@ -1,3 +1,5 @@
+local unitTypes = require("scripts/unit/unitTypesList.nut")
+
 const COOP_MAX_PLAYERS = 4
 
 ::enable_coop_in_QMB <- false
@@ -85,7 +87,7 @@ global enum MIS_PROGRESS //value received from get_mission_progress
   if (misBlk?.useKillStreaks && !misBlk?.allowedKillStreaks)
     misBlk.useKillStreaks = false
 
-  foreach (unitType in ::g_unit_type.types)
+  foreach (unitType in unitTypes.types)
     if (unitType.isAvailable() && !(unitType.missionSettingsAvailabilityFlag in misBlk))
       misBlk[unitType.missionSettingsAvailabilityFlag] = ::has_unittype_in_full_mission_blk(fullMissionBlk, unitType.esUnitType)
 }
@@ -93,7 +95,7 @@ global enum MIS_PROGRESS //value received from get_mission_progress
 ::get_mission_allowed_unittypes_mask <- function get_mission_allowed_unittypes_mask(misBlk, useKillStreaks = null)
 {
   local res = 0
-  foreach (unitType in ::g_unit_type.types)
+  foreach (unitType in unitTypes.types)
     if (unitType.isAvailable() && ::is_mission_for_unittype(misBlk, unitType.esUnitType, useKillStreaks))
       res = res | unitType.bit
   return res
@@ -101,7 +103,7 @@ global enum MIS_PROGRESS //value received from get_mission_progress
 
 ::is_mission_for_unittype <- function is_mission_for_unittype(misBlk, esUnitType, useKillStreaks = null)
 {
-  local unitType = ::g_unit_type.getByEsUnitType(esUnitType)
+  local unitType = unitTypes.getByEsUnitType(esUnitType)
 
   // Works for missions in Skirmish.
   if (unitType.missionSettingsAvailabilityFlag in misBlk)
@@ -142,7 +144,7 @@ global enum MIS_PROGRESS //value received from get_mission_progress
     }
 
   // Searching by respawn points of Multiplayer missions
-  local tag = ::g_unit_type.getByEsUnitType(esUnitType).tag
+  local tag = unitTypes.getByEsUnitType(esUnitType).tag
   local triggersBlk = fullMissionBlk?.triggers
   if (triggersBlk)
     for (local i = 0; i < triggersBlk.blockCount(); i++)

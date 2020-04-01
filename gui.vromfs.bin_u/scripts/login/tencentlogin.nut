@@ -1,3 +1,4 @@
+local { clearBorderSymbols } = require("std/string.nut")
 local { animBgLoad } = require("scripts/loading/animBg.nut")
 
 class ::gui_handlers.LoginWndHandlerTencent extends ::BaseGuiHandler
@@ -56,7 +57,7 @@ class ::gui_handlers.LoginWndHandlerTencent extends ::BaseGuiHandler
     validateFunc = function(nick) {
       if (::is_chat_message_empty(nick))
         return ""
-      return ::clearBorderSymbols(nick, [" "])
+      return clearBorderSymbols(nick, [" "])
     }
     canCancel = false
     allowEmpty = false

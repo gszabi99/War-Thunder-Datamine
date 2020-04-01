@@ -1,8 +1,10 @@
+local { clearBorderSymbols } = require("std/string.nut")
 local fxOptions = require("scripts/options/fxOptions.nut")
 local { setUnitLastBullets,
         isBulletGroupActive } = require("scripts/weaponry/bulletsInfo.nut")
 local { getLastWeapon,
         setLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 ::generic_options <- null
 
@@ -815,7 +817,7 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
       getOptValue(::USEROPT_USE_KILLSTREAKS, false)
     local allowedUnitTypesMask  = ::get_mission_allowed_unittypes_mask(missionBlk, useKillStreaks)
 
-    foreach (unitType in ::g_unit_type.types)
+    foreach (unitType in unitTypes.types)
     {
       local isShow = !!(allowedUnitTypesMask & unitType.bit)
       local itemObj = optionTrObj.findObject("bit_" + unitType.tag)
@@ -1737,10 +1739,10 @@ class ::gui_handlers.AddRadioModalHandler extends ::gui_handlers.BaseGuiHandlerW
     if (::is_chat_message_empty(value))
       return
 
-    local name = ::clearBorderSymbols(value, [" "])
+    local name = clearBorderSymbols(value, [" "])
     local url = scene.findObject("newradio_url").getValue()
     if(url != "")
-      url = ::clearBorderSymbols(url, [" "])
+      url = clearBorderSymbols(url, [" "])
 
     if (name == "")
       return msgBox("warning",

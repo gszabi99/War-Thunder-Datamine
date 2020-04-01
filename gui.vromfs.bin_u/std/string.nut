@@ -820,7 +820,19 @@ local function validateEmail(no_dump_email) {
   return true
 }
 
-local export = {
+local function clearBorderSymbols(value, symList = [" "]) {
+  while(value != "" && symList.indexof(value.slice(0,1)) != null)
+    value = value.slice(1)
+  while(value!="" && symList.indexof(value.slice(-1)) != null)
+    value = value.slice(0, -1)
+  return value
+}
+
+local function clearBorderSymbolsMultiline(str) {
+  return clearBorderSymbols(str, [" ", 0x0A.tochar(), 0x0D.tochar()])
+}
+
+return {
   INVALID_INDEX = INVALID_INDEX
   slice = slice
   substring = substring
@@ -854,8 +866,8 @@ local export = {
   tostring_r = tostring_r
   pprint = pprint
   validateEmail = validateEmail
+  clearBorderSymbols = clearBorderSymbols
+  clearBorderSymbolsMultiline = clearBorderSymbolsMultiline
 
   toIntegerSafe = toIntegerSafe
 }
-
-return export

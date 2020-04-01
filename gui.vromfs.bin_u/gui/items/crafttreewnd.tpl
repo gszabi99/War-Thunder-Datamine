@@ -3,7 +3,7 @@ root {
 
   frame {
     pos:t='50%pw-50%w, 50%ph-50%h'
-    max-height:t='1@maxWindowHeight'
+    max-height:t='1@maxWindowHeightNoSrh'
     position:t='absolute'
     class:t='wnd'
     padByLine:t='yes'

@@ -9,6 +9,7 @@ local { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
 local RB_GM_TYPE = require("scripts/gameModes/rbGmTypes.nut")
 local tutorAction = require("scripts/tutorials/tutorialActions.nut")
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -656,7 +657,7 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
     if (currentGameMode.type == RB_GM_TYPE.EVENT)
     {
       local event = ::game_mode_manager.getGameModeEvent(currentGameMode)
-      foreach(unitType in ::g_unit_type.types)
+      foreach(unitType in unitTypes.types)
         if (::events.isUnitTypeRequired(event, unitType.esUnitType))
         {
           properUnitType = unitType
@@ -1215,7 +1216,7 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
     local validPreset = null
     local isNotFoundUnitTypeForTutorial = true
     local isNotFoundValidPresetForTutorial= false
-    foreach (unitType in ::g_unit_type.types)
+    foreach (unitType in unitTypes.types)
     {
       if (!unitType.isAvailableForFirstChoice()
         || ::my_stats.getTimePlayedOnUnitType(unitType.esUnitType) > 0)

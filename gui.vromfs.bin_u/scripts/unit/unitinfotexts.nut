@@ -1,7 +1,7 @@
 local basicUnitRoles = {
   [::ES_UNIT_TYPE_AIRCRAFT] = ["type_fighter", "type_assault", "type_bomber"],
   [::ES_UNIT_TYPE_TANK] = ["type_tank", "type_light_tank", "type_medium_tank", "type_heavy_tank",
-    "type_tank_destroyer", "type_spaa", "type_lbv", "type_mbv", "type_hbv"],
+    "type_tank_destroyer", "type_spaa", "type_lbv", "type_mbv", "type_hbv", "type_suit"],
   [::ES_UNIT_TYPE_SHIP] = ["type_ship", "type_boat", "type_heavy_boat", "type_barge",
     "type_destroyer", "type_frigate", "type_light_cruiser",
     "type_cruiser", //FIX ME This role has been replaced by type_heavy_cruiser. Need this for compatibility with 1_95_0_X
@@ -23,6 +23,7 @@ local unitRoleFontIcons = {
   lbv                      = ::loc("icon/unitclass/light_tank")
   mbv                      = ::loc("icon/unitclass/medium_tank")
   hbv                      = ::loc("icon/unitclass/heavy_tank")
+  suit                     = ::loc("icon/unitclass/suit")
   ship                     = ::loc("icon/unitclass/ship"),
   boat                     = ::loc("icon/unitclass/gun_boat")
   heavy_boat               = ::loc("icon/unitclass/heavy_gun_boat")
@@ -65,6 +66,8 @@ local unitRoleByTag = {
   type_lbv              = "lbv",
   type_mbv              = "mbv",
   type_hbv              = "hbv",
+  //suit (1st april event)
+  type_suit             = "suit",
   //ships:
   type_ship             = "ship",
   type_boat             = "boat",

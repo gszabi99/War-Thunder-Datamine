@@ -3005,6 +3005,66 @@
       "rollRate": 140.0
     }
   },
+  "f4u-6_au-1": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "testFlight": "testFlight_honolulu",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "p&w",
+        "model": "r2800-83wa",
+        "mass": 1161.0
+      },
+      "tanks_params": {
+        "protected": true
+      }
+    },
+    "tags": {
+      "ally": true,
+      "type_assault": true,
+      "visibleBaseTag": true,
+      "country_usa": true,
+      "pacific": true,
+      "air": true
+    },
+    "years_active": {
+      "year1945": {
+        "guadalcanal": 1.0,
+        "guam": 1.0,
+        "honolulu": 1.0,
+        "iwo_jima": 1.0,
+        "midway": 1.0,
+        "peleliu": 1.0,
+        "saipan": 1.0,
+        "wake_island": 1.0
+      },
+      "year1950": {
+        "korea": 1.0
+      },
+      "year1951": {
+        "korea": 1.0
+      },
+      "year1952": {
+        "korea": 1.0
+      },
+      "year1953": {
+        "korea": 1.0
+      }
+    },
+    "Shop": {
+      "maxAltitude": 9500.0,
+      "maxSpeed": 177.2222,
+      "turnTime": 22.0,
+      "airfieldLen": 500.0,
+      "maxSpeedAlt": 4267.0,
+      "climbSpeed": 19.0,
+      "climbTime": 157.0,
+      "climbAlt": 3048.0,
+      "wingLoading": 193.0,
+      "powerToWeightRatio": 0.43,
+      "rollRate": 100.0
+    }
+  },
   "f4u-7": {
     "type": "aircraft",
     "hangar_place": "aircraft",
@@ -55734,6 +55794,22 @@
       "armorThicknessTurret": [7.0,0.0,0.0]
     }
   },
+  "germ_sdkfz_234_1": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_germany_tft",
+    "tags": {
+      "country_germany": true,
+      "tank": true,
+      "type_light_tank": true,
+      "scout": true,
+      "canRepairAnyAlly": true
+    },
+    "Shop": {
+      "armorThicknessHull": [30.0,8.0,10.0],
+      "armorThicknessTurret": [30.0,8.0,8.0]
+    }
+  },
   "germ_sdkfz_234_2": {
     "type": "tank",
     "hangar_place": "tank",
@@ -58241,6 +58317,16 @@
       "type_heavy_tank": true
     }
   },
+  "ussr_object_279": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_ussr_tft",
+    "tags": {
+      "country_ussr": true,
+      "tank": true,
+      "type_heavy_tank": true
+    }
+  },
   "us_m60": {
     "type": "tank",
     "hangar_place": "tank",
@@ -59619,7 +59705,9 @@
     "tags": {
       "country_sweden": true,
       "tank": true,
-      "type_light_tank": true
+      "type_light_tank": true,
+      "scout": true,
+      "canRepairAnyAlly": true
     },
     "Shop": {
       "armorThicknessHull": [50.0,20.0,15.0],
@@ -59742,8 +59830,8 @@
       "type_medium_tank": true
     },
     "Shop": {
-      "armorThicknessHull": [40.0,30.0,20.0],
-      "armorThicknessTurret": [0.0,0.0,0.0]
+      "armorThicknessHull": [76.0,50.0,38.0],
+      "armorThicknessTurret": [152.0,89.0,89.0]
     }
   },
   "sw_strv_101": {
@@ -59757,8 +59845,8 @@
       "type_medium_tank": true
     },
     "Shop": {
-      "armorThicknessHull": [40.0,30.0,20.0],
-      "armorThicknessTurret": [0.0,0.0,0.0]
+      "armorThicknessHull": [127.0,50.0,32.0],
+      "armorThicknessTurret": [152.0,89.0,89.0]
     }
   },
   "sw_strv_103_0": {
@@ -67883,7 +67971,7 @@
     "tags": {
       "country_china": true,
       "tank": true,
-      "type_light_tank": true
+      "type_medium_tank": true
     }
   },
   "cn_m5a1_stuart": {
@@ -67895,7 +67983,9 @@
     "tags": {
       "country_china": true,
       "tank": true,
-      "type_light_tank": true
+      "type_light_tank": true,
+      "scout": true,
+      "canRepairAnyAlly": true
     },
     "Shop": {
       "armorThicknessHull": [28.5,28.5,25.4],
@@ -69249,7 +69339,7 @@
     },
     "Shop": {
       "maxSpeed": 16.46,
-      "displacement": 29690000.0
+      "displacement": 2969000.0
     }
   },
   "uk_cruiser_london": {
@@ -69271,6 +69361,82 @@
       "armorThicknessCitadel": [25.4,35.0,25.4],
       "maxSpeed": 16.59,
       "displacement": 13315000.0
+    }
+  },
+  "uk_sgb_309": {
+    "type": "ship",
+    "hangar_place": "ship",
+    "testFlight": "testFlight_uk_tfs",
+    "tags": {
+      "country_britain": true,
+      "type_gun_boat": true,
+      "type_boat": true,
+      "ship": true,
+      "boat": true,
+      "pacific": true,
+      "mediterran": true,
+      "westernfront": true
+    },
+    "Shop": {
+      "armorThicknessCitadel": [0.0,19.0,0.0],
+      "maxSpeed": 18.0,
+      "displacement": 255000.0
+    }
+  },
+  "assault_combat_space_suit": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ussr_tft",
+    "tags": {
+      "country_usa": true,
+      "tank": true,
+      "type_suit": true,
+      "suit": true
+    },
+    "Shop": {
+      "armorThicknessHull": [75.0,60.0,60.0]
+    }
+  },
+  "close_combat_space_suit": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ussr_tft",
+    "tags": {
+      "country_usa": true,
+      "tank": true,
+      "type_suit": true,
+      "suit": true
+    },
+    "Shop": {
+      "armorThicknessHull": [75.0,60.0,60.0]
+    }
+  },
+  "fire_support_combat_space_suit": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ussr_tft",
+    "tags": {
+      "country_usa": true,
+      "tank": true,
+      "type_suit": true,
+      "suit": true
+    },
+    "Shop": {
+      "armorThicknessHull": [75.0,60.0,60.0]
+    }
+  },
+  "scout_combat_space_suit": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ussr_tft",
+    "tags": {
+      "country_usa": true,
+      "tank": true,
+      "type_suit": true,
+      "suit": true
+    },
+    "Shop": {
+      "armorThicknessHull": [75.0,60.0,60.0]
     }
   }
 }

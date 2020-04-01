@@ -1,3 +1,4 @@
+local { clearBorderSymbols } = require("std/string.nut")
 local dirtyWordsFilter = require("scripts/dirtyWords/dirtyWords.nut")
 
 class ::gui_handlers.ModifyClanModalHandler extends ::gui_handlers.BaseGuiHandlerWT
@@ -223,13 +224,13 @@ class ::gui_handlers.ModifyClanModalHandler extends ::gui_handlers.BaseGuiHandle
 
     local err            = ""
 
-    newClanName          = newClanName.len() > 0 ? ::clearBorderSymbols(newClanName, [" "]) : ""
-    newClanTag           = newClanTag.len() > 0 ? ::clearBorderSymbols(newClanTag, [" "]) : ""
+    newClanName          = newClanName.len() > 0 ? clearBorderSymbols(newClanName, [" "]) : ""
+    newClanTag           = newClanTag.len() > 0 ? clearBorderSymbols(newClanTag, [" "]) : ""
     newClanTagDecoration = !newClanTagDecoration ? 0 : newClanTagDecoration
-    newClanSlogan        = newClanSlogan.len() > 0 ? ::clearBorderSymbols(newClanSlogan, [" "]) : ""
-    newClanDescription   = newClanDescription.len() > 0 ? ::clearBorderSymbols(newClanDescription, [" "]) : ""
-    newClanRegion        = newClanRegion.len() > 0 ? ::clearBorderSymbols(newClanRegion, [" "]) : ""
-    newClanAnnouncement  = newClanAnnouncement.len() > 0 ? ::clearBorderSymbols(newClanAnnouncement, [" "]) : ""
+    newClanSlogan        = newClanSlogan.len() > 0 ? clearBorderSymbols(newClanSlogan, [" "]) : ""
+    newClanDescription   = newClanDescription.len() > 0 ? clearBorderSymbols(newClanDescription, [" "]) : ""
+    newClanRegion        = newClanRegion.len() > 0 ? clearBorderSymbols(newClanRegion, [" "]) : ""
+    newClanAnnouncement  = newClanAnnouncement.len() > 0 ? clearBorderSymbols(newClanAnnouncement, [" "]) : ""
 
     if(!::checkClanTagForDirtyWords(newClanTag, false))
       err += ::loc("clan/error/bad_words_in_clanTag")

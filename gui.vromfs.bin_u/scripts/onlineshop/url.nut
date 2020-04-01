@@ -1,3 +1,5 @@
+local { clearBorderSymbols } = require("std/string.nut")
+
 const URL_TAGS_DELIMITER = " "
 const URL_TAG_AUTO_LOCALIZE = "auto_local"
 const URL_TAG_AUTO_LOGIN = "auto_login"
@@ -19,7 +21,7 @@ g_url.open <- function open(baseUrl, forceExternal=false, isAlreadyAuthenticated
     return
   }
 
-  local url = ::clearBorderSymbols(baseUrl, [URL_TAGS_DELIMITER])
+  local url = clearBorderSymbols(baseUrl, [URL_TAGS_DELIMITER])
   local urlTags = ::split(baseUrl, URL_TAGS_DELIMITER)
   if (!urlTags.len())
   {
@@ -111,7 +113,7 @@ g_url.validateLink <- function validateLink(link)
     return null
   }
 
-  link = ::clearBorderSymbols(link, [URL_TAGS_DELIMITER])
+  link = clearBorderSymbols(link, [URL_TAGS_DELIMITER])
   local linkStartIdx = ::g_string.lastIndexOf(link, URL_TAGS_DELIMITER)
   if (linkStartIdx < 0)
     linkStartIdx = 0

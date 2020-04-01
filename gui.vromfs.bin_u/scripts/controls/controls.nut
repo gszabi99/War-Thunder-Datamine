@@ -9,6 +9,7 @@ local { isBulletGroupActive } = require("scripts/weaponry/bulletsInfo.nut")
 local { resetFastVoiceMessages } = require("scripts/voiceMessages.nut")
 local { unitClassType } = require("scripts/unit/unitClassType.nut")
 local controlsPresetConfigPath = require("scripts/controls/controlsPresetConfigPath.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 ::MAX_SHORTCUTS <- 3
 ::preset_changed <- false
@@ -196,8 +197,8 @@ local axisMappedOnMouse = {
 
 
 
-
-
+  suit_mouse_aim_x       = @(isMouseAimMode) MOUSE_AXIS.HORIZONTAL_AXIS
+  suit_mouse_aim_y       = @(isMouseAimMode) MOUSE_AXIS.VERTICAL_AXIS
 
   camx                   = @(isMouseAimMode) MOUSE_AXIS.HORIZONTAL_AXIS
   camy                   = @(isMouseAimMode) MOUSE_AXIS.VERTICAL_AXIS
@@ -213,8 +214,8 @@ local axisMappedOnMouse = {
 
 
 
-
-
+  suit_camx              = @(isMouseAimMode) MOUSE_AXIS.HORIZONTAL_AXIS
+  suit_camy              = @(isMouseAimMode) MOUSE_AXIS.VERTICAL_AXIS
 }
 ::is_axis_mapped_on_mouse <- function is_axis_mapped_on_mouse(shortcutId, helpersMode = null, joyParams = null)
 {
@@ -525,7 +526,7 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
     local curValue = 0
     controlsGroupsIdList = []
     local currentUnit = ::get_player_cur_unit()
-    local unitType = ::g_unit_type.INVALID
+    local unitType = unitTypes.INVALID
     local classType = unitClassType.UNKNOWN
     local unitTags = []
     if (curGroupId == "" && currentUnit)
@@ -547,7 +548,7 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
             continue
 
         controlsGroupsIdList.append(header.id)
-        local isSuitable = unitType != ::g_unit_type.INVALID
+        local isSuitable = unitType != unitTypes.INVALID
           && unitType == header?.unitType
         if (isSuitable && "unitClassTypes" in header)
           isSuitable = ::isInArray(classType, header.unitClassTypes)
@@ -2539,7 +2540,7 @@ local function getWeaponFeatures(weaponsBlkList)
 
   local isMouseAimMode = helpersMode == globalEnv.EM_MOUSE_AIM
 
-  if (unitType == ::g_unit_type.AIRCRAFT)
+  if (unitType == unitTypes.AIRCRAFT)
   {
     local fmBlk = ::get_fm_file(unitId, unitBlk)
     local unitControls = fmBlk?.AvailableControls || ::DataBlock()
@@ -2616,7 +2617,7 @@ local function getWeaponFeatures(weaponsBlkList)
       controls.append("ID_SENSOR_TARGET_LOCK")
     }
   }
-  else if (unitType == ::g_unit_type.HELICOPTER)
+  else if (unitType == unitTypes.HELICOPTER)
   {
     controls = [ "helicopter_collective", "helicopter_climb", "helicopter_cyclic_roll" ]
 
@@ -2650,12 +2651,12 @@ local function getWeaponFeatures(weaponsBlkList)
 
 
 
-
-
-
-
-
-  else if (unitType == ::g_unit_type.TANK)
+  else if (unitType == unitTypes.TANK && unit.isSuit())
+  {
+    controls = [ "suit_forward", "suit_strafe", "suit_updown", "suit_roll", "suit_mouse_aim_x", "suit_mouse_aim_y",
+      "ID_FIRE_SUIT", "ID_FIRE_SUIT_SPECIAL_GUN" ]
+  }
+  else if (unitType == unitTypes.TANK)
   {
     controls = [ "gm_throttle", "gm_steering", "gm_mouse_aim_x", "gm_mouse_aim_y", "ID_TOGGLE_VIEW_GM", "ID_FIRE_GM", "ID_REPAIR_TANK" ]
 
@@ -2689,7 +2690,7 @@ local function getWeaponFeatures(weaponsBlkList)
 
     actionBarShortcutFormat = "ID_ACTION_BAR_ITEM_%d"
   }
-  else if (unitType == ::g_unit_type.SHIP)
+  else if (unitType == unitTypes.SHIP)
   {
     controls = ["ship_steering", "ID_TOGGLE_VIEW_SHIP"]
 

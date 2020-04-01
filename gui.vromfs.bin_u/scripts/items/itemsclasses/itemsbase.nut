@@ -390,13 +390,13 @@ class ::BaseItem
   {
     if (::getTblValue("showAction", params, true))
     {
-      local mainActionData = getMainActionData(true)
+      local mainActionData = params?.overrideMainActionData ?? getMainActionData(true)
       res.isInactive <- (params?.showButtonInactiveIfNeed ?? false)
         && (mainActionData?.isInactive ?? false)
       if (mainActionData && getLimitsCheckData().result)
       {
-        res.modActionName <- mainActionData?.btnColoredName || mainActionData.btnName
-        res.needShowActionButtonAlways <- needShowActionButtonAlways()
+        res.modActionName <- mainActionData?.btnColoredName ?? mainActionData.btnName
+        res.needShowActionButtonAlways <- mainActionData?.needShowActionButtonAlways ?? needShowActionButtonAlways()
       }
     }
 
@@ -494,7 +494,7 @@ class ::BaseItem
 
     if (hasReachedMaxAmount())
     {
-      ::scene_msg_box("reached_max_amount", null, ::loc("item/reached_max_amount"),
+      ::scene_msg_box("reached_max_amount", null, ::loc(getLocIdsList().reachedMaxAmount),
         [["cancel"]], "cancel")
       return false
     }
@@ -778,4 +778,6 @@ class ::BaseItem
   needOfferBuyAtExpiration = @() false
   isVisibleInWorkshopOnly = @() false
   getIconName = @() getSmallIconName()
+  canCraftOnlyInCraftTree = @() false
+  getLocIdsList = @() { reachedMaxAmount = "item/reached_max_amount" }
 }
