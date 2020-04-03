@@ -80,6 +80,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 
   hudType    = HUD_TYPE.NONE
   isXinput   = false
+  suitMode   = false
   currentHud = null
 
   isLowQualityWarningVisible = false
@@ -234,16 +235,14 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 
     if (newHudType == hudType)
     {
-      local canExit = true
       local playerUnit = ::get_player_cur_unit();
-      if (playerUnit && playerUnit?.isSuit())
-        canExit = false;
+      local newSuitMode = (playerUnit && playerUnit?.isSuit())
 
-      if (isXinput == ::is_xinput_device())
-        if (canExit)
-          return false
+      if (isXinput == ::is_xinput_device() && newSuitMode == suitMode)
+        return false
 
       isXinput = ::is_xinput_device()
+      suitMode = newSuitMode
     }
 
     local hudObj = scene.findObject("hud_obj")
