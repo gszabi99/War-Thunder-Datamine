@@ -3,6 +3,9 @@ local controlsOperations = require("scripts/controls/controlsOperations.nut")
 local { unitClassType } = require("scripts/unit/unitClassType.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 
+local isMouseAimSelected = @() (::g_controls_utils.getMouseUsageMask() & AIR_MOUSE_USAGE.AIM)
+local needFullGunnerSettings = @() ::is_ps4_or_xbox || !isMouseAimSelected()
+
 return [
   {
     id = "ID_PLANE_CONTROL_HEADER"
@@ -51,8 +54,7 @@ return [
   {
     id = "mouse_usage_no_aim"
     type = CONTROL_TYPE.SPINNER
-    showFunc = @() ::has_feature("SimulatorDifficulty")
-      && (::g_controls_utils.getMouseUsageMask() & AIR_MOUSE_USAGE.AIM)
+    showFunc = @() ::has_feature("SimulatorDifficulty") && isMouseAimSelected()
     optionType = ::USEROPT_MOUSE_USAGE_NO_AIM
     onChangeValue = "onAircraftHelpersChanged"
   }
@@ -367,26 +369,32 @@ return [
     id = "turret_x"
     type = CONTROL_TYPE.AXIS
     checkAssign = false
-    filterHide = [globalEnv.EM_MOUSE_AIM]
+    showFunc = needFullGunnerSettings
   }
   {
     id = "turret_y"
     type = CONTROL_TYPE.AXIS
     checkAssign = false
-    filterHide = [globalEnv.EM_MOUSE_AIM]
+    showFunc = needFullGunnerSettings
   }
   {
     id = "gunner_view_sens"
     type = CONTROL_TYPE.SLIDER
     optionType = ::USEROPT_GUNNER_VIEW_SENSE
-    filterHide = [globalEnv.EM_MOUSE_AIM]
+    showFunc = needFullGunnerSettings
+  }
+  {
+    id = "gunner_view_zoom_sens"
+    type = CONTROL_TYPE.SLIDER
+    optionType = ::USEROPT_GUNNER_VIEW_ZOOM_SENS
+    showFunc = @() needFullGunnerSettings() && ::have_per_vehicle_zoom_sens
   }
   {
     id = "gunner_joy_speed"
     type = CONTROL_TYPE.SLIDER
     value = @(joyParams) 100.0*(::get_option_multiplier(::OPTION_CAMERA_SPEED) - min_camera_speed) / (max_camera_speed - min_camera_speed)
     setValue = @(joyParams, objValue) ::set_option_multiplier(::OPTION_CAMERA_SPEED, min_camera_speed + (objValue / 100.0) * (max_camera_speed - min_camera_speed))
-    filterHide = [globalEnv.EM_MOUSE_AIM]
+    showFunc = needFullGunnerSettings
   }
   {
     id = "invert_y_gunner"

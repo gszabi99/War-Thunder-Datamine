@@ -295,10 +295,14 @@ return [
   }
   {
     id = "atgm_aim_sens_helicopter"
+    optionType = ::USEROPT_ATGM_AIM_SENS_HELICOPTER
     type = CONTROL_TYPE.SLIDER
-    value = @(joyParams) 100.0 * ::get_option_multiplier(::OPTION_ATGM_AIM_SENS_HELICOPTER)
-    setValue = @(joyParams, objValue)
-      ::set_option_multiplier(::OPTION_ATGM_AIM_SENS_HELICOPTER, objValue / 100.0)
+  }
+  {
+    id = "atgm_aim_zoom_sens_helicopter"
+    optionType = ::USEROPT_ATGM_AIM_ZOOM_SENS_HELICOPTER
+    type = CONTROL_TYPE.SLIDER
+    showFunc = @() ::have_per_vehicle_zoom_sens
   }
   {
     id = "ID_CHANGE_SHOT_FREQ_HELICOPTER"

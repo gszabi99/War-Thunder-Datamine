@@ -1195,6 +1195,27 @@ local isWaitMeasureEvent = false
       descr.value = (::get_option_multiplier(::OPTION_GUNNER_VIEW_SENSE) * 100.0).tointeger()
       break
 
+    case ::USEROPT_GUNNER_VIEW_ZOOM_SENS:
+      descr.id = "multiplier_gunner_view_zoom"
+      if (::have_per_vehicle_zoom_sens)
+        descr.value = (::get_option_multiplier(::OPTION_GUNNER_VIEW_ZOOM_SENS) * 100.0).tointeger()
+      else
+        descr.value = 0
+      break
+
+    case ::USEROPT_ATGM_AIM_SENS_HELICOPTER:
+      descr.id = "atgm_aim_sens_helicopter"
+      descr.value = (::get_option_multiplier(::OPTION_ATGM_AIM_SENS_HELICOPTER) * 100.0).tointeger()
+      break
+
+    case ::USEROPT_ATGM_AIM_ZOOM_SENS_HELICOPTER:
+      descr.id = "atgm_aim_zoom_sens_helicopter"
+      if (::have_per_vehicle_zoom_sens)
+        descr.value = (::get_option_multiplier(::OPTION_ATGM_AIM_ZOOM_SENS_HELICOPTER) * 100.0).tointeger()
+      else
+        descr.value = 0
+      break
+
     case ::USEROPT_MOUSE_SMOOTH:
       descr.id = "mouse_smooth"
       descr.controlType = optionControlType.CHECKBOX
@@ -4124,6 +4145,25 @@ local isWaitMeasureEvent = false
     case ::USEROPT_GUNNER_VIEW_SENSE:
       local val = value / 100.0
       ::set_option_multiplier(::OPTION_GUNNER_VIEW_SENSE, val)
+      break
+
+    case ::USEROPT_GUNNER_VIEW_ZOOM_SENS:
+      if (::have_per_vehicle_zoom_sens) {
+        local val = value / 100.0
+        ::set_option_multiplier(::OPTION_GUNNER_VIEW_ZOOM_SENS, val)
+      }
+      break
+
+    case ::USEROPT_ATGM_AIM_SENS_HELICOPTER:
+      local val = value / 100.0
+      ::set_option_multiplier(::OPTION_ATGM_AIM_SENS_HELICOPTER, val)
+      break
+
+    case ::USEROPT_ATGM_AIM_ZOOM_SENS_HELICOPTER:
+      if (::have_per_vehicle_zoom_sens) {
+        local val = value / 100.0
+        ::set_option_multiplier(::OPTION_ATGM_AIM_ZOOM_SENS_HELICOPTER, val)
+      }
       break
 
     case ::USEROPT_MOUSE_SMOOTH:

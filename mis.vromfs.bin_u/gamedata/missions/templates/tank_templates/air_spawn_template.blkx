@@ -1797,7 +1797,12 @@
         "events": {
           "initMission": []
         },
-        "conditions": [],
+        "conditions": {
+          "gameWhenDifficulty": {
+            "difficulty": "arcade",
+            "is": "notEqual"
+          }
+        },
         "actions": [
           {
             "unitWakeUp": [

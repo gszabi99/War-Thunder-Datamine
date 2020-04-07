@@ -60,3 +60,7 @@
 
 include "gui/items/craftTreeItemBlock"
 
+<<#buttons>>
+  include "gui/commonParts/button"
+<</buttons>>
+

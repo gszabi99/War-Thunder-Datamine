@@ -97,3 +97,7 @@
   OPTION_PITCH_BLOCKER_WHILE_BRACKING = -1
   need_force_autologin = @() false
 })
+
+//----------------------------wop_1_97_1_X---------------------------------//
+::have_per_vehicle_zoom_sens <- "OPTION_GUNNER_VIEW_ZOOM_SENS" in ::getroottable()
+                             && "OPTION_ATGM_AIM_ZOOM_SENS_HELICOPTER" in ::getroottable()

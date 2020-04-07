@@ -74,7 +74,7 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
   ::set_option_multiplier(::OPTION_MOUSE_SENSE,                 0.5); //::USEROPT_MOUSE_SENSE
   ::set_option_multiplier(::OPTION_MOUSE_AIM_SENSE,             0.5); //::USEROPT_MOUSE_AIM_SENSE
   ::set_option_multiplier(::OPTION_GUNNER_VIEW_SENSE,           1); //::USEROPT_GUNNER_VIEW_SENSE
-  ::set_option_multiplier(::OPTION_ATGM_AIM_SENS_HELICOPTER,    1);
+  ::set_option_multiplier(::OPTION_ATGM_AIM_SENS_HELICOPTER,    1); //::USEROPT_ATGM_AIM_SENS_HELICOPTER
   ::set_option_multiplier(::OPTION_MOUSE_JOYSTICK_DEADZONE,     0.1); //mouseJoystickDeadZone
   ::set_option_multiplier(::OPTION_HELICOPTER_MOUSE_JOYSTICK_DEADZONE,     0.1);
   ::set_option_multiplier(::OPTION_MOUSE_JOYSTICK_SCREENSIZE,   0.6); //mouseJoystickScreenSize

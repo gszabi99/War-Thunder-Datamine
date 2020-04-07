@@ -30,6 +30,8 @@ g_skill_parameters_request_type._getValues <- function _getValues()
 
 g_skill_parameters_request_type._getSelectedParameters <- function _getSelectedParameters(crewId, unit)
 {
+  if (unit == null)
+    return null
   local cacheUid = getCachePrefix() + "Selected"
   local res = ::g_crew_short_cache.getData(crewId, unit, cacheUid)
   if (res)

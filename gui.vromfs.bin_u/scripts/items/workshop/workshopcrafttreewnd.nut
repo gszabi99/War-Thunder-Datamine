@@ -219,6 +219,7 @@ local function getConfigByItemBlock(itemBlock, itemsList, workshopSet)
   local isDisguised = (itemBlock?.reqItemForIdentification ?? []).findindex(
     @(itemId) !workshopSet.isItemIdKnown(itemId)) != null
   local hasReachedMaxAmount = item?.hasReachedMaxAmount() ?? false
+  local hasItemInInventory = (item?.getAmount() ?? 0) != 0 || isCraftingOrHasCraftResult
   return {
     item = item
     hasComponent = hasComponent
@@ -226,13 +227,13 @@ local function getConfigByItemBlock(itemBlock, itemsList, workshopSet)
       || (((item?.maxAmount ?? -1) == 1) && isCraftingOrHasCraftResult)
     itemId = itemId
     isDisabledAction = isDisabledAction
-    isDisabled = item != null && item.getAmount() == 0 && !isCraftingOrHasCraftResult
+    isDisabled = item != null && !hasItemInInventory
       && (!item.hasUsableRecipeOrNotRecipes() || isDisabledAction)
     iconInsteadAmount = hasReachedMaxAmount ? getSucessItemCraftIcon(item) : null
     conectionInRowText = itemBlock?.conectionInRowText
-    isDisguised = isDisguised
-    isHidden = (itemBlock?.reqItemForDisplaying ?? []).findindex(
-      @(itemId) !workshopSet.isItemIdKnown(itemId)) != null
+    isDisguised = !hasItemInInventory && isDisguised
+    isHidden = !hasItemInInventory && (itemBlock?.reqItemForDisplaying ?? []).findindex(
+        @(itemId) !workshopSet.isItemIdKnown(itemId)) != null
   }
 }
 
@@ -445,8 +446,41 @@ local function getBodyItemsTitles(titlesConfig, itemSizes) {
   return titlesView
 }
 
-local getTextBlocksView = function getTextBlocksView(textBlocks, itemSizes) {
-  return textBlocks.map(@(textBlock) sizeAndPosViewConfig.textBlock(textBlock.__merge({ itemSizes = itemSizes})))
+local getTextBlocksView = @(textBlocks, itemSizes)  textBlocks.map(
+  @(textBlock) sizeAndPosViewConfig.textBlock(textBlock.__merge({ itemSizes = itemSizes})))
+
+local bodyButtonsConfig = {
+  marketplace = {
+    id = "marketplace"
+    text = "#mainmenu/marketplace"
+    onClick = "onToMarketplaceButton"
+    link = ""
+    isLink = true
+    isFeatured = true
+    isHidden = @() !::ItemsManager.isMarketplaceEnabled()
+  }
+}
+local buttonViewParams = {
+  shortcut = ""
+  btnName = "A"
+  showOnSelect = "focus"
+  actionParamsMarkup = ""
+}
+local function getButtonView(bodyConfig, itemSizes) {
+  local button = bodyConfig.button
+  if (button == null)
+    return null
+
+  local buttonConfig = bodyButtonsConfig?[button?.type ?? ""]
+  if (buttonConfig?.isHidden() ?? true)
+    return null
+
+  local buttonView = buttonConfig.__merge(button).__merge(buttonViewParams)
+  local posY = itemSizes.itemsOffsetByBodies[bodyConfig.bodyIdx]
+    + itemSizes.visibleItemsCountYByBodies[bodyConfig.bodyIdx] * itemSizes.itemBlockHeight
+    + itemSizes.headerBlockInterval
+  buttonView.actionParamsMarkup = $"pos:t='0.5pw - 0.5w, {posY}'; position:t='absolute'; noMargin:t='yes'"
+  return buttonView
 }
 
 local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
@@ -528,12 +562,19 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     local itemBlockHeight = itemHeight + itemBlockInterval
     local headerBlockInterval = ::to_pixels("1@headerAndCraftTreeBlockInterval")
     local isItemIdKnown = workshopSet.isItemIdKnown.bindenv(workshopSet)
+    local buttonHeight = ::to_pixels("1@buttonHeight") + 2*::to_pixels("1@buttonMargin")
+    local items = itemsList
     foreach (idx, rows in craftTree.treeRowsByBodies) {
       local visibleItemsCountY = 0
       for (local i = rows.len(); i > 0; i--)
-        if (rows[i-1].findindex(@(itemBlock) itemBlock?.id != null
-          && (itemBlock.reqItemForDisplaying.findindex(
-            @(itemId) !isItemIdKnown(itemId)) == null)) != null)
+        if (rows[i-1].findindex(
+          function(itemBlock) {
+            local item = items?[itemBlock?.id]
+            local hasItemInInventory = item != null
+              && (item.getAmount() != 0 || item.isCrafting() || item.hasCraftResult())
+            return hasItemInInventory
+              || ((itemBlock?.reqItemForDisplaying ?? []).findindex(@(itemId) !isItemIdKnown(itemId)) == null)
+          }) != null)
         {
           visibleItemsCountY = i
           break
@@ -543,8 +584,10 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
       visibleItemsCountY = ::max(visibleItemsCountY,
         textBlocks.len() > 0 ? (textBlocks.top().endPosY + 1) : 0)
       curBodiesOffset += isShowHeaderPlace || idx == 0 ? 0
-        : bodiesConfig[idx-1].bodyTitlesCount * titleHeight
-          + visibleItemsCountYByBodies[idx-1] * itemBlockHeight + headerBlockInterval
+        : (bodiesConfig[idx-1].bodyTitlesCount * titleHeight
+            + visibleItemsCountYByBodies[idx-1] * itemBlockHeight + headerBlockInterval
+            + (bodiesConfig[idx-1].button != null ? buttonHeight : 0)
+          )
       itemsOffsetByBodies.append(curBodiesOffset
         + (isShowHeaderPlace ? 0 : (bodiesConfig[idx].bodyTitlesCount * titleHeight)))
       bodiesOffset.append(curBodiesOffset)
@@ -616,6 +659,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     local shopArrows = []
     local conectionsInRow = []
     local textBlocks = []
+    local buttons = []
     local bodiesConfig = craftTree.bodiesConfig
     foreach (idx, rows in craftTree.treeRowsByBodies) {
       local connectingElements = getRowsElementsView(rows, itemSizes, itemsList,
@@ -624,6 +668,9 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
       conectionsInRow.extend(connectingElements.conectionsInRow)
       itemBlocksArr.extend(connectingElements.itemBlocksArr)
       textBlocks.extend(getTextBlocksView(bodiesConfig[idx].textBlocks, itemSizes))
+      local buttonView = getButtonView(bodiesConfig[idx], itemSizes)
+      if (buttonView != null)
+        buttons.append(buttonView)
     }
 
     local bodyWidth = itemSizes.maxItemsCountX * itemSizes.itemBlockWidth
@@ -687,6 +734,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
       shopArrows = shopArrows
       conectionsInRow = conectionsInRow
       textBlocks = textBlocks
+      buttons = buttons
     }
   }
 
@@ -707,6 +755,12 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   function onMainAction()
   {
     local curItemParam = getCurItemParam()
+    local button = curItemParam.button
+    if (button?.onClick != null) {
+      this[button.onClick]()
+      return
+    }
+
     local item = curItemParam.item
     local itemObj = curItemParam.obj
     if (item == null)
@@ -746,12 +800,14 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
       return {
         obj = null
         item = null
+        button = null
       }
 
     local itemObj = itemsListObj.getChild(value)
     return {
       obj = itemObj
       item = itemsList?[(itemObj?.itemId ?? "-1").tointeger()]
+      button = bodyButtonsConfig?[itemObj?.id ?? ""]
     }
   }
 
@@ -825,6 +881,10 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   function onEventProfileUpdated(p)
   {
     doWhenActiveOnce("updateCraftTree")
+  }
+
+  function onToMarketplaceButton() {
+    ::ItemsManager.goToMarketplace()
   }
 }
 

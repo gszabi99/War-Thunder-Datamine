@@ -9,6 +9,7 @@ local DEFAULT_BRANCH_CONFIG = {
   branchItems = {}
   bodyIdx = 0
   textBlocks = []
+  buttonBlk = null
   itemsIdList = {}
 }
 
@@ -208,6 +209,7 @@ local function generateRows(branchBlk, treeRows)
       columnWithResourcesCount = resourcesInColumn.reduce(@(res, value) res + value, 0)
       bodyIdx = bodyIdx
       textBlocks = textBlocks
+      buttonBlk = branchBlk?.button
       itemsIdList = itemsIdList
     })
   }
@@ -283,6 +285,7 @@ local function generateTreeConfig(blk)
          bodyTitlesCount = bodyTitle != "" ? 1 : 0
          treeColumnsCount = 0
          textBlocks = []
+         button = null
        })
 
      local curBodyConfig = bodiesConfig[bodyIdx]
@@ -295,6 +298,9 @@ local function generateTreeConfig(blk)
      curBodyConfig.hasBranchesTitles = hasBranchesTitlesInBody || hasBranchTitle
      curBodyConfig.treeColumnsCount += branch.itemsCountX
      curBodyConfig.textBlocks.extend(branch.textBlocks)
+     curBodyConfig.button = branch.buttonBlk != null
+       ? ::buildTableFromBlk(branch.buttonBlk)
+       : curBodyConfig.button
   }
   local paramsForPosByColumns = array(
     bodiesConfig.reduce(@(res, value) ::max(res, value.treeColumnsCount), 0), null)

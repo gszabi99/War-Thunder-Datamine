@@ -263,7 +263,8 @@ Button_text[active=yes],
 }
 
 buttonsNest > Button_text:focus,
-modSlotButtonsNest > Button_text:focus {
+modSlotButtonsNest > Button_text:focus,
+craftBranchBody:focus > Button_text[selected=yes] {
   background-color: @buttonColor;
   color: @buttonFontColor;
   border-color:@buttonBorderColor;
@@ -2146,9 +2147,14 @@ Button_text[isLink=yes][isFeatured=yes] > btnText {
   color:@linkTextColor;
 }
 
-Button_text[isLink=yes][isFeatured=yes]:hover > btnText,
-Button_text[isLink=yes][isFeatured=yes]:pushed > btnText,
 Button_text[isLink=yes][isFeatured=yes][selected=yes] > btnText {
+  color:@linkTextHoverColor;
+}
+craftBranchBody:focus > Button_text[isLink=yes][isFeatured=yes][selected=yes] > btnText {
+  color:@linkTextColor;
+}
+Button_text[isLink=yes][isFeatured=yes]:hover > btnText,
+Button_text[isLink=yes][isFeatured=yes]:pushed > btnText {
   color:@linkTextHoverColor;
 }
 
@@ -2160,9 +2166,14 @@ Button_text[isLink=yes][isFeatured=yes] > btnText > underline {
   bgcolor:@linkTextColor;
 }
 
-Button_text[isLink=yes][isFeatured=yes]:hover > btnText > underline,
-Button_text[isLink=yes][isFeatured=yes]:pushed > btnText > underline,
 Button_text[isLink=yes][isFeatured=yes][selected=yes] > btnText > underline {
+  bgcolor:@linkTextHoverColor;
+}
+craftBranchBody:focus > Button_text[isLink=yes][isFeatured=yes][selected=yes] > btnText > underline {
+  bgcolor:@linkTextColor;
+}
+Button_text[isLink=yes][isFeatured=yes]:hover > btnText > underline,
+Button_text[isLink=yes][isFeatured=yes]:pushed > btnText > underline {
   bgcolor:@linkTextHoverColor;
 }
 
@@ -2170,7 +2181,7 @@ Button_text[visualStyle=noFrame][isLink=yes][isFeatured=yes] > btnText {
   color:@linkTextColor;
 }
 
-Button_text[isLink=yes][isFeatured=yes] > btnText > underline {
+Button_text[visualStyle=noFrame][isLink=yes][isFeatured=yes] > btnText > underline {
   bgcolor:@linkTextColor;
 }
 
