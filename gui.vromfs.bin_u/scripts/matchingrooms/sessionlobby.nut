@@ -2563,6 +2563,8 @@ SessionLobby.rpcJoinBattle <- function rpcJoinBattle(params)
     return "already in room"
   if (::is_in_flight())
     return "already in session"
+  if (!antiCheat.showMsgboxIfEacInactive({enableEAC = true}))
+    return "EAC is not active"
 
   dagor.debug("join to battle with id " + battleId)
   SessionLobby.joinBattle(battleId)

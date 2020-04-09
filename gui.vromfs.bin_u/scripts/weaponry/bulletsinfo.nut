@@ -739,7 +739,7 @@ local function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS)
     return descr
 
   local modTotal = getBulletsGroupCount(air, false)
-  local firstFakeIdx = canBeDuplicate? ::BULLETS_SETS_QUANTITY : modTotal
+  local firstFakeIdx = canBeDuplicate? air.unitType.bulletSetsQuantity : modTotal
   if (firstFakeIdx <= groupIdx)
   {
     local fakeIdx = groupIdx - firstFakeIdx
@@ -923,7 +923,7 @@ local function getActiveBulletsGroupInt(air, checkPurchased = true)
   local res = air.primaryBullets[primaryWeapon] | air.secondaryBullets[secondaryWeapon]
   if (canBulletsBeDuplicate(air))
   {
-    res = res & ~((1 << ::BULLETS_SETS_QUANTITY) - 1) //use only fake bullets mask
+    res = res & ~((1 << air.unitType.bulletSetsQuantity) - 1) //use only fake bullets mask
     res = res | getActiveBulletsGroupIntForDuplicates(air, checkPurchased)
   }
   return res
