@@ -903,7 +903,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
         needCheckUnitPurchase = false, needOnlyAvailable = false
       })
       local curBulletsName = ::get_last_bullets(air.name, groupIndex)
-      if (groupIndex < ::BULLETS_SETS_QUANTITY)
+      if (groupIndex < air.unitType.bulletSetsQuantity)
         lastBullets.append(curBulletsName)
       if (!bulletsList.values.len() || bulletsList.duplicate)
         continue
@@ -1440,7 +1440,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
   function checkSaveBulletsAndDo(func)
   {
     local needSave = false;
-    for (local groupIndex = 0; groupIndex < ::BULLETS_SETS_QUANTITY; groupIndex++)
+    for (local groupIndex = 0; groupIndex < air.unitType.bulletSetsQuantity; groupIndex++)
     {
         if (lastBullets && groupIndex in lastBullets &&
             lastBullets[groupIndex] != ::get_last_bullets(airName, groupIndex))

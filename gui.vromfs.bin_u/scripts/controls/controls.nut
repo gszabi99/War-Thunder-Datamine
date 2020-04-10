@@ -2777,7 +2777,7 @@ local function getWeaponFeatures(weaponsBlkList)
     if (::is_platform_pc && !::is_xinput_device())
     {
       local bulletsChoice = 0
-      for (local groupIndex = 0; groupIndex < ::BULLETS_SETS_QUANTITY; groupIndex++)
+      for (local groupIndex = 0; groupIndex < unitType.bulletSetsQuantity; groupIndex++)
       {
         if (isBulletGroupActive(unit, groupIndex))
         {

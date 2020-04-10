@@ -194,7 +194,7 @@ class UnitBulletsManager
   function getActiveBulGroupsAmount()
   {
     //do not count fake bullets
-    return stdMath.number_of_set_bits(groupsActiveMask & ((1 << ::BULLETS_SETS_QUANTITY) - 1))
+    return stdMath.number_of_set_bits(groupsActiveMask & ((1 << unit.unitType.bulletSetsQuantity) - 1))
   }
 
   function openChooseBulletsWnd(groupIdx, itemParams = null, alignObj = null, align = "bottom")
@@ -283,7 +283,7 @@ class UnitBulletsManager
     groupsActiveMask = getActiveBulletsGroupInt(unit, checkPurchased) //!!FIX ME: better to detect actives in manager too.
 
     local canChangeActivity = canChangeBulletsActivity()
-    local bulletsTotal = unit.unitType.canUseSeveralBulletsForGun ? ::BULLETS_SETS_QUANTITY : getBulletsGroupCount(unit)
+    local bulletsTotal = unit.unitType.canUseSeveralBulletsForGun ? unit.unitType.bulletSetsQuantity : getBulletsGroupCount(unit)
     for (local groupIndex = 0; groupIndex < bulletsTotal; groupIndex++)
     {
       bulGroups.append(::BulletGroup(unit, groupIndex, getGroupGunInfo(groupIndex), {

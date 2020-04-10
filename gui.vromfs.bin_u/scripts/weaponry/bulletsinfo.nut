@@ -426,10 +426,11 @@ local function getBulletsGroupCount(air, full = false)
     air.bulModsGroups = groups.len()
     air.bulGroups     = groups.len()
 
-    if (air.bulGroups < ::BULLETS_SETS_QUANTITY)
+    local bulletSetsQuantity = air.unitType.bulletSetsQuantity
+    if (air.bulGroups < bulletSetsQuantity)
     {
       local add = getBulletsSetData(air, ::fakeBullets_prefix, modList) || 0
-      air.bulGroups = ::min(air.bulGroups + add, ::BULLETS_SETS_QUANTITY)
+      air.bulGroups = ::min(air.bulGroups + add, bulletSetsQuantity)
     }
   }
   return full? air.bulGroups : air.bulModsGroups
@@ -856,7 +857,11 @@ local function getBulletGroupIndex(airName, bulletName)
   if (!groupName || groupName == "")
     return -1
 
-  for (local groupIndex = 0; groupIndex < ::BULLETS_SETS_QUANTITY; groupIndex++)
+  local unit = ::getAircraftByName(airName)
+  if (unit == null)
+    return -1
+
+  for (local groupIndex = 0; groupIndex < unit.unitType.bulletSetsQuantity; groupIndex++)
   {
     local bulletsList = getBulletsList(airName, groupIndex, {
       needCheckUnitPurchase = false, needOnlyAvailable = false })

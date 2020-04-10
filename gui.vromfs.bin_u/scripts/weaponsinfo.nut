@@ -17,7 +17,7 @@ local { getWeaponInfoText,
   if (weaponText.warning)
     return weaponText.amount? UNIT_WEAPONS_WARNING : UNIT_WEAPONS_ZERO
 
-  for (local i = 0; i < ::BULLETS_SETS_QUANTITY; i++)
+  for (local i = 0; i < unit.unitType.bulletSetsQuantity; i++)
   {
     local modifName = ::get_last_bullets(unit.name, i);
     if (modifName && modifName != "" && ::shop_is_modification_enabled(unit.name, modifName))

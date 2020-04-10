@@ -326,7 +326,7 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
     if (!air)
       return
 
-    for (local groupIndex = 0; groupIndex < ::BULLETS_SETS_QUANTITY; groupIndex++)
+    for (local groupIndex = 0; groupIndex < air.unitType.bulletSetsQuantity; groupIndex++)
     {
       local show = isBulletGroupActive(air, groupIndex)
       if (!showOptionRow(get_option(::USEROPT_BULLETS0 + groupIndex), show))
@@ -354,10 +354,10 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
       !!unit && unit.getAvailableSecondaryWeapons().hasBombs)
   }
 
-  function setLastBulletsCache()
+  function setLastBulletsCache(unit)
   {
     lastBulletsCache = []
-    for (local groupIndex = 0; groupIndex < ::BULLETS_SETS_QUANTITY; groupIndex++) {
+    for (local groupIndex = 0; groupIndex < unit.unitType.bulletSetsQuantity; groupIndex++) {
       local bulletOptId = ::USEROPT_BULLETS0 + groupIndex
       local bulletOpt = ::get_option(bulletOptId)
       local bulletValue = bulletOpt?.value
@@ -398,12 +398,12 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
 
     if (!obj.getValue()) {//default mod option selected
       lastWeaponCache = getLastWeapon(unit.name)
-      setLastBulletsCache()
+      setLastBulletsCache(unit)
       local defaultWeap = unit.getDefaultWeapon()
       setLastWeapon(unit.name, defaultWeap)
 
       local defaultBulletIdx = 0
-      for (local groupIndex = 0; groupIndex < ::BULLETS_SETS_QUANTITY; groupIndex++) {
+      for (local groupIndex = 0; groupIndex < unit.unitType.bulletSetsQuantity; groupIndex++) {
         local bulletOptId = ::USEROPT_BULLETS0 + groupIndex
         local bulletOpt = ::get_option(bulletOptId)
         local bulletValue = bulletOpt?.value
@@ -435,7 +435,7 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
 
       if (referenceWeap) {
         local defaultBulletIdx = 0
-        for (local groupIndex = 0; groupIndex < ::BULLETS_SETS_QUANTITY; groupIndex++) {
+        for (local groupIndex = 0; groupIndex < unit.unitType.bulletSetsQuantity; groupIndex++) {
           local bulletValue = ::get_option(::USEROPT_BULLETS0 + groupIndex)?.value ?? defaultBulletIdx
           if (bulletValue != defaultBulletIdx) {
             referenceWeap = false

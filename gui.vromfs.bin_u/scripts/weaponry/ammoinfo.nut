@@ -102,7 +102,7 @@ local function getUnitNotReadyAmmoList(unit, readyStatus = UNIT_WEAPONS_WARNING)
   local weapon = getLastWeapon(unit.name)
   addAmmoData(getAmmoAmountData(unit, weapon, AMMO.WEAPON))
 
-  for (local i = 0; i < ::BULLETS_SETS_QUANTITY; i++)
+  for (local i = 0; i < unit.unitType.bulletSetsQuantity; i++)
   {
     local modifName = ::get_last_bullets(unit.name, i)
     if (modifName && modifName != "")

@@ -385,7 +385,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
     }
 
     local bulDataList = []
-    for (local groupIdx = 0; groupIdx < ::BULLETS_SETS_QUANTITY; groupIdx++)
+    for (local groupIdx = 0; groupIdx < updUnit.unitType.bulletSetsQuantity; groupIdx++)
     {
       local isActive = isBulletGroupActive(updUnit, groupIdx)
 
