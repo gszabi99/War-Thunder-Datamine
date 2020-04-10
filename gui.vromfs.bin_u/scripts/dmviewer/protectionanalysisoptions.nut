@@ -246,7 +246,7 @@ options.addTypes({
 
       for (local groupIndex = 0; groupIndex < getLastFakeBulletsIndex(unit); groupIndex++)
       {
-        local gunIdx = ::get_linked_gun_index(groupIndex, groupsCount, false)
+        local gunIdx = ::get_linked_gun_index(groupIndex, groupsCount, unit.unitType.bulletSetsQuantity, false)
         if (gunIdx == curGunIdx)
           continue
 

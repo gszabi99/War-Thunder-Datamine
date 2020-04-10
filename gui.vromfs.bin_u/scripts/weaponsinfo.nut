@@ -511,11 +511,11 @@ local getModBlock = function(modName, blockName, templateKey)
   return null
 }
 
-::get_linked_gun_index <- function get_linked_gun_index(group_index, total_groups, canBeDuplicate = true)
+::get_linked_gun_index <- function get_linked_gun_index(group_index, total_groups, bulletSetsQuantity, canBeDuplicate = true)
 {
   if (!canBeDuplicate)
     return group_index
-  return (group_index.tofloat() * total_groups / ::BULLETS_SETS_QUANTITY + 0.001).tointeger()
+  return (group_index.tofloat() * total_groups / bulletSetsQuantity + 0.001).tointeger()
 }
 
 ::isAirHaveAnyWeaponsTags <- function isAirHaveAnyWeaponsTags(air, tags, checkPurchase = true)

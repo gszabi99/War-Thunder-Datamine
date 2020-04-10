@@ -70,7 +70,7 @@ class UnitBulletsManager
 
   function getGroupGunInfo(groupIdx)
   {
-    local linkedIdx = ::get_linked_gun_index(groupIdx, getGunTypesCount())
+    local linkedIdx = ::get_linked_gun_index(groupIdx, getGunTypesCount(), unit.unitType.bulletSetsQuantity)
     return ::getTblValue(linkedIdx, gunsInfo, null)
   }
 

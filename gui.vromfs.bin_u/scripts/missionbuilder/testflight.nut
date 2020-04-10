@@ -384,12 +384,13 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
       })
     }
 
+    local bulletSetsQuantity = updUnit.unitType.bulletSetsQuantity
     local bulDataList = []
-    for (local groupIdx = 0; groupIdx < updUnit.unitType.bulletSetsQuantity; groupIdx++)
+    for (local groupIdx = 0; groupIdx < bulletSetsQuantity; groupIdx++)
     {
       local isActive = isBulletGroupActive(updUnit, groupIdx)
 
-      local gunIdx = ::get_linked_gun_index(groupIdx, groupsCount)
+      local gunIdx = ::get_linked_gun_index(groupIdx, groupsCount, bulletSetsQuantity)
       local modName = ::get_last_bullets(updUnit.name, groupIdx)
       local maxToRespawn = 0
 

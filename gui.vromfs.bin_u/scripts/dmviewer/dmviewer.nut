@@ -702,6 +702,16 @@ const AFTERBURNER_CHAMBER = 3
             local powerTakeoff = 0
             local thrustMax = 0
             local thrustTakeoff = 0
+            local thrustMaxCoef = 1
+            local afterburneThrustMaxCoef = 1
+            local engineThrustMaxBlk = engineMainBlk?.ThrustMax
+
+            if (engineThrustMaxBlk)
+            {
+              thrustMaxCoef = engineThrustMaxBlk?.ThrustMaxCoeff_0_0 ?? 1
+              afterburneThrustMaxCoef = engineThrustMaxBlk?.ThrAftMaxCoeff_0_0 ?? 1
+            }
+
             local horsePowerValue = getFirstFound([infoBlk, engineMainBlk],
               @(b) b?.ThrustMax?.PowerMax0 ?? b?.HorsePowers ?? b?.Power, 0)
             local thrustValue = getFirstFound([infoBlk, engineMainBlk], @(b) b?.ThrustMax?.ThrustMax0, 0)
@@ -785,6 +795,7 @@ const AFTERBURNER_CHAMBER = 3
             if (thrustMax > 0)
             {
               thrustMax += thrustModDelta
+              thrustMax *= thrustMaxCoef
               desc.append(::loc("engine_thrust_max") + ::loc("ui/colon")
                 + ::g_measure_type.THRUST_KGF.getMeasureUnitsText(thrustMax))
             }
@@ -797,6 +808,7 @@ const AFTERBURNER_CHAMBER = 3
                   : "engine_thrust_takeoff"
 
               thrustTakeoff += thrustModDelta
+              thrustTakeoff *= thrustMaxCoef * afterburneThrustMaxCoef
               desc.append(::loc(thrustTakeoffLocId) + ::loc("ui/colon")
                 + ::g_measure_type.THRUST_KGF.getMeasureUnitsText(thrustTakeoff))
             }

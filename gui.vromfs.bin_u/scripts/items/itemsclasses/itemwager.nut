@@ -550,7 +550,7 @@ class ::items_classes.Wager extends ::BaseItem
     return true
   }
 
-  function activateImpl(wagerValue, cb)
+  function sendTaskActivate(wagerValue, cb)
   {
     local blk = ::DataBlock()
     blk.setStr("name", uids[0])
@@ -561,6 +561,28 @@ class ::items_classes.Wager extends ::BaseItem
       @() cb({ success = true }), @(res) cb({ success = false }))
     if (!isTaskSend)
       cb({success=false})
+  }
+
+  hasGoldReward = @() rewardType == "goldRewardParams"
+  function activateImpl(wagerValue, cb)
+  {
+    if (!isGoldWager && !hasGoldReward()) {
+      sendTaskActivate(wagerValue, cb)
+      return
+    }
+
+    local activateLocId = wagerValue > 0 ? "msgbox/wagerActivate/withCost" : "msgbox/wagerActivate"
+    local bodyText = ::loc(activateLocId, {
+      name = getWagerDescriptionForMessageBox(uids[0])
+      cost = getWagerCost(wagerValue)
+    })
+    local item = this
+    ::scene_msg_box("activate_wager_message_box", null, bodyText,
+      [
+        [ "yes", @() item.sendTaskActivate(wagerValue, cb) ],
+        [ "no", @() cb({success=false}) ]
+      ],
+      "yes")
   }
 
   function getWagerDescriptionForMessageBox(uid)
