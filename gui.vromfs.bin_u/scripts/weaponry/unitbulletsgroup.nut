@@ -189,6 +189,6 @@ class BulletGroup
 
   function shouldHideBullet()
   {
-    return gunInfo.forcedMaxBulletsInRespawn
+    return gunInfo?.forcedMaxBulletsInRespawn ?? false
   }
 }

@@ -2236,9 +2236,9 @@
         "Fuel": 300.0,
         "TakeOff": 12000.0,
         "momentOfInertia": [2.5,2.5,6.0],
-        "CenterOfGravity": [0.2,0.5,0.0],
+        "CenterOfGravity": [0.2,2.5,0.0],
         "CenterOfGravityClampY": [0.0,0.7],
-        "AdvancedMass": true,
+        "AdvancedMass": false,
         "trackMass": 940.0
       },
       "tracks": {
@@ -2247,6 +2247,7 @@
         "width": 0.25
       },
       "collisionProps": {
+        "cls_turret": "convex_hull",
         "cls_body": "convex_hull"
       },
       "engine": {
