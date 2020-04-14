@@ -96,6 +96,25 @@
 ::apply_compatibilities({
   OPTION_PITCH_BLOCKER_WHILE_BRACKING = -1
   need_force_autologin = @() false
+  request_leaderboard_blk = function(blk) {
+    if (blk?.start != null)
+    {
+      return ::request_page_of_leaderboard(
+        blk.valueType == LEADERBOARD_VALUE_INHISTORY? ::ETTI_VALUE_INHISORY : ETTI_VALUE_TOTAL,
+        blk.category,
+        blk.count,
+        blk.start,
+        blk.gameMode
+      )
+    }
+
+    return ::request_me_in_leaderboard(
+      blk.valueType == LEADERBOARD_VALUE_INHISTORY? ::ETTI_VALUE_INHISORY : ETTI_VALUE_TOTAL,
+      blk.category,
+      0,
+      blk.gameMode
+    )
+  }
 })
 
 //----------------------------wop_1_97_1_X---------------------------------//

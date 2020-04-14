@@ -122,7 +122,7 @@ local { hasAllFeatures } = require("scripts/user/features.nut")
     rowsInPage = 1
     pos = 0
     lbMode = ""
-    consolePostfix = ""
+    platform = ""
   }
 
   function reset()
@@ -183,36 +183,38 @@ local { hasAllFeatures } = require("scripts/user/features.nut")
   function loadLeaderboard(requestData)
   {
     lastRequestData = requestData
-    if(!canRequestLb)
+    if (!canRequestLb)
       return
 
     canRequestLb = false
 
-    local taskId = ::request_page_of_leaderboard(
-      requestData.lbType,
-      requestData.lbField,
-      requestData.rowsInPage,
-      requestData.pos,
-      $"{requestData.lbMode}{requestData.consolePostfix}"
-    )
+    local db = ::DataBlock()
+    db.setStr("category", requestData.lbField)
+    db.setStr("valueType", requestData.lbType == ::ETTI_VALUE_INHISORY? LEADERBOARD_VALUE_INHISTORY : LEADERBOARD_VALUE_TOTAL)
+    db.setInt("count", requestData.rowsInPage)
+    db.setStr("gameMode", requestData.lbMode)
+    db.setStr("platform", requestData.platform)
+    db.setInt("start", requestData.pos)
 
+    local taskId = ::request_leaderboard_blk(db)
     ::add_bg_task_cb(taskId, @() ::leaderboardModel.handleLbRequest(requestData))
   }
 
   function loadSeflRow(requestData)
   {
     lastRequestSRData = requestData
-    if(!canRequestLb)
+    if (!canRequestLb)
       return
     canRequestLb = false
 
-    local taskId = ::request_me_in_leaderboard(
-      requestData.lbType,
-      requestData.lbField,
-      0,
-      $"{requestData.lbMode}{requestData.consolePostfix}"
-    )
+    local db = ::DataBlock()
+    db.setStr("category", requestData.lbField)
+    db.setStr("valueType", requestData.lbType == ::ETTI_VALUE_INHISORY? LEADERBOARD_VALUE_INHISTORY : LEADERBOARD_VALUE_TOTAL)
+    db.setInt("count", 0)
+    db.setStr("gameMode", requestData.lbMode)
+    db.setStr("platform", requestData.platform)
 
+    local taskId = ::request_leaderboard_blk(db)
     ::add_bg_task_cb(taskId, @() ::leaderboardModel.handleSelfRowLbRequest(requestData))
   }
 
@@ -256,7 +258,7 @@ local { hasAllFeatures } = require("scripts/user/features.nut")
   function lbBlkToArray(blk, requestData)
   {
     local res = []
-    local valueKey = (requestData.lbType == ::ETTI_VALUE_INHISORY) ? "value_inhistory" : "value_total"
+    local valueKey = (requestData.lbType == ::ETTI_VALUE_INHISORY) ? LEADERBOARD_VALUE_INHISTORY : LEADERBOARD_VALUE_TOTAL
     for (local i = 0; i < blk.blockCount(); i++)
     {
       local table = {}
@@ -407,14 +409,14 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
   rowsInPage  = 16
   maxRows     = 1000
 
-  consolePostfix = ""
+  platform = ""
   request = {
     lbType     = null
     lbField    = null
     rowsInPage = null
     pos        = null
     lbMode     = ""
-    consolePostfix = ""
+    platform = ""
   }
   pageData    = null
   selfRowData = null
@@ -437,7 +439,7 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
 
     curLbCategory = lb_presets[0]
     lbType = ::loadLocalByAccount("leaderboards_type", ::ETTI_VALUE_INHISORY)
-    consolePostfix = ::has_feature("PS4SeparateLeaderboards")? ::loadLocalByAccount("leaderboards_postfix", "") : ""
+    platform = ::has_feature("PS4SeparateLeaderboards")? ::loadLocalByAccount("leaderboards_postfix", "") : ""
     pos = 0
     rowsInPage = 16
 
@@ -654,8 +656,8 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
 
   function onChangePsnFilter(obj)
   {
-    consolePostfix = obj.getValue() ? "__ps4" : ""
-    ::saveLocalByAccount("leaderboards_postfix", consolePostfix)
+    platform = obj.getValue() ? "ps4" : ""
+    ::saveLocalByAccount("leaderboards_postfix", platform)
     fetchLbData()
   }
 
@@ -759,7 +761,7 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
         id = "month_filter"
         text = "#mainmenu/btnMonthLb"
         cb = "onChangeType"
-        cbValue = lbType == ::ETTI_VALUE_INHISORY ? "yes" : "no"
+        filterCbValue = lbType == ::ETTI_VALUE_INHISORY ? "yes" : "no"
       }]
     }
 
@@ -768,7 +770,7 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
         id = "psn_filter"
         text = "#mainmenu/leaderboards/onlyPS4"
         cb = "onChangePsnFilter"
-        cbValue = consolePostfix == "" ? "no" : "yes"
+        filterCbValue = platform == "" ? "no" : "yes"
       })
     return res
   }

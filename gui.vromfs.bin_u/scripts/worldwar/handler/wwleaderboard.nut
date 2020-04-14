@@ -55,7 +55,7 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
     if (!lb_presets)
       lb_presets = ::ww_leaderboards_list
 
-    consolePostfix = ::has_feature("PS4SeparateLeaderboards")? ::loadLocalByAccount("leaderboards_postfix", "") : ""
+    platform = ::has_feature("PS4SeparateLeaderboards")? ::loadLocalByAccount("leaderboards_postfix", "") : ""
     initTable()
     fillMapsList()
     initModes()
@@ -233,9 +233,10 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
     lbField = curLbCategory.field
     requestData = newRequestData
     local requestParams = {
-      gameMode = requestData.modeName + requestData.modePostFix + requestData.consolePostfix
+      gameMode = requestData.modeName + requestData.modePostFix
       table    = requestData.day && requestData.day > 0 ? "day" + requestData.day : "season"
       category = lbField
+      platform = platform
     }
 
     local cb = function(hasSelfRow = false)
@@ -383,7 +384,7 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
       modeName = lbModeData.mode
       modePostFix = mapId + countryId
       day = lbModeData.hasDaysData ? lbDay : null
-      consolePostfix = lbModeData?.needShowConsoleFilter? consolePostfix : ""
+      platform = lbModeData?.needShowConsoleFilter? platform : ""
     }
   }
 
@@ -394,7 +395,7 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
           id = "psn_filter"
           text = "#mainmenu/leaderboards/onlyPS4"
           cb = "onChangePsnFilter"
-          filterCbValue = consolePostfix == "" ? "no" : "yes"
+          filterCbValue = platform == "" ? "no" : "yes"
         }]}
       : null
   }

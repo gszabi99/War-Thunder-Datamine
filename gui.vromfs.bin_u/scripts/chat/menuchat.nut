@@ -1083,7 +1083,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
                                                     voiceChatStatus = voiceChatStatus
                                                    })
 
-        ::call_darg("updateVoiceChatStatus", { name = contact?.name ?? "",
+        ::call_darg("updateVoiceChatStatus", { name = contact?.getName() ?? "",
           isTalking = voiceChatStatus == voiceChatStats.talking})
       }
     }

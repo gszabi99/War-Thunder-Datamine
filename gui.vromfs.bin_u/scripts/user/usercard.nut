@@ -1034,8 +1034,8 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     ]
 
     local valueFieldName = (statsType == ::ETTI_VALUE_TOTAL)
-                           ? "value_total"
-                           : "value_inhistory"
+                           ? LEADERBOARD_VALUE_TOTAL
+                           : LEADERBOARD_VALUE_INHISTORY
     local lb = ::getTblValue(valueFieldName, ::getTblValue(lbMode, stats.leaderboard), {})
     local standartRow = {}
 

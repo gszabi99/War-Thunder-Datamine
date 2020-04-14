@@ -291,6 +291,9 @@ global enum TOP_MENU_ELEMENT_TYPE {
 
 global const MAIN_FOCUS_ITEM_IDX = 4
 
+global const LEADERBOARD_VALUE_TOTAL = "value_total"
+global const LEADERBOARD_VALUE_INHISTORY = "value_inhistory"
+
 ::randomize <- function randomize()
 {
   ::math.init_rnd(get_local_unixtime())

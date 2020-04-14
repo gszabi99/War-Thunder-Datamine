@@ -108,7 +108,7 @@ elemViewType.addTypes({
       local isTalking = contact?.voiceStatus == voiceChatStats.talking
       memberObj.fade = isTalking ? "in" : "out"
       if (isTalking)
-        memberObj.findObject("users_name").setValue(contact?.name ?? "")
+        memberObj.findObject("users_name").setValue(contact?.getName() ?? "")
     }
 
     fillContainer = function(obj, childRequired)

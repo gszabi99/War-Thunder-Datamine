@@ -16,12 +16,16 @@ local function cacheUnitSearchTokens(unit)
   searchTokensCache[unit] <- tokens
 }
 
+local function clearCache() {
+  searchTokensCache.clear()
+}
+
 local function rebuildCache()
 {
   if (!::g_login.isLoggedIn())
     return
 
-  searchTokensCache.clear()
+  clearCache()
   foreach (unit in ::all_units)
     cacheUnitSearchTokens(unit)
 }
@@ -51,6 +55,10 @@ local function findUnitsByLocName(searchStrRaw, needIncludeHidden = false, needI
 
 ::add_event_listener("GameLocalizationChanged", @(p) rebuildCache(),
   null, ::g_listener_priority.CONFIG_VALIDATION)
+
+::add_event_listener("SignOut", @(p) clearCache(),
+  null, ::g_listener_priority.DEFAULT)
+
 
 return {
   findUnitsByLocName = findUnitsByLocName

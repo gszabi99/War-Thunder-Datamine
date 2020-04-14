@@ -54,6 +54,7 @@ dataParams = {
   start    = 1  // start position lb request
   count    = 0  // count of records
   category = ::g_lb_category.WW_EVENTS_PERSONAL_ELO.field // sort field parametr
+  platform = "" //"ps4" for ps4 only players
 }
 headersParams = {
   userId = -1 //optional parameter. Equal to user id for user leaderboard and clan id for clan leaderboard
@@ -69,7 +70,7 @@ local function requestWwLeaderboardData(modeName, dataParams, cb, headersParams 
     headers = { appid = mode.appId }.__update(headersParams)
     action = ("userId" in headersParams) ? "ano_get_leaderboard_json" : "cln_get_leaderboard_json" //Need use ano_get_leaderboard_json for request with userId
     data = {
-      valueType = "value_total"
+      valueType = LEADERBOARD_VALUE_TOTAL
       resolveNick = true
     }.__update(dataParams)
   }

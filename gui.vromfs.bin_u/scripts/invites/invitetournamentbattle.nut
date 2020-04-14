@@ -1,3 +1,5 @@
+local antiCheat = require("scripts/penitentiary/antiCheat.nut")
+
 class ::g_invites_classes.TournamentBattle extends ::BaseInvite
 {
   //custom class params, not exist in base invite
@@ -89,6 +91,9 @@ class ::g_invites_classes.TournamentBattle extends ::BaseInvite
 
     if ( !::isInMenu() )
       return ::g_invites.showLeaveSessionFirstPopup()
+
+    if (!antiCheat.showMsgboxIfEacInactive({enableEAC = true}))
+      return
 
     ::dagor.debug("Going to join to battleId(" + battleId + ") via accepted invite");
     ::SessionLobby.joinBattle(battleId)
