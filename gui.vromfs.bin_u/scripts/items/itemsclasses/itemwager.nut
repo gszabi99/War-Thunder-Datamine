@@ -473,9 +473,9 @@ class ::items_classes.Wager extends ::BaseItem
       "\n" + ::UnlockConditions.getConditionsText(conditions)
   }
 
-  function getMainActionData(isShort = false)
+  function getMainActionData(isShort = false, params = {})
   {
-    local res = base.getMainActionData(isShort)
+    local res = base.getMainActionData(isShort, params)
     if (res)
       return res
     if (isInventoryItem && amount && !isActive() && curWager >= 0)

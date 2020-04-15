@@ -96,9 +96,9 @@ class ::items_classes.Discount extends ::BaseItem
     return base.getName()
   }
 
-  function getMainActionData(isShort = false)
+  function getMainActionData(isShort = false, params = {})
   {
-    local res = base.getMainActionData(isShort)
+    local res = base.getMainActionData(isShort, params)
     if (res)
       return res
     if (isInventoryItem && amount && !isActive())

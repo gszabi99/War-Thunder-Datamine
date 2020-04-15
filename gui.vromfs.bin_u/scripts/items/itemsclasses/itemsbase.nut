@@ -29,7 +29,7 @@
 
   getStopConditions()          - added for boosters, but perhaps, it have in some other items
 
-  getMainActionData(isShort = false)
+  getMainActionData(isShort = false, params = {})
                                     - get main action data (short will be on item button)
   doMainAction(cb, handler)         - do main action. (buy, activate, etc)
 
@@ -390,13 +390,13 @@ class ::BaseItem
   {
     if (::getTblValue("showAction", params, true))
     {
-      local mainActionData = params?.overrideMainActionData ?? getMainActionData(true)
+      local mainActionData = params?.overrideMainActionData ?? getMainActionData(true, params)
       res.isInactive <- (params?.showButtonInactiveIfNeed ?? false)
         && (mainActionData?.isInactive ?? false)
       if (mainActionData && getLimitsCheckData().result)
       {
         res.modActionName <- mainActionData?.btnColoredName ?? mainActionData.btnName
-        res.needShowActionButtonAlways <- mainActionData?.needShowActionButtonAlways ?? needShowActionButtonAlways()
+        res.needShowActionButtonAlways <- mainActionData?.needShowActionButtonAlways ?? needShowActionButtonAlways(params)
       }
     }
 
@@ -525,7 +525,7 @@ class ::BaseItem
     return res + ((costText == "")? "" : " (" + costText + ")")
   }
 
-  function getMainActionData(isShort = false)
+  function getMainActionData(isShort = false, params = {})
   {
     if (isCanBuy())
       return {
@@ -749,7 +749,7 @@ class ::BaseItem
   getRarityColor              = @() ""
   getRelatedRecipes           = @() [] //recipes with this item in materials
   getMyRecipes                = @() [] //recipes with this item in result
-  needShowActionButtonAlways  = @() false
+  needShowActionButtonAlways  = @(params) false
 
   getMaxRecipesToShow         = @() 0 //if 0, all recipes will be shown.
   getDescRecipeListHeader     = @(showAmount, totalAmount, isMultipleExtraItems) ""

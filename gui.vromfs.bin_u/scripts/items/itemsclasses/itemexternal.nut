@@ -397,12 +397,12 @@ local ItemExternal = class extends ::BaseItem
   hasMainActionDisassemble  = @() itemDef?.tags?.canBeDisassembled == "mainAction"
   needShowAsDisassemble     = @() hasMainActionDisassemble() || (canDisassemble() && !canAssemble())
 
-  function getMainActionData(isShort = false)
+  function getMainActionData(isShort = false, params = {})
   {
-    local res = base.getMainActionData(isShort)
+    local res = base.getMainActionData(isShort, params)
     if (res)
       return res
-    if (amount && canConsume())
+    if (amount && canConsume() && (params?.canConsume ?? true))
       return {
         btnName = ::loc("item/consume")
       }
@@ -453,7 +453,7 @@ local ItemExternal = class extends ::BaseItem
 
   function consume(cb, params)
   {
-    if (!uids || !uids.len() || !metaBlk || !canConsume())
+    if (!uids || !uids.len() || !metaBlk || !canConsume() || !(params?.canConsume ?? true))
       return false
 
     if (shouldAutoConsume)
@@ -738,9 +738,9 @@ local ItemExternal = class extends ::BaseItem
     }))
   }
 
-  function needShowActionButtonAlways()
+  function needShowActionButtonAlways(params)
   {
-    if(getMainActionData(true)?.isInactive ?? false)
+    if(getMainActionData(true, params)?.isInactive ?? false)
       return false
 
     if (canRunCustomMission())

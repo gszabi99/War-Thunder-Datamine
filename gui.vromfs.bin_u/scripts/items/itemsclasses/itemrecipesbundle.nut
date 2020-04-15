@@ -42,7 +42,7 @@ class ::items_classes.RecipesBundle extends ::items_classes.Chest {
       })
   }
 
-  function getMainActionData(isShort = false)
+  function getMainActionData(isShort = false, params = {})
   {
     if (canAssemble())
       return {

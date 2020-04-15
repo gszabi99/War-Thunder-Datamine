@@ -260,6 +260,7 @@ local viewItemsParams = {
   showPrice = false,
   contentIcon = false
   shouldHideAdditionalAmmount = true
+  canConsume = false
   count = -1
 }
 
@@ -790,7 +791,11 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     if (item == null)
       return
 
-    item.doMainAction(null, this, { obj = obj, isHidePrizeActionBtn = true })
+    item.doMainAction(null, this, {
+      obj = obj
+      isHidePrizeActionBtn = true
+      canConsume = false
+    })
   }
 
   function getCurItemParam()
