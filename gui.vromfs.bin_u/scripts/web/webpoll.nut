@@ -70,9 +70,9 @@ local function webpollEvent(id, token, voted) {
 
 local function onCanVoteResponse(response) {
   if (response?.status == "OK" && response?.data != null)
-    foreach (id,data in response.data)
-      if (data?.canVote == true)
-        webpollEvent(id, data?.disposable_token, data?.hasVote)
+    foreach (id, data in response.data)
+      if (data?.can_vote ?? false)
+        webpollEvent(id, data?.disposable_token, data?.has_vote ?? false)
 }
 
 local function onSurveyVoteResult(params) {
@@ -109,6 +109,21 @@ local function getPollIdByFullUrl(url) {
   return pollIdByFullUrl?[url]
 }
 
+local function requestPolls() {
+  local pollsForRequestByBaseUrl = {}
+  foreach (pollId, baseUrl in pollBaseUrlById) {
+    local pollIdInt = pollId.tointeger()
+    if (canRequestAuthorization(pollIdInt)) {
+      authorizedPollsRequestTimeOut[pollIdInt] <- ::dagor.getCurTime() + REQUEST_AUTHORIZATION_TIMEOUT_MS
+      pollsForRequestByBaseUrl[baseUrl] <- (pollsForRequestByBaseUrl?[baseUrl] ?? []).append(pollIdInt)
+    }
+  }
+
+  foreach (baseUrl, pollsArray in pollsForRequestByBaseUrl) {
+    api.canVote($"{baseUrl}/api/v1/survey/can_vote/", pollsArray, onCanVoteResponse)
+  }
+}
+
 local function generatePollUrl(pollId, needAuthorization = true) {
   local pollBaseUrl = getPollBaseUrl(pollId)
   if (pollBaseUrl == null)
@@ -117,10 +132,8 @@ local function generatePollUrl(pollId, needAuthorization = true) {
   local pollIdInt = pollId.tointeger()
   local cachedToken = getPollToken(pollIdInt)
   if (cachedToken == "") {
-    if(needAuthorization && canRequestAuthorization(pollIdInt)) {
-      authorizedPollsRequestTimeOut[pollIdInt] <- ::dagor.getCurTime() + REQUEST_AUTHORIZATION_TIMEOUT_MS
-      api.canVote(pollBaseUrl + "/api/v1/survey/can_vote/", [pollIdInt], onCanVoteResponse)
-    }
+    if (needAuthorization && canRequestAuthorization(pollIdInt))
+      requestPolls()
     return ""
   }
 

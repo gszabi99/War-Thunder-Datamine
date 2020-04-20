@@ -325,12 +325,8 @@ class ::gui_handlers.trophyRewardWnd extends ::gui_handlers.BaseGuiHandlerWT
     base.onTake(unitToTake, {
       cellClass = "slotbarClone"
       isNewUnit = true
+      afterSuccessFunc = ::Callback(@() goBack(), this)
     })
-  }
-
-  function onEventCrewTakeUnit(params)
-  {
-    goBack()
   }
 
   function onUnitHover(obj)

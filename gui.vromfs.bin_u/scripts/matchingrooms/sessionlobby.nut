@@ -2581,9 +2581,6 @@ SessionLobby.getMGameMode <- function getMGameMode(room = null, isCustomGameMode
     return room._customGameMode
 
   local mGameMode = ::g_matching_game_modes.getModeById(mGameModeId)
-  if (!mGameMode)
-    ::g_matching_game_modes.requestGameModeById(mGameModeId)
-
   if (isCustomGameModeAllowed && room && mGameMode && ::events.isCustomGameMode(mGameMode))
   {
     local customGameMode = clone mGameMode

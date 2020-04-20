@@ -439,7 +439,10 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
 
     curLbCategory = lb_presets[0]
     lbType = ::loadLocalByAccount("leaderboards_type", ::ETTI_VALUE_INHISORY)
-    platform = ::has_feature("PS4SeparateLeaderboards")? ::loadLocalByAccount("leaderboards_postfix", "") : ""
+    platform = ::has_feature("PS4SeparateLeaderboards")
+      && ::get_gui_option_in_mode(::USEROPT_PS4_ONLY_LEADERBOARD, ::OPTIONS_MODE_GAMEPLAY) == true
+        ? "ps4"
+        : ""
     pos = 0
     rowsInPage = 16
 
@@ -654,13 +657,6 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
     fetchLbData()
   }
 
-  function onChangePsnFilter(obj)
-  {
-    platform = obj.getValue() ? "ps4" : ""
-    ::saveLocalByAccount("leaderboards_postfix", platform)
-    fetchLbData()
-  }
-
   function onCategory(obj)
   {
     if (!::checkObj(obj))
@@ -756,7 +752,7 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
 
   function getTopItemsTplView()
   {
-    local res = {
+    return {
       filter = [{
         id = "month_filter"
         text = "#mainmenu/btnMonthLb"
@@ -764,15 +760,6 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
         filterCbValue = lbType == ::ETTI_VALUE_INHISORY ? "yes" : "no"
       }]
     }
-
-    if (::has_feature("PS4SeparateLeaderboards"))
-      res.filter.append({
-        id = "psn_filter"
-        text = "#mainmenu/leaderboards/onlyPS4"
-        cb = "onChangePsnFilter"
-        filterCbValue = platform == "" ? "no" : "yes"
-      })
-    return res
   }
 
   function initTopItems()

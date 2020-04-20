@@ -16,6 +16,11 @@ expandable {
   timer_interval_msec:t='1000'
   <</addTimer>>
 
+  <<#isConcealed>>
+    display:t='hide'
+    enable:t='no'
+  <</isConcealed>>
+
   <<^onlyInfo>>
   on_click:t = 'onJoinThread'
   clickable:t='yes'

@@ -1,5 +1,6 @@
 local enums = ::require("sqStdlibs/helpers/enums.nut")
 local platformModule = require("scripts/clientState/platform.nut")
+local { isCrossNetworkMessageAllowed } = require("scripts/chat/chatStates.nut")
 
 enum chatRoomCheckOrder {
   CUSTOM
@@ -69,6 +70,7 @@ enum chatRoomTabOrder {
   fillChatHeader = function(obj, roomData) {}
   updateChatHeader = function(obj, roomData) {}
   isAllowed = @() true
+  isConcealed = @(roomId) false
 }
 
 enums.addTypesByGlobalName("g_chat_room_type", {
@@ -106,6 +108,8 @@ enums.addTypesByGlobalName("g_chat_room_type", {
         return "friend"
       return ""
     }
+
+    isConcealed = @(roomId) !isCrossNetworkMessageAllowed(roomId)
   }
 
   SQUAD = { //param - random
@@ -242,6 +246,8 @@ enums.addTypesByGlobalName("g_chat_room_type", {
       if ("onSceneShow" in ud)
         ud.onSceneShow()
     }
+
+    isConcealed = @(roomId) ::g_chat.getThreadInfo(roomId)?.isConcealed() ?? false
   }
 
   THREADS_LIST = {

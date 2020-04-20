@@ -362,18 +362,22 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
     if (!::has_feature("WorldWarLeaderboards"))
       return false
 
-    local callback = ::Callback(
-      function(modesData) {
-        local seasonDay = wwLeaderboardData.getSeasonDay(modesData?.tables)
-        if (seasonDay)
-          wwTopLeaderboard.initTop(this, scene.findObject("top_daily_players"),
-            "ww_users", seasonDay)
-      }, this)
-    wwLeaderboardData.requestWwLeaderboardModes(
-      "ww_users",
-      @(modesData) callback(modesData))
-    wwTopLeaderboard.initTop(this, scene.findObject("top_global_players"), "ww_users")
-    wwTopLeaderboard.initTop(this, scene.findObject("top_global_managers"), "ww_users_manager")
+    if (::get_gui_option_in_mode(::USEROPT_PS4_ONLY_LEADERBOARD, ::OPTIONS_MODE_GAMEPLAY) != true
+      || ::has_feature("PS4SeparateWWLeaderboards"))
+    {
+      local callback = ::Callback(
+        function(modesData) {
+          local seasonDay = wwLeaderboardData.getSeasonDay(modesData?.tables)
+          if (seasonDay)
+            wwTopLeaderboard.initTop(this, scene.findObject("top_daily_players"),
+              "ww_users", seasonDay)
+        }, this)
+      wwLeaderboardData.requestWwLeaderboardModes(
+        "ww_users",
+        @(modesData) callback(modesData))
+      wwTopLeaderboard.initTop(this, scene.findObject("top_global_players"), "ww_users")
+      wwTopLeaderboard.initTop(this, scene.findObject("top_global_managers"), "ww_users_manager")
+    }
     wwTopLeaderboard.initTop(this, scene.findObject("top_global_clans"),   "ww_clans")
     return true
   }

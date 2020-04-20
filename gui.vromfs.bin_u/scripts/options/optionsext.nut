@@ -3723,6 +3723,7 @@ local isWaitMeasureEvent = false
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.value = crossplayModule.isCrossNetworkChatEnabled()
+      descr.cb = "onChangeCrossNetworkChat"
       break
     case ::USEROPT_REPLACE_MY_NICK_LOCAL:
       descr.id = "replace_my_nick_local"
@@ -3751,6 +3752,13 @@ local isWaitMeasureEvent = false
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.value = ::get_allow_to_be_added_to_lb()
+      break
+
+    case ::USEROPT_PS4_ONLY_LEADERBOARD:
+      descr.id = "ps4_only_leaderboards"
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      defaultValue = false
       break
 
     default:
@@ -4880,6 +4888,10 @@ local isWaitMeasureEvent = false
 
     case ::USEROPT_QUEUE_EVENT_CUSTOM_MODE:
       ::queue_classes.Event.setShouldQueueCustomMode(::getTblValue("eventName", descr.context, ""), value)
+      break
+
+    case ::USEROPT_PS4_ONLY_LEADERBOARD:
+      ::set_gui_option(optionId, value)
       break
 
     default:

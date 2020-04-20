@@ -121,7 +121,9 @@ class ::gui_handlers.SquadWidgetCustomHandler extends ::gui_handlers.BaseGuiHand
 
       local memberVoipObj = memberObj.findObject("member_voip_" + indexStr)
       memberVoipObj["isVoipActive"] = contact.voiceStatus == voiceChatStats.talking ? "yes" : "no"
-      local needShowVoice = chatStatesCanUseVoice() && !platformModule.isXBoxPlayerName(member.name)
+      local needShowVoice = chatStatesCanUseVoice()
+        && ::get_option_voicechat()
+        && !platformModule.isXBoxPlayerName(member.name)
       memberVoipObj.show(needShowVoice)
 
       local memberCrossPlayObj = memberObj.findObject("member_crossplay_active_" + indexStr)
@@ -276,6 +278,11 @@ class ::gui_handlers.SquadWidgetCustomHandler extends ::gui_handlers.BaseGuiHand
     if (::g_squad_manager.getMemberData(uid) == null)
       return
 
+    doWhenActiveOnce("updateView")
+  }
+
+  function onEventVoiceChatOptionUpdated(p)
+  {
     doWhenActiveOnce("updateView")
   }
 

@@ -140,22 +140,7 @@ local { isChatEnabled } = require("scripts/chat/chatStates.nut")
     }
   }
 
-  //chat
-  if (gchat_is_enabled() && ::has_feature("Chat"))
-  {
-    local objBtn = getObj($"{prefix}chat_btn")
-    if (::check_obj(objBtn))
-    {
-      local haveNew = ::g_chat.haveNewMessages()
-      local tooltip = ::loc(haveNew ? "mainmenu/chat_new_messages" : "mainmenu/chat")
-      ::update_gc_button(objBtn, haveNew, tooltip)
-
-      local newCountChatObj = objBtn.findObject($"{prefix}new_chat_messages")
-      local newMessagesCount = ::g_chat.getNewMessagesCount()
-      local newMessagesText = newMessagesCount ? newMessagesCount.tostring() : ""
-      newCountChatObj.setValue(newMessagesText)
-    }
-  }
+  ::update_gamercards_chat_info(prefix)
 
   if (::has_feature("Friends"))
   {
@@ -373,4 +358,26 @@ local { isChatEnabled } = require("scripts/chat/chatStates.nut")
     (@(needAlert) function(scene) {
       ::showBtn("gc_clanAlert", needAlert, scene)
     })(needAlert))
+}
+
+::update_gamercards_chat_info <- function update_gamercards_chat_info(prefix = "gc_")
+{
+  if (!::gchat_is_enabled() || !::has_feature("Chat"))
+    return
+
+  local haveNew = ::g_chat.haveNewMessages()
+  local tooltip = ::loc(haveNew ? "mainmenu/chat_new_messages" : "mainmenu/chat")
+
+  local newMessagesCount = ::g_chat.getNewMessagesCount()
+  local newMessagesText = newMessagesCount ? newMessagesCount.tostring() : ""
+
+  ::do_with_all_gamercards(function(scene) {
+    local objBtn = scene.findObject($"{prefix}chat_btn")
+    if (!::check_obj(objBtn))
+      return
+
+    ::update_gc_button(objBtn, haveNew, tooltip)
+    local newCountChatObj = objBtn.findObject($"{prefix}new_chat_messages")
+    newCountChatObj.setValue(newMessagesText)
+  })
 }

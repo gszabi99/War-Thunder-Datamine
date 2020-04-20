@@ -212,6 +212,11 @@ g_chat_latest_threads.onEventChatThreadInfoModifiedByPlayer <- function onEventC
     ::g_chat_latest_threads.forceAutoRefreshInSecond() //wait for all changes applied
 }
 
+g_chat_latest_threads.onEventCrossNetworkChatOptionChanged <- function onEventCrossNetworkChatOptionChanged(p)
+{
+  forceAutoRefreshInSecond()
+}
+
 g_chat_latest_threads.onEventChatThreadCreateRequested <- function onEventChatThreadCreateRequested(p)
 {
   ::g_chat_latest_threads.forceAutoRefreshInSecond()

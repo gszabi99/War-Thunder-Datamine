@@ -5,6 +5,7 @@ local { setUnitLastBullets,
 local { getLastWeapon,
         setLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local crossplayModule = require("scripts/social/crossplay.nut")
 
 ::generic_options <- null
 
@@ -602,7 +603,7 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
 
   function onVoicechatChange(obj)
   {
-    ::set_option_voicechat(obj.getValue() ? 1 : 0)
+    ::set_option(::USEROPT_VOICE_CHAT, !::get_option(::USEROPT_VOICE_CHAT).value)
     ::broadcastEvent("VoiceChatOptionUpdated")
   }
 
@@ -632,6 +633,56 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
       })
     } else
       setOptionValueByControlObj(obj)
+  }
+
+  function onChangeCrossNetworkChat(obj)
+  {
+    local value = obj.getValue()
+    if (value == true)
+    {
+      //Just send notification that value changed
+      setCrossNetworkChatValue(null, true, true)
+      return
+    }
+
+    msgBox(
+      "crossnetwork_changes_warning",
+      ::loc("guiHints/ps4_crossnetwork_chat"),
+      [
+        ["ok", @() setCrossNetworkChatValue(null, false, true)], //Send notification of changed value
+        ["no", @() setCrossNetworkChatValue(obj, true, false)] //Silently return value
+      ],
+      "no",
+      {cancel_fn = @() setCrossNetworkChatValue(obj, true, false)}
+    )
+  }
+
+  function setCrossNetworkChatValue(obj, value, needSendNotification = false)
+  {
+    if (::check_obj(obj))
+      obj.setValue(value)
+
+    if (needSendNotification)
+    {
+      ::broadcastEvent("CrossNetworkChatOptionChanged")
+
+      if (value == false) //Turn off voice if we turn off crossnetwork opt
+      {
+        local voiceOpt = ::get_option(::USEROPT_VOICE_CHAT)
+        if (voiceOpt.value == true && voiceOpt?.cb != null) // onVoicechatChange toggles value
+          this[voiceOpt.cb](null)
+        else
+          ::set_option(::USEROPT_VOICE_CHAT, false)
+      }
+
+      local listObj = scene.findObject("groups_list")
+      if (::check_obj(listObj))
+      {
+        local voiceTabObj = listObj.findObject("voicechat")
+        if (::check_obj(voiceTabObj))
+          voiceTabObj.inactive = value? "no" : "yes"
+      }
+    }
   }
 
   function get_option_by_id(id)
@@ -809,7 +860,7 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
     if (!option)
       return
     local optionTrObj = getObj(option.getTrId())
-    if(!::check_obj(optionTrObj))
+    if (!::check_obj(optionTrObj))
       return
 
     local missionBlk = ::get_mission_meta_info(optionsConfig?.missionName ?? "")
@@ -1099,6 +1150,8 @@ class ::gui_handlers.GroupOptionsModal extends ::gui_handlers.GenericOptionsModa
     foreach(idx, gr in optGroups)
     {
       view.tabs.append({
+        id = gr.name
+        visualDisable = gr.name == "voicechat" && !crossplayModule.isCrossNetworkChatEnabled()
         tabName = "#options/" + gr.name
         navImagesText = ::get_navigation_images_text(idx, optGroups.len())
       })
@@ -1432,7 +1485,15 @@ class ::gui_handlers.GroupOptionsModal extends ::gui_handlers.GenericOptionsModa
   {
     local config = optGroups[group]
 
-    guiScene.replaceContent(scene.findObject("optionslist"), "gui/options/voicechatOptions.blk", this);
+    guiScene.replaceContent(scene.findObject("optionslist"), "gui/options/voicechatOptions.blk", this)
+
+    local needShowOptions = crossplayModule.isCrossNetworkChatEnabled()
+    showSceneBtn("voice_disable_warning", !needShowOptions)
+
+    showSceneBtn("voice_options_block", needShowOptions)
+    if (!needShowOptions)
+      return
+
     if ("options" in config)
       fillOptionsList(group, "voiceOptions")
 

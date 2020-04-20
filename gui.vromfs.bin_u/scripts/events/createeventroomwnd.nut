@@ -49,7 +49,7 @@ class ::gui_handlers.CreateEventRoomWnd extends ::gui_handlers.GenericOptionsMod
         {
           id = "btn_missions"
           text = "#mainmenu/btnMissions"
-          shortcut = "X"
+          shortcut = "Y"
           funcName = "onMissions"
           visualStyle = "secondary"
           button = true

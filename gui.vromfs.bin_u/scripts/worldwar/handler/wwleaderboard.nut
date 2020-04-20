@@ -55,7 +55,11 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
     if (!lb_presets)
       lb_presets = ::ww_leaderboards_list
 
-    platform = ::has_feature("PS4SeparateLeaderboards")? ::loadLocalByAccount("leaderboards_postfix", "") : ""
+    platform = ::has_feature("PS4SeparateLeaderboards")
+      && ::get_gui_option_in_mode(::USEROPT_PS4_ONLY_LEADERBOARD, ::OPTIONS_MODE_GAMEPLAY) == true
+        ? "ps4"
+        : ""
+
     initTable()
     fillMapsList()
     initModes()
@@ -63,7 +67,6 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
     updateButtons()
     fetchRewardsData()
     fetchRewardsTimeData()
-    updateConsoleCheckbox()
     initFocusArray()
   }
 
@@ -120,7 +123,6 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
     lbMode = null
     lbModesList = []
 
-    local modeIdx = 0
     local data = ""
     foreach(idx, modeData in wwLeaderboardData.modes)
     {
@@ -128,14 +130,19 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
         (modeData?.needFeature && !::has_feature(modeData.needFeature)))
         continue
 
+      if (!::has_feature("PS4SeparateWWLeaderboards")
+          && ::get_gui_option_in_mode(::USEROPT_PS4_ONLY_LEADERBOARD, ::OPTIONS_MODE_GAMEPLAY) == true
+          && modeData?.needShowConsoleFilter == true)
+          continue
+
       lbModesList.append(modeData)
       local optionText = ::g_string.stripTags(
-        ::loc("worldwar/leaderboard/" + modeData.mode))
-      data += format("option {text:t='%s'}", optionText)
-
-      if (modeData.mode == beginningMode)
-        modeIdx = idx
+        ::loc($"worldwar/leaderboard/{modeData.mode}"))
+      data += "option {text:t='{0}'}".subst(optionText)
     }
+
+    local curMod = beginningMode
+    local modeIdx = lbModesList.findindex(@(m) m.mode == curMod ) ?? 0
 
     local modesObj = showSceneBtn("modes_list", true)
     guiScene.replaceContentFromText(modesObj, data, data.len(), this)
@@ -232,11 +239,12 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
 
     lbField = curLbCategory.field
     requestData = newRequestData
+
     local requestParams = {
       gameMode = requestData.modeName + requestData.modePostFix
       table    = requestData.day && requestData.day > 0 ? "day" + requestData.day : "season"
       category = lbField
-      platform = platform
+      platform = requestData.platform
     }
 
     local cb = function(hasSelfRow = false)
@@ -280,11 +288,6 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
       cb()
   }
 
-  function updateConsoleCheckbox()
-  {
-    showSceneBtn("psn_filter", lbModeData?.needShowConsoleFilter ?? false)
-  }
-
   function onModeSelect(obj)
   {
     local modeObjValue = obj.getValue()
@@ -295,7 +298,6 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
     lbMode = lbModeData.mode
     forClans = lbMode == "ww_clans"
 
-    updateConsoleCheckbox()
     delayedRestoreFocus()
     checkLbCategory()
 
@@ -380,24 +382,13 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
     local mapId = lbMap && ::isInArray(lbMap, availableMapsList) ? "__" + lbMap.getId() : ""
     local countryId = lbCountry && ::isInArray(lbCountry, availableCountriesList)
       ? "__" + lbCountry : ""
+
     return {
       modeName = lbModeData.mode
       modePostFix = mapId + countryId
       day = lbModeData.hasDaysData ? lbDay : null
-      platform = lbModeData?.needShowConsoleFilter? platform : ""
+      platform = lbModeData?.needShowConsoleFilter ? platform : ""
     }
-  }
-
-  function getTopItemsTplView()
-  {
-    return ::has_feature("PS4SeparateLeaderboards")
-      ? { filter = [{
-          id = "psn_filter"
-          text = "#mainmenu/leaderboards/onlyPS4"
-          cb = "onChangePsnFilter"
-          filterCbValue = platform == "" ? "no" : "yes"
-        }]}
-      : null
   }
 
   function getWwMaps()

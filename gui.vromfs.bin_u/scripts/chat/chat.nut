@@ -342,6 +342,7 @@ g_chat.updateThreadInfo <- function updateThreadInfo(dataBlk)
   if (dataBlk?.type == "thread_list")
     ::g_chat_latest_threads.onNewThreadInfoToList(threadsInfo[roomId])
 
+  ::update_gamercards_chat_info()
   ::broadcastEvent("ChatThreadInfoChanged", { roomId = roomId })
 }
 
@@ -612,9 +613,8 @@ g_chat.getNewMessagesCount <- function getNewMessagesCount()
   local result = 0
 
   foreach (room in ::g_chat.rooms)
-  {
-    result += room.newImportantMessagesCount
-  }
+    if (!room.hidden && !room.concealed())
+      result += room.newImportantMessagesCount
 
   return result
 }

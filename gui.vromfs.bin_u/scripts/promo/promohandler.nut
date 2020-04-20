@@ -117,10 +117,12 @@ class Promo
       local block = sourceDataBlock.getBlock(i)
 
       local blockView = ::g_promo.generateBlockView(block)
+      local blockId = blockView.id
       if (block?.pollId != null)
       {
-        setPollBaseUrl(block.pollId, block?.link)
-        pollIdToObjectId[block.pollId] <- blockView.id
+        if (::g_promo.getVisibilityById(blockId)) //add pollId to request only for visible promo
+          setPollBaseUrl(block.pollId, block?.link)
+        pollIdToObjectId[block.pollId] <- blockId
       }
 
       if (block?.bottom != null)
@@ -128,8 +130,8 @@ class Promo
       else
         upperPromoView.promoButtons.append(blockView)
 
-      if (blockView?.notifyNew && !::g_promo.isWidgetSeenById(blockView.id))
-        widgetsTable[blockView.id] <- {}
+      if (blockView?.notifyNew && !::g_promo.isWidgetSeenById(blockId))
+        widgetsTable[blockId] <- {}
 
       local playlistArray = getPlaylistArray(block)
       if (playlistArray.len() > 0)
@@ -139,7 +141,7 @@ class Promo
       }
 
       if (blockView.needUpdateByTimer)
-        needUpdateByTimerArr.append(blockView.id)
+        needUpdateByTimerArr.append(blockId)
     }
     return {
       upper = ::handyman.renderCached("gui/promo/promoBlocks", upperPromoView)

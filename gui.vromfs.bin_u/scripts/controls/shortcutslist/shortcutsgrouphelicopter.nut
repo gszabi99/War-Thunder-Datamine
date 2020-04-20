@@ -574,6 +574,11 @@ return [
     checkAssign = false
     showFunc = @() ::has_feature("ConstantlyComputedWeaponSight")
   }
+  {
+    id = "ID_REQUEST_DETECT_ALLY_HELI"
+    checkGroup = ctrlGroups.HELICOPTER
+    checkAssign = false
+  }
 //-------------------------------------------------------
   {
     id = "ID_HELICOPTER_JOYSTICK_HEADER"

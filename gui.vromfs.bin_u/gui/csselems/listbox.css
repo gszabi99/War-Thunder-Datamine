@@ -21,6 +21,8 @@
 
 @const headerOptionSelectedTextColor: #e0e0e0;
 
+@const shopFilterFontColorDisabled: #26343434;
+
 listbox,
 listboxNoScroll {
   behaviour:select;
@@ -163,10 +165,6 @@ shopFilterText {
   input-transparent:yes;
   pos:0, 50%ph-50%h;
   position:relative;
-}
-shopFilter:disabled shopFilterText,
-shopFilter[inactive=yes] shopFilterText {
-  color:@disabledTextColor;
 }
 
 HorizontalListBox > shopFilter {
@@ -373,7 +371,14 @@ shopFilterText[smallFont=yes] {
 shopFilter[selected=yes], shopFilter[selected=yes] shopFilterText {
   color:@activeTextColor;
 }
-shopFilter:disabled[selected=yes] shopFilterText {
+
+shopFilter:disabled shopFilterText,
+shopFilter[inactive=yes] shopFilterText {
+  color:@shopFilterFontColorDisabled;
+}
+
+shopFilter:disabled[selected=yes] shopFilterText,
+shopFilter[inactive=yes][selected=yes] shopFilterText {
   color:@disabledActiveTextColor;
 }
 

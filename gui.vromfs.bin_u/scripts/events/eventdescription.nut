@@ -343,9 +343,23 @@ class ::gui_handlers.EventDescription extends ::gui_handlers.BaseGuiHandlerWT
     return ::loc("multiplayer/battleStartsIn", { time = time.secondsToString(secToStart, true) })
   }
 
+  function isLeaderboardsAvailable()
+  {
+    return !::is_platform_ps4
+      || ::get_gui_option_in_mode(::USEROPT_PS4_ONLY_LEADERBOARD, ::OPTIONS_MODE_GAMEPLAY) != true
+      || ::has_feature("PS4SeparateEventsLeaderboards")
+  }
+
   function fetchLbData()
   {
-    hideEventLeaderboard()
+    local isLbAvailable = isLeaderboardsAvailable()
+    hideEventLeaderboard(isLbAvailable)
+    if (!isLbAvailable)
+    {
+      showEventLb(null)
+      return
+    }
+
     newSelfRowRequest = ::events.getMainLbRequest(selectedEvent)
     ::events.requestSelfRow(
       newSelfRowRequest,
@@ -374,18 +388,19 @@ class ::gui_handlers.EventDescription extends ::gui_handlers.BaseGuiHandlerWT
     if (btnLb == null || lbTable == null)
       return
 
-    local lbRows = lb_data ? ::getTblValue("rows", lb_data, []) : []
+    local isLbAvailable = isLeaderboardsAvailable()
+    local lbRows = lb_data?.rows ?? []
     playersInTable = []
     guiScene.replaceContentFromText(lbTable, "", 0, this)
-    lbWaitBox.show(!lb_data)
+    lbWaitBox.show(!lb_data && isLbAvailable)
 
-    if (::events.isEventForClanGlobalLb(selectedEvent))
+    if (::events.isEventForClanGlobalLb(selectedEvent) || newSelfRowRequest == null)
       return
 
     local field = newSelfRowRequest.lbField
     local lbCategory = ::events.getLbCategoryByField(field)
     local showTable = checkLbTableVisible(lbRows, lbCategory)
-    local showButton = lbRows.len() > 0
+    local showButton = lbRows.len() > 0 && isLbAvailable
     lbTable.show(showTable)
     btnLb.show(showButton)
     if (!showTable)
@@ -421,6 +436,9 @@ class ::gui_handlers.EventDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function generateRowTableData(row, rowIdx, lbCategory)
   {
+    if (!newSelfRowRequest)
+      return ""
+
     local rowName = "row_" + rowIdx
     local forClan = ::events.isClanLbRequest(newSelfRowRequest)
 
@@ -507,7 +525,7 @@ class ::gui_handlers.EventDescription extends ::gui_handlers.BaseGuiHandlerWT
     ::gui_handlers.MRoomMembersWnd.open(room)
   }
 
-  function hideEventLeaderboard()
+  function hideEventLeaderboard(showWaitBox = true)
   {
     local lbWrapObj = getObject("lb_wrap")
     if (lbWrapObj == null)
@@ -520,7 +538,7 @@ class ::gui_handlers.EventDescription extends ::gui_handlers.BaseGuiHandlerWT
       lbTable.show(false)
     local lbWaitBox = getObject("msgWaitAnimation")
     if (lbWaitBox != null)
-      lbWaitBox.show(true)
+      lbWaitBox.show(showWaitBox)
   }
 
   function getFullRoomData()

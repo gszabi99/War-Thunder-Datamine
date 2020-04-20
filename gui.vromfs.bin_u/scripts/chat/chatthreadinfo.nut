@@ -1,5 +1,6 @@
 local platformModule = require("scripts/clientState/platform.nut")
 local playerContextMenu = ::require("scripts/user/playerContextMenu.nut")
+local { isCrossNetworkMessageAllowed } = require("scripts/chat/chatStates.nut")
 
 const MAX_THREAD_LANG_VISIBLE = 3
 
@@ -274,4 +275,7 @@ class ChatThreadInfo
       contentObject.getChild(i)["background-image"] = res[i].icon
     }
   }
+
+  //It's like hidden, but must reveal when unhidden
+  isConcealed = @() !isCrossNetworkMessageAllowed(ownerNick)
 }

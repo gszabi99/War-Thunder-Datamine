@@ -162,6 +162,9 @@ root {
           padding-left:t='1@framePadding'
           padding-top:t='1@framePadding'
           flow:t='vertical'
+          <<^banListHeight>>
+          overflow-y:t='auto'
+          <</banListHeight>>
           position:t='relative'
           css-hier-invalidate:t='yes'
 
@@ -184,28 +187,32 @@ root {
             display:t='hide'
           }
 
-          tdiv {
-            id:t='tactical-map'
-            size:t='pw, 1@mapPreferencePreviewSize'
-            max-width:t='h'
-            max-height:t='w'
-            pos:t='0.5pw-0.5w, 1@blockInterval'
-            position:t='relative'
-            display:t='hide'
+          tdiv{
+            size:t='pw, 1@mapPreferencePreviewSize+1@buttonHeight'
+            flow:t='vertical'
+            tdiv {
+              id:t='tactical-map'
+              size:t='pw, 1@mapPreferencePreviewSize'
+              max-width:t='h'
+              max-height:t='w'
+              pos:t='0.5pw-0.5w, 1@blockInterval'
+              position:t='relative'
+              display:t='hide'
 
-            tacticalMap {
-              size:t='pw, ph'
+              tacticalMap {
+                size:t='pw, ph'
+              }
             }
-          }
 
-          tdiv {
-            id:t='paginator'
-            pos:t='0.5pw-0.5w, 0'
-            position:t='relative'
-            height:t='1@buttonHeight'
-            margin:t='0, 1@blockInterval'
-            navMiddle{
-              id:t='paginator_place'
+            tdiv {
+              id:t='paginator'
+              pos:t='0.5pw-0.5w, 0'
+              position:t='relative'
+              height:t='1@buttonHeight'
+              margin:t='0, 1@blockInterval'
+              navMiddle{
+                id:t='paginator_place'
+              }
             }
           }
 
@@ -267,9 +274,11 @@ root {
           tdiv {
             id:t='ban_list'
             width:t='pw'
-            max-height:t='fh'
             flow:t='vertical'
+            <<#banListHeight>>
+            height:t='<<banListHeight>>'
             overflow-y:t='auto'
+            <</banListHeight>>
             scrollbarShortcuts:t='yes'
             position:t='relative'
             css-hier-invalidate:t='yes'

@@ -35,6 +35,10 @@ class ::gui_handlers.mapPreferencesModal extends ::gui_handlers.BaseGuiHandlerWT
       + daguiFonts.getFontLineHeightPx("fontSmall")
     local mapsRowsHeight = mapsCountY * mapItemHeight
     local title = mapPreferencesParams.getPrefTitle(curEvent)
+    local textRowHeight = daguiFonts.getFontLineHeightPx("fontNormal")
+    local banListHeight = ::to_pixels("".concat("1@maxWindowHeight-1@framePadding-1@frameTopPadding",
+      "-1@frameHeaderHeight-1@mapPreferencePreviewSize-3@checkboxSize-2@buttonHeight-3@blockInterval",
+      "-2@buttonMargin")) - 2*textRowHeight
 
     return {
       wndTitle = title
@@ -49,6 +53,7 @@ class ::gui_handlers.mapPreferencesModal extends ::gui_handlers.BaseGuiHandlerWT
       hasMaxDisliked = hasMaxCount("disliked") ? "yes" : "no"
       hasMaxLiked = hasMaxCount("liked") ? "yes" : "no"
       hasScroll = ::to_pixels("1@mapPreferenceListHeight") < (mapsRowsHeight + ::to_pixels("1@blockInterval"))
+      banListHeight = banListHeight > textRowHeight ? banListHeight : 0
     }
   }
 

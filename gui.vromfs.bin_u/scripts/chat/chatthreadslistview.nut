@@ -7,6 +7,7 @@ class ::gui_handlers.ChatThreadsListView extends ::gui_handlers.BaseGuiHandlerWT
   sceneBlkName = "gui/chat/chatThreadsList.blk"
   isPrimaryFocus = false
   backFunc = null
+  updateInactiveList = false
 
   roomId = ""
 
@@ -132,8 +133,16 @@ class ::gui_handlers.ChatThreadsListView extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventChatLatestThreadsUpdate(p)
   {
-    if (isSceneActive())
-      updateAll()
+    if (isSceneActive() || updateInactiveList)
+    {
+      updateAll(updateInactiveList)
+      updateInactiveList = false
+    }
+  }
+
+  function onEventCrossNetworkChatOptionChanged(p)
+  {
+    updateInactiveList = true
   }
 
   function onUpdate(obj, dt)
@@ -220,7 +229,11 @@ class ::gui_handlers.ChatThreadsListView extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     //sellImg is bigger than item, so for correct view while selecting by gamepad need to scroll to selImg
-    local childObj = listObj.getChild(listObj.getValue() || 0)
+    local val = ::get_obj_valid_index(listObj)
+    local childObj = listObj.getChild(val < 0? 0 : val)
+    if (!::check_obj(childObj))
+      childObj = listObj.getChild(0)
+
     local selImg = childObj.findObject("thread_row_sel_img")
     if (::checkObj(selImg))
       selImg.scrollToView()
@@ -244,7 +257,7 @@ class ::gui_handlers.ChatThreadsListView extends ::gui_handlers.BaseGuiHandlerWT
 
   function getMainFocusObj()
   {
-    return listObj.childrenCount() ? listObj : null
+    return ::is_obj_have_active_childs(listObj) ? listObj : null
   }
 
   function getMainFocusObj2()

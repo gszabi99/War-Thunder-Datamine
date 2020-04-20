@@ -2053,6 +2053,26 @@ Button_text[type=weaponryAmount] {
   enable:yes;
 }
 
+[show_console_buttons=yes] weaponry_item Button_text.sliderValueButton[type=weaponryAmount] > ButtonImg {
+  display:hide;
+}
+
+[show_console_buttons=yes] :focus weaponry_item[selected=yes] Button_text.sliderValueButton[type=weaponryAmount] > ButtonImg {
+  display:show;
+}
+
+[show_console_buttons=yes] weaponry_item Button_text.sliderValueButton[type=weaponryAmount][btnName=LB] {
+  padding-left:1@buttonTextPadding;
+  text-align:center;
+  text:'-';
+}
+
+[show_console_buttons=yes] weaponry_item Button_text.sliderValueButton[type=weaponryAmount][btnName=RB] {
+  padding-left:1@buttonTextPadding;
+  text-align:center;
+  text:'+';
+}
+
 [show_console_buttons=yes] [move=yes] weaponBundleBlock:focus weaponry_item[selected=yes] Button_text {
   display:hide;
 }

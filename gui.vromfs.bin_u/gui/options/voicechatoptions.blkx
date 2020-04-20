@@ -1,131 +1,146 @@
 {
-  "tdiv": [
-    {
-      "width": "pw"
+  "tdiv": {
+    "width": "pw",
+    "textarea": {
+      "id": "voice_disable_warning",
+      "position": "relative",
+      "pos": "50%pw-50%w, 0",
+      "max-width": "50%pw",
+      "margin": "0, 0.03@scrn_tgt",
+      "text": "#options/voiceChat/disableWarning",
+      "overlayTextColor": "warning"
     },
-    {
-      "pos": "0.5pw-0.5w, 0.5ph-0.5h"
-    },
-    {
-      "max-height": "@bigOptionsHeight"
-    },
-    {
-      "flow": "vertical"
-    },
-    {
-      "optionsBoxRightScroll": {
-        "id": "voiceOptions"
-      }
-    },
-    {
-      "tdiv": [
-        {
-          "id": "ptt_buttons_block"
-        },
-        {
-          "width": "pw"
-        },
-        {
-          "flow": "vertical"
-        },
-        {
-          "display": "hide"
-        },
-        {
-          "tdiv": [
-            {
-              "width": "pw"
-            },
-            {
-              "td": {
-                "cellType": "left",
-                "width": "0.5pw",
-                "optiontext": {
-                  "text": "#options/ptt_shortcut"
+    "tdiv": [
+      {
+        "id": "voice_options_block"
+      },
+      {
+        "width": "pw"
+      },
+      {
+        "pos": "0.5pw-0.5w, 0.5ph-0.5h"
+      },
+      {
+        "max-height": "@bigOptionsHeight"
+      },
+      {
+        "flow": "vertical"
+      },
+      {
+        "optionsBoxRightScroll": {
+          "id": "voiceOptions"
+        }
+      },
+      {
+        "tdiv": [
+          {
+            "id": "ptt_buttons_block"
+          },
+          {
+            "width": "pw"
+          },
+          {
+            "flow": "vertical"
+          },
+          {
+            "display": "hide"
+          },
+          {
+            "tdiv": [
+              {
+                "width": "pw"
+              },
+              {
+                "td": {
+                  "cellType": "left",
+                  "width": "0.5pw",
+                  "optiontext": {
+                    "text": "#options/ptt_shortcut"
+                  }
                 }
-              }
-            },
-            {
-              "td": {
-                "cellType": "right",
-                "width": "0.5pw",
-                "padding-left": "@optPad",
-                "Button_text": {
-                  "_on_click": "onAssignVoiceButton",
-                  "tooltip": "#guiHints/ptt_shortcut",
-                  "textarea": {
-                    "id": "ptt_shortcut",
-                    "voiceShortcut": "yes",
-                    "pos": "0, 0.5ph-0.5h",
-                    "position": "relative",
-                    "min-width": "@buttonWidth-@buttonTextPadding",
-                    "input-transparent": "yes",
-                    "text-align": "center",
-                    "text": ""
+              },
+              {
+                "td": {
+                  "cellType": "right",
+                  "width": "0.5pw",
+                  "padding-left": "@optPad",
+                  "Button_text": {
+                    "_on_click": "onAssignVoiceButton",
+                    "tooltip": "#guiHints/ptt_shortcut",
+                    "textarea": {
+                      "id": "ptt_shortcut",
+                      "voiceShortcut": "yes",
+                      "pos": "0, 0.5ph-0.5h",
+                      "position": "relative",
+                      "min-width": "@buttonWidth-@buttonTextPadding",
+                      "input-transparent": "yes",
+                      "text-align": "center",
+                      "text": ""
+                    }
                   }
                 }
               }
-            }
-          ]
-        },
-        {
-          "tdiv": [
-            {
-              "width": "pw"
-            },
-            {
-              "padding-top": "0.005@sf"
-            },
-            {
-              "td": {
-                "cellType": "left",
-                "width": "0.5pw"
-              }
-            },
-            {
-              "td": {
-                "cellType": "right",
-                "width": "0.5pw",
-                "padding-left": "@optPad",
-                "Button_text": {
-                  "_on_click": "onClearVoiceButton",
-                  "text": "#mainmenu/btnReset",
-                  "tooltip": "#guiHints/ptt_shortcut_reset"
+            ]
+          },
+          {
+            "tdiv": [
+              {
+                "width": "pw"
+              },
+              {
+                "padding-top": "0.005@sf"
+              },
+              {
+                "td": {
+                  "cellType": "left",
+                  "width": "0.5pw"
+                }
+              },
+              {
+                "td": {
+                  "cellType": "right",
+                  "width": "0.5pw",
+                  "padding-left": "@optPad",
+                  "Button_text": {
+                    "_on_click": "onClearVoiceButton",
+                    "text": "#mainmenu/btnReset",
+                    "tooltip": "#guiHints/ptt_shortcut_reset"
+                  }
                 }
               }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "tdiv": [
-        {
-          "width": "pw"
-        },
-        {
-          "padding-top": "0.005@sf"
-        },
-        {
-          "td": {
-            "cellType": "left",
-            "width": "0.5pw"
+            ]
           }
-        },
-        {
-          "td": {
-            "cellType": "right",
-            "width": "0.5pw",
-            "padding-left": "@optPad",
-            "Button_text": {
-              "id": "joinEchoButton",
-              "text": "#options/joinEcho",
-              "tooltip": "#guiHints/joinEcho",
-              "_on_click": "onEchoTestButton"
+        ]
+      },
+      {
+        "tdiv": [
+          {
+            "width": "pw"
+          },
+          {
+            "padding-top": "0.005@sf"
+          },
+          {
+            "td": {
+              "cellType": "left",
+              "width": "0.5pw"
+            }
+          },
+          {
+            "td": {
+              "cellType": "right",
+              "width": "0.5pw",
+              "padding-left": "@optPad",
+              "Button_text": {
+                "id": "joinEchoButton",
+                "text": "#options/joinEcho",
+                "tooltip": "#guiHints/joinEcho",
+                "_on_click": "onEchoTestButton"
+              }
             }
           }
-        }
-      ]
-    }
-  ]
+        ]
+      }
+    ]
+  }
 }

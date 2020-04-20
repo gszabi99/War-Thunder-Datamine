@@ -670,17 +670,11 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
   function fillClanMemberList(membersData)
   {
     sortMembers(membersData)
-    local tblObj = scene.findObject("clan_members_list")
-    local markUp = ""
-    local rowIdx = 0
 
     local headerRow = [{text = "#clan/number", width = "0.1@sf"}]
     foreach(column in clan_member_list)
     {
-      if (::getTblValue("myClanOnly", column, false) && !isMyClan)
-        continue
-      local showByFeature = ::getTblValue("showByFeature", column, null)
-      if (showByFeature != null && !::has_feature(showByFeature))
+      if (!needShowColumn(column))
         continue
 
       local rowData = {
@@ -698,20 +692,31 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
         rowData.width <- "0.01@sf"
       headerRow.append(rowData)
     }
-    markUp = ::buildTableRowNoPad("row_header", headerRow, true,
+    local markUp = ::buildTableRowNoPad("row_header", headerRow, true,
       "inactive:t='yes'; commonTextColor:t='yes'; bigIcons:t='yes'; style:t='height:0.05sh;'; insetHeader = 'yes';")
 
+    local rowIdx = 0
+    local isOnlyPS4Players = ::has_feature("PS4SeparateLeaderboards")
+      && ::get_gui_option_in_mode(::USEROPT_PS4_ONLY_LEADERBOARD, ::OPTIONS_MODE_GAMEPLAY) == true
     foreach(member in membersData)
     {
+      if (isOnlyPS4Players)
+      {
+        if (member?.platform != null)
+        {
+          if (member.platform != ::TP_PS4)
+            continue
+        }
+        else if (!platformModule.isPlayerFromPS4(member.nick))
+          continue
+      }
+
       local rowName = "row_" + rowIdx
       local nick = ::g_string.stripTags(member.nick)
       local rowData = [{ text = (rowIdx + 1).tostring() }]
       foreach(column in clan_member_list)
       {
-        if ((::getTblValue("myClanOnly", column, false) && !isMyClan))
-          continue
-        local showByFeature = ::getTblValue("showByFeature", column, null)
-        if (showByFeature != null && !::has_feature(showByFeature))
+        if (!needShowColumn(column))
           continue
 
         rowData.append(getClanMembersCell(member, column))
@@ -721,6 +726,7 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
       rowIdx++
     }
 
+    local tblObj = scene.findObject("clan_members_list")
     guiScene.setUpdatesEnabled(false, false)
     guiScene.replaceContentFromText(tblObj, markUp, markUp.len(), this)
 
@@ -728,6 +734,17 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
     onSelect()
     updateMembersStatus()
     restoreFocus()
+  }
+
+  function needShowColumn(column)
+  {
+    if ((column?.myClanOnly ?? false) && !isMyClan)
+      return false
+
+    if (column?.showByFeature != null && !::has_feature(column?.showByFeature))
+      return false
+
+    return true
   }
 
   function getFieldNameByColumn(columnId)

@@ -120,3 +120,6 @@
 //----------------------------wop_1_97_1_X---------------------------------//
 ::have_per_vehicle_zoom_sens <- "OPTION_GUNNER_VIEW_ZOOM_SENS" in ::getroottable()
                              && "OPTION_ATGM_AIM_ZOOM_SENS_HELICOPTER" in ::getroottable()
+::apply_compatibilities({
+  TP_PS4 = 7
+})

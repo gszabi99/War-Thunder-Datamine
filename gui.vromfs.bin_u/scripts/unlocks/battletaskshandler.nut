@@ -209,7 +209,8 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
     updateWidgetsVisibility()
     if (finishedTaskIdx < 0 || finishedTaskIdx >= configsArrayByTabType[currentTabType].len())
       finishedTaskIdx = 0
-    listBoxObj.setValue(finishedTaskIdx)
+    if (finishedTaskIdx < listBoxObj.childrenCount())
+      listBoxObj.setValue(finishedTaskIdx)
 
     local obj = scene.findObject("warbond_shop_progress_block")
     local curWb = ::g_warbonds.getCurrentWarbond()

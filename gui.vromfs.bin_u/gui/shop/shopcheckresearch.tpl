@@ -27,6 +27,8 @@ root {
     include 'gui/shop/shopInclude.blk'
   }
 
-  include 'gui/gamercardTopPanel.blk'
-  include 'gui/gamercardBottomPanel.blk'
+  gamercard_div {
+    include 'gui/gamercardTopPanel.blk'
+    include 'gui/gamercardBottomPanel.blk'
+  }
 }

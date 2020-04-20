@@ -1,3 +1,5 @@
+local antiCheat = require("scripts/penitentiary/antiCheat.nut")
+
 ::hidden_userlogs <- [
   ::EULT_NEW_STREAK,
   ::EULT_SESSION_START,
@@ -475,6 +477,10 @@ class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
       if (!::isInMenu())
         return ::g_invites.showLeaveSessionFirstPopup()
 
+      if (!antiCheat.showMsgboxIfEacInactive({enableEAC = true}))
+        return
+
+      ::dagor.debug($"join to tournament battle with id {battleId}")
       ::SessionLobby.joinBattle(log.battleId)
     }
   }

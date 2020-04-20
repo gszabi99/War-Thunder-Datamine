@@ -180,6 +180,7 @@ local function newMessage(from, msg, privateMsg=false, myPrivate=false, overlayS
 
     joined = true
     hidden = customScene != null
+    concealed = @() rType.isConcealed(id)
 
     existOnlyInCustom = customScene != null
     isCustomScene = customScene != null
