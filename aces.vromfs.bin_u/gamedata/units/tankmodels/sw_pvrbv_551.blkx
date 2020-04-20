@@ -1052,6 +1052,23 @@
         "fuel_tank_l_03_dm": [],
         "fuel_tank_l_04_dm": [],
         "fuel_tank_l_05_dm": []
+      },
+      "fuel_tanks_exterior": {
+        "armorClass": "tank_structural_steel",
+        "hp": 250.0,
+        "armorThickness": 2.0,
+        "armorThrough": 12.0,
+        "fireProtectionHp": 15.0,
+        "fireParamsPreset": "fuel_exterior",
+        "fuel_tank_exterior_r_01_dm": [],
+        "fuel_tank_exterior_r_02_dm": [],
+        "fuel_tank_exterior_r_03_dm": [],
+        "fuel_tank_exterior_l_01_dm": [],
+        "fuel_tank_exterior_l_02_dm": [],
+        "fuel_tank_exterior_l_03_dm": [],
+        "fuel_tank_exterior_01_dm": [],
+        "fuel_tank_exterior_02_dm": [],
+        "fuel_tank_exterior_03_dm": []
       }
     }
   },
@@ -2236,6 +2253,8 @@
           "brokenBarrelAllowShoot": false,
           "speedYaw": 25.0,
           "speedPitch": 25.0,
+          "yawSpdLowBattery": 25.0,
+          "pitchSpdLowBattery": 25.0,
           "fireConeAngle": 1.0,
           "bullets": 8,
           "salvoAmount": 100.0,
@@ -2337,7 +2356,7 @@
         "animationMultiplier": -0.45,
         "height": 0.044,
         "width": 0.3,
-        "fricFrontal": [1.0,1.0]
+        "fricFrontal": [1.0,0.9]
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -2349,11 +2368,11 @@
         "minRPM": 500.0
       },
       "mechanics": {
-        "maxBrakeForce": 50000.0,
+        "maxBrakeForce": 40000.0,
         "driveGearRadius": 0.25,
         "mainGearRatio": 2.3,
         "sideGearRatio": 4.0,
-        "neutralGearRatio": 30.0,
+        "neutralGearRatio": 13.0,
         "gearRatios": [
           {
             "ratio": -8.0

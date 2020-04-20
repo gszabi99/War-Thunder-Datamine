@@ -400,8 +400,8 @@
         },
         "turret_03_side_dm": {
           "armorThickness": 10.0,
-          "createSecondaryShatters": false,
-          "armorClass": "aluminium"
+          "armorClass": "aluminium",
+          "createSecondaryShatters": false
         },
         "turret_02_side_dm": {
           "armorThickness": 45.0,
@@ -499,10 +499,6 @@
           "armorClass": "tank_structural_steel"
         },
         "turret_08_back_dm": {
-          "armorThickness": 4.0,
-          "armorClass": "tank_structural_steel"
-        },
-        "turret_08_bottom_dm": {
           "armorThickness": 4.0,
           "armorClass": "tank_structural_steel"
         },
@@ -735,7 +731,9 @@
         "armorThickness": 20.0,
         "hp": 300.0,
         "track_r_dm": [],
-        "track_l_dm": []
+        "track_l_dm": [],
+        "track_r_01_dm": [],
+        "track_l_01_dm": []
       },
       "crew": {
         "armorClass": "steel_tankman",
@@ -2808,7 +2806,7 @@
         "animationMultiplier": -0.62,
         "width": 0.61,
         "height": 0.06,
-        "fricFrontal": [1.0,1.0],
+        "fricFrontal": [1.2,1.0],
         "criticalHillAngle": 27.0,
         "hillClimbingDeclineFricKoef": 15.0
       },
@@ -2828,7 +2826,7 @@
         "driveGearRadius": 0.299,
         "mainGearRatio": 4.3,
         "sideGearRatio": 1.0,
-        "neutralGearRatio": 15.0,
+        "neutralGearRatio": 13.0,
         "manufacturer": "david_brown",
         "model": "tn54e",
         "type": "auto",
@@ -4005,8 +4003,8 @@
         "effects": {
           "nightVision": {
             "gunnerThermal": {
-              "resolution": [500,300],
-              "noiseFactor": 0.05
+              "resolution": [800,600],
+              "noiseFactor": 0.04
             },
             "commanderIr": {
               "resolution": [1600,1200],

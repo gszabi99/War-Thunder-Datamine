@@ -120,9 +120,6 @@
     "rearmTimeOnField": 120.0
   },
   {
-    "canReloadNonGuns": true
-  },
-  {
     "smokeScreenActivateTime": 5.0
   },
   {
@@ -1915,7 +1912,7 @@
           "sleeveMesh": "auto_cannon_cartridge_case",
           "openHatchTime": 0.0,
           "sleevesLifeTime": 5.0,
-          "sleeveImpulse": [1.0,-2.0,-1.0],
+          "sleeveImpulse": [0.0,0.0,-2.0],
           "linkSleeveToGun": true,
           "recoilOffset": 0.01,
           "maxAdditionalPitch": 0.0,
@@ -2063,7 +2060,7 @@
       "tracks": {
         "animationMultiplier": -0.6,
         "height": 0.055,
-        "fricFrontal": [1.2,1.2]
+        "fricFrontal": [1.2,1.0]
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -2075,7 +2072,7 @@
         "minRPM": 700.0
       },
       "mechanics": {
-        "maxBrakeForce": 200000.0,
+        "maxBrakeForce": 100000.0,
         "driveGearRadius": 0.23,
         "mainGearRatio": 1.0,
         "sideGearRatio": 4.071,

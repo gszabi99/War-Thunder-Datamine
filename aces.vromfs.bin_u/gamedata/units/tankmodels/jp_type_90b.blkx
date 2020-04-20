@@ -120,9 +120,6 @@
     "arcadePowerMult": 1.5
   },
   {
-    "arcadeTurnPowerMult": 1.1
-  },
-  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "RHA_tank_modern",
@@ -334,6 +331,10 @@
           "armorThickness": 3.0,
           "hp": 20.0
         },
+        "optic_turret_06_dm": {
+          "armorThickness": 3.0,
+          "hp": 20.0
+        },
         "optic_body_01_dm": {
           "armorThickness": 3.0,
           "hp": 20.0
@@ -460,7 +461,9 @@
         "armorThickness": 20.0,
         "hp": 300.0,
         "track_r_dm": [],
-        "track_l_dm": []
+        "track_l_dm": [],
+        "track_r_01_dm": [],
+        "track_l_01_dm": []
       },
       "crew": {
         "armorClass": "steel_tankman",
@@ -2140,15 +2143,13 @@
         "CenterOfGravity": [0.2,0.5,0.0],
         "AdvancedMass": false,
         "trackMass": 2500.0,
-        "CenterOfGravityClampY": [0.0,0.6],
-        "cls_body": 0.7,
-        "cls_turret": 0.3
+        "CenterOfGravityClampY": [0.0,0.6]
       },
       "tracks": {
         "animationMultiplier": 0.71,
         "width": 0.55,
         "height": 0.05,
-        "fricFrontal": [1.7,1.3],
+        "fricFrontal": [1.1,0.9],
         "criticalHillAngle": 27.0,
         "hillClimbingDeclineFricKoef": 15.0
       },

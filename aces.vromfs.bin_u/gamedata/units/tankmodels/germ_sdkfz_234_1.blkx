@@ -494,7 +494,7 @@
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "RHA_tank",
-      "hp": 1000.0,
+      "hp": 10000.0,
       "RHA_armor": {
         "body_front_dm": {
           "armorThickness": 30.0
@@ -596,7 +596,7 @@
       },
       "CHA_tank": {
         "armorClass": "CHA_tank",
-        "hp": 1000.0,
+        "hp": 10000.0,
         "gun_mask_dm": {
           "armorThickness": 8.0
         },
@@ -692,8 +692,8 @@
       },
       "gun": {
         "armorClass": "tank_barrel",
-        "hp": 150.0,
-        "armorThickness": 15.0,
+        "hp": 100.0,
+        "armorThickness": 10.0,
         "gun_barrel_dm": [],
         "gun_barrel_01_dm": {
           "armorThrough": 10.0,
@@ -1048,6 +1048,23 @@
         "fuel_tank_l_03_dm": [],
         "fuel_tank_l_04_dm": [],
         "fuel_tank_l_05_dm": []
+      },
+      "fuel_tanks_exterior": {
+        "armorClass": "tank_structural_steel",
+        "hp": 250.0,
+        "armorThickness": 2.0,
+        "armorThrough": 12.0,
+        "fireProtectionHp": 15.0,
+        "fireParamsPreset": "fuel_exterior",
+        "fuel_tank_exterior_r_01_dm": [],
+        "fuel_tank_exterior_r_02_dm": [],
+        "fuel_tank_exterior_r_03_dm": [],
+        "fuel_tank_exterior_l_01_dm": [],
+        "fuel_tank_exterior_l_02_dm": [],
+        "fuel_tank_exterior_l_03_dm": [],
+        "fuel_tank_exterior_01_dm": [],
+        "fuel_tank_exterior_02_dm": [],
+        "fuel_tank_exterior_03_dm": []
       }
     }
   },
@@ -2322,6 +2339,8 @@
           "breechDP": "cannon_breech_dm",
           "speedYaw": 15.0,
           "speedPitch": 25.0,
+          "yawSpdLowBattery": 15.0,
+          "pitchSpdLowBattery": 25.0,
           "bullets": 250,
           "fireConeAngle": 15.0,
           "ChainfireTime": 0.5,
@@ -3110,7 +3129,7 @@
   {
     "cockpit": {
       "headPos": [0.0,3.5,-7.0],
-      "headPosOnShooting": [0.45,3.1,0.25],
+      "headPosOnShooting": [0.3,3.1,-0.4],
       "zoomOutFov": 40.0,
       "zoomInFov": 21.0,
       "sightFov": 25.0,

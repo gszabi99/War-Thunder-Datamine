@@ -386,7 +386,9 @@
         "armorThickness": 20.0,
         "hp": 300.0,
         "track_r_dm": [],
-        "track_l_dm": []
+        "track_l_dm": [],
+        "track_r_01_dm": [],
+        "track_l_01_dm": []
       },
       "crew": {
         "armorClass": "steel_tankman",
@@ -715,6 +717,23 @@
         "fuel_tank_l_03_dm": [],
         "fuel_tank_l_04_dm": [],
         "fuel_tank_l_05_dm": []
+      },
+      "fuel_tanks_exterior": {
+        "armorClass": "tank_structural_steel",
+        "hp": 250.0,
+        "armorThickness": 2.0,
+        "armorThrough": 12.0,
+        "fireProtectionHp": 15.0,
+        "fireParamsPreset": "fuel_exterior",
+        "fuel_tank_exterior_r_01_dm": [],
+        "fuel_tank_exterior_r_02_dm": [],
+        "fuel_tank_exterior_r_03_dm": [],
+        "fuel_tank_exterior_l_01_dm": [],
+        "fuel_tank_exterior_l_02_dm": [],
+        "fuel_tank_exterior_l_03_dm": [],
+        "fuel_tank_exterior_01_dm": [],
+        "fuel_tank_exterior_02_dm": [],
+        "fuel_tank_exterior_03_dm": []
       }
     }
   },
@@ -1994,7 +2013,8 @@
         "animationMultiplier": -0.68,
         "height": 0.055,
         "width": 0.4,
-        "fricFrontal": [1.0,1.0],
+        "fricFrontal": [1.0,0.9],
+        "fricSideRot": [5.0,0.0,0.7,0.3],
         "criticalHillAngle": 27.0,
         "hillClimbingDeclineFricKoef": 15.0
       },
@@ -2012,7 +2032,7 @@
         "driveGearRadius": 0.34,
         "mainGearRatio": 3.96,
         "sideGearRatio": 2.74,
-        "neutralGearRatio": 15.0,
+        "neutralGearRatio": 12.0,
         "gearRatios": [
           {
             "ratio": -5.64

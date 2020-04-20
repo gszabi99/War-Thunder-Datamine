@@ -1018,6 +1018,23 @@
         "fuel_tank_l_03_dm": [],
         "fuel_tank_l_04_dm": [],
         "fuel_tank_l_05_dm": []
+      },
+      "fuel_tanks_exterior": {
+        "armorClass": "tank_structural_steel",
+        "hp": 250.0,
+        "armorThickness": 2.0,
+        "armorThrough": 12.0,
+        "fireProtectionHp": 15.0,
+        "fireParamsPreset": "fuel_exterior",
+        "fuel_tank_exterior_r_01_dm": [],
+        "fuel_tank_exterior_r_02_dm": [],
+        "fuel_tank_exterior_r_03_dm": [],
+        "fuel_tank_exterior_l_01_dm": [],
+        "fuel_tank_exterior_l_02_dm": [],
+        "fuel_tank_exterior_l_03_dm": [],
+        "fuel_tank_exterior_01_dm": [],
+        "fuel_tank_exterior_02_dm": [],
+        "fuel_tank_exterior_03_dm": []
       }
     }
   },
@@ -1031,6 +1048,11 @@
       "EngineNameAi": "engine_tank_ai_light",
       "TrackSoundNameAi": "tracks_ai_light",
       "turret_turn": "turret_rocket_turn"
+    }
+  },
+  {
+    "attachables": {
+      "ex_armor_01_dm": true
     }
   },
   {
@@ -2126,6 +2148,8 @@
         "brokenBarrelAllowShoot": false,
         "speedYaw": 18.0,
         "speedPitch": 8.0,
+        "yawSpdLowBattery": 18.0,
+        "pitchSpdLowBattery": 8.0,
         "fireConeAngle": 1.0,
         "bullets": 10,
         "salvoAmount": 100.0,
@@ -2178,7 +2202,7 @@
       "tracks": {
         "animationMultiplier": 0.6,
         "height": 0.055,
-        "fricFrontal": [1.0,1.0]
+        "fricFrontal": [1.0,0.9]
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
