@@ -1187,8 +1187,12 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function getAdditionalTabsArray()
   {
-    if (!::is_worldwar_enabled())
+    if (!::is_worldwar_enabled() || !::has_feature("WorldWarLeaderboards"))
       return []
+
+    if (::get_gui_option_in_mode(::USEROPT_PS4_ONLY_LEADERBOARD, ::OPTIONS_MODE_GAMEPLAY) == true
+      && !::has_feature("PS4SeparateWWLeaderboards"))
+        return []
 
     requestWwMembersList()
     return [{

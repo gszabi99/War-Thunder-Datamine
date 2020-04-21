@@ -3,10 +3,6 @@ SwitchBox {
   id:t='<<id>>'
   <</id>>
 
-  <<^enabled>>
-  enable:t='no'
-  <</enabled>>
-
   value:t='<<#value>>yes<</value>><<^value>>no<</value>>'
 
   textChecked:t='<<textChecked>><<^textChecked>><<?options/yes>><</textChecked>>'

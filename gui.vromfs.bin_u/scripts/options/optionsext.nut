@@ -290,8 +290,6 @@ local isWaitMeasureEvent = false
 
 ::create_option_switchbox <- function create_option_switchbox(config)
 {
-  if (!("enabled" in config))
-    config.enabled <- true
   return ::handyman.renderCached(("gui/options/optionSwitchbox"), config)
 }
 
@@ -3716,7 +3714,9 @@ local isWaitMeasureEvent = false
       descr.id = "ps4_crossplay"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
+      descr.cb = "onChangeCrossPlay"
       descr.value = crossplayModule.isCrossPlayEnabled()
+      descr.enabled <- !::checkIsInQueue()
       break
     case ::USEROPT_PS4_CROSSNETWORK_CHAT:
       descr.id = "ps4_crossnetwork_chat"
@@ -3758,6 +3758,7 @@ local isWaitMeasureEvent = false
       descr.id = "ps4_only_leaderboards"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
+      descr.enabled <- crossplayModule.isCrossPlayEnabled()
       defaultValue = false
       break
 

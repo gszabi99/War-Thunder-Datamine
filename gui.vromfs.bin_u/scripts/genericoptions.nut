@@ -489,6 +489,15 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
     checkVehicleModificationRow()
   }
 
+  function onEventQueueChangeState(p) {
+    local opt = findOptionInContainers(::USEROPT_PS4_CROSSPLAY)
+    if (opt == null)
+      return
+
+    enableOptionRow(opt, !::checkIsInQueue())
+    delayedRestoreFocus()
+  }
+
   function onTripleAerobaticsSmokeSelected(obj)
   {
     local option = get_option_by_id(obj?.id)
@@ -514,20 +523,35 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
       showOptionRow(option, show)
   }
 
-  function showOptionRow(option, show)
-  {
-    local obj = ::getTblValue(option.id, optionIdToObjCache)
-    if( ! ::checkObj(obj))
+  function getOptionObj(option) {
+    local obj = optionIdToObjCache?[option.id]
+    if (!::check_obj(obj))
     {
       obj = getObj(option.getTrId())
-      if ( ! ::checkObj(obj))
-        return false
+      if (!::check_obj(obj))
+        return null
       optionIdToObjCache[option.id] <- obj
     }
+
+    return obj
+  }
+
+  function showOptionRow(option, show) {
+    local obj = getOptionObj(option)
+    if (obj == null)
+      return false
 
     obj.show(show)
     obj.inactive = show && option.controlType != optionControlType.HEADER ? null : "yes"
     return true
+  }
+
+  function enableOptionRow(option, status) {
+    local obj = getOptionObj(option)
+    if (obj == null)
+      return
+
+    obj.enable(status)
   }
 
   function onNumPlayers(obj)
@@ -633,6 +657,22 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
       })
     } else
       setOptionValueByControlObj(obj)
+  }
+
+  function onChangeCrossPlay(obj) {
+    local option = get_option_by_id(obj?.id)
+    if (!option)
+      return
+
+    local val = obj.getValue()
+    if (val == false)
+    {
+      ::set_option(::USEROPT_PS4_ONLY_LEADERBOARD, true)
+      updateOption(::USEROPT_PS4_ONLY_LEADERBOARD)
+    }
+    local opt = findOptionInContainers(::USEROPT_PS4_ONLY_LEADERBOARD)
+    if (opt != null)
+      enableOptionRow(opt, val)
   }
 
   function onChangeCrossNetworkChat(obj)
