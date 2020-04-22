@@ -814,13 +814,13 @@
           {
             "button": {
               "deviceId": 3,
-              "buttonId": 16
+              "buttonId": 8
             }
           },
           {
             "button": {
               "deviceId": 3,
-              "buttonId": 17
+              "buttonId": 9
             }
           }
         ]
@@ -832,7 +832,7 @@
         "shortcut": {
           "button": {
             "deviceId": 3,
-            "buttonId": 9
+            "buttonId": 17
           }
         }
       }
@@ -843,7 +843,7 @@
         "shortcut": {
           "button": {
             "deviceId": 3,
-            "buttonId": 9
+            "buttonId": 17
           }
         }
       }
@@ -854,18 +854,7 @@
         "shortcut": {
           "button": {
             "deviceId": 3,
-            "buttonId": 0
-          }
-        }
-      }
-    },
-    {
-      "event": {
-        "name": "ID_TOGGLE_VIEW_SUIT",
-        "shortcut": {
-          "button": {
-            "deviceId": 3,
-            "buttonId": 15
+            "buttonId": 3
           }
         }
       }
@@ -876,7 +865,7 @@
         "shortcut": {
           "button": {
             "deviceId": 3,
-            "buttonId": 8
+            "buttonId": 16
           }
         }
       }
@@ -905,7 +894,7 @@
     },
     {
       "event": {
-        "name": "suit_roll_rangeMin",
+        "name": "suit_updown_rangeMin",
         "shortcut": {
           "button": {
             "deviceId": 3,
@@ -916,11 +905,33 @@
     },
     {
       "event": {
+        "name": "suit_updown_rangeMax",
+        "shortcut": {
+          "button": {
+            "deviceId": 3,
+            "buttonId": 0
+          }
+        }
+      }
+    },
+    {
+      "event": {
+        "name": "suit_roll_rangeMin",
+        "shortcut": {
+          "button": {
+            "deviceId": 3,
+            "buttonId": 8
+          }
+        }
+      }
+    },
+    {
+      "event": {
         "name": "suit_roll_rangeMax",
         "shortcut": {
           "button": {
             "deviceId": 3,
-            "buttonId": 3
+            "buttonId": 9
           }
         }
       }
@@ -2841,6 +2852,7 @@
       "USEROPT_ATGM_AIM_ZOOM_SENS_HELICOPTER": 10,
       "USEROPT_GUNNER_VIEW_SENSE": 80,
       "USEROPT_GUNNER_VIEW_ZOOM_SENS": 50,
+      "USEROPT_AUTOMATIC_TRANSMISSION_TANK": true,
       "helicopter_camx": {
         "axisId": 2
       },
@@ -2880,11 +2892,14 @@
         "axisId": 3,
         "relative": true
       },
+      "suit_forward": {
+        "axisId": 1
+      },
       "suit_strafe": {
         "axisId": 0
       },
       "suit_updown": {
-        "axisId": 1
+        "axisId": -1
       },
       "suit_roll": {
         "axisId": -1
@@ -3850,9 +3865,6 @@
           "axis": -1
         }
       ],
-      "suit_forward": {
-        "axisId": 6
-      },
       "hangar": []
     }
   }
