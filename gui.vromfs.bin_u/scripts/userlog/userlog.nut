@@ -471,7 +471,8 @@ class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     if (log.type == ::EULT_INVITE_TO_TOURNAMENT)    //!!!FIX ME need create eNum by userlog type and put action definition into it
     {
-      if (!log?.battleId)
+      local battleId = log?.battleId
+      if (battleId == null)
         return
 
       if (!::isInMenu())
