@@ -3,13 +3,25 @@ local screenInfo = ::require("scripts/options/screenInfo.nut")
 local defValue  = 1.0
 local values    = [1.0, 0.95, 0.9, 0.85]
 local items     = ["100%", "95%", "90%", "85%"]
+if (::is_platform_xboxone)
+{
+  //::xbox_get_safe_area() returns max of it's size is 0.89
+  // so remove all below of it to fit in.
+  for (local i = values.len() - 1; i >= 0; i--)
+  {
+    if (values[i] < ::xbox_get_safe_area())
+    {
+      values.remove(i)
+      items.remove(i)
+    }
+  }
+}
+
 
 local getFixedValue = function() //return -1 when not fixed
 {
   if (::is_platform_ps4)
     return ::ps4_get_safe_area()
-  if (::is_platform_xboxone)
-    return ::xbox_get_safe_area()
   return -1
 }
 

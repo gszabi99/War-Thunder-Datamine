@@ -8,8 +8,6 @@ local getFixedValue = function() //return -1 when not fixed
 {
   if (::is_platform_ps4)
     return ::ps4_get_safe_area()
-  if (::is_platform_xboxone)
-    return ::xbox_get_safe_area()
   if (::is_low_width_screen())
     return 1.0
   return -1

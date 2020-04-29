@@ -4,13 +4,10 @@
     "background-color": "@modalShadeColor",
     "frame": [
       {
-        "id": "wnd_frame"
-      },
-      {
         "class": "wndNav"
       },
       {
-        "width": "@srw"
+        "width": "1@maxWindowWidth"
       },
       {
         "height": "1@maxWindowHeight"
@@ -30,12 +27,25 @@
       {
         "frame_header": {
           "activeText": {
-            "id": "dialog_header",
             "caption": "yes",
             "text": "#save/controlPresets"
           },
+          "top_right_holder": {
+            "hasRightIndent": "yes",
+            "tdiv": {
+              "width": "1@subsetComboBoxWidth",
+              "position": "relative",
+              "top": "50%ph-50%h",
+              "margin-left": "1@listboxPad",
+              "tdiv": {
+                "id": "sorting_block_bg",
+                "width": "pw",
+                "background-color": "@rowHoverBackgroundColor",
+                "padding": "1@dp"
+              }
+            }
+          },
           "Button_close": {
-            "id": "btn_back",
             "on_click": "onCancel"
           }
         }
@@ -94,7 +104,7 @@
           "navLeft": {
             "Button_text": {
               "id": "btn_delete",
-              "btnName": "RB",
+              "btnName": "LB",
               "text": "#save/btnDelete",
               "on_click": "onBtnDelete",
               "ButtonImg": []
