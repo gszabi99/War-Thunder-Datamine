@@ -453,7 +453,7 @@ local function getWeaponItemViewParams(id, unit, item, params = {})
   local haveDiscount = discount > 0 && statusTbl.canShowDiscount && itemCostText != ""
   if (haveDiscount)
   {
-    if (!res.hideDiscount)
+    if (!res.isShowDiscount)
     {
       res.discountText = "".concat("-", discount, "%")
       res.discountTooltip = ::format(

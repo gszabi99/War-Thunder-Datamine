@@ -17342,6 +17342,69 @@
       "rollRate": 67.0
     }
   },
+  "swordfish_mk2": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "testFlight": "testFlight_britain_navy",
+    "releaseDate": "2020-05-09 00:00:00",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "bristol",
+        "model": "pegasus_30",
+        "mass": 460.0
+      },
+      "tanks_params": {
+        "protected": true
+      }
+    },
+    "tags": {
+      "ally": true,
+      "country_britain": true,
+      "type_bomber": true,
+      "type_torpedo": true,
+      "bomberview": true,
+      "mediterranean": true,
+      "western_front": true,
+      "not_in_dynamic_campaign": true,
+      "carrier_take_off": true,
+      "air": true
+    },
+    "years_active": {
+      "year1940": {
+        "britain": 1.0,
+        "malta": 1.0,
+        "sicily": 0.5
+      },
+      "year1941": {
+        "britain": 0.8,
+        "malta": 0.8,
+        "sicily": 0.8
+      },
+      "year1942": {
+        "britain": 0.4,
+        "malta": 0.4,
+        "sicily": 0.8
+      },
+      "year1943": {
+        "britain": 0.3,
+        "malta": 0.3,
+        "sicily": 0.5
+      }
+    },
+    "Shop": {
+      "maxAltitude": 5200.0,
+      "maxSpeed": 73.6,
+      "maxSpeedAlt": 1800.0,
+      "turnTime": 15.0,
+      "airfieldLen": 190.0,
+      "climbTime": 258.0,
+      "climbAlt": 1000.0,
+      "climbSpeed": 3.87,
+      "wingLoading": 61.65,
+      "thrustToWeightRatio": 0.195,
+      "rollRate": 27.0
+    }
+  },
   "tempest_mkv": {
     "type": "aircraft",
     "hangar_place": "aircraft",
@@ -53374,7 +53437,7 @@
     "type": "aircraft",
     "hangar_place": "aircraft",
     "testFlight": "testFlight_france",
-    "releaseDate": "2017-10-27 00:00:00",
+    "releaseDate": "2020-05-01 00:00:00",
     "info": {
       "engine1_dm": {
         "manufacturer": "arsenal",
@@ -55066,7 +55129,9 @@
     "tags": {
       "country_ussr": true,
       "tank": true,
-      "type_light_tank": true
+      "type_light_tank": true,
+      "scout": true,
+      "canRepairAnyAlly": true
     },
     "Shop": {
       "armorThicknessHull": [40.0,40.0,40.0],
@@ -55801,9 +55866,7 @@
     "tags": {
       "country_germany": true,
       "tank": true,
-      "type_light_tank": true,
-      "scout": true,
-      "canRepairAnyAlly": true
+      "type_light_tank": true
     },
     "Shop": {
       "armorThicknessHull": [30.0,8.0,10.0],
@@ -57033,7 +57096,9 @@
     "tags": {
       "country_ussr": true,
       "tank": true,
-      "type_light_tank": true
+      "type_light_tank": true,
+      "scout": true,
+      "canRepairAnyAlly": true
     },
     "Shop": {
       "armorThicknessHull": [55.0,45.0,30.0],
@@ -58007,6 +58072,21 @@
     "Shop": {
       "armorThicknessHull": [15.8,12.7,6.35],
       "armorThicknessTurret": [15.8,15.8,15.8]
+    }
+  },
+  "us_lvt_a_4": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ussr_tft",
+    "releaseDate": "2020-05-09 00:00:00",
+    "tags": {
+      "country_usa": true,
+      "tank": true,
+      "type_light_tank": true
+    },
+    "Shop": {
+      "armorThicknessHull": [12.7,6.35,6.35],
+      "armorThicknessTurret": [50.8,32.0,32.0]
     }
   },
   "us_lvt_a_1": {
@@ -59272,7 +59352,8 @@
       "country_sweden": true,
       "tank": true,
       "type_light_tank": true,
-      "scout": true
+      "scout": true,
+      "canRepairAnyAlly": true
     },
     "Shop": {
       "armorThicknessTurret": [20.0,20.0,20.0],
@@ -60358,7 +60439,9 @@
     "tags": {
       "country_britain": true,
       "tank": true,
-      "type_light_tank": true
+      "type_light_tank": true,
+      "scout": true,
+      "canRepairAnyAlly": true
     },
     "Shop": {
       "armorThicknessHull": [20.0,14.0,14.0],
@@ -60372,7 +60455,9 @@
     "tags": {
       "country_britain": true,
       "tank": true,
-      "type_light_tank": true
+      "type_light_tank": true,
+      "scout": true,
+      "canRepairAnyAlly": true
     },
     "Shop": {
       "armorThicknessHull": [20.0,14.0,14.0],
@@ -60736,26 +60821,6 @@
       "armorThicknessTurret": [51.0,51.0,51.0]
     }
   },
-  "uk_centaur_aa_mk_1": {
-    "type": "tank",
-    "hangar_place": "tank",
-    "testFlight": "testFlight_ussr_tft",
-    "tags": {
-      "country_britain": true,
-      "tank": true,
-      "type_spaa": true
-    }
-  },
-  "uk_centaur_aa_mk_2": {
-    "type": "tank",
-    "hangar_place": "tank",
-    "testFlight": "testFlight_ussr_tft",
-    "tags": {
-      "country_britain": true,
-      "tank": true,
-      "type_spaa": true
-    }
-  },
   "uk_crusader_aa_mk_1": {
     "type": "tank",
     "hangar_place": "tank",
@@ -60862,7 +60927,7 @@
     "type": "tank",
     "hangar_place": "tank",
     "testFlight": "testFlight_italy_tft",
-    "releaseDate": "2017-10-27 00:00:00",
+    "releaseDate": "2020-05-01 00:00:00",
     "tags": {
       "country_italy": true,
       "tank": true,
@@ -61045,7 +61110,9 @@
     "tags": {
       "country_france": true,
       "tank": true,
-      "type_light_tank": true
+      "type_light_tank": true,
+      "scout": true,
+      "canRepairAnyAlly": true
     },
     "Shop": {
       "armorThicknessHull": [25.0,25.0,25.0],
@@ -61325,7 +61392,9 @@
     "tags": {
       "country_france": true,
       "tank": true,
-      "type_light_tank": true
+      "type_light_tank": true,
+      "scout": true,
+      "canRepairAnyAlly": true
     },
     "Shop": {
       "armorThicknessHull": [20.0,14.0,14.0],
@@ -62514,7 +62583,7 @@
     "type": "tank",
     "hangar_place": "tank",
     "testFlight": "testFlight_japan_tft",
-    "releaseDate": "2017-09-14 00:00:00",
+    "releaseDate": "2020-05-01 00:00:00",
     "tags": {
       "country_japan": true,
       "tank": true,
@@ -63298,6 +63367,7 @@
     "type": "ship",
     "hangar_place": "ship",
     "testFlight": "testFlight_destroyer_germ_tfs",
+    "releaseDate": "2020-05-01 00:00:00",
     "tags": {
       "country_germany": true,
       "type_destroyer": true,
@@ -69303,6 +69373,26 @@
       "armorThicknessCitadel": [0.0,19.0,0.0],
       "maxSpeed": 18.0,
       "displacement": 255000.0
+    }
+  },
+  "ussr_g5_rct": {
+    "type": "ship",
+    "hangar_place": "ship",
+    "testFlight": "testFlight_ussr_tfs",
+    "releaseDate": "2020-05-09 00:00:00",
+    "tags": {
+      "country_ussr": true,
+      "type_torpedo_boat": true,
+      "type_boat": true,
+      "ship": true,
+      "boat": true,
+      "pacific": true,
+      "mediterran": true,
+      "westernfront": true
+    },
+    "Shop": {
+      "maxSpeed": 28.29,
+      "displacement": 16260.0
     }
   }
 }
