@@ -1,4 +1,5 @@
 local crossplayModule = require("scripts/social/crossplay.nut")
+local string = require("string")
 
 local MRoomsHandlers = class {
   [PERSISTENT_DATA_PARAMS] = [
@@ -243,9 +244,27 @@ local MRoomsHandlers = class {
       return
     }
 
-    ::connect_to_host(hostPub.ip, hostPub.port,
-                      roomPub.room_key, me.private.auth_key,
-                      getTblValue("sessionId", roomPub, roomId))
+    local serverUrls = [];
+    if ("serverURLs" in hostPub)
+      serverUrls = hostPub.serverURLs
+    else if ("ip" in hostPub && "port" in hostPub)
+    {
+      local ip = hostPub.ip
+      local ipStr = string.format("%u.%u.%u.%u:%d", ip&255, (ip>>8)&255, (ip>>16)&255, ip>>24, hostPub.port)
+      serverUrls.append(ipStr)
+    }
+
+    // for compatibility with old client: after all client will be updated delete check and call connect_to_host
+    if ("connect_to_host_list" in ::getroottable())
+      ::connect_to_host_list(serverUrls,
+                        roomPub.room_key, me.private.auth_key,
+                        getTblValue("sessionId", roomPub, roomId))
+    else
+      ::connect_to_host("ip" in hostPub ? hostPub.ip : 0,
+                        "port" in hostPub ? hostPub.port : 0,
+                        roomPub.room_key, me.private.auth_key,
+                        getTblValue("sessionId", roomPub, roomId))
+
   }
 
   // notifications

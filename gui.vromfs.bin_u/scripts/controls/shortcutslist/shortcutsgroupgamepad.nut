@@ -9,7 +9,7 @@ return [
   {
     id = "ID_COMMON_OPERATIONS_HEADER"
     type = CONTROL_TYPE.SECTION
-    showFunc = @() ::is_xinput_device()
+    showFunc = @() ::have_xinput_device()
   }
   {
     id = "ID_COMMON_SWAP_GAMEPAD_STICKS_WITHOUT_MODIFIERS"
@@ -18,7 +18,7 @@ return [
       ctrlGroups.ONLY_COMMON | ctrlGroups.HANGAR | ctrlGroups.REPLAY,
       controlsOperations.Flags.WITHOUT_MODIFIERS
     )
-    showFunc = @() ::is_xinput_device()
+    showFunc = @() ::have_xinput_device()
   }
   {
     id = "ID_COMMON_SWAP_GAMEPAD_STICKS"
@@ -26,6 +26,6 @@ return [
     onClick = @() controlsOperations.swapGamepadSticks(
       ctrlGroups.ONLY_COMMON | ctrlGroups.HANGAR | ctrlGroups.REPLAY
     )
-    showFunc = @() ::is_xinput_device()
+    showFunc = @() ::have_xinput_device()
   }
 ]

@@ -13,7 +13,7 @@ return [
   {
     id = "ID_TANK_OPERATIONS_HEADER"
     type = CONTROL_TYPE.SECTION
-    showFunc = @() ::is_xinput_device()
+    showFunc = @() ::have_xinput_device()
   }
   {
     id = "ID_TANK_SWAP_GAMEPAD_STICKS_WITHOUT_MODIFIERS"
@@ -22,7 +22,7 @@ return [
       ctrlGroups.TANK,
       controlsOperations.Flags.WITHOUT_MODIFIERS
     )
-    showFunc = @() ::is_xinput_device()
+    showFunc = @() ::have_xinput_device()
   }
   {
     id = "ID_TANK_SWAP_GAMEPAD_STICKS"
@@ -30,7 +30,7 @@ return [
     onClick = @() controlsOperations.swapGamepadSticks(
       ctrlGroups.TANK
     )
-    showFunc = @() ::is_xinput_device()
+    showFunc = @() ::have_xinput_device()
   }
 //-------------------------------------------------------
   {
@@ -268,6 +268,13 @@ return [
     id = "ID_TARGETING_HOLD_GM"
     checkGroup = ctrlGroups.TANK
     checkAssign = false
+  }
+  {
+    id = "gm_target_camera"
+    type = CONTROL_TYPE.AXIS
+    checkAssign = false
+    condition = @() ::is_ps4_or_xbox
+    hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
   }
   {
     id = "gm_zoom"

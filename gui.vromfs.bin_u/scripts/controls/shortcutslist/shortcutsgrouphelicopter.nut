@@ -14,7 +14,7 @@ return [
   {
     id = "ID_HELICOPTER_OPERATIONS_HEADER"
     type = CONTROL_TYPE.SECTION
-    showFunc = @() ::is_xinput_device()
+    showFunc = @() ::have_xinput_device()
   }
   {
     id = "ID_HELICOPTER_SWAP_GAMEPAD_STICKS_WITHOUT_MODIFIERS"
@@ -23,13 +23,13 @@ return [
       ctrlGroups.HELICOPTER,
       controlsOperations.Flags.WITHOUT_MODIFIERS
     )
-    showFunc = @() ::is_xinput_device()
+    showFunc = @() ::have_xinput_device()
   }
   {
     id = "ID_HELICOPTER_SWAP_GAMEPAD_STICKS"
     type = CONTROL_TYPE.BUTTON,
     onClick = @() controlsOperations.swapGamepadSticks( ctrlGroups.HELICOPTER )
-    showFunc = @() ::is_xinput_device()
+    showFunc = @() ::have_xinput_device()
   }
 //-------------------------------------------------------
   {

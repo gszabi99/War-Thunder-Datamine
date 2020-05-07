@@ -14,7 +14,7 @@ return [
   {
     id = "ID_SUBMARINE_OPERATIONS_HEADER"
     type = CONTROL_TYPE.SECTION
-    showFunc = @() ::is_xinput_device()
+    showFunc = @() ::have_xinput_device()
   }
   {
     id = "ID_SUBMARINE_SWAP_GAMEPAD_STICKS_WITHOUT_MODIFIERS"
@@ -23,7 +23,7 @@ return [
       ctrlGroups.SUBMARINE,
       controlsOperations.Flags.WITHOUT_MODIFIERS
     )
-    showFunc = @() ::is_xinput_device()
+    showFunc = @() ::have_xinput_device()
   }
   {
     id = "ID_SUBMARINE_SWAP_GAMEPAD_STICKS"
@@ -31,7 +31,7 @@ return [
     onClick = @() controlsOperations.swapGamepadSticks(
       ctrlGroups.SUBMARINE
     )
-    showFunc = @() ::is_xinput_device()
+    showFunc = @() ::have_xinput_device()
   }
 //-------------------------------------------------------
   {

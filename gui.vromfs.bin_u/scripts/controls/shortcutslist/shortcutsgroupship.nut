@@ -12,7 +12,7 @@ return [
   {
     id = "ID_SHIP_OPERATIONS_HEADER"
     type = CONTROL_TYPE.SECTION
-    showFunc = @() ::is_xinput_device()
+    showFunc = @() ::have_xinput_device()
   }
   {
     id = "ID_SHIP_SWAP_GAMEPAD_STICKS_WITHOUT_MODIFIERS"
@@ -21,13 +21,13 @@ return [
       ctrlGroups.SHIP,
       controlsOperations.Flags.WITHOUT_MODIFIERS
     )
-    showFunc = @() ::is_xinput_device()
+    showFunc = @() ::have_xinput_device()
   }
   {
     id = "ID_SHIP_SWAP_GAMEPAD_STICKS"
     type = CONTROL_TYPE.BUTTON,
     onClick = @() controlsOperations.swapGamepadSticks(ctrlGroups.SHIP)
-    showFunc = @() ::is_xinput_device()
+    showFunc = @() ::have_xinput_device()
   }
 //-------------------------------------------------------
   {
