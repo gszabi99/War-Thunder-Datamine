@@ -14,6 +14,7 @@ local airHud = require("airHud.nut")
 local tankHud = require("tankHud.nut")
 local mfdHud = require("mfd.nut")
 local radarComponent = require("radarComponent.nut")
+local changelog = require("changelog/changelog.ui.nut")
 
 local widgetsMap = {
   [DargWidgets.HUD] = function() {
@@ -57,6 +58,11 @@ local widgetsMap = {
     size = flex()
     halign = ALIGN_CENTER
     children = scoreboard
+  },
+
+  [DargWidgets.CHANGE_LOG] = @() {
+    size = flex()
+    children = changelog
   }
 }
 

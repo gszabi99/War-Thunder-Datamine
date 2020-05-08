@@ -927,8 +927,28 @@ const AFTERBURNER_CHAMBER = 3
       case "depth_charge":
       case "aa_gun":
 
-        weaponPartName = weaponPartName || partName
-        local weaponInfoBlk = getWeaponByXrayPartName(weaponPartName)
+        local weaponInfoBlk = null
+        local weaponTrigger = ::getTblValue("weapon_trigger", params)
+        local triggerParam = "trigger"
+        if (weaponTrigger)
+        {
+          local weaponList = getUnitWeaponList()
+          foreach(weapon in weaponList)
+          {
+            if (triggerParam in weapon && weapon[triggerParam] == weaponTrigger)
+            {
+              weaponInfoBlk = weapon
+              break
+            }
+          }
+        }
+
+        if (!weaponInfoBlk)
+        {
+          weaponPartName = weaponPartName || partName
+          weaponInfoBlk = getWeaponByXrayPartName(weaponPartName)
+        }
+
         if( ! weaponInfoBlk)
           break
 

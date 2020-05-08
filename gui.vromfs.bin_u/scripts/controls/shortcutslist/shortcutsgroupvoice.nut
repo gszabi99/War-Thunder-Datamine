@@ -1,4 +1,4 @@
-local { getFavoriteVoiceMessagesVariants } = require("scripts/voiceMessages.nut")
+local { getFavoriteVoiceMessagesVariants } = require("scripts/wheelmenu/voiceMessages.nut")
 
 local MAX_VOICE_MESSAGE_BUTTONS = 8
 

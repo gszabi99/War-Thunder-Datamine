@@ -1,3 +1,4 @@
+local statsd = require("statsd")
 local XboxShopPurchasableItem = class
 {
   defaultIconStyle = "default_chest_debug"
@@ -100,7 +101,7 @@ local XboxShopPurchasableItem = class
   getSeenId = @() id.tostring()
   canBeUnseen = @() isBought
   showDetails = function(metricPlaceCall = "ingame_store") {
-    ::statsd_counter($"{metricPlaceCall}.open_product")
+    statsd.send_counter($"sq.{metricPlaceCall}.open_product", 1)
     ::add_big_query_record("open_product",
       ::save_to_json({
         itemId = id

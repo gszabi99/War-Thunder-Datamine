@@ -2,6 +2,10 @@
   id:t='<<id>>'
   css-hier-invalidate:t='yes'
 
+  <<#noMargin>>
+  noMargin:t='yes'
+  <</noMargin>>
+
   <<#isHidden>>
   display:t='hide'
   enable:t='no'

@@ -1,6 +1,7 @@
 local RB_GM_TYPE = require("scripts/gameModes/rbGmTypes.nut")
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { openUrl } = require("scripts/onlineShop/url.nut")
 
 ::featured_modes <- [
   {
@@ -30,7 +31,7 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
     modeId = "tss_featured_game_mode"
     text = @() ::loc("mainmenu/btnTournamentsTSS")
     textDescription = @() null
-    startFunction = @() ::g_url.open(::loc("url/tss_all_tournaments"), false, false)
+    startFunction = @() openUrl(::loc("url/tss_all_tournaments"), false, false)
     isWide = false
     image = @() "#ui/images/game_modes_tiles/tss_" + (isWide ? "wide" : "thin") + ".jpg?P1"
     videoPreview = null

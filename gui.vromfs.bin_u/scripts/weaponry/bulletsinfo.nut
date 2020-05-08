@@ -6,6 +6,8 @@ local { AMMO,
 
 local bulletIcons = {}
 
+local bulletAspectRatio = {}
+
 local bulletsFeaturesImg = [
   { id = "damage", values = [] }
   { id = "armor",  values = [] }
@@ -27,10 +29,11 @@ local BULLETS_LIST_PARAMS = {
   isForcedAvailable     = false
 }
 
-local getBulletIcons = @() bulletIcons
 local getBulletsFeaturesImg = @() bulletsFeaturesImg
 
 const BULLETS_CALIBER_QUANTITY = 4
+const MAX_BULLETS_ON_ICON = 4
+const DEFAULT_BULLET_IMG_ASPECT_RATIO = 0.2
 
 local function getModificationBulletsGroup(modifName)
 {
@@ -57,6 +60,33 @@ local function getModificationBulletsGroup(modifName)
     return modifName.slice(0, modifName.len()-8)
 
   return ""
+}
+
+local function isBullets(item)
+{
+  return (("isDefaultForGroup" in item) && (item.isDefaultForGroup >= 0))
+    || (item.type == weaponsItem.modification && getModificationBulletsGroup(item.name) != "")
+}
+
+local function isWeaponTierAvailable(unit, tierNum)
+{
+  local isAvailable = ::is_tier_available(unit.name, tierNum)
+
+  if (!isAvailable && tierNum > 1) //make force check
+  {
+    local reqMods = unit.needBuyToOpenNextInTier[tierNum-2]
+    foreach(mod in unit.modifications)
+      if(mod.tier == (tierNum-1) &&
+         ::isModResearched(unit, mod) &&
+         getModificationBulletsGroup(mod.name) == "" &&
+         !::wp_get_modification_cost_gold(unit.name, mod.name)
+        )
+        reqMods--
+
+    isAvailable = reqMods <= 0
+  }
+
+  return isAvailable
 }
 
 local function isFakeBullet(modName)
@@ -229,7 +259,7 @@ local function getBulletsSetData(air, modifName, noModList = null)
     local bulletsModBlk = wBlk?[getModificationBulletsEffect(modifName)]
     local bulletsBlk = bulletsModBlk ? bulletsModBlk : wBlk
     local bulletsList = bulletsBlk % "bullet"
-    local weaponType = WEAPON_TYPE.GUN
+    local weaponType = WEAPON_TYPE.GUNS
     if (!bulletsList.len())
     {
       bulletsList = bulletsBlk % "rocket"
@@ -237,17 +267,17 @@ local function getBulletsSetData(air, modifName, noModList = null)
       {
         local rocket = bulletsList[0]
         if (rocket?.smokeShell == true)
-          weaponType = WEAPON_TYPE.SMOKE_SCREEN
+          weaponType = WEAPON_TYPE.SMOKE
         else if (rocket?.smokeShell == false)
            weaponType = WEAPON_TYPE.FLARES
         else if (rocket?.operated || rocket?.guidanceType)
           weaponType = (rocket?.bulletType == "atgm_tank") ? WEAPON_TYPE.AGM : WEAPON_TYPE.AAM
         else
-          weaponType = WEAPON_TYPE.ROCKET
+          weaponType = WEAPON_TYPE.ROCKETS
       }
     }
 
-    local isBulletBelt = weaponType == WEAPON_TYPE.GUN &&
+    local isBulletBelt = weaponType == WEAPON_TYPE.GUNS &&
       (wBlk?.isBulletBelt != false ||
         ((wBlk?.bulletsCartridge ?? 0) > 1 && !wBlk?.useSingleIconForBullet))
 
@@ -472,11 +502,8 @@ local function getBulletsInfoForPrimaryGuns(air)
           continue
 
         wpList[weapon.blk].catridge = wBlk?.bulletsCartridge || 1
-        local totalBullets = wpList[weapon.blk].total
-        wpList[weapon.blk].total = (wpList[weapon.blk].total /
+        wpList[weapon.blk].total = ::ceil(wpList[weapon.blk].total * 1.0 /
           wpList[weapon.blk].catridge).tointeger()
-        if (wpList[weapon.blk].total * wpList[weapon.blk].catridge < totalBullets)
-          wpList[weapon.blk].total += 1
 
         wpList[weapon.blk].groupIndex = getWeaponModIdx(wBlk, modsList)
         wpList[weapon.blk].forcedMaxBulletsInRespawn = wBlk?.forcedMaxBulletsInRespawn ?? false
@@ -603,7 +630,7 @@ local function getModificationInfo(air, modifName, isShortDesc=false, limitedNam
   //bullets sets
   local set = getBulletsSetData(air, modifName)
 
-  if (isShortDesc && !mod && set?.weaponType == WEAPON_TYPE.GUN && !air.unitType.canUseSeveralBulletsForGun)
+  if (isShortDesc && !mod && set?.weaponType == WEAPON_TYPE.GUNS && !air.unitType.canUseSeveralBulletsForGun)
   {
     res.desc = ::loc("modification/default_bullets")
     return res
@@ -632,7 +659,7 @@ local function getModificationInfo(air, modifName, isShortDesc=false, limitedNam
     if (shortDescr == "")
       shortDescr = ::loc(locId + "/name")
     if (set?.bulletNames?[0]
-      && (set.weaponType != WEAPON_TYPE.GUN || !set.isBulletBelt ||
+      && (set.weaponType != WEAPON_TYPE.GUNS || !set.isBulletBelt ||
       (::isCaliberCannon(caliber) && air.unitType.canUseSeveralBulletsForGun)))
     {
       locId = set.bulletNames[0]
@@ -723,7 +750,7 @@ local function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS)
   local descr = {
     values = []
     isTurretBelt = false
-    weaponType = WEAPON_TYPE.GUN
+    weaponType = WEAPON_TYPE.GUNS
     caliber = 0
     duplicate = false //tank gun bullets can be duplicate to change bullets during the battle
 
@@ -985,10 +1012,164 @@ local function initBulletIcons(blk = null)
     foreach(key, value in ib)
       bulletIcons[key] <- value
 
+  local ar = blk?.bullet_icon_aspect_ratio
+  if (ar)
+    foreach(key, value in ar)
+      bulletAspectRatio[key] <- value
+
   local bf = blk?.bullets_features_icons
   if (bf)
     foreach(item in bulletsFeaturesImg)
       item.values = bf % item.id
+}
+
+local function getBulletsIconItem(unit, item)
+{
+  if (isBullets(item))
+    return item
+
+  if (item.type == weaponsItem.modification)
+  {
+    ::updateRelationModificationList(unit, item.name)
+    if ("relationModification" in item && item.relationModification.len() == 1)
+      return ::getModificationByName(unit, item.relationModification[0])
+  }
+  return null
+}
+
+local function getBulletImage(bulletsSet, bulletIndex, needFullPath = true)
+{
+  local imgId = bulletsSet.bullets[bulletIndex]
+  if (bulletsSet?.customIconsMap[imgId] != null)
+    imgId = bulletsSet.customIconsMap[imgId]
+  if (imgId.indexof("@") != null)
+    imgId = imgId.slice(0, imgId.indexof("@"))
+  local defaultImgId = ::isCaliberCannon(1000 * (bulletsSet?.caliber ?? 0.0))
+    ? "default_shell" : "default_ball"
+  local textureId = bulletIcons?[imgId] ?? bulletIcons?[defaultImgId]
+  return needFullPath ? $"#ui/gameuiskin#{textureId}" : textureId
+}
+
+local function getBulletsIconView(bulletsSet, tooltipId = null, tooltipDelayed = false)
+{
+  local view = {}
+  if (!bulletsSet || !("bullets" in bulletsSet))
+    return view
+
+  initBulletIcons()
+  view.bullets <- (@(bulletsSet, tooltipId, tooltipDelayed) function () {
+      local res = []
+
+      local length = bulletsSet.bullets.len()
+      local isBelt = bulletsSet?.isBulletBelt ?? true
+
+      local ratio = 1.0
+      local count = 1
+      if (isBelt)
+      {
+        ratio = bulletAspectRatio?[getBulletImage(bulletsSet, 0, false)]
+          ?? bulletAspectRatio?["default"]
+          ?? DEFAULT_BULLET_IMG_ASPECT_RATIO
+        local maxAmountInView = ::min(MAX_BULLETS_ON_ICON, (1.0 / ratio).tointeger())
+        if (bulletsSet.catridge)
+          maxAmountInView = ::min(bulletsSet.catridge, maxAmountInView)
+        count = length * ::max(1, ::floor(maxAmountInView / length))
+      }
+
+      local totalWidth = 100.0
+      local itemWidth = totalWidth * ratio
+      local itemHeight = totalWidth
+      local space = totalWidth - itemWidth * count
+      local separator = (space > 0)
+        ? (space / (count + 1))
+        : (count == 1 ? space : (space / (count - 1)))
+      local start = (space > 0) ? separator : 0.0
+
+      for (local i = 0; i < count; i++)
+      {
+        local item = {
+          image           = getBulletImage(bulletsSet, i % length)
+          posx            = (start + (itemWidth + separator) * i) + "%pw"
+          sizex           = itemWidth + "%pw"
+          sizey           = itemHeight + "%pw"
+          useTooltip      = tooltipId != null
+          tooltipId       = tooltipId
+          tooltipDelayed  = tooltipId != null && tooltipDelayed
+        }
+        res.append(item)
+      }
+
+      return res
+    })(bulletsSet, tooltipId, tooltipDelayed)
+
+  local bIconParam = bulletsSet?.bIconParam
+  local isBelt = bulletsSet?.isBulletBelt ?? true
+  if (bIconParam && !isBelt)
+  {
+    local addIco = []
+    foreach(item in getBulletsFeaturesImg())
+    {
+      local idx = bIconParam?[item.id] ?? -1
+      if (idx in item.values)
+        addIco.append({ img = item.values[idx] })
+    }
+    if (addIco.len())
+      view.addIco <- addIco
+  }
+  return view
+}
+
+local function getBulletsIconData(bulletsSet)
+{
+  if (!bulletsSet)
+    return ""
+  return ::handyman.renderCached(("gui/weaponry/bullets"), getBulletsIconView(bulletsSet))
+}
+
+local function addBulletsParamToDesc(descTbl, unit, item)
+{
+  if (!unit.unitType.canUseSeveralBulletsForGun && !::has_feature("BulletParamsForAirs"))
+    return
+  local bIcoItem = getBulletsIconItem(unit, item)
+  if (!bIcoItem)
+    return
+
+  local modName = bIcoItem.name
+  local bulletsSet = getBulletsSetData(unit, modName)
+  if (!bulletsSet)
+    return
+
+  local bIconParam = bulletsSet?.bIconParam
+  local isBelt = bulletsSet?.isBulletBelt ?? true
+  if (bIconParam && !isBelt)
+  {
+    descTbl.bulletActions <- []
+    local setClone = clone bulletsSet
+    foreach(p in ["armor", "damage"])
+    {
+      local value = bIconParam?[p] ?? -1
+      if (value < 0)
+        continue
+
+      setClone.bIconParam = { [p] = value }
+      descTbl.bulletActions.append({
+        text = ::loc("bulletAction/" + p)
+        visual = getBulletsIconData(setClone)
+      })
+    }
+  }
+  else
+    descTbl.bulletActions <- [{ visual = getBulletsIconData(bulletsSet) }]
+
+  local searchName = getBulletsSearchName(unit, modName)
+  local useDefaultBullet = searchName != modName
+  local bullet_parameters = ::calculate_tank_bullet_parameters(unit.name,
+    useDefaultBullet && "weaponBlkName" in bulletsSet ?
+      bulletsSet.weaponBlkName :
+      getModificationBulletsEffect(searchName),
+    useDefaultBullet, false)
+
+  ::weaponVisual.buildPiercingData(unit, bullet_parameters, descTbl, bulletsSet, true)
 }
 
 return {
@@ -1011,6 +1192,10 @@ return {
   initBulletIcons                       = initBulletIcons
   getModificationInfo                   = getModificationInfo
   getModificationName                   = getModificationName
-  getBulletIcons                        = getBulletIcons
   getBulletsFeaturesImg                 = getBulletsFeaturesImg
+  isBullets                             = isBullets
+  isWeaponTierAvailable                 = isWeaponTierAvailable
+  getBulletsIconItem                    = getBulletsIconItem
+  addBulletsParamToDesc                 = addBulletsParamToDesc
+  getBulletsIconView                    = getBulletsIconView
 }

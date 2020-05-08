@@ -4,6 +4,7 @@ local decorLayoutPresets = require("scripts/customization/decorLayoutPresetsWnd.
 local unitActions = require("scripts/unit/unitActions.nut")
 local unitStatus = require("scripts/unit/unitStatus.nut")
 local contentPreview = require("scripts/customization/contentPreview.nut")
+local { openUrl } = require("scripts/onlineShop/url.nut")
 
 local { canUseIngameShop, getShopItemsTable } = ::is_platform_ps4? require("scripts/onlineShop/ps4ShopData.nut")
   : ::is_platform_xboxone? require("scripts/onlineShop/xboxShopData.nut")
@@ -2185,7 +2186,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
   function onInfo()
   {
     if (::has_feature("WikiUnitInfo"))
-      ::open_url(::format(::loc("url/wiki_objects"), unit.name), false, false, "customization_wnd")
+      openUrl(::format(::loc("url/wiki_objects"), unit.name), false, false, "customization_wnd")
     else
       ::showInfoMsgBox(::colorize("activeTextColor", ::getUnitName(unit, false)) + "\n" + ::loc("profile/wiki_link"))
   }

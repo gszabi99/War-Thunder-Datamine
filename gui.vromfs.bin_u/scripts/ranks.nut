@@ -297,19 +297,15 @@ if (!("EUCT_TOTAL" in ::getroottable()))
 ::checkAllowed <- function checkAllowed(tbl)
 {
   if (::disable_network())
-    return true;
+    return true
 
-  local silent = (("silent" in tbl) && tbl.silent)
+  local silent = tbl?.silent ?? false
 
   if ("silentFeature" in tbl)
     if (!::has_feature(tbl.silentFeature))
     {
       if (!silent)
-      {
-        local handler = this
-        msgBox("in_demo_only", ::loc("msgbox/notAvailbleInDemo"),
-               [["ok", (@(handler) function() {if ("stopSearch" in handler) handler.stopSearch = false;})(handler) ]], "ok")
-      }
+        ::showInfoMsgBox(::loc("msgbox/notAvailbleInDemo"), "in_demo_only_feature")
       return false
     }
 
@@ -317,50 +313,44 @@ if (!("EUCT_TOTAL" in ::getroottable()))
     if (::get_profile_info().rank < tbl.minLevel)
     {
       if (!silent)
-      {
-
-        local handler = this
-        msgBox("in_demo_only", ::format(::loc("charServer/needRankFmt"), tbl.minLevel),
-               [["ok", (@(handler) function() {if ("stopSearch" in handler) handler.stopSearch = false;})(handler) ]], "ok")
-      }
+        ::showInfoMsgBox(::format(::loc("charServer/needRankFmt"), tbl.minLevel), "in_demo_only_minlevel")
       return false
     }
 
   if (("minRank" in tbl) && ("rankCountry" in tbl))
-    if (!haveCountryRankAir("country_"+tbl.rankCountry, tbl.minRank))
+  {
+    local country = $"country_{tbl.rankCountry}"
+    if (!::haveCountryRankAir(country, tbl.minRank))
     {
       if (!silent)
       {
-        local country = "country_"+tbl.rankCountry
-        local handler = this
-        msgBox("in_demo_only", ::loc("charServer/needAirRankFmt", { tier = tbl.minRank, country = ::loc(country) }),
-               [["ok", (@(handler) function() {if ("stopSearch" in handler) handler.stopSearch = false;})(handler) ]], "ok")
+        ::showInfoMsgBox(
+          ::loc("charServer/needAirRankFmt", {
+              tier = tbl.minRank,
+              country = ::loc(country)
+          }),
+          "in_demo_only_minrank")
       }
-      return false;
+      return false
     }
+  }
 
   if ("unlock" in tbl)
-  {
     if (!::is_unlocked_scripted(::UNLOCKABLE_SINGLEMISSION, tbl.unlock) && !::is_debug_mode_enabled)
     {
       if (!silent)
       {
-        local after = function() {
-          if (::session_list_handler)
-            if ("stopSearch" in ::session_list_handler)
-              ::session_list_handler.stopSearch = false;
-        }
-        ::show_sm_unlock_description(tbl.unlock, after)
+        local msg = ::loc("charServer/needUnlock") + "\n\n" + ::get_unlock_description(tbl.unlock, 1)
+        ::showInfoMsgBox(msg, "in_demo_only_singlemission_unlock")
       }
-      return false;
+      return false
     }
-  }
 
   //check entitlement - this is always last
   if ("entitlement" in tbl)
   {
     if (::has_entitlement(tbl.entitlement))
-      return true;
+      return true
     else if (!silent && (tbl.entitlement == ::shop_get_premium_account_ent_name()))
     {
       local guiScene = ::get_gui_scene()

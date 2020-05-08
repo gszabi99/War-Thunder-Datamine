@@ -28,16 +28,16 @@ icon[hudTankDebuff=yes][state=ok] {
   color-factor:80;
 }
 
-debuffs > text[hudTankDebuff=yes] {
+debuffs > debuffsTextNest > text[hudTankDebuff=yes] {
   textShade:yes;
 }
 
-debuffs > text[hudTankDebuff=yes][state=off] {
+debuffs > debuffsTextNest > text[hudTankDebuff=yes][state=off] {
   color:@crewStateOkColor;
   color-factor:180;
 }
 
-debuffs > text[hudTankDebuff=yes][state=on] {
+debuffs > debuffsTextNest > text[hudTankDebuff=yes][state=on] {
   color:@white;
   color-factor:255;
 }

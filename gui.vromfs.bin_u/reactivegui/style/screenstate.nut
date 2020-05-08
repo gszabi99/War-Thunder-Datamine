@@ -11,6 +11,9 @@ local mode = persist("mode",
 local safeAreaHud = persist("safeAreaHud",
   @() Watched(::cross_call.getHudSafearea() ?? [ 1.0, 1.0 ]))
 
+local safeAreaMenu = persist("safeAreaMenu",
+  @() Watched(::cross_call.getMenuSafearea() ?? [ 1.0, 1.0 ]))
+
 local recalculateHudSize = function(safeArea) {
   local borders = [
     ::max((sh((1.0 - safeArea[1]) *100) / 2).tointeger(), debugRowHeight),
@@ -23,7 +26,8 @@ local recalculateHudSize = function(safeArea) {
   }
 }
 
-local safeAreaSizeHud = frp.map(safeAreaHud, @(val) recalculateHudSize(val))
+local safeAreaSizeHud = ::Computed(@() recalculateHudSize(safeAreaHud.value))
+local safeAreaSizeMenu = ::Computed(@() recalculateHudSize(safeAreaMenu.value))
 
 local function rw(percent) {
   return (percent / 100.0 * safeAreaSizeHud.value.size[0]).tointeger()
@@ -34,14 +38,18 @@ frp.subscribe([resolution, mode], function(new_val){
     function() {
       ::gui_scene.clearTimer(callee())
       safeAreaHud(::cross_call.getHudSafearea() ?? [ 1.0, 1.0 ])
-      safeAreaSizeHud.trigger()
+      safeAreaMenu(::cross_call.getMenuSafearea() ?? [ 1.0, 1.0 ])
   })
 })
 
-::interop.updateHudSafeArea <- function (config = {}) {
+::interop.updateSafeArea <- function (config = {}) {
   local newSafeAreaHud = config?.safeAreaHud
-  if(newSafeAreaHud)
+  if(newSafeAreaHud != null)
     safeAreaHud.update(newSafeAreaHud)
+
+  local newSafeAreaMenu = config?.safeAreaMenu
+  if(newSafeAreaMenu != null)
+    safeAreaMenu.update(newSafeAreaMenu)
 }
 
 ::interop.updateScreenOptions <- function (config = {}) {
@@ -57,5 +65,6 @@ frp.subscribe([resolution, mode], function(new_val){
 
 return {
   safeAreaSizeHud = safeAreaSizeHud
+  safeAreaSizeMenu = safeAreaSizeMenu
   rw = rw
 }

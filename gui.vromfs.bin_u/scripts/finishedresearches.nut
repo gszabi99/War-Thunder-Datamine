@@ -1,6 +1,8 @@
 local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 local { getModificationName } = require("scripts/weaponry/bulletsInfo.nut")
 local { AMMO, getAmmoMaxAmount } = require("scripts/weaponry/ammoInfo.nut")
+local { canResearchItem, getItemCost } = require("scripts/weaponry/itemInfo.nut")
+local { updateModItem, createModItem } = require("scripts/weaponry/weaponryVisual.nut")
 
 ::researched_items_table <- null
 ::abandoned_researched_items_for_session <- []
@@ -365,10 +367,10 @@ class ::gui_handlers.showAllResearchedItems extends ::gui_handlers.BaseGuiHandle
     local modObj = obj.findObject(id)
     local params = { canShowResearch = canShowResearch }
     if (!modObj)
-      modObj = ::weaponVisual.createItem(id, unit, mod, weaponsItem.modification, obj,
+      modObj = createModItem(id, unit, mod, weaponsItem.modification, obj,
         this, params)
     else
-      ::weaponVisual.updateItem(unit, mod, modObj, false, this, params)
+      updateModItem(unit, mod, modObj, false, this, params)
   }
 
   function updateButtons()
@@ -800,7 +802,7 @@ class ::gui_handlers.showAllResearchedItems extends ::gui_handlers.BaseGuiHandle
   function buyModification(unit, modName, silent = true)
   {
     local mod = ::getModificationByName(unit, modName)
-    local price = ::weaponVisual.getItemCost(unit, mod)
+    local price = getItemCost(unit, mod)
     if (!::check_balance_msgBox(price))
       return false
 
@@ -1233,9 +1235,9 @@ class ::gui_handlers.nextResearchChoice extends ::gui_handlers.showAllResearched
     local id = "mod_" + mod.name
     local modObj = finishedModObj.findObject(id)
     if (!modObj)
-      modObj = ::weaponVisual.createItem(id, unit, mod, weaponsItem.modification, finishedModObj, this)
+      modObj = createModItem(id, unit, mod, weaponsItem.modification, finishedModObj, this)
     else
-      ::weaponVisual.updateItem(unit, mod, modObj, false, this)
+      updateModItem(unit, mod, modObj, false, this)
   }
 
   function onRepair()
@@ -1271,7 +1273,7 @@ class ::gui_handlers.nextResearchChoice extends ::gui_handlers.showAllResearched
     foreach(idx, block in unit.modifications)
     {
       block["type"] <- weaponsItem.modification
-      if (::weaponVisual.canResearchItem(unit, block, false))
+      if (canResearchItem(unit, block, false))
       {
         researchesArray.append(block)
         blankCell.append("td{id:t='" + block.name + "';}")
@@ -1294,7 +1296,7 @@ class ::gui_handlers.nextResearchChoice extends ::gui_handlers.showAllResearched
       if (!::checkObj(obj))
         continue
 
-      ::weaponVisual.createItem("mod_" + mod.name, unit, mod,
+      createModItem("mod_" + mod.name, unit, mod,
         weaponsItem.modification, obj, this, {
           canShowResearch = false,
           flushExp = flushExpNum

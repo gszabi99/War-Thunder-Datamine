@@ -1,3 +1,5 @@
+local { getConfigValueById } = require("scripts/hud/hudTankStates.nut")
+
 ::g_hud_tank_debuffs <- {
   scene    = null
   guiScene = null
@@ -27,7 +29,8 @@
       return
 
     guiScene = scene.getScene()
-    local blk = ::handyman.renderCached("gui/hud/HudTankDebuffs", {})
+    local blk = ::handyman.renderCached("gui/hud/HudTankDebuffs",
+      { stabilizerValue = getConfigValueById("stabilizer") })
     guiScene.replaceContentFromText(scene, blk, blk.len(), this)
 
     ::g_hud_event_manager.subscribe("TankDebafs:Fire",

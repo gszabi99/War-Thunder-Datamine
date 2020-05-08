@@ -22,13 +22,6 @@ local tabGroups = [
     ]
   }
   {
-    title = "#controls/help/suit_simpleControls"
-    list = [
-      helpTypes.IMAGE_SUIT
-      helpTypes.KEYBOARD_SUIT
-    ]
-  }
-  {
     title = "#controls/help/ship_simpleControls"
     list = [
       helpTypes.IMAGE_SHIP
@@ -67,7 +60,7 @@ local tabGroups = [
   }
 ]
 
-::getTabs <- function getTabs(contentSet)
+local function getTabs(contentSet)
 {
   local res = []
   foreach (group in tabGroups)
@@ -79,18 +72,13 @@ local tabGroups = [
   return res
 }
 
-::getPrefferableType <- function getPrefferableType(contentSet)
+local function getPrefferableType(contentSet)
 {
   if (contentSet == HELP_CONTENT_SET.LOADING)
     return helpTypes.MISSION_OBJECTIVES
 
   local unit = ::get_player_cur_unit()
-  if (::is_suit_mission())
-    unit = ::getAircraftByName("assault_combat_space_suit")
-
-  local unitTag = ::is_submarine(unit) ? "submarine"
-    : unit.isSuit() ? "suit"
-    : null
+  local unitTag = ::is_submarine(unit) ? "submarine" : null
 
   foreach (pattern in [
     CONTROL_HELP_PATTERN.HOTAS4,

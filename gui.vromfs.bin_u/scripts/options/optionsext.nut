@@ -827,13 +827,6 @@ local isWaitMeasureEvent = false
 
 
 
-    case ::USEROPT_INVERTY_SUIT:
-      descr.id = "invertY_suit"
-      descr.controlType = optionControlType.CHECKBOX
-      descr.controlName <- "switchbox"
-      descr.value = ::get_option_invertY(AxisInvertOption.INVERT_SUIT_Y) != 0
-      break
-
     case ::USEROPT_INVERTY_SUBMARINE:
       descr.id = "invertY_submarine"
       descr.controlType = optionControlType.CHECKBOX
@@ -3940,9 +3933,6 @@ local isWaitMeasureEvent = false
 
 
 
-    case ::USEROPT_INVERTY_SUIT:
-      ::set_option_invertY(AxisInvertOption.INVERT_SUIT_Y, value ? 1 : 0)
-      break
     case ::USEROPT_INVERTY_SUBMARINE:
       ::set_option_invertY(AxisInvertOption.INVERT_SUBMARINE_Y, value ? 1 : 0)
       break

@@ -1,16 +1,32 @@
 local modsTree = ::require("scripts/weaponry/modsTree.nut")
 local tutorialModule = ::require("scripts/user/newbieTutorialDisplay.nut")
-local { getBulletsListHeader } = require("scripts/weaponry/weaponryVisual.nut")
-local { getBulletsList,
+local weaponryPresetsModal = require("scripts/weaponry/weaponryPresetsModal.nut")
+local { getItemAmount,
+        getItemCost,
+        canBeResearched,
+        getByCurBundle,
+        getItemStatusTbl,
+        isCanBeDisabled,
+        isModInResearch,
+        getBundleCurItem,
+        canResearchItem } = require("scripts/weaponry/itemInfo.nut")
+local { getBulletsListHeader,
+        updateModItem,
+        createModItem,
+        createModBundle } = require("scripts/weaponry/weaponryVisual.nut")
+local { isBullets,
+        getBulletsList,
         setUnitLastBullets,
         getBulletGroupIndex,
         getBulletsItemsList,
         getModificationName,
+        isWeaponTierAvailable,
         getLastFakeBulletsIndex,
         isBulletsGroupActiveByMod,
         getModificationBulletsGroup } = require("scripts/weaponry/bulletsInfo.nut")
 local { AMMO, getAmmoCost } = require("scripts/weaponry/ammoInfo.nut")
-local { getLastWeapon,
+local { WEAPON_TAG,
+        getLastWeapon,
         setLastWeapon,
         getSecondaryWeaponsList } = require("scripts/weaponry/weaponryInfo.nut")
 local tutorAction = require("scripts/tutorials/tutorialActions.nut")
@@ -200,7 +216,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     {
       local finishedResearch = ::getTblValue(::researchedModForCheck, researchBlock, "")
       foreach(item in items)
-        if (::weaponVisual.isModInResearch(air, item))
+        if (isModInResearch(air, item))
         {
           modIdx = item.guiPosIdx
           break
@@ -291,7 +307,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     local finItem = items[finIdx]
     local balance = ::Cost()
     balance.setFromTbl(::get_balance())
-    if (::weaponVisual.getItemAmount(air, finItem) < 1 && ::weaponVisual.getItemCost(air, finItem) <= balance)
+    if (getItemAmount(air, finItem) < 1 && getItemCost(air, finItem) <= balance)
     {
       local finModName = getModificationName(air, items[finIdx].name, true)
       steps.insert(0,
@@ -443,7 +459,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (isItemTypeUnit(iType))
       return createUnitItemObj(id, item, holderObj, posX, posY)
 
-    return ::weaponVisual.createItem(id, air, item, iType, holderObj, this, { posX = posX, posY = posY })
+    return createModItem(id, air, item, iType, holderObj, this, { posX = posX, posY = posY })
   }
 
   function wrapUnitToItem(unit)
@@ -473,15 +489,16 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
   function createItemForBundle(id, unit, item, iType, holderObj, handler, params = {})
   {
     id = addItemToList(item, iType)
-    return ::weaponVisual.createItem(id, unit, item, iType, holderObj, handler, params)
+    return createModItem(id, unit, item, iType, holderObj, handler, params)
   }
 
-  function createBundle(itemsList, itemsType, subType, holderObj, posX, posY)
+  function createBundle(itemsList, itemsType, subType, holderObj, posX, posY, needDropDown = true)
   {
-    ::weaponVisual.createBundle("bundle_" + items.len(), air, itemsList, itemsType, holderObj, this,
+    createModBundle("bundle_" + items.len(), air, itemsList, itemsType, holderObj, this,
       { posX = posX, posY = posY, subType = subType,
         maxItemsInColumn = 5, createItemFunc = createItemForBundle
         cellSizeObj = scene.findObject("cell_size")
+        needDropDown = needDropDown
       })
   }
 
@@ -502,16 +519,23 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     local isVisualDisabled = false
     local visualItem = item
+    local isMenuBtn = false
     if (item.type == weaponsItem.bundle)
-      visualItem = ::weaponVisual.getBundleCurItem(air, item) || visualItem
-    if (::weaponVisual.isBullets(visualItem))
+    {
+      visualItem = getBundleCurItem(air, item) || visualItem
+      isMenuBtn = item.itemsType == weaponsItem.weapon &&
+        (air.isAir() || air.isHelicopter()) && ::has_feature("ShowWeapPresetsMenu")
+    }
+    if (isBullets(visualItem))
       isVisualDisabled = !isBulletsGroupActiveByMod(air, visualItem)
 
-    ::weaponVisual.updateItem(air, item, itemObj, true, this, {canShowResearch = availableFlushExp == 0 && setResearchManually,
-                                                               flushExp = availableFlushExp,
-                                                               researchMode = researchMode
-                                                               visualDisabled = isVisualDisabled
-                                                              })
+    updateModItem(air, item, itemObj, true, this,{
+      canShowResearch = availableFlushExp == 0 && setResearchManually,
+      flushExp = availableFlushExp,
+      researchMode = researchMode
+      visualDisabled = isVisualDisabled
+      isMenuBtn = isMenuBtn
+    })
   }
 
   function updateBuyAllButton()
@@ -574,7 +598,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     local showResearchButton = researchMode
                        && getAmmoCost(air, item.name, AMMO.MODIFICATION).gold == 0
                        && !::isModClassPremium(item)
-                       && ::weaponVisual.canBeResearched(air, item, false)
+                       && canBeResearched(air, item, false)
                        && availableFlushExp > 0
 
     showSceneBtn("btn_nav_research", showResearchButton)
@@ -592,7 +616,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     showSceneBtn("btn_buy_mod", showPurchaseButton)
     if (showPurchaseButton)
-      ::placePriceTextToButton(scene, "btn_buy_mod", ::loc("mainmenu/btnBuy"), ::weaponVisual.getItemCost(air, item).wp)
+      ::placePriceTextToButton(scene, "btn_buy_mod", ::loc("mainmenu/btnBuy"), getItemCost(air, item).wp)
 
     local textObj = scene.findObject("no_action_text")
     if (::checkObj(textObj))
@@ -743,6 +767,9 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     local treeSize = modsTree.getModsTreeSize(air)
+    if (treeSize.guiPosX > 6)
+      ::dagor.logerr($"Modifications: {air.name} too much modifications in a row")
+
     mainModsObj.size = format("%.1f@modCellWidth, %.1f@modCellHeight", treeSize.guiPosX, treeSize.tier + treeOffsetY)
     if (!(treeSize.tier > 0))
       return
@@ -765,7 +792,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
         ::dagor.assertf(false, ::format("No modification data for unit '%s' in tier %s.", air.name, i.tostring()))
         break
       }
-      local unlocked = ::weaponVisual.isTierAvailable(air, i)
+      local unlocked = isWeaponTierAvailable(air, i)
       local owned = (tiersArray[i-1].notResearched == 0)
       scene.findObject(tierIdPrefix + i).type = owned? "owned" : unlocked ? "unlocked" : "locked"
 
@@ -889,7 +916,8 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (::isAirHaveSecondaryWeapons(air))
     {
       //add secondary weapons bundle
-      createBundle(getSecondaryWeaponsList(air), weaponsItem.weapon, 0, mainModsObj, offsetX, offsetY)
+      createBundle(getSecondaryWeaponsList(air), weaponsItem.weapon, 0, mainModsObj,
+        offsetX, offsetY, (!air.isAir() && !air.isHelicopter()) || !::has_feature("ShowWeapPresetsMenu")) //no dropdown for air and helicopter
       columnsList.append(getWeaponsColumnData(::g_weaponry_types.WEAPON.getHeader(air)))
       offsetX++
     }
@@ -933,7 +961,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function canBomb(checkPurchase)
   {
-    return ::isAirHaveAnyWeaponsTags(air, ["bomb", "rocket"], checkPurchase)
+    return ::isAirHaveAnyWeaponsTags(air, [WEAPON_TAG.ROCKET, WEAPON_TAG.BOMB], checkPurchase)
   }
 
   function getItemBundle(searchItem)
@@ -1143,6 +1171,10 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     {
       if (stickBundle && ::check_obj(obj))
         onDropDown(obj.getParent())
+
+      if ((air.isAir() || air.isHelicopter()) && items[idx].itemsType == weaponsItem.weapon
+        && ::has_feature("ShowWeapPresetsMenu"))
+        weaponryPresetsModal.open({ unit = air }) //open modal menu for air and helicopter only
       return
     }
     doItemAction(items[idx], fullAction)
@@ -1150,7 +1182,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function doItemAction(item, fullAction = true)
   {
-    local amount = ::weaponVisual.getItemAmount(air, item)
+    local amount = getItemAmount(air, item)
     local onlyBuy = !fullAction && !getItemBundle(item)
 
     if (checkResearchOperation(item))
@@ -1223,7 +1255,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function checkResearchOperation(item)
   {
-    if (::weaponVisual.canResearchItem(air, item, availableFlushExp <= 0 && setResearchManually))
+    if (canResearchItem(air, item, availableFlushExp <= 0 && setResearchManually))
     {
       local afterFuncDone = (@(item) function() {
         setModificatonOnResearch(item, function()
@@ -1323,7 +1355,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
     else if (item.type == weaponsItem.modification)
     {
-      if (::weaponVisual.getItemAmount(air, item) && ::is_mod_upgradeable(item.name))
+      if (getItemAmount(air, item) && ::is_mod_upgradeable(item.name))
       {
         ::gui_handlers.ModUpgradeApplyWnd.open(air, item, getItemObj(idx))
         return
@@ -1342,7 +1374,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     local open = false
 
     if (item.type==weaponsItem.bundle)
-      return ::weaponVisual.getByCurBundle(air, item, @(a, it) onBuy(it.guiPosIdx, buyAmount))
+      return getByCurBundle(air, item, @(a, it) onBuy(it.guiPosIdx, buyAmount))
 
     if (item.type==weaponsItem.weapon)
     {
@@ -1413,7 +1445,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
   function switchMod(item, checkCanDisable = true)
   {
     local equipped = ::shop_is_modification_enabled(airName, item.name)
-    if (checkCanDisable && equipped && !::weaponVisual.isCanBeDisabled(item))
+    if (checkCanDisable && equipped && !isCanBeDisabled(item))
       return
 
     ::play_gui_sound(!equipped ? "check" : "uncheck")
@@ -1460,7 +1492,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     if (needSave)
     {
-      taskId = save_online_single_job(321)
+      taskId = save_online_single_job(SAVE_WEAPON_JOB_DIGIT)
       if (taskId >= 0 && func)
       {
         local cb = ::u.isFunction(func) ? ::Callback(func, this) : func
@@ -1617,8 +1649,8 @@ class ::gui_handlers.MultiplePurchase extends ::gui_handlers.BaseGuiHandlerWT
       return
     }
 
-    itemCost = ::weaponVisual.getItemCost(unit, item)
-    local statusTbl = ::weaponVisual.getItemStatusTbl(unit, item)
+    itemCost = getItemCost(unit, item)
+    local statusTbl = getItemStatusTbl(unit, item)
     minValue = statusTbl.amount
     maxValue = statusTbl.maxAmount
     minUserValue = statusTbl.amount + 1
@@ -1627,7 +1659,7 @@ class ::gui_handlers.MultiplePurchase extends ::gui_handlers.BaseGuiHandlerWT
     scene.findObject("item_name_header").setValue(::weaponVisual.getItemName(unit, item))
 
     updateSlider()
-    ::weaponVisual.createItem("mod_" + item.name, unit, item, item.type, scene.findObject("icon"), this)
+    createModItem("mod_" + item.name, unit, item, item.type, scene.findObject("icon"), this)
 
     local discountType = item.type == weaponsItem.spare? "spare" : (item.type == weaponsItem.weapon)? "weapons" : "mods"
     ::showAirDiscount(scene.findObject("multPurch_discount"), unit.name, discountType, item.name, true)

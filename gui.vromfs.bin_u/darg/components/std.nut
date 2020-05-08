@@ -26,9 +26,7 @@ local Color = ::Color
 */
 
 local textArea = require("textArea.nut")
-local text = require("text.nut").text
-local stext = require("text.nut").stext
-local dtext = require("text.nut").dtext
+local {stext,dtext,text} = require("text.nut")
 local contextMenu = require("contextMenu.nut")
 local textInput = require("textInput.nut")
 local scrollbar = require("scrollbar.nut")

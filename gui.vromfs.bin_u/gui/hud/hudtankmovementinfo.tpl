@@ -1,9 +1,9 @@
 <<#tankStates>>
 tdiv {
   id:t='<<stateId>>'
-  behaviour:t='bhvHudTankStates'
+  behaviour:t='bhvUpdateByWatched'
   css-hier-invalidate:t='yes'
-  <<^isVisibleState>>display:t='hide'<</isVisibleState>>
+  value:t='<<stateValue>>'
   text {
     text:t='<<stateName>>'
     css-hier-invalidate:t='yes'
@@ -12,7 +12,7 @@ tdiv {
     id:t='state_value'
     margin-left:t='0.005@shHud'
     css-hier-invalidate:t='yes'
-    text:t='<<stateValue>>'
+    text:t=''
   }
 }
 <</tankStates>>

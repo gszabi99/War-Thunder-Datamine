@@ -1,3 +1,5 @@
+local { WEAPON_TAG } = require("scripts/weaponry/weaponryInfo.nut")
+
 ::g_tutorials_manager <- {
   actions = []
 
@@ -51,7 +53,7 @@
 
     if (::check_aircraft_tags(unit.tags, ["bomberview"]))
       return ::gui_start_checkTutorial("bomber")
-    else if (::isAirHaveAnyWeaponsTags(unit, ["bomb", "rocket"]))
+    else if (::isAirHaveAnyWeaponsTags(unit, [WEAPON_TAG.BOMB, WEAPON_TAG.ROCKET]))
       return ::gui_start_checkTutorial("assaulter")
 
     return false

@@ -1,5 +1,3 @@
-local loc = ("loc" in ::getroottable()) ? ::loc : @(text) text
-
 local function text(val, params={}, addchildren = null) { //warning disable: -ident-hides-ident
   if (val == null)
     return null
@@ -17,17 +15,16 @@ local function text(val, params={}, addchildren = null) { //warning disable: -id
       children.append(addchildren)
   }
 
-  local localize = params?.localize ?? true
   local watch = params?.watch
   local watchedtext = false
   local txt = ""
   local rendObj = params?.rendObj ?? ROBJ_DTEXT
   ::assert(rendObj == ROBJ_DTEXT || rendObj == ROBJ_STEXT, "rendObj for text should be ROBJ_STEXT or ROBJ_DTEXT")
   if (::type(val) == "string")  {
-    txt = (localize) ? loc(val) : val
+    txt = val
   }
   if (::type(val) == "instance" && val instanceof ::Watched) {
-    txt = (localize) ? loc(val.value) : val.value
+    txt = val.value
     watchedtext = true
   }
   local ret = {

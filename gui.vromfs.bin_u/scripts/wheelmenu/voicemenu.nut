@@ -1,4 +1,4 @@
-local { getVoiceMessageNames, getCategoryLoc } = require("scripts/voiceMessages.nut")
+local { getVoiceMessageNames, getCategoryLoc } = require("scripts/wheelmenu/voiceMessages.nut")
 
 ::gui_start_voicemenu <- function gui_start_voicemenu(config)
 {

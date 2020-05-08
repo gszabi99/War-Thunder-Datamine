@@ -1,4 +1,5 @@
 local { animBgLoad } = require("scripts/loading/animBg.nut")
+local showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
 
 ::gui_start_loading <- function gui_start_loading(isMissionLoading = false)
 {
@@ -17,7 +18,7 @@ local { animBgLoad } = require("scripts/loading/animBg.nut")
   else
     ::handlersManager.loadHandler(::gui_handlers.LoadingHandler)
 
-  ::show_title_logo(true)
+  showTitleLogo()
 }
 
 class ::gui_handlers.LoadingHandler extends ::BaseGuiHandler

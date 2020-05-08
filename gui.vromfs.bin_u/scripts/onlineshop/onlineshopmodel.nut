@@ -1,9 +1,12 @@
-local { openIngameStore } = ::is_platform_ps4? require("scripts/onlineShop/ps4Shop.nut")
+local { getShopItem = @(id) null,
+        openIngameStore = @(...) false
+} = ::is_platform_ps4? require("scripts/onlineShop/ps4Shop.nut")
   : ::is_platform_xboxone? require("scripts/onlineShop/xboxShop.nut")
-    : { openIngameStore = @(...) false }
+  : null
 
 local callbackWhenAppWillActive = require("scripts/clientState/callbackWhenAppWillActive.nut")
 local { getBundleId } = require("scripts/onlineShop/onlineBundles.nut")
+local { openUrl } = require("scripts/onlineShop/url.nut")
 /*
  * Search in price.blk:
  * Search parapm is a table of request fields
@@ -49,7 +52,7 @@ OnlineShopModel.showGoods <- function showGoods(searchRequest, requestOrigin)
       foreach (goodsName in searchResult)
       {
         local bundleId = getBundleId(goodsName)
-        if (bundleId != "")
+        if (bundleId != "" && getShopItem(bundleId) != null)
         {
           if (::is_ps4_or_xbox)
             openIngameStore({ curItemId = bundleId, openedFrom = requestOrigin })
@@ -378,7 +381,7 @@ OnlineShopModel.getCustomPurchaseUrl <- function getCustomPurchaseUrl(chapter)
 
 OnlineShopModel.openShopUrl <- function openShopUrl(baseUrl, isAlreadyAuthenticated = false)
 {
-  ::open_url(baseUrl, false, isAlreadyAuthenticated, "shop_window")
+  openUrl(baseUrl, false, isAlreadyAuthenticated, "shop_window")
   startEntitlementsUpdater()
 }
 

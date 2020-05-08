@@ -307,8 +307,6 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
 
   function startTestFlight()
   {
-    ::test_flight <- true
-
     local misName = getTestFlightMisName(unit.testFlight)
     local misBlk = ::get_mission_meta_info(misName)
     if (!misBlk)
@@ -452,6 +450,12 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
       ::set_unit_option(updUnit.name, ::USEROPT_BULLETS0 + bulIdx, modName)
       ::set_gui_option(::USEROPT_BULLETS0 + bulIdx, modName)
       ::set_gui_option(::USEROPT_BULLET_COUNT0 + bulIdx, bulData.amountToSet)
+    }
+    for (local bulIdx = bulletSetsQuantity; bulIdx < ::BULLETS_SETS_QUANTITY; bulIdx++)
+    {
+      ::set_unit_option(updUnit.name, ::USEROPT_BULLETS0 + bulIdx, "")
+      ::set_gui_option(::USEROPT_BULLETS0 + bulIdx, "")
+      ::set_gui_option(::USEROPT_BULLET_COUNT0 + bulIdx, 0)
     }
   }
 

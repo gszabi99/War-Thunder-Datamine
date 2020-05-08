@@ -12,13 +12,13 @@ local scoresTable = @() {
   flow = FLOW_VERTICAL
   watch = orderState.scoresTable
   children = orderState.scoresTable.value.map(@(item) {
-    size = [flex(), ::scrn_tgt(2.24)]
+    size = [flex(), ::scrn_tgt(0.0224)]
     flow = FLOW_HORIZONTAL
     valign = ALIGN_BOTTOM
     children = [
       {
         rendObj = ROBJ_IMAGE
-        size = [::scrn_tgt(2.24), ::scrn_tgt(2.24)]
+        size = [::scrn_tgt(0.0224), ::scrn_tgt(0.0224)]
         image = pilotIcon
       }
       @(){
@@ -52,7 +52,7 @@ local updateFunction = function () {
 return function() {
   return {
     flow = FLOW_VERTICAL
-    size = [::scrn_tgt(40), SIZE_TO_CONTENT]
+    size = [::scrn_tgt(0.4), SIZE_TO_CONTENT]
     watch = orderState.showOrder
     isHidden = !orderState.showOrder.value
     onAttach = function (elem) {

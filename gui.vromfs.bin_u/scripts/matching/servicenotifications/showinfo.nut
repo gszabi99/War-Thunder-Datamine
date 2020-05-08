@@ -1,4 +1,5 @@
 local callbackWhenAppWillActive = require("scripts/clientState/callbackWhenAppWillActive.nut")
+local { openUrl } = require("scripts/onlineShop/url.nut")
 
 local function showMessageBox(params)
 {
@@ -21,7 +22,7 @@ local function showMessageBox(params)
   return { result = "ok" }
 }
 
-local function openUrl(params)
+local function showUrl(params)
 {
   if (::is_in_flight())
     return { error = { message = "Can not be shown in battle" }}
@@ -33,11 +34,11 @@ local function openUrl(params)
   if (params?.logout_on_close ?? false)
     callbackWhenAppWillActive(@() ::exit_game())
 
-  ::open_url(url)
+  openUrl(url)
 
   return { result = "ok" }
 }
 
 
 web_rpc.register_handler("show_message_box", showMessageBox)
-web_rpc.register_handler("open_url", openUrl)
+web_rpc.register_handler("open_url", showUrl)

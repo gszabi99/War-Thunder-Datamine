@@ -1,6 +1,7 @@
 local { getDefaultBulletName } = require("scripts/weaponry/weaponryVisual.nut")
 local { isFakeBullet,
-        getBulletsSetData } = require("scripts/weaponry/bulletsInfo.nut")
+        getBulletsSetData,
+        getBulletsIconView } = require("scripts/weaponry/bulletsInfo.nut")
 
 const LONG_ACTIONBAR_TEXT_LEN = 6;
 
@@ -148,7 +149,7 @@ class ActionBar
           local tooltipId = ::g_tooltip.getIdModification(unit.name, modifName,
             { isInHudActionBar = true })
           local tooltipDelayed = !canControl
-          return ::weaponVisual.getBulletsIconView(data, tooltipId, tooltipDelayed)
+          return getBulletsIconView(data, tooltipId, tooltipDelayed)
         })(item, unit, canControl)
       )
     }
@@ -455,7 +456,6 @@ class ActionBar
       menu            = menu
       callbackFunc    = activateStreak
       contentTemplate = "gui/hud/actionBarItemStreakWheel"
-      contentType     = WM_CONTENT_TYPE.TEMPLATE
       owner           = this
     }
 
@@ -508,7 +508,6 @@ class ActionBar
       menu            = menu
       callbackFunc    = activateWeapon
       contentTemplate = "gui/hud/actionBarItemStreakWheel"
-      contentType     = WM_CONTENT_TYPE.TEMPLATE
       owner           = this
     }
     ::gui_start_wheelmenu(params)

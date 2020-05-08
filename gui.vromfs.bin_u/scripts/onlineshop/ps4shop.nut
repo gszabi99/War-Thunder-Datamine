@@ -1,4 +1,5 @@
 require("ingameConsoleStore.nut")
+local statsd = require("statsd")
 local psnStore = require("ps4_api.store")
 local psnSystem = require("ps4_api.sys")
 
@@ -103,11 +104,11 @@ class ::gui_handlers.Ps4Shop extends ::gui_handlers.IngameConsoleStore
     {
       psnStore.show_icon(psnStore.IconPosition.CENTER)
       base.initScreen()
-      ::statsd_counter("ingame_store.contents.initScreen.ok")
+      statsd.send_counter("sq.ingame_store.contents", 1, {callsite = "init_screen", status = "ok"})
       return
     }
 
-    ::statsd_counter("ingame_store.contents.initScreen.empty")
+    statsd.send_counter("sq.ingame_store.contents", 1, {callsite = "init_screen", status = "empty"})
     goBack()
   }
 
@@ -144,11 +145,13 @@ class ::gui_handlers.Ps4Shop extends ::gui_handlers.IngameConsoleStore
     isLoadingInProgress = p?.isLoadingInProgress ?? false
     if (!canDisplayStoreContents())
     {
-      ::statsd_counter("ingame_store.contents.onEventShopSheetsInited.empty")
+      statsd.send_counter("sq.ingame_store.contents", 1,
+        {callsite = "on_event_shop_sheets_inited", status = "empty"})
       goBack()
       return
     }
-    ::statsd_counter("ingame_store.contents.onEventShopSheetsInited.ok")
+    statsd.send_counter("sq.ingame_store.contents", 1,
+      {callsite = "on_event_shop_sheets_inited", status = "ok"})
 
     fillItemsList()
     restoreFocus()
@@ -182,7 +185,7 @@ return shopData.__merge({
 
       if (shopData.canUseIngameShop())
       {
-        ::statsd_counter($"ingame_store.open.{openedFrom}")
+        statsd.send_counter("sq.ingame_store.open", 1, {origin = openedFrom})
         local item = shopData.getShopItem(curItemId)
         ::handlersManager.loadHandler(::gui_handlers.Ps4Shop, {
           itemsCatalog = shopData.getShopItemsTable()

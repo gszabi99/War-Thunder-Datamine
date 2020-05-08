@@ -10,18 +10,21 @@ local function deep_clone(val) {
 
 
 //Updates (mutates) target arrays and tables recursively with source
+/*
+ * - if types of target and source doesn't match, target will be overwritten by source
+ * - primitive types and arrays at target will be fully overwritten by source
+ * - values of target table with same keys from source table will be overritten
+ * - new key value pairs from source table will be added to target table
+ * - it's impossible to delete key from target table, only overwrite with null value
+ */
 local function deep_update(target, source) {
   if ((recursivetypes.indexof(::type(source)) == null)) {
     target = source
     return target
   }
-  if (::type(target)!=::type(source)){
+  if (::type(target)!=::type(source) || isArray(source)){
     target = deep_clone(source)
     return target
-  }
-
-  if (isArray(source) && target.len() < source.len()){
-    target.resize(source.len())
   }
   foreach(k, v in source){
     if (!(k in target)){

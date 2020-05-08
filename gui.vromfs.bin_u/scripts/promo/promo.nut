@@ -10,6 +10,7 @@ local { canUseIngameShop = @() false,
   : null
 
 local { getBundleId } = require("scripts/onlineShop/onlineBundles.nut")
+local { validateLink, openUrl } = require("scripts/onlineShop/url.nut")
 
 enum ONLINE_SHOP_TYPES {
   WARPOINTS = "warpoints"
@@ -30,10 +31,10 @@ local function openLink(owner, params = [], source = "promo_open_link")
     forceBrowser = params.len() > 1? params[1] : false
   }
 
-  local processedLink = ::g_url.validateLink(link)
+  local processedLink = validateLink(link)
   if (processedLink == null)
     return
-  ::open_url(processedLink, forceBrowser, false, source)
+  openUrl(processedLink, forceBrowser, false, source)
 }
 
 local function onOpenTutorial(owner, params = [])
@@ -447,7 +448,7 @@ g_promo.generateBlockView <- function generateBlockView(block)
     {
       local action = actionData.action
       if (action == "url" && actionData.paramsArray.len())
-        fillBlock.link <- ::g_url.validateLink(actionData.paramsArray[0])
+        fillBlock.link <- validateLink(actionData.paramsArray[0])
 
       fillBlock.action <- PERFORM_ACTON_NAME
       view.collapsedAction <- PERFORM_ACTON_NAME

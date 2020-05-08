@@ -21,8 +21,8 @@ updateFontParams(::cross_call.getCurrentFontParams())
 ::interop.updateFontParams <- updateFontParams
 
 local get = @(fontId) Fonts?[(baseNameFontsById?[fontId] ?? "") + fontGenId.value]
-local getSizePx = @(val = 1) ::math.round(val * fontSizePx.value / 1080.0)
-local getSizeByScrnTgt = @(val = 1) ::math.round(val * fontSizePx.value / 100)
+local getSizePx = @(val = 1) ::math.round(val * fontSizePx.value / 1080.0).tointeger()
+local getSizeByScrnTgt = @(val = 1) ::math.round(val * fontSizePx.value).tointeger()
 local getSizeByDp = @(val = 1) val * max((fontSizePx.value/900.0 + 0.5).tointeger(), 1)
 
 return {

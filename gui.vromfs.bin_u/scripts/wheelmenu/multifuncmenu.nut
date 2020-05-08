@@ -6,14 +6,33 @@ local callbackFunc = null
 local isDebugMode = false
 local getSectionTitle = @(id) cfg[id]?.getTitle() ?? ::loc(cfg[id]?.title ?? id)
 
+local function isEnabledByUnit(c, unitId)
+{
+  if (c == null)
+    return false
+  if (c?.enable)
+    return c.enable(unitId)
+  if (c?.section)
+  {
+    local sect = cfg[c.section]
+    if (sect?.enable)
+      return sect.enable(unitId)
+    foreach (cc in sect.items)
+      if (isEnabledByUnit(cc, unitId))
+        return true
+    return false
+  }
+  return true
+}
+
 local function open(curSectionId = null, isForward = true)
 {
   if (!isMultifuncMenuAvailable())
     return false
 
   local joyParams = ::joystick_get_cur_settings()
-  local shouldAddAccessKeys = ::is_platform_pc && !::is_xinput_device()
   local unit = ::get_player_cur_unit()
+  local unitId = unit?.name
   local unitType = unit?.unitType
   if (!unitType)
     return false
@@ -22,31 +41,22 @@ local function open(curSectionId = null, isForward = true)
   if (cfg?[curSectionId] == null)
     return false
 
-  // Initializing accessKeys once
-  if (shouldAddAccessKeys && !getHandler())
-  {
-    local params = {
-      menu = []
-      curSectionId = curSectionId
-      isAccessKeysEnabled = true
-    }
-    for (local idx = 0; idx < 8; idx++)
-      params.menu.append({ name = " ", accessKey = $"{idx+1} | Num{idx+1}" })
-    ::handlersManager.loadHandler(::gui_handlers.multifuncMenuHandler, params)
-    getHandler()?.path.clear()
-  }
-
   local allowedShortcutIds = ::g_controls_utils.getControlsList({ unitType = unit.unitType })
     .map(@(s) s.id)
 
   local menu = []
   foreach (idx, c in cfg[curSectionId].items)
   {
+    if (::u.isFunction(c))
+      c = c()
+
     local isShortcut = "shortcut" in c
     local isSection  = "section"  in c
+    local isAction   = "action"   in c
 
     local shortcutId = null
     local sectionId = null
+    local action = null
     local label = ""
     local isEnabled = false
 
@@ -54,14 +64,20 @@ local function open(curSectionId = null, isForward = true)
     {
       shortcutId = c.shortcut.findvalue(@(id) allowedShortcutIds.indexof(id) != null)
       label = ::loc("hotkeys/{0}".subst(shortcutId ?? c.shortcut?[0] ?? ""))
-      isEnabled = shortcutId != null
+      isEnabled = shortcutId != null && isEnabledByUnit(c, unitId)
     }
     else if (isSection)
     {
       sectionId = c.section
       local title = getSectionTitle(sectionId)
       label = "".concat(title, ::loc("ui/ellipsis"))
-      isEnabled = cfg?[sectionId].enableFunc(unit) ?? true
+      isEnabled = isEnabledByUnit(c, unitId)
+    }
+    else if (isAction)
+    {
+      action = c.action
+      label = c.label
+      isEnabled = label != ""
     }
 
     local color = isEnabled ? "hudGreenTextColor" : ""
@@ -76,14 +92,22 @@ local function open(curSectionId = null, isForward = true)
 
     local isEmpty = label == ""
 
+    local shortcutText = ""
+    if (!isEmpty && ::is_platform_pc)
+      shortcutText = ::get_shortcut_text({
+        shortcuts = ::get_shortcuts([ $"ID_VOICE_MESSAGE_{idx+1}" ])
+        shortcutId = 0
+        cantBeEmpty = false
+        strip_tags = true
+        colored = isEnabled
+      })
+
     menu.append(isEmpty ? null : {
       sectionId  = sectionId
       shortcutId = shortcutId
+      action = action
       name = ::colorize(color, label)
-      shortcutText = shouldAddAccessKeys
-        ? ::loc("ui/comma").concat($"{idx+1}", ::loc($"key/Num_{idx+1}"))
-        : null
-      accessKey    = shouldAddAccessKeys ? $"{idx+1} | Num{idx+1}" : null
+      shortcutText = shortcutText != "" ? shortcutText : null
       wheelmenuEnabled = isEnabled
     })
   }
@@ -94,8 +118,7 @@ local function open(curSectionId = null, isForward = true)
     curSectionId = curSectionId
     mouseEnabled = joyParams.useMouseForVoiceMessage || joyParams.useJoystickMouseForVoiceMessage
     axisEnabled  = true
-    isAccessKeysEnabled = shouldAddAccessKeys
-    shouldShadeBackground = false
+    shouldShadeBackground = ::is_xinput_device()
   }
 
   local handler = getHandler()
@@ -118,6 +141,8 @@ callbackFunc = function (idx)
     open(menu[idx].sectionId)
   else if (menu?[idx].shortcutId)
     getHandler()?.toggleShortcut(menu[idx].shortcutId)
+  else if (menu?[idx].action != null)
+    menu?[idx].action()
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -127,12 +152,19 @@ class ::gui_handlers.multifuncMenuHandler extends ::gui_handlers.wheelMenuHandle
   wndControlsAllowMaskWhenActive = CtrlsInGui.CTRL_IN_MULTIFUNC_MENU
                                  | CtrlsInGui.CTRL_ALLOW_WHEEL_MENU
                                  | CtrlsInGui.CTRL_ALLOW_VEHICLE_MOUSE
+                                 | CtrlsInGui.CTRL_ALLOW_VEHICLE_KEYBOARD
                                  | CtrlsInGui.CTRL_ALLOW_VEHICLE_JOY
                                  | CtrlsInGui.CTRL_ALLOW_MP_STATISTICS
                                  | CtrlsInGui.CTRL_ALLOW_TACTICAL_MAP
 
   wndControlsAllowMaskWhenInactive = CtrlsInGui.CTRL_ALLOW_FULL
-  wndControlsAllowMaskOnShortcut   = CtrlsInGui.CTRL_ALLOW_VEHICLE_KEYBOARD
+
+  wndControlsAllowMaskOnShortcutPc      = CtrlsInGui.CTRL_IN_MULTIFUNC_MENU
+                                        | CtrlsInGui.CTRL_ALLOW_FULL
+
+  wndControlsAllowMaskOnShortcutXinput  = CtrlsInGui.CTRL_IN_MULTIFUNC_MENU
+                                        | CtrlsInGui.CTRL_ALLOW_WHEEL_MENU
+                                        | CtrlsInGui.CTRL_ALLOW_VEHICLE_KEYBOARD
 
   curSectionId = null
   path = null
@@ -156,14 +188,22 @@ class ::gui_handlers.multifuncMenuHandler extends ::gui_handlers.wheelMenuHandle
 
   function toggleShortcut(shortcutId)
   {
-    switchControlsAllowMask(wndControlsAllowMaskOnShortcut)
-    ::handlersManager.doDelayed(::Callback(function() {
-      ::toggle_shortcut(shortcutId)
+    if ("emulate_shortcut" in ::getroottable())
+    {
+      ::emulate_shortcut(shortcutId)
+    }
+    else // Compatibility with client 1.97.1.X and older
+    {
+      switchControlsAllowMask(::is_xinput_device() ? wndControlsAllowMaskOnShortcutXinput
+                                                   : wndControlsAllowMaskOnShortcutPc)
       ::handlersManager.doDelayed(::Callback(function() {
-        switchControlsAllowMask(isActive ? wndControlsAllowMaskWhenActive
-                                         : wndControlsAllowMaskWhenInactive)
+        ::toggle_shortcut(shortcutId)
+        ::handlersManager.doDelayed(::Callback(function() {
+          switchControlsAllowMask(isActive ? wndControlsAllowMaskWhenActive
+                                           : wndControlsAllowMaskWhenInactive)
+        }, this))
       }, this))
-    }, this))
+    }
   }
 
   function gotoPrevMenuOrQuit()
@@ -200,6 +240,12 @@ class ::gui_handlers.multifuncMenuHandler extends ::gui_handlers.wheelMenuHandle
   if (isShow)
     return open()
   getHandler()?.quit()
+  return true
+}
+
+// Called from client
+::on_multifunc_menu_item_selected <- function on_multifunc_menu_item_selected(index, isDown) {
+  getHandler()?.onShortcutSelectCallback(index, isDown)
   return true
 }
 

@@ -1,6 +1,7 @@
 local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 local time = require("scripts/time.nut")
 local stdMath = require("std/math.nut")
+local statsd = require("statsd")
 
 
 ::g_battle_tasks <- null
@@ -924,7 +925,7 @@ class BattleTasks
     local taskId = ::char_send_blk("cln_reroll_battle_task", blk)
     ::g_tasker.addTask(taskId, {showProgressBox = true},
       function() {
-        ::statsd_counter("battle_tasks.reroll_v2." + (task?._base_id ?? "null"))
+        statsd.send_counter("sq.battle_tasks.reroll_v2", 1, {task_id = (task?._base_id ?? "null")})
         ::broadcastEvent("BattleTasksIncomeUpdate")
       }
     )
@@ -942,7 +943,7 @@ class BattleTasks
     local taskId = ::char_send_blk("cln_reroll_all_battle_tasks_for_meta", blk)
     ::g_tasker.addTask(taskId, {showProgressBox = true},
       function() {
-        ::statsd_counter("battle_tasks.special_reroll" + (task?._base_id ?? "null"))
+        statsd.send_counter("sq.battle_tasks.special_reroll", 1, {task_id = (task?._base_id ?? "null")})
         ::broadcastEvent("BattleTasksIncomeUpdate")
       })
   }

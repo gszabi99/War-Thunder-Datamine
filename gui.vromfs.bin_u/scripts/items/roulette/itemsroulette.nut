@@ -21,7 +21,6 @@ ItemsRoulette API:
 const MIN_ITEMS_OFFSET = 0.1
 const MAX_ITEMS_OFFSET = 0.4
 
-
 local ItemGenerators = require("scripts/items/itemsClasses/itemGenerators.nut")
 local rouletteAnim = ::require("scripts/items/roulette/rouletteAnim.nut")
 
@@ -516,7 +515,7 @@ ItemsRoulette.createItemsMarkup <- function createItemsMarkup(completeArray)
   foreach(idx, slot in completeArray)
   {
     local slotRes = []
-    local offset = slot.len() <= 1 ? 0 : ::max(MIN_ITEMS_OFFSET, MAX_ITEMS_OFFSET / (slot.len() - 1))
+    local offset = ::LayersIcon.getOffset(slot.len(), MIN_ITEMS_OFFSET, MAX_ITEMS_OFFSET)
 
     foreach(slotIdx, item in slot)
       slotRes.insert(0,

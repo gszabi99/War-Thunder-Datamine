@@ -1,3 +1,4 @@
+local statsd = require("statsd")
 local { animBgLoad } = require("scripts/loading/animBg.nut")
 
 class ::gui_handlers.LoginWndHandlerDMM extends ::BaseGuiHandler
@@ -18,7 +19,7 @@ class ::gui_handlers.LoginWndHandlerDMM extends ::BaseGuiHandler
     ::dagor.debug("DMM Login: check_login_pass")
     ::dagor.debug("DMM Login: dmm_user_id " + ::dgs_get_argv("dmm_user_id"))
     ::dagor.debug("DMM Login: dmm_token " + ::dgs_get_argv("dmm_token"))
-    ::statsd_counter("gameStart.request_login.dmm")
+    statsd.send_counter("sq.game_start.request_login", 1, {login_type = "dmm"})
     local ret = ::check_login_pass(::dgs_get_argv("dmm_user_id"),
       ::dgs_get_argv("dmm_token"), "749130", "dmm", false, false)
     proceedAuthorizationResult(ret)

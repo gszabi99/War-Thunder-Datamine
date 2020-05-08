@@ -62,4 +62,10 @@ return [
     checkGroup = ctrlGroups.HANGAR
     checkAssign = false
   }
+  {
+    id = "hangar_camera_zoom"
+    type = CONTROL_TYPE.AXIS
+    checkGroup = ctrlGroups.HANGAR
+    checkAssign = false
+  }
 ]

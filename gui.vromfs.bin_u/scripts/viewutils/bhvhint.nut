@@ -34,8 +34,8 @@
       obj.setIntProp(isUpdateInProgressPID, 1)
 
       local params = {
-        isWrapInRowAllowed = obj?.isWrapInRowAllowed == "yes"
-        flowAlign = obj?["flow-align"] ?? "center"
+        isWrapInRowAllowed = obj.getFinalProp("isWrapInRowAllowed") == "yes"
+        flowAlign = obj.getFinalProp("flow-align") ?? "center"
         showShortcutsNameIfNotAssign = true
       }
       local markup = ::g_hints.buildHintMarkup(::loc(obj?.value ?? ""), params)

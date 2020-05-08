@@ -10,6 +10,7 @@ local selectUnitHandler = require("scripts/slotbar/selectUnitHandler.nut")
 local selectGroupHandler = require("scripts/slotbar/selectGroupHandler.nut")
 local crewModalByVehiclesGroups = require("scripts/crew/crewModalByVehiclesGroups.nut")
 local { getBundleId } = require("scripts/onlineShop/onlineBundles.nut")
+local { openUrl } = require("scripts/onlineShop/url.nut")
 
 local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,
@@ -263,7 +264,7 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
       isLink     = ::has_feature("WikiUnitInfo")
       actionFunc = function () {
         if (::has_feature("WikiUnitInfo"))
-          ::open_url(::format(::loc("url/wiki_objects"), unit.name), false, false, "unit_actions")
+          openUrl(::format(::loc("url/wiki_objects"), unit.name), false, false, "unit_actions")
         else
           ::showInfoMsgBox(::colorize("activeTextColor", ::getUnitName(unit, false)) + "\n" + ::loc("profile/wiki_link"))
       }

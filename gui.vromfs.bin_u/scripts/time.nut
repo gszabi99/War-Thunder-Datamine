@@ -1,5 +1,5 @@
 local math = require("math")
-local timeBase = require("std/time.nut")
+local timeBase = require("std/timeLoc.nut")
 local dagor_iso8601 = require("dagor.iso8601")
 local { get_local_unixtime, unixtime_to_local_timetbl, local_timetbl_to_unixtime,
   unixtime_to_utc_timetbl, utc_timetbl_to_unixtime

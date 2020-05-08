@@ -1,23 +1,42 @@
 local function getEntitlementConfig(name)
 {
+  if (!name || name == "")
+    return null
+
   local res = { name = name }
 
   local pblk = ::DataBlock()
   ::get_shop_prices(pblk)
-  if (pblk?[name] != null)
+  if (pblk?[name] == null)
+    return null
+
+  foreach(param in ["entitlementGift", "aircraftGift", "unlockGift", "decalGift", "skinGift", "showEntAsGift"])
   {
-    foreach(param in ["ttl", "httl", "onlinePurchase", "wpIncome", "goldIncome", "goldIncomeFirstBuy",
-                      "group", "useGroupAmount", "image", "chapterImage",
-                      "aircraftGift", "alias", "chapter", "goldDiscount", "goldCost"])
-      if (pblk[name]?[param] != null && !(param in res))
-        res[param] <- pblk[name][param]
+    if (param in pblk[name])
+      res[param] <- pblk[name] % param
   }
+
+  if (res?.showEntAsGift != null)
+  {
+    if (pblk[name]?.showEntitlementGift)
+      res.entitlementGift.extend(res.showEntAsGift)
+    else
+      res.entitlementGift = res?.showEntAsGift
+  }
+
+  for (local i = 0; i < pblk[name].paramCount(); i++)
+  {
+    local paramName = pblk[name].getParamName(i)
+    if (!(paramName in res))
+      res[paramName] <- pblk[name].getParamValue(i)
+  }
+
   return res
 }
 
 local function getEntitlementLocId(item)
 {
-  return ("alias" in item) ? item.alias : ("group" in item) ? item.group : item.name
+  return ("alias" in item) ? item.alias : ("group" in item) ? item.group : (item?.name ?? "unknown")
 }
 
 local function getEntitlementAmount(item)

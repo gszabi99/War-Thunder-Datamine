@@ -31,7 +31,7 @@ local function tabCtor(tab, is_current, handler) {
       size = [ SIZE_TO_CONTENT, ::fpx(30) + 2 * (::dp() + ::fpx(3))]
       watch = stateFlags
       group = grp
-      padding = [::fpx(2)+ ::scrn_tgt(0.5), ::scrn_tgt(), ::scrn_tgt(0.5), ::scrn_tgt()]
+      padding = [::fpx(2)+ ::scrn_tgt(0.005), ::scrn_tgt(0.01), ::scrn_tgt(0.005), ::scrn_tgt(0.01)]
       margin = [0, ::dp()]
       behavior = Behaviors.Button
 

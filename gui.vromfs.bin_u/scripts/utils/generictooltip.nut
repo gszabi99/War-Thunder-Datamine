@@ -144,9 +144,6 @@ g_tooltip.close <- function close(obj)
 
     if (!(dbg_event in this))
     {
-      local metric = "errors.brokenTooltip." + ::toString(this) + ";" + dbg_event
-      dagor.debug("Error: " + metric + ";" + ::toString(obj))
-      ::statsd_counter(metric)
       guiScene.replaceContentFromText(obj, "", 0, null) //after it tooltip dosnt open again
       return
     }

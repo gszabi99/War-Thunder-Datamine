@@ -141,7 +141,7 @@ local shipHud = @(){
   flow = FLOW_VERTICAL
   valign = ALIGN_BOTTOM
   halign = ALIGN_LEFT
-  gap = ::scrn_tgt(0.5)
+  gap = ::scrn_tgt(0.005)
   children = [
     voiceChat
     activeOrder

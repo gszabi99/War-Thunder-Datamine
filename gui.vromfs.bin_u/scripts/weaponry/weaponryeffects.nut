@@ -241,6 +241,9 @@ enums.addTypes(effectsType, [
   { id = "distToBrake",            measureType = "meters_alt", isInverted = true, presize = 0.1
     canShowForUnit = @(unit) ::has_feature("TankModEffect")
   }
+  { id = "trackFricFrontalK",      preset = "PERCENT_FLOAT"
+    canShowForUnit = @(unit) ::has_feature("TankModEffect")
+  }
   { id = "accelTime",              measureType = "seconds", isInverted = true, presize = 0.1
     canShowForUnit = @(unit) ::has_feature("TankModEffect")
   }

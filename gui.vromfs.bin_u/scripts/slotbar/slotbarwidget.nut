@@ -905,8 +905,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
       countryIdx = countryData.idx
       needSkipAnim = countriesCount == 0
       alwaysShowBorder = alwaysShowBorder
-      countryImage = ::is_suit_mission() ? "#ui/gameuiskin#cursor_invisible.svg"
-        : ::get_country_icon(countryData.country, false)
+      countryImage = ::get_country_icon(countryData.country, false)
     })
     guiScene.appendWithBlk(crewsObj, blk, this)
   }

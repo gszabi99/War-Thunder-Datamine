@@ -1,4 +1,5 @@
-local progressMsg = ::require("sqDagui/framework/progressMsg.nut")
+local progressMsg = require("sqDagui/framework/progressMsg.nut")
+local { missionsListCampaignId } = require("scripts/missions/getMissionsListCampaignId.nut")
 
 ::current_campaign <- null
 ::current_campaign_name <- ""
@@ -100,7 +101,7 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
 
   function initMissionsList(title)
   {
-    local customChapterId = (gm == ::GM_DYNAMIC) ? ::current_campaign_id : null
+    local customChapterId = (gm == ::GM_DYNAMIC) ? ::current_campaign_id : missionsListCampaignId.value
     local customChapters = null
     if (!showAllCampaigns && (gm == ::GM_CAMPAIGN || gm == ::GM_SINGLE_MISSION))
       customChapters = ::current_campaign
@@ -445,7 +446,7 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
       {
         local unitNameLoc = ::colorize("activeTextColor", ::getUnitName(curMission.mustHaveUnit))
         local requirements = ::loc("conditions/char_unit_exist/single", { value = unitNameLoc })
-        showInfoMsgBox(::loc("charServer/needUnlock") + "\n\n" + requirements)
+        ::showInfoMsgBox(::loc("charServer/needUnlock") + "\n\n" + requirements)
       }
       return false
     }
@@ -454,14 +455,15 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
       if (showMsgbox)
       {
         local unlockId = curMission.blk.chapter + "/" + curMission.blk.name
-        ::show_sm_unlock_description(unlockId, function(){})
+        local msg = ::loc("charServer/needUnlock") + "\n\n" + ::get_unlock_description(unlockId, 1)
+        ::showInfoMsgBox(msg, "in_demo_only_singlemission_unlock")
       }
       return false
     }
     if ((gm == ::GM_CAMPAIGN) && (curMission.progress >= 4))
     {
       if (showMsgbox)
-        showInfoMsgBox(::loc("campaign/unlockPrevious"))
+        ::showInfoMsgBox(::loc("campaign/unlockPrevious"))
       return false
     }
     if ((gm != ::GM_CAMPAIGN) && !curMission.isUnlocked)
@@ -471,7 +473,7 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
         local msg = ::loc("ui/unavailable")
         if ("mustHaveUnit" in curMission)
           msg = ::format("%s\n%s", ::loc("unlocks/need_to_unlock"), ::getUnitName(curMission.mustHaveUnit))
-        showInfoMsgBox(msg)
+        ::showInfoMsgBox(msg)
       }
       return false
     }

@@ -7,7 +7,7 @@ local transition = require("reactiveGui/style/hudTransition.nut")
 local logContainer = @() {
   size = [flex(), SIZE_TO_CONTENT]
   gap = ::fpx(3)
-  padding = [::scrn_tgt(0.5) , ::scrn_tgt(0.5)]
+  padding = [::scrn_tgt(0.005) , ::scrn_tgt(0.005)]
   flow = FLOW_VERTICAL
 }
 
@@ -55,7 +55,7 @@ local hudLog = function (params) {
 
   return @() {
     rendObj = ROBJ_9RECT
-    size = [flex(), ::scrn_tgt(13.5)]
+    size = [flex(), ::scrn_tgt(0.135)]
     watch = visibleState
     clipChildren = true
     opacity = visibleState.value ? 1.0 : 0.0

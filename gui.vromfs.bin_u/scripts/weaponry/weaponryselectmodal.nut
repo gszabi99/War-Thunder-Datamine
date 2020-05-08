@@ -21,6 +21,7 @@
     ]
   }
 */
+local { updateModItem, createModItemLayout } = require("scripts/weaponry/weaponryVisual.nut")
 local { getLastWeapon, setLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 
 ::gui_start_weaponry_select_modal <- function gui_start_weaponry_select_modal(config)
@@ -123,7 +124,7 @@ class ::gui_handlers.WeaponrySelectModal extends ::gui_handlers.BaseGuiHandlerWT
 
       params.posX = rows ? (idx / rows) : 0
       params.posY = rows ? (idx % rows) : 0
-      weaponryListMarkup += ::weaponVisual.createItemLayout(idx, unit, weaponryItem, weaponryItem.type, params)
+      weaponryListMarkup += createModItemLayout(idx, unit, weaponryItem, weaponryItem.type, params)
     }
 
     selIdx = ::max(wasSelIdx, 0)
@@ -159,7 +160,7 @@ class ::gui_handlers.WeaponrySelectModal extends ::gui_handlers.BaseGuiHandlerWT
       itemObj.enable(enabled)
 
       weaponItemParams.visualDisabled <- !enabled || ::getTblValue("visualDisabled", config, false)
-      ::weaponVisual.updateItem(unit, config.weaponryItem, itemObj, false, this, weaponItemParams)
+      updateModItem(unit, config.weaponryItem, itemObj, false, this, weaponItemParams)
     }
     weaponItemParams.visualDisabled <- false
   }

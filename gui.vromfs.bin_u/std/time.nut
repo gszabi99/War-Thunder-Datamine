@@ -1,10 +1,4 @@
-/*
-  bad module - it depends on localization
-  consider to get table of localizations instead in parameter - or move it out std.lib - or split it into two modules
-*/
 local stdStr = require("string")
-local math = require("math")
-
 
 const TIME_SECOND_IN_MSEC = 1000
 const TIME_SECOND_IN_MSEC_F = 1000.0
@@ -29,95 +23,42 @@ local secondsToHours = @(seconds) seconds / TIME_HOUR_IN_SECONDS_F
 local hoursToSeconds = @(seconds) seconds * TIME_HOUR_IN_SECONDS
 local daysToSeconds = @(days) days * TIME_DAY_IN_SECONDS
 
-local function hoursToString(time, full = true, useSeconds = false, dontShowZeroParam = false, fullUnits = false, i18n = ::loc) {
-  local res = []
-  local sign = time >= 0 ? "" : i18n("ui/minus")
-  time = math.fabs(time.tofloat())
-
-  local dd = (time / 24).tointeger()
-  local hh = (time % 24).tointeger()
-  local mm = (time * TIME_MINUTE_IN_SECONDS % TIME_MINUTE_IN_SECONDS).tointeger()
-  local ss = (time * TIME_HOUR_IN_SECONDS % TIME_MINUTE_IN_SECONDS).tointeger()
-
-  if (dd>0) {
-    res.append(fullUnits ? i18n("measureUnits/full/days", { n = dd }) :
-      "{0}{1}".subst(dd,i18n("measureUnits/days")))
-    if (dontShowZeroParam && hh == 0) {
-      return "".join([sign].extend(res))
-    }
-  }
-
-  if (hh && (full || time<24*7)) {
-    if (res.len()>0)
-      res.append(" ")
-    res.append(fullUnits ? i18n("measureUnits/full/hours", { n = hh }) :
-      stdStr.format((time >= 24)? "%02d%s" : "%d%s", hh, i18n("measureUnits/hours")))
-    if (dontShowZeroParam && mm == 0) {
-      return "".join([sign].extend(res))
-    }
-  }
-
-  if ((mm || (!res.len() && !useSeconds)) && (full || time<24)) {
-    if (res.len()>0)
-      res.append(" ")
-    res.append(fullUnits ? i18n("measureUnits/full/minutes", { n = mm }) :
-      stdStr.format((time >= 1)? "%02d%s" : "%d%s", mm, i18n("measureUnits/minutes")))
-  }
-
-  if (((ss && useSeconds) || res.len()==0) && (time < 1.0 / 6)) { // < 10min
-    if (res.len()>0)
-      res.append(" ")
-    res.append(fullUnits ? i18n("measureUnits/full/seconds", { n = ss }) :
-      stdStr.format("%02d%s", ss, i18n("measureUnits/seconds")))
-  }
-
-  if (res.len()==0)
-    return ""
-  return "".join([sign].extend(res))
-}
-
-
-local function secondsToString(value, useAbbreviations = true, dontShowZeroParam = false, secondsFraction = 0, i18n = ::loc) {
-  value = value != null ? value.tofloat() : 0.0
-  local s = (math.fabs(value) + 0.5).tointeger()
-  local res = []
-  local separator = useAbbreviations ? " " : ":"
-  local sign = value >= 0 ? "" : i18n("ui/minus")
-
-  local hoursNum = s / TIME_HOUR_IN_SECONDS
+local function secondsToTime(time){
+  if(::type(time)=="table" && "seconds" in time)
+    return time
+  local s = time.tointeger()
+  local milliseconds = ((time-s)*1000).tointeger()
+  local hoursNum = (s / TIME_HOUR_IN_SECONDS) % 24
   local minutesNum = (s % TIME_HOUR_IN_SECONDS) / TIME_MINUTE_IN_SECONDS
-  local secondsNum = (secondsFraction > 0 ? value : s) % TIME_MINUTE_IN_SECONDS
-
-  if (hoursNum != 0) {
-    res.append(stdStr.format("%d%s", hoursNum, useAbbreviations ? i18n("measureUnits/hours") : ""))
+  local secondsNum = s % TIME_MINUTE_IN_SECONDS
+  local days = (s / TIME_DAY_IN_SECONDS)
+  if (days<2){
+    hoursNum = hoursNum + days*24
+    days = 0
   }
-
-  if (!dontShowZeroParam || minutesNum != 0) {
-    local fStr = res.len() > 0 ? "%02d%s" : "%d%s"
-    if (res.len()>0)
-      res.append(separator)
-    res.append(
-      stdStr.format(fStr, minutesNum, useAbbreviations ? i18n("measureUnits/minutes") : "")
-    )
-  }
-
-  if (!dontShowZeroParam || secondsNum != 0 || res.len()==0) {
-    local symbolsNum = res.len() ? 2 : 1
-    local fStr = secondsFraction > 0
-      ? $"%0{secondsFraction + 1 + symbolsNum}.{secondsFraction}f%s"
-      : $"%0{symbolsNum}d%s"
-    if (res.len()>0)
-      res.append(separator)
-    res.append(
-      stdStr.format(fStr, secondsNum, useAbbreviations ? i18n("measureUnits/seconds") : "")
-    )
-  }
-
-  if (res.len()==0)
-    return ""
-  return "".join([sign].extend(res))
+  return {days=days, hours = hoursNum, minutes = minutesNum, seconds = secondsNum, milliseconds=milliseconds}
 }
 
+local function secondsToTimeSimpleString(time) {
+  local {hours=0, minutes=0, seconds=0} = secondsToTime(time)
+  local minuteStr = hours > 0 ? stdStr.format("%02d", minutes) : minutes.tostring()
+  local hoursStr = hours > 0 ? hours.tostring() : null
+  local secondsStr = stdStr.format("%02d", seconds)//minutes+hours > 0 ? stdStr.format("%02d", seconds) : seconds.tostring()
+  local res = ":".join([hoursStr,minuteStr,secondsStr].filter(@(v) v != null))
+  return time < 0 ? "".concat("-",res) : res
+}
+
+local function roundTime(time){
+  local t = (::type(time)=="table" && "seconds" in time) ? clone time : secondsToTime(time)
+  if (t.days > 0 || t.hours > 24) {
+    t.minutes = 0
+    t.seconds = 0
+  }
+  if (t.minutes > 10 || t.hours > 1 || t.days > 0) {
+    t.seconds = 0
+  }
+  return t
+}
 
 local timeTbl = {
   s = 1
@@ -127,7 +68,7 @@ local timeTbl = {
   w = TIME_WEEK_IN_SECONDS
 }
 
-local function getSecondsFromTemplate (str, errorValue = null) {
+local function getSecondsFromTemplate(str, errorValue = null) {
  // "1w 1d 1h 1m 1s"
   if (!str.len())
     return errorValue
@@ -148,28 +89,19 @@ local function getSecondsFromTemplate (str, errorValue = null) {
   return seconds
 }
 
-local function buildDateStr(timeTable) {
-  local year = timeTable?.year ?? -1
-  local locId = year > 0 ? "date_format" : "date_format_short"
-  return ::loc(locId, {
-    year = year
-    day = timeTable?.day ?? -1
-    month = ::loc("sm_month_{0}".subst((timeTable?.month ?? -1)+1))
-    dayOfWeek = ::loc("weekday_{0}".subst((timeTable?.dayOfWeek ?? -1)+1))
-  })
+local function secondsToTimeFormatString(time) {
+  local {days=0, hours=0, minutes=0, seconds=0} = secondsToTime(time)
+  local res = []
+  if (days>0)
+    res.append(days, "{days}", " ")//warning disable: -forgot-subst
+  if (hours>0)
+    res.append(hours, "{hours}", " ")//warning disable: -forgot-subst
+  if (minutes>0)
+    res.append(minutes,"{minutes}" ," ")//warning disable: -forgot-subst
+  if (seconds>0)
+    res.append(minutes+hours > 0 ? stdStr.format("%02d", seconds) : seconds.tostring(),"{seconds}")//warning disable: -forgot-subst
+  return "".join(res)
 }
-
-local function buildTimeStr(timeTable, showZeroSeconds = false, showSeconds = true) {
-  local sec = timeTable?.sec ?? -1
-  if (showSeconds && (sec > 0 || (showZeroSeconds && sec == 0)))
-    return stdStr.format("%d:%02d:%02d", timeTable.hour, timeTable.min, timeTable.sec)
-  else
-    return stdStr.format("%d:%02d", timeTable.hour, timeTable.min)
-}
-
-local buildDateTimeStr = @(timeTable, showZeroSeconds = false, showSeconds = true, formatStr = "{date}.{time}") //warning disable: -forgot-subst
-  formatStr.subst({ date = buildDateStr(timeTable), time = buildTimeStr(timeTable, showZeroSeconds, showSeconds)})
-
 
 local export = {
   millisecondsToSeconds = millisecondsToSeconds
@@ -181,13 +113,11 @@ local export = {
   hoursToSeconds = hoursToSeconds
   daysToSeconds = daysToSeconds
 
-  hoursToString = hoursToString
-  secondsToString = secondsToString
+  secondsToTimeFormatString = secondsToTimeFormatString
+  secondsToTimeSimpleString = secondsToTimeSimpleString
+  secondsToTime = secondsToTime
+  roundTime = roundTime
   getSecondsFromTemplate = getSecondsFromTemplate
-
-  buildDateTimeStr = buildDateTimeStr
-  buildDateStr = buildDateStr
-  buildTimeStr = buildTimeStr
 
   TIME_SECOND_IN_MSEC = TIME_SECOND_IN_MSEC
   TIME_SECOND_IN_MSEC_F = TIME_SECOND_IN_MSEC_F

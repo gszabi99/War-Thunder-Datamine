@@ -2,8 +2,9 @@ local platformModule = require("scripts/clientState/platform.nut")
 local time = require("scripts/time.nut")
 local { hasAllFeatures } = require("scripts/user/features.nut")
 local externalIDsService = require("scripts/user/externalIdsService.nut")
-local avatars = ::require("scripts/user/avatars.nut")
+local avatars = require("scripts/user/avatars.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { openUrl } = require("scripts/onlineShop/url.nut")
 
 local getAirsStatsFromBlk = function (blk)
 {
@@ -1297,7 +1298,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onOpenAchievementsUrl()
   {
-    ::open_url(::loc("url/achievements",
+    openUrl(::loc("url/achievements",
         { appId = ::WT_APPID, name = player.name}),
       false, false, "profile_page")
   }

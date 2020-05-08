@@ -1,6 +1,7 @@
 local crossplayModule = require("scripts/social/crossplay.nut")
 local mapPreferencesParams = require("scripts/missions/mapPreferencesParams.nut")
 local slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+local { openUrl } = require("scripts/onlineShop/url.nut")
 
 local needShowRateWnd = false //need this, because debriefing data destroys after debriefing modal is closed
 
@@ -139,7 +140,7 @@ local needShowRateWnd = false //need this, because debriefing data destroys afte
     if (token == "")
       return ::dagor.debug("Steam Email Registration: empty token")
 
-    ::open_url(::loc("url/steam_bind_url",
+    openUrl(::loc("url/steam_bind_url",
         { token = token,
           langAbbreviation = ::g_language.getShortName()
         }), false, false, "profile_page")

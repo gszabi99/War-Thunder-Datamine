@@ -866,13 +866,6 @@ class ::gui_handlers.showUnlocksGroupModal extends ::gui_handlers.BaseGuiHandler
   return ::buildRewardText("", reward, true, true)
 }
 
-::show_sm_unlock_description <- function show_sm_unlock_description(unlockName, afterFunc)
-{
-  local msg = ::loc("charServer/needUnlock") + "\n\n" + ::get_unlock_description(unlockName, 1)
-  ::scene_msg_box("in_demo_only", null, msg,
-         [["ok", afterFunc ]], "ok")
-}
-
 ::default_unlock_data <- {
   id = ""
   type = -1

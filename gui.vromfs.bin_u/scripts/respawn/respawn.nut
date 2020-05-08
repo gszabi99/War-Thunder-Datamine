@@ -1,4 +1,5 @@
 local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
+local statsd = require("statsd")
 local time = ::require("scripts/time.nut")
 local respawnBases = ::require("scripts/respawn/respawnBases.nut")
 local gamepadIcons = require("scripts/controls/gamepadIcons.nut")
@@ -177,10 +178,8 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
 
   function initScreen()
   {
-    // April Fools Day 2020 temporary hack:
-    local shouldShowMap = !::is_suit_mission()
-    showSceneBtn("tactical-map-box", shouldShowMap)
-    showSceneBtn("tactical-map", shouldShowMap)
+    showSceneBtn("tactical-map-box", true)
+    showSceneBtn("tactical-map", true)
 
     missionRules = ::g_mis_custom_state.getCurMissionRules()
 
@@ -746,7 +745,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     if (newMask != slotReadyAtHostMask)
     {
       dagor.debug("Error: is_crew_slot_was_ready_at_host or is_crew_available_in_session have changed without cb. force reload slots")
-      statsd_counter("errors.changeDisabledSlots." + ::get_current_mission_name())
+      statsd.send_counter("sq.errors.change_disabled_slots", 1, {mission = ::get_current_mission_name()})
       needReinitSlotbar = true
     }
 
@@ -754,7 +753,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     if (newSlotsCostSum != slotsCostSum)
     {
       dagor.debug("Error: slots spawn cost have changed without cb. force reload slots")
-      statsd_counter("errors.changedSlotsSpawnCost." + ::get_current_mission_name())
+      statsd.send_counter("sq.errors.changed_slots_spawn_cost", 1, {mission = ::get_current_mission_name()})
       needReinitSlotbar = true
     }
 

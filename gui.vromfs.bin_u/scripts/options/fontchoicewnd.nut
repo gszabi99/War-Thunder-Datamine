@@ -37,7 +37,6 @@ class ::gui_handlers.FontChoiceWnd extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!wasOpened)
     {
-      ::statsd_counter("temp_test.fontChoice.open")
       wasOpened = true
     }
   }
@@ -55,7 +54,6 @@ class ::gui_handlers.FontChoiceWnd extends ::gui_handlers.BaseGuiHandlerWT
   function goBack()
   {
     markSeen(true)
-    ::statsd_counter("temp_test.fontChoice.close")
     base.goBack()
   }
 }

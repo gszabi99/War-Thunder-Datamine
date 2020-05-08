@@ -1,4 +1,3 @@
-local mergeRecursive = require("std/deep.nut")._merge
 local defStyle = require("textButton.style.nut")
 local fa = require("fontawesome.map.nut")
 local Fonts = ::Fonts
@@ -6,7 +5,7 @@ local hdpx = ::hdpx
 local pw = ::pw
 
 local function textColor(sf, style=null, isEnabled = true) {
-  local styling = (style) ? mergeRecursive(defStyle, style) : defStyle
+  local styling = defStyle.__merge(style ?? {})
   if (!isEnabled) return styling.TextDisabled
   if (sf & S_ACTIVE)    return styling.TextActive
   if (sf & S_HOVER)     return styling.TextHover
@@ -15,7 +14,7 @@ local function textColor(sf, style=null, isEnabled = true) {
 }
 
 local function borderColor(sf, style=null, isEnabled = true) {
-  local styling = (style) ? mergeRecursive(defStyle, style) : defStyle
+  local styling = defStyle.__merge(style ?? {})
   if (!isEnabled) return styling.BdDisabled
   if (sf & S_ACTIVE)    return styling.BdActive
   if (sf & S_HOVER)     return styling.BdHover
@@ -24,7 +23,7 @@ local function borderColor(sf, style=null, isEnabled = true) {
 }
 
 local function fillColor(sf, style=null, isEnabled = true) {
-  local styling = (style) ? mergeRecursive(defStyle, style) : defStyle
+  local styling = defStyle.__merge(style ?? {})
   if (!isEnabled) return styling.BgDisabled
   if (sf & S_ACTIVE)    return styling.BgActive
   if (sf & S_HOVER)     return styling.BgHover
@@ -33,7 +32,7 @@ local function fillColor(sf, style=null, isEnabled = true) {
 }
 
 local function fillColorTransp(sf, style=null, isEnabled = true) {
-  local styling = (style) ? mergeRecursive(defStyle, style) : defStyle
+  local styling = defStyle.__merge(style ?? {})
   if (sf & S_ACTIVE)    return styling.BgActive
   if (sf & S_HOVER)     return styling.BgHover
   if (sf & S_KB_FOCUS)  return styling.BgFocused

@@ -1,4 +1,5 @@
 local { animBgLoad } = require("scripts/loading/animBg.nut")
+local showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
 
 local multiplayerSessionPrivelegeCallback = null
 local function checkMultiplayerSessionsPrivilegeSq(showMarket, cb)
@@ -25,7 +26,7 @@ class ::gui_handlers.LoginWndHandlerXboxOne extends ::BaseGuiHandler
     animBgLoad()
     ::setVersionText(scene)
     ::setProjectAwards(this)
-    ::show_title_logo(true, scene, "128")
+    showTitleLogo(scene, 128)
     ::set_gui_options_mode(::OPTIONS_MODE_GAMEPLAY)
 
     local buttonsView = [

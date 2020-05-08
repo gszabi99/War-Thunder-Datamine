@@ -3,8 +3,9 @@ local ItemGenerators = require("scripts/items/itemsClasses/itemGenerators.nut")
 local inventoryClient = require("scripts/inventory/inventoryClient.nut")
 local itemTransfer = require("scripts/items/itemsTransfer.nut")
 local stdMath = require("std/math.nut")
+local { openUrl } = require("scripts/onlineShop/url.nut")
 
-local seenList = ::require("scripts/seen/seenList.nut")
+local seenList = require("scripts/seen/seenList.nut")
 local seenInventory = seenList.get(SEEN.INVENTORY)
 local seenItems = seenList.get(SEEN.ITEMS_SHOP)
 local OUT_OF_DATE_DAYS_ITEMS_SHOP = 28
@@ -399,7 +400,7 @@ ItemsManager.isMarketplaceEnabled <- function isMarketplaceEnabled()
 ItemsManager.goToMarketplace <- function goToMarketplace()
 {
   if (isMarketplaceEnabled())
-    ::open_url(inventoryClient.getMarketplaceBaseUrl(), false, false, "marketplace")
+    openUrl(inventoryClient.getMarketplaceBaseUrl(), false, false, "marketplace")
 }
 
 ItemsManager.markItemsListUpdate <- function markItemsListUpdate()

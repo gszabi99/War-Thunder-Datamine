@@ -217,4 +217,6 @@ LayersIcon.getTextDataFromLayer <- function getTextDataFromLayer(layerCfg)
                       props)
 }
 
+LayersIcon.getOffset <- @(itemsLen, minOffset, maxOffset) itemsLen <= 1 ? 0 : ::max(minOffset, maxOffset / (itemsLen - 1))
+
 ::g_script_reloader.registerPersistentDataFromRoot("LayersIcon")

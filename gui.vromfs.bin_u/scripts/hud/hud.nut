@@ -13,7 +13,6 @@ local defaultFontSize = "small"
 
 ::should_show_controls_help_on_loading <- ::is_platform_ps4 || ::is_platform_xboxone
 ::should_offer_controls_help <- !::should_show_controls_help_on_loading
-local controlsHelpSuggestedLastTime = -1
 
 ::air_hud_actions <- {
   flaps = {
@@ -80,7 +79,6 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 
   hudType    = HUD_TYPE.NONE
   isXinput   = false
-  suitMode   = false
   currentHud = null
 
   isLowQualityWarningVisible = false
@@ -235,14 +233,10 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 
     if (newHudType == hudType)
     {
-      local playerUnit = ::get_player_cur_unit();
-      local newSuitMode = (playerUnit && playerUnit?.isSuit())
-
-      if (isXinput == ::is_xinput_device() && newSuitMode == suitMode)
+      if (isXinput == ::is_xinput_device())
         return false
 
       isXinput = ::is_xinput_device()
-      suitMode = newSuitMode
     }
 
     local hudObj = scene.findObject("hud_obj")
@@ -258,13 +252,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
     else if (newHudType == HUD_TYPE.AIR)
       currentHud = ::handlersManager.loadHandler(::use_touchscreen && !isXinput ? ::HudTouchAir : ::HudAir, { scene = hudObj })
     else if (newHudType == HUD_TYPE.TANK)
-    {
-      local playerUnit = ::get_player_cur_unit();
-      if (playerUnit && playerUnit?.isSuit())
-        currentHud = ::handlersManager.loadHandler(::HudCommon3d, { scene = hudObj })
-      else
-        currentHud = ::handlersManager.loadHandler(::use_touchscreen && !isXinput ? ::HudTouchTank : ::HudTank, { scene = hudObj })
-    }
+      currentHud = ::handlersManager.loadHandler(::use_touchscreen && !isXinput ? ::HudTouchTank : ::HudTank, { scene = hudObj })
     else if (newHudType == HUD_TYPE.SHIP)
       currentHud = ::handlersManager.loadHandler(::HudShip, { scene = hudObj })
     else if (newHudType == HUD_TYPE.HELICOPTER)
@@ -598,6 +586,7 @@ class HudAir extends ::gui_handlers.BaseUnitHud
     updateTacticalMapVisibility()
     updateDmgIndicatorVisibility()
     updateShowHintsNest()
+    updatePosHudMultiplayerScore()
 
     ::g_hud_event_manager.subscribe("DamageIndicatorToggleVisbility",
       function(ed) { updateDmgIndicatorVisibility() },
@@ -711,6 +700,7 @@ class HudTank extends ::gui_handlers.BaseUnitHud
     ::hudEnemyDamage.init(scene)
     actionBar = ActionBar(scene.findObject("hud_action_bar"))
     updateShowHintsNest()
+    updatePosHudMultiplayerScore()
 
     ::g_hud_event_manager.subscribe("DamageIndicatorToggleVisbility",
       @(eventData) updateDamageIndicatorBackground(),
@@ -725,70 +715,6 @@ class HudTank extends ::gui_handlers.BaseUnitHud
     ::g_hud_tank_debuffs.reinit()
     ::g_hud_crew_state.reinit()
     updateShowHintsNest()
-  }
-
-  function updateDamageIndicatorBackground()
-  {
-    local visMode = ::g_hud_vis_mode.getCurMode()
-    local isDmgPanelVisible = ::is_dmg_indicator_visible() && visMode.isPartVisible(HUD_VIS_PART.DMG_PANEL)
-    ::showBtn("tank_background", isDmgPanelVisible, scene)
-  }
-
-  function updateShowHintsNest()
-  {
-    showSceneBtn("actionbar_hints_nest", true)
-  }
-}
-
-
-class HudCommon3d extends ::gui_handlers.BaseUnitHud
-{
-  actionBar    = null
-  sceneBlkName = "gui/hud/hudCommon3d.blk"
-
-  function initScreen()
-  {
-    ::g_hud_display_timers.init(scene, ::ES_UNIT_TYPE_TANK)
-    ::g_hud_tank_debuffs.init(scene)
-    ::g_hud_crew_state.init(scene)
-    showHudTankMovementStates(scene)
-    ::hudEnemyDamage.init(scene)
-    actionBar = ActionBar(scene.findObject("hud_action_bar"))
-    updateShowHintsNest()
-
-    ::g_hud_event_manager.subscribe("DamageIndicatorToggleVisbility",
-      @(eventData) updateDamageIndicatorBackground(),
-      this)
-
-    trySuggestControlsHelp()
-  }
-
-  function reinitScreen(params = {})
-  {
-    actionBar.reinit()
-    ::hudEnemyDamage.reinit()
-    ::g_hud_display_timers.reinit()
-    ::g_hud_tank_debuffs.reinit()
-    ::g_hud_crew_state.reinit()
-    updateShowHintsNest()
-  }
-
-  function trySuggestControlsHelp()
-  {
-    if (!::should_offer_controls_help || !::get_player_cur_unit()?.isSuit())
-      return
-
-    local now = ::dagor.getCurTime() / 1000
-    local forgetAfterSec = 2 * ::g_hud_hints.CONTROLS_HELP_HINT.lifeTime
-    if (controlsHelpSuggestedLastTime != -1 && (now - controlsHelpSuggestedLastTime > forgetAfterSec))
-    {
-      ::should_offer_controls_help = false
-      return
-    }
-
-    controlsHelpSuggestedLastTime = now
-    guiScene.performDelayed(this, @()
-      ::g_hud_event_manager.onHudEvent("hint:controlsHelp:offer", {}))
   }
 
   function updateDamageIndicatorBackground()
@@ -814,6 +740,7 @@ class HudHelicopter extends ::gui_handlers.BaseUnitHud
   {
     ::hudEnemyDamage.init(scene)
     actionBar = ActionBar(scene.findObject("hud_action_bar"))
+    updatePosHudMultiplayerScore()
   }
 
   function reinitScreen(params = {})
@@ -902,6 +829,7 @@ class HudShip extends ::gui_handlers.BaseUnitHud
     ::g_hud_display_timers.init(scene, ::ES_UNIT_TYPE_SHIP)
     ::hud_request_hud_ship_debuffs_state()
     actionBar = ActionBar(scene.findObject("hud_action_bar"))
+    updatePosHudMultiplayerScore()
   }
 
   function reinitScreen(params = {})

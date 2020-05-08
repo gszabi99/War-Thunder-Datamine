@@ -950,7 +950,7 @@ class Events
       return availableTeams
 
     local mgm = getMGameMode(event, room)
-    foreach(team in getSidesList(isCustomGameMode(mgm) ? null : mgm))
+    foreach(team in getSidesList(isLobbyGameMode(mgm) ? null : mgm))
     {
       local teamData = getTeamDataWithRoom(event, team, room)
       if (::isInArray(playersCurCountry, getCountries(teamData)))
@@ -2744,9 +2744,16 @@ class Events
     recalcAllEventsDisplayType()
   }
 
+  // game mode allows to join either from queue or from rooms list
+  function isLobbyGameMode(mGameMode)
+  {
+    return mGameMode?.withLobby ?? false
+  }
+
+  // it is lobby game mode but with sessions that can be created by players
   function isCustomGameMode(mGameMode)
   {
-    return ::getTblValue("forCustomLobby", mGameMode, false)
+    return mGameMode?.forCustomLobby ?? false
   }
 
   function getCustomGameMode(event)

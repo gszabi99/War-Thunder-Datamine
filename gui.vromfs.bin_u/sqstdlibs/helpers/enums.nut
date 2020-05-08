@@ -70,8 +70,11 @@ local function getCachedType(propName, propValue, cacheTable, enumTable, default
   return cacheTable?[propValue] ?? defaultVal
 }
 
-local function addType(enumTable, typeTemplate, typeName, typeDefinition) {
-  local typeTbl = enumTable?[typeName] ?? {} //to not brake links on exist types
+local function addType(enumTable, typeTemplate, typeName, typeDefinition, enumTablePersistId) {
+  local typeTbl = enumTablePersistId != null
+    ? persist($"{enumTablePersistId}/{typeName}", @() {})
+    : (enumTable?[typeName] ?? {})
+
   typeTbl.clear()
   if (typeTemplate)
     foreach(key, value in typeTemplate)
@@ -93,10 +96,22 @@ local function addType(enumTable, typeTemplate, typeName, typeDefinition) {
   return typeTbl
 }
 
-local function addTypes(enumTable, typesToAdd, typeConstructor = null, addTypeNameKey = null ) {
+/**
+ * Adds multiple types to a given type enumeration.
+ * @param {table} enumTable  - Type enumeration table, where new types should be added.
+ * @param {table} typesToAdd - Table of types to add.
+ * @param {string|null} [typeConstructor] - Optional type contrtuctor func, takes no params.
+ *        It will be called for each type, using the type itself as an environment.
+ * @param {string|null} [addTypeNameKey] - Optional key name for storing enumTable's key of a type
+          in the type itself. This is a recommended way of creating unique ID for every type.
+ * @param {string|null} [enumTablePersistId] - unique string ID for enumTable, to persist all types
+ *        in typesToAdd, to preserve the existing links on type tables during scripts reloads.
+ *        On reload, each type's table is preserved (as a container), cleared, and refilled.
+ */
+local function addTypes(enumTable, typesToAdd, typeConstructor = null, addTypeNameKey = null, enumTablePersistId = null) {
   local typeTemplate = enumTable?.template
   foreach (typeName, typeDefinition in typesToAdd) {
-    local typeTbl = addType(enumTable, typeTemplate, typeName, typeDefinition)
+    local typeTbl = addType(enumTable, typeTemplate, typeName, typeDefinition, enumTablePersistId)
     if (addTypeNameKey)
       typeTbl[addTypeNameKey] <- typeName
     if (typeConstructor != null)
@@ -104,22 +119,17 @@ local function addTypes(enumTable, typesToAdd, typeConstructor = null, addTypeNa
   }
 }
 
-local function collectAndRegisterTypes(enumTableName, enumTable, typesToAdd) {
-  if (!(PERSISTENT_DATA_PARAMS in enumTable)) // warning disable: -undefined-const
-    enumTable[PERSISTENT_DATA_PARAMS] <- []
-  local persistentList = enumTable[PERSISTENT_DATA_PARAMS]
-  foreach(typeName, data in typesToAdd) {
-    u.appendOnce(typeName, persistentList)
-    if (!(typeName in enumTable))
-      enumTable[typeName] <- null
-  }
-
-  ::g_script_reloader.registerPersistentData("enumUtils/" + enumTableName, enumTable, persistentList)
-}
-
-//registerForScriptReloader = true - register types to not brake links on types on reload scripts
+/**
+ * Adds multiple types to a global type enumeration.
+ * @param {string} enumTableName - Global variable name of type enumeration table.
+ * @param {table} typesToAdd              - see addTypes().
+ * @param {string|null} [typeConstructor] - see addTypes().
+ * @param {string|null} [addTypeNameKey]  - see addTypes().
+ * @param {bool} [shouldPersistTypes] - true if need to persist all types in typesToAdd,
+          to preserve the existing links on type tables during scripts reloads. True by default.
+ */
 local function addTypesByGlobalName(enumTableName, typesToAdd, typeConstructor = null, addTypeNameKey = null,
-                                registerForScriptReloader = true) {
+                                    shouldPersistTypes = true) {
 
   local enumTable = ::getroottable()?[enumTableName]
   if (!isTable(enumTable)) {
@@ -127,13 +137,8 @@ local function addTypesByGlobalName(enumTableName, typesToAdd, typeConstructor =
     return
   }
 
-  if (!("g_script_reloader" in ::getroottable()))
-    registerForScriptReloader = false
-
-  if (registerForScriptReloader)
-    collectAndRegisterTypes(enumTableName, enumTable, typesToAdd)
-
-  addTypes(enumTable, typesToAdd, typeConstructor, addTypeNameKey)
+  local enumTablePersistId = shouldPersistTypes ? enumTableName : null
+  addTypes(enumTable, typesToAdd, typeConstructor, addTypeNameKey, enumTablePersistId)
 }
 
 return {

@@ -1,8 +1,10 @@
+local statsd = require("statsd")
 local penalties = require("scripts/penitentiary/penalties.nut")
 local tutorialModule = require("scripts/user/newbieTutorialDisplay.nut")
 local contentStateModule = require("scripts/clientState/contentState.nut")
 local checkUnlocksByAbTest = require("scripts/unlocks/checkUnlocksByAbTest.nut")
 local fxOptions = require("scripts/options/fxOptions.nut")
+local { openUrl } = require("scripts/onlineShop/url.nut")
 
 local onMainMenuReturnActions = require("scripts/mainmenu/onMainMenuReturnActions.nut")
 
@@ -91,7 +93,7 @@ local onMainMenuReturnActions = require("scripts/mainmenu/onMainMenuReturnAction
 ::go_to_account_web_page <- function go_to_account_web_page(bqKey = "")
 {
   local urlBase = ::format("/user.php?skin_lang=%s", ::g_language.getShortName())
-  ::open_url(::get_authenticated_url_table(urlBase).url, false, false, bqKey)
+  openUrl(::get_authenticated_url_table(urlBase).url, false, false, bqKey)
 }
 
 g_login.getStateDebugStr <- function getStateDebugStr(state = null)
@@ -370,13 +372,8 @@ g_login.firstMainMenuLoad <- function firstMainMenuLoad()
       && !::g_gamepad_cursor_controls.getValue()
     )
     {
-      handler.doWhenActive(function() { ::gui_start_gamepad_cursor_controls_splash(
-        function() {::statsd_counter("temp_test.gamepadCursorController.enabled") }
-      ) })
+      handler.doWhenActive(function() { ::gui_start_gamepad_cursor_controls_splash(@() null) })
     }
-    else if (::g_gamepad_cursor_controls.getValue())
-      ::statsd_counter("temp_test.gamepadCursorController.enabled")
-    ::statsd_counter("temp_test.gamepadCursorController.asked")
   }
 
   if (!::disable_network() && !::getFromSettingsBlk("debug/skipPopups"))
@@ -422,12 +419,12 @@ g_login.firstMainMenuLoad <- function firstMainMenuLoad()
 
 g_login.statsdOnLogin <- function statsdOnLogin()
 {
-  ::statsd_counter("gameStart.login")
+  statsd.send_counter("sq.gameStart.login", 1)
 
   if (::get_controls_preset() == "")
   {
     ::dagor.debug("statsd_on_login customcontrols")
-    ::statsd_counter("customcontrols")
+    statsd.send_counter("sq.customcontrols", 1)
   }
 
   if (::is_platform_ps4)
@@ -446,7 +443,7 @@ g_login.statsdOnLogin <- function statsdOnLogin()
     foreach (misBlk in mis_array)
       if (::is_user_mission(misBlk))
       {
-        ::statsd_counter("ug.goodum")
+        statsd.send_counter("sq.ug.goodum", 1)
         anyUG = true
         ::dagor.debug("statsd_on_login ug.goodum " + (misBlk?.name ?? "null"))
         break
@@ -473,7 +470,7 @@ g_login.statsdOnLogin <- function statsdOnLogin()
         break
     }
     if (haveUserSkin)
-      ::statsd_counter("ug.haveus")
+      statsd.send_counter("sq.ug.haveus", 1)
 
     local cdb = ::get_user_skins_profile_blk()
     for (local i = 0; i < cdb.paramCount(); i++)
@@ -482,7 +479,7 @@ g_login.statsdOnLogin <- function statsdOnLogin()
       if ((typeof(skin) == "string") && (skin != "") && (skin.indexof("template")==null))
       {
         anyUG = true
-        statsd_counter("ug.useus")
+        statsd.send_counter("sq.ug.useus", 1)
         dagor.debug("statsd_on_login ug.useus "+skin)
         break;
       }
@@ -498,7 +495,7 @@ g_login.statsdOnLogin <- function statsdOnLogin()
         {
           anyUG = true
           ::dagor.debug("statsd_on_login ug.langum " + file)
-          ::statsd_counter("ug.langum")
+          statsd.send_counter("sq.ug.langum", 1)
           break
         }
     }
@@ -506,7 +503,7 @@ g_login.statsdOnLogin <- function statsdOnLogin()
     if (anyUG)
     {
       ::dagor.debug("statsd_on_login ug.any")
-      ::statsd_counter("ug.any")
+      statsd.send_counter("sq.ug.any", 1)
     }
   }
 }

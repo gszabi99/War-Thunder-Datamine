@@ -1,4 +1,6 @@
+local statsd = require("statsd")
 local { animBgLoad } = require("scripts/loading/animBg.nut")
+local showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
 
 class ::gui_handlers.LoginWndHandlerPs4 extends ::BaseGuiHandler
 {
@@ -10,7 +12,7 @@ class ::gui_handlers.LoginWndHandlerPs4 extends ::BaseGuiHandler
     animBgLoad()
     ::setVersionText(scene)
     ::setProjectAwards(this)
-    ::show_title_logo(true, scene, "128")
+    showTitleLogo(scene, 128)
     ::set_gui_options_mode(::OPTIONS_MODE_GAMEPLAY)
 
     local data = ::handyman.renderCached("gui/commonParts/button", {
@@ -28,6 +30,9 @@ class ::gui_handlers.LoginWndHandlerPs4 extends ::BaseGuiHandler
     guiScene.performDelayed(this, function() {
       ::ps4_initial_check_settings()
     })
+
+    if (::dgs_get_argv("autologin"))
+      ::on_ps4_autologin()
   }
 
   function onOk()
@@ -37,7 +42,7 @@ class ::gui_handlers.LoginWndHandlerPs4 extends ::BaseGuiHandler
 
     if ((::ps4_initial_check_network() >= 0) && (::ps4_init_trophies() >= 0))
     {
-      ::statsd_counter("gameStart.request_login.ps4")
+      statsd.send_counter("sq.game_start.request_login", 1, {login_type = "ps4"})
       ::dagor.debug("PS4 Login: ps4_login")
       isLoggingIn = true
       local ret = ::ps4_login();

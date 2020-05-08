@@ -231,7 +231,7 @@ options.addTypes({
     sortId = sortId++
     labelLocId = "mainmenu/shell"
     shouldSetParams = true
-    visibleTypes = [ WEAPON_TYPE.GUN, WEAPON_TYPE.ROCKET, WEAPON_TYPE.AGM ]
+    visibleTypes = [ WEAPON_TYPE.GUNS, WEAPON_TYPE.ROCKETS, WEAPON_TYPE.AGM ]
 
     reinit = function(handler, scene)
     {

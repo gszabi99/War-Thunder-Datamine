@@ -1,6 +1,7 @@
 local protectionAnalysis = require("scripts/dmViewer/protectionAnalysis.nut")
 local { getCrewPoints } = require("scripts/crew/crewSkills.nut")
 local { getSkillCategoryView } = require("scripts/crew/crewSkillsView.nut")
+local { slotInfoPanelButtons } = require("scripts/slotInfoPanel/slotInfoPanelButtons.nut")
 
 const SLOT_INFO_CFG_SAVE_PATH = "show_slot_info_panel_tab"
 
@@ -67,6 +68,14 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
     infoPanelObj.show(true)
     ::dmViewer.init(this)
 
+    //Must be before replace fill tabs
+    local buttonsPlace = scene.findObject("buttons_place")
+    if (::check_obj(buttonsPlace))
+    {
+      local data = "".join(slotInfoPanelButtons.value.map(@(view) ::handyman.renderCached("gui/commonParts/button", view)))
+      guiScene.replaceContentFromText(buttonsPlace, data, data.len(), this)
+    }
+
     for (local i = tabsInfo.len() - 1; i >= 0; i--)
       if (tabsInfo[i].reqFeature != "" && !::has_feature(tabsInfo[i].reqFeature))
         tabsInfo.remove(i)
@@ -118,6 +127,15 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
   function getCurShowUnit()
   {
     return ::getAircraftByName(getCurShowUnitName())
+  }
+
+  function onUnitInfoTestDrive()
+  {
+    local unit = getCurShowUnit()
+    if (!unit)
+      return
+
+    ::queues.checkAndStart(@() ::gui_start_testflight(unit), null, "isCanNewflight")
   }
 
   function onAirInfoWeapons()
@@ -214,6 +232,7 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
     if ( !::checkObj(contentObj) || ( ! contentObj.isVisible() && ! force))
       return
 
+    updateTestDriveButtonText(unit)
     updateWeaponryDiscounts(unit)
     ::showAirInfo(unit, true)
     ::showBtn("aircraft-name", false, scene)
@@ -412,10 +431,22 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
     return unit
   }
 
+  function updateTestDriveButtonText(unit)
+  {
+    local obj = scene.findObject("btnTestdrive")
+    if (!::check_obj(obj))
+      return
+
+    obj.setValue(unit.unitType.getTestFlightText())
+  }
+
   function updateWeaponryDiscounts(unit)
   {
     local discount = unit ? ::get_max_weaponry_discount_by_unitName(unit.name) : 0
-    ::showCurBonus(scene.findObject("btnAirInfoWeaponry_discount"), discount, "mods", true, true)
+    local discountObj = scene.findObject("btnAirInfoWeaponry_discount")
+    ::showCurBonus(discountObj, discount, "mods", true, true)
+    if (::check_obj(discountObj))
+      discountObj.show(discount > 0)
 
     if (::checkObj(listboxObj))
     {

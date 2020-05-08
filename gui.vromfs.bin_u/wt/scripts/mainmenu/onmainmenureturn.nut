@@ -100,6 +100,7 @@ onMainMenuReturnActions.onMainMenuReturn <- function(handler, isAfterLogin) {
     handler.doWhenActiveOnce("checkUpgradeCrewTutorial")
     handler.doWhenActiveOnce("initPromoBlock")
     handler.doWhenActiveOnce("checkNewUnitTypeToBattleTutor")
+    handler.doWhenActiveOnce("checkShowChangelog")
 
     local hasModalObjectVal = guiScene.hasModalObject()
     handler.doWhenActive((@(hasModalObjectVal) function() { ::g_popup_msg.showPopupWndIfNeed(hasModalObjectVal) })(hasModalObjectVal))

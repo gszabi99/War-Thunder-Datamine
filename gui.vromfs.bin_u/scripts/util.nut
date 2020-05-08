@@ -3,7 +3,6 @@ local time = require("scripts/time.nut")
 local penalty = require_native("penalty")
 local platformModule = require("scripts/clientState/platform.nut")
 local stdMath = require("std/math.nut")
-local string = require("string")
 
 ::usageRating_amount <- [0.0003, 0.0005, 0.001, 0.002]
 ::allowingMultCountry <- [1.5, 2, 2.5, 3, 4, 5]
@@ -473,26 +472,6 @@ foreach (i, v in ::cssColorsMapDark)
 
   foreach(id, status in table)
     ::showBtn(id, status, obj)
-}
-
-::show_title_logo <- function show_title_logo(show, scene = null, logoHeight = "", name_id = "id_full_title")
-{
-  local guiScene = ::get_cur_gui_scene()
-  local pic = null
-  pic = scene? scene.findObject("titleLogo") : guiScene["titleLogo"]
-  if(logoHeight == "")
-  {
-    local displayHeight = ::g_dagui_utils.toPixels(guiScene, "@titleLogoPlateHeight")
-    logoHeight = ::min(::max(displayHeight.tointeger(), 64), 128)
-  }
-
-  if(::checkObj(pic))
-  {
-    pic["background-image"] = "ui/" + ::loc(name_id) + logoHeight
-    pic.show(show)
-    return true
-  }
-  return false
 }
 
 ::getAmountAndMaxAmountText <- function getAmountAndMaxAmountText(amount, maxAmount, showMaxAmount = false)
@@ -1375,8 +1354,6 @@ foreach (i, v in ::cssColorsMapDark)
 
 ::startCreateWndByGamemode <- function startCreateWndByGamemode(handler, obj)
 {
-  if("stopSearch" in handler)
-    handler.stopSearch = false;
   local gm = ::match_search_gm
   if (gm == ::GM_EVENT)
     ::gui_start_briefing()
@@ -1814,12 +1791,6 @@ foreach (i, v in ::cssColorsMapDark)
   return ::char_send_blk("cln_unlock_crew", blk)
 }
 
-::statsd_counter <- function statsd_counter(metric, value = 1)
-{
-  if ("statsd_report" in getroottable())
-    ::statsd_report("counter", "sq." + metric, value)
-}
-
 ::get_navigation_images_text <- function get_navigation_images_text(cur, total)
 {
   local res = ""
@@ -1943,20 +1914,6 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
   return res
 }
 
-::assembleBlueprints <- function assembleBlueprints()
-{
-
-  return ::char_send_action_and_load_profile("cln_assemble_blueprints")
-}
-
-::sellBlueprints <- function sellBlueprints(uid, count)
-{
-  local blk = ::DataBlock()
-  blk.setStr("uid", uid)
-  blk.setInt("count", count)
-  return ::char_send_blk("cln_sell_blueprints", blk)
-}
-
 ::inherit_table <- function inherit_table(parent_table, child_table)
 {
   return ::u.extend(::u.copy(parent_table), child_table)
@@ -1971,13 +1928,6 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
   })
 
   ::call_darg("hudCursorVisibleUpdate", ::is_cursor_visible_in_gui())
-}
-
-::char_convert_blueprints <- function char_convert_blueprints(bType)
-{
-  local blk = ::DataBlock()
-  blk.setStr("type", bType)
-  return ::char_send_blk("cln_convert_blueprints", blk)
 }
 
 ::is_mode_with_teams <- function is_mode_with_teams(gt = null)
@@ -2134,110 +2084,4 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
   if ((cost?.gold ?? 0) > 0)
     text = ::colorize("@red", ::loc("shop/needMoneyQuestion_warning"))+ "\n" + text
   return text
-}
-
-::aaaa <- function aaaa()
-{
-  local function deftostr(def){
-    local typ = ::type(def)
-    if(["integer","float","null","boolean"].indexof(typ)!=null)
-      return def
-    else if (typ=="string")
-      return "\"\""
-    else if (typ=="table")
-      return "{}"
-    else if (typ=="array")
-      return "[]"
-    else if (typ=="function")
-      return "@(...) null"
-    else
-      return "null"
-  }
-
-  local function arrstr(params, defs, native){
-    params = params ?? []
-    defs = defs ?? []
-    params = params.filter(@(v) v!="this" && v!="vargv")
-    local defslen = defs.len()
-    local paramslen = params.len()
-    local ret = ""
-    for (local i=0; i<params.len(); i++){
-      if (i < paramslen - defslen) {
-        if (i==0)
-          ret = params[0]
-        else
-          ret += ", " + (params[i] ?? ("arg"+i))
-      }
-      else {
-        if (i==0)
-          ret = params[0] + " = " + deftostr(defs[0])
-        else
-          ret += ", " + params[i] + " = "  + deftostr(defs[i-(paramslen-defslen)])
-      }
-    }
-    if (native && paramslen==0)
-      return "..."
-    return ret
-  }
-
-  local function indents(n){
-    if (n < 1) return ""
-    local ret = ""
-    for (local i=0; i<n;i++)
-      ret+="  "
-    return ret
-  }
-
-  local function isIdentifier(name)
-  {
-    for (local i = 0; i < name.len(); i++)
-    {
-      local c = name[i];
-      if (!(c == '_' || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9' && i > 0)))
-        return false;
-    }
-    return true;
-  }
-
-
-  local maxrecursion = 4
-  local pp
-  pp = function(v, indent=0, recursion=0){
-    if (::type(v) == "function") {
-      local infos = v.getfuncinfos()
-      v = arrstr(infos?.parameters, infos?.defparams, infos?.native)
-      return "function(" + v + "){}\n"
-    }
-    else if (::type(v) == "class") {
-      return "{}\n"
-    }
-    else if (::type(v) == "table") {
-      local ret = ""
-      if (recursion < maxrecursion) {
-        ret += "{\n"
-        foreach (k, val in v) {
-          if (k != "globals" && ::type(k) == "string" && k.len() > 0 && (isIdentifier(k)))
-            ret += (indent == 0 ? "::" : indents(indent)) + k + (indent == 0 ? " <- " : " = ") + pp(val, indent+1, recursion+1)
-        }
-        ret += indents(indent-1)+"}\n"
-      }
-      else
-        ret ="{}\n"
-      return ret
-    }
-    else if (::type(v) == "array")
-      return "[]\n"
-    else if (::type(v) == "string")
-      return "\"\"\n"
-    else
-      return "0" + "\n"
-  }
-
-  ::dagor.debug("consttable:\n")
-  foreach (s in string.split(pp(getconsttable()), "\n"))
-    ::dagor.debug(s);
-
-  ::dagor.debug("roottable:\n")
-  foreach (s in string.split(pp(getroottable()), "\n"))
-    ::dagor.debug(s);
 }

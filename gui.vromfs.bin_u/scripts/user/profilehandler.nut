@@ -3,6 +3,8 @@ local externalIDsService = require("scripts/user/externalIdsService.nut")
 local avatars = require("scripts/user/avatars.nut")
 local platformModule = require("scripts/clientState/platform.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { openUrl } = require("scripts/onlineShop/url.nut")
+
 
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
@@ -300,6 +302,9 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
       btn_changeAccount = ::isInMenu() && isProfileOpened && !::is_platform_ps4 && !::is_vendor_tencent()
       btn_changeName = ::isInMenu() && isProfileOpened && !platformModule.isMeXBOXPlayer() && !platformModule.isMePS4Player() && !::is_vendor_tencent()
       btn_getLink = !::is_in_loading_screen() && isProfileOpened && ::has_feature("Invites")
+      btn_codeApp = platformModule.isPlatformPC && ::has_feature("AllowExternalLink") &&
+        !::g_user_utils.haveTag("gjpass") && ::isInMenu() && isProfileOpened &&
+          !::is_vendor_tencent()
       btn_ps4Registration = isProfileOpened && ::is_platform_ps4 && ::g_user_utils.haveTag("psnlogin")
       btn_SteamRegistration = isProfileOpened && ::steam_is_running() && ::has_feature("AllowSteamAccountLinking") && ::g_user_utils.haveTag("steamlogin")
       btn_xboxRegistration = isProfileOpened && ::is_platform_xboxone && ::has_feature("AllowXboxAccountLinking")
@@ -875,6 +880,11 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     }
   }
 
+  function onCodeAppClick(obj)
+  {
+    openUrl(::loc("url/2step/codeApp"))
+  }
+
   function onGroupCollapse(obj)
   {
     local value = obj.getValue()
@@ -1417,7 +1427,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     msgBox("question_change_name", ::loc(textLocId),
       [
         ["ok", function() {
-          ::open_url(::loc("url/changeName"), false, false, "profile_page")
+          openUrl(::loc("url/changeName"), false, false, "profile_page")
           afterOkFunc()
         }],
         ["cancel", function() { }]
@@ -1640,7 +1650,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
 
   function onOpenAchievementsUrl()
   {
-    ::open_url(::loc("url/achievements",
+    openUrl(::loc("url/achievements",
         { appId = ::WT_APPID, name = ::get_profile_info().name}),
       false, false, "profile_page")
   }

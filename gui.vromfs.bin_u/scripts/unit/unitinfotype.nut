@@ -33,6 +33,7 @@ enum UNIT_INFO_ORDER{
   MASS_PER_SEC,
   MASS,
   HORSE_POWERS,
+  HORSE_POWERS_RPM,
   MAX_SPEED_TANK,
   MAX_INCLINATION,
   TURN_TURRET_SPEED,
@@ -298,7 +299,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
   {
     id = "train_cost"
     compare = COMPARE_LESS_BETTER
-    order = UNIT_INFO_ORDER.FREE_REPAIRS
+    order = UNIT_INFO_ORDER.TRAIN_COST
     headerLocId = "shop/crew_train_cost"
     addToExportDataBlock = function(blk, unit)
     {
@@ -565,6 +566,25 @@ enums.addTypesByGlobalName("g_unit_info_type", [
         blk.valueText[mode] = ::format("%s %s %d %s",
           ::g_measure_type.HORSEPOWERS.getMeasureUnitsText(horsePowers),
           ::loc("shop/unitValidCondition"), horsePowersRPM.tointeger(), ::loc("measureUnits/rpm"))
+    }
+
+    addToExportDataBlock = function(blk, unit)
+    {
+      addToExportTankDataBlock(blk, unit)
+    }
+  }
+  {
+    id = "horse_powers_rpm"
+    order = UNIT_INFO_ORDER.HORSE_POWERS_RPM
+    compare = COMPARE_NO_COMPARE
+    headerLocId = "shop/horsePowers"
+    infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
+    addToExportTankDataBlockValues = function(blk, params, mode)
+    {
+        local horsePowersRPM = params.maxHorsePowersRPM.tointeger()
+
+        blk.value[mode] = horsePowersRPM
+        blk.valueText[mode] = horsePowersRPM.tostring()
     }
 
     addToExportDataBlock = function(blk, unit)

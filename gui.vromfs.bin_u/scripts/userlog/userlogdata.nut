@@ -1,6 +1,7 @@
 local time = require("scripts/time.nut")
-local workshop = ::require("scripts/items/workshop/workshop.nut")
-local workshopPreview = ::require("scripts/items/workshop/workshopPreview.nut")
+local workshop = require("scripts/items/workshop/workshop.nut")
+local workshopPreview = require("scripts/items/workshop/workshopPreview.nut")
+local { showEntitlement } = require("scripts/onlineShop/entitlementRewardWnd.nut")
 
 global enum USERLOG_POPUP {
   UNLOCK                = 0x0001
@@ -215,13 +216,14 @@ local clanActionNames = {
   local saveJob = false
   local combinedUnitTiersUserLogs = {}
   local trophyRewardsTable = {}
+  local entitlementRewards = {}
   local rentsTable = {}
   local ignoreRentItems = []
   local total = ::get_user_logs_count()
   local unlocksNeedsPopupWnd = false
   local popupMask = ("getUserlogsMask" in handler) ? handler.getUserlogsMask() : USERLOG_POPUP.ALL
 
-  for(local i = 0; i < total; i++)
+  for (local i = 0; i < total; i++)
   {
     local blk = ::DataBlock()
     ::get_user_log_blk_body(i, blk)
@@ -458,6 +460,12 @@ local clanActionNames = {
       }
       markDisabled = true
     }
+    else if (blk?.type == ::EULT_BUYING_RESOURCE)
+    {
+      if (blk?.body?.entName != null && entitlementRewards?[blk.body.entName] == null)
+        entitlementRewards[blk.body.entName] <- true
+      markDisabled = true
+    }
 
     if (markDisabled)
     {
@@ -480,6 +488,8 @@ local clanActionNames = {
   {
     ::gui_start_open_trophy(trophyRewardsTable)
   }
+
+  entitlementRewards.each(@(key, entId) handler.doWhenActive(@() showEntitlement(entId)))
 
   rentsTable.each(function(config, key) {
     if (!::isInArray(key, ignoreRentItems))

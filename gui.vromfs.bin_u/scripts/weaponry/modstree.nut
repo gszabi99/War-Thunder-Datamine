@@ -108,8 +108,20 @@ local modsTree = {
     }
     checkNotInTreeMods(notInTreeMods)
 
+    clearEmptyClasses(tree)
+
     generatePositions(tree)
     return tree
+  }
+
+  function clearEmptyClasses(tree)
+  {
+    for (local i = tree.len() - 1; i >= 0; i--)
+    {
+      local branch = tree[i]
+      if (branch != null && branch.len() <= 1)
+        tree.remove(i)
+    }
   }
 
   function shiftBranchX(branch, offsetX)

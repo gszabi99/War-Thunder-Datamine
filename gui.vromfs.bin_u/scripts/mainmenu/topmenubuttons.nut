@@ -4,6 +4,10 @@ local contentStateModule = require("scripts/clientState/contentState.nut")
 local workshop = require("scripts/items/workshop/workshop.nut")
 local platform = require("scripts/clientState/platform.nut")
 local encyclopedia = require("scripts/encyclopedia.nut")
+local { openChangelog } = require("scripts/changelog/openChangelog.nut")
+local openPersonalUnlocksModal = require("scripts/unlocks/personalUnlocksModal.nut")
+local { openUrlByObj } = require("scripts/onlineShop/url.nut")
+local openQrWindow = require("scripts/wndLib/qrWindow.nut")
 
 local cache = { byId = {} }
 
@@ -120,6 +124,11 @@ local list = {
     isHidden = @(...) !::has_feature("UserMissions")
     isInactiveInQueue = true
   }
+  PERSONAL_UNLOCKS = {
+    text = "#mainmenu/btnPersonalUnlocks"
+    onClickFunc = @(obj, handler) openPersonalUnlocksModal()
+    isHidden = @(...) !::has_feature("PersonalUnlocks")
+  }
   OPTIONS = {
     text = "#mainmenu/btnGameplay"
     onClickFunc = @(obj, handler) ::gui_start_options(handler)
@@ -147,6 +156,11 @@ local list = {
     text = "#mainmenu/btnGetLink"
     onClickFunc = @(...) ::show_viral_acquisition_wnd()
     isHidden = @(...) !::has_feature("Invites")
+  }
+  CHANGE_LOG = {
+    text = "#mainmenu/btnChangelog"
+    onClickFunc = @(...) openChangelog()
+    isHidden = @(...) !::has_feature("Changelog")
   }
   EXIT = {
     text = "#mainmenu/btnExit"
@@ -176,7 +190,7 @@ local list = {
   }
   TSS = {
     text = "#topmenu/tss"
-    onClickFunc = @(obj, handler) ::g_url.openByObj(obj)
+    onClickFunc = @(obj, handler) openUrlByObj(obj)
     isDelayed = false
     link = "#url/tss"
     isLink = @() true
@@ -184,11 +198,17 @@ local list = {
   }
   STREAMS_AND_REPLAYS = {
     text = "#topmenu/streamsAndReplays"
-    onClickFunc = @(obj, handler) ::g_url.openByObj(obj)
+    onClickFunc = @(obj, handler) ::has_feature("ShowUrlQrCode")
+      ? openQrWindow({
+          headerText = ::loc("topmenu/streamsAndReplays")
+          baseUrl = ::loc("url/streamsAndReplays")
+        })
+      : openUrlByObj(obj)
     isDelayed = false
     link = "#url/streamsAndReplays"
-    isLink = @() true
-    isHidden = @(...) !::has_feature("AllowExternalLink") || ::is_vendor_tencent()
+    isLink = @() !::has_feature("ShowUrlQrCode")
+    isHidden = @(...) (!::has_feature("AllowExternalLink") && !::has_feature("ShowUrlQrCode"))
+      || ::is_vendor_tencent() || !::isInMenu()
   }
   EAGLES = {
     text = "#charServer/chapter/eagles"
@@ -295,7 +315,7 @@ local list = {
   }
   FAQ = {
     text = "#mainmenu/faq"
-    onClickFunc = @(obj, handler) ::g_url.openByObj(obj)
+    onClickFunc = @(obj, handler) openUrlByObj(obj)
     isDelayed = false
     link = "#url/faq"
     isLink = @() true
@@ -304,16 +324,22 @@ local list = {
   }
   SUPPORT = {
     text = "#mainmenu/support"
-    onClickFunc = @(obj, handler) ::g_url.openByObj(obj)
+    onClickFunc = @(obj, handler) ::has_feature("ShowUrlQrCode")
+      ? openQrWindow({
+          headerText = ::loc("mainmenu/support")
+          baseUrl = ::loc("url/support")
+        })
+      : openUrlByObj(obj)
     isDelayed = false
     link = "#url/support"
-    isLink = @() true
-    isFeatured = @() true
-    isHidden = @(...) !::has_feature("AllowExternalLink") || ::is_vendor_tencent() || !::isInMenu()
+    isLink = @() !::has_feature("ShowUrlQrCode")
+    isFeatured = @() !::has_feature("ShowUrlQrCode")
+    isHidden = @(...) (!::has_feature("AllowExternalLink") && !::has_feature("ShowUrlQrCode"))
+      || ::is_vendor_tencent() || !::isInMenu()
   }
   WIKI = {
     text = "#mainmenu/wiki"
-    onClickFunc = @(obj, handler) ::g_url.openByObj(obj)
+    onClickFunc = @(obj, handler) openUrlByObj(obj)
     isDelayed = false
     link = "#url/wiki"
     isLink = @() true

@@ -11,6 +11,8 @@ colors.menu <- {
   userlogColoredText = Color(249, 219, 120)
   streakTextColor = Color(255, 229, 82)
   activeTextColor = Color(255, 255, 255)
+  linkTextColor           = Color(23, 192, 252)
+  linkTextHoverColorLight = Color(132, 224, 250)
 
   tabBackgroundColor = Color(3, 7, 12, 204)
   listboxSelOptionColor = Color(40, 51, 60)
@@ -29,6 +31,17 @@ colors.menu <- {
   textInputBgColor = Color(2, 5, 9, 145)
 
   voiceChatIconActiveColor = Color(134, 216, 8)
+
+  modalShadeColor = Color(2, 6, 11, 178)
+  frameBackgroundColor = Color(17, 20, 26, 242)
+  frameBorderColor = Color(32, 38, 44, 178)
+  frameHeaderColor = Color(42, 48, 55, 204)
+  higlightFrameBgColor = Color(8, 8, 8, 17) //evenTrColor
+
+  buttonCloseColorHover = Color(178, 57, 29)
+  buttonCloseColorPushed = Color(106, 34, 17, 153)
+  menuButtonColorHover = Color(45, 56, 65)
+  menuButtonTextColorHover = Color(224, 224, 224)
 }
 
 colors.hud <- {

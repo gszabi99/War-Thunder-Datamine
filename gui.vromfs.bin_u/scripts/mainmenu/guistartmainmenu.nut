@@ -46,3 +46,5 @@ local dbgStartCheck = 0
   topMenuShopActive(showShop)
   ::gui_start_mainmenu()
 }
+
+::cross_call_api.startMainmenu <- @() ::switch_gui_scene(::gui_start_mainmenu)

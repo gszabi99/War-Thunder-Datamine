@@ -400,4 +400,6 @@ g_language.getCurrentSteamLanguage <- function getCurrentSteamLanguage()
   return g_language.getCurrentSteamLanguage()
 }
 
+::cross_call_api.language <- ::g_language
+
 ::subscribe_handler(::g_language, ::g_listener_priority.DEFAULT_HANDLER)

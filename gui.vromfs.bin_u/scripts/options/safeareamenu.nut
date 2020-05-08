@@ -50,6 +50,8 @@ local canChangeValue = @() getFixedValue() == -1
 
 local getSafearea = @() screenInfo.getFinalSafearea(getValue(), screenInfo.getMenuWidthLimit())
 
+::cross_call_api.getMenuSafearea <- getSafearea
+
 local export = {
   getValue = getValue
   setValue = setValue

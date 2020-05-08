@@ -84,6 +84,11 @@ mission_item_completed:current mission_item_text, mission_item_unlocked:current 
 mission_item_unlocked, mission_item_locked{
   margin-left:3*@sf/@pf_outdated;
 }
+
+mission_item_unlocked[noMargin=yes] {
+  margin-left:0;
+}
+
 mission_item_locked mission_item_text
 {
   color:@missionLockedColor;

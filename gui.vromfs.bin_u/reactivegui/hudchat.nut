@@ -4,7 +4,7 @@ local teamColors = require("style/teamColors.nut")
 local chatBase = require("daRg/components/chat.nut")
 local textInput =  require("components/textInput.nut")
 local penalty = require("penitentiary/penalty.nut")
-local time = require("std/time.nut")
+local {secondsToTimeSimpleString} = require("std/time.nut")
 local state = require("hudChatState.nut")
 local hudState = require("hudState.nut")
 local hudLog = require("components/hudLog.nut")
@@ -161,7 +161,7 @@ local messageComponent = @(message) function() {
     )
   } else {
     text = ::string.format("%s <Color=%d>[%s] %s:</Color> <Color=%d>%s</Color>",
-      time.secondsToString(message.time, false),
+      secondsToTimeSimpleString(message.time),
       getSenderColor(message),
       ::cross_call.mp_chat_mode.getModeNameText(message.mode),
       ::cross_call.platform.getPlayerName(message.sender),

@@ -34,16 +34,21 @@ icon {
   background-image:t='#ui/gameuiskin#engine_state_indicator.svg'
 }
 
-text {
-  id:t='stabilizer'
-  hudTankDebuff:t='yes'
-  state:t='<<stateValue>>'
+debuffsTextNest {
+  behaviour:t='bhvUpdateByWatched'
   position:t='absolute'
   pos:t='pw/2 - w/2, 0.08ph - h/2'
-  text:t='#HUD/TXT_STABILIZER'
   css-hier-invalidate:t='yes'
-  behaviour:t='bhvHudTankStates'
+  value:t='<<stabilizerValue>>'
   display:t='hide'
+
+  text {
+    id:t='stabilizer'
+    hudTankDebuff:t='yes'
+    state:t='<<stateValue>>'
+    text:t='#HUD/TXT_STABILIZER'
+    css-hier-invalidate:t='yes'
+  }
 }
 
 icon {

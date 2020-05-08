@@ -1,6 +1,7 @@
 local state = require("shipState.nut")
 local colors = require("style/colors.nut")
-local time = require("std/time.nut")
+local {secondsToTimeFormatString} = require("std/time.nut")
+local timeLocTable = require("timeLocTable.nut")
 
 return @(){
   watch = state.timeToDeath
@@ -23,7 +24,7 @@ return @(){
       fontFxColor = Color(0, 0, 0, 50)
       fontFxFactor = 64
       fontFx = FFT_GLOW
-      text = time.secondsToString(state.timeToDeath.value, true, true)
+      text = secondsToTimeFormatString(state.timeToDeath.value).subst(timeLocTable)
       color = colors.hud.damageModule.alert
     }
   ]

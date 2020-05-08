@@ -1,9 +1,11 @@
+local stdMath = require("std/math.nut")
 local time = require("scripts/time.nut")
 local workshop = ::require("scripts/items/workshop/workshop.nut")
+local { updateModItem } = require("scripts/weaponry/weaponryVisual.nut")
 local workshopPreview = ::require("scripts/items/workshop/workshopPreview.nut")
-local stdMath = require("std/math.nut")
 local { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/entitlements.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { openUrl } = require("scripts/onlineShop/url.nut")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -500,7 +502,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
   function onNoAwardsInfoBtn()
   {
     if (::debriefing_result?.exp.eacKickMessage != null)
-      ::open_url(::loc("url/support/easyanticheat/kick_reasons"), false, false, "support_eac")
+      openUrl(::loc("url/support/easyanticheat/kick_reasons"), false, false, "support_eac")
   }
 
   function reinitTotal()
@@ -1520,7 +1522,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     if (mod)
     {
       local modObj = obj.findObject("mod_" + unitId)
-      ::weaponVisual.updateItem(unit, mod, modObj, false, this, getParamsForModItem(diffExp))
+      updateModItem(unit, mod, modObj, false, this, getParamsForModItem(diffExp))
     }
     else
     {
@@ -1564,7 +1566,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     if (!::checkObj(modObj))
       return
     local diffExp = getModExp(airData)
-    ::weaponVisual.updateItem(unit, mod, modObj, false, this, getParamsForModItem(diffExp))
+    updateModItem(unit, mod, modObj, false, this, getParamsForModItem(diffExp))
   }
 
   function getParamsForModItem(diffExp)

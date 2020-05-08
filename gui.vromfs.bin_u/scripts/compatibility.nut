@@ -121,5 +121,7 @@
 ::have_per_vehicle_zoom_sens <- "OPTION_GUNNER_VIEW_ZOOM_SENS" in ::getroottable()
                              && "OPTION_ATGM_AIM_ZOOM_SENS_HELICOPTER" in ::getroottable()
 ::apply_compatibilities({
+  request_voice_message_list = @(...) null
+  is_last_voice_message_list_for_squad = @() false
   TP_PS4 = 7
 })

@@ -12,6 +12,7 @@ img{
   pos:t='<<posx>>, 0.5ph - 0.5h'
   position:t='absolute'
   background-image:t='<<image>>'
+  background-repeat:t='aspect-ratio'
 
   <<#useTooltip>>
   title:t='$tooltipObj'

@@ -1,7 +1,7 @@
 local math = require("std/math.nut")
 local screenState = require("style/screenState.nut")
 local rwr = require("rwr.nut")
-local mlws = require("mlws.nut")
+local tws = require("tws.nut")
 local radarComponent = require("radarComponent.nut")
 local helicopterState = require("helicopterState.nut")
 local aamAim = require("rocketAamAim.nut")
@@ -496,7 +496,7 @@ local function helicopterHUDs(colorStyle, isBackground) {
     helicopterSightHud(hudStyle, isBackground)
     gunnerHud(hudStyle, isBackground)
     pilotHud(hudStyle, isBackground)
-    mlws(rwrStyle)
+    tws(rwrStyle)
     rwr(rwrStyle)
     radar
   ]

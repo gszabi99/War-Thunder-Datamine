@@ -13,12 +13,6 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
     isStartedFromMenu  = isStartedFromMenu
     contentSet = contentSet
   })
-
-  if (::is_in_flight() && ::get_player_cur_unit()?.isSuit())
-  {
-    ::should_offer_controls_help = false
-    ::g_hud_event_manager.onHudEvent("hint:controlsHelp:remove", {})
-  }
 }
 
 ::gui_start_flight_menu_help <- function gui_start_flight_menu_help()

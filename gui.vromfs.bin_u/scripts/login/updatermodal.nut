@@ -1,3 +1,4 @@
+local statsd = require("statsd")
 local time = require("scripts/time.nut")
 local { animBgLoad } = require("scripts/loading/animBg.nut")
 
@@ -121,7 +122,7 @@ class ::gui_handlers.UpdaterModal extends ::BaseGuiHandler
     {
       if (!wasCancelButtonShownOnce)
       {
-        ::statsd_report("counter", "updater.longdownload", 1)
+        statsd.send_counter("sq.updater.longdownload", 1)
         wasCancelButtonShownOnce = true
       }
     }
@@ -197,7 +198,7 @@ class ::gui_handlers.UpdaterModal extends ::BaseGuiHandler
   function onCancel()
   {
     isCancel = true
-    ::statsd_report("counter", "updater.cancelled", 1)
+    statsd.send_counter("sq.updater.cancelled", 1)
     ::stop_content_updater()
     showSceneBtn(buttonCancelId, false)
   }
@@ -205,7 +206,7 @@ class ::gui_handlers.UpdaterModal extends ::BaseGuiHandler
   function onEventSignOut()
   {
     ::stop_content_updater()
-    ::statsd_report("counter", "updater.signedout", 1)
+    statsd.send_counter("sq.updater.signedout", 1)
   }
 
   function afterModalDestroy()

@@ -27,9 +27,10 @@ icon {
 
   drivingDirectionModeStatus {
     id:t='driving_direction_mode'
-    behaviour:t='bhvHudTankStates'
+    behaviour:t='bhvUpdateByWatched'
     state:t='off'
     tooltip:t='#hotkeys/ID_ENABLE_GM_DIRECTION_DRIVING'
+    value:t='<<drivingDirectionModeValue>>'
   }
 }
 

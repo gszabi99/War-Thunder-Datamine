@@ -129,6 +129,7 @@ global enum AnimProp{
   DragAndDrop = "DragAndDrop"
   RtPropUpdate = "RtPropUpdate"
   Pannable = "Pannable"
+  Pannable2touch = "Pannable2touch"
 }
 
 ::Picture <- function Picture(val){return val}

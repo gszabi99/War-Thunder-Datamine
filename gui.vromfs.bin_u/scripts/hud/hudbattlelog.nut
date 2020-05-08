@@ -106,7 +106,6 @@ enum BATTLE_LOG_FILTER
     //
 
 
-    [::UT_SuitVehicle]   = ::ES_UNIT_TYPE_TANK,
   }
 
   rePatternNumeric = ::regexp2("^\\d+$")

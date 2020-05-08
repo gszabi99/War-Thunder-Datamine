@@ -253,6 +253,9 @@ local defaults = ::Watched({  //def value when feature not found in game_setting
 
   everyDayLoginAward = true
   DebugLogPS4ShopData = false //For debug purpose, to see ps4 shop data on retail console
+  ShowWeapPresetsMenu = false
+  Changelog = false
+  ShowUrlQrCode = false
 })
 
 local override = ::Watched({})
@@ -327,6 +330,8 @@ local function hasAnyFeature(arr)
 addListenersWithoutEnv({
   ProfileUpdated = @(p) cache.clear()
 }, ::g_listener_priority.CONFIG_VALIDATION)
+
+::cross_call_api.hasFeature <- hasFeature
 
 return {
   defaults = defaults

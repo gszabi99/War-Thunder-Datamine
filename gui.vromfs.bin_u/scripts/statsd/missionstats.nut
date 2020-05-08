@@ -1,3 +1,5 @@
+local statsd = require("statsd")
+
 ::MissionStats <- {
   [PERSISTENT_DATA_PARAMS] = ["sendDelaySec", "_spawnTime"]
 
@@ -36,7 +38,7 @@ MissionStats.onEventPlayerQuitMission <- function onEventPlayerQuitMission(p)
   if (!::is_multiplayer())
     return
 
-  statsd_counter("early_session_leave." + ::get_current_mission_name())
+  statsd.send_counter("sq.early_session_leave", 1, {mission = get_current_mission_name()})
 }
 
 //!!must be atthe end of the file

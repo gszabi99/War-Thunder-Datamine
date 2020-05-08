@@ -126,8 +126,9 @@ handlersManager.updatePostLoadCss <- function updatePostLoadCss()
     local safearea = safeAreaHud.getSafearea()
     ::set_dagui_pre_include_css_str(cssStringPre)
     ::set_hud_width_limit(safearea[0])
-    ::call_darg("updateHudSafeArea", {
+    ::call_darg("updateSafeArea", {
       safeAreaHud = safearea
+      safeAreaMenu = safeAreaMenu.getSafearea()
     })
     haveChanges = true
   }

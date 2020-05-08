@@ -1,3 +1,6 @@
+local { getItemStatusTbl,
+        getItemUnlockCost,
+        getItemCost } = require("scripts/weaponry/itemInfo.nut")
 local { isFakeBullet,
         getBulletGroupIndex } = require("scripts/weaponry/bulletsInfo.nut")
 local { getLastWeapon,
@@ -364,7 +367,7 @@ local getModBlock = function(modName, blockName, templateKey)
   local modsCost = ::Cost()
   foreach(modification in ::getTblValue("modifications", unit, {}))
   {
-    local statusTbl = ::weaponVisual.getItemStatusTbl(unit, modification)
+    local statusTbl = getItemStatusTbl(unit, modification)
     if (statusTbl.maxAmount == statusTbl.amount)
       continue
 
@@ -373,14 +376,14 @@ local getModBlock = function(modName, blockName, templateKey)
 
     if (open)
     {
-      local openCost = ::weaponVisual.getItemUnlockCost(unit, modification)
+      local openCost = getItemUnlockCost(unit, modification)
       if (!openCost.isZero())
         _modCost = openCost
     }
 
     if (::canBuyMod(unit, modification))
     {
-      local modificationCost = ::weaponVisual.getItemCost(unit, modification)
+      local modificationCost = getItemCost(unit, modification)
       if (!modificationCost.isZero())
       {
         skipSummary = statusTbl.maxAmount > 1

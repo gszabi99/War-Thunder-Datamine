@@ -105,21 +105,18 @@ return [
     id = "ID_SHIP_WEAPON_PRIMARY"
     checkGroup = ctrlGroups.SHIP
     checkAssign = false
-    showFunc = @() ::g_controls_utils.checkOptionValue(::USEROPT_WHEEL_CONTROL_SHIP, false)
     needShowInHelp = true
   }
   {
     id = "ID_SHIP_WEAPON_SECONDARY"
     checkGroup = ctrlGroups.SHIP
     checkAssign = false
-    showFunc = @() ::g_controls_utils.checkOptionValue(::USEROPT_WHEEL_CONTROL_SHIP, false)
     needShowInHelp = true
   }
   {
     id = "ID_SHIP_WEAPON_MACHINEGUN"
     checkGroup = ctrlGroups.SHIP
     checkAssign = false
-    showFunc = @() ::g_controls_utils.checkOptionValue(::USEROPT_WHEEL_CONTROL_SHIP, false)
     needShowInHelp = true
   }
   {

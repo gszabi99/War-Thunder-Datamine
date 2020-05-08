@@ -5,42 +5,49 @@
   "root": {
     "active": true
   },
-  "simple_unit": {
-    "_extends": "root",
-    "aim_component": [],
-    "aim_component:_namespace": {
-      "inited": false
+  "simple_unit": [
+    {
+      "_extends": "root"
     },
-    "unit_ref": [],
-    "unit_ref:_namespace": {
-      "id": -1
+    {
+      "_extends": "replicating"
+    },
+    {
+      "uid": -1
+    },
+    {
+      "className": ""
+    },
+    {
+      "playerNo": -1
+    },
+    {
+      "is_local": false
+    },
+    {
+      "unitVersion": 0
+    },
+    {
+      "_replicated": "^(uid)$"
     }
-  },
+  ],
   "unit": {
-    "_extends": "simple_unit",
+    "_extends": "simple_unit"
+  },
+  "simple_ground_unit": {
+    "_extends": "unit",
+    "aim_component": []
+  },
+  "ground_unit": {
+    "_extends": "simple_ground_unit",
     "unit_fire": [],
     "unit_fire_fx": [],
     "unit_extinguish": [],
     "unit_crew": [],
-    "unit_crew:_namespace": {
-      "inited": false
-    },
     "unit_repair": [],
-    "unit_repair:_namespace": {
-      "inited": false
-    },
     "unit_fx": [],
-    "unit_fx:_namespace": {
-      "inited": false
-    },
     "fuel_tanks": [],
-    "fuel_tanks:_namespace": {
-      "inited": false
-    },
     "ammo_stowage": [],
-    "ammo_stowage:_namespace": {
-      "inited": false
-    },
     "fire_damage": [],
     "fire_damage:_namespace": {
       "update_burn_interval": 1.0,
@@ -58,93 +65,58 @@
     }
   },
   "light_vehicle": {
-    "_extends": "simple_unit"
+    "_extends": "simple_ground_unit"
   },
   "fortification": {
-    "_extends": "simple_unit"
+    "_extends": "simple_ground_unit"
   },
   "simple_tank": {
-    "_extends": "simple_unit"
+    "_extends": "simple_ground_unit"
   },
   "tank": {
-    "_extends": "unit",
+    "_extends": "ground_unit",
     "medicalkit": [],
     "medicalkit:_namespace": {
       "name": "tank_medical_kit_expendable",
       "enabled_without_mod": false
     },
-    "track_sound_outside": [],
-    "track_sound_outside:_namespace": {
-      "inited": false
+    "track_sound_outside": {
+      "_tags": "sound"
     }
   },
   "player_tank": {
     "_extends": "tank",
-    "track_sound_cockpit": [],
-    "track_sound_cockpit:_namespace": {
-      "inited": false
+    "track_sound_cockpit": {
+      "_tags": "sound"
     }
   },
   "simple_ship": {
-    "_extends": "simple_unit"
+    "_extends": "simple_ground_unit"
   },
   "ship": {
-    "_extends": "unit",
+    "_extends": "ground_unit",
     "extinguisher.enabled_without_mod": false,
-    "track_sound_outside": [],
-    "track_sound_outside:_namespace": {
-      "inited": false
+    "track_sound_outside": {
+      "_tags": "sound"
     }
   },
   "player_ship": {
     "_extends": "ship",
-    "track_sound_cockpit": [],
-    "track_sound_cockpit:_namespace": {
-      "inited": false
+    "track_sound_cockpit": {
+      "_tags": "sound"
     }
-  },
-  "helicopter": {
-    "_extends": "unit"
   },
   "walker": {
+    "_extends": "ground_unit"
+  },
+  "barrage_ballon": {
     "_extends": "unit"
   },
-  "suit": {
-    "_extends": "simple_unit",
-    "unit_fire": [],
-    "unit_fire_fx": [],
-    "unit_extinguish": [],
-    "unit_crew": [],
-    "unit_crew:_namespace": {
-      "inited": false
-    },
-    "unit_fx": [],
-    "unit_fx:_namespace": {
-      "inited": false
-    },
-    "fuel_tanks": [],
-    "fuel_tanks:_namespace": {
-      "inited": false
-    },
-    "ammo_stowage": [],
-    "ammo_stowage:_namespace": {
-      "inited": false
-    },
-    "fire_damage": [],
-    "fire_damage:_namespace": {
-      "update_burn_interval": 1.0,
-      "isBurn": false
-    },
-    "toolkit": [],
-    "toolkit:_namespace": {
-      "name": "tank_tool_kit_expendable",
-      "enabled_without_mod": true
-    },
-    "extinguisher": [],
-    "extinguisher:_namespace": {
-      "name": "manual_extinguisher_expendable",
-      "enabled_without_mod": true
-    }
+  "infantry_troop": {
+    "_extends": "simple_ground_unit"
+  },
+  "aircraft": {
+    "_extends": "unit"
   },
   "weapon": {
     "_extends": "root",

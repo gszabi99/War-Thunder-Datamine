@@ -277,7 +277,6 @@ local Unit = class
   //
 
 
-  isSuit                = @() esUnitType == ::ES_UNIT_TYPE_TANK && tags.indexof("suit") != null
 
   getUnitWpCostBlk      = @() ::get_wpcost_blk()?[name] ?? ::DataBlock()
   isBought              = @() ::shop_is_aircraft_purchased(name)
@@ -408,7 +407,7 @@ local Unit = class
     weaponry.modClass <- blk?.modClass || weaponBlk?.modClass || ""
     weaponry.image <- ::get_weapon_image(esUnitType, weaponBlk, blk)
     weaponry.requiresModelReload <- weaponBlk?.requiresModelReload ?? false
-    weaponry.isHidden <- weaponBlk?.isHidden ?? false
+    weaponry.isHidden <- blk?.isHidden ?? weaponBlk?.isHidden ?? false
     weaponry.weaponmask <- blk?.weaponmask ?? 0
 
     if (weaponry.name == "tank_additional_armor")

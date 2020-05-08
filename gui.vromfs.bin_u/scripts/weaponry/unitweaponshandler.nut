@@ -1,3 +1,4 @@
+local { updateModItem, createModItemLayout } = require("scripts/weaponry/weaponryVisual.nut")
 local { getLastWeapon, setLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 
 class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
@@ -50,6 +51,7 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
       canShowPrice = canShowPrice
       canShowStatusImage = false
       selectBulletsByManager = (canChangeWeaponry && canChangeBulletsAmount) ? bulletsManager : null
+      needSliderButtons = canChangeBulletsAmount
       hasMenu = false
       isForceHidePlayerInfo = isForcedAvailable && !::isUnitUsable(unit)
     }
@@ -228,7 +230,7 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
         item = getCurBullet(cell.bulGroupIdx)
 
       if (item)
-        res += ::weaponVisual.createItemLayout(cell.id, unit, item, cell.itemType, params)
+        res += createModItemLayout(cell.id, unit, item, cell.itemType, params)
     }
     return res
   }
@@ -445,7 +447,7 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!curWeapon)
       return
 
-    ::weaponVisual.updateItem(unit, curWeapon, itemObj, false, this, showItemParams)
+    updateModItem(unit, curWeapon, itemObj, false, this, showItemParams)
     showItemParams.hasMenu = false
   }
 
@@ -460,7 +462,7 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
       showItemParams.visualDisabled <- !bulGroup.active
       showItemParams.hasMenu <- canChangeWeaponry && bulGroup.bullets.values.len() > 1
-      ::weaponVisual.updateItem(unit, bulGroup.getSelBullet(), itemObj, false, this, showItemParams)
+      updateModItem(unit, bulGroup.getSelBullet(), itemObj, false, this, showItemParams)
     }
     showItemParams.visualDisabled <- false
     showItemParams.hasMenu <- false

@@ -8,38 +8,29 @@ const URL_TAG_NO_ENCODING = "no_encoding"
 
 const AUTH_ERROR_LOG_COLLECTION = "log"
 
-::g_url <- {}
+local canAutoLogin = @() !::is_vendor_tencent() && ::g_login.isAuthorized()
 
-g_url.open <- function open(baseUrl, forceExternal=false, isAlreadyAuthenticated = false)
-{
-  if (!::has_feature("AllowExternalLink"))
-    return
-
-  if (baseUrl == null || baseUrl == "")
-  {
+local function getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated = false) {
+  if (baseUrl == null || baseUrl == "") {
     dagor.debug("Error: tried to open an empty url")
-    return
+    return null
   }
 
   local url = clearBorderSymbols(baseUrl, [URL_TAGS_DELIMITER])
   local urlTags = ::split(baseUrl, URL_TAGS_DELIMITER)
-  if (!urlTags.len())
-  {
+  if (!urlTags.len()) {
     dagor.debug("Error: tried to open an empty url")
-    return
+    return null
   }
-  url = urlTags.remove(urlTags.len() - 1)
+  local urlWithoutTags = urlTags.remove(urlTags.len() - 1)
+  url = urlWithoutTags
 
   local urlType = ::g_url_type.getByUrl(url)
   if (::isInArray(URL_TAG_AUTO_LOCALIZE, urlTags))
     url = urlType.applyCurLang(url)
 
-  ::dagor.debug("Open url with urlType = " + urlType.typeName + ": " + url)
-  ::dagor.debug("Base Url = " + baseUrl)
-
   local shouldLogin = ::isInArray(URL_TAG_AUTO_LOGIN, urlTags)
-  if (!isAlreadyAuthenticated && urlType.needAutoLogin && shouldLogin && canAutoLogin())
-  {
+  if (!isAlreadyAuthenticated && urlType.needAutoLogin && shouldLogin && canAutoLogin()) {
     local shouldEncode = !::isInArray(URL_TAG_NO_ENCODING, urlTags)
     if (shouldEncode)
       url = ::encode_base64(url)
@@ -50,25 +41,45 @@ g_url.open <- function open(baseUrl, forceExternal=false, isAlreadyAuthenticated
 
     if (authData.yuplayResult == ::YU2_OK)
       url = authData.url + (shouldEncode ? "&ret_enc=1" : "") //This parameter is needed for coded complex links.
-    else if (authData.yuplayResult == ::YU2_WRONG_LOGIN)
-    {
+    else if (authData.yuplayResult == ::YU2_WRONG_LOGIN) {
       ::send_error_log("Authorize url: failed to get authenticated url with error ::YU2_WRONG_LOGIN",
         false, AUTH_ERROR_LOG_COLLECTION)
       ::gui_start_logout()
-      return
+      return null
     }
     else
       ::send_error_log("Authorize url: failed to get authenticated url with error " + authData.yuplayResult,
         false, AUTH_ERROR_LOG_COLLECTION)
   }
 
+  return {
+    url = url
+    urlWithoutTags = urlWithoutTags
+    urlTags = urlTags
+    urlType = urlType
+  }
+}
+
+local function open(baseUrl, forceExternal=false, isAlreadyAuthenticated = false) {
+  if (!::has_feature("AllowExternalLink"))
+    return
+
+  local urlConfig = getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated)
+  if (urlConfig == null)
+    return
+
+  local url = urlConfig.url
+  local urlType = urlConfig.urlType
+
+  ::dagor.debug("Open url with urlType = " + urlType.typeName + ": " + url)
+  ::dagor.debug("Base Url = " + baseUrl)
   local hasFeature = urlType.isOnlineShop
                      ? ::has_feature("EmbeddedBrowserOnlineShop")
                      : ::has_feature("EmbeddedBrowser")
   if (!forceExternal && ::use_embedded_browser() && !::steam_is_running() && hasFeature)
   {
     // Embedded browser
-    ::open_browser_modal(url, urlTags)
+    ::open_browser_modal(url, urlConfig.urlTags)
     ::broadcastEvent("BrowserOpened", { url = url, external = false })
     return
   }
@@ -87,8 +98,7 @@ g_url.open <- function open(baseUrl, forceExternal=false, isAlreadyAuthenticated
   })(url))
 }
 
-g_url.openByObj <- function openByObj(obj, forceExternal=false, isAlreadyAuthenticated = false)
-{
+local function openUrlByObj(obj, forceExternal=false, isAlreadyAuthenticated = false) {
   if (!::check_obj(obj) || obj?.link == null || obj.link == "")
     return
 
@@ -96,13 +106,7 @@ g_url.openByObj <- function openByObj(obj, forceExternal=false, isAlreadyAuthent
   open(link, forceExternal, isAlreadyAuthenticated)
 }
 
-g_url.canAutoLogin <- function canAutoLogin()
-{
-  return !::is_platform_xboxone && !::is_vendor_tencent() && ::g_login.isAuthorized()
-}
-
-g_url.validateLink <- function validateLink(link)
-{
+local function validateLink(link) {
   if (link == null)
     return null
 
@@ -132,8 +136,7 @@ g_url.validateLink <- function validateLink(link)
   return null
 }
 
-::open_url <- function open_url(baseUrl, forceExternal=false, isAlreadyAuthenticated = false, biqQueryKey = "")
-{
+local function openUrl(baseUrl, forceExternal=false, isAlreadyAuthenticated = false, biqQueryKey = "") {
   if (!::has_feature("AllowExternalLink"))
     return
 
@@ -144,5 +147,16 @@ g_url.validateLink <- function validateLink(link)
   ::add_big_query_record(forceExternal ? "player_opens_external_browser" : "player_opens_browser"
     ::save_to_json(bigQueryInfoObject))
 
-  ::g_url.open(baseUrl, forceExternal, isAlreadyAuthenticated)
+  open(baseUrl, forceExternal, isAlreadyAuthenticated)
+}
+
+::open_url <- openUrl //use in native code
+
+::cross_call_api.openUrl <- openUrl
+
+return {
+  openUrl = openUrl
+  openUrlByObj = openUrlByObj
+  validateLink = validateLink
+  getAuthenticatedUrlConfig = getAuthenticatedUrlConfig
 }

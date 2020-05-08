@@ -132,18 +132,12 @@ local function details() {
   local text = sel ? sel.locationText : null
 
   local summaryText = {
+    size = flex()
+    margin = [sh(3), 0, 0, 0]
     rendObj = ROBJ_TEXTAREA
     behavior = [Behaviors.TextArea, Behaviors.WheelScroll]
     text = text
-    size = [flex(), fontH(400)]
   }
-
-  local children = [
-    summaryText
-  ]
-
-  local panelItems = propPanel(sel.componentDesc)
-  children.extend(panelItems)
 
   return {
     size = [flex(), flex(1)]
@@ -151,7 +145,8 @@ local function details() {
     color = Color(0,0,50,200)
     flow = FLOW_VERTICAL
 
-    children = children
+    children = propPanel(sel.componentDesc)
+      .append(summaryText)
   }
 }
 

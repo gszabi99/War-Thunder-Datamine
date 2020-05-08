@@ -192,9 +192,13 @@ local getBlinkOpacity = @() math.round(radarState.currentTime * 3) % 2 == 0 ? 1.
   radarState.TargetsTrigger.trigger()
 }
 
-local radarHdpx = function(px)
+local ilsHdpx = function(px)
 {
   return radarState.MfdIlsEnabled.value ? (px * radarState.MfdIlsHeight.value / 1024) : hdpx(px)
+}
+local radarHdpx = function(px)
+{
+  return radarState.MfdRadarEnabled.value ? (px * radarState.radarPosSize.h / 1024) : hdpx(px)
 }
 local radarSh = function(h)
 {
@@ -206,7 +210,7 @@ local radarSw = function(w)
 }
 local getFontScale = function()
 {
-  return radarState.MfdRadarEnabled.value || radarState.MfdIlsEnabled.value ? 2.5 : (sh(100) / 1080)
+  return radarState.MfdRadarEnabled.value || radarState.MfdIlsEnabled.value ? 2 : (sh(100) / 1080)
 }
 style.lineForeground <- class {
   color = greenColor
@@ -595,18 +599,8 @@ local B_ScopeSquareLaunchRangeComponent = function(width, height, aamLaunchZoneD
   })
 }
 
-local angularGateWidthMultMin = 4.0
-local angularGateWidthMultMax = 6.0
-local angularGateWidthMultMinDistanceRel = 0.06
-local angularGateWidthMultMaxDistanceRel = 0.33
-local angularGateBeamWidthMin = 2.0 * 0.0174
 local distanceGateWidthRelMin = 0.05
-
-local function calcAngularGateWidth(distance_rel)
-{
-  local blend = min((distance_rel - angularGateWidthMultMinDistanceRel) / (angularGateWidthMultMaxDistanceRel - angularGateWidthMultMinDistanceRel), 1.0)
-  return angularGateWidthMultMin * blend + angularGateWidthMultMax * (1.0 - blend)
-}
+local angularGateWidthMultSquare = 4.0
 
 local distanceGateWidthMult = 2.0
 local iffDistRelMult = 0.5
@@ -630,8 +624,7 @@ local function createTargetOnRadarSquare(index, radius, radarWidth, radarHeight)
   {
     local frameCommands = []
 
-    local angularGateWidthMult = calcAngularGateWidth(distanceRel)
-    local angularGateWidthRel = angularGateWidthMult * 2.0 * max(radarState.AzimuthHalfWidth.value, angularGateBeamWidthMin) / getAzimuthRange()
+    local angularGateWidthRel = angularGateWidthMultSquare * 2.0 * radarState.AzimuthHalfWidth.value / getAzimuthRange()
     local angleGateLeftRel = angleRel - 0.5 * angularGateWidthRel
     local angleGateRightRel = angleRel + 0.5 * angularGateWidthRel
 
@@ -848,7 +841,7 @@ local noiseSignal = function(size, pos1, pos2)
 
   return @(){
     size = SIZE_TO_CONTENT
-    children = !radarState.MfdRadarEnabled.value ? getChildren() : []
+    children = getChildren()
     watch = [
       radarState.IsRadarVisible,
       radarState.IsRadar2Visible,
@@ -863,8 +856,6 @@ local radToDeg = 180.0 / 3.14159
 
 local makeRadarModeText = function ()
 {
-  if (radarState.MfdRadarEnabled.value)
-    return ""
   local text = ""
   if (radarState.RadarModeNameId.value >= 0)
     text += ::loc(modeNames[radarState.RadarModeNameId.value])
@@ -875,8 +866,6 @@ local makeRadarModeText = function ()
 
 local makeRadar2ModeText = function ()
 {
-  if (radarState.MfdRadarEnabled.value)
-    return ""
   local text = ""
   if (radarState.Radar2ModeNameId.value >= 0)
     text += ::loc(modeNames[radarState.Radar2ModeNameId.value])
@@ -896,7 +885,7 @@ local B_ScopeSquareMarkers = function(radarWidth, radarHeight)
         children = @() style.lineForeground.__merge({
           rendObj = ROBJ_DTEXT
           size = SIZE_TO_CONTENT
-          pos = [hdpx(4), hdpx(4)]
+          pos = radarState.MfdRadarEnabled.value ? [ radarWidth * 0.2, -radarHdpx(40)] : [hdpx(4), hdpx(4)]
           hplace = ALIGN_RIGHT
           watch = [ radarState.HasAzimuthScale, radarState.ScanAzimuthMin, radarState.ScanAzimuthMax,
                     radarState.ScanElevationMin, radarState.ScanElevationMax, radarState.ScanPatternsMax ]
@@ -909,7 +898,7 @@ local B_ScopeSquareMarkers = function(radarWidth, radarHeight)
       @() style.lineForeground.__merge({
         rendObj = ROBJ_DTEXT
         size = SIZE_TO_CONTENT
-        pos = [radarWidth + hdpx(4), hdpx(4)]
+        pos = radarState.MfdRadarEnabled.value ? [ radarWidth * 0.8, -radarHdpx(40)] : [radarWidth + hdpx(4), hdpx(4)]
         watch = [ radarState.HasDistanceScale, radarState.DistanceMax, radarState.DistanceScalesMax ]
         text = radarState.HasDistanceScale.value ?
           ::cross_call.measureTypes.DISTANCE.getMeasureUnitsText(radarState.DistanceMax.value * 1000.0) +
@@ -918,7 +907,8 @@ local B_ScopeSquareMarkers = function(radarWidth, radarHeight)
       style.lineForeground.__merge({
         rendObj = ROBJ_STEXT
         size = SIZE_TO_CONTENT
-        pos = [radarWidth + hdpx(4), radarHeight - hdpx(20)]
+        pos = radarState.MfdRadarEnabled.value ? [ radarWidth * 0.8, radarHeight + radarHdpx(10)] :
+          [radarWidth + hdpx(4), radarHeight - hdpx(20)]
         text = ::cross_call.measureTypes.DISTANCE.getMeasureUnitsText(0.0)
       })
       @() style.lineForeground.__merge({
@@ -1193,6 +1183,19 @@ local function B_ScopeSectorComponent(width, valueWatched, distWatched, halfWidt
   }
 }
 
+local angularGateBeamWidthMin = 2.0 * 0.0174
+
+local angularGateWidthMultMinPolar = 4.0
+local angularGateWidthMultMaxPolar = 6.0
+local angularGateWidthMultMinDistanceRelPolar = 0.06
+local angularGateWidthMultMaxDistanceRelPolar = 0.33
+
+local function calcAngularGateWidthPolar(distance_rel)
+{
+  local blend = min((distance_rel - angularGateWidthMultMinDistanceRelPolar) / (angularGateWidthMultMaxDistanceRelPolar - angularGateWidthMultMinDistanceRelPolar), 1.0)
+  return angularGateWidthMultMinPolar * blend + angularGateWidthMultMaxPolar * (1.0 - blend)
+}
+
 local function createTargetOnRadarPolar(index, radius, radarWidth, radarHeight)
 {
   local target = radarState.targets[index]
@@ -1209,7 +1212,7 @@ local function createTargetOnRadarPolar(index, radius, radarWidth, radarHeight)
 
   if (target.isSelected || target.isDetected || !target.isEnemy)
   {
-    local angularGateWidthMult = calcAngularGateWidth(distanceRel)
+    local angularGateWidthMult = calcAngularGateWidthPolar(distanceRel)
     local angularGateWidth = angularGateWidthMult * 2.0 * max(radarState.AzimuthHalfWidth.value, angularGateBeamWidthMin)
     local angleGateLeft  = angle - 0.5 * angularGateWidth
     local angleGateRight = angle + 0.5 * angularGateWidth
@@ -1527,7 +1530,7 @@ local B_ScopeHalfCircleMarkers = function(radarWidth, radarHeight)
         children = @() style.lineForeground.__merge({
           rendObj = ROBJ_DTEXT
           size = SIZE_TO_CONTENT
-          pos = radarState.MfdRadarEnabled.value ? [ radarWidth * 0.3, radarHeight * 0.75] :
+          pos = radarState.MfdRadarEnabled.value ? [ radarWidth * 0.4, radarHeight * 0.2] :
           [
             radarWidth * 0.5 * (1.0 - math.sin(radarState.AzimuthMax.value)) + hdpx(4),
             radarHeight * 0.5 * (1.0 - math.cos(radarState.AzimuthMax.value)) - hdpx(4)
@@ -1539,12 +1542,13 @@ local B_ScopeHalfCircleMarkers = function(radarWidth, radarHeight)
             math.floor((radarState.ScanAzimuthMax.value - radarState.ScanAzimuthMin.value) * radToDeg + 0.5) + ::loc("measureUnits/deg") + "x" +
             math.floor((radarState.ScanElevationMax.value - radarState.ScanElevationMin.value) * radToDeg + 0.5) + ::loc("measureUnits/deg") +
             (radarState.ScanPatternsMax.value > 1 ? "*" : " ") : ""
+          fontScale = getFontScale()
         })
       }
       @() style.lineForeground.__merge({
         rendObj = ROBJ_DTEXT
         size = SIZE_TO_CONTENT
-        pos = radarState.MfdRadarEnabled.value ? [ radarWidth * 0.3, radarHeight * 0.75] :
+        pos = radarState.MfdRadarEnabled.value ? [ radarWidth * 0.55, radarHeight * 0.2] :
         [
           radarWidth * 0.5 * (1.0 + math.sin(radarState.AzimuthMax.value)) + hdpx(4),
           radarWidth * 0.5 * (1.0 - math.cos(radarState.AzimuthMax.value)) - hdpx(4)
@@ -1558,14 +1562,16 @@ local B_ScopeHalfCircleMarkers = function(radarWidth, radarHeight)
       style.lineForeground.__merge({
         rendObj = ROBJ_DTEXT
         size = SIZE_TO_CONTENT
-        pos = [radarWidth * (0.5 - 0.15), radarState.MfdRadarEnabled.value ? 0 : -hdpx(20)]
+        pos = [radarWidth * (0.5 - 0.15), radarState.MfdRadarEnabled.value ? radarHeight * 0.1 : -hdpx(20)]
         text = makeRadarModeText()
+        fontScale = radarState.MfdRadarEnabled.value ? 2.0 : (sh(100) / 1080)
       })
       style.lineForeground.__merge({
         rendObj = ROBJ_DTEXT
         size = SIZE_TO_CONTENT
-        pos = [radarWidth * (0.5 + 0.05), radarState.MfdRadarEnabled.value ? 0 : -hdpx(20)]
+        pos = [radarWidth * (0.5 + 0.05), radarState.MfdRadarEnabled.value ? radarHeight * 0.1 : -hdpx(20)]
         text = makeRadar2ModeText()
+        fontScale = radarState.MfdRadarEnabled.value ? 2.0 : (sh(100) / 1080)
       })
       noiseSignal(
         [radarWidth * 0.06, radarHeight * 0.06],
@@ -2055,7 +2061,7 @@ local forestallRadius = hdpx(15)
 local targetOnScreenWidth = hdpx(50)
 
 local targetsOnScreenComponent = function() {
-  local targetSize = radarState.MfdIlsEnabled.value ? radarHdpx(100) : targetOnScreenWidth
+  local targetSize = radarState.MfdIlsEnabled.value ? ilsHdpx(100) : targetOnScreenWidth
   local getTargets = function() {
     if (!radarState.HasAzimuthScale.value)
       return null
@@ -2087,7 +2093,7 @@ local forestallComponent = function() {
       @() {
           rendObj = ROBJ_VECTOR_CANVAS
           size = [2 * forestallRadius * widthMul, 2 * forestallRadius * widthMul]
-          lineWidth = radarHdpx(2) * LINE_WIDTH * widthMul
+          lineWidth = ilsHdpx(2) * LINE_WIDTH * widthMul
           color = greenColor
           fillColor = Color(0, 0, 0, 0)
           commands = [
@@ -2164,7 +2170,7 @@ local function lockZoneComponent() {
           rendObj = ROBJ_DTEXT
           size = SIZE_TO_CONTENT
           pos = [ math.sqrt(math.pow(radarState.lockZone.x1 - radarState.lockZone.x0, 2) +
-                            math.pow(radarState.lockZone.y1 - radarState.lockZone.y0, 2)) * 1.4 + hdpx(5), 0]
+                            math.pow(radarState.lockZone.y1 - radarState.lockZone.y0, 2)) * 1.0, 0]
           fontScale = getFontScale() * 1.4
           fontFxFactor = 8
           text = radarLockDistRange()
@@ -2213,12 +2219,12 @@ local getForestallTargetLineCoords = function(widthMul) {
   if (absDy >= absDx)
   {
     resPoint2.x = p2.x
-    resPoint2.y = p2.y + (dy > 0 ? 0.5 : -0.5) * radarHdpx(50)
+    resPoint2.y = p2.y + (dy > 0 ? 0.5 : -0.5) * ilsHdpx(50)
   }
   else
   {
     resPoint2.y = p2.y
-    resPoint2.x = p2.x + (dx > 0 ? 0.5 : -0.5) * radarHdpx(50)
+    resPoint2.x = p2.x + (dx > 0 ? 0.5 : -0.5) * ilsHdpx(50)
   }
 
   local vecDx = p1.x - resPoint2.x
@@ -2435,13 +2441,13 @@ local radar = function(posX, posY){
     pos = [posX, posY]
     size = SIZE_TO_CONTENT
     children = function(){
-      local width = radarState.MfdRadarEnabled.value ? radarState.radarPosSize.w * 0.9 : sh(28)
-      local height = radarState.MfdRadarEnabled.value ? radarState.radarPosSize.h * 0.9 : width
-      local pos = radarState.MfdRadarEnabled.value ? radarState.radarPosSize.h * 0.2 : 0
+      local width = radarState.MfdRadarEnabled.value ? radarState.radarPosSize.w : sh(28)
+      local height = radarState.MfdRadarEnabled.value ? radarState.radarPosSize.h : width
+      local pos = radarState.MfdRadarEnabled.value ? radarState.radarPosSize.h * 0.3 : 0
 
       local scopeChild = null
       local cScope = null
-      if (radarState.ViewMode.value == RadarViewMode.B_SCOPE_SQUARE || radarState.MfdRadarEnabled.value)
+      if (radarState.ViewMode.value == RadarViewMode.B_SCOPE_SQUARE)
       {
         if (getAzimuthRange() > math.PI)
           scopeChild = B_Scope(width, height)
@@ -2497,7 +2503,7 @@ local Root = function(for_mfd, radarPosX = sh(8), radarPosY = sh(32), radar_colo
     if (!for_mfd && (radarState.MfdRadarEnabled.value || radarState.MfdIlsEnabled.value))
       return null
     local radarMfd = radarState.MfdRadarEnabled.value ?
-          radar(radarState.radarPosSize.x + radarState.radarPosSize.w * 0.05, radarState.radarPosSize.y + radarState.radarPosSize.h * 0.05) : null
+          radar(radarState.radarPosSize.x, radarState.radarPosSize.y) : null
     return radarState.IsRadarHudVisible.value ?
       ((radarState.MfdRadarEnabled.value || radarState.MfdIlsEnabled.value) ?
        [

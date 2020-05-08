@@ -9,8 +9,8 @@ weaponry_item > weaponBody > weaponInfoBg:hover,
 weaponry_item[equipped=yes] > weaponBody > weaponInfoBg {
   background-color:@weaponryItemFocus;
 }
-weaponry_item[selected=yes] > weaponBody > weaponInfoBg,
-.weaponryTable > tr > td[selected=yes] > weaponry_item > weaponBody > weaponInfoBg {
+[show_console_buttons=yes] weaponry_item[selected=yes] > weaponBody > weaponInfoBg,
+[show_console_buttons=yes] .weaponryTable > tr > td[selected=yes] > weaponry_item > weaponBody > weaponInfoBg {
   background-color:@weaponryItemSelected;
 }
 
@@ -84,7 +84,7 @@ weaponry_item[isBundle=yes] > weaponBody RadioButton {
 
 modIcon:hover,
 weaponry_item > weaponBody:hover > modIcon,
-.weaponryTable > tr > td[selected=yes] > weaponry_item > weaponBody > modIcon,
+[show_console_buttons=yes] .weaponryTable > tr > td[selected=yes] > weaponry_item > weaponBody > modIcon,
 .researchesTable > tr > td > .unitItem > weaponry_item:hover > weaponBody > modIcon
 {
   hoverStyle:yes;
@@ -121,9 +121,9 @@ modIcon > wallpaper{
   input-transparent:yes;
 }
 
-weaponry_item[selected=yes] > weaponBody modIcon > wallpaper,
-.weaponryTable > tr > td[selected=yes] > weaponry_item > weaponBody modIcon > wallpaper,
-weaponry_item[selected=yes] > weaponBody:hover modIcon > wallpaper,
+[show_console_buttons=yes] weaponry_item[selected=yes] > weaponBody modIcon > wallpaper,
+[show_console_buttons=yes] .weaponryTable > tr > td[selected=yes] > weaponry_item > weaponBody modIcon > wallpaper,
+[show_console_buttons=yes] weaponry_item[selected=yes] > weaponBody:hover modIcon > wallpaper,
 modIcon[hoverStyle=yes] > wallpaper{
   foreground-image: #ui/gameuiskin#item_glow;
   foreground-repeat:expand;
@@ -156,7 +156,7 @@ modIcon[status=research]                   img{ color-factor:200; background-col
 modIcon[status=research][hoverStyle=yes]   img{ color-factor:255; background-color:@shopAircraftOwned; }
 modIcon[status=waiting]                    img{ background-color:@shopItemWaiting; }
 modIcon[status=waiting][hoverStyle=yes]    img,
-[selected=yes] > modIcon[status=waiting]   img{ background-color:@shopItemWaitingFocus; }
+[show_console_buttons=yes] [selected=yes] > modIcon[status=waiting]   img{ background-color:@shopItemWaitingFocus; }
 modIcon[ignoreStatus=yes]                  img{ color-factor:255; background-color:@shopAircraftOwned; }
 
 modIcon[status=locked]                     > wallpaper{ background-color:@shopItemLocked; }
@@ -173,7 +173,7 @@ modIcon[equipped=yes][hoverStyle=yes]      > wallpaper{ background-image:#ui/gam
 modIcon[status=research]                     itemWinkBlock{ display:show; transp-time:3000;}
 modIcon[status=waiting]                    > wallpaper{ background-color:@shopItemWaiting; }
 modIcon[status=waiting][hoverStyle=yes] > wallpaper,
-.weaponryTable > tr > td[selected=yes] wallpaper { background-color:@shopItemWaitingFocus; }
+[show_console_buttons=yes] .weaponryTable > tr > td[selected=yes] wallpaper { background-color:@shopItemWaitingFocus; }
 
 weaponBody:hover > modIcon[status=research] itemWinkBlock,
 modIcon[status=research]:hover itemWinkBlock {display:hide;}
@@ -189,8 +189,8 @@ weaponry_item[status=disabled] > weaponBody text {
   background-color:@transparent;
 }
 
-weaponry_item[selected=yes] > selImg,
-.weaponryTable > tr > td[selected=yes] > weaponry_item > selImg {
+[show_console_buttons=yes] weaponry_item[selected=yes] > selImg,
+[show_console_buttons=yes] .weaponryTable > tr > td[selected=yes] > weaponry_item > selImg {
   size:pw+10*@sf/@pf_outdated, ph+8*@sf/@pf_outdated;
   pos:50%pw-50%w, 50%ph-50%h;
   position:absolute;
@@ -221,9 +221,9 @@ weaponry_item[selected=yes] > selImg,
 .researchesTable > tr[inactive=no]:hover > td > img[selectRowImage=yes] {
   background-color:@selImgHoverColor;
 }
-.researchesTable > tr[selected=yes] > td > .unitItem[highlightStartModification=yes] > weaponry_item > selImg,
-.researchesTable > tr[selected=yes] > td > .unitItem[highlightStartModification=yes] > td > shopItem > selImg,
-.researchesTable > tr[selected=yes] > td > img[selectRowImage=yes] {
+[show_console_buttons=yes] .researchesTable > tr[selected=yes] > td > .unitItem[highlightStartModification=yes] > weaponry_item > selImg,
+[show_console_buttons=yes] .researchesTable > tr[selected=yes] > td > .unitItem[highlightStartModification=yes] > td > shopItem > selImg,
+[show_console_buttons=yes] .researchesTable > tr[selected=yes] > td > img[selectRowImage=yes] {
   background-color:@white;
 }
 
@@ -464,4 +464,23 @@ table[modTestTable] > tr > td {
 
 weapon_item_unit, weapon_item_unit > td {
   css-hier-invalidate:yes;
+}
+
+weaponryPreset {
+  behaviour:button;
+  css-hier-invalidate:yes;
+}
+
+weaponryPreset [selected=yes] {
+  background-color:@weaponryItemSelected;
+}
+
+weaponryPreset:hover {
+  background-color:@evenTrColor;
+}
+
+[show_console_buttons=no] weaponryPreset:focus {
+  border:yes;
+  border-offset:@dp;
+  border-color:@white;
 }

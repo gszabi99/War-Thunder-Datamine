@@ -1,7 +1,6 @@
 #no-func-decl-sugar
 
-local tostring_r = require("std/string.nut").tostring_r
-local dagorMath = require("dagor.math")
+local {tostring_r} = require("std/string.nut")
 local Color = ::Color
 local logLib = require("std/log.nut")
 local functools = require("std/functools.nut")
@@ -13,28 +12,6 @@ local tostringfuncTbl = [
   {
     compare = @(val) val instanceof ::Watched
     tostring = @(val) "::Watched: {0}".subst(tostring_r(val.value,{maxdeeplevel = 3, splitlines=false}))
-  }
-  {
-    compare = @(val) val instanceof dagorMath.Point3
-    tostring = function(val){
-      return "Point3: {x}, {y}, {z}".subst({x=val.x, y=val.y, z=val.z})
-    }
-  }
-  {
-    compare = @(val) val instanceof dagorMath.Point2
-    tostring = function(val){
-      return "Point2: {x}, {y}".subst({x=val.x, y=val.y})
-    }
-  }
-  {
-    compare = @(val) val instanceof dagorMath.TMatrix
-    tostring = function(val){
-      local o = []
-      for (local i=0; i<4;i++)
-        o.append("[{x}, {y}, {z}]".subst({x=val[i].x,y=val[i].y, z=val[i].z}))
-      o = " ".join(o)
-      return "TMatix: [{0}]".subst(o)
-    }
   }
 ]
 local log = logLib(tostringfuncTbl)

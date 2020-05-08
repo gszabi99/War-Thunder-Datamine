@@ -98,7 +98,7 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
 
     local callback = ::Callback(function(userstatTbl) {
       rewardsTimeData = {}
-      foreach (key, val in userstatTbl)
+      foreach (key, val in (userstatTbl?.response ?? userstatTbl))
       {
         local rewardTimeStr = val?.interval?.index == 0 && val?.prevInterval?.index != 0 ?
           val?.prevInterval?.end : val?.interval?.end

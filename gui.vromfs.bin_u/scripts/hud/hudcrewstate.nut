@@ -1,5 +1,7 @@
 local enums = ::require("sqStdlibs/helpers/enums.nut")
 local stdMath = require("std/math.nut")
+local { getConfigValueById } = require("scripts/hud/hudTankStates.nut")
+
 ::g_hud_crew_member <- {
   types = []
 }
@@ -110,7 +112,8 @@ enums.addTypesByGlobalName("g_hud_crew_member", {
       return
 
     guiScene = scene.getScene()
-    local blk = ::load_template_text("gui/hud/hudCrewState")
+    local blk = ::handyman.renderCached("gui/hud/hudCrewState",
+      { drivingDirectionModeValue = getConfigValueById("driving_direction_mode") })
     guiScene.replaceContentFromText(scene, blk, blk.len(), this)
 
     foreach (crewMemberType in ::g_hud_crew_member.types)

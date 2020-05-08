@@ -57,7 +57,6 @@ global enum AxisInvertOption
   INVERT_EXT_TANK_Y,
   INVERT_SPECTATOR_Y,
   INVERT_SUBMARINE_Y,
-  INVERT_SUIT_Y,
 };
 
 global enum DargWidgets
@@ -66,6 +65,7 @@ global enum DargWidgets
   ,HUD
   ,SHIP_OBSTACLE_RF
   ,SCOREBOARD
+  ,CHANGE_LOG
 };
 
 global enum HelicopterParams

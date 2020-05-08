@@ -39,7 +39,7 @@ local function getCachedBundleId(blockName, entName) {
 }
 
 local function getCachedEntitlementId(blockName, bundleName) {
-  if (!bundleName)
+  if (!bundleName || bundleName == "")
     return ""
 
   local invBlockName = $"inv_{blockName}"

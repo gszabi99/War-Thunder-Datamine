@@ -10,10 +10,6 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
     "min_values_to_show_reward_premium"
   ])
 
-::is_suit_mission <- function is_suit_mission() {
-  return ((::g_mission_type.getCurrentObjectives() & MISSION_OBJECTIVE.KILLS_SUIT) != 0)
-}
-
 
 ::debriefing_result <- null
 ::dynamic_result <- -1
@@ -79,16 +75,13 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
     text = "multiplayer/air_kills"
     icon = "icon/mpstats/kills"
     isVisibleWhenEmpty = @() !!(::g_mission_type.getCurrentObjectives() & MISSION_OBJECTIVE.KILLS_AIR)
-      && !::is_suit_mission()
   }
   { id = "GroundKills"
     showByTypes = function(gt) {return (!(gt & ::GT_RACE) && !(gt & ::GT_FOOTBALL))}
     showByModes = ::is_gamemode_versus
-    // !!! TEMP HACK - REVERT AFTER SPACE APRIL EVENT
-    getName = @() ::loc(::is_suit_mission() ? "multiplayer/suit_kills" : "multiplayer/ground_kills")
-    getIcon = @() ::loc(::is_suit_mission() ? "icon/mpstats/suitKills" : "icon/mpstats/groundKills", "")
-    isVisibleWhenEmpty = @() !!((::g_mission_type.getCurrentObjectives() & MISSION_OBJECTIVE.KILLS_GROUND)
-      || ::is_suit_mission())
+    getName = @() ::loc("multiplayer/ground_kills")
+    getIcon = @() ::loc("icon/mpstats/groundKills", "")
+    isVisibleWhenEmpty = @() !!(::g_mission_type.getCurrentObjectives() & MISSION_OBJECTIVE.KILLS_GROUND)
   }
   { id = "AwardDamage"
     showByTypes = function(gt) {return (!(gt & ::GT_RACE) && !(gt & ::GT_FOOTBALL))}

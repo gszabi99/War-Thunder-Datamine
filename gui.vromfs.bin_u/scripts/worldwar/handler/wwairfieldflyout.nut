@@ -1,5 +1,6 @@
 local time = require("scripts/time.nut")
 local stdMath = require("std/math.nut")
+local { updateModItem, createModItem } = require("scripts/weaponry/weaponryVisual.nut")
 local wwUnitClassParams = require("scripts/worldWar/inOperation/wwUnitClassParams.nut")
 local wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 local wwOperationUnitsGroups = require("scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
@@ -690,11 +691,11 @@ class ::gui_handlers.WwAirfieldFlyOut extends ::gui_handlers.BaseGuiHandlerWT
       hasMenu = hasPresetToChoose(unit)
     }
     if (!::check_obj(modItemObj))
-      modItemObj = ::weaponVisual.createItem(
+      modItemObj = createModItem(
         unit.name, unit, weapon, weapon.type, containerObj, this,
         params.__merge({shortcutIcon = "X"}))
     else
-      ::weaponVisual.updateItem(
+      updateModItem(
         unit, weapon, modItemObj, false, this, params)
     modItemObj.pos = "0, 2"
 

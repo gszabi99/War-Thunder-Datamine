@@ -45,7 +45,6 @@ global enum ctrlGroups {
 
 
   ONLY_COMMON   = 0x0080
-  SUIT          = 0x1000
 
   VOICE         = 0x0100
   REPLAY        = 0x0200

@@ -69,10 +69,25 @@ class ::gui_handlers.trophyRewardWnd extends ::gui_handlers.BaseGuiHandlerWT
   isHidePrizeActionBtn = false
   singleAnimationGuiSound = null
   rewardImage = null
-  rewardImageRatio = null
+  rewardImageRatio = 1
   rewardImageShowTimeSec = -1
 
   function initScreen()
+  {
+    configsArray = configsArray ?? []
+
+    prepareParams()
+
+    setTitle()
+    checkConfigsArray()
+    updateRewardItem()
+    updateWnd()
+    startOpening()
+
+    scene.findObject("update_timer").setUserData(this)
+  }
+
+  function prepareParams()
   {
     local itemId = configsArray?[0]?.itemDefId
       || configsArray?[0]?.trophyItemDefId
@@ -90,36 +105,39 @@ class ::gui_handlers.trophyRewardWnd extends ::gui_handlers.BaseGuiHandlerWT
          || trophyItem.iType == itemType.CRAFT_PROCESS
          || trophyItem.iType == itemType.CRAFT_PART)
 
-    local title = rewardTitle && rewardTitle != "" ? rewardTitle
-      : isDisassemble && !shouldShowRewardItem ? ::loc("mainmenu/itemDisassembled/title")
-      : isCreation() ? trophyItem.getCreationCaption()
-      : trophyItem.getOpeningCaption()
+    shrinkedConfigsArray = ::trophyReward.processUserlogData(configsArray)
+  }
+
+  function setTitle()
+  {
+    local title = getTitle()
+
     local titleObj = scene.findObject("reward_title")
     titleObj.setValue(title)
     if (daguiFonts.getStringWidthPx(title, "fontMedium", guiScene) >
       ::to_pixels("1@trophyWndWidth - 1@buttonCloseHeight"))
       titleObj.caption = "no"
-
-    shrinkedConfigsArray = ::trophyReward.processUserlogData(configsArray)
-    checkConfigsArray()
-    updateRewardItem()
-    updateWnd()
-    startOpening()
-
-    scene.findObject("update_timer").setUserData(this)
   }
+
+  getTitle = @() rewardTitle && rewardTitle != "" ? rewardTitle
+    : isDisassemble && !shouldShowRewardItem ? ::loc("mainmenu/itemDisassembled/title")
+    : isCreation() ? trophyItem.getCreationCaption()
+    : trophyItem.getOpeningCaption()
+
+  isRouletteStarted = @() ::ItemsRoulette.init(
+    trophyItem.id,
+    configsArray,
+    scene,
+    this,
+    function() {
+      openChest.call(this)
+      onOpenAnimFinish.call(this)
+    }
+  )
 
   function startOpening()
   {
-    if (::ItemsRoulette.init(trophyItem.id,
-                             configsArray,
-                             scene,
-                             this,
-                             function() {
-                               openChest.call(this)
-                               onOpenAnimFinish.call(this)
-                             }
-                          ))
+    if (isRouletteStarted())
       useSingleAnimation = false
 
     ::showBtn(useSingleAnimation? "reward_roullete" : "open_chest_animation", false, scene) //hide not used animation
@@ -148,9 +166,11 @@ class ::gui_handlers.trophyRewardWnd extends ::gui_handlers.BaseGuiHandlerWT
     ItemsRoulette.skipAnimation(obj)
     opened = true
     updateWnd()
-    ::broadcastEvent("TrophyContentVisible", { trophyItem = trophyItem })
+    notifyTrophyVisible()
     return true
   }
+
+  notifyTrophyVisible = @() ::broadcastEvent("TrophyContentVisible", { trophyItem = trophyItem })
 
   function updateWnd()
   {
@@ -160,11 +180,7 @@ class ::gui_handlers.trophyRewardWnd extends ::gui_handlers.BaseGuiHandlerWT
     updateButtons()
   }
 
-  function updateTrophyImage() {
-    local imageObjPlace = scene.findObject("reward_image_place")
-    if (!::check_obj(imageObjPlace))
-      return
-
+  function getIconData() {
     local itemToShow = trophyItem
     if (shouldShowRewardItem && configsArray[0]?.item)
       itemToShow = ::ItemsManager.findItemById(configsArray[0].item)
@@ -177,6 +193,15 @@ class ::gui_handlers.trophyRewardWnd extends ::gui_handlers.BaseGuiHandlerWT
     } else
       layersData = itemToShow.getBigIcon()
 
+    return layersData
+  }
+
+  function updateTrophyImage() {
+    local imageObjPlace = scene.findObject("reward_image_place")
+    if (!::check_obj(imageObjPlace))
+      return
+
+    local layersData = getIconData()
     guiScene.replaceContentFromText(imageObjPlace, layersData, layersData.len(), this)
   }
 
@@ -189,7 +214,7 @@ class ::gui_handlers.trophyRewardWnd extends ::gui_handlers.BaseGuiHandlerWT
 
     local imageObj = showSceneBtn("reward_image", true)
     imageObj["background-image"] = rewardImage
-    imageObj.width = $"{rewardImageRatio ?? 1}@chestRewardHeight"
+    imageObj.width = $"{rewardImageRatio}@chestRewardHeight"
     if (rewardImageShowTimeSec > 0)
       ::Timer(scene, rewardImageShowTimeSec, function() {
           if (!isValid())
@@ -346,7 +371,7 @@ class ::gui_handlers.trophyRewardWnd extends ::gui_handlers.BaseGuiHandlerWT
       btnObj.setValue(::loc(getRewardsListLocId()))
     showSceneBtn("open_chest_animation", !animFinished) //hack tooltip bug
     showSceneBtn("btn_ok", animFinished)
-    showSceneBtn("btn_back", animFinished || trophyItem.isAllowSkipOpeningAnim())
+    showSceneBtn("btn_back", animFinished || (trophyItem?.isAllowSkipOpeningAnim() ?? false))
 
     local prizeActionBtnId = isHidePrizeActionBtn || !animFinished ? ""
       : unit && unit.isUsable() && !::isUnitInSlotbar(unit) ? "btn_take_air"
@@ -385,7 +410,7 @@ class ::gui_handlers.trophyRewardWnd extends ::gui_handlers.BaseGuiHandlerWT
     if (animFinished)
       return true
 
-    if (!trophyItem.isAllowSkipOpeningAnim())
+    if (!trophyItem?.isAllowSkipOpeningAnim() ?? false)
       return false
 
     local animObj = scene.findObject("open_chest_animation")

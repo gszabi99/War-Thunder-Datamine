@@ -1,9 +1,5 @@
-global enum WM_CONTENT_TYPE {
-  TEXT,
-  TEMPLATE
-}
+// TEST:  ::gui_start_wheelmenu({ menu = [0,1,2,3,4,5,6,7].map(@(v) { name = v.tostring() }), callbackFunc = dlog })
 
-// TEST:  ::gui_start_wheelmenu({ menu = [0,1,2,3,4,5,6,7], callbackFunc = dlog })
 ::gui_start_wheelmenu <- function gui_start_wheelmenu(params)
 {
   local defaultParams = {
@@ -12,7 +8,6 @@ global enum WM_CONTENT_TYPE {
     owner = null
     mouseEnabled    = false
     axisEnabled     = true
-    contentType     = WM_CONTENT_TYPE.TEXT
     contentTemplate = "gui/wheelMenu/textContent"
     contentPartails = {}
   }
@@ -41,25 +36,15 @@ global enum WM_CONTENT_TYPE {
  *
  * just call gui_start_wheelmenu function
  *
- * gui_start_wheelmenu parametrs:
- * @owner - instance of handler, which creates thw wheel menu
- * @params - table with some configs for instanciate wheel menu.
- * Has optinal and requirend paramstr. List of them is blow:
+ * gui_start_wheelmenu parameters:
+ * @owner - instance of handler, which creates the wheel menu
+ * @params - table with some configs for instantiate wheel menu.
+ *  Has optional and required parameters:
  *  @menu
- *   required parameter. Array of menu items in
- *   special format (described in @contentTepe section).
- *
- *  @contentType
- *   Optionldetermine how to handle menu items.
- *   All available types are in WM_CONTENT_TYPE enum.
- *   @menu format:
- *   WM_CONTENT_TYPE.TEXT:
- *    menu = ["text 1", "text 2", "text 3" ... ]
- *   WM_CONTENT_TYPE.TEMPLATE:
- *    each element of @menu array is a view for your tempalte
- *
+ *   required parameter. Array of menu items,
+ *   each element of array is a view for your template.
  *  @contentTemplate
- *   path to template for WM_CONTENT_TYPE.TEMPLATE content type
+ *   optional parameter. path to view template of @menu item.
  * */
 
 
@@ -81,6 +66,7 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
   applyIndex = -1
   joystickSides = ["E", "NE", "N", "NW", "W", "SW", "S", "SE"]
   joystickMinDeviation = 8000
+  btnSetIdx = -1
   btnSetsConfig = [
     ["W", "E"],
     ["W", "SW", "E", "SE", "S"],
@@ -92,15 +78,14 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
   menu = null
   isActive = true
   joystickSelection = null
+  isKbdShortcutDown = false
   callbackFunc = null
   owner = null
   mouseEnabled = false
   axisEnabled = true
-  isAccessKeysEnabled = false
   shouldShadeBackground = true
   contentTemplate = "gui/wheelMenu/textContent"
   contentPartails = {}
-  contentType = WM_CONTENT_TYPE.TEXT
 
   function initScreen()
   {
@@ -118,6 +103,7 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       watchAxis = ::joystickInterface.getAxisWatch(false, true, true)
       stuckAxis = ::joystickInterface.getAxisStuck(watchAxis)
       joystickSelection = null
+      isKbdShortcutDown = false
 
       scene.findObject("wheelmenu_axis_input_timer").setUserData(this)
       onWheelmenuAxisInputTimer()
@@ -142,22 +128,19 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function fill()
   {
-    local btnAll = btnSetsConfig[ btnSetsConfig.len() - 1 ]
-    local btnSet = btnAll
+    btnSetIdx = btnSetsConfig.len() - 1
     for (local i = 0; i < btnSetsConfig.len(); i++)
       if (btnSetsConfig[i].len() >= menu.len())
         {
-          btnSet = btnSetsConfig[i]
+          btnSetIdx = i
           break
         }
+    local btnSet = btnSetsConfig[btnSetIdx]
 
-    for (local i = 0; i < btnAll.len(); i++)
+    foreach (suffix in joystickSides)
     {
-      local suffix = btnAll[i]
       local index = ::find_in_array(btnSet, suffix, invalidIndex)
-      local item = menu?[index] ?? ""
-      if (!::u.isTable(item))
-        item = { name = item.tostring() }
+      local item = menu?[index]
       local isShow = (item?.name ?? "") != ""
       local enabled = isShow && (item?.wheelmenuEnabled ?? true)
       local bObj = showSceneBtn("wheelmenuItem" + suffix, isShow)
@@ -167,7 +150,6 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
         local buttonType = ::getTblValue("buttonType", item, "")
         if (buttonType != "")
           bObj.type = buttonType
-        bObj.accessKey = isAccessKeysEnabled && isShow ? (item?.accessKey ?? "") : ""
 
         if (isShow)
         {
@@ -192,17 +174,16 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onWheelmenuItemClick(obj)
   {
-    if (!obj || (!mouseEnabled && !::use_touchscreen && !::is_cursor_visible_in_gui() && !isAccessKeysEnabled) )
+    if (!obj || (!mouseEnabled && !::use_touchscreen && !::is_cursor_visible_in_gui()) )
       return
 
     local index = obj.index.tointeger()
-    if (isItemAvailable(index))
-      sendAnswerAndClose(index)
+    trySelectItem(index)
   }
 
   function onWheelmenuAxisInputTimer(obj=null, dt=null)
   {
-    if (!axisEnabled)
+    if (!axisEnabled || isKbdShortcutDown)
       return
 
     local axisData = ::joystickInterface.getAxisData(watchAxis, stuckAxis)
@@ -217,18 +198,29 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       selection = joystickSides?[side]
     }
 
-    if (selection != joystickSelection)
-    {
-      local bObj = joystickSelection && scene.findObject("wheelmenuItem" + joystickSelection)
-      if (bObj)
-        bObj.selected = "no"
+    highlightItemBySide(selection)
+  }
 
-      bObj = selection && scene.findObject("wheelmenuItem" + selection)
-      if (bObj)
-        bObj.selected = "yes"
+  function highlightItemBySide(selection)
+  {
+    if (selection == joystickSelection)
+      return
 
-      joystickSelection = selection
-    }
+    local bObj = joystickSelection && scene.findObject("wheelmenuItem" + joystickSelection)
+    if (bObj)
+      bObj.selected = "no"
+
+    bObj = selection && scene.findObject("wheelmenuItem" + selection)
+    if (bObj)
+      bObj.selected = "yes"
+
+    joystickSelection = selection
+  }
+
+  function highlightItemByIndex(index)
+  {
+    local selection = btnSetsConfig[btnSetIdx]?[index]
+    highlightItemBySide(selection)
   }
 
   function onWheelmenuAccesskeyApply(obj)
@@ -237,8 +229,7 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     local bObj = scene.findObject("wheelmenuItem" + joystickSelection)
     local index = bObj && bObj.index.tointeger()
-    if (isItemAvailable(index))
-      sendAnswerAndClose(index)
+    trySelectItem(index)
   }
 
   function onWheelmenuAccesskeyCancel(obj)
@@ -248,9 +239,26 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onVoiceMessageSwitchChannel(obj) {}
 
+  function onShortcutSelectCallback(index, isDown)
+  {
+    if (!isItemAvailable(index))
+      return false
+    isKbdShortcutDown = isDown
+    highlightItemByIndex(isDown ? index : -1)
+    if (!isDown)
+      trySelectItem(index)
+    return true // processed
+  }
+
   function isItemAvailable(index)
   {
-    return (menu?[index].tostring() ?? "") != "" && (menu?[index].wheelmenuEnabled ?? true)
+    return (menu?[index].name ?? "") != "" && (menu?[index].wheelmenuEnabled ?? true)
+  }
+
+  function trySelectItem(index)
+  {
+    if (isItemAvailable(index))
+      sendAnswerAndClose(index)
   }
 
   function sendAnswerAndClose(index)

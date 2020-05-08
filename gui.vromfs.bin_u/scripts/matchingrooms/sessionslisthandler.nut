@@ -1,10 +1,11 @@
-::match_search_gm <- -1
-::match_search_diff <- -1
+local { sessionsListBlkPath } = require("scripts/matchingRooms/getSessionsListBlkPath.nut")
+local fillSessionInfo = require("scripts/matchingRooms/fillSessionInfo.nut")
 
-::session_list_handler <- null
+::match_search_gm <- -1
+
 ::back_sessions_func <- ::gui_start_mainmenu
 
-::g_script_reloader.registerPersistentData("SessionsList", ::getroottable(), ["match_search_gm", "match_search_diff"])
+::g_script_reloader.registerPersistentData("SessionsList", ::getroottable(), ["match_search_gm"])
 
 ::gui_start_session_list <- function gui_start_session_list(prev_scene_func=null)
 {
@@ -20,10 +21,7 @@
 
 ::gui_start_missions <- function gui_start_missions() //!!FIX ME: is it really used in some cases?
 {
-  ::quick_match_flag <- false
-  ::match_search_diff = -1
   ::match_search_gm = -1
-  ::match_search_map <- ""
   gui_start_session_list(gui_start_mainmenu)
 }
 
@@ -35,23 +33,7 @@
 
 ::prepare_start_skirmish <- function prepare_start_skirmish()
 {
-  ::quick_match_flag <- false
-  ::match_search_diff = -1
   ::match_search_gm = ::GM_SKIRMISH
-  ::match_search_map <- ""
-}
-
-::gui_start_mp_menu_reload <- function gui_start_mp_menu_reload()
-{
-  local gt = ::get_game_type()
-  local mpMode = ::get_mp_mode()
-  if (mpMode == ::GM_SKIRMISH)
-    ::gui_start_skirmish()
-  else
-  if (gt & ::GT_COOPERATIVE)
-    ::gui_start_missions()
-  else
-    ::gui_start_mainmenu_reload()
 }
 
 ::build_check_table <- function build_check_table(session, gm=0)
@@ -95,7 +77,7 @@
 
 class ::gui_handlers.SessionsList extends ::gui_handlers.GenericOptions
 {
-  sceneBlkName = "gui/sessionsList.blk"
+  sceneBlkName = sessionsListBlkPath.value
   sceneNavBlkName = "gui/navSessionsList.blk"
   optionsContainer = "mp_coop_options"
   isCoop = true
@@ -108,6 +90,8 @@ class ::gui_handlers.SessionsList extends ::gui_handlers.GenericOptions
   curPage = 0
   roomsPerPage = 1
 
+  curDifficulty = -1
+
   function initScreen()
   {
     base.initScreen()
@@ -117,7 +101,6 @@ class ::gui_handlers.SessionsList extends ::gui_handlers.GenericOptions
     curPageRoomsList = []
     roomsListData = ::MRoomsList.getMRoomsListByRequestParams(null) //skirmish when no params
 
-    ::session_list_handler = this
     isCoop = is_gamemode_coop(::match_search_gm)
     scene.findObject("sessions_update").setUserData(this)
 
@@ -199,7 +182,10 @@ class ::gui_handlers.SessionsList extends ::gui_handlers.GenericOptions
     if (!options) return
 
     local container = create_options_container(optionsContainer, options, true, false, 0.5, true, false)
-    guiScene.replaceContentFromText("session-options", container.tbl, container.tbl.len(), this)
+    local optObj = scene.findObject("session-options")
+    if (::check_obj(optObj))
+      guiScene.replaceContentFromText(optObj, container.tbl, container.tbl.len(), this)
+
     optionsContainers.append(container.descr)
     onHintUpdate()
   }
@@ -217,42 +203,22 @@ class ::gui_handlers.SessionsList extends ::gui_handlers.GenericOptions
 
   function onDifficultyChange(obj)
   {
-    if (!obj) return
+    if (!::check_obj(obj))
+      return
+
     local value = obj.getValue()
     local option = get_option(::USEROPT_SEARCH_DIFFICULTY)
     if (!(value in option.values))
       return
 
     local newDiff = option.idxValues[value]
-    if (::match_search_diff == newDiff)
+    if (curDifficulty == newDiff)
       return
 
-    ::match_search_diff = newDiff
+    curDifficulty = newDiff
     updateRoomsList()
   }
 
-/*
-    ::match_search_diff - difficulty, -1 = any
-    ::match_search_gm - game mode, -1 = any
-*/
-  /*
-  function getFirstGoodSession(sessions)
-  {
-    for (local i = 0; i < sessions.len(); i++)
-    {
-      if (sessions[i].numPlayers == sessions[i].numPlayersTotal)
-        continue;
-
-      local tbl = ::build_check_table(sessions[i])
-      tbl.silent <- true
-      if (! ::checkAllowed.bindenv(this)(tbl))
-        continue;
-
-      return i;
-    }
-    return -1;
-  }
-  */
   function onSkirmish(obj) { ::checkAndCreateGamemodeWnd(this, ::GM_SKIRMISH) }
 
   function onSessionsUpdate(obj = null, dt = 0.0)
@@ -289,7 +255,7 @@ class ::gui_handlers.SessionsList extends ::gui_handlers.GenericOptions
 
   function getCurFilter()
   {
-    return { diff = ::match_search_diff }
+    return { diff = curDifficulty }
   }
 
   function sortRoomsList()
@@ -446,7 +412,7 @@ class ::gui_handlers.SessionsList extends ::gui_handlers.GenericOptions
   function updateCurRoomInfo()
   {
     local room = getCurRoom()
-    ::session_fill_info(scene, room? room.public : null)
+    fillSessionInfo(scene, room?.public)
     ::update_vehicle_info_button(scene, room)
 
     local btnObj = scene.findObject("btn_select")
@@ -485,16 +451,6 @@ class ::gui_handlers.SessionsList extends ::gui_handlers.GenericOptions
       )
       return
 
-    /*
-    local tbl = ::build_check_table(room)
-    tbl.silent <- true
-    if (!::checkAllowed.bindenv(this)(tbl))
-    {
-      tbl.silent <- false
-      goForwardCheckEntitlement(function() { onStart(null) }.bindenv(this), tbl);
-      return
-    }
-    */
     checkedNewFlight((@(room) function() {
       ::SessionLobby.joinFoundRoom(room)
     })(room))

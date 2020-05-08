@@ -37,6 +37,7 @@ enums.addTypesByGlobalName("g_top_menu_left_side_sections", [
         buttonsList.OPTIONS
         buttonsList.CONTROLS
         "community"
+        buttonsList.CHANGE_LOG
         buttonsList.EXIT
         buttonsList.DEBUG_UNLOCK
       ]
@@ -56,6 +57,7 @@ enums.addTypesByGlobalName("g_top_menu_left_side_sections", [
         buttonsList.SINGLE_MISSION
         buttonsList.DYNAMIC
         buttonsList.CAMPAIGN
+        buttonsList.PERSONAL_UNLOCKS
         buttonsList.BENCHMARK
       ]
     ]

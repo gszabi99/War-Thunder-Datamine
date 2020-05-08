@@ -17,14 +17,15 @@ weaponry_item {
     id:t='modItem_discount'
     pos:t='pw-w, -1@discountBoxDownHeight + 10@sf/@pf'
     position:t='absolute'
-    <<#isShowDiscount>>
+    <<^isShowDiscount>>
+    display:t='hide'
+    <</isShowDiscount>>
     discount{
       id:t='discount'
       type:t='weaponryItem'
       tooltip:t='<<discountTooltip>>'
       text:t='<<discountText>>'
     }
-    <</isShowDiscount>>
   }
   weaponBody{
     id:t='centralBlock'

@@ -2,7 +2,7 @@ local { ceil, floor} = require("std/math.nut")
 local { localTeam, ticketsTeamA, ticketsTeamB, timeLeft, scoreLimit,
   deathPenaltyMul, ctaDeathTicketPenalty } = require("reactiveGui/missionState.nut")
 local teamColors = require("reactiveGui/style/teamColors.nut")
-local { secondsToString } = require("std/time.nut")
+local { secondsToTimeSimpleString } = require("std/time.nut")
 
 local scoresForOneKill = ::Computed(@() deathPenaltyMul.value * ctaDeathTicketPenalty.value)
 local countKillsToWin = ::Computed(@() scoresForOneKill.value == 0
@@ -84,7 +84,7 @@ return {
         watch = timeLeft
         rendObj = ROBJ_DTEXT
         font = Fonts.small_text_hud
-        text = secondsToString(timeLeft.value, false)
+        text = secondsToTimeSimpleString(timeLeft.value)
       }]
     }
     getScoreObj("enemyTeam")

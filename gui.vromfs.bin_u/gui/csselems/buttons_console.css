@@ -990,9 +990,10 @@ Button_text[btnName=DpadRight]         { accessKey:'J:Dpad.Right | Right'; }
 
 Button_text[btnName=AB]                { accessKey:'J:A | Space | Enter | NumEnter | J:B | Esc | Backspace'; }
 
-Button_text[btnName=A], DummyButton[btnName=A], mapStateBox[btnName=A]
+Button_text[btnName=A], DummyButton[btnName=A], mapStateBox[btnName=A], weaponryPreset[btnName=A]:focus
                                         { accessKey:'J:A | Space | Enter | NumEnter'; }
-[swap_ab=yes] Button_text[btnName=A], [swap_ab=yes] DummyButton[btnName=A]
+[swap_ab=yes] Button_text[btnName=A], [swap_ab=yes] DummyButton[btnName=A], [swap_ab=yes] mapStateBox[btnName=A],
+[swap_ab=yes] weaponryPreset[btnName=A]:focus
                                         { accessKey:'J:B | Space | Enter | NumEnter'; }
 
 Button_text[btnName=SpaceA]            { accessKey:'J:A | Space'; }
@@ -1821,6 +1822,14 @@ campaign_item > fullSizeCollapseBtn > activeText {
   text:"+";
 }
 
+weaponryPreset[showOrNoneOn=selectedOnConsole] > ButtonImg {
+  display:hide;
+}
+
+[show_console_buttons=yes] weaponryPreset[showOrNoneOn=selectedOnConsole]:focus > ButtonImg {
+  display:show;
+}
+
 [collapsed=yes] btnCollapse {
   text:"+";
 }
@@ -1956,8 +1965,8 @@ weaponry_item:hover > modSlotButtonsNest > Button_text.additional[canShow=yes],
 weaponry_item > modSlotButtonsNest:hover > Button_text.additional[canShow=yes],
 weapon_item_unit:hover > Button_text.additional[canShow=yes],
 Button_text.additional:hover[canShow=yes],
-:focus > weaponry_item[selected=yes] > modSlotButtonsNest > Button_text.additional[canShow=yes],
-:focus > weaponry_item[selected=yes] > modSlotButtonsNest > Button_text.additional[canShow=selected],
+[show_console_buttons=yes] :focus > weaponry_item[selected=yes] > modSlotButtonsNest > Button_text.additional[canShow=yes],
+[show_console_buttons=yes] :focus > weaponry_item[selected=yes] > modSlotButtonsNest > Button_text.additional[canShow=selected],
 [show_console_buttons=yes] :focus > weaponry_item[selected=yes] > modSlotButtonsNest > Button_text.additional[canShow=console] {
   display:show;
 }

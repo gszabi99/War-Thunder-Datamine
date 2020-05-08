@@ -1,7 +1,7 @@
 local penalty = ::require_native("penalty")
 local stdStr = require("string")
 local time = require("std/time.nut")
-
+local timeLocTable = require("reactiveGui/timeLocTable.nut")
 
 local currentPenaltyDesc = Watched({})
 
@@ -19,17 +19,17 @@ local function getDevoiceDescriptionText(highlightColor = Color(255, 255, 255)) 
   if (currentPenaltyDesc.value.duration >= penalty.BAN_USER_INFINITE_PENALTY) {
     txt += ::loc("charServer/mute/permanent") + "\n"
   } else {
-    local durationHours = time.secondsToHours(currentPenaltyDesc.value.duration)
-    local timeText = stdStr.format("<color=%d>%s</color>",
-      highlightColor,
-      time.hoursToString(durationHours, false))
+    local durationTime = time.roundTime(time.secondsToTime(currentPenaltyDesc.value.duration))
+    durationTime.seconds = 0
+    durationTime = time.secondsToTimeFormatString(durationTime).subst(timeLocTable)
+    local timeText = stdStr.format("<color=%d>%s</color>", highlightColor, durationTime)
     txt += stdStr.format(::loc("charServer/mute/timed"), timeText)
 
     if ((currentPenaltyDesc.value?.seconds_left ?? 0) > 0) {
-      local leftHours = time.secondsToHours(currentPenaltyDesc.value.seconds_left)
+      local leftTime = time.roundTime(currentPenaltyDesc.value.seconds_left)
       timeText = stdStr.format("<color=%d>%s</color>",
-        highlightColor,
-        time.hoursToString(leftHours, false, true))
+        highlightColor, time.secondsToTimeFormatString(leftTime).subst(timeLocTable)
+      )
       if (timeText != "") {
         txt += " " + stdStr.format(::loc("charServer/ban/timeLeft"), timeText)
       }

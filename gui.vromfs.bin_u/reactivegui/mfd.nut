@@ -1,7 +1,7 @@
 local rwr = require("rwr.nut")
 local helicopterState = require("helicopterState.nut")
 local hudElems = require("helicopterHudElems.nut")
-local mlws = require("mlws.nut")
+local tws = require("tws.nut")
 local radarComponent = require("radarComponent.nut")
 
 
@@ -79,16 +79,16 @@ local getRwr = function(colorStyle) {
   }
 }
 
-local getMlws = function(colorStyle) {
+local getTws = function(colorStyle) {
   local getChildren = function() {
-    return mlws(colorStyle,
+    return tws(colorStyle,
        helicopterState.RwrPosSize[0] + helicopterState.RwrPosSize[2] * 0.17,
        helicopterState.RwrPosSize[1] + helicopterState.RwrPosSize[3] * 0.17,
        helicopterState.RwrPosSize[2] * 0.66,
        helicopterState.RwrPosSize[3] * 0.66, true)
   }
   return @(){
-    watch = helicopterState.MlwsForMfd
+    watch = helicopterState.TwsForMfd
     children = getChildren()
   }
 }
@@ -156,7 +156,7 @@ local function mfdHUD(colorStyle, isBackground) {
     mfdSightHud(colorStyle, isBackground)
     ilsHud(colorStyle, isBackground)
     getRwr(rwrStyle)
-    getMlws(rwrStyle)
+    getTws(rwrStyle)
     radarComponent.radar(true, sw(6), sh(6), getColor(isBackground))
   ]
 }

@@ -1,73 +1,43 @@
-::g_personal_unlocks <- {
-  [PERSISTENT_DATA_PARAMS] = ["unlocksArray"]
+local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
 
-  unlocksArray = []
-  newIconWidgetById = {}
-  isArrayValid = false
+local unlocksArray = []
+local isArrayValid = false
 
-  showAllUnlocksValue = false
-}
-
-g_personal_unlocks.reset <- function reset()
-{
+local function reset() {
   unlocksArray.clear()
-  newIconWidgetById.clear()
 }
 
-g_personal_unlocks.update <- function update()
-{
+local function update() {
   if (!::g_login.isLoggedIn())
     return
 
   reset()
 
   foreach(unlockBlk in ::g_unlocks.getAllUnlocksWithBlkOrder())
-    if (unlockBlk?.showAsBattleTask && (showAllUnlocksValue || ::is_unlock_visible(unlockBlk)))
-    {
+    if (unlockBlk?.showAsBattleTask ?? false) {
       unlocksArray.append(unlockBlk)
-      newIconWidgetById[unlockBlk.id] <- null
     }
   isArrayValid = true
 }
 
-g_personal_unlocks.getUnlocksArray <- function getUnlocksArray()
-{
+local function getUnlocksArray() {
   if(!isArrayValid)
     update()
 
   return unlocksArray
 }
 
-g_personal_unlocks.onEventBattleTasksShowAll <- function onEventBattleTasksShowAll(params)
-{
-  showAllUnlocksValue = ::getTblValue("showAllTasksValue", params, false)
-  update()
-}
-
-g_personal_unlocks.onEventSignOut <- function onEventSignOut(p)
-{
-  reset()
-}
-
-g_personal_unlocks.onEventLoginComplete <- function onEventLoginComplete(p)
-{
-  invalidateArray()
-}
-
-g_personal_unlocks.isAvailableForUser <- function isAvailableForUser()
-{
-  return ::has_feature("PersonalUnlocks") && !::u.isEmpty(getUnlocksArray())
-}
-
-g_personal_unlocks.invalidateArray <- function invalidateArray()
-{
+local function invalidateArray() {
   isArrayValid = false
 }
 
-g_personal_unlocks.onEventUnlocksCacheInvalidate <- function onEventUnlocksCacheInvalidate(p)
-{
-  invalidateArray()
-}
+subscriptions.addListenersWithoutEnv({
+  SignOut = @(p) invalidateArray()
+  LoginComplete = @(p) invalidateArray()
+  UnlocksCacheInvalidate = @(p) invalidateArray()
+}, ::g_listener_priority.CONFIG_VALIDATION)
 
-::g_script_reloader.registerPersistentDataFromRoot("g_personal_unlocks")
-::subscribe_handler(::g_personal_unlocks, ::g_listener_priority.CONFIG_VALIDATION)
+
+return {
+  getPersonalUnlocks =  getUnlocksArray
+}

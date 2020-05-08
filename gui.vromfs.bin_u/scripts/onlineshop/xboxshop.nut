@@ -2,6 +2,7 @@ require("scripts/onlineShop/ingameConsoleStore.nut")
 
 local seenList = require("scripts/seen/seenList.nut").get(SEEN.EXT_XBOX_SHOP)
 local shopData = require("scripts/onlineShop/xboxShopData.nut")
+local statsd = require("statsd")
 local xboxSetPurchCb = require("scripts/onlineShop/xboxPurchaseCallback.nut")
 
 
@@ -63,7 +64,7 @@ class ::gui_handlers.XboxShop extends ::gui_handlers.IngameConsoleStore
 
     if (wasPurchasePerformed)
     {
-      ::statsd_counter("close_product.purchased")
+      statsd.send_counter("sq.close_product.purchased", 1)
       ::add_big_query_record("close_product",
         ::save_to_json({
           itemId = curItem.id,

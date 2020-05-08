@@ -1,4 +1,7 @@
+local statsd = require("statsd")
 local { animBgLoad } = require("scripts/loading/animBg.nut")
+local showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
+local { openUrl } = require("scripts/onlineShop/url.nut")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 
@@ -47,7 +50,7 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
     animBgLoad()
     ::setVersionText()
     ::setProjectAwards(this)
-    ::show_title_logo(true, scene, "128")
+    showTitleLogo(scene, 128)
     initLanguageSwitch()
     checkShardingCircuits()
     ::set_gui_options_mode(::OPTIONS_MODE_GAMEPLAY)
@@ -350,7 +353,7 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
 
   function requestLoginWithCode(no_dump_login, code)
   {
-    ::statsd_counter("gameStart.request_login.regular")
+    statsd.send_counter("sq.game_start.request_login", 1, {login_type = "regular"})
     ::dagor.debug("Login: check_login_pass")
     return ::check_login_pass(no_dump_login,
                               ::get_object_value(scene, "loginbox_password", ""),
@@ -424,7 +427,7 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
     steamSpecCode = steamSpecCode || "steam"
     isLoginRequestInprogress = true
     ::disable_autorelogin_once <- false
-    ::statsd_counter("gameStart.request_login.steam")
+    statsd.send_counter("sq.game_start.request_login", 1, {login_type = "steam"})
     ::dagor.debug("Steam Login: check_login_pass with code " + steamSpecCode)
     local result = ::check_login_pass("", "", "steam", steamSpecCode, false, false)
     proceedAuthorizationResult(result, "")
@@ -434,7 +437,7 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
   {
     local no_dump_login = ::get_object_value(scene, "loginbox_username", "")
     local no_dump_url = ::webauth_get_url(no_dump_login)
-    ::open_url(no_dump_url)
+    openUrl(no_dump_url)
     ::browser_set_external_url(no_dump_url)
   }
 
@@ -511,7 +514,7 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
         if (needTrySteamLink())
         {
           local isRemoteComp = ::get_object_value(scene, "loginbox_remote_comp", false)
-          ::statsd_counter("gameStart.request_login.steam_link")
+          statsd.send_counter("sq.gameStart.request_login", 1, {login_type = "steam_link"})
           ::dagor.debug("Steam Link Login: check_login_pass")
           local res = ::check_login_pass("", "", "steam", "steam", true, isRemoteComp)
           ::dagor.debug("Steam Link Login: link existing account, result = " + res)
@@ -557,7 +560,7 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
           return;
         ::error_message_box("yn1/connect_error", result, // auth error
         [
-          ["recovery", function() {::open_url(::loc("url/recovery"), false, false, "login_wnd")}],
+          ["recovery", function() {openUrl(::loc("url/recovery"), false, false, "login_wnd")}],
           ["exit", ::exit_game],
           ["tryAgain", ::Callback(onLoginErrorTryAgain, this)]
         ], "tryAgain")
@@ -669,12 +672,12 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
     else
       urlLocId = "url/signUp"
 
-    ::open_url(::loc(urlLocId), false, false, "login_wnd")
+    openUrl(::loc(urlLocId), false, false, "login_wnd")
   }
 
   function onForgetPassword()
   {
-    ::open_url(::loc("url/recovery"), false, false, "login_wnd")
+    openUrl(::loc("url/recovery"), false, false, "login_wnd")
   }
 
   function onChangeLogin(obj)

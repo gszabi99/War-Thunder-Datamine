@@ -45,7 +45,7 @@ tdiv {
   }
 
   <<#bulletParams>>
-    textareaNoTab {
+    tooltipDesc {
       pos:t='0, @blockInterval'
       position:t='relative'
       hideEmptyText:t='yes'

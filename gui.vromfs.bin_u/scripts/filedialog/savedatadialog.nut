@@ -28,6 +28,22 @@ class ::gui_handlers.SaveDataDialog extends ::gui_handlers.BaseGuiHandlerWT
     {id = "name", param = "comment", asc = false}
   ]
 
+  tableParams = [
+    {
+      id = "name"
+      headerLocId = "#save/fileName"
+      width = "fw"
+      param = "comment"
+    }
+    {
+      id = "mtime"
+      headerLocId = "#filesystem/fileMTime"
+      width = "0.18@sf"
+      param = "mtime"
+      textFunc = @(p) time.buildTabularDateTimeStr(p)
+    }
+  ]
+
   currentFocusItem = 4
 
   function initScreen()
@@ -159,31 +175,43 @@ class ::gui_handlers.SaveDataDialog extends ::gui_handlers.BaseGuiHandlerWT
     if (!fileTableObj)
       return
 
-    local view = {rows = [{
-      row_id = "file_header_row"
-      isHeaderRow = true
-      cells = [{id="file_col_name", text="#save/fileName", width="fw"},
-               {id="file_col_mtime", text="#filesystem/fileMTime", width="0.18@sf"}]
-    }]}
+    local curSortIdx = ::loadLocalByAccount(LOCAL_SORT_ENTITIES_ID, 0)
+    local sortParam = sortParams[curSortIdx].param
+    local headerRow = []
+    tableParams.each(function(p, idx) {
+      headerRow.append({
+        id = $"file_header_{p.id}"
+        text = p.headerLocId
+        width = p.width
+        active = p.param == sortParam
+      })
+    })
+
+    local markUp = ::buildTableRowNoPad("row_header", headerRow, true,
+      "inactive:t='yes'; commonTextColor:t='yes'; insetHeader = 'yes';")
 
     tableEntries.clear()
 
-    local isEven = false
+    local rowData = []
     foreach (idx, e in entries)
     {
-      local rowView = {
-        row_id = "file_row_"+idx
-        even = isEven
-        cells = [{text=e.comment, width="fw"},
-                 {text=time.buildTabularDateTimeStr(e.mtime), width="0.18@sf"}]
-      }
-      view.rows.append(rowView)
-      tableEntries[rowView.row_id] <- e
-      isEven = !isEven
+      rowData.clear()
+
+      local rowName = $"file_row_{idx}"
+      tableEntries[rowName] <- e
+      tableParams.each(function(p) {
+        rowData.append({
+          id = $"{rowName}_{p.id}"
+          text = p?.textFunc? p.textFunc(e[p.param]) : e[p.param]
+          width = p.width
+          active = p.param == sortParam
+        })
+      })
+
+      markUp += ::buildTableRowNoPad(rowName, rowData, idx % 2 != 0)
     }
 
-    local data = ::handyman.renderCached("gui/fileDialog/fileTable", view)
-    guiScene.replaceContentFromText(fileTableObj, data, data.len(), this)
+    guiScene.replaceContentFromText(fileTableObj, markUp, markUp.len(), this)
   }
 
   function updateSelectionAfterDataLoaded()

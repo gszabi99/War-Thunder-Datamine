@@ -1,3 +1,5 @@
+local hudState = require_native("hudState")
+
 local function getAabbObjFromHud(hudFuncName) {
   local handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.Hud)
   if (handler == null || !(hudFuncName in handler))
@@ -26,12 +28,24 @@ local function getDamagePannelAabb() {
     : ::get_dagui_obj_aabb(handler.getDamagePannelObj())
 }
 
+local function getAircraftInstrumentsAabb() {
+  local bbox = hudState.getHudAircraftInstrumentsBbox()
+  if (bbox == null || bbox.x2 == 0 || bbox.y2 == 0)
+    return null
+  return {
+    pos  = [ bbox.x1, bbox.y1 ]
+    size = [ bbox.x2 - bbox.x1, bbox.y2 - bbox.y1 ]
+    visible = true
+  }
+}
+
 local aabbList = {
   map = @() getAabbObjFromHud("getTacticalMapObj")
   hitCamera = @() ::g_hud_hitcamera.getAABB()
   multiplayerScore = @() getAabbObjFromHud("getMultiplayerScoreObj")
   dmPanel = getDamagePannelAabb
   tankDebuffs = @() getAabbObjFromHud("getTankDebufsObj")
+  aircraftInstruments = getAircraftInstrumentsAabb
 }
 
 ::get_ingame_map_aabb <- function get_ingame_map_aabb() { return aabbList.map() }  //this function used in native code

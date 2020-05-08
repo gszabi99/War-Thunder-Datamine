@@ -1,4 +1,6 @@
+local statsd = require("statsd")
 local { getPollIdByFullUrl, generatePollUrl } = require("scripts/web/webpoll.nut")
+local { openUrl } = require("scripts/onlineShop/url.nut")
 
 ::embedded_browser_event <- function embedded_browser_event(event_type, url, error_desc, error_code,
   is_main_frame)
@@ -94,7 +96,7 @@ class ::gui_handlers.BrowserModalHandler extends ::BaseGuiHandler
     if (!u.isEmpty(urlTags))
         taggedUrl = ::g_string.implode(urlTags, " ") + " " + taggedUrl
     local newUrl = u.isEmpty(externalUrl) ? taggedUrl : externalUrl
-    ::open_url(u.isEmpty(newUrl) ? originalUrl : newUrl, true, false, "internal_browser")
+    openUrl(u.isEmpty(newUrl) ? originalUrl : newUrl, true, false, "internal_browser")
   }
 
   function setTitle(title)
@@ -151,7 +153,7 @@ class ::gui_handlers.BrowserModalHandler extends ::BaseGuiHandler
         }
         break;
       case ::BROWSER_EVENT_BROWSER_CRASHED:
-        statsd_counter("browser." + params.errorDesc)
+        statsd.send_counter("sq.browser.crash", 1, {reason = params.errorDesc})
         browserForceExternal()
         goBack()
         break;

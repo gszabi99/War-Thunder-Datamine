@@ -1,5 +1,6 @@
 local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
 local seenList = ::require("scripts/seen/seenList.nut").get(SEEN.EXT_XBOX_SHOP)
+local statsd = require("statsd")
 local progressMsg = ::require("sqDagui/framework/progressMsg.nut")
 
 local XboxShopPurchasableItem = ::require("scripts/onlineShop/XboxShopPurchasableItem.nut")
@@ -18,7 +19,7 @@ local haveItemDiscount = null
 {
   if (!catalog || !catalog.blockCount())
   {
-    ::statsd_counter($"ingame_store.open.{statsdMetric}.empty_catalog")
+    statsd.send_counter("sq.ingame_store.open.empty_catalog", 1, {catalog = statsdMetric})
     ::dagor.debug("XBOX SHOP: Empty catalog. Don't open shop.")
     return
   }
@@ -52,7 +53,7 @@ local haveItemDiscount = null
     progressMsg.destroy(XBOX_RECEIVE_CATALOG_MSG_ID)
   reqProgressMsg = false
 
-  ::statsd_counter($"ingame_store.open.{statsdMetric}")
+  statsd.send_counter("ingame_store.open", 1, {catalog = statsdMetric})
   if (onReceiveCatalogCb)
     onReceiveCatalogCb()
   onReceiveCatalogCb = null

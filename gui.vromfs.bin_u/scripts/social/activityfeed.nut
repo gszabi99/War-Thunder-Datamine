@@ -1,4 +1,5 @@
 local psn = require("ps4Lib/webApi.nut")
+local statsd = require("statsd")
 
 ::FACEBOOK_POST_WALL_MESSAGE <- false
 
@@ -135,15 +136,16 @@ local psn = require("ps4Lib/webApi.nut")
   if (!::is_platform_ps4 || !::has_feature("ActivityFeedPs4"))
     return
 
-  local sendStat = function(stat) {
+  local sendStat = function(tags) {
     local qualifiedNameParts = split(::getEnumValName("ps4_activity_feed", config.subType, true), ".")
-    ::statsd_counter("activityfeed." + qualifiedNameParts[1] + "." + stat)
+    tags["type"] <- qualifiedNameParts[1]
+    statsd.send_counter("activityfeed", 1, tags)
   }
 
   local locId = ::getTblValue("locId", config, "")
   if (locId == "" && u.isEmpty(customFeedParams?.captions))
   {
-    sendStat("abort.noLocId")
+    sendStat({action = "abort", reason = "no_loc_id"})
     ::dagor.debug("ps4PostActivityFeed, Not found locId in config")
     ::debugTableData(config)
     return
@@ -188,7 +190,11 @@ local psn = require("ps4Lib/webApi.nut")
   if (smallImage)
     body.targets.append({meta=smallImage, type="SMALL_IMAGE_URL", aspectRatio="2.08:1"})
 
-  sendStat("post")
-  psn.send(psn.feed.post(body), function(_, err) { sendStat(err ? "fail."+err.code.tostring() : "success") })
+  psn.send(psn.feed.post(body), function(_, err) {
+      local tags = { action = "post", result = err ? "fail" : "success" }
+      if (err != null)
+        tags["reason"] <- err.code.tostring()
+      sendStat(tags)
+  })
 }
 //----------------------- </PlayStation> --------------------------

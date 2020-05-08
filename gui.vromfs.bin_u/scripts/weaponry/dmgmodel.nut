@@ -6,7 +6,7 @@ const DEFAULT_ARMOR_FOR_PENETRATION_RADIUS = 50
 ::g_dmg_model <- {
   RICOCHET_PROBABILITIES = [0.0, 0.5, 1.0]
 
-  ricochetDataByBulletType = null
+  ricochetDataByPreset = null
 }
 
 /*************************************************************************************************/
@@ -23,10 +23,10 @@ g_dmg_model.getExplosiveBlk <- function getExplosiveBlk()
   return ::DataBlock("gameData/damage_model/explosive.blk")
 }
 
-g_dmg_model.getRicochetData <- function getRicochetData(bulletType)
+g_dmg_model.getRicochetData <- function getRicochetData(presetName)
 {
   initRicochetDataOnce()
-  return ::getTblValue(bulletType, ricochetDataByBulletType)
+  return ricochetDataByPreset?[presetName]
 }
 
 g_dmg_model.getTntEquivalentText <- function getTntEquivalentText(explosiveType, explosiveMass)
@@ -102,7 +102,7 @@ g_dmg_model.getDestructionInfoTexts <- function getDestructionInfoTexts(explosiv
 
 g_dmg_model.resetData <- function resetData()
 {
-  ricochetDataByBulletType = null
+  ricochetDataByPreset = null
 }
 
 g_dmg_model.getLinearValueFromP2blk <- function getLinearValueFromP2blk(blk, x)
@@ -177,43 +177,35 @@ g_dmg_model.getMaxProbabilityFromP2blk <- function getMaxProbabilityFromP2blk(bl
 
 g_dmg_model.initRicochetDataOnce <- function initRicochetDataOnce()
 {
-  if (ricochetDataByBulletType)
+  if (ricochetDataByPreset)
     return
 
-  ricochetDataByBulletType = {}
+  ricochetDataByPreset = {}
   local blk = getDmgModelBlk()
   if (!blk)
     return
 
-  local typesList = blk?.bulletTypes
   local ricBlk = blk?.ricochetPresets
-  if (!typesList || !ricBlk)
+  if (!ricBlk)
   {
-    ::dagor.assertf(false, "ERROR: Can't load ricochet params from damageModel.blk")
+    ::dagor.assertf(false, "ERROR: Can't load ricochetPresets from damageModel.blk")
     return
   }
 
-  local defaultData = getRicochetDataByPreset({
-                        ricochetPreset = "default"
-                      },
-                      ricBlk)
-  ricochetDataByBulletType[""] <- defaultData
-
-  for (local i = 0; i < typesList.blockCount(); i++)
+  for (local i = 0; i < ricBlk.blockCount(); i++)
   {
-    local presetBlk = typesList.getBlock(i)
-    local bulletType = presetBlk.getBlockName()
-    ricochetDataByBulletType[bulletType] <- getRicochetDataByPreset(presetBlk, ricBlk, defaultData)
+    local presetDataBlk = ricBlk.getBlock(i)
+    local presetName = presetDataBlk.getBlockName()
+    ricochetDataByPreset[presetName] <- getRicochetDataByPreset(presetDataBlk)
   }
 }
 
-g_dmg_model.getRicochetDataByPreset <- function getRicochetDataByPreset(preset, ricBlk, defaultData = null)
+g_dmg_model.getRicochetDataByPreset <- function getRicochetDataByPreset(presetDataBlk)
 {
   local res = {
     angleProbabilityMap = []
   }
-  local rPreset = preset.ricochetPreset
-  local ricochetPresetBlk = getRichochetPresetBlkByName(rPreset, ricBlk)
+  local ricochetPresetBlk = getRichochetPresetBlk(presetDataBlk)
   if (ricochetPresetBlk != null)
   {
     local addMaxProbability = false
@@ -250,11 +242,10 @@ g_dmg_model.getRicochetDataByPreset <- function getRicochetDataByPreset(preset, 
   return res
 }
 
-g_dmg_model.getRichochetPresetBlkByName <- function getRichochetPresetBlkByName(presetName, ricBlk)
+g_dmg_model.getRichochetPresetBlk <- function getRichochetPresetBlk(presetData)
 {
-  if (presetName == null || ricBlk?[presetName] == null)
+  if (presetData == null)
     return null
-  local presetData = ricBlk[presetName]
   // First cycle through all preset blocks searching
   // for block with "caliberToArmor:r = 1".
   for (local i = 0; i < presetData.blockCount(); ++i)

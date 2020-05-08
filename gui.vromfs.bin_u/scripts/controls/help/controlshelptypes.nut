@@ -401,23 +401,6 @@ enums.addTypes(result, {
       ]
     }
   }
-  IMAGE_SUIT = {
-    subTabName = "#hotkeys/ID_COMMON_CONTROL_HEADER"
-
-    showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS, HELP_CONTENT_SET.CONTROLS_SUIT ]
-    helpPattern = CONTROL_HELP_PATTERN.IMAGE
-
-    checkFeature = @() unitTypes.TANK.isAvailable()
-    pageUnitTypeBit = unitTypes.TANK.bit
-    pageUnitTag = "suit"
-
-    pageBlkName = "gui/help/controlsSuit.blk"
-    defaultValues = { country = "ussr" }
-    imagePattern = "#ui/images/help/help_controls_suit_%s.jpg?P1"
-    hasImageByCountries = ["ussr"]
-    countryRelatedObjs = { ussr = [] }
-    linkLines = { links = [] }
-  }
   CONTROLLER_AIRCRAFT = {
     subTabName = helpMarkup.title
     showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
@@ -479,21 +462,6 @@ enums.addTypes(result, {
     checkFeature = @() unitTypes.SHIP.isAvailable() && ::has_feature("SpecialShips")
     pageUnitTypeBit = unitTypes.SHIP.bit
     pageUnitTag = "submarine"
-
-    pageBlkName = helpMarkup.blk
-    pageFillfuncName = "initGamepadPage"
-  }
-  CONTROLLER_SUIT = {
-    subTabName = helpMarkup.title
-
-    showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
-    helpPattern = CONTROL_HELP_PATTERN.GAMEPAD
-
-    specificCheck = @() ::show_console_buttons
-    checkFeature = @() unitTypes.TANK.isAvailable()
-    pageUnitTypeBit = unitTypes.TANK.bit
-    pageUnitTag = "suit"
-    needShow = @(...) true
 
     pageBlkName = helpMarkup.blk
     pageFillfuncName = "initGamepadPage"
@@ -594,26 +562,6 @@ enums.addTypes(result, {
     checkFeature = @() unitTypes.SHIP.isAvailable() && ::has_feature("SpecialShips")
     pageUnitTypeBit = unitTypes.SHIP.bit
     pageUnitTag = "submarine"
-
-    pageBlkName = "gui/help/controllerKeyboard.blk"
-    pageFillfuncName = "fillAllTexts"
-  }
-  KEYBOARD_SUIT = {
-    subTabName = "#controlType/mouse"
-
-    showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS, HELP_CONTENT_SET.CONTROLS_SUIT ]
-    helpPattern = CONTROL_HELP_PATTERN.KEYBOARD_MOUSE
-
-    specificCheck = function() {
-      if (::is_platform_pc)
-        return true
-
-      local basePresets = ::g_controls_manager.getCurPreset().getBasePresetNames()
-      return ::is_platform_ps4 && ::u.search(basePresets, @(val) val == "default"|| val == "dualshock4") != null
-    }
-    checkFeature = @() unitTypes.TANK.isAvailable()
-    pageUnitTypeBit = unitTypes.TANK.bit
-    pageUnitTag = "suit"
 
     pageBlkName = "gui/help/controllerKeyboard.blk"
     pageFillfuncName = "fillAllTexts"

@@ -1,4 +1,5 @@
 local psnStore = require("ps4_api.store")
+local statsd = require("statsd")
 
 local IMAGE_TYPE_INDEX = 1 //240x240
 
@@ -31,7 +32,7 @@ local function sendBqRecord(metric, itemId, result = null) {
   }
 
   local path = ".".join(metric)
-  ::statsd_counter(path)
+  statsd.send_counter($"sq.{path}", 1)
   ::add_big_query_record(path,
     ::save_to_json(sendStat.__merge({
       itemId = itemId

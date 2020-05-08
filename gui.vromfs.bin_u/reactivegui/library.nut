@@ -1,3 +1,6 @@
+local log_ = require("std/log.nut")()
+::debugTableData <- log_.debugTableData //used for sq debugger
+
 global enum Layers {
   Default
   Tooltip

@@ -1410,14 +1410,15 @@ enums.addTypesByGlobalName("g_hud_hints", {
     getLocParams = @(hintData) { shotFreq = ::loc($"hints/shotFreq/{hintData.shotFreq}") }
   }
 
-  SUIT_ENGINE_BRAKE = {
-    hintType = ::g_hud_hint_types.COMMON
-    locId = "hints/suit_engine_brake"
-    showEvent = "hint:suit_engine_brake:show"
-    hideEvent = "hint:suit_engine_brake:hide"
-    lifeTime = 5.0
+  CHANGE_BULLET_TYPE_FOR_SET = {
+    hintType = ::g_hud_hint_types.ACTIONBAR
+    locId = "hints/change_bullet_type_for_set"
+    showEvent = "hint:change_bullet_type_for_set"
+    totalCount = 8
+    lifeTime = 4.0
     isHideOnDeath = true
   }
+
 },
 function() {
   name = "hint_" + typeName.tolower()

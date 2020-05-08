@@ -1,27 +1,24 @@
 local weaponryEffects = ::require("scripts/weaponry/weaponryEffects.nut")
-local modUpgradeElem = ::require("scripts/weaponry/elems/modUpgradeElem.nut")
 local stdMath = require("std/math.nut")
-local { isFakeBullet,
-        getBulletIcons,
-        initBulletIcons,
-        getBulletsSetData,
-        getBulletGroupIndex,
+local { isResearchableItem,
+        isModInResearch,
+        canBeResearched,
+        getItemUpgradesList,
+        getByCurBundle,
+        getItemStatusTbl,
+        getRepairCostCoef,
+        countWeaponsUpgrade,
+        getDiscountPath } = require("scripts/weaponry/itemInfo.nut")
+local { isBullets,
+        isWeaponTierAvailable,
         getModificationInfo,
         getModificationName,
-        getBulletsSearchName,
-        getBulletsFeaturesImg,
-        isBulletsGroupActiveByMod,
-        getModificationBulletsEffect,
-        getModificationBulletsGroup } = require("scripts/weaponry/bulletsInfo.nut")
-local { AMMO,
-        getAmmoAmount,
-        getAmmoMaxAmount,
-        getAmmoWarningMinimum } = require("scripts/weaponry/ammoInfo.nut")
-local { WEAPON_TYPE,
-        getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
+        addBulletsParamToDesc,
+        isBulletsGroupActiveByMod } = require("scripts/weaponry/bulletsInfo.nut")
+local { WEAPON_TYPE } = require("scripts/weaponry/weaponryInfo.nut")
 local { getWeaponInfoText,
         getWeaponNameText,
-        getWeaponItemViewParams } = require("scripts/weaponry/weaponryVisual.nut")
+        getBulletsCountText } = require("scripts/weaponry/weaponryVisual.nut")
 
 /*
   weaponVisual API
@@ -34,466 +31,7 @@ local { getWeaponInfoText,
 
 ::dagui_propid.add_name_id("_iconBulletName")
 
-::weaponVisual <- {
-  function addBonusToObj(handler, obj, value, tooltipLocName="", isDiscount=true, bType = "old")
-  {
-    if (!::checkObj(obj) || value < 2) return
-
-    local guiScene = obj.getScene()
-    local text = ""
-    local id = ""
-    local tooltip = ""
-    text = isDiscount? "-" + value + "%" : "x" + stdMath.roundToDigits(value, 2)
-    if(tooltipLocName != "")
-    {
-      local prefix = isDiscount? "discount/" : "bonus/"
-      id = isDiscount? "discount" : "bonus"
-      tooltip = ::format(::loc(prefix + tooltipLocName + "/tooltip"), value.tostring())
-    }
-    local discountData = ::format("discount{id:t='%s'; type:t='%s'; tooltip:t='%s'; text:t='%s';}",
-      id, bType, tooltip, text)
-
-    guiScene.appendWithBlk(obj, discountData, handler)
-  }
-}
-
-weaponVisual.createItemLayout <- function createItemLayout(id, unit, item, iType, params = {})
-{
-  if (!("type" in item))
-    item.type <- iType
-
-  return ::handyman.renderCached("gui/weaponry/weaponItem", getWeaponItemViewParams(id, unit, item, params))
-}
-
-weaponVisual.createItem <- function createItem(id, unit, item, iType, holderObj, handler, params = {})
-{
-  local data = createItemLayout(id, unit, item, iType, params)
-  holderObj.getScene().appendWithBlk(holderObj, data, handler)
-  return holderObj.findObject(id)
-}
-
-weaponVisual.createBundle <- function createBundle(id, unit, itemsList, itemsType, holderObj, handler, params = {})
-{
-  if (itemsList.len()==0)
-    return null
-
-  local maxItemsInColumn = ::getTblValue("maxItemsInColumn", params, 5)
-  local createItemFunc = ::getTblValue("createItemFunc", params, createItem)
-  local bundleItem = {
-      name = id
-      type = weaponsItem.bundle
-      hideStatus = true
-      itemsType = itemsType
-      subType = ::getTblValue("subType", params, 0)
-      itemsList = itemsList
-    }
-  if (itemsType==weaponsItem.bullets)
-    itemsType = weaponsItem.modification
-
-  if (itemsList.len()==1)
-  {
-    itemsList[0].hideStatus <- true
-    createItemFunc.call(handler, id, unit, itemsList[0], itemsType, holderObj, handler, params)
-    return itemsList[0]
-  }
-
-  local bundleObj = createItemFunc.call(handler, id, unit, bundleItem, bundleItem.type, holderObj, handler, params)
-  bundleObj["class"] = "dropDown"
-
-  local guiScene = holderObj.getScene()
-  local hoverObj = guiScene.createElementByObject(bundleObj, "gui/weaponry/weaponBundleTop.blk", "hoverSize", handler)
-
-  local cols = ((itemsList.len()-1)/maxItemsInColumn + 1).tointeger()
-  local rows = ((itemsList.len()-1)/cols + 1).tointeger()
-  local itemsObj = hoverObj.findObject("items_field")
-  foreach(idx, item in itemsList)
-    createItemFunc.call(handler, id + "_" + idx, unit, item, itemsType, itemsObj, handler, { posX = (idx/rows).tointeger(), posY = idx%rows })
-  itemsObj.width = cols + "@modCellWidth"
-  itemsObj.height = rows + "@modCellHeight"
-
-  hoverObj.width = cols + "@modCellWidth"
-  local rootSize = guiScene.getRoot().getSize()
-  local rightSide = bundleObj.getPosRC()[0] < 0.7 * rootSize[0] //better to use width const here, but need const calculator from dagui for that
-  if (rightSide)
-    hoverObj.pos = "0.5pw-0.5@modCellWidth, ph"
-  else
-    hoverObj.pos = "0.5pw+0.5@modCellWidth-w, ph"
-
-  local cellObj = ::getTblValue("cellSizeObj", params) || bundleObj
-  local cellSize = cellObj.getSize()
-  hoverObj["height-end"] = (cellSize[1].tofloat() * (rows + 0.4)).tointeger().tostring()
-  return bundleItem
-}
-
-weaponVisual.updateItem <- function updateItem(air, item, itemObj, showButtons, handler, params = {})
-{
-  local guiScene = itemObj.getScene()
-  local isOwn = ::isUnitUsable(air)
-  local visualItem = item
-  local isBundle = item.type == weaponsItem.bundle
-  if (isBundle)
-    visualItem = getBundleCurItem(air, item) || visualItem
-
-  local limitedName = ::getTblValue("limitedName", params, true)
-  itemObj.findObject("name").setValue(getItemName(air, visualItem, limitedName))
-
-  local isForceHidePlayerInfo = params?.isForceHidePlayerInfo ?? false
-  if (::getTblValue("useGenericTooltip", params))
-    updateGenericTooltipId(itemObj, air, item, { hasPlayerInfo = !isForceHidePlayerInfo })
-
-  local bIcoItem = getBulletsIconItem(air, visualItem)
-  if (bIcoItem)
-  {
-    local divObj = itemObj.findObject("bullets")
-    if (divObj?._iconBulletName != bIcoItem.name)
-    {
-      divObj._iconBulletName = bIcoItem.name
-      local bulletsSet = getBulletsSetData(air, bIcoItem.name)
-      dagor.assertf(isTank(air) || bulletsSet!=null, "No bullets in bullets set " + visualItem.name + " for " + air.name)
-      local iconData = getBulletsIconData(bulletsSet)
-      guiScene.replaceContentFromText(divObj, iconData, iconData.len(), handler)
-    }
-  }
-
-  local imgObj = itemObj.findObject("image")
-  imgObj["background-image"] = bIcoItem? "" : getItemImage(air, visualItem)
-
-  local statusTbl = getItemStatusTbl(air, visualItem)
-  local canBeDisabled = isCanBeDisabled(item)
-  local isSwitcher = isItemSwitcher(visualItem)
-  local discount = ::getDiscountByPath(getDiscountPath(air, visualItem, statusTbl.discountType))
-  local itemCostText = getFullItemCostText(air, item)
-  local priceText = statusTbl.showPrice && ::getTblValue("canShowPrice", params, true) ? itemCostText : ""
-  local flushExp = ::getTblValue("flushExp", params, 0)
-  local canShowResearch = ::getTblValue("canShowResearch", params, true)
-  local canResearch = canResearchItem(air, visualItem, false)
-  local itemReqExp = ::getTblValue("reqExp", visualItem, 0)
-  local isModResearching = canShowResearch &&
-                               canResearch &&
-                               statusTbl.modExp >= 0 &&
-                               statusTbl.modExp < itemReqExp &&
-                               !statusTbl.amount
-
-  local isResearchInProgress = isModResearching && isModInResearch(air, visualItem)
-  local isResearchPaused = isModResearching && statusTbl.modExp > 0 && !isModInResearch(air, visualItem)
-
-  local showStatus = false
-  if (::getTblValue("canShowStatusImage", params, true))
-    if (visualItem.type == weaponsItem.weapon || isBullets(visualItem))
-      showStatus = true
-    else if (visualItem.type == weaponsItem.modification || visualItem.type == weaponsItem.expendables)
-      showStatus = canBeDisabled && statusTbl.amount
-
-  local statusObj = itemObj.findObject("status_image")
-  if(statusObj)
-    statusObj.show(showStatus && (! statusTbl.unlocked || ! isSwitcher))
-
-  local statusRadioObj = itemObj.findObject("status_radio")
-  if(statusRadioObj)
-    statusRadioObj.show(showStatus && statusTbl.unlocked &&
-      isSwitcher && !isFakeBullet(visualItem.name))
-
-  local blockObj = itemObj.findObject("modItem_statusBlock")
-  if (blockObj)
-    blockObj.show(!isResearchInProgress)
-  local dObj = itemObj.findObject("discount")
-  if(::checkObj(dObj))
-    guiScene.destroyElement(dObj)
-
-  local haveDiscount = discount > 0 && statusTbl.canShowDiscount && itemCostText != ""
-  if (haveDiscount)
-  {
-    local discountObj = itemObj.findObject("modItem_discount")
-    if (discountObj)
-      addBonusToObj(handler, discountObj, discount, statusTbl.discountType, true, "weaponryItem")
-    if (priceText != "")
-      priceText = "<color=@goodTextColor>" + priceText +"</color>"
-  }
-
-  local showProgress = isResearchInProgress || isResearchPaused
-
-  local priceObj = itemObj.findObject("price")
-  if (priceObj)
-    priceObj.show(!showProgress && (statusTbl.showPrice || canResearch))
-
-  local progressBlock = itemObj.findObject("mod_research_block")
-  if (progressBlock)
-    progressBlock.show(showProgress)
-  if (showProgress && progressBlock)
-  {
-    local diffExp = ::getTblValue("diffExp", params, 0)
-    local progressObj = progressBlock.findObject("mod_research_progress")
-
-    progressObj.setValue((itemReqExp ? statusTbl.modExp.tofloat() / itemReqExp : 1) * 1000)
-    progressObj.type = diffExp? "new" : ""
-    progressObj.paused = isResearchPaused? "yes" : "no"
-
-    local oldExp = max(0, statusTbl.modExp - diffExp)
-    local progressObjOld = progressBlock.findObject("mod_research_progress_old")
-    progressObjOld.show(oldExp > 0)
-    progressObjOld.setValue((itemReqExp ? oldExp.tofloat() / itemReqExp : 1) * 1000)
-    progressObjOld.paused = isResearchPaused? "yes" : "no"
-  }
-  else
-  {
-    if (priceObj && statusTbl.showPrice)
-      priceObj.setValue(priceText)
-    else if (priceObj && canResearch && !isResearchInProgress && !isResearchPaused)
-    {
-      local showExp = itemReqExp - statusTbl.modExp
-      local rpText = ::Cost().setRp(showExp).tostring()
-      if (flushExp > 0 && flushExp > showExp)
-        rpText = "<color=@goodTextColor>" + rpText + "</color>"
-      priceObj.setValue(rpText)
-    }
-  }
-
-  local iconObj = itemObj.findObject("icon")
-  local optEquipped = isForceHidePlayerInfo || statusTbl.equipped ? "yes" : "no"
-  local optStatus = "locked"
-  if (::getTblValue("visualDisabled", params, false))
-    optStatus = "disabled"
-  else if (statusTbl.amount)
-    optStatus = "owned"
-  else if (isForceHidePlayerInfo || statusTbl.unlocked)
-    optStatus = "unlocked"
-  else if (isModInResearch(air, visualItem) && visualItem.type == weaponsItem.modification)
-    optStatus = canShowResearch? "research" : "researchable"
-  else if (canResearchItem(air, visualItem))
-    optStatus = "researchable"
-
-  itemObj.equipped = optEquipped
-  itemObj.status = optStatus
-  iconObj.equipped = optEquipped
-  iconObj.status = optStatus
-
-  if (!isForceHidePlayerInfo)
-  {
-    local amountText = getAmountAndMaxAmountText(statusTbl.amount, statusTbl.maxAmount, statusTbl.showMaxAmount);
-    local amountObject = itemObj.findObject("amount");
-    amountObject.setValue(amountText)
-    amountObject.overlayTextColor = statusTbl.amount < statusTbl.amountWarningValue ? "weaponWarning" : "";
-  }
-
-  local isWarningIconVisible = !isForceHidePlayerInfo
-                            && statusTbl.unlocked
-                            && statusTbl.showMaxAmount
-                            && statusTbl.amount < statusTbl.amountWarningValue
-  itemObj.findObject("warning_icon").show(isWarningIconVisible)
-
-  updateItemBulletsSliderByItem(itemObj, ::getTblValue("selectBulletsByManager", params), visualItem)
-
-  local showMenuIcon = isBundle || ::getTblValue("hasMenu", params)
-  local visualHasMenuObj = itemObj.findObject("modItem_visualHasMenu")
-  if (visualHasMenuObj)
-    visualHasMenuObj.show(showMenuIcon)
-
-  local upgradesObj = itemObj.findObject("upgrade_img")
-  if (upgradesObj)
-    upgradesObj.upgradeStatus = getItemUpgradesStatus(air, visualItem)
-
-  local statusIcon = itemObj.findObject("status_icon")
-  if (::checkObj(statusIcon))
-    statusIcon["background-image"] = getStatusIcon(air, item)
-
-  modUpgradeElem.setValueToObj(itemObj.findObject("mod_upgrade_icon"), air.name, visualItem.name)
-
-  if (!showButtons)
-    return
-
-  //updateButtons
-  local btnText = ""
-  local showBtnOnlySelected = false
-  if (isBundle)
-  {
-    showBtnOnlySelected = true
-    btnText = ::loc("mainmenu/btnAirGroupOpen")
-  }
-  else if (isOwn && statusTbl.unlocked)
-  {
-    if (!statusTbl.amount || (visualItem.type == weaponsItem.spare && statusTbl.canBuyMore))
-      btnText = ::loc("mainmenu/btnBuy")
-    else if (isSwitcher && !statusTbl.equipped)
-      btnText = ::loc("mainmenu/btnSelect")
-    else if (visualItem.type == weaponsItem.modification)
-      btnText = statusTbl.equipped ? (canBeDisabled ? ::loc("mod/disable") : "") : ::loc("mod/enable")
-  }
-  else if (canResearchItem(air, visualItem) || (canResearchItem(air, visualItem, false) && (flushExp > 0 || !canShowResearch)))
-    btnText = ::loc("mainmenu/btnResearch")
-
-  local actionBtn = itemObj.findObject("actionBtn")
-  actionBtn.canShow = btnText == "" ? "no" : !showBtnOnlySelected? "yes"
-                      : (isBundle) ? "console" : "selected"
-  actionBtn.setValue(btnText)
-
-  //alternative action button
-  local altBtn = itemObj.findObject("altActionBtn")
-  local altBtnText = ""
-  local altBtnTooltip = ""
-  if (statusTbl.goldUnlockable && !(::getTblValue("researchMode", params, false) && flushExp > 0))
-    altBtnText = getItemUnlockCost(air, item).tostring()
-  if (altBtnText != "")
-    altBtnText = ::loc("mainmenu/btnBuy") + ::loc("ui/parentheses/space", {text = altBtnText})
-  else if (visualItem.type == weaponsItem.spare && isOwn)
-  {
-    if (::ItemsManager.getInventoryList(itemType.UNIVERSAL_SPARE).len() && statusTbl.canBuyMore)
-    {
-      altBtnText = ::loc("items/universalSpare/activate", { icon = ::loc("icon/universalSpare") })
-      altBtnTooltip = ::loc("items/universalSpare/activate/tooltip")
-    }
-  }
-  else if (statusTbl.amount && statusTbl.maxAmount > 1
-            && statusTbl.amount < statusTbl.maxAmount
-            && !isBundle)
-    altBtnText = ::loc("mainmenu/btnBuy")
-  else if (visualItem.type == weaponsItem.modification
-      && isOwn
-      && statusTbl.curUpgrade < statusTbl.maxUpgrade
-      && ::ItemsManager.getInventoryList(itemType.MOD_UPGRADE).len())
-    altBtnText = ::loc("mainmenu/btnUpgrade")
-
-  altBtn.canShow = (altBtnText == "") ? "no" : "yes"
-  if (altBtnTooltip != "")
-    altBtn.tooltip = altBtnTooltip
-  local textObj = altBtn.findObject("altBtnBuyText")
-  if (::checkObj(textObj))
-    textObj.setValue(altBtnText)
-}
-
-weaponVisual.getItemStatusTbl <- function getItemStatusTbl(air, item)
-{
-  local isOwn = ::isUnitUsable(air)
-  local res = {
-    amount = getItemAmount(air, item)
-    maxAmount = 0
-    amountWarningValue = 0
-    modExp = 0
-    showMaxAmount = false
-    canBuyMore = false
-    equipped = false
-    goldUnlockable = false
-    unlocked = false
-    showPrice = true
-    discountType = ""
-    canShowDiscount = true
-    curUpgrade = 0
-    maxUpgrade = 0
-  }
-
-  if (item.type == weaponsItem.weapon)
-  {
-    res.maxAmount = getAmmoMaxAmount(air, item.name, AMMO.WEAPON)
-    res.amount = getAmmoAmount(air, item.name, AMMO.WEAPON)
-    res.showMaxAmount = res.maxAmount > 1
-    res.amountWarningValue = getAmmoWarningMinimum(AMMO.WEAPON, air, res.maxAmount)
-    res.canBuyMore = res.amount < res.maxAmount
-    res.equipped = res.amount && getLastWeapon(air.name) == item.name
-    res.unlocked = ::is_weapon_enabled(air, item) || (isOwn && ::is_weapon_unlocked(air, item) )
-    res.discountType = "weapons"
-  }
-  else if (item.type == weaponsItem.primaryWeapon)
-  {
-    res.equipped = ::get_last_primary_weapon(air) == item.name
-    if (item.name == "") //default
-      res.unlocked = isOwn
-    else
-    {
-      res.maxAmount = ::wp_get_modification_max_count(air.name, item.name)
-      res.equipped = res.amount && ::shop_is_modification_enabled(air.name, item.name)
-      res.unlocked = res.amount || ::canBuyMod(air, item)
-      res.showPrice = false//amount < maxAmount
-    }
-  }
-  else if (item.type == weaponsItem.modification || item.type == weaponsItem.expendables)
-  {
-    local groupDef = ("isDefaultForGroup" in item)? item.isDefaultForGroup : -1
-    if (groupDef >= 0) //default bullets, always bought.
-    {
-      res.unlocked = isOwn
-      local currBullet = ::get_last_bullets(air.name, groupDef);
-      res.equipped = !currBullet || currBullet == "" || currBullet == item.name
-      res.showPrice = false
-    }
-    else
-    {
-      res.unlocked = res.amount || ::canBuyMod(air, item)
-      res.maxAmount = ::wp_get_modification_max_count(air.name, item.name)
-      res.amountWarningValue = getAmmoWarningMinimum(AMMO.MODIFICATION, air, res.maxAmount)
-      res.canBuyMore = res.amount < res.maxAmount
-      res.modExp = ::shop_get_module_exp(air.name, item.name)
-      res.discountType = "mods"
-      if (!isBullets(item))
-      {
-        res.equipped = res.amount && ::shop_is_modification_enabled(air.name, item.name)
-        res.goldUnlockable = !res.unlocked && ::has_feature("SpendGold") && canBeResearched(air, item, false)
-        if (item.type == weaponsItem.expendables)
-          res.showPrice = !res.amount || ::canBuyMod(air, item)
-        else
-        {
-          res.canShowDiscount = res.canBuyMore
-          res.showPrice = !res.amount && ::canBuyMod(air, item)
-        }
-
-        if (isOwn && res.amount && ::is_mod_upgradeable(item.name))
-        {
-          res.curUpgrade = ::get_modification_level(air.name, item.name)
-          res.maxUpgrade = 1 //only 1 upgrade level planned to be used atm.
-                             //so no point to add complex logic about max upgrade detection right now.
-        }
-      }
-      else
-      {
-        res.equipped = false
-        res.showMaxAmount = res.maxAmount > 1
-        local id = getBulletGroupIndex(air.name, item.name)
-        if (id >= 0)
-        {
-          local currBullet = ::get_last_bullets(air.name, id);
-          res.equipped = res.amount && (currBullet == item.name)
-        }
-      }
-    }
-  }
-  else if (item.type == weaponsItem.spare)
-  {
-    res.equipped = res.amount > 0
-    res.maxAmount = ::max_spare_amount
-    res.showMaxAmount = false
-    res.canBuyMore = res.amount < res.maxAmount
-    res.unlocked = isOwn
-    res.discountType = "spare"
-  }
-  return res
-}
-
-weaponVisual.isItemSwitcher <- function isItemSwitcher(item)
-{
-  return (item.type == weaponsItem.weapon) || (item.type == weaponsItem.primaryWeapon) || isBullets(item)
-}
-
-weaponVisual.updateGenericTooltipId <- function updateGenericTooltipId(itemObj, unit, item, params = null)
-{
-  local tooltipObj = itemObj.findObject("tooltip_" + (itemObj?.id??""))
-  if (!tooltipObj)
-    return
-
-  local tooltipId = ""
-  if (item.type == weaponsItem.modification)
-    tooltipId = ::g_tooltip_type.MODIFICATION.getTooltipId(unit.name, item.name)
-  else if (item.type == weaponsItem.weapon)
-    tooltipId = ::g_tooltip_type.WEAPON.getTooltipId(unit.name, item.name, params)
-  else if (item.type == weaponsItem.spare)
-    tooltipId = ::g_tooltip_type.SPARE.getTooltipId(unit.name)
-  tooltipObj.tooltipId = tooltipId
-}
-
-weaponVisual.updateItemBulletsSliderByItem <- function updateItemBulletsSliderByItem(itemObj, bulletsManager, item)
-{
-  local bulGroup = null
-  if (bulletsManager != null && bulletsManager.canChangeBulletsCount())
-    bulGroup = bulletsManager.getBulletGroupBySelectedMod(item)
-  updateItemBulletsSlider(itemObj, bulletsManager, bulGroup)
-}
+::weaponVisual <- {}
 
 weaponVisual.updateItemBulletsSlider <- function updateItemBulletsSlider(itemObj, bulletsManager, bulGroup)
 {
@@ -508,22 +46,8 @@ weaponVisual.updateItemBulletsSlider <- function updateItemBulletsSlider(itemObj
   local unallocated = bulletsManager.getUnallocatedBulletCount(bulGroup)
 
   local textObj = holderObj.findObject("bulletsCountText")
-  if (::checkObj(textObj))
-  {
-    local restText = ""
-    if (unallocated && curVal < maxVal)
-      restText = ::colorize("userlogColoredText",
-        ::loc("ui/parentheses", { text = "+" + min(unallocated * guns,maxVal - curVal ) }))
-    local valColor = "activeTextColor"
-    if (!curVal || maxVal == 0)
-      valColor = "badTextColor"
-    else if (curVal == maxVal)
-      valColor = "goodTextColor"
-
-    local valText = ::colorize(valColor, curVal*guns)
-    local text = ::format("%s/%s %s", valText, (maxVal*guns).tostring(), restText)
-    textObj.setValue(text)
-  }
+  if (::check_obj(textObj))
+    textObj.setValue(getBulletsCountText(curVal, maxVal, unallocated, guns))
 
   local btnDec = holderObj.findObject("buttonDec")
   if (::checkObj(btnDec))
@@ -549,67 +73,6 @@ weaponVisual.updateItemBulletsSlider <- function updateItemBulletsSlider(itemObj
   }
 }
 
-weaponVisual.getBundleCurItem <- function getBundleCurItem(air, bundle)
-{
-  if (!("itemsType" in bundle))
-    return null
-
-  if (bundle.itemsType == weaponsItem.weapon)
-  {
-    local curWeapon = getLastWeapon(air.name)
-    foreach(item in bundle.itemsList)
-      if (curWeapon == item.name)
-        return item
-    return bundle.itemsList[0]
-  }
-  else if (bundle.itemsType == weaponsItem.bullets)
-  {
-    local curName = ::get_last_bullets(air.name, ::getTblValue("subType", bundle, 0))
-    local def = null
-    foreach(item in bundle.itemsList)
-      if (curName == item.name)
-        return item
-      else if (("isDefaultForGroup" in item)
-               || (!def && curName == "" && !::wp_get_modification_cost(air.name, item.name)))
-        def = item
-    return def
-  }
-  else if (bundle.itemsType == weaponsItem.primaryWeapon)
-  {
-    local curPrimaryWeaponName = ::get_last_primary_weapon(air)
-    foreach (item in bundle.itemsList)
-      if(item.name == curPrimaryWeaponName)
-        return item
-  }
-  return null
-}
-
-weaponVisual.getByCurBundle <- function getByCurBundle(air, bundle, func, defValue = "")
-{
-  local cur = getBundleCurItem(air, bundle)
-  return cur? func(air, cur) : defValue
-}
-
-weaponVisual.isBullets <- function isBullets(item)
-{
-  return (("isDefaultForGroup" in item) && (item.isDefaultForGroup >= 0))
-    || (item.type == weaponsItem.modification && getModificationBulletsGroup(item.name) != "")
-}
-
-weaponVisual.getBulletsIconItem <- function getBulletsIconItem(air, item)
-{
-  if (isBullets(item))
-    return item
-
-  if (item.type == weaponsItem.modification)
-  {
-    updateRelationModificationList(air, item.name)
-    if ("relationModification" in item && item.relationModification.len() == 1)
-      return ::getModificationByName(air, item.relationModification[0])
-  }
-  return null
-}
-
 weaponVisual.getItemName <- function getItemName(air, item, limitedName = true)
 {
   return ::g_weaponry_types.getUpgradeTypeByItem(item).getLocName(air, item, limitedName)
@@ -630,92 +93,6 @@ weaponVisual.getItemImage <- function getItemImage(air, item)
   return ""
 }
 
-weaponVisual.getBulletsIconData <- function getBulletsIconData(bulletsSet)
-{
-  if (!bulletsSet)
-    return ""
-  local blk = ::handyman.renderCached(("gui/weaponry/bullets"), getBulletsIconView(bulletsSet))
-  return blk
-}
-
-/**
- * @param tooltipId If not null, tooltip block
- * will be added with specified tooltip id.
- */
-weaponVisual.getBulletsIconView <- function getBulletsIconView(bulletsSet, tooltipId = null, tooltipDelayed = false)
-{
-  local view = {}
-  if (!bulletsSet || !("bullets" in bulletsSet))
-    return view
-
-  initBulletIcons()
-  local bulletIcons = getBulletIcons()
-  view.bullets <- (@(bulletsSet, tooltipId, tooltipDelayed) function () {
-      local res = []
-
-      local length = bulletsSet.bullets.len()
-      local isBelt = "isBulletBelt" in bulletsSet ? bulletsSet.isBulletBelt : true
-      local maxAmountInView = 4
-      if (bulletsSet.catridge)
-        maxAmountInView = ::min(bulletsSet.catridge, maxAmountInView)
-      local count = isBelt ? length * max(1,::floor(maxAmountInView / length)) : 1
-      local totalWidth = 100.0
-      local itemWidth = isBelt ? totalWidth / 5 : totalWidth
-      local itemHeight = totalWidth
-      local space = totalWidth - itemWidth * count
-      local separator = (space > 0) ? (space / (count + 1)) : (count == 1 ? space : (space / (count - 1)))
-      local start = (space > 0) ? separator : 0.0
-
-      for (local i = 0; i < count; i++)
-      {
-        local imgId = bulletsSet.bullets[i % length]
-        if (bulletsSet?.customIconsMap[imgId] != null)
-          imgId = bulletsSet.customIconsMap[imgId]
-        if (imgId.indexof("@") != null)
-          imgId = imgId.slice(0, imgId.indexof("@"))
-        local defaultImgId = ::isCaliberCannon(1000 * (bulletsSet?.caliber ?? 0.0)) ? "default_shell" : "default_ball"
-
-        local item = {
-          image           = "#ui/gameuiskin#" + bulletIcons[ (imgId in bulletIcons) ? imgId : defaultImgId ]
-          posx            = (start + (itemWidth + separator) * i) + "%pw"
-          sizex           = itemWidth + "%pw"
-          sizey           = itemHeight + "%pw"
-          useTooltip      = tooltipId != null
-          tooltipId       = tooltipId
-          tooltipDelayed  = tooltipId != null && tooltipDelayed
-        }
-        res.append(item)
-      }
-
-      return res
-    })(bulletsSet, tooltipId, tooltipDelayed)
-
-  local bIconParam = getTblValue("bIconParam", bulletsSet)
-  if (bIconParam)
-  {
-    local addIco = []
-    foreach(item in getBulletsFeaturesImg())
-    {
-      local idx = ::getTblValue(item.id, bIconParam, -1)
-      if (idx in item.values)
-        addIco.append({ img = item.values[idx] })
-    }
-    if (addIco.len())
-      view.addIco <- addIco
-  }
-  return view
-}
-
-weaponVisual.getItemAmount <- function getItemAmount(air, item)
-{
-  return ::g_weaponry_types.getUpgradeTypeByItem(item).getAmount(air, item)
-}
-
-weaponVisual.getItemCost <- function getItemCost(air, item)
-{
-  return ::g_weaponry_types.getUpgradeTypeByItem(item).getCost(air, item)
-}
-
 //include spawn score cost
 weaponVisual.getFullItemCostText <- function getFullItemCostText(unit, item)
 {
@@ -733,108 +110,6 @@ weaponVisual.getFullItemCostText <- function getFullItemCostText(unit, item)
       res += (res.len() ? ", " : "") + scoreCostText
   }
   return res
-}
-
-weaponVisual.getItemUnlockCost <- function getItemUnlockCost(air, item)
-{
-  return ::g_weaponry_types.getUpgradeTypeByItem(item).getUnlockCost(air, item)
-}
-
-weaponVisual.isCanBeDisabled <- function isCanBeDisabled(item)
-{
-  return (item.type == weaponsItem.modification || item.type == weaponsItem.expendables) &&
-         (!("deactivationIsAllowed" in item) || item.deactivationIsAllowed) &&
-         !isBullets(item)
-}
-
-weaponVisual.isResearchableItem <- function isResearchableItem(item)
-{
-  return item.type == weaponsItem.modification
-}
-
-weaponVisual.canResearchItem <- function canResearchItem(air, item, checkCurrent = true)
-{
-  return item.type == weaponsItem.modification &&
-         canBeResearched(air, item, checkCurrent)
-}
-
-weaponVisual.canBeResearched <- function canBeResearched(air, item, checkCurrent = true)
-{
-  if (isResearchableItem(item))
-    return ::canResearchMod(air, item, checkCurrent)
-  return false
-}
-
-weaponVisual.isModInResearch <- function isModInResearch(air, item)
-{
-  if (item.name == "" || !("type" in item) || item.type != weaponsItem.modification)
-    return false
-
-  local status = ::shop_get_module_research_status(air.name, item.name)
-  return status == ::ES_ITEM_STATUS_IN_RESEARCH
-}
-
-weaponVisual.getItemUpgradesStatus <- function getItemUpgradesStatus(unit, item)
-{
-  if (item.type == weaponsItem.primaryWeapon)
-  {
-    local countData = countWeaponsUpgrade(unit, item)
-    return !countData?[1] ? ""
-      : countData[0] >= countData[1] ? "full"
-      : "part"
-  }
-  if (item.type == weaponsItem.modification)
-  {
-    local curPrimWeaponName = ::get_last_primary_weapon(unit)
-    local weapMod = ::getModificationByName(unit, curPrimWeaponName)
-    local upgradesList = getItemUpgradesList(weapMod || unit) //default weapon upgrades stored in unit
-    if (upgradesList)
-      foreach(list in upgradesList)
-        if (::isInArray(item.name, list))
-          return "mod"
-  }
-  return ""
-}
-
-weaponVisual.getItemUpgradesList <- function getItemUpgradesList(item)
-{
-  if ("weaponUpgrades" in item)
-    return item.weaponUpgrades
-  else if ("weaponMod" in item && item.weaponMod != null && "weaponUpgrades" in item.weaponMod)
-    return item.weaponMod.weaponUpgrades
-  return null
-}
-
-weaponVisual.countWeaponsUpgrade <- function countWeaponsUpgrade(air, item)
-{
-  local upgradesTotal = 0
-  local upgraded = 0
-  local upgrades = getItemUpgradesList(item)
-
-  if (!upgrades)
-    return null
-
-  foreach (i, modsArray in upgrades)
-  {
-    if (modsArray.len() == 0)
-      continue
-
-    upgradesTotal++
-
-    foreach(modName in modsArray)
-      if (::shop_is_modification_enabled(air.name, modName))
-      {
-        upgraded++
-        break
-      }
-  }
-  return [upgraded, upgradesTotal]
-}
-
-weaponVisual.getRepairCostCoef <- function getRepairCostCoef(item)
-{
-  local modeName = ::get_current_shop_difficulty().getEgdName(true)
-  return item?["repairCostCoef" + modeName] ?? item?.repairCostCoef ?? 0
 }
 
 weaponVisual.getReqModsText <- function getReqModsText(air, item)
@@ -858,7 +133,7 @@ weaponVisual.getItemDescTbl <- function getItemDescTbl(air, item, params = null,
     ::g_mis_custom_state.getCurMissionRules().isWorldWar
 
   if (item.type==weaponsItem.bundle)
-    return ::weaponVisual.getByCurBundle(air, item,
+    return getByCurBundle(air, item,
       function(air, item) {
         return getItemDescTbl(air, item, params, effect, updateEffectFunc)
       }, res)
@@ -873,7 +148,7 @@ weaponVisual.getItemDescTbl <- function getItemDescTbl(air, item, params = null,
 
   local hasPlayerInfo = params?.hasPlayerInfo ?? true
   if (hasPlayerInfo
-    && !::weaponVisual.isTierAvailable(air, curTier) && curTier > 1
+    && !isWeaponTierAvailable(air, curTier) && curTier > 1
     && !needShowWWSecondaryWeapons)
   {
     local reqMods = ::getNextTierModsCount(air, curTier - 1)
@@ -977,7 +252,7 @@ weaponVisual.getItemDescTbl <- function getItemDescTbl(air, item, params = null,
 
   if (statusTbl.discountType != "")
   {
-    local discount = getDiscountByPath(getDiscountPath(air, item, statusTbl.discountType))
+    local discount = ::getDiscountByPath(getDiscountPath(air, item, statusTbl.discountType))
     if (discount > 0 && statusTbl.showPrice)
     {
       local cost = "cost" in item? item.cost : 0
@@ -1028,56 +303,13 @@ weaponVisual.getItemDescTbl <- function getItemDescTbl(air, item, params = null,
   return res
 }
 
-weaponVisual.addBulletsParamToDesc <- function addBulletsParamToDesc(descTbl, unit, item)
-{
-  if (!unit.unitType.canUseSeveralBulletsForGun && !::has_feature("BulletParamsForAirs"))
-    return
-  local bIcoItem = getBulletsIconItem(unit, item)
-  if (!bIcoItem)
-    return
-
-  local modName = bIcoItem.name
-  local bulletsSet = getBulletsSetData(unit, modName)
-  if (!bulletsSet)
-    return
-
-  local bIconParam = getTblValue("bIconParam", bulletsSet)
-  if (bIconParam)
-  {
-    descTbl.bulletActions <- []
-    local setClone = clone bulletsSet
-    foreach(p in ["armor", "damage"])
-    {
-      local value = ::getTblValue(p, bIconParam, -1)
-      if (value < 0)
-        continue
-
-      setClone.bIconParam = { [p] = value }
-      descTbl.bulletActions.append({
-        text = ::loc("bulletAction/" + p)
-        visual = getBulletsIconData(setClone)
-      })
-    }
-  }
-  else
-    descTbl.bulletActions <- [{ visual = getBulletsIconData(bulletsSet) }]
-
-  local searchName = getBulletsSearchName(unit, modName)
-  local useDefaultBullet = searchName!=modName;
-  local bullet_parameters = ::calculate_tank_bullet_parameters(unit.name,
-    useDefaultBullet && "weaponBlkName" in bulletsSet ? bulletsSet.weaponBlkName : getModificationBulletsEffect(searchName),
-    useDefaultBullet, false);
-
-  buildPiercingData(unit, bullet_parameters, descTbl, bulletsSet, true)
-}
-
 weaponVisual.buildPiercingData <- function buildPiercingData(unit, bullet_parameters, descTbl, bulletsSet = null, needAdditionalInfo = false)
 {
   local param = { armorPiercing = array(0, null) , armorPiercingDist = array(0, null)}
   local needAddParams = bullet_parameters.len() == 1
 
-  local isSmokeShell = bulletsSet?.weaponType == WEAPON_TYPE.GUN && bulletsSet?.bullets?[0] == "smoke_tank"
-  local isSmokeGenerator = isSmokeShell || bulletsSet?.weaponType == WEAPON_TYPE.SMOKE_SCREEN
+  local isSmokeShell = bulletsSet?.weaponType == WEAPON_TYPE.GUNS && bulletsSet?.bullets?[0] == "smoke_tank"
+  local isSmokeGenerator = isSmokeShell || bulletsSet?.weaponType == WEAPON_TYPE.SMOKE
   local isCountermeasure = isSmokeGenerator || bulletsSet?.weaponType == WEAPON_TYPE.FLARES
 
   if (isCountermeasure)
@@ -1147,7 +379,7 @@ weaponVisual.buildPiercingData <- function buildPiercingData(unit, bullet_parame
     if (!needAddParams)
       continue
 
-    foreach(p in ["mass", "speed", "fuseDelayDist", "explodeTreshold", "operatedDist", "endSpeed", "maxSpeed", "rangeBand0", "rangeBand1"])
+    foreach(p in ["mass", "speed", "fuseDelayDist", "explodeTreshold", "operatedDist", "machMax", "endSpeed", "maxSpeed", "rangeBand0", "rangeBand1"])
       param[p] <- ::getTblValue(p, bullet_params, 0)
 
     foreach(p in ["reloadTimes", "autoAiming", "weaponBlkPath"])
@@ -1170,6 +402,7 @@ weaponVisual.buildPiercingData <- function buildPiercingData(unit, bullet_parame
     }
 
     param.bulletType <- ::getTblValue("bulletType", bullet_params, "")
+    param.ricochetPreset <- bullet_params?.ricochetPreset
   }
 
   descTbl.bulletParams <- []
@@ -1193,8 +426,10 @@ weaponVisual.buildPiercingData <- function buildPiercingData(unit, bullet_parame
       addProp(p, ::loc("bullet_properties/speed"),
                  ::format("%.0f %s", param.speed, ::loc("measureUnits/metersPerSecond_climbSpeed")))
 
-    local maxSpeed = (param?.maxSpeed || param?.endSpeed) ?? 0
-    if (maxSpeed)
+    local maxSpeed = param?.maxSpeed ?? param?.endSpeed ?? 0
+    if (param?.machMax)
+      addProp(p, "".concat(::loc("rocket/maxSpeed"), ::format("%.1f %s", param.machMax, ::loc("measureUnits/machNumber"))))
+    else if (maxSpeed)
       addProp(p, ::loc("rocket/maxSpeed"), ::g_measure_type.SPEED_PER_SEC.getMeasureUnitsText(maxSpeed))
 
     if ("autoAiming" in param)
@@ -1246,7 +481,7 @@ weaponVisual.buildPiercingData <- function buildPiercingData(unit, bullet_parame
       addProp(p, ::loc("bullet_properties/proximityFuze/triggerRadius"),
         proximityFuseRadius + " " + ::loc("measureUnits/meters_alt"))
 
-    local ricochetData = !isCountermeasure && ::g_dmg_model.getRicochetData(param.bulletType)
+    local ricochetData = !isCountermeasure && ::g_dmg_model.getRicochetData(param?.ricochetPreset)
     if (ricochetData)
       foreach(item in ricochetData.angleProbabilityMap)
         addProp(p, ::loc("bullet_properties/angleByProbability",
@@ -1393,27 +628,6 @@ weaponVisual.updateWeaponTooltip <- function updateWeaponTooltip(obj, air, item,
   obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
 }
 
-weaponVisual.isTierAvailable <- function isTierAvailable(air, tierNum)
-{
-  local isAvailable = ::is_tier_available(air.name, tierNum)
-
-  if (!isAvailable && tierNum > 1) //make force check
-  {
-    local reqMods = air.needBuyToOpenNextInTier[tierNum-2]
-    foreach(mod in air.modifications)
-      if(mod.tier == (tierNum-1) &&
-         ::isModResearched(air, mod) &&
-         getModificationBulletsGroup(mod.name) == "" &&
-         !::wp_get_modification_cost_gold(air.name, mod.name)
-        )
-        reqMods--
-
-    isAvailable = reqMods <= 0
-  }
-
-  return isAvailable
-}
-
 weaponVisual.getReqTextWorldWarArmy <- function getReqTextWorldWarArmy(unit, item)
 {
   local text = ""
@@ -1444,13 +658,4 @@ weaponVisual.getStatusIcon <- function getStatusIcon(unit, item)
     return "#ui/gameuiskin#ww_icon.svg"
 
   return ""
-}
-
-weaponVisual.getDiscountPath <- function getDiscountPath(air, item, discountType)
-{
-  local discountPath = ["aircrafts", air.name, item.name]
-  if (item.type != weaponsItem.spare)
-    discountPath.insert(2, discountType)
-
-  return discountPath
 }

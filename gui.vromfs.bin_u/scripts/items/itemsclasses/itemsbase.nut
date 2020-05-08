@@ -41,6 +41,7 @@
 
 
 local time = require("scripts/time.nut")
+local { validateLink, openUrl } = require("scripts/onlineShop/url.nut")
 
 ::items_classes <- {}
 
@@ -451,9 +452,9 @@ class ::BaseItem
   {
     if (!hasLink())
       return
-    local validLink = ::g_url.validateLink(link)
+    local validLink = validateLink(link)
     if (validLink)
-      ::open_url(validLink, forceExternalBrowser, false, linkBigQueryKey)
+      openUrl(validLink, forceExternalBrowser, false, linkBigQueryKey)
   }
 
   function _requestBuy(params = {})

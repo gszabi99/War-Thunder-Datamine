@@ -1,6 +1,7 @@
 local time = require("scripts/time.nut")
 local platformModule = require("scripts/clientState/platform.nut")
 local { isChatEnabled } = require("scripts/chat/chatStates.nut")
+local showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
 
 ::fill_gamer_card <- function fill_gamer_card(cfg = null, prefix = "gc_", scene = null, save_scene=true)
 {
@@ -18,7 +19,7 @@ local { isChatEnabled } = require("scripts/chat/chatStates.nut")
     return
 
   if (isValidGamercard)
-    ::show_title_logo(true, div)
+    showTitleLogo(div)
 
   if (scene && save_scene && isGamercard && isValidGamercard)
     ::add_gamercard_scene(scene)

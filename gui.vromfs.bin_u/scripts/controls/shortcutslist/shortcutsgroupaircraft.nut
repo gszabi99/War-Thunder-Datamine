@@ -208,6 +208,11 @@ return [
     checkAssign = false
     showFunc = @() ::has_feature("ConstantlyComputedWeaponSight")
   }
+  {
+    id = "ID_SWITCH_REGISTERED_BOMB_TARGETING_POINT"
+    checkAssign = false
+    showFunc = @() ::has_feature("ConstantlyComputedWeaponSight")
+  }
 //-------------------------------------------------------
   {
     id = "ID_PLANE_AXES_HEADER"
@@ -409,6 +414,18 @@ return [
   {
     id = "ID_TOGGLE_VIEW"
     needShowInHelp = true
+  }
+  {
+    id = "ID_LOCK_TARGETING_AT_POINT"
+    checkAssign = false
+    needShowInHelp = true
+    showFunc = @() ::has_feature("PointOfInterestDesignator")
+  }
+  {
+    id = "ID_UNLOCK_TARGETING_AT_POINT"
+    checkAssign = false
+    needShowInHelp = true
+    showFunc = @() ::has_feature("PointOfInterestDesignator")
   }
   {
     id = "ID_CAMERA_FPS"
@@ -823,6 +840,7 @@ return [
   {
     id = "ID_TOGGLE_EXTINGUISHER"
     filterShow = [globalEnv.EM_FULL_REAL]
+    showFunc = @() ::has_feature("AircraftExtinguisher")
     checkAssign = false
   }
   {

@@ -4,9 +4,9 @@ local controllerState = require_native("controllerState")
 local time = require("scripts/time.nut")
 local shortcutsListModule = require("scripts/controls/shortcutsList/shortcutsList.nut")
 local shortcutsAxisListModule = require("scripts/controls/shortcutsList/shortcutsAxis.nut")
-local { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
+local { TRIGGER_TYPE, getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 local { isBulletGroupActive } = require("scripts/weaponry/bulletsInfo.nut")
-local { resetFastVoiceMessages } = require("scripts/voiceMessages.nut")
+local { resetFastVoiceMessages } = require("scripts/wheelmenu/voiceMessages.nut")
 local { unitClassType } = require("scripts/unit/unitClassType.nut")
 local controlsPresetConfigPath = require("scripts/controls/controlsPresetConfigPath.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
@@ -197,8 +197,6 @@ local axisMappedOnMouse = {
 
 
 
-  suit_mouse_aim_x       = @(isMouseAimMode) MOUSE_AXIS.HORIZONTAL_AXIS
-  suit_mouse_aim_y       = @(isMouseAimMode) MOUSE_AXIS.VERTICAL_AXIS
 
   camx                   = @(isMouseAimMode) MOUSE_AXIS.HORIZONTAL_AXIS
   camy                   = @(isMouseAimMode) MOUSE_AXIS.VERTICAL_AXIS
@@ -214,8 +212,6 @@ local axisMappedOnMouse = {
 
 
 
-  suit_camx              = @(isMouseAimMode) MOUSE_AXIS.HORIZONTAL_AXIS
-  suit_camy              = @(isMouseAimMode) MOUSE_AXIS.VERTICAL_AXIS
 }
 ::is_axis_mapped_on_mouse <- function is_axis_mapped_on_mouse(shortcutId, helpersMode = null, joyParams = null)
 {
@@ -2126,7 +2122,7 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
 }
 
 ::get_shortcut_text <- ::kwarg(function get_shortcut_text(shortcuts,
-  shortcutId, cantBeEmpty = true, strip_tags = false, preset = null)
+  shortcutId, cantBeEmpty = true, strip_tags = false, preset = null, colored = true)
 {
   if (!(shortcutId in shortcuts))
     return ""
@@ -2144,7 +2140,7 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
     if (text=="")
       continue
 
-    data = ::addHotkeyTxt(strip_tags? ::g_string.stripTags(text) : text, data)
+    data = ::addHotkeyTxt(strip_tags? ::g_string.stripTags(text) : text, data, colored)
   }
 
   if (cantBeEmpty && data=="")
@@ -2153,9 +2149,10 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
   return data
 })
 
-::addHotkeyTxt <- function addHotkeyTxt(hotkeyTxt, baseTxt="")
+::addHotkeyTxt <- function addHotkeyTxt(hotkeyTxt, baseTxt="", colored = true)
 {
-  return ((baseTxt!="")? baseTxt+", " : "") + "<color=@hotkeyColor>" + hotkeyTxt + "</color>"
+  hotkeyTxt = colored ? ::colorize("hotkeyColor", hotkeyTxt) : hotkeyTxt
+  return ::loc("ui/comma").join([ baseTxt, hotkeyTxt ], true)
 }
 
 //works like get_shortcut_text, but returns only first binded shortcut for action
@@ -2481,21 +2478,21 @@ local function getWeaponFeatures(weaponsBlkList)
       if (!w?.blk || w?.dummy)
         continue
 
-      if (w?.trigger == "machine gun")
+      if (w?.trigger == TRIGGER_TYPE.MACHINE_GUN)
         res.gotMachineGuns = true
-      if (w?.trigger == "cannon")
+      if (w?.trigger == TRIGGER_TYPE.CANNON)
         res.gotCannons = true
-      if (w?.trigger == "additional gun")
+      if (w?.trigger == TRIGGER_TYPE.ADD_GUN)
         res.gotAdditionalGuns = true
-      if (w?.trigger == "bombs")
+      if (w?.trigger == TRIGGER_TYPE.BOMBS)
         res.gotBombs = true
-      if (w?.trigger == "torpedoes")
+      if (w?.trigger == TRIGGER_TYPE.TORPEDOES)
         res.gotTorpedoes = true
-      if (w?.trigger == "rockets")
+      if (w?.trigger == TRIGGER_TYPE.ROCKETS)
         res.gotRockets = true
-      if (w?.trigger == "agm" || w?.trigger == "atgm")
+      if (w?.trigger == TRIGGER_TYPE.AGM || w?.trigger == TRIGGER_TYPE.ATGM)
         res.gotAGM = true
-      if (w?.trigger == "aam")
+      if (w?.trigger == TRIGGER_TYPE.AAM)
         res.gotAAM = true
       if (::g_string.startsWith(w?.trigger ?? "", "gunner"))
         res.gotGunnerTurrets = true
@@ -2651,11 +2648,6 @@ local function getWeaponFeatures(weaponsBlkList)
 
 
 
-  else if (unitType == unitTypes.TANK && unit.isSuit())
-  {
-    controls = [ "suit_forward", "suit_strafe", "suit_updown", "suit_roll", "suit_mouse_aim_x", "suit_mouse_aim_y",
-      "ID_FIRE_SUIT", "ID_FIRE_SUIT_SPECIAL_GUN" ]
-  }
   else if (unitType == unitTypes.TANK)
   {
     controls = [ "gm_throttle", "gm_steering", "gm_mouse_aim_x", "gm_mouse_aim_y", "ID_TOGGLE_VIEW_GM", "ID_FIRE_GM", "ID_REPAIR_TANK" ]
