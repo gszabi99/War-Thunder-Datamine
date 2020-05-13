@@ -53,15 +53,12 @@
       "bulletType": "ball_shell",
       "hitPowerMult": 13.0,
       "onHitChanceMultFire": 1.0,
-      "effectiveDistance": 1800.0,
       "relativeVelHitShift": [300.0,1000.0],
       "relativeVelArmorShift": [200.0,1000.0],
       "groundFxScale": [0.4,0.6],
       "hitpower": {
-        "HitPower10m": [1.0,10.0],
-        "HitPower1000m": [0.88,1000.0],
-        "HitPower1500m": [0.65,1500.0],
-        "HitPower2000m": [0.3,2000.0]
+        "HitPower0m": [0.85,500.0],
+        "HitPower10000m": [0.8,10000.0]
       },
       "armorpower": {
         "ArmorPower0m": [15.0,10.0],
@@ -77,7 +74,7 @@
         "range_percent_of_ammo": [100.0,0.0],
         "traceFreq": 1,
         "tracer": "20mmRed",
-        "trail": "thin"
+        "trail": "noTrail"
       },
       "collisions": {
         "steel": {
@@ -107,15 +104,7 @@
       "relativeVelHitShift": [300.0,1000.0],
       "relativeVelArmorShift": [200.0,1000.0],
       "explodeTreshold": 0.1,
-      "explodeHitPower": 16.0,
-      "explodeArmorPower": 6.0,
-      "explodeRadius": [0.05,0.5],
       "fuseDelayDist": 0.2,
-      "shutterDamage": true,
-      "shutterDamageRadius": 1.2,
-      "shutterAmount": 15,
-      "shutterArmorPower": 6.0,
-      "shutterHit": 3.0,
       "groundCollisionEffect": "cannon_air_hit",
       "groundFxScale": [0.4,0.6],
       "hitpower": {
@@ -131,6 +120,52 @@
         "ArmorPower1000m": [1.0,1000.0],
         "ArmorPower1450m": [0.5,1450.0],
         "ArmorPower1500m": [0.0,1500.0]
+      },
+      "damage": {
+        "shatter": [
+          {
+            "useRealShatters": true
+          },
+          {
+            "countPortion": 0.7
+          },
+          {
+            "segment": {
+              "angles": [0.0,14.0],
+              "countPortion": 0.0
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [15.0,124.0],
+              "countPortion": 0.5
+            }
+          },
+          {
+            "segment": {
+              "angles": [125.0,234.0],
+              "countPortion": 0.0
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [235.0,344.0],
+              "countPortion": 0.5
+            }
+          },
+          {
+            "segment": {
+              "angles": [345.0,359.0],
+              "countPortion": 0.0
+            }
+          }
+        ]
       },
       "visual": {
         "range_percent_of_ammo": [100.0,0.0],
@@ -165,15 +200,7 @@
       "relativeVelHitShift": [300.0,1000.0],
       "relativeVelArmorShift": [200.0,1000.0],
       "explodeTreshold": 0.1,
-      "explodeHitPower": 16.0,
-      "explodeArmorPower": 6.0,
-      "explodeRadius": [0.05,0.5],
       "fuseDelayDist": 0.2,
-      "shutterDamage": true,
-      "shutterDamageRadius": 1.2,
-      "shutterAmount": 15,
-      "shutterArmorPower": 6.0,
-      "shutterHit": 3.0,
       "groundCollisionEffect": "cannon_air_hit",
       "groundFxScale": [0.4,0.6],
       "hitpower": {
@@ -189,6 +216,52 @@
         "ArmorPower1000m": [1.0,1000.0],
         "ArmorPower1450m": [0.5,1450.0],
         "ArmorPower1500m": [0.0,1500.0]
+      },
+      "damage": {
+        "shatter": [
+          {
+            "useRealShatters": true
+          },
+          {
+            "countPortion": 0.7
+          },
+          {
+            "segment": {
+              "angles": [0.0,14.0],
+              "countPortion": 0.0
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [15.0,124.0],
+              "countPortion": 0.5
+            }
+          },
+          {
+            "segment": {
+              "angles": [125.0,234.0],
+              "countPortion": 0.0
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [235.0,344.0],
+              "countPortion": 0.5
+            }
+          },
+          {
+            "segment": {
+              "angles": [345.0,359.0],
+              "countPortion": 0.0
+            }
+          }
+        ]
       },
       "visual": {
         "range_percent_of_ammo": [100.0,0.0],
@@ -215,15 +288,12 @@
       "maxDistance": 4000.0,
       "bulletType": "ap_i_t",
       "onHitChanceMultFire": 10.0,
-      "effectiveDistance": 1800.0,
       "relativeVelHitShift": [300.0,1000.0],
       "relativeVelArmorShift": [200.0,1000.0],
       "groundFxScale": [0.4,0.6],
       "hitpower": {
-        "HitPower10m": [1.0,10.0],
-        "HitPower1000m": [0.88,1000.0],
-        "HitPower1500m": [0.65,1500.0],
-        "HitPower2000m": [0.3,2000.0]
+        "HitPower0m": [0.85,500.0],
+        "HitPower10000m": [0.8,10000.0]
       },
       "armorpower": {
         "ArmorPower0m": [53.0,10.0],
@@ -271,15 +341,7 @@
           "relativeVelHitShift": [300.0,1000.0],
           "relativeVelArmorShift": [200.0,1000.0],
           "explodeTreshold": 0.1,
-          "explodeHitPower": 16.0,
-          "explodeArmorPower": 6.0,
-          "explodeRadius": [0.05,0.5],
           "fuseDelayDist": 0.2,
-          "shutterDamage": true,
-          "shutterDamageRadius": 1.2,
-          "shutterAmount": 15,
-          "shutterArmorPower": 6.0,
-          "shutterHit": 3.0,
           "groundCollisionEffect": "cannon_air_hit",
           "groundFxScale": [0.4,0.6],
           "hitpower": {
@@ -295,6 +357,52 @@
             "ArmorPower1000m": [1.0,1000.0],
             "ArmorPower1450m": [0.5,1450.0],
             "ArmorPower1500m": [0.0,1500.0]
+          },
+          "damage": {
+            "shatter": [
+              {
+                "useRealShatters": true
+              },
+              {
+                "countPortion": 0.7
+              },
+              {
+                "segment": {
+                  "angles": [0.0,14.0],
+                  "countPortion": 0.0
+                }
+              },
+              {
+                "segment": {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.0,
+                  "angles": [15.0,124.0],
+                  "countPortion": 0.5
+                }
+              },
+              {
+                "segment": {
+                  "angles": [125.0,234.0],
+                  "countPortion": 0.0
+                }
+              },
+              {
+                "segment": {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.0,
+                  "angles": [235.0,344.0],
+                  "countPortion": 0.5
+                }
+              },
+              {
+                "segment": {
+                  "angles": [345.0,359.0],
+                  "countPortion": 0.0
+                }
+              }
+            ]
           },
           "visual": {
             "range_percent_of_ammo": [100.0,0.0],
@@ -321,15 +429,12 @@
           "maxDistance": 4000.0,
           "bulletType": "ap_i_t",
           "onHitChanceMultFire": 10.0,
-          "effectiveDistance": 1800.0,
           "relativeVelHitShift": [300.0,1000.0],
           "relativeVelArmorShift": [200.0,1000.0],
           "groundFxScale": [0.4,0.6],
           "hitpower": {
-            "HitPower10m": [1.0,10.0],
-            "HitPower1000m": [0.88,1000.0],
-            "HitPower1500m": [0.65,1500.0],
-            "HitPower2000m": [0.3,2000.0]
+            "HitPower0m": [0.85,500.0],
+            "HitPower10000m": [0.8,10000.0]
           },
           "armorpower": {
             "ArmorPower0m": [53.0,10.0],
@@ -379,15 +484,7 @@
           "relativeVelHitShift": [300.0,1000.0],
           "relativeVelArmorShift": [200.0,1000.0],
           "explodeTreshold": 0.1,
-          "explodeHitPower": 16.0,
-          "explodeArmorPower": 6.0,
-          "explodeRadius": [0.05,0.5],
           "fuseDelayDist": 0.2,
-          "shutterDamage": true,
-          "shutterDamageRadius": 1.2,
-          "shutterAmount": 15,
-          "shutterArmorPower": 6.0,
-          "shutterHit": 3.0,
           "groundCollisionEffect": "cannon_air_hit",
           "groundFxScale": [0.4,0.6],
           "hitpower": {
@@ -403,6 +500,52 @@
             "ArmorPower1000m": [1.0,1000.0],
             "ArmorPower1450m": [0.5,1450.0],
             "ArmorPower1500m": [0.0,1500.0]
+          },
+          "damage": {
+            "shatter": [
+              {
+                "useRealShatters": true
+              },
+              {
+                "countPortion": 0.7
+              },
+              {
+                "segment": {
+                  "angles": [0.0,14.0],
+                  "countPortion": 0.0
+                }
+              },
+              {
+                "segment": {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.0,
+                  "angles": [15.0,124.0],
+                  "countPortion": 0.5
+                }
+              },
+              {
+                "segment": {
+                  "angles": [125.0,234.0],
+                  "countPortion": 0.0
+                }
+              },
+              {
+                "segment": {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.0,
+                  "angles": [235.0,344.0],
+                  "countPortion": 0.5
+                }
+              },
+              {
+                "segment": {
+                  "angles": [345.0,359.0],
+                  "countPortion": 0.0
+                }
+              }
+            ]
           },
           "visual": {
             "range_percent_of_ammo": [100.0,0.0],
@@ -437,15 +580,7 @@
           "relativeVelHitShift": [300.0,1000.0],
           "relativeVelArmorShift": [200.0,1000.0],
           "explodeTreshold": 0.1,
-          "explodeHitPower": 16.0,
-          "explodeArmorPower": 6.0,
-          "explodeRadius": [0.05,0.5],
           "fuseDelayDist": 0.2,
-          "shutterDamage": true,
-          "shutterDamageRadius": 1.2,
-          "shutterAmount": 15,
-          "shutterArmorPower": 6.0,
-          "shutterHit": 3.0,
           "groundCollisionEffect": "cannon_air_hit",
           "groundFxScale": [0.4,0.6],
           "hitpower": {
@@ -461,6 +596,52 @@
             "ArmorPower1000m": [1.0,1000.0],
             "ArmorPower1450m": [0.5,1450.0],
             "ArmorPower1500m": [0.0,1500.0]
+          },
+          "damage": {
+            "shatter": [
+              {
+                "useRealShatters": true
+              },
+              {
+                "countPortion": 0.7
+              },
+              {
+                "segment": {
+                  "angles": [0.0,14.0],
+                  "countPortion": 0.0
+                }
+              },
+              {
+                "segment": {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.0,
+                  "angles": [15.0,124.0],
+                  "countPortion": 0.5
+                }
+              },
+              {
+                "segment": {
+                  "angles": [125.0,234.0],
+                  "countPortion": 0.0
+                }
+              },
+              {
+                "segment": {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.0,
+                  "angles": [235.0,344.0],
+                  "countPortion": 0.5
+                }
+              },
+              {
+                "segment": {
+                  "angles": [345.0,359.0],
+                  "countPortion": 0.0
+                }
+              }
+            ]
           },
           "visual": {
             "range_percent_of_ammo": [100.0,0.0],
@@ -495,15 +676,7 @@
           "relativeVelHitShift": [300.0,1000.0],
           "relativeVelArmorShift": [200.0,1000.0],
           "explodeTreshold": 0.1,
-          "explodeHitPower": 16.0,
-          "explodeArmorPower": 6.0,
-          "explodeRadius": [0.05,0.5],
           "fuseDelayDist": 0.2,
-          "shutterDamage": true,
-          "shutterDamageRadius": 1.2,
-          "shutterAmount": 15,
-          "shutterArmorPower": 6.0,
-          "shutterHit": 3.0,
           "groundCollisionEffect": "cannon_air_hit",
           "groundFxScale": [0.4,0.6],
           "hitpower": {
@@ -519,6 +692,52 @@
             "ArmorPower1000m": [1.0,1000.0],
             "ArmorPower1450m": [0.5,1450.0],
             "ArmorPower1500m": [0.0,1500.0]
+          },
+          "damage": {
+            "shatter": [
+              {
+                "useRealShatters": true
+              },
+              {
+                "countPortion": 0.7
+              },
+              {
+                "segment": {
+                  "angles": [0.0,14.0],
+                  "countPortion": 0.0
+                }
+              },
+              {
+                "segment": {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.0,
+                  "angles": [15.0,124.0],
+                  "countPortion": 0.5
+                }
+              },
+              {
+                "segment": {
+                  "angles": [125.0,234.0],
+                  "countPortion": 0.0
+                }
+              },
+              {
+                "segment": {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.0,
+                  "angles": [235.0,344.0],
+                  "countPortion": 0.5
+                }
+              },
+              {
+                "segment": {
+                  "angles": [345.0,359.0],
+                  "countPortion": 0.0
+                }
+              }
+            ]
           },
           "visual": {
             "range_percent_of_ammo": [100.0,0.0],
@@ -545,15 +764,12 @@
           "maxDistance": 4000.0,
           "bulletType": "ap_i_t",
           "onHitChanceMultFire": 10.0,
-          "effectiveDistance": 1800.0,
           "relativeVelHitShift": [300.0,1000.0],
           "relativeVelArmorShift": [200.0,1000.0],
           "groundFxScale": [0.4,0.6],
           "hitpower": {
-            "HitPower10m": [1.0,10.0],
-            "HitPower1000m": [0.88,1000.0],
-            "HitPower1500m": [0.65,1500.0],
-            "HitPower2000m": [0.3,2000.0]
+            "HitPower0m": [0.85,500.0],
+            "HitPower10000m": [0.8,10000.0]
           },
           "armorpower": {
             "ArmorPower0m": [53.0,10.0],
@@ -595,15 +811,12 @@
           "maxDistance": 4000.0,
           "bulletType": "ap_i_t",
           "onHitChanceMultFire": 10.0,
-          "effectiveDistance": 1800.0,
           "relativeVelHitShift": [300.0,1000.0],
           "relativeVelArmorShift": [200.0,1000.0],
           "groundFxScale": [0.4,0.6],
           "hitpower": {
-            "HitPower10m": [1.0,10.0],
-            "HitPower1000m": [0.88,1000.0],
-            "HitPower1500m": [0.65,1500.0],
-            "HitPower2000m": [0.3,2000.0]
+            "HitPower0m": [0.85,500.0],
+            "HitPower10000m": [0.8,10000.0]
           },
           "armorpower": {
             "ArmorPower0m": [53.0,10.0],
@@ -641,15 +854,12 @@
           "maxDistance": 4000.0,
           "bulletType": "ap_i",
           "onHitChanceMultFire": 10.0,
-          "effectiveDistance": 1800.0,
           "relativeVelHitShift": [300.0,1000.0],
           "relativeVelArmorShift": [200.0,3000.0],
           "groundFxScale": [0.4,0.6],
           "hitpower": {
-            "HitPower10m": [1.0,10.0],
-            "HitPower1000m": [0.88,1000.0],
-            "HitPower1500m": [0.65,1500.0],
-            "HitPower2000m": [0.3,2000.0]
+            "HitPower0m": [0.85,500.0],
+            "HitPower10000m": [0.8,10000.0]
           },
           "armorpower": {
             "ArmorPower0m": [53.0,10.0],
@@ -687,15 +897,12 @@
           "maxDistance": 4000.0,
           "bulletType": "ap_i",
           "onHitChanceMultFire": 10.0,
-          "effectiveDistance": 1800.0,
           "relativeVelHitShift": [300.0,1000.0],
           "relativeVelArmorShift": [200.0,3000.0],
           "groundFxScale": [0.4,0.6],
           "hitpower": {
-            "HitPower10m": [1.0,10.0],
-            "HitPower1000m": [0.88,1000.0],
-            "HitPower1500m": [0.65,1500.0],
-            "HitPower2000m": [0.3,2000.0]
+            "HitPower0m": [0.85,500.0],
+            "HitPower10000m": [0.8,10000.0]
           },
           "armorpower": {
             "ArmorPower0m": [53.0,10.0],
@@ -745,15 +952,7 @@
           "relativeVelHitShift": [300.0,1000.0],
           "relativeVelArmorShift": [200.0,1000.0],
           "explodeTreshold": 0.1,
-          "explodeHitPower": 16.0,
-          "explodeArmorPower": 6.0,
-          "explodeRadius": [0.05,0.5],
           "fuseDelayDist": 0.2,
-          "shutterDamage": true,
-          "shutterDamageRadius": 1.2,
-          "shutterAmount": 15,
-          "shutterArmorPower": 6.0,
-          "shutterHit": 3.0,
           "groundCollisionEffect": "cannon_air_hit",
           "groundFxScale": [0.4,0.6],
           "hitpower": {
@@ -769,6 +968,52 @@
             "ArmorPower1000m": [1.0,1000.0],
             "ArmorPower1450m": [0.5,1450.0],
             "ArmorPower1500m": [0.0,1500.0]
+          },
+          "damage": {
+            "shatter": [
+              {
+                "useRealShatters": true
+              },
+              {
+                "countPortion": 0.7
+              },
+              {
+                "segment": {
+                  "angles": [0.0,14.0],
+                  "countPortion": 0.0
+                }
+              },
+              {
+                "segment": {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.0,
+                  "angles": [15.0,124.0],
+                  "countPortion": 0.5
+                }
+              },
+              {
+                "segment": {
+                  "angles": [125.0,234.0],
+                  "countPortion": 0.0
+                }
+              },
+              {
+                "segment": {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.0,
+                  "angles": [235.0,344.0],
+                  "countPortion": 0.5
+                }
+              },
+              {
+                "segment": {
+                  "angles": [345.0,359.0],
+                  "countPortion": 0.0
+                }
+              }
+            ]
           },
           "visual": {
             "range_percent_of_ammo": [100.0,0.0],
@@ -803,15 +1048,7 @@
           "relativeVelHitShift": [300.0,1000.0],
           "relativeVelArmorShift": [200.0,1000.0],
           "explodeTreshold": 0.1,
-          "explodeHitPower": 16.0,
-          "explodeArmorPower": 6.0,
-          "explodeRadius": [0.05,0.5],
           "fuseDelayDist": 0.2,
-          "shutterDamage": true,
-          "shutterDamageRadius": 1.2,
-          "shutterAmount": 15,
-          "shutterArmorPower": 6.0,
-          "shutterHit": 3.0,
           "groundCollisionEffect": "cannon_air_hit",
           "groundFxScale": [0.4,0.6],
           "hitpower": {
@@ -827,6 +1064,52 @@
             "ArmorPower1000m": [1.0,1000.0],
             "ArmorPower1450m": [0.5,1450.0],
             "ArmorPower1500m": [0.0,1500.0]
+          },
+          "damage": {
+            "shatter": [
+              {
+                "useRealShatters": true
+              },
+              {
+                "countPortion": 0.7
+              },
+              {
+                "segment": {
+                  "angles": [0.0,14.0],
+                  "countPortion": 0.0
+                }
+              },
+              {
+                "segment": {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.0,
+                  "angles": [15.0,124.0],
+                  "countPortion": 0.5
+                }
+              },
+              {
+                "segment": {
+                  "angles": [125.0,234.0],
+                  "countPortion": 0.0
+                }
+              },
+              {
+                "segment": {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.0,
+                  "angles": [235.0,344.0],
+                  "countPortion": 0.5
+                }
+              },
+              {
+                "segment": {
+                  "angles": [345.0,359.0],
+                  "countPortion": 0.0
+                }
+              }
+            ]
           },
           "visual": {
             "range_percent_of_ammo": [100.0,0.0],
@@ -861,15 +1144,7 @@
           "relativeVelHitShift": [300.0,1000.0],
           "relativeVelArmorShift": [200.0,1000.0],
           "explodeTreshold": 0.1,
-          "explodeHitPower": 16.0,
-          "explodeArmorPower": 6.0,
-          "explodeRadius": [0.05,0.5],
           "fuseDelayDist": 0.2,
-          "shutterDamage": true,
-          "shutterDamageRadius": 1.2,
-          "shutterAmount": 15,
-          "shutterArmorPower": 6.0,
-          "shutterHit": 3.0,
           "groundCollisionEffect": "cannon_air_hit",
           "groundFxScale": [0.4,0.6],
           "hitpower": {
@@ -885,6 +1160,52 @@
             "ArmorPower1000m": [1.0,1000.0],
             "ArmorPower1450m": [0.5,1450.0],
             "ArmorPower1500m": [0.0,1500.0]
+          },
+          "damage": {
+            "shatter": [
+              {
+                "useRealShatters": true
+              },
+              {
+                "countPortion": 0.7
+              },
+              {
+                "segment": {
+                  "angles": [0.0,14.0],
+                  "countPortion": 0.0
+                }
+              },
+              {
+                "segment": {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.0,
+                  "angles": [15.0,124.0],
+                  "countPortion": 0.5
+                }
+              },
+              {
+                "segment": {
+                  "angles": [125.0,234.0],
+                  "countPortion": 0.0
+                }
+              },
+              {
+                "segment": {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.0,
+                  "angles": [235.0,344.0],
+                  "countPortion": 0.5
+                }
+              },
+              {
+                "segment": {
+                  "angles": [345.0,359.0],
+                  "countPortion": 0.0
+                }
+              }
+            ]
           },
           "visual": {
             "range_percent_of_ammo": [100.0,0.0],
@@ -911,15 +1232,12 @@
           "maxDistance": 4000.0,
           "bulletType": "ap_i",
           "onHitChanceMultFire": 10.0,
-          "effectiveDistance": 1800.0,
           "relativeVelHitShift": [300.0,1000.0],
           "relativeVelArmorShift": [200.0,3000.0],
           "groundFxScale": [0.4,0.6],
           "hitpower": {
-            "HitPower10m": [1.0,10.0],
-            "HitPower1000m": [0.88,1000.0],
-            "HitPower1500m": [0.65,1500.0],
-            "HitPower2000m": [0.3,2000.0]
+            "HitPower0m": [0.85,500.0],
+            "HitPower10000m": [0.8,10000.0]
           },
           "armorpower": {
             "ArmorPower0m": [53.0,10.0],
