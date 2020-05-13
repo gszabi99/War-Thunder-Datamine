@@ -290,6 +290,16 @@ global enum TOP_MENU_ELEMENT_TYPE {
   LINE_SEPARATOR
 }
 
+global enum USERLOG_POPUP {
+  UNLOCK                = 0x0001
+  FINISHED_RESEARCHES   = 0x0002
+  OPEN_TROPHY           = 0x0004
+
+  //masks
+  ALL                   = 0xFFFF
+  NONE                  = 0x0000
+}
+
 global const MAIN_FOCUS_ITEM_IDX = 4
 
 global const LEADERBOARD_VALUE_TOTAL = "value_total"
@@ -701,7 +711,6 @@ local isFullScriptsLoaded = false
     "weaponry/unitBulletsManager.nut"
     "dmViewer/dmViewer.nut"
     "weaponry/weaponryTypes.nut"
-    "weaponsVisual.nut"
     "weaponry/weaponrySelectModal.nut"
     "weaponry/unitWeaponsHandler.nut"
     "weaponry/weapons.nut"

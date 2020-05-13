@@ -1,9 +1,9 @@
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 
-global const KGF_TO_NEWTON        = 9.807
 global const UNIT_WEAPONS_ZERO    = 0
 global const UNIT_WEAPONS_WARNING = 1
 global const UNIT_WEAPONS_READY   = 2
+const KGF_TO_NEWTON = 9.807
 
 local TRIGGER_TYPE = {
   MACHINE_GUN = "machine gun"
@@ -195,7 +195,7 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null)
       if (::isInArray(currentTypeName, [ WEAPON_TYPE.ROCKETS, WEAPON_TYPE.AGM, WEAPON_TYPE.AAM ]))
       {
         item.machMax  <- itemBlk?.machMax ?? 0
-        item.maxSpeed <- itemBlk?.maxSpeed ?? itemBlk?.endSpeed ?? 0
+        item.maxSpeed <- (itemBlk?.maxSpeed ?? 0) || (itemBlk?.endSpeed ?? 0)
 
         if (currentTypeName == WEAPON_TYPE.AAM || currentTypeName == WEAPON_TYPE.AGM)
         {
@@ -504,6 +504,7 @@ local function getSecondaryWeaponsList(unit)
 }
 
 return {
+  KGF_TO_NEWTON           = KGF_TO_NEWTON
   PURPOSE_TYPE            = PURPOSE_TYPE
   TRIGGER_TYPE            = TRIGGER_TYPE
   WEAPON_TYPE             = WEAPON_TYPE

@@ -2,7 +2,10 @@ local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 local { getModificationName } = require("scripts/weaponry/bulletsInfo.nut")
 local { AMMO, getAmmoMaxAmount } = require("scripts/weaponry/ammoInfo.nut")
 local { canResearchItem, getItemCost } = require("scripts/weaponry/itemInfo.nut")
-local { updateModItem, createModItem } = require("scripts/weaponry/weaponryVisual.nut")
+local { updateModItem,
+        createModItem,
+        getReqModsText,
+        updateWeaponTooltip } = require("scripts/weaponry/weaponryVisual.nut")
 
 ::researched_items_table <- null
 ::abandoned_researched_items_for_session <- []
@@ -420,7 +423,7 @@ class ::gui_handlers.showAllResearchedItems extends ::gui_handlers.BaseGuiHandle
     local unit = dataTable.unit
     local modItem = ::getModificationByName(unit, dataTable[modField])
     if (modItem)
-      ::weaponVisual.updateWeaponTooltip(obj, unit, modItem, this)
+      updateWeaponTooltip(obj, unit, modItem, this)
   }
 
   function prepareNextResearchBlocks(curRowObj, haveMod)
@@ -914,7 +917,7 @@ class ::gui_handlers.showAllResearchedItems extends ::gui_handlers.BaseGuiHandle
 
     if (!isPrevModificationBought(unit, modName))
     {
-      local reqMods = ::weaponVisual.getReqModsText(unit, mod)
+      local reqMods = getReqModsText(unit, mod)
       local reason = ::format(::loc("weaponry/action_not_allowed"), ::loc("weaponry/unlockModsReq") + "\n" + reqMods)
       msgBox("cant_buy_mod", reason, [["ok", function () {}]], "ok")
       return false
@@ -1414,7 +1417,7 @@ class ::gui_handlers.nextResearchChoice extends ::gui_handlers.showAllResearched
     local unit = ::getAircraftByName(unitName)
     local modItem = ::getModificationByName(unit, idx)
     if (modItem)
-      ::weaponVisual.updateWeaponTooltip(obj, unit, modItem, this)
+      updateWeaponTooltip(obj, unit, modItem, this)
   }
 
   function onModItemClick(obj)

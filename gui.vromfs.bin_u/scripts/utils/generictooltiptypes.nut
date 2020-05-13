@@ -4,6 +4,10 @@ local skinLocations = require("scripts/customization/skinLocations.nut")
 local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
 local { getSkillCategoryByName } = require("scripts/crew/crewSkills.nut")
 local { getSkillCategoryTooltipContent } = require("scripts/crew/crewSkillsView.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { updateModType,
+        updateSpareType,
+        updateWeaponTooltip } = require("scripts/weaponry/weaponryVisual.nut")
 
 ::g_tooltip_type <- {
   types = []
@@ -513,8 +517,8 @@ enums.addTypesByGlobalName("g_tooltip_type", {
       if (!mod)
         return false
 
-      ::weaponVisual.updateModType(unit, mod)
-      ::weaponVisual.updateWeaponTooltip(obj, unit, mod, handler, params)
+      updateModType(unit, mod)
+      updateWeaponTooltip(obj, unit, mod, handler, params)
       return true
     }
   }
@@ -543,7 +547,7 @@ enums.addTypesByGlobalName("g_tooltip_type", {
       if (!weapon)
         return false
 
-      ::weaponVisual.updateWeaponTooltip(obj, unit, weapon, handler, {
+      updateWeaponTooltip(obj, unit, weapon, handler, {
         hasPlayerInfo = hasPlayerInfo
         weaponsFilterFunc = params?.weaponBlkPath ? (@(path, blk) path == params.weaponBlkPath) : null
       }, effect)
@@ -563,8 +567,8 @@ enums.addTypesByGlobalName("g_tooltip_type", {
       if (!spare)
         return false
 
-      ::weaponVisual.updateSpareType(spare)
-      ::weaponVisual.updateWeaponTooltip(obj, unit, spare, handler)
+      updateSpareType(spare)
+      updateWeaponTooltip(obj, unit, spare, handler)
       return true
     }
   }
@@ -577,7 +581,7 @@ enums.addTypesByGlobalName("g_tooltip_type", {
     getTooltipContent = function(categoryName, params)
     {
       local unit = ::getAircraftByName(params?.unitName ?? "")
-      local crewUnitType = (unit?.unitType ?? g_unit_type.INVALID).crewUnitType
+      local crewUnitType = (unit?.unitType ?? unitTypes.INVALID).crewUnitType
       local skillCategory = getSkillCategoryByName(categoryName)
       local crewCountryId = ::find_in_array(::shopCountriesList, ::get_profile_country_sq(), -1)
       local crewIdInCountry = ::getTblValue(crewCountryId, ::selected_crews, -1)

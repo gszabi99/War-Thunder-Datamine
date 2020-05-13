@@ -18,3 +18,25 @@ local ctrlsState = frp.combine(
 ctrlsState.subscribe(function (new_val) {
   ::set_allowed_controls_mask(new_val)
 })
+
+local gamepadCursorControl = persist("gamepadCursorControl",
+  @() Watched(::cross_call.getValueGamepadCursorControl()))
+
+local haveXinputDevice = persist("haveXinputDevice",  //FIX ME: remove "haveXinputDevice" when in darg scene will be determined correctly that joystick has controller
+  @() Watched(::cross_call.haveXinputDevice()))
+
+local enabledGamepadCursorControlInScene = keepref(::Computed(
+  @() gamepadCursorControl.value && haveXinputDevice.value))
+
+local function updateSceneGamepadCursorControl(value) {
+  log($"ctrlsState: updateSceneGamepadCursorControl: {value} ({gamepadCursorControl.value}, {haveXinputDevice.value})")
+  ::gui_scene.config.gamepadCursorControl = value
+}
+
+updateSceneGamepadCursorControl(enabledGamepadCursorControlInScene.value)
+
+enabledGamepadCursorControlInScene.subscribe(updateSceneGamepadCursorControl)
+
+::interop.updateGamepadCursorControl <- @(value) gamepadCursorControl(value)
+
+::interop.updateHaveXinputDevice <- @(value) haveXinputDevice(value)

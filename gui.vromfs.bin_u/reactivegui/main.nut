@@ -6,10 +6,7 @@
 ::regexp2 <- require("regexp2")
 
 // configure scene when hosted in game
-if ("gui_scene" in ::getroottable()) {
-  ::gui_scene.config.gamepadCursorControl = true
-  ::gui_scene.config.clickRumbleEnabled = false
-}
+::gui_scene.config.clickRumbleEnabled = false
 
 require("ctrlsState.nut") //need this for controls mask updated
 /*scale px by font size*/

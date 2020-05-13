@@ -1,6 +1,7 @@
 local { getSkillCategories, getSkillValue, getSkillCategoryCrewLevel,
   categoryHasNonGunnerSkills, getSkillCategoryMaxCrewLevel } = require("scripts/crew/crewSkills.nut")
 local { getSkillListParameterRowsView } = require("scripts/crew/crewSkillParameters.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 local function getSkillCategoryName(skillCategory) {
   return ::loc($"crewSkillCategory/{skillCategory.categoryName}", skillCategory.categoryName)
@@ -8,7 +9,7 @@ local function getSkillCategoryName(skillCategory) {
 
 /** @see slotInfoPanel.nut */
 local function getSkillCategoryView(crewData, unit) {
-  local unitType = unit?.unitType ?? g_unit_type.INVALID
+  local unitType = unit?.unitType ?? unitTypes.INVALID
   local crewUnitType = unitType.crewUnitType
   local unitName = unit?.name ?? ""
   local view = []

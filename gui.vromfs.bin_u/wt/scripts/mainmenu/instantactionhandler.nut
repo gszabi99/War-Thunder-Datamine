@@ -1024,12 +1024,18 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
 
   function getMainFocusObj3()
   {
-    return scene.findObject("promo_mainmenu_place_top")
+    local obj = scene.findObject("promo_mainmenu_place_top")
+    return ::g_dagui_utils.getFirstActiveChild(obj) != null
+      ? obj
+      : null
   }
 
   function getMainFocusObj4()
   {
-    return scene.findObject("promo_mainmenu_place_bottom")
+    local obj = scene.findObject("promo_mainmenu_place_bottom")
+    return ::g_dagui_utils.getFirstActiveChild(obj) != null
+      ? obj
+      : null
   }
 
   function onUnlockCrew(obj)

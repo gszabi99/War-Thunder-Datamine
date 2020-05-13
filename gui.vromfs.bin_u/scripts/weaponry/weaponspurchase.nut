@@ -1,4 +1,5 @@
 local unitActions = require("scripts/unit/unitActions.nut")
+local { getModItemName } = require("scripts/weaponry/weaponryVisual.nut")
 local { getItemStatusTbl,
         getItemUnlockCost,
         getItemCost } = require("scripts/weaponry/itemInfo.nut")
@@ -401,7 +402,7 @@ class WeaponsPurchase
 
   function getItemTextWithAmount(amount)
   {
-    local text = ::weaponVisual.getItemName(unit, modItem, false)
+    local text = getModItemName(unit, modItem, false)
     if (amount > 1)
       text += " " + ::colorize("activeTextColor", ::format(::loc("weapons/counter/right/short"), amount))
 

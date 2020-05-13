@@ -339,6 +339,24 @@ local DEFAULT_OVERRIDE_PARAMS = {
 
     return _align
   }
+
+  function getFirstActiveChild(sceneObj) {
+    if (!::check_obj(sceneObj))
+      return null
+
+    local chCount = sceneObj.childrenCount()
+    if (chCount <= 0)
+      return null
+
+    for (local i = 0; i < chCount; i++)
+    {
+      local nextChObj = sceneObj.getChild(i)
+      if (nextChObj.isVisible() && nextChObj.isEnabled())
+        return nextChObj
+    }
+
+    return null
+  }
 }
 
 ::check_obj <- function check_obj(obj) {

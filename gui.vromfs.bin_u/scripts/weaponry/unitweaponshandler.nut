@@ -1,4 +1,6 @@
-local { updateModItem, createModItemLayout } = require("scripts/weaponry/weaponryVisual.nut")
+local { updateModItem,
+        createModItemLayout,
+        updateItemBulletsSlider } = require("scripts/weaponry/weaponryVisual.nut")
 local { getLastWeapon, setLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 
 class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
@@ -472,7 +474,7 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     local itemObj = scene.findObject(getBulletsItemId(groupIdx))
     if (::checkObj(itemObj))
-      ::weaponVisual.updateItemBulletsSlider(itemObj, bulletsManager, bulGroup)
+      updateItemBulletsSlider(itemObj, bulletsManager, bulGroup)
   }
 
   //included to updateBullets but much faster than full bullets update

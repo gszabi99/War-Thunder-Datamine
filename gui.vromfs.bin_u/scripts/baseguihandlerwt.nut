@@ -6,6 +6,7 @@ local xboxContactsManager = require("scripts/contacts/xboxContactsManager.nut")
 local unitContextMenuState = require("scripts/unit/unitContextMenuState.nut")
 local { isChatEnabled } = require("scripts/chat/chatStates.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
+local { updateWeaponTooltip } = require("scripts/weaponry/weaponryVisual.nut")
 
 local stickedDropDown = null
 local defaultSlotbarActions = [ "autorefill", "aircraft", "weapons", "showroom", "testflight", "crew", "info", "repair" ]
@@ -662,7 +663,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
     local mod = ::getModificationByName(unit, modName) || { name = modName, isDefaultForGroup = (obj?.groupIdx ?? 0).tointeger() }
     mod.type <- weaponsItem.modification
-    ::weaponVisual.updateWeaponTooltip(obj, unit, mod, this)
+    updateWeaponTooltip(obj, unit, mod, this)
   }
 
   function onTooltipObjClose(obj)

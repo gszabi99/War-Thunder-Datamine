@@ -3,16 +3,6 @@ local workshop = require("scripts/items/workshop/workshop.nut")
 local workshopPreview = require("scripts/items/workshop/workshopPreview.nut")
 local { showEntitlement } = require("scripts/onlineShop/entitlementRewardWnd.nut")
 
-global enum USERLOG_POPUP {
-  UNLOCK                = 0x0001
-  FINISHED_RESEARCHES   = 0x0002
-  OPEN_TROPHY           = 0x0004
-
-  //masks
-  ALL                   = 0xFFFF
-  NONE                  = 0x0000
-}
-
 ::shown_userlog_notifications <- []
 
 ::g_script_reloader.registerPersistentData("UserlogDataGlobals", ::getroottable(), ["shown_userlog_notifications"])

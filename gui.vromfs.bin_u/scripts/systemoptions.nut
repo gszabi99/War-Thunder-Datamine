@@ -241,8 +241,6 @@
   }
   softFx = { widgetType="checkbox" def=true blk="render/softFx" restart=false
   }
-  bloomOnEffects = { widgetType="checkbox" def=true blk="graphics/fxFloatTarget" restart=false
-  }
   lastClipSize = { widgetType="checkbox" def=false blk="graphics/lastClipSize" restart=false
     getFromBlk = function(blk, desc) { return (::get_blk_value_by_path(blk, desc.blk, 4096) == 8192) }
     setToBlk = function(blk, desc, val) { ::set_blk_value_by_path(blk, desc.blk, (val ? 8192 : 4096)) }
@@ -291,7 +289,6 @@
   {k="enableSuspensionAnimation",v={ultralow=false,low=false,medium=false,high=false ,max=true, movie=true}}
   {k="haze",                 v={ultralow=false,low=false,medium=false,high=false ,max=true, movie=true}}
   {k="softFx",               v={ultralow=false,low=false,medium=true ,high=true ,max=true, movie=true}}
-  {k="bloomOnEffects",       v={ultralow=false,low=false,medium=false,high=true,max=true, movie=true}}
   {k="lastClipSize",         v={ultralow=false,low=false,medium=false,high=false,max=true, movie=true}, compMode=true}
   {k="landquality",          v={ultralow=0,low=0,medium=0 ,high=2,max=3,movie=4}}
   {k="rendinstDistMul",      v={ultralow=50,low=50,medium=85 ,high=100,max=130,movie=180}}
@@ -636,7 +633,6 @@
       "advancedShore"
       "haze"
       "softFx"
-      "bloomOnEffects"
       "lastClipSize"
       "lenseFlares"
       "enableSuspensionAnimation"

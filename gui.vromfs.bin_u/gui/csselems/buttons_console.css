@@ -68,6 +68,7 @@
 
 @const buttonMargin: @blockInterval;
 @const smallButtonMargin: 1@dp;
+@const additionalButtonHeight: 0.7@buttonHeight;
 
 @const buttonIconHeight: @cIco + 5*@sf/@pf_outdated;
 
@@ -1951,7 +1952,7 @@ Button_text.profileImg[enabled=no]:hover > img {
 }
 
 Button_text.additional {
-  height:0.7@buttonHeight;
+  height:1@additionalButtonHeight;
   min-width:pw;
   font:@fontSmall;
   margin:1@smallButtonMargin;

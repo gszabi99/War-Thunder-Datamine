@@ -76,9 +76,6 @@ g_tips.validate <- function validate()
   existTipsMask = GLOBAL_LOADING_TIP_BIT
   curNewbieUnitTypeMask = getNewbieUnitTypeMask()
 
-  if (!("g_unit_type" in ::getroottable()))
-    return
-
   foreach(unitType in unitTypes.types)
   {
     if (unitType == unitTypes.INVALID)

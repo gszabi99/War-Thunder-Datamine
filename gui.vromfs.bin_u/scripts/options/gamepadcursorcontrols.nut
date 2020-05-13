@@ -35,6 +35,7 @@ const GAMEPAD_CURSOR_CONTROL_SPEED_DEFAULT = 100
     currentOptionValue = newValue
     ::setSystemConfigOption(GAMEPAD_CURSOR_CONTROL_CONFIG_NAME, currentOptionValue)
     ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
+    ::call_darg("updateGamepadCursorControl", newValue)
   }
 
 
@@ -114,3 +115,6 @@ const GAMEPAD_CURSOR_CONTROL_SPEED_DEFAULT = 100
 ::subscribe_handler(::g_gamepad_cursor_controls, ::g_listener_priority.CONFIG_VALIDATION)
 
 ::g_gamepad_cursor_controls.init()
+
+::cross_call_api.getValueGamepadCursorControl <- @() ::g_gamepad_cursor_controls.getValue()
+::cross_call_api.haveXinputDevice <- @() ::have_xinput_device() //FIX ME: remove "haveXinputDevice" when in darg scene will be determined correctly that joystick has controller

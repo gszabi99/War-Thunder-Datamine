@@ -41,11 +41,10 @@ class ::gui_handlers.RecentItemsHandler extends ::gui_handlers.BaseGuiHandlerWT
   function updateHandler(checkDefShow = false)
   {
     recentItems = ::g_recent_items.getRecentItems()
-    local show = (!checkDefShow || defShow) && recentItems.len() > 0 && ::ItemsManager.isEnabled()
-    scene.show(show)
-    scene.enable(show)
-    wasShown = show
-    if (!show)
+    local isVisible = (!checkDefShow || defShow) && recentItems.len() > 0 && ::ItemsManager.isEnabled()
+    ::show_obj(scene, isVisible)
+    wasShown = isVisible
+    if (!isVisible)
       return
 
     scene.type = ::g_promo.PROMO_BUTTON_TYPE.RECENT_ITEMS
@@ -134,7 +133,7 @@ class ::gui_handlers.RecentItemsHandler extends ::gui_handlers.BaseGuiHandlerWT
     local isVisible = !::handlersManager.findHandlerClassInScene(::gui_handlers.EveryDayLoginAward)
       && !::handlersManager.findHandlerClassInScene(::gui_handlers.trophyRewardWnd)
       && ::g_recent_items.getRecentItems().len()
-    scene.show(isVisible)
+    ::show_obj(scene, isVisible)
   }
 
   onEventActiveHandlersChanged = @(p) updateVisibility()

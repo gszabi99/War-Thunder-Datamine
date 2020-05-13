@@ -910,6 +910,8 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
 
     foreach (unitType in unitTypes.types)
     {
+      if (unitType == unitTypes.INVALID)
+        continue
       local isShow = !!(allowedUnitTypesMask & unitType.bit)
       local itemObj = optionTrObj.findObject("bit_" + unitType.tag)
       if (!::check_obj(itemObj))

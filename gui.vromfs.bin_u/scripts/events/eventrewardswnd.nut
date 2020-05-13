@@ -35,10 +35,11 @@ class ::gui_handlers.EventRewardsWnd extends ::gui_handlers.BaseGuiHandlerWT
         local even = true
         local res = []
         foreach(conditionName, condition in rewardsList)
-          foreach (blk in condition)
+          foreach (idx, blk in condition)
           {
             even = !even
             local item = {
+              index           = idx
               conditionId     = conditionName
               conditionText   = ::EventRewards.getConditionText(blk)
               conditionValue  = ::EventRewards.getConditionValue(blk)
@@ -63,22 +64,24 @@ class ::gui_handlers.EventRewardsWnd extends ::gui_handlers.BaseGuiHandlerWT
   function fetchRewardsProgress()
   {
     foreach(conditionId, rewardsInCondition in rewardsList)
-      foreach (blk in rewardsInCondition)
+      foreach (idx, blk in rewardsInCondition)
         if (!::EventRewards.isRewardReceived(blk, event))
+        {
+          local index = idx
+          local reward = blk
           ::EventRewards.getCondition(conditionId)
-                        .updateProgress(blk, event, (@(blk) function (progress) {
-                            local condId = ::EventRewards.getRewardConditionId(blk)
-                            local conditionValue = ::EventRewards.getConditionValue(blk)
-                            local conditionField = ::EventRewards.getConditionField(blk)
+                        .updateProgress(blk, event, function (progress) {
+                            local condId = ::EventRewards.getRewardConditionId(reward)
+                            local conditionField = ::EventRewards.getConditionField(reward)
                             local conditionTextObj = scene.findObject("reward_condition_text_" +
                                                                       condId + "_" +
                                                                       conditionField + "_" +
-                                                                      conditionValue)
+                                                                      index)
                             if (::checkObj(conditionTextObj))
                             {
-                              local condition = ::EventRewards.getConditionText(blk, progress)
+                              local condition = ::EventRewards.getConditionText(reward, progress)
                               conditionTextObj.setValue(condition)
                             }
-                          })(blk), this)
+        }, this)}
   }
 }

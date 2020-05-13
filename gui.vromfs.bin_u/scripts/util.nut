@@ -198,6 +198,7 @@ foreach (i, v in ::cssColorsMapDark)
 
 ::on_lost_controller <- function on_lost_controller()
 {
+  ::call_darg("updateHaveXinputDevice", ::have_xinput_device())
   ::add_msg_box("cannot_session", ::loc("pl1/lostController"), [["ok", function() {}]], "ok")
 }
 

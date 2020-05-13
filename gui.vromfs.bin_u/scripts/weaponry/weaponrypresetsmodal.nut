@@ -5,7 +5,8 @@ local { getLastWeapon,
         setLastWeapon,
         getSecondaryWeaponsList } = require("scripts/weaponry/weaponryInfo.nut")
 local { getItemAmount } = require("scripts/weaponry/itemInfo.nut")
-local { getWeaponItemViewParams } = require("scripts/weaponry/weaponryVisual.nut")
+local { getWeaponItemViewParams,
+        updateWeaponTooltip } = require("scripts/weaponry/weaponryVisual.nut")
 
 class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -196,7 +197,7 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
         showSceneBtn("altActionBtn", false)
         return
       }
-    ::weaponVisual.updateWeaponTooltip(descObj, unit, presetsList[curPresetIdx], this)
+    updateWeaponTooltip(descObj, unit, presetsList[curPresetIdx], this)
     local idx = curPresetIdx
     local itemParams = ::u.search(presetsMarkup, @(i) i?.presetId == idx)
     local btnText = itemParams?.weaponryItem.actionBtnText ?? ""

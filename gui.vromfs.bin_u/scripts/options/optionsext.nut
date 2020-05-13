@@ -2477,6 +2477,8 @@ local isWaitMeasureEvent = false
 
       foreach (unitType in unitTypes.types)
       {
+        if (unitType == unitTypes.INVALID)
+          continue
         local isVisible = !!(availableUnitTypesMask & unitType.bit)
         descr.values.append(unitType.esUnitType)
         descr.items.append({

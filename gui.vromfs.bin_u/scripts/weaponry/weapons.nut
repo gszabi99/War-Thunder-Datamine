@@ -10,10 +10,13 @@ local { getItemAmount,
         isModInResearch,
         getBundleCurItem,
         canResearchItem } = require("scripts/weaponry/itemInfo.nut")
-local { getBulletsListHeader,
-        updateModItem,
+local { updateModItem,
         createModItem,
-        createModBundle } = require("scripts/weaponry/weaponryVisual.nut")
+        getModItemName,
+        getReqModsText,
+        createModBundle,
+        updateWeaponTooltip,
+        getBulletsListHeader } = require("scripts/weaponry/weaponryVisual.nut")
 local { isBullets,
         getBulletsList,
         setUnitLastBullets,
@@ -986,7 +989,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     local curTier = "tier" in item? item.tier : 1
     local canDisplayInfo = curTier <= 1 || ::isInArray(curTier, shownTiers)
     tooltipOpenTime = canDisplayInfo? -1 : ::tooltip_display_delay
-    ::weaponVisual.updateWeaponTooltip(obj, air, item, this, { canDisplayInfo = canDisplayInfo })
+    updateWeaponTooltip(obj, air, item, this, { canDisplayInfo = canDisplayInfo })
 
     obj.findObject("weapons_timer").setUserData(this)
   }
@@ -1008,7 +1011,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       local item = items[idx]
       if ("tier" in item && !::isInArray(item.tier, shownTiers))
         shownTiers.append(item.tier)
-      ::weaponVisual.updateWeaponTooltip(tooltipObj, air, item, this)
+      updateWeaponTooltip(tooltipObj, air, item, this)
     }
   }
 
@@ -1103,7 +1106,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       if("tier" in item)
         reqTierMods = ::getNextTierModsCount(air, item.tier - 1)
       if ("reqModification" in item)
-        reqMods = ::weaponVisual.getReqModsText(air, item)
+        reqMods = getReqModsText(air, item)
 
       if(reqTierMods > 0)
         reason = ::format(::loc("weaponry/action_not_allowed"),
@@ -1656,7 +1659,7 @@ class ::gui_handlers.MultiplePurchase extends ::gui_handlers.BaseGuiHandlerWT
     minUserValue = statusTbl.amount + 1
     maxUserValue = statusTbl.maxAmount
 
-    scene.findObject("item_name_header").setValue(::weaponVisual.getItemName(unit, item))
+    scene.findObject("item_name_header").setValue(getModItemName(unit, item))
 
     updateSlider()
     createModItem("mod_" + item.name, unit, item, item.type, scene.findObject("icon"), this)
@@ -1697,7 +1700,7 @@ class ::gui_handlers.MultiplePurchase extends ::gui_handlers.BaseGuiHandlerWT
 
   function onModificationTooltipOpen(obj)
   {
-    ::weaponVisual.updateWeaponTooltip(obj, unit, item, this)
+    updateWeaponTooltip(obj, unit, item, this)
   }
 
   function onButtonDec()

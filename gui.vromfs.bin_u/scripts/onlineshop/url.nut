@@ -83,17 +83,17 @@ local function open(baseUrl, forceExternal=false, isAlreadyAuthenticated = false
   }
 
   //shell_launch can be long sync function so call it delayed to avoid broke current call.
-  ::get_gui_scene().performDelayed(this, (@(url) function() {
+  ::get_gui_scene().performDelayed(::getroottable(), function() {
     // External browser
     local response = ::shell_launch(url)
     if (response > 0)
     {
       local errorText = ::get_yu2_error_text(response)
       ::showInfoMsgBox(errorText, "errorMessageBox")
-      dagor.debug("shell_launch() have returned " + response + " for URL:" + url)
+      ::dagor.debug("shell_launch() have returned " + response + " for URL:" + url)
     }
     ::broadcastEvent("BrowserOpened", { url = url, external = true })
-  })(url))
+  })
 }
 
 local function openUrlByObj(obj, forceExternal=false, isAlreadyAuthenticated = false) {

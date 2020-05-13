@@ -60,7 +60,7 @@ frame {
           width:t='0.44@scrn_tgt';
           flow:t='vertical';
           textareaNoTab {
-            id:t='reward_condition_text_<<conditionId>>_<<conditionField>>_<<conditionValue>>';
+            id:t='reward_condition_text_<<conditionId>>_<<conditionField>>_<<index>>';
             width:t='pw';
             text:t='<<conditionText>>';
             <<#received>>

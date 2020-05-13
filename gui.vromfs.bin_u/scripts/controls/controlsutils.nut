@@ -82,6 +82,7 @@ if (::is_platform_xboxone)
 ::on_connected_controller <- function on_connected_controller()
 {
   //calls from c++ code, no event on PS4 or XBoxOne
+  ::call_darg("updateHaveXinputDevice", ::have_xinput_device())
   if (!::isInMenu())
     return
   local action = function() { ::gui_start_controls_type_choice() }

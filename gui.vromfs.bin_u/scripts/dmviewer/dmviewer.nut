@@ -1,6 +1,6 @@
 local { getParametersByCrewId } = require("scripts/crew/crewSkillParameters.nut")
 local { getWeaponXrayDescText } = require("scripts/weaponry/weaponryVisual.nut")
-local { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
+local { getLastWeapon, KGF_TO_NEWTON } = require("scripts/weaponry/weaponryInfo.nut")
 local { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
 
 

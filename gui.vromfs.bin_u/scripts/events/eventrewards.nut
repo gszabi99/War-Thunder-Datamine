@@ -5,7 +5,7 @@
     local value = ::EventRewards.getConditionValue(rewardBlk)
     local res = ::loc("conditions/" + conditionId + "/" + rewardBlk.fieldName, {value = value})
 
-    if (progress)
+    if (progress != null)
       res += " (" + progress + "/" + value + ")"
     return res
   }
