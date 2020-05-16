@@ -559,6 +559,9 @@
             "separateDm": true
           },
           {
+            "overwriteLinks": true
+          },
+          {
             "dp": "stab_dm"
           },
           {
@@ -753,6 +756,9 @@
           },
           {
             "separateDm": true
+          },
+          {
+            "overwriteLinks": true
           },
           {
             "dp": "stab_dm"
@@ -1156,6 +1162,12 @@
             "dm": "wing1_r_dm"
           },
           {
+            "separateDm": true
+          },
+          {
+            "overwriteLinks": true
+          },
+          {
             "dp": "stab_dm"
           },
           {
@@ -1350,6 +1362,9 @@
           },
           {
             "separateDm": true
+          },
+          {
+            "overwriteLinks": true
           },
           {
             "dp": "stab_dm"
@@ -6484,13 +6499,43 @@
       {
         "preset": {
           "name": "f_89_default",
-          "blk": "gameData/FlightModels/weaponPresets/f_89_default.blk"
+          "blk": "gameData/FlightModels/weaponPresets/f_89_default.blk",
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "amountPerTier": 52.0,
+              "iconType": "nar_ap_large"
+            }
+          }
         }
       },
       {
         "preset": {
           "name": "f_89_HVAR",
-          "blk": "gameData/FlightModels/weaponPresets/f_89_hvar.blk"
+          "blk": "gameData/FlightModels/weaponPresets/f_89_hvar.blk",
+          "weaponConfig": [
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+                "amountPerTier": 52.0,
+                "iconType": "nar_ap_large"
+              }
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_a.blk",
+                "amountPerTier": 4.0,
+                "iconType": "rockets_he_small_group"
+              }
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_b.blk",
+                "amountPerTier": 4.0,
+                "iconType": "rockets_he_small_group"
+              }
+            }
+          ]
         }
       },
       {

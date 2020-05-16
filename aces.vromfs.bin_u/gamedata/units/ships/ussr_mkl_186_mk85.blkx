@@ -1720,51 +1720,6 @@
       },
       {
         "event": {
-          "name": "superstructure_back_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_front_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_top_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_bottom_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_side_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
           "name": "superstructure_fire",
           "fx": {
             "name": "ship_fire_medium",
@@ -2642,6 +2597,7 @@
         "superstructure_dm": {
           "armorClass": "ship_RHA",
           "armorThickness": 20.0,
+          "stopChanceOnDeadPart": 1.0,
           "hp": 500.0
         }
       },
@@ -2821,20 +2777,15 @@
           "hp": 350.0
         }
       },
-      "turrets": {
-        "fireParamsPreset": "ship_turrets",
+      "turret_armor": {
         "armorClass": "ship_structural_steel",
+        "fireParamsPreset": "ship_construction",
+        "fireProtectionHp": 5000.0,
         "armorThickness": 15.0,
-        "turret_01_front_dm": {
-          "hp": 250.0
-        },
-        "turret_02_front_dm": {
-          "hp": 250.0
-        },
         "turret_01_side_dm": {
           "armorClass": "ship_RHA",
           "armorThickness": 30.0,
-          "hp": 250.0
+          "hp": 338.0
         },
         "turret_01_top_dm": {
           "armorClass": "ship_RHA",
@@ -2849,7 +2800,7 @@
         "turret_02_side_dm": {
           "armorClass": "ship_RHA",
           "armorThickness": 30.0,
-          "hp": 250.0
+          "hp": 338.0
         },
         "turret_02_top_dm": {
           "armorClass": "ship_RHA",
@@ -2864,13 +2815,23 @@
         "turret_03_bottom_dm": {
           "armorClass": "ship_Wsh",
           "armorThickness": 20.0,
-          "hp": 250.0
+          "hp": 292.0
         },
         "turret_04_bottom_dm": {
           "armorClass": "ship_Wsh",
           "armorThickness": 20.0,
-          "hp": 250.0
+          "hp": 292.0
+        },
+        "turret_01_back_dm": {
+          "armorClass": "ship_Wsh",
+          "armorThickness": 10.0,
+          "hp": 326.0
         }
+      },
+      "turrets": {
+        "fireParamsPreset": "ship_turrets",
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 15.0
       },
       "turrets_main_caliber": {
         "fireParamsPreset": "ship_turrets",
@@ -2896,9 +2857,9 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 5.0,
         "auxiliary_caliber_turret_01_dm": {
-          "armorClass": "ship_Wsh",
-          "armorThickness": 10.0,
-          "hp": 150.0
+          "armorClass": "ship_structural_steel",
+          "armorThickness": 3.0,
+          "hp": 80.0
         }
       },
       "turrets_aa_caliber": {
@@ -2912,12 +2873,12 @@
         "aa_turret_01_dm": {
           "armorClass": "ship_Wsh",
           "armorThickness": 10.0,
-          "hp": 75.0
+          "hp": 50.0
         },
         "aa_turret_02_dm": {
           "armorClass": "ship_Wsh",
           "armorThickness": 10.0,
-          "hp": 75.0
+          "hp": 50.0
         }
       },
       "gun_masks": {

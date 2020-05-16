@@ -17,6 +17,7 @@
   "hmap_detail_tex_mul": [0.6,0.6],
   "maxIntroVideoPlayed": 2,
   "tankInvulnerabilityResetByShoot": false,
+  "tankInvulnerabilityResetByUseSpecialAbility": false,
   "tankInvulnerabilityTime": 20.0,
   "tankInvulnerabilityRadius": 20.0,
   "shipInvulnerabilityRadius": 200.0,
@@ -193,7 +194,7 @@
   "enableNoFirstMoveCooldown": true,
   "shipAiTargetMaxDist": 25000.0,
   "timeStayOnInGameForDisconnected": 300.0,
-  "useFullSectionsOnShips": true,
+  "useFullSectionsOnShips": false,
   "impulseBasedAircraftToSceneCollision": false,
   "impulseBasedAircraftToSceneCollisionWithCollisionObjects": true,
   "impulseBasedAircraftToUnitCollision": false,
@@ -1626,7 +1627,7 @@
       "nightVisionInTPS": true,
       "hudDetectAlly": false,
       "keepDeadShipOnMap": true,
-      "hudSendSquare": false
+      "hudSendSquare": true
     },
     "hardcore": {
       "baseDifficulty": 2,
@@ -3192,9 +3193,9 @@
         "hudSendSquareTimeFromStart": 900
       },
       "on": {
-        "hudSendSquareTimeInterval": 30,
-        "hudSendSquareNumPlayers": 2,
-        "hudSendSquareTimeFromStart": 90
+        "hudSendSquareTimeInterval": 20,
+        "hudSendSquareNumPlayers": 1,
+        "hudSendSquareTimeFromStart": 900
       }
     }
   },
@@ -9970,6 +9971,30 @@
           "name": "wheel_l_04_",
           "modelNames": "sdkfz_234_1"
         }
+      },
+      {
+        "p": {
+          "name": "wheel_r_01_",
+          "modelNames": "type_93"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_01_",
+          "modelNames": "type_93"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_02_",
+          "modelNames": "type_93"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_02_",
+          "modelNames": "type_93"
+        }
       }
     ],
     "crew": [
@@ -13060,6 +13085,7 @@
     "starsIntensity": 10.0,
     "globeSaturateColor": [1.0,1.0,1.0,0.0],
     "useKmRadiusScale": true,
+    "globeRotateSpeed": 0.0,
     "globeMinCameraDistance": 15000.0,
     "globeCameraViscosity": [0.4,0.2],
     "globeMouseRotSpeed": 0.002,
@@ -13091,6 +13117,7 @@
     "starsIntensity": 1.0,
     "globeSaturateColor": [1.0,1.0,1.0,0.0],
     "useKmRadiusScale": false,
+    "globeRotateSpeed": 0.0005,
     "shadowsTex": "globe_shadows",
     "cloudsTex": "globe_clouds_ocean_8k",
     "slices": [
@@ -13200,11 +13227,11 @@
       "allHunters": true,
       "onlyBinocularUse": true,
       "radius": 5000.0,
-      "scoutingTime": 30.0,
+      "scoutingTime": 45.0,
       "markerShowTime": 2.0,
       "markerHideTime": 0.0,
-      "actionBarCooldown": 10.0,
-      "actionBarFailCooldown": 60.0,
+      "actionBarCooldown": 6.0,
+      "actionBarFailCooldown": 45.0,
       "killScore": 0.7,
       "hitScore": 0.0,
       "scoutScore": 0.0,

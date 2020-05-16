@@ -2078,26 +2078,27 @@
         "clock_hour": [0.0,12.0],
         "clock_min": [0.0,60.0],
         "clock_sec": [0.0,60.0],
+        "g_meter": [-5.0,10.0],
+        "g_meter_min": [-5.0,10.0],
+        "g_meter_max": [-5.0,10.0],
         "compass": [0.0,360.0],
         "compass1": [0.0,360.0],
         "compass2": [0.0,360.0],
-        "aviahorizon_pitch": [-30.0,30.0],
+        "aviahorizon_pitch": [-70.0,70.0],
         "aviahorizon_roll": [-180.0,180.0],
         "bank": [-8.0,8.0],
         "turn": [-0.23562,0.23562],
-        "g_meter": [-4.5,10.0],
         "vario": [-30.48,30.48],
         "altitude_10k": [0.0,100000.0],
         "altitude_hour": [0.0,10000.0],
         "altitude_min": [0.0,1000.0],
-        "altitude1_hour": [0.0,10000.0],
-        "altitude1_min": [0.0,1000.0],
+        "altitude1_10k": [10000.0,40000.0],
         "altitude_koef": 3.28,
-        "speed": [0.0,437.278],
+        "speed": [0.0,514.444],
         "mach": [0.6,1.4],
         "water_temperature": [0.0,1000.0],
         "oil_temperature": [0.0,120.0],
-        "rpm": [0.0,12000.0],
+        "rpm_hour": [100.0,12000.0],
         "rpm_min": [0.0,1000.0],
         "fuel": [0.0,1315.0]
       },
@@ -2479,6 +2480,9 @@
             "separateDm": true
           },
           {
+            "overwriteLinks": true
+          },
+          {
             "dp": "stab_dm"
           },
           {
@@ -2673,6 +2677,9 @@
           },
           {
             "separateDm": true
+          },
+          {
+            "overwriteLinks": true
           },
           {
             "dp": "stab_dm"
@@ -3076,6 +3083,12 @@
             "dm": "wing1_r_dm"
           },
           {
+            "separateDm": true
+          },
+          {
+            "overwriteLinks": true
+          },
+          {
             "dp": "stab_dm"
           },
           {
@@ -3270,6 +3283,9 @@
           },
           {
             "separateDm": true
+          },
+          {
+            "overwriteLinks": true
           },
           {
             "dp": "stab_dm"

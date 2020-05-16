@@ -545,6 +545,7 @@
       "radiolocation": {
         "armorClass": "ship_structural_steel",
         "armorThickness": 5.0,
+        "dmgState": 0.0,
         "radar_01_dm": {
           "hp": 150.0
         }
@@ -667,14 +668,20 @@
           "hp": 1000.0
         }
       },
-      "turrets": {
+      "turret_armor": {
         "armorClass": "ship_structural_steel",
+        "fireParamsPreset": "ship_construction",
+        "fireProtectionHp": 5000.0,
         "armorThickness": 15.0,
         "turret_01_top_dm": {
           "armorClass": "ship_RHA",
           "armorThickness": 6.0,
           "hp": 250.0
-        },
+        }
+      },
+      "turrets": {
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 15.0,
         "turret_01_dm": {
           "armorClass": "ship_RHA",
           "armorThickness": 15.0,
@@ -2033,51 +2040,6 @@
             }
           }
         ]
-      },
-      {
-        "event": {
-          "name": "superstructure_back_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_front_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_top_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_bottom_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_side_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
       },
       {
         "event": {

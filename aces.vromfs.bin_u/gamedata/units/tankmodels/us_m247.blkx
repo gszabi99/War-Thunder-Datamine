@@ -2116,13 +2116,13 @@
           {
             "limits": {
               "yaw": [-180.0,180.0],
-              "pitch": [-5.0,85.0]
+              "pitch": [-10.0,85.0]
             }
           },
           {
             "limitsTable": {
               "lim1": [-180.0,-160.0,2.0,85.0],
-              "lim2": [-160.0,160.0,-5.0,85.0],
+              "lim2": [-160.0,160.0,-10.0,85.0],
               "lim3": [160.0,180.0,2.0,85.0]
             }
           },
@@ -2242,10 +2242,16 @@
             "node": "antenna_target_location"
           },
           {
+            "node": "antenna_target_location_mount"
+          },
+          {
             "node": "antenna_target_tagging"
           },
           {
             "node": "antenna_target_tagging_mount"
+          },
+          {
+            "node": "ex_decor_l_04"
           }
         ]
       }
@@ -2835,6 +2841,15 @@
       },
       {
         "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -3031,13 +3046,13 @@
                 {
                   "limits": {
                     "yaw": [-180.0,180.0],
-                    "pitch": [-5.0,85.0]
+                    "pitch": [-10.0,85.0]
                   }
                 },
                 {
                   "limitsTable": {
                     "lim1": [-180.0,-160.0,2.0,85.0],
-                    "lim2": [-160.0,160.0,-5.0,85.0],
+                    "lim2": [-160.0,160.0,-10.0,85.0],
                     "lim3": [160.0,180.0,2.0,85.0]
                   }
                 },
@@ -3157,10 +3172,16 @@
                   "node": "antenna_target_location"
                 },
                 {
+                  "node": "antenna_target_location_mount"
+                },
+                {
                   "node": "antenna_target_tagging"
                 },
                 {
                   "node": "antenna_target_tagging_mount"
+                },
+                {
+                  "node": "ex_decor_l_04"
                 }
               ]
             },

@@ -756,6 +756,18 @@
     }
   },
   {
+    "fuelTanks": {
+      "r1": {
+        "part": "fuel_tank_exterior_r_01_dm",
+        "external": true
+      },
+      "l1": {
+        "part": "fuel_tank_exterior_l_01_dm",
+        "external": true
+      }
+    }
+  },
+  {
     "xray_viewer_data": [
       {
         "armorArrayHull": {
@@ -2746,6 +2758,15 @@
             }
           }
         ]
+      },
+      {
+        "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
       },
       {
         "event": {

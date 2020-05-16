@@ -1,6 +1,6 @@
 qrBackground {
   size:t='<<qrSize>>, <<qrSize>>'
-  padding:t='<<cellSize>>'
+  padding:t='4*<<cellSize>>'
   background-color:t='@white'
 
   tdiv {

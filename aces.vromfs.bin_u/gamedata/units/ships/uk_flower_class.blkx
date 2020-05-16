@@ -992,7 +992,8 @@
       },
       "radiolocation": {
         "armorClass": "ship_structural_steel",
-        "armorThickness": 5.0
+        "armorThickness": 5.0,
+        "dmgState": 0.0
       },
       "engine": {
         "armorThrough": 30.0,
@@ -1096,6 +1097,17 @@
         "armorThickness": 15.0,
         "hidableInViewer": true
       },
+      "turret_armor": {
+        "armorClass": "ship_structural_steel",
+        "fireParamsPreset": "ship_construction",
+        "fireProtectionHp": 5000.0,
+        "armorThickness": 15.0,
+        "turret_01_front_dm": {
+          "armorClass": "ship_Wsh",
+          "armorThickness": 12.7,
+          "hp": 250.0
+        }
+      },
       "turrets": {
         "armorClass": "ship_structural_steel",
         "armorThickness": 15.0,
@@ -1106,11 +1118,6 @@
           "hp": 250.0
         },
         "turret_03_dm": {
-          "hp": 250.0
-        },
-        "turret_01_front_dm": {
-          "armorClass": "ship_Wsh",
-          "armorThickness": 12.7,
           "hp": 250.0
         }
       },
@@ -1587,6 +1594,11 @@
       {
         "ammunition_torpedoes": [
           {
+            "onKill": {
+              "nothing": 1.0
+            }
+          },
+          {
             "onHit": {
               "damageType": "explosion",
               "expl": 0.01,
@@ -2023,7 +2035,7 @@
           {
             "onHit": {
               "damageType": "explosion",
-              "fire": 0.3,
+              "fire": 0.05,
               "damage": 400.0,
               "fHitCritical": false
             }
@@ -2095,8 +2107,16 @@
           {
             "onHit": {
               "damageType": "explosion",
-              "fire": 0.1,
-              "damage": 200.0,
+              "fire": 0.03,
+              "damage": 250.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "shatter",
+              "fire": 0.001,
+              "damage": 15.0,
               "fHitCritical": false
             }
           }
@@ -2125,8 +2145,24 @@
           {
             "onHit": {
               "damageType": "explosion",
+              "fire": 0.1,
+              "damage": 250.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "explosion",
               "fire": 0.25,
-              "damage": 300.0,
+              "damage": 400.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "shatter",
+              "fire": 0.001,
+              "damage": 15.0,
               "fHitCritical": false
             }
           }
@@ -2677,51 +2713,6 @@
       },
       {
         "event": {
-          "name": "superstructure_back_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_front_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_top_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_bottom_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_side_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
           "name": "superstructure_fire",
           "fx": {
             "name": "ship_fire_medium",
@@ -2734,6 +2725,15 @@
           "name": "fuel_tank_fire",
           "fx": {
             "name": "ship_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "torpedo_fire",
+          "fx": {
+            "name": "ship_ammo_fire_large",
             "centerDmgPart": true
           }
         }
@@ -3141,6 +3141,15 @@
           "fx": {
             "name": "ship_hit_fire",
             "scale": 1.5
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "torpedo_explosion",
+          "fx": {
+            "name": "ship_ammo_fire_large",
+            "centerDmgPart": true
           }
         }
       }

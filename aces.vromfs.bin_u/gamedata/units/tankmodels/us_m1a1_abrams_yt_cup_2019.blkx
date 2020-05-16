@@ -329,7 +329,8 @@
           "armorThickness": 60.0
         },
         "turret_03_front_dm": {
-          "armorThickness": 12.7
+          "armorThickness": 6.35,
+          "variableThickness": true
         },
         "turret_02_front_dm": {
           "armorThickness": 31.75,
@@ -2204,7 +2205,7 @@
             {
               "layer": {
                 "dmPart": "turret_side_dm",
-                "xrayTextThickness": 6.0
+                "xrayTextThickness": 6.35
               }
             },
             {
@@ -3125,6 +3126,15 @@
             }
           }
         ]
+      },
+      {
+        "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
       },
       {
         "event": {

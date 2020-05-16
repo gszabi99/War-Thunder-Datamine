@@ -9,6 +9,27 @@
   "tags": [],
   "rocket": [
     {
+      "normalizationPreset": "default"
+    },
+    {
+      "ricochetPreset": "defaultExt"
+    },
+    {
+      "secondaryShattersPreset": "ap"
+    },
+    {
+      "stabilityThreshold": 0.05
+    },
+    {
+      "stabilityCaliberToArmorThreshold": 5.0
+    },
+    {
+      "stabilityReductionAfterRicochet": 0.5
+    },
+    {
+      "stabilityReductionAfterPenetration": 0.15
+    },
+    {
       "bulletType": "aam"
     },
     {
@@ -138,18 +159,6 @@
       "uncageBeforeLaunch": false
     },
     {
-      "loftTime": [0.05,0.5]
-    },
-    {
-      "loftOmegaLimit": 0.1
-    },
-    {
-      "loftAccel": 60.0
-    },
-    {
-      "useThrustVectoringForLoft": true
-    },
-    {
       "guidanceSfx": "alarm_con_scan"
     },
     {
@@ -223,6 +232,28 @@
     },
     {
       "price": 3000.0
+    },
+    {
+      "amountPerTier": 2.0
+    },
+    {
+      "iconType": "missile_air_to_air_group"
+    },
+    {
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.05]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod3": [30.0,0.2]
+        },
+        {
+          "mod3": [45.0,0.3]
+        }
+      ]
     },
     {
       "DamageParts": {
@@ -363,8 +394,9 @@
         "gateWidth": 1.0,
         "minAngleToSun": 10.0,
         "bandMaskToReject": 4,
-        "lockAngleMax": 40.0,
-        "angleMax": 40.0,
+        "lockAngleMax": 38.0,
+        "arretAngles": [0.0,0.0],
+        "angleMax": 38.0,
         "rateMax": 20.0,
         "prolongationTimeMax": 3.0
       }

@@ -144,8 +144,7 @@
           "armorThickness": 14.0
         },
         "turret_03_bottom_dm": {
-          "armorThickness": 5.0,
-          "armorClass": "tank_structural_steel"
+          "armorThickness": 51.0
         },
         "turret_03_top_dm": {
           "armorThickness": 12.0
@@ -1840,7 +1839,7 @@
           "defaultPitch": 0.0,
           "barrelDP": "gun_barrel_dm",
           "breechDP": "cannon_breech_dm",
-          "speedYaw": 20.0,
+          "speedYaw": 24.0,
           "speedPitch": 4.0,
           "fireConeAngle": 1.0,
           "bullets": 72,
@@ -2704,6 +2703,15 @@
       },
       {
         "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -2777,7 +2785,7 @@
                 "defaultPitch": 0.0,
                 "barrelDP": "gun_barrel_dm",
                 "breechDP": "cannon_breech_dm",
-                "speedYaw": 20.0,
+                "speedYaw": 24.0,
                 "speedPitch": 4.0,
                 "fireConeAngle": 1.0,
                 "bullets": 72,
@@ -3063,7 +3071,7 @@
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
                 "allowableDelta": 360.0,
-                "salvo": 10,
+                "salvo": 4,
                 "speedYaw": 24.0,
                 "speedPitch": 15.0,
                 "fireConeAngle": 1.0,

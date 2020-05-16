@@ -64,7 +64,40 @@
       "explosionPatchRadius": 3.4
     },
     {
+      "normalizationPreset": "heat"
+    },
+    {
+      "ricochetPreset": "atgm"
+    },
+    {
+      "secondaryShattersPreset": "ap"
+    },
+    {
+      "stabilityThreshold": 0.1
+    },
+    {
+      "stabilityCaliberToArmorThreshold": 100.0
+    },
+    {
+      "stabilityReductionAfterRicochet": 0.3
+    },
+    {
+      "stabilityReductionAfterPenetration": 0.01
+    },
+    {
       "bulletType": "atgm_tank"
+    },
+    {
+      "cumulativeSecondaryShattersPreset": "atgm"
+    },
+    {
+      "explodeOnRendinst": true
+    },
+    {
+      "modelName": "tank_bullet_heat_fs"
+    },
+    {
+      "fresnel": [0.23,0.1,2.0]
     },
     {
       "bulletName": "114mm_m8"
@@ -191,6 +224,19 @@
       }
     },
     {
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.0]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod2": [30.0,0.2]
+        }
+      ]
+    },
+    {
       "DamageParts": {
         "body": {
           "hp": 50.0,
@@ -201,26 +247,23 @@
     },
     {
       "damage": {
+        "kinetic": {
+          "damageType": "generic"
+        },
         "shatter": [
           {
             "useRealShatters": true
           },
           {
-            "countPortion": 0.03
+            "countPortion": 0.2
           },
           {
             "segment": {
               "radiusScale": 1.0,
               "penetrationScale": 1.0,
-              "damageScale": 1.0,
+              "damageScale": 2.0,
               "angles": [0.0,100.0],
-              "countPortion": 0.5
-            }
-          },
-          {
-            "segment": {
-              "angles": [101.0,259.0],
-              "countPortion": 0.0
+              "countPortion": 0.3
             }
           },
           {
@@ -228,8 +271,17 @@
               "radiusScale": 1.0,
               "penetrationScale": 1.0,
               "damageScale": 1.0,
+              "angles": [101.0,259.0],
+              "countPortion": 0.4
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 2.0,
               "angles": [260.0,359.0],
-              "countPortion": 0.5
+              "countPortion": 0.3
             }
           }
         ]

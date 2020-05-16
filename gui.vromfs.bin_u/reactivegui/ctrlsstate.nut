@@ -1,7 +1,7 @@
 local globalState = require("globalState.nut")
 local hudChatState = require("hudChatState.nut")
 local frp = require("std/frp.nut")
-
+local extWatched = require("globals/extWatched.nut")
 
 local ctrlsState = frp.combine(
   [globalState.isInFlight, hudChatState.inputEnabled, hudChatState.inputChatVisible],
@@ -19,11 +19,12 @@ ctrlsState.subscribe(function (new_val) {
   ::set_allowed_controls_mask(new_val)
 })
 
-local gamepadCursorControl = persist("gamepadCursorControl",
-  @() Watched(::cross_call.getValueGamepadCursorControl()))
 
-local haveXinputDevice = persist("haveXinputDevice",  //FIX ME: remove "haveXinputDevice" when in darg scene will be determined correctly that joystick has controller
-  @() Watched(::cross_call.haveXinputDevice()))
+local gamepadCursorControl = extWatched("gamepadCursorControl",
+  ::cross_call.getValueGamepadCursorControl)
+
+local haveXinputDevice = extWatched("haveXinputDevice",  //FIX ME: remove "haveXinputDevice" when in darg scene will be determined correctly that joystick has controller
+  ::cross_call.haveXinputDevice)
 
 local enabledGamepadCursorControlInScene = keepref(::Computed(
   @() gamepadCursorControl.value && haveXinputDevice.value))
@@ -32,11 +33,12 @@ local function updateSceneGamepadCursorControl(value) {
   log($"ctrlsState: updateSceneGamepadCursorControl: {value} ({gamepadCursorControl.value}, {haveXinputDevice.value})")
   ::gui_scene.config.gamepadCursorControl = value
 }
-
 updateSceneGamepadCursorControl(enabledGamepadCursorControlInScene.value)
 
 enabledGamepadCursorControlInScene.subscribe(updateSceneGamepadCursorControl)
 
-::interop.updateGamepadCursorControl <- @(value) gamepadCursorControl(value)
+local showConsoleButtons = extWatched("showConsoleButtons", ::cross_call.isConsoleModeEnabled)
 
-::interop.updateHaveXinputDevice <- @(value) haveXinputDevice(value)
+return {
+  showConsoleButtons = showConsoleButtons
+}

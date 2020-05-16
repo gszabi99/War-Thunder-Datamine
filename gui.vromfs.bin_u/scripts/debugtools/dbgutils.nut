@@ -426,7 +426,7 @@ local { getWeaponInfoText, getWeaponNameText } = require("scripts/weaponry/weapo
   ::on_renderer_settings_change()
   ::perform_delayed(function() {
     ::handlersManager.getActiveBaseHandler().fullReloadScene()
-    ::call_darg("updateScreenOptions", { resolution = newResolution })
+    ::call_darg("updateExtWatched", { resolution = newResolution })
     done()
   })
 }

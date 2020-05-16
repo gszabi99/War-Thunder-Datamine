@@ -22,7 +22,7 @@
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
-  "fireParamsPreset": "900kph",
+  "fireParamsPreset": "1100kph",
   "fightAiBehaviour": "assault",
   "DamageParts": {
     "armor10": {
@@ -2027,6 +2027,8 @@
         "turn": [-0.23562,0.23562],
         "aviahorizon_pitch": [-70.0,70.0],
         "aviahorizon_roll": [-180.0,180.0],
+        "aviahorizon_pitch1": [-90.0,90.0],
+        "aviahorizon_roll1": [-180.0,180.0],
         "compass": [0.0,360.0],
         "compass1": [0.0,360.0],
         "compass2": [0.0,360.0],
@@ -2128,7 +2130,14 @@
       "preset": {
         "name": "a_4b_bomb_mk81",
         "blk": "gameData/FlightModels/weaponPresets/a_4b_bomb_mk81.blk",
-        "reqModification": "us_250lb_mk81"
+        "reqModification": "us_250lb_mk81",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk",
+            "amountPerTier": 3.5,
+            "iconType": "bombs_small_group"
+          }
+        }
       }
     },
     {
@@ -2389,7 +2398,7 @@
     "radiusSpeed": 2.0
   },
   "fireParams": {
-    "engineExtinguishFireSpeed": [193.0,277.0],
+    "engineExtinguishFireSpeed": [272.0,316.0],
     "engineExtinguishFireSpeedChance": [0.01,0.1],
     "fireDamagePowerRel": 0.05,
     "nonExtinguishFireTime": 5.0

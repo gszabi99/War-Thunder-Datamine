@@ -1805,6 +1805,22 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 10.0
       },
+      "turret_armor": {
+        "armorClass": "ship_structural_steel",
+        "fireParamsPreset": "ship_construction",
+        "fireProtectionHp": 5000.0,
+        "armorThickness": 15.0,
+        "turret_01_side_dm": {
+          "armorClass": "ship_Wsh",
+          "armorThickness": 10.0,
+          "hp": 301.0
+        },
+        "turret_02_side_dm": {
+          "armorClass": "ship_Wsh",
+          "armorThickness": 10.0,
+          "hp": 301.0
+        }
+      },
       "gun_masks": {
         "armorClass": "ship_structural_steel",
         "armorThickness": 5.0
@@ -1826,13 +1842,13 @@
         "shatterDamageMult": 1.1,
         "explosionDamageMult": 1.0,
         "secondaryShatterDamageMult": 0.5,
-        "armorClass": "ship_Wsh",
-        "armorThickness": 4.0,
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 3.0,
         "main_caliber_turret_01_dm": {
-          "hp": 150.0
+          "hp": 100.0
         },
         "main_caliber_turret_02_dm": {
-          "hp": 150.0
+          "hp": 100.0
         }
       },
       "turrets_aux_caliber": {
@@ -2600,51 +2616,6 @@
       },
       {
         "event": {
-          "name": "superstructure_back_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_front_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_top_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_bottom_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_side_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
           "name": "superstructure_fire",
           "fx": {
             "name": "ship_fire_medium",
@@ -3322,7 +3293,7 @@
     "breaches": {
       "repairSpeed": 20.0,
       "waterMassVel": -14000.0,
-      "waterMassMult": 50.0,
+      "waterMassMult": 40.0,
       "sizeToRepair": [0.01,2.0,10.0,300.0],
       "additionalWaterDeathThreshold": 400000.0,
       "additionalWaterShouldDiePercent": 0.45,

@@ -108,7 +108,18 @@
       "caliber": 0.02,
       "speed": 705.0,
       "maxDistance": 2000.0,
+      "normalizationPreset": "heat",
+      "ricochetPreset": "he",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.05,
+      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "he_frag_i_t",
+      "slopeEffectPreset": "ap",
+      "modelName": "tank_bullet_he",
+      "fresnel": [0.23,0.1,2.0],
+      "explodeOnRendinst": true,
       "bulletName": "20mm_brgr",
       "hitPowerMult": 1.0,
       "nearHitPower": [1.0,50.0],
@@ -130,6 +141,20 @@
       "ricochetEffect": "bullet_hit_armor",
       "waterCollisionEffect": "big_water_splash",
       "waterFxScale": [0.6,0.8],
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.05]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod3": [30.0,0.2]
+        },
+        {
+          "mod3": [45.0,0.3]
+        }
+      ],
       "armorpower": {
         "ArmorPower0m": [2.0,10.0],
         "ArmorPower100m": [2.0,100.0],
@@ -253,6 +278,13 @@
       "bulletCount": 10,
       "mass": 0.115,
       "caliber": 0.02,
+      "normalizationPreset": "default",
+      "ricochetPreset": "defaultExt",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.05,
+      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "ap_i",
       "bulletName": "20mm_pzbrgr_ph",
       "speed": 705.0,
@@ -263,12 +295,27 @@
       "ricochetEffect": "bullet_hit_armor",
       "waterCollisionEffect": "water_splash",
       "waterFxScale": [1.2,1.4],
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.05]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod3": [30.0,0.2]
+        },
+        {
+          "mod3": [45.0,0.3]
+        }
+      ],
       "hitpower": {
         "HitPower0m": [0.85,500.0],
         "HitPower10000m": [0.8,10000.0]
       },
       "damage": {
         "kinetic": {
+          "damageType": "generic",
           "demarrePenetrationK": 0.9,
           "demarreSpeedPow": 1.43,
           "demarreMassPow": 0.71,

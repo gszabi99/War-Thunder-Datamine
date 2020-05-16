@@ -7,7 +7,40 @@
   "mesh": "us_zuni_wafar_mk24_rocket",
   "rocket": [
     {
+      "normalizationPreset": "heat"
+    },
+    {
+      "ricochetPreset": "heat"
+    },
+    {
+      "secondaryShattersPreset": "ap"
+    },
+    {
+      "stabilityThreshold": 0.1
+    },
+    {
+      "stabilityCaliberToArmorThreshold": 100.0
+    },
+    {
+      "stabilityReductionAfterRicochet": 0.3
+    },
+    {
+      "stabilityReductionAfterPenetration": 0.01
+    },
+    {
       "bulletType": "heat_tank"
+    },
+    {
+      "cumulativeSecondaryShattersPreset": "heat_fs"
+    },
+    {
+      "explodeOnRendinst": true
+    },
+    {
+      "modelName": "tank_bullet_heat"
+    },
+    {
+      "fresnel": [0.23,0.1,2.0]
     },
     {
       "caliber": 0.07
@@ -179,6 +212,18 @@
     },
     {
       "aiAccelPrediction": 0.5
+    },
+    {
+      "amountPerTier": 4.0
+    },
+    {
+      "iconType": "nar_ap_special"
+    },
+    {
+      "stabilityRicochetModifier": {
+        "mod1": [0.0,0.0],
+        "mod2": [20.0,1.0]
+      }
     },
     {
       "collisions": {

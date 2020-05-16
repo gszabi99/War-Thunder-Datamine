@@ -227,14 +227,6 @@
         },
         "turret_06_front_dm": {
           "armorThickness": 95.0
-        },
-        "turret_04_side_dm": {
-          "armorThickness": 10.0,
-          "hidableInViewer": true
-        },
-        "turret_05_side_dm": {
-          "armorThickness": 10.0,
-          "hidableInViewer": true
         }
       },
       "turret_composite_armor": {
@@ -247,7 +239,9 @@
           "cumulativeArmorQuality": 0.0,
           "createSecondaryShatters": false
         },
-        "composite_armor_turret_02_dm": [],
+        "composite_armor_turret_02_dm": {
+          "armorClass": "CHA_tank"
+        },
         "composite_armor_hull_01_dm": {
           "hidableInXrayViewer": true,
           "armorThickness": 0.1,
@@ -267,6 +261,26 @@
           "cumulativeArmorQuality": 1.0,
           "createSecondaryShatters": false
         }
+      },
+      "grille": {
+        "armorClass": "tank_structural_steel",
+        "hp": 300.0,
+        "armorThickness": 15.0,
+        "armorEffectiveThicknessMax": 15.0,
+        "stopChanceOnDeadPart": 0.0,
+        "createSecondaryShatters": false,
+        "turret_04_side_dm": [],
+        "turret_05_side_dm": []
+      },
+      "turret_grille_armor": {
+        "hp": 300.0,
+        "cumulativeEffectiveThicknessMax": 200.0,
+        "genericArmorQuality": 0.01,
+        "cumulativeArmorQuality": 2.0,
+        "armorThickness": 50.0,
+        "armorClass": "grille_air",
+        "composite_armor_turret_03_dm": [],
+        "composite_armor_turret_04_dm": []
       },
       "turret": {
         "armorClass": "CHA_tank",
@@ -913,64 +927,102 @@
     }
   },
   {
-    "xray_viewer_data": {
-      "armorArrayHull": {
-        "xrayDmPart": "composite_armor_hull_01_dm",
-        "armorArrayText": [
-          {
-            "layer": {
-              "dmPart": "superstructure_front_dm"
+    "xray_viewer_data": [
+      {
+        "armorArrayHull": {
+          "xrayDmPart": "composite_armor_hull_01_dm",
+          "armorArrayText": [
+            {
+              "layer": {
+                "dmPart": "superstructure_front_dm"
+              }
+            },
+            {
+              "layer": {
+                "dmPart": "composite_armor_hull_01_dm",
+                "xrayTextThickness": 104.0
+              }
+            },
+            {
+              "layer": {
+                "dmPart": "turret_02_back_dm",
+                "xrayTextThickness": 60.0
+              }
             }
-          },
-          {
-            "layer": {
-              "dmPart": "composite_armor_hull_01_dm",
-              "xrayTextThickness": 104.0
-            }
-          },
-          {
-            "layer": {
-              "dmPart": "turret_02_back_dm",
-              "xrayTextThickness": 60.0
-            }
-          }
-        ]
+          ]
+        }
       },
-      "armorArrayTurret": {
-        "xrayDmPart": "composite_armor_turret_01_dm",
-        "armorArrayText": [
-          {
-            "layer": {
-              "dmPart": "turret_01_front_dm"
+      {
+        "armorArrayTurret": {
+          "xrayDmPart": "composite_armor_turret_01_dm",
+          "armorArrayText": [
+            {
+              "layer": {
+                "dmPart": "turret_01_front_dm"
+              }
+            },
+            {
+              "layer": {
+                "dmPart": "composite_armor_turret_01_dm",
+                "xrayTextThickness": 530.0
+              }
+            },
+            {
+              "layer": {
+                "dmPart": "turret_06_front_dm",
+                "xrayTextThickness": 45.0
+              }
+            },
+            {
+              "layer": {
+                "dmPart": "turret_06_front_dm",
+                "xrayTextThickness": 50.0
+              }
+            },
+            {
+              "layer": {
+                "dmPart": "turret_06_front_dm",
+                "xrayTextThickness": 20.0
+              }
             }
-          },
-          {
+          ]
+        }
+      },
+      {
+        "armorArrayTurret": {
+          "xrayDmPart": "composite_armor_turret_02_dm",
+          "titleLoc": "CHA_tank",
+          "armorArrayText": {
             "layer": {
-              "dmPart": "composite_armor_turret_01_dm",
-              "xrayTextThickness": 530.0
-            }
-          },
-          {
-            "layer": {
-              "dmPart": "turret_06_front_dm",
-              "xrayTextThickness": 45.0
-            }
-          },
-          {
-            "layer": {
-              "dmPart": "turret_06_front_dm",
-              "xrayTextThickness": 50.0
-            }
-          },
-          {
-            "layer": {
-              "dmPart": "turret_06_front_dm",
-              "xrayTextThickness": 20.0
+              "dmPart": "composite_armor_turret_02_dm",
+              "xrayTextThickness": [40.0,310.0]
             }
           }
-        ]
+        }
+      },
+      {
+        "armorArrayHull": {
+          "xrayDmPart": "composite_armor_turret_04_dm",
+          "titleLoc": "grille_air",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_turret_04_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayTurret": {
+          "xrayDmPart": "composite_armor_turret_03_dm",
+          "titleLoc": "grille_air",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_turret_03_dm"
+            }
+          }
+        }
       }
-    }
+    ]
   },
   {
     "attachables": {
@@ -986,11 +1038,11 @@
   },
   {
     "sound": {
-      "EngineName": "engine_t90a",
+      "EngineName": "engine_t72",
       "TrackSoundPath": "tanks/engines_tanks",
       "TrackSoundPathStudio": "ground/engines",
-      "TrackSoundName": "tracks_su100",
-      "TrackSoundNameCockpit": "tracks_su100_interior",
+      "TrackSoundName": "tracks_t72",
+      "TrackSoundNameCockpit": "tracks_t72_interior",
       "turret_turn": "turret_turn_servo",
       "EngineNameAi": "engine_tank_ai_middle",
       "TrackSoundNameAi": "tracks_ai_middle"
@@ -2786,6 +2838,15 @@
             }
           }
         ]
+      },
+      {
+        "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
       },
       {
         "event": {

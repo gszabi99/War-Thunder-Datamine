@@ -1,0 +1,2580 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": "lbt_battles_armada"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/water.bin",
+      "type": "singleMission",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "clear"
+    },
+    "spectator_points": []
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "tracked_vehicles": {
+        "name": "lbt_battles_t1_tank_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [11153.4,-12.0,36563.3]
+        ],
+        "unit_class": "ussr_t34_mode41",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 12,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "lbt_battles_t2_tank_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [6730.6,-12.0,36457.2]
+        ],
+        "unit_class": "germ_pzIVc",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 12,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "lbt_battles_t1_art_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [11709.2,-12.0,38774.2]
+        ],
+        "unit_class": "ussr_quest_large_art",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 10,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "lbt_battles_t2_art_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [6693.22,-12.0,38718.7]
+        ],
+        "unit_class": "germ_quest_large_art",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 10,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "lbt_battles_t1_battle_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [11566.0,-12.0,33007.9]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "lbt_battles_t1_squad_01"
+          },
+          {
+            "squad_members": "lbt_battles_t1_squad_02"
+          },
+          {
+            "squad_members": "lbt_battles_t1_squad_03"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "lbt_battles_t2_battle_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [6563.28,-12.0,33727.1]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "lbt_battles_t2_squad_01"
+          },
+          {
+            "squad_members": "lbt_battles_t2_squad_02"
+          },
+          {
+            "squad_members": "lbt_battles_t2_squad_03"
+          }
+        ]
+      }
+    },
+    {
+      "armada": {
+        "name": "lbt_battles_armada",
+        "tm": [
+          [-0.642788,0.0,0.766044],
+          [0.0,1.0,0.0],
+          [-0.766044,0.0,-0.642788],
+          [8913.7,388.0,13021.9]
+        ],
+        "unit_class": "a5m4",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "lbt_battles_t1_bunker_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [11526.5,-11.9988,37449.4]
+        ],
+        "unit_class": "uk_bunker_light",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 10,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "lbt_battles_t2_bunker_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [6774.53,-11.9985,37342.8]
+        ],
+        "unit_class": "uk_bunker_light",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 10,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "lbt_battles_t1_bunker_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [12581.5,-11.9988,37449.4]
+        ],
+        "unit_class": "uk_bunker_light",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 10,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "lbt_battles_t1_art_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [12764.1,-12.0,38774.2]
+        ],
+        "unit_class": "ussr_quest_large_art",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 10,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "lbt_battles_t1_tank_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [12208.4,-12.0,36563.3]
+        ],
+        "unit_class": "ussr_t34_mode41",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 12,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "lbt_battles_t1_bunker_03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [13682.6,-11.9988,37449.4]
+        ],
+        "unit_class": "uk_bunker_light",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 10,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "lbt_battles_t1_art_03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [13865.3,-12.0,38774.2]
+        ],
+        "unit_class": "ussr_quest_large_art",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 10,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "lbt_battles_t1_tank_03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [13309.5,-12.0,36563.3]
+        ],
+        "unit_class": "ussr_t34_mode41",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 12,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "lbt_battles_t2_tank_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [7521.2,-12.0,36457.2]
+        ],
+        "unit_class": "germ_pzIVc",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 12,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "lbt_battles_t2_art_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [7483.83,-12.0,38718.7]
+        ],
+        "unit_class": "germ_quest_large_art",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 10,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "lbt_battles_t2_bunker_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [7565.13,-11.9985,37342.8]
+        ],
+        "unit_class": "uk_bunker_light",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 10,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "lbt_battles_t2_tank_03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [8321.13,-12.0,36457.2]
+        ],
+        "unit_class": "germ_pzIVc",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 12,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "lbt_battles_t2_art_03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [8283.75,-12.0,38718.7]
+        ],
+        "unit_class": "germ_quest_large_art",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 10,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "lbt_battles_t2_bunker_03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [8365.05,-11.9985,37342.8]
+        ],
+        "unit_class": "uk_bunker_light",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 10,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "lbt_battles_t1_squad_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [10845.9,-11.9995,34437.5]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "lbt_battles_t1_tank_01"
+          },
+          {
+            "squad_members": "lbt_battles_t1_art_01"
+          },
+          {
+            "squad_members": "lbt_battles_t1_bunker_01"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "lbt_battles_t1_squad_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [11692.2,-12.0,34375.8]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "lbt_battles_t1_tank_02"
+          },
+          {
+            "squad_members": "lbt_battles_t1_art_02"
+          },
+          {
+            "squad_members": "lbt_battles_t1_bunker_02"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "lbt_battles_t1_squad_03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [12867.6,-11.999,34495.5]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "lbt_battles_t1_bunker_03"
+          },
+          {
+            "squad_members": "lbt_battles_t1_art_03"
+          },
+          {
+            "squad_members": "lbt_battles_t1_tank_03"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "lbt_battles_t2_squad_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [6775.69,-11.9995,35125.7]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "lbt_battles_t2_tank_01"
+          },
+          {
+            "squad_members": "lbt_battles_t2_art_01"
+          },
+          {
+            "squad_members": "lbt_battles_t2_bunker_01"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "lbt_battles_t2_squad_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [7595.83,-11.9995,35102.0]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "lbt_battles_t2_tank_02"
+          },
+          {
+            "squad_members": "lbt_battles_t2_art_02"
+          },
+          {
+            "squad_members": "lbt_battles_t2_bunker_02"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "lbt_battles_t2_squad_03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [8464.56,-12.0,35090.2]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "lbt_battles_t2_tank_03"
+          },
+          {
+            "squad_members": "lbt_battles_t2_art_03"
+          },
+          {
+            "squad_members": "lbt_battles_t2_bunker_03"
+          }
+        ]
+      }
+    }
+  ],
+  "areas": {
+    "lbt_t1_battle_area_01": {
+      "type": "Box",
+      "tm": [
+        [-294.074,0.0,-0.000221252],
+        [0.0,181.25,0.0],
+        [-0.000636074,0.0,-600.0],
+        [36900.0,200.0,36800.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_01": {
+      "type": "Box",
+      "tm": [
+        [293.795,0.0,12.8271],
+        [0.0,181.25,0.0],
+        [-26.1716,0.0,599.429],
+        [36200.0,200.0,36500.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_02": {
+      "type": "Sphere",
+      "tm": [
+        [1044.19,0.0,-2812.41],
+        [0.0,3000.0,0.0],
+        [2812.41,0.0,1044.19],
+        [22144.3,36.7998,34532.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_03": {
+      "type": "Sphere",
+      "tm": [
+        [-357.552,0.0,-2978.61],
+        [0.0,3000.0,0.0],
+        [2978.61,0.0,-357.552],
+        [16089.1,464.611,33714.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_01": {
+      "type": "Sphere",
+      "tm": [
+        [130.859,0.0,-2997.15],
+        [0.0,3000.0,0.0],
+        [2997.15,0.0,130.859],
+        [36811.6,236.8,36868.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_04": {
+      "type": "Sphere",
+      "tm": [
+        [2999.17,0.0,-70.9601],
+        [0.0,3000.0,0.0],
+        [70.9601,0.0,2999.17],
+        [605.202,170.873,33793.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_05": {
+      "type": "Sphere",
+      "tm": [
+        [-520.945,0.0,-2954.42],
+        [0.0,3000.0,0.0],
+        [2954.42,0.0,-520.945],
+        [-11718.6,154.25,37181.8]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_06": {
+      "type": "Sphere",
+      "tm": [
+        [-288.4,0.0,-2986.11],
+        [0.0,3000.0,0.0],
+        [2986.11,0.0,-288.4],
+        [-23329.8,-20.6515,32649.1]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_07": {
+      "type": "Sphere",
+      "tm": [
+        [-99.7198,0.0,-2998.34],
+        [0.0,3000.0,0.0],
+        [2998.34,0.0,-99.7198],
+        [-31836.3,210.1,35879.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_08": {
+      "type": "Sphere",
+      "tm": [
+        [649.315,0.0,-2928.88],
+        [0.0,3000.0,0.0],
+        [2928.88,0.0,649.315],
+        [31563.0,136.8,23882.8]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_09": {
+      "type": "Sphere",
+      "tm": [
+        [301.321,0.0,-2984.82],
+        [0.0,3000.0,0.0],
+        [2984.82,0.0,301.321],
+        [21982.2,23.2,24368.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_10": {
+      "type": "Sphere",
+      "tm": [
+        [-2718.92,0.0,-1267.86],
+        [0.0,3000.0,0.0],
+        [1267.86,0.0,-2718.92],
+        [11309.9,130.298,26612.9]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_11": {
+      "type": "Sphere",
+      "tm": [
+        [-2974.33,0.0,-391.583],
+        [0.0,3000.0,0.0],
+        [391.583,0.0,-2974.33],
+        [1788.3,144.4,20465.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_12": {
+      "type": "Sphere",
+      "tm": [
+        [1500.0,0.0,-2598.08],
+        [0.0,3000.0,0.0],
+        [2598.08,0.0,1500.0],
+        [-8937.9,225.91,21804.8]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_13": {
+      "type": "Sphere",
+      "tm": [
+        [1611.9,0.0,-2530.17],
+        [0.0,3000.0,0.0],
+        [2530.17,0.0,1611.9],
+        [-24874.2,271.716,25327.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_14": {
+      "type": "Sphere",
+      "tm": [
+        [2988.58,0.0,-261.468],
+        [0.0,3000.0,0.0],
+        [261.468,0.0,2988.58],
+        [-31800.0,200.0,25600.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_15": {
+      "type": "Sphere",
+      "tm": [
+        [261.467,0.0,-2988.58],
+        [0.0,3000.0,0.0],
+        [2988.58,0.0,261.467],
+        [35339.2,250.599,12253.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_16": {
+      "type": "Sphere",
+      "tm": [
+        [261.467,0.0,-2988.58],
+        [0.0,3000.0,0.0],
+        [2988.58,0.0,261.467],
+        [27318.3,235.352,13471.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_17": {
+      "type": "Sphere",
+      "tm": [
+        [1026.06,0.0,2819.07],
+        [0.0,3000.0,0.0],
+        [-2819.07,0.0,1026.06],
+        [17400.0,300.0,10700.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_18": {
+      "type": "Sphere",
+      "tm": [
+        [1148.05,0.0,2771.64],
+        [0.0,3000.0,0.0],
+        [-2771.64,0.0,1148.05],
+        [2840.45,140.896,10209.8]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_19": {
+      "type": "Sphere",
+      "tm": [
+        [1762.33,0.0,-2427.79],
+        [0.0,3000.0,0.0],
+        [2427.79,0.0,1762.33],
+        [-16431.3,165.767,11416.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_21": {
+      "type": "Sphere",
+      "tm": [
+        [2578.35,0.0,-1533.67],
+        [0.0,3000.0,0.0],
+        [1533.67,0.0,2578.35],
+        [-39629.0,226.8,11901.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_20": {
+      "type": "Sphere",
+      "tm": [
+        [261.468,0.0,2988.58],
+        [0.0,3000.0,0.0],
+        [-2988.58,0.0,261.468],
+        [-22186.4,-25.1852,13965.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_28": {
+      "type": "Sphere",
+      "tm": [
+        [564.154,0.0,2946.48],
+        [0.0,3000.0,0.0],
+        [-2946.48,0.0,564.154],
+        [-37887.2,153.76,-126.911]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_29": {
+      "type": "Sphere",
+      "tm": [
+        [-494.37,0.0,-2958.99],
+        [0.0,3000.0,0.0],
+        [2958.99,0.0,-494.37],
+        [42125.3,50.6,-14955.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_30": {
+      "type": "Sphere",
+      "tm": [
+        [-520.945,0.0,-2954.42],
+        [0.0,3000.0,0.0],
+        [2954.42,0.0,-520.945],
+        [23229.5,6.2489,-9920.65]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_23": {
+      "type": "Sphere",
+      "tm": [
+        [-520.945,0.0,-2954.42],
+        [0.0,3000.0,0.0],
+        [2954.42,0.0,-520.945],
+        [23784.6,2.76291,1636.8]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_24": {
+      "type": "Sphere",
+      "tm": [
+        [-74.8308,0.0,-2999.07],
+        [0.0,3000.0,0.0],
+        [2999.07,0.0,-74.8308],
+        [8700.0,0.0,-1300.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_32": {
+      "type": "Sphere",
+      "tm": [
+        [-182.563,0.0,-2994.44],
+        [0.0,3000.0,0.0],
+        [2994.44,0.0,-182.563],
+        [-1752.29,119.057,-11256.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_33": {
+      "type": "Sphere",
+      "tm": [
+        [-1148.05,0.0,-2771.63],
+        [0.0,3000.0,0.0],
+        [2771.63,0.0,-1148.05],
+        [-8942.95,21.7012,-14537.5]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_25": {
+      "type": "Sphere",
+      "tm": [
+        [2849.26,0.0,939.031],
+        [0.0,3000.0,0.0],
+        [-939.031,0.0,2849.26],
+        [695.715,132.4,119.859]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_27": {
+      "type": "Sphere",
+      "tm": [
+        [2998.59,0.0,91.9503],
+        [0.0,3000.0,0.0],
+        [-91.9503,0.0,2998.59],
+        [-27134.7,86.1082,1933.73]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_35": {
+      "type": "Sphere",
+      "tm": [
+        [2968.14,0.0,-436.021],
+        [0.0,3000.0,0.0],
+        [436.021,0.0,2968.14],
+        [-38241.6,99.1772,-11366.8]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_36": {
+      "type": "Sphere",
+      "tm": [
+        [-1500.0,0.0,-2598.07],
+        [0.0,3000.0,0.0],
+        [2598.07,0.0,-1500.0],
+        [34500.0,0.0,-27100.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_22": {
+      "type": "Sphere",
+      "tm": [
+        [-119.873,0.0,-2997.6],
+        [0.0,3000.0,0.0],
+        [2997.6,0.0,-119.873],
+        [34924.0,101.756,34.1806]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_37": {
+      "type": "Sphere",
+      "tm": [
+        [-141.061,0.0,-2996.67],
+        [0.0,3000.0,0.0],
+        [2996.67,0.0,-141.061],
+        [23579.1,1.75,-22619.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_26": {
+      "type": "Sphere",
+      "tm": [
+        [85.0677,0.0,-2998.8],
+        [0.0,3000.0,0.0],
+        [2998.8,0.0,85.0677],
+        [-10556.9,101.341,-4966.15]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_31": {
+      "type": "Sphere",
+      "tm": [
+        [-404.943,0.0,-2972.54],
+        [0.0,3000.0,0.0],
+        [2972.54,0.0,-404.943],
+        [15573.2,1.75002,-9103.76]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_39": {
+      "type": "Sphere",
+      "tm": [
+        [-15.2887,0.0,-2999.96],
+        [0.0,3000.0,0.0],
+        [2999.96,0.0,-15.2887],
+        [-286.628,13.7495,-24527.2]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_40": {
+      "type": "Sphere",
+      "tm": [
+        [-505.464,0.0,-2957.11],
+        [0.0,3000.0,0.0],
+        [2957.11,0.0,-505.464],
+        [-11888.1,175.539,-24016.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_34": {
+      "type": "Sphere",
+      "tm": [
+        [1026.06,0.0,-2819.08],
+        [0.0,3000.0,0.0],
+        [2819.08,0.0,1026.06],
+        [-23570.8,164.581,-15765.5]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_42": {
+      "type": "Sphere",
+      "tm": [
+        [-226.288,0.0,-2991.46],
+        [0.0,3000.0,0.0],
+        [2991.46,0.0,-226.288],
+        [-34951.2,83.5091,-26936.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_43": {
+      "type": "Sphere",
+      "tm": [
+        [-130.86,0.0,-2997.14],
+        [0.0,3000.0,0.0],
+        [2997.14,0.0,-130.86],
+        [38390.8,1.75,-38834.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_44": {
+      "type": "Sphere",
+      "tm": [
+        [-261.467,0.0,-2988.58],
+        [0.0,3000.0,0.0],
+        [2988.58,0.0,-261.467],
+        [24963.0,0.0,-37915.2]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_45": {
+      "type": "Sphere",
+      "tm": [
+        [-995.875,0.0,-2829.88],
+        [0.0,3000.0,0.0],
+        [2829.88,0.0,-995.875],
+        [12729.3,1.74829,-38324.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_38": {
+      "type": "Sphere",
+      "tm": [
+        [-401.743,0.0,-2972.98],
+        [0.0,3000.0,0.0],
+        [2972.98,0.0,-401.743],
+        [10700.0,100.0,-28300.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_46": {
+      "type": "Sphere",
+      "tm": [
+        [520.945,0.0,-2954.42],
+        [0.0,3000.0,0.0],
+        [2954.42,0.0,520.945],
+        [-1574.21,59.05,-35759.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_47": {
+      "type": "Sphere",
+      "tm": [
+        [-1826.28,0.0,-2380.06],
+        [0.0,3000.0,0.0],
+        [2380.06,0.0,-1826.28],
+        [-12288.7,59.049,-37578.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_41": {
+      "type": "Sphere",
+      "tm": [
+        [2974.33,0.0,391.578],
+        [0.0,3000.0,0.0],
+        [-391.578,0.0,2974.33],
+        [-24139.5,76.8031,-23849.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_48": {
+      "type": "Sphere",
+      "tm": [
+        [2988.58,0.0,-261.467],
+        [0.0,3000.0,0.0],
+        [261.467,0.0,2988.58],
+        [-23475.3,193.5,-39707.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_battle_area_49": {
+      "type": "Sphere",
+      "tm": [
+        [2771.64,0.0,1148.05],
+        [0.0,3000.0,0.0],
+        [-1148.05,0.0,2771.64],
+        [-36084.8,150.805,-38197.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_02": {
+      "type": "Box",
+      "tm": [
+        [-283.558,0.0,-77.9392],
+        [0.0,181.25,0.0],
+        [159.02,0.0,-578.544],
+        [22500.0,200.0,34700.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_03": {
+      "type": "Box",
+      "tm": [
+        [-291.978,0.0,35.0493],
+        [0.0,181.25,0.0],
+        [-95.3497,0.0,-794.297],
+        [16608.1,308.761,34130.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_04": {
+      "type": "Box",
+      "tm": [
+        [-293.41,0.0,19.7731],
+        [0.0,181.25,0.0],
+        [-53.7882,0.0,-798.19],
+        [835.461,22.2374,32891.1]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_05": {
+      "type": "Box",
+      "tm": [
+        [-289.607,0.0,51.0656],
+        [0.0,181.25,0.0],
+        [-104.189,0.0,-590.885],
+        [-11600.1,124.463,37062.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_06": {
+      "type": "Box",
+      "tm": [
+        [-294.063,0.0,2.65132],
+        [0.0,181.25,0.0],
+        [-5.4092,0.0,-599.976],
+        [-22900.0,0.0,32500.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_07": {
+      "type": "Box",
+      "tm": [
+        [-294.059,0.0,-3.05426],
+        [0.0,181.25,0.0],
+        [6.23932,0.0,-600.678],
+        [-31600.0,100.0,36000.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_08": {
+      "type": "Box",
+      "tm": [
+        [-276.34,0.0,-100.579],
+        [0.0,181.25,0.0],
+        [205.211,0.0,-563.816],
+        [31700.0,100.0,24300.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_09": {
+      "type": "Box",
+      "tm": [
+        [-286.229,0.0,-67.4748],
+        [0.0,181.25,0.0],
+        [137.668,0.0,-583.993],
+        [22400.0,100.0,24300.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_10": {
+      "type": "Box",
+      "tm": [
+        [-280.464,0.0,-88.4304],
+        [0.0,181.25,0.0],
+        [180.424,0.0,-572.23],
+        [11700.0,0.0,26500.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_11": {
+      "type": "Box",
+      "tm": [
+        [293.794,0.0,12.828],
+        [0.0,181.25,0.0],
+        [-26.1716,0.0,599.429],
+        [1500.0,200.0,20000.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_12": {
+      "type": "Box",
+      "tm": [
+        [-284.755,0.0,73.4455],
+        [0.0,181.25,0.0],
+        [-149.852,0.0,-580.986],
+        [-8600.0,0.0,22000.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_13": {
+      "type": "Box",
+      "tm": [
+        [-189.028,0.0,225.274],
+        [0.0,181.25,0.0],
+        [-459.628,0.0,-385.671],
+        [-24200.0,200.0,25100.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_14": {
+      "type": "Box",
+      "tm": [
+        [-292.955,0.0,25.6301],
+        [0.0,181.25,0.0],
+        [-52.2941,0.0,-597.717],
+        [-31500.0,100.0,25000.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_15": {
+      "type": "Box",
+      "tm": [
+        [-292.955,0.0,-25.6305],
+        [0.0,181.25,0.0],
+        [52.293,0.0,-597.717],
+        [35500.0,200.0,12700.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_16": {
+      "type": "Box",
+      "tm": [
+        [-292.955,0.0,-25.6305],
+        [0.0,181.25,0.0],
+        [52.293,0.0,-597.717],
+        [28078.3,200.0,13136.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_17": {
+      "type": "Box",
+      "tm": [
+        [-280.464,0.0,88.4297],
+        [0.0,181.25,0.0],
+        [-180.424,0.0,-572.23],
+        [17600.0,200.0,10700.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_18": {
+      "type": "Box",
+      "tm": [
+        [-276.34,0.0,100.579],
+        [0.0,181.25,0.0],
+        [-205.212,0.0,-563.815],
+        [3000.0,100.0,9900.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_19": {
+      "type": "Box",
+      "tm": [
+        [-293.082,0.0,-24.1415],
+        [0.0,181.25,0.0],
+        [49.2554,0.0,-597.975],
+        [-16000.0,0.0,11500.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_21": {
+      "type": "Box",
+      "tm": [
+        [-259.059,0.0,139.169],
+        [0.0,181.25,0.0],
+        [-283.949,0.0,-528.557],
+        [-39400.0,100.0,12000.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_20": {
+      "type": "Box",
+      "tm": [
+        [-292.955,0.0,25.6301],
+        [0.0,181.25,0.0],
+        [-52.2939,0.0,-597.717],
+        [-21700.0,0.0,13900.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_28": {
+      "type": "Box",
+      "tm": [
+        [-290.965,0.0,42.65],
+        [0.0,181.25,0.0],
+        [-87.0212,0.0,-593.656],
+        [-36900.0,0.0,-300.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_29": {
+      "type": "Box",
+      "tm": [
+        [-284.727,0.0,73.5559],
+        [0.0,181.25,0.0],
+        [-150.076,0.0,-580.928],
+        [42800.0,0.0,-14400.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_30": {
+      "type": "Box",
+      "tm": [
+        [-287.104,0.0,63.6491],
+        [0.0,181.25,0.0],
+        [-129.865,0.0,-585.777],
+        [23600.0,0.0,-10200.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_23": {
+      "type": "Box",
+      "tm": [
+        [-287.104,0.0,63.6491],
+        [0.0,181.25,0.0],
+        [-129.864,0.0,-585.777],
+        [25200.0,0.0,1400.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_24": {
+      "type": "Box",
+      "tm": [
+        [-293.983,0.0,7.3351],
+        [0.0,181.25,0.0],
+        [-14.9662,0.0,-599.813],
+        [9200.0,0.0,-1500.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_32": {
+      "type": "Box",
+      "tm": [
+        [-294.031,0.0,5.07497],
+        [0.0,181.25,0.0],
+        [-10.3547,0.0,-599.911],
+        [-1463.54,104.307,-11341.1]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_33": {
+      "type": "Box",
+      "tm": [
+        [-260.847,0.0,135.788],
+        [0.0,181.25,0.0],
+        [-277.05,0.0,-532.206],
+        [-8472.55,-11.7988,-14980.9]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_25": {
+      "type": "Box",
+      "tm": [
+        [-287.854,1.08373,60.1546],
+        [1.06837,181.237,1.84725],
+        [-122.704,6.70913,-587.281],
+        [1400.0,200.0,-800.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_27": {
+      "type": "Box",
+      "tm": [
+        [-293.263,0.0,-21.8263],
+        [0.0,181.25,0.0],
+        [44.5319,0.0,-598.345],
+        [-26800.0,100.0,1700.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_35": {
+      "type": "Box",
+      "tm": [
+        [-292.539,0.0,30.0087],
+        [0.0,181.25,0.0],
+        [-61.2285,0.0,-596.868],
+        [-38103.7,82.6448,-11455.8]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_36": {
+      "type": "Box",
+      "tm": [
+        [-254.676,0.0,147.037],
+        [0.0,181.25,0.0],
+        [-300.0,0.0,-519.615],
+        [34600.0,100.0,-27500.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_22": {
+      "type": "Box",
+      "tm": [
+        [-293.84,0.0,11.75],
+        [0.0,181.25,0.0],
+        [-23.9767,0.0,-599.521],
+        [35500.0,100.0,700.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_37": {
+      "type": "Box",
+      "tm": [
+        [-292.866,0.0,26.6277],
+        [0.0,181.25,0.0],
+        [-54.3285,0.0,-597.535],
+        [24200.0,0.0,-22700.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_26": {
+      "type": "Box",
+      "tm": [
+        [-294.04,0.0,4.49112],
+        [0.0,181.25,0.0],
+        [-9.16447,0.0,-599.93],
+        [-10300.0,100.0,-4600.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_31": {
+      "type": "Box",
+      "tm": [
+        [-286.815,0.0,64.939],
+        [0.0,181.25,0.0],
+        [-132.496,0.0,-585.188],
+        [17030.6,40.8352,-9223.84]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_39": {
+      "type": "Box",
+      "tm": [
+        [-294.071,0.0,1.4985],
+        [0.0,181.25,0.0],
+        [-3.05821,0.0,-599.992],
+        [0.0,0.0,-24800.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_40": {
+      "type": "Box",
+      "tm": [
+        [-284.448,0.0,74.6237],
+        [0.0,181.25,0.0],
+        [-152.254,0.0,-580.361],
+        [-11600.0,0.0,-24200.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_34": {
+      "type": "Box",
+      "tm": [
+        [-277.234,0.0,-98.088],
+        [0.0,181.25,0.0],
+        [200.127,0.0,-565.641],
+        [-23414.7,-12.0,-15262.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_42": {
+      "type": "Box",
+      "tm": [
+        [-293.925,0.0,9.36916],
+        [0.0,181.25,0.0],
+        [-19.1178,0.0,-599.695],
+        [-34054.2,168.914,-26722.8]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_43": {
+      "type": "Box",
+      "tm": [
+        [-292.955,0.0,25.63],
+        [0.0,181.25,0.0],
+        [-52.2936,0.0,-597.717],
+        [38730.7,0.0,-39105.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_44": {
+      "type": "Box",
+      "tm": [
+        [-293.857,0.0,11.3194],
+        [0.0,181.25,0.0],
+        [-23.0959,0.0,-599.555],
+        [25492.5,-1.74976,-38307.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_45": {
+      "type": "Box",
+      "tm": [
+        [-267.835,0.0,121.425],
+        [0.0,181.25,0.0],
+        [-247.746,0.0,-546.463],
+        [13184.5,-0.0017091,-38357.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_38": {
+      "type": "Box",
+      "tm": [
+        [-283.792,0.0,77.0825],
+        [0.0,181.25,0.0],
+        [-157.273,0.0,-579.021],
+        [11200.0,100.0,-28600.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_46": {
+      "type": "Box",
+      "tm": [
+        [-293.467,0.0,-18.8903],
+        [0.0,181.25,0.0],
+        [38.5408,0.0,-598.761],
+        [-941.43,-12.0,-36324.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_47": {
+      "type": "Box",
+      "tm": [
+        [-291.647,0.0,-37.7031],
+        [0.0,181.25,0.0],
+        [76.9257,0.0,-595.048],
+        [-11863.7,-12.001,-37636.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_41": {
+      "type": "Box",
+      "tm": [
+        [-292.956,0.0,-25.6306],
+        [0.0,181.25,0.0],
+        [52.293,0.0,-597.717],
+        [-23710.1,59.3865,-24212.8]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_48": {
+      "type": "Box",
+      "tm": [
+        [-291.559,0.0,38.3842],
+        [0.0,181.25,0.0],
+        [-78.316,0.0,-594.867],
+        [-23259.5,117.5,-39971.1]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_49": {
+      "type": "Box",
+      "tm": [
+        [-276.34,0.0,-100.58],
+        [0.0,181.25,0.0],
+        [205.212,0.0,-563.816],
+        [-35845.3,117.5,-37408.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_02": {
+      "type": "Box",
+      "tm": [
+        [283.559,0.0,77.9386],
+        [0.0,181.25,0.0],
+        [-159.02,0.0,578.544],
+        [21600.0,200.0,34500.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_03": {
+      "type": "Box",
+      "tm": [
+        [287.813,0.0,-60.3644],
+        [0.0,181.25,0.0],
+        [164.215,0.0,782.964],
+        [15453.8,308.761,34273.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_04": {
+      "type": "Box",
+      "tm": [
+        [293.993,0.0,-6.95564],
+        [0.0,181.25,0.0],
+        [18.9252,0.0,799.776],
+        [19.2882,132.401,34237.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_05": {
+      "type": "Box",
+      "tm": [
+        [284.055,0.0,-76.1125],
+        [0.0,181.25,0.0],
+        [129.428,0.0,483.03],
+        [-12000.0,100.0,37300.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_06": {
+      "type": "Box",
+      "tm": [
+        [292.713,0.0,-28.2707],
+        [0.0,181.25,0.0],
+        [57.7167,0.0,597.589],
+        [-23900.0,0.0,32500.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_07": {
+      "type": "Box",
+      "tm": [
+        [293.913,0.0,-9.77521],
+        [0.0,181.25,0.0],
+        [19.9715,0.0,600.498],
+        [-32700.0,100.0,35900.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_08": {
+      "type": "Box",
+      "tm": [
+        [280.465,0.0,88.4304],
+        [0.0,181.25,0.0],
+        [-180.422,0.0,572.231],
+        [30700.0,100.0,24000.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_09": {
+      "type": "Box",
+      "tm": [
+        [291.021,0.0,42.2719],
+        [0.0,181.25,0.0],
+        [-86.2456,0.0,593.769],
+        [21700.0,100.0,24200.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_10": {
+      "type": "Box",
+      "tm": [
+        [293.988,0.0,-7.14722],
+        [0.0,181.25,0.0],
+        [14.5838,0.0,599.823],
+        [10900.0,0.0,26300.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t1_battle_area_11": {
+      "type": "Box",
+      "tm": [
+        [-291.142,0.0,-41.4333],
+        [0.0,181.25,0.0],
+        [84.5345,0.0,-594.015],
+        [2000.0,100.0,20600.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_12": {
+      "type": "Box",
+      "tm": [
+        [-288.93,0.0,54.7696],
+        [0.0,181.25,0.0],
+        [-111.748,0.0,-589.502],
+        [-9300.0,100.0,21900.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_13": {
+      "type": "Box",
+      "tm": [
+        [284.681,0.0,-73.7347],
+        [0.0,181.25,0.0],
+        [150.44,0.0,580.834],
+        [-25300.0,100.0,25300.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_14": {
+      "type": "Box",
+      "tm": [
+        [269.824,0.0,-116.942],
+        [0.0,181.25,0.0],
+        [238.778,0.0,550.942],
+        [-32000.0,100.0,25900.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_15": {
+      "type": "Box",
+      "tm": [
+        [293.139,0.0,23.4535],
+        [0.0,181.25,0.0],
+        [-47.8515,0.0,598.089],
+        [35100.0,200.0,12600.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_16": {
+      "type": "Box",
+      "tm": [
+        [293.139,0.0,23.4535],
+        [0.0,181.25,0.0],
+        [-47.8514,0.0,598.089],
+        [27100.0,200.0,13100.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_17": {
+      "type": "Box",
+      "tm": [
+        [274.306,0.0,-106.004],
+        [0.0,181.25,0.0],
+        [216.28,0.0,559.663],
+        [16600.0,300.0,11200.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_18": {
+      "type": "Box",
+      "tm": [
+        [274.104,0.0,-106.525],
+        [0.0,181.25,0.0],
+        [217.343,0.0,559.251],
+        [2500.0,100.0,9800.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_19": {
+      "type": "Box",
+      "tm": [
+        [290.968,0.0,42.6428],
+        [0.0,181.25,0.0],
+        [-87.0028,0.0,593.659],
+        [-16700.0,0.0,11400.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_21": {
+      "type": "Box",
+      "tm": [
+        [264.091,0.0,-129.369],
+        [0.0,181.25,0.0],
+        [263.95,0.0,538.823],
+        [-39900.0,100.0,11900.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_20": {
+      "type": "Box",
+      "tm": [
+        [293.584,0.0,-16.9963],
+        [0.0,181.25,0.0],
+        [34.6778,0.0,598.997],
+        [-22400.0,0.0,13500.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_28": {
+      "type": "Box",
+      "tm": [
+        [287.107,0.0,-63.6425],
+        [0.0,181.25,0.0],
+        [129.85,0.0,585.781],
+        [-38200.0,100.0,200.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_29": {
+      "type": "Box",
+      "tm": [
+        [293.323,0.0,-21.0262],
+        [0.0,181.25,0.0],
+        [42.8986,0.0,598.464],
+        [41600.0,0.0,-14500.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_30": {
+      "type": "Box",
+      "tm": [
+        [292.184,0.0,-33.3019],
+        [0.0,181.25,0.0],
+        [67.9459,0.0,596.14],
+        [22800.0,0.0,-9700.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_23": {
+      "type": "Box",
+      "tm": [
+        [292.184,0.0,-33.3019],
+        [0.0,181.25,0.0],
+        [67.946,0.0,596.14],
+        [23300.0,100.0,1500.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_24": {
+      "type": "Box",
+      "tm": [
+        [293.716,0.0,14.5157],
+        [0.0,181.25,0.0],
+        [-29.6156,0.0,599.269],
+        [8400.0,0.0,-1300.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_32": {
+      "type": "Box",
+      "tm": [
+        [293.53,0.0,-17.9063],
+        [0.0,181.25,0.0],
+        [54.8012,0.0,898.33],
+        [-2098.53,116.106,-11120.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_33": {
+      "type": "Box",
+      "tm": [
+        [254.671,0.0,-147.047],
+        [0.0,181.25,0.0],
+        [300.018,0.0,519.605],
+        [-9383.4,0.0,-14050.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_25": {
+      "type": "Box",
+      "tm": [
+        [292.9,0.0,26.2645],
+        [0.0,181.25,0.0],
+        [-53.5879,0.0,597.602],
+        [400.0,100.0,-600.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_27": {
+      "type": "Box",
+      "tm": [
+        [292.752,0.0,27.869],
+        [0.0,181.25,0.0],
+        [-56.8601,0.0,597.3],
+        [-27400.0,0.0,1800.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_35": {
+      "type": "Box",
+      "tm": [
+        [291.67,0.0,-37.5381],
+        [0.0,181.25,0.0],
+        [76.5867,0.0,595.092],
+        [-38446.5,100.0,-11229.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_36": {
+      "type": "Box",
+      "tm": [
+        [291.358,0.0,39.8901],
+        [0.0,181.25,0.0],
+        [-81.3876,0.0,594.454],
+        [34000.0,0.0,-27000.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_22": {
+      "type": "Box",
+      "tm": [
+        [294.069,0.0,1.94522],
+        [0.0,181.25,0.0],
+        [-3.96745,0.0,599.987],
+        [34700.0,100.0,100.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_37": {
+      "type": "Box",
+      "tm": [
+        [293.955,0.0,-8.36961],
+        [0.0,181.25,0.0],
+        [17.0764,0.0,599.757],
+        [23200.0,0.0,-22400.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_26": {
+      "type": "Box",
+      "tm": [
+        [284.258,0.0,-75.3492],
+        [0.0,181.25,0.0],
+        [153.733,0.0,579.971],
+        [-10900.0,100.0,-4500.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_31": {
+      "type": "Box",
+      "tm": [
+        [293.824,0.0,-12.144],
+        [0.0,181.25,0.0],
+        [24.7781,0.0,599.488],
+        [15238.2,14.4015,-8876.13]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_39": {
+      "type": "Box",
+      "tm": [
+        [293.401,0.0,-19.9027],
+        [0.0,181.25,0.0],
+        [40.6081,0.0,598.624],
+        [-700.0,0.0,-25000.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_40": {
+      "type": "Box",
+      "tm": [
+        [282.851,0.0,-80.469],
+        [0.0,181.25,0.0],
+        [164.179,0.0,577.101],
+        [-13100.0,0.0,-23900.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_34": {
+      "type": "Box",
+      "tm": [
+        [293.672,0.0,-15.3827],
+        [0.0,181.25,0.0],
+        [31.3857,0.0,599.179],
+        [-24185.7,87.5396,-15913.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_42": {
+      "type": "Box",
+      "tm": [
+        [293.325,0.0,21.0026],
+        [0.0,181.25,0.0],
+        [-42.8511,0.0,598.468],
+        [-35197.6,80.9238,-27162.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_43": {
+      "type": "Box",
+      "tm": [
+        [293.993,0.0,-6.96421],
+        [0.0,181.25,0.0],
+        [14.2093,0.0,599.832],
+        [37477.9,0.000732422,-39463.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_44": {
+      "type": "Box",
+      "tm": [
+        [293.512,0.0,-18.1946],
+        [0.0,181.25,0.0],
+        [37.1227,0.0,598.85],
+        [24615.8,-1.74902,-37638.9]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_45": {
+      "type": "Box",
+      "tm": [
+        [282.313,0.0,-82.34],
+        [0.0,181.25,0.0],
+        [167.997,0.0,576.001],
+        [12527.0,-0.000732422,-38314.2]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_38": {
+      "type": "Box",
+      "tm": [
+        [294.038,0.0,4.64143],
+        [0.0,181.25,0.0],
+        [-9.47012,0.0,599.925],
+        [10300.0,100.0,-28700.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_46": {
+      "type": "Box",
+      "tm": [
+        [280.474,0.0,88.4021],
+        [0.0,181.25,0.0],
+        [-180.366,0.0,572.248],
+        [-1793.64,0.00012207,-35887.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_47": {
+      "type": "Box",
+      "tm": [
+        [285.361,0.0,71.0615],
+        [0.0,181.25,0.0],
+        [-144.986,0.0,582.219],
+        [-12721.4,0.0,-38660.8]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_41": {
+      "type": "Box",
+      "tm": [
+        [293.39,0.0,20.059],
+        [0.0,181.25,0.0],
+        [-40.9263,0.0,598.603],
+        [-24306.1,91.2019,-24273.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "lbt_t2_battle_area_48": {
+      "type": "Box",
+      "tm": [
+        [290.777,0.0,-43.9177],
+        [0.0,181.25,0.0],
+        [104.539,0.0,692.15],
+        [-23681.1,91.75,-39798.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}

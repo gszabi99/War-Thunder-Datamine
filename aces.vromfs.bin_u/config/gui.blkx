@@ -421,6 +421,9 @@
       "login_layer_1_04_20": 0.0
     },
     {
+      "login_layer_trento": 3.0
+    },
+    {
       "beforeLogin": {
         "default_chance": 0.0,
         "login_layer_t1": 1.0
@@ -743,6 +746,13 @@
     "common_tank": "sap_tank",
     "special_common_tank": "sapbc_tank",
     "sapbc_flat_nose_tank": "sapbc_tank"
+  },
+  "bullet_icon_aspect_ratio": {
+    "default": 0.2,
+    "apdsfs_tank": 0.32,
+    "he_frag_tank": 0.32,
+    "bullet_proxi_fuze_cannon": 1.0,
+    "he_frag_proxi_fuze_ship_belt": 1.0
   },
   "bullets_locId_by_caliber": [
     {
@@ -2291,6 +2301,13 @@
         "w": 0.0,
         "h": 0.0,
         "position": "relative"
+      },
+      "trophy_item_place": {
+        "id": "trophy_item_placewe",
+        "x": 0.0,
+        "position": "relative",
+        "h": "1@itemHeight",
+        "y": 0.0
       },
       "big_wooden_box_item_place_container": {
         "w": 0.0,
@@ -3959,6 +3976,7 @@
       "country_north_korea": "#ui/gameuiskin#country_north_korea.svg",
       "country_republic_china": "#ui/gameuiskin#flag_republic_china.svg",
       "country_south_africa_modern": "#ui/gameuiskin#country_south_africa_modern.svg",
+      "country_vietnam": "#ui/gameuiskin#country_vietnam.svg",
       "first_choice_country_usa_aviation": "#ui/first_choice/usa_aviation.png",
       "first_choice_country_germany_aviation": "#ui/first_choice/germany_aviation.png",
       "first_choice_country_ussr_aviation": "#ui/first_choice/ussr_aviation.png",
@@ -3976,6 +3994,7 @@
       "first_choice_country_italy_army": "#ui/first_choice/italy_army.png",
       "first_choice_country_france_army": "#ui/first_choice/france_army.png",
       "first_choice_country_china_army": "#ui/first_choice/china_army.png",
+      "first_choice_country_sweden_army": "#ui/first_choice/sweden_army.png",
       "first_choice_country_usa_fleet": "#ui/first_choice/usa_fleet.png",
       "first_choice_country_germany_fleet": "#ui/first_choice/germany_fleet.png",
       "first_choice_country_ussr_fleet": "#ui/first_choice/ussr_fleet.png",
@@ -4024,6 +4043,7 @@
       "country_china_tank_unit": "#ui/images/researches/china_ground_finishedresearch.jpg?P1",
       "country_italy_aircraft_unit": "#ui/images/researches/italy_finishedresearch.jpg?P1",
       "country_italy_tank_unit": "#ui/images/researches/italy_ground_finishedresearch.jpg?P1",
+      "country_italy_ship_unit": "#ui/images/researches/italy_ship_finishedresearch.jpg?P1",
       "country_france_aircraft_unit": "#ui/images/researches/france_finishedresearch.jpg?P1",
       "country_france_tank_unit": "#ui/images/researches/france_ground_finishedresearch.jpg?P1",
       "country_france_helicopter_unit": "#ui/images/researches/france_heli_finishedresearch.jpg?P1",
@@ -4052,6 +4072,7 @@
       "country_china_tank_modification": "#ui/images/researches/china_ground_newmodificationresearch.jpg?P1",
       "country_italy_aircraft_modification": "#ui/images/researches/italy_newmodificationresearch.jpg?P1",
       "country_italy_tank_modification": "#ui/images/researches/italy_ground_newmodificationresearch.jpg?P1",
+      "country_italy_ship_modification": "#ui/images/researches/italy_ship_newmodificationresearch.jpg?P1",
       "country_france_aircraft_modification": "#ui/images/researches/france_newmodificationresearch.jpg?P1",
       "country_france_tank_modification": "#ui/images/researches/france_ground_newmodificationresearch.jpg?P1",
       "country_france_helicopter_modification": "#ui/images/researches/france_heli_newmodificationresearch.jpg?P1",
@@ -4153,6 +4174,7 @@
       "first_choice_country_italy_army": "#ui/first_choice/italy_army_alt.png",
       "first_choice_country_france_army": "#ui/first_choice/france_army_alt.png",
       "first_choice_country_china_army": "#ui/first_choice/china_army_alt.png",
+      "first_choice_country_sweden_army": "#ui/first_choice/sweden_army_alt.png",
       "first_choice_country_usa_fleet": "#ui/first_choice/usa_fleet_alt.png",
       "first_choice_country_germany_fleet": "#ui/first_choice/germany_fleet_alt.png",
       "first_choice_country_ussr_fleet": "#ui/first_choice/ussr_fleet_alt.png",
@@ -5423,23 +5445,34 @@
   "entitlement_units_discount": [
     {
       "i": {
-        "beginDate": "2020-05-07 11:00:00",
-        "endDate": "2020-05-11 10:50:00",
-        "platform": "pc",
-        "ussr_t_126sp": 30,
-        "i-153_m62_zhukovskiy": 30,
-        "p-47m-1-re": 30,
-        "p-51d-20-na": 30,
-        "wyvern_s4": 30,
-        "us_m3a1_stuart_usmc": 30,
-        "p-36a_rasmussen": 30,
-        "uk_a27m_cromwell_5_rp3": 30,
-        "avenger_mk1": 30,
-        "ussr_is_6": 30,
-        "uk_centurion_mk_3_ss11": 30,
-        "p-38g_metal": 30,
-        "us_t29": 30,
-        "us_destroyer_fletcher_cowell": 30
+        "beginDate": "2020-04-20 11:10:00",
+        "endDate": "2020-04-22 11:10:00",
+        "platform": "ps4_scee",
+        "g_lynx": 30
+      }
+    },
+    {
+      "i": {
+        "beginDate": "2020-04-20 11:10:00",
+        "endDate": "2020-04-22 11:10:00",
+        "platform": "ps4_scea",
+        "ah_1s": 50
+      }
+    },
+    {
+      "i": {
+        "beginDate": "2020-04-20 11:10:00",
+        "endDate": "2020-04-22 11:10:00",
+        "platform": "ps4_scej",
+        "a_129_a": 50
+      }
+    },
+    {
+      "i": {
+        "beginDate": "2020-04-20 11:10:00",
+        "endDate": "2020-04-22 11:10:00",
+        "platform": "xboxOne",
+        "g_lynx": 40
       }
     },
     {

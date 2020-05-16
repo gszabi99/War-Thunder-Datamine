@@ -82,7 +82,7 @@ if (::is_platform_xboxone)
 ::on_connected_controller <- function on_connected_controller()
 {
   //calls from c++ code, no event on PS4 or XBoxOne
-  ::call_darg("updateHaveXinputDevice", ::have_xinput_device())
+  ::call_darg("updateExtWatched", { haveXinputDevice = ::have_xinput_device() })
   if (!::isInMenu())
     return
   local action = function() { ::gui_start_controls_type_choice() }
@@ -171,4 +171,9 @@ if (controllerState?.add_event_handler)
   preset = ::g_controls_presets.parsePresetName(preset)
   preset = ::g_controls_presets.getHighestVersionPreset(preset)
   return preset
+}
+
+::on_lost_controller <- function on_lost_controller() {
+  ::call_darg("updateExtWatched", { haveXinputDevice = ::have_xinput_device() })
+  ::add_msg_box("cannot_session", ::loc("pl1/lostController"), [["ok", function() {}]], "ok")
 }

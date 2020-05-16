@@ -1163,7 +1163,14 @@
     },
     {
       "sensor": {
-        "blk": "gameData/sensors/tv_tracker.blk"
+        "blk": "gameData/sensors/tv_tracker.blk",
+        "node": "optic1_gun"
+      }
+    },
+    {
+      "sensor": {
+        "blk": "gameData/sensors/us_flir.blk",
+        "node": "optic1_gun"
       }
     }
   ],
@@ -1211,14 +1218,28 @@
       "preset": {
         "name": "lynx_ah_mk1_4_TOW_cannon",
         "blk": "gameData/flightModels/weaponPresets/lynx_ah_mk1_4_TOW_cannon.blk",
-        "reqModification": "ah_1_TOW"
+        "reqModification": "ah_1_TOW",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/us_127mm_TOW.blk",
+            "amountPerTier": 2.0,
+            "iconType": "atgm_type2_x2"
+          }
+        }
       }
     },
     {
       "preset": {
         "name": "lynx_ah_mk1_4_TOW2_cannon",
         "blk": "gameData/flightModels/weaponPresets/lynx_ah_mk1_4_TOW2_cannon.blk",
-        "reqModification": "ah_1_TOW2"
+        "reqModification": "ah_1_TOW2",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/us_127mm_TOW2.blk",
+            "amountPerTier": 2.0,
+            "iconType": "atgm_type2_x2"
+          }
+        }
       }
     },
     {
@@ -1239,7 +1260,14 @@
       "preset": {
         "name": "lynx_ah_mk1_4_hellfire_cannon",
         "blk": "gameData/flightModels/weaponPresets/lynx_ah_mk1_4_hellfire_cannon.blk",
-        "reqModification": "ah_1_AGM_114_8"
+        "reqModification": "ah_1_AGM_114_8",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/us_hellfire_agm_114_b.blk",
+            "amountPerTier": 2.0,
+            "iconType": "atgm_type_helfire_x2"
+          }
+        }
       }
     },
     {
@@ -1269,6 +1297,15 @@
         },
         {
           "reqModification": "stinger_aam"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/us_127mm_TOW.blk",
+              "amountPerTier": 2.0,
+              "iconType": "atgm_type2_x2"
+            }
+          }
         }
       ]
     },
@@ -1285,6 +1322,15 @@
         },
         {
           "reqModification": "stinger_aam"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/us_127mm_TOW2.blk",
+              "amountPerTier": 2.0,
+              "iconType": "atgm_type2_x2"
+            }
+          }
         }
       ]
     },
@@ -1333,6 +1379,15 @@
         },
         {
           "reqModification": "stinger_aam"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/us_hellfire_agm_114_b.blk",
+              "amountPerTier": 2.0,
+              "iconType": "atgm_type_helfire_x2"
+            }
+          }
         }
       ]
     },
@@ -1372,6 +1427,15 @@
         },
         {
           "reqModification": "stinger_aam"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/us_127mm_TOW.blk",
+              "amountPerTier": 2.0,
+              "iconType": "atgm_type2_x2"
+            }
+          }
         }
       ]
     },
@@ -1388,6 +1452,15 @@
         },
         {
           "reqModification": "stinger_aam"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/us_127mm_TOW2.blk",
+              "amountPerTier": 2.0,
+              "iconType": "atgm_type2_x2"
+            }
+          }
         }
       ]
     },
@@ -1436,6 +1509,15 @@
         },
         {
           "reqModification": "stinger_aam"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/us_hellfire_agm_114_b.blk",
+              "amountPerTier": 2.0,
+              "iconType": "atgm_type_helfire_x2"
+            }
+          }
         }
       ]
     },

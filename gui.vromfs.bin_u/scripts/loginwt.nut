@@ -376,10 +376,6 @@ g_login.firstMainMenuLoad <- function firstMainMenuLoad()
     }
   }
 
-  if (!::disable_network() && !::getFromSettingsBlk("debug/skipPopups"))
-    handler.doWhenActive(::check_tutorial_on_start)
-  handler.doWhenActive(::check_joystick_thustmaster_hotas)
-
   if (::has_feature("CheckEmailVerified") && !::g_user_utils.haveTag("email_verified"))
     handler.doWhenActive(function () {
       msgBox(

@@ -2641,6 +2641,15 @@
       },
       {
         "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -2937,6 +2946,19 @@
               }
             }
           ]
+        }
+      },
+      "night_vision_system": {
+        "tier": 2,
+        "effects": {
+          "nightVision": {
+            "driverIr": {
+              "resolution": [800,600],
+              "lightMult": 5.0,
+              "ghosting": 0.7,
+              "noiseFactor": 0.2
+            }
+          }
         }
       }
     }

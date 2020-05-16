@@ -698,6 +698,10 @@
         },
         "ex_armor_turret_l_01_dm": {
           "armorThickness": 35.0
+        },
+        "composite_armor_hull_01_dm": {
+          "armorThickness": 8.0,
+          "hidableInXrayViewer": true
         }
       },
       "turret": {
@@ -1241,6 +1245,19 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
+      }
+    }
+  },
+  {
+    "xray_viewer_data": {
+      "armorArrayHull": {
+        "xrayDmPart": "composite_armor_hull_01_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_01_dm"
+          }
+        }
       }
     }
   },
@@ -3156,6 +3173,15 @@
             }
           }
         ]
+      },
+      {
+        "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
       },
       {
         "event": {

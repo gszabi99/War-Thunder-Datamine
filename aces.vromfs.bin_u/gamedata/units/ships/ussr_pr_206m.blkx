@@ -1844,7 +1844,7 @@
         },
         "bridge_dm": {
           "armorThickness": 1.0,
-          "hp": 311.0
+          "hp": 310.0
         },
         "radio_station_dm": {
           "armorThickness": 1.0,
@@ -1910,10 +1910,14 @@
       "radiolocation": {
         "armorClass": "ship_structural_steel",
         "armorThickness": 5.0,
+        "dmgState": 0.0,
         "radar_01_dm": {
           "hp": 150.0
         },
         "antenna_target_location_01_dm": {
+          "hp": 150.0
+        },
+        "antenna_target_tagging_01_dm": {
           "hp": 150.0
         },
         "antenna_target_tagging_mount_01_dm": {
@@ -1999,18 +2003,29 @@
         "armorThickness": 15.0,
         "hidableInViewer": true
       },
-      "turrets": {
+      "turret_armor": {
         "armorClass": "ship_structural_steel",
+        "fireParamsPreset": "ship_construction",
+        "fireProtectionHp": 5000.0,
         "armorThickness": 15.0,
-        "turret_01_dm": {
-          "armorClass": "ship_Wsh",
+        "turret_01_front_dm": {
+          "armorClass": "RHA_tank",
           "armorThickness": 4.0,
-          "hp": 250.0
+          "hp": 1000.0
+        },
+        "turret_01_side_dm": {
+          "armorClass": "ship_Wsh",
+          "armorThickness": 10.0,
+          "hp": 301.0
         }
       },
-      "gun_masks": {
+      "turrets": {
         "armorClass": "ship_structural_steel",
-        "armorThickness": 5.0,
+        "armorThickness": 15.0
+      },
+      "gun_masks": {
+        "armorClass": "RHA_tank",
+        "armorThickness": 4.0,
         "gun_mask_01_dm": {
           "hp": 150.0
         }
@@ -2022,7 +2037,7 @@
         "explosionDamageMult": 1.5,
         "secondaryShatterDamageMult": 0.5,
         "armorClass": "ship_structural_steel",
-        "armorThickness": 15.0,
+        "armorThickness": 5.0,
         "main_caliber_turret_01_dm": {
           "hp": 250.0
         }
@@ -2036,7 +2051,9 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 12.7,
         "auxiliary_caliber_turret_01_dm": {
-          "hp": 150.0
+          "armorClass": "ship_structural_steel",
+          "armorThickness": 3.0,
+          "hp": 135.0
         }
       },
       "turrets_aa_caliber": {
@@ -2893,51 +2910,6 @@
             }
           }
         ]
-      },
-      {
-        "event": {
-          "name": "superstructure_back_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_front_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_top_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_bottom_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_side_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
       },
       {
         "event": {

@@ -68,6 +68,20 @@ enums.addTypesByGlobalName("g_url_type", {
     }
   }
 
+  GAIJIN_PASS = {
+    needAutoLogin = true
+    supportedLangs = ["ru", "en", "fr", "de", "es", "pl", "ja", "cs", "pt", "ko", "tr", "zh"]
+    urlRegexpList = [
+      regexp(@"^https?:\/\/login\.gaijin\.net" + URL_ANY_ENDING)
+    ]
+    applyLangKey = function(url, langKey)
+    {
+      url += url.indexof("?") == null ? "?" : "&";
+      url += "lang=" + langKey;
+      return url
+    }
+  }
+
   WARTHUNDER_RU = {
     needAutoLogin = true
     urlRegexpList = [

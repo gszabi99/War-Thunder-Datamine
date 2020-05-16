@@ -31,7 +31,15 @@
     "caliber": 0.0127,
     "speed": 793.0,
     "Cx": 0.15,
+    "normalizationPreset": "default",
+    "ricochetPreset": "default",
+    "secondaryShattersPreset": "ap",
+    "stabilityThreshold": 0.05,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.5,
+    "stabilityReductionAfterPenetration": 0.3,
     "bulletType": "he_i_ball",
+    "slopeEffectPreset": "ap",
     "maxDistance": 2000.0,
     "hitPowerMult": 0.3,
     "onHitChanceMultFire": 8.0,
@@ -52,6 +60,20 @@
     "ricochetEffect": "bullet_hit_armor",
     "waterCollisionEffect": "water_splash",
     "waterFxScale": [1.4,1.6],
+    "stabilityRicochetModifier": [
+      {
+        "mod1": [0.0,0.05]
+      },
+      {
+        "mod2": [20.0,0.1]
+      },
+      {
+        "mod3": [30.0,0.2]
+      },
+      {
+        "mod3": [45.0,0.3]
+      }
+    ],
     "hitpower": {
       "HitPower10m": [1.0,10.0],
       "HitPower1000m": [0.95,1000.0],

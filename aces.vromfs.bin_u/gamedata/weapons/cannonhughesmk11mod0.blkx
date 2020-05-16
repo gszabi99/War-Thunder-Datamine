@@ -30,7 +30,10 @@
     "maxDeltaAngle": 0.24
   },
   {
-    "shotFreq": 70.0
+    "shotFreq": 66.6
+  },
+  {
+    "alternativeShotFreq": 11.6
   },
   {
     "shotFreqRndK": 0.1
@@ -54,16 +57,42 @@
     "mass": 109.0
   },
   {
+    "iconType": "doublebarreled_box"
+  },
+  {
     "bullet": {
       "mass": 0.11,
       "caliber": 0.02,
       "speed": 1012.0,
       "maxDistance": 2000.0,
-      "bulletType": "ap_i_t",
-      "recoilMultiplier": 0.35,
+      "normalizationPreset": "ap",
+      "ricochetPreset": "ap",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.05,
+      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterPenetration": 0.15,
+      "bulletType": "ap_t",
+      "slopeEffectPreset": "ap",
+      "modelName": "tank_bullet_ap",
+      "fresnel": [0.23,0.1,2.0],
       "relativeVelHitShift": [300.0,1000.0],
       "relativeVelArmorShift": [200.0,1000.0],
       "groundFxScale": [0.4,0.6],
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.05]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod3": [30.0,0.2]
+        },
+        {
+          "mod3": [45.0,0.3]
+        }
+      ],
       "hitpower": {
         "HitPower0m": [0.85,500.0],
         "HitPower10000m": [0.8,10000.0]
@@ -102,8 +131,18 @@
       "caliber": 0.02,
       "speed": 1012.0,
       "maxDistance": 2000.0,
-      "bulletType": "he_frag_i",
-      "recoilMultiplier": 0.35,
+      "normalizationPreset": "heat",
+      "ricochetPreset": "he",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.05,
+      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterPenetration": 0.15,
+      "bulletType": "he_i",
+      "slopeEffectPreset": "ap",
+      "modelName": "tank_bullet_he",
+      "fresnel": [0.23,0.1,2.0],
+      "explodeOnRendinst": true,
       "explosiveType": "comp_b",
       "explosiveMass": 0.014,
       "hitPowerMult": 1.0,
@@ -123,6 +162,20 @@
       "shutterHit": 3.0,
       "groundCollisionEffect": "cannon_air_hit",
       "groundFxScale": [0.4,0.6],
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.05]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod3": [30.0,0.2]
+        },
+        {
+          "mod3": [45.0,0.3]
+        }
+      ],
       "hitpower": {
         "HitPower10m": [1.0,10.0],
         "HitPower1000m": [0.88,1000.0],
@@ -160,11 +213,34 @@
       "caliber": 0.02,
       "speed": 1012.0,
       "maxDistance": 2000.0,
-      "bulletType": "ap_i_t",
-      "recoilMultiplier": 0.35,
+      "normalizationPreset": "ap",
+      "ricochetPreset": "ap",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.05,
+      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterPenetration": 0.15,
+      "bulletType": "ap_t",
+      "slopeEffectPreset": "ap",
+      "modelName": "tank_bullet_ap",
+      "fresnel": [0.23,0.1,2.0],
       "relativeVelHitShift": [300.0,1000.0],
       "relativeVelArmorShift": [200.0,1000.0],
       "groundFxScale": [0.4,0.6],
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.05]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod3": [30.0,0.2]
+        },
+        {
+          "mod3": [45.0,0.3]
+        }
+      ],
       "hitpower": {
         "HitPower0m": [0.85,500.0],
         "HitPower10000m": [0.8,10000.0]
@@ -205,11 +281,34 @@
           "caliber": 0.02,
           "speed": 1012.0,
           "maxDistance": 2000.0,
-          "bulletType": "ap_i_t",
-          "recoilMultiplier": 0.35,
+          "normalizationPreset": "ap",
+          "ricochetPreset": "ap",
+          "secondaryShattersPreset": "ap",
+          "stabilityThreshold": 0.05,
+          "stabilityCaliberToArmorThreshold": 5.0,
+          "stabilityReductionAfterRicochet": 0.5,
+          "stabilityReductionAfterPenetration": 0.15,
+          "bulletType": "ap_t",
+          "slopeEffectPreset": "ap",
+          "modelName": "tank_bullet_ap",
+          "fresnel": [0.23,0.1,2.0],
           "relativeVelHitShift": [300.0,1000.0],
           "relativeVelArmorShift": [200.0,1000.0],
           "groundFxScale": [0.4,0.6],
+          "stabilityRicochetModifier": [
+            {
+              "mod1": [0.0,0.05]
+            },
+            {
+              "mod2": [20.0,0.1]
+            },
+            {
+              "mod3": [30.0,0.2]
+            },
+            {
+              "mod3": [45.0,0.3]
+            }
+          ],
           "hitpower": {
             "HitPower0m": [0.85,500.0],
             "HitPower10000m": [0.8,10000.0]
@@ -248,8 +347,18 @@
           "caliber": 0.02,
           "speed": 1012.0,
           "maxDistance": 2000.0,
-          "bulletType": "he_frag_i",
-          "recoilMultiplier": 0.35,
+          "normalizationPreset": "heat",
+          "ricochetPreset": "he",
+          "secondaryShattersPreset": "ap",
+          "stabilityThreshold": 0.05,
+          "stabilityCaliberToArmorThreshold": 5.0,
+          "stabilityReductionAfterRicochet": 0.5,
+          "stabilityReductionAfterPenetration": 0.15,
+          "bulletType": "he_i",
+          "slopeEffectPreset": "ap",
+          "modelName": "tank_bullet_he",
+          "fresnel": [0.23,0.1,2.0],
+          "explodeOnRendinst": true,
           "explosiveType": "comp_b",
           "explosiveMass": 0.014,
           "hitPowerMult": 1.0,
@@ -269,6 +378,20 @@
           "shutterHit": 3.0,
           "groundCollisionEffect": "cannon_air_hit",
           "groundFxScale": [0.4,0.6],
+          "stabilityRicochetModifier": [
+            {
+              "mod1": [0.0,0.05]
+            },
+            {
+              "mod2": [20.0,0.1]
+            },
+            {
+              "mod3": [30.0,0.2]
+            },
+            {
+              "mod3": [45.0,0.3]
+            }
+          ],
           "hitpower": {
             "HitPower10m": [1.0,10.0],
             "HitPower1000m": [0.88,1000.0],
@@ -306,8 +429,18 @@
           "caliber": 0.02,
           "speed": 1012.0,
           "maxDistance": 2000.0,
-          "bulletType": "he_frag_i",
-          "recoilMultiplier": 0.35,
+          "normalizationPreset": "heat",
+          "ricochetPreset": "he",
+          "secondaryShattersPreset": "ap",
+          "stabilityThreshold": 0.05,
+          "stabilityCaliberToArmorThreshold": 5.0,
+          "stabilityReductionAfterRicochet": 0.5,
+          "stabilityReductionAfterPenetration": 0.15,
+          "bulletType": "he_i",
+          "slopeEffectPreset": "ap",
+          "modelName": "tank_bullet_he",
+          "fresnel": [0.23,0.1,2.0],
+          "explodeOnRendinst": true,
           "explosiveType": "comp_b",
           "explosiveMass": 0.014,
           "hitPowerMult": 1.0,
@@ -327,6 +460,20 @@
           "shutterHit": 3.0,
           "groundCollisionEffect": "cannon_air_hit",
           "groundFxScale": [0.4,0.6],
+          "stabilityRicochetModifier": [
+            {
+              "mod1": [0.0,0.05]
+            },
+            {
+              "mod2": [20.0,0.1]
+            },
+            {
+              "mod3": [30.0,0.2]
+            },
+            {
+              "mod3": [45.0,0.3]
+            }
+          ],
           "hitpower": {
             "HitPower10m": [1.0,10.0],
             "HitPower1000m": [0.88,1000.0],
@@ -364,6 +511,13 @@
           "caliber": 0.02,
           "speed": 1021.0,
           "maxDistance": 2000.0,
+          "normalizationPreset": "default",
+          "ricochetPreset": "defaultExt",
+          "secondaryShattersPreset": "ap",
+          "stabilityThreshold": 0.05,
+          "stabilityCaliberToArmorThreshold": 5.0,
+          "stabilityReductionAfterRicochet": 0.5,
+          "stabilityReductionAfterPenetration": 0.15,
           "bulletType": "ap_i",
           "recoilMultiplier": 0.35,
           "hitPowerMult": 7.0,
@@ -371,6 +525,20 @@
           "onHitChanceMultFire": 1.7,
           "relativeVelArmorShift": [200.0,1000.0],
           "groundFxScale": [0.4,0.6],
+          "stabilityRicochetModifier": [
+            {
+              "mod1": [0.0,0.05]
+            },
+            {
+              "mod2": [20.0,0.1]
+            },
+            {
+              "mod3": [30.0,0.2]
+            },
+            {
+              "mod3": [45.0,0.3]
+            }
+          ],
           "hitpower": {
             "HitPower0m": [0.85,500.0],
             "HitPower10000m": [0.8,10000.0]
@@ -412,11 +580,34 @@
           "caliber": 0.02,
           "speed": 1012.0,
           "maxDistance": 2000.0,
-          "bulletType": "ap_i_t",
-          "recoilMultiplier": 0.35,
+          "normalizationPreset": "ap",
+          "ricochetPreset": "ap",
+          "secondaryShattersPreset": "ap",
+          "stabilityThreshold": 0.05,
+          "stabilityCaliberToArmorThreshold": 5.0,
+          "stabilityReductionAfterRicochet": 0.5,
+          "stabilityReductionAfterPenetration": 0.15,
+          "bulletType": "ap_t",
+          "slopeEffectPreset": "ap",
+          "modelName": "tank_bullet_ap",
+          "fresnel": [0.23,0.1,2.0],
           "relativeVelHitShift": [300.0,1000.0],
           "relativeVelArmorShift": [200.0,1000.0],
           "groundFxScale": [0.4,0.6],
+          "stabilityRicochetModifier": [
+            {
+              "mod1": [0.0,0.05]
+            },
+            {
+              "mod2": [20.0,0.1]
+            },
+            {
+              "mod3": [30.0,0.2]
+            },
+            {
+              "mod3": [45.0,0.3]
+            }
+          ],
           "hitpower": {
             "HitPower0m": [0.85,500.0],
             "HitPower10000m": [0.8,10000.0]
@@ -455,11 +646,34 @@
           "caliber": 0.02,
           "speed": 1012.0,
           "maxDistance": 2000.0,
-          "bulletType": "ap_i_t",
-          "recoilMultiplier": 0.35,
+          "normalizationPreset": "ap",
+          "ricochetPreset": "ap",
+          "secondaryShattersPreset": "ap",
+          "stabilityThreshold": 0.05,
+          "stabilityCaliberToArmorThreshold": 5.0,
+          "stabilityReductionAfterRicochet": 0.5,
+          "stabilityReductionAfterPenetration": 0.15,
+          "bulletType": "ap_t",
+          "slopeEffectPreset": "ap",
+          "modelName": "tank_bullet_ap",
+          "fresnel": [0.23,0.1,2.0],
           "relativeVelHitShift": [300.0,1000.0],
           "relativeVelArmorShift": [200.0,1000.0],
           "groundFxScale": [0.4,0.6],
+          "stabilityRicochetModifier": [
+            {
+              "mod1": [0.0,0.05]
+            },
+            {
+              "mod2": [20.0,0.1]
+            },
+            {
+              "mod3": [30.0,0.2]
+            },
+            {
+              "mod3": [45.0,0.3]
+            }
+          ],
           "hitpower": {
             "HitPower0m": [0.85,500.0],
             "HitPower10000m": [0.8,10000.0]
@@ -498,11 +712,34 @@
           "caliber": 0.02,
           "speed": 1012.0,
           "maxDistance": 2000.0,
-          "bulletType": "ap_i_t",
-          "recoilMultiplier": 0.35,
+          "normalizationPreset": "ap",
+          "ricochetPreset": "ap",
+          "secondaryShattersPreset": "ap",
+          "stabilityThreshold": 0.05,
+          "stabilityCaliberToArmorThreshold": 5.0,
+          "stabilityReductionAfterRicochet": 0.5,
+          "stabilityReductionAfterPenetration": 0.15,
+          "bulletType": "ap_t",
+          "slopeEffectPreset": "ap",
+          "modelName": "tank_bullet_ap",
+          "fresnel": [0.23,0.1,2.0],
           "relativeVelHitShift": [300.0,1000.0],
           "relativeVelArmorShift": [200.0,1000.0],
           "groundFxScale": [0.4,0.6],
+          "stabilityRicochetModifier": [
+            {
+              "mod1": [0.0,0.05]
+            },
+            {
+              "mod2": [20.0,0.1]
+            },
+            {
+              "mod3": [30.0,0.2]
+            },
+            {
+              "mod3": [45.0,0.3]
+            }
+          ],
           "hitpower": {
             "HitPower0m": [0.85,500.0],
             "HitPower10000m": [0.8,10000.0]
@@ -541,8 +778,18 @@
           "caliber": 0.02,
           "speed": 1012.0,
           "maxDistance": 2000.0,
-          "bulletType": "he_frag_i",
-          "recoilMultiplier": 0.35,
+          "normalizationPreset": "heat",
+          "ricochetPreset": "he",
+          "secondaryShattersPreset": "ap",
+          "stabilityThreshold": 0.05,
+          "stabilityCaliberToArmorThreshold": 5.0,
+          "stabilityReductionAfterRicochet": 0.5,
+          "stabilityReductionAfterPenetration": 0.15,
+          "bulletType": "he_i",
+          "slopeEffectPreset": "ap",
+          "modelName": "tank_bullet_he",
+          "fresnel": [0.23,0.1,2.0],
+          "explodeOnRendinst": true,
           "explosiveType": "comp_b",
           "explosiveMass": 0.014,
           "hitPowerMult": 1.0,
@@ -562,6 +809,20 @@
           "shutterHit": 3.0,
           "groundCollisionEffect": "cannon_air_hit",
           "groundFxScale": [0.4,0.6],
+          "stabilityRicochetModifier": [
+            {
+              "mod1": [0.0,0.05]
+            },
+            {
+              "mod2": [20.0,0.1]
+            },
+            {
+              "mod3": [30.0,0.2]
+            },
+            {
+              "mod3": [45.0,0.3]
+            }
+          ],
           "hitpower": {
             "HitPower10m": [1.0,10.0],
             "HitPower1000m": [0.88,1000.0],

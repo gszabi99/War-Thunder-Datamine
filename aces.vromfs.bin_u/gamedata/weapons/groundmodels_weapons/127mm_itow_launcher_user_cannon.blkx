@@ -35,7 +35,18 @@
   "animChar": "bgm_71_tow_rocket_char",
   "reloadAnimParam": "rocket_hide",
   "bullet": {
+    "normalizationPreset": "heat",
+    "ricochetPreset": "atgm",
+    "secondaryShattersPreset": "ap",
+    "stabilityThreshold": 0.1,
+    "stabilityCaliberToArmorThreshold": 100.0,
+    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterPenetration": 0.01,
     "bulletType": "atgm_tank",
+    "cumulativeSecondaryShattersPreset": "atgm",
+    "explodeOnRendinst": true,
+    "modelName": "tank_bullet_heat_fs",
+    "fresnel": [0.23,0.1,2.0],
     "bulletName": "127mm_i_tow",
     "mass": 37.0,
     "caliber": 0.127,
@@ -44,12 +55,34 @@
     "sound": "atgm_LPC",
     "sound_inside": "atgm_LPC_interior",
     "recoilMultiplier": 0.05,
+    "stabilityRicochetModifier": [
+      {
+        "mod1": [0.0,0.0]
+      },
+      {
+        "mod2": [20.0,0.1]
+      },
+      {
+        "mod2": [30.0,0.2]
+      }
+    ],
     "rocket": {
       "caliber": 0.127,
       "mass": 19.0,
       "explosiveMass": 2.08,
       "massEnd": 19.0,
+      "normalizationPreset": "heat",
+      "ricochetPreset": "atgm",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.1,
+      "stabilityCaliberToArmorThreshold": 100.0,
+      "stabilityReductionAfterRicochet": 0.3,
+      "stabilityReductionAfterPenetration": 0.01,
       "bulletType": "atgm_tank",
+      "cumulativeSecondaryShattersPreset": "atgm",
+      "explodeOnRendinst": true,
+      "modelName": "tank_bullet_heat_fs",
+      "fresnel": [0.23,0.1,2.0],
       "maxDeltaAngle": 0.03,
       "dragCx": 0.027,
       "length": 1.15,
@@ -106,6 +139,17 @@
       "speedViscosity": 0.2,
       "timeToLive": 20.0,
       "price": 3000.0,
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.0]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod2": [30.0,0.2]
+        }
+      ],
       "collisions": {
         "steel": {
           "fx": "cannon_hit_armor_cumulative",
@@ -139,7 +183,18 @@
   },
   "127mm_us_tow": {
     "bullet": {
+      "normalizationPreset": "heat",
+      "ricochetPreset": "atgm",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.1,
+      "stabilityCaliberToArmorThreshold": 100.0,
+      "stabilityReductionAfterRicochet": 0.3,
+      "stabilityReductionAfterPenetration": 0.01,
       "bulletType": "atgm_tank",
+      "cumulativeSecondaryShattersPreset": "atgm",
+      "explodeOnRendinst": true,
+      "modelName": "tank_bullet_heat_fs",
+      "fresnel": [0.23,0.1,2.0],
       "bulletName": "127mm_i_tow",
       "mass": 37.0,
       "caliber": 0.127,
@@ -148,12 +203,34 @@
       "sound": "atgm_LPC",
       "sound_inside": "atgm_LPC_interior",
       "recoilMultiplier": 0.05,
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.0]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod2": [30.0,0.2]
+        }
+      ],
       "rocket": {
         "caliber": 0.127,
         "mass": 19.0,
         "explosiveMass": 2.08,
         "massEnd": 19.0,
+        "normalizationPreset": "heat",
+        "ricochetPreset": "atgm",
+        "secondaryShattersPreset": "ap",
+        "stabilityThreshold": 0.1,
+        "stabilityCaliberToArmorThreshold": 100.0,
+        "stabilityReductionAfterRicochet": 0.3,
+        "stabilityReductionAfterPenetration": 0.01,
         "bulletType": "atgm_tank",
+        "cumulativeSecondaryShattersPreset": "atgm",
+        "explodeOnRendinst": true,
+        "modelName": "tank_bullet_heat_fs",
+        "fresnel": [0.23,0.1,2.0],
         "maxDeltaAngle": 0.03,
         "dragCx": 0.027,
         "length": 1.15,
@@ -210,6 +287,17 @@
         "speedViscosity": 0.2,
         "timeToLive": 20.0,
         "price": 3000.0,
+        "stabilityRicochetModifier": [
+          {
+            "mod1": [0.0,0.0]
+          },
+          {
+            "mod2": [20.0,0.1]
+          },
+          {
+            "mod2": [30.0,0.2]
+          }
+        ],
         "collisions": {
           "steel": {
             "fx": "cannon_hit_armor_cumulative",

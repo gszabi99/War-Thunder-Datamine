@@ -30,7 +30,17 @@
     "caliber": 0.128,
     "speed": 250.0,
     "maxDistance": 2000.0,
+    "normalizationPreset": "ap",
+    "ricochetPreset": "ap",
+    "secondaryShattersPreset": "ap",
+    "stabilityThreshold": 0.05,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.5,
+    "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "cannon_ball",
+    "slopeEffectPreset": "ap",
+    "modelName": "tank_bullet_ball",
+    "fresnel": [0.23,0.1,2.0],
     "bulletName": "cannon_ball",
     "hitPowerMult": 750.0,
     "relativeVelHitShift": [300.0,1000.0],
@@ -45,6 +55,20 @@
     "waterFxScale": [0.9,1.1],
     "ricochetEffect": "cannon_ricochet",
     "waterCollisionEffect": "20_ap_water_splash",
+    "stabilityRicochetModifier": [
+      {
+        "mod1": [0.0,0.05]
+      },
+      {
+        "mod2": [20.0,0.1]
+      },
+      {
+        "mod3": [30.0,0.2]
+      },
+      {
+        "mod3": [45.0,0.3]
+      }
+    ],
     "hitpower": {
       "HitPower0m": [0.55,100.0],
       "HitPower200m": [0.45,200.0],

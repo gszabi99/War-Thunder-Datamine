@@ -27,7 +27,18 @@
   "isBulletBelt": false,
   "bullet": {
     "mass": 16.5,
+    "normalizationPreset": "heat",
+    "ricochetPreset": "atgm",
+    "secondaryShattersPreset": "ap",
+    "stabilityThreshold": 0.1,
+    "stabilityCaliberToArmorThreshold": 100.0,
+    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterPenetration": 0.01,
     "bulletType": "atgm_tank",
+    "cumulativeSecondaryShattersPreset": "atgm",
+    "explodeOnRendinst": true,
+    "modelName": "tank_bullet_heat_fs",
+    "fresnel": [0.23,0.1,2.0],
     "bulletName": "142mm_acra",
     "caliber": 0.142,
     "sound_path": "tanks/weapon_tanks/atgm",
@@ -37,12 +48,34 @@
     "sfxReloadBullet": "grd_cannon_reload_auto",
     "recoilMultiplier": 0.05,
     "shotFreq": 0.067,
+    "stabilityRicochetModifier": [
+      {
+        "mod1": [0.0,0.0]
+      },
+      {
+        "mod2": [20.0,0.1]
+      },
+      {
+        "mod2": [30.0,0.2]
+      }
+    ],
     "rocket": {
       "caliber": 0.142,
       "mass": 24.0,
       "explosiveMass": 2.5,
       "massEnd": 24.0,
+      "normalizationPreset": "heat",
+      "ricochetPreset": "atgm",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.1,
+      "stabilityCaliberToArmorThreshold": 100.0,
+      "stabilityReductionAfterRicochet": 0.3,
+      "stabilityReductionAfterPenetration": 0.01,
       "bulletType": "atgm_tank",
+      "cumulativeSecondaryShattersPreset": "atgm",
+      "explodeOnRendinst": true,
+      "modelName": "tank_bullet_heat_fs",
+      "fresnel": [0.23,0.1,2.0],
       "maxDeltaAngle": 0.02,
       "dragCx": 0.027,
       "length": 1.15,
@@ -100,6 +133,17 @@
       "timeToLive": 20.0,
       "price": 3000.0,
       "mesh": "acra_rocket_deployed",
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.0]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod2": [30.0,0.2]
+        }
+      ],
       "collisions": {
         "steel": {
           "fx": "cannon_hit_armor_cumulative",
@@ -128,7 +172,19 @@
   },
   "142mm_fr_HE": {
     "bullet": {
+      "normalizationPreset": "heat",
+      "ricochetPreset": "he",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.4,
+      "stabilityCaliberToArmorThreshold": 10.0,
+      "stabilityReductionAfterRicochet": 0.45,
+      "stabilityReductionAfterPenetration": 1.0,
       "bulletType": "he_frag_tank",
+      "slopeEffectPreset": "ap",
+      "modelName": "tank_bullet_he",
+      "fresnel": [0.23,0.1,2.0],
+      "explodeOnRendinst": true,
+      "useEffectiveArmorThicknessForShatter": true,
       "bulletName": "142mm_muc",
       "mass": 20.0,
       "caliber": 0.142,
@@ -138,13 +194,30 @@
       "sound_inside": "atgm_LPC_interior",
       "sfxReloadBullet": "grd_cannon_reload_auto",
       "recoilMultiplier": 0.05,
+      "stabilityRicochetModifier": {
+        "mod1": [0.0,0.5],
+        "mod2": [20.0,0.6],
+        "mod3": [30.0,1.0]
+      },
       "rocket": {
         "caliber": 0.142,
         "mass": 20.0,
         "explosiveType": "a_ix_2",
         "explosiveMass": 2.8,
         "massEnd": 20.0,
+        "normalizationPreset": "heat",
+        "ricochetPreset": "he",
+        "secondaryShattersPreset": "ap",
+        "stabilityThreshold": 0.4,
+        "stabilityCaliberToArmorThreshold": 10.0,
+        "stabilityReductionAfterRicochet": 0.45,
+        "stabilityReductionAfterPenetration": 1.0,
         "bulletType": "he_frag_tank",
+        "slopeEffectPreset": "ap",
+        "modelName": "tank_bullet_he",
+        "fresnel": [0.23,0.1,2.0],
+        "explodeOnRendinst": true,
+        "useEffectiveArmorThicknessForShatter": true,
         "maxDeltaAngle": 0.03,
         "dragCx": 0.027,
         "length": 1.15,
@@ -200,6 +273,11 @@
         "timeToLive": 20.0,
         "price": 3000.0,
         "mesh": "9m114_rocket_deployed",
+        "stabilityRicochetModifier": {
+          "mod1": [0.0,0.5],
+          "mod2": [20.0,0.6],
+          "mod3": [30.0,1.0]
+        },
         "collisions": {
           "steel": {
             "fx": "cannon_hit_armor_cumulative",

@@ -21,7 +21,19 @@
     "antiShipRocket": true
   },
   "rocket": {
+    "normalizationPreset": "heat",
+    "ricochetPreset": "he",
+    "secondaryShattersPreset": "ap_rocket",
+    "stabilityThreshold": 0.05,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.5,
+    "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "rocket_tank",
+    "slopeEffectPreset": "ap",
+    "modelName": "tank_bullet_he",
+    "fresnel": [0.23,0.1,2.0],
+    "explodeOnRendinst": true,
+    "useEffectiveArmorThicknessForShatter": true,
     "bulletName": "114mm_m8",
     "caliber": 0.114,
     "mass": 19.8,
@@ -78,6 +90,11 @@
     "speedViscosity": 0.2,
     "timeToLive": 20.0,
     "price": 3000.0,
+    "stabilityRicochetModifier": {
+      "mod1": [0.0,0.5],
+      "mod2": [20.0,0.6],
+      "mod3": [30.0,1.0]
+    },
     "collisions": {
       "steel": {
         "fx": "cannon_hit_armor_cumulative",

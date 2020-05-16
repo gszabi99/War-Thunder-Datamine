@@ -1,17 +1,11 @@
+local extWatched = require("reactiveGui/globals/extWatched.nut")
+
 const pathprefix = "scripts/changelog/changelogs/"
 local langFile = @(version, lang) "{0}{1}_{2}.nut".subst(pathprefix,"_".join(version), lang)
 
-local versions = ::Watched(::cross_call.changelog.getVersions() ?? [])
-local unseenPatchnote = ::Watched(::cross_call.changelog.getUnseenPatchnote())
-local languageName = ::Watched(::cross_call.language.getLanguageName() ?? "")
-
-local function updatePatchnoteStates(config) {
-  versions(config?.versions ?? versions.value)
-  languageName(config?.languageName ?? languageName.value)
-  if ("unseenPatchnote" in config)
-    unseenPatchnote(config.unseenPatchnote)
-}
-::interop.updatePatchnoteStates <-  updatePatchnoteStates
+local versions = extWatched("changelogsVersions", @() ::cross_call.changelog.getVersions() ?? [])
+local unseenPatchnote = extWatched("unseenPatchnote", ::cross_call.changelog.getUnseenPatchnote)
+local languageName = extWatched("languageName", @() ::cross_call.language.getLanguageName() ?? "")
 
 local chosenPatchnote = ::Watched(null)
 local curPatchnote = ::Computed(@() chosenPatchnote.value ?? unseenPatchnote.value ?? versions.value?[0])

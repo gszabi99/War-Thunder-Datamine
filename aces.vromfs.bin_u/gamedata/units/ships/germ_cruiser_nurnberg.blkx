@@ -3112,7 +3112,7 @@
         "stopChanceOnDeadPart": 1.0,
         "genericDamageMult": 0.3,
         "armorClass": "ship_structural_steel",
-        "armorThickness": 2.0,
+        "armorThickness": 1.45,
         "oneSided": true,
         "compartment_01_dm": {
           "hp": 3000.0
@@ -3180,19 +3180,15 @@
         "armorThickness": 8.0,
         "oneSided": true,
         "superstructure_back_dm": {
-          "fireParamsPreset": "ship_superstructure_back",
           "hp": 5000.0
         },
         "superstructure_front_dm": {
-          "fireParamsPreset": "ship_superstructure_front",
           "hp": 5000.0
         },
         "superstructure_top_dm": {
-          "fireParamsPreset": "ship_superstructure_top",
           "hp": 5000.0
         },
         "superstructure_dm": {
-          "fireParamsPreset": "ship_superstructure",
           "hp": 5000.0
         }
       },
@@ -3200,7 +3196,7 @@
         "stopChanceOnDeadPart": 0.3,
         "fireParamsPreset": "ship_construction",
         "armorClass": "ship_structural_steel",
-        "armorThickness": 25.4,
+        "armorThickness": 16.0,
         "fireDamageMult": 0.1,
         "mid_bottom_dm": {
           "hp": 20000.0
@@ -3210,7 +3206,7 @@
         "stopChanceOnDeadPart": 0.7,
         "armorClass": "ship_structural_steel",
         "fireParamsPreset": "ship_construction",
-        "armorThickness": 25.4,
+        "armorThickness": 16.0,
         "fireDamageMult": 0.1,
         "bulkhead_01_dm": {
           "hp": 1500.0
@@ -3284,19 +3280,21 @@
         }
       },
       "engine": {
-        "armorThrough": 250.0,
         "fireProtectionHp": 25.0,
         "fireParamsPreset": "ship_engine",
         "armorClass": "armor_tank_engine",
         "armorThickness": 10.0,
         "engine_room_01_dm": {
-          "hp": 1500.0
+          "armorThrough": 500.0,
+          "hp": 3000.0
         },
         "engine_room_02_dm": {
-          "hp": 1500.0
+          "armorThrough": 500.0,
+          "hp": 3000.0
         },
         "engine_room_03_dm": {
-          "hp": 1000.0
+          "armorThrough": 500.0,
+          "hp": 2500.0
         },
         "funnel_01_dm": {
           "shatterDamageMult": 1.2,
@@ -3307,20 +3305,14 @@
           "hp": 500.0
         },
         "transmission_01_dm": {
-          "shatterDamageMult": 0.1,
-          "explosionDamageMult": 0.7,
           "secondaryShatterDamageMult": 0.1,
           "hp": 1000.0
         },
         "transmission_02_dm": {
-          "shatterDamageMult": 0.1,
-          "explosionDamageMult": 0.7,
           "secondaryShatterDamageMult": 0.1,
-          "hp": 529.0
+          "hp": 1000.0
         },
         "transmission_03_dm": {
-          "shatterDamageMult": 0.1,
-          "explosionDamageMult": 0.7,
           "secondaryShatterDamageMult": 0.1,
           "hp": 1000.0
         }
@@ -3618,7 +3610,7 @@
       "turrets_aa_caliber": {
         "fireParamsPreset": "ship_turrets",
         "armorClass": "ship_structural_steel",
-        "armorThickness": 3.0,
+        "armorThickness": 2.0,
         "oneSided": true,
         "fireProtectionHp": 25.0,
         "aa_turret_01_dm": {
@@ -3702,31 +3694,31 @@
         "armorClass": "tank_barrel",
         "armorThickness": 20.0,
         "main_caliber_gun_01_dm": {
-          "hp": 300.0
+          "hp": 500.0
         },
         "main_caliber_gun_02_dm": {
-          "hp": 300.0
+          "hp": 500.0
         },
         "main_caliber_gun_03_dm": {
-          "hp": 300.0
+          "hp": 500.0
         },
         "main_caliber_gun_04_dm": {
-          "hp": 300.0
+          "hp": 500.0
         },
         "main_caliber_gun_05_dm": {
-          "hp": 300.0
+          "hp": 500.0
         },
         "main_caliber_gun_06_dm": {
-          "hp": 300.0
+          "hp": 500.0
         },
         "main_caliber_gun_07_dm": {
-          "hp": 300.0
+          "hp": 500.0
         },
         "main_caliber_gun_08_dm": {
-          "hp": 300.0
+          "hp": 500.0
         },
         "main_caliber_gun_09_dm": {
-          "hp": 300.0
+          "hp": 500.0
         }
       },
       "gun_aux_caliber": {
@@ -3734,16 +3726,16 @@
         "armorClass": "tank_barrel",
         "armorThickness": 15.0,
         "auxiliary_caliber_gun_01_dm": {
-          "hp": 200.0
+          "hp": 207.0
         },
         "auxiliary_caliber_gun_02_dm": {
-          "hp": 200.0
+          "hp": 207.0
         },
         "auxiliary_caliber_gun_03_dm": {
-          "hp": 200.0
+          "hp": 207.0
         },
         "auxiliary_caliber_gun_04_dm": {
-          "hp": 200.0
+          "hp": 207.0
         }
       },
       "gun_aa_caliber": {
@@ -4000,6 +3992,7 @@
       "radiolocation": {
         "armorClass": "ship_structural_steel",
         "armorThickness": 5.0,
+        "dmgState": 0.0,
         "radar_01_dm": {
           "hp": 350.0
         }
@@ -4231,7 +4224,8 @@
         "ammunition_depth_charges": {
           "onKill": {
             "expl": 0.05,
-            "nothing": 0.95
+            "nothing": 0.95,
+            "fHitCritical": false
           },
           "onHit": {
             "damageType": "fire",
@@ -4244,22 +4238,23 @@
         "ammunition_torpedoes": [
           {
             "onKill": {
-              "fire": 1.0
+              "expl": 1.0,
+              "fHitCritical": false
             }
           },
           {
             "onHit": {
               "damageType": "explosion",
-              "fire": 0.05,
-              "damage": 300.0,
+              "expl": 0.01,
+              "damage": 400.0,
               "fHitCritical": false
             }
           },
           {
             "onHit": {
               "damageType": "fire",
-              "fire": 0.15,
-              "damage": 150.0,
+              "expl": 0.1,
+              "damage": 250.0,
               "fHitCritical": false
             }
           }
@@ -4524,101 +4519,6 @@
       {
         "part": [
           {
-            "name": "torpedo_01_dm"
-          },
-          {
-            "name": "torpedo_02_dm"
-          },
-          {
-            "name": "torpedo_03_dm"
-          },
-          {
-            "name": "torpedo_04_dm"
-          },
-          {
-            "name": "torpedo_05_dm"
-          },
-          {
-            "name": "torpedo_06_dm"
-          },
-          {
-            "name": "torpedo_07_dm"
-          },
-          {
-            "name": "torpedo_08_dm"
-          },
-          {
-            "name": "torpedo_09_dm"
-          },
-          {
-            "name": "torpedo_10_dm"
-          },
-          {
-            "name": "torpedo_11_dm"
-          },
-          {
-            "name": "torpedo_12_dm"
-          },
-          {
-            "name": "torpedo_14_dm"
-          },
-          {
-            "name": "torpedo_15_dm"
-          },
-          {
-            "name": "torpedo_16_dm"
-          },
-          {
-            "name": "torpedo_17_dm"
-          },
-          {
-            "name": "torpedo_18_dm"
-          },
-          {
-            "name": "torpedo_19_dm"
-          },
-          {
-            "name": "torpedo_20_dm"
-          },
-          {
-            "name": "torpedo_21_dm"
-          },
-          {
-            "name": "torpedo_22_dm"
-          },
-          {
-            "name": "torpedo_23_dm"
-          },
-          {
-            "name": "torpedo_24_dm"
-          },
-          {
-            "onKill": {
-              "nothing": 1.0,
-              "kill": false
-            }
-          },
-          {
-            "onHit": {
-              "damageType": "explosion",
-              "fire": 0.05,
-              "damage": 300.0,
-              "fHitCritical": false
-            }
-          },
-          {
-            "onHit": {
-              "damageType": "fire",
-              "fire": 0.15,
-              "damage": 150.0,
-              "fHitCritical": false
-            }
-          }
-        ]
-      },
-      {
-        "part": [
-          {
             "name": "depth_charge_01_dm"
           },
           {
@@ -4818,7 +4718,7 @@
           {
             "onHit": {
               "damageType": "explosion",
-              "fire": 0.3,
+              "fire": 0.05,
               "damage": 400.0,
               "fHitCritical": false
             }
@@ -4905,15 +4805,15 @@
           {
             "onHit": {
               "damageType": "explosion",
-              "fire": 0.1,
-              "damage": 200.0,
+              "fire": 0.05,
+              "damage": 300.0,
               "fHitCritical": false
             }
           },
           {
             "onHit": {
-              "damageType": "fire",
-              "fire": 0.15,
+              "damageType": "shatter",
+              "fire": 0.001,
               "damage": 25.0,
               "fHitCritical": false
             }
@@ -4950,6 +4850,26 @@
             "name": "cover_09_dm"
           },
           {
+            "onHit": {
+              "damageType": "explosion",
+              "fire": 0.1,
+              "damage": 300.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "shatter",
+              "fire": 0.001,
+              "damage": 25.0,
+              "fHitCritical": false
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
             "name": "superstructure_dm"
           },
           {
@@ -4971,7 +4891,15 @@
             "onHit": {
               "damageType": "explosion",
               "fire": 0.15,
-              "damage": 300.0,
+              "damage": 400.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "shatter",
+              "fire": 0.002,
+              "damage": 35.0,
               "fHitCritical": false
             }
           }
@@ -5210,8 +5138,8 @@
           "speedYaw": 8.0,
           "speedPitch": 6.0,
           "bullets": 120,
-          "fireConeAngle": 1.0,
           "useGunnerTargetingQuality": false,
+          "fireConeAngle": 1.0,
           "turret": {
             "head": "main_caliber_turret_01",
             "gun": "main_caliber_gun_01",
@@ -5283,8 +5211,8 @@
           "speedYaw": 8.0,
           "speedPitch": 6.0,
           "bullets": 120,
-          "fireConeAngle": 1.0,
           "useGunnerTargetingQuality": false,
+          "fireConeAngle": 1.0,
           "turret": {
             "head": "main_caliber_turret_01",
             "gun": "main_caliber_gun_02",
@@ -5351,8 +5279,8 @@
           "speedYaw": 8.0,
           "speedPitch": 6.0,
           "bullets": 120,
-          "fireConeAngle": 1.0,
           "useGunnerTargetingQuality": false,
+          "fireConeAngle": 1.0,
           "turret": {
             "head": "main_caliber_turret_01",
             "gun": "main_caliber_gun_03",
@@ -5419,8 +5347,8 @@
           "speedYaw": 8.0,
           "speedPitch": 6.0,
           "bullets": 120,
-          "fireConeAngle": 1.0,
           "useGunnerTargetingQuality": false,
+          "fireConeAngle": 1.0,
           "turret": {
             "head": "main_caliber_turret_02",
             "gun": "main_caliber_gun_04",
@@ -5492,8 +5420,8 @@
           "speedYaw": 8.0,
           "speedPitch": 6.0,
           "bullets": 120,
-          "fireConeAngle": 1.0,
           "useGunnerTargetingQuality": false,
+          "fireConeAngle": 1.0,
           "turret": {
             "head": "main_caliber_turret_02",
             "gun": "main_caliber_gun_05",
@@ -5560,8 +5488,8 @@
           "speedYaw": 8.0,
           "speedPitch": 6.0,
           "bullets": 120,
-          "fireConeAngle": 1.0,
           "useGunnerTargetingQuality": false,
+          "fireConeAngle": 1.0,
           "turret": {
             "head": "main_caliber_turret_02",
             "gun": "main_caliber_gun_06",
@@ -5628,8 +5556,8 @@
           "speedYaw": 8.0,
           "speedPitch": 6.0,
           "bullets": 120,
-          "fireConeAngle": 1.0,
           "useGunnerTargetingQuality": false,
+          "fireConeAngle": 1.0,
           "turret": {
             "head": "main_caliber_turret_03",
             "gun": "main_caliber_gun_07",
@@ -5701,8 +5629,8 @@
           "speedYaw": 8.0,
           "speedPitch": 6.0,
           "bullets": 120,
-          "fireConeAngle": 1.0,
           "useGunnerTargetingQuality": false,
+          "fireConeAngle": 1.0,
           "turret": {
             "head": "main_caliber_turret_03",
             "gun": "main_caliber_gun_08",
@@ -5769,8 +5697,8 @@
           "speedYaw": 8.0,
           "speedPitch": 6.0,
           "bullets": 120,
-          "fireConeAngle": 1.0,
           "useGunnerTargetingQuality": false,
+          "fireConeAngle": 1.0,
           "turret": {
             "head": "main_caliber_turret_03",
             "gun": "main_caliber_gun_09",
@@ -5836,8 +5764,8 @@
           "speedYaw": 10.0,
           "speedPitch": 12.0,
           "bullets": 400,
-          "fireConeAngle": 1.0,
           "useGunnerTargetingQuality": false,
+          "fireConeAngle": 1.0,
           "turret": {
             "head": "auxiliary_caliber_turret_01",
             "gun": "auxiliary_caliber_gun_01",
@@ -5903,8 +5831,8 @@
           "speedYaw": 10.0,
           "speedPitch": 12.0,
           "bullets": 400,
-          "fireConeAngle": 1.0,
           "useGunnerTargetingQuality": false,
+          "fireConeAngle": 1.0,
           "turret": {
             "head": "auxiliary_caliber_turret_01",
             "gun": "auxiliary_caliber_gun_01",
@@ -5970,8 +5898,8 @@
           "speedYaw": 10.0,
           "speedPitch": 12.0,
           "bullets": 400,
-          "fireConeAngle": 1.0,
           "useGunnerTargetingQuality": false,
+          "fireConeAngle": 1.0,
           "turret": {
             "head": "auxiliary_caliber_turret_02",
             "gun": "auxiliary_caliber_gun_02",
@@ -6037,8 +5965,8 @@
           "speedYaw": 10.0,
           "speedPitch": 12.0,
           "bullets": 400,
-          "fireConeAngle": 1.0,
           "useGunnerTargetingQuality": false,
+          "fireConeAngle": 1.0,
           "turret": {
             "head": "auxiliary_caliber_turret_02",
             "gun": "auxiliary_caliber_gun_02",
@@ -6104,8 +6032,8 @@
           "speedYaw": 10.0,
           "speedPitch": 12.0,
           "bullets": 400,
-          "fireConeAngle": 1.0,
           "useGunnerTargetingQuality": false,
+          "fireConeAngle": 1.0,
           "turret": {
             "head": "auxiliary_caliber_turret_03",
             "gun": "auxiliary_caliber_gun_03",
@@ -6171,8 +6099,8 @@
           "speedYaw": 10.0,
           "speedPitch": 12.0,
           "bullets": 400,
-          "fireConeAngle": 1.0,
           "useGunnerTargetingQuality": false,
+          "fireConeAngle": 1.0,
           "turret": {
             "head": "auxiliary_caliber_turret_03",
             "gun": "auxiliary_caliber_gun_03",
@@ -6238,8 +6166,8 @@
           "speedYaw": 10.0,
           "speedPitch": 12.0,
           "bullets": 400,
-          "fireConeAngle": 1.0,
           "useGunnerTargetingQuality": false,
+          "fireConeAngle": 1.0,
           "turret": {
             "head": "auxiliary_caliber_turret_04",
             "gun": "auxiliary_caliber_gun_04",
@@ -6305,8 +6233,8 @@
           "speedYaw": 10.0,
           "speedPitch": 12.0,
           "bullets": 400,
-          "fireConeAngle": 1.0,
           "useGunnerTargetingQuality": false,
+          "fireConeAngle": 1.0,
           "turret": {
             "head": "auxiliary_caliber_turret_04",
             "gun": "auxiliary_caliber_gun_04",
@@ -6722,7 +6650,6 @@
           "speedYaw": 30.0,
           "speedPitch": 24.0,
           "bullets": 2000,
-          "fireConeAngle": 1.0,
           "useGunnerTargetingQuality": false,
           "turret": {
             "head": "aa_turret_04",
@@ -7450,7 +7377,6 @@
           "speedYaw": 30.0,
           "speedPitch": 24.0,
           "bullets": 2000,
-          "fireConeAngle": 1.0,
           "useGunnerTargetingQuality": false,
           "turret": {
             "head": "aa_turret_13",
@@ -8950,51 +8876,6 @@
       },
       {
         "event": {
-          "name": "superstructure_back_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_front_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_top_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_bottom_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_side_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
           "name": "superstructure_fire",
           "fx": {
             "name": "ship_fire_medium",
@@ -9007,6 +8888,15 @@
           "name": "fuel_tank_fire",
           "fx": {
             "name": "ship_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "torpedo_fire",
+          "fx": {
+            "name": "ship_ammo_fire_large",
             "centerDmgPart": true
           }
         }
@@ -9414,6 +9304,15 @@
           "fx": {
             "name": "ship_hit_fire",
             "scale": 1.5
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "torpedo_explosion",
+          "fx": {
+            "name": "ship_ammo_fire_large",
+            "centerDmgPart": true
           }
         }
       }

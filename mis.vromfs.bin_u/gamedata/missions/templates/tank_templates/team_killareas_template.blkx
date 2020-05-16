@@ -97,10 +97,10 @@
       "actions": {
         "triggerEnable": [
           {
-            "target": "t1_killareas_init"
+            "target": "t1_detection_areas_init"
           },
           {
-            "target": "t2_killareas_init"
+            "target": "t2_detection_areas_init"
           }
         ]
       },
@@ -183,10 +183,10 @@
         },
         "triggerEnable": [
           {
-            "target": "t1_killareas_init"
+            "target": "t1_detection_areas_init"
           },
           {
-            "target": "t2_killareas_init"
+            "target": "t2_detection_areas_init"
           }
         ]
       }
@@ -236,10 +236,10 @@
         ],
         "triggerEnable": [
           {
-            "target": "t1_killareas_init"
+            "target": "t1_detection_areas_init"
           },
           {
-            "target": "t2_killareas_init"
+            "target": "t2_detection_areas_init"
           }
         ]
       },
@@ -249,10 +249,10 @@
         },
         "triggerEnable": [
           {
-            "target": "t1_killareas_init"
+            "target": "t1_detection_areas_init"
           },
           {
-            "target": "t2_killareas_init"
+            "target": "t2_detection_areas_init"
           }
         ]
       }
@@ -291,16 +291,16 @@
         ],
         "triggerEnable": [
           {
-            "target": "t1_killareas_init"
+            "target": "t1_kill_areas_init"
           },
           {
-            "target": "t2_killareas_init"
+            "target": "t2_kill_areas_init"
           }
         ]
       },
       "else_actions": []
     },
-    "t1_killareas_init": {
+    "t1_detection_areas_init": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -349,7 +349,7 @@
       },
       "else_actions": []
     },
-    "t2_killareas_init": {
+    "t2_detection_areas_init": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -380,6 +380,104 @@
           "ground": true,
           "mapArea": false,
           "killArea": false,
+          "killOutOfBattleArea": false,
+          "newGridHorizontalCellCount": 0,
+          "detectionArea": true,
+          "airMapArea": false,
+          "area": "@t2_killarea",
+          "team": "A"
+        },
+        "triggerEnable": [
+          {
+            "target": "t2_enable_crewlock"
+          },
+          {
+            "target": "t2_disable_crewlock"
+          }
+        ]
+      },
+      "else_actions": []
+    },
+    "t1_kill_areas_init": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [
+        {
+          "objectExists": {
+            "target": "@t1_killarea",
+            "type": "area"
+          }
+        },
+        {
+          "objectExists": {
+            "target": "@t1_killarea",
+            "type": "squad"
+          }
+        }
+      ],
+      "actions": {
+        "missionBattleArea": {
+          "air": false,
+          "ground": true,
+          "mapArea": false,
+          "killArea": true,
+          "killOutOfBattleArea": false,
+          "newGridHorizontalCellCount": 0,
+          "detectionArea": true,
+          "airMapArea": false,
+          "area": "@t1_killarea",
+          "team": "B"
+        },
+        "triggerEnable": [
+          {
+            "target": "t1_enable_crewlock"
+          },
+          {
+            "target": "t1_disable_crewlock"
+          }
+        ]
+      },
+      "else_actions": []
+    },
+    "t2_kill_areas_init": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [
+        {
+          "objectExists": {
+            "target": "@t2_killarea",
+            "type": "area"
+          }
+        },
+        {
+          "objectExists": {
+            "target": "@t2_killarea",
+            "type": "squad"
+          }
+        }
+      ],
+      "actions": {
+        "missionBattleArea": {
+          "air": false,
+          "ground": true,
+          "mapArea": false,
+          "killArea": true,
           "killOutOfBattleArea": false,
           "newGridHorizontalCellCount": 0,
           "detectionArea": true,

@@ -2359,6 +2359,11 @@
             "pitch": [-10.0,50.0]
           }
         }
+      },
+      {
+        "hideNodes": {
+          "node": "ex_armor_05"
+        }
       }
     ]
   },
@@ -2986,6 +2991,15 @@
       },
       {
         "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -3185,6 +3199,11 @@
                   "yaw": [-120.0,120.0],
                   "pitch": [-10.0,50.0]
                 }
+              }
+            },
+            {
+              "hideNodes": {
+                "node": "ex_armor_05"
               }
             }
           ]

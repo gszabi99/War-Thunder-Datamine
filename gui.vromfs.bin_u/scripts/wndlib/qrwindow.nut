@@ -38,8 +38,8 @@ local class qrWindow extends ::gui_handlers.BaseGuiHandlerWT {
 
     urlWithoutTags = urlConfig.urlWithoutTags
     local list = generateQrBlocks(urlConfig.url)
-    local cellSize = ((qrSize ?? ::to_pixels("0.5@sf")).tofloat() / (list.size + 2)).tointeger()
-    local size = cellSize * (list.size + 2)
+    local cellSize = ((qrSize ?? ::to_pixels("0.5@sf")).tofloat() / (list.size + 8)).tointeger()
+    local size = cellSize * (list.size + 8)
     return {
       qrSize = size
       cellSize = cellSize

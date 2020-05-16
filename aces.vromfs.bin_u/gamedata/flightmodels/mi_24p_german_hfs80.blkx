@@ -1484,6 +1484,9 @@
         },
         {
           "node": "lipa"
+        },
+        {
+          "node": "lipa_off"
         }
       ]
     },
@@ -1648,7 +1651,13 @@
       "preset": {
         "name": "mi_24p_german_rocket_r60_x2_c_8",
         "blk": "gameData/flightModels/weaponPresets/mi_24p_german_rocket_r60_x2_c_8.blk",
-        "reqModification": "mi_24_r_60"
+        "reqModification": "mi_24_r_60",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/su_r_60.blk",
+            "iconType": "missile_air_to_air"
+          }
+        }
       }
     },
     {
@@ -1664,6 +1673,14 @@
         },
         {
           "reqModification": "mi_24_r_60"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/su_r_60.blk",
+              "iconType": "missile_air_to_air"
+            }
+          }
         }
       ]
     },
@@ -1671,7 +1688,13 @@
       "preset": {
         "name": "mi_24p_german_rocket_r60_x4_c_8",
         "blk": "gameData/flightModels/weaponPresets/mi_24p_german_rocket_r60_x4_c_8.blk",
-        "reqModification": "mi_24_r_60_2"
+        "reqModification": "mi_24_r_60_2",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/su_r_60.blk",
+            "iconType": "missile_air_to_air"
+          }
+        }
       }
     },
     {
@@ -1687,6 +1710,14 @@
         },
         {
           "reqModification": "mi_24_r_60_2"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/su_r_60.blk",
+              "iconType": "missile_air_to_air"
+            }
+          }
         }
       ]
     },
@@ -4199,6 +4230,9 @@
               },
               {
                 "node": "lipa"
+              },
+              {
+                "node": "lipa_off"
               }
             ]
           },
@@ -4252,9 +4286,14 @@
       "effects": {
         "commonWeapons": [
           {
-            "hideNodes": {
-              "node": "lipa"
-            }
+            "hideNodes": [
+              {
+                "node": "lipa"
+              },
+              {
+                "node": "lipa_off"
+              }
+            ]
           },
           {
             "Weapon": {
@@ -4331,7 +4370,9 @@
         },
         "commonWeapons": [
           {
-            "hideNodes": []
+            "hideNodes": {
+              "node": "lipa_off"
+            }
           },
           {
             "Weapon": {

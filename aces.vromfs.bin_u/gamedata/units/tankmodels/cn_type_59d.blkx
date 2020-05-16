@@ -1659,6 +1659,15 @@
       },
       {
         "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -1744,6 +1753,18 @@
         "turret_03_bottom_dm": {
           "armorThickness": 60.0
         }
+      },
+      "turret_grille_armor": {
+        "hp": 300.0,
+        "cumulativeEffectiveThicknessMax": 200.0,
+        "genericArmorQuality": 0.01,
+        "cumulativeArmorQuality": 2.0,
+        "armorThickness": 50.0,
+        "armorClass": "grille_air",
+        "composite_armor_turret_01_dm": [],
+        "composite_armor_turret_02_dm": [],
+        "composite_armor_turret_03_dm": [],
+        "composite_armor_turret_04_dm": []
       },
       "CHA_armor": {
         "armorClass": "CHA_tank",
@@ -1857,6 +1878,18 @@
           "armorThickness": 5.0
         }
       },
+      "grille": {
+        "armorClass": "tank_structural_steel",
+        "hp": 300.0,
+        "armorThickness": 15.0,
+        "armorEffectiveThicknessMax": 15.0,
+        "stopChanceOnDeadPart": 0.0,
+        "createSecondaryShatters": false,
+        "ex_armor_01_dm": [],
+        "ex_armor_02_dm": [],
+        "ex_armor_03_dm": [],
+        "ex_armor_04_dm": []
+      },
       "body_shields": {
         "armorClass": "tank_structural_steel",
         "hp": 100.0,
@@ -1877,22 +1910,6 @@
         "ex_decor_l_06_dm": [],
         "ex_decor_l_07_dm": [],
         "ex_armor_06_dm": [],
-        "ex_armor_01_dm": {
-          "armorThickness": 15.0,
-          "hp": 500.0
-        },
-        "ex_armor_02_dm": {
-          "armorThickness": 15.0,
-          "hp": 500.0
-        },
-        "ex_armor_03_dm": {
-          "armorThickness": 15.0,
-          "hp": 500.0
-        },
-        "ex_armor_04_dm": {
-          "armorThickness": 15.0,
-          "hp": 500.0
-        },
         "timber": {
           "armorClass": "ship_wood",
           "armorThickness": 100.0,
@@ -2326,6 +2343,54 @@
         }
       }
     }
+  },
+  {
+    "xray_viewer_data": [
+      {
+        "armorArrayHull": {
+          "xrayDmPart": "composite_armor_turret_01_dm",
+          "titleLoc": "grille_air",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_hull_01_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayTurret": {
+          "xrayDmPart": "composite_armor_turret_02_dm",
+          "titleLoc": "grille_air",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_turret_01_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayTurret": {
+          "xrayDmPart": "composite_armor_turret_03_dm",
+          "titleLoc": "grille_air",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_turret_01_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayTurret": {
+          "xrayDmPart": "composite_armor_turret_04_dm",
+          "titleLoc": "grille_air",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_turret_01_dm"
+            }
+          }
+        }
+      }
+    ]
   },
   {
     "commonWeapons": [

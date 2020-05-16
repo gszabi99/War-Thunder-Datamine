@@ -2217,20 +2217,14 @@
     "cockpitClose": "cockpit_door2_close"
   },
   "cockpit": {
-    "headPos": [3.262,0.81,0.0],
+    "headPos": [3.262,0.81,0.014],
     "headPosOnShooting": [3.262,0.81,0.014],
-    "lightPos": [3.90828,0.536393,0.105602],
-    "lightColor": [0.02,0.2,0.07],
-    "lightRadius": 0.2,
-    "lightPos1": [3.902788,0.430591,-0.110828],
-    "lightColor1": [0.02,0.2,0.07],
+    "lightPos": [3.33663,0.433669,0.073418],
+    "lightColor": [0.01,0.05,0.23],
+    "lightRadius": 0.25,
+    "lightPos1": [3.39561,0.415944,-0.11724],
+    "lightColor1": [0.01,0.05,0.23],
     "lightRadius1": 0.2,
-    "lightPos2": [3.958814,0.357091,0.244058],
-    "lightColor2": [0.02,0.2,0.07],
-    "lightRadius2": 0.25,
-    "lightPos3": [3.833471,0.300402,-0.377947],
-    "lightColor3": [0.02,0.2,0.07],
-    "lightRadius3": 0.25,
     "devices": {
       "pedals": [-1.0,1.0],
       "pedals1": [-1.0,1.0],
@@ -2255,26 +2249,27 @@
       "clock_hour": [0.0,12.0],
       "clock_min": [0.0,60.0],
       "clock_sec": [0.0,60.0],
+      "g_meter": [-5.0,10.0],
+      "g_meter_min": [-5.0,10.0],
+      "g_meter_max": [-5.0,10.0],
       "compass": [0.0,360.0],
       "compass1": [0.0,360.0],
       "compass2": [0.0,360.0],
-      "aviahorizon_pitch": [-40.0,40.0],
+      "aviahorizon_pitch": [-70.0,70.0],
       "aviahorizon_roll": [-180.0,180.0],
       "bank": [-8.0,8.0],
       "turn": [-0.23562,0.23562],
-      "g_meter": [-4.5,10.0],
       "vario": [-30.48,30.48],
       "altitude_10k": [0.0,100000.0],
       "altitude_hour": [0.0,10000.0],
       "altitude_min": [0.0,1000.0],
-      "altitude1_hour": [0.0,10000.0],
-      "altitude1_min": [0.0,1000.0],
+      "altitude1_10k": [10000.0,40000.0],
       "altitude_koef": 3.28,
-      "speed": [0.0,437.278],
+      "speed": [0.0,514.444],
       "mach": [0.6,1.4],
       "water_temperature": [0.0,1000.0],
       "oil_temperature": [0.0,120.0],
-      "rpm": [0.0,12000.0],
+      "rpm_hour": [100.0,12000.0],
       "rpm_min": [0.0,1000.0],
       "fuel": [0.0,1315.0]
     },
@@ -2739,6 +2734,9 @@
           "separateDm": true
         },
         {
+          "overwriteLinks": true
+        },
+        {
           "dp": "stab_dm"
         },
         {
@@ -2933,6 +2931,9 @@
         },
         {
           "separateDm": true
+        },
+        {
+          "overwriteLinks": true
         },
         {
           "dp": "stab_dm"
@@ -3336,6 +3337,12 @@
           "dm": "wing1_r_dm"
         },
         {
+          "separateDm": true
+        },
+        {
+          "overwriteLinks": true
+        },
+        {
           "dp": "stab_dm"
         },
         {
@@ -3530,6 +3537,9 @@
         },
         {
           "separateDm": true
+        },
+        {
+          "overwriteLinks": true
         },
         {
           "dp": "stab_dm"

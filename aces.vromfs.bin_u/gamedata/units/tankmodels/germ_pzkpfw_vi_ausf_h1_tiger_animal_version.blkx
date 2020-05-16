@@ -155,7 +155,8 @@
           "armorThickness": 26.0
         },
         "turret_side_dm": {
-          "armorThickness": 82.0
+          "armorThickness": 82.0,
+          "variableThickness": true
         },
         "turret_front_dm": {
           "armorThickness": 100.0
@@ -174,10 +175,16 @@
           "armorThickness": 80.0
         },
         "gun_mask_dm": {
-          "armorThickness": 120.0
+          "armorThickness": 100.0,
+          "variableThickness": true
         },
-        "turret_03_front_dm": {
-          "armorThickness": 75.0
+        "gun_barrel_armor_dm": {
+          "armorThickness": 27.5,
+          "variableThickness": true
+        },
+        "gun_mask_01_dm": {
+          "armorThickness": 30.0,
+          "variableThickness": true
         },
         "turret_04_front_dm": {
           "armorThickness": 90.0
@@ -200,9 +207,6 @@
         "turret_01_bottom_dm": {
           "armorThickness": 10.0,
           "armorClass": "RHA_tank"
-        },
-        "gun_barrel_armor_dm": {
-          "armorThickness": 30.0
         },
         "ex_armor_body_01_dm": {
           "armorThickness": 100.0
@@ -1883,130 +1887,6 @@
     }
   },
   {
-    "MetaParts": {
-      "body": [
-        {
-          "hp": 10000.0
-        },
-        {
-          "part": "ex_armor_body_02_dm"
-        },
-        {
-          "part": "superstructure_side_dm"
-        },
-        {
-          "part": "superstructure_bottom_dm"
-        },
-        {
-          "part": "superstructure_front_dm"
-        },
-        {
-          "part": "superstructure_top_dm"
-        },
-        {
-          "part": "superstructure_back_dm"
-        },
-        {
-          "part": "body_front_dm"
-        },
-        {
-          "part": "body_side_dm"
-        },
-        {
-          "part": "body_top_dm"
-        },
-        {
-          "part": "body_back_dm"
-        },
-        {
-          "part": "body_bottom_dm"
-        },
-        {
-          "fireParamsPreset": "default_metapart"
-        },
-        {
-          "fireParams": {
-            "fireDamagePower": 1.0,
-            "maxTankFireTime": [20.0,30.0],
-            "firePart": "transmission_dm"
-          }
-        }
-      ],
-      "turret": [
-        {
-          "hp": 10000.0
-        },
-        {
-          "part": "turret_top_dm"
-        },
-        {
-          "part": "turret_side_dm"
-        },
-        {
-          "part": "turret_back_dm"
-        },
-        {
-          "part": "turret_commander_dm"
-        },
-        {
-          "part": "turret_front_dm"
-        },
-        {
-          "part": "turret_01_front_dm"
-        },
-        {
-          "part": "turret_02_front_dm"
-        },
-        {
-          "part": "gun_mask_dm"
-        },
-        {
-          "part": "turret_bottom_dm"
-        },
-        {
-          "fireParamsPreset": "default_metapart"
-        },
-        {
-          "fireParams": {
-            "fireDamagePower": 1.0,
-            "maxTankFireTime": [20.0,30.0],
-            "firePart": "transmission_dm"
-          }
-        }
-      ],
-      "crew": [
-        {
-          "killAllPartsForDeath": true
-        },
-        {
-          "killNumPartsForDeath": 4
-        },
-        {
-          "part": "loader_dm"
-        },
-        {
-          "part": "driver_dm"
-        },
-        {
-          "part": "gunner_dm"
-        },
-        {
-          "part": "machine_gunner_dm"
-        },
-        {
-          "part": "commander_dm"
-        },
-        {
-          "effects": {
-            "killUnit": {
-              "nothing": 1.0
-            }
-          }
-        }
-      ]
-    }
-  },
-  {
     "gunConvergence": {
       "distance": 800.0,
       "vertical": true,
@@ -2757,6 +2637,15 @@
             }
           }
         ]
+      },
+      {
+        "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
       },
       {
         "event": {

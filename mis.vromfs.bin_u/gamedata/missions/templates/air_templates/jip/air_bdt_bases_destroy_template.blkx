@@ -12,11 +12,11 @@
     "mission": {
       "level": "levels/water.bin",
       "type": "singleMission",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
-      "allowEmptyTeams": true
+      "allowEmptyTeams": true,
+      "restoreType": "attempts",
+      "optionalTakeOff": false
     },
     "spectator_points": []
   },
@@ -191,49 +191,6 @@
           },
           {
             "comment": {
-              "value": "собираем имя зениток"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "bdt_t1_bomb_zone_",
-              "var": "bdt_t1_cur_spawn_aaa_name"
-            }
-          },
-          {
-            "varAddString": {
-              "digits": 2,
-              "value": "@bdt_t1_cur_spawn_random_idx",
-              "var": "bdt_t1_cur_spawn_aaa_name"
-            }
-          },
-          {
-            "varAddString": {
-              "digits": 0,
-              "value": "_aaa_point_",
-              "var": "bdt_t1_cur_spawn_aaa_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "собираем имя обжектива"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "bdt_t2_destroy_zone_",
-              "var": "bdt_t2_spawn_objective_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@bdt_t1_cur_base_spawn_idx",
-              "digits": 2,
-              "var": "bdt_t2_spawn_objective_name"
-            }
-          },
-          {
-            "comment": {
               "value": "собираем имя объекта"
             }
           },
@@ -310,6 +267,31 @@
               "value": "_name",
               "digits": 0,
               "var": "bdt_spawn_t1_zone_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "собираем имя зениток"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "bdt_t1_bomb_zone_",
+              "var": "bdt_t1_cur_spawn_aaa_name"
+            }
+          },
+          {
+            "varAddString": {
+              "digits": 2,
+              "value": "@bdt_t1_cur_base_spawn_idx",
+              "var": "bdt_t1_cur_spawn_aaa_name"
+            }
+          },
+          {
+            "varAddString": {
+              "digits": 0,
+              "value": "_aaa_point_",
+              "var": "bdt_t1_cur_spawn_aaa_name"
             }
           },
           {
@@ -1074,49 +1056,6 @@
           },
           {
             "comment": {
-              "value": "собираем имя зениток"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "bdt_t2_bomb_zone_",
-              "var": "bdt_t2_cur_spawn_aaa_name"
-            }
-          },
-          {
-            "varAddString": {
-              "digits": 2,
-              "value": "@bdt_t2_cur_spawn_random_idx",
-              "var": "bdt_t2_cur_spawn_aaa_name"
-            }
-          },
-          {
-            "varAddString": {
-              "digits": 0,
-              "value": "_aaa_point_",
-              "var": "bdt_t2_cur_spawn_aaa_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "собираем имя обжектива"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "bdt_t1_destroy_zone_",
-              "var": "bdt_t1_spawn_objective_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@bdt_t2_cur_base_spawn_idx",
-              "digits": 2,
-              "var": "bdt_t1_spawn_objective_name"
-            }
-          },
-          {
-            "comment": {
               "value": "собираем имя объекта"
             }
           },
@@ -1193,6 +1132,31 @@
               "value": "_name",
               "digits": 0,
               "var": "bdt_spawn_t2_zone_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "собираем имя зениток"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "bdt_t2_bomb_zone_",
+              "var": "bdt_t2_cur_spawn_aaa_name"
+            }
+          },
+          {
+            "varAddString": {
+              "digits": 2,
+              "value": "@bdt_t2_cur_base_spawn_idx",
+              "var": "bdt_t2_cur_spawn_aaa_name"
+            }
+          },
+          {
+            "varAddString": {
+              "digits": 0,
+              "value": "_aaa_point_",
+              "var": "bdt_t2_cur_spawn_aaa_name"
             }
           },
           {
@@ -4087,7 +4051,6 @@
               "check_targets": "any",
               "object": "bdt_t1_aaa_squad",
               "target": "@bdt_t1_aaa_destroy_name",
-              "object_var_value": 0,
               "compareCenters": false,
               "check_all_units": true
             }
@@ -5072,9 +5035,13 @@
     "bdt_t1_zone_01_name": "",
     "bdt_t1_zone_02_name": "",
     "bdt_t1_zone_03_name": "",
+    "bdt_t1_zone_04_name": "",
+    "bdt_t1_zone_05_name": "",
     "bdt_t2_zone_01_name": "",
     "bdt_t2_zone_02_name": "",
     "bdt_t2_zone_03_name": "",
+    "bdt_t2_zone_04_name": "",
+    "bdt_t2_zone_05_name": "",
     "bdt_is_template_active": false,
     "bdt_delay_timer": 120,
     "bdt_army_both_zero": -1,
@@ -5148,9 +5115,13 @@
     "bdt_t1_zone_01_timer": 0,
     "bdt_t1_zone_02_timer": 0,
     "bdt_t1_zone_03_timer": 0,
+    "bdt_t1_zone_04_timer": 0,
+    "bdt_t1_zone_05_timer": 0,
     "bdt_t2_zone_01_timer": 0,
     "bdt_t2_zone_02_timer": 0,
     "bdt_t2_zone_03_timer": 0,
+    "bdt_t2_zone_04_timer": 0,
+    "bdt_t2_zone_05_timer": 0,
     "bdt_destroy_t1_timer_var_name": "",
     "bdt_destroy_t2_timer_var_name": "",
     "bdt_t1_restore_cur_idx": 0,

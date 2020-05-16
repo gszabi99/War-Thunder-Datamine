@@ -76,11 +76,18 @@
     "hasAirbrake": true,
     "hasGearControl": true,
     "hasArrestorControl": false,
-    "hasCockpitDoorControl": false,
+    "hasCockpitDoorControl": true,
     "hasWheelBrakeControl": true,
     "hasLockGearControl": false,
     "bHasBoosterSwitcher": false,
-    "hasChutes": true
+    "hasChutes": true,
+    "airbrakeLimits": {
+      "mechRangeOnGround": [0.0,0.0],
+      "secondaryMech": "gear",
+      "secondaryMechRange": [0.0,0.0],
+      "secondaryMechDependentRange": [0.0,0.0],
+      "forcedSecondaryMechValue": -1.0
+    }
   },
   "FlyByWire": [],
   "Areas": {

@@ -102,9 +102,6 @@
     "arcadePowerMult": 1.5
   },
   {
-    "arcadeTurnPowerMult": 1.1
-  },
-  {
     "ikGunner": [
       {
         "model": "sweden_gunner_char"
@@ -2245,7 +2242,7 @@
       "tracks": {
         "animationMultiplier": -0.63,
         "height": 0.04,
-        "fricFrontal": [1.0,1.0]
+        "fricSideRot": [5.0,0.0,0.8,0.3]
       },
       "collisionProps": {
         "cls_body": "convex_hull"
@@ -2260,7 +2257,7 @@
         "driveGearRadius": 0.23,
         "mainGearRatio": 1.59,
         "sideGearRatio": 3.4,
-        "neutralGearRatio": 15.0,
+        "neutralGearRatio": 12.0,
         "gearRatios": [
           {
             "ratio": -4.65
@@ -2858,6 +2855,15 @@
             }
           }
         ]
+      },
+      {
+        "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
       },
       {
         "event": {

@@ -36,8 +36,8 @@ local function updateVersions() {
 }
 
 versions.subscribe(function(value) {
-  ::call_darg("updatePatchnoteStates", {
-    versions = value
+  ::call_darg("updateExtWatched", {
+    changelogsVersions = value
     languageName = ::g_language.getLanguageName()
   })
 })
@@ -76,7 +76,7 @@ local unseenPatchnote = ::Computed(function() {
   return findBestVersionToshow(versions.value, lastSeenVersionInfoNumState.value)
 })
 
-unseenPatchnote.subscribe(@(value) ::call_darg("updatePatchnoteStates", { unseenPatchnote = value }))
+unseenPatchnote.subscribe(@(value) ::call_darg("updateExtWatched", { unseenPatchnote = value }))
 
 local function openChangelog() {
   isShowedUnseenPatchnoteOnce = true

@@ -1145,6 +1145,7 @@
       "radiolocation": {
         "armorClass": "ship_structural_steel",
         "armorThickness": 5.0,
+        "dmgState": 0.0,
         "radar_01_dm": {
           "hp": 150.0
         },
@@ -1252,6 +1253,12 @@
         "armorClass": "ship_RHA",
         "armorThickness": 15.0,
         "hidableInViewer": true
+      },
+      "turret_armor": {
+        "armorClass": "ship_structural_steel",
+        "fireParamsPreset": "ship_construction",
+        "fireProtectionHp": 5000.0,
+        "armorThickness": 15.0
       },
       "turrets": {
         "armorClass": "ship_structural_steel",
@@ -2651,8 +2658,8 @@
           "speedYaw": 24.0,
           "speedPitch": 30.0,
           "bullets": 1500,
-          "fireConeAngle": 1.0,
           "useGunnerTargetingQuality": false,
+          "fireConeAngle": 1.0,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -2741,7 +2748,6 @@
           "speedYaw": 30.0,
           "speedPitch": 24.0,
           "bullets": 2000,
-          "fireConeAngle": 1.0,
           "useGunnerTargetingQuality": false,
           "turret": {
             "head": "auxiliary_caliber_turret_01",
@@ -2812,7 +2818,6 @@
           "speedPitch": 55.0,
           "bullets": 2000,
           "useGunnerTargetingQuality": false,
-          "fireConeAngle": 1.0,
           "turret": {
             "head": "aa_turret_01",
             "gun": "aa_gun_01",
@@ -2878,7 +2883,6 @@
           "speedPitch": 55.0,
           "bullets": 2000,
           "useGunnerTargetingQuality": false,
-          "fireConeAngle": 1.0,
           "turret": {
             "head": "aa_turret_01",
             "gun": "aa_gun_01",
@@ -2939,7 +2943,6 @@
           "speedPitch": 55.0,
           "bullets": 2000,
           "useGunnerTargetingQuality": false,
-          "fireConeAngle": 1.0,
           "turret": {
             "head": "aa_turret_02",
             "gun": "aa_gun_02",
@@ -3005,7 +3008,6 @@
           "speedPitch": 55.0,
           "bullets": 2000,
           "useGunnerTargetingQuality": false,
-          "fireConeAngle": 1.0,
           "turret": {
             "head": "aa_turret_02",
             "gun": "aa_gun_02",
@@ -3131,51 +3133,6 @@
             }
           }
         ]
-      },
-      {
-        "event": {
-          "name": "superstructure_back_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_front_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_top_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_bottom_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_side_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
       },
       {
         "event": {

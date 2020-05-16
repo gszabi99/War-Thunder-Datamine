@@ -1266,9 +1266,9 @@ sysopt.applyRestartEngine <- function applyRestartEngine(reloadScene = false)
     return
 
   ::handlersManager.markfullReloadOnSwitchScene()
-  ::call_darg("updateScreenOptions", {
+  ::call_darg("updateExtWatched", {
       resolution = mCfgCurrent.resolution
-      mode = mCfgCurrent.mode
+      screenMode = mCfgCurrent.mode
   })
 }
 

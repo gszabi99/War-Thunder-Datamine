@@ -1,3 +1,5 @@
+local extWatched = require("reactiveGui/globals/extWatched.nut")
+
 local baseNameFontsById = {
   tiny       = "very_tiny_text"
   small      = "tiny_text"
@@ -7,18 +9,8 @@ local baseNameFontsById = {
   bigBold    = "big_text"
 }
 
-local fontGenId = persist("fontGenId",  @() Watched(""))
-local fontSizePx = persist("fontSizePx", @() Watched(0))
-
-local updateFontParams = function (params) {
-  if (params?.fontGenId)
-    fontGenId(params.fontGenId)
-  if (params?.fontSizePx)
-    fontSizePx(params.fontSizePx)
-}
-updateFontParams(::cross_call.getCurrentFontParams())
-
-::interop.updateFontParams <- updateFontParams
+local fontGenId = extWatched("fontGenId",  @() ::cross_call.getCurrentFontParams()?.fontGenId ?? "")
+local fontSizePx = extWatched("fontSizePx", @() ::cross_call.getCurrentFontParams()?.fontSizePx ?? 0)
 
 local get = @(fontId) Fonts?[(baseNameFontsById?[fontId] ?? "") + fontGenId.value]
 local getSizePx = @(val = 1) ::math.round(val * fontSizePx.value / 1080.0).tointeger()

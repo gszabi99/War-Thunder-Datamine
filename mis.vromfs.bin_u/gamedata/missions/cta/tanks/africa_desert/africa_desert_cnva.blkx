@@ -210,8 +210,6 @@
     "mission": {
       "level": "levels/avg_africa_desert.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
       "locName": "missions/_CnvA;africa_desert/name",
@@ -225,11 +223,13 @@
       "remapAiTankModels": true,
       "country_axis": "germany",
       "country_allies": "ussr",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": true,
         "isShipsAllowed": false,
-        "isHelicoptersAllowed": false
+        "isHelicoptersAllowed": true
       }
     },
     "spectator_points": [],
@@ -2789,6 +2789,17 @@
       ],
       "objLayer": 0,
       "props": []
+    },
+    "cnv_battle_area": {
+      "type": "Box",
+      "tm": [
+        [4096.0,0.0,0.0],
+        [0.0,500.0,0.0],
+        [0.0,0.0,4096.0],
+        [2048.0,0.0,2048.0]
+      ],
+      "objLayer": 0,
+      "props": []
     }
   },
   "objLayers": [
@@ -3293,7 +3304,7 @@
   },
   "__viewPoints": {
     "viewpt_02": {
-      "pos": [1292.6,73.4134,2655.08],
+      "pos": [1292.6,-476.0,2655.08],
       "ht": 2.5
     }
   }

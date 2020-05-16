@@ -117,6 +117,7 @@ local export = math.__merge({
   calc_golden_ratio_columns = calc_golden_ratio_columns
   color2uint = color2uint
   getRomanNumeral = getRomanNumeral
+  calcPercent = @(value) (100.0 * value + 0.5).tointeger()
 })
 
 return export

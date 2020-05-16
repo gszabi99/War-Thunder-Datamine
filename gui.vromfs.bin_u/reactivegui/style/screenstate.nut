@@ -1,18 +1,19 @@
 local frp = require("std/frp.nut")
+local extWatched = require("reactiveGui/globals/extWatched.nut")
 
 local debugRowHeight = 14 /* Height of on-screen debug text (fps, build, etc) */
 
-local resolution = persist("resolution",
-  @() Watched(::cross_call.sysopt.getGuiValue("resolution", "1024 x 768")))
+local resolution = extWatched("resolution",
+  @() ::cross_call.sysopt.getGuiValue("resolution", "1024 x 768"))
 
-local mode = persist("mode",
-  @() Watched(::cross_call.sysopt.getGuiValue("mode", "fullscreen")))
+local mode = extWatched("screenMode",
+  @() ::cross_call.sysopt.getGuiValue("mode", "fullscreen"))
 
-local safeAreaHud = persist("safeAreaHud",
-  @() Watched(::cross_call.getHudSafearea() ?? [ 1.0, 1.0 ]))
+local safeAreaHud = extWatched("safeAreaHud",
+  @() ::cross_call.getHudSafearea() ?? [ 1.0, 1.0 ])
 
-local safeAreaMenu = persist("safeAreaMenu",
-  @() Watched(::cross_call.getMenuSafearea() ?? [ 1.0, 1.0 ]))
+local safeAreaMenu = extWatched("safeAreaMenu",
+  @() ::cross_call.getMenuSafearea() ?? [ 1.0, 1.0 ])
 
 local recalculateHudSize = function(safeArea) {
   local borders = [
@@ -37,31 +38,12 @@ frp.subscribe([resolution, mode], function(new_val){
   ::gui_scene.setInterval(0.5,
     function() {
       ::gui_scene.clearTimer(callee())
-      safeAreaHud(::cross_call.getHudSafearea() ?? [ 1.0, 1.0 ])
-      safeAreaMenu(::cross_call.getMenuSafearea() ?? [ 1.0, 1.0 ])
+      ::interop.updateExtWatched({
+        safeAreaHud = ::cross_call.getHudSafearea() ?? [ 1.0, 1.0 ]
+        safeAreaMenu = ::cross_call.getMenuSafearea() ?? [ 1.0, 1.0 ]
+      })
   })
 })
-
-::interop.updateSafeArea <- function (config = {}) {
-  local newSafeAreaHud = config?.safeAreaHud
-  if(newSafeAreaHud != null)
-    safeAreaHud.update(newSafeAreaHud)
-
-  local newSafeAreaMenu = config?.safeAreaMenu
-  if(newSafeAreaMenu != null)
-    safeAreaMenu.update(newSafeAreaMenu)
-}
-
-::interop.updateScreenOptions <- function (config = {}) {
-  local newResolution = config?.resolution
-  if(newResolution)
-    resolution.update(newResolution)
-
-  local newMode = config?.mode
-  if(newMode)
-    mode.update(newMode)
-}
-
 
 return {
   safeAreaSizeHud = safeAreaSizeHud

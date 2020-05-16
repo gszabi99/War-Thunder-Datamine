@@ -7,6 +7,7 @@ local encyclopedia = require("scripts/encyclopedia.nut")
 local { openChangelog } = require("scripts/changelog/openChangelog.nut")
 local openPersonalUnlocksModal = require("scripts/unlocks/personalUnlocksModal.nut")
 local { openUrlByObj } = require("scripts/onlineShop/url.nut")
+local openQrWindow = require("scripts/wndLib/qrWindow.nut")
 
 local cache = { byId = {} }
 
@@ -197,11 +198,17 @@ local list = {
   }
   STREAMS_AND_REPLAYS = {
     text = "#topmenu/streamsAndReplays"
-    onClickFunc = @(obj, handler) openUrlByObj(obj)
+    onClickFunc = @(obj, handler) ::has_feature("ShowUrlQrCode")
+      ? openQrWindow({
+          headerText = ::loc("topmenu/streamsAndReplays")
+          baseUrl = ::loc("url/streamsAndReplays")
+        })
+      : openUrlByObj(obj)
     isDelayed = false
     link = "#url/streamsAndReplays"
-    isLink = @() true
-    isHidden = @(...) !::has_feature("AllowExternalLink") || ::is_vendor_tencent()
+    isLink = @() !::has_feature("ShowUrlQrCode")
+    isHidden = @(...) (!::has_feature("AllowExternalLink") && !::has_feature("ShowUrlQrCode"))
+      || ::is_vendor_tencent() || !::isInMenu()
   }
   EAGLES = {
     text = "#charServer/chapter/eagles"
@@ -317,12 +324,18 @@ local list = {
   }
   SUPPORT = {
     text = "#mainmenu/support"
-    onClickFunc = @(obj, handler) openUrlByObj(obj)
+    onClickFunc = @(obj, handler) ::has_feature("ShowUrlQrCode")
+      ? openQrWindow({
+          headerText = ::loc("mainmenu/support")
+          baseUrl = ::loc("url/support")
+        })
+      : openUrlByObj(obj)
     isDelayed = false
     link = "#url/support"
-    isLink = @() true
-    isFeatured = @() true
-    isHidden = @(...) !::has_feature("AllowExternalLink") || ::is_vendor_tencent() || !::isInMenu()
+    isLink = @() !::has_feature("ShowUrlQrCode")
+    isFeatured = @() !::has_feature("ShowUrlQrCode")
+    isHidden = @(...) (!::has_feature("AllowExternalLink") && !::has_feature("ShowUrlQrCode"))
+      || ::is_vendor_tencent() || !::isInMenu()
   }
   WIKI = {
     text = "#mainmenu/wiki"

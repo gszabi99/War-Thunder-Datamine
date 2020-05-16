@@ -204,7 +204,7 @@ local function createMlwsTarget(index, colorStyle, width, height)
       pivot = [0.5, 0.5]
       translate = [
         targetOffsetX * width - radius,
-        targetOffsetY * width - radius
+        targetOffsetY * height - radius
       ]
     }
     halign = ALIGN_CENTER

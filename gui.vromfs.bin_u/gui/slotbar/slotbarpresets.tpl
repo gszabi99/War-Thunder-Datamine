@@ -33,7 +33,7 @@ gcButtonsHolder {
 
   Button_text {
     id:t='btn_slotbar_presets'
-    style:t='min-width:1@minPresetNameItemWidth; height:1@bottomMenuPanelHeight;'
+    style:t='height:1@bottomMenuPanelHeight;'
     tooltip:t='#shop/slotbarPresets/tooltip'
     on_click:t='onSlotsChoosePreset'
 

@@ -102,7 +102,7 @@
     "destroysTrees": true
   },
   {
-    "type": "typeMediumTank"
+    "type": "typeLightTank"
   },
   {
     "rearmSmokeTimeOnField": 60.0
@@ -1932,7 +1932,7 @@
             "ratio": 1.0
           },
           {
-            "ratio": 0.82
+            "ratio": 0.77
           }
         ]
       },
@@ -2459,6 +2459,15 @@
       },
       {
         "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -2482,9 +2491,9 @@
       "zoomInFov": 12.3,
       "sightFov": 7.0,
       "sightName": "strv_74_sight",
-      "headPos": [0.0,3.2,-7.7],
+      "headPos": [0.0,3.5,-8.0],
       "headPosOnShooting": [0.3,3.0,-0.25],
-      "detectionHeight": 2.05
+      "detectionHeight": 3.0
     }
   },
   {
@@ -2661,6 +2670,8 @@
       "tank_medical_kit_expendable": {
         "image": "#ui/gameuiskin#tank_reinforcement_sw"
       },
+      "airstrike": [],
+      "improved_optics": [],
       "tank_smoke_screen_system_mod": {
         "tier": 4,
         "modClass": "protection",
@@ -2804,7 +2815,7 @@
                   "triggerGroup": "smoke"
                 },
                 {
-                  "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_smoke_grenade_launcher.blk"
+                  "blk": "gameData/Weapons/groundModels_weapons/66mm_uk_smoke_grenade_launcher.blk"
                 },
                 {
                   "weaponType": "rockets"

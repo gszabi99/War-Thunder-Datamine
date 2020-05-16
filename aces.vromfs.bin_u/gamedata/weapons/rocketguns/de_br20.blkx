@@ -14,7 +14,7 @@
       "selfDestructionInAir": true
     },
     {
-      "maxDistance": 500.0
+      "maxDistance": 1500.0
     },
     {
       "caliber": 0.21
@@ -26,7 +26,43 @@
       "explosiveType": "fp60_40"
     },
     {
+      "normalizationPreset": "heat"
+    },
+    {
+      "ricochetPreset": "he"
+    },
+    {
+      "secondaryShattersPreset": "ap_rocket"
+    },
+    {
+      "stabilityThreshold": 0.05
+    },
+    {
+      "stabilityCaliberToArmorThreshold": 5.0
+    },
+    {
+      "stabilityReductionAfterRicochet": 0.5
+    },
+    {
+      "stabilityReductionAfterPenetration": 0.15
+    },
+    {
       "bulletType": "rocket_tank"
+    },
+    {
+      "slopeEffectPreset": "ap"
+    },
+    {
+      "modelName": "tank_bullet_he"
+    },
+    {
+      "fresnel": [0.23,0.1,2.0]
+    },
+    {
+      "explodeOnRendinst": true
+    },
+    {
+      "useEffectiveArmorThicknessForShatter": true
     },
     {
       "explosiveMass": 10.1
@@ -213,6 +249,19 @@
     },
     {
       "aiAccelPrediction": 0.5
+    },
+    {
+      "amountPerTier": 1.0
+    },
+    {
+      "iconType": "rockets_he_large"
+    },
+    {
+      "stabilityRicochetModifier": {
+        "mod1": [0.0,0.5],
+        "mod2": [20.0,0.6],
+        "mod3": [30.0,1.0]
+      }
     },
     {
       "collisions": {

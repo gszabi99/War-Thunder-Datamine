@@ -1,3 +1,5 @@
+local { calcPercent } = require("std/math.nut")
+
 local psnStore = require("ps4_api.store")
 local statsd = require("statsd")
 
@@ -114,6 +116,7 @@ local Ps4ShopPurchasableItem = class
 
   haveDiscount = @() !isBought && price != listPrice
   havePsPlusDiscount = @() ::ps4_has_psplus() && ("display_plus_upsell_price" in skuInfo || skuInfo?.is_plus_price) //use in markup
+  getDiscountPercent = @() calcPercent(1 - (price.tofloat() / listPrice))
 
   getPriceText = @() ::colorize(!haveDiscount() ? ""
       : havePsPlusDiscount() ? "psplusTextColor"

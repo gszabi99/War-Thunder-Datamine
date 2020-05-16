@@ -43,7 +43,17 @@
     "ballisticCaliber": 0.05,
     "speed": 3000.0,
     "maxDistance": 10000.0,
+    "normalizationPreset": "default",
+    "ricochetPreset": "apds_fs_long",
+    "secondaryShattersPreset": "apds_fs_long",
+    "stabilityThreshold": 0.0,
+    "stabilityCaliberToArmorThreshold": 10.0,
+    "stabilityReductionAfterRicochet": 0.1,
+    "stabilityReductionAfterPenetration": 0.05,
     "bulletType": "apds_fs_long_tank",
+    "slopeEffectPreset": "apds_fs_long",
+    "modelName": "tank_bullet_apdsfs_long",
+    "fresnel": [0.23,0.1,2.0],
     "hitPowerMult": 30000.0,
     "onHitChanceMultExplFuel": 0.1,
     "selfDestructionFx": "bullet_self_expl",
@@ -60,6 +70,23 @@
     "waterCollisionEffect": "120-203_water_splash",
     "waterFxScale": [0.8,1.0],
     "explosionPatchRadius": 1.5,
+    "stabilityRicochetModifier": [
+      {
+        "mod1": [0.0,0.25]
+      },
+      {
+        "mod2": [20.0,0.3]
+      },
+      {
+        "mod3": [30.0,0.45]
+      },
+      {
+        "mod3": [45.0,0.5]
+      },
+      {
+        "mod4": [50.0,0.7]
+      }
+    ],
     "proximityFuse": {
       "radius": 7.0,
       "armDistance": 10.0,

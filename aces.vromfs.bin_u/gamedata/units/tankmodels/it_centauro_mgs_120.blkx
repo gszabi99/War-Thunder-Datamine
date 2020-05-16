@@ -184,6 +184,20 @@
     ]
   },
   {
+    "sensors": [
+      {
+        "sensor": {
+          "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+        }
+      },
+      {
+        "sensor": {
+          "blk": "gameData/sensors/LaserWarningSensor.blk"
+        }
+      }
+    ]
+  },
+  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "RHA_tank",
@@ -2915,6 +2929,15 @@
       },
       {
         "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -2940,8 +2963,8 @@
       "sightName": "centauro",
       "openedCockpit": false,
       "headPos": [0.0,3.8,-8.8],
-      "headPosOnShooting": [-1.4,3.2,-0.6],
-      "detectionHeight": 2.42
+      "headPosOnShooting": [-1.4,3.4,-0.6],
+      "detectionHeight": 3.1
     }
   },
   {

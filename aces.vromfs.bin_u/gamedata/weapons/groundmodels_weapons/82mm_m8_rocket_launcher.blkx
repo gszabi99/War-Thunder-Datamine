@@ -17,7 +17,19 @@
     "antiShipRocket": true
   },
   "rocket": {
+    "normalizationPreset": "heat",
+    "ricochetPreset": "he",
+    "secondaryShattersPreset": "ap_rocket",
+    "stabilityThreshold": 0.05,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.5,
+    "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "rocket_tank",
+    "slopeEffectPreset": "ap",
+    "modelName": "tank_bullet_he",
+    "fresnel": [0.23,0.1,2.0],
+    "explodeOnRendinst": true,
+    "useEffectiveArmorThicknessForShatter": true,
     "bulletName": "82mm_m_8",
     "caliber": 0.082,
     "mass": 7.84,
@@ -74,6 +86,11 @@
     "speedViscosity": 0.05,
     "timeToLive": 20.0,
     "price": 3000.0,
+    "stabilityRicochetModifier": {
+      "mod1": [0.0,0.5],
+      "mod2": [20.0,0.6],
+      "mod3": [30.0,1.0]
+    },
     "collisions": {
       "steel": {
         "fx": "cannon_hit_armor_cumulative",

@@ -5,6 +5,7 @@
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
   "gearSinkRangeLR": 0.135,
   "gearSinkRangeC": 0.088,
+  "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
   "paratrooper": "ally",
   "advancedInstructor": true,
@@ -2029,8 +2030,9 @@
       "water_temperature1": [0.0,1000.0],
       "fuel_pressure": [0.0,15.0],
       "fuel": [0.0,1050.0],
-      "ammo_counter1": [100.0,0.0],
-      "ammo_counter3": [100.0,0.0]
+      "ammo_counter1": [90.0,0.0],
+      "ammo_counter2": [90.0,0.0],
+      "ammo_counter3": [90.0,0.0]
     },
     "parts_holes_dmg": {
       "part": "fuse"
@@ -2049,6 +2051,12 @@
         "part": "engine4"
       }
     ]
+  },
+  "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/su_srd-1.blk",
+      "dmPart": "radar_dm"
+    }
   },
   "commonWeapons": [
     {
@@ -2087,7 +2095,7 @@
         "dm": "cannon3_dm",
         "bullets": 70,
         "spread": 1.0,
-        "counterIndex": 3
+        "counterIndex": 2
       }
     }
   ],
@@ -2116,14 +2124,28 @@
       "preset": {
         "name": "mig_19s_s5k_rockets",
         "blk": "gameData/FlightModels/weaponPresets/mig_19s_s5k_rockets.blk",
-        "reqModification": "C5"
+        "reqModification": "C5",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/su_s_5k_rocket.blk",
+            "amountPerTier": 8.0,
+            "iconType": "nar_ap_middle"
+          }
+        }
       }
     },
     {
       "preset": {
         "name": "mig_19s_4xs5k_rockets",
         "blk": "gameData/FlightModels/weaponPresets/mig_19s_4xs5k_rockets.blk",
-        "reqModification": "C5"
+        "reqModification": "C5",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/su_s_5k_rocket.blk",
+            "amountPerTier": 8.0,
+            "iconType": "nar_ap_middle"
+          }
+        }
       }
     }
   ],

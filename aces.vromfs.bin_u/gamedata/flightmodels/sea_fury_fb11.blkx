@@ -2484,6 +2484,13 @@
         "blk": "gameData/FlightModels/weaponPresets/sea_fury_rockets.blk",
         "reqModification": "gloster_rc"
       }
+    },
+    {
+      "preset": {
+        "name": "triplex_rockets",
+        "blk": "gameData/FlightModels/weaponPresets/sea_fury_triplex_rockets.blk",
+        "reqModification": "triplex_rp"
+      }
     }
   ],
   "turbulence": {
@@ -2595,9 +2602,12 @@
     "hispano_air_targets": [],
     "hispano_tracers": [],
     "hispano_stealth": [],
-    "hispano_belt_pack": [],
+    "hispano_belt_pack": {
+      "tier": 1
+    },
     "hispano_mk5_new_gun": {
-      "reqModification": "hispano_belt_pack"
+      "reqModification": "hispano_belt_pack",
+      "tier": 3
     },
     "halker_sbc": {
       "modClass": "weapon",
@@ -2610,8 +2620,13 @@
     },
     "gloster_rc": {
       "modClass": "weapon",
-      "tier": 4,
+      "tier": 3,
       "reqModification": "halker_mbc"
+    },
+    "triplex_rp": {
+      "modClass": "weapon",
+      "tier": 4,
+      "reqModification": "gloster_rc"
     }
   },
   "user_skin": [

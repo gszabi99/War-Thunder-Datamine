@@ -842,6 +842,7 @@
         },
         "radar_02_dm": {
           "armorThickness": 5.0,
+          "dmgState": 0.0,
           "hp": 100.0
         }
       },
@@ -904,6 +905,22 @@
           "hp": 100.0
         }
       },
+      "turret_armor": {
+        "armorClass": "ship_structural_steel",
+        "fireParamsPreset": "ship_construction",
+        "fireProtectionHp": 5000.0,
+        "armorThickness": 15.0,
+        "turret_03_side_dm": {
+          "armorClass": "ship_Wsh",
+          "armorThickness": 6.35,
+          "hp": 250.0
+        },
+        "turret_03_front_dm": {
+          "armorClass": "ship_Wsh",
+          "armorThickness": 12.7,
+          "hp": 250.0
+        }
+      },
       "gun_masks": {
         "armorClass": "ship_structural_steel",
         "armorThickness": 5.0
@@ -916,16 +933,6 @@
           "hp": 250.0
         },
         "turret_02_dm": {
-          "hp": 250.0
-        },
-        "turret_03_side_dm": {
-          "armorClass": "ship_Wsh",
-          "armorThickness": 6.35,
-          "hp": 250.0
-        },
-        "turret_03_front_dm": {
-          "armorClass": "ship_Wsh",
-          "armorThickness": 12.7,
           "hp": 250.0
         }
       },
@@ -2374,7 +2381,6 @@
           "speedPitch": 55.0,
           "bullets": 2000,
           "useGunnerTargetingQuality": false,
-          "fireConeAngle": 1.0,
           "turret": {
             "head": "bone_mg_mount_h_02",
             "gun": "bone_mg_mount_v_02",
@@ -2449,7 +2455,6 @@
           "speedPitch": 55.0,
           "bullets": 2000,
           "useGunnerTargetingQuality": false,
-          "fireConeAngle": 1.0,
           "turret": {
             "head": "bone_mg_mount_h_02",
             "gun": "bone_mg_mount_v_02",
@@ -2524,7 +2529,6 @@
           "speedPitch": 55.0,
           "bullets": 2000,
           "useGunnerTargetingQuality": false,
-          "fireConeAngle": 1.0,
           "turret": {
             "head": "bone_mg_mount_h_01",
             "gun": "bone_mg_mount_v_01",
@@ -2598,7 +2602,6 @@
           "speedPitch": 55.0,
           "bullets": 2000,
           "useGunnerTargetingQuality": false,
-          "fireConeAngle": 1.0,
           "turret": {
             "head": "bone_mg_mount_h_01",
             "gun": "bone_mg_mount_v_01",
@@ -2677,8 +2680,8 @@
             "barrel": "gun_barrel_02",
             "gunnerDm": "auxiliary_caliber_turret_03_dm",
             "linkedAnimPart": {
-              "verNode": "bone_radius_foot",
-              "verLimits": [0.0,12.0],
+              "verNode": "bone_radius_foot_01",
+              "verLimits": [0.0,9.0],
               "verOriginLimits": [5.0,55.0]
             }
           },
@@ -3058,51 +3061,6 @@
             }
           }
         ]
-      },
-      {
-        "event": {
-          "name": "superstructure_back_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_front_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_top_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_bottom_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "superstructure_side_fire",
-          "fx": {
-            "name": "ship_fire_medium",
-            "centerDmgPart": true
-          }
-        }
       },
       {
         "event": {
@@ -3780,7 +3738,7 @@
     "breaches": {
       "repairSpeed": 20.0,
       "waterMassVel": -14000.0,
-      "waterMassMult": 50.0,
+      "waterMassMult": 40.0,
       "sizeToRepair": [0.01,2.0,10.0,300.0],
       "additionalWaterDeathThreshold": 360000.0,
       "additionalWaterShouldDiePercent": 0.45,

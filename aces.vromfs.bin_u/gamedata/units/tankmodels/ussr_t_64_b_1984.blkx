@@ -1636,6 +1636,15 @@
       },
       {
         "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -1936,9 +1945,11 @@
         "armorClass": "ERA_K_I",
         "kineticProtectionEquivalent": 5.0,
         "cumulativeProtectionEquivalent": 370.0,
+        "cumulativeEffectiveThicknessMax": 370.0,
         "hp": 250.0,
         "armorThickness": 70.0,
         "genericArmorQuality": 0.08,
+        "cumulativeArmorQuality": 10.0,
         "genericDamageMult": 3.0,
         "stopChanceOnDeadPart": 0.0,
         "hidableInViewer": true,
@@ -2602,6 +2613,7 @@
         "AdvancedMass": true,
         "trackMass": 1300.0,
         "cls_body": 0.8,
+        "cls_body_01": 0.8,
         "cls_turret": 0.5
       },
       "tracks": {
@@ -2614,6 +2626,7 @@
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
+        "cls_body_01": "convex_hull",
         "cls_body": "convex_hull"
       },
       "engine": {

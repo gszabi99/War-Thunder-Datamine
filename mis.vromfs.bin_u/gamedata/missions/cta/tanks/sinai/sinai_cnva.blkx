@@ -210,8 +210,6 @@
     "mission": {
       "level": "levels/avg_egypt_sinai.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
       "locName": "missions/_CnvA;sinai/name",
@@ -225,11 +223,13 @@
       "remapAiTankModels": true,
       "country_axis": "germany",
       "country_allies": "ussr",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": true,
         "isShipsAllowed": false,
-        "isHelicoptersAllowed": false
+        "isHelicoptersAllowed": true
       }
     },
     "spectator_points": [],
@@ -986,7 +986,7 @@
         [1.0,0.0,0.0],
         [0.0,1.0,0.0],
         [0.0,0.0,1.0],
-        [17.9734,632.3,698.23]
+        [242.389,632.3,698.23]
       ],
       "objLayer": 0,
       "props": []
@@ -2453,6 +2453,17 @@
       ],
       "objLayer": 0,
       "props": []
+    },
+    "cnv_battle_area": {
+      "type": "Box",
+      "tm": [
+        [4096.0,0.0,0.0],
+        [0.0,500.0,0.0],
+        [0.0,0.0,4096.0],
+        [2048.0,0.0,2048.0]
+      ],
+      "objLayer": 0,
+      "props": []
     }
   },
   "objLayers": [
@@ -2712,7 +2723,7 @@
   },
   "__viewPoints": {
     "viewpt_01": {
-      "pos": [890.546,634.757,1439.47],
+      "pos": [890.546,-476.0,1439.47],
       "ht": 2.5
     }
   }

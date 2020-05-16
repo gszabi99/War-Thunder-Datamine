@@ -32,9 +32,19 @@
     "explosiveType": "a_ix_2",
     "explosiveMass": 0.66,
     "caliber": 0.152,
-    "speed": 750.0,
+    "speed": 760.0,
     "maxDistance": 10000.0,
+    "normalizationPreset": "apbc",
+    "ricochetPreset": "apbc",
+    "secondaryShattersPreset": "ap",
+    "stabilityThreshold": 0.05,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.5,
+    "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "aphebc_tank",
+    "slopeEffectPreset": "apbc",
+    "modelName": "tank_bullet_aphebc",
+    "fresnel": [0.23,0.1,2.0],
     "bulletName": "152mm_br_540b",
     "relativeVelHitShift": [300.0,1000.0],
     "fuseDelayDist": 1.2,
@@ -44,12 +54,27 @@
     "waterCollisionEffect": "120-203_water_splash",
     "waterFxScale": [1.1,1.2],
     "explosionPatchRadius": 3.4,
+    "stabilityRicochetModifier": [
+      {
+        "mod1": [0.0,0.05]
+      },
+      {
+        "mod2": [20.0,0.1]
+      },
+      {
+        "mod3": [30.0,0.2]
+      },
+      {
+        "mod3": [45.0,0.3]
+      }
+    ],
     "hitpower": {
       "HitPower0m": [0.85,500.0],
       "HitPower10000m": [0.8,10000.0]
     },
     "damage": {
       "kinetic": {
+        "damageType": "generic",
         "demarrePenetrationK": 0.9,
         "demarreSpeedPow": 1.43,
         "demarreMassPow": 0.71,
@@ -167,20 +192,6 @@
         "fx": "75_122_ap_hit_snow_stone",
         "fxScale": [0.8,1.0]
       }
-    },
-    "armorpower": {
-      "ArmorPower0m": [232.0,10.0],
-      "ArmorPower100m": [229.0,100.0],
-      "ArmorPower250m": [226.0,250.0],
-      "ArmorPower500m": [220.0,500.0],
-      "ArmorPower750m": [213.0,750.0],
-      "ArmorPower1000m": [209.0,1000.0],
-      "ArmorPower1250m": [204.0,1250.0],
-      "ArmorPower1500m": [198.0,1500.0],
-      "ArmorPower2000m": [189.0,2000.0],
-      "ArmorPower2500m": [179.0,2500.0],
-      "ArmorPower3000m": [170.0,3000.0],
-      "ArmorPower10000m": [5.0,10000.0]
     }
   },
   "152mm_ussr_HE": {
@@ -192,7 +203,19 @@
       "caliber": 0.152,
       "speed": 750.0,
       "maxDistance": 10000.0,
+      "normalizationPreset": "heat",
+      "ricochetPreset": "he",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.4,
+      "stabilityCaliberToArmorThreshold": 10.0,
+      "stabilityReductionAfterRicochet": 0.45,
+      "stabilityReductionAfterPenetration": 1.0,
       "bulletType": "he_frag_tank",
+      "slopeEffectPreset": "ap",
+      "modelName": "tank_bullet_he",
+      "fresnel": [0.23,0.1,2.0],
+      "explodeOnRendinst": true,
+      "useEffectiveArmorThicknessForShatter": true,
       "bulletName": "152mm_of_540",
       "hitPowerMult": 50.0,
       "nearHitPower": [1.0,50.0],
@@ -207,6 +230,11 @@
       "waterCollisionEffect": "120-203_he_water_splash",
       "waterFxScale": [1.1,1.2],
       "explosionPatchRadius": 4.0,
+      "stabilityRicochetModifier": {
+        "mod1": [0.0,0.5],
+        "mod2": [20.0,0.6],
+        "mod3": [30.0,1.0]
+      },
       "visual": {
         "range_percent_of_ammo": [100.0,0.0],
         "traceFreq": 1,
@@ -327,9 +355,19 @@
       "explosiveType": "a_ix_2",
       "explosiveMass": 0.66,
       "caliber": 0.152,
-      "speed": 750.0,
+      "speed": 760.0,
       "maxDistance": 10000.0,
+      "normalizationPreset": "apbc",
+      "ricochetPreset": "apbc",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.05,
+      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "aphebc_tank",
+      "slopeEffectPreset": "apbc",
+      "modelName": "tank_bullet_aphebc",
+      "fresnel": [0.23,0.1,2.0],
       "bulletName": "152mm_br_540b",
       "relativeVelHitShift": [300.0,1000.0],
       "fuseDelayDist": 1.2,
@@ -339,12 +377,27 @@
       "waterCollisionEffect": "120-203_water_splash",
       "waterFxScale": [1.1,1.2],
       "explosionPatchRadius": 3.4,
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.05]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod3": [30.0,0.2]
+        },
+        {
+          "mod3": [45.0,0.3]
+        }
+      ],
       "hitpower": {
         "HitPower0m": [0.85,500.0],
         "HitPower10000m": [0.8,10000.0]
       },
       "damage": {
         "kinetic": {
+          "damageType": "generic",
           "demarrePenetrationK": 0.9,
           "demarreSpeedPow": 1.43,
           "demarreMassPow": 0.71,
@@ -462,20 +515,6 @@
           "fx": "75_122_ap_hit_snow_stone",
           "fxScale": [0.8,1.0]
         }
-      },
-      "armorpower": {
-        "ArmorPower0m": [232.0,10.0],
-        "ArmorPower100m": [229.0,100.0],
-        "ArmorPower250m": [226.0,250.0],
-        "ArmorPower500m": [220.0,500.0],
-        "ArmorPower750m": [213.0,750.0],
-        "ArmorPower1000m": [209.0,1000.0],
-        "ArmorPower1250m": [204.0,1250.0],
-        "ArmorPower1500m": [198.0,1500.0],
-        "ArmorPower2000m": [189.0,2000.0],
-        "ArmorPower2500m": [179.0,2500.0],
-        "ArmorPower3000m": [170.0,3000.0],
-        "ArmorPower10000m": [5.0,10000.0]
       }
     }
   },
@@ -488,7 +527,18 @@
       "caliber": 0.152,
       "speed": 770.0,
       "maxDistance": 7000.0,
+      "normalizationPreset": "heat",
+      "ricochetPreset": "heat",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.1,
+      "stabilityCaliberToArmorThreshold": 100.0,
+      "stabilityReductionAfterRicochet": 0.3,
+      "stabilityReductionAfterPenetration": 0.01,
       "bulletType": "heat_tank",
+      "cumulativeSecondaryShattersPreset": "heat_fs",
+      "explodeOnRendinst": true,
+      "modelName": "tank_bullet_heat",
+      "fresnel": [0.23,0.1,2.0],
       "bulletName": "152mm_bp_540",
       "onHitChanceMultExplFuel": 0.3,
       "relativeVelHitShift": [300.0,1000.0],
@@ -498,6 +548,10 @@
       "waterCollisionEffect": "120-203_he_water_splash",
       "waterFxScale": [1.1,1.2],
       "explosionPatchRadius": 4.0,
+      "stabilityRicochetModifier": {
+        "mod1": [0.0,0.0],
+        "mod2": [20.0,1.0]
+      },
       "hitpower": {
         "HitPower0m": [1.0,500.0],
         "HitPower1000m": [0.9,1000.0],

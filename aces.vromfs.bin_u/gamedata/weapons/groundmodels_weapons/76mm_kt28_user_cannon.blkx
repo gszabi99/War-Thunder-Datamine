@@ -34,7 +34,18 @@
     "caliber": 0.0762,
     "speed": 381.0,
     "maxDistance": 10000.0,
+    "normalizationPreset": "heat",
+    "ricochetPreset": "heat",
+    "secondaryShattersPreset": "ap",
+    "stabilityThreshold": 0.05,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.5,
+    "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "shrapnel_tank",
+    "slopeEffectPreset": "ap",
+    "modelName": "tank_bullet_shrapnel",
+    "fresnel": [0.23,0.1,2.0],
+    "explodeOnRendinst": true,
     "bulletName": "76mm_sh_353",
     "hitPowerMult": 100.0,
     "relativeVelHitShift": [300.0,1000.0],
@@ -59,6 +70,20 @@
     "waterCollisionEffect": "120-203_he_water_splash",
     "waterFxScale": [0.7,0.8],
     "explosionPatchRadius": 2.1,
+    "stabilityRicochetModifier": [
+      {
+        "mod1": [0.0,0.05]
+      },
+      {
+        "mod2": [20.0,0.1]
+      },
+      {
+        "mod3": [30.0,0.2]
+      },
+      {
+        "mod3": [45.0,0.3]
+      }
+    ],
     "hitpower": {
       "HitPower0m": [0.85,500.0],
       "HitPower10000m": [0.8,10000.0]
@@ -199,7 +224,18 @@
       "caliber": 0.0762,
       "speed": 381.0,
       "maxDistance": 10000.0,
+      "normalizationPreset": "heat",
+      "ricochetPreset": "heat",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.05,
+      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "shrapnel_tank",
+      "slopeEffectPreset": "ap",
+      "modelName": "tank_bullet_shrapnel",
+      "fresnel": [0.23,0.1,2.0],
+      "explodeOnRendinst": true,
       "bulletName": "76mm_sh_353",
       "hitPowerMult": 100.0,
       "relativeVelHitShift": [300.0,1000.0],
@@ -224,6 +260,20 @@
       "waterCollisionEffect": "120-203_he_water_splash",
       "waterFxScale": [0.7,0.8],
       "explosionPatchRadius": 2.1,
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.05]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod3": [30.0,0.2]
+        },
+        {
+          "mod3": [45.0,0.3]
+        }
+      ],
       "hitpower": {
         "HitPower0m": [0.85,500.0],
         "HitPower10000m": [0.8,10000.0]
@@ -365,7 +415,19 @@
       "caliber": 0.0762,
       "speed": 387.0,
       "maxDistance": 10000.0,
+      "normalizationPreset": "heat",
+      "ricochetPreset": "he",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.4,
+      "stabilityCaliberToArmorThreshold": 10.0,
+      "stabilityReductionAfterRicochet": 0.45,
+      "stabilityReductionAfterPenetration": 1.0,
       "bulletType": "he_frag_tank",
+      "slopeEffectPreset": "ap",
+      "modelName": "tank_bullet_he",
+      "fresnel": [0.23,0.1,2.0],
+      "explodeOnRendinst": true,
+      "useEffectiveArmorThicknessForShatter": true,
       "bulletName": "76mm_of_350m",
       "hitPowerMult": 2.0,
       "nearHitPower": [1.0,50.0],
@@ -380,6 +442,11 @@
       "waterCollisionEffect": "120-203_he_water_splash",
       "waterFxScale": [0.7,0.8],
       "explosionPatchRadius": 2.1,
+      "stabilityRicochetModifier": {
+        "mod1": [0.0,0.5],
+        "mod2": [20.0,0.6],
+        "mod3": [30.0,1.0]
+      },
       "visual": {
         "tracer": "noColor"
       },
@@ -501,7 +568,17 @@
       "speed": 370.0,
       "Cx": 0.38,
       "maxDistance": 10000.0,
+      "normalizationPreset": "apbc",
+      "ricochetPreset": "apbc",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.05,
+      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "aphebc_tank",
+      "slopeEffectPreset": "apbc",
+      "modelName": "tank_bullet_aphebc",
+      "fresnel": [0.23,0.1,2.0],
       "bulletName": "76mm_br_350a",
       "relativeVelHitShift": [300.0,1000.0],
       "fuseDelayDist": 1.2,
@@ -511,12 +588,27 @@
       "waterCollisionEffect": "120-203_water_splash",
       "waterFxScale": [0.7,0.8],
       "explosionPatchRadius": 1.8,
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.05]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod3": [30.0,0.2]
+        },
+        {
+          "mod3": [45.0,0.3]
+        }
+      ],
       "hitpower": {
         "HitPower0m": [0.85,500.0],
         "HitPower10000m": [0.8,10000.0]
       },
       "damage": {
         "kinetic": {
+          "damageType": "generic",
           "demarrePenetrationK": 0.9,
           "demarreSpeedPow": 1.43,
           "demarreMassPow": 0.71,

@@ -196,12 +196,6 @@ foreach (i, v in ::cssColorsMapDark)
   guiScene.performDelayed(getroottable(), ::update_msg_boxes)
 }
 
-::on_lost_controller <- function on_lost_controller()
-{
-  ::call_darg("updateHaveXinputDevice", ::have_xinput_device())
-  ::add_msg_box("cannot_session", ::loc("pl1/lostController"), [["ok", function() {}]], "ok")
-}
-
 ::on_cannot_create_session <- function on_cannot_create_session()
 {
   ::add_msg_box("cannot_session", ::loc("NET_CANNOT_CREATE_SESSION"), [["ok", function() {}]], "ok")

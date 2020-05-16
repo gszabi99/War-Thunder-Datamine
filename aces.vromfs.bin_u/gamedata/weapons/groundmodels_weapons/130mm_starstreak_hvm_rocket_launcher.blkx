@@ -109,7 +109,18 @@
   },
   {
     "bullet": {
+      "normalizationPreset": "heat",
+      "ricochetPreset": "he",
+      "secondaryShattersPreset": "ap_rocket",
+      "stabilityThreshold": 0.05,
+      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "sam_tank",
+      "slopeEffectPreset": "ap",
+      "modelName": "tank_bullet_he",
+      "fresnel": [0.23,0.1,2.0],
+      "explodeOnRendinst": true,
       "bulletName": "130mm_starstreak_hvm",
       "mass": 14.0,
       "caliber": 0.13,
@@ -118,11 +129,27 @@
       "sound": "atgm_LPC",
       "sound_inside": "atgm_LPC_interior",
       "recoilMultiplier": 0.05,
+      "stabilityRicochetModifier": {
+        "mod1": [0.0,0.5],
+        "mod2": [20.0,0.6],
+        "mod3": [30.0,1.0]
+      },
       "rocket": {
         "caliber": 0.13,
         "mass": 14.0,
         "explosiveMass": 1.2,
+        "normalizationPreset": "heat",
+        "ricochetPreset": "atgm",
+        "secondaryShattersPreset": "ap",
+        "stabilityThreshold": 0.1,
+        "stabilityCaliberToArmorThreshold": 100.0,
+        "stabilityReductionAfterRicochet": 0.3,
+        "stabilityReductionAfterPenetration": 0.01,
         "bulletType": "atgm_tank",
+        "cumulativeSecondaryShattersPreset": "atgm",
+        "explodeOnRendinst": true,
+        "modelName": "tank_bullet_heat_fs",
+        "fresnel": [0.23,0.1,2.0],
         "bulletName": "us_starstreak",
         "maxDeltaAngle": 0.03,
         "dragCx": 0.027,
@@ -141,6 +168,7 @@
         "massEnd1": 2.7,
         "thrustDeviation": 0.01,
         "operated": true,
+        "isBeamRider": true,
         "operatedDist": 7000.0,
         "autoLeveling": true,
         "autoAiming": true,
@@ -182,6 +210,8 @@
         "timeToLive": 14.0,
         "price": 3000.0,
         "mesh": "starstreak_hvm_rocket_deployed",
+        "amountPerTier": 2.0,
+        "iconType": "missile_air_to_air_group",
         "strikingPart": {
           "spinOffset": 0.5,
           "spinFreq": 3.0,
@@ -201,6 +231,7 @@
           "timeFire": 0.0,
           "thrustDeviation": 0.0,
           "operated": true,
+          "isBeamRider": true,
           "operatedDist": 9800.0,
           "autoLeveling": true,
           "autoAiming": true,
@@ -265,6 +296,17 @@
             "HitPower7000m": [0.9,7000.0]
           }
         },
+        "stabilityRicochetModifier": [
+          {
+            "mod1": [0.0,0.0]
+          },
+          {
+            "mod2": [20.0,0.1]
+          },
+          {
+            "mod2": [30.0,0.2]
+          }
+        ],
         "collisions": {
           "steel": {
             "fx": "cannon_hit_armor_cumulative",

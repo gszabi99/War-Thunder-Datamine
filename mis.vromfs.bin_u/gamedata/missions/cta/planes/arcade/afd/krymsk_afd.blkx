@@ -1,0 +1,1808 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 22.0
+    },
+    "player": [
+      {
+        "army": 1
+      },
+      {
+        "wing": "t1_player01"
+      },
+      {
+        "wing": "t1_player02"
+      },
+      {
+        "wing": "t1_player03"
+      },
+      {
+        "wing": "t1_player04"
+      },
+      {
+        "wing": "t1_player05"
+      },
+      {
+        "wing": "t1_player06"
+      },
+      {
+        "wing": "t1_player07"
+      },
+      {
+        "wing": "t1_player08"
+      },
+      {
+        "wing": "t1_player09"
+      },
+      {
+        "wing": "t1_player10"
+      },
+      {
+        "wing": "t1_player11"
+      },
+      {
+        "wing": "t1_player12"
+      },
+      {
+        "wing": "t1_player13"
+      },
+      {
+        "wing": "t1_player14"
+      },
+      {
+        "wing": "t1_player15"
+      },
+      {
+        "wing": "t1_player16"
+      }
+    ],
+    "player_teamB": [
+      {
+        "army": 2
+      },
+      {
+        "wing": "t2_player01"
+      },
+      {
+        "wing": "t2_player02"
+      },
+      {
+        "wing": "t2_player03"
+      },
+      {
+        "wing": "t2_player04"
+      },
+      {
+        "wing": "t2_player05"
+      },
+      {
+        "wing": "t2_player06"
+      },
+      {
+        "wing": "t2_player07"
+      },
+      {
+        "wing": "t2_player08"
+      },
+      {
+        "wing": "t2_player09"
+      },
+      {
+        "wing": "t2_player10"
+      },
+      {
+        "wing": "t2_player11"
+      },
+      {
+        "wing": "t2_player12"
+      },
+      {
+        "wing": "t2_player13"
+      },
+      {
+        "wing": "t2_player14"
+      },
+      {
+        "wing": "t2_player15"
+      },
+      {
+        "wing": "t2_player16"
+      },
+      {
+        "wing": "t2_player17"
+      }
+    ],
+    "mission": {
+      "level": "levels/krymsk.bin",
+      "type": "domination",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "hazy",
+      "scoreLimit": 14500,
+      "timeLimit": 20,
+      "deathPenaltyMul": 0.4,
+      "country_axis": "germany",
+      "country_allies": "ussr",
+      "locName": "missions/_AfD;location/krymsk",
+      "locDesc": "missions/_AfD/main/desc;missions/_AfD/with_ground;missions/_AfD/1zone",
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": true,
+        "isTanksAllowed": false,
+        "isShipsAllowed": false,
+        "isHelicoptersAllowed": false
+      }
+    },
+    "spectator_points": [
+      {
+        "spectatorPoint": "spectator_point_01"
+      },
+      {
+        "spectatorPoint": "spectator_point_02"
+      },
+      {
+        "spectatorPoint": "spectator_point_03"
+      },
+      {
+        "spectatorPoint": "spectator_point_04"
+      }
+    ],
+    "briefing": [
+      {
+        "place_loc": ""
+      },
+      {
+        "date_loc": ""
+      },
+      {
+        "objective_loc": ""
+      },
+      {
+        "music": "action_01"
+      },
+      {
+        "part": [
+          {
+            "event": ""
+          },
+          {
+            "minTime": 6
+          },
+          {
+            "slide": {
+              "map": false,
+              "minTime": 6,
+              "picture": "versus/airfield_domination_01",
+              "showAirMap": false
+            }
+          },
+          {
+            "slide": {
+              "map": false,
+              "minTime": 6,
+              "picture": "versus/airfield_domination_02",
+              "showAirMap": false
+            }
+          }
+        ]
+      },
+      {
+        "part": {
+          "event": "",
+          "minTime": 0,
+          "slide": [
+            {
+              "map": true
+            },
+            {
+              "minTime": 4
+            },
+            {
+              "picture": ""
+            },
+            {
+              "showAirMap": false
+            },
+            {
+              "icon": {
+                "icontype": "fighter",
+                "side": "ally",
+                "target": "t1_bombers_spawn",
+                "lookAt": "capture_zone01"
+              }
+            },
+            {
+              "icon": {
+                "icontype": "fighter",
+                "side": "enemy",
+                "target": "t2_bombers_spawn",
+                "lookAt": "capture_zone01"
+              }
+            },
+            {
+              "icon": {
+                "icontype": "basezone_A",
+                "side": "neutral",
+                "target": "capture_zone01"
+              }
+            },
+            {
+              "icon": {
+                "icontype": "tank",
+                "side": "ally",
+                "target": "t1_tanks_01"
+              }
+            },
+            {
+              "icon": {
+                "icontype": "tank",
+                "side": "enemy",
+                "target": "t2_tanks_01"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "imports": [
+    {
+      "import_record": {
+        "file": "gameData/missions/bridges/krymsk_bridges.blk",
+        "importAreas": false,
+        "importUnits": true,
+        "importTriggers": false,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": false,
+        "showUnits": true,
+        "showTriggers": false,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/land_units_death_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/land_units_move_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/base_logic_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/arcade_spawner.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    }
+  ],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "miss_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "triggerDisable": [
+            {
+              "target": "t1_all_land_destroyed"
+            },
+            {
+              "target": "t2_all_land_destroyed"
+            }
+          ]
+        },
+        {
+          "addAirfield": {
+            "runwayStart": "airfield_start",
+            "runwayEnd": "airfield_end",
+            "runwayWidth": 160.0,
+            "army": 0
+          }
+        },
+        {
+          "missionMarkAsCaptureZone": {
+            "army": 0,
+            "name_for_respawn_base": "",
+            "timeMultiplier": 0.14,
+            "disableZone": false,
+            "target": "capture_zone01",
+            "canCaptureOnGround": true,
+            "canCaptureInAir": false,
+            "canCaptureByGM": true,
+            "airfield": "airfield_start",
+            "createRespawnBaseFromAirfield": false,
+            "tags": {
+              "tank": false
+            }
+          }
+        },
+        {
+          "__missionMarkAsRespawnPoint": {
+            "loc_name": "missions/bombers_spawn",
+            "spawnEffect": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "radius": -1.0,
+            "isStrictSpawn": false,
+            "useExisting": false,
+            "removeAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "isIndividual": false,
+            "resetStrictSpawnIndex": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "target": "t1_bombers_spawn",
+            "team": "A",
+            "tags": {
+              "type_bomber": true,
+              "tank": false
+            }
+          }
+        },
+        {
+          "__missionMarkAsRespawnPoint": {
+            "loc_name": "missions/bombers_spawn",
+            "spawnEffect": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "radius": -1.0,
+            "isStrictSpawn": false,
+            "useExisting": false,
+            "removeAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "isIndividual": false,
+            "resetStrictSpawnIndex": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "target": "t2_bombers_spawn",
+            "team": "B",
+            "tags": {
+              "type_bomber": true,
+              "tank": false
+            }
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "t1_land_squad",
+            "team": "B"
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "t2_land_squad",
+            "team": "A"
+          }
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "t1_tanks_squad"
+            },
+            {
+              "object": "t2_tanks_squad"
+            },
+            {
+              "accuracy": 0.0
+            },
+            {
+              "effShootingRate": 0.0
+            }
+          ]
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "t1_aaa_squad"
+            },
+            {
+              "object": "t2_aaa_squad"
+            },
+            {
+              "accuracy": 0.6
+            },
+            {
+              "effShootingRate": 0.0
+            },
+            {
+              "airEffShootingRate": 0.6
+            }
+          ]
+        },
+        {
+          "wait": {
+            "time": 10.0
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "arcade_destroy_all"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "update_indicators": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "missionSetTargetsIndicator": {
+            "target_type": "isAlive",
+            "target_marking": 0,
+            "delta": 0,
+            "icon": "tank",
+            "icon army": 1,
+            "set": true,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "t1_land_squad"
+          }
+        },
+        {
+          "missionSetTargetsIndicator": {
+            "target_type": "isAlive",
+            "target_marking": 0,
+            "delta": 0,
+            "icon": "tank",
+            "icon army": 2,
+            "set": true,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "t2_land_squad"
+          }
+        }
+      ],
+      "else_actions": []
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true,
+    "arcade_capture_airfield": {
+      "is_enabled": true,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 18000,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "arcade_destroy_all": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    }
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "wheeled_vehicles": {
+        "name": "t1_tanks_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [5055.4,306.5,10763.9]
+        ],
+        "unit_class": "ussr_ba10",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 12,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [48.0,14.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t1_tanks_01_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [7210.05,271.9,10853.3]
+            ],
+            "props": {
+              "speed": 15.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_tanks_01_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [8206.0,211.5,10551.0]
+            ],
+            "props": {
+              "speed": 15.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "air_defence": {
+        "name": "t1_aaa_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [4331.35,296.35,10720.7]
+        ],
+        "unit_class": "ussr_zis5_20mm",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 6,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [20.0,10.0],
+          "formation_noise": [0.3,0.4],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t1_tanks_02_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [7210.05,271.9,10853.3]
+            ],
+            "props": {
+              "speed": 25.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_tanks_02_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [8206.0,211.5,10551.0]
+            ],
+            "props": {
+              "speed": 25.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "t2_tanks_01",
+        "tm": [
+          [-0.984808,0.0,0.173648],
+          [0.0,1.0,0.0],
+          [-0.173648,0.0,-0.984808],
+          [11455.0,306.5,11012.9]
+        ],
+        "unit_class": "ussr_ba10",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 12,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [48.0,14.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t1_tanks_02_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [9538.9,271.9,10945.2]
+            ],
+            "props": {
+              "speed": 15.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_tanks_02_wp_04": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [8412.0,211.5,11287.3]
+            ],
+            "props": {
+              "speed": 15.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "air_defence": {
+        "name": "t2_aaa_01",
+        "tm": [
+          [-0.984808,0.0,0.173648],
+          [0.0,1.0,0.0],
+          [-0.173648,0.0,-0.984808],
+          [11835.2,306.5,11010.9]
+        ],
+        "unit_class": "ussr_zis5_20mm",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 6,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [20.0,10.0],
+          "formation_noise": [0.3,0.4],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t2_tanks_02_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [9538.9,271.9,10945.2]
+            ],
+            "props": {
+              "speed": 25.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t2_tanks_02_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [8412.0,211.5,11287.3]
+            ],
+            "props": {
+              "speed": 25.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_land_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3938.35,274.1,11603.3]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_tanks_01"
+          },
+          {
+            "squad_members": "t1_aaa_01"
+          },
+          {
+            "squad_members": "t1_tanks_02"
+          },
+          {
+            "squad_members": "t1_aaa_02"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_land_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [13444.7,218.3,11089.9]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_tanks_01"
+          },
+          {
+            "squad_members": "t2_aaa_01"
+          },
+          {
+            "squad_members": "t2_tanks_02"
+          },
+          {
+            "squad_members": "t2_aaa_02"
+          }
+        ]
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "t1_tanks_02",
+        "tm": [
+          [0.707107,0.0,0.707107],
+          [0.0,1.0,0.0],
+          [-0.707107,0.0,0.707107],
+          [6317.05,306.5,8347.65]
+        ],
+        "unit_class": "ussr_ba10",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 12,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [48.0,14.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t1_tanks_02_wp_05": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [7336.55,271.9,9635.3]
+            ],
+            "props": {
+              "speed": 15.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_tanks_02_wp_06": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [8206.0,211.5,10551.0]
+            ],
+            "props": {
+              "speed": 15.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "air_defence": {
+        "name": "t1_aaa_02",
+        "tm": [
+          [0.793353,0.0,0.608761],
+          [0.0,1.0,0.0],
+          [-0.608761,0.0,0.793353],
+          [5988.75,296.35,7740.1]
+        ],
+        "unit_class": "ussr_zis5_20mm",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 6,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [20.0,10.0],
+          "formation_noise": [0.3,0.4],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t1_aaa_02_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [7223.9,271.9,9665.5]
+            ],
+            "props": {
+              "speed": 25.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_aaa_02_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [8206.0,211.5,10551.0]
+            ],
+            "props": {
+              "speed": 25.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "t2_tanks_02",
+        "tm": [
+          [-0.5373,0.0,-0.843392],
+          [0.0,1.0,0.0],
+          [0.843392,0.0,-0.5373],
+          [10183.4,306.5,13415.3]
+        ],
+        "unit_class": "ussr_ba10",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 12,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [48.0,14.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t2_tanks_02_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [9134.95,271.9,12079.0]
+            ],
+            "props": {
+              "speed": 15.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t2_tanks_02_wp_04": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [8412.0,211.5,11287.3]
+            ],
+            "props": {
+              "speed": 15.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "air_defence": {
+        "name": "t2_aaa_02",
+        "tm": [
+          [-0.5,0.0,-0.866026],
+          [0.0,1.0,0.0],
+          [0.866026,0.0,-0.5],
+          [10398.9,306.5,13803.2]
+        ],
+        "unit_class": "ussr_zis5_37mm",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 6,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [20.0,10.0],
+          "formation_noise": [0.3,0.4],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t2_aaa_02_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [9123.4,271.9,11949.7]
+            ],
+            "props": {
+              "speed": 25.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t2_aaa_02_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [8409.6,211.5,11294.3]
+            ],
+            "props": {
+              "speed": 25.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_movable_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [11821.0,374.3,11977.3]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_tanks_01"
+          },
+          {
+            "squad_members": "t2_aaa_01"
+          },
+          {
+            "squad_members": "t2_tanks_02"
+          },
+          {
+            "squad_members": "t2_aaa_02"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_movable_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [5081.3,1010.5,12897.6]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_tanks_01"
+          },
+          {
+            "squad_members": "t1_aaa_01"
+          },
+          {
+            "squad_members": "t1_tanks_02"
+          },
+          {
+            "squad_members": "t1_aaa_02"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_tanks_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-3658.0,416.55,4021.25]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_tanks_01"
+          },
+          {
+            "squad_members": "t1_tanks_02"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_tanks_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-2608.8,416.55,921.35]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_tanks_01"
+          },
+          {
+            "squad_members": "t2_tanks_02"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_aaa_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-4564.85,416.55,2733.3]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_aaa_01"
+          },
+          {
+            "squad_members": "t1_aaa_02"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_aaa_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1961.75,416.55,247.7]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_aaa_01"
+          },
+          {
+            "squad_members": "t2_aaa_02"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_heavy_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-4379.5,416.55,3967.55]
+        ],
+        "props": {
+          "squad_members": "t1_tanks_squad"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_heavy_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-4270.05,416.55,-392.95]
+        ],
+        "props": {
+          "squad_members": "t2_tanks_squad"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_light_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-3615.25,416.55,2911.35]
+        ],
+        "props": {
+          "squad_members": "t1_aaa_squad"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_light_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-3445.65,416.55,-1298.8]
+        ],
+        "props": {
+          "squad_members": "t2_aaa_squad"
+        }
+      }
+    },
+    {
+      "armada": {
+        "name": "t1_player01",
+        "tm": [
+          [-0.642788,0.0,-0.766044],
+          [0.0,1.0,0.0],
+          [0.766044,0.0,-0.642788],
+          [9369.55,1000.0,12508.3]
+        ],
+        "unit_class": "dummy_plane",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 1,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_quest_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [566.05,274.1,13858.8]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_tanks_01"
+          },
+          {
+            "squad_members": "t1_aaa_01"
+          },
+          {
+            "squad_members": "t1_tanks_02"
+          },
+          {
+            "squad_members": "t1_aaa_02"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_quest_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [16809.2,218.3,9452.6]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_tanks_01"
+          },
+          {
+            "squad_members": "t2_aaa_01"
+          },
+          {
+            "squad_members": "t2_tanks_02"
+          },
+          {
+            "squad_members": "t2_aaa_02"
+          }
+        ]
+      }
+    }
+  ],
+  "areas": {
+    "capture_zone01": {
+      "type": "Box",
+      "tm": [
+        [533.61,0.0,-266.805],
+        [0.0,200.04,0.0],
+        [550.0,0.0,1100.0],
+        [8351.9,188.35,10902.8]
+      ],
+      "props": []
+    },
+    "t2_fighters_spawn_far": {
+      "type": "Sphere",
+      "tm": [
+        [-271.892,0.0,-126.786],
+        [0.0,300.0,0.0],
+        [126.786,0.0,-271.892],
+        [15335.8,1000.0,13811.0]
+      ],
+      "props": []
+    },
+    "t1_fighters_spawn_far": {
+      "type": "Sphere",
+      "tm": [
+        [271.892,0.0,126.786],
+        [0.0,300.0,0.0],
+        [-126.786,0.0,271.892],
+        [1470.45,1000.0,8067.45]
+      ],
+      "props": []
+    },
+    "area01": {
+      "type": "Sphere",
+      "tm": [
+        [13858.2,0.0,5740.23],
+        [0.0,15000.0,0.0],
+        [-5740.23,0.0,13858.2],
+        [8399.55,1000.0,10936.3]
+      ],
+      "props": []
+    },
+    "airfield_end": {
+      "type": "Sphere",
+      "tm": [
+        [101.7,0.0,0.0],
+        [0.0,101.7,0.0],
+        [0.0,0.0,101.7],
+        [8152.2,211.5,10483.5]
+      ],
+      "props": []
+    },
+    "airfield_start": {
+      "type": "Sphere",
+      "tm": [
+        [101.7,0.0,0.0],
+        [0.0,101.7,0.0],
+        [0.0,0.0,101.7],
+        [8604.65,211.5,11313.4]
+      ],
+      "props": []
+    },
+    "t1_bombers_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [271.892,0.0,126.786],
+        [0.0,300.0,0.0],
+        [-126.786,0.0,271.892],
+        [696.85,3000.0,7344.3]
+      ],
+      "props": []
+    },
+    "t2_bombers_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [-543.784,0.0,-253.571],
+        [0.0,600.0,0.0],
+        [253.571,0.0,-543.784],
+        [16101.3,3000.0,14526.7]
+      ],
+      "props": []
+    },
+    "area03": {
+      "type": "Sphere",
+      "tm": [
+        [15407.2,0.0,7184.5],
+        [0.0,17000.0,0.0],
+        [-7184.5,0.0,15407.2],
+        [8399.56,3000.0,10936.3]
+      ],
+      "props": []
+    },
+    "area02": {
+      "type": "Sphere",
+      "tm": [
+        [11086.6,0.0,4592.19],
+        [0.0,12000.0,0.0],
+        [-4592.19,0.0,11086.6],
+        [8399.55,1000.0,10936.3]
+      ],
+      "props": []
+    },
+    "area04": {
+      "type": "Sphere",
+      "tm": [
+        [9238.8,0.0,3826.82],
+        [0.0,10000.0,0.0],
+        [-3826.82,0.0,9238.8],
+        [8399.55,1000.0,10936.3]
+      ],
+      "props": []
+    },
+    "t2_fighters_spawn_middle": {
+      "type": "Sphere",
+      "tm": [
+        [-271.892,0.0,-126.786],
+        [0.0,300.0,0.0],
+        [126.786,0.0,-271.892],
+        [13934.0,1000.0,13227.3]
+      ],
+      "props": []
+    },
+    "t2_fighters_spawn_near": {
+      "type": "Sphere",
+      "tm": [
+        [-271.892,0.0,-126.786],
+        [0.0,300.0,0.0],
+        [126.786,0.0,-271.892],
+        [13015.2,1000.0,12849.2]
+      ],
+      "props": []
+    },
+    "t1_fighters_spawn_middle": {
+      "type": "Sphere",
+      "tm": [
+        [271.892,0.0,126.786],
+        [0.0,300.0,0.0],
+        [-126.786,0.0,271.892],
+        [2857.4,1000.0,8640.7]
+      ],
+      "props": []
+    },
+    "t1_fighters_spawn_near": {
+      "type": "Sphere",
+      "tm": [
+        [271.892,0.0,126.786],
+        [0.0,300.0,0.0],
+        [-126.786,0.0,271.892],
+        [3791.45,1000.0,9026.8]
+      ],
+      "props": []
+    },
+    "spectator_point_01": {
+      "type": "Point",
+      "tm": [
+        [0.128543,-0.173648,0.976383],
+        [0.0226656,0.984808,0.172163],
+        [-0.991445,0.0,0.130526],
+        [7959.65,1170.7,6318.15]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "spectator_point_02": {
+      "type": "Point",
+      "tm": [
+        [0.939228,-0.173648,-0.296137],
+        [0.165611,0.984808,-0.052217],
+        [0.300706,0.0,0.953717],
+        [4026.4,1170.7,12254.5]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "spectator_point_03": {
+      "type": "Point",
+      "tm": [
+        [-0.336824,-0.173648,-0.925417],
+        [-0.0593912,0.984808,-0.163176],
+        [0.939693,0.0,-0.34202],
+        [9811.1,1170.7,15117.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "spectator_point_04": {
+      "type": "Point",
+      "tm": [
+        [-0.852869,-0.173648,0.492404],
+        [-0.150384,0.984808,0.0868241],
+        [-0.5,0.0,-0.866026],
+        [12394.8,1170.7,8796.5]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_assaults_spawn_near": {
+      "type": "Sphere",
+      "tm": [
+        [271.892,0.0,126.786],
+        [0.0,300.0,0.0],
+        [-126.786,0.0,271.892],
+        [3791.45,1500.0,9026.8]
+      ],
+      "props": []
+    },
+    "t1_assaults_spawn_middle": {
+      "type": "Sphere",
+      "tm": [
+        [271.892,0.0,126.786],
+        [0.0,300.0,0.0],
+        [-126.786,0.0,271.892],
+        [2857.4,1500.0,8640.7]
+      ],
+      "props": []
+    },
+    "t1_assaults_spawn_far": {
+      "type": "Sphere",
+      "tm": [
+        [271.892,0.0,126.786],
+        [0.0,300.0,0.0],
+        [-126.786,0.0,271.892],
+        [1470.45,1500.0,8067.45]
+      ],
+      "props": []
+    },
+    "t2_assaults_spawn_near": {
+      "type": "Sphere",
+      "tm": [
+        [-271.892,0.0,-126.786],
+        [0.0,300.0,0.0],
+        [126.786,0.0,-271.892],
+        [13015.2,1500.0,12849.2]
+      ],
+      "props": []
+    },
+    "t2_assaults_spawn_middle": {
+      "type": "Sphere",
+      "tm": [
+        [-271.892,0.0,-126.786],
+        [0.0,300.0,0.0],
+        [126.786,0.0,-271.892],
+        [13934.0,1500.0,13227.3]
+      ],
+      "props": []
+    },
+    "t2_assaults_spawn_far": {
+      "type": "Sphere",
+      "tm": [
+        [-271.892,0.0,-126.786],
+        [0.0,300.0,0.0],
+        [126.786,0.0,-271.892],
+        [15335.8,1500.0,13811.0]
+      ],
+      "props": []
+    },
+    "area05": {
+      "type": "Sphere",
+      "tm": [
+        [17553.7,0.0,7270.96],
+        [0.0,19000.0,0.0],
+        [-7270.96,0.0,17553.7],
+        [8399.55,1000.0,10936.3]
+      ],
+      "props": []
+    },
+    "t1_fighters_spawn_huge": {
+      "type": "Sphere",
+      "tm": [
+        [271.892,0.0,126.786],
+        [0.0,300.0,0.0],
+        [-126.786,0.0,271.892],
+        [-374.95,1000.0,7301.45]
+      ],
+      "props": []
+    },
+    "t1_assaults_spawn_huge": {
+      "type": "Sphere",
+      "tm": [
+        [271.892,0.0,126.786],
+        [0.0,300.0,0.0],
+        [-126.786,0.0,271.892],
+        [-374.95,1500.0,7301.45]
+      ],
+      "props": []
+    },
+    "t2_fighters_spawn_huge": {
+      "type": "Sphere",
+      "tm": [
+        [-271.892,0.0,-126.786],
+        [0.0,300.0,0.0],
+        [126.786,0.0,-271.892],
+        [17166.6,1000.0,14575.5]
+      ],
+      "props": []
+    },
+    "t2_assaults_spawn_huge": {
+      "type": "Sphere",
+      "tm": [
+        [-271.892,0.0,-126.786],
+        [0.0,300.0,0.0],
+        [126.786,0.0,-271.892],
+        [17166.6,1500.0,14575.5]
+      ],
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}

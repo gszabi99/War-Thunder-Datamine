@@ -1,10 +1,11 @@
 local colorCorrector = require_native("colorCorrector")
 local fonts = require_native("fonts")
-local screenInfo = ::require("scripts/options/screenInfo.nut")
+local screenInfo = require("scripts/options/screenInfo.nut")
 local safeAreaMenu = require("scripts/options/safeAreaMenu.nut")
 local safeAreaHud = require("scripts/options/safeAreaHud.nut")
 local gamepadIcons = require("scripts/controls/gamepadIcons.nut")
-local focusFrame = ::require("scripts/viewUtils/focusFrameWT.nut")
+local focusFrame = require("scripts/viewUtils/focusFrameWT.nut")
+local { setSceneActive } = require_native("reactiveGuiCommand")
 
 handlersManager[PERSISTENT_DATA_PARAMS].append("curControlsAllowMask", "isCurSceneBgBlurred")
 
@@ -113,7 +114,7 @@ handlersManager.updatePostLoadCss <- function updatePostLoadCss()
   {
     shouldResetFontsCache = true
     haveChanges = true
-    ::call_darg("updateFontParams", {
+    ::call_darg("updateExtWatched", {
       fontGenId = font.fontGenId
       fontSizePx = font.getFontSizePx(::screen_width(), ::screen_height())
     })
@@ -126,7 +127,7 @@ handlersManager.updatePostLoadCss <- function updatePostLoadCss()
     local safearea = safeAreaHud.getSafearea()
     ::set_dagui_pre_include_css_str(cssStringPre)
     ::set_hud_width_limit(safearea[0])
-    ::call_darg("updateSafeArea", {
+    ::call_darg("updateExtWatched", {
       safeAreaHud = safearea
       safeAreaMenu = safeAreaMenu.getSafearea()
     })
@@ -337,15 +338,18 @@ handlersManager._updateControlsAllowMask <- function _updateControlsAllowMask()
 handlersManager._updateWidgets <- function _updateWidgets()
 {
   local widgetsList = []
-
+  local hasActiveDargScene = false
   foreach(group in handlers)
     foreach(h in group)
       if (isHandlerValid(h, true) && h.isSceneActive() && h?.getWidgetsList)
       {
         local wList = h.getWidgetsList()
         widgetsList.extend(wList)
+        if (wList.len() > 0 && h.isSceneActiveNoModals())
+          hasActiveDargScene = true
       }
 
+  setSceneActive(hasActiveDargScene)
   ::call_darg("updateWidgets", widgetsList)
 }
 

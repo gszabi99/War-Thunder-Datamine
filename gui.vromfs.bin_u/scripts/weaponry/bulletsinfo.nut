@@ -4,8 +4,14 @@ local { WEAPON_TYPE,
 local { AMMO,
         getAmmoAmountData } = require("scripts/weaponry/ammoInfo.nut")
 
-local bulletIcons = {}
+local BULLET_TYPE = {
+  ROCKET_AIR     = "rocket_aircraft"
+  AAM            = "aam"
+  TORPEDO        = "torpedo"
+  ATGM_TANK      = "atgm_tank"
+}
 
+local bulletIcons = {}
 local bulletAspectRatio = {}
 
 local bulletsFeaturesImg = [
@@ -271,7 +277,7 @@ local function getBulletsSetData(air, modifName, noModList = null)
         else if (rocket?.smokeShell == false)
            weaponType = WEAPON_TYPE.FLARES
         else if (rocket?.operated || rocket?.guidanceType)
-          weaponType = (rocket?.bulletType == "atgm_tank") ? WEAPON_TYPE.AGM : WEAPON_TYPE.AAM
+          weaponType = (rocket?.bulletType == BULLET_TYPE.ATGM_TANK) ? WEAPON_TYPE.AGM : WEAPON_TYPE.AAM
         else
           weaponType = WEAPON_TYPE.ROCKETS
       }
@@ -1434,6 +1440,7 @@ local function addBulletsParamToDesc(descTbl, unit, item)
 }
 
 return {
+  BULLET_TYPE                           = BULLET_TYPE
   getModificationBulletsGroup           = getModificationBulletsGroup
   isFakeBullet                          = isFakeBullet
   setUnitLastBullets                    = setUnitLastBullets
