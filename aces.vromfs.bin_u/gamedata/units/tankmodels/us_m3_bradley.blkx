@@ -111,7 +111,7 @@
     "type": "typeLightTank"
   },
   {
-    "cruiseVelocity": 5.0
+    "cruiseVelocity": 10.0
   },
   {
     "rearmSmokeTimeOnField": 60.0
@@ -309,14 +309,10 @@
         "armorThickness": 4.0,
         "stopChanceOnDeadPart": 0.0,
         "createSecondaryShatters": false,
-        "ex_decor_r_02_dm": [],
-        "ex_decor_02_dm": [],
-        "ex_decor_03_dm": [],
-        "ex_decor_r_04_dm": [],
-        "ex_decor_l_07_dm": [],
         "ex_decor_l_09_dm": [],
-        "ex_decor_l_13_dm": [],
-        "ex_decor_r_13_dm": []
+        "ex_decor_r_04_dm": [],
+        "ex_decor_02_dm": [],
+        "ex_decor_03_dm": []
       },
       "body_shields": {
         "hp": 600.0,
@@ -1971,11 +1967,6 @@
             "yaw": [-180.0,180.0],
             "pitch": [-9.0,59.0]
           },
-          "limitsTable": {
-            "lim1": [-180.0,-150.0,-1.0,59.0],
-            "lim2": [-150.0,150.0,-9.0,59.0],
-            "lim3": [150.0,180.0,-1.0,59.0]
-          },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": false,
             "hasHorizontal": true,
@@ -2107,7 +2098,7 @@
           "stopForFire": true,
           "readyToFireVar": "m3_bradley_action",
           "readyToFireTime": 5.0,
-          "maxSpeedForFire": 5.0,
+          "maxSpeedForFire": 12.0,
           "lagStopForFireTime": 2.0,
           "barrelDP": "gun_barrel_02_dm",
           "brokenBarrelAllowShoot": false,
@@ -2143,11 +2134,6 @@
           "limits": {
             "yaw": [0.0,0.0],
             "pitch": [-19.0,29.0]
-          },
-          "limitsTable": {
-            "lim1": [-180.0,-140.0,-13.0,29.0],
-            "lim2": [-140.0,140.0,-19.0,29.0],
-            "lim3": [140.0,180.0,-13.0,29.0]
           }
         }
       }
@@ -2748,15 +2734,6 @@
       },
       {
         "event": {
-          "name": "fuel_exterior",
-          "fx": {
-            "name": "tank_ex_fuel_explosion",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -2886,11 +2863,6 @@
                 "limits": {
                   "yaw": [-180.0,180.0],
                   "pitch": [-9.0,59.0]
-                },
-                "limitsTable": {
-                  "lim1": [-180.0,-150.0,-1.0,59.0],
-                  "lim2": [-150.0,150.0,-9.0,59.0],
-                  "lim3": [150.0,180.0,-1.0,59.0]
                 },
                 "gunStabilizer": {
                   "hasVerticalGunFreeMode": false,
@@ -3023,7 +2995,7 @@
                 "stopForFire": true,
                 "readyToFireVar": "m3_bradley_action",
                 "readyToFireTime": 5.0,
-                "maxSpeedForFire": 5.0,
+                "maxSpeedForFire": 12.0,
                 "lagStopForFireTime": 2.0,
                 "barrelDP": "gun_barrel_02_dm",
                 "brokenBarrelAllowShoot": false,
@@ -3059,11 +3031,6 @@
                 "limits": {
                   "yaw": [0.0,0.0],
                   "pitch": [-19.0,29.0]
-                },
-                "limitsTable": {
-                  "lim1": [-180.0,-140.0,-13.0,29.0],
-                  "lim2": [-140.0,140.0,-19.0,29.0],
-                  "lim3": [140.0,180.0,-13.0,29.0]
                 }
               }
             },

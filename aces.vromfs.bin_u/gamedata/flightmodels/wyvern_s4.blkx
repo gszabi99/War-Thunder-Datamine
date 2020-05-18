@@ -2608,13 +2608,6 @@
           "reqModification": "gloster_rc_add"
         }
       ]
-    },
-    {
-      "preset": {
-        "name": "wyvern_s4_redangel",
-        "blk": "gameData/FlightModels/weaponPresets/wyvern_s4_redangel.blk",
-        "reqModification": "red_angel"
-      }
     }
   ],
   "jetwash": {
@@ -2698,45 +2691,38 @@
     "hispano_air_targets": [],
     "hispano_tracers": [],
     "hispano_stealth": [],
-    "hispano_belt_pack": {
-      "tier": 1
-    },
+    "hispano_belt_pack": [],
     "hispano_mk5_new_gun": {
-      "reqModification": "hispano_belt_pack",
-      "tier": 3
+      "reqModification": "hispano_belt_pack"
     },
     "halker_mbc": {
       "modClass": "weapon",
-      "tier": 2
+      "tier": 1
     },
     "blackburn_tc": {
       "modClass": "weapon",
-      "tier": 3,
+      "tier": 1,
       "reqModification": "halker_mbc"
     },
     "halker_lbc": {
       "modClass": "weapon",
-      "tier": 4,
-      "reqModification": "blackburn_tc"
+      "tier": 2,
+      "reqModification": "halker_mbc"
     },
     "halker_rc": {
       "modClass": "weapon",
-      "tier": 1
+      "tier": 3,
+      "reqModification": "halker_lbc"
     },
     "gloster_rc": {
       "modClass": "weapon",
-      "tier": 2,
+      "tier": 4,
       "reqModification": "halker_rc"
     },
     "gloster_rc_add": {
       "modClass": "weapon",
-      "tier": 3,
-      "reqModification": "gloster_rc"
-    },
-    "red_angel": {
-      "modClass": "weapon",
       "tier": 4,
-      "reqModification": "gloster_rc_add"
+      "reqModification": "gloster_rc"
     }
   },
   "user_skin": [

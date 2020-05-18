@@ -1,6 +1,3 @@
-local globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
-local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
-
 ::g_unlock_view <- {
   function fillSimplifiedUnlockInfo(unlockBlk, unlockObj, context) {
     local isShowUnlock = unlockBlk != null && ::is_unlock_visible(unlockBlk)
@@ -33,170 +30,6 @@ local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
       ::UnlockConditions.getConditionsText(unlockConfig.conditions,
         unlockConfig.showProgress ? unlockConfig.curVal : null, unlockConfig.maxVal)
     ], true)
-  }
-
-  function getUnlockImageConfig(unlockConfig)
-  {
-    local unlockType = getUnlockType(unlockConfig)
-    local iconStyle = unlockConfig?.iconStyle ?? ""
-    local image = unlockConfig?.image ?? ""
-
-    if (iconStyle=="" && image=="")
-    {
-      local isUnlocked = ::is_unlocked_scripted(unlockType, unlockConfig.id)
-      iconStyle = (isUnlocked? "default_unlocked" : "default_locked") +
-          ((isUnlocked || unlockConfig.curStage < 1)? "" : "_stage_" + unlockConfig.curStage)
-    }
-
-    return {
-      style = iconStyle
-      image = unlockType == ::UNLOCKABLE_PILOT? unlockConfig.descrImage : image
-      ratio = unlockConfig?.imgRatio ?? 1.0
-      params = unlockConfig?.iconParams
-    }
-  }
-
-  function fillUnlockImage(unlockConfig, unlockObj)
-  {
-    local imgConfig = getUnlockImageConfig(unlockConfig)
-
-    local iconObj = unlockObj.findObject("achivment_ico")
-
-    local unlockType = getUnlockType(unlockConfig)
-    local isUnlocked = ::is_unlocked_scripted(unlockType, unlockConfig.id)
-    iconObj.decal_locked = (!isUnlocked && (unlockType == ::UNLOCKABLE_DECAL || unlockType == ::UNLOCKABLE_MEDAL) ) ? "yes" : "no"
-    iconObj.achievement_locked = (!isUnlocked && unlockConfig.curStage <= 0 &&
-        unlockType != ::UNLOCKABLE_MEDAL && unlockType != ::UNLOCKABLE_DECAL) ? "yes" : "no"
-
-    ::LayersIcon.replaceIcon(
-      iconObj,
-      imgConfig.style,
-      imgConfig.image,
-      imgConfig.ratio,
-      null/*defStyle*/,
-      imgConfig.params
-    )
-  }
-
-  function getUnitActionButtonsView(unit) {
-    if ((unit.isInShop ?? false) == false)
-      return []
-
-    local gcb = globalCallbacks.UNIT_PREVIEW
-    return [{
-      image = "#ui/gameuiskin#btn_preview.svg"
-      tooltip = "#mainmenu/btnPreview"
-      funcName = gcb.cbName
-      actionParamsMarkup = gcb.getParamsMarkup({ unitId = unit.name })
-    }]
-  }
-
-  function getUnitViewDataItem(unlockConfig) {
-    local unit = ::getAircraftByName(unlockConfig.id)
-    if (!unit)
-      return null
-
-    local isBought = unit.isBought()
-    local buttons = getUnitActionButtonsView(unit)
-    local receiveOnce = "mainmenu/receiveOnlyOnce"
-
-    local unitPlate = ::build_aircraft_item(unit.name, unit, {
-      hasActions = true,
-      status = isBought ? "locked" : "canBuy",
-      isLocalState = true
-      showAsTrophyContent = true
-      tooltipParams = {
-        showLocalState = true
-      }
-    })
-
-    return {
-      shopItemType = getUnitRole(unit)
-      unitPlate = unitPlate
-      classIco = ::getUnitClassIco(unit)
-      commentText = isBought? ::colorize("badTextColor", ::loc(receiveOnce)) : null
-      buttons = buttons
-      buttonsCount = buttons.len()
-    }
-  }
-
-  function getUnlockType(unlockConfig) {
-    return unlockConfig?.unlockType ?? unlockConfig?.type ?? -1
-  }
-
-  function getDecoratorActionButtonsView(decorator, decoratorType) {
-    if (!decorator.canPreview())
-      return []
-
-    local gcb = globalCallbacks.DECORATOR_PREVIEW
-    return [{
-      image = "#ui/gameuiskin#btn_preview.svg"
-      tooltip = "#mainmenu/btnPreview"
-      funcName = gcb.cbName
-      actionParamsMarkup = gcb.getParamsMarkup({
-        resource = decorator.id,
-        resourceType = decoratorType.resourceType
-      })
-    }]
-  }
-
-  function getDecoratorViewDataItem(unlockConfig) {
-    local unlockType = getUnlockType(unlockConfig)
-    local decoratorType = ::g_decorator_type.getTypeByUnlockedItemType(unlockType)
-    local decorator = ::g_decorator.getDecorator(unlockConfig.id, decoratorType)
-    local nameColor = decorator ? decorator.getRarityColor() : "activeTextColor"
-    local isHave = decoratorType.isPlayerHaveDecorator(unlockConfig.id)
-    local buttons = getDecoratorActionButtonsView(decorator, decoratorType)
-    local locName = decoratorType.getLocName(unlockConfig.id, true)
-
-    return {
-      icon = decoratorType.prizeTypeIcon
-      title = ::colorize(nameColor, locName)
-      tooltipId = ::g_tooltip.getIdDecorator(decorator.id, decoratorType.unlockedItemType)
-      commentText = isHave ? ::colorize("badTextColor", ::loc("mainmenu/receiveOnlyOnce")) : null
-      buttons = buttons
-    }
-  }
-
-  function getPilotViewDataItem(unlockConfig) {
-    return {
-      title = ::loc("trophy/unlockables_names/gamerpic")
-      previewImage = "cardAvatar { value:t='" + unlockConfig.id +"'}"
-    }
-  }
-
-  function getViewDataItem(unlockConfig) {
-    local unlockType = getUnlockType(unlockConfig)
-    if (unlockType == ::UNLOCKABLE_AIRCRAFT)
-      return getUnitViewDataItem(unlockConfig)
-
-    if (unlockType == ::UNLOCKABLE_DECAL
-      || unlockType == ::UNLOCKABLE_SKIN
-      || unlockType == ::UNLOCKABLE_ATTACHABLE)
-      return getDecoratorViewDataItem(unlockConfig)
-
-    if (unlockType == ::UNLOCKABLE_PILOT)
-      return getPilotViewDataItem(unlockConfig)
-
-    local icon = "#ui/gameuiskin#item_type_placeholder"
-    local title = unlockConfig.name
-
-    if (unlockType == ::UNLOCKABLE_TITLE)
-    {
-      icon = "#ui/gameuiskin#item_type_unlock"
-      title = ::format(::loc("reward/title"), title)
-    }
-
-    return {
-      icon = icon
-      title = title
-    }
-  }
-
-  function getViewItem(unlockConfig, params = {}) {
-    local view = params
-    view.list <- [getViewDataItem(unlockConfig)]
-    return ::handyman.renderCached("gui/items/trophyDesc", view)
   }
 }
 
@@ -262,6 +95,34 @@ g_unlock_view.fillUnlockProgressBar <- function fillUnlockProgressBar(unlockConf
 g_unlock_view.fillUnlockDescription <- function fillUnlockDescription(unlockConfig, unlockObj)
 {
   unlockObj.findObject("description").setValue(getUnlockDescription(unlockConfig))
+}
+
+g_unlock_view.fillUnlockImage <- function fillUnlockImage(unlockConfig, unlockObj)
+{
+  local unlockType = unlockConfig.unlockType
+  local isUnlocked = ::is_unlocked_scripted(-1, unlockConfig.id)
+  local iconObj = unlockObj.findObject("achivment_ico")
+  iconObj.decal_locked = (!isUnlocked && (unlockType == ::UNLOCKABLE_DECAL || unlockType == ::UNLOCKABLE_MEDAL) ) ? "yes" : "no"
+  iconObj.achievement_locked = (!isUnlocked && unlockConfig.curStage <= 0 &&
+      unlockType != ::UNLOCKABLE_MEDAL && unlockType != ::UNLOCKABLE_DECAL) ? "yes" : "no"
+
+  local iconStyle = unlockConfig.iconStyle
+  local image = unlockConfig.image
+
+  if (iconStyle=="" && image=="")
+  {
+    iconStyle = (isUnlocked? "default_unlocked" : "default_locked") +
+        ((isUnlocked || unlockConfig.curStage < 1)? "" : "_stage_" + unlockConfig.curStage)
+  }
+
+  ::LayersIcon.replaceIcon(
+    iconObj,
+    iconStyle,
+    image,
+    unlockConfig.imgRatio,
+    null/*defStyle*/,
+    unlockConfig.iconParams
+  )
 }
 
 g_unlock_view.fillReward <- function fillReward(unlockConfig, unlockObj)

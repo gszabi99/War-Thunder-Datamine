@@ -222,11 +222,6 @@ return [
     needShowInHelp = true
   }
   {
-    id = "ID_AGM_LOCK_HELICOPTER"
-    checkGroup = ctrlGroups.HELICOPTER
-    needShowInHelp = true
-  }
-  {
     id = "ID_TOGGLE_LASER_DESIGNATOR_HELICOPTER"
     checkGroup = ctrlGroups.HELICOPTER
     checkAssign = false

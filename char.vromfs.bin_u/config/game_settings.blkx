@@ -488,21 +488,6 @@
                 "unit": "il-2m"
               }
             ]
-          },
-          "mi_4av": {
-            "name": "mainmenu/type_helicopter",
-            "defaultUnit": "mi_4av",
-            "unitList": [
-              {
-                "unit": "mi_4av"
-              },
-              {
-                "unit": "mi_24a"
-              },
-              {
-                "unit": "mi_24v"
-              }
-            ]
           }
         },
         "country_germany": {
@@ -641,21 +626,6 @@
               },
               {
                 "unit": "ju-87d-5"
-              }
-            ]
-          },
-          "sa_313b": {
-            "name": "mainmenu/type_helicopter",
-            "defaultUnit": "sa_313b",
-            "unitList": [
-              {
-                "unit": "sa_313b"
-              },
-              {
-                "unit": "uh_1d"
-              },
-              {
-                "unit": "bo_105pah1"
               }
             ]
           }
@@ -2288,17 +2258,6 @@
     "ItalyTanksInFirstCountryChoice": {
       "condition": ""
     },
-    "ItalyShipsInFirstCountryChoice": [
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      },
-      {
-        "condition": "role_ALPHA_TESTER"
-      }
-    ],
     "FranceAircraftsInFirstCountryChoice": {
       "condition": ""
     },
@@ -2316,9 +2275,17 @@
     "SwedenAircraftsInFirstCountryChoice": {
       "condition": ""
     },
-    "SwedenTanksInFirstCountryChoice": {
-      "condition": ""
-    },
+    "SwedenTanksInFirstCountryChoice": [
+      {
+        "condition": "role_DEVELOPER"
+      },
+      {
+        "condition": "role_TESTER"
+      },
+      {
+        "condition": "role_ALPHA_TESTER"
+      }
+    ],
     "Helicopters": [
       {
         "condition": "role_GAIJIN"
@@ -2498,28 +2465,6 @@
     "ConstantlyComputedWeaponSight": {
       "condition": ""
     },
-    "PointOfInterestDesignator": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
-    "AircraftExtinguisher": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
     "ShowDamageReport": [
       {
         "condition": "role_GAIJIN"
@@ -3285,10 +3230,7 @@
     "SwedenAircraftUnlocked": {
       "condition": ""
     },
-    "SwedenTankUnlocked": {
-      "condition": ""
-    },
-    "ItalyShipsUnlocked": [
+    "SwedenTankUnlocked": [
       {
         "condition": "role_GAIJIN"
       },
@@ -3302,7 +3244,7 @@
         "condition": "role_ALPHA_TESTER"
       },
       {
-        "condition": "wt_access_italy_ships_unlocks"
+        "condition": "wt_access_sweden_tanks_unlocks"
       }
     ],
     "CountryChina": {
@@ -3668,21 +3610,6 @@
         "condition": "role_ALPHA_TESTER"
       }
     ],
-    "WheelmenuCustomAxis": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      },
-      {
-        "condition": "role_ALPHA_TESTER"
-      }
-    ],
-    "ShowWeapPresetsMenu": [],
     "PS4SeparateLeaderboards": [
       {
         "condition": "role_GAIJIN"
@@ -3696,20 +3623,6 @@
     ],
     "nonPayingUser": {
       "condition": "!customerAccount"
-    },
-    "Changelog": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
-    "ShowUrlQrCode": {
-      "condition": "xboxOneAccess"
     }
   }
 }

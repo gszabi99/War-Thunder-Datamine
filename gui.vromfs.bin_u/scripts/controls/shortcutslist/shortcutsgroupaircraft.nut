@@ -208,11 +208,6 @@ return [
     checkAssign = false
     showFunc = @() ::has_feature("ConstantlyComputedWeaponSight")
   }
-  {
-    id = "ID_SWITCH_REGISTERED_BOMB_TARGETING_POINT"
-    checkAssign = false
-    showFunc = @() ::has_feature("ConstantlyComputedWeaponSight")
-  }
 //-------------------------------------------------------
   {
     id = "ID_PLANE_AXES_HEADER"

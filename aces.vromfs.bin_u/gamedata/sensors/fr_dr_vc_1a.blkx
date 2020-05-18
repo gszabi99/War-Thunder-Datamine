@@ -519,44 +519,20 @@
     "standbyOrSearch": {
       "stateInit": "init",
       "actionsTemplates": {
-        "setStandbyMode": {
-          "setModeName": {
-            "name": "standby"
-          },
-          "setEnabled": {
-            "value": false
-          },
-          "clearTargets": [],
-          "clearTargetsOfInterest": [],
-          "setScanPattern": {
-            "scanPattern": "search"
-          },
-          "setCenterElevation": {
-            "source": "constant",
-            "value": 22.5
-          }
-        },
-        "setSearchMode": [
+        "setStandbyMode": [
           {
             "setModeName": {
-              "name": "search"
+              "name": "standby"
             }
           },
           {
             "setEnabled": {
-              "value": true
+              "value": false
             }
           },
           {
-            "setCenterAzimuth": {
-              "source": "constant",
-              "value": 0.0
-            }
-          },
-          {
-            "setFsmActive": {
-              "fsm": "search",
-              "active": true
+            "setEnabled": {
+              "value": false
             }
           },
           {
@@ -564,11 +540,6 @@
           },
           {
             "clearTargetsOfInterest": []
-          },
-          {
-            "setTransiver": {
-              "transiver": "search"
-            }
           },
           {
             "setScanPattern": {
@@ -580,19 +551,36 @@
               "source": "constant",
               "value": 22.5
             }
-          },
-          {
-            "setCenterAzimuth": {
-              "source": "body"
-            }
-          },
-          {
-            "setScanDirectionPhase": {
-              "azimuth": -180.0,
-              "elevation": 0.0
-            }
           }
         ],
+        "setSearchMode": {
+          "setModeName": {
+            "name": "search"
+          },
+          "setEnabled": {
+            "value": true
+          },
+          "setCenterAzimuth": {
+            "source": "constant",
+            "value": 0.0
+          },
+          "setFsmActive": {
+            "fsm": "search",
+            "active": true
+          },
+          "clearTargets": [],
+          "clearTargetsOfInterest": [],
+          "setTransiver": {
+            "transiver": "search"
+          },
+          "setScanPattern": {
+            "scanPattern": "search"
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": 22.5
+          }
+        },
         "resetSearchMode": {
           "setFsmActive": {
             "fsm": "search",
@@ -618,12 +606,21 @@
             "setSearchMode": []
           }
         },
+        "switchToStandby": {
+          "stateFrom": "search",
+          "command": "switch",
+          "event": "disable",
+          "stateTo": "standby",
+          "actions": {
+            "resetSearchMode": [],
+            "setStandbyMode": []
+          }
+        },
         "activateStandby": {
           "stateFrom": "standbyInactive",
           "event": "fsmActivate",
           "stateTo": "standby",
           "actions": {
-            "resetSearchMode": [],
             "setStandbyMode": []
           }
         },
@@ -646,37 +643,6 @@
           "stateTo": "searchInactive",
           "actions": {
             "resetSearchMode": []
-          }
-        },
-        "switchingToStandby": {
-          "stateFrom": "search",
-          "command": "switch",
-          "event": "disable",
-          "stateTo": "antennaParking",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "parkAntenna",
-              "active": true
-            }
-          }
-        },
-        "switchToStandby": {
-          "stateFrom": "antennaParking",
-          "event": "inScanDirectionPhase",
-          "stateTo": "standby",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "parkAntenna",
-              "active": false
-            },
-            "setScanPattern": {
-              "scanPattern": "search"
-            },
-            "setScanDirectionPhase": {
-              "azimuth": -180.0,
-              "elevation": 0.0
-            },
-            "setStandbyMode": []
           }
         }
       }
@@ -743,20 +709,6 @@
             },
             "checkActiveTargetOfInerestInertialTimeout": {
               "timeOut": 1.0
-            }
-          }
-        }
-      }
-    },
-    "parkAntenna": {
-      "stateInit": "init",
-      "transitions": {
-        "checkAntennaParked": {
-          "event": "update",
-          "actions": {
-            "checkInScanDirectionPhase": {
-              "azimuth": -180.0,
-              "elevation": 0.0
             }
           }
         }

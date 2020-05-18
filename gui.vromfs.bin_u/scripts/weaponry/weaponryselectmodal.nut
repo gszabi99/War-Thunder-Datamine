@@ -21,7 +21,6 @@
     ]
   }
 */
-local weaponryPresetsModal = require("scripts/weaponry/weaponryPresetsModal.nut")
 local { updateModItem, createModItemLayout } = require("scripts/weaponry/weaponryVisual.nut")
 local { getLastWeapon, setLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 
@@ -60,30 +59,21 @@ local CHOOSE_WEAPON_PARAMS = {
     })
   }
 
-  if ((unit.isAir() || unit.isHelicopter()) && ::has_feature("ShowWeapPresetsMenu"))
-    weaponryPresetsModal.open(
-      {
-        unit = unit
-        chooseMenuList = list
-        isWorldWarUnit = isWorldWarUnit
-        afterDestroyCb = cb
-      }) //open modal menu for air and helicopter only
-  else
-    ::gui_start_weaponry_select_modal({
-      unit = unit
-      list = list
-      weaponItemParams = params.itemParams
-      alignObj = params.alignObj
-      align = params.align
-      onChangeValueCb = (@(unit, cb) function(weapon) {
-        if (isWorldWarUnit)
-          ::g_world_war.set_last_weapon_preset(unit.name, weapon.name)
-        else
-          setLastWeapon(unit.name, weapon.name)
+  ::gui_start_weaponry_select_modal({
+    unit = unit
+    list = list
+    weaponItemParams = params.itemParams
+    alignObj = params.alignObj
+    align = params.align
+    onChangeValueCb = (@(unit, cb) function(weapon) {
+      if (isWorldWarUnit)
+        ::g_world_war.set_last_weapon_preset(unit.name, weapon.name)
+      else
+        setLastWeapon(unit.name, weapon.name)
 
-        if (cb) cb(unit.name, weapon.name)
-      })(unit, cb)
-    })
+      if (cb) cb(unit.name, weapon.name)
+    })(unit, cb)
+  })
 }
 
 class ::gui_handlers.WeaponrySelectModal extends ::gui_handlers.BaseGuiHandlerWT

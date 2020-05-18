@@ -37,6 +37,7 @@ enums.addTypesByGlobalName("g_top_menu_left_side_sections", [
         buttonsList.OPTIONS
         buttonsList.CONTROLS
         "community"
+        buttonsList.CHANGE_LOG
         buttonsList.EXIT
         buttonsList.DEBUG_UNLOCK
       ]
@@ -125,7 +126,6 @@ enums.addTypesByGlobalName("g_top_menu_right_side_sections", [
       [
         buttonsList.WINDOW_HELP
         buttonsList.ENCYCLOPEDIA
-        buttonsList.CHANGE_LOG
         buttonsList.CREDITS
         buttonsList.EULA
         buttonsList.LINE_SEPARATOR

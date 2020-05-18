@@ -188,11 +188,17 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     local axisData = ::joystickInterface.getAxisData(watchAxis, stuckAxis)
     local joystickData = ::joystickInterface.getMaxDeviatedAxisInfo(axisData, 32000, joystickMinDeviation)
-    if (joystickData == null || joystickData.normLength == 0)
-      return
 
-    local side = ((joystickData.angle / PI + 2.125) * 4).tointeger() % 8
-    highlightItemBySide(joystickSides?[side])
+    local selection = null
+    if (joystickData)
+    {
+      local side = joystickData.normLength > 0
+        ? (((joystickData.angle / PI + 2.125) * 4).tointeger() % 8)
+        : -1
+      selection = joystickSides?[side]
+    }
+
+    highlightItemBySide(selection)
   }
 
   function highlightItemBySide(selection)

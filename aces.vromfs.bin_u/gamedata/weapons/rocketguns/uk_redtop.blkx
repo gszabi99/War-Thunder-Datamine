@@ -9,27 +9,6 @@
   "tags": [],
   "rocket": [
     {
-      "normalizationPreset": "default"
-    },
-    {
-      "ricochetPreset": "defaultExt"
-    },
-    {
-      "secondaryShattersPreset": "ap"
-    },
-    {
-      "stabilityThreshold": 0.05
-    },
-    {
-      "stabilityCaliberToArmorThreshold": 5.0
-    },
-    {
-      "stabilityReductionAfterRicochet": 0.5
-    },
-    {
-      "stabilityReductionAfterPenetration": 0.15
-    },
-    {
       "bulletType": "aam"
     },
     {
@@ -63,19 +42,16 @@
       "distFromCmToStab": 0.15
     },
     {
-      "wingAreaMult": 1.2
-    },
-    {
       "CxK": 3.8
     },
     {
       "WdK": [0.1,0.1,0.1]
     },
     {
-      "finsAoaHor": 0.15
+      "finsAoaHor": 0.13
     },
     {
-      "finsAoaVer": 0.15
+      "finsAoaVer": 0.13
     },
     {
       "force": 36000.0
@@ -219,32 +195,10 @@
       "loadFactorMax": 16.0
     },
     {
-      "rangeMax": 12000.0
+      "rangeMax": 12.0
     },
     {
       "price": 3000.0
-    },
-    {
-      "amountPerTier": 1.0
-    },
-    {
-      "iconType": "missile_type_b_air_to_air"
-    },
-    {
-      "stabilityRicochetModifier": [
-        {
-          "mod1": [0.0,0.05]
-        },
-        {
-          "mod2": [20.0,0.1]
-        },
-        {
-          "mod3": [30.0,0.2]
-        },
-        {
-          "mod3": [45.0,0.3]
-        }
-      ]
     },
     {
       "DamageParts": {
@@ -395,8 +349,8 @@
     },
     {
       "arcadeProp": {
-        "finsAoaHor": 0.17,
-        "finsAoaVer": 0.17,
+        "finsAoaHor": 0.15,
+        "finsAoaVer": 0.15,
         "timeFire": 3.0
       }
     },
@@ -404,11 +358,10 @@
       "propNavGuidance": {
         "timeOut": 0.6,
         "propNavMult": 4.0,
-        "propNavAccelMax": 16.0,
-        "accelControlProp": 0.03,
-        "accelControlIntg": 0.01,
+        "accelControlProp": 2.0,
+        "accelControlIntg": 0.05,
         "accelControlIntgLim": 0.5,
-        "accelControlDiff": 0.002
+        "accelControlDiff": 0.2
       }
     },
     {

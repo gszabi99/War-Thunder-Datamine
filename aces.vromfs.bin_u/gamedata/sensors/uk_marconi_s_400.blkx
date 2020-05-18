@@ -140,9 +140,7 @@
   },
   "scopeRangeSets": {
     "common": {
-      "range1": 12000.0,
-      "range2": 6000.0,
-      "range3": 3000.0
+      "range1": 12000.0
     }
   },
   "fsms": {
@@ -549,29 +547,50 @@
     "standbyOrSearch": {
       "stateInit": "init",
       "actionsTemplates": {
-        "setStandbyMode": {
-          "setModeName": {
-            "name": "standby"
+        "setStandbyMode": [
+          {
+            "setModeName": {
+              "name": "standby"
+            }
           },
-          "setEnabled": {
-            "value": false
+          {
+            "setEnabled": {
+              "value": false
+            }
           },
-          "clearTargets": [],
-          "clearTargetsOfInterest": [],
-          "setTransiver": {
-            "transiver": "search"
+          {
+            "setEnabled": {
+              "value": false
+            }
           },
-          "setSignal": {
-            "signal": "search"
+          {
+            "clearTargets": []
           },
-          "setCenterElevation": {
-            "source": "constant",
-            "value": 7.5
+          {
+            "clearTargetsOfInterest": []
           },
-          "setScanPatternSet": {
-            "scanPatternSet": "search"
+          {
+            "setTransiver": {
+              "transiver": "search"
+            }
+          },
+          {
+            "setSignal": {
+              "signal": "search"
+            }
+          },
+          {
+            "setCenterElevation": {
+              "source": "constant",
+              "value": 7.5
+            }
+          },
+          {
+            "setScanPatternSet": {
+              "scanPatternSet": "search"
+            }
           }
-        },
+        ],
         "setSearchMode": {
           "setModeName": {
             "name": "search"
@@ -643,7 +662,6 @@
           "event": "fsmActivate",
           "stateTo": "standby",
           "actions": {
-            "resetSearchMode": [],
             "setStandbyMode": []
           }
         },

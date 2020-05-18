@@ -1,6 +1,13 @@
 {
   "damage": [
     {
+      "preset": {
+        "param": "bulletType",
+        "presets": "config/damageModel.blk:bulletTypes",
+        "target": ""
+      }
+    },
+    {
       "extends": {
         "source": "config/damageModel.blk:kineticEnergyToDamage",
         "target": "damage/kinetic/energyToDamage"
@@ -142,12 +149,6 @@
       }
     },
     {
-      "alias": {
-        "param": "useEffectiveArmorThicknessForShatter",
-        "alias": "damage/shatter/useEffectiveArmorThickness"
-      }
-    },
-    {
       "extends": {
         "source": "config/damageModel.blk:defaultShatterDamageProps",
         "target": "damage/shatter",
@@ -214,6 +215,19 @@
     }
   ],
   "ballistics": [
+    {
+      "preset": {
+        "param": "bulletType",
+        "presets": "config/damageModel.blk:bulletTypes",
+        "target": ""
+      }
+    },
+    {
+      "extends": {
+        "source": "config/damageModel.blk:bulletTypes/default",
+        "target": ""
+      }
+    },
     {
       "preset": {
         "param": "slopeEffectPreset",

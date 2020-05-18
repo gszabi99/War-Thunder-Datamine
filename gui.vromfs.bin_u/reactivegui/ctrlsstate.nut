@@ -36,9 +36,3 @@ local function updateSceneGamepadCursorControl(value) {
 updateSceneGamepadCursorControl(enabledGamepadCursorControlInScene.value)
 
 enabledGamepadCursorControlInScene.subscribe(updateSceneGamepadCursorControl)
-
-local showConsoleButtons = extWatched("showConsoleButtons", ::cross_call.isConsoleModeEnabled)
-
-return {
-  showConsoleButtons = showConsoleButtons
-}

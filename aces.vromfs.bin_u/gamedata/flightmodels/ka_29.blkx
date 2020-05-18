@@ -1629,111 +1629,77 @@
     "turretTurnSfxPathStudio": "aircraft/effects",
     "turretTurnSfxName": "turret_turn_servo"
   },
-  "cockpit": [
-    {
-      "textToShowInCockpit": "msg/textToShowInCockpit"
+  "cockpit": {
+    "textToShowInCockpit": "msg/textToShowInCockpit",
+    "headPos": [2.6,-0.14,0.557],
+    "headPosOnShooting": [2.6,-0.14,0.557],
+    "lightPos": [1.84948,1.192163,0.24924],
+    "lightColor": [2.1,0.08,0.0],
+    "lightRadius": 0.2,
+    "lightPos1": [1.848522,1.22336,-0.042559],
+    "lightColor1": [2.1,0.08,0.0],
+    "lightRadius1": 0.18,
+    "zoomOutFov": 22.46,
+    "zoomInFov": 7.37,
+    "sightInFov": 4.91,
+    "sightOutFov": -1.0,
+    "sightFov": 0.5,
+    "devices": {
+      "speed": [0.0,257.222],
+      "bank": [-8.0,8.0],
+      "turn": [-0.23562,0.23562],
+      "vario": [-30.0,30.0],
+      "altitude_10k": [0.0,100000.0],
+      "altitude_hour": [0.0,10000.0],
+      "altitude_min": [0.0,1000.0],
+      "altitude_koef": 3.28,
+      "aviahorizon_pitch": [-60.0,60.0],
+      "aviahorizon_roll": [-180.0,180.0],
+      "compass": [0.0,360.0],
+      "fuel": [0.0,1277.625],
+      "rpm": [0.0,4500.0],
+      "rpm1": [0.0,4500.0],
+      "rpm2": [0.0,4500.0],
+      "rpm3": [0.0,4500.0],
+      "manifold_pressure": [0.334,2.507],
+      "manifold_pressure1": [0.334,2.507],
+      "manifold_pressure2": [0.334,2.507],
+      "manifold_pressure3": [0.334,2.507],
+      "head_temperature": [0.0,300.0],
+      "head_temperature1": [0.0,300.0],
+      "head_temperature2": [0.0,300.0],
+      "head_temperature3": [0.0,300.0],
+      "oil_temperature": [-50.0,150.0],
+      "oil_temperature1": [-50.0,150.0],
+      "oil_temperature2": [-50.0,150.0],
+      "oil_temperature3": [-50.0,150.0],
+      "fuel_pressure": [0.0,15.0],
+      "fuel_pressure1": [0.0,15.0],
+      "fuel_pressure2": [0.0,15.0],
+      "fuel_pressure3": [0.0,15.0],
+      "oil_pressure": [0.0,150.0],
+      "oil_pressure1": [0.0,150.0],
+      "oil_pressure2": [0.0,150.0],
+      "oil_pressure3": [0.0,150.0]
     },
-    {
-      "headPos": [2.6,-0.14,0.557]
+    "parts_holes_dmg": {
+      "part": "fuse"
     },
-    {
-      "headPosOnShooting": [2.6,-0.14,0.557]
-    },
-    {
-      "lightPos": [3.218644,-0.594647,0.578619]
-    },
-    {
-      "lightColor": [0.01,0.6,0.1]
-    },
-    {
-      "lightRadius": 0.45
-    },
-    {
-      "lightPos": [3.214933,-0.616382,0.214875]
-    },
-    {
-      "lightColor": [0.01,0.6,0.1]
-    },
-    {
-      "lightRadius": 0.45
-    },
-    {
-      "zoomOutFov": 22.46
-    },
-    {
-      "zoomInFov": 7.37
-    },
-    {
-      "sightInFov": 4.91
-    },
-    {
-      "sightOutFov": -1.0
-    },
-    {
-      "sightFov": 0.5
-    },
-    {
-      "devices": {
-        "speed": [0.0,257.222],
-        "bank": [-8.0,8.0],
-        "turn": [-0.23562,0.23562],
-        "vario": [-30.0,30.0],
-        "altitude_10k": [0.0,100000.0],
-        "altitude_hour": [0.0,10000.0],
-        "altitude_min": [0.0,1000.0],
-        "altitude_koef": 3.28,
-        "aviahorizon_pitch": [-60.0,60.0],
-        "aviahorizon_roll": [-180.0,180.0],
-        "compass": [0.0,360.0],
-        "fuel": [0.0,1277.625],
-        "rpm": [0.0,4500.0],
-        "rpm1": [0.0,4500.0],
-        "rpm2": [0.0,4500.0],
-        "rpm3": [0.0,4500.0],
-        "manifold_pressure": [0.334,2.507],
-        "manifold_pressure1": [0.334,2.507],
-        "manifold_pressure2": [0.334,2.507],
-        "manifold_pressure3": [0.334,2.507],
-        "head_temperature": [0.0,300.0],
-        "head_temperature1": [0.0,300.0],
-        "head_temperature2": [0.0,300.0],
-        "head_temperature3": [0.0,300.0],
-        "oil_temperature": [-50.0,150.0],
-        "oil_temperature1": [-50.0,150.0],
-        "oil_temperature2": [-50.0,150.0],
-        "oil_temperature3": [-50.0,150.0],
-        "fuel_pressure": [0.0,15.0],
-        "fuel_pressure1": [0.0,15.0],
-        "fuel_pressure2": [0.0,15.0],
-        "fuel_pressure3": [0.0,15.0],
-        "oil_pressure": [0.0,150.0],
-        "oil_pressure1": [0.0,150.0],
-        "oil_pressure2": [0.0,150.0],
-        "oil_pressure3": [0.0,150.0]
+    "parts_oil_dmg": [
+      {
+        "part": "engine1"
+      },
+      {
+        "part": "engine2"
+      },
+      {
+        "part": "engine3"
+      },
+      {
+        "part": "engine4"
       }
-    },
-    {
-      "parts_holes_dmg": {
-        "part": "fuse"
-      }
-    },
-    {
-      "parts_oil_dmg": [
-        {
-          "part": "engine1"
-        },
-        {
-          "part": "engine2"
-        },
-        {
-          "part": "engine3"
-        },
-        {
-          "part": "engine4"
-        }
-      ]
-    }
-  ],
+    ]
+  },
   "helicopter": {
     "rotorBladeAnglesCoeffs": [0.3,0.5,0.5],
     "propellerStrainCoeff": -0.01
@@ -1842,7 +1808,7 @@
         },
         {
           "limits": {
-            "yaw": [-15.0,15.0],
+            "yaw": [-28.0,30.0],
             "pitch": [-31.0,0.0]
           }
         }
@@ -1883,14 +1849,7 @@
       "preset": {
         "name": "ka_29_rocket_9M114",
         "blk": "gameData/flightModels/weaponPresets/ka_29_rocket_9M114.blk",
-        "reqModification": "mi_24_su_9M114",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/su_9M114.blk",
-            "amountPerTier": 4.0,
-            "iconType": "atgm_type2_x4"
-          }
-        }
+        "reqModification": "mi_24_su_9M114"
       }
     },
     {
@@ -1904,14 +1863,7 @@
       "preset": {
         "name": "ka_29_rocket_b8v20_9M114",
         "blk": "gameData/flightModels/weaponPresets/ka_29_rocket_b8v20_9M114.blk",
-        "reqModification": "mi_24_su_9M114",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/su_9M114.blk",
-            "amountPerTier": 4.0,
-            "iconType": "atgm_type2_x4"
-          }
-        }
+        "reqModification": "mi_24_su_9M114"
       }
     }
   ],
@@ -2111,7 +2063,7 @@
               },
               {
                 "limits": {
-                  "yaw": [-15.0,15.0],
+                  "yaw": [-28.0,30.0],
                   "pitch": [-31.0,0.0]
                 }
               }
@@ -2228,7 +2180,7 @@
               },
               {
                 "limits": {
-                  "yaw": [-15.0,15.0],
+                  "yaw": [-28.0,30.0],
                   "pitch": [-31.0,0.0]
                 }
               }
@@ -2364,7 +2316,7 @@
               },
               {
                 "limits": {
-                  "yaw": [-15.0,15.0],
+                  "yaw": [-28.0,30.0],
                   "pitch": [-31.0,0.0]
                 }
               }
@@ -2489,7 +2441,7 @@
               },
               {
                 "limits": {
-                  "yaw": [-15.0,15.0],
+                  "yaw": [-28.0,30.0],
                   "pitch": [-31.0,0.0]
                 }
               }

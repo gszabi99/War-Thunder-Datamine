@@ -22,17 +22,16 @@ onMainMenuReturnActions.onMainMenuReturn <- function(handler, isAfterLogin) {
     {
       handler.doWhenActive(::g_user_utils.checkShowRateWnd)
       handler.doWhenActive(::check_joystick_thustmaster_hotas)
+      handler.doWhenActive(::check_tutorial_on_mainmenu)
     }
   }
 
   ::check_logout_scheduled()
 
   ::sysopt.configMaintain()
-  ::g_user_presence.init()
 
-  handler.doWhenActive(@() ::checkNewNotificationUserlogs())
-  handler.doWhenActive(@() ::checkNonApprovedResearches(true))
-
+  ::checkNewNotificationUserlogs()
+  ::checkNonApprovedResearches(true)
   if (isAllowPopups)
   {
     handler.doWhenActive(::gui_handlers.FontChoiceWnd.openIfRequired)
@@ -93,20 +92,19 @@ onMainMenuReturnActions.onMainMenuReturn <- function(handler, isAfterLogin) {
     handler.unitInfoPanel = ::create_slot_info_panel(handler.scene, true, "mainmenu")
     handler.registerSubHandler(handler.unitInfoPanel)
   }
+  ::g_user_presence.init()
 
   if (isAllowPopups)
   {
-    handler.doWhenActiveOnce("checkShowChangelog")
-    handler.doWhenActiveOnce("initPromoBlock")
-
-    local hasModalObjectVal = guiScene.hasModalObject()
-    handler.doWhenActive(@() ::g_popup_msg.showPopupWndIfNeed(hasModalObjectVal) )
-    handler.doWhenActive(@() itemNotifications.checkOfferToBuyAtExpiration() )
-
-    handler.doWhenActive(::check_tutorial_on_start)
     handler.doWhenActiveOnce("checkNoviceTutor")
     handler.doWhenActiveOnce("checkUpgradeCrewTutorial")
+    handler.doWhenActiveOnce("initPromoBlock")
     handler.doWhenActiveOnce("checkNewUnitTypeToBattleTutor")
+    handler.doWhenActiveOnce("checkShowChangelog")
+
+    local hasModalObjectVal = guiScene.hasModalObject()
+    handler.doWhenActive((@(hasModalObjectVal) function() { ::g_popup_msg.showPopupWndIfNeed(hasModalObjectVal) })(hasModalObjectVal))
+    handler.doWhenActive(function () { itemNotifications.checkOfferToBuyAtExpiration() })
   }
 
   handler.doWhenActive(::pop_gblk_error_popups)

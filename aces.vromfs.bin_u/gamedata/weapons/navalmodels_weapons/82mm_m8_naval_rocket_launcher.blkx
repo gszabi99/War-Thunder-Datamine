@@ -16,19 +16,7 @@
     "antiShipRocket": true
   },
   "rocket": {
-    "normalizationPreset": "heat",
-    "ricochetPreset": "he",
-    "secondaryShattersPreset": "ap_rocket",
-    "stabilityThreshold": 0.05,
-    "stabilityCaliberToArmorThreshold": 5.0,
-    "stabilityReductionAfterRicochet": 0.5,
-    "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "rocket_tank",
-    "slopeEffectPreset": "ap",
-    "modelName": "tank_bullet_he",
-    "fresnel": [0.23,0.1,2.0],
-    "explodeOnRendinst": true,
-    "useEffectiveArmorThicknessForShatter": true,
     "bulletName": "82mm_m_8",
     "explosiveType": "tnt",
     "explosiveMass": 0.6,
@@ -42,7 +30,7 @@
     "CxK": 0.1,
     "WdK": [0.1,0.1,0.1],
     "force": 6500.0,
-    "timeFire": 0.6,
+    "timeFire": 0.87,
     "thrustDeviation": 0.003,
     "explosionEffect": "atgm_hit",
     "defFxScale": [1.7,2.1],
@@ -53,7 +41,7 @@
     "waterFxScale": [0.3,0.4],
     "explosionPatchRadius": 3.4,
     "smokeEffect": "hydra_smoke",
-    "maxDistance": 5515.0,
+    "maxDistance": 5500.0,
     "minDistance": 30.0,
     "distanceFuse": false,
     "relativeVelHitShift": [300.0,1000.0],
@@ -71,11 +59,6 @@
     "speedViscosity": 0.05,
     "timeToLive": 20.0,
     "price": 3000.0,
-    "stabilityRicochetModifier": {
-      "mod1": [0.0,0.5],
-      "mod2": [20.0,0.6],
-      "mod3": [30.0,1.0]
-    },
     "collisions": {
       "steel": {
         "fx": "cannon_hit_armor_cumulative",
@@ -95,23 +78,26 @@
       }
     },
     "damage": {
-      "kinetic": {
-        "damageType": "generic"
-      },
       "shatter": [
         {
           "useRealShatters": true
         },
         {
-          "countPortion": 0.2
+          "countPortion": 0.03
         },
         {
           "segment": {
             "radiusScale": 1.0,
             "penetrationScale": 1.0,
-            "damageScale": 2.0,
+            "damageScale": 1.0,
             "angles": [0.0,100.0],
-            "countPortion": 0.3
+            "countPortion": 0.5
+          }
+        },
+        {
+          "segment": {
+            "angles": [101.0,259.0],
+            "countPortion": 0.0
           }
         },
         {
@@ -119,17 +105,8 @@
             "radiusScale": 1.0,
             "penetrationScale": 1.0,
             "damageScale": 1.0,
-            "angles": [101.0,259.0],
-            "countPortion": 0.4
-          }
-        },
-        {
-          "segment": {
-            "radiusScale": 1.0,
-            "penetrationScale": 1.0,
-            "damageScale": 2.0,
             "angles": [260.0,359.0],
-            "countPortion": 0.3
+            "countPortion": 0.5
           }
         }
       ]

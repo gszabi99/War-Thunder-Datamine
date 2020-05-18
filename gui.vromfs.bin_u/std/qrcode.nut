@@ -874,7 +874,7 @@ local function generateFrame(str) {
 local function generateQrArray(data) {
   data = normalizeData(data)
 
-  eccLevel = ECC_LEVELS[data?.level ?? "M"]
+  eccLevel = ECC_LEVELS[data?.level ?? "L"]
   local frame = generateFrame(data?.value ?? "")
 
   local res = []

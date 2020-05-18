@@ -9,27 +9,6 @@
   "tags": [],
   "rocket": [
     {
-      "normalizationPreset": "default"
-    },
-    {
-      "ricochetPreset": "defaultExt"
-    },
-    {
-      "secondaryShattersPreset": "ap"
-    },
-    {
-      "stabilityThreshold": 0.05
-    },
-    {
-      "stabilityCaliberToArmorThreshold": 5.0
-    },
-    {
-      "stabilityReductionAfterRicochet": 0.5
-    },
-    {
-      "stabilityReductionAfterPenetration": 0.15
-    },
-    {
       "bulletType": "aam"
     },
     {
@@ -63,19 +42,16 @@
       "distFromCmToStab": 0.1
     },
     {
-      "wingAreaMult": 1.2
-    },
-    {
       "CxK": 4.1
     },
     {
       "WdK": [0.1,0.1,0.1]
     },
     {
-      "finsAoaHor": 0.18
+      "finsAoaHor": 0.16
     },
     {
-      "finsAoaVer": 0.18
+      "finsAoaVer": 0.16
     },
     {
       "force": 12000.0
@@ -216,35 +192,13 @@
       "machMax": 2.5
     },
     {
-      "loadFactorMax": 30.0
+      "loadFactorMax": 20.0
     },
     {
-      "rangeMax": 18000.0
+      "rangeMax": 18.0
     },
     {
       "price": 3000.0
-    },
-    {
-      "amountPerTier": 1.0
-    },
-    {
-      "iconType": "missile_type_b_air_to_air"
-    },
-    {
-      "stabilityRicochetModifier": [
-        {
-          "mod1": [0.0,0.05]
-        },
-        {
-          "mod2": [20.0,0.1]
-        },
-        {
-          "mod3": [30.0,0.2]
-        },
-        {
-          "mod3": [45.0,0.3]
-        }
-      ]
     },
     {
       "collisions": {
@@ -383,29 +337,21 @@
         "rangeMax": 11000.0,
         "fov": 2.5,
         "minAngleToSun": 10.0,
-        "lockAngleMax": 17.0,
-        "angleMax": 45.0,
-        "rateMax": 35.0,
+        "lockAngleMax": 10.0,
+        "angleMax": 40.0,
+        "rateMax": 25.0,
         "prolongationTimeMax": 1.0,
         "targetDesignator": true
       }
     },
     {
       "propNavGuidance": {
-        "timeOut": 0.5,
+        "timeOut": 0.3,
         "propNavMult": 4.0,
-        "propNavAccelMax": 30.0,
-        "accelControlProp": 0.023,
-        "accelControlIntg": 0.007,
+        "accelControlProp": 2.0,
+        "accelControlIntg": 0.1,
         "accelControlIntgLim": 0.5,
-        "accelControlDiff": 0.005
-      }
-    },
-    {
-      "arcadeProp": {
-        "finsAoaHor": 0.2,
-        "finsAoaVer": 0.2,
-        "timeFire": 2.2
+        "accelControlDiff": 0.3
       }
     },
     {

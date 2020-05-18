@@ -1,6 +1,5 @@
 local textButton = require("daRg/components/textButton.nut")
 local fontsState = require("reactiveGui/style/fontsState.nut")
-local textButtonTextCtor = require("textButtonTextCtor.nut")
 
 local commonButtonStyle = {
   halign = ALIGN_CENTER
@@ -10,8 +9,6 @@ local commonButtonStyle = {
   minWidth = ::scrn_tgt(0.16)
   padding = [::fpx(3), ::scrn_tgt(0.005)]
   borderRadius = 0
-  textCtor = textButtonTextCtor
-  textMargin = 0
 
   style = {
     BgNormal     = Color(45, 56, 65)

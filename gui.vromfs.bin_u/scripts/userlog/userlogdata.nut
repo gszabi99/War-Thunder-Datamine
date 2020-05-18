@@ -1,9 +1,7 @@
 local time = require("scripts/time.nut")
 local workshop = require("scripts/items/workshop/workshop.nut")
 local workshopPreview = require("scripts/items/workshop/workshopPreview.nut")
-local { disableSeenUserlogs } = require("scripts/userLog/userlogUtils.nut")
 local { showEntitlement } = require("scripts/onlineShop/entitlementRewardWnd.nut")
-local { showUnlock } = require("scripts/unlocks/unlockRewardWnd.nut")
 
 ::shown_userlog_notifications <- []
 
@@ -205,12 +203,10 @@ local clanActionNames = {
   if (!handler)
     return //no need to try do something when no one base handler loaded
 
-  local seenIdsArray = []
-
+  local saveJob = false
   local combinedUnitTiersUserLogs = {}
   local trophyRewardsTable = {}
   local entitlementRewards = {}
-  local unlocksRewards = {}
   local rentsTable = {}
   local ignoreRentItems = []
   local total = ::get_user_logs_count()
@@ -296,31 +292,13 @@ local clanActionNames = {
       if (!blk?.body.unlockId)
         continue
 
-      local unlockType = blk?.body.unlockType
-      if (unlockType == ::UNLOCKABLE_TITLE && !onStartAwards)
+      if (blk?.body.unlockType == ::UNLOCKABLE_TITLE && !onStartAwards)
         ::my_stats.markStatsReset()
 
       if ((! ::is_unlock_need_popup(blk.body.unlockId)
           && ! ::is_unlock_need_popup_in_menu(blk.body.unlockId))
         || !(popupMask & USERLOG_POPUP.UNLOCK))
-      {
-        if (!onStartAwards
-            && (!blk?.body.popupInDebriefing || !::isHandlerInScene(::gui_handlers.DebriefingModal))
-            && (unlockType == ::UNLOCKABLE_TITLE
-               || unlockType == ::UNLOCKABLE_AIRCRAFT
-               || unlockType == ::UNLOCKABLE_DECAL
-               || unlockType == ::UNLOCKABLE_SKIN
-               || unlockType == ::UNLOCKABLE_ATTACHABLE
-               || unlockType == ::UNLOCKABLE_PILOT
-               )
-           )
-        {
-          unlocksRewards[blk.body.unlockId] <- true
-          seenIdsArray.append(blk?.id)
-        }
-
         continue
-      }
 
       if (::is_unlock_need_popup_in_menu(blk.body.unlockId))
       {
@@ -339,7 +317,7 @@ local clanActionNames = {
 
       local config = ::build_log_unlock_data(unlock)
       config.disableLogId <- blk.id
-      handler.doWhenActive(@() ::showUnlockWnd(config))
+      ::showUnlockWnd(config)
       ::shown_userlog_notifications.append(blk.id)
       continue
     }
@@ -480,20 +458,28 @@ local clanActionNames = {
     }
 
     if (markDisabled)
-      seenIdsArray.append(blk.id)
+    {
+      if (::disable_user_log_entry(i))
+        saveJob = true
+      ::u.appendOnce(blk.id, ::shown_userlog_notifications)
+    }
   }
 
-  if (unlocksNeedsPopupWnd)
+  if(unlocksNeedsPopupWnd)
     handler.doWhenActive( (@(handler) function() { ::g_popup_msg.showPopupWndIfNeed(handler) })(handler))
 
-  if (seenIdsArray.len())
-    disableSeenUserlogs(seenIdsArray)
+  if (saveJob)
+  {
+    dagor.debug("checkNewNotificationUserlogs - needSave")
+    ::save_online_job()
+  }
 
   if (trophyRewardsTable.len() > 0)
-    handler.doWhenActive(@() ::gui_start_open_trophy(trophyRewardsTable))
+  {
+    ::gui_start_open_trophy(trophyRewardsTable)
+  }
 
   entitlementRewards.each(@(key, entId) handler.doWhenActive(@() showEntitlement(entId)))
-  unlocksRewards.each(@(key, unlockId) handler.doWhenActive(@() showUnlock(unlockId)))
 
   rentsTable.each(function(config, key) {
     if (!::isInArray(key, ignoreRentItems))

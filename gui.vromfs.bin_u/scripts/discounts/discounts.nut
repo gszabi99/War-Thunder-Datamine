@@ -1,15 +1,8 @@
 local { getTimestampFromStringUtc } = require("scripts/time.nut")
 local { targetPlatform, isPlatformPC, isPlatformPS4, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
-
-local { haveDiscount = @() false,
-        canUseIngameShop = @() false,
-        getShopItemsTable = @() {}
-} = isPlatformPS4 ? require("scripts/onlineShop/ps4ShopData.nut")
+local { haveDiscount, canUseIngameShop } = isPlatformPS4 ? require("scripts/onlineShop/ps4ShopData.nut")
   : isPlatformXboxOne ? require("scripts/onlineShop/xboxShopData.nut")
-  : null
-
-local { getEntitlementId } = require("scripts/onlineShop/onlineBundles.nut")
-local { getEntitlementConfig } = require("scripts/onlineShop/entitlements.nut")
+  : { haveDiscount = @() false, canUseIngameShop = @() false }
 
 local { buttonsList } = require("scripts/mainmenu/topMenuButtons.nut")
 local topMenuOnlineShopId = isPlatformPS4 ? buttonsList.PS4_ONLINE_SHOP.id
@@ -30,30 +23,14 @@ local updateGiftUnitsDiscountTask = -1
   getDiscountIconId = @(name) name + "_discount"
   canBeVisibleOnUnit = @(unit) unit && unit.isVisibleInShop() && !unit.isBought()
   discountsList = {}
-  consoleEntitlementUnits = {} //It must not be cleared in common func
 
   function updateOnlineShopDiscounts()
   {
-    consoleEntitlementUnits.clear()
-
     if (topMenuOnlineShopId == "")
       return
 
-    local isDiscountAvailable = haveDiscount()
-    discountsList[topMenuOnlineShopId] = isDiscountAvailable
-
-    if (isDiscountAvailable)
-      foreach (label, item in getShopItemsTable()) {
-        if (item.haveDiscount()) {
-          local entId = getEntitlementId(item.id)
-          local config = getEntitlementConfig(entId)
-          local unitsList = config?.aircraftGift ?? []
-          foreach (unitName in unitsList)
-            consoleEntitlementUnits[unitName] <- item.getDiscountPercent()
-        }
-      }
-
-    updateDiscountData()
+    discountsList[topMenuOnlineShopId] = haveDiscount()
+    updateDiscountNotifications()
   }
 
   onEventXboxShopDataUpdated = @(p) updateOnlineShopDiscounts()
@@ -200,8 +177,6 @@ g_discount.updateDiscountData <- function updateDiscountData(isSilentUpdate = fa
 
   if (canUseIngameShop() && topMenuOnlineShopId != "")
     discountsList[topMenuOnlineShopId] = haveDiscount()
-
-  discountsList.entitlementUnits.__update(consoleEntitlementUnits)
 
   local isShopDiscountVisible = false
   foreach(airName, discount in discountsList.airList)

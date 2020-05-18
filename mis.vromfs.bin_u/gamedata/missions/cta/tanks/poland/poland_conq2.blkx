@@ -215,6 +215,12 @@
         "type": "domination"
       },
       {
+        "restoreType": "attempts"
+      },
+      {
+        "optionalTakeOff": false
+      },
+      {
         "environment": "Day"
       },
       {
@@ -260,17 +266,11 @@
         "country_allies": "ussr"
       },
       {
-        "restoreType": "attempts"
-      },
-      {
-        "optionalTakeOff": false
-      },
-      {
         "allowedUnitTypes": {
           "isAirplanesAllowed": true,
           "isTanksAllowed": true,
-          "isShipsAllowed": false,
-          "isHelicoptersAllowed": true
+          "isHelicoptersAllowed": true,
+          "isShipsAllowed": false
         }
       },
       {
@@ -371,21 +371,21 @@
               "icon": {
                 "icontype": "tank",
                 "side": "ally",
-                "target": "briefing_t1_tankSpawn_Rb_01"
+                "target": "briefing_t1_spawn_01"
               }
             },
             {
               "icon": {
                 "icontype": "tank",
                 "side": "enemy",
-                "target": "briefing_t2_tankSpawn_Rb_01"
+                "target": "briefing_t2_spawn_01"
               }
             },
             {
               "icon": {
                 "icontype": "basezone_A",
                 "side": "neutral",
-                "target": "briefing_captureZone_Rb02"
+                "target": "briefing_captureZone02"
               }
             },
             {
@@ -422,8 +422,22 @@
             {
               "icon": {
                 "icontype": "tank",
+                "side": "ally",
+                "target": "briefing_t1_tankSpawn_Rb_02"
+              }
+            },
+            {
+              "icon": {
+                "icontype": "tank",
                 "side": "enemy",
                 "target": "briefing_t2_tankSpawn_Rb_01"
+              }
+            },
+            {
+              "icon": {
+                "icontype": "tank",
+                "side": "enemy",
+                "target": "briefing_t2_tankSpawn_Rb_02"
               }
             },
             {
@@ -708,7 +722,7 @@
         [48.0,0.0,0.0],
         [0.0,50.0,0.0],
         [0.0,0.0,48.0],
-        [2045.41,16.8999,1770.75]
+        [2225.05,16.9,1372.65]
       ],
       "objLayer": 0,
       "props": []

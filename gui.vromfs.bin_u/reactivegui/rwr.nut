@@ -329,7 +329,7 @@ local function createTarget(index, colorStyle, width, height)
       pivot = [0.5, 0.5]
       translate = [
         targetOffsetX * width - radius,
-        targetOffsetY * height - radius
+        targetOffsetY * width - radius
       ]
     }
     halign = ALIGN_CENTER

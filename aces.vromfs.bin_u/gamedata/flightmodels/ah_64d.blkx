@@ -1287,9 +1287,12 @@
     "textToShowInCockpit": "msg/textToShowInCockpit",
     "headPos": [1.08,0.895,0.0],
     "headPosOnShooting": [1.08,0.895,0.0],
-    "lightPos": [1.882572,0.389432,-0.010049],
-    "lightColor": [0.01,0.6,0.1],
-    "lightRadius": 0.4,
+    "lightPos": [1.979847,-0.213676,-0.012096],
+    "lightColor": [0.01,1.5,0.1],
+    "lightRadius": 0.5,
+    "lightPos1": [3.449379,-0.554936,0.005765],
+    "lightColor1": [0.01,1.5,0.1],
+    "lightRadius1": 0.35,
     "zoomOutFov": 18.0,
     "zoomInFov": 0.9,
     "sightFov": 0.5,
@@ -1354,8 +1357,7 @@
           },
           {
             "page": {
-              "type": "radar",
-              "radarScale": 0.85
+              "type": "radar"
             }
           },
           {
@@ -1703,19 +1705,12 @@
     },
     {
       "sensor": {
-        "blk": "gameData/sensors/tv_tracker.blk",
-        "node": "optic1_gun"
+        "blk": "gameData/sensors/tv_tracker.blk"
       }
     },
     {
       "sensor": {
         "blk": "gameData/sensors/us_an_apr_39.blk"
-      }
-    },
-    {
-      "sensor": {
-        "blk": "gameData/sensors/us_flir.blk",
-        "node": "optic1_gun"
       }
     }
   ],
@@ -1872,28 +1867,14 @@
       "preset": {
         "name": "ah_64d_8_hellfire",
         "blk": "gameData/flightModels/weaponPresets/ah_64d_8_hellfire.blk",
-        "reqModification": "ah_1_AGM_114_8",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/us_hellfire_agm_114_b.blk",
-            "amountPerTier": 2.0,
-            "iconType": "atgm_type_helfire_x2"
-          }
-        }
+        "reqModification": "ah_1_AGM_114_8"
       }
     },
     {
       "preset": {
         "name": "ah_64d_rocket_4_hellfire",
         "blk": "gameData/flightModels/weaponPresets/ah_64d_rocket_4_hellfire.blk",
-        "reqModification": "ah_1_AGM_114_8",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/us_hellfire_agm_114_k.blk",
-            "amountPerTier": 2.0,
-            "iconType": "atgm_type_helfire_x2"
-          }
-        }
+        "reqModification": "ah_1_AGM_114_8"
       }
     },
     {
@@ -2133,19 +2114,12 @@
           },
           {
             "sensor": {
-              "blk": "gameData/sensors/tv_tracker.blk",
-              "node": "optic1_gun"
+              "blk": "gameData/sensors/tv_tracker.blk"
             }
           },
           {
             "sensor": {
               "blk": "gameData/sensors/us_an_apr_39.blk"
-            }
-          },
-          {
-            "sensor": {
-              "blk": "gameData/sensors/us_flir.blk",
-              "node": "optic1_gun"
             }
           }
         ]
@@ -2336,8 +2310,7 @@
           },
           {
             "sensor": {
-              "blk": "gameData/sensors/tv_tracker.blk",
-              "node": "optic1_gun"
+              "blk": "gameData/sensors/tv_tracker.blk"
             }
           },
           {
@@ -2348,17 +2321,6 @@
           {
             "sensor": {
               "blk": "gameData/sensors/us_an_aar_47.blk"
-            }
-          },
-          {
-            "sensor": {
-              "blk": "gameData/sensors/us_flir.blk",
-              "node": "optic1_gun"
-            }
-          },
-          {
-            "sensor": {
-              "blk": "gameData/sensors/us_an_avr-2.blk"
             }
           }
         ]
@@ -2569,19 +2531,12 @@
           },
           {
             "sensor": {
-              "blk": "gameData/sensors/tv_tracker.blk",
-              "node": "optic1_gun"
+              "blk": "gameData/sensors/tv_tracker.blk"
             }
           },
           {
             "sensor": {
               "blk": "gameData/sensors/us_an_apr_39.blk"
-            }
-          },
-          {
-            "sensor": {
-              "blk": "gameData/sensors/us_flir.blk",
-              "node": "optic1_gun"
             }
           }
         ]

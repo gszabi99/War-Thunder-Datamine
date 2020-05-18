@@ -2,7 +2,8 @@ local { TIERS_NUMBER,
         getTiers,
         getWeaponryByPresetInfo } = require("scripts/weaponry/weaponryPresetsParams.nut")
 local { getLastWeapon,
-        setLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
+        setLastWeapon,
+        getSecondaryWeaponsList } = require("scripts/weaponry/weaponryInfo.nut")
 local { getItemAmount } = require("scripts/weaponry/itemInfo.nut")
 local { getWeaponItemViewParams,
         updateWeaponTooltip } = require("scripts/weaponry/weaponryVisual.nut")
@@ -15,15 +16,12 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
   chosenPresetIdx      = null
   curPresetIdx         = null
   presetsList          = null
-  chooseMenuList       = null
   weaponryByPresetInfo = null
   lastWeapon           = null
   presetsMarkup        = null
   collapsedPresets     = []
   chapterCount         = 0
   presetTextWidth      = 0
-  isWorldWarUnit       = false
-  afterDestroyCb       = null
 
   function getSceneTplView()
   {
@@ -32,10 +30,12 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
         "@tierIconSize+1@narrowTooltipWidth+6@blockInterval+2@scrollBarSize+2@frameHeaderPad"))
     presetTextWidth = ::min(::to_pixels("1@srw") - tiersAndDescWidth,
       ::to_pixels("1@modPresetTextMaxWidth"))
-    weaponryByPresetInfo = getWeaponryByPresetInfo(unit, chooseMenuList)
-    presetsList = weaponryByPresetInfo.presetsList
-    lastWeapon = !isWorldWarUnit ?
-      getLastWeapon(unit.name) : ::g_world_war.get_last_weapon_preset(unit.name)
+    presetsList = getSecondaryWeaponsList(unit).sort(@(a, b)
+      a.chapterOrd <=> b.chapterOrd
+      || b.isEnabled <=> a.isEnabled
+      || b.isDefault <=> a.isDefault)
+    weaponryByPresetInfo = getWeaponryByPresetInfo(unit, presetsList)
+    lastWeapon = getLastWeapon(unit.name)
     local lw = lastWeapon
     chosenPresetIdx = presetsList.findindex(@(w) w.name == lw) ?? 0
     presetsMarkup = getPresetsMarkup()
@@ -59,12 +59,12 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
     local curType = ""
     foreach (idx, preset in weaponryByPresetInfo.presets)
     {
-      if (curType != preset.purposeType && preset.purposeType != "NONE")
+      if (curType != preset.presetPurposeType && preset.presetPurposeType != "NONE")
       {
-        curType = preset.purposeType
+        curType = preset.presetPurposeType
         res.append({
           isCollapsable = true
-          purposeTypeName = ::loc($"weapons/purposeType/{ preset.purposeType }")
+          purposeTypeName = ::loc($"weapons/purposeType/{ preset.presetPurposeType }")
         })
       }
 
@@ -148,13 +148,8 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
     }
 
     ::play_gui_sound("check")
-    if (isWorldWarUnit)
-      ::g_world_war.set_last_weapon_preset(unit.name, item.name)
-    else
-    {
-      setLastWeapon(unit.name, item.name)
-      ::check_secondary_weapon_mods_recount(unit)
-    }
+    setLastWeapon(unit.name, item.name)
+    ::check_secondary_weapon_mods_recount(unit)
     guiScene.performDelayed(this, @()goBack())
   }
 
@@ -302,11 +297,6 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
       else if (!isShow && idx == -1)
         collapsedPresets.append(itemObj.id)
     }
-  }
-
-  function afterModalDestroy()
-  {
-    if (afterDestroyCb) afterDestroyCb(unit.name, presetsList[curPresetIdx].name)
   }
 }
 

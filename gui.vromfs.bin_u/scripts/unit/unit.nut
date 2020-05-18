@@ -648,18 +648,6 @@ local Unit = class
     return ::OnlineShopModel.searchEntitlement({unitName = name})
   }
 
-  function getUnlockImage()
-  {
-    if (isAir())
-      return "#ui/gameuiskin#blueprint_items_aircraft"
-    if (isTank())
-      return "#ui/gameuiskin#blueprint_items_tank"
-    if (isShip())
-      return "#ui/gameuiskin#blueprint_items_ship"
-
-    return "#ui/gameuiskin#blueprint_items_aircraft"
-  }
-
   isSquadronVehicle       = @() researchType == "clanVehicle"
   getOpenCost             = @() ::Cost(0, ::clan_get_unit_open_cost_gold(name))
 }
