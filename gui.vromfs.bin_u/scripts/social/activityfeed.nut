@@ -139,7 +139,7 @@ local statsd = require("statsd")
   local sendStat = function(tags) {
     local qualifiedNameParts = split(::getEnumValName("ps4_activity_feed", config.subType, true), ".")
     tags["type"] <- qualifiedNameParts[1]
-    statsd.send_counter("activityfeed", 1, tags)
+    statsd.send_counter("sq.activityfeed", 1, tags)
   }
 
   local locId = ::getTblValue("locId", config, "")
