@@ -2104,6 +2104,15 @@
         },
         {
           "reqModification": "halker_rc"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3_3.blk",
+              "amountPerTier": 1.0,
+              "iconType": "rockets_he_small"
+            }
+          }
         }
       ]
     },
@@ -2164,7 +2173,21 @@
       "preset": {
         "name": "rockets",
         "blk": "gameData/FlightModels/weaponPresets/firebrand_rockets.blk",
-        "reqModification": "halker_rc"
+        "reqModification": "halker_rc",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/uk_rp3_3.blk",
+            "amountPerTier": 1.0,
+            "iconType": "rockets_he_small"
+          }
+        }
+      }
+    },
+    {
+      "preset": {
+        "name": "firebrand_uncle_tom",
+        "blk": "gameData/FlightModels/weaponPresets/firebrand_uncle_tom.blk",
+        "reqModification": "uncle_tom"
       }
     }
   ],
@@ -2400,6 +2423,9 @@
           "separateDm": true
         },
         {
+          "overwriteLinks": true
+        },
+        {
           "dp": "stab_dm"
         },
         {
@@ -2594,6 +2620,9 @@
         },
         {
           "separateDm": true
+        },
+        {
+          "overwriteLinks": true
         },
         {
           "dp": "stab_dm"
@@ -2997,6 +3026,12 @@
           "dm": "wing1_r_dm"
         },
         {
+          "separateDm": true
+        },
+        {
+          "overwriteLinks": true
+        },
+        {
           "dp": "stab_dm"
         },
         {
@@ -3191,6 +3226,9 @@
         },
         {
           "separateDm": true
+        },
+        {
+          "overwriteLinks": true
         },
         {
           "dp": "stab_dm"
@@ -5795,9 +5833,12 @@
     "hispano_air_targets": [],
     "hispano_tracers": [],
     "hispano_stealth": [],
-    "hispano_belt_pack": [],
+    "hispano_belt_pack": {
+      "tier": 1
+    },
     "hispano_mk5_new_gun": {
-      "reqModification": "hispano_belt_pack"
+      "reqModification": "hispano_belt_pack",
+      "tier": 3
     },
     "blackburn_tc": {
       "modClass": "weapon",
@@ -5805,23 +5846,27 @@
     },
     "halker_sbc": {
       "modClass": "weapon",
-      "tier": 1,
+      "tier": 2,
       "reqModification": "blackburn_tc"
     },
     "halker_mbc": {
       "modClass": "weapon",
-      "tier": 2,
+      "tier": 3,
       "reqModification": "halker_sbc"
     },
     "halker_lbc": {
       "modClass": "weapon",
-      "tier": 3,
+      "tier": 4,
       "reqModification": "halker_mbc"
     },
     "halker_rc": {
       "modClass": "weapon",
+      "tier": 2
+    },
+    "uncle_tom": {
+      "modClass": "weapon",
       "tier": 4,
-      "reqModification": "halker_lbc"
+      "reqModification": "halker_rc"
     }
   },
   "user_skin": [

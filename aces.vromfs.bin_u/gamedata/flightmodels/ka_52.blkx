@@ -1549,15 +1549,15 @@
       "textToShowInCockpit": "msg/textToShowInCockpit",
       "headPos": [2.47,0.51,0.382],
       "headPosOnShooting": [2.4,0.51,0.382],
-      "lightPos": [3.833732,-0.228747,0.124572],
-      "lightColor": [0.01,1.5,0.1],
-      "lightRadius": 0.27,
-      "lightPos1": [3.775546,-0.432429,-0.282726],
-      "lightColor1": [0.01,1.5,0.1],
-      "lightRadius1": 0.27,
-      "lightPos2": [3.865871,-0.079488,-0.18869],
-      "lightColor2": [0.01,1.5,0.1],
-      "lightRadius2": 0.05,
+      "lightPos": [3.191985,0.061043,0.469077],
+      "lightColor": [0.01,0.6,0.1],
+      "lightRadius": 0.3,
+      "lightPos1": [3.201561,0.072741,-0.049673],
+      "lightColor1": [0.01,0.6,0.1],
+      "lightRadius1": 0.3,
+      "lightPos2": [3.186026,0.067484,-0.40658],
+      "lightColor2": [0.01,0.6,0.1],
+      "lightRadius2": 0.3,
       "zoomOutFov": 22.46,
       "zoomInFov": 7.37,
       "sightInFov": 1.2,
@@ -1867,11 +1867,13 @@
         },
         {
           "display": {
-            "textureArea": [0.0,0.0,0.5,0.5],
+            "textureArea": [0.0,0.0,0.8,0.8],
             "page": {
               "type": "pilot_hud",
               "ilsNode": "ils",
-              "ilsSize": [0.216,0.157]
+              "ilsSize": [0.28,0.28],
+              "ilsOffsetForce": 0.2,
+              "brightnessMult": 3.5
             }
           }
         }
@@ -1922,7 +1924,7 @@
           "trigger": "gunner0",
           "triggerGroup": "primary",
           "blk": "gameData/Weapons/dummy_weapon.blk",
-          "emitter": "optic2_gun",
+          "emitter": "optic1_gun",
           "parkInDeadzone": false,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
@@ -1931,8 +1933,8 @@
           "bullets": 1,
           "aimForOperatedShell": true,
           "turret": {
-            "head": "optic2_turret",
-            "gun": "optic2_gun",
+            "head": "optic1_turret",
+            "gun": "optic1_gun",
             "mainTurret": true
           },
           "limits": {
@@ -2028,12 +2030,19 @@
       },
       {
         "sensor": {
-          "blk": "gameData/sensors/tv_tracker.blk"
+          "blk": "gameData/sensors/tv_tracker.blk",
+          "node": "optic1_gun"
         }
       },
       {
         "sensor": {
           "blk": "gameData/sensors/su_spo-150.blk"
+        }
+      },
+      {
+        "sensor": {
+          "blk": "gameData/sensors/LaserBeamRidingSensor.blk",
+          "node": "optic1_gun"
         }
       }
     ]
@@ -4845,7 +4854,7 @@
                 "trigger": "gunner0",
                 "triggerGroup": "primary",
                 "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "optic2_gun",
+                "emitter": "optic1_gun",
                 "parkInDeadzone": false,
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
@@ -4854,8 +4863,8 @@
                 "bullets": 1,
                 "aimForOperatedShell": true,
                 "turret": {
-                  "head": "optic2_turret",
-                  "gun": "optic2_gun",
+                  "head": "optic1_turret",
+                  "gun": "optic1_gun",
                   "mainTurret": true
                 },
                 "limits": {
@@ -4969,7 +4978,7 @@
                 "trigger": "gunner0",
                 "triggerGroup": "primary",
                 "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "optic2_gun",
+                "emitter": "optic1_gun",
                 "parkInDeadzone": false,
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
@@ -4978,8 +4987,8 @@
                 "bullets": 1,
                 "aimForOperatedShell": true,
                 "turret": {
-                  "head": "optic2_turret",
-                  "gun": "optic2_gun",
+                  "head": "optic1_turret",
+                  "gun": "optic1_gun",
                   "mainTurret": true
                 },
                 "limits": {
@@ -5093,7 +5102,8 @@
             },
             {
               "sensor": {
-                "blk": "gameData/sensors/tv_tracker.blk"
+                "blk": "gameData/sensors/tv_tracker.blk",
+                "node": "optic1_gun"
               }
             },
             {
@@ -5104,6 +5114,16 @@
             {
               "sensor": {
                 "blk": "gameData/sensors/su_l_370_2.blk"
+              }
+            },
+            {
+              "sensor": {
+                "blk": "gameData/sensors/su_l-140.blk"
+              }
+            },
+            {
+              "sensor": {
+                "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
               }
             }
           ]

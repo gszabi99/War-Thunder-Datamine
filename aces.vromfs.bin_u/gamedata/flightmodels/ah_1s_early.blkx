@@ -25,9 +25,6 @@
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -1276,9 +1273,14 @@
   },
   "commonWeapons": [
     {
-      "hideNodes": {
-        "node": "fuse2"
-      }
+      "hideNodes": [
+        {
+          "node": "fuse2"
+        },
+        {
+          "node": "fuse3"
+        }
+      ]
     },
     {
       "Weapon": {

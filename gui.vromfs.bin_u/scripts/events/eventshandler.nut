@@ -1,6 +1,8 @@
 local seenEvents = ::require("scripts/seen/seenList.nut").get(SEEN.EVENTS)
 local bhvUnseen = ::require("scripts/seen/bhvUnseen.nut")
-local crossplayModule = require("scripts/social/crossplay.nut")
+local { getTextWithCrossplayIcon,
+        isCrossPlayEnabled,
+        needShowCrossPlayInfo } = require("scripts/social/crossplay.nut")
 local clustersModule = require("scripts/clusterSelect.nut")
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
 
@@ -580,12 +582,18 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
   function getEventNameForListBox(event)
   {
     local text = ::events.getEventNameText(event)
+    if (needShowCrossPlayInfo())
+    {
+      local isPlatformOnlyAllowed = ::events.isEventPlatformOnlyAllowed(event)
+      text = getTextWithCrossplayIcon(!isPlatformOnlyAllowed, text)
+      if (!isPlatformOnlyAllowed && !isCrossPlayEnabled())
+        text = ::colorize("warningTextColor", text)
+    }
+
     if (::events.isEventEnded(event))
       text = ::colorize("oldTextColor", text)
-    return crossplayModule.getTextWithCrossplayIcon(
-      !::events.isEventPlatformOnlyAllowed(event) && !crossplayModule.isCrossPlayEnabled(),
-      text
-    )
+
+    return text
   }
 
   function getCurrentEdiff()

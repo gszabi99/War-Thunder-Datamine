@@ -36,16 +36,39 @@
     "mass": 0.072,
     "caliber": 0.015,
     "speed": 850.0,
-    "maxDistance": 3000.0,
+    "maxDistance": 3500.0,
+    "normalizationPreset": "ap",
+    "ricochetPreset": "ap",
+    "secondaryShattersPreset": "ap",
+    "stabilityThreshold": 0.05,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.5,
+    "stabilityReductionAfterPenetration": 0.3,
     "bulletType": "ap_i_t",
+    "slopeEffectPreset": "ap",
     "onHitChanceMultFire": 10.0,
     "dynamicKv": true,
     "relativeVelArmorShift": [200.0,1000.0],
     "waterCollisionEffect": "water_splash",
     "waterFxScale": [1.0,1.0],
+    "stabilityRicochetModifier": [
+      {
+        "mod1": [0.0,0.05]
+      },
+      {
+        "mod2": [20.0,0.1]
+      },
+      {
+        "mod3": [30.0,0.2]
+      },
+      {
+        "mod3": [45.0,0.3]
+      }
+    ],
     "damage": {
       "kinetic": {
-        "demarrePenetrationK": 1.0,
+        "damageType": "generic",
+        "demarrePenetrationK": 0.9,
         "demarreSpeedPow": 1.43,
         "demarreMassPow": 0.71,
         "demarreCaliberPow": 1.07
@@ -139,16 +162,39 @@
       "mass": 0.072,
       "caliber": 0.015,
       "speed": 850.0,
-      "maxDistance": 3000.0,
+      "maxDistance": 3500.0,
+      "normalizationPreset": "ap",
+      "ricochetPreset": "ap",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.05,
+      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "ap_i_t",
+      "slopeEffectPreset": "ap",
       "onHitChanceMultFire": 10.0,
       "dynamicKv": true,
       "relativeVelArmorShift": [200.0,1000.0],
       "waterCollisionEffect": "water_splash",
       "waterFxScale": [1.0,1.0],
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.05]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod3": [30.0,0.2]
+        },
+        {
+          "mod3": [45.0,0.3]
+        }
+      ],
       "damage": {
         "kinetic": {
-          "demarrePenetrationK": 1.0,
+          "damageType": "generic",
+          "demarrePenetrationK": 0.9,
           "demarreSpeedPow": 1.43,
           "demarreMassPow": 0.71,
           "demarreCaliberPow": 1.07

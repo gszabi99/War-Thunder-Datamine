@@ -2630,7 +2630,21 @@
         "preset": {
           "name": "mosquito_fb_mk6_rockets",
           "blk": "gameData/FlightModels/weaponPresets/mosquito_fb_mk6_rockets.blk",
-          "reqModification": "mosquitofb_rsc"
+          "reqModification": "mosquitofb_rsc",
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+              "amountPerTier": 1.0,
+              "iconType": "rockets_he_small"
+            }
+          }
+        }
+      },
+      {
+        "preset": {
+          "name": "mosquito_fb_mk6_uncle_tom",
+          "blk": "gameData/FlightModels/weaponPresets/mosquito_fb_mk6_uncle_tom.blk",
+          "reqModification": "uncle_tom"
         }
       }
     ]
@@ -2753,9 +2767,12 @@
       "hispano_air_targets": [],
       "hispano_tracers": [],
       "hispano_stealth": [],
-      "bmg303_belt_pack": [],
+      "bmg303_belt_pack": {
+        "tier": 1
+      },
       "bmg303_new_gun": {
-        "reqModification": "bmg303_belt_pack"
+        "reqModification": "bmg303_belt_pack",
+        "tier": 3
       },
       "hispano_belt_pack": {
         "tier": 1
@@ -2788,6 +2805,11 @@
         "modClass": "weapon",
         "tier": 3,
         "reqModification": "mosquitofb_mbc"
+      },
+      "uncle_tom": {
+        "modClass": "weapon",
+        "tier": 4,
+        "reqModification": "mosquitofb_rsc"
       }
     }
   },

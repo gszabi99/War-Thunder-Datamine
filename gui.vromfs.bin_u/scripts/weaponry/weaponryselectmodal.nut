@@ -21,6 +21,7 @@
     ]
   }
 */
+local weaponryPresetsModal = require("scripts/weaponry/weaponryPresetsModal.nut")
 local { updateModItem, createModItemLayout } = require("scripts/weaponry/weaponryVisual.nut")
 local { getLastWeapon, setLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 
@@ -45,6 +46,14 @@ local CHOOSE_WEAPON_PARAMS = {
     : ::g_world_war.get_last_weapon_preset(unit.name)
   local hasOnlyBought = !::is_in_flight() || !::g_mis_custom_state.getCurMissionRules().isWorldWar
   local isForcedAvailable = params.isForcedAvailable || isWorldWarUnit
+  local onChangeValueCb = (@(unit, cb) function(weapon) {
+    if (isWorldWarUnit)
+      ::g_world_war.set_last_weapon_preset(unit.name, weapon.name)
+    else
+      setLastWeapon(unit.name, weapon.name)
+
+    if (cb) cb(unit.name, weapon.name)
+  })(unit, cb)
 
   local list = []
   foreach(weapon in unit.weapons)
@@ -59,21 +68,23 @@ local CHOOSE_WEAPON_PARAMS = {
     })
   }
 
-  ::gui_start_weaponry_select_modal({
-    unit = unit
-    list = list
-    weaponItemParams = params.itemParams
-    alignObj = params.alignObj
-    align = params.align
-    onChangeValueCb = (@(unit, cb) function(weapon) {
-      if (isWorldWarUnit)
-        ::g_world_war.set_last_weapon_preset(unit.name, weapon.name)
-      else
-        setLastWeapon(unit.name, weapon.name)
-
-      if (cb) cb(unit.name, weapon.name)
-    })(unit, cb)
-  })
+  if ((unit.isAir() || unit.isHelicopter()) && ::has_feature("ShowWeapPresetsMenu"))
+    weaponryPresetsModal.open({ //open modal menu for air and helicopter only
+        unit = unit
+        chooseMenuList   = list
+        isWorldWarUnit   = isWorldWarUnit
+        weaponItemParams = params.itemParams
+        onChangeValueCb   = onChangeValueCb
+      })
+  else
+    ::gui_start_weaponry_select_modal({
+      unit = unit
+      list = list
+      weaponItemParams = params.itemParams
+      alignObj = params.alignObj
+      align = params.align
+      onChangeValueCb = onChangeValueCb
+    })
 }
 
 class ::gui_handlers.WeaponrySelectModal extends ::gui_handlers.BaseGuiHandlerWT

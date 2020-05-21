@@ -19,7 +19,18 @@
     "caliber": 0.04,
     "speed": 241.0,
     "maxDistance": 2200.0,
+    "normalizationPreset": "heat",
+    "ricochetPreset": "heat",
+    "secondaryShattersPreset": "ap",
+    "stabilityThreshold": 0.1,
+    "stabilityCaliberToArmorThreshold": 100.0,
+    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterPenetration": 0.01,
     "bulletType": "he_at_grenade",
+    "cumulativeSecondaryShattersPreset": "heat_fs",
+    "explodeOnRendinst": true,
+    "modelName": "tank_bullet_heat",
+    "fresnel": [0.23,0.1,2.0],
     "explosiveType": "rdx_tnt",
     "explosiveMass": 0.032,
     "hitPowerMult": 1.0,
@@ -36,6 +47,10 @@
     "ricochetEffect": "bullet_hit_armor",
     "waterCollisionEffect": "big_water_splash",
     "waterFxScale": [0.8,1.0],
+    "stabilityRicochetModifier": {
+      "mod1": [0.0,0.0],
+      "mod2": [20.0,1.0]
+    },
     "hitpower": {
       "HitPower10m": [1.0,50.0],
       "HitPower1000m": [0.85,1000.0],
@@ -53,7 +68,7 @@
     "cumulativeDamage": {
       "armorPower": 76.0,
       "distance": 6.0,
-      "damage": 100.0,
+      "damage": 80.0,
       "onHitChanceMultFire": 15.0
     },
     "visual": {

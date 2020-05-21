@@ -1,6 +1,6 @@
 class gui_bhv.ControlsInput
 {
-  eventMask = ::EV_MOUSE_L_BTN | ::EV_PROCESS_SHORTCUTS | ::EV_MOUSE_EXT_BTN | ::EV_KBD_UP | ::EV_KBD_DOWN | ::EV_JOYSTICK
+  eventMask = ::EV_MOUSE_L_BTN | ::EV_PROCESS_SHORTCUTS | ::EV_MOUSE_EXT_BTN | ::EV_KBD_UP | ::EV_KBD_DOWN | ::EV_JOYSTICK | ::EV_GESTURE
 
   function onLMouse(obj, mx, my, is_up, bits)
   {
@@ -31,7 +31,7 @@ class gui_bhv.ControlsInput
 
   function getCurrentBtnIndex(obj)
   {
-    for (local i = 0; i < 3; i++)
+    for (local i = 0; i < ::TOTAL_DEVICES; i++)
       if (!obj["device" + i].len())
         return i
 
@@ -165,6 +165,34 @@ class gui_bhv.ControlsInput
       if (obj["device0"] != "" && obj["button0"] != "")
         obj.sendNotify("end_edit")
     }
+    return ::RETCODE_HALT
+  }
+
+  function onGesture(obj, event, gesture_idx)
+  {
+    if (!checkActive(obj))
+      return ::RETCODE_HALT
+
+    if (event == ::EV_GESTURE_START)
+    {
+      local btnIndex = getCurrentBtnIndex(obj)
+      if (btnIndex >= 0 && !obj["device" + btnIndex].len())
+      {
+        if (!isExistsShortcut(obj, ::STD_GESTURE_DEVICE_ID.tostring(), gesture_idx.tostring()))
+        {
+          obj["device" + btnIndex] = ::STD_GESTURE_DEVICE_ID.tostring()
+          obj["button" + btnIndex] = gesture_idx.tostring()
+          obj.sendNotify("change_value")
+        }
+        return ::RETCODE_HALT
+      }
+    }
+    else if (event == ::EV_GESTURE_END)
+    {
+      if (obj["device0"] != "" && obj["button0"] != "")
+        obj.sendNotify("end_edit")
+    }
+
     return ::RETCODE_HALT
   }
 

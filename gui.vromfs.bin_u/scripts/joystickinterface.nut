@@ -1,18 +1,20 @@
+local { isWheelmenuAxisConfigurable } = require("scripts/wheelmenu/multifuncmenuShared.nut")
+
 ::joystickInterface <- {
   maxAbsoluteAxisValue = 32000
   invertedByDefault = {}
 
-  function getAxisWatch(aircraft = false, tank = false, camera = false)
+  function getAxisWatch(isForWheelmenu = false, isForArtillery = false)
   {
     local res = []
-    if (aircraft) {
-      res.append(["decal_move_x", "decal_move_y"])
+    if (isForWheelmenu) {
+      if (::is_xinput_device() && isWheelmenuAxisConfigurable())
+        res.append(::get_player_cur_unit()?.unitType.wheelmenuAxis ?? [])
+      else
+        res.append(["decal_move_x", "decal_move_y"], ["camx", "camy"])
     }
-    if (tank) {
+    if (isForArtillery) {
       res.append(["decal_move_x", "decal_move_y"])
-    }
-    if (camera) {
-      res.append(["camx", "camy"])
     }
     return res
   }
@@ -123,21 +125,16 @@
   }
 
   /**
-   * Return array [dx, dy] of current cursor displasement with left stick.
+   * Return array [dx, dy] of current cursor displasement with the stick.
    * dx and dy are floats [0;+1].
-   * Basicly, shortcuts used for getting axis values,
-   * and they could be remapped by user.
-   * But by design, we assosiate this shortcuts with left stick
    *
    * @dt - time form last update
    * @NonlinearityPower - (integer) in this power length of deviation vecotr will be powered
    *   to make control more accurate. Lentgh of deviation vector is bounded in [0,+1]
-   * @stuckAxis - result of getAxisStuck()
+   * @axisValues - result of getMaxDeviatedAxisInfo()
    */
-  function getGamepadPositionDeviation(dt, nonlinearityPower = 1, stuckAxis = {})
+  function getPositionDelta(dt, nonlinearityPower, axisValues)
   {
-    local axisData = getAxisData(getAxisWatch(false, true), stuckAxis)
-    local axisValues = getMaxDeviatedAxisInfo(axisData)
     local distance = ::pow(axisValues.normLength, nonlinearityPower) * dt
     local dx =   distance * ::cos(axisValues.angle)
     local dy = - distance * ::sin(axisValues.angle)

@@ -21,10 +21,10 @@ ctrlsState.subscribe(function (new_val) {
 
 
 local gamepadCursorControl = extWatched("gamepadCursorControl",
-  ::cross_call.getValueGamepadCursorControl)
+  @() ::cross_call.getValueGamepadCursorControl())
 
 local haveXinputDevice = extWatched("haveXinputDevice",  //FIX ME: remove "haveXinputDevice" when in darg scene will be determined correctly that joystick has controller
-  ::cross_call.haveXinputDevice)
+  @() ::cross_call.haveXinputDevice())
 
 local enabledGamepadCursorControlInScene = keepref(::Computed(
   @() gamepadCursorControl.value && haveXinputDevice.value))
@@ -36,3 +36,9 @@ local function updateSceneGamepadCursorControl(value) {
 updateSceneGamepadCursorControl(enabledGamepadCursorControlInScene.value)
 
 enabledGamepadCursorControlInScene.subscribe(updateSceneGamepadCursorControl)
+
+local showConsoleButtons = extWatched("showConsoleButtons", @() ::cross_call.isConsoleModeEnabled())
+
+return {
+  showConsoleButtons = showConsoleButtons
+}

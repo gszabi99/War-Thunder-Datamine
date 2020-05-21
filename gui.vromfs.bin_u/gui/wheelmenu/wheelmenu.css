@@ -68,11 +68,9 @@ wheelmenu shortcut {
   input-transparent: yes;
   background-color:@white;
   background-repeat:stretch;
-  display:hide;
 }
 
 wheelmenu > shortcut {
-  background-image:@control_l_stick_4;
   size:54(@sf/1080), 54(@sf/1080);
   background-svg-size: 54(@sf/1080), 54(@sf/1080);
 }
@@ -81,15 +79,18 @@ wheelmenu > wheelmenuItem > shortcut {
   background-image:@control_button_a;
   size:40(@sf/1080), 40(@sf/1080);
   background-svg-size: 40(@sf/1080), 40(@sf/1080);
+  display:hide;
 }
 
 [swap_ab=yes] wheelmenu > wheelmenuItem > shortcut {
   background-image:@control_button_b;
 }
 
-[show_console_buttons=yes] wheelmenu > shortcut,
 [show_console_buttons=yes] wheelmenu > wheelmenuItem[selected=yes] > shortcut {
   display:show;
+}
+[show_console_buttons=yes] wheelmenu > wheelmenuItem[selected=yes]:disabled > shortcut {
+  display:hide;
 }
 
 wheelmenuDummy { behaviour:button; }

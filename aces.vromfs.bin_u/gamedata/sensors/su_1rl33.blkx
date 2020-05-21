@@ -552,40 +552,23 @@
     "standbyOrSearch": {
       "stateInit": "init",
       "actionsTemplates": {
-        "setStandbyMode": [
-          {
-            "setModeName": {
-              "name": "standby"
-            }
+        "setStandbyMode": {
+          "setModeName": {
+            "name": "standby"
           },
-          {
-            "setEnabled": {
-              "value": false
-            }
+          "setEnabled": {
+            "value": false
           },
-          {
-            "setEnabled": {
-              "value": false
-            }
+          "clearTargets": [],
+          "clearTargetsOfInterest": [],
+          "setCenterElevation": {
+            "source": "constant",
+            "value": 7.5
           },
-          {
-            "clearTargets": []
-          },
-          {
-            "clearTargetsOfInterest": []
-          },
-          {
-            "setCenterElevation": {
-              "source": "constant",
-              "value": 7.5
-            }
-          },
-          {
-            "setScanPatternSet": {
-              "scanPatternSet": "search"
-            }
+          "setScanPatternSet": {
+            "scanPatternSet": "search"
           }
-        ],
+        },
         "setSearchMode": [
           {
             "setModeName": {
@@ -672,6 +655,7 @@
           "event": "fsmActivate",
           "stateTo": "standby",
           "actions": {
+            "resetSearchMode": [],
             "setStandbyMode": []
           }
         },

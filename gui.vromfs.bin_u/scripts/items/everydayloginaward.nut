@@ -1,5 +1,5 @@
 local time = require("scripts/time.nut")
-
+local { disableSeenUserlogs } = require("scripts/userLog/userlogUtils.nut")
 
 ::gui_start_show_login_award <- function gui_start_show_login_award(blk)
 {
@@ -361,9 +361,7 @@ class ::gui_handlers.EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     sendOpenTrophyStatistic(obj)
-    if (::disable_user_log_entry_by_id(userlog.id))
-      ::save_online_job()
-    ::u.appendOnce(userlog.id, ::shown_userlog_notifications)
+    disableSeenUserlogs([userlog.id])
     isOpened = true
     if (callItemsRoulette())
       useSingleAnimation = false

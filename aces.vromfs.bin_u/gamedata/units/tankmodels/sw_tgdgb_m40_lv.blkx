@@ -2159,7 +2159,10 @@
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
-        "cls_body": "convex_hull"
+        "cls_body": "convex_hull",
+        "cls_body_01": "convex_hull",
+        "cls_body_02": "convex_hull",
+        "cls_body_03": "convex_hull"
       },
       "engine": {
         "horsePowers": 140.0,
@@ -2744,6 +2747,15 @@
             }
           }
         ]
+      },
+      {
+        "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
       },
       {
         "event": {

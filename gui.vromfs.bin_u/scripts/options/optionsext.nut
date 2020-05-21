@@ -3699,13 +3699,6 @@ local isWaitMeasureEvent = false
       descr.controlName <- "switchbox"
       descr.value = ::g_gamepad_cursor_controls.getValue()
       break
-    case ::USEROPT_GAMEPAD_CURSOR_CONTROLLER_SPEED:
-      descr.id = "gamepad_cursor_controller_speed"
-      descr.controlType = optionControlType.SLIDER
-      descr.value = ::g_gamepad_cursor_controls.getSpeed()
-      descr.min <- 5
-      descr.max <- 200
-      break
     case ::USEROPT_PS4_CROSSPLAY:
       descr.id = "ps4_crossplay"
       descr.controlType = optionControlType.CHECKBOX
@@ -4855,9 +4848,6 @@ local isWaitMeasureEvent = false
       break
     case ::USEROPT_GAMEPAD_CURSOR_CONTROLLER:
       ::g_gamepad_cursor_controls.setValue(value)
-      break
-    case ::USEROPT_GAMEPAD_CURSOR_CONTROLLER_SPEED:
-      ::g_gamepad_cursor_controls.setSpeed(value)
       break
     case ::USEROPT_PS4_CROSSPLAY:
       crossplayModule.setCrossPlayStatus(value)

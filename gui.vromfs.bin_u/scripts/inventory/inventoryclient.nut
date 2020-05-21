@@ -30,6 +30,7 @@ local requestInternal = function(requestData, data, callback, progressBoxData = 
   })
 }
 
+local getErrorId = @(result) result.error.split(":")[0]
 
 local InventoryClient = class {
   items = {}
@@ -540,7 +541,12 @@ local InventoryClient = class {
     return recipes
   }
 
-  function handleItemsDelta(result, cb = null, shouldCheckInventory = true) {
+  function handleItemsDelta(result, cb = null, errocCb = null, shouldCheckInventory = true) {
+    if (result?.error != null) {
+      errocCb?(getErrorId(result))
+      return
+    }
+
     local itemJson = getResultData(result, "item_json")
     if (!itemJson)
       return
@@ -594,7 +600,7 @@ local InventoryClient = class {
     }
   }
 
-  function exchangeViaChard(materials, outputItemDefId, cb = null, shouldCheckInventory = true, requirement = null) {
+  function exchangeViaChard(materials, outputItemDefId, cb = null, errocCb = null, shouldCheckInventory = true, requirement = null) {
     local json = {
       outputitemdefid = outputItemDefId
       materials = materials
@@ -605,7 +611,7 @@ local InventoryClient = class {
     }
 
     local internalCb = ::Callback((@(cb, shouldCheckInventory) function(data) {
-                                     handleItemsDelta(data, cb, shouldCheckInventory)
+                                     handleItemsDelta(data, cb, errocCb, shouldCheckInventory)
                                  })(cb, shouldCheckInventory), this)
     local taskId = ::char_send_custom_action("cln_inventory_exchange_items",
                                              EATT_JSON_REQUEST,
@@ -615,7 +621,7 @@ local InventoryClient = class {
     ::g_tasker.addTask(taskId, { showProgressBox = true }, internalCb, null, TASK_CB_TYPE.REQUEST_DATA)
   }
 
-  function exchangeDirect(materials, outputItemDefId, cb = null, shouldCheckInventory = true) {
+  function exchangeDirect(materials, outputItemDefId, cb = null, errocCb = null, shouldCheckInventory = true) {
     local req = {
         outputitemdefid = outputItemDefId,
         materials = materials
@@ -623,13 +629,13 @@ local InventoryClient = class {
 
     request("ExchangeItems", {}, req,
       function(result) {
-        handleItemsDelta(result, cb, shouldCheckInventory)
+        handleItemsDelta(result, cb, errocCb, shouldCheckInventory)
       },
       { }
     )
   }
 
-  function exchange(materials, outputItemDefId, cb = null, shouldCheckInventory = true, requirement = null) {
+  function exchange(materials, outputItemDefId, cb = null, errocCb = null, shouldCheckInventory = true, requirement = null) {
     // We can continue to use exchangeDirect if requirement is null. It would be
     // better to use exchangeViaChard in all cases for the sake of consistency,
     // but this will break compatibility with the char server. This distinction
@@ -637,11 +643,11 @@ local InventoryClient = class {
 
     if (!::u.isString(requirement) || requirement.len() == 0)
     {
-      exchangeDirect(materials, outputItemDefId, cb, shouldCheckInventory)
+      exchangeDirect(materials, outputItemDefId, cb, errocCb, shouldCheckInventory)
       return
     }
 
-    exchangeViaChard(materials, outputItemDefId, cb, shouldCheckInventory, requirement)
+    exchangeViaChard(materials, outputItemDefId, cb, errocCb, shouldCheckInventory, requirement)
   }
 
   function getChestGeneratorItemdefIds(itemdefid) {
@@ -714,16 +720,12 @@ local InventoryClient = class {
     items.clear()
   }
 
-  function cancelDelayedExchange(itemUid, cb = null) {
+  function cancelDelayedExchange(itemUid, cb = null, errocCb = null) {
     request("CancelDelayedExchange",
       { itemId = itemUid },
       null,
-      function(result) {
-        if (!!result?.error)
-          return cb(result)
-
-        handleItemsDelta(result, cb)
-      })
+      @(result) handleItemsDelta(result, cb, errocCb)
+    )
   }
 
 }

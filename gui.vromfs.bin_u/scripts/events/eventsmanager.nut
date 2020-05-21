@@ -2056,6 +2056,7 @@ class Events
     local data = {
       activeJoinButton = false
       reasonText = null
+      msgboxReasonText = null
       checkStatus = false
       actionFunc = null
       event = event // Used to backtrack event in actionFunc.
@@ -2096,6 +2097,11 @@ class Events
         ::scene_msg_box("cant_join", null, messageText,
             [["ok", function() {}]], "ok")
       }
+    }
+    else if (!isEventPlatformOnlyAllowed(mGameMode) && !crossplayModule.isCrossPlayEnabled())
+    {
+      data.reasonText = ::loc("xbox/crossPlayRequired")
+      data.msgboxReasonText = ::loc("xbox/actionNotAvailableCrossNetworkPlay")
     }
     else if (!checkSpecialRequirements(event))
     {
@@ -2168,10 +2174,6 @@ class Events
     {
       data.reasonText = ::loc("events/notEnoughMoney")
     }
-    else if (!isEventPlatformOnlyAllowed(mGameMode) && !crossplayModule.isCrossPlayEnabled())
-    {
-      data.reasonText = ::loc("xbox/crossPlayRequired")
-    }
     else
     {
       data.reasonText = ""
@@ -2181,9 +2183,8 @@ class Events
 
     if (data.actionFunc == null && !data.checkStatus)
     {
-      data.actionFunc = function (reasonData) {
-        ::scene_msg_box("cant_join", null, reasonData.reasonText,
-            [["ok", function() {}]], "ok")
+      data.actionFunc = function(reasonData) {
+        ::showInfoMsgBox(reasonData.msgboxReasonText || reasonData.reasonText, "cant_join")
       }
     }
 

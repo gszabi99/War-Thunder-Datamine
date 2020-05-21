@@ -2102,14 +2102,28 @@
     {
       "preset": {
         "name": "a2d_20x250lbs",
-        "blk": "gameData/FlightModels/weaponPresets/a2d_20x250lbs.blk"
+        "blk": "gameData/FlightModels/weaponPresets/a2d_20x250lbs.blk",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+            "amountPerTier": 5.0,
+            "iconType": "bombs_small_group"
+          }
+        }
       }
     },
     {
       "preset": {
         "name": "a2d_rockets",
         "blk": "gameData/FlightModels/weaponPresets/a2d_rockets.blk",
-        "reqModification": "frc_mk2"
+        "reqModification": "frc_mk2",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_a.blk",
+            "amountPerTier": 2.0,
+            "iconType": "rockets_he_middle_group"
+          }
+        }
       }
     },
     {
@@ -2153,6 +2167,15 @@
         },
         {
           "reqModification": "us_2000lb_m66"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_a.blk",
+              "amountPerTier": 2.0,
+              "iconType": "rockets_he_middle_group"
+            }
+          }
         }
       ]
     },

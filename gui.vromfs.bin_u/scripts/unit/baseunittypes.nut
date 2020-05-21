@@ -35,6 +35,7 @@ return {
     modClassOrder = ["lth", "armor", "weapon"]
     canShowProtectionAnalysis = @() ::has_feature("DmViewerProtectionAnalysisAircraft")
     canShowVisualEffectInProtectionAnalysis = @() ::has_feature("DmViewerProtectionAnalysisVisualEffect")
+    wheelmenuAxis = [ "wheelmenu_x", "wheelmenu_y" ]
   }
 
   TANK = {
@@ -65,6 +66,7 @@ return {
     canSpendGold = @() isAvailable() && ::has_feature("SpendGoldForTanks")
     canShowProtectionAnalysis = @() true
     canShowVisualEffectInProtectionAnalysis = @() false
+    wheelmenuAxis = [ "gm_wheelmenu_x", "gm_wheelmenu_y" ]
   }
 
   SHIP = {
@@ -97,6 +99,7 @@ return {
     canShowProtectionAnalysis = @() ::has_feature("DmViewerProtectionAnalysisShip")
     canShowVisualEffectInProtectionAnalysis = @() false
     bulletSetsQuantity = ::BULLETS_SETS_QUANTITY
+    wheelmenuAxis = [ "ship_wheelmenu_x", "ship_wheelmenu_y" ]
   }
 
   HELICOPTER = {
@@ -120,5 +123,6 @@ return {
     modClassOrder = ["lth", "armor", "weapon"]
     canShowProtectionAnalysis = @() ::has_feature("DmViewerProtectionAnalysisAircraft")
     canShowVisualEffectInProtectionAnalysis = @() ::has_feature("DmViewerProtectionAnalysisVisualEffect")
+    wheelmenuAxis = [ "helicopter_wheelmenu_x", "helicopter_wheelmenu_y" ]
   }
 }

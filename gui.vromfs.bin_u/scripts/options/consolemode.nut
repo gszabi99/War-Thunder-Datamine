@@ -25,6 +25,7 @@
     return false
 
   ::show_console_buttons = showCB
+  ::call_darg("updateExtWatched", { showConsoleButtons = showCB })
   if (!::g_login.isProfileReceived())
     return true
 
@@ -33,3 +34,5 @@
   ::handlersManager.markfullReloadOnSwitchScene()
   return true
 }
+
+::cross_call_api.isConsoleModeEnabled <- @() ::get_is_console_mode_enabled()

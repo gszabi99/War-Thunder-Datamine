@@ -29,13 +29,36 @@
     "caliber": 0.152,
     "speed": 1500.0,
     "maxDistance": 0.01,
+    "normalizationPreset": "apcr",
+    "ricochetPreset": "apds",
+    "secondaryShattersPreset": "apds",
+    "stabilityThreshold": 0.05,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.5,
+    "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "football_jump",
+    "modelName": "tank_bullet_apdc",
+    "fresnel": [0.23,0.1,2.0],
     "bulletName": "football_jump",
     "Cx": 0.01,
     "relativeVelArmorShift": [200.0,1000.0],
     "groundCollisionEffect": "",
     "ricochetEffect": "",
     "waterCollisionEffect": "",
+    "stabilityRicochetModifier": [
+      {
+        "mod1": [0.0,0.05]
+      },
+      {
+        "mod2": [20.0,0.1]
+      },
+      {
+        "mod3": [30.0,0.2]
+      },
+      {
+        "mod3": [45.0,0.3]
+      }
+    ],
     "hitpower": {
       "HitPower0m": [0.0,0.0],
       "HitPower1m": [0.0,1.0]
@@ -69,13 +92,36 @@
       "caliber": 0.152,
       "speed": 1500.0,
       "maxDistance": 0.01,
+      "normalizationPreset": "apcr",
+      "ricochetPreset": "apds",
+      "secondaryShattersPreset": "apds",
+      "stabilityThreshold": 0.05,
+      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "football_jump",
+      "modelName": "tank_bullet_apdc",
+      "fresnel": [0.23,0.1,2.0],
       "bulletName": "football_jump",
       "Cx": 0.01,
       "relativeVelArmorShift": [200.0,1000.0],
       "groundCollisionEffect": "",
       "ricochetEffect": "",
       "waterCollisionEffect": "",
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.05]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod3": [30.0,0.2]
+        },
+        {
+          "mod3": [45.0,0.3]
+        }
+      ],
       "hitpower": {
         "HitPower0m": [0.0,0.0],
         "HitPower1m": [0.0,1.0]

@@ -109,7 +109,18 @@
   },
   {
     "bullet": {
+      "normalizationPreset": "heat",
+      "ricochetPreset": "he",
+      "secondaryShattersPreset": "ap_rocket",
+      "stabilityThreshold": 0.05,
+      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "sam_tank",
+      "slopeEffectPreset": "ap",
+      "modelName": "tank_bullet_he",
+      "fresnel": [0.23,0.1,2.0],
+      "explodeOnRendinst": true,
       "bulletName": "152mm_mim146",
       "mass": 51.0,
       "caliber": 0.152,
@@ -118,6 +129,11 @@
       "sound": "atgm_LPC",
       "sound_inside": "atgm_LPC_interior",
       "recoilMultiplier": 0.05,
+      "stabilityRicochetModifier": {
+        "mod1": [0.0,0.5],
+        "mod2": [20.0,0.6],
+        "mod3": [30.0,1.0]
+      },
       "rocket": {
         "hasProximityFuse": true,
         "caliber": 0.152,
@@ -136,6 +152,7 @@
         "timeFire": 3.0,
         "thrustDeviation": 0.0,
         "operated": true,
+        "isBeamRider": true,
         "operatedDist": 10000.0,
         "autoLeveling": true,
         "autoAiming": true,
@@ -185,6 +202,7 @@
           "radius": 6.0,
           "armDistance": 300.0,
           "detectAirUnits": true,
+          "detectShells": true,
           "detectGroundUnits": false,
           "detectGround": false,
           "minimalAltitude": 25.0

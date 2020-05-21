@@ -12,12 +12,12 @@
     "mission": {
       "level": "levels/dover_strait.bin",
       "type": "testFlight",
-      "restoreType": "manual",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "good",
       "windDirection": [1.0,0.0,0.0],
-      "locName": "missions/testFlight"
+      "locName": "missions/testFlight",
+      "restoreType": "manual",
+      "optionalTakeOff": false
     },
     "spectator_points": [],
     "briefing": {
@@ -45,8 +45,8 @@
             "icon": {
               "icontype": "fighter",
               "side": "player",
-              "target": "airfield00",
-              "lookAt": "airfield01"
+              "target": "briefing_player",
+              "lookAt": "point_of_view"
             }
           },
           {
@@ -74,7 +74,7 @@
             "icon": {
               "icontype": "airfield",
               "side": "ally",
-              "target": "airfield01"
+              "target": "airfield"
             }
           }
         ]
@@ -98,15 +98,8 @@
       },
       "conditions": [],
       "actions": {
-        "addAirfield": {
-          "runwayStart": "airfield00",
-          "runwayEnd": "airfield01",
-          "runwayWidth": 50.0,
-          "army": 1,
-          "spawnPoint": "spawnpoint"
-        },
         "spawnOnAirfield": {
-          "runwayName": "airfield00",
+          "runwayName": "airfield",
           "objects": "armada_01"
         },
         "unitSetIndication": [
@@ -159,7 +152,7 @@
           "time": 3.0
         },
         "spawnOnAirfield": {
-          "runwayName": "airfield00",
+          "runwayName": "airfield",
           "objects": "armada_01"
         }
       },
@@ -408,7 +401,7 @@
           [0.98619,0.0,-0.165615],
           [0.0,1.0,0.0],
           [0.165615,0.0,0.98619],
-          [17696.3,24.2087,-25232.3]
+          [17655.7,33.0093,-25226.5]
         ],
         "unit_class": "fr_citroen_kegresse_p4t",
         "closed_waypoints": false,
@@ -443,7 +436,7 @@
           [0.98619,0.0,-0.165615],
           [0.0,1.0,0.0],
           [0.165615,0.0,0.98619],
-          [17716.9,23.6261,-25107.6]
+          [17676.3,23.6261,-25101.8]
         ],
         "unit_class": "fr_cckw_353_bofors",
         "closed_waypoints": false,
@@ -509,14 +502,14 @@
     },
     {
       "objectGroups": {
-        "name": "dynAF_britain_concrete1line_ally",
+        "name": "airfield",
         "tm": [
           [0.0,0.0,-1.0],
           [0.0,1.0,0.0],
           [1.0,0.0,0.0],
-          [17732.3,8.19171,-25307.9]
+          [17744.7,15.451,-24350.9]
         ],
-        "unit_class": "dynAF_britain_concrete1line_ally",
+        "unit_class": "dynaf_universal_1line_3000_a",
         "objLayer": 2,
         "props": {
           "army": 1,
@@ -790,36 +783,6 @@
     }
   ],
   "areas": {
-    "airfield00": {
-      "type": "Sphere",
-      "tm": [
-        [-3.8147e-06,-0.496585,99.9988],
-        [-0.765648,99.9958,0.496571],
-        [-99.997,-0.765638,-0.00375652],
-        [17862.0,8.36811,-25740.2]
-      ],
-      "props": []
-    },
-    "airfield01": {
-      "type": "Sphere",
-      "tm": [
-        [-9.53674e-06,0.0,100.0],
-        [0.0,100.0,0.0],
-        [-100.0,0.0,-9.53674e-06],
-        [17862.0,8.19687,-24579.3]
-      ],
-      "props": []
-    },
-    "spawnpoint": {
-      "type": "Sphere",
-      "tm": [
-        [-4.05312e-06,-0.379888,76.4991],
-        [-0.585721,76.4968,0.379877],
-        [-76.4978,-0.585713,-0.00297475],
-        [17862.0,8.36385,-25739.5]
-      ],
-      "props": []
-    },
     "area_01": {
       "type": "Point",
       "tm": [
@@ -849,6 +812,28 @@
         [0.0,1.0,0.0],
         [0.0,0.0,1.0],
         [20249.6,5000.0,-16987.2]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "point_of_view": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [17618.0,8.39453,-18541.9]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "briefing_player": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [17540.0,8.33746,-22758.7]
       ],
       "objLayer": 0,
       "props": []

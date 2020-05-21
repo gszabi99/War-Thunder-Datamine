@@ -466,19 +466,6 @@ class ::gui_handlers.ShowTutorialRewardHandler extends ::gui_handlers.BaseGuiHan
   return res
 }
 
-::check_tutorial_on_mainmenu <- function check_tutorial_on_mainmenu()
-{
-  foreach(tutorial in ::tutorials_to_check)
-  {
-    local func = ::getTblValue("isNeedAskInMainmenu", tutorial)
-    if (!func || !func())
-      continue
-
-    if (::gui_start_checkTutorial(tutorial.id))
-      return
-  }
-}
-
 ::check_tutorial_on_start <- function check_tutorial_on_start()
 {
   local tutorial = "fighter"
@@ -490,7 +477,17 @@ class ::gui_handlers.ShowTutorialRewardHandler extends ::gui_handlers.BaseGuiHan
     tutorial = "boat"
 
   if (!::gui_start_checkTutorial(tutorial))
-    check_tutorial_on_mainmenu()
+  {
+    foreach(t in ::tutorials_to_check)
+    {
+      local func = ::getTblValue("isNeedAskInMainmenu", t)
+      if (!func || !func())
+        continue
+
+      if (::gui_start_checkTutorial(t.id))
+        return
+    }
+  }
 }
 
 ::reset_tutorial_skip <- function reset_tutorial_skip()

@@ -108,7 +108,7 @@ class ::gui_handlers.FlightMenu extends ::gui_handlers.BaseGuiHandlerWT
     local btnBailout = scene.findObject("btn_Bailout")
     if (::checkObj(btnBailout))
     {
-      if (::get_mission_restore_type() != ::ERT_MANUAL
+      if ((::get_mission_restore_type() != ::ERT_MANUAL || gm == ::GM_TEST_FLIGHT)
           && gm != ::GM_BENCHMARK
           && !::is_camera_not_flight()
           && ::is_player_can_bailout()

@@ -1670,6 +1670,8 @@
           "breechDP": "cannon_breech_dm",
           "speedYaw": 20.0,
           "speedPitch": 4.0,
+          "yawSpdLowBattery": 20.0,
+          "pitchSpdLowBattery": 4.0,
           "fireConeAngle": 1.0,
           "bullets": 103,
           "salvoAmount": 100.0,
@@ -1755,7 +1757,7 @@
           "turret": {
             "head": "bone_mg_aa_h_01",
             "gun": "bone_mg_aa_v_01",
-            "gunnerDm": "gunner_dm"
+            "gunnerDm": "loader_dm"
           },
           "limits": {
             "yaw": [-60.0,60.0],
@@ -1841,7 +1843,7 @@
             "turret": {
               "head": "bone_mg_gun_twin",
               "gun": "bone_mg_gun_twin",
-              "gunnerDm": "loader_dm"
+              "gunnerDm": "gunner_dm"
             }
           },
           {
@@ -1884,7 +1886,7 @@
           "turret": {
             "head": "bone_mg_body_01",
             "gun": "bone_mg_body_01",
-            "gunnerDm": "machine_gunner_dm"
+            "gunnerDm": "driver_dm"
           },
           "limits": {
             "yaw": [-0.0,0.0],
@@ -1924,7 +1926,7 @@
           "turret": {
             "head": "bone_mg_body_02",
             "gun": "bone_mg_body_02",
-            "gunnerDm": "machine_gunner_dm"
+            "gunnerDm": "driver_dm"
           },
           "limits": {
             "yaw": [-0.0,0.0],
@@ -2630,6 +2632,15 @@
             }
           }
         ]
+      },
+      {
+        "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
       },
       {
         "event": {

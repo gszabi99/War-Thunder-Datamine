@@ -68,6 +68,7 @@ local unitTypes = {
     getMissionAllowedCraftsClassName = @() name.tolower()
 
     bulletSetsQuantity = BULLETS_SETS_QUANTITY_SHORT
+    wheelmenuAxis = []
   }
 
   types = []

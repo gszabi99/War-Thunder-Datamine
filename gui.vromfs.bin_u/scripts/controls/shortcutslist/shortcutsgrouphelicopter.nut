@@ -1,6 +1,7 @@
 local globalEnv = require_native("globalEnv")
 local controlsOperations = require("scripts/controls/controlsOperations.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { isWheelmenuAxisConfigurable } = require("scripts/wheelmenu/multifuncmenuShared.nut")
 
 return [
   {
@@ -218,6 +219,11 @@ return [
   }
   {
     id = "ID_WEAPON_LOCK_HELICOPTER"
+    checkGroup = ctrlGroups.HELICOPTER
+    needShowInHelp = true
+  }
+  {
+    id = "ID_AGM_LOCK_HELICOPTER"
     checkGroup = ctrlGroups.HELICOPTER
     needShowInHelp = true
   }
@@ -578,6 +584,22 @@ return [
     id = "ID_REQUEST_DETECT_ALLY_HELI"
     checkGroup = ctrlGroups.HELICOPTER
     checkAssign = false
+  }
+  {
+    id = "helicopter_wheelmenu_x"
+    type = CONTROL_TYPE.AXIS
+    axisDirection = AxisDirection.X
+    checkGroup = ctrlGroups.HELICOPTER
+    hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
+    showFunc = @() ::is_xinput_device() && isWheelmenuAxisConfigurable()
+  }
+  {
+    id = "helicopter_wheelmenu_y"
+    type = CONTROL_TYPE.AXIS
+    axisDirection = AxisDirection.Y
+    checkGroup = ctrlGroups.HELICOPTER
+    hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
+    showFunc = @() ::is_xinput_device() && isWheelmenuAxisConfigurable()
   }
 //-------------------------------------------------------
   {

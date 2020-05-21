@@ -29,6 +29,7 @@ local defaultLocIdsList = {
   createRecipes                         = "item/create_recipes"
   cancelTitle                           = ""
   reachedMaxAmount                      = "item/reached_max_amount"
+  inventoryErrorPrefix                  = "inventoryError/"
 }
 
 local ItemExternal = class extends ::BaseItem

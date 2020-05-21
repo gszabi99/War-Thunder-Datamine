@@ -139,6 +139,16 @@ web_rpc.register_handler("exportUnlockInfo", exportUnlockInfo)
   )
 }
 
+::debug_show_debriefing_trophy <- function debug_show_debriefing_trophy(trophyItemId) {
+  local filteredLogs = ::getUserLogsList({
+    show = [::EULT_OPEN_TROPHY]
+    disableVisible = true
+    checkFunc = @(userlog) trophyItemId == userlog.body.id
+  })
+
+  ::gui_start_open_trophy({ [trophyItemId] = filteredLogs })
+}
+
 ::debug_new_unit_unlock <- function debug_new_unit_unlock(needTutorial = false, unitName = null)
 {
   local unit = ::getAircraftByName(unitName)

@@ -2,6 +2,7 @@ local globalEnv = require_native("globalEnv")
 local controlsOperations = require("scripts/controls/controlsOperations.nut")
 local { unitClassType } = require("scripts/unit/unitClassType.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { isWheelmenuAxisConfigurable } = require("scripts/wheelmenu/multifuncmenuShared.nut")
 
 local isMouseAimSelected = @() (::g_controls_utils.getMouseUsageMask() & AIR_MOUSE_USAGE.AIM)
 local needFullGunnerSettings = @() ::is_ps4_or_xbox || !isMouseAimSelected()
@@ -205,6 +206,11 @@ return [
   }
   {
     id = "ID_TOGGLE_CANNONS_AND_ROCKETS_BALLISTIC_COMPUTER"
+    checkAssign = false
+    showFunc = @() ::has_feature("ConstantlyComputedWeaponSight")
+  }
+  {
+    id = "ID_SWITCH_REGISTERED_BOMB_TARGETING_POINT"
     checkAssign = false
     showFunc = @() ::has_feature("ConstantlyComputedWeaponSight")
   }
@@ -548,6 +554,22 @@ return [
     checkAssign = false
     showFunc = @() ::has_feature("ConstantlyComputedWeaponSight")
   }
+  {
+    id = "wheelmenu_x"
+    type = CONTROL_TYPE.AXIS
+    axisDirection = AxisDirection.X
+    checkGroup = ctrlGroups.AIR
+    hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
+    showFunc = @() ::is_xinput_device() && isWheelmenuAxisConfigurable()
+  }
+  {
+    id = "wheelmenu_y"
+    type = CONTROL_TYPE.AXIS
+    axisDirection = AxisDirection.Y
+    checkGroup = ctrlGroups.AIR
+    hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
+    showFunc = @() ::is_xinput_device() && isWheelmenuAxisConfigurable()
+  }
 //-------------------------------------------------------
   {
     id = "ID_INSTRUCTOR_HEADER"
@@ -602,12 +624,6 @@ return [
     filterHide = [globalEnv.EM_INSTRUCTOR, globalEnv.EM_REALISTIC, globalEnv.EM_FULL_REAL]
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
     axisDirection = AxisDirection.Y
-  }
-  {
-    id = "mouse_smooth"
-    type = CONTROL_TYPE.SWITCH_BOX
-    optionType = ::USEROPT_MOUSE_SMOOTH
-    showFunc = @() ::has_feature("EnableMouse")
   }
   {
     id = "aim_time_nonlinearity_air"

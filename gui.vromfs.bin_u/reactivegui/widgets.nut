@@ -13,6 +13,7 @@ local screenState = require("style/screenState.nut")
 local airHud = require("airHud.nut")
 local tankHud = require("tankHud.nut")
 local mfdHud = require("mfd.nut")
+local heliIlsHud = require("heliIls.nut")
 local radarComponent = require("radarComponent.nut")
 local changelog = require("changelog/changelog.ui.nut")
 
@@ -22,9 +23,11 @@ local widgetsMap = {
       return null
 
     ::gui_scene.removePanel(0)
+    ::gui_scene.removePanel(1)
     if (hudUnitType.isHelicopter())
     {
       ::gui_scene.addPanel(0, mfdHud)
+      ::gui_scene.addPanel(1, heliIlsHud)
       return helicopterHud
     }
     else if (hudUnitType.isAir())

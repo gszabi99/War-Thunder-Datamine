@@ -5,9 +5,9 @@ return [
   {t="h2" v="Новая игровая нация Швеция"}
   {t="emphasis" v= "Мы начинаем ЗБТ шведской бронетехники. Не пропустите подробности и условия в новостях."}
   {t="horizontal" halign = ALIGN_CENTER v = [
-    {t="image" v = "!ui/tanks/sw_cv_90105_tml" size = [pw(30), pw(20)]}
-    {t="image" v = "!ui/tanks/sw_pvrbv_551" size = [pw(30), pw(20)]}
-    {t="image" v = "!ui/tanks/sw_pvkv_II" size = [pw(30), pw(20)]}
+    {t="image" v = "!ui/tanks/sw_cv_90105_tml" size = [fpx(420), fpx(280)]}
+    {t="image" v = "!ui/tanks/sw_pvrbv_551" size = [fpx(420), fpx(280)]}
+    {t="image" v = "!ui/tanks/sw_pvkv_II" size = [fpx(420), fpx(280)]}
   ]}
   {t="horizontal" valign = ALIGN_CENTER v = [
     {t="bullets" v = [

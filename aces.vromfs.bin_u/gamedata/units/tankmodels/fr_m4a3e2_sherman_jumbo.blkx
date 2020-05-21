@@ -116,7 +116,7 @@
       "hp": 10000.0,
       "hull": {
         "superstructure_front_dm": {
-          "armorThickness": 63.5
+          "armorThickness": 38.1
         },
         "body_side_dm": {
           "armorThickness": 38.1
@@ -143,7 +143,7 @@
           "armorThickness": 25.4
         },
         "body_shield_dm": {
-          "armorThickness": 38.1,
+          "armorThickness": 63.5,
           "hp": 5000.0
         },
         "turret_01_top_dm": {
@@ -2641,6 +2641,15 @@
       },
       {
         "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -2945,7 +2954,6 @@
   },
   {
     "default_skin": {
-      "name": "default",
       "replace_tex": {
         "from": "us_camo_olive*",
         "to": "fr_camo_vert_olive_arme*"

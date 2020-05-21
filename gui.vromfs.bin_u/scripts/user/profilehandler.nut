@@ -302,6 +302,9 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
       btn_changeAccount = ::isInMenu() && isProfileOpened && !::is_platform_ps4 && !::is_vendor_tencent()
       btn_changeName = ::isInMenu() && isProfileOpened && !platformModule.isMeXBOXPlayer() && !platformModule.isMePS4Player() && !::is_vendor_tencent()
       btn_getLink = !::is_in_loading_screen() && isProfileOpened && ::has_feature("Invites")
+      btn_codeApp = platformModule.isPlatformPC && ::has_feature("AllowExternalLink") &&
+        !::g_user_utils.haveTag("gjpass") && ::isInMenu() && isProfileOpened &&
+          !::is_vendor_tencent()
       btn_ps4Registration = isProfileOpened && ::is_platform_ps4 && ::g_user_utils.haveTag("psnlogin")
       btn_SteamRegistration = isProfileOpened && ::steam_is_running() && ::has_feature("AllowSteamAccountLinking") && ::g_user_utils.haveTag("steamlogin")
       btn_xboxRegistration = isProfileOpened && ::is_platform_xboxone && ::has_feature("AllowXboxAccountLinking")
@@ -309,8 +312,8 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
       btn_achievements_url = (sheet == "UnlockAchievement") && ::has_feature("AchievementsUrl")
         && ::has_feature("AllowExternalLink") && !::is_vendor_tencent()
     }
-    foreach(name, show in buttonsList)
-      scene.findObject(name).show(show)
+
+    ::showBtnTable(scene, buttonsList)
   }
 
   function onSheetChange(obj)
@@ -875,6 +878,11 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
         }
       }
     }
+  }
+
+  function onCodeAppClick(obj)
+  {
+    openUrl(::loc("url/2step/codeApp"))
   }
 
   function onGroupCollapse(obj)

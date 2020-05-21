@@ -137,9 +137,9 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     unlocks = {
       filter = {
         show = [::EULT_NEW_UNLOCK]
-        unlocks = [::UNLOCKABLE_AIRCRAFT, ::UNLOCKABLE_SKIN, ::UNLOCKABLE_DECAL, ::UNLOCKABLE_WEAPON,
-                   ::UNLOCKABLE_DIFFICULTY, ::UNLOCKABLE_ENCYCLOPEDIA, ::UNLOCKABLE_PILOT,
-                   ::UNLOCKABLE_MEDAL, ::UNLOCKABLE_CHALLENGE, ::UNLOCKABLE_ACHIEVEMENT]
+        unlocks = [::UNLOCKABLE_AIRCRAFT, ::UNLOCKABLE_SKIN, ::UNLOCKABLE_DECAL, ::UNLOCKABLE_ATTACHABLE,
+                   ::UNLOCKABLE_WEAPON, ::UNLOCKABLE_DIFFICULTY, ::UNLOCKABLE_ENCYCLOPEDIA, ::UNLOCKABLE_PILOT,
+                   ::UNLOCKABLE_MEDAL, ::UNLOCKABLE_CHALLENGE, ::UNLOCKABLE_ACHIEVEMENT, ::UNLOCKABLE_TITLE]
         filters = { popupInDebriefing = [false, null] }
         currentRoomOnly = true
         disableVisible = true
@@ -196,6 +196,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     isMp = ::is_multiplayer()
     ::close_cur_voicemenu()
     ::enableHangarControls(true)
+    checkDestroySession()
 
     // Debriefing shows on on_hangar_loaded event, but looks like DoF resets in this frame too.
     // DoF changing works unstable on this frame, but works 100% good on next guiscene act.
@@ -1098,7 +1099,6 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       updateInventoryButton()
 
       initFocusArray()
-      checkDestroySession()
       checkPopupWindows()
       throwBattleEndEvent()
       guiScene.performDelayed(this, function() {ps4SendActivityFeed() })

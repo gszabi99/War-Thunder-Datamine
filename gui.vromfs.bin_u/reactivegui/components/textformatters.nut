@@ -1,5 +1,6 @@
 local fontsState = require("reactiveGui/style/fontsState.nut")
 local colors = require("reactiveGui/style/colors.nut")
+local JB = require("reactiveGui/control/gui_buttons.nut")
 
 local blockInterval = ::fpx(6)
 local borderWidth = ::dp(1)
@@ -40,6 +41,7 @@ local function url(data, formatTextFunc=noTextFormatFunc, style=defStyle){
   if (data?.url==null)
     return textArea(data, style)
   local stateFlags = Watched(0)
+  local onClick = @() ::cross_call.openUrl(data.url)
   return function() {
     local color = stateFlags.value & S_HOVER ? style.urlHoverColor : style.urlColor
     return {
@@ -50,10 +52,11 @@ local function url(data, formatTextFunc=noTextFormatFunc, style=defStyle){
       font = defStyle.textFont
       watch = stateFlags
       onElemState = @(sf) stateFlags(sf)
-      children = {rendObj=ROBJ_FRAME borderWidth = [0,0,borderWidth,0] color=color, size = flex()}
-      onClick = function() {
-        ::cross_call.openUrl(data.url)
-      }
+      children = [
+        {rendObj=ROBJ_FRAME borderWidth = [0,0,borderWidth,0] color=color, size = flex()},
+        stateFlags.value & S_HOVER ? { hotkeys = [["{0}".subst(JB.A), onClick]] } : null
+      ]
+      onClick = onClick
     }.__update(data)
   }
 }

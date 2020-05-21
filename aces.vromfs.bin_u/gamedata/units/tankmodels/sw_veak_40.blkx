@@ -228,6 +228,7 @@
         "armorClass": "tank_structural_steel",
         "armorThickness": 15.0,
         "hp": 200.0,
+        "ex_armor_01_dm": [],
         "antenna_target_tagging_dm": []
       },
       "hull_inner_armor": {
@@ -340,7 +341,6 @@
           "armorClass": "tank_traks",
           "armorThickness": 20.0,
           "hp": 200.0,
-          "ex_armor_01_dm": [],
           "ex_armor_02_dm": []
         }
       },
@@ -2764,6 +2764,15 @@
             }
           }
         ]
+      },
+      {
+        "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
       },
       {
         "event": {

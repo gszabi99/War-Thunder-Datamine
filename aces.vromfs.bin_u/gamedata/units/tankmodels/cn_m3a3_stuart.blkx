@@ -139,6 +139,15 @@
         },
         "body_bottom_dm": {
           "armorThickness": 12.7
+        },
+        "turret_01_back_dm": {
+          "armorThickness": 50.0
+        },
+        "turret_01_bottom_dm": {
+          "armorThickness": 50.0
+        },
+        "turret_01_front_dm": {
+          "armorThickness": 50.0
         }
       },
       "turret": {
@@ -617,7 +626,8 @@
         "stopChanceOnDeadPart": 0.0,
         "createSecondaryShatters": false,
         "ex_decor_l_02_dm": [],
-        "ex_decor_r_02_dm": []
+        "ex_decor_r_02_dm": [],
+        "ex_decor_13_dm": []
       }
     }
   },
@@ -2245,6 +2255,15 @@
       },
       {
         "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -2387,6 +2406,8 @@
           "breechDP": "cannon_breech_dm",
           "speedYaw": 20.0,
           "speedPitch": 4.0,
+          "yawSpdLowBattery": 20.0,
+          "pitchSpdLowBattery": 4.0,
           "fireConeAngle": 1.0,
           "bullets": 106,
           "salvoAmount": 100.0,
@@ -2471,7 +2492,7 @@
           "turret": {
             "head": "bone_mg_aa_h_01",
             "gun": "bone_mg_aa_v_01",
-            "gunnerDm": "gunner_dm"
+            "gunnerDm": "commander_dm"
           },
           "limits": {
             "yaw": [-60.0,15.0],

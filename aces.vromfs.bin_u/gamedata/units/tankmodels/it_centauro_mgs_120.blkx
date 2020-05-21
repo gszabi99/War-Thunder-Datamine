@@ -184,6 +184,20 @@
     ]
   },
   {
+    "sensors": [
+      {
+        "sensor": {
+          "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+        }
+      },
+      {
+        "sensor": {
+          "blk": "gameData/sensors/LaserWarningSensor.blk"
+        }
+      }
+    ]
+  },
+  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "RHA_tank",
@@ -2912,6 +2926,15 @@
             }
           }
         ]
+      },
+      {
+        "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
       },
       {
         "event": {

@@ -51,12 +51,25 @@
     "mass": 125.0
   },
   {
+    "amountPerTier": 1.0
+  },
+  {
+    "iconType": "doublebarreled_box"
+  },
+  {
     "bullet": {
       "mass": 0.199,
       "caliber": 0.023,
       "speed": 700.0,
       "recoilMultiplier": 0.4,
       "maxDistance": 3500.0,
+      "normalizationPreset": "default",
+      "ricochetPreset": "defaultExt",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.05,
+      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "ap_i",
       "hitPowerMult": 25.0,
       "onHitChanceMultFire": 5.0,
@@ -68,6 +81,20 @@
       "relativeVelArmorShift": [200.0,1000.0],
       "groundCollisionEffect": "37_50_ap_hit_ground",
       "groundFxScale": [0.6,0.7],
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.05]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod3": [30.0,0.2]
+        },
+        {
+          "mod3": [45.0,0.3]
+        }
+      ],
       "armorpower": {
         "ArmorPower0m": [29.0,10.0],
         "ArmorPower100m": [26.0,100.0],

@@ -1346,9 +1346,14 @@
   {
     "commonWeapons": [
       {
-        "hideNodes": {
-          "node": "fuse2"
-        }
+        "hideNodes": [
+          {
+            "node": "fuse2"
+          },
+          {
+            "node": "fuse3"
+          }
+        ]
       },
       {
         "Weapon": {
@@ -1485,7 +1490,14 @@
       {
         "preset": {
           "name": "ah_1s_rocket_ffar",
-          "blk": "gameData/flightModels/weaponPresets/ah_1s_rocket_ffar.blk"
+          "blk": "gameData/flightModels/weaponPresets/ah_1s_rocket_ffar.blk",
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "amountPerTier": 7.0,
+              "iconType": "nar_ap_small"
+            }
+          }
         }
       },
       {
@@ -1506,7 +1518,14 @@
         "preset": {
           "name": "ah_1s_rocket_ffar_xm18",
           "blk": "gameData/flightModels/weaponPresets/ah_1s_rocket_ffar_xm18.blk",
-          "reqModification": "uh_1c_xm18"
+          "reqModification": "uh_1c_xm18",
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "amountPerTier": 7.0,
+              "iconType": "nar_ap_small"
+            }
+          }
         }
       },
       {
@@ -1529,7 +1548,14 @@
         "preset": {
           "name": "ah_1s_rocket_4xTOW",
           "blk": "gameData/flightModels/weaponPresets/ah_1s_rocket_4xTOW.blk",
-          "reqModification": "ah_1_TOW"
+          "reqModification": "ah_1_TOW",
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/us_127mm_TOW2.blk",
+              "amountPerTier": 2.0,
+              "iconType": "atgm_type2_x2"
+            }
+          }
         }
       },
       {
@@ -1552,6 +1578,15 @@
           },
           {
             "reqModification": "ah_1_TOW"
+          },
+          {
+            "weaponConfig": {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/us_127mm_TOW2.blk",
+                "amountPerTier": 2.0,
+                "iconType": "atgm_type2_x2"
+              }
+            }
           }
         ]
       },
@@ -1584,6 +1619,15 @@
           },
           {
             "reqModification": "ah_1_TOW"
+          },
+          {
+            "weaponConfig": {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/us_127mm_TOW2.blk",
+                "amountPerTier": 2.0,
+                "iconType": "atgm_type2_x2"
+              }
+            }
           }
         ]
       },
@@ -4065,6 +4109,11 @@
         "group": "mi-24_EVU",
         "effects": {
           "commonWeapons": [
+            {
+              "hideNodes": {
+                "node": "fuse3"
+              }
+            },
             {
               "Weapon": {
                 "dummy": true,

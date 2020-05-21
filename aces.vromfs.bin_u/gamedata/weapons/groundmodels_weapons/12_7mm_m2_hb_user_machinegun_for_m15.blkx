@@ -96,32 +96,48 @@
       "speed": 929.0,
       "Cx": 0.15,
       "maxDistance": 2500.0,
+      "normalizationPreset": "default",
+      "ricochetPreset": "default",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.0,
+      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityReductionAfterRicochet": 0.01,
+      "stabilityReductionAfterPenetration": 0.01,
       "bulletType": "ap_i_t_ball_M20",
+      "slopeEffectPreset": "ap",
       "bulletName": "ap_i_t_ball_M20",
       "hitPowerMult": 8.0,
       "onHitChanceMultFire": 10.0,
       "relativeVelHitShift": [300.0,1000.0],
-      "armorFragmentsDamage": true,
-      "armorFragmentsDamageRadius": 1.5,
-      "armorFragmentsDamageAngle": 15.0,
-      "armorFragmentsAmount": 5,
-      "armorFragmentsArmorPower": 2.0,
-      "armorFragmentsHit": 4.0,
       "ricochetEffect": "bullet_hit_armor",
       "waterCollisionEffect": "water_splash",
       "waterFxScale": [0.9,1.1],
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.05]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod3": [30.0,0.2]
+        },
+        {
+          "mod3": [45.0,0.3]
+        }
+      ],
       "hitpower": {
         "HitPower0m": [0.85,500.0],
         "HitPower10000m": [0.8,10000.0]
       },
-      "armorpower": {
-        "ArmorPower0m": [23.0,10.0],
-        "ArmorPower100m": [22.0,100.0],
-        "ArmorPower500m": [16.0,500.0],
-        "ArmorPower1000m": [10.0,1000.0],
-        "ArmorPower1500m": [6.0,1500.0],
-        "ArmorPower2000m": [5.0,2000.0],
-        "ArmorPower2500m": [3.0,2500.0]
+      "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 0.9,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
+        }
       },
       "visual": {
         "range_percent_of_ammo": [100.0,0.0],
@@ -238,7 +254,15 @@
       "caliber": 0.0127,
       "speed": 944.0,
       "maxDistance": 2000.0,
+      "normalizationPreset": "default",
+      "ricochetPreset": "default",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.0,
+      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityReductionAfterRicochet": 0.01,
+      "stabilityReductionAfterPenetration": 0.01,
       "bulletType": "i_ball_M1",
+      "slopeEffectPreset": "ap",
       "bulletName": "i_ball_M1",
       "hitPowerMult": 1.0,
       "nearHitPower": [1.0,50.0],
@@ -260,6 +284,20 @@
       "ricochetEffect": "bullet_hit_armor",
       "waterCollisionEffect": "water_splash",
       "waterFxScale": [1.4,1.6],
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.05]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod3": [30.0,0.2]
+        },
+        {
+          "mod3": [45.0,0.3]
+        }
+      ],
       "armorpower": {
         "ArmorPower0m": [2.0,10.0],
         "ArmorPower100m": [2.0,100.0],
@@ -384,19 +422,42 @@
       "speed": 894.0,
       "Cx": 0.15,
       "maxDistance": 2500.0,
+      "normalizationPreset": "default",
+      "ricochetPreset": "default",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.0,
+      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityReductionAfterRicochet": 0.01,
+      "stabilityReductionAfterPenetration": 0.01,
       "bulletType": "ap_ball_M2",
+      "slopeEffectPreset": "ap",
       "bulletName": "ap_ball_M2",
       "relativeVelHitShift": [300.0,1000.0],
       "relativeVelArmorShift": [200.0,1000.0],
       "ricochetEffect": "bullet_hit_armor",
       "waterCollisionEffect": "water_splash",
       "waterFxScale": [0.9,1.1],
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.05]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod3": [30.0,0.2]
+        },
+        {
+          "mod3": [45.0,0.3]
+        }
+      ],
       "hitpower": {
         "HitPower0m": [0.85,500.0],
         "HitPower10000m": [0.8,10000.0]
       },
       "damage": {
         "kinetic": {
+          "damageType": "generic",
           "demarrePenetrationK": 0.9,
           "demarreSpeedPow": 1.43,
           "demarreMassPow": 0.71,
@@ -518,32 +579,48 @@
       "speed": 929.0,
       "Cx": 0.15,
       "maxDistance": 2500.0,
+      "normalizationPreset": "default",
+      "ricochetPreset": "default",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.0,
+      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityReductionAfterRicochet": 0.01,
+      "stabilityReductionAfterPenetration": 0.01,
       "bulletType": "ap_i_t_ball_M20",
+      "slopeEffectPreset": "ap",
       "bulletName": "ap_i_t_ball_M20",
       "hitPowerMult": 8.0,
       "onHitChanceMultFire": 10.0,
       "relativeVelHitShift": [300.0,1000.0],
-      "armorFragmentsDamage": true,
-      "armorFragmentsDamageRadius": 1.5,
-      "armorFragmentsDamageAngle": 15.0,
-      "armorFragmentsAmount": 5,
-      "armorFragmentsArmorPower": 2.0,
-      "armorFragmentsHit": 4.0,
       "ricochetEffect": "bullet_hit_armor",
       "waterCollisionEffect": "water_splash",
       "waterFxScale": [0.9,1.1],
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.05]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod3": [30.0,0.2]
+        },
+        {
+          "mod3": [45.0,0.3]
+        }
+      ],
       "hitpower": {
         "HitPower0m": [0.85,500.0],
         "HitPower10000m": [0.8,10000.0]
       },
-      "armorpower": {
-        "ArmorPower0m": [23.0,10.0],
-        "ArmorPower100m": [22.0,100.0],
-        "ArmorPower500m": [16.0,500.0],
-        "ArmorPower1000m": [10.0,1000.0],
-        "ArmorPower1500m": [6.0,1500.0],
-        "ArmorPower2000m": [5.0,2000.0],
-        "ArmorPower2500m": [3.0,2500.0]
+      "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 0.9,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
+        }
       },
       "visual": {
         "range_percent_of_ammo": [100.0,0.0],
@@ -663,32 +740,48 @@
           "speed": 929.0,
           "Cx": 0.15,
           "maxDistance": 2500.0,
+          "normalizationPreset": "default",
+          "ricochetPreset": "default",
+          "secondaryShattersPreset": "ap",
+          "stabilityThreshold": 0.0,
+          "stabilityCaliberToArmorThreshold": 5.0,
+          "stabilityReductionAfterRicochet": 0.01,
+          "stabilityReductionAfterPenetration": 0.01,
           "bulletType": "ap_i_t_ball_M20",
+          "slopeEffectPreset": "ap",
           "bulletName": "ap_i_t_ball_M20",
           "hitPowerMult": 8.0,
           "onHitChanceMultFire": 10.0,
           "relativeVelHitShift": [300.0,1000.0],
-          "armorFragmentsDamage": true,
-          "armorFragmentsDamageRadius": 1.5,
-          "armorFragmentsDamageAngle": 15.0,
-          "armorFragmentsAmount": 5,
-          "armorFragmentsArmorPower": 2.0,
-          "armorFragmentsHit": 4.0,
           "ricochetEffect": "bullet_hit_armor",
           "waterCollisionEffect": "water_splash",
           "waterFxScale": [0.9,1.1],
+          "stabilityRicochetModifier": [
+            {
+              "mod1": [0.0,0.05]
+            },
+            {
+              "mod2": [20.0,0.1]
+            },
+            {
+              "mod3": [30.0,0.2]
+            },
+            {
+              "mod3": [45.0,0.3]
+            }
+          ],
           "hitpower": {
             "HitPower0m": [0.85,500.0],
             "HitPower10000m": [0.8,10000.0]
           },
-          "armorpower": {
-            "ArmorPower0m": [23.0,10.0],
-            "ArmorPower100m": [22.0,100.0],
-            "ArmorPower500m": [16.0,500.0],
-            "ArmorPower1000m": [10.0,1000.0],
-            "ArmorPower1500m": [6.0,1500.0],
-            "ArmorPower2000m": [5.0,2000.0],
-            "ArmorPower2500m": [3.0,2500.0]
+          "damage": {
+            "kinetic": {
+              "damageType": "generic",
+              "demarrePenetrationK": 0.9,
+              "demarreSpeedPow": 1.43,
+              "demarreMassPow": 0.71,
+              "demarreCaliberPow": 1.07
+            }
           },
           "visual": {
             "range_percent_of_ammo": [100.0,0.0],
@@ -805,7 +898,15 @@
           "caliber": 0.0127,
           "speed": 944.0,
           "maxDistance": 2000.0,
+          "normalizationPreset": "default",
+          "ricochetPreset": "default",
+          "secondaryShattersPreset": "ap",
+          "stabilityThreshold": 0.0,
+          "stabilityCaliberToArmorThreshold": 5.0,
+          "stabilityReductionAfterRicochet": 0.01,
+          "stabilityReductionAfterPenetration": 0.01,
           "bulletType": "i_ball_M1",
+          "slopeEffectPreset": "ap",
           "bulletName": "i_ball_M1",
           "hitPowerMult": 1.0,
           "nearHitPower": [1.0,50.0],
@@ -827,6 +928,20 @@
           "ricochetEffect": "bullet_hit_armor",
           "waterCollisionEffect": "water_splash",
           "waterFxScale": [1.4,1.6],
+          "stabilityRicochetModifier": [
+            {
+              "mod1": [0.0,0.05]
+            },
+            {
+              "mod2": [20.0,0.1]
+            },
+            {
+              "mod3": [30.0,0.2]
+            },
+            {
+              "mod3": [45.0,0.3]
+            }
+          ],
           "armorpower": {
             "ArmorPower0m": [2.0,10.0],
             "ArmorPower100m": [2.0,100.0],
@@ -951,19 +1066,42 @@
           "speed": 894.0,
           "Cx": 0.15,
           "maxDistance": 2500.0,
+          "normalizationPreset": "default",
+          "ricochetPreset": "default",
+          "secondaryShattersPreset": "ap",
+          "stabilityThreshold": 0.0,
+          "stabilityCaliberToArmorThreshold": 5.0,
+          "stabilityReductionAfterRicochet": 0.01,
+          "stabilityReductionAfterPenetration": 0.01,
           "bulletType": "ap_ball_M2",
+          "slopeEffectPreset": "ap",
           "bulletName": "ap_ball_M2",
           "relativeVelHitShift": [300.0,1000.0],
           "relativeVelArmorShift": [200.0,1000.0],
           "ricochetEffect": "bullet_hit_armor",
           "waterCollisionEffect": "water_splash",
           "waterFxScale": [0.9,1.1],
+          "stabilityRicochetModifier": [
+            {
+              "mod1": [0.0,0.05]
+            },
+            {
+              "mod2": [20.0,0.1]
+            },
+            {
+              "mod3": [30.0,0.2]
+            },
+            {
+              "mod3": [45.0,0.3]
+            }
+          ],
           "hitpower": {
             "HitPower0m": [0.85,500.0],
             "HitPower10000m": [0.8,10000.0]
           },
           "damage": {
             "kinetic": {
+              "damageType": "generic",
               "demarrePenetrationK": 0.9,
               "demarreSpeedPow": 1.43,
               "demarreMassPow": 0.71,
@@ -1085,32 +1223,48 @@
           "speed": 929.0,
           "Cx": 0.15,
           "maxDistance": 2500.0,
+          "normalizationPreset": "default",
+          "ricochetPreset": "default",
+          "secondaryShattersPreset": "ap",
+          "stabilityThreshold": 0.0,
+          "stabilityCaliberToArmorThreshold": 5.0,
+          "stabilityReductionAfterRicochet": 0.01,
+          "stabilityReductionAfterPenetration": 0.01,
           "bulletType": "ap_i_t_ball_M20",
+          "slopeEffectPreset": "ap",
           "bulletName": "ap_i_t_ball_M20",
           "hitPowerMult": 8.0,
           "onHitChanceMultFire": 10.0,
           "relativeVelHitShift": [300.0,1000.0],
-          "armorFragmentsDamage": true,
-          "armorFragmentsDamageRadius": 1.5,
-          "armorFragmentsDamageAngle": 15.0,
-          "armorFragmentsAmount": 5,
-          "armorFragmentsArmorPower": 2.0,
-          "armorFragmentsHit": 4.0,
           "ricochetEffect": "bullet_hit_armor",
           "waterCollisionEffect": "water_splash",
           "waterFxScale": [0.9,1.1],
+          "stabilityRicochetModifier": [
+            {
+              "mod1": [0.0,0.05]
+            },
+            {
+              "mod2": [20.0,0.1]
+            },
+            {
+              "mod3": [30.0,0.2]
+            },
+            {
+              "mod3": [45.0,0.3]
+            }
+          ],
           "hitpower": {
             "HitPower0m": [0.85,500.0],
             "HitPower10000m": [0.8,10000.0]
           },
-          "armorpower": {
-            "ArmorPower0m": [23.0,10.0],
-            "ArmorPower100m": [22.0,100.0],
-            "ArmorPower500m": [16.0,500.0],
-            "ArmorPower1000m": [10.0,1000.0],
-            "ArmorPower1500m": [6.0,1500.0],
-            "ArmorPower2000m": [5.0,2000.0],
-            "ArmorPower2500m": [3.0,2500.0]
+          "damage": {
+            "kinetic": {
+              "damageType": "generic",
+              "demarrePenetrationK": 0.9,
+              "demarreSpeedPow": 1.43,
+              "demarreMassPow": 0.71,
+              "demarreCaliberPow": 1.07
+            }
           },
           "visual": {
             "range_percent_of_ammo": [100.0,0.0],
@@ -1232,32 +1386,48 @@
           "speed": 929.0,
           "Cx": 0.15,
           "maxDistance": 2500.0,
+          "normalizationPreset": "default",
+          "ricochetPreset": "default",
+          "secondaryShattersPreset": "ap",
+          "stabilityThreshold": 0.0,
+          "stabilityCaliberToArmorThreshold": 5.0,
+          "stabilityReductionAfterRicochet": 0.01,
+          "stabilityReductionAfterPenetration": 0.01,
           "bulletType": "ap_i_t_ball_M20",
+          "slopeEffectPreset": "ap",
           "bulletName": "ap_i_t_ball_M20",
           "hitPowerMult": 8.0,
           "onHitChanceMultFire": 10.0,
           "relativeVelHitShift": [300.0,1000.0],
-          "armorFragmentsDamage": true,
-          "armorFragmentsDamageRadius": 1.5,
-          "armorFragmentsDamageAngle": 15.0,
-          "armorFragmentsAmount": 5,
-          "armorFragmentsArmorPower": 2.0,
-          "armorFragmentsHit": 4.0,
           "ricochetEffect": "bullet_hit_armor",
           "waterCollisionEffect": "water_splash",
           "waterFxScale": [0.9,1.1],
+          "stabilityRicochetModifier": [
+            {
+              "mod1": [0.0,0.05]
+            },
+            {
+              "mod2": [20.0,0.1]
+            },
+            {
+              "mod3": [30.0,0.2]
+            },
+            {
+              "mod3": [45.0,0.3]
+            }
+          ],
           "hitpower": {
             "HitPower0m": [0.85,500.0],
             "HitPower10000m": [0.8,10000.0]
           },
-          "armorpower": {
-            "ArmorPower0m": [23.0,10.0],
-            "ArmorPower100m": [22.0,100.0],
-            "ArmorPower500m": [16.0,500.0],
-            "ArmorPower1000m": [10.0,1000.0],
-            "ArmorPower1500m": [6.0,1500.0],
-            "ArmorPower2000m": [5.0,2000.0],
-            "ArmorPower2500m": [3.0,2500.0]
+          "damage": {
+            "kinetic": {
+              "damageType": "generic",
+              "demarrePenetrationK": 0.9,
+              "demarreSpeedPow": 1.43,
+              "demarreMassPow": 0.71,
+              "demarreCaliberPow": 1.07
+            }
           },
           "visual": {
             "range_percent_of_ammo": [100.0,0.0],
@@ -1375,7 +1545,15 @@
           "speed": 929.0,
           "Cx": 0.15,
           "maxDistance": 2500.0,
+          "normalizationPreset": "default",
+          "ricochetPreset": "default",
+          "secondaryShattersPreset": "ap",
+          "stabilityThreshold": 0.0,
+          "stabilityCaliberToArmorThreshold": 5.0,
+          "stabilityReductionAfterRicochet": 0.01,
+          "stabilityReductionAfterPenetration": 0.01,
           "bulletType": "ap_i_ball_M8",
+          "slopeEffectPreset": "ap",
           "bulletName": "ap_i_ball_M8",
           "onHitChanceMultFire": 10.0,
           "relativeVelHitShift": [300.0,1000.0],
@@ -1389,6 +1567,20 @@
           "ricochetEffect": "bullet_hit_armor",
           "waterCollisionEffect": "water_splash",
           "waterFxScale": [0.9,1.1],
+          "stabilityRicochetModifier": [
+            {
+              "mod1": [0.0,0.05]
+            },
+            {
+              "mod2": [20.0,0.1]
+            },
+            {
+              "mod3": [30.0,0.2]
+            },
+            {
+              "mod3": [45.0,0.3]
+            }
+          ],
           "hitpower": {
             "HitPower0m": [0.85,500.0],
             "HitPower10000m": [0.8,10000.0]
@@ -1517,32 +1709,48 @@
           "speed": 929.0,
           "Cx": 0.15,
           "maxDistance": 2500.0,
+          "normalizationPreset": "default",
+          "ricochetPreset": "default",
+          "secondaryShattersPreset": "ap",
+          "stabilityThreshold": 0.0,
+          "stabilityCaliberToArmorThreshold": 5.0,
+          "stabilityReductionAfterRicochet": 0.01,
+          "stabilityReductionAfterPenetration": 0.01,
           "bulletType": "ap_i_t_ball_M20",
+          "slopeEffectPreset": "ap",
           "bulletName": "ap_i_t_ball_M20",
           "hitPowerMult": 8.0,
           "onHitChanceMultFire": 10.0,
           "relativeVelHitShift": [300.0,1000.0],
-          "armorFragmentsDamage": true,
-          "armorFragmentsDamageRadius": 1.5,
-          "armorFragmentsDamageAngle": 15.0,
-          "armorFragmentsAmount": 5,
-          "armorFragmentsArmorPower": 2.0,
-          "armorFragmentsHit": 4.0,
           "ricochetEffect": "bullet_hit_armor",
           "waterCollisionEffect": "water_splash",
           "waterFxScale": [0.9,1.1],
+          "stabilityRicochetModifier": [
+            {
+              "mod1": [0.0,0.05]
+            },
+            {
+              "mod2": [20.0,0.1]
+            },
+            {
+              "mod3": [30.0,0.2]
+            },
+            {
+              "mod3": [45.0,0.3]
+            }
+          ],
           "hitpower": {
             "HitPower0m": [0.85,500.0],
             "HitPower10000m": [0.8,10000.0]
           },
-          "armorpower": {
-            "ArmorPower0m": [23.0,10.0],
-            "ArmorPower100m": [22.0,100.0],
-            "ArmorPower500m": [16.0,500.0],
-            "ArmorPower1000m": [10.0,1000.0],
-            "ArmorPower1500m": [6.0,1500.0],
-            "ArmorPower2000m": [5.0,2000.0],
-            "ArmorPower2500m": [3.0,2500.0]
+          "damage": {
+            "kinetic": {
+              "damageType": "generic",
+              "demarrePenetrationK": 0.9,
+              "demarreSpeedPow": 1.43,
+              "demarreMassPow": 0.71,
+              "demarreCaliberPow": 1.07
+            }
           },
           "visual": {
             "range_percent_of_ammo": [100.0,0.0],
@@ -1664,19 +1872,42 @@
           "speed": 894.0,
           "Cx": 0.15,
           "maxDistance": 2500.0,
+          "normalizationPreset": "default",
+          "ricochetPreset": "default",
+          "secondaryShattersPreset": "ap",
+          "stabilityThreshold": 0.0,
+          "stabilityCaliberToArmorThreshold": 5.0,
+          "stabilityReductionAfterRicochet": 0.01,
+          "stabilityReductionAfterPenetration": 0.01,
           "bulletType": "ap_ball_M2",
+          "slopeEffectPreset": "ap",
           "bulletName": "ap_ball_M2",
           "relativeVelHitShift": [300.0,1000.0],
           "relativeVelArmorShift": [200.0,1000.0],
           "ricochetEffect": "bullet_hit_armor",
           "waterCollisionEffect": "water_splash",
           "waterFxScale": [0.9,1.1],
+          "stabilityRicochetModifier": [
+            {
+              "mod1": [0.0,0.05]
+            },
+            {
+              "mod2": [20.0,0.1]
+            },
+            {
+              "mod3": [30.0,0.2]
+            },
+            {
+              "mod3": [45.0,0.3]
+            }
+          ],
           "hitpower": {
             "HitPower0m": [0.85,500.0],
             "HitPower10000m": [0.8,10000.0]
           },
           "damage": {
             "kinetic": {
+              "damageType": "generic",
               "demarrePenetrationK": 0.9,
               "demarreSpeedPow": 1.43,
               "demarreMassPow": 0.71,
@@ -1798,19 +2029,42 @@
           "speed": 894.0,
           "Cx": 0.15,
           "maxDistance": 2500.0,
+          "normalizationPreset": "default",
+          "ricochetPreset": "default",
+          "secondaryShattersPreset": "ap",
+          "stabilityThreshold": 0.0,
+          "stabilityCaliberToArmorThreshold": 5.0,
+          "stabilityReductionAfterRicochet": 0.01,
+          "stabilityReductionAfterPenetration": 0.01,
           "bulletType": "ap_ball_M2",
+          "slopeEffectPreset": "ap",
           "bulletName": "ap_ball_M2",
           "relativeVelHitShift": [300.0,1000.0],
           "relativeVelArmorShift": [200.0,1000.0],
           "ricochetEffect": "bullet_hit_armor",
           "waterCollisionEffect": "water_splash",
           "waterFxScale": [0.9,1.1],
+          "stabilityRicochetModifier": [
+            {
+              "mod1": [0.0,0.05]
+            },
+            {
+              "mod2": [20.0,0.1]
+            },
+            {
+              "mod3": [30.0,0.2]
+            },
+            {
+              "mod3": [45.0,0.3]
+            }
+          ],
           "hitpower": {
             "HitPower0m": [0.85,500.0],
             "HitPower10000m": [0.8,10000.0]
           },
           "damage": {
             "kinetic": {
+              "damageType": "generic",
               "demarrePenetrationK": 0.9,
               "demarreSpeedPow": 1.43,
               "demarreMassPow": 0.71,
@@ -1932,32 +2186,48 @@
           "speed": 929.0,
           "Cx": 0.15,
           "maxDistance": 2500.0,
+          "normalizationPreset": "default",
+          "ricochetPreset": "default",
+          "secondaryShattersPreset": "ap",
+          "stabilityThreshold": 0.0,
+          "stabilityCaliberToArmorThreshold": 5.0,
+          "stabilityReductionAfterRicochet": 0.01,
+          "stabilityReductionAfterPenetration": 0.01,
           "bulletType": "ap_i_t_ball_M20",
+          "slopeEffectPreset": "ap",
           "bulletName": "ap_i_t_ball_M20",
           "hitPowerMult": 8.0,
           "onHitChanceMultFire": 10.0,
           "relativeVelHitShift": [300.0,1000.0],
-          "armorFragmentsDamage": true,
-          "armorFragmentsDamageRadius": 1.5,
-          "armorFragmentsDamageAngle": 15.0,
-          "armorFragmentsAmount": 5,
-          "armorFragmentsArmorPower": 2.0,
-          "armorFragmentsHit": 4.0,
           "ricochetEffect": "bullet_hit_armor",
           "waterCollisionEffect": "water_splash",
           "waterFxScale": [0.9,1.1],
+          "stabilityRicochetModifier": [
+            {
+              "mod1": [0.0,0.05]
+            },
+            {
+              "mod2": [20.0,0.1]
+            },
+            {
+              "mod3": [30.0,0.2]
+            },
+            {
+              "mod3": [45.0,0.3]
+            }
+          ],
           "hitpower": {
             "HitPower0m": [0.85,500.0],
             "HitPower10000m": [0.8,10000.0]
           },
-          "armorpower": {
-            "ArmorPower0m": [23.0,10.0],
-            "ArmorPower100m": [22.0,100.0],
-            "ArmorPower500m": [16.0,500.0],
-            "ArmorPower1000m": [10.0,1000.0],
-            "ArmorPower1500m": [6.0,1500.0],
-            "ArmorPower2000m": [5.0,2000.0],
-            "ArmorPower2500m": [3.0,2500.0]
+          "damage": {
+            "kinetic": {
+              "damageType": "generic",
+              "demarrePenetrationK": 0.9,
+              "demarreSpeedPow": 1.43,
+              "demarreMassPow": 0.71,
+              "demarreCaliberPow": 1.07
+            }
           },
           "visual": {
             "range_percent_of_ammo": [100.0,0.0],
@@ -2078,32 +2348,48 @@
         "speed": 929.0,
         "Cx": 0.15,
         "maxDistance": 2500.0,
+        "normalizationPreset": "default",
+        "ricochetPreset": "default",
+        "secondaryShattersPreset": "ap",
+        "stabilityThreshold": 0.0,
+        "stabilityCaliberToArmorThreshold": 5.0,
+        "stabilityReductionAfterRicochet": 0.01,
+        "stabilityReductionAfterPenetration": 0.01,
         "bulletType": "ap_i_t_ball_M20",
+        "slopeEffectPreset": "ap",
         "bulletName": "ap_i_t_ball_M20",
         "hitPowerMult": 8.0,
         "onHitChanceMultFire": 10.0,
         "relativeVelHitShift": [300.0,1000.0],
-        "armorFragmentsDamage": true,
-        "armorFragmentsDamageRadius": 1.5,
-        "armorFragmentsDamageAngle": 15.0,
-        "armorFragmentsAmount": 5,
-        "armorFragmentsArmorPower": 2.0,
-        "armorFragmentsHit": 4.0,
         "ricochetEffect": "bullet_hit_armor",
         "waterCollisionEffect": "water_splash",
         "waterFxScale": [0.9,1.1],
+        "stabilityRicochetModifier": [
+          {
+            "mod1": [0.0,0.05]
+          },
+          {
+            "mod2": [20.0,0.1]
+          },
+          {
+            "mod3": [30.0,0.2]
+          },
+          {
+            "mod3": [45.0,0.3]
+          }
+        ],
         "hitpower": {
           "HitPower0m": [0.85,500.0],
           "HitPower10000m": [0.8,10000.0]
         },
-        "armorpower": {
-          "ArmorPower0m": [23.0,10.0],
-          "ArmorPower100m": [22.0,100.0],
-          "ArmorPower500m": [16.0,500.0],
-          "ArmorPower1000m": [10.0,1000.0],
-          "ArmorPower1500m": [6.0,1500.0],
-          "ArmorPower2000m": [5.0,2000.0],
-          "ArmorPower2500m": [3.0,2500.0]
+        "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.9,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          }
         },
         "visual": {
           "range_percent_of_ammo": [100.0,0.0],

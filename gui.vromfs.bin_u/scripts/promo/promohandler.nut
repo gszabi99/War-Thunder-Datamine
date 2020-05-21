@@ -1,4 +1,5 @@
 local { clearOldVotedPolls, setPollBaseUrl, isPollVoted, generatePollUrl } = require("scripts/web/webpoll.nut")
+local { getTextWithCrossplayIcon, needShowCrossPlayInfo } = require("scripts/social/crossplay.nut")
 
 ::create_promo_blocks <- function create_promo_blocks(handler)
 {
@@ -407,7 +408,8 @@ class Promo
         text = operationText
     }
 
-    wwButton.findObject("world_war_button_text").setValue(::loc("icon/worldWar") + " " + text)
+    text = getTextWithCrossplayIcon(needShowCrossPlayInfo(), text)
+    wwButton.findObject("world_war_button_text").setValue("{0} {1}".subst(::loc("icon/worldWar"), text))
 
     if (!::g_promo.isCollapsed(id))
       return
@@ -526,6 +528,7 @@ class Promo
   function onEventWWLoadOperation(p) { updateWorldWarButton() }
   function onEventWWStopWorldWar(p) { updateWorldWarButton() }
   function onEventWWGlobalStatusChanged(p) { updateWorldWarButton() }
+  function onEventCrossPlayOptionChanged(p) { updateWorldWarButton() }
   function onEventWebPollAuthResult(p) { updateWebPollButton(p) }
   function onEventWebPollTokenInvalidated(p) {
     if (p?.pollId == null)

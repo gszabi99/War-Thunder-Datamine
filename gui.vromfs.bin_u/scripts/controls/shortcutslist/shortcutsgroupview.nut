@@ -23,6 +23,24 @@ return [
     optionType = ::USEROPT_FIX_GUN_IN_MOUSE_LOOK
   }
   {
+    id = "use_touchpad_for_aim"
+    type = CONTROL_TYPE.SWITCH_BOX
+    value = @(joyParams) joyParams.useTouchpadAiming
+    setValue = function(joyParams, objValue) {
+      local old = joyParams.useTouchpadAiming
+      joyParams.useTouchpadAiming = objValue
+      if (objValue != old)
+        ::set_controls_preset("")
+    }
+    showFunc = @() ::has_feature("EnableMouse") && ::is_platform_ps4
+  }
+  {
+    id = "mouse_smooth"
+    type = CONTROL_TYPE.SWITCH_BOX
+    optionType = ::USEROPT_MOUSE_SMOOTH
+    showFunc = @() ::has_feature("EnableMouse")
+  }
+  {
     id = "mouse_sensitivity"
     type = CONTROL_TYPE.SLIDER
     optionType = ::USEROPT_MOUSE_SENSE

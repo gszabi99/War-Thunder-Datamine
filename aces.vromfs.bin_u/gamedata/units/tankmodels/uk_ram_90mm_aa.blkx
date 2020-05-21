@@ -429,86 +429,10 @@
         "crouchDelta": [0.0,0.0,0.0]
       },
       {
-        "suffix": "7"
-      },
-      {
-        "dmName": "loader_01_dm"
-      },
-      {
-        "deadHeadAttitudeMin": -40.0
-      },
-      {
-        "deadHeadAttitudeMax": -55.0
-      },
-      {
-        "ikNode": {
-          "downNode": "Bip01 L Hand",
-          "midNode": "Bip01 L Forearm",
-          "upNode": "Bip01 L UpperArm",
-          "targetNode": "lefthand_",
-          "flexionDir": [0.5,-0.5,0.3]
-        }
-      },
-      {
-        "ikNode": {
-          "downNode": "Bip01 R Hand",
-          "midNode": "Bip01 R Forearm",
-          "upNode": "Bip01 R UpperArm",
-          "targetNode": "righthand_",
-          "flexionDir": [-0.5,-0.5,0.3]
-        }
-      },
-      {
-        "ikNode": {
-          "downNode": "Bip01 L Foot",
-          "midNode": "Bip01 L Calf",
-          "upNode": "Bip01 L Thigh",
-          "targetNode": "pedal_lfoot_",
-          "flexionDir": [-0.2,1.0,-1.0]
-        }
-      },
-      {
-        "ikNode": {
-          "downNode": "Bip01 R Foot",
-          "midNode": "Bip01 R Calf",
-          "upNode": "Bip01 R Thigh",
-          "targetNode": "pedal_rfoot_",
-          "flexionDir": [-0.6,1.0,-1.0]
-        }
-      }
-    ]
-  },
-  {
-    "ikGunner": [
-      {
-        "model": "uk_gunner_char"
-      },
-      {
-        "maxHeadHorAngle": 60.0
-      },
-      {
-        "maxHeadDownAngle": 60.0
-      },
-      {
-        "maxHeadUpAngle": 10.0
-      },
-      {
-        "headNode": "Bip01 Head"
-      },
-      {
-        "pelvisNode": "Bip01 Pelvis"
-      },
-      {
-        "pelvisTargetNode": "Bip01 Pelvis_"
-      },
-      {
-        "crouchDelta": [0.0,0.0,0.0]
-      },
-      {
         "suffix": "4"
       },
       {
-        "dmName": "loader_02_dm"
+        "dmName": "loader_dm"
       },
       {
         "deadHeadAttitudeMin": -40.0
@@ -712,9 +636,6 @@
       "armorClass": "RHA_tank",
       "hp": 10000.0,
       "hull": {
-        "body_top_dm": {
-          "armorThickness": 10.0
-        },
         "body_front_dm": {
           "armorThickness": 50.8
         },
@@ -724,33 +645,30 @@
         "superstructure_front_dm": {
           "armorThickness": 25.4
         },
-        "superstructure_side_dm": {
-          "armorThickness": 10.0
-        },
         "body_side_dm": {
-          "armorThickness": 38.1
-        },
-        "superstructure_top_dm": {
-          "armorThickness": 10.0
-        },
-        "superstructure_bottom_dm": {
-          "armorThickness": 10.0
-        },
-        "superstructure_back_dm": {
           "armorThickness": 38.1
         },
         "body_bottom_dm": {
           "armorThickness": 12.7
         },
-        "ex_armor_l_01_dm": {
-          "armorThickness": 10.0
-        },
-        "ex_armor_r_01_dm": {
-          "armorThickness": 10.0
-        },
-        "ex_armor_01_dm": {
-          "armorThickness": 10.0
+        "turret_03_back_dm": {
+          "armorThickness": 38.0
         }
+      },
+      "mild_steel_parts": {
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 19.05,
+        "superstructure_side_dm": [],
+        "turret_02_top_dm": [],
+        "body_top_dm": [],
+        "superstructure_bottom_dm": [],
+        "ex_armor_l_01_dm": [],
+        "ex_armor_r_01_dm": [],
+        "ex_armor_01_dm": [],
+        "turret_01_front_dm": [],
+        "superstructure_back_dm": [],
+        "turret_01_back_dm": [],
+        "superstructure_top_dm": []
       },
       "turret": {
         "armorClass": "RHA_tank",
@@ -760,9 +678,6 @@
         "turret_01_top_dm": {
           "armorThickness": 20.0,
           "armorClass": "tank_structural_steel"
-        },
-        "turret_02_top_dm": {
-          "armorThickness": 10.0
         },
         "turret_02_front_dm": {
           "armorThickness": 60.0,
@@ -780,16 +695,10 @@
         "turret_back_dm": {
           "armorThickness": 10.0
         },
-        "turret_01_back_dm": {
-          "armorThickness": 10.0
-        },
         "turret_02_back_dm": {
           "armorThickness": 38.1
         },
         "turret_front_dm": {
-          "armorThickness": 10.0
-        },
-        "turret_01_front_dm": {
           "armorThickness": 10.0
         }
       },
@@ -2380,13 +2289,10 @@
           "substitute": "machine_gunner2"
         },
         {
+          "substitute": "loader"
+        },
+        {
           "substitute": "commander"
-        },
-        {
-          "substitute": "loader1"
-        },
-        {
-          "substitute": "loader2"
         }
       ],
       "driver": [
@@ -2403,35 +2309,15 @@
           "substitute": "machine_gunner2"
         },
         {
-          "substitute": "commander"
-        },
-        {
-          "substitute": "loader1"
-        },
-        {
-          "substitute": "loader2"
-        }
-      ],
-      "loader1": [
-        {
-          "dmPart": "loader_01_dm"
-        },
-        {
-          "role": "loader"
-        },
-        {
-          "substitute": "machine_gunner1"
-        },
-        {
-          "substitute": "machine_gunner2"
+          "substitute": "loader"
         },
         {
           "substitute": "commander"
         }
       ],
-      "loader2": [
+      "loader": [
         {
-          "dmPart": "loader_02_dm"
+          "dmPart": "loader_dm"
         },
         {
           "role": "loader"
@@ -2528,8 +2414,8 @@
           "barrel": "bone_gun_barrel"
         },
         "limits": {
-          "yaw": [-90.0,90.0],
-          "pitch": [-5.0,80.0]
+          "yaw": [-180.0,180.0],
+          "pitch": [-5.0,85.0]
         }
       }
     }
@@ -3228,6 +3114,15 @@
       },
       {
         "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -3253,7 +3148,7 @@
       "sightFov": 9.5,
       "sightName": "zfl_zf_1a",
       "headPos": [0.0,3.7,-7.5],
-      "headPosOnShooting": [-1.2,3.1,0.5],
+      "headPosOnShooting": [-1.2,3.3,0.5],
       "bone_turret": "bone_turret",
       "detectionHeight": 2.53
     }

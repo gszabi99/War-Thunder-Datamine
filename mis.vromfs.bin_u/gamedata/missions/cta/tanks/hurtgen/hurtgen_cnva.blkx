@@ -210,8 +210,6 @@
     "mission": {
       "level": "levels/avg_hurtgen.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
       "locName": "missions/_CnvA;hurtgen/name",
@@ -225,11 +223,13 @@
       "remapAiTankModels": true,
       "country_axis": "germany",
       "country_allies": "ussr",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": true,
         "isShipsAllowed": false,
-        "isHelicoptersAllowed": false
+        "isHelicoptersAllowed": true
       }
     },
     "spectator_points": [],
@@ -1289,7 +1289,7 @@
       "objLayer": 0,
       "props": []
     },
-    "area_01": {
+    "cnv_battle_area": {
       "type": "Box",
       "tm": [
         [-4096.0,0.0,0.0],

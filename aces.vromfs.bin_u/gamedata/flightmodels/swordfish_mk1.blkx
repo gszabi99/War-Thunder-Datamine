@@ -2357,8 +2357,8 @@
             "gun": "gun1"
           },
           "limits": {
-            "yaw": [-40.0,40.0],
-            "pitch": [-5.0,50.0]
+            "yaw": [-90.0,90.0],
+            "pitch": [-5.0,85.0]
           },
           "limitsDeadzone": {
             "yaw": [-1.0,1.0],
@@ -2380,6 +2380,20 @@
         "preset": {
           "name": "swordfish_mk1_4x250lb",
           "blk": "gameData/FlightModels/weaponPresets/swordfish_mk1_4x250lb.blk"
+        }
+      },
+      {
+        "preset": {
+          "name": "swordfish_mk1_6x250lb",
+          "blk": "gameData/FlightModels/weaponPresets/swordfish_mk1_6x250lb.blk",
+          "reqModification": "uc_type_mk_1"
+        }
+      },
+      {
+        "preset": {
+          "name": "swordfish_mk1_2x250_2x500lb",
+          "blk": "gameData/FlightModels/weaponPresets/swordfish_mk1_2x250_2x500lb.blk",
+          "reqModification": "uc_type_mk_2"
         }
       },
       {
@@ -2475,6 +2489,7 @@
       "303_turret_ap": [],
       "303_turret_api": [],
       "hp_105": [],
+      "new_engine_injection": [],
       "new_radiator": [],
       "new_compressor": [],
       "bmg303_turret_belt_pack": {
@@ -2491,9 +2506,19 @@
       "type97_new_gun": {
         "reqModification": "type89_belt_pack"
       },
-      "fairey_tc": {
+      "uc_type_mk_1": {
+        "modClass": "weapon",
+        "tier": 1
+      },
+      "uc_type_mk_2": {
+        "reqModification": "uc_type_mk_1",
         "modClass": "weapon",
         "tier": 2
+      },
+      "fairey_tc": {
+        "reqModification": "uc_type_mk_2",
+        "modClass": "weapon",
+        "tier": 3
       }
     }
   },

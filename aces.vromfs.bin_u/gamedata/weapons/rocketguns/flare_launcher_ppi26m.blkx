@@ -16,6 +16,13 @@
     "antiShipRocket": true
   },
   "rocket": {
+    "normalizationPreset": "default",
+    "ricochetPreset": "defaultExt",
+    "secondaryShattersPreset": "ap",
+    "stabilityThreshold": 0.05,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.5,
+    "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "flare",
     "bulletName": "flare_launcher",
     "caliber": 0.026,
@@ -28,6 +35,7 @@
     "distFromCmToStab": 0.005,
     "CxK": 8.0,
     "WdK": [0.1,0.1,0.1],
+    "isFlare": true,
     "force": 0.1,
     "timeFire": 4.4,
     "thrustDeviation": 0.01,
@@ -68,6 +76,20 @@
     "price": 300.0,
     "hasTracerTrail": true,
     "tracerTrailEmitter": [-0.35,-0.3,0.0],
+    "stabilityRicochetModifier": [
+      {
+        "mod1": [0.0,0.05]
+      },
+      {
+        "mod2": [20.0,0.1]
+      },
+      {
+        "mod3": [30.0,0.2]
+      },
+      {
+        "mod3": [45.0,0.3]
+      }
+    ],
     "DamageParts": {
       "body": {
         "hp": 5.0,

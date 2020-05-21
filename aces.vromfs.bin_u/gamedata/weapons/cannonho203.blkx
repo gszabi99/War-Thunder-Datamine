@@ -9,17 +9,29 @@
   "aimMinDist": 10.0,
   "aimMaxDist": 1000.0,
   "maxDeltaAngle": 0.32,
-  "shotFreq": 2.0,
+  "shotFreq": 5.0,
   "traceFreq": 1,
   "bEnablePause": false,
   "bullets": 30,
   "bulletsCluster": 1,
   "reloadSpeedK": 1.5,
+  "soundLoop": false,
   "bullet": {
     "mass": 0.436,
     "caliber": 0.037,
+    "normalizationPreset": "heat",
+    "ricochetPreset": "he",
+    "secondaryShattersPreset": "ap",
+    "stabilityThreshold": 0.05,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.5,
+    "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "he_frag_i_t",
-    "speed": 576.0,
+    "slopeEffectPreset": "ap",
+    "modelName": "tank_bullet_he",
+    "fresnel": [0.23,0.1,2.0],
+    "explodeOnRendinst": true,
+    "speed": 609.6,
     "explosiveType": "tnt",
     "explosiveMass": 0.035,
     "maxDistance": 2000.0,
@@ -48,6 +60,20 @@
     "ricochetEffect": "bullet_hit_armor",
     "waterCollisionEffect": "big_water_splash",
     "waterFxScale": [0.8,1.0],
+    "stabilityRicochetModifier": [
+      {
+        "mod1": [0.0,0.05]
+      },
+      {
+        "mod2": [20.0,0.1]
+      },
+      {
+        "mod3": [30.0,0.2]
+      },
+      {
+        "mod3": [45.0,0.3]
+      }
+    ],
     "armorpower": {
       "ArmorPower0m": [2.0,10.0],
       "ArmorPower100m": [2.0,100.0],

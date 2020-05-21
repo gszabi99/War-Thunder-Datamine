@@ -3534,14 +3534,28 @@
       {
         "preset": {
           "name": "halifax_mk3_default",
-          "blk": "gameData/FlightModels/weaponPresets/halifax_mk3_default.blk"
+          "blk": "gameData/FlightModels/weaponPresets/halifax_mk3_default.blk",
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
+              "amountPerTier": 5.0,
+              "iconType": "bombs_small_group"
+            }
+          }
         }
       },
       {
         "preset": {
           "name": "halifax_mk3_15x500lbs",
           "blk": "gameData/FlightModels/weaponPresets/halifax_mk3_15x500lbs.blk",
-          "reqModification": "subc_mk1"
+          "reqModification": "subc_mk1",
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+              "amountPerTier": 5.0,
+              "iconType": "bombs_middle_group"
+            }
+          }
         }
       },
       {
@@ -3557,6 +3571,24 @@
           },
           {
             "reqModification": "subc_mk3"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": {
+                  "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+                  "amountPerTier": 3.0,
+                  "iconType": "bombs_middle_group"
+                }
+              },
+              {
+                "Weapon": {
+                  "blk": "gameData/Weapons/BombGuns/uk_1000lbs_mc_mk1.blk",
+                  "amountPerTier": 3.0,
+                  "iconType": "bombs_large_group"
+                }
+              }
+            ]
           }
         ]
       }

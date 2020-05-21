@@ -10,19 +10,14 @@ local function update(config) {
   }
 }
 
-local key = {}
-local persist = this.persist
 local function make(name, ctor) {
   if (name in extData) {
     ::assert(false, $"extWatched: duplicate name: {name}")
     return extData[name]
   }
 
-  local res = persist(name, @() Watched(key))
+  local res = Watched(ctor())
   extData[name] <- res
-  if (res.value == key)
-    res(ctor())
-
   res.whiteListMutatorClosure(update)
   return res
 }

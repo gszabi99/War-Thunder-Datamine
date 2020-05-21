@@ -368,6 +368,9 @@
         "optic_body_02_dm": {
           "armorThickness": 165.0
         },
+        "turret_08_bottom_dm": {
+          "armorThickness": 10.0
+        },
         "turret_05_top_dm": {
           "armorThickness": 25.0
         },
@@ -2769,16 +2772,6 @@
             "pitch": [-10.0,50.0]
           }
         }
-      },
-      {
-        "hideNodes": [
-          {
-            "node": "ex_decor_r_04"
-          },
-          {
-            "node": "ex_decor_l_04"
-          }
-        ]
       }
     ]
   },
@@ -3389,6 +3382,15 @@
       },
       {
         "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -3937,16 +3939,6 @@
                   "pitch": [-10.0,50.0]
                 }
               }
-            },
-            {
-              "hideNodes": [
-                {
-                  "node": "ex_decor_r_04"
-                },
-                {
-                  "node": "ex_decor_l_04"
-                }
-              ]
             },
             {
               "Weapon": {

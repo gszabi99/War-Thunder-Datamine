@@ -1,11 +1,8 @@
 const GAMEPAD_CURSOR_CONTROL_CONFIG_NAME = "use_gamepad_cursor_control"
-const GAMEPAD_CURSOR_CONTROL_SPEED_CONFIG_NAME = "gamepad_cursor_control_speed"
 const IS_GAMEPAD_CURSOR_ENABLED_DEFAULT = true
-const GAMEPAD_CURSOR_CONTROL_SPEED_DEFAULT = 100
 
 ::g_gamepad_cursor_controls <- {
   currentOptionValue = IS_GAMEPAD_CURSOR_ENABLED_DEFAULT
-  currentOptionSpeed = GAMEPAD_CURSOR_CONTROL_SPEED_DEFAULT
   isPaused = false
 
 
@@ -13,11 +10,6 @@ const GAMEPAD_CURSOR_CONTROL_SPEED_DEFAULT = 100
   {
     currentOptionValue = getValue()
     ::set_use_gamepad_cursor_control(currentOptionValue)
-    if (canChangeSpeed())
-    {
-      currentOptionSpeed = getSpeed()
-      ::set_gamepad_cursor_control_speed(currentOptionSpeed)
-    }
   }
 
 
@@ -52,43 +44,9 @@ const GAMEPAD_CURSOR_CONTROL_SPEED_DEFAULT = 100
     return IS_GAMEPAD_CURSOR_ENABLED_DEFAULT
   }
 
-  function setSpeed(newSpeed)
-  {
-    if (currentOptionSpeed == newSpeed)
-      return
-    ::set_gamepad_cursor_control_speed(newSpeed)
-    if (::g_login.isProfileReceived())
-      ::set_gui_option_in_mode(
-        ::USEROPT_GAMEPAD_CURSOR_CONTROLLER_SPEED,
-        newSpeed,
-        ::OPTIONS_MODE_GAMEPLAY
-      )
-    currentOptionSpeed = newSpeed
-    ::setSystemConfigOption(GAMEPAD_CURSOR_CONTROL_SPEED_CONFIG_NAME, currentOptionSpeed)
-    ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
-  }
-
-  function getSpeed()
-  {
-    if (!::g_login.isProfileReceived())
-      return ::getSystemConfigOption(GAMEPAD_CURSOR_CONTROL_SPEED_CONFIG_NAME, GAMEPAD_CURSOR_CONTROL_SPEED_DEFAULT)
-    if (canChangeValue())
-      return ::get_gui_option_in_mode(
-        ::USEROPT_GAMEPAD_CURSOR_CONTROLLER_SPEED,
-        ::OPTIONS_MODE_GAMEPLAY,
-        GAMEPAD_CURSOR_CONTROL_SPEED_DEFAULT
-      )
-    return GAMEPAD_CURSOR_CONTROL_SPEED_DEFAULT
-  }
-
   function canChangeValue()
   {
     return ::has_feature("GamepadCursorControl") && ::is_mouse_available()
-  }
-
-  function canChangeSpeed()
-  {
-    return canChangeValue() && ::getroottable()?.set_gamepad_cursor_control_speed
   }
 
   function pause(isPause)
@@ -103,10 +61,7 @@ const GAMEPAD_CURSOR_CONTROL_SPEED_DEFAULT = 100
   function onEventProfileUpdated(p)
   {
     if (!::g_login.isLoggedIn())
-    {
       setValue(getValue())
-      setSpeed(getSpeed())
-    }
     else if (isPaused)
       pause(false)
   }

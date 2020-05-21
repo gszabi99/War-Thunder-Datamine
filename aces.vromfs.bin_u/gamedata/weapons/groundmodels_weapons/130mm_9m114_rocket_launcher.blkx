@@ -22,7 +22,40 @@
   },
   "rocket": [
     {
+      "normalizationPreset": "heat"
+    },
+    {
+      "ricochetPreset": "atgm"
+    },
+    {
+      "secondaryShattersPreset": "ap"
+    },
+    {
+      "stabilityThreshold": 0.1
+    },
+    {
+      "stabilityCaliberToArmorThreshold": 100.0
+    },
+    {
+      "stabilityReductionAfterRicochet": 0.3
+    },
+    {
+      "stabilityReductionAfterPenetration": 0.01
+    },
+    {
       "bulletType": "atgm_tank"
+    },
+    {
+      "cumulativeSecondaryShattersPreset": "atgm"
+    },
+    {
+      "explodeOnRendinst": true
+    },
+    {
+      "modelName": "tank_bullet_heat_fs"
+    },
+    {
+      "fresnel": [0.23,0.1,2.0]
     },
     {
       "bulletName": "130mm_9m114"
@@ -239,6 +272,19 @@
     },
     {
       "aiAccelPrediction": 0.5
+    },
+    {
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.0]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod2": [30.0,0.2]
+        }
+      ]
     },
     {
       "collisions": {

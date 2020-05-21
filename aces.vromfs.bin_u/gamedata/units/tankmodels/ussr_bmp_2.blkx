@@ -190,7 +190,8 @@
           "armorThickness": 13.0
         },
         "ex_armor_01_dm": {
-          "armorThickness": 5.0,
+          "armorClass": "aluminium",
+          "armorThickness": 2.0,
           "hidableInViewer": true
         },
         "ex_armor_turret_r_04_dm": {
@@ -207,6 +208,21 @@
         "body_top_dm": {
           "armorThickness": 12.0,
           "armorClass": "ABT-101"
+        },
+        "turret_03_side_dm": {
+          "armorThickness": 30.0
+        },
+        "turret_03_bottom_dm": {
+          "armorThickness": 16.0
+        },
+        "turret_03_front_dm": {
+          "armorThickness": 13.0
+        },
+        "turret_03_back_dm": {
+          "armorThickness": 5.0
+        },
+        "turret_03_top_dm": {
+          "armorThickness": 6.0
         }
       },
       "turret": {
@@ -2890,6 +2906,15 @@
             }
           }
         ]
+      },
+      {
+        "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
       },
       {
         "event": {

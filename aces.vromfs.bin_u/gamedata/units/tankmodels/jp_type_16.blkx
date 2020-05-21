@@ -291,6 +291,9 @@
         "composite_armor_hull_01_dm": {
           "armorThickness": 8.0
         },
+        "composite_armor_hull_02_dm": {
+          "armorThickness": 8.0
+        },
         "turret_03_back_dm": {
           "armorThickness": 15.0
         },
@@ -327,6 +330,34 @@
         },
         "turret_04_front_dm": {
           "armorThickness": 5.0
+        },
+        "turret_04_bottom_dm": {
+          "armorThickness": 5.0
+        },
+        "turret_05_bottom_dm": {
+          "armorThickness": 5.0,
+          "hidableInViewer": true
+        },
+        "turret_05_front_dm": {
+          "armorThickness": 5.0,
+          "hidableInViewer": true
+        },
+        "turret_05_side_dm": {
+          "armorThickness": 5.0
+        },
+        "turret_05_top_dm": {
+          "armorThickness": 5.0
+        },
+        "turret_05_back_dm": {
+          "armorThickness": 5.0
+        },
+        "turret_06_bottom_dm": {
+          "armorThickness": 5.0,
+          "hidableInViewer": true
+        },
+        "turret_06_front_dm": {
+          "armorThickness": 5.0,
+          "hidableInViewer": true
         }
       },
       "optics": {
@@ -1766,17 +1797,30 @@
     }
   },
   {
-    "xray_viewer_data": {
-      "armorArrayHull": {
-        "xrayDmPart": "composite_armor_hull_01_dm",
-        "titleLoc": "RHA_tank_modern",
-        "armorArrayText": {
-          "layer": {
-            "dmPart": "composite_armor_hull_01_dm"
+    "xray_viewer_data": [
+      {
+        "armorArrayHull": {
+          "xrayDmPart": "composite_armor_hull_01_dm",
+          "titleLoc": "RHA_tank_modern",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_hull_01_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayHull": {
+          "xrayDmPart": "composite_armor_hull_02_dm",
+          "titleLoc": "RHA_tank_modern",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_hull_02_dm"
+            }
           }
         }
       }
-    }
+    ]
   },
   {
     "MetaParts": {
@@ -1953,7 +1997,7 @@
       "TrackSoundPathStudio": "ground/engines",
       "TrackSoundName": "tracks_wheels",
       "TrackSoundNameCockpit": "tracks_wheels_interior",
-      "turret_turn": "turret_turn_t34_servo",
+      "turret_turn": "turret_turn_servo",
       "EngineNameAi": "engine_truck_ai",
       "TrackSoundNameAi": "tracks_ai_wheels"
     }
@@ -2807,6 +2851,15 @@
             }
           }
         ]
+      },
+      {
+        "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
       },
       {
         "event": {

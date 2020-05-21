@@ -34,7 +34,18 @@
     "caliber": 0.106,
     "speed": 502.0,
     "maxDistance": 7000.0,
+    "normalizationPreset": "heat",
+    "ricochetPreset": "heat_fs",
+    "secondaryShattersPreset": "ap",
+    "stabilityThreshold": 0.1,
+    "stabilityCaliberToArmorThreshold": 100.0,
+    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterPenetration": 0.01,
     "bulletType": "heat_grenade_tank",
+    "cumulativeSecondaryShattersPreset": "heat_fs",
+    "explodeOnRendinst": true,
+    "modelName": "tank_bullet_grenade_heat_fs",
+    "fresnel": [0.23,0.1,2.0],
     "bulletName": "106mm_m344a1",
     "onHitChanceMultExplFuel": 0.3,
     "relativeVelHitShift": [300.0,1000.0],
@@ -44,6 +55,10 @@
     "waterCollisionEffect": "120-203_he_water_splash",
     "waterFxScale": [1.1,1.2],
     "explosionPatchRadius": 4.0,
+    "stabilityRicochetModifier": {
+      "mod1": [0.0,0.0],
+      "mod2": [20.0,1.0]
+    },
     "hitpower": {
       "HitPower0m": [1.0,500.0],
       "HitPower1000m": [0.9,1000.0],
@@ -179,7 +194,18 @@
       "caliber": 0.106,
       "speed": 502.0,
       "maxDistance": 7000.0,
+      "normalizationPreset": "heat",
+      "ricochetPreset": "heat_fs",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.1,
+      "stabilityCaliberToArmorThreshold": 100.0,
+      "stabilityReductionAfterRicochet": 0.3,
+      "stabilityReductionAfterPenetration": 0.01,
       "bulletType": "heat_grenade_tank",
+      "cumulativeSecondaryShattersPreset": "heat_fs",
+      "explodeOnRendinst": true,
+      "modelName": "tank_bullet_grenade_heat_fs",
+      "fresnel": [0.23,0.1,2.0],
       "bulletName": "106mm_m344a1",
       "onHitChanceMultExplFuel": 0.3,
       "relativeVelHitShift": [300.0,1000.0],
@@ -189,6 +215,10 @@
       "waterCollisionEffect": "120-203_he_water_splash",
       "waterFxScale": [1.1,1.2],
       "explosionPatchRadius": 4.0,
+      "stabilityRicochetModifier": {
+        "mod1": [0.0,0.0],
+        "mod2": [20.0,1.0]
+      },
       "hitpower": {
         "HitPower0m": [1.0,500.0],
         "HitPower1000m": [0.9,1000.0],
@@ -325,7 +355,20 @@
       "caliber": 0.106,
       "speed": 498.0,
       "maxDistance": 10000.0,
+      "normalizationPreset": "heat",
+      "ricochetPreset": "hesh",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.1,
+      "stabilityCaliberToArmorThreshold": 10.0,
+      "stabilityReductionAfterRicochet": 0.3,
+      "stabilityReductionAfterPenetration": 0.9,
       "bulletType": "hesh_tank",
+      "slopeEffectPreset": "hesh",
+      "cumulativeSecondaryShattersPreset": "hesh",
+      "useEffectiveArmorThicknessForShatter": true,
+      "modelName": "tank_bullet_hesh",
+      "fresnel": [0.23,0.1,2.0],
+      "cumulativeByNormal": true,
       "bulletName": "106mm_m361a1",
       "hitPowerMult": 20.0,
       "relativeVelHitShift": [300.0,1000.0],
@@ -344,6 +387,23 @@
       "waterCollisionEffect": "120-203_he_water_splash",
       "waterFxScale": [1.1,1.2],
       "explosionPatchRadius": 4.0,
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.0]
+        },
+        {
+          "mod2": [20.0,0.3]
+        },
+        {
+          "mod3": [30.0,0.5]
+        },
+        {
+          "mod3": [45.0,0.7]
+        },
+        {
+          "mod4": [60.0,1.0]
+        }
+      ],
       "hitpower": {
         "HitPower0m": [1.0,500.0],
         "HitPower1000m": [0.9,1000.0],

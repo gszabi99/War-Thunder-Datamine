@@ -2132,9 +2132,9 @@
   {
     "VehiclePhys": {
       "Mass": {
-        "Empty": 50000.0,
+        "Empty": 48600.0,
         "Fuel": 1600.0,
-        "TakeOff": 51600.0,
+        "TakeOff": 50200.0,
         "momentOfInertia": [4.0,5.0,6.0],
         "CenterOfGravity": [0.2,0.5,0.0],
         "AdvancedMass": false,
@@ -2746,6 +2746,15 @@
             }
           }
         ]
+      },
+      {
+        "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
       },
       {
         "event": {

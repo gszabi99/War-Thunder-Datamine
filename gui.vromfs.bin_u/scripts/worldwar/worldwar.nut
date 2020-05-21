@@ -4,6 +4,7 @@ local seenWWMapsObjective = require("scripts/seen/seenList.nut").get(SEEN.WW_MAP
 local wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 local wwArmyGroupManager = require("scripts/worldWar/inOperation/wwArmyGroupManager.nut")
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
+local { isCrossPlayEnabled } = require("scripts/social/crossplay.nut")
 
 const WW_CUR_OPERATION_SAVE_ID = "worldWar/curOperation"
 const WW_CUR_OPERATION_COUNTRY_SAVE_ID = "worldWar/curOperationCountry"
@@ -358,6 +359,9 @@ g_world_war.getSetting <- function getSetting(settingName, defaultValue)
 
 g_world_war.canPlayWorldwar <- function canPlayWorldwar()
 {
+  if (!isCrossPlayEnabled())
+    return false
+
   local minRankRequired = getSetting("minCraftRank", 0)
   local unit = ::u.search(::all_units, @(unit)
     unit.canUseByPlayer() && unit.rank >= minRankRequired
@@ -382,8 +386,13 @@ g_world_war.canJoinWorldwarBattle <- function canJoinWorldwarBattle()
   return ::is_worldwar_enabled() && ::g_world_war.canPlayWorldwar()
 }
 
-g_world_war.getPlayWorldwarConditionText <- function getPlayWorldwarConditionText()
+g_world_war.getPlayWorldwarConditionText <- function getPlayWorldwarConditionText(fullText = false)
 {
+  if (!isCrossPlayEnabled())
+    return fullText
+      ? ::loc("xbox/actionNotAvailableCrossNetworkPlay")
+      : ::loc("xbox/crossPlayRequired")
+
   local rankText = ::colorize("@unlockHeaderColor",
     ::get_roman_numeral(getSetting("minCraftRank", 0)))
   return ::loc("worldWar/playCondition", {rank = rankText})
@@ -391,7 +400,7 @@ g_world_war.getPlayWorldwarConditionText <- function getPlayWorldwarConditionTex
 
 g_world_war.getCantPlayWorldwarReasonText <- function getCantPlayWorldwarReasonText()
 {
-  return !canPlayWorldwar() ? getPlayWorldwarConditionText() : ""
+  return !canPlayWorldwar() ? getPlayWorldwarConditionText(true) : ""
 }
 
 g_world_war.openMainWnd <- function openMainWnd(forceOpenMainMenu = false)
@@ -437,7 +446,7 @@ g_world_war.checkPlayWorldwarAccess <- function checkPlayWorldwarAccess()
   }
   if (!canPlayWorldwar())
   {
-    ::showInfoMsgBox(getPlayWorldwarConditionText())
+    ::showInfoMsgBox(getPlayWorldwarConditionText(true))
     return false
   }
   return true

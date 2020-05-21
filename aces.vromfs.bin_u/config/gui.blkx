@@ -421,6 +421,9 @@
       "login_layer_1_04_20": 0.0
     },
     {
+      "login_layer_trento": 3.0
+    },
+    {
       "beforeLogin": {
         "default_chance": 0.0,
         "login_layer_t1": 1.0
@@ -686,6 +689,7 @@
     "apcr": "bullet_cannon_silver",
     "apcr_t": "bullet_cannon_silver",
     "he_vt": "bullet_proxi_fuze_cannon",
+    "he_tf": "bullet_dist_fuze_cannon",
     "s_d": "bullet_cannon_brown",
     "ac_shell_tank": "ac_shell_tank",
     "apcr_tank": "apcr_tank",
@@ -743,6 +747,13 @@
     "common_tank": "sap_tank",
     "special_common_tank": "sapbc_tank",
     "sapbc_flat_nose_tank": "sapbc_tank"
+  },
+  "bullet_icon_aspect_ratio": {
+    "default": 0.2,
+    "apdsfs_tank": 0.32,
+    "he_frag_tank": 0.32,
+    "bullet_proxi_fuze_cannon": 1.0,
+    "he_frag_proxi_fuze_ship_belt": 1.0
   },
   "bullets_locId_by_caliber": [
     {
@@ -2291,6 +2302,13 @@
         "w": 0.0,
         "h": 0.0,
         "position": "relative"
+      },
+      "trophy_item_place": {
+        "id": "trophy_item_placewe",
+        "x": 0.0,
+        "position": "relative",
+        "h": "1@itemHeight",
+        "y": 0.0
       },
       "big_wooden_box_item_place_container": {
         "w": 0.0,
@@ -3959,6 +3977,7 @@
       "country_north_korea": "#ui/gameuiskin#country_north_korea.svg",
       "country_republic_china": "#ui/gameuiskin#flag_republic_china.svg",
       "country_south_africa_modern": "#ui/gameuiskin#country_south_africa_modern.svg",
+      "country_vietnam": "#ui/gameuiskin#country_vietnam.svg",
       "first_choice_country_usa_aviation": "#ui/first_choice/usa_aviation.png",
       "first_choice_country_germany_aviation": "#ui/first_choice/germany_aviation.png",
       "first_choice_country_ussr_aviation": "#ui/first_choice/ussr_aviation.png",
@@ -3976,6 +3995,7 @@
       "first_choice_country_italy_army": "#ui/first_choice/italy_army.png",
       "first_choice_country_france_army": "#ui/first_choice/france_army.png",
       "first_choice_country_china_army": "#ui/first_choice/china_army.png",
+      "first_choice_country_sweden_army": "#ui/first_choice/sweden_army.png",
       "first_choice_country_usa_fleet": "#ui/first_choice/usa_fleet.png",
       "first_choice_country_germany_fleet": "#ui/first_choice/germany_fleet.png",
       "first_choice_country_ussr_fleet": "#ui/first_choice/ussr_fleet.png",
@@ -4024,6 +4044,7 @@
       "country_china_tank_unit": "#ui/images/researches/china_ground_finishedresearch.jpg?P1",
       "country_italy_aircraft_unit": "#ui/images/researches/italy_finishedresearch.jpg?P1",
       "country_italy_tank_unit": "#ui/images/researches/italy_ground_finishedresearch.jpg?P1",
+      "country_italy_ship_unit": "#ui/images/researches/italy_ship_finishedresearch.jpg?P1",
       "country_france_aircraft_unit": "#ui/images/researches/france_finishedresearch.jpg?P1",
       "country_france_tank_unit": "#ui/images/researches/france_ground_finishedresearch.jpg?P1",
       "country_france_helicopter_unit": "#ui/images/researches/france_heli_finishedresearch.jpg?P1",
@@ -4052,6 +4073,7 @@
       "country_china_tank_modification": "#ui/images/researches/china_ground_newmodificationresearch.jpg?P1",
       "country_italy_aircraft_modification": "#ui/images/researches/italy_newmodificationresearch.jpg?P1",
       "country_italy_tank_modification": "#ui/images/researches/italy_ground_newmodificationresearch.jpg?P1",
+      "country_italy_ship_modification": "#ui/images/researches/italy_ship_newmodificationresearch.jpg?P1",
       "country_france_aircraft_modification": "#ui/images/researches/france_newmodificationresearch.jpg?P1",
       "country_france_tank_modification": "#ui/images/researches/france_ground_newmodificationresearch.jpg?P1",
       "country_france_helicopter_modification": "#ui/images/researches/france_heli_newmodificationresearch.jpg?P1",
@@ -4153,6 +4175,7 @@
       "first_choice_country_italy_army": "#ui/first_choice/italy_army_alt.png",
       "first_choice_country_france_army": "#ui/first_choice/france_army_alt.png",
       "first_choice_country_china_army": "#ui/first_choice/china_army_alt.png",
+      "first_choice_country_sweden_army": "#ui/first_choice/sweden_army_alt.png",
       "first_choice_country_usa_fleet": "#ui/first_choice/usa_fleet_alt.png",
       "first_choice_country_germany_fleet": "#ui/first_choice/germany_fleet_alt.png",
       "first_choice_country_ussr_fleet": "#ui/first_choice/ussr_fleet_alt.png",
@@ -5423,23 +5446,34 @@
   "entitlement_units_discount": [
     {
       "i": {
-        "beginDate": "2020-05-07 11:00:00",
-        "endDate": "2020-05-11 10:50:00",
-        "platform": "pc",
-        "ussr_t_126sp": 30,
-        "i-153_m62_zhukovskiy": 30,
-        "p-47m-1-re": 30,
-        "p-51d-20-na": 30,
-        "wyvern_s4": 30,
-        "us_m3a1_stuart_usmc": 30,
-        "p-36a_rasmussen": 30,
-        "uk_a27m_cromwell_5_rp3": 30,
-        "avenger_mk1": 30,
-        "ussr_is_6": 30,
-        "uk_centurion_mk_3_ss11": 30,
-        "p-38g_metal": 30,
-        "us_t29": 30,
-        "us_destroyer_fletcher_cowell": 30
+        "beginDate": "2020-04-20 11:10:00",
+        "endDate": "2020-04-22 11:10:00",
+        "platform": "ps4_scee",
+        "g_lynx": 30
+      }
+    },
+    {
+      "i": {
+        "beginDate": "2020-04-20 11:10:00",
+        "endDate": "2020-04-22 11:10:00",
+        "platform": "ps4_scea",
+        "ah_1s": 50
+      }
+    },
+    {
+      "i": {
+        "beginDate": "2020-04-20 11:10:00",
+        "endDate": "2020-04-22 11:10:00",
+        "platform": "ps4_scej",
+        "a_129_a": 50
+      }
+    },
+    {
+      "i": {
+        "beginDate": "2020-04-20 11:10:00",
+        "endDate": "2020-04-22 11:10:00",
+        "platform": "xboxOne",
+        "g_lynx": 40
       }
     },
     {
@@ -5479,130 +5513,935 @@
     }
   ],
   "bundles": {
-    "guid": {
-      "eagles100": "B73D89CF-E37E-4520-9373-53384EB3D8EA",
-      "eagles150": "41B9A05C-92F8-450C-85D2-B77091033B1D",
-      "eagles500": "8D5D650F-013D-4371-9F4A-35652980F73B",
-      "eagles1000": "668B1208-EF1B-42BD-B9E1-F540B6EB89CD",
-      "eagles2500": "6673008D-A324-48CF-869A-2A67E9F7656A",
-      "eagles5000": "ABFFC61D-093A-4298-B22B-358E3C6941E2",
-      "eagles10000": "99F1A7B2-043D-43EA-B376-05F158E14085",
-      "eagles15000": "BCBAA4B1-D67D-43F6-AE78-FEF1D252E4FF",
-      "eagles20000": "BC612298-5A95-4589-B6AC-99BCE32B35C4",
-      "eagles25000": "7881C61E-E279-4A4C-9B60-2112C0DABAA6",
-      "eagles30000": "922EF6AD-526F-41A2-8C33-FCCFD3DEAB73",
-      "pacific_41_43": "D66205C8-C851-4A22-BD5F-44ABBF6863F0",
-      "usa_pacific_41_43_yuplay": "8063CC1A-A700-4A0B-9815-EB5DE525DFE8",
-      "jpn_pacific_41_43_yuplay": "763B5F80-A8F8-49E7-B721-B1ECA3D00AD4",
-      "usa_pacific_41_43": "8063CC1A-A700-4A0B-9815-EB5DE525DFE8",
-      "jpn_pacific_41_43": "763B5F80-A8F8-49E7-B721-B1ECA3D00AD4",
-      "wop_starter_pack_3_gift": "6A3CDB1A-0109-45DE-864C-2A0058FB0C1D",
-      "wop_starter_pack_1_gift": "A5757ADB-C7F5-4C1E-A076-01EF317F85A7",
-      "wop_starter_pack_2_gift": "AF3004F5-8DDD-4784-BAF3-A07659DC0BB8",
-      "wop_starter_pack_mustang_gift": "E2910BBF-95D5-4E7B-8F75-2ACEBB8E0D0E",
-      "wop_starter_pack_d_520_gift": "B952A153-7198-403D-BC66-606EBE9DF19F",
-      "tanks_starter_pack_t-34": "D09CA285-9EE2-4BF6-BD47-05190959C77F",
-      "tanks_starter_pack_m4a2": "1350B2EA-25AD-449B-832E-A225DA96FEB6",
-      "wt_starter_tank_usa_2014": "78F59687-7844-4CEA-B9D1-F40ABC307AA4",
-      "wt_advanced_tank_usa_2014": "47EF5048-AF44-46B1-8521-223D8AD5C210",
-      "wt_tank_pack_13_eng": "1E3B6AC1-D66D-460D-B670-97802F1C2D4F",
-      "wt_panf_victory1": "5107088E-1F2F-4AC0-B4FD-A3AFE0A6E0B3",
-      "wt_panf_victory2": "3807DAC6-E0BE-4C24-826A-D5D2259792E3",
-      "wt_panf_victory3": "9FD72476-7E30-4503-8BA3-3377108117B8",
-      "wt_panf_victory4": "142E8070-81A8-46D1-B0B5-D397FEA41BDD",
-      "wt_panf_victory5": "7CFE6AAD-35B7-4031-A70D-38C5C851CCAE",
-      "wt_panf_victory6": "CDD0FD37-F765-4E32-9642-1EEAD79635A2",
-      "wt_panf_victory8": "10694EA1-0B5F-4CA3-8EA7-9DE59D7B3EF1",
-      "wt_panf_victory9": "909AD55D-59C9-46DD-B93B-B1422244AF8F",
-      "wt_panf_victory10": "2B1921AB-13BA-4E44-88D1-654A75005A23",
-      "wt_panf_victory11": "8F6AC9A9-ED3E-4112-AE5F-80C9303BC2B6",
-      "wt_panf_victory12": "6A498DDA-D7EC-4599-8DFF-6B51D0A7BC94",
-      "wt_panf_victory13": "92EA3AB9-E5A1-4A46-A2E8-8C81B140B624",
-      "british_tank_pack": "24EB2ACA-77B2-4F15-82A4-0F6ED4928BFA",
-      "british_tank_sherman2nd": "8FF79A9F-D699-4F84-AC00-D9CAE6726011",
-      "british_tank_a13": "99B750BA-9C8B-423B-A80D-B5C2ACC7ACF7",
-      "british_tank_m1065th": "FD168CD6-AC52-40F9-A0C3-E6C523A01636",
-      "british_tank_a43": "A2148256-F435-41DD-AED6-6191A8F19750",
-      "king_tiger_pack": "564E9F92-4620-43C8-88F5-8C0582FA0E2B",
-      "t26e_pack_2016": "A63232C8-56E2-4E98-961A-547F9CD3DD52",
-      "sdkfz140_pack_2016": "9D2DF3D3-DC49-4550-83FD-B4F6D10082E3",
-      "t29_release_pack": "99745A05-B151-42D6-9A8A-F6BFAFDB0340",
-      "kv2_zis6_release_pack": "1C53CA3D-9006-42A6-9754-F3FD978AC3D4",
-      "wyvern_release_pack": "20740B62-1B12-4CAB-A252-FE9F586708FB",
-      "centurion_pack": "B875B6BC-B2F0-430C-A3AA-5690E72CAC73",
-      "ki_87_advanced_pack": "334C6DA3-447B-4EA4-8741-BA46D57BC1EC",
-      "wop_starter_pack_7": "7760F01E-3981-4334-A1CF-B6B7D0F42307",
-      "wop_starter_pack_4": "8CC94A0E-4C86-44D5-8065-AC70A3DBA9BF",
-      "wop_starter_pack_1": "C3479072-F347-49F9-A480-9A518333466D",
-      "wt_release_japan_tiger6": "79BD0A43-C028-468C-9E91-6B7406A4E509",
-      "wt_release_japan_chi_ha": "F139E094-F0A5-4331-8FFE-74C99ED7337F",
-      "wt_la_11_advanced_pack": "3FCA3505-C5F1-4A93-9B4A-57B37623D563",
-      "wt_ussr_is_6": "45E8B779-1227-48CA-BCAA-A67DA2B5F99A",
-      "release_fiat_cr32_pack": "05420064-EB2E-46CB-909D-367DA40BD779",
-      "release_fiat_g55s_pack": "0B06310C-E81D-43FB-9509-F680BC417CAB",
-      "type5_hori_pack": "DCD7DA96-D7F5-405B-B3CB-6D54715C16E5",
-      "m47_germany_pack": "FEBA4CDA-1A44-43E8-86D8-B67304D766C4",
-      "be6_ussr_pack": "7041D377-2C78-47DD-BBD9-4469E05B99E0",
-      "release_object120_pack": "25DDBB62-BFF0-44D5-8C17-A1DDE70CAF08",
-      "release_dew_d371_pack": "A9C01667-0173-49CF-BACD-A343C57167CE",
-      "release_so8000_pack": "F45113BD-6CCA-41A9-9AD2-8611D34EBE0A",
-      "it_m26_pershing_pack": "3D2FDF6A-B9AD-4278-98B3-93C65735ED5E",
-      "it_p40_pack": "FAA40F04-AAAD-4943-BA9C-BC206DF57404",
-      "wt_release_b1ter": "D403B5EF-363B-461A-BB32-9183EF811D4F",
-      "wt_release_amx13ss11": "75D8B40A-80AB-4418-BA73-887D5657B972",
-      "wt_release_m4a1_fl10": "C4D693E0-2710-4E95-8380-96B63A740F76",
-      "wt_amx_30_pack": "F55E48B7-C046-4F80-BC7A-4EA670110DF8",
-      "wt_mb5_pack": "EA4A46AA-E25E-4912-89D8-016D0EE3DDBB",
-      "wt_magach3_pack": "64963D67-290F-4F87-9671-F013393CA2A3",
-      "wt_xm_1_gm_pack": "DAC78D73-2E01-40DA-A3AB-2AC6F878C2AF",
-      "wt_centurion_avre_pack": "E27DC83A-3AC3-431C-B5E4-1B99D933E9BD",
-      "wt_bf109z_zwilling_pack": "529ED3E4-FACD-44C7-965A-882137518041",
-      "wop_starter_pack_11": "C4927583-8645-46BF-9844-D5B962F62672",
-      "wt_naval_galster_pack": "5B9AB68E-8344-4789-A3A4-96E4A6FF1D1C",
-      "wt_naval_cowell_pack": "102546F7-0FF9-45C9-A747-42780E0DB642",
-      "wt_germany_release_leopard_pack": "C11E0447-9591-460C-B138-84DAEFEBB119",
-      "wt_ussr_release_t_55am_pack": "E4A7A677-82EB-4B16-B412-4E8F37C35C3E",
-      "wt_ussr_release_hind_pack": "01D73580-6DFB-4EFB-8BAE-3082CF258D79",
-      "wt_usa_release_huey_hog_pack": "66F9E306-6571-4FE0-A78F-318DBF66769F",
-      "wt_uk_destroyer_haida_pack": "01F275A1-7D4E-4D04-8C1C-64B769B3EE6F",
-      "wt_uk_fairmile_d_5001_pack": "D7CF8DBE-33C6-4EB4-9F0F-A2F3256B0F29",
-      "wt_bo_105cb2_pack": "3AE263BC-6721-41FC-8770-CB4610F2A475",
-      "wt_uk_meteor_fmk8_reaper_pack": "231D4827-7E0D-4335-8312-3233AF4995D3",
-      "wt_ussr_mig_15bis_ish_pack": "ABBBEF1E-5E1B-4B4E-96B5-2223435247A8",
-      "wt_us_f_86f_35_sabre_pack": "154A69F9-3765-4E2D-9A68-1398E7BA7161",
-      "wt_uk_shot_kal_dalet_pack": "B4E559FF-2A3C-4A53-97F7-1F7FD3BB61D4",
-      "wt_it_m60a1_ariete_pack": "640C7797-5106-4434-9BAA-901A245D93B9",
-      "wt_it_semovente_105_25_pack": "0108E1C9-6A59-4838-A67D-1CD8004DACA0",
-      "wt_fr_iar_316b_pack": "C62A0AE8-D6B0-417A-B52C-A508E45B4601",
-      "wt_japan_jasdf_sabre_pack": "142CC8E5-4A79-4759-8985-C97AF4C35A29",
-      "wt_japan_type_74g_pack": "9B637D3D-7A31-405B-8184-A659DD71BE2C",
-      "wt_germany_sea_hawk_mk100_pack": "AEF71943-C3B4-4EEF-8624-63A4E02CA256",
-      "wt_fr_vautour_2a_pack": "F068840E-36A5-475D-943F-933BC89E8FC8",
-      "wt_it_fiat_g91_r4_pack": "AEBB135A-7E52-4CA2-95CD-280E951536DC",
-      "wt_it_of_40_pack": "E3AE2D13-0A4F-4955-8A27-C7F610215466",
-      "wt_fr_super_amx_30_pack": "AA364467-E20A-4FA4-A81F-0D0FB0425805",
-      "wt_japan_ah_1s_cobra_pack": "EB251C4E-7E89-4CAB-9ADE-A48DB7B699ED",
-      "wt_japan_pg_02_pack": "1DC4E281-D047-4927-A16B-E10C37282954",
-      "wt_japan_kiyoshimo_pack": "C1D5CED7-E0B9-453E-846F-11A2C1485D7B",
-      "wt_ussr_mig_17_cuba_pack": "69F4FE83-CEB2-41AB-BF03-75496FD0FBBD",
-      "wt_cn_t_62_pack": "D26D6B9D-6240-468B-B1A3-383503DF09F9",
-      "wt_cn_shenyang_f5_pack": "48BEACB7-4AEE-40CC-8335-CEC389909F38",
-      "wt_cn_m4a4_sherman_pack": "3EAC3839-7CBD-499B-A47C-C17892920ED5",
-      "wt_cn_curtiss_hawk_h81a2_pack": "CE764FA3-84A1-4175-96FA-1B5F5E361823",
-      "wt_fr_ec_665_tiger_hap_pack": "B2AB4732-523A-4011-AFD0-8F849F215DDF",
-      "wt_uk_g_lynx_pack": "95F24BF2-A52D-43A7-8285-4067516BED6D",
-      "wt_ussr_ka_50_pack": "B9E88B57-8BFC-4FB3-9EA9-9ED00DA44847",
-      "wt_it_a129_mangusta_pack": "874C278C-C4EC-4A05-B97C-6273FD730C08",
-      "wt_sv_vl_pyorremyrsky_pack": "009FB77B-92F8-41B7-9307-D6B834AFB345",
-      "wt_sv_saab_j29d_pack": "33B2E591-CC3A-4F96-8F25-D7C9AFDBF678",
-      "wt_uk_hunter_fga_9_pack": "631B5537-98AF-4B84-B589-858F96768D35",
-      "wt_germany_prinz_eugen_pack": "DD3E6017-3A2D-45C7-B5B0-CA1FDB4FC98B",
-      "wt_sw_strv_103_0_pack": "C81B4FE2-A186-4497-A133-5FF8BAB39DFB",
-      "sw_sav_fm48_pack": "9DAB5D50-42E4-4A93-A042-A9AA0CF9EE60",
-      "wt_usa_ah_64a_peten_pack": "A04D87C8-D157-417E-BFAE-95E548E6E227",
-      "wt_uk_rooikat_105_pack": "9235844D-6988-4120-82B9-0F625152EADD",
-      "wt_sw_cv_90105_tml_pack": "6DABEC0D-13D3-4188-8DF4-F3E7F04F0AB9"
-    },
+    "guid": [
+      {
+        "eagles100": "B73D89CF-E37E-4520-9373-53384EB3D8EA"
+      },
+      {
+        "eagles150": "41B9A05C-92F8-450C-85D2-B77091033B1D"
+      },
+      {
+        "eagles500": "8D5D650F-013D-4371-9F4A-35652980F73B"
+      },
+      {
+        "eagles1000": "668B1208-EF1B-42BD-B9E1-F540B6EB89CD"
+      },
+      {
+        "eagles2500": "6673008D-A324-48CF-869A-2A67E9F7656A"
+      },
+      {
+        "eagles5000": "ABFFC61D-093A-4298-B22B-358E3C6941E2"
+      },
+      {
+        "eagles10000": "99F1A7B2-043D-43EA-B376-05F158E14085"
+      },
+      {
+        "eagles15000": "BCBAA4B1-D67D-43F6-AE78-FEF1D252E4FF"
+      },
+      {
+        "eagles20000": "BC612298-5A95-4589-B6AC-99BCE32B35C4"
+      },
+      {
+        "eagles25000": "7881C61E-E279-4A4C-9B60-2112C0DABAA6"
+      },
+      {
+        "eagles30000": "922EF6AD-526F-41A2-8C33-FCCFD3DEAB73"
+      },
+      {
+        "pacific_41_43": "D66205C8-C851-4A22-BD5F-44ABBF6863F0"
+      },
+      {
+        "usa_pacific_41_43_yuplay": "8063CC1A-A700-4A0B-9815-EB5DE525DFE8"
+      },
+      {
+        "jpn_pacific_41_43_yuplay": "763B5F80-A8F8-49E7-B721-B1ECA3D00AD4"
+      },
+      {
+        "usa_pacific_41_43": "8063CC1A-A700-4A0B-9815-EB5DE525DFE8"
+      },
+      {
+        "jpn_pacific_41_43": "763B5F80-A8F8-49E7-B721-B1ECA3D00AD4"
+      },
+      {
+        "wop_starter_pack_3_gift": "6A3CDB1A-0109-45DE-864C-2A0058FB0C1D"
+      },
+      {
+        "wop_starter_pack_1_gift": "A5757ADB-C7F5-4C1E-A076-01EF317F85A7"
+      },
+      {
+        "wop_starter_pack_2_gift": "AF3004F5-8DDD-4784-BAF3-A07659DC0BB8"
+      },
+      {
+        "wop_starter_pack_mustang_gift": "E2910BBF-95D5-4E7B-8F75-2ACEBB8E0D0E"
+      },
+      {
+        "wop_starter_pack_d_520_gift": "B952A153-7198-403D-BC66-606EBE9DF19F"
+      },
+      {
+        "tanks_starter_pack_t-34": "D09CA285-9EE2-4BF6-BD47-05190959C77F"
+      },
+      {
+        "tanks_starter_pack_m4a2": "1350B2EA-25AD-449B-832E-A225DA96FEB6"
+      },
+      {
+        "wt_starter_tank_usa_2014": "78F59687-7844-4CEA-B9D1-F40ABC307AA4"
+      },
+      {
+        "wt_advanced_tank_usa_2014": "47EF5048-AF44-46B1-8521-223D8AD5C210"
+      },
+      {
+        "wt_tank_pack_13_eng": "1E3B6AC1-D66D-460D-B670-97802F1C2D4F"
+      },
+      {
+        "wt_panf_victory1": "5107088E-1F2F-4AC0-B4FD-A3AFE0A6E0B3"
+      },
+      {
+        "wt_panf_victory2": "3807DAC6-E0BE-4C24-826A-D5D2259792E3"
+      },
+      {
+        "wt_panf_victory3": "9FD72476-7E30-4503-8BA3-3377108117B8"
+      },
+      {
+        "wt_panf_victory4": "142E8070-81A8-46D1-B0B5-D397FEA41BDD"
+      },
+      {
+        "wt_panf_victory5": "7CFE6AAD-35B7-4031-A70D-38C5C851CCAE"
+      },
+      {
+        "wt_panf_victory6": "CDD0FD37-F765-4E32-9642-1EEAD79635A2"
+      },
+      {
+        "wt_panf_victory8": "10694EA1-0B5F-4CA3-8EA7-9DE59D7B3EF1"
+      },
+      {
+        "wt_panf_victory9": "909AD55D-59C9-46DD-B93B-B1422244AF8F"
+      },
+      {
+        "wt_panf_victory10": "2B1921AB-13BA-4E44-88D1-654A75005A23"
+      },
+      {
+        "wt_panf_victory11": "8F6AC9A9-ED3E-4112-AE5F-80C9303BC2B6"
+      },
+      {
+        "wt_panf_victory12": "6A498DDA-D7EC-4599-8DFF-6B51D0A7BC94"
+      },
+      {
+        "wt_panf_victory13": "92EA3AB9-E5A1-4A46-A2E8-8C81B140B624"
+      },
+      {
+        "british_tank_pack": "24EB2ACA-77B2-4F15-82A4-0F6ED4928BFA"
+      },
+      {
+        "british_tank_sherman2nd": "8FF79A9F-D699-4F84-AC00-D9CAE6726011"
+      },
+      {
+        "british_tank_a13": "99B750BA-9C8B-423B-A80D-B5C2ACC7ACF7"
+      },
+      {
+        "british_tank_m1065th": "FD168CD6-AC52-40F9-A0C3-E6C523A01636"
+      },
+      {
+        "british_tank_a43": "A2148256-F435-41DD-AED6-6191A8F19750"
+      },
+      {
+        "king_tiger_pack": "564E9F92-4620-43C8-88F5-8C0582FA0E2B"
+      },
+      {
+        "t26e_pack_2016": "A63232C8-56E2-4E98-961A-547F9CD3DD52"
+      },
+      {
+        "sdkfz140_pack_2016": "9D2DF3D3-DC49-4550-83FD-B4F6D10082E3"
+      },
+      {
+        "t29_release_pack": "99745A05-B151-42D6-9A8A-F6BFAFDB0340"
+      },
+      {
+        "kv2_zis6_release_pack": "1C53CA3D-9006-42A6-9754-F3FD978AC3D4"
+      },
+      {
+        "wyvern_release_pack": "20740B62-1B12-4CAB-A252-FE9F586708FB"
+      },
+      {
+        "centurion_pack": "B875B6BC-B2F0-430C-A3AA-5690E72CAC73"
+      },
+      {
+        "ki_87_advanced_pack": "334C6DA3-447B-4EA4-8741-BA46D57BC1EC"
+      },
+      {
+        "wop_starter_pack_7": "7760F01E-3981-4334-A1CF-B6B7D0F42307"
+      },
+      {
+        "wop_starter_pack_4": "8CC94A0E-4C86-44D5-8065-AC70A3DBA9BF"
+      },
+      {
+        "wop_starter_pack_1": "C3479072-F347-49F9-A480-9A518333466D"
+      },
+      {
+        "wt_release_japan_tiger6": "79BD0A43-C028-468C-9E91-6B7406A4E509"
+      },
+      {
+        "wt_release_japan_chi_ha": "F139E094-F0A5-4331-8FFE-74C99ED7337F"
+      },
+      {
+        "wt_la_11_advanced_pack": "3FCA3505-C5F1-4A93-9B4A-57B37623D563"
+      },
+      {
+        "wt_ussr_is_6": "45E8B779-1227-48CA-BCAA-A67DA2B5F99A"
+      },
+      {
+        "release_fiat_cr32_pack": "05420064-EB2E-46CB-909D-367DA40BD779"
+      },
+      {
+        "release_fiat_g55s_pack": "0B06310C-E81D-43FB-9509-F680BC417CAB"
+      },
+      {
+        "type5_hori_pack": "DCD7DA96-D7F5-405B-B3CB-6D54715C16E5"
+      },
+      {
+        "m47_germany_pack": "FEBA4CDA-1A44-43E8-86D8-B67304D766C4"
+      },
+      {
+        "be6_ussr_pack": "7041D377-2C78-47DD-BBD9-4469E05B99E0"
+      },
+      {
+        "release_object120_pack": "25DDBB62-BFF0-44D5-8C17-A1DDE70CAF08"
+      },
+      {
+        "release_dew_d371_pack": "A9C01667-0173-49CF-BACD-A343C57167CE"
+      },
+      {
+        "release_so8000_pack": "F45113BD-6CCA-41A9-9AD2-8611D34EBE0A"
+      },
+      {
+        "it_m26_pershing_pack": "3D2FDF6A-B9AD-4278-98B3-93C65735ED5E"
+      },
+      {
+        "it_p40_pack": "FAA40F04-AAAD-4943-BA9C-BC206DF57404"
+      },
+      {
+        "wt_release_b1ter": "D403B5EF-363B-461A-BB32-9183EF811D4F"
+      },
+      {
+        "wt_release_amx13ss11": "75D8B40A-80AB-4418-BA73-887D5657B972"
+      },
+      {
+        "wt_release_m4a1_fl10": "C4D693E0-2710-4E95-8380-96B63A740F76"
+      },
+      {
+        "wt_amx_30_pack": "F55E48B7-C046-4F80-BC7A-4EA670110DF8"
+      },
+      {
+        "wt_mb5_pack": "EA4A46AA-E25E-4912-89D8-016D0EE3DDBB"
+      },
+      {
+        "wt_magach3_pack": "64963D67-290F-4F87-9671-F013393CA2A3"
+      },
+      {
+        "wt_xm_1_gm_pack": "DAC78D73-2E01-40DA-A3AB-2AC6F878C2AF"
+      },
+      {
+        "wt_centurion_avre_pack": "E27DC83A-3AC3-431C-B5E4-1B99D933E9BD"
+      },
+      {
+        "wt_bf109z_zwilling_pack": "529ED3E4-FACD-44C7-965A-882137518041"
+      },
+      {
+        "wop_starter_pack_11": "C4927583-8645-46BF-9844-D5B962F62672"
+      },
+      {
+        "wt_naval_galster_pack": "5B9AB68E-8344-4789-A3A4-96E4A6FF1D1C"
+      },
+      {
+        "wt_naval_cowell_pack": "102546F7-0FF9-45C9-A747-42780E0DB642"
+      },
+      {
+        "wt_germany_release_leopard_pack": "C11E0447-9591-460C-B138-84DAEFEBB119"
+      },
+      {
+        "wt_ussr_release_t_55am_pack": "E4A7A677-82EB-4B16-B412-4E8F37C35C3E"
+      },
+      {
+        "wt_ussr_release_hind_pack": "01D73580-6DFB-4EFB-8BAE-3082CF258D79"
+      },
+      {
+        "wt_usa_release_huey_hog_pack": "66F9E306-6571-4FE0-A78F-318DBF66769F"
+      },
+      {
+        "wt_uk_destroyer_haida_pack": "01F275A1-7D4E-4D04-8C1C-64B769B3EE6F"
+      },
+      {
+        "wt_uk_fairmile_d_5001_pack": "D7CF8DBE-33C6-4EB4-9F0F-A2F3256B0F29"
+      },
+      {
+        "wt_bo_105cb2_pack": "3AE263BC-6721-41FC-8770-CB4610F2A475"
+      },
+      {
+        "wt_uk_meteor_fmk8_reaper_pack": "231D4827-7E0D-4335-8312-3233AF4995D3"
+      },
+      {
+        "wt_ussr_mig_15bis_ish_pack": "ABBBEF1E-5E1B-4B4E-96B5-2223435247A8"
+      },
+      {
+        "wt_us_f_86f_35_sabre_pack": "154A69F9-3765-4E2D-9A68-1398E7BA7161"
+      },
+      {
+        "wt_uk_shot_kal_dalet_pack": "B4E559FF-2A3C-4A53-97F7-1F7FD3BB61D4"
+      },
+      {
+        "wt_it_m60a1_ariete_pack": "640C7797-5106-4434-9BAA-901A245D93B9"
+      },
+      {
+        "wt_it_semovente_105_25_pack": "0108E1C9-6A59-4838-A67D-1CD8004DACA0"
+      },
+      {
+        "wt_fr_iar_316b_pack": "C62A0AE8-D6B0-417A-B52C-A508E45B4601"
+      },
+      {
+        "wt_japan_jasdf_sabre_pack": "142CC8E5-4A79-4759-8985-C97AF4C35A29"
+      },
+      {
+        "wt_japan_type_74g_pack": "9B637D3D-7A31-405B-8184-A659DD71BE2C"
+      },
+      {
+        "wt_germany_sea_hawk_mk100_pack": "AEF71943-C3B4-4EEF-8624-63A4E02CA256"
+      },
+      {
+        "wt_fr_vautour_2a_pack": "F068840E-36A5-475D-943F-933BC89E8FC8"
+      },
+      {
+        "wt_it_fiat_g91_r4_pack": "AEBB135A-7E52-4CA2-95CD-280E951536DC"
+      },
+      {
+        "wt_it_of_40_pack": "E3AE2D13-0A4F-4955-8A27-C7F610215466"
+      },
+      {
+        "wt_fr_super_amx_30_pack": "AA364467-E20A-4FA4-A81F-0D0FB0425805"
+      },
+      {
+        "wt_japan_ah_1s_cobra_pack": "EB251C4E-7E89-4CAB-9ADE-A48DB7B699ED"
+      },
+      {
+        "wt_japan_pg_02_pack": "1DC4E281-D047-4927-A16B-E10C37282954"
+      },
+      {
+        "wt_japan_kiyoshimo_pack": "C1D5CED7-E0B9-453E-846F-11A2C1485D7B"
+      },
+      {
+        "wt_ussr_mig_17_cuba_pack": "69F4FE83-CEB2-41AB-BF03-75496FD0FBBD"
+      },
+      {
+        "wt_cn_t_62_pack": "D26D6B9D-6240-468B-B1A3-383503DF09F9"
+      },
+      {
+        "wt_cn_shenyang_f5_pack": "48BEACB7-4AEE-40CC-8335-CEC389909F38"
+      },
+      {
+        "wt_cn_m4a4_sherman_pack": "3EAC3839-7CBD-499B-A47C-C17892920ED5"
+      },
+      {
+        "wt_cn_curtiss_hawk_h81a2_pack": "CE764FA3-84A1-4175-96FA-1B5F5E361823"
+      },
+      {
+        "wt_fr_ec_665_tiger_hap_pack": "B2AB4732-523A-4011-AFD0-8F849F215DDF"
+      },
+      {
+        "wt_uk_g_lynx_pack": "95F24BF2-A52D-43A7-8285-4067516BED6D"
+      },
+      {
+        "wt_ussr_ka_50_pack": "B9E88B57-8BFC-4FB3-9EA9-9ED00DA44847"
+      },
+      {
+        "wt_it_a129_mangusta_pack": "874C278C-C4EC-4A05-B97C-6273FD730C08"
+      },
+      {
+        "wt_sv_vl_pyorremyrsky_pack": "009FB77B-92F8-41B7-9307-D6B834AFB345"
+      },
+      {
+        "wt_sv_saab_j29d_pack": "33B2E591-CC3A-4F96-8F25-D7C9AFDBF678"
+      },
+      {
+        "wt_uk_hunter_fga_9_pack": "631B5537-98AF-4B84-B589-858F96768D35"
+      },
+      {
+        "wt_germany_prinz_eugen_pack": "DD3E6017-3A2D-45C7-B5B0-CA1FDB4FC98B"
+      },
+      {
+        "wt_sw_strv_103_0_pack": "C81B4FE2-A186-4497-A133-5FF8BAB39DFB"
+      },
+      {
+        "sw_sav_fm48_pack": "9DAB5D50-42E4-4A93-A042-A9AA0CF9EE60"
+      },
+      {
+        "wt_usa_ah_64a_peten_pack": "A04D87C8-D157-417E-BFAE-95E548E6E227"
+      },
+      {
+        "wt_uk_rooikat_105_pack": "9235844D-6988-4120-82B9-0F625152EADD"
+      },
+      {
+        "wt_sw_cv_90105_tml_pack": "6DABEC0D-13D3-4188-8DF4-F3E7F04F0AB9"
+      },
+      {
+        "it_p420_sparviero_pack": "6DABEC0D-13D3-4188-8DF4-F3E7F04F0AB9"
+      },
+      {
+        "it_geniere_pack": "7C207329-7B1D-49CE-B481-D5E691952B95"
+      },
+      {
+        "cn_type_69_2g_pack": "BF9E215F-AEE2-496F-9C18-C8B71379A16E"
+      },
+      {
+        "premium_account_1_day_psn": "C440D900-D8A6-4854-9BA7-DAD3DD88C788"
+      },
+      {
+        "premium_account_7_days_psn": "D29AB515-5C4A-4EC5-91CB-E7C6D1620042"
+      },
+      {
+        "premium_account_15_days_psn": "C5C357FD-1F8F-4B94-B36C-2C94BC0FE3A3"
+      },
+      {
+        "premium_account_30_days_psn": "CA888272-E7BA-4950-8810-1AFA8CBA2DE5"
+      },
+      {
+        "premium_account_90_days_psn": "F5B58882-8EBC-4C59-BA73-7544922B18A7"
+      },
+      {
+        "premium_account_365_days_psn": "CA57EADD-B9D0-4C27-9E8D-E37071E595A2"
+      },
+      {
+        "silver_lions_1k_psn": "47BB91D4-A53E-48BF-90C3-316CB62BD26A"
+      },
+      {
+        "silver_lions_11k_psn": "5B956C60-13B8-466C-9160-4BE9F0A07965"
+      },
+      {
+        "silver_lions_58k_psn": "31EADF5D-9029-4192-A998-18FEC8AF10D7"
+      },
+      {
+        "silver_lions_120k_psn": "620C70A0-5D0F-40FF-8163-225FCEA8F329"
+      },
+      {
+        "silver_lions_120k_psn": "620C70A0-5D0F-40FF-8163-225FCEA8F329"
+      },
+      {
+        "silver_lions_630k_psn": "2B0A60BF-D16E-479F-A5D1-6A7532262E49"
+      },
+      {
+        "silver_lions_1300k_psn": "857BD6DA-024B-45BB-A493-CAB7EE820594"
+      },
+      {
+        "m2a4_1st_arm_div_psn": "48E4AF10-E392-4956-8EAF-74FF40BF87EE"
+      },
+      {
+        "grant_1_psn": "D0782FCF-3219-42F5-82A4-A2980F96F0BD"
+      },
+      {
+        "m4a5_psn": "3E3027C2-40C3-4CB0-841E-6BD4A7A29EB8"
+      },
+      {
+        "t14_psn": "F06EC5FB-9FE3-492A-8CDF-9A16B6674EBF"
+      },
+      {
+        "m18_black_cat_psn": "E2589E58-4F83-4DE0-8FC9-88E9277A27F6"
+      },
+      {
+        "t20_psn": "F684CA76-4091-49EA-A94E-6AE1B3ADBE1B"
+      },
+      {
+        "calliope_psn": "A1141DF3-F963-4E3C-85D7-57A41C62ADEE"
+      },
+      {
+        "cobra_king_psn": "65340483-89F8-4951-A870-B26451D2A131"
+      },
+      {
+        "m26_t99_psn": "3861B70C-9B9E-4C5A-8F5F-979A8574A6E9"
+      },
+      {
+        "t28_psn": "1C016E98-5EB2-4249-8FBA-53D09830DB9C"
+      },
+      {
+        "super_hellcat_psn": "A7E00C44-9779-4A2E-8305-4BCC121F27EB"
+      },
+      {
+        "m26e1_psn": "A7E00C44-9779-4A2E-8305-4BCC121F27EB"
+      },
+      {
+        "m46_tiger_psn": "AC6B2DBB-CDCA-41A1-96B7-9BAF8A2F9C08"
+      },
+      {
+        "t114_psn": "DA71E805-10A8-49D3-B70B-1D3E535012A1"
+      },
+      {
+        "t54e1_psn": "A1DD0845-D339-4F55-A619-0D3F62D59871"
+      },
+      {
+        "pz_2_c_dak_psn": "A605E517-34ED-4990-9934-F2F9659B081F"
+      },
+      {
+        "nb_fz_psn": "E6E5299D-D3D0-4787-93ED-9CEF5A991186"
+      },
+      {
+        "pz_3_n_psn": "52715A53-5C35-4BC4-B943-2E89892263B4"
+      },
+      {
+        "15_cm_pz_w_42_psn": "C4A787EB-F4B4-4F26-8F0E-52622F7C19BF"
+      },
+      {
+        "t_34_747_r_psn": "50CAC524-E5E9-4DE4-BAC7-121C971626FB"
+      },
+      {
+        "pz_bef_wg_4_j": "DDAC104C-EAB6-4FF5-9123-F2790EF0DF4E"
+      },
+      {
+        "kv_2_754_r_psn": "724AFC40-E17C-4BED-873B-DB074F2F5630"
+      },
+      {
+        "pz_kpfw_churchill_psn": "C652762B-42C9-4703-BBF5-EA67425A3A33"
+      },
+      {
+        "panzer_4_70_a_psn": "E3288CCA-2BA9-4B9F-B205-A8AAFB423089"
+      },
+      {
+        "brummbar_psn": "C8162379-D10F-43EE-BDB1-BF9727029D71"
+      },
+      {
+        "kv_1_c_756_r_psn": "DBBEF23B-13DD-4794-A98C-EC38B85F6EF6"
+      },
+      {
+        "bfw_jagdpanther_psn": "F2D2726C-F77B-4DF2-BA4E-0F1493D65F67"
+      },
+      {
+        "pz_bef_wg_6_p_psn": "7851A0FE-6B41-4E80-9F12-8FE6ABAD368E"
+      },
+      {
+        "ru_251_psn": "943F222B-CD5C-4436-91CF-56E27C140C20"
+      },
+      {
+        "mkpz_m47_g_psn": "267E263D-F308-45C4-98D9-251F31FE3208"
+      },
+      {
+        "t_26_1_gv_psn": "F39F3A61-1727-402C-8F67-6E9728C80C65"
+      },
+      {
+        "t_35_psn": "7AF06A53-D879-4C8E-8A0F-B450406F8AA7"
+      },
+      {
+        "su_57_psn": "D1CC825B-10BE-48AB-BA81-29A9F3EE7923"
+      },
+      {
+        "t_126_psn": "D67943A6-3BDE-4A3B-A569-30EE2B180863"
+      },
+      {
+        "bm_8_24_psn": "4B23DB55-7942-48E2-B21C-60A8A747CEB7"
+      },
+      {
+        "t_3_psn": "B8BA1486-51FB-4A48-8CA8-10FE4AD08C84"
+      },
+      {
+        "smk_psn": "8353C692-E26A-4045-B766-E23D6D0A520B"
+      },
+      {
+        "zut_37_psn": "BF9368B7-89F0-464E-A461-57D8DEE7DD80"
+      },
+      {
+        "t_34_57_psn": "65102B9A-EB1E-493F-9D18-607E76B27B3B"
+      },
+      {
+        "su_100y_psn": "C66889DF-1D5B-4913-9327-031E215F8E92"
+      },
+      {
+        "m4a2_ussr_psn": "3AC2880C-9A55-44DE-B3E5-574FF5C1879A"
+      },
+      {
+        "kv_122_psn": "6A4AF4C5-80FC-46BB-943A-1D0A8130DE9C"
+      },
+      {
+        "t_44_122_psn": "992AEFEA-47A8-4227-BD3A-6C2F4BF96AAB"
+      },
+      {
+        "t_34_100_psn": "8EC4DEAC-4BDA-40DB-8115-1B3B2C8B2619"
+      },
+      {
+        "is_2_revenge_psn": "1FDFA959-07F6-4902-B33F-8F3C8902912C"
+      },
+      {
+        "su_122p_psn": "9648F907-45A4-495D-82B2-3ECDBB393D18"
+      },
+      {
+        "a13_3_rtr_psn": "87AC4E20-EF3C-4961-B244-6801348FD172"
+      },
+      {
+        "independent_psn": "8E64F78D-5A20-4817-BC0B-17A745A28424"
+      },
+      {
+        "cromwell_mk_5_psn": "BD428B61-2A23-418A-80F1-3DDAAE110BE4"
+      },
+      {
+        "ac_4_psn": "0F834CCB-811A-4D3A-9BEA-1E1DBB8FEF7C"
+      },
+      {
+        "sherman_1c_uk_psn": "9689E3B6-9DFB-4F13-A1BC-A94FB575E817"
+      },
+      {
+        "centurion_action_x_psn": "C72A8473-BC62-46F0-9DE9-6AC3E5C1B02D"
+      },
+      {
+        "ha_go_commander_psn": "94D95473-01CE-4D84-84B3-494514A04FD0"
+      },
+      {
+        "ro_go_psn": "E847DB09-8450-45E7-B1EC-D750BB62D818"
+      },
+      {
+        "chi_ha_short_gun_psn": "4BAD8A9B-C302-460D-9E5E-605072B8F8EC"
+      },
+      {
+        "chi_nu_2_psn": "AE058035-F4C0-4C08-93D5-D68CF8421030"
+      },
+      {
+        "type_75_mrls_psn": "5C666645-0056-47B9-9C0F-7BA77F1FAB59"
+      },
+      {
+        "t_26_n531_psn": "A94009CB-148B-4C28-9E2E-DD5A6045AFA3"
+      },
+      {
+        "t_34_85_n215_psn": "0E265F83-B1D8-4B94-AD6B-F4AB9C08BAC1"
+      },
+      {
+        "is_2_n402_psn": "6D513E5E-DA10-48CB-842F-930356DCE013"
+      },
+      {
+        "m13_40_2_psn": "A36E95A6-E58C-46C4-A441-4144E14D1D29"
+      },
+      {
+        "h_39_cambronne_psn": "ADE08A0C-8595-4D4C-BE31-308CC2F22BAA"
+      },
+      {
+        "b1_ter_psn": "D5CB9F5E-9A8E-42C2-83F6-AAF91CB78822"
+      },
+      {
+        "amx_13_ss_11_psn": "D546C133-B4D7-4D1E-AFB1-86E0C22E4FDC"
+      },
+      {
+        "panther_dauphine_psn": "6C990714-2E31-46C6-BE36-6118057FA3B9"
+      },
+      {
+        "strv_m39_psn": "9E00031A-0860-42DF-8001-B8EB3DCCE3C9"
+      },
+      {
+        "galers_f3f_2_psn": "17CCA2C0-51E4-4D07-9443-0AA9F082A02A"
+      },
+      {
+        "thachs_f2a_1_psn": "FE59A22F-4913-47A5-8F76-5F77A0FD3666"
+      },
+      {
+        "b_10b_psn": "B965F7B0-6C23-4A16-BA9B-56566C58FAAF"
+      },
+      {
+        "ki_43_2_psn": "E31E7794-B6C6-41D8-9FC1-2268DAF6A1F6"
+      },
+      {
+        "xp_55_psn": "479BB53F-357C-47FD-B4AE-D22D63FCFB2C"
+      },
+      {
+        "ki_61_1b_psn": "760738E6-96B4-4B86-B505-E905051571A4"
+      },
+      {
+        "xp_50_psn": "5E88A743-509B-4619-BE25-81C359D393CA"
+      },
+      {
+        "a6m2_usa_psn": "61EDFD24-E6B0-4FCF-9001-FF845BF232F0"
+      },
+      {
+        "btd_1_psn": "734ED7D9-E1EC-4F7A-9359-BDC6BE88B07D"
+      },
+      {
+        "bf_109_f4_psn": "4F9A7FE7-4ACA-48A9-A5BC-BEF4CA94A1E4"
+      },
+      {
+        "p_61a_1_psn": "B33F03BC-EE03-463C-9B7E-14CBEFD46E07"
+      },
+      {
+        "fw_190_a8_psn": "BE2603B5-BE1C-4E2D-A2E9-09486CDF1E8B"
+      },
+      {
+        "spitfire_lf_mk_9c_psn": "A9012832-1000-4DC7-90AA-536FE200B59C"
+      },
+      {
+        "xa_38_psn": "03029146-08E0-4A8E-8E27-244A5EA08E8A"
+      },
+      {
+        "a2d_1_psn": "0C62E305-0E73-4F84-8756-FF54C142BB80"
+      },
+      {
+        "f_89b_psn": "1F1F50EA-9706-499C-A065-B5FFF2528610"
+      },
+      {
+        "f_89d_psn": "8A3DAA10-9AEB-446E-9F5E-16A8C02C594A"
+      },
+      {
+        "flegels_bf_109a_psn": "A36FEA65-5F16-4A93-8C81-4141911BA5A4"
+      },
+      {
+        "he_112_b1_u2_psn": "471F86EE-E4AD-440C-A852-B319925ACC3D"
+      },
+      {
+        "il_2_1942_psn": "B84727F7-03D1-4A90-8BC8-BA09FE0D83E7"
+      },
+      {
+        "wellington_mk_1c_psn": "AAC24B3F-48DC-4D7D-895E-D7BC356C1421"
+      },
+      {
+        "yak_1b_psn": "2E7A0584-1E4C-40CF-8E73-833D4947896D"
+      },
+      {
+        "bv_238_psn": "A0A2EA85-084C-4761-801A-D83D366E2DE8"
+      },
+      {
+        "ta_154_a_1_psn": "36BC315D-D3A8-4075-A0FA-3628E29674EE"
+      },
+      {
+        "p_47d_psn": "8654F312-FC35-4308-A462-59DB9BF29777"
+      },
+      {
+        "la_5fn_psn": "06221014-94D1-4BEF-8E32-7A43848F4960"
+      },
+      {
+        "he_219_a7_psn": "324CE26B-79C8-4E60-B331-25739072503E"
+      },
+      {
+        "do_335_b2_psn": "798A4C7C-E351-40BE-9ED0-1B6C1D0A59BD"
+      },
+      {
+        "ju_288c_psn": "C56066F4-D108-4083-9828-588D47CECB00"
+      },
+      {
+        "tempest_mk_v_psn": "B4CA0233-AA53-4339-AF60-A86D2F75ADF8"
+      },
+      {
+        "zhukovsky_i_153_m62_psn": "CA3A9983-D596-43CC-828E-679ED1B7B6F6"
+      },
+      {
+        "hampden_tb_mk_1_psn": "C0417078-168A-4F34-A514-FD3466D4ED9B"
+      },
+      {
+        "pby_5a_catalina_psn": "7F880763-0B20-40A5-A159-15A2607DD804"
+      },
+      {
+        "i_153p_psn": "05AFF4D4-E673-4948-BAC0-A56D01B2D24D"
+      },
+      {
+        "hurricane_mk_2b_psn": "B1F5F0BD-A3DF-4D59-8BB8-EC1ED267D867"
+      },
+      {
+        "i_16_type_28_psn": "31A6CD21-8277-41E5-BBAC-A6E60671C0E0"
+      },
+      {
+        "p_40e_1_psn": "095DEF43-DB52-4AAC-B07F-BEB62213AD2F"
+      },
+      {
+        "p_39k_1_psn": "174F7D93-9249-4401-A67A-39B05341B654"
+      },
+      {
+        "b_25j_30_psn": "0D510704-0C54-4F90-9190-0CD895E659E8"
+      },
+      {
+        "p_63a_5_psn": "32EC71AA-9810-468F-AF2B-2499A98C0883"
+      },
+      {
+        "p_47d_27_psn": "9EB9A853-5580-4F1A-9B7F-ECD9806A9621"
+      },
+      {
+        "yak_3_vk_107_psn": "EE875518-295D-40FC-B344-45E6765A9225"
+      },
+      {
+        "fw_190_d_9_ussr_psn": "7EE3123D-EB77-43AB-91DB-936A452CBB18"
+      },
+      {
+        "be_6_psn": "D1F3008D-BA99-4A7B-97DF-C3ABD0DD7F72"
+      },
+      {
+        "tucks_gladiator_mk_2_psn": "FAFF4104-BE9D-45F5-8F0F-FCD8E652391D"
+      },
+      {
+        "havoc_mk_1_psn": "E4C8FBBB-EC1D-4EFB-BECF-9862A335A509"
+      },
+      {
+        "wirraway_psn": "663C7AD4-2B3B-4E93-9378-B5874C4BA2AF"
+      },
+      {
+        "catalina_mk_3a_psn": "A96DE4D1-C4BA-4C34-812C-7E23FFDCD9AE"
+      },
+      {
+        "avenger_mk_2_psn": "CF7BD434-E146-455F-814E-75E3E88E7481"
+      },
+      {
+        "hudson_mk_v_psn": "28549BFA-F41D-4A9E-9A1D-55C87FBA2F13"
+      },
+      {
+        "corsair_f_mk_2_psn": "669F1E09-54D7-42A0-9DB5-F207D4956DB9"
+      },
+      {
+        "boomerang_mk_1_psn": "3CBDCECD-A1AC-4804-9839-8085E7303A34"
+      },
+      {
+        "boomerang_mk_2_psn": "9BB53AC4-BCE2-4F13-804E-5C90BF45D5FE"
+      },
+      {
+        "hellcat_mk_2_psn": "0E269323-44BF-495F-BF9B-175644F6F762"
+      },
+      {
+        "mustang_mk_1a_psn": "722DCEE1-75CE-4141-9C11-201FAEDFB7CF"
+      },
+      {
+        "spitfire_f_mk_14c_psn": "DFBA3588-1855-4387-A8AE-15B8CDD296B8"
+      },
+      {
+        "mb_5_psn": "46F252FE-94D3-45F2-A447-F54853A65559"
+      },
+      {
+        "hagiri_a5m4_psn": "28393E84-1ED5-42CE-99D9-2CA5430FE48A"
+      },
+      {
+        "a7he1_psn": "35939A2E-A7DF-41DB-AD53-8D2A1567FB69"
+      },
+      {
+        "ki_44_2_otsu_psn": "81ECD232-1636-4545-BE3E-EEAC13000829"
+      },
+      {
+        "bf_109_e7_psn": "48B90063-4677-4130-89EB-D42A13F870AC"
+      },
+      {
+        "f4u_1a_psn": "EDF4C1DD-0237-4534-BDD5-17B85E567DCA"
+      },
+      {
+        "h8k3_psn": "9A06F0C0-330C-46C5-965B-324FA4B7955C"
+      },
+      {
+        "ki_100_2_psn": "247398D5-DE29-4211-9F6D-BB01933E70E4"
+      },
+      {
+        "ki_96_psn": "6043ACFE-3409-4CAE-B257-F997C9394BE3"
+      },
+      {
+        "fw_190_a_5_japan_psn": "9AE91CED-82F6-460A-8429-43928EA9A650"
+      },
+      {
+        "a7m1_nk9h_psn": "03838C58-1BDB-4AEC-B0B4-3C44E4C92447"
+      },
+      {
+        "j2m4_kai_psn": "A80F3882-2BED-40C7-BFA5-977CDEE32F8F"
+      },
+      {
+        "j2m5_psn": "D6712D4C-39F6-487A-B162-6F65B2F8F235"
+      },
+      {
+        "b_17e_psn": "D451B8D2-FC3B-45CA-AFE5-B7C5C1A7E9AC"
+      },
+      {
+        "ki_87_psn": "BB061D60-44E2-4A02-9442-A265F4BB5478"
+      },
+      {
+        "hawk_3_psn": "F703099C-9108-4F3B-9D72-C8B71921ACE7"
+      },
+      {
+        "ki_45_hei_tei_psn": "78A0A507-73A4-4DA6-9DB6-8E09BA354CD7"
+      },
+      {
+        "a6m2_psn": "8B513F2F-7C7F-4685-A95E-741AF3593E08"
+      },
+      {
+        "ki_84_ko_psn": "5799C99B-953A-482E-A4AA-E3E8DC662303"
+      },
+      {
+        "marcolin_cr_42_cn_psn": "A0FDCDA8-663A-4380-BE8C-F97A53CF14FD"
+      },
+      {
+        "iar_81c_psn": "81FB4F6D-1004-4816-B515-349A9446D570"
+      },
+      {
+        "hs_129_b2_romania_psn": "4254C543-D376-4266-BEAB-D2289E534D14"
+      },
+      {
+        "spitfire_mk_vb_trop_psn": "BBB88038-D60E-4F93-A0CF-996012E19611"
+      },
+      {
+        "bf_109_g_2_psn": "D436C8CB-B1B5-42CD-846E-3B4024769325"
+      },
+      {
+        "g_55s_psn": "43A4A0F2-E685-429F-BA78-F93FAAFA8B40"
+      },
+      {
+        "palliers_d_510_psn": "020C99F6-FAB8-4A80-8386-2DAF115BFC82"
+      },
+      {
+        "yak_3_france_psn": "0AE4B998-72AA-4816-BA12-7D2679945BB9"
+      },
+      {
+        "jacobis_j8a_psn": "06D036F7-ADDD-481B-BDE4-AC75DB61D974"
+      },
+      {
+        "morko_morane_psn": "4FC5AE72-D58E-443C-95C3-32A67CD4333C"
+      },
+      {
+        "58_ft_pt3_psn": "A21D9812-6A84-4885-A976-30224B43EE51"
+      },
+      {
+        "165_ft_pc_466_carmi_psn": "2059A83D-AD2B-42A3-B55C-4DE9423208FA"
+      },
+      {
+        "elco_80_pt_556_psn": "23942348-C9A1-4AB6-9EAB-AA0110FBE5FF"
+      },
+      {
+        "uss_helena_cl_50_psn": "2F374DAA-8700-4EA3-8FC0-33600AE2997A"
+      },
+      {
+        "ls_4_esau_psn": "887BECB7-1F04-48FB-B136-CE1E293BD050"
+      },
+      {
+        "type_m_1943_psn": "4F5E20B0-2EEE-409E-BFCC-5DEA81A4FF2C"
+      },
+      {
+        "type_1939_t31_psn": "B32FA4A6-3F14-4710-9E8D-CD35D4B6466E"
+      },
+      {
+        "g5_shvak_psn": "A57910C9-70F0-49CE-AFA6-F3523D9CBD6E"
+      },
+      {
+        "pr_123k_a11_psn": "1519E127-B1E5-4A2D-834C-4AC6A0248F35"
+      },
+      {
+        "pr_1204_psn": "669C32B8-06CB-4CA1-97DA-E61DDD34884A"
+      },
+      {
+        "mbk_pr_186_psn": "F5E06705-D619-4355-97C0-EE6520DD74AC"
+      },
+      {
+        "pr_7u_stroyny_psn": "32B5118E-C8CA-43B1-8C92-8263081000AC"
+      },
+      {
+        "pr_41_neustrashimy_psn": "81014757-EB2F-4903-8578-FF54FDE34ADB"
+      },
+      {
+        "mtb_1_2_series_psn": "3367454E-924C-4DF5-8A1E-582D5A6E9FB1"
+      },
+      {
+        "mgb_75_psn": "B534700A-F2C5-4BA3-9BCA-1CF53C321E48"
+      },
+      {
+        "hms_belfast_psn": "404DEC5A-8BFD-40C6-9833-D54DFAB5927C"
+      },
+      {
+        "type_t_14_mod_01_psn": "3710FA30-DFB8-4668-B910-B02443822B00"
+      },
+      {
+        "type_4_model_4_psn": "6949E929-FF14-457D-BB69-CD6E7761DC30"
+      },
+      {
+        "ijn_mikuma_psn": "31F85017-7FC2-4C69-B84E-0CD104B97656"
+      },
+      {
+        "mi_24p_hfs_80_psn": "1F81E6B9-AA7D-48CC-B711-58F1117FDC44"
+      }
+    ],
     "xbox": {
       "centurion_pack": "1bfe87f0-54f1-47c1-84ec-ddd59a05ba3f",
       "king_tiger_pack": "9534aefb-da46-4dfe-9a5c-b2e80724ba94",
@@ -5664,7 +6503,10 @@
       "wt_sv_saab_j29d_pack": "f51eb8ee-e28b-47bf-961e-859bd3c12594",
       "wt_uk_hunter_fga_9_pack": "35d6a40b-7894-4017-9c23-09adf1a8a0bd",
       "wt_uk_rooikat_105_pack": "48425039-4832-3039-c04e-32544a422600",
-      "wt_sw_cv_90105_tml_pack": "47365039-305a-3039-c054-4c5057425200"
+      "wt_sw_cv_90105_tml_pack": "47365039-305a-3039-c054-4c5057425200",
+      "it_p420_sparviero_pack": "39534e39-5248-3042-c036-58544a365100",
+      "it_geniere_pack": "4a425039-3458-3031-c043-43584a4b4500",
+      "cn_type_69_2g_pack": "39304e39-3151-304e-c030-5737484b1100"
     },
     "scee": {
       "eagles150": "EE01500000000000",
@@ -5792,7 +6634,10 @@
       "ah_64a_peten_ps_prem": "EE00520000000000",
       "sw_cv_90105_tml_ps_prem": "EE00530000000000",
       "uk_rooikat_105_ps_prem": "EE00540000000000",
-      "usa_beginners_pack_ps_prem": "EE00560000000000"
+      "usa_beginners_pack_ps_prem": "EE00560000000000",
+      "geniere_ps_prem": "ER00610000000000",
+      "p_420_sparviero_ps_prem": "ER00620000000000",
+      "type_69_2g_ps_prem": "ER00630000000000"
     },
     "scea": {
       "eagles150": "UE01500000000000",
@@ -5920,7 +6765,10 @@
       "ah_64a_peten_ps_prem": "UU00520000000000",
       "sw_cv_90105_tml_ps_prem": "UU00530000000000",
       "uk_rooikat_105_ps_prem": "UU00540000000000",
-      "usa_beginners_pack_ps_prem": "UU00560000000000"
+      "usa_beginners_pack_ps_prem": "UU00560000000000",
+      "geniere_ps_prem": "UR00610000000000",
+      "p_420_sparviero_ps_prem": "UR00610000000000",
+      "type_69_2g_ps_prem": "UR00630000000000"
     },
     "scej": {
       "eagles150": "JE00010000000000",
@@ -6048,7 +6896,10 @@
       "ah_64a_peten_ps_prem": "JJ00520000000000",
       "sw_cv_90105_tml_ps_prem": "JJ00530000000000",
       "uk_rooikat_105_ps_prem": "JJ00540000000000",
-      "usa_beginners_pack_ps_prem": "JJ00560000000000"
+      "usa_beginners_pack_ps_prem": "JJ00560000000000",
+      "geniere_ps_prem": "JR00190000000000",
+      "p_420_sparviero_ps_prem": "JR00200000000000",
+      "type_69_2g_ps_prem": "JR00210000000000"
     }
   }
 }

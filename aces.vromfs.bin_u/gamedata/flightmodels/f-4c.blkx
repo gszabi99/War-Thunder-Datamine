@@ -36,6 +36,15 @@
     "startExhaustFxType": "jet_start_exhaust"
   },
   {
+    "haveCCIPForRocket": true
+  },
+  {
+    "haveCCIPForBombs": true
+  },
+  {
+    "haveCCIPForGun": true
+  },
+  {
     "gyroscopicSightOverSensors": true
   },
   {
@@ -3017,6 +3026,7 @@
           "rpm1_hour": [0.0,10000.0],
           "rpm1_min": [0.0,1000.0],
           "oil_pressure": [0.0,160.0],
+          "oil_pressure1": [0.0,160.0],
           "water_temperature_hour": [100.0,1100.0],
           "water_temperature_min": [0.0,100.0],
           "water_temperature1_hour": [100.0,1100.0],
@@ -3037,7 +3047,8 @@
             "display": {
               "textureArea": [0.0,0.5,0.5,1.0],
               "page": {
-                "type": "radar"
+                "type": "radar",
+                "radarScale": 0.67
               }
             }
           },
@@ -3098,14 +3109,28 @@
         "preset": {
           "name": "f_4c_bomb_mk81",
           "blk": "gameData/flightModels/weaponPresets/f_4c_bomb_mk81.blk",
-          "reqModification": "us_250lb_mk81"
+          "reqModification": "us_250lb_mk81",
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk",
+              "amountPerTier": 3.0,
+              "iconType": "bombs_small_group"
+            }
+          }
         }
       },
       {
         "preset": {
           "name": "f_4c_bomb_mk82",
           "blk": "gameData/flightModels/weaponPresets/f_4c_bomb_mk82.blk",
-          "reqModification": "us_500lb_mk82"
+          "reqModification": "us_500lb_mk82",
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "amountPerTier": 3.0,
+              "iconType": "bombs_middle_group"
+            }
+          }
         }
       },
       {
@@ -3170,6 +3195,15 @@
           },
           {
             "reqModification": "us_aim_9b"
+          },
+          {
+            "weaponConfig": {
+              "Weapon": {
+                "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk",
+                "amountPerTier": 3.0,
+                "iconType": "bombs_small_group"
+              }
+            }
           }
         ]
       },
@@ -3186,6 +3220,15 @@
           },
           {
             "reqModification": "us_aim_9b"
+          },
+          {
+            "weaponConfig": {
+              "Weapon": {
+                "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+                "amountPerTier": 3.0,
+                "iconType": "bombs_middle_group"
+              }
+            }
           }
         ]
       },

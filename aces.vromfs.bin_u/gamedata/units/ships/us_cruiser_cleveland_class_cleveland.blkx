@@ -2709,7 +2709,23 @@
           "hp": 10000.0
         },
         "armor_cit_06_dm": {
-          "armorThickness": 76.0,
+          "armorThickness": 139.7,
+          "hp": 10000.0
+        },
+        "armor_cit_07_dm": {
+          "armorThickness": 127.0,
+          "hp": 10000.0
+        },
+        "armor_cit_08_dm": {
+          "armorThickness": 95.25,
+          "hp": 10000.0
+        },
+        "armor_cit_09_dm": {
+          "armorThickness": 76.2,
+          "hp": 10000.0
+        },
+        "armor_cit_10_dm": {
+          "armorThickness": 101.6,
           "hp": 10000.0
         }
       },
@@ -3287,16 +3303,16 @@
         "armorClass": "ship_RHA",
         "armorThickness": 100.0,
         "gun_mask_01_dm": {
-          "hp": 200.0
+          "hp": 100.0
         },
         "gun_mask_02_dm": {
-          "hp": 200.0
+          "hp": 100.0
         },
         "gun_mask_03_dm": {
-          "hp": 200.0
+          "hp": 100.0
         },
         "gun_mask_04_dm": {
-          "hp": 200.0
+          "hp": 100.0
         },
         "gun_mask_05_dm": {
           "armorClass": "ship_STS",
@@ -4719,7 +4735,9 @@
         "cls_body_05": "convex_hull",
         "cls_body_06": "convex_hull",
         "cls_body_07": "convex_hull",
-        "cls_body_08": "convex_hull"
+        "cls_body_08": "convex_hull",
+        "cls_body_09": "convex_hull",
+        "cls_body_10": "convex_hull"
       },
       "hydrodynamics": {
         "bodyArea": 0.0,
@@ -4765,6 +4783,12 @@
           "emitter": "emtr_gun_flame_01",
           "flash": "emtr_gun_flame_01",
           "useEmitter": true,
+          "sleeveEmitter": "emtr_shell_01",
+          "sleeveMesh": "cartridge_case_250mm",
+          "openHatchTime": 0.0,
+          "sleevesLifeTime": 4.0,
+          "sleeveImpulse": [1.0,0.0,-1.0],
+          "linkSleeveToGun": false,
           "barrelDP": "main_caliber_gun_01_dm",
           "breechDP": "main_caliber_gun_01_dm",
           "defaultYaw": 0.0,
@@ -4839,6 +4863,12 @@
           "emitter": "emtr_gun_flame_02",
           "flash": "emtr_gun_flame_02",
           "useEmitter": true,
+          "sleeveEmitter": "emtr_shell_02",
+          "sleeveMesh": "cartridge_case_250mm",
+          "openHatchTime": 0.0,
+          "sleevesLifeTime": 4.0,
+          "sleeveImpulse": [1.0,0.0,-1.0],
+          "linkSleeveToGun": false,
           "barrelDP": "main_caliber_gun_01_dm",
           "breechDP": "main_caliber_gun_01_dm",
           "defaultYaw": 0.0,
@@ -4908,6 +4938,12 @@
           "emitter": "emtr_gun_flame_03",
           "flash": "emtr_gun_flame_03",
           "useEmitter": true,
+          "sleeveEmitter": "emtr_shell_03",
+          "sleeveMesh": "cartridge_case_250mm",
+          "openHatchTime": 0.0,
+          "sleevesLifeTime": 4.0,
+          "sleeveImpulse": [1.0,0.0,-1.0],
+          "linkSleeveToGun": false,
           "barrelDP": "main_caliber_gun_01_dm",
           "breechDP": "main_caliber_gun_01_dm",
           "defaultYaw": 0.0,
@@ -5395,6 +5431,12 @@
           "emitter": "emtr_gun_flame_43",
           "flash": "emtr_gun_flame_43",
           "useEmitter": true,
+          "sleeveEmitter": "emtr_shell_04",
+          "sleeveMesh": "cartridge_case_250mm",
+          "openHatchTime": 0.0,
+          "sleevesLifeTime": 4.0,
+          "sleeveImpulse": [1.0,0.0,-1.0],
+          "linkSleeveToGun": false,
           "barrelDP": "main_caliber_gun_04_dm",
           "breechDP": "main_caliber_gun_04_dm",
           "defaultYaw": 0.0,
@@ -5467,6 +5509,12 @@
           "emitter": "emtr_gun_flame_44",
           "flash": "emtr_gun_flame_44",
           "useEmitter": true,
+          "sleeveEmitter": "emtr_shell_05",
+          "sleeveMesh": "cartridge_case_250mm",
+          "openHatchTime": 0.0,
+          "sleevesLifeTime": 4.0,
+          "sleeveImpulse": [1.0,0.0,-1.0],
+          "linkSleeveToGun": false,
           "barrelDP": "main_caliber_gun_04_dm",
           "breechDP": "main_caliber_gun_04_dm",
           "defaultYaw": 0.0,
@@ -5534,6 +5582,12 @@
           "emitter": "emtr_gun_flame_45",
           "flash": "emtr_gun_flame_45",
           "useEmitter": true,
+          "sleeveEmitter": "emtr_shell_06",
+          "sleeveMesh": "cartridge_case_250mm",
+          "openHatchTime": 0.0,
+          "sleevesLifeTime": 4.0,
+          "sleeveImpulse": [1.0,0.0,-1.0],
+          "linkSleeveToGun": false,
           "barrelDP": "main_caliber_gun_04_dm",
           "breechDP": "main_caliber_gun_04_dm",
           "defaultYaw": 0.0,
@@ -5601,6 +5655,12 @@
           "emitter": "emtr_gun_flame_07",
           "flash": "emtr_gun_flame_07",
           "useEmitter": true,
+          "sleeveEmitter": "emtr_shell_07",
+          "sleeveMesh": "cartridge_case",
+          "openHatchTime": 0.0,
+          "sleevesLifeTime": 4.0,
+          "sleeveImpulse": [4.0,0.0,1.0],
+          "linkSleeveToGun": false,
           "barrelDP": "auxiliary_caliber_gun_01_dm",
           "breechDP": "auxiliary_caliber_gun_01_dm",
           "defaultYaw": 0.0,
@@ -5674,6 +5734,12 @@
           "emitter": "emtr_gun_flame_08",
           "flash": "emtr_gun_flame_08",
           "useEmitter": true,
+          "sleeveEmitter": "emtr_shell_08",
+          "sleeveMesh": "cartridge_case",
+          "openHatchTime": 0.0,
+          "sleevesLifeTime": 4.0,
+          "sleeveImpulse": [4.0,0.0,1.0],
+          "linkSleeveToGun": false,
           "barrelDP": "auxiliary_caliber_gun_01_dm",
           "breechDP": "auxiliary_caliber_gun_01_dm",
           "defaultYaw": 0.0,
@@ -5747,6 +5813,12 @@
           "emitter": "emtr_gun_flame_11",
           "flash": "emtr_gun_flame_11",
           "useEmitter": true,
+          "sleeveEmitter": "emtr_shell_09",
+          "sleeveMesh": "cartridge_case",
+          "openHatchTime": 0.0,
+          "sleevesLifeTime": 4.0,
+          "sleeveImpulse": [4.0,0.0,1.0],
+          "linkSleeveToGun": false,
           "barrelDP": "auxiliary_caliber_gun_02_dm",
           "breechDP": "auxiliary_caliber_gun_02_dm",
           "defaultYaw": 0.0,
@@ -5818,6 +5890,12 @@
           "emitter": "emtr_gun_flame_12",
           "flash": "emtr_gun_flame_12",
           "useEmitter": true,
+          "sleeveEmitter": "emtr_shell_10",
+          "sleeveMesh": "cartridge_case",
+          "openHatchTime": 0.0,
+          "sleevesLifeTime": 4.0,
+          "sleeveImpulse": [4.0,0.0,1.0],
+          "linkSleeveToGun": false,
           "barrelDP": "auxiliary_caliber_gun_02_dm",
           "breechDP": "auxiliary_caliber_gun_02_dm",
           "defaultYaw": 0.0,
@@ -5889,6 +5967,12 @@
           "emitter": "emtr_gun_flame_13",
           "flash": "emtr_gun_flame_13",
           "useEmitter": true,
+          "sleeveEmitter": "emtr_shell_11",
+          "sleeveMesh": "cartridge_case",
+          "openHatchTime": 0.0,
+          "sleevesLifeTime": 4.0,
+          "sleeveImpulse": [4.0,0.0,1.0],
+          "linkSleeveToGun": false,
           "barrelDP": "auxiliary_caliber_gun_03_dm",
           "breechDP": "auxiliary_caliber_gun_03_dm",
           "defaultYaw": 0.0,
@@ -5960,6 +6044,12 @@
           "emitter": "emtr_gun_flame_14",
           "flash": "emtr_gun_flame_14",
           "useEmitter": true,
+          "sleeveEmitter": "emtr_shell_12",
+          "sleeveMesh": "cartridge_case",
+          "openHatchTime": 0.0,
+          "sleevesLifeTime": 4.0,
+          "sleeveImpulse": [4.0,0.0,1.0],
+          "linkSleeveToGun": false,
           "barrelDP": "auxiliary_caliber_gun_03_dm",
           "breechDP": "auxiliary_caliber_gun_03_dm",
           "defaultYaw": 0.0,
@@ -6031,6 +6121,12 @@
           "emitter": "emtr_gun_flame_27",
           "flash": "emtr_gun_flame_27",
           "useEmitter": true,
+          "sleeveEmitter": "emtr_shell_13",
+          "sleeveMesh": "cartridge_case",
+          "openHatchTime": 0.0,
+          "sleevesLifeTime": 4.0,
+          "sleeveImpulse": [4.0,0.0,1.0],
+          "linkSleeveToGun": false,
           "barrelDP": "auxiliary_caliber_gun_04_dm",
           "breechDP": "auxiliary_caliber_gun_04_dm",
           "defaultYaw": 0.0,
@@ -6101,6 +6197,12 @@
           "emitter": "emtr_gun_flame_28",
           "flash": "emtr_gun_flame_28",
           "useEmitter": true,
+          "sleeveEmitter": "emtr_shell_14",
+          "sleeveMesh": "cartridge_case",
+          "openHatchTime": 0.0,
+          "sleevesLifeTime": 4.0,
+          "sleeveImpulse": [4.0,0.0,1.0],
+          "linkSleeveToGun": false,
           "barrelDP": "auxiliary_caliber_gun_04_dm",
           "breechDP": "auxiliary_caliber_gun_04_dm",
           "defaultYaw": 0.0,
@@ -6171,6 +6273,12 @@
           "emitter": "emtr_gun_flame_29",
           "flash": "emtr_gun_flame_29",
           "useEmitter": true,
+          "sleeveEmitter": "emtr_shell_15",
+          "sleeveMesh": "cartridge_case",
+          "openHatchTime": 0.0,
+          "sleevesLifeTime": 4.0,
+          "sleeveImpulse": [4.0,0.0,1.0],
+          "linkSleeveToGun": false,
           "barrelDP": "auxiliary_caliber_gun_05_dm",
           "breechDP": "auxiliary_caliber_gun_05_dm",
           "defaultYaw": 0.0,
@@ -6241,6 +6349,12 @@
           "emitter": "emtr_gun_flame_30",
           "flash": "emtr_gun_flame_30",
           "useEmitter": true,
+          "sleeveEmitter": "emtr_shell_16",
+          "sleeveMesh": "cartridge_case",
+          "openHatchTime": 0.0,
+          "sleevesLifeTime": 4.0,
+          "sleeveImpulse": [4.0,0.0,1.0],
+          "linkSleeveToGun": false,
           "barrelDP": "auxiliary_caliber_gun_05_dm",
           "breechDP": "auxiliary_caliber_gun_05_dm",
           "defaultYaw": 0.0,
@@ -6311,6 +6425,12 @@
           "emitter": "emtr_gun_flame_38",
           "flash": "emtr_gun_flame_38",
           "useEmitter": true,
+          "sleeveEmitter": "emtr_shell_17",
+          "sleeveMesh": "cartridge_case",
+          "openHatchTime": 0.0,
+          "sleevesLifeTime": 4.0,
+          "sleeveImpulse": [4.0,0.0,1.0],
+          "linkSleeveToGun": false,
           "barrelDP": "auxiliary_caliber_gun_06_dm",
           "breechDP": "auxiliary_caliber_gun_06_dm",
           "defaultYaw": 0.0,
@@ -6386,6 +6506,12 @@
           "emitter": "emtr_gun_flame_39",
           "flash": "emtr_gun_flame_39",
           "useEmitter": true,
+          "sleeveEmitter": "emtr_shell_18",
+          "sleeveMesh": "cartridge_case",
+          "openHatchTime": 0.0,
+          "sleevesLifeTime": 4.0,
+          "sleeveImpulse": [4.0,0.0,1.0],
+          "linkSleeveToGun": false,
           "barrelDP": "auxiliary_caliber_gun_06_dm",
           "breechDP": "auxiliary_caliber_gun_06_dm",
           "defaultYaw": 0.0,
@@ -9702,6 +9828,58 @@
           "deviation": 0.6,
           "rotation": 2.1,
           "collisionNode": "ex_armor_05_dm"
+        }
+      }
+    ]
+  },
+  {
+    "user_skin": [
+      {
+        "name": "cruiser_cleveland_class_cleveland_c"
+      },
+      {
+        "replace_tex": {
+          "from": "camo_darkgrey_5d*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "camo_hazegray*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "camo_navygrey_5*"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "turret_mk2a_oerlikon_c*",
+          "param": "camo_skin_tex"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "turret_127mm_mk28_c*",
+          "param": "camo_skin_tex"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "turret_152mm_mk16_c*",
+          "param": "camo_skin_tex"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "turret_40mm_mk1_twin_open_c*",
+          "param": "camo_skin_tex"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "cruiser_cleveland_class_cleveland_c*",
+          "param": "camo_skin_tex"
         }
       }
     ]

@@ -34,21 +34,37 @@
         "hp": 15.0
       }
     },
-    "armor12_7": {
+    "armor4_7": {
+      "armor1_dm": {
+        "hp": 35.0
+      },
       "armor2_dm": {
-        "hp": 40.0
-      }
-    },
-    "armor3": {
-      "armor4_dm": {
+        "hp": 35.0
+      },
+      "armor3_dm": {
         "hp": 35.0
       },
       "armor5_dm": {
         "hp": 35.0
+      },
+      "armor6_dm": {
+        "hp": 35.0
+      },
+      "armor10_dm": {
+        "hp": 35.0
+      },
+      "armor11_dm": {
+        "hp": 35.0
       }
     },
-    "armor8": {
-      "armor3_dm": {
+    "armor12_7": {
+      "armor4_dm": {
+        "hp": 40.0
+      },
+      "armor8_dm": {
+        "hp": 40.0
+      },
+      "armor9_dm": {
         "hp": 40.0
       }
     },
@@ -169,7 +185,7 @@
       }
     },
     "glass38": {
-      "armor1_dm": {
+      "armor7_dm": {
         "hp": 100.0
       }
     },
@@ -356,6 +372,36 @@
     {
       "part": {
         "name": "armor5_dm"
+      }
+    },
+    {
+      "part": {
+        "name": "armor6_dm"
+      }
+    },
+    {
+      "part": {
+        "name": "armor7_dm"
+      }
+    },
+    {
+      "part": {
+        "name": "armor8_dm"
+      }
+    },
+    {
+      "part": {
+        "name": "armor9_dm"
+      }
+    },
+    {
+      "part": {
+        "name": "armor10_dm"
+      }
+    },
+    {
+      "part": {
+        "name": "armor11_dm"
       }
     },
     {
@@ -2319,28 +2365,55 @@
       "preset": {
         "name": "f4u-7_rocket_hvar",
         "blk": "gameData/FlightModels/weaponPresets/f4u-7_rocket_hvar.blk",
-        "reqModification": "frc_mk2"
+        "reqModification": "frc_mk2",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
+            "amountPerTier": 1.0,
+            "iconType": "rockets_he_middle"
+          }
+        }
       }
     },
     {
       "preset": {
         "name": "f4u-7_rocket_t10",
         "blk": "gameData/FlightModels/weaponPresets/f4u-7_rocket_t10.blk",
-        "reqModification": "fr_matra_t_10"
+        "reqModification": "fr_matra_t_10",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140b.blk",
+            "amountPerTier": 1.0,
+            "iconType": "rockets_he_small"
+          }
+        }
       }
     },
     {
       "preset": {
         "name": "f4u-7_rocket_t10_151",
         "blk": "gameData/FlightModels/weaponPresets/f4u-7_rocket_t10_151.blk",
-        "reqModification": "fr_matra_t_10_150"
+        "reqModification": "fr_matra_t_10_150",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+            "amountPerTier": 1.0,
+            "iconType": "rockets_ap_small"
+          }
+        }
       }
     },
     {
       "preset": {
         "name": "f4u-7_rocket_sneb",
         "blk": "gameData/FlightModels/weaponPresets/f4u-7_rocket_sneb.blk",
-        "reqModification": "fr_matra_sneb"
+        "reqModification": "fr_matra_sneb",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23.blk",
+            "amountPerTier": 19.0
+          }
+        }
       }
     }
   ],
@@ -2577,6 +2650,9 @@
           "separateDm": true
         },
         {
+          "overwriteLinks": true
+        },
+        {
           "dp": "stab_dm"
         },
         {
@@ -2771,6 +2847,9 @@
         },
         {
           "separateDm": true
+        },
+        {
+          "overwriteLinks": true
         },
         {
           "dp": "stab_dm"
@@ -3174,6 +3253,12 @@
           "dm": "wing1_r_dm"
         },
         {
+          "separateDm": true
+        },
+        {
+          "overwriteLinks": true
+        },
+        {
           "dp": "stab_dm"
         },
         {
@@ -3368,6 +3453,9 @@
         },
         {
           "separateDm": true
+        },
+        {
+          "overwriteLinks": true
         },
         {
           "dp": "stab_dm"

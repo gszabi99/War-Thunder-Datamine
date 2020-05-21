@@ -26,6 +26,12 @@ local defaultLocIdsList = {
   actionButton              = null
 }
 
+local function showExchangeInventoryErrorMsg(errorId, componentItem) {
+  local locIdPrefix = componentItem.getLocIdsList()?.inventoryErrorPrefix
+  ::showInfoMsgBox(::loc($"{locIdPrefix}{errorId}", { itemName = componentItem.getName() }),
+    "exchange_inventory_error")
+}
+
 local lastRecipeIdx = 0
 local ExchangeRecipes = class {
   idx = 0
@@ -521,6 +527,9 @@ local ExchangeRecipes = class {
     local usedUidsList = {}
     local recipe = this //to not remove recipe until operation complete
     local leftAmount = amount
+    local errorCb = (componentItem?.shouldAutoConsume ?? true)
+      ? null
+      : @(errorId) showExchangeInventoryErrorMsg(errorId, componentItem)
     local exchangeAction = (@(cb) inventoryClient.exchange(
       getMaterialsListForExchange(usedUidsList),
       generatorId,
@@ -528,6 +537,7 @@ local ExchangeRecipes = class {
         resultItems.extend(items)
         cb()
       },
+      errorCb,
       --leftAmount <= 0,
       requirement
     )).bindenv(recipe)

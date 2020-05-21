@@ -123,15 +123,6 @@
     "canReloadNonGuns": true
   },
   {
-    "customClassIco": "!#ui/gameuiskin#image_in_progress_ico"
-  },
-  {
-    "customImage": "!#ui/unitskin#image_in_progress"
-  },
-  {
-    "customTooltipImage": "ui/aircrafts/image_in_progress"
-  },
-  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "RHA_tank",
@@ -183,7 +174,7 @@
           "armorThickness": 20.0
         },
         "turret_04_front_dm": {
-          "armorThickness": 6.0
+          "armorThickness": 20.0
         },
         "turret_05_back_dm": {
           "armorThickness": 5.0
@@ -204,7 +195,7 @@
           "armorThickness": 6.0
         },
         "turret_05_front_dm": {
-          "armorThickness": 6.0
+          "armorThickness": 20.0
         },
         "turret_05_top_dm": {
           "armorThickness": 6.0
@@ -253,6 +244,9 @@
         },
         "turret_03_side_dm": {
           "armorThickness": 6.0
+        },
+        "turret_02_side_dm": {
+          "armorThickness": 10.0
         }
       },
       "hull_turret_spaced_armor": {
@@ -290,9 +284,6 @@
         },
         "turret_02_back_dm": {
           "armorThickness": 35.0
-        },
-        "turret_02_side_dm": {
-          "armorThickness": 10.0
         },
         "turret_02_bottom_dm": {
           "armorThickness": 20.0
@@ -2109,20 +2100,20 @@
             "pitch": [-8.0,35.0]
           },
           "limitsTable": {
-            "lim1": [-180.0,-140.0,-1.0,35.0],
-            "lim2": [-140.0,-110.0,-3.0,35.0],
+            "lim1": [-180.0,-155.0,3.0,35.0],
+            "lim2": [-155.0,-110.0,-4.0,35.0],
             "lim3": [-110.0,110.0,-8.0,35.0],
             "lim4": [110.0,140.0,-3.0,35.0],
-            "lim5": [140.0,180.0,-1.0,35.0]
+            "lim5": [140.0,180.0,-2.0,35.0]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": false,
             "hasHorizontal": true,
             "horizontalOmegaMult": 1.0,
-            "horizontalSpeedLimitKPH": 75.0,
+            "horizontalSpeedLimitKPH": 15.0,
             "hasVertical": true,
             "verticalOmegaMult": 1.0,
-            "verticalSpeedLimitKPH": 75.0,
+            "verticalSpeedLimitKPH": 15.0,
             "speedFromVehicleVerticalMult": -1.0,
             "errorKPHToDegrees": [
               {
@@ -2142,7 +2133,7 @@
         "Weapon": {
           "trigger": "gunner1",
           "triggerGroup": "coaxial",
-          "blk": "gameData/Weapons/groundModels_weapons/8mm_Ksp_m36_user_machinegun.blk",
+          "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Ksp_39_Strv_user_machinegun.blk",
           "emitter": "bone_mg_twin",
           "flash": "emtr_mg_flame_01",
           "barrelDP": "gun_barrel_02_dm",
@@ -2222,8 +2213,8 @@
           "errTargetting": 3.0,
           "errExplTime": 0.0,
           "turret": {
-            "head": "gun_barrel_01",
-            "gun": "gun_barrel_01",
+            "head": "bone_gun_01",
+            "gun": "bone_gun_01",
             "gunnerDm": "gunner_dm",
             "rotatedTurret": "bone_turret"
           },
@@ -3213,7 +3204,40 @@
             }
           }
         }
-      ]
+      ],
+      "ammo2": {
+        "weaponTrigger": "gunner2",
+        "fatalFire": true,
+        "fatalExplosion": true,
+        "replenishmentDelay": 0.1,
+        "replenishmentTime": 0.1,
+        "shells": {
+          "ammo_body_28_dm": {
+            "count": 1
+          },
+          "ammo_body_29_dm": {
+            "count": 1
+          },
+          "ammo_body_31_dm": {
+            "count": 1
+          },
+          "ammo_body_33_dm": {
+            "count": 1
+          },
+          "ammo_body_36_dm": {
+            "count": 1
+          },
+          "ammo_body_30_dm": {
+            "count": 1
+          },
+          "ammo_body_32_dm": {
+            "count": 1
+          },
+          "ammo_body_35_dm": {
+            "count": 1
+          }
+        }
+      }
     }
   },
   {
@@ -3287,20 +3311,20 @@
                   "pitch": [-8.0,35.0]
                 },
                 "limitsTable": {
-                  "lim1": [-180.0,-140.0,-1.0,35.0],
-                  "lim2": [-140.0,-110.0,-3.0,35.0],
+                  "lim1": [-180.0,-155.0,3.0,35.0],
+                  "lim2": [-155.0,-110.0,-4.0,35.0],
                   "lim3": [-110.0,110.0,-8.0,35.0],
                   "lim4": [110.0,140.0,-3.0,35.0],
-                  "lim5": [140.0,180.0,-1.0,35.0]
+                  "lim5": [140.0,180.0,-2.0,35.0]
                 },
                 "gunStabilizer": {
                   "hasVerticalGunFreeMode": false,
                   "hasHorizontal": true,
                   "horizontalOmegaMult": 1.0,
-                  "horizontalSpeedLimitKPH": 75.0,
+                  "horizontalSpeedLimitKPH": 15.0,
                   "hasVertical": true,
                   "verticalOmegaMult": 1.0,
-                  "verticalSpeedLimitKPH": 75.0,
+                  "verticalSpeedLimitKPH": 15.0,
                   "speedFromVehicleVerticalMult": -1.0,
                   "errorKPHToDegrees": [
                     {
@@ -3320,7 +3344,7 @@
               "Weapon": {
                 "trigger": "gunner1",
                 "triggerGroup": "coaxial",
-                "blk": "gameData/Weapons/groundModels_weapons/8mm_Ksp_m36_user_machinegun.blk",
+                "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Ksp_39_Strv_user_machinegun.blk",
                 "emitter": "bone_mg_twin",
                 "flash": "emtr_mg_flame_01",
                 "barrelDP": "gun_barrel_02_dm",
@@ -3400,8 +3424,8 @@
                 "errTargetting": 3.0,
                 "errExplTime": 0.0,
                 "turret": {
-                  "head": "gun_barrel_01",
-                  "gun": "gun_barrel_01",
+                  "head": "bone_gun_01",
+                  "gun": "bone_gun_01",
                   "gunnerDm": "gunner_dm",
                   "rotatedTurret": "bone_turret"
                 },
@@ -3419,7 +3443,7 @@
             {
               "Weapon": [
                 {
-                  "trigger": "gunner2"
+                  "trigger": "gunner3"
                 },
                 {
                   "triggerGroup": "smoke"

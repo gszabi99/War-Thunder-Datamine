@@ -1,8 +1,9 @@
+local { calcPercent } = require("std/math.nut")
+
 local psnStore = require("ps4_api.store")
 local statsd = require("statsd")
 
 local IMAGE_TYPE_INDEX = 1 //240x240
-local BQ_DEFAULT_ACTION_ERROR = -1
 
 enum PURCHASE_STATUS {
   PURCHASED = "RED_BAG" // - Already purchased and cannot be purchased again
@@ -19,17 +20,12 @@ local function handleNewPurchase(itemId) {
 
 local getActionText = @(action) action == psnStore.Action.PURCHASED ? "purchased"
   : action == psnStore.Action.CANCELED ? "canceled"
-  : action == BQ_DEFAULT_ACTION_ERROR ? "unknown"
   : "none"
 
 local function sendBqRecord(metric, itemId, result = null) {
   local sendStat = {}
-
-  if (result != null)
-  {
-    sendStat["isPlusAuthorized"] <- result?.isPlusAuthorized ?? null
-    sendStat["action"] <- result?.action ?? BQ_DEFAULT_ACTION_ERROR
-  }
+  foreach (k, v in result ?? {})
+    sendStat[k] <- v
 
   if ("action" in sendStat)
   {
@@ -120,6 +116,7 @@ local Ps4ShopPurchasableItem = class
 
   haveDiscount = @() !isBought && price != listPrice
   havePsPlusDiscount = @() ::ps4_has_psplus() && ("display_plus_upsell_price" in skuInfo || skuInfo?.is_plus_price) //use in markup
+  getDiscountPercent = @() calcPercent(1 - (price.tofloat() / listPrice))
 
   getPriceText = @() ::colorize(!haveDiscount() ? ""
       : havePsPlusDiscount() ? "psplusTextColor"

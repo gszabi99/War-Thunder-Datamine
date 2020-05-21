@@ -210,8 +210,6 @@
     "mission": {
       "level": "levels/avg_kursk.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
       "locName": "missions/_CnvA;kursk/name",
@@ -225,11 +223,13 @@
       "remapAiTankModels": true,
       "country_axis": "germany",
       "country_allies": "ussr",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": true,
         "isShipsAllowed": false,
-        "isHelicoptersAllowed": false
+        "isHelicoptersAllowed": true
       }
     },
     "spectator_points": [],
@@ -3122,6 +3122,17 @@
         [0.0,100.0,0.0],
         [0.0,0.0,150.0],
         [1220.76,-0.376221,2647.93]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "cnv_battle_area": {
+      "type": "Box",
+      "tm": [
+        [4096.0,0.0,0.0],
+        [0.0,500.0,0.0],
+        [0.0,0.0,4096.0],
+        [2048.0,0.0,2048.0]
       ],
       "objLayer": 0,
       "props": []

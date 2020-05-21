@@ -124,4 +124,5 @@
   request_voice_message_list = @(...) null
   is_last_voice_message_list_for_squad = @() false
   TP_PS4 = 7
+  CONTROLS_ALLOW_ENGINE_AUTOSTART = false
 })

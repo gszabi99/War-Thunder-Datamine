@@ -3168,6 +3168,15 @@
       },
       {
         "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -3501,16 +3510,16 @@
         "effects": {
           "nightVision": {
             "gunnerThermal": {
-              "resolution": [800,600],
-              "noiseFactor": 0.04
+              "resolution": [500,300],
+              "noiseFactor": 0.05
             },
             "commanderThermal": {
               "resolution": [800,600],
               "noiseFactor": 0.04
             },
             "driverIr": {
-              "resolution": [1200,800],
-              "lightMult": 7.0,
+              "resolution": [800,600],
+              "lightMult": 5.0,
               "ghosting": 0.6,
               "noiseFactor": 0.2
             }

@@ -53,19 +53,15 @@
       },
       "aileron_r_dm": {
         "genericDamageMult": 0.3,
-        "hp": 28.1
-      },
-      "elevator_dm": {
-        "genericDamageMult": 0.3,
         "hp": 30.5
       },
       "elevator0_dm": {
         "genericDamageMult": 0.3,
-        "hp": 30.5
+        "hp": 20.2
       },
       "elevator1_dm": {
         "genericDamageMult": 0.3,
-        "hp": 30.5
+        "hp": 20.2
       },
       "fin_dm": {
         "hp": 30.5
@@ -80,7 +76,7 @@
         "hp": 27.7
       },
       "flap_r_dm": {
-        "hp": 27.7
+        "hp": 27.8
       },
       "rudder_dm": {
         "genericDamageMult": 0.3,
@@ -111,19 +107,11 @@
       },
       "wing2_l_dm": {
         "genericDamageMult": 0.3,
-        "hp": 72.9
+        "hp": 76.9
       },
       "wing2_r_dm": {
         "genericDamageMult": 0.3,
-        "hp": 72.9
-      },
-      "wing_l_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 80.5
-      },
-      "wing_r_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 80.5
+        "hp": 76.9
       }
     },
     "dural": {
@@ -189,7 +177,10 @@
     },
     "steel_cooling_sys": {
       "oil1_dm": {
-        "hp": 16.7
+        "hp": 17.5
+      },
+      "oil2_dm": {
+        "hp": 17.5
       },
       "water1_dm": {
         "hp": 17.5
@@ -203,13 +194,24 @@
     },
     "steel_tank_s": {
       "tank1_dm": {
-        "hp": 70.5
+        "hp": 57.9
       },
       "tank2_dm": {
         "hp": 39.5
       },
       "tank3_dm": {
         "hp": 39.5
+      },
+      "tank4_dm": {
+        "hp": 39.5
+      }
+    },
+    "wood": {
+      "wing_l_dm": {
+        "hp": 102.8
+      },
+      "wing_r_dm": {
+        "hp": 102.8
       }
     }
   },
@@ -382,63 +384,6 @@
       "part": {
         "name": "cover4_dm"
       }
-    },
-    {
-      "part": [
-        {
-          "name": "elevator_dm"
-        },
-        {
-          "onHit": {
-            "damage": 10.0,
-            "cut": 0.1
-          }
-        },
-        {
-          "onHit": {
-            "damage": 20.0,
-            "cut": 0.4
-          }
-        },
-        {
-          "onHit": {
-            "damage": 30.0,
-            "cut": 0.7
-          }
-        },
-        {
-          "onHit": {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        },
-        {
-          "onKill": {
-            "cut": 1.0,
-            "nothing": 4.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 30.0,
-            "cut": 1.0,
-            "nothing": 1.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        }
-      ]
     },
     {
       "part": [
@@ -1188,6 +1133,17 @@
     },
     {
       "part": {
+        "name": "oil2_dm",
+        "onHit": {
+          "leak_oil": 0.95
+        },
+        "onKill": {
+          "leak_oil": 1.0
+        }
+      }
+    },
+    {
+      "part": {
         "name": "pilot_dm"
       }
     },
@@ -1515,6 +1471,54 @@
       "part": [
         {
           "name": "tank3_dm"
+        },
+        {
+          "onHit": {
+            "fire": 0.03,
+            "leak": 0.5
+          }
+        },
+        {
+          "onHit": {
+            "damage": 10.0,
+            "fire": 0.5,
+            "leak": 0.7
+          }
+        },
+        {
+          "onHit": {
+            "damage": 50.0,
+            "fire": 0.8,
+            "leak": 0.9
+          }
+        },
+        {
+          "onKill": {
+            "fire": 3.0,
+            "leak": 12.0,
+            "nothing": 85.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 30.0,
+            "fire": 15.0,
+            "leak": 25.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        }
+      ]
+    },
+    {
+      "part": [
+        {
+          "name": "tank4_dm"
         },
         {
           "onHit": {
@@ -2267,7 +2271,14 @@
       "preset": {
         "name": "rockets",
         "blk": "gameData/FlightModels/weaponPresets/tempest_mkv_rockets.blk",
-        "reqModification": "halker_rc"
+        "reqModification": "halker_rc",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/uk_rp3_4a.blk",
+            "amountPerTier": 1.0,
+            "iconType": "rockets_he_small"
+          }
+        }
       }
     }
   ],

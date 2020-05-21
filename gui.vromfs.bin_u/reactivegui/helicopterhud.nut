@@ -5,6 +5,7 @@ local tws = require("tws.nut")
 local radarComponent = require("radarComponent.nut")
 local helicopterState = require("helicopterState.nut")
 local aamAim = require("rocketAamAim.nut")
+local agmAim = require("agmAim.nut")
 local hudElems = require("helicopterHudElems.nut")
 
 local compassWidth = hdpx(420)
@@ -409,6 +410,7 @@ local function helicopterMainHud(elemStyle, isBackground) {
     ? [
       hudElems.rocketAim(elemStyle, sh(0.8), sh(1.8), isBackground)
       aamAim(elemStyle, @() getColor(isBackground))
+      agmAim(elemStyle, @() getColor(isBackground))
       helicopterGunDirection(elemStyle, isBackground, false)
       helicopterFixedGunsDirection(elemStyle, isBackground)
       helicopterCCRP(elemStyle, isBackground)
@@ -444,6 +446,7 @@ local function helicopterSightHud(elemStyle, isBackground) {
       atgmTrackerStatusComponent(elemStyle, isBackground)
       azimuth
       hudElems.detectAlly(elemStyle, sw(51), sh(35), isBackground)
+      agmAim(elemStyle, @() getColor(isBackground))
       helicopterGunDirection(elemStyle, isBackground, true)
     ]
     : null
@@ -458,6 +461,7 @@ local function gunnerHud(elemStyle, isBackground) {
     ? [
       hudElems.rocketAim(elemStyle, sh(0.8), sh(1.8), isBackground)
       aamAim(elemStyle, @() getColor(isBackground))
+      agmAim(elemStyle, @() getColor(isBackground))
       helicopterGunDirection(elemStyle, isBackground, false)
       helicopterFixedGunsDirection(elemStyle, isBackground)
       helicopterCCRP(elemStyle, isBackground)

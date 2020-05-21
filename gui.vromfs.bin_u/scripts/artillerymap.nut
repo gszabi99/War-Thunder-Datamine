@@ -104,12 +104,12 @@ class ::gui_handlers.ArtilleryMap extends ::gui_handlers.BaseGuiHandlerWT
     local curPointingice = pointingDevice
     local mousePos = ::get_dagui_mouse_cursor_pos()
     local axisData = ::joystickInterface.getAxisData(watchAxis, stuckAxis)
-    local joystickData = ::joystickInterface.getMaxDeviatedAxisInfo(axisData, 32000, 2000)
+    local joystickData = ::joystickInterface.getMaxDeviatedAxisInfo(axisData)
 
     if (joystickData.x || joystickData.y)
     {
       curPointingice = ::is_xinput_device() ? POINTING_DEVICE.GAMEPAD : POINTING_DEVICE.JOYSTICK
-      local displasement = ::joystickInterface.getGamepadPositionDeviation(dt, 3)
+      local displasement = ::joystickInterface.getPositionDelta(dt, 3, joystickData)
       local prevMapCoords = mapCoords || [0.5, 0.5]
       mapCoords = [
         ::clamp(prevMapCoords[0] + displasement[0], 0.0, 1.0),

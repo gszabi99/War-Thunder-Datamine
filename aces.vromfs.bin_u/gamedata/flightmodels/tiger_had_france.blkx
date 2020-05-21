@@ -1312,60 +1312,49 @@
     "gun": "gun_default"
   },
   "cockpit": {
-    "textToShowInCockpit": "msg/textToShowInCockpit",
-    "headPos": [2.52,0.6,0.0],
-    "headPosOnShooting": [2.52,0.6,0.0],
-    "lightPos": [1.979847,-0.213676,-0.012096],
-    "lightColor": [0.01,1.5,0.1],
-    "lightRadius": 0.5,
-    "lightPos1": [3.449379,-0.554936,0.005765],
-    "lightColor1": [0.01,1.5,0.1],
-    "lightRadius1": 0.35,
+    "headPos": [2.52,0.611,0.0],
+    "headPosOnShooting": [2.52,0.611,0.0],
+    "mirror": true,
+    "mirrorPos": [2.898,0.726,0.162],
+    "mirrorNorm": [-1.0,0.0,0.0],
+    "lightPos": [3.143456,0.224957,-0.006499],
+    "lightColor": [0.01,0.6,0.1],
+    "lightRadius": 0.45,
     "zoomOutFov": 22.46,
     "zoomInFov": 2.46,
     "sightFov": 5.5,
     "sightOutFov": 20.0,
     "sightInFov": 0.8,
     "devices": {
-      "speed": [0.0,257.222],
+      "stick_ailerons": [-1.0,1.0],
+      "stick_elevator": [-1.0,1.0],
+      "pedals": [-1.0,1.0],
+      "pedals1": [-1.0,1.0],
+      "pedals2": [-1.0,1.0],
+      "pedals3": [-1.0,1.0],
+      "pedals4": [-1.0,1.0],
+      "pedals5": [-1.0,1.0],
+      "pedals6": [-1.0,1.0],
+      "pedals7": [-1.0,1.0],
+      "throttle": [0.0,1.0],
+      "weapon1": [0.0,1.0],
+      "weapon2": [0.0,1.0],
+      "weapon3": [0.0,1.0],
+      "aviahorizon_pitch": [-90.0,90.0],
+      "aviahorizon_roll": [-90.0,90.0],
       "bank": [-8.0,8.0],
-      "turn": [-0.23562,0.23562],
-      "vario": [-30.0,30.0],
-      "altitude_10k": [0.0,100000.0],
+      "compass": [0.0,360.0],
+      "clock_hour": [0.0,12.0],
+      "clock_min": [0.0,60.0],
+      "clock_sec": [0.0,60.0],
       "altitude_hour": [0.0,10000.0],
       "altitude_min": [0.0,1000.0],
-      "altitude_koef": 3.28,
-      "aviahorizon_pitch": [-60.0,60.0],
-      "aviahorizon_roll": [-180.0,180.0],
-      "compass": [0.0,360.0],
-      "fuel": [0.0,1277.625],
-      "rpm": [0.0,4500.0],
-      "rpm1": [0.0,4500.0],
-      "rpm2": [0.0,4500.0],
-      "rpm3": [0.0,4500.0],
-      "rpm_hour": [0.0,10000.0],
-      "rpm_min": [0.0,1000.0],
-      "water_temperature": [0.0,1000.0],
-      "manifold_pressure": [0.334,2.507],
-      "manifold_pressure1": [0.334,2.507],
-      "manifold_pressure2": [0.334,2.507],
-      "manifold_pressure3": [0.334,2.507],
-      "head_temperature": [0.0,300.0],
-      "head_temperature1": [0.0,300.0],
-      "head_temperature2": [0.0,300.0],
-      "head_temperature3": [0.0,300.0],
-      "oil_temperature": [-50.0,150.0],
-      "oil_temperature1": [-50.0,150.0],
-      "oil_temperature2": [-50.0,150.0],
-      "oil_temperature3": [-50.0,150.0],
-      "fuel_pressure": [0.0,15.0],
-      "fuel_pressure1": [0.0,15.0],
-      "fuel_pressure2": [0.0,15.0],
-      "fuel_pressure3": [0.0,15.0],
-      "oil_pressure": [0.0,150.0],
-      "oil_pressure1": [0.0,150.0],
-      "oil_pressure2": [0.0,150.0],
-      "oil_pressure3": [0.0,150.0]
+      "speed": [0.0,111.111],
+      "vario": [-15.0,15.0],
+      "rpm": [0.0,40000.0],
+      "rpm1": [0.0,40000.0],
+      "oil_temperature": [0.0,140.0],
+      "water_temperature": [0.0,1400.0]
     },
     "multifunctionDisplays": [
       {
@@ -1649,11 +1638,13 @@
       },
       {
         "display": {
-          "textureArea": [0.0,0.0,0.5,0.5],
+          "textureArea": [0.0,0.0,0.8,0.8],
           "page": {
             "type": "pilot_hud",
             "ilsNode": "ils",
-            "ilsSize": [0.135,0.157]
+            "ilsSize": [0.2,0.2],
+            "ilsOffsetForce": 0.2,
+            "brightnessMult": 3.5
           }
         }
       }
@@ -1683,12 +1674,24 @@
   "sensors": [
     {
       "sensor": {
-        "blk": "gameData/sensors/tv_tracker.blk"
+        "blk": "gameData/sensors/tv_tracker.blk",
+        "node": "optic1_gun"
       }
     },
     {
       "sensor": {
         "blk": "gameData/sensors/us_an_apr_39.blk"
+      }
+    },
+    {
+      "sensor": {
+        "blk": "gameData/sensors/us_flir.blk",
+        "node": "optic1_gun"
+      }
+    },
+    {
+      "sensor": {
+        "blk": "gameData/sensors/fr_ralm01.blk"
       }
     }
   ],
@@ -1811,14 +1814,35 @@
     {
       "preset": {
         "name": "tiger_had_france_tel22_tda",
-        "blk": "gameData/flightModels/weaponPresets/tiger_had_france_tel22_tda.blk"
+        "blk": "gameData/flightModels/weaponPresets/tiger_had_france_tel22_tda.blk",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_TDA.blk",
+            "amountPerTier": 22.0
+          }
+        }
       }
     },
     {
       "preset": {
         "name": "tiger_had_france_tel12_tda",
         "blk": "gameData/flightModels/weaponPresets/tiger_had_france_tel12_tda.blk",
-        "reqModification": "tiger_tel12"
+        "reqModification": "tiger_tel12",
+        "weaponConfig": [
+          {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_TDA.blk",
+              "amountPerTier": 22.0
+            }
+          },
+          {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_md_460.blk",
+              "amountPerTier": 12.0,
+              "iconType": "nar_ap_rocket_s"
+            }
+          }
+        ]
       }
     },
     {
@@ -1832,21 +1856,51 @@
       "preset": {
         "name": "tiger_had_france_hot3_tel12",
         "blk": "gameData/flightModels/weaponPresets/tiger_had_france_hot3_tel12.blk",
-        "reqModification": "tiger_hot3"
+        "reqModification": "tiger_hot3",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_md_460.blk",
+            "amountPerTier": 12.0,
+            "iconType": "nar_ap_rocket_s"
+          }
+        }
       }
     },
     {
       "preset": {
         "name": "tiger_had_france_4_hellfire",
         "blk": "gameData/flightModels/weaponPresets/tiger_had_france_4_hellfire.blk",
-        "reqModification": "ah_1_AGM_114_8"
+        "reqModification": "ah_1_AGM_114_8",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/us_hellfire_agm_114_b.blk",
+            "amountPerTier": 2.0,
+            "iconType": "atgm_type_helfire_x2"
+          }
+        }
       }
     },
     {
       "preset": {
         "name": "tiger_had_france_4_hellfire_tel12",
         "blk": "gameData/flightModels/weaponPresets/tiger_had_france_4_hellfire_tel12.blk",
-        "reqModification": "ah_1_AGM_114_8"
+        "reqModification": "ah_1_AGM_114_8",
+        "weaponConfig": [
+          {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_md_460.blk",
+              "amountPerTier": 12.0,
+              "iconType": "nar_ap_rocket_s"
+            }
+          },
+          {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/us_hellfire_agm_114_b.blk",
+              "amountPerTier": 2.0,
+              "iconType": "atgm_type_helfire_x2"
+            }
+          }
+        ]
       }
     },
     {
@@ -1860,7 +1914,14 @@
       "preset": {
         "name": "tiger_had_france_8_hellfire_tel12",
         "blk": "gameData/flightModels/weaponPresets/tiger_had_france_8_hellfire_tel12.blk",
-        "reqModification": "ah_1_AGM_114_16"
+        "reqModification": "ah_1_AGM_114_16",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_md_460.blk",
+            "amountPerTier": 12.0,
+            "iconType": "nar_ap_rocket_s"
+          }
+        }
       }
     },
     {
@@ -1874,7 +1935,13 @@
       "preset": {
         "name": "tiger_had_france_tel22_tda_mistral",
         "blk": "gameData/flightModels/weaponPresets/tiger_had_france_tel22_tda_mistral.blk",
-        "reqModification": "heli_atam_mistral"
+        "reqModification": "heli_atam_mistral",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_TDA.blk",
+            "amountPerTier": 22.0
+          }
+        }
       }
     },
     {
@@ -1906,6 +1973,15 @@
         },
         {
           "reqModification": "heli_atam_mistral"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_md_460.blk",
+              "amountPerTier": 12.0,
+              "iconType": "nar_ap_rocket_s"
+            }
+          }
         }
       ]
     },
@@ -1922,6 +1998,15 @@
         },
         {
           "reqModification": "heli_atam_mistral"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/us_hellfire_agm_114_b.blk",
+              "amountPerTier": 2.0,
+              "iconType": "atgm_type_helfire_x2"
+            }
+          }
         }
       ]
     },
@@ -1954,6 +2039,24 @@
         },
         {
           "reqModification": "heli_atam_mistral"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/us_hellfire_agm_114_b.blk",
+                "amountPerTier": 2.0,
+                "iconType": "atgm_type_helfire_x2"
+              }
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_md_460.blk",
+                "amountPerTier": 12.0,
+                "iconType": "nar_ap_rocket_s"
+              }
+            }
+          ]
         }
       ]
     },
@@ -1970,6 +2073,15 @@
         },
         {
           "reqModification": "heli_atam_mistral"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_md_460.blk",
+              "amountPerTier": 12.0,
+              "iconType": "nar_ap_rocket_s"
+            }
+          }
         }
       ]
     }
@@ -1997,7 +2109,11 @@
       "prevModification": "new_compressor_heli"
     },
     "cd_98_main_rotor": {
-      "tier": 3
+      "tier": 3,
+      "effects": {
+        "mulCdminMainRotor": 1.15,
+        "mulOswEffNumberMainRotor": 0.85
+      }
     },
     "new_heli_cover": [],
     "heli_flak_jacket": [],
@@ -2143,7 +2259,8 @@
         "sensors": [
           {
             "sensor": {
-              "blk": "gameData/sensors/tv_tracker.blk"
+              "blk": "gameData/sensors/tv_tracker.blk",
+              "node": "optic1_gun"
             }
           },
           {

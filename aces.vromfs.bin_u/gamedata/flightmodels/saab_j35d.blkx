@@ -2512,6 +2512,45 @@
           "reqModification": "swe_rb24"
         }
       ]
+    },
+    {
+      "preset": {
+        "name": "saab_j35d_rb24jx4_missiles",
+        "blk": "gameData/flightModels/weaponPresets/saab_j35d_rb24jx4_missiles.blk",
+        "reqModification": "swe_rb24j"
+      }
+    },
+    {
+      "preset": [
+        {
+          "name": "saab_j35d_135mm_rockets_rb24j"
+        },
+        {
+          "blk": "gameData/flightModels/weaponPresets/saab_j35d_135mm_rockets_rb24j.blk"
+        },
+        {
+          "reqModification": "swe_rb24j"
+        },
+        {
+          "reqModification": "swe_m56d"
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "saab_j35d_75mm_srak_m57b_rb24j"
+        },
+        {
+          "blk": "gameData/flightModels/weaponPresets/saab_j35d_75mm_srak_m57b_rb24j.blk"
+        },
+        {
+          "reqModification": "swe_m57b"
+        },
+        {
+          "reqModification": "swe_rb24j"
+        }
+      ]
     }
   ],
   "turbulence": {
@@ -2594,7 +2633,7 @@
     },
     "swe_m56d": {
       "modClass": "weapon",
-      "tier": 2
+      "tier": 1
     },
     "swe_m57b": {
       "reqModification": "swe_m56d",
@@ -2602,9 +2641,14 @@
       "tier": 2
     },
     "swe_rb24": {
-      "tier": 4,
+      "tier": 3,
       "modClass": "weapon",
       "reqModification": "swe_m57b"
+    },
+    "swe_rb24j": {
+      "tier": 4,
+      "modClass": "weapon",
+      "reqModification": "swe_rb24"
     }
   },
   "default_skin_tomoe": [

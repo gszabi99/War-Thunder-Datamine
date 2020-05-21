@@ -9,6 +9,27 @@
   "tags": [],
   "rocket": [
     {
+      "normalizationPreset": "default"
+    },
+    {
+      "ricochetPreset": "defaultExt"
+    },
+    {
+      "secondaryShattersPreset": "ap"
+    },
+    {
+      "stabilityThreshold": 0.05
+    },
+    {
+      "stabilityCaliberToArmorThreshold": 5.0
+    },
+    {
+      "stabilityReductionAfterRicochet": 0.5
+    },
+    {
+      "stabilityReductionAfterPenetration": 0.15
+    },
+    {
       "bulletType": "aam"
     },
     {
@@ -222,10 +243,32 @@
       "loadFactorMax": 10.0
     },
     {
-      "rangeMax": 5.0
+      "rangeMax": 5000.0
     },
     {
       "price": 3000.0
+    },
+    {
+      "amountPerTier": 2.0
+    },
+    {
+      "iconType": "missile_air_to_air_group"
+    },
+    {
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.05]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod3": [30.0,0.2]
+        },
+        {
+          "mod3": [45.0,0.3]
+        }
+      ]
     },
     {
       "DamageParts": {

@@ -1,5 +1,8 @@
 // TEST:  ::gui_start_wheelmenu({ menu = [0,1,2,3,4,5,6,7].map(@(v) { name = v.tostring() }), callbackFunc = dlog })
 
+local { isWheelmenuAxisConfigurable } = require("scripts/wheelmenu/multifuncmenuShared.nut")
+local { getGamepadAxisTexture } = require("scripts/controls/gamepadIcons.nut")
+
 ::gui_start_wheelmenu <- function gui_start_wheelmenu(params)
 {
   local defaultParams = {
@@ -98,9 +101,10 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     showScene(true)
     fill()
     updateTitlePos()
+    updateSelectShortcutImage()
     if (axisEnabled)
     {
-      watchAxis = ::joystickInterface.getAxisWatch(false, true, true)
+      watchAxis = ::joystickInterface.getAxisWatch(true)
       stuckAxis = ::joystickInterface.getAxisStuck(watchAxis)
       joystickSelection = null
       isKbdShortcutDown = false
@@ -172,6 +176,21 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     obj.top = hasTopItem ? "-1.5h" : "-1.5h +1@wheelmenuBtnHeight"
   }
 
+  function updateSelectShortcutImage()
+  {
+    local obj = scene.findObject("wheelmenu_select_shortcut")
+    local isShow = ::show_console_buttons && axisEnabled
+    if (isWheelmenuAxisConfigurable() && isShow)
+    {
+      local shortcuts = ::get_player_cur_unit()?.unitType.wheelmenuAxis ?? []
+      local shortcutType = ::g_shortcut_type.COMPOSIT_AXIS
+      isShow = shortcutType.isComponentsAssignedToSingleInputItem(shortcuts)
+      local axesId = shortcutType.getComplexAxesId(shortcuts)
+      obj["background-image"] = getGamepadAxisTexture(axesId)
+    }
+    obj.show(isShow)
+  }
+
   function onWheelmenuItemClick(obj)
   {
     if (!obj || (!mouseEnabled && !::use_touchscreen && !::is_cursor_visible_in_gui()) )
@@ -188,17 +207,11 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     local axisData = ::joystickInterface.getAxisData(watchAxis, stuckAxis)
     local joystickData = ::joystickInterface.getMaxDeviatedAxisInfo(axisData, 32000, joystickMinDeviation)
+    if (joystickData == null || joystickData.normLength == 0)
+      return
 
-    local selection = null
-    if (joystickData)
-    {
-      local side = joystickData.normLength > 0
-        ? (((joystickData.angle / PI + 2.125) * 4).tointeger() % 8)
-        : -1
-      selection = joystickSides?[side]
-    }
-
-    highlightItemBySide(selection)
+    local side = ((joystickData.angle / PI + 2.125) * 4).tointeger() % 8
+    highlightItemBySide(joystickSides?[side])
   }
 
   function highlightItemBySide(selection)

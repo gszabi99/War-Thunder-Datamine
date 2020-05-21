@@ -2,8 +2,7 @@ local { TIERS_NUMBER,
         getTiers,
         getWeaponryByPresetInfo } = require("scripts/weaponry/weaponryPresetsParams.nut")
 local { getLastWeapon,
-        setLastWeapon,
-        getSecondaryWeaponsList } = require("scripts/weaponry/weaponryInfo.nut")
+        setLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 local { getItemAmount } = require("scripts/weaponry/itemInfo.nut")
 local { getWeaponItemViewParams,
         updateWeaponTooltip } = require("scripts/weaponry/weaponryVisual.nut")
@@ -16,12 +15,16 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
   chosenPresetIdx      = null
   curPresetIdx         = null
   presetsList          = null
+  chooseMenuList       = null
   weaponryByPresetInfo = null
   lastWeapon           = null
   presetsMarkup        = null
   collapsedPresets     = []
   chapterCount         = 0
   presetTextWidth      = 0
+  isWorldWarUnit       = false
+  onChangeValueCb      = null
+  weaponItemParams     = null
 
   function getSceneTplView()
   {
@@ -30,12 +33,10 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
         "@tierIconSize+1@narrowTooltipWidth+6@blockInterval+2@scrollBarSize+2@frameHeaderPad"))
     presetTextWidth = ::min(::to_pixels("1@srw") - tiersAndDescWidth,
       ::to_pixels("1@modPresetTextMaxWidth"))
-    presetsList = getSecondaryWeaponsList(unit).sort(@(a, b)
-      a.chapterOrd <=> b.chapterOrd
-      || b.isEnabled <=> a.isEnabled
-      || b.isDefault <=> a.isDefault)
-    weaponryByPresetInfo = getWeaponryByPresetInfo(unit, presetsList)
-    lastWeapon = getLastWeapon(unit.name)
+    weaponryByPresetInfo = getWeaponryByPresetInfo(unit, chooseMenuList)
+    presetsList = weaponryByPresetInfo.presetsList
+    lastWeapon = !isWorldWarUnit ?
+      getLastWeapon(unit.name) : ::g_world_war.get_last_weapon_preset(unit.name)
     local lw = lastWeapon
     chosenPresetIdx = presetsList.findindex(@(w) w.name == lw) ?? 0
     presetsMarkup = getPresetsMarkup()
@@ -59,23 +60,26 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
     local curType = ""
     foreach (idx, preset in weaponryByPresetInfo.presets)
     {
-      if (curType != preset.presetPurposeType && preset.presetPurposeType != "NONE")
+      if (curType != preset.purposeType && preset.purposeType != "NONE")
       {
-        curType = preset.presetPurposeType
+        curType = preset.purposeType
         res.append({
           isCollapsable = true
-          purposeTypeName = ::loc($"weapons/purposeType/{ preset.presetPurposeType }")
+          purposeTypeName = ::loc($"weapons/purposeType/{ preset.purposeType }")
         })
       }
 
+      local params = weaponItemParams ?
+        weaponItemParams.__merge({visualDisabled = !preset.isEnabled}) : {}
+      params.__update({
+          collapsable = true
+          selected = idx == chosenPresetIdx
+          showButtons = true
+        })
       res.append({
         presetId = idx
         weaponryItem = getWeaponItemViewParams($"item_{idx}", unit, presetsList[idx],
-          {
-            collapsable = true
-            selected = idx == chosenPresetIdx
-            showButtons = true
-          }).__update({
+          params).__update({
               presetTextWidth = presetTextWidth
               tiers = getTiers(unit, preset, weaponryByPresetInfo.weaponrySizes)
             })
@@ -128,8 +132,7 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
   function onModActionBtn(obj = null)
   {
     chosenPresetIdx = curPresetIdx
-    local item = presetsList[curPresetIdx]
-    doItemAction(item)
+    doItemAction(presetsList[curPresetIdx])
   }
 
   function onAltModAction(obj)
@@ -139,17 +142,21 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
 
   function doItemAction(item)
   {
-    local amount = getItemAmount(unit, item)
-    if(getLastWeapon(unit.name) == item.name || !amount)
-    {
-      if (item.cost <= 0)
-        return
-      return onBuy(item)
-    }
-
     ::play_gui_sound("check")
-    setLastWeapon(unit.name, item.name)
-    ::check_secondary_weapon_mods_recount(unit)
+    if (onChangeValueCb)
+      onChangeValueCb(item)
+    else
+    {
+      local amount = getItemAmount(unit, item)
+      if(getLastWeapon(unit.name) == item.name || !amount)
+      {
+        if (item.cost <= 0)
+          return
+        return onBuy(item)
+      }
+      setLastWeapon(unit.name, item.name)
+      ::check_secondary_weapon_mods_recount(unit)
+    }
     guiScene.performDelayed(this, @()goBack())
   }
 

@@ -183,7 +183,7 @@
   {
     "ikGunner": [
       {
-        "model": "sweden_gunner_officer_char"
+        "model": "sweden_gunner_char"
       },
       {
         "maxHeadHorAngle": 60.0
@@ -207,10 +207,10 @@
         "crouchDelta": [0.0,0.0,0.0]
       },
       {
-        "suffix": "3"
+        "suffix": "2"
       },
       {
-        "dmName": "gunner_dm"
+        "dmName": "loader_01_dm"
       },
       {
         "deadHeadAttitudeMin": -40.0
@@ -259,7 +259,7 @@
   {
     "ikGunner": [
       {
-        "model": "sweden_gunner_char"
+        "model": "sweden_gunner_officer_char"
       },
       {
         "maxHeadHorAngle": 60.0
@@ -283,10 +283,10 @@
         "crouchDelta": [0.0,0.0,0.0]
       },
       {
-        "suffix": "2"
+        "suffix": "3"
       },
       {
-        "dmName": "gunner_01_dm"
+        "dmName": "gunner_dm"
       },
       {
         "deadHeadAttitudeMin": -40.0
@@ -409,12 +409,164 @@
     ]
   },
   {
+    "ikGunner": [
+      {
+        "model": "sweden_gunner_char"
+      },
+      {
+        "maxHeadHorAngle": 60.0
+      },
+      {
+        "maxHeadDownAngle": 60.0
+      },
+      {
+        "maxHeadUpAngle": 10.0
+      },
+      {
+        "headNode": "Bip01 Head"
+      },
+      {
+        "pelvisNode": "Bip01 Pelvis"
+      },
+      {
+        "pelvisTargetNode": "Bip01 Pelvis_"
+      },
+      {
+        "crouchDelta": [0.0,0.0,0.0]
+      },
+      {
+        "suffix": "5"
+      },
+      {
+        "dmName": "loader_02_dm"
+      },
+      {
+        "deadHeadAttitudeMin": -40.0
+      },
+      {
+        "deadHeadAttitudeMax": -55.0
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "lefthand_",
+          "flexionDir": [0.5,-0.5,0.3]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "righthand_",
+          "flexionDir": [-0.5,-0.5,0.3]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [-0.2,1.0,-1.0]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [-0.6,1.0,-1.0]
+        }
+      }
+    ]
+  },
+  {
+    "controlDevices": [
+      {
+        "device": {
+          "type": "turretTurnH",
+          "turnSpeed": 0.6,
+          "node": "bone_roll_turret_h",
+          "node_handle": "bone_roll_turret_h_handle"
+        }
+      },
+      {
+        "device": {
+          "type": "turretTurnV",
+          "turnSpeed": -1.0,
+          "node": "bone_roll_turret_v",
+          "node_handle": "bone_roll_turret_v_handle"
+        }
+      },
+      {
+        "device": {
+          "type": "steeringWheel",
+          "turnSpeed": -3.0,
+          "node": "bone_roll_driver",
+          "absoluteValue": true
+        }
+      },
+      {
+        "device": {
+          "type": "engineFan",
+          "turnSpeed": 1.0,
+          "node": "bone_roll_engine_01"
+        }
+      },
+      {
+        "device": {
+          "type": "engineFan",
+          "turnSpeed": 1.0,
+          "node": "bone_roll_engine_02"
+        }
+      },
+      {
+        "device": {
+          "type": "engineFan",
+          "turnSpeed": 1.0,
+          "node": "bone_roll_engine_03"
+        }
+      },
+      {
+        "device": {
+          "type": "engineFan",
+          "turnSpeed": 1.0,
+          "node": "bone_roll_engine_04"
+        }
+      },
+      {
+        "device": {
+          "type": "waterJetShutter",
+          "turnSpeed": 1.5,
+          "maxValue": -1.7,
+          "node": "body_shutter_l",
+          "absoluteValue": true,
+          "progressive": true
+        }
+      },
+      {
+        "device": {
+          "type": "waterJetShutter",
+          "turnSpeed": 1.5,
+          "maxValue": 1.7,
+          "node": "body_shutter_r",
+          "absoluteValue": true,
+          "progressive": true
+        }
+      }
+    ]
+  },
+  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "RHA_tank",
       "hp": 10000.0,
       "hull": {
-        "armorThickness": 8.0,
+        "armorThickness": 10.0,
         "body_front_dm": [],
         "body_top_dm": [],
         "body_side_dm": [],
@@ -2173,7 +2325,7 @@
         "trigger": "gunner0",
         "blk": "gameData/Weapons/groundModels_weapons/40mm_Lva_kan_m48_user_cannon.blk",
         "emitter": "bone_gun_barrel",
-        "flash": "emtr_gun_flame_01",
+        "flash": "emtr_gun_flame",
         "recoilMultiplier": 0.2,
         "allowableDelta": 20.0,
         "defaultYaw": 0.0,
@@ -2237,7 +2389,7 @@
         "trackMass": 940.0
       },
       "tracks": {
-        "animationMultiplier": 0.5,
+        "animationMultiplier": -0.5,
         "height": 0.04
       },
       "collisionProps": {
@@ -2254,6 +2406,7 @@
         "driveGearRadius": 0.3,
         "mainGearRatio": 1.3,
         "sideGearRatio": 4.5,
+        "neutralGearRatio": 15.0,
         "gearRatios": [
           {
             "ratio": -8.35
@@ -2286,6 +2439,28 @@
         "defaultDampeningForce": [55000.0,55000.0],
         "dampeningRelaxationRatio": 0.4,
         "dampeningCompressionRatio": 0.15
+      },
+      "movableSuspension": {
+        "speed": 0.07,
+        "maxSpeedForMove": 1.0,
+        "roll": {
+          "wheel_l_01": [],
+          "wheel_l_02": [],
+          "wheel_l_03": [],
+          "wheel_l_04": [],
+          "wheel_l_05": [],
+          "wheel_r_01": [],
+          "wheel_r_02": [],
+          "wheel_r_03": [],
+          "wheel_r_04": [],
+          "wheel_r_05": []
+        },
+        "pitch": {
+          "wheel_l_01": [],
+          "wheel_r_01": [],
+          "wheel_l_05": [],
+          "wheel_r_05": []
+        }
       }
     }
   },
@@ -2798,6 +2973,15 @@
             }
           }
         ]
+      },
+      {
+        "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
       },
       {
         "event": {

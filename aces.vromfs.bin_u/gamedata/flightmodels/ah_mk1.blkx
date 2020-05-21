@@ -1287,12 +1287,9 @@
     "textToShowInCockpit": "msg/textToShowInCockpit",
     "headPos": [1.08,0.895,0.0],
     "headPosOnShooting": [1.08,0.895,0.0],
-    "lightPos": [1.979847,-0.213676,-0.012096],
-    "lightColor": [0.01,1.5,0.1],
-    "lightRadius": 0.5,
-    "lightPos1": [3.449379,-0.554936,0.005765],
-    "lightColor1": [0.01,1.5,0.1],
-    "lightRadius1": 0.35,
+    "lightPos": [1.882572,0.389432,-0.010049],
+    "lightColor": [0.01,0.6,0.1],
+    "lightRadius": 0.4,
     "zoomOutFov": 18.0,
     "zoomInFov": 0.9,
     "sightFov": 0.5,
@@ -1607,11 +1604,13 @@
       },
       {
         "display": {
-          "textureArea": [0.0,0.0,0.5,0.5],
+          "textureArea": [0.0,0.0,0.8,0.8],
           "page": {
             "type": "pilot_hud",
             "ilsNode": "ils",
-            "ilsSize": [0.143,0.208]
+            "ilsSize": [0.2,0.2],
+            "ilsOffsetForce": 0.2,
+            "brightnessMult": 3.5
           }
         }
       }
@@ -1643,12 +1642,19 @@
     },
     {
       "sensor": {
-        "blk": "gameData/sensors/tv_tracker.blk"
+        "blk": "gameData/sensors/tv_tracker.blk",
+        "node": "optic1_gun"
       }
     },
     {
       "sensor": {
         "blk": "gameData/sensors/us_an_apr_39.blk"
+      }
+    },
+    {
+      "sensor": {
+        "blk": "gameData/sensors/us_flir.blk",
+        "node": "optic1_gun"
       }
     }
   ],
@@ -2068,7 +2074,8 @@
           },
           {
             "sensor": {
-              "blk": "gameData/sensors/tv_tracker.blk"
+              "blk": "gameData/sensors/tv_tracker.blk",
+              "node": "optic1_gun"
             }
           },
           {
@@ -2079,6 +2086,17 @@
           {
             "sensor": {
               "blk": "gameData/sensors/us_an_aar_57.blk"
+            }
+          },
+          {
+            "sensor": {
+              "blk": "gameData/sensors/us_flir.blk",
+              "node": "optic1_gun"
+            }
+          },
+          {
+            "sensor": {
+              "blk": "gameData/sensors/us_an_avr-2.blk"
             }
           }
         ]
@@ -2280,7 +2298,8 @@
           },
           {
             "sensor": {
-              "blk": "gameData/sensors/tv_tracker.blk"
+              "blk": "gameData/sensors/tv_tracker.blk",
+              "node": "optic1_gun"
             }
           },
           {
@@ -2291,6 +2310,17 @@
           {
             "sensor": {
               "blk": "gameData/sensors/us_an_aar_57.blk"
+            }
+          },
+          {
+            "sensor": {
+              "blk": "gameData/sensors/us_flir.blk",
+              "node": "optic1_gun"
+            }
+          },
+          {
+            "sensor": {
+              "blk": "gameData/sensors/us_an_avr-2.blk"
             }
           }
         ]
@@ -2512,7 +2542,8 @@
           },
           {
             "sensor": {
-              "blk": "gameData/sensors/tv_tracker.blk"
+              "blk": "gameData/sensors/tv_tracker.blk",
+              "node": "optic1_gun"
             }
           },
           {
@@ -2523,6 +2554,17 @@
           {
             "sensor": {
               "blk": "gameData/sensors/us_an_aar_57.blk"
+            }
+          },
+          {
+            "sensor": {
+              "blk": "gameData/sensors/us_flir.blk",
+              "node": "optic1_gun"
+            }
+          },
+          {
+            "sensor": {
+              "blk": "gameData/sensors/us_an_avr-2.blk"
             }
           }
         ]

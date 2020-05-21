@@ -12,12 +12,12 @@
     "mission": {
       "level": "levels/sicily.bin",
       "type": "testFlight",
-      "restoreType": "manual",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "good",
       "windDirection": [1.0,0.0,0.0],
-      "locName": "missions/testFlight"
+      "locName": "missions/testFlight",
+      "restoreType": "manual",
+      "optionalTakeOff": false
     },
     "spectator_points": [],
     "briefing": {
@@ -28,17 +28,34 @@
       "part": {
         "event": "",
         "minTime": 0,
-        "slide": {
-          "map": true,
-          "minTime": 4,
-          "picture": "",
-          "showAirMap": false,
-          "icon": {
-            "icontype": "fighter",
-            "side": "player",
-            "target": "armada_01"
+        "slide": [
+          {
+            "map": true
+          },
+          {
+            "minTime": 4
+          },
+          {
+            "picture": ""
+          },
+          {
+            "showAirMap": false
+          },
+          {
+            "icon": {
+              "icontype": "fighter",
+              "side": "player",
+              "target": "armada_01"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "tank",
+              "side": "enemy",
+              "target": "briefing_tanks"
+            }
           }
-        }
+        ]
       }
     }
   },
@@ -74,15 +91,8 @@
       },
       "conditions": [],
       "actions": {
-        "addAirfield": {
-          "runwayStart": "airfield00",
-          "runwayEnd": "airfield01",
-          "runwayWidth": 50.0,
-          "army": 1,
-          "spawnPoint": "spawnpoint"
-        },
         "spawnOnAirfield": {
-          "runwayName": "airfield00",
+          "runwayName": "airfield",
           "objects": "armada_01"
         },
         "unitSetIndication": [
@@ -141,7 +151,7 @@
           "time": 3.0
         },
         "spawnOnAirfield": {
-          "runwayName": "airfield00",
+          "runwayName": "airfield",
           "objects": "armada_01"
         }
       },
@@ -315,10 +325,10 @@
       "ships": {
         "name": "ships_01",
         "tm": [
-          [0.0132742,0.0,-0.999912],
+          [-0.624147,0.0,-0.781307],
           [0.0,1.0,0.0],
-          [0.999912,0.0,0.0132742],
-          [14144.0,-0.000244141,16944.3]
+          [0.781307,0.0,-0.624147],
+          [22087.4,-0.000976563,26459.3]
         ],
         "unit_class": "cargo_ship",
         "objLayer": 1,
@@ -351,7 +361,7 @@
               [1.0,0.0,0.0],
               [0.0,1.0,0.0],
               [0.0,0.0,1.0],
-              [14065.6,-0.00012207,16320.7]
+              [21631.1,-0.000854491,26027.0]
             ],
             "props": {
               "speed": 300.0,
@@ -367,7 +377,7 @@
               [1.0,0.0,0.0],
               [0.0,1.0,0.0],
               [0.0,0.0,1.0],
-              [13898.0,0.0,13099.2]
+              [19457.6,-0.000732422,23643.3]
             ],
             "props": {
               "speed": 300.0,
@@ -383,7 +393,7 @@
               [1.0,0.0,0.0],
               [0.0,1.0,0.0],
               [0.0,0.0,1.0],
-              [14610.2,0.0,11343.2]
+              [18894.0,-0.000732422,21834.1]
             ],
             "props": {
               "speed": 300.0,
@@ -399,7 +409,7 @@
               [1.0,0.0,0.0],
               [0.0,1.0,0.0],
               [0.0,0.0,1.0],
-              [15418.3,0.0,11783.9]
+              [19798.3,-0.000732422,21662.1]
             ],
             "props": {
               "speed": 300.0,
@@ -415,7 +425,7 @@
               [1.0,0.0,0.0],
               [0.0,1.0,0.0],
               [0.0,0.0,1.0],
-              [15848.7,0.0,13106.6]
+              [20970.1,-0.000732422,22411.4]
             ],
             "props": {
               "speed": 300.0,
@@ -431,7 +441,7 @@
               [1.0,0.0,0.0],
               [0.0,1.0,0.0],
               [0.0,0.0,1.0],
-              [15885.0,0.0,15138.4]
+              [22287.3,-0.000732422,23958.8]
             ],
             "props": {
               "speed": 300.0,
@@ -447,7 +457,7 @@
               [1.0,0.0,0.0],
               [0.0,1.0,0.0],
               [0.0,0.0,1.0],
-              [15657.0,0.0,16170.9]
+              [22766.2,-0.000732422,24901.6]
             ],
             "props": {
               "speed": 300.0,
@@ -723,39 +733,26 @@
           }
         }
       }
+    },
+    {
+      "objectGroups": {
+        "name": "airfield",
+        "tm": [
+          [0.670051,0.0,0.742315],
+          [0.0,1.0,0.0],
+          [-0.742315,0.0,0.670051],
+          [18303.4,89.3694,26547.4]
+        ],
+        "unit_class": "dynaf_universal_1line_3000_a",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      }
     }
   ],
   "areas": {
-    "airfield00": {
-      "type": "Sphere",
-      "tm": [
-        [229.737,0.0,16.0979],
-        [0.0,230.3,0.0],
-        [-16.0979,0.0,229.737],
-        [10388.8,8.65,14760.7]
-      ],
-      "props": []
-    },
-    "airfield01": {
-      "type": "Sphere",
-      "tm": [
-        [194.233,0.0,-123.74],
-        [0.0,230.3,0.0],
-        [123.74,0.0,194.233],
-        [12166.4,8.65,14820.0]
-      ],
-      "props": []
-    },
-    "spawnpoint": {
-      "type": "Sphere",
-      "tm": [
-        [76.3128,0.0,5.34729],
-        [0.0,76.5,0.0],
-        [-5.34729,0.0,76.3128],
-        [10401.6,8.65,14764.5]
-      ],
-      "props": []
-    },
     "ai_resp_point": {
       "type": "Point",
       "tm": [
@@ -774,6 +771,17 @@
         [0.0,1.0,0.0],
         [0.0,0.0,1.0],
         [11059.5,5000.0,12069.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "briefing_tanks": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [9780.56,9.92871,11606.9]
       ],
       "objLayer": 0,
       "props": []

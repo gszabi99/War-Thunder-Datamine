@@ -210,8 +210,6 @@
     "mission": {
       "level": "levels/avg_eastern_europe.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
       "locName": "missions/_CnvA;eastern_europe/name",
@@ -225,11 +223,13 @@
       "remapAiTankModels": true,
       "country_axis": "germany",
       "country_allies": "ussr",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": true,
         "isShipsAllowed": false,
-        "isHelicoptersAllowed": false
+        "isHelicoptersAllowed": true
       }
     },
     "spectator_points": [],
@@ -1646,7 +1646,7 @@
       "objLayer": 0,
       "props": []
     },
-    "area_01": {
+    "cnv_battle_area": {
       "type": "Box",
       "tm": [
         [4096.0,0.0,0.0],
@@ -4395,7 +4395,7 @@
   },
   "__viewPoints": {
     "viewpt_01": {
-      "pos": [2182.72,16.7547,749.912],
+      "pos": [2182.72,-476.5,749.912],
       "ht": 2.0
     }
   }

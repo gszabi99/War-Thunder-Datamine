@@ -32,7 +32,17 @@
     "speed": 900.0,
     "Cx": 0.5,
     "maxDistance": 10000.0,
+    "normalizationPreset": "ap",
+    "ricochetPreset": "ap",
+    "secondaryShattersPreset": "ap_large_caliber",
+    "stabilityThreshold": 0.05,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.5,
+    "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "ap_tank",
+    "slopeEffectPreset": "ap",
+    "modelName": "tank_bullet_ap",
+    "fresnel": [0.23,0.1,2.0],
     "bulletName": "57mm_m70",
     "relativeVelHitShift": [300.0,1000.0],
     "relativeVelArmorShift": [200.0,1000.0],
@@ -40,12 +50,27 @@
     "waterCollisionEffect": "120-203_water_splash",
     "waterFxScale": [0.5,0.7],
     "explosionPatchRadius": 0.8,
+    "stabilityRicochetModifier": [
+      {
+        "mod1": [0.0,0.05]
+      },
+      {
+        "mod2": [20.0,0.1]
+      },
+      {
+        "mod3": [30.0,0.2]
+      },
+      {
+        "mod3": [45.0,0.3]
+      }
+    ],
     "hitpower": {
       "HitPower0m": [0.85,500.0],
       "HitPower10000m": [0.8,10000.0]
     },
     "damage": {
       "kinetic": {
+        "damageType": "generic",
         "demarrePenetrationK": 0.9,
         "demarreSpeedPow": 1.43,
         "demarreMassPow": 0.71,
@@ -175,7 +200,17 @@
       "speed": 822.0,
       "Cx": 0.5,
       "maxDistance": 10000.0,
+      "normalizationPreset": "apbc",
+      "ricochetPreset": "apbc",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.05,
+      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "apcbc_tank",
+      "slopeEffectPreset": "apc",
+      "modelName": "tank_bullet_apcbc",
+      "fresnel": [0.23,0.1,2.0],
       "bulletName": "57mm_m86",
       "relativeVelHitShift": [300.0,1000.0],
       "fuseDelayDist": 1.2,
@@ -185,12 +220,27 @@
       "waterCollisionEffect": "120-203_water_splash",
       "waterFxScale": [0.7,0.8],
       "explosionPatchRadius": 1.8,
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.05]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod3": [30.0,0.2]
+        },
+        {
+          "mod3": [45.0,0.3]
+        }
+      ],
       "hitpower": {
         "HitPower0m": [0.85,500.0],
         "HitPower10000m": [0.8,10000.0]
       },
       "damage": {
         "kinetic": {
+          "damageType": "generic",
           "demarrePenetrationK": 1.0,
           "demarreSpeedPow": 1.43,
           "demarreMassPow": 0.71,

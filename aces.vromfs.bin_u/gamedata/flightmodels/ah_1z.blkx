@@ -1723,11 +1723,13 @@
       },
       {
         "display": {
-          "textureArea": [0.0,0.0,0.5,0.5],
+          "textureArea": [0.0,0.0,0.8,0.8],
           "page": {
             "type": "pilot_hud",
             "ilsNode": "ils",
-            "ilsSize": [0.143,0.208]
+            "ilsSize": [0.2,0.2],
+            "ilsOffsetForce": 0.2,
+            "brightnessMult": 3.5
           }
         }
       }
@@ -1751,17 +1753,24 @@
     ]
   },
   "helicopter": {
-    "rotorBladeAnglesCoeffs": [0.0,0.5,0.5]
+    "rotorBladeAnglesCoeffs": [0.0,0.0,0.0]
   },
   "sensors": [
     {
       "sensor": {
-        "blk": "gameData/sensors/tv_tracker.blk"
+        "blk": "gameData/sensors/tv_tracker.blk",
+        "node": "optic1_gun"
       }
     },
     {
       "sensor": {
         "blk": "gameData/sensors/us_an_apr_39.blk"
+      }
+    },
+    {
+      "sensor": {
+        "blk": "gameData/sensors/us_flir.blk",
+        "node": "optic1_gun"
       }
     }
   ],
@@ -1919,7 +1928,14 @@
       "preset": {
         "name": "ah_1z_rocket_4xTOW",
         "blk": "gameData/flightModels/weaponPresets/ah_1z_rocket_4xTOW.blk",
-        "reqModification": "ah_1_TOW"
+        "reqModification": "ah_1_TOW",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/us_127mm_TOW.blk",
+            "amountPerTier": 2.0,
+            "iconType": "atgm_type2_x2"
+          }
+        }
       }
     },
     {
@@ -1933,7 +1949,14 @@
       "preset": {
         "name": "ah_1z_rocket_4xTOW_rocket",
         "blk": "gameData/flightModels/weaponPresets/ah_1z_rocket_4xTOW_rocket.blk",
-        "reqModification": "ah_1_TOW"
+        "reqModification": "ah_1_TOW",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/us_127mm_TOW.blk",
+            "amountPerTier": 2.0,
+            "iconType": "atgm_type2_x2"
+          }
+        }
       }
     },
     {
@@ -1956,6 +1979,15 @@
         },
         {
           "reqModification": "uh_1c_xm18"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/us_127mm_TOW.blk",
+              "amountPerTier": 2.0,
+              "iconType": "atgm_type2_x2"
+            }
+          }
         }
       ]
     },
@@ -1979,7 +2011,14 @@
       "preset": {
         "name": "ah_1z_rocket_4xTOW2",
         "blk": "gameData/flightModels/weaponPresets/ah_1z_rocket_4xTOW2.blk",
-        "reqModification": "ah_1_TOW2"
+        "reqModification": "ah_1_TOW2",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/us_127mm_TOW2.blk",
+            "amountPerTier": 2.0,
+            "iconType": "atgm_type2_x2"
+          }
+        }
       }
     },
     {
@@ -1993,7 +2032,14 @@
       "preset": {
         "name": "ah_1z_rocket_4xTOW2_rocket",
         "blk": "gameData/flightModels/weaponPresets/ah_1z_rocket_4xTOW2_rocket.blk",
-        "reqModification": "ah_1_TOW2"
+        "reqModification": "ah_1_TOW2",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/us_127mm_TOW2.blk",
+            "amountPerTier": 2.0,
+            "iconType": "atgm_type2_x2"
+          }
+        }
       }
     },
     {
@@ -2016,6 +2062,15 @@
         },
         {
           "reqModification": "uh_1c_xm18"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/us_127mm_TOW2.blk",
+              "amountPerTier": 2.0,
+              "iconType": "atgm_type2_x2"
+            }
+          }
         }
       ]
     },
@@ -4869,7 +4924,8 @@
         "sensors": [
           {
             "sensor": {
-              "blk": "gameData/sensors/tv_tracker.blk"
+              "blk": "gameData/sensors/tv_tracker.blk",
+              "node": "optic1_gun"
             }
           },
           {
@@ -4880,6 +4936,17 @@
           {
             "sensor": {
               "blk": "gameData/sensors/us_an_aar_47.blk"
+            }
+          },
+          {
+            "sensor": {
+              "blk": "gameData/sensors/us_flir.blk",
+              "node": "optic1_gun"
+            }
+          },
+          {
+            "sensor": {
+              "blk": "gameData/sensors/us_an_avr-2.blk"
             }
           }
         ]
@@ -5088,7 +5155,8 @@
         "sensors": [
           {
             "sensor": {
-              "blk": "gameData/sensors/tv_tracker.blk"
+              "blk": "gameData/sensors/tv_tracker.blk",
+              "node": "optic1_gun"
             }
           },
           {
@@ -5099,6 +5167,17 @@
           {
             "sensor": {
               "blk": "gameData/sensors/us_an_aar_47.blk"
+            }
+          },
+          {
+            "sensor": {
+              "blk": "gameData/sensors/us_flir.blk",
+              "node": "optic1_gun"
+            }
+          },
+          {
+            "sensor": {
+              "blk": "gameData/sensors/us_an_avr-2.blk"
             }
           }
         ]

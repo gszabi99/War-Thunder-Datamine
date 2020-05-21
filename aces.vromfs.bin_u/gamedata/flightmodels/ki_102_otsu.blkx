@@ -134,17 +134,13 @@
           "genericDamageMult": 0.3,
           "hp": 30.5
         },
-        "elevator_dm": {
-          "genericDamageMult": 0.3,
-          "hp": 30.5
-        },
         "elevator0_dm": {
           "genericDamageMult": 0.3,
-          "hp": 30.5
+          "hp": 22.9
         },
         "elevator1_dm": {
           "genericDamageMult": 0.3,
-          "hp": 30.5
+          "hp": 22.9
         },
         "fin_dm": {
           "hp": 30.5
@@ -189,14 +185,6 @@
         "wing2_r_dm": {
           "genericDamageMult": 0.3,
           "hp": 78.2
-        },
-        "wing_l_dm": {
-          "genericDamageMult": 0.3,
-          "hp": 80.5
-        },
-        "wing_r_dm": {
-          "genericDamageMult": 0.3,
-          "hp": 80.5
         }
       },
       "dural": {
@@ -294,9 +282,6 @@
         },
         "oil6_dm": {
           "hp": 17.5
-        },
-        "water1_dm": {
-          "hp": 11.5
         }
       },
       "steel_pilot": {
@@ -329,6 +314,14 @@
         },
         "tank7_dm": {
           "hp": 70.5
+        }
+      },
+      "wood": {
+        "wing_l_dm": {
+          "hp": 142.1
+        },
+        "wing_r_dm": {
+          "hp": 142.1
         }
       }
     }
@@ -558,63 +551,6 @@
         "part": {
           "name": "cover9_dm"
         }
-      },
-      {
-        "part": [
-          {
-            "name": "elevator_dm"
-          },
-          {
-            "onHit": {
-              "damage": 10.0,
-              "cut": 0.1
-            }
-          },
-          {
-            "onHit": {
-              "damage": 20.0,
-              "cut": 0.4
-            }
-          },
-          {
-            "onHit": {
-              "damage": 30.0,
-              "cut": 0.7
-            }
-          },
-          {
-            "onHit": {
-              "damage": 50.0,
-              "cut": 1.0
-            }
-          },
-          {
-            "onKill": {
-              "cut": 1.0,
-              "nothing": 4.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 20.0,
-              "cut": 1.0,
-              "nothing": 2.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 30.0,
-              "cut": 1.0,
-              "nothing": 1.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 50.0,
-              "cut": 1.0
-            }
-          }
-        ]
       },
       {
         "part": [
@@ -1909,17 +1845,6 @@
         ]
       },
       {
-        "part": {
-          "name": "water1_dm",
-          "onHit": {
-            "leak_water": 0.5
-          },
-          "onKill": {
-            "leak_water": 1.0
-          }
-        }
-      },
-      {
         "part": [
           {
             "name": "wing1_l_dm"
@@ -2553,9 +2478,9 @@
       "headPos": [0.407,1.025,0.0],
       "headPosOnShooting": [0.407,1.025,0.0],
       "openedGunnerCockpit": true,
-      "lightPos": [0.968457,0.666546,-0.003504],
-      "lightColor": [0.32,0.1,0.01],
-      "lightAttenuation": 5.0,
+      "lightPos": [1.042036,0.667926,0.001579],
+      "lightColor": [0.05,0.1,0.55],
+      "lightRadius": 0.35,
       "devices": {
         "speed": [0.0,277.778],
         "bank": [-8.0,8.0],

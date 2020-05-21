@@ -20,12 +20,6 @@ local TRIGGER_TYPE = {
   ATGM        = "atgm"
 }
 
-local PURPOSE_TYPE_ORDER = ["NONE", "UNIVERSAL", "AIR_TO_AIR", "AIR_TO_GROUND"]
-local PURPOSE_TYPE = {
-  AIR_TO_AIR    = [TRIGGER_TYPE.AAM]
-  AIR_TO_GROUND = [TRIGGER_TYPE.AGM, TRIGGER_TYPE.ATGM, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.TORPEDOES]
-}
-
 local WEAPON_TYPE = {
   GUNS        = "guns"
   CANNONS     = "cannons"
@@ -37,7 +31,6 @@ local WEAPON_TYPE = {
   ROCKETS     = "rockets"   // Rockets
   AAM         = "aam"       // Air-to-Air Missiles
   AGM         = "agm"       // Air-to-Ground Missile, Anti-Tank Guided Missiles
-  BLOCK       = "block"     // Any weapon that have been united in one block (MRL forexample)
 }
 
 local WEAPON_TAG = {
@@ -96,7 +89,7 @@ local function setLastWeapon(unitName, weaponName)
   ::broadcastEvent("UnitWeaponChanged", { unitName = unitName, weaponName = weaponName })
 }
 
-local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null)
+local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null, wConf = null)
 {
   local unitType = ::get_es_unit_type(unit)
 
@@ -175,22 +168,39 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null)
       explosiveMass = 0
       dropSpeedRange = null
       dropHeightRange = null
+      iconType = null
+      amountPerTier = null
+      bulletType = null
+      tiers = {}
     }
+
+    if (wConf)
+      foreach (wc in (wConf % "Weapon"))
+        if (weapon.blk.tolower() == wc.blk.tolower())
+        {
+          item.iconType <- wc?.iconType
+          item.amountPerTier <- wc?.amountPerTier
+          foreach (t in (wc % "tier"))
+            item.tiers[t.idx] <- {amountPerTier = t?.amountPerTier, iconType = t?.iconType}
+          break
+        }
+
 
     local needBulletParams = !::isInArray(currentTypeName, [WEAPON_TYPE.SMOKE, WEAPON_TYPE.FLARES])
 
     if (needBulletParams && weaponTag.len() && weaponBlk?[weaponTag])
     {
       local itemBlk = weaponBlk[weaponTag]
+      local isGun = ::isInArray(currentTypeName, [WEAPON_TYPE.GUNS, WEAPON_TYPE.CANNONS])
       item.caliber = itemBlk?.caliber ?? item.caliber
       item.massKg = itemBlk?.mass ?? item.massKg
       item.massLbs = itemBlk?.mass_lbs ?? item.massLbs
       item.explosiveType = itemBlk?.explosiveType ?? item.explosiveType
       item.explosiveMass = itemBlk?.explosiveMass ?? item.explosiveMass
-      if (itemBlk?.iconType)
-        item.iconType <- itemBlk.iconType
-      if (itemBlk?.amountPerTier)
-        item.amountPerTier <- itemBlk.amountPerTier.tointeger()
+      item.iconType = isGun ? weaponBlk?.iconType : item.iconType ?? itemBlk?.iconType
+      item.amountPerTier = isGun ? weaponBlk?.amountPerTier
+        : item.amountPerTier ?? itemBlk?.amountPerTier
+      item.bulletType = itemBlk?.bulletType
 
       if (::isInArray(currentTypeName, [ WEAPON_TYPE.ROCKETS, WEAPON_TYPE.AGM, WEAPON_TYPE.AAM ]))
       {
@@ -200,19 +210,39 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null)
         if (currentTypeName == WEAPON_TYPE.AAM || currentTypeName == WEAPON_TYPE.AGM)
         {
           if (itemBlk?.operated == true)
+          {
             item.autoAiming <- itemBlk?.autoAiming ?? false
+            item.isBeamRider <- itemBlk?.isBeamRider ?? false
+          }
           else
             item.guidanceType <- itemBlk?.guidanceType
+
+          if ((itemBlk?.rangeMax ?? 0) != 0)
+            item.launchRange <- itemBlk.rangeMax
+
+          if (itemBlk?.irSeeker != null)
+          {
+            local rangeRearAspect = itemBlk.irSeeker?.rangeBand0 ?? 0
+            local rangeAllAspect  = itemBlk.irSeeker?.rangeBand1 ?? 0
+            if (currentTypeName == WEAPON_TYPE.AAM)
+            {
+              item.seekerRangeRearAspect <- rangeRearAspect
+              item.seekerRangeAllAspect  <- rangeAllAspect
+              if (rangeRearAspect > 0 || rangeAllAspect > 0)
+                item.allAspect <- rangeAllAspect * 1.0 >= 0.2 * rangeRearAspect
+            }
+            else if (currentTypeName == WEAPON_TYPE.AGM && (itemBlk.irSeeker?.groundVehiclesAsTarget ?? false))
+            {
+              if (rangeRearAspect > 0 || rangeAllAspect > 0)
+                item.seekerRange <- ::min(rangeRearAspect, rangeAllAspect)
+            }
+            if (itemBlk?.guidanceType == "ir" && (itemBlk.irSeeker?.bandMaskToReject ?? 0) != 0)
+              item.seekerECCM <- true
+          }
         }
         if (currentTypeName == WEAPON_TYPE.AAM)
         {
           item.loadFactorMax <- itemBlk?.loadFactorMax ?? 0
-          item.seekerRangeRearAspect <- itemBlk?.irSeeker?.rangeBand0 ?? 0
-          item.seekerRangeAllAspect  <- itemBlk?.irSeeker?.rangeBand1 ?? 0
-          if (item.seekerRangeRearAspect > 0 || item.seekerRangeAllAspect > 0)
-            item.allAspect <- item.seekerRangeAllAspect * 1.0 >= 0.2 * item.seekerRangeRearAspect
-          if (itemBlk?.guidanceType == "ir" && (itemBlk?.irSeeker?.bandMaskToReject ?? 0) != 0)
-            item.seekerECCM <- true
         }
         else if (currentTypeName == WEAPON_TYPE.AGM)
         {
@@ -287,7 +317,8 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null)
 //weapon - is a weaponData gathered by addWeaponsFromBlk
 local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
 {
-  local res = ""
+  local res = []
+  local colon = ::loc("ui/colon")
 
   local massText = null
   if (weapon.massLbs > 0)
@@ -295,42 +326,50 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
   else if (weapon.massKg > 0)
     massText = format(::loc("mass/kg"), weapon.massKg)
   if (massText)
-    res += newLine + ::loc("shop/tank_mass") + " " + massText
+    res.append("".concat(::loc("shop/tank_mass"), " ", massText))
 
   if (::isInArray(weaponType, [ "rockets", "agm", "aam" ]))
   {
     if (weapon?.guidanceType != null || weapon?.autoAiming != null)
     {
-      local guidanceTxt = weapon?.autoAiming != null
-        ? ::loc("missile/aiming/{0}".subst(weapon.autoAiming ? "semiautomatic" : "manual"))
-        : ::loc("missile/guidance/{0}".subst(weapon.guidanceType))
-      res += newLine + ::loc("missile/guidance") + ::loc("ui/colon") + guidanceTxt
+      local aimingType = weapon?.autoAiming == null ? ""
+        : weapon.autoAiming && weapon.isBeamRider ? "beamRiding"
+        : weapon.autoAiming ? "semiautomatic"
+        : "manual"
+      local guidanceTxt = aimingType != ""
+        ? ::loc($"missile/aiming/{aimingType}")
+        : ::loc($"missile/guidance/{weapon.guidanceType}")
+      res.append("".concat(::loc("missile/guidance"), colon, guidanceTxt))
     }
     if (weapon?.allAspect != null)
-      res += newLine + ::loc("missile/aspect") + ::loc("ui/colon")
-        + ::loc("missile/aspect/{0}".subst(weapon.allAspect ? "allAspect" : "rearAspect"))
+      res.append("".concat(::loc("missile/aspect"), colon,
+        ::loc("missile/aspect/{0}".subst(weapon.allAspect ? "allAspect" : "rearAspect"))))
     if (weapon?.seekerRangeRearAspect)
-      res += newLine + ::loc("missile/seekerRange/rearAspect") + ::loc("ui/colon")
-             + ::g_measure_type.DISTANCE.getMeasureUnitsText(weapon.seekerRangeRearAspect)
+      res.append("".concat(::loc("missile/seekerRange/rearAspect"), colon,
+        ::g_measure_type.DISTANCE.getMeasureUnitsText(weapon.seekerRangeRearAspect)))
     if (weapon?.seekerRangeAllAspect)
-      res += newLine + ::loc("missile/seekerRange/allAspect") + ::loc("ui/colon")
-             + ::g_measure_type.DISTANCE.getMeasureUnitsText(weapon.seekerRangeAllAspect)
+      res.append("".concat(::loc("missile/seekerRange/allAspect"), colon,
+        ::g_measure_type.DISTANCE.getMeasureUnitsText(weapon.seekerRangeAllAspect)))
+    if (weapon?.seekerRange)
+      res.append("".concat(::loc("missile/seekerRange"), colon,
+        ::g_measure_type.DISTANCE.getMeasureUnitsText(weapon.seekerRange)))
     if (weapon?.seekerECCM)
-      res += newLine + ::loc("missile/eccm") + ::loc("ui/colon") + ::loc("options/yes")
-
+      res.append("".concat(::loc("missile/eccm"), colon, ::loc("options/yes")))
+    if (weapon?.launchRange)
+      res.append("".concat(::loc("missile/launchRange"), colon,
+        ::g_measure_type.DISTANCE.getMeasureUnitsText(weapon.launchRange)))
     if (weapon?.machMax)
-      res += newLine + ::loc("rocket/maxSpeed") + ::loc("ui/colon")
-        + ::format("%.1f %s", weapon.machMax, ::loc("measureUnits/machNumber"))
+      res.append("".concat(::loc("rocket/maxSpeed"), colon,
+        ::format("%.1f %s", weapon.machMax, ::loc("measureUnits/machNumber"))))
     else if (weapon?.maxSpeed)
-      res += newLine + ::loc("rocket/maxSpeed") + ::loc("ui/colon")
-        + ::g_measure_type.SPEED_PER_SEC.getMeasureUnitsText(weapon.maxSpeed)
-
+      res.append("".concat(::loc("rocket/maxSpeed"), colon,
+        ::g_measure_type.SPEED_PER_SEC.getMeasureUnitsText(weapon.maxSpeed)))
     if (weapon?.loadFactorMax)
-      res += newLine + ::loc("missile/loadFactorMax") + ::loc("ui/colon")
-             + ::g_measure_type.GFORCE.getMeasureUnitsText(weapon.loadFactorMax)
+      res.append("".concat(::loc("missile/loadFactorMax"), colon,
+        ::g_measure_type.GFORCE.getMeasureUnitsText(weapon.loadFactorMax)))
     if (weapon?.operatedDist)
-      res += newLine + ::loc("firingRange") + ::loc("ui/colon")
-             + ::g_measure_type.DISTANCE.getMeasureUnitsText(weapon.operatedDist)
+      res.append("".concat(::loc("firingRange"), colon,
+        ::g_measure_type.DISTANCE.getMeasureUnitsText(weapon.operatedDist)))
   }
   else if (weaponType == "torpedoes")
   {
@@ -345,7 +384,7 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
         weapon = clone weapon
         foreach (k, v in weapon)
         {
-          local kEffect = k + "Torpedo"
+          local kEffect = $"{k}Torpedo"
           if ((kEffect in effects) && type(v) == type(effects[kEffect]))
             weapon[k] += effects[kEffect]
         }
@@ -353,52 +392,52 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
     }
 
     if (weapon?.maxSpeedInWater)
-      res += newLine + ::loc("torpedo/maxSpeedInWater") + ::loc("ui/colon")
-             + ::g_measure_type.SPEED.getMeasureUnitsText(weapon?.maxSpeedInWater)
+      res.append("".concat(::loc("torpedo/maxSpeedInWater"), colon,
+        ::g_measure_type.SPEED.getMeasureUnitsText(weapon?.maxSpeedInWater)))
 
     if (weapon?.distToLive)
-      res += newLine + ::loc("torpedo/distanceToLive") + ::loc("ui/colon")
-             + ::g_measure_type.DISTANCE.getMeasureUnitsText(weapon?.distToLive)
+      res.append("".concat(::loc("torpedo/distanceToLive"), colon,
+        ::g_measure_type.DISTANCE.getMeasureUnitsText(weapon?.distToLive)))
 
     if (weapon?.diveDepth)
-      res += newLine + ::loc("bullet_properties/diveDepth") + ::loc("ui/colon")
-             + ::g_measure_type.DEPTH.getMeasureUnitsText(weapon?.diveDepth)
+      res.append("".concat(::loc("bullet_properties/diveDepth"), colon,
+        ::g_measure_type.DEPTH.getMeasureUnitsText(weapon?.diveDepth)))
 
     if (weapon?.armDistance)
-      res += newLine + ::loc("torpedo/armingDistance") + ::loc("ui/colon")
-             + ::g_measure_type.DEPTH.getMeasureUnitsText(weapon?.armDistance)
+      res.append("".concat(::loc("torpedo/armingDistance"), colon,
+        ::g_measure_type.DEPTH.getMeasureUnitsText(weapon?.armDistance)))
   }
 
-  if (!weapon.explosiveType)
-    return res
-
-  res += newLine + ::loc("bullet_properties/explosiveType") + ::loc("ui/colon")
-         + ::loc("explosiveType/" + weapon.explosiveType)
-  if (weapon.explosiveMass)
+  if (weapon.explosiveType != null)
   {
-    local measureType = ::g_measure_type.getTypeByName("kg", true)
-    res += newLine + ::loc("bullet_properties/explosiveMass") + ::loc("ui/colon")
-             + measureType.getMeasureUnitsText(weapon.explosiveMass)
-  }
-  if (weapon.explosiveType && weapon.explosiveMass)
-  {
-    local tntEqText = ::g_dmg_model.getTntEquivalentText(weapon.explosiveType, weapon.explosiveMass)
-    if (tntEqText.len())
-      res += newLine + ::loc("bullet_properties/explosiveMassInTNTEquivalent") + ::loc("ui/colon") + tntEqText
-  }
-
-  if (/*weaponType == "rockets" || */ (weaponType == "bombs" && unit.unitType != unitTypes.SHIP))
-  {
-    local destrTexts = ::g_dmg_model.getDestructionInfoTexts(weapon.explosiveType, weapon.explosiveMass, weapon.massKg)
-    foreach(name in ["maxArmorPenetration", "destroyRadiusArmored", "destroyRadiusNotArmored"])
+    res.append("".concat(::loc("bullet_properties/explosiveType"), colon,
+      ::loc($"explosiveType/{weapon.explosiveType}")))
+    if (weapon.explosiveMass)
     {
-      local valueText = destrTexts[name + "Text"]
-      if (valueText.len())
-        res += newLine + ::loc("bombProperties/" + name) + ::loc("ui/colon") + valueText
+      local measureType = ::g_measure_type.getTypeByName("kg", true)
+      res.append("".concat(::loc("bullet_properties/explosiveMass"), colon,
+        measureType.getMeasureUnitsText(weapon.explosiveMass)))
+    }
+    if (weapon.explosiveMass)
+    {
+      local tntEqText = ::g_dmg_model.getTntEquivalentText(weapon.explosiveType, weapon.explosiveMass)
+      if (tntEqText.len())
+        res.append("".concat(::loc("bullet_properties/explosiveMassInTNTEquivalent"), colon, tntEqText))
+    }
+
+    if (weaponType == "bombs" && unit.unitType != unitTypes.SHIP)
+    {
+      local destrTexts = ::g_dmg_model.getDestructionInfoTexts(weapon.explosiveType, weapon.explosiveMass, weapon.massKg)
+      foreach (key in ["maxArmorPenetration", "destroyRadiusArmored", "destroyRadiusNotArmored"])
+      {
+        local valueText = destrTexts[$"{key}Text"]
+        if (valueText.len())
+          res.append("".concat(::loc($"bombProperties/{key}"), colon, valueText))
+      }
     }
   }
 
-  return res
+  return "".concat(res.len() ? newLine : "", newLine.join(res))
 }
 
 local function getUnitWeaponry(unit, p = WEAPON_TEXT_PARAMS)
@@ -442,40 +481,25 @@ local function getUnitWeaponry(unit, p = WEAPON_TEXT_PARAMS)
   if (unitBlk?.weapon_presets != null && !p.isPrimary)
   {
     local wpBlk = null
+    local wConf = null
     foreach (wp in (unitBlk.weapon_presets % "preset"))
     {
       if (wp.name == unit.weapons?[weaponPresetIdx]?.name)
       {
         wpBlk = ::DataBlock(wp.blk)
+        wConf = wp?.weaponConfig
+        if (wConf?.presetType != null)
+            unit.weapons[weaponPresetIdx].presetType <- wConf.presetType
         break
       }
     }
 
     if (!wpBlk)
       return weapons
-    weapons = addWeaponsFromBlk(weapons, wpBlk, unit, p.weaponsFilterFunc)
+    weapons = addWeaponsFromBlk(weapons, wpBlk, unit, p.weaponsFilterFunc, wConf)
   }
 
   return weapons
-}
-
-local function getPresetTypeByPurpose(weaponry)
-{
-  if (::u.isEmpty(weaponry))
-    return "NONE"
-
-  local res =[]
-  foreach (weaponTypeName, weaponType in weaponry)
-    foreach (pTypeName, pType in PURPOSE_TYPE)
-      foreach (tag in pType)
-        if (weaponTypeName == tag)
-        {
-          if (!::isInArray(pTypeName, res))
-            res.append(pTypeName)
-          break
-        }
-
-  return !res.len() || res.len() != 1 ? "UNIVERSAL" : res[0]
 }
 
 local function getSecondaryWeaponsList(unit)
@@ -483,18 +507,11 @@ local function getSecondaryWeaponsList(unit)
   local weaponsList = []
   local unitName = unit.name
   local lastWeapon = ::get_last_weapon(unitName)
-  local isOwn = ::isUnitUsable(unit)
   foreach(weapon in unit.weapons)
   {
     if(::isWeaponAux(weapon))
       continue
 
-    local pType = getPresetTypeByPurpose(
-      getUnitWeaponry(unit, {isPrimary = false, weaponPreset = weapon.name}))
-    weapon.isEnabled <- ::is_weapon_enabled(unit, weapon) || (isOwn && ::is_weapon_unlocked(unit, weapon))
-    weapon.isDefault <- weapon.name.indexof("default") != null
-    weapon.chapterOrd <- PURPOSE_TYPE_ORDER.findindex(@(p) p == pType)
-    weapon.presetPurposeType <- pType
     weaponsList.append(weapon)
     if(lastWeapon=="" && ::shop_is_weapon_purchased(unitName, weapon.name))
       setLastWeapon(unitName, weapon.name)
@@ -503,9 +520,19 @@ local function getSecondaryWeaponsList(unit)
   return weaponsList
 }
 
+local function getPresetsList(unit, chooseMenuList)
+{
+  if (!chooseMenuList)
+    return getSecondaryWeaponsList(unit)
+
+  local weaponsList = []
+  foreach (item in chooseMenuList)
+    weaponsList.append(item.weaponryItem.__merge({isEnabled = item.enabled}))
+  return weaponsList
+}
+
 return {
   KGF_TO_NEWTON           = KGF_TO_NEWTON
-  PURPOSE_TYPE            = PURPOSE_TYPE
   TRIGGER_TYPE            = TRIGGER_TYPE
   WEAPON_TYPE             = WEAPON_TYPE
   WEAPON_TAG              = WEAPON_TAG
@@ -513,6 +540,7 @@ return {
   getLastWeapon           = getLastWeapon
   setLastWeapon           = setLastWeapon
   getSecondaryWeaponsList = getSecondaryWeaponsList
+  getPresetsList          = getPresetsList
   addWeaponsFromBlk       = addWeaponsFromBlk
   getWeaponExtendedInfo   = getWeaponExtendedInfo
   getUnitWeaponry         = getUnitWeaponry

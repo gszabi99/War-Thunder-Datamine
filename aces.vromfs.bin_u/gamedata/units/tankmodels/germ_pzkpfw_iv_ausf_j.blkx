@@ -698,6 +698,15 @@
       },
       {
         "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -1871,14 +1880,20 @@
         "turret_01_front_dm": {
           "armorThickness": 14.0
         },
-        "turret_01_top_dm": {
-          "armorThickness": 8.0
-        },
         "turret_01_side_dm": {
           "armorThickness": 20.0
         },
         "superstructure_side_dm": {
           "armorThickness": 10.0
+        },
+        "turret_02_front_dm": {
+          "armorThickness": 60.0
+        },
+        "turret_02_bottom_dm": {
+          "armorThickness": 45.0
+        },
+        "turret_01_top_dm": {
+          "armorThickness": 25.0
         }
       },
       "turret": {
@@ -1912,19 +1927,19 @@
           "hp": 100.0
         },
         "ex_armor_turret_r_01_dm": {
-          "armorThickness": 5.0,
+          "armorThickness": 8.0,
           "hp": 100.0
         },
         "ex_armor_turret_r_02_dm": {
-          "armorThickness": 5.0,
+          "armorThickness": 8.0,
           "hp": 100.0
         },
         "ex_armor_turret_l_01_dm": {
-          "armorThickness": 5.0,
+          "armorThickness": 8.0,
           "hp": 100.0
         },
         "ex_armor_turret_l_02_dm": {
-          "armorThickness": 5.0,
+          "armorThickness": 8.0,
           "hp": 100.0
         }
       },
@@ -2031,8 +2046,6 @@
           "armorClass": "tank_traks",
           "armorThickness": 20.0,
           "hp": 200.0,
-          "track_r_dm": [],
-          "track_l_dm": [],
           "ex_armor_04_dm": [],
           "ex_armor_body_01_dm": [],
           "ex_armor_body_02_dm": [],
@@ -2049,6 +2062,19 @@
           "ex_armor_body_r_07_dm": [],
           "ex_armor_body_l_01_dm": [],
           "ex_armor_body_l_02_dm": []
+        }
+      },
+      "tracks": {
+        "armorClass": "tank_traks",
+        "armorThickness": 20.0,
+        "hp": 300.0,
+        "track_r_dm": [],
+        "track_l_dm": [],
+        "track_r_01_dm": {
+          "hp": 360.0
+        },
+        "track_l_01_dm": {
+          "hp": 360.0
         }
       },
       "gun": {
@@ -2665,6 +2691,18 @@
       "new_tank_transmission": [],
       "new_tank_engine": [],
       "tank_camouflage": [],
+      "ostketten_tank_tracks": {
+        "disableModEffects": {
+          "hideNodes": [
+            {
+              "node": "track_l_01"
+            },
+            {
+              "node": "track_r_01"
+            }
+          ]
+        }
+      },
       "tank_additional_armor": {
         "tier": 4,
         "modClass": "protection",

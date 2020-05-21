@@ -885,15 +885,9 @@
     "textToShowInCockpit": "msg/textToShowInCockpit",
     "headPos": [1.4,0.65,-0.34],
     "headPosOnShooting": [1.4,0.65,-0.34],
-    "lightPos": [2.634856,0.104049,-0.361975],
-    "lightColor": [0.01,1.5,0.1],
-    "lightRadius": 0.4,
-    "lightPos1": [2.634856,0.104049,0.361975],
-    "lightColor1": [0.01,1.5,0.1],
-    "lightRadius1": 0.4,
-    "lightPos2": [2.057121,0.469129,0.079509],
-    "lightColor2": [0.01,1.5,0.1],
-    "lightRadius2": 0.5,
+    "lightPos1": [2.019962,0.218256,-0.114969],
+    "lightColor1": [0.01,0.6,0.1],
+    "lightRadius1": 0.35,
     "sightInFov": 3.68,
     "sightOutFov": -1.0,
     "sightFov": 5.5,
@@ -974,6 +968,13 @@
         "blk": "gameData/flightModels/weaponPresets/sa_342m_rocket_ffar.blk",
         "tags": {
           "free": true
+        },
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+            "amountPerTier": 7.0,
+            "iconType": "nar_ap_small"
+          }
         }
       }
     },
@@ -981,14 +982,28 @@
       "preset": {
         "name": "sa_342m_hot",
         "blk": "gameData/flightModels/weaponPresets/sa_342m_hot.blk",
-        "reqModification": "sa_heli_hot"
+        "reqModification": "sa_heli_hot",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/euro_hot.blk",
+            "amountPerTier": 2.0,
+            "iconType": "atgm_type2_x2"
+          }
+        }
       }
     },
     {
       "preset": {
         "name": "sa_342m_hot_2",
         "blk": "gameData/flightModels/weaponPresets/sa_342m_hot_2.blk",
-        "reqModification": "sa_heli_hot_2"
+        "reqModification": "sa_heli_hot_2",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/euro_hot2.blk",
+            "amountPerTier": 2.0,
+            "iconType": "atgm_type2_x2"
+          }
+        }
       }
     },
     {
@@ -1002,21 +1017,42 @@
       "preset": {
         "name": "sa_342m_ffar_rocket_atam_mistral",
         "blk": "gameData/flightModels/weaponPresets/sa_342m_ffar_rocket_atam_mistral.blk",
-        "reqModification": "heli_atam_mistral"
+        "reqModification": "heli_atam_mistral",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+            "amountPerTier": 7.0,
+            "iconType": "nar_ap_small"
+          }
+        }
       }
     },
     {
       "preset": {
         "name": "sa_342m_hot_rocket_atam_mistral",
         "blk": "gameData/flightModels/weaponPresets/sa_342m_hot_rocket_atam_mistral.blk",
-        "reqModification": "heli_atam_mistral"
+        "reqModification": "heli_atam_mistral",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/euro_hot.blk",
+            "amountPerTier": 2.0,
+            "iconType": "atgm_type2_x2"
+          }
+        }
       }
     },
     {
       "preset": {
         "name": "sa_342m_hot_2_rocket_atam_mistral",
         "blk": "gameData/flightModels/weaponPresets/sa_342m_hot_2_rocket_atam_mistral.blk",
-        "reqModification": "heli_atam_mistral"
+        "reqModification": "heli_atam_mistral",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/euro_hot2.blk",
+            "amountPerTier": 2.0,
+            "iconType": "atgm_type2_x2"
+          }
+        }
       }
     }
   ],

@@ -172,9 +172,6 @@
         "turret_bottom_dm": {
           "armorThickness": 40.0
         },
-        "turret_back_dm": {
-          "armorThickness": 33.0
-        },
         "ex_armor_05_dm": {
           "armorThickness": 60.0
         }
@@ -184,6 +181,9 @@
         "hp": 5000.0,
         "turret_02_top_dm": {
           "armorThickness": 25.0
+        },
+        "turret_back_dm": {
+          "armorThickness": 33.0
         },
         "turret_02_front_dm": {
           "armorThickness": 33.0
@@ -351,14 +351,21 @@
         "wheel_l_front_dm": [],
         "wheel_r_front_dm": [],
         "wheel_support_dm": [],
+        "body_side_screens": {
+          "armorClass": "t_90_rubber_fabric_screens",
+          "hp": 100.0,
+          "hidableInViewer": true,
+          "armorThickness": 8.0,
+          "createSecondaryShatters": false,
+          "ex_decor_r_02_dm": [],
+          "ex_decor_l_02_dm": []
+        },
         "body_shields": {
           "armorClass": "tank_structural_steel",
           "armorThickness": 5.0,
           "hp": 1000.0,
           "stopChanceOnDeadPart": 0.0,
           "createSecondaryShatters": false,
-          "ex_decor_r_02_dm": [],
-          "ex_decor_l_02_dm": [],
           "ex_decor_l_03_dm": [],
           "ex_decor_r_03_dm": [],
           "ex_decor_l_04_dm": [],
@@ -2549,6 +2556,15 @@
             }
           }
         ]
+      },
+      {
+        "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
       },
       {
         "event": {

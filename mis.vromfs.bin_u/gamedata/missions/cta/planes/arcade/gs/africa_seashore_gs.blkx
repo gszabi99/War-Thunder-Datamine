@@ -118,9 +118,9 @@
       "weather": "hazy",
       "locName": "missions/_GS/heavy_tank_ship;location/arcade_africa_seashore",
       "locDesc": "missions/_GS/desc",
-      "scoreLimit": 2400,
+      "scoreLimit": 7000,
       "timeLimit": 25,
-      "deathPenaltyMul": 0.0,
+      "deathPenaltyMul": 0.2,
       "country_axis": "germany",
       "country_allies": "ussr",
       "restoreType": "attempts",
@@ -412,6 +412,38 @@
         "showWayPoints": true,
         "excludes": []
       }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/air_templates/gs/assaults_gs_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/air_templates/gs/template_at_gs_planeset.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
     }
   ],
   "triggers": {
@@ -430,6 +462,12 @@
       },
       "conditions": [],
       "actions": [
+        {
+          "varSetBool": {
+            "value": false,
+            "var": "barabashka_enabled"
+          }
+        },
         {
           "varSetInt": {
             "value": 4,
@@ -571,12 +609,6 @@
               "object": "t2_trucks_squad"
             },
             {
-              "object": "t1_navy_ships_squad"
-            },
-            {
-              "object": "t2_navy_ships_squad"
-            },
-            {
               "targetGnd": false
             },
             {
@@ -587,6 +619,40 @@
             },
             {
               "airEffShootingRate": 0.1
+            }
+          ]
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "t1_navy_ships_squad"
+            },
+            {
+              "object": "t2_navy_ships_squad"
+            },
+            {
+              "targetAir": false
+            },
+            {
+              "accuracy": 0.0
+            },
+            {
+              "effShootingRate": 0.0
+            },
+            {
+              "airEffShootingRate": 0.0
             }
           ]
         },
@@ -716,7 +782,7 @@
       "else_actions": []
     },
     "update_indicators": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -775,12 +841,12 @@
       "objectGroups": {
         "name": "t1_airfield",
         "tm": [
-          [-0.628864,0.0,0.777514],
+          [-0.696137,0.0,0.717908],
           [0.0,1.0,0.0],
-          [-0.777514,0.0,-0.628864],
-          [-5527.82,56.8657,-5192.91]
+          [-0.717908,0.0,-0.696137],
+          [-5142.61,52.3635,-5345.25]
         ],
-        "unit_class": "dynAF_egypt_kahili_dirt",
+        "unit_class": "dynaf_universal_1line_a",
         "props": {
           "army": 1,
           "active": true
@@ -794,9 +860,9 @@
           [-0.461748,0.0,0.88701],
           [0.0,1.0,0.0],
           [-0.88701,0.0,-0.461748],
-          [-3854.4,46.0034,4123.2]
+          [-4132.19,38.0868,4537.3]
         ],
-        "unit_class": "dynAF_egypt_kahili_dirt",
+        "unit_class": "dynaf_universal_1line_a",
         "props": {
           "army": 2,
           "active": true
@@ -3399,7 +3465,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [-4888.35,112.75,-5692.4]
+          [-5110.01,112.75,-5648.74]
         ],
         "unit_class": "germ_88mm_flak36",
         "closed_waypoints": false,
@@ -4022,6 +4088,9 @@
             "object_marking": 0
           },
           {
+            "squad_members": "t1_land_squad"
+          },
+          {
             "squad_members": "t1_bunkers_light_squad"
           },
           {
@@ -4045,6 +4114,9 @@
         "props": [
           {
             "object_marking": 0
+          },
+          {
+            "squad_members": "t2_land_squad"
           },
           {
             "squad_members": "t2_bunkers_light_squad"
@@ -4082,7 +4154,7 @@
         "bulletsCount3": 0,
         "props": {
           "army": 1,
-          "count": 5,
+          "count": 7,
           "formation_type": "rows",
           "formation_div": 2,
           "formation_step": [14.0,8.0],
@@ -4342,7 +4414,7 @@
         "bulletsCount3": 0,
         "props": {
           "army": 1,
-          "count": 5,
+          "count": 7,
           "formation_type": "rows",
           "formation_div": 2,
           "formation_step": [14.0,8.0],
@@ -4602,7 +4674,7 @@
         "bulletsCount3": 0,
         "props": {
           "army": 1,
-          "count": 5,
+          "count": 7,
           "formation_type": "rows",
           "formation_div": 2,
           "formation_step": [14.0,8.0],
@@ -4846,7 +4918,7 @@
         "bulletsCount3": 0,
         "props": {
           "army": 2,
-          "count": 5,
+          "count": 7,
           "formation_type": "rows",
           "formation_div": 3,
           "formation_step": [14.0,8.0],
@@ -5138,7 +5210,7 @@
         "bulletsCount3": 0,
         "props": {
           "army": 2,
-          "count": 5,
+          "count": 7,
           "formation_type": "rows",
           "formation_div": 3,
           "formation_step": [14.0,8.0],
@@ -5446,7 +5518,7 @@
         "bulletsCount3": 0,
         "props": {
           "army": 2,
-          "count": 5,
+          "count": 7,
           "formation_type": "rows",
           "formation_div": 3,
           "formation_step": [14.0,8.0],
@@ -7775,34 +7847,6 @@
       }
     },
     {
-      "squad": {
-        "name": "t1_quest_additional_units",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1483.09,549.875,-4735.36]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "t1_additional_tank_01"
-          },
-          {
-            "squad_members": "t1_additional_tank_02"
-          },
-          {
-            "squad_members": "t1_additional_tank_03"
-          },
-          {
-            "squad_members": "t1_additional_tank_04"
-          }
-        ]
-      }
-    },
-    {
       "tracked_vehicles": {
         "name": "t2_additional_tank_01",
         "tm": [
@@ -8647,34 +8691,6 @@
       }
     },
     {
-      "squad": {
-        "name": "t2_quest_additional_units",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [152.459,423.86,2934.37]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "t2_additional_tank_01"
-          },
-          {
-            "squad_members": "t2_additional_tank_02"
-          },
-          {
-            "squad_members": "t2_additional_tank_03"
-          },
-          {
-            "squad_members": "t2_additional_tank_04"
-          }
-        ]
-      }
-    },
-    {
       "objectGroups": {
         "name": "t2_bomb_target_04",
         "tm": [
@@ -9359,20 +9375,20 @@
     "t2_airfield_bombing_zone": {
       "type": "Box",
       "tm": [
-        [-623.733,0.0,1198.18],
+        [-923.497,0.0,1774.02],
         [0.0,350.0,0.0],
-        [-453.515,0.0,-236.085],
-        [-3722.66,41.6106,4204.07]
+        [-665.258,0.0,-346.311],
+        [-4137.78,32.0504,4503.4]
       ],
       "props": []
     },
     "t1_airfield_bombing_zone": {
       "type": "Box",
       "tm": [
-        [-868.281,0.0,1034.78],
+        [-1406.28,0.0,1422.1],
         [0.0,350.0,0.0],
-        [-391.666,0.0,-328.647],
-        [-5459.3,41.6115,-5098.39]
+        [-533.286,0.0,-527.358],
+        [-5209.4,25.2882,-5299.97]
       ],
       "props": []
     },
@@ -9760,6 +9776,105 @@
         [0.0,300.0,0.0],
         [268.924,0.0,-132.964],
         [-1.5098,750.0,1469.29]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "at_area": {
+      "type": "Sphere",
+      "tm": [
+        [1448.83,0.0,15934.3],
+        [0.0,16000.0,0.0],
+        [-15934.3,0.0,1448.83],
+        [-1904.65,500.005,-137.057]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "at_t1_spawn_01_01": {
+      "type": "Point",
+      "tm": [
+        [-0.993581,0.0,0.113125],
+        [0.0,1.0,0.0],
+        [-0.113125,0.0,-0.993581],
+        [5973.45,500.005,1235.81]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "at_t2_spawn_01_01": {
+      "type": "Point",
+      "tm": [
+        [-0.993581,0.0,0.113125],
+        [0.0,1.0,0.0],
+        [-0.113125,0.0,-0.993581],
+        [5973.45,500.005,1235.81]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "at_t1_spawn_01_02": {
+      "type": "Point",
+      "tm": [
+        [0.993581,0.0,-0.113125],
+        [0.0,1.0,0.0],
+        [0.113125,0.0,0.993581],
+        [-9418.44,499.995,2638.87]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "at_t2_spawn_01_02": {
+      "type": "Point",
+      "tm": [
+        [0.993581,0.0,-0.113125],
+        [0.0,1.0,0.0],
+        [0.113125,0.0,0.993581],
+        [-9418.44,499.995,2638.87]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "at_t1_spawn_02_01": {
+      "type": "Point",
+      "tm": [
+        [-0.993581,0.0,0.113125],
+        [0.0,1.0,0.0],
+        [-0.113125,0.0,-0.993581],
+        [5604.03,500.005,-2895.16]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "at_t2_spawn_02_01": {
+      "type": "Point",
+      "tm": [
+        [-0.993581,0.0,0.113125],
+        [0.0,1.0,0.0],
+        [-0.113125,0.0,-0.993581],
+        [5604.03,500.005,-2895.16]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "at_t1_spawn_02_02": {
+      "type": "Point",
+      "tm": [
+        [0.993581,0.0,-0.113125],
+        [0.0,1.0,0.0],
+        [0.113125,0.0,0.993581],
+        [-9787.78,499.996,-1499.29]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "at_t2_spawn_02_02": {
+      "type": "Point",
+      "tm": [
+        [0.993581,0.0,-0.113125],
+        [0.0,1.0,0.0],
+        [0.113125,0.0,0.993581],
+        [-9787.78,499.996,-1499.29]
       ],
       "objLayer": 0,
       "props": []

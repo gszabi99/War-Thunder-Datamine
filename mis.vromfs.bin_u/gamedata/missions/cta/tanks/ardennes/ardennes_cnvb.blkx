@@ -210,8 +210,6 @@
     "mission": {
       "level": "levels/avg_ardennes.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "clear",
       "locName": "missions/_CnvB;ardennes/name",
@@ -225,11 +223,13 @@
       "remapAiTankModels": true,
       "country_axis": "germany",
       "country_allies": "ussr",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": true,
         "isShipsAllowed": false,
-        "isHelicoptersAllowed": false
+        "isHelicoptersAllowed": true
       }
     },
     "spectator_points": [],
@@ -3134,7 +3134,7 @@
       "objLayer": 0,
       "props": []
     },
-    "area_01": {
+    "cnv_battle_area": {
       "type": "Box",
       "tm": [
         [4096.0,0.0,0.0],
@@ -5024,7 +5024,7 @@
   },
   "__viewPoints": {
     "viewpt_01": {
-      "pos": [3204.26,289.084,3430.62],
+      "pos": [3204.26,-477.0,3430.62],
       "ht": 1.5
     }
   }

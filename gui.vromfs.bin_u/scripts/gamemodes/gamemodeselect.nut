@@ -236,6 +236,10 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
         showEventDescription = false
         newIconWidgetId = getWidgetId(id)
         newIconWidgetContent = newIconWidgetContent
+        inactiveColor = mode?.inactiveColor ?? @() false
+        crossPlayRestricted = mode?.crossPlayRestricted ?? @() false
+        crossplayTooltip = mode?.crossplayTooltip ?? null
+        isCrossPlayRequired = mode?.isCrossPlayRequired ?? @() false
       })
       if (mode?.updateByTimeFunc)
         gameModesWithTimer[id] <- mode.updateByTimeFunc

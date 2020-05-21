@@ -8,7 +8,7 @@ const URL_TAG_NO_ENCODING = "no_encoding"
 
 const AUTH_ERROR_LOG_COLLECTION = "log"
 
-local canAutoLogin = @() !::is_platform_xboxone && !::is_vendor_tencent() && ::g_login.isAuthorized()
+local canAutoLogin = @() !::is_vendor_tencent() && ::g_login.isAuthorized()
 
 local function getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated = false) {
   if (baseUrl == null || baseUrl == "") {
@@ -22,7 +22,8 @@ local function getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated = false
     dagor.debug("Error: tried to open an empty url")
     return null
   }
-  url = urlTags.remove(urlTags.len() - 1)
+  local urlWithoutTags = urlTags.remove(urlTags.len() - 1)
+  url = urlWithoutTags
 
   local urlType = ::g_url_type.getByUrl(url)
   if (::isInArray(URL_TAG_AUTO_LOCALIZE, urlTags))
@@ -53,6 +54,7 @@ local function getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated = false
 
   return {
     url = url
+    urlWithoutTags = urlWithoutTags
     urlTags = urlTags
     urlType = urlType
   }
@@ -156,4 +158,5 @@ return {
   openUrl = openUrl
   openUrlByObj = openUrlByObj
   validateLink = validateLink
+  getAuthenticatedUrlConfig = getAuthenticatedUrlConfig
 }

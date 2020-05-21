@@ -33,56 +33,6 @@
       "fxPresetName": "procedural",
       "nonExtinguishFireTime": 1.0
     },
-    "ship_superstructure_back": {
-      "damage": 0.01,
-      "radiusScale": 0.5,
-      "radiusScales": [0.5,1.5],
-      "allowMultipleFires": false,
-      "fxPresetName": "superstructure_back_fire",
-      "maxFireTime": [15.0,60.0],
-      "nonExtinguishFireTime": 5.0,
-      "checkAdditionalWater": false
-    },
-    "ship_superstructure_front": {
-      "damage": 0.01,
-      "radiusScale": 0.5,
-      "radiusScales": [0.5,1.5],
-      "allowMultipleFires": false,
-      "fxPresetName": "superstructure_front_fire",
-      "maxFireTime": [15.0,60.0],
-      "nonExtinguishFireTime": 5.0,
-      "checkAdditionalWater": false
-    },
-    "ship_superstructure_top": {
-      "damage": 0.01,
-      "radiusScale": 0.5,
-      "radiusScales": [0.5,1.5],
-      "allowMultipleFires": false,
-      "fxPresetName": "superstructure_top_fire",
-      "maxFireTime": [15.0,60.0],
-      "nonExtinguishFireTime": 5.0,
-      "checkAdditionalWater": false
-    },
-    "ship_superstructure_bottom": {
-      "damage": 0.01,
-      "radiusScale": 0.5,
-      "radiusScales": [0.5,1.5],
-      "allowMultipleFires": false,
-      "fxPresetName": "superstructure_bottom_fire",
-      "maxFireTime": [15.0,60.0],
-      "nonExtinguishFireTime": 5.0,
-      "checkAdditionalWater": false
-    },
-    "ship_superstructure_side": {
-      "damage": 0.01,
-      "radiusScale": 0.5,
-      "radiusScales": [0.5,1.5],
-      "allowMultipleFires": false,
-      "fxPresetName": "superstructure_side_fire",
-      "maxFireTime": [15.0,60.0],
-      "nonExtinguishFireTime": 5.0,
-      "checkAdditionalWater": false
-    },
     "ship_superstructure": {
       "damage": 0.01,
       "radiusScale": 0.5,
@@ -91,7 +41,8 @@
       "fxPresetName": "superstructure_fire",
       "maxFireTime": [15.0,60.0],
       "nonExtinguishFireTime": 5.0,
-      "checkAdditionalWater": false
+      "checkAdditionalWater": false,
+      "allowMultipleFx": true
     },
     "ship_cover": {
       "damage": 0.01,
@@ -124,8 +75,8 @@
       "checkAdditionalWater": true
     },
     "ship_fuel_tank": {
-      "damage": 0.05,
-      "radiusScales": [0.5,2.5],
+      "damage": 0.01,
+      "radiusScales": [0.3,2.0],
       "maxFireTime": [20.0,30.0],
       "nonExtinguishFireTime": 10.0,
       "underwaterExtinguishTime": 10.0,
@@ -142,6 +93,17 @@
       "maxFireTime": [12.0,60.0],
       "nonExtinguishFireTime": 10.0,
       "underwaterExtinguishTime": 10.0,
+      "underwaterExtinguishAdditionalWater": 0.035,
+      "checkAdditionalWater": true
+    },
+    "ship_torpedo_fire": {
+      "damage": 0.05,
+      "radiusScale": 0.3,
+      "radiusScales": [0.3,1.0],
+      "allowMultipleFires": false,
+      "maxFireTime": [10.0,60.0],
+      "nonExtinguishFireTime": 10.0,
+      "underwaterExtinguishTime": 3.0,
       "underwaterExtinguishAdditionalWater": 0.035,
       "checkAdditionalWater": true
     },
@@ -170,7 +132,8 @@
       "penetration": 6.0,
       "extinguisherEffective": false,
       "fxPresetName": "fuel_exterior",
-      "extinguishChance": 0.99
+      "extinguishChance": 0.99,
+      "allowMultipleFx": true
     },
     "hull_bustle": {
       "damage": 1.0,

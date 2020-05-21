@@ -275,6 +275,30 @@
           "armorClass": "tank_structural_steel"
         }
       },
+      "grille": {
+        "armorClass": "RHA_tank_modern",
+        "hp": 300.0,
+        "armorThickness": 30.0,
+        "armorEffectiveThicknessMax": 30.0,
+        "stopChanceOnDeadPart": 0.0,
+        "createSecondaryShatters": false,
+        "ex_armor_body_01_dm": [],
+        "ex_armor_body_02_dm": [],
+        "ex_armor_body_03_dm": [],
+        "ex_armor_body_04_dm": []
+      },
+      "turret_grille_armor": {
+        "hp": 300.0,
+        "cumulativeEffectiveThicknessMax": 200.0,
+        "genericArmorQuality": 0.01,
+        "cumulativeArmorQuality": 2.0,
+        "armorThickness": 50.0,
+        "armorClass": "grille_air",
+        "composite_armor_hull_03_dm": [],
+        "composite_armor_hull_04_dm": [],
+        "composite_armor_hull_05_dm": [],
+        "composite_armor_hull_06_dm": []
+      },
       "body_shields": {
         "armorClass": "tank_structural_steel",
         "hp": 1000.0,
@@ -285,14 +309,20 @@
         "ex_armor_r_03_dm": [],
         "ex_armor_l_04_dm": [],
         "ex_armor_r_04_dm": [],
+        "ex_armor_r_05_dm": [],
+        "ex_armor_l_05_dm": [],
         "ex_armor_l_07_dm": [],
         "ex_armor_r_07_dm": [],
+        "ex_armor_body_05_dm": [],
+        "ex_armor_body_06_dm": [],
         "ex_decor_13_dm": [],
         "ex_decor_14_dm": [],
         "ex_decor_15_dm": [],
         "ex_decor_16_dm": [],
         "ex_decor_l_05_dm": [],
         "ex_decor_r_05_dm": [],
+        "ex_armor_r_06_dm": [],
+        "ex_armor_l_06_dm": [],
         "ex_decor_l_10_dm": [],
         "ex_decor_r_10_dm": [],
         "ex_decor_l_11_dm": [],
@@ -794,6 +824,18 @@
     }
   },
   {
+    "fuelTanks": {
+      "r1": {
+        "part": "fuel_tank_exterior_r_01_dm",
+        "external": true
+      },
+      "l1": {
+        "part": "fuel_tank_exterior_l_01_dm",
+        "external": true
+      }
+    }
+  },
+  {
     "xray_viewer_data": [
       {
         "armorArrayHull": {
@@ -815,6 +857,50 @@
             "layer": {
               "dmPart": "composite_armor_hull_02_dm",
               "xrayTextThickness": 10.0
+            }
+          }
+        }
+      },
+      {
+        "armorArrayHull": {
+          "xrayDmPart": "composite_armor_hull_03_dm",
+          "titleLoc": "grille_air",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_hull_03_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayTurret": {
+          "xrayDmPart": "composite_armor_hull_04_dm",
+          "titleLoc": "grille_air",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_hull_04_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayTurret": {
+          "xrayDmPart": "composite_armor_hull_05_dm",
+          "titleLoc": "grille_air",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_hull_05_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayTurret": {
+          "xrayDmPart": "composite_armor_hull_06_dm",
+          "titleLoc": "grille_air",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_hull_06_dm"
             }
           }
         }
@@ -1839,6 +1925,12 @@
           "blk": "gameData/Weapons/groundModels_weapons/105mm_L74_103C_user_cannon.blk",
           "emitter": "bone_gun_barrel",
           "flash": "emtr_gun_flame",
+          "sleeveEmitter": "emtr_shell",
+          "sleeveMesh": "cartridge_case",
+          "hatchAnimVar": "hatch_toggle",
+          "openHatchTime": 1.3,
+          "sleevesLifeTime": 10.0,
+          "sleeveImpulse": [5.0,0.0,0.0],
           "maxAdditionalPitch": 0.0,
           "allowableDelta": 20.0,
           "defaultYaw": 0.0,
@@ -2193,11 +2285,11 @@
         "Empty": 41800.0,
         "Fuel": 700.0,
         "TakeOff": 42500.0,
-        "momentOfInertia": [1.8,3.0,3.0],
+        "momentOfInertia": [2.0,4.0,4.0],
         "CenterOfGravity": [0.1,0.4,0.0],
         "AdvancedMass": false,
-        "trackMass": 2600.0,
-        "CenterOfGravityClampY": [0.0,0.4]
+        "trackMass": 1500.0,
+        "CenterOfGravityClampY": [0.0,0.5]
       },
       "tracks": {
         "animationMultiplier": -0.63,
@@ -2270,8 +2362,8 @@
         "frontBackGearRadius": 0.27,
         "topGearRadius": 0.15,
         "defaultDampeningForce": [120000.0,120000.0],
-        "dampeningRelaxationRatio": 0.8,
-        "dampeningCompressionRatio": 0.4
+        "dampeningRelaxationRatio": 0.7,
+        "dampeningCompressionRatio": 0.3
       },
       "movableSuspension": {
         "speed": 1.0,
@@ -2785,6 +2877,15 @@
       },
       {
         "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -2852,6 +2953,12 @@
                 "blk": "gameData/Weapons/groundModels_weapons/105mm_L74_103C_user_cannon.blk",
                 "emitter": "bone_gun_barrel",
                 "flash": "emtr_gun_flame",
+                "sleeveEmitter": "emtr_shell",
+                "sleeveMesh": "cartridge_case",
+                "hatchAnimVar": "hatch_toggle",
+                "openHatchTime": 1.3,
+                "sleevesLifeTime": 10.0,
+                "sleeveImpulse": [5.0,0.0,0.0],
                 "maxAdditionalPitch": 0.0,
                 "allowableDelta": 20.0,
                 "defaultYaw": 0.0,

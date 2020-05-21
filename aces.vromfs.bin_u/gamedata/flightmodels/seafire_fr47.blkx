@@ -2619,7 +2619,14 @@
       "preset": {
         "name": "4_rockets",
         "blk": "gameData/FlightModels/weaponPresets/seafire_fr47_4rockets.blk",
-        "reqModification": "gloster_rc"
+        "reqModification": "gloster_rc",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/uk_rp3_3.blk",
+            "amountPerTier": 1.0,
+            "iconType": "rockets_he_small"
+          }
+        }
       }
     },
     {
@@ -2635,6 +2642,24 @@
         },
         {
           "reqModification": "gloster_rc_add"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/uk_rp3_4a.blk",
+                "amountPerTier": 4.0,
+                "iconType": "rockets_he_small_group"
+              }
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/uk_rp3_4b.blk",
+                "amountPerTier": 4.0,
+                "iconType": "rockets_he_small_group"
+              }
+            }
+          ]
         }
       ]
     }

@@ -2030,8 +2030,8 @@
       "water_temperature1": [0.0,1000.0],
       "fuel_pressure": [0.0,15.0],
       "fuel": [0.0,1050.0],
-      "ammo_counter1": [100.0,0.0],
-      "ammo_counter3": [100.0,0.0],
+      "ammo_counter1": [90.0,0.0],
+      "ammo_counter3": [90.0,0.0],
       "weapon_lock_lamp_flags1": 6,
       "weapon_lock_lamp_flags2": 8
     },
@@ -2118,14 +2118,28 @@
       "preset": {
         "name": "mig_19_s5k_rockets",
         "blk": "gameData/FlightModels/weaponPresets/mig_19s_s5k_rockets.blk",
-        "reqModification": "C5"
+        "reqModification": "C5",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/su_s_5k_rocket.blk",
+            "amountPerTier": 8.0,
+            "iconType": "nar_ap_small"
+          }
+        }
       }
     },
     {
       "preset": {
         "name": "mig_19_4xs5k_rockets",
         "blk": "gameData/FlightModels/weaponPresets/mig_19s_4xs5k_rockets.blk",
-        "reqModification": "C5"
+        "reqModification": "C5",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/su_s_5k_rocket.blk",
+            "amountPerTier": 8.0,
+            "iconType": "nar_ap_small"
+          }
+        }
       }
     }
   ],

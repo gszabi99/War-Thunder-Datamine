@@ -268,9 +268,9 @@ local getAGBullets = generateAgmBulletsTextFunction(helicopterState.Agm.count, h
 
 local getAABullets = generateBulletsTextFunction(helicopterState.Aam.count, helicopterState.Aam.seconds)
 
-local createHelicopterParam = function(param, width, line_style, isBackground, needCaption = true)
+local createHelicopterParam = function(param, width, line_style, isBackground, needCaption = true, for_ils = false)
 {
-  local rowHeight = helicopterState.IsMfdEnabled.value ? 30 : hdpx(28)
+  local rowHeight = for_ils ? 50 : hdpx(28)
 
   local selectColor = function(){
     return param?.alertWatched && param.alertWatched[0].value && !isBackground
@@ -475,14 +475,14 @@ textParamsMap[HelicopterParams.FUEL] <- {
   alertWatched = [helicopterState.IsFuelCritical]
 }
 
-local generateParamsTable = function(mask, width, pos, gap, needCaption = true) {
+local generateParamsTable = function(mask, width, pos, gap, needCaption = true, forIls = false) {
   local getChildren = function(line_style, isBackground)
   {
     local children = []
     foreach(key, param in textParamsMap)
     {
       if ((1 << key) & mask.value)
-        children.append(createHelicopterParam(param, width, line_style, isBackground, needCaption))
+        children.append(createHelicopterParam(param, width, line_style, isBackground, needCaption, forIls))
     }
     return children
   }

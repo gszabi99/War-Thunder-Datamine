@@ -20,7 +20,19 @@
     "antiShipRocket": true
   },
   "rocket": {
+    "normalizationPreset": "heat",
+    "ricochetPreset": "he",
+    "secondaryShattersPreset": "ap_rocket",
+    "stabilityThreshold": 0.05,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.5,
+    "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "rocket_tank",
+    "slopeEffectPreset": "ap",
+    "modelName": "tank_bullet_he",
+    "fresnel": [0.23,0.1,2.0],
+    "explodeOnRendinst": true,
+    "useEffectiveArmorThicknessForShatter": true,
     "bulletName": "152mm_rp_3",
     "caliber": 0.152,
     "mass": 43.0,
@@ -77,6 +89,11 @@
     "waterCollisionEffect": "120-203_he_water_splash",
     "waterFxScale": [1.2,1.4],
     "explosionPatchRadius": 5.0,
+    "stabilityRicochetModifier": {
+      "mod1": [0.0,0.5],
+      "mod2": [20.0,0.6],
+      "mod3": [30.0,1.0]
+    },
     "DamageParts": {
       "body": {
         "hp": 5.0,

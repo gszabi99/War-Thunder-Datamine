@@ -192,7 +192,7 @@
           "armorThickness": 12.7
         },
         "turret_06_bottom_dm": {
-          "armorThickness": 5.0
+          "armorThickness": 10.0
         },
         "turret_05_front_dm": {
           "armorThickness": 25.4,
@@ -254,13 +254,15 @@
           "armorThickness": 25.1
         },
         "turret_05_top_dm": {
-          "armorThickness": 12.7
+          "armorThickness": 12.7,
+          "createSecondaryShatters": false
         },
         "turret_03_front_dm": {
           "armorThickness": 25.4
         }
       },
-      "armor_steel": {
+      "ex_armor_steel": {
+        "createSecondaryShatters": false,
         "ex_armor_r_01_dm": {
           "armorThickness": 6.0,
           "hidableInViewer": true
@@ -293,28 +295,30 @@
           "armorThickness": 6.0,
           "hidableInViewer": true
         },
+        "turret_08_back_dm": {
+          "armorThickness": 6.35,
+          "hidableInViewer": true
+        },
+        "superstructure_back_dm": {
+          "armorThickness": 6.35,
+          "hidableInViewer": true
+        },
+        "turret_02_bottom_dm": {
+          "armorThickness": 6.35
+        }
+      },
+      "armor_steel": {
         "turret_01_bottom_dm": {
           "armorThickness": 5.0
         },
         "turret_01_top_dm": {
           "armorThickness": 5.0
         },
-        "turret_02_bottom_dm": {
-          "armorThickness": 6.35
-        },
         "turret_bottom_dm": {
           "armorThickness": 6.35
         },
-        "turret_08_back_dm": {
-          "armorThickness": 6.35,
-          "hidableInViewer": true
-        },
         "turret_04_back_dm": {
           "armorThickness": 25.4
-        },
-        "superstructure_back_dm": {
-          "armorThickness": 6.35,
-          "hidableInViewer": true
         },
         "turret_06_side_dm": {
           "armorThickness": 6.35
@@ -363,10 +367,13 @@
         "armorThickness": 4.0,
         "stopChanceOnDeadPart": 0.0,
         "createSecondaryShatters": false,
-        "ex_decor_l_09_dm": [],
-        "ex_decor_r_04_dm": [],
         "ex_decor_02_dm": [],
-        "ex_decor_03_dm": []
+        "ex_decor_03_dm": [],
+        "ex_decor_r_04_dm": [],
+        "ex_decor_l_04_dm": [],
+        "ex_decor_r_05_dm": [],
+        "ex_decor_l_05_dm": [],
+        "ex_decor_l_09_dm": []
       },
       "body_shields": {
         "hp": 600.0,
@@ -2011,9 +2018,14 @@
         }
       },
       {
-        "animatedBones": {
-          "node": "antenna_target_location"
-        }
+        "animatedBones": [
+          {
+            "node": "antenna_target_location"
+          },
+          {
+            "node": "antenna_target_location_mount"
+          }
+        ]
       }
     ]
   },
@@ -2041,6 +2053,11 @@
           "blk": "gameData/sensors/us_adats_track.blk",
           "turretIndex": 0,
           "dmPart": "optic_gun_dm"
+        }
+      },
+      {
+        "sensor": {
+          "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
         }
       }
     ]
@@ -2629,6 +2646,15 @@
             }
           }
         ]
+      },
+      {
+        "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
       },
       {
         "event": {

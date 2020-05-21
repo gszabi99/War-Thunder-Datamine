@@ -105,15 +105,6 @@
     "type": "typeMediumTank"
   },
   {
-    "customClassIco": "!#ui/gameuiskin#image_in_progress_ico"
-  },
-  {
-    "customImage": "!#ui/unitskin#image_in_progress"
-  },
-  {
-    "customTooltipImage": "ui/aircrafts/image_in_progress"
-  },
-  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "RHA_tank",
@@ -2763,15 +2754,6 @@
     }
   },
   {
-    "default_skin": {
-      "name": "default",
-      "replace_tex": {
-        "from": "it_camo_olive_green*",
-        "to": "it_camo_olive_dab*"
-      }
-    }
-  },
-  {
     "skin": {
       "name": "it_camo_desert_light_yellow",
       "nameLocId": "skin/it_camo_desert_light_yellow",
@@ -2790,6 +2772,19 @@
       "replace_tex": {
         "from": "it_camo_olive_green*",
         "to": "it_camo_winter_white*"
+      }
+    }
+  },
+  {
+    "default_skin": {
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "it_camo_olive_dab*"
+      },
+      "set_tex": {
+        "from": "sherman_VII_body_c*",
+        "to": "sherman_VII_skin_body_c*",
+        "param": "camo_skin_tex"
       }
     }
   }

@@ -2569,6 +2569,9 @@
             "separateDm": true
           },
           {
+            "overwriteLinks": true
+          },
+          {
             "dp": "stab_dm"
           },
           {
@@ -2763,6 +2766,9 @@
           },
           {
             "separateDm": true
+          },
+          {
+            "overwriteLinks": true
           },
           {
             "dp": "stab_dm"
@@ -3166,6 +3172,12 @@
             "dm": "wing1_r_dm"
           },
           {
+            "separateDm": true
+          },
+          {
+            "overwriteLinks": true
+          },
+          {
             "dp": "stab_dm"
           },
           {
@@ -3360,6 +3372,9 @@
           },
           {
             "separateDm": true
+          },
+          {
+            "overwriteLinks": true
           },
           {
             "dp": "stab_dm"
@@ -6056,14 +6071,28 @@
         "preset": {
           "name": "a7m_66kg_rockets",
           "blk": "gameData/FlightModels/weaponPresets/n1k2_jko_66kg_rockets.blk",
-          "reqModification": "jp_rocket_type3_66kg"
+          "reqModification": "jp_rocket_type3_66kg",
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/jp_navy_rocket_type3_number6_66kg.blk",
+              "amountPerTier": 1.0,
+              "iconType": "rockets_he_large"
+            }
+          }
         }
       },
       {
         "preset": {
           "name": "a7m_84kg_rockets",
           "blk": "gameData/FlightModels/weaponPresets/n1k2_jko_84kg_rockets.blk",
-          "reqModification": "jp_rocket_type3_84kg"
+          "reqModification": "jp_rocket_type3_84kg",
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/jp_navy_rocket_type5_number6_84kg.blk",
+              "amountPerTier": 1.0,
+              "iconType": "rockets_ap_large"
+            }
+          }
         }
       }
     ]

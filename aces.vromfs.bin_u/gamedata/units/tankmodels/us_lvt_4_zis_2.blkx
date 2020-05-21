@@ -218,6 +218,9 @@
         },
         "body_back_dm": {
           "armorThickness": 6.35
+        },
+        "ex_armor_01_dm": {
+          "armorThickness": 6.35
         }
       },
       "turret": {
@@ -1987,7 +1990,8 @@
             "exhaust": [-3.5,1.5,1.3],
             "exhaustDir": [-5.5,0.0,0.0],
             "intake": [2.5,1.1,1.3],
-            "thrust": 30000.0
+            "thrust": 30000.0,
+            "reverseMult": 0.7
           }
         },
         {
@@ -1995,7 +1999,8 @@
             "exhaust": [-3.5,1.5,-1.3],
             "exhaustDir": [-5.5,0.0,0.0],
             "intake": [2.5,1.1,-1.3],
-            "thrust": 30000.0
+            "thrust": 30000.0,
+            "reverseMult": 0.7
           }
         }
       ]
@@ -2477,6 +2482,15 @@
             }
           }
         ]
+      },
+      {
+        "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
       },
       {
         "event": {

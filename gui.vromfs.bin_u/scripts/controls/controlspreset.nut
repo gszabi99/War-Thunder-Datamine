@@ -27,6 +27,7 @@ class ControlsPreset {
     mouseButton = ::STD_MOUSE_DEVICE_ID
     keyboardKey = ::STD_KEYBOARD_DEVICE_ID
     joyButton   = ::JOYSTICK_DEVICE_0_ID
+    gesture     = ::STD_GESTURE_DEVICE_ID
   }
 
 
@@ -219,6 +220,7 @@ class ControlsPreset {
       useJoystickMouseForVoiceMessage   = false
       useMouseForVoiceMessage           = false
       mouseJoystick                     = false
+      useTouchpadAiming                 = false
     }
   }
 
@@ -935,7 +937,7 @@ class ControlsPreset {
   function getButtonName(deviceId, buttonId)
   {
     if (deviceId != ::JOYSTICK_DEVICE_0_ID)
-      return ::get_button_name(deviceId, buttonId) // C++ function
+      return ::loc(::get_button_name(deviceId, buttonId)) // C++ function
 
     local buttonLocalized = ::loc("composite/button")
 

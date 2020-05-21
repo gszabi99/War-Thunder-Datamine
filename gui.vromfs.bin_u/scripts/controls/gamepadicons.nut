@@ -175,6 +175,8 @@ local getMouseTexture = function(idx, preset = curPreset)
 local getMouseAxisTexture = @(axisVal)
   axisVal in mouseAxesImages ? "#ui/gameuiskin#"+mouseAxesImages[axisVal] : ""
 
+::cross_call_api.getTextureName <- getTexture
+
 return {
   TOTAL_BUTTON_INDEXES = btnNameByIndex.len()
   ICO_PRESET_DEFAULT       = ICO_PRESET_DEFAULT

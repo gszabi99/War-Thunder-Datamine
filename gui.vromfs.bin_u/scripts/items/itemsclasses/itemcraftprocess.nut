@@ -34,7 +34,8 @@ class ::items_classes.CraftProcess extends ItemExternal {
         { itemName = ::colorize("activeTextColor", parentItem ? parentItem.getName() : getName()) })
       ::scene_msg_box("craft_canceled", null, text, [
         [ "yes", @() inventoryClient.cancelDelayedExchange(item.uids[0],
-                     @(resultItems) item.onCancelComplete(resultItems, params)) ],
+                     @(resultItems) item.onCancelComplete(resultItems, params),
+                     @(errorId) item.showCantCancelCraftMsgBox()) ],
         [ "no" ]
       ], "yes", { cancel_fn = function() {} })
       return true
@@ -52,9 +53,6 @@ class ::items_classes.CraftProcess extends ItemExternal {
 
   function onCancelComplete(resultItems, params)
   {
-    if (!!resultItems?.error)
-      return showCantCancelCraftMsgBox()
-
     ::ItemsManager.markInventoryUpdate()
 
     local isShowOpening  = @(extItem) extItem?.itemdef.type == "item"

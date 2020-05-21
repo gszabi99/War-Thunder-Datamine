@@ -111,15 +111,6 @@
     "canReloadNonGuns": true
   },
   {
-    "customClassIco": "!#ui/gameuiskin#image_in_progress_ico"
-  },
-  {
-    "customImage": "!#ui/unitskin#image_in_progress"
-  },
-  {
-    "customTooltipImage": "ui/aircrafts/image_in_progress"
-  },
-  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "aluminum_armor_5083",
@@ -152,7 +143,7 @@
           "armorThickness": 19.0
         },
         "superstructure_top_dm": {
-          "armorThickness": 19.0
+          "armorThickness": 19.05
         },
         "superstructure_back_dm": {
           "armorThickness": 25.4
@@ -223,10 +214,10 @@
           "variableThickness": true
         },
         "turret_top_dm": {
-          "armorThickness": 19.0
+          "armorThickness": 25.4
         },
         "turret_commander_dm": {
-          "armorThickness": 31.7
+          "armorThickness": 25.4
         }
       },
       "mask": {
@@ -1704,6 +1695,171 @@
     }
   },
   {
+    "MetaParts": {
+      "body": [
+        {
+          "hp": 8000.0
+        },
+        {
+          "part": "body_front_dm"
+        },
+        {
+          "part": "body_top_dm"
+        },
+        {
+          "part": "body_bottom_dm"
+        },
+        {
+          "part": "body_side_dm"
+        },
+        {
+          "part": "body_back_dm"
+        },
+        {
+          "part": "superstructure_top_dm"
+        },
+        {
+          "part": "superstructure_front_dm"
+        },
+        {
+          "part": "superstructure_back_dm"
+        },
+        {
+          "part": "superstructure_side_dm"
+        },
+        {
+          "part": "turret_02_side_dm"
+        },
+        {
+          "part": "turret_03_side_dm"
+        },
+        {
+          "part": "turret_01_back_dm"
+        },
+        {
+          "part": "turret_02_back_dm"
+        },
+        {
+          "part": "turret_03_back_dm"
+        },
+        {
+          "part": "turret_02_top_dm"
+        },
+        {
+          "part": "turret_03_top_dm"
+        },
+        {
+          "effect": {
+            "conditionDamageType": "explosion",
+            "expl": 1.0,
+            "conditionDamage": 350.0,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "cumulative",
+            "expl": 1.0,
+            "conditionDamage": 250.0,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "generic",
+            "expl": 1.0,
+            "conditionDamage": 750.0,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "expl": 1.0,
+            "conditionDead": true,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
+        }
+      ],
+      "mount": [
+        {
+          "hp": 8000.0
+        },
+        {
+          "part": "turret_bottom_dm"
+        },
+        {
+          "part": "gun_mask_01_dm"
+        },
+        {
+          "part": "turret_back_dm"
+        },
+        {
+          "part": "turret_side_dm"
+        },
+        {
+          "part": "turret_top_dm"
+        },
+        {
+          "part": "turret_bottom_dm"
+        },
+        {
+          "part": "turret_02_bottom_dm"
+        },
+        {
+          "part": "turret_commander_dm"
+        },
+        {
+          "part": "turret_01_top_dm"
+        },
+        {
+          "part": "turret_front_dm"
+        },
+        {
+          "part": "turret_01_front_dm"
+        },
+        {
+          "effect": {
+            "conditionDamageType": "explosion",
+            "expl": 1.0,
+            "conditionDamage": 350.0,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "cumulative",
+            "expl": 1.0,
+            "conditionDamage": 250.0,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "generic",
+            "expl": 1.0,
+            "conditionDamage": 750.0,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "expl": 1.0,
+            "conditionDead": true,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
+        }
+      ]
+    }
+  },
+  {
     "gunConvergence": {
       "distance": 800.0,
       "vertical": true,
@@ -1752,13 +1908,25 @@
           },
           "limits": {
             "yaw": [-180.0,180.0],
-            "pitch": [-13.0,43.0]
+            "pitch": [-17.0,45.0]
           },
-          "limitsTable": {
-            "lim1": [-180.0,-110.0,-5.0,43.0],
-            "lim2": [-110.0,110.0,-13.0,43.0],
-            "lim3": [110.0,180.0,-5.0,43.0]
-          },
+          "limitsTable": [
+            {
+              "lim1": [-180.0,-95.0,-6.0,45.0]
+            },
+            {
+              "lim2": [-95.0,-55.0,-17.0,45.0]
+            },
+            {
+              "lim2": [-55.0,55.0,-13.0,45.0]
+            },
+            {
+              "lim2": [55.0,95.0,-17.0,45.0]
+            },
+            {
+              "lim3": [95.0,180.0,-6.0,45.0]
+            }
+          ],
           "gunStabilizer": {
             "hasVerticalGunFreeMode": false,
             "hasHorizontal": true,
@@ -1971,7 +2139,19 @@
             "ratio": 10.0
           },
           {
+            "ratio": 8.0
+          },
+          {
+            "ratio": 6.0
+          },
+          {
+            "ratio": 4.5
+          },
+          {
             "ratio": 3.75
+          },
+          {
+            "ratio": 2.7
           },
           {
             "ratio": 1.84
@@ -2678,6 +2858,9 @@
       },
       "airstrike": [],
       "improved_optics": [],
+      "modern_tank_laser_rangefinder": {
+        "tier": 3
+      },
       "75mm_usa_APDSFS": [],
       "tank_smoke_screen_system_mod": {
         "tier": 3,
@@ -2720,13 +2903,25 @@
                 },
                 "limits": {
                   "yaw": [-180.0,180.0],
-                  "pitch": [-13.0,43.0]
+                  "pitch": [-17.0,45.0]
                 },
-                "limitsTable": {
-                  "lim1": [-180.0,-110.0,-5.0,43.0],
-                  "lim2": [-110.0,110.0,-13.0,43.0],
-                  "lim3": [110.0,180.0,-5.0,43.0]
-                },
+                "limitsTable": [
+                  {
+                    "lim1": [-180.0,-95.0,-6.0,45.0]
+                  },
+                  {
+                    "lim2": [-95.0,-55.0,-17.0,45.0]
+                  },
+                  {
+                    "lim2": [-55.0,55.0,-13.0,45.0]
+                  },
+                  {
+                    "lim2": [55.0,95.0,-17.0,45.0]
+                  },
+                  {
+                    "lim3": [95.0,180.0,-6.0,45.0]
+                  }
+                ],
                 "gunStabilizer": {
                   "hasVerticalGunFreeMode": false,
                   "hasHorizontal": true,

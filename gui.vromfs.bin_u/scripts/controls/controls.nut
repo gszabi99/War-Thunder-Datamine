@@ -10,6 +10,7 @@ local { resetFastVoiceMessages } = require("scripts/wheelmenu/voiceMessages.nut"
 local { unitClassType } = require("scripts/unit/unitClassType.nut")
 local controlsPresetConfigPath = require("scripts/controls/controlsPresetConfigPath.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { isMultifuncMenuAvailable, isWheelmenuAxisConfigurable } = require("scripts/wheelmenu/multifuncmenuShared.nut")
 
 ::MAX_SHORTCUTS <- 3
 ::preset_changed <- false
@@ -177,7 +178,7 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
   foreach (button in shortcut)
     if (button && button.dev.len() >= 0)
       foreach(d in button.dev)
-        if (d > 0 && d <= ::JOYSTICK_DEVICE_0_ID)
+        if (d > 0 && d <= ::STD_GESTURE_DEVICE_ID)
             return true
   return false
 }
@@ -507,8 +508,8 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
     local showWizard = !::is_platform_xboxone
       || (controllerState?.is_keyboard_connected || @() false) ()
       || (controllerState?.is_mouse_connected || @() false) ()
-    showSceneBtn("btn_controlsWizard", !isTutorial && showWizard)
-    showSceneBtn("btn_controlsDefault", !isTutorial && !showWizard)
+    showSceneBtn("btn_controlsWizard", showWizard)
+    showSceneBtn("btn_controlsDefault", !showWizard)
     showSceneBtn("btn_clearAll", !isTutorial)
     showSceneBtn("btn_controlsHelp", ::has_feature("ControlsHelp"))
   }
@@ -2548,7 +2549,7 @@ local function getWeaponFeatures(weaponsBlkList)
 
     controls = [ "throttle" ]
 
-    if (::get_mission_difficulty_int() == ::g_difficulty.SIMULATOR.diffCode)
+    if (::get_mission_difficulty_int() == ::g_difficulty.SIMULATOR.diffCode && !::CONTROLS_ALLOW_ENGINE_AUTOSTART)
       controls.append("ID_TOGGLE_ENGINE")
 
     if (isMouseAimMode)
@@ -2782,6 +2783,14 @@ local function getWeaponFeatures(weaponsBlkList)
         for (local i = 0; i < bulletsChoice; i++)
           controls.append(::format(actionBarShortcutFormat, i + 1))
     }
+  }
+
+  if (unitType.wheelmenuAxis.len())
+  {
+    if (isMultifuncMenuAvailable())
+      controls.append("ID_SHOW_MULTIFUNC_WHEEL_MENU")
+    if (::is_xinput_device() && isWheelmenuAxisConfigurable())
+      controls.extend(unitType.wheelmenuAxis)
   }
 
   return controls

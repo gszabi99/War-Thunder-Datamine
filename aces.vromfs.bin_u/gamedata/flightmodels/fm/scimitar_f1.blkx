@@ -59,10 +59,9 @@
   "Elevon": false,
   "ElevonPitchAngleMultiplier": 0.0,
   "VSlats": [10000.0,15000.0],
-  "FlapsToSlats": [0.0,0.0,0.33,1.0],
   "Vne": 1322.0,
   "VneControl": 1320.0,
-  "VneMach": 1.08,
+  "VneMach": 1.14,
   "MaxSpeedNearGround": 846.0,
   "MaxSpeedAtAltitude": 900.0,
   "CriticalSpeed": 50.0,
@@ -93,8 +92,6 @@
     "dvRudderTrim": 0.125,
     "hasFlapsControl": true,
     "canTakeoffWithoutFlaps": true,
-    "hasTakeoffFlapsPosition": true,
-    "hasCombatFlapsPosition": true,
     "hasAirbrake": true,
     "hasGearControl": true,
     "hasArrestorControl": true,
@@ -126,7 +123,7 @@
     "FocusOffset": 0.0,
     "WingVertPos": 0.07,
     "AlphaShift": -0.05,
-    "FlapsShift": [0.12,0.04],
+    "FlapsShift": [0.17,0.04],
     "AirbrakesShift": [0.04,0.01],
     "GearFocusShift": [0.01,0.03],
     "ElevonFocusShift": [0.0,0.0],
@@ -155,10 +152,6 @@
     "FuseCd": 0.0,
     "AirbrakeCd": 0.05,
     "CockpitDoorCd": 0.007,
-    "FlapsPolarBlending1": [0.0,0.0],
-    "FlapsPolarBlending2": [0.2,0.25],
-    "FlapsPolarBlending3": [0.33,0.7],
-    "FlapsPolarBlending4": [1.0,1.0],
     "ClToCmCoeff": 0.0,
     "UseSpinLoss": true,
     "SpinClLoss": 0.12,
@@ -212,6 +205,52 @@
     "DownwashCoeff": 0.8,
     "StabFlowInertia": 0.15,
     "VertStabFlowInertia": 0.1,
+    "FlapsAxis": {
+      "Retracted": {
+        "Presents": true,
+        "Flaps": 0.0
+      },
+      "Combat": {
+        "Presents": true,
+        "Flaps": 0.45
+      },
+      "Takeoff": {
+        "Presents": true,
+        "Flaps": 0.7
+      },
+      "Landing": {
+        "Presents": true,
+        "Flaps": 1.0
+      }
+    },
+    "Flaps0": {
+      "Flaps": 0.0,
+      "FlapsPolarBlending": 0.0,
+      "FlapsAnimation": 0.0,
+      "Stab": 0.0,
+      "Slats": 0.0
+    },
+    "Flaps1": {
+      "Flaps": 0.45,
+      "FlapsPolarBlending": 0.25,
+      "FlapsAnimation": 0.54,
+      "Stab": 0.0,
+      "Slats": 0.6
+    },
+    "Flaps2": {
+      "Flaps": 0.7,
+      "FlapsPolarBlending": 0.7,
+      "FlapsAnimation": 0.8,
+      "Stab": 0.0,
+      "Slats": 1.0
+    },
+    "Flaps3": {
+      "Flaps": 1.0,
+      "FlapsPolarBlending": 1.0,
+      "FlapsAnimation": 1.0,
+      "Stab": -2.0,
+      "Slats": 1.0
+    },
     "NoFlaps": {
       "Cl0": 0.01,
       "alphaCritHigh": 23.0,
@@ -221,8 +260,8 @@
       "CdMin": 0.0075
     },
     "FullFlaps": {
-      "Cl0": 0.35,
-      "alphaCritHigh": 22.5,
+      "Cl0": 0.53,
+      "alphaCritHigh": 21.5,
       "alphaCritLow": -19.0,
       "ClCritHigh": 1.12,
       "ClCritLow": -0.35,
@@ -449,15 +488,15 @@
         "ThrustMaxCoeff_0_2": 0.92,
         "ThrAftMaxCoeff_0_2": 1.0,
         "TorqueMaxCoeff_0_2": 0.92,
-        "ThrustMaxCoeff_0_3": 0.906,
+        "ThrustMaxCoeff_0_3": 0.93,
         "ThrAftMaxCoeff_0_3": 1.0,
-        "TorqueMaxCoeff_0_3": 0.906,
-        "ThrustMaxCoeff_0_4": 0.925,
+        "TorqueMaxCoeff_0_3": 0.93,
+        "ThrustMaxCoeff_0_4": 0.945,
         "ThrAftMaxCoeff_0_4": 1.0,
-        "TorqueMaxCoeff_0_4": 0.925,
-        "ThrustMaxCoeff_0_5": 0.95,
+        "TorqueMaxCoeff_0_4": 0.945,
+        "ThrustMaxCoeff_0_5": 0.96,
         "ThrAftMaxCoeff_0_5": 1.0,
-        "TorqueMaxCoeff_0_5": 0.95,
+        "TorqueMaxCoeff_0_5": 0.96,
         "ThrustMaxCoeff_0_6": 0.98,
         "ThrAftMaxCoeff_0_6": 1.0,
         "TorqueMaxCoeff_0_6": 0.98,

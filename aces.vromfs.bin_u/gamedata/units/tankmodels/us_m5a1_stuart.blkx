@@ -136,6 +136,20 @@
         },
         "body_back_dm": {
           "armorThickness": 25.4
+        },
+        "turret_01_bottom_dm": {
+          "armorThickness": 28.5
+        },
+        "turret_01_top_dm": {
+          "armorThickness": 25.4,
+          "armorClass": "CHA_tank"
+        },
+        "turret_01_side_dm": {
+          "armorThickness": 34.0,
+          "armorClass": "CHA_tank"
+        },
+        "turret_01_front_dm": {
+          "armorThickness": 25.4
         }
       },
       "turret": {
@@ -1685,6 +1699,8 @@
           "breechDP": "cannon_breech_dm",
           "speedYaw": 24.0,
           "speedPitch": 4.0,
+          "yawSpdLowBattery": 24.0,
+          "pitchSpdLowBattery": 4.0,
           "fireConeAngle": 1.0,
           "bullets": 147,
           "salvoAmount": 100.0,
@@ -2576,6 +2592,15 @@
             }
           }
         ]
+      },
+      {
+        "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
       },
       {
         "event": {

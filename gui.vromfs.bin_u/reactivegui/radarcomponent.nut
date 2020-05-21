@@ -82,6 +82,7 @@ local radarState = {
   azimuthMarkers = {}
   AzimuthMarkersTrigger = Watched(0)
   Irst = Watched(false)
+  RadarScale = Watched(1.0)
 
   MfdIlsHeight = Watched(0)
 
@@ -2480,9 +2481,13 @@ local radar = function(posX, posY){
 
 local radarMfdBackground = function()
 {
+  local backSize = [radarState.radarPosSize.w / radarState.RadarScale.value,
+    radarState.radarPosSize.h / radarState.RadarScale.value]
+  local backPos = [radarState.radarPosSize.x - (1.0 - radarState.RadarScale.value) * 0.5 * backSize[0],
+   radarState.radarPosSize.y - (1.0 - radarState.RadarScale.value) * 0.5 * backSize[1]]
   return {
-    pos = [radarState.radarPosSize.x, radarState.radarPosSize.y]
-    size = [radarState.radarPosSize.w, radarState.radarPosSize.h]
+    pos = backPos
+    size = backSize
     rendObj = ROBJ_SOLID
     lineWidth = radarState.radarPosSize.h
     color = Color(0, 0, 0, 255)

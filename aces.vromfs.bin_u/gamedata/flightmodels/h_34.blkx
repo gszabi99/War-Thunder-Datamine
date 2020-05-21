@@ -1340,7 +1340,7 @@
     }
   },
   "helicopter": {
-    "rotorBladeAnglesCoeffs": [0.3,0.5,0.5],
+    "rotorBladeAnglesCoeffs": [0.15,0.25,0.25],
     "propellerStrainCoeff": -0.01
   },
   "gunnerOpticFps": {
@@ -1353,21 +1353,209 @@
     {
       "preset": {
         "name": "h_34_default",
-        "blk": "gameData/flightModels/weaponPresets/h_34_us_v3.blk"
+        "blk": "gameData/flightModels/weaponPresets/h_34_us_v3.blk",
+        "weaponConfig": [
+          {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/gunBrowning50_M3.blk"
+              },
+              {
+                "tier": {
+                  "idx": 8,
+                  "amountPerTier": 1.0,
+                  "iconType": "machine_gun"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 7,
+                  "amountPerTier": 1.0,
+                  "iconType": "machine_gun"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 5,
+                  "amountPerTier": 1.0,
+                  "iconType": "machine_gun"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 4,
+                  "amountPerTier": 1.0,
+                  "iconType": "machine_gun"
+                }
+              }
+            ]
+          },
+          {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk"
+              },
+              {
+                "amountPerTier": 16.0
+              },
+              {
+                "iconType": "nar_rocket_s"
+              },
+              {
+                "tier": {
+                  "idx": 9
+                }
+              },
+              {
+                "tier": {
+                  "idx": 3
+                }
+              }
+            ]
+          }
+        ]
       }
     },
     {
       "preset": {
         "name": "h_34_us_v1",
         "blk": "gameData/flightModels/weaponPresets/h_34_us_v1.blk",
-        "reqModification": "frc_mk2"
+        "reqModification": "frc_mk2",
+        "weaponConfig": [
+          {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
+              "amountPerTier": 2.0,
+              "iconType": "rockets_he_middle_group",
+              "tier": {
+                "idx": 6
+              }
+            }
+          },
+          {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk"
+              },
+              {
+                "tier": {
+                  "idx": 1,
+                  "amountPerTier": 20.0,
+                  "iconType": "nar_ap_rocket_s"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 11,
+                  "amountPerTier": 20.0,
+                  "iconType": "nar_ap_rocket_s"
+                }
+              }
+            ]
+          },
+          {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/gunBrowning30_usaaf.blk"
+              },
+              {
+                "tier": {
+                  "idx": 9,
+                  "amountPerTier": 1.0,
+                  "iconType": "machine_gun"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 10,
+                  "amountPerTier": 1.0,
+                  "iconType": "machine_gun"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 2,
+                  "amountPerTier": 1.0,
+                  "iconType": "machine_gun"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 3,
+                  "amountPerTier": 1.0,
+                  "iconType": "machine_gun"
+                }
+              }
+            ]
+          },
+          {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/gunBrowning50_M3.blk"
+              },
+              {
+                "tier": {
+                  "idx": 8,
+                  "amountPerTier": 1.0,
+                  "iconType": "machine_gun"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 4,
+                  "amountPerTier": 1.0,
+                  "iconType": "machine_gun"
+                }
+              }
+            ]
+          },
+          {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/cannonAN_M3.blk"
+              },
+              {
+                "tier": {
+                  "idx": 5,
+                  "amountPerTier": 1.0,
+                  "iconType": "cannon_inner"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 7,
+                  "amountPerTier": 1.0,
+                  "iconType": "cannon_inner"
+                }
+              }
+            ]
+          }
+        ]
       }
     },
     {
       "preset": {
         "name": "h_34_us_v6",
         "blk": "gameData/flightModels/weaponPresets/h_34_us_v6.blk",
-        "reqModification": "fj_4b_agm_12b"
+        "reqModification": "fj_4b_agm_12b",
+        "weaponConfig": [
+          {
+            "Weapon": {
+              "blk": "gameData/Weapons/cannonHughesMk11Mod0.blk",
+              "tier": {
+                "idx": 7
+              }
+            }
+          },
+          {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/us_agm_12b_bullpup_heli.blk",
+              "tier": {
+                "idx": 5
+              }
+            }
+          }
+        ]
       }
     }
   ],

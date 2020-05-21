@@ -1870,13 +1870,13 @@
             "gunnerDm": "gunner_dm",
             "linkedAnimPart": {
               "verNode": "bone_mg_gun_twin",
-              "verLimits": [-4.5,31.0],
-              "verOriginLimits": [-4.5,31.0]
+              "verLimits": [-4.0,30.0],
+              "verOriginLimits": [-4.0,30.0]
             }
           },
           "limits": {
             "yaw": [-180.0,180.0],
-            "pitch": [-5.0,30.0]
+            "pitch": [-4.0,30.0]
           }
         }
       },
@@ -1889,7 +1889,7 @@
             "triggerGroup": "coaxial"
           },
           {
-            "blk": "gameData/Weapons/groundModels_weapons/7_62mm_PKT_user_machinegun.blk"
+            "blk": "gameData/Weapons/groundModels_weapons/7_62mm_PKT_beltfed_user_machinegun.blk"
           },
           {
             "emitter": "bone_mg_gun_twin_01"
@@ -1919,7 +1919,7 @@
             "fireConeAngle": 1.0
           },
           {
-            "bullets": 1000
+            "bullets": 2000
           },
           {
             "fireConeAngle": 15.0
@@ -2211,14 +2211,14 @@
       },
       "engine": {
         "horsePowers": 300.0,
-        "maxRPM": 2880.0,
-        "minRPM": 600.0
+        "maxRPM": 2600.0,
+        "minRPM": 700.0
       },
       "mechanics": {
         "maxBrakeForce": 52800.0,
         "driveGearRadius": 0.27,
-        "mainGearRatio": 0.946,
-        "sideGearRatio": 5.556,
+        "mainGearRatio": 0.87,
+        "sideGearRatio": 5.5,
         "gearRatios": [
           {
             "ratio": -4.952
@@ -2239,7 +2239,7 @@
             "ratio": 1.284
           },
           {
-            "ratio": 0.858
+            "ratio": 0.85
           }
         ]
       },
@@ -2816,6 +2816,15 @@
       },
       {
         "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -3005,7 +3014,7 @@
                 },
                 "limits": {
                   "yaw": [-180.0,180.0],
-                  "pitch": [-5.0,30.0]
+                  "pitch": [-4.0,30.0]
                 }
               }
             },
@@ -3018,7 +3027,7 @@
                   "triggerGroup": "coaxial"
                 },
                 {
-                  "blk": "gameData/Weapons/groundModels_weapons/7_62mm_PKT_user_machinegun.blk"
+                  "blk": "gameData/Weapons/groundModels_weapons/7_62mm_PKT_beltfed_user_machinegun.blk"
                 },
                 {
                   "emitter": "bone_mg_gun_twin_01"
@@ -3048,7 +3057,7 @@
                   "fireConeAngle": 1.0
                 },
                 {
-                  "bullets": 1000
+                  "bullets": 2000
                 },
                 {
                   "fireConeAngle": 15.0

@@ -2030,9 +2030,9 @@
             "pitch": [-6.0,60.0]
           },
           "limitsTable": {
-            "lim1": [-180.0,-145.0,-2.0,64.0],
+            "lim1": [-180.0,-145.0,-2.0,60.0],
             "lim2": [-145.0,145.0,-6.0,60.0],
-            "lim3": [145.0,180.0,-2.0,64.0]
+            "lim3": [145.0,180.0,-2.0,60.0]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": false,
@@ -2074,7 +2074,7 @@
           "defaultPitch": 0.0,
           "barrelDP": "gun_barrel_02_dm",
           "breechDP": "cannon_breech_02_dm",
-          "speedYaw": 35.0,
+          "speedYaw": 0.0,
           "speedPitch": 35.0,
           "fireConeAngle": 1.0,
           "bullets": 500,
@@ -2131,8 +2131,13 @@
             }
           ],
           "limits": {
-            "yaw": [-0.0,0.0],
+            "yaw": [-180.0,180.0],
             "pitch": [-6.0,60.0]
+          },
+          "limitsTable": {
+            "lim1": [-180.0,-145.0,-2.0,60.0],
+            "lim2": [-145.0,145.0,-6.0,60.0],
+            "lim3": [145.0,180.0,-2.0,60.0]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": false,
@@ -2184,10 +2189,10 @@
             "barrelDP": "gun_barrel_05_dm"
           },
           {
-            "speedYaw": 17.0
+            "speedYaw": 0.0
           },
           {
-            "speedPitch": 35.0
+            "speedPitch": 0.0
           },
           {
             "fireConeAngle": 1.0
@@ -2993,6 +2998,15 @@
       },
       {
         "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -3210,10 +3224,13 @@
               "node": "ex_armor_r_07"
             },
             {
-              "node": "gun_mask_part_bmp_3"
+              "node": "optic_gun"
             },
             {
               "node": "turret_part_bmp_3"
+            },
+            {
+              "node": "gun_mask_01"
             }
           ]
         },
@@ -3235,7 +3252,7 @@
               "node": "ex_lantern_05"
             },
             {
-              "node": "turret_part_sodema"
+              "node": "optic_gun_1"
             }
           ]
         }
@@ -3333,9 +3350,9 @@
                   "pitch": [-6.0,60.0]
                 },
                 "limitsTable": {
-                  "lim1": [-180.0,-145.0,-2.0,64.0],
+                  "lim1": [-180.0,-145.0,-2.0,60.0],
                   "lim2": [-145.0,145.0,-6.0,60.0],
-                  "lim3": [145.0,180.0,-2.0,64.0]
+                  "lim3": [145.0,180.0,-2.0,60.0]
                 },
                 "gunStabilizer": {
                   "hasVerticalGunFreeMode": false,
@@ -3377,7 +3394,7 @@
                 "defaultPitch": 0.0,
                 "barrelDP": "gun_barrel_02_dm",
                 "breechDP": "cannon_breech_02_dm",
-                "speedYaw": 35.0,
+                "speedYaw": 0.0,
                 "speedPitch": 35.0,
                 "fireConeAngle": 1.0,
                 "bullets": 500,
@@ -3434,8 +3451,13 @@
                   }
                 ],
                 "limits": {
-                  "yaw": [-0.0,0.0],
+                  "yaw": [-180.0,180.0],
                   "pitch": [-6.0,60.0]
+                },
+                "limitsTable": {
+                  "lim1": [-180.0,-145.0,-2.0,60.0],
+                  "lim2": [-145.0,145.0,-6.0,60.0],
+                  "lim3": [145.0,180.0,-2.0,60.0]
                 },
                 "gunStabilizer": {
                   "hasVerticalGunFreeMode": false,
@@ -3487,10 +3509,10 @@
                   "barrelDP": "gun_barrel_05_dm"
                 },
                 {
-                  "speedYaw": 17.0
+                  "speedYaw": 0.0
                 },
                 {
-                  "speedPitch": 35.0
+                  "speedPitch": 0.0
                 },
                 {
                   "fireConeAngle": 1.0

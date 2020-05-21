@@ -2861,6 +2861,22 @@
   },
   {
     "dmg": {
+      "name": "buoy_red_a",
+      "destroyedModelName": "buoy_red_a_destr_phobj",
+      "updateDist": 500.0,
+      "destructionImpulse": 1600.0,
+      "fx": "ad_metal",
+      "fxScale": 2.0,
+      "material": "metal",
+      "stopsBullets": true,
+      "floatable": true,
+      "mass": 2000.0,
+      "inertiaMult": [60.0,1.1,20.0],
+      "volumesCount": 4
+    }
+  },
+  {
+    "dmg": {
       "name": "yacht_a",
       "destroyedModelName": "yacht_a_destr_phobj",
       "updateDist": 1000.0,
@@ -23905,7 +23921,7 @@
       "destructionImpulse": 20000.0,
       "fx": "ad_metal",
       "fxScale": 0.5,
-      "stopsBullets": true,
+      "stopsBullets": false,
       "isParent": false
     }
   },
@@ -23916,7 +23932,7 @@
       "destructionImpulse": 20000.0,
       "fx": "ad_metal",
       "fxScale": 0.5,
-      "stopsBullets": true,
+      "stopsBullets": false,
       "isParent": false
     }
   },
@@ -23927,7 +23943,7 @@
       "destructionImpulse": 20000.0,
       "fx": "ad_metal",
       "fxScale": 0.5,
-      "stopsBullets": true,
+      "stopsBullets": false,
       "isParent": false
     }
   },
@@ -23938,19 +23954,8 @@
       "destructionImpulse": 20000.0,
       "fx": "ad_metal",
       "fxScale": 0.5,
-      "stopsBullets": true,
+      "stopsBullets": false,
       "isParent": false
-    }
-  },
-  {
-    "dmg": {
-      "name": "baroque_manor_small_a_rails_b_03",
-      "destroyedModelName": "baroque_manor_small_a_rails_b_03_destr_phobj",
-      "destructionImpulse": 20000.0,
-      "fx": "ad_metal",
-      "fxScale": 0.5,
-      "stopsBullets": true,
-      "isParent": true
     }
   },
   {
@@ -33780,6 +33785,1123 @@
       },
       "mediterranean_stone_small_d": {
         "immortal": true
+      },
+      "baroque_town_build_2w_6f_b_dp_01": {
+        "nextRes": "baroque_town_build_2w_6f_b_dp_01_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_2w_6f_b_dp_02": {
+        "nextRes": "baroque_town_build_2w_6f_b_dp_02_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_2w_6f_b_dp_03": {
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_2w_6f_b_dp_04": {
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_3w_3f_c_dp_01": {
+        "nextRes": "baroque_town_build_3w_3f_c_dp_01_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_3w_3f_c_dp_02": {
+        "nextRes": "baroque_town_build_3w_3f_c_dp_02_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_3w_5f_a_dp_01": {
+        "nextRes": "baroque_town_build_3w_5f_a_dp_01_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_3w_5f_a_dp_02": {
+        "nextRes": "baroque_town_build_3w_5f_a_dp_02_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_3w_5f_a_dp_03": {
+        "nextRes": "baroque_town_build_3w_5f_a_dp_03_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_3w_5f_a_dp_04": {
+        "nextRes": "baroque_town_build_3w_5f_a_dp_04_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_4w_2f_d_dp_01": {
+        "nextRes": "baroque_town_build_4w_2f_d_dp_01_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_4w_2f_d_dp_02": {
+        "nextRes": "baroque_town_build_4w_2f_d_dp_02_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_4w_2f_d_dp_03": {
+        "nextRes": "baroque_town_build_4w_2f_d_dp_03_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_4w_2f_d_dp_04": {
+        "nextRes": "baroque_town_build_4w_2f_d_dp_04_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_5w_2f_b_dp_01": {
+        "nextRes": "baroque_town_build_5w_2f_b_dp_01_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_5w_2f_b_dp_02": {
+        "nextRes": "baroque_town_build_5w_2f_b_dp_02_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_5w_2f_b_dp_03": {
+        "nextRes": "baroque_town_build_5w_2f_b_dp_03_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_5w_2f_b_dp_04": {
+        "nextRes": "baroque_town_build_5w_2f_b_dp_04_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_corner_60deg_a_dp_01": {
+        "nextRes": "baroque_town_build_corner_60deg_a_dp_01_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_corner_60deg_a_dp_02": {
+        "nextRes": "baroque_town_build_corner_60deg_a_dp_02_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_corner_60deg_a_dp_03": {
+        "nextRes": "baroque_town_build_corner_60deg_a_dp_03_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_corner_60deg_a_dp_04": {
+        "nextRes": "baroque_town_build_corner_60deg_a_dp_04_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_corner_60deg_a_dp_05": {
+        "nextRes": "baroque_town_build_corner_60deg_a_dp_05_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_corner_60deg_a_dp_06": {
+        "nextRes": "baroque_town_build_corner_60deg_a_dp_06_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_corner_90deg_a_dp_01": {
+        "nextRes": "baroque_town_build_corner_90deg_a_dp_01_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_corner_90deg_a_dp_02": {
+        "nextRes": "baroque_town_build_corner_90deg_a_dp_02_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_corner_90deg_a_dp_03": {
+        "nextRes": "baroque_town_build_corner_90deg_a_dp_03_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_corner_90deg_a_dp_04": {
+        "nextRes": "baroque_town_build_corner_90deg_a_dp_04_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_corner_90deg_a_dp_05": {
+        "nextRes": "baroque_town_build_corner_90deg_a_dp_05_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_corner_90deg_b_dp_01": {
+        "nextRes": "baroque_town_build_corner_90deg_b_dp_01_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_corner_90deg_b_dp_02": {
+        "nextRes": "baroque_town_build_corner_90deg_b_dp_02_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_corner_90deg_b_dp_03": {
+        "nextRes": "baroque_town_build_corner_90deg_b_dp_03_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_corner_90deg_b_dp_04": {
+        "nextRes": "baroque_town_build_corner_90deg_b_dp_04_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_corner_90deg_b_dp_05": {
+        "nextRes": "baroque_town_build_corner_90deg_b_dp_05_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_corner_120deg_a_dp_01": {
+        "nextRes": "baroque_town_build_corner_120deg_a_dp_01_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_corner_120deg_a_dp_02": {
+        "nextRes": "baroque_town_build_corner_120deg_a_dp_02_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_corner_120deg_a_dp_03": {
+        "nextRes": "baroque_town_build_corner_120deg_a_dp_03_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_corner_120deg_a_dp_04": {
+        "nextRes": "baroque_town_build_corner_120deg_a_dp_04_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_corner_120deg_a_dp_05": {
+        "nextRes": "baroque_town_build_corner_120deg_a_dp_05_dmg",
+        "hp": 666.0,
+        "impulseThreshold": 1.5,
+        "isParent": true,
+        "apexDestructible": true,
+        "hpFullRegenTime": 480.0,
+        "fx": "ad_buildings_destructions_big",
+        "dmPreset": "stone_house",
+        "fxScale": 1.0
+      },
+      "baroque_town_build_corner_120deg_a_dp_06": [
+        {
+          "nextRes": "baroque_town_build_corner_120deg_a_dp_06_dmg"
+        },
+        {
+          "hp": 666.0
+        },
+        {
+          "impulseThreshold": 1.5
+        },
+        {
+          "isParent": true
+        },
+        {
+          "apexDestructible": true
+        },
+        {
+          "hpFullRegenTime": 480.0
+        },
+        {
+          "isParent": true
+        },
+        {
+          "fx": "ad_buildings_destructions_big"
+        },
+        {
+          "dmPreset": "stone_house"
+        },
+        {
+          "fxScale": 0.1
+        }
+      ],
+      "baroque_manor_large_a_dp_01": [
+        {
+          "nextRes": "baroque_manor_large_a_dp_01_dmg"
+        },
+        {
+          "hp": 666.0
+        },
+        {
+          "impulseThreshold": 1.5
+        },
+        {
+          "isParent": true
+        },
+        {
+          "apexDestructible": true
+        },
+        {
+          "hpFullRegenTime": 480.0
+        },
+        {
+          "isParent": true
+        },
+        {
+          "fx": "ad_buildings_destructions_big"
+        },
+        {
+          "dmPreset": "stone_house"
+        },
+        {
+          "fxScale": 0.1
+        }
+      ],
+      "baroque_manor_large_a_dp_02": [
+        {
+          "nextRes": "baroque_manor_large_a_dp_02_dmg"
+        },
+        {
+          "hp": 666.0
+        },
+        {
+          "impulseThreshold": 1.5
+        },
+        {
+          "isParent": true
+        },
+        {
+          "apexDestructible": true
+        },
+        {
+          "hpFullRegenTime": 480.0
+        },
+        {
+          "isParent": true
+        },
+        {
+          "fx": "ad_buildings_destructions_big"
+        },
+        {
+          "dmPreset": "stone_house"
+        },
+        {
+          "fxScale": 0.1
+        }
+      ],
+      "baroque_manor_large_a_dp_03": [
+        {
+          "nextRes": "baroque_manor_large_a_dp_03_dmg"
+        },
+        {
+          "hp": 666.0
+        },
+        {
+          "impulseThreshold": 1.5
+        },
+        {
+          "isParent": true
+        },
+        {
+          "apexDestructible": true
+        },
+        {
+          "hpFullRegenTime": 480.0
+        },
+        {
+          "isParent": true
+        },
+        {
+          "fx": "ad_buildings_destructions_big"
+        },
+        {
+          "dmPreset": "stone_house"
+        },
+        {
+          "fxScale": 0.1
+        }
+      ],
+      "baroque_manor_large_a_dp_04": [
+        {
+          "nextRes": "baroque_manor_large_a_dp_04_dmg"
+        },
+        {
+          "hp": 666.0
+        },
+        {
+          "impulseThreshold": 1.5
+        },
+        {
+          "isParent": true
+        },
+        {
+          "apexDestructible": true
+        },
+        {
+          "hpFullRegenTime": 480.0
+        },
+        {
+          "isParent": true
+        },
+        {
+          "fx": "ad_buildings_destructions_big"
+        },
+        {
+          "dmPreset": "stone_house"
+        },
+        {
+          "fxScale": 0.1
+        }
+      ],
+      "baroque_manor_small_a_dp_01": [
+        {
+          "nextRes": "baroque_manor_small_a_dp_01_dmg"
+        },
+        {
+          "hp": 666.0
+        },
+        {
+          "impulseThreshold": 1.5
+        },
+        {
+          "isParent": true
+        },
+        {
+          "apexDestructible": true
+        },
+        {
+          "hpFullRegenTime": 480.0
+        },
+        {
+          "isParent": true
+        },
+        {
+          "fx": "ad_buildings_destructions_big"
+        },
+        {
+          "dmPreset": "stone_house"
+        },
+        {
+          "fxScale": 0.1
+        }
+      ],
+      "baroque_manor_small_a_dp_02": [
+        {
+          "nextRes": "baroque_manor_small_a_dp_02_dmg"
+        },
+        {
+          "hp": 666.0
+        },
+        {
+          "impulseThreshold": 1.5
+        },
+        {
+          "isParent": true
+        },
+        {
+          "apexDestructible": true
+        },
+        {
+          "hpFullRegenTime": 480.0
+        },
+        {
+          "isParent": true
+        },
+        {
+          "fx": "ad_buildings_destructions_big"
+        },
+        {
+          "dmPreset": "stone_house"
+        },
+        {
+          "fxScale": 0.1
+        }
+      ],
+      "baroque_manor_small_a_dp_03": [
+        {
+          "nextRes": "baroque_manor_small_a_dp_03_dmg"
+        },
+        {
+          "hp": 666.0
+        },
+        {
+          "impulseThreshold": 1.5
+        },
+        {
+          "isParent": true
+        },
+        {
+          "apexDestructible": true
+        },
+        {
+          "hpFullRegenTime": 480.0
+        },
+        {
+          "isParent": true
+        },
+        {
+          "fx": "ad_buildings_destructions_big"
+        },
+        {
+          "dmPreset": "stone_house"
+        },
+        {
+          "fxScale": 0.1
+        }
+      ],
+      "baroque_manor_small_a_dp_04": [
+        {
+          "nextRes": "baroque_manor_small_a_dp_04_dmg"
+        },
+        {
+          "hp": 666.0
+        },
+        {
+          "impulseThreshold": 1.5
+        },
+        {
+          "isParent": true
+        },
+        {
+          "apexDestructible": true
+        },
+        {
+          "hpFullRegenTime": 480.0
+        },
+        {
+          "isParent": true
+        },
+        {
+          "fx": "ad_buildings_destructions_big"
+        },
+        {
+          "dmPreset": "stone_house"
+        },
+        {
+          "fxScale": 0.1
+        }
+      ],
+      "baroque_manor_small_a_rails_b_03": {
+        "nextRes": "baroque_manor_small_a_rails_b_03_dmg",
+        "physRes": "baroque_manor_small_a_rails_b_03_destr_phobj",
+        "hp": 10.0,
+        "impulseThreshold": 1.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 1.0,
+        "isParent": true
+      },
+      "north_port_patio_a_base": {
+        "nextRes": "north_port_patio_a_base_dmg",
+        "physRes": "north_port_patio_a_base_destr_phobj",
+        "hp": 20.0,
+        "impulseThreshold": 1.0,
+        "fx": "ad_wood_small",
+        "fxScale": 1.0,
+        "material": "wood"
+      },
+      "north_port_patio_a_owen": {
+        "nextRes": "north_port_patio_a_owen_dmg",
+        "physRes": "north_port_patio_a_owen_destr_phobj",
+        "hp": 20.0,
+        "impulseThreshold": 1.0,
+        "fx": "ad_wood_small",
+        "fxScale": 1.0,
+        "material": "wood"
+      },
+      "north_port_patio_b_base": {
+        "nextRes": "north_port_patio_b_base_dmg",
+        "physRes": "north_port_patio_b_base_destr_phobj",
+        "hp": 20.0,
+        "impulseThreshold": 1.0,
+        "fx": "ad_wood_small",
+        "fxScale": 1.0,
+        "material": "wood"
+      },
+      "north_port_patio_b_owen": {
+        "nextRes": "north_port_patio_b_owen_dmg",
+        "physRes": "north_port_patio_b_owen_destr_phobj",
+        "hp": 20.0,
+        "impulseThreshold": 1.0,
+        "fx": "ad_wood_small",
+        "fxScale": 1.0,
+        "material": "wood"
+      },
+      "north_port_patio_a_owen_fence": {
+        "nextRes": "north_port_patio_a_owen_fence_dmg",
+        "physRes": "north_port_patio_a_owen_fence_destr_phobj",
+        "hp": 20.0,
+        "impulseThreshold": 1.0,
+        "fx": "ad_wood_small",
+        "fxScale": 1.0,
+        "material": "wood"
+      },
+      "north_port_patio_c": {
+        "physRes": "north_port_patio_c_destr_phobj",
+        "hp": 20.0,
+        "impulseThreshold": 1.0,
+        "fx": "ad_wood_small",
+        "fxScale": 1.0,
+        "material": "wood"
+      },
+      "north_port_fence_a_column_a": {
+        "nextRes": "north_port_fence_a_column_a_dmg",
+        "physRes": "north_port_fence_a_column_a_destr_phobj",
+        "hp": 9.0,
+        "impulseThreshold": 0.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 0.5,
+        "material": "transparentBeton"
+      },
+      "north_port_fence_a_column_b": {
+        "nextRes": "north_port_fence_a_column_b_dmg",
+        "physRes": "north_port_fence_a_column_b_destr_phobj",
+        "hp": 9.0,
+        "impulseThreshold": 0.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 0.5,
+        "material": "transparentBeton"
+      },
+      "north_port_fence_a_gate": {
+        "physRes": "north_port_fence_a_gate_destr_phobj",
+        "hp": 9.0,
+        "impulseThreshold": 0.0,
+        "fx": "ad_metal_small",
+        "fxScale": 0.5,
+        "material": "transparentBeton"
+      },
+      "north_port_fence_a_wall_a": {
+        "nextRes": "north_port_fence_a_wall_a_dmg",
+        "physRes": "north_port_fence_a_wall_a_destr_phobj",
+        "hp": 9.0,
+        "impulseThreshold": 0.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 0.5,
+        "material": "transparentBeton"
+      },
+      "north_port_fence_a_wall_b": {
+        "nextRes": "north_port_fence_a_wall_b_dmg",
+        "physRes": "north_port_fence_a_wall_b_destr_phobj",
+        "hp": 9.0,
+        "impulseThreshold": 0.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 0.5,
+        "material": "transparentBeton"
+      },
+      "north_port_fence_a_wicket": {
+        "nextRes": "north_port_fence_a_wicket_dmg",
+        "physRes": "north_port_fence_a_wicket_destr_phobj",
+        "hp": 9.0,
+        "impulseThreshold": 0.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 0.5,
+        "material": "transparentBeton"
+      },
+      "north_port_fence_b_column": {
+        "nextRes": "north_port_fence_b_column_dmg",
+        "physRes": "north_port_fence_b_column_destr_phobj",
+        "hp": 9.0,
+        "impulseThreshold": 0.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 0.5,
+        "material": "transparentBeton"
+      },
+      "north_port_fence_b_gate": {
+        "physRes": "north_port_fence_b_gate_destr_phobj",
+        "hp": 9.0,
+        "impulseThreshold": 0.0,
+        "fx": "ad_metal_small",
+        "fxScale": 0.5,
+        "material": "transparentBeton"
+      },
+      "north_port_fence_b_segment": {
+        "nextRes": "north_port_fence_b_segment_dmg",
+        "physRes": "north_port_fence_b_segment_destr_phobj",
+        "hp": 9.0,
+        "impulseThreshold": 0.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 0.5,
+        "material": "transparentBeton"
+      },
+      "north_port_fence_b_wicket": {
+        "nextRes": "north_port_fence_b_wicket_dmg",
+        "physRes": "north_port_fence_b_wicket_destr_phobj",
+        "hp": 9.0,
+        "impulseThreshold": 0.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 0.5,
+        "material": "transparentBeton"
+      },
+      "north_port_fence_c_column": {
+        "nextRes": "north_port_fence_c_column_dmg",
+        "physRes": "north_port_fence_c_column_destr_phobj",
+        "hp": 9.0,
+        "impulseThreshold": 0.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 0.5,
+        "material": "transparentBeton"
+      },
+      "north_port_fence_c_gate": {
+        "physRes": "north_port_fence_c_gate_destr_phobj",
+        "hp": 9.0,
+        "impulseThreshold": 0.0,
+        "fx": "ad_metal_small",
+        "fxScale": 0.5,
+        "material": "transparentBeton"
+      },
+      "north_port_fence_c_segment": {
+        "nextRes": "north_port_fence_c_segment_dmg",
+        "physRes": "north_port_fence_c_segment_destr_phobj",
+        "hp": 9.0,
+        "impulseThreshold": 0.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 0.5,
+        "material": "transparentBeton"
+      },
+      "north_port_fence_c_wicket": {
+        "nextRes": "north_port_fence_c_wicket_dmg",
+        "physRes": "north_port_fence_c_wicket_destr_phobj",
+        "hp": 9.0,
+        "impulseThreshold": 0.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 0.5,
+        "material": "transparentBeton"
+      },
+      "north_port_town_building_a_dp_01": {
+        "nextRes": "north_port_town_building_a_dp_01_dmg",
+        "hp": 10.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 1.0,
+        "isParent": true
+      },
+      "north_port_town_building_a_dp_02": {
+        "nextRes": "north_port_town_building_a_dp_02_dmg",
+        "hp": 10.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 1.0,
+        "isParent": true
+      },
+      "north_port_town_building_a_dp_03": {
+        "nextRes": "north_port_town_building_a_dp_03_dmg",
+        "hp": 10.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 1.0,
+        "isParent": true
+      },
+      "north_port_town_building_a_dp_04": {
+        "nextRes": "north_port_town_building_a_dp_04_dmg",
+        "hp": 10.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 1.0,
+        "isParent": true
+      },
+      "north_port_town_building_a_dp_05": {
+        "nextRes": "north_port_town_building_a_dp_05_dmg",
+        "hp": 10.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 1.0,
+        "isParent": true
+      },
+      "north_port_town_building_a_pipes_a_dp_01": {
+        "hp": 5.0,
+        "impulseThreshold": 1.5,
+        "apexDestructible": true
+      },
+      "north_port_town_building_a_pipes_a_dp_02": {
+        "hp": 5.0,
+        "impulseThreshold": 1.5,
+        "apexDestructible": true
+      },
+      "north_port_town_building_a_pipes_a_dp_03": {
+        "hp": 5.0,
+        "impulseThreshold": 1.5,
+        "apexDestructible": true
+      },
+      "north_port_town_building_a_pipes_a_dp_04": {
+        "hp": 5.0,
+        "impulseThreshold": 1.5,
+        "apexDestructible": true
+      },
+      "north_port_town_building_a_pipes_a_dp_05": {
+        "hp": 5.0,
+        "impulseThreshold": 1.5,
+        "apexDestructible": true
+      },
+      "north_port_town_building_b_dp_01": {
+        "nextRes": "north_port_town_building_b_dp_01_dmg",
+        "hp": 10.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 1.0,
+        "isParent": true
+      },
+      "north_port_town_building_b_dp_02": {
+        "nextRes": "north_port_town_building_b_dp_02_dmg",
+        "hp": 10.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 1.0,
+        "isParent": true
+      },
+      "north_port_town_building_b_dp_03": {
+        "nextRes": "north_port_town_building_b_dp_03_dmg",
+        "hp": 10.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 1.0,
+        "isParent": true
+      },
+      "north_port_town_building_b_dp_04": {
+        "nextRes": "north_port_town_building_b_dp_04_dmg",
+        "hp": 10.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 1.0,
+        "isParent": true
+      },
+      "north_port_town_building_b_dp_05": {
+        "nextRes": "north_port_town_building_b_dp_05_dmg",
+        "hp": 10.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 1.0,
+        "isParent": true
+      },
+      "north_port_town_building_d_dp_01": {
+        "nextRes": "north_port_town_building_d_dp_01_dmg",
+        "hp": 10.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 1.0,
+        "isParent": true
+      },
+      "north_port_town_building_d_dp_02": {
+        "nextRes": "north_port_town_building_d_dp_02_dmg",
+        "hp": 10.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 1.0,
+        "isParent": true
+      },
+      "north_port_town_building_d_dp_03": {
+        "nextRes": "north_port_town_building_d_dp_03_dmg",
+        "hp": 10.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 1.0,
+        "isParent": true
+      },
+      "north_port_town_building_d_dp_04": {
+        "nextRes": "north_port_town_building_d_dp_04_dmg",
+        "hp": 10.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 1.0,
+        "isParent": true
+      },
+      "north_port_town_building_d_dp_05": {
+        "nextRes": "north_port_town_building_d_dp_05_dmg",
+        "hp": 10.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 1.0,
+        "isParent": true
+      },
+      "north_port_town_building_g_dp_01": {
+        "nextRes": "north_port_town_building_g_dp_01_dmg",
+        "hp": 10.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 1.0,
+        "isParent": true
+      },
+      "north_port_town_building_g_dp_02": {
+        "nextRes": "north_port_town_building_g_dp_02_dmg",
+        "hp": 10.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 1.0,
+        "isParent": true
+      },
+      "north_port_town_building_g_dp_03": {
+        "nextRes": "north_port_town_building_g_dp_03_dmg",
+        "hp": 10.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 1.0,
+        "isParent": true
+      },
+      "north_port_town_building_g_dp_04": {
+        "nextRes": "north_port_town_building_g_dp_04_dmg",
+        "hp": 10.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 1.0,
+        "isParent": true
+      },
+      "north_port_town_building_g_dp_05": {
+        "nextRes": "north_port_town_building_g_dp_05_dmg",
+        "hp": 10.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 1.0,
+        "isParent": true
+      },
+      "north_port_town_building_g_dp_06": {
+        "nextRes": "north_port_town_building_g_dp_06_dmg",
+        "hp": 10.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 1.0,
+        "isParent": true
+      },
+      "north_port_town_building_g_dp_07": {
+        "nextRes": "north_port_town_building_g_dp_07_dmg",
+        "hp": 10.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 1.0,
+        "isParent": true
+      },
+      "north_port_town_building_i_dp_01": {
+        "nextRes": "north_port_town_building_i_dp_01_dmg",
+        "hp": 10.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 1.0,
+        "isParent": true
+      },
+      "north_port_town_building_i_dp_02": {
+        "nextRes": "north_port_town_building_i_dp_02_dmg",
+        "hp": 10.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 1.0,
+        "isParent": true
+      },
+      "north_port_town_building_i_dp_03": {
+        "nextRes": "north_port_town_building_i_dp_03_dmg",
+        "hp": 10.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 1.0,
+        "isParent": true
+      },
+      "north_port_town_building_i_dp_04": {
+        "nextRes": "north_port_town_building_i_dp_04_dmg",
+        "hp": 10.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 1.0,
+        "isParent": true
+      },
+      "north_port_town_building_i_dp_05": {
+        "nextRes": "north_port_town_building_i_dp_05_dmg",
+        "hp": 10.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 1.0,
+        "isParent": true
+      },
+      "north_port_town_building_i_dp_06": {
+        "nextRes": "north_port_town_building_i_dp_06_dmg",
+        "hp": 10.0,
+        "fx": "ad_dust_stucco",
+        "fxScale": 1.0,
+        "isParent": true
       },
       "maginot_bunker_house_a_dp_01": {
         "nextRes": "maginot_bunker_house_a_dp_01_debris",

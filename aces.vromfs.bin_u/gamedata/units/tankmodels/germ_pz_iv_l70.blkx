@@ -1605,6 +1605,15 @@
       },
       {
         "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -2496,6 +2505,60 @@
       "new_tank_transmission": [],
       "new_tank_engine": [],
       "tank_camouflage": [],
+      "ostketten_tank_tracks": {
+        "invertEnableLogic": false,
+        "turn_it_off": false,
+        "effects": {
+          "mulFrontalStaticFriction": 1.02,
+          "mulFrontalSlidingFriction": 1.05,
+          "mulSideRotMinSpd": 1.05,
+          "mulSideRotMaxSpd": 1.05,
+          "mulSideRotMinFric": 0.95,
+          "mulSideRotMaxFric": 0.95,
+          "hideNodes": [
+            {
+              "node": "track_l"
+            },
+            {
+              "node": "track_r"
+            },
+            {
+              "node": "ex_armor_body_l_01"
+            },
+            {
+              "node": "ex_armor_body_l_02"
+            },
+            {
+              "node": "ex_armor_body_l_03"
+            },
+            {
+              "node": "ex_armor_body_l_04"
+            },
+            {
+              "node": "ex_armor_body_r_01"
+            },
+            {
+              "node": "ex_armor_body_r_02"
+            },
+            {
+              "node": "ex_armor_body_r_03"
+            },
+            {
+              "node": "ex_armor_body_r_04"
+            }
+          ]
+        },
+        "disableModEffects": {
+          "hideNodes": [
+            {
+              "node": "track_l_01"
+            },
+            {
+              "node": "track_r_01"
+            }
+          ]
+        }
+      },
       "tank_additional_armor": {
         "tier": 4,
         "modClass": "protection",

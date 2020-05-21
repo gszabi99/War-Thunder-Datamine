@@ -1494,20 +1494,11 @@
   {
     "tank_crew": {
       "changeTimeMult": 1.0,
-      "gunner": [
-        {
-          "dmPart": "commander_dm"
-        },
-        {
-          "role": "tank_gunner"
-        },
-        {
-          "role": "commander"
-        },
-        {
-          "substitute": "loader"
-        }
-      ],
+      "gunner": {
+        "dmPart": "gunner_dm",
+        "role": "tank_gunner",
+        "substitute": "loader"
+      },
       "driver": {
         "dmPart": "driver_dm",
         "role": "driver",
@@ -1529,7 +1520,7 @@
           "killNumPartsForDeath": 2
         },
         {
-          "part": "commander_dm"
+          "part": "gunner_dm"
         },
         {
           "part": "driver_dm"
@@ -2389,6 +2380,15 @@
             }
           }
         ]
+      },
+      {
+        "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
       },
       {
         "event": {

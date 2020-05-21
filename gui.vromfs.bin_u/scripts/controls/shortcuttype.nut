@@ -69,7 +69,7 @@ g_shortcut_type._getBitArrayAxisIdByShortcutId <- function _getBitArrayAxisIdByS
   local joyParams = ::JoystickParams()
   joyParams.setFrom(::joystick_get_cur_settings())
   local shortcutData = ::get_shortcut_by_id(shortcutId)
-  local axis = joyParams.getAxis(shortcutData.axisIndex)
+  local axis = joyParams.getAxis(shortcutData?.axisIndex ?? -1)
 
   if (axis.axisId < 0)
     if (_isAxisBoundToMouse(shortcutId))

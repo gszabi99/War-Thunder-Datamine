@@ -10,7 +10,7 @@
       "normalizationPreset": "heat"
     },
     {
-      "ricochetPreset": "atgm"
+      "ricochetPreset": "heat"
     },
     {
       "secondaryShattersPreset": "ap"
@@ -28,16 +28,16 @@
       "stabilityReductionAfterPenetration": 0.01
     },
     {
-      "bulletType": "atgm_tank"
+      "bulletType": "heat_tank"
     },
     {
-      "cumulativeSecondaryShattersPreset": "atgm"
+      "cumulativeSecondaryShattersPreset": "heat_fs"
     },
     {
       "explodeOnRendinst": true
     },
     {
-      "modelName": "tank_bullet_heat_fs"
+      "modelName": "tank_bullet_heat"
     },
     {
       "fresnel": [0.23,0.1,2.0]
@@ -223,17 +223,10 @@
       "iconType": "nar_ap_middle"
     },
     {
-      "stabilityRicochetModifier": [
-        {
-          "mod1": [0.0,0.0]
-        },
-        {
-          "mod2": [20.0,0.1]
-        },
-        {
-          "mod2": [30.0,0.2]
-        }
-      ]
+      "stabilityRicochetModifier": {
+        "mod1": [0.0,0.0],
+        "mod2": [20.0,1.0]
+      }
     },
     {
       "collisions": {

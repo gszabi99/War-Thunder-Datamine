@@ -108,13 +108,232 @@
     "rearmTimeOnField": 35.0
   },
   {
-    "customClassIco": "!#ui/gameuiskin#image_in_progress_ico"
+    "ikGunner": [
+      {
+        "model": "japan_gunner_char"
+      },
+      {
+        "maxHeadHorAngle": 60.0
+      },
+      {
+        "maxHeadDownAngle": 60.0
+      },
+      {
+        "maxHeadUpAngle": 10.0
+      },
+      {
+        "headNode": "Bip01 Head"
+      },
+      {
+        "pelvisNode": "Bip01 Pelvis"
+      },
+      {
+        "pelvisTargetNode": "Bip01 Pelvis_"
+      },
+      {
+        "crouchDelta": [0.0,0.0,0.0]
+      },
+      {
+        "suffix": "1"
+      },
+      {
+        "dmName": "driver_dm"
+      },
+      {
+        "deadHeadAttitudeMin": -40.0
+      },
+      {
+        "deadHeadAttitudeMax": -55.0
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "lefthand_",
+          "flexionDir": [0.5,-0.5,0.3]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "righthand_",
+          "flexionDir": [-0.5,-0.5,0.3]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [-0.2,1.0,-1.0]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [-0.6,1.0,-1.0]
+        }
+      }
+    ]
   },
   {
-    "customImage": "!#ui/unitskin#image_in_progress"
+    "ikGunner": [
+      {
+        "model": "japan_gunner_officer_char"
+      },
+      {
+        "maxHeadHorAngle": 60.0
+      },
+      {
+        "maxHeadDownAngle": 60.0
+      },
+      {
+        "maxHeadUpAngle": 10.0
+      },
+      {
+        "headNode": "Bip01 Head"
+      },
+      {
+        "pelvisNode": "Bip01 Pelvis"
+      },
+      {
+        "pelvisTargetNode": "Bip01 Pelvis_"
+      },
+      {
+        "crouchDelta": [0.0,0.0,0.0]
+      },
+      {
+        "suffix": "2"
+      },
+      {
+        "dmName": "commander_dm"
+      },
+      {
+        "deadHeadAttitudeMin": -40.0
+      },
+      {
+        "deadHeadAttitudeMax": -55.0
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "lefthand_",
+          "flexionDir": [0.5,-0.5,0.3]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "righthand_",
+          "flexionDir": [-0.5,-0.5,0.3]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [-0.2,1.0,-1.0]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [-0.6,1.0,-1.0]
+        }
+      }
+    ]
   },
   {
-    "customTooltipImage": "ui/aircrafts/image_in_progress"
+    "controlDevices": [
+      {
+        "device": {
+          "type": "turretTurnH",
+          "turnSpeed": 0.6,
+          "node": "bone_roll_turret_h",
+          "node_handle": "bone_roll_turret_h_handle"
+        }
+      },
+      {
+        "device": {
+          "type": "turretTurnV",
+          "turnSpeed": -1.0,
+          "node": "bone_roll_turret_v",
+          "node_handle": "bone_roll_turret_v_handle"
+        }
+      },
+      {
+        "device": {
+          "type": "steeringWheel",
+          "turnSpeed": -0.6,
+          "node": "bone_roll_driver",
+          "absoluteValue": true
+        }
+      },
+      {
+        "device": {
+          "type": "engineFan",
+          "turnSpeed": 1.0,
+          "node": "bone_roll_engine_01"
+        }
+      },
+      {
+        "device": {
+          "type": "engineFan",
+          "turnSpeed": 1.0,
+          "node": "bone_roll_engine_02"
+        }
+      },
+      {
+        "device": {
+          "type": "engineFan",
+          "turnSpeed": 1.0,
+          "node": "bone_roll_engine_03"
+        }
+      },
+      {
+        "device": {
+          "type": "engineFan",
+          "turnSpeed": 1.0,
+          "node": "bone_roll_engine_04"
+        }
+      },
+      {
+        "device": {
+          "type": "waterJetShutter",
+          "turnSpeed": 1.5,
+          "maxValue": -1.7,
+          "node": "body_shutter_l",
+          "absoluteValue": true,
+          "progressive": true
+        }
+      },
+      {
+        "device": {
+          "type": "waterJetShutter",
+          "turnSpeed": 1.5,
+          "maxValue": 1.7,
+          "node": "body_shutter_r",
+          "absoluteValue": true,
+          "progressive": true
+        }
+      }
+    ]
   },
   {
     "DamageParts": {
@@ -125,16 +344,22 @@
         "armorThickness": 5.0,
         "body_top_dm": [],
         "turret_01_side_dm": [],
-        "turret_02_side_dm": [],
-        "body_front_dm": [],
         "body_side_dm": [],
         "body_back_dm": [],
         "turret_bottom_dm": [],
         "turret_back_dm": [],
-        "turret_front_dm": [],
-        "gun_mask_dm": [],
-        "gun_mask_01_dm": [],
-        "gun_mask_02_dm": []
+        "turret_front_dm": {
+          "armorThickness": 10.0
+        },
+        "gun_mask_dm": {
+          "armorThickness": 10.0
+        },
+        "gun_mask_01_dm": {
+          "armorThickness": 10.0
+        },
+        "gun_mask_02_dm": {
+          "armorThickness": 10.0
+        }
       },
       "sensor": {
         "armorClass": "tank_structural_steel",
@@ -158,15 +383,16 @@
         }
       },
       "chassis": {
-        "armorClass": "tank_steel_wheels",
+        "armorClass": "car_wheels",
         "hp": 250.0,
-        "armorThickness": 15.0,
+        "armorThickness": 10.0,
         "wheel_r_01_dm": [],
         "wheel_l_01_dm": [],
         "wheel_r_02_dm": [],
         "wheel_l_02_dm": [],
         "wheel_support_dm": {
-          "armorThickness": 10.0
+          "armorThickness": 10.0,
+          "armorClass": "tank_steel_wheels"
         }
       },
       "crew": {
@@ -1495,34 +1721,19 @@
           "part": "body_back_dm"
         },
         {
-          "part": "ex_armor_01_dm"
+          "part": "turret_01_side_dm"
         },
         {
-          "part": "ex_armor_02_dm"
+          "part": "turret_02_side_dm"
         },
         {
-          "part": "superstructure_front_dm"
+          "part": "gun_mask_dm"
         },
         {
-          "part": "superstructure_top_dm"
+          "part": "gun_mask_01_dm"
         },
         {
-          "part": "superstructure_side_dm"
-        },
-        {
-          "part": "superstructure_back_dm"
-        },
-        {
-          "part": "superstructure_bottom_dm"
-        },
-        {
-          "part": "body_front_dm"
-        },
-        {
-          "part": "body_bottom_dm"
-        },
-        {
-          "part": "body_side_dm"
+          "part": "gun_mask_02_dm"
         },
         {
           "effect": {
@@ -1633,7 +1844,7 @@
   },
   {
     "sound": {
-      "EngineName": "engine_m3_bradley",
+      "EngineName": "engine_type93",
       "TrackSoundPath": "tanks/engines_tanks",
       "TrackSoundPathStudio": "ground/engines",
       "TrackSoundName": "tracks_wheels",
@@ -1659,8 +1870,6 @@
         "emitterGenFmt": "bone_rocket_%02d",
         "ammoDpGenFmt": "ammo_turret_%02d_dm",
         "recoilMultiplier": 0.0,
-        "stopForFire": true,
-        "maxSpeedForFire": 5.0,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "allowableDelta": 20.0,
@@ -1802,35 +2011,21 @@
       },
       "suspension": {
         "suspensionOffsets": [-0.16,-0.12,0.1],
-        "defaultGearRadius": 0.406,
+        "defaultGearRadius": 0.44,
         "defaultDampeningForce": [10000.0,10000.0],
         "hasSuspensionOnDriveGear": true,
         "dampeningRelaxationRatio": 0.2,
         "dampeningCompressionRatio": 0.1,
         "brokenWheelSteeringDeflection": -15.0,
-        "steeringDeflection": [
-          {
-            "wheel_l_01": 32.0
-          },
-          {
-            "wheel_r_01": 32.0
-          },
-          {
-            "wheel_r_01": -12.0
-          },
-          {
-            "wheel_r_02": -12.0
-          },
-          {
-            "steeringTau": 1000000.0
-          },
-          {
-            "steeringSpd": 1.0
-          },
-          {
-            "steeringNeutralSpd": 3.0
-          }
-        ],
+        "steeringDeflection": {
+          "wheel_l_01": 32.0,
+          "wheel_r_01": 32.0,
+          "wheel_l_02": -12.0,
+          "wheel_r_02": -12.0,
+          "steeringTau": 1000000.0,
+          "steeringSpd": 1.0,
+          "steeringNeutralSpd": 3.0
+        },
         "wheelsWidth": {
           "wheel_l_01": 0.4,
           "wheel_l_02": 0.4,
@@ -2432,19 +2627,19 @@
   {
     "cockpit": {
       "headPos": [0.0,3.1,-6.5],
-      "headPosOnShooting": [-1.1,2.6,0.0],
-      "zoomOutFov": 40.0,
-      "zoomInFov": 21.0,
-      "sightFov": 25.0,
-      "sightName": "default_tank_spg",
+      "headPosOnShooting": [-1.6,3.4,0.0],
+      "zoomOutFov": 12.3,
+      "zoomInFov": 6.14,
+      "sightFov": 9.0,
+      "sightName": "roland_sight",
       "detectionHeight": 2.07
     }
   },
   {
     "ammoStowages": {
       "ammo1": {
-        "removeLoadedAmmo": true,
-        "weaponTrigger": "gunner1",
+        "removeLoadedAmmo": false,
+        "weaponTrigger": "gunner0",
         "fatalFire": true,
         "fatalExplosion": true,
         "shells": {
@@ -2489,75 +2684,120 @@
       "art_support": [],
       "manual_extinguisher": [],
       "tank_tool_kit": [],
+      "new_tank_horizontal_aiming": [],
+      "new_tank_vertical_aiming": [],
+      "modern_tank_laser_rangefinder": [],
       "tank_medical_kit": {
         "image": "#ui/gameuiskin#tank_reinforcement_jp"
       },
       "tank_medical_kit_expendable": {
         "image": "#ui/gameuiskin#tank_reinforcement_jp"
       },
-      "80mm_type_91_aam": []
+      "80mm_type_91_aam": [],
+      "night_vision_system": {
+        "image": "#ui/gameuiskin#thermal_sight",
+        "tier": 1,
+        "effects": {
+          "nightVision": {
+            "gunnerThermal": {
+              "resolution": [1200,800],
+              "noiseFactor": 0.04
+            },
+            "commanderThermal": {
+              "resolution": [1200,800],
+              "noiseFactor": 0.04
+            },
+            "driverIr": {
+              "resolution": [1200,800],
+              "lightMult": 7.0,
+              "ghosting": 0.6,
+              "noiseFactor": 0.2
+            }
+          }
+        }
+      }
     }
   },
   {
     "user_skin": {
-      "name": "stormer_hvm",
+      "name": "type_93",
       "replace_tex": {
-        "from": "uk_camo_very_dark_drab*"
+        "from": "jp_camo_sdf_green*"
       }
     }
   },
   {
     "skin": {
-      "name": "uk_camo_standart_modern_light_stone",
-      "nameLocId": "skin/uk_camo_standart_modern_light_stone",
-      "descLocId": "skin/uk_camo_standart_modern_light_stone/desc",
+      "name": "post_era_biege_gray_green",
+      "nameLocId": "skin/jp_camo_post_biege_gray_green",
+      "descLocId": "skin/jp_camo_post_biege_gray_green/desc",
       "replace_tex": {
-        "from": "uk_camo_very_dark_drab*",
-        "to": "uk_camo_standart_modern_light_stone*"
+        "from": "jp_camo_sdf_green*",
+        "to": "jp_camo_post_biege_gray_green*"
       }
     }
   },
   {
     "skin": {
-      "name": "uk_camo_standart_modern_bicolor",
-      "nameLocId": "skin/uk_camo_standart_modern_bicolor",
-      "descLocId": "skin/uk_camo_standart_modern_bicolor/desc",
+      "name": "post_era_green_olive",
+      "nameLocId": "skin/jp_camo_post_green_olive",
+      "descLocId": "skin/jp_camo_post_green_olive/desc",
       "replace_tex": {
-        "from": "uk_camo_very_dark_drab*",
-        "to": "uk_camo_standart_modern_bicolor*"
+        "from": "jp_camo_sdf_green*",
+        "to": "jp_camo_post_green_olive*"
       }
     }
   },
   {
     "skin": {
-      "name": "uk_camo_standart_modern_desert_bicolor",
-      "nameLocId": "skin/uk_camo_standart_modern_desert_bicolor",
-      "descLocId": "skin/uk_camo_standart_modern_desert_bicolor/desc",
+      "name": "post_era_multicolor",
+      "nameLocId": "skin/jp_camo_post_multicolor",
+      "descLocId": "skin/jp_camo_post_multicolor/desc",
       "replace_tex": {
-        "from": "uk_camo_very_dark_drab*",
-        "to": "uk_camo_standart_modern_desert_bicolor*"
+        "from": "jp_camo_sdf_green*",
+        "to": "jp_camo_post_multicolor*"
       }
     }
   },
   {
     "skin": {
-      "name": "uk_camo_winter_olive",
+      "name": "jp_camo_modern_bicolor",
+      "nameLocId": "skin/jp_camo_modern_bicolor",
+      "descLocId": "skin/jp_camo_modern_bicolor/desc",
+      "replace_tex": {
+        "from": "jp_camo_sdf_green*",
+        "to": "jp_camo_modern_bicolor*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "post_era_winter",
       "nameLocId": "skin/winter",
       "descLocId": "skin/winter/desc",
       "replace_tex": {
-        "from": "uk_camo_very_dark_drab*",
-        "to": "us_camo_winter_olive*"
+        "from": "jp_camo_sdf_green*",
+        "to": "jp_camo_post_winter*"
       }
     }
   },
   {
     "skin": {
-      "name": "fr_camo_winter_green_white",
-      "nameLocId": "skin/fr_camo_winter_green_white",
-      "descLocId": "skin/fr_camo_winter_green_white/desc",
+      "name": "jp_camo_winter_late",
+      "nameLocId": "skin/jp_camo_winter_late",
+      "descLocId": "skin/jp_camo_winter_late/desc",
       "replace_tex": {
-        "from": "uk_camo_very_dark_drab*",
-        "to": "fr_camo_winter_green_white*"
+        "from": "jp_camo_sdf_green*",
+        "to": "jp_camo_winter_late*"
+      }
+    }
+  },
+  {
+    "sensors": {
+      "sensor": {
+        "blk": "gameData/sensors/it_tv_tracker_3jb10.blk",
+        "turretIndex": 0,
+        "dmPart": "optic_gun_dm"
       }
     }
   }

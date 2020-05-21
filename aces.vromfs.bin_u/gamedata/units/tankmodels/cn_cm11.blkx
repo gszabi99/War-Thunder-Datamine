@@ -199,15 +199,15 @@
         },
         "turret_02_front_dm": {
           "armorThickness": 36.0
+        },
+        "body_back_dm": {
+          "armorThickness": 28.0
         }
       },
       "hull_RHA": {
         "armorClass": "RHA_tank",
         "superstructure_top_dm": {
           "armorThickness": 20.0
-        },
-        "body_back_dm": {
-          "armorThickness": 28.0
         },
         "turret_top_dm": {
           "armorThickness": 25.0
@@ -2968,6 +2968,15 @@
             }
           }
         ]
+      },
+      {
+        "event": {
+          "name": "fuel_exterior",
+          "fx": {
+            "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
       },
       {
         "event": {

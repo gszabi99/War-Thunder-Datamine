@@ -28,6 +28,22 @@ local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
 
   local configsArray = configsTable.rawdelete(tKey)
   configsArray.sort(::trophyReward.rewardsSortComparator)
+
+  local itemId = configsArray?[0]?.itemDefId
+    || configsArray?[0]?.trophyItemDefId
+    || configsArray?[0]?.id
+    || ""
+
+  local trophyItem = ::ItemsManager.findItemById(itemId)
+  if (!trophyItem)
+  {
+    ::dagor.logerr($"Trophy Reward: Not found item {itemId}")
+    local configsArrayString = ::toString(configsTable) // warning disable: -declared-never-used
+    ::script_net_assert_once($"not found {itemId}", $"Trophy Reward: Not found item {itemId}. Don't show reward.")
+    return
+  }
+
+  params.trophyItem <- trophyItem
   params.configsArray <- configsArray
   params.afterFunc <- @() ::gui_start_open_trophy(configsTable)
 
@@ -89,15 +105,6 @@ class ::gui_handlers.trophyRewardWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function prepareParams()
   {
-    local itemId = configsArray?[0]?.itemDefId
-      || configsArray?[0]?.trophyItemDefId
-      || configsArray?[0]?.id
-      || ""
-    trophyItem = ::ItemsManager.findItemById(itemId)
-
-    if (!trophyItem)
-      return base.goBack()
-
     shouldShowRewardItem = trophyItem.iType == itemType.RECIPES_BUNDLE
     isBoxOpening = !shouldShowRewardItem
       && (trophyItem.iType == itemType.TROPHY

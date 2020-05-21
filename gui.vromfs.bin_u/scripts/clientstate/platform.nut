@@ -68,6 +68,8 @@ local isPlayerFromPS4 = @(name) isPlatformPS4 && isPS4PlayerName(name)
 local isMePS4Player = @() ::g_user_utils.haveTag("ps4")
 local isMeXBOXPlayer = @() ::g_user_utils.haveTag("xbone")
 
+local isMePS4PlayerOnPC = @() ::g_user_utils.haveTag("psn") && isPlatformPC
+
 local canSpendRealMoney = @() !isPlatformPC || !::has_entitlement("XBOXAccount") || !::has_entitlement("PSNAccount")
 
 local isPs4XboxOneInteractionAvailable = function(name)
@@ -110,6 +112,7 @@ return {
   isPlayerFromPS4 = isPlayerFromPS4
 
   isMePS4Player = isMePS4Player
+  isMePS4PlayerOnPC = isMePS4PlayerOnPC
   isMeXBOXPlayer = isMeXBOXPlayer
 
   canInteractCrossConsole = canInteractCrossConsole

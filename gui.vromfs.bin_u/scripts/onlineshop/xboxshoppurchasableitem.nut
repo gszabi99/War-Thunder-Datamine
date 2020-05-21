@@ -1,4 +1,6 @@
+local { calcPercent } = require("std/math.nut")
 local statsd = require("statsd")
+
 local XboxShopPurchasableItem = class
 {
   defaultIconStyle = "default_chest_debug"
@@ -66,6 +68,7 @@ local XboxShopPurchasableItem = class
   getPriceText = @() ::colorize(haveDiscount()? "goodTextColor" : "" , price == 0? ::loc("shop/free") : (price + " " + currencyCode))
   updateIsBoughtStatus = @() isBought = isMultiConsumable? false : ::xbox_is_item_bought(id)
   haveDiscount = @() !isBought && listPrice > 0 && price != listPrice
+  getDiscountPercent = @() calcPercent(1 - (price.tofloat() / listPrice))
 
   getDescription = function() {
     local strPrice = getPriceText()

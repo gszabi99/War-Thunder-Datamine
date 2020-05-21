@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": -10.0
-    },
     "player": [
       {
         "army": 1
@@ -214,8 +210,6 @@
     "mission": {
       "level": "levels/avg_volokolamsk.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
       "locName": "missions/_CnvA;volokolamsk/name",
@@ -229,12 +223,18 @@
       "remapAiTankModels": true,
       "country_axis": "germany",
       "country_allies": "ussr",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": true,
         "isShipsAllowed": false,
-        "isHelicoptersAllowed": false
+        "isHelicoptersAllowed": true
       }
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": -10.0
     },
     "spectator_points": [],
     "briefing": {
@@ -3135,6 +3135,17 @@
       ],
       "objLayer": 0,
       "props": []
+    },
+    "cnv_battle_area": {
+      "type": "Box",
+      "tm": [
+        [4096.0,0.0,0.0],
+        [0.0,500.0,0.0],
+        [0.0,0.0,4096.0],
+        [0.0,0.0,0.0]
+      ],
+      "objLayer": 0,
+      "props": []
     }
   },
   "objLayers": [
@@ -3826,7 +3837,7 @@
   },
   "__viewPoints": {
     "viewpt_01": {
-      "pos": [-463.537,68.0285,768.725],
+      "pos": [-463.537,-476.0,768.725],
       "ht": 2.5
     }
   }

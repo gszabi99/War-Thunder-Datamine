@@ -108,15 +108,6 @@
     "arcadeTurnPowerMult": 1.2
   },
   {
-    "customClassIco": "!#ui/gameuiskin#image_in_progress_ico"
-  },
-  {
-    "customImage": "!#ui/unitskin#image_in_progress"
-  },
-  {
-    "customTooltipImage": "ui/aircrafts/image_in_progress"
-  },
-  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "RHA_tank",
@@ -635,7 +626,8 @@
         "stopChanceOnDeadPart": 0.0,
         "createSecondaryShatters": false,
         "ex_decor_l_02_dm": [],
-        "ex_decor_r_02_dm": []
+        "ex_decor_r_02_dm": [],
+        "ex_decor_13_dm": []
       }
     }
   },
@@ -2575,15 +2567,6 @@
     }
   },
   {
-    "default_skin": {
-      "name": "default",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "it_camo_olive_dab*"
-      }
-    }
-  },
-  {
     "skin": {
       "name": "it_camo_desert_light_yellow",
       "nameLocId": "skin/it_camo_desert_light_yellow",
@@ -2602,6 +2585,19 @@
       "replace_tex": {
         "from": "us_camo_olive*",
         "to": "it_camo_winter_white*"
+      }
+    }
+  },
+  {
+    "default_skin": {
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "it_camo_olive_dab*"
+      },
+      "set_tex": {
+        "from": "m3a3_stuart_body_c*",
+        "to": "m3a3_stuart_skin_body_c*",
+        "param": "camo_skin_tex"
       }
     }
   },

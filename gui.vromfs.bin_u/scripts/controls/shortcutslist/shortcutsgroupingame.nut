@@ -94,4 +94,9 @@ return [
     checkGroup = ctrlGroups.COMMON
     checkAssign = false
   }
+  {
+    id = "ID_SQUAD_TARGET_DESIGNATION"
+    checkGroup = ctrlGroups.COMMON
+    checkAssign = false
+  }
 ]

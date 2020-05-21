@@ -215,12 +215,6 @@
         "type": "domination"
       },
       {
-        "restoreType": "attempts"
-      },
-      {
-        "optionalTakeOff": false
-      },
-      {
         "environment": "Day"
       },
       {
@@ -264,6 +258,12 @@
       },
       {
         "country_allies": "ussr"
+      },
+      {
+        "restoreType": "attempts"
+      },
+      {
+        "optionalTakeOff": false
       },
       {
         "allowedUnitTypes": {
@@ -371,21 +371,21 @@
               "icon": {
                 "icontype": "tank",
                 "side": "ally",
-                "target": "briefing_t1_spawn_01"
+                "target": "briefing_t1_tankSpawn_Rb_01"
               }
             },
             {
               "icon": {
                 "icontype": "tank",
                 "side": "enemy",
-                "target": "briefing_t2_spawn_01"
+                "target": "briefing_t2_tankSpawn_Rb_01"
               }
             },
             {
               "icon": {
                 "icontype": "basezone_A",
                 "side": "neutral",
-                "target": "briefing_captureZone01"
+                "target": "briefing_captureZone_Rb01"
               }
             },
             {
@@ -416,14 +416,14 @@
               "icon": {
                 "icontype": "tank",
                 "side": "ally",
-                "target": "briefing_t1_tankSpawn_Sb_01"
+                "target": "briefing_t1_tankSpawn_Rb_01"
               }
             },
             {
               "icon": {
                 "icontype": "tank",
                 "side": "enemy",
-                "target": "briefing_t2_tankSpawn_Sb_01"
+                "target": "briefing_t2_tankSpawn_Rb_01"
               }
             },
             {
@@ -572,10 +572,10 @@
     "briefing_t1_tankSpawn_Rb_01": {
       "type": "Point",
       "tm": [
-        [0.642788,0.0,0.766044],
+        [1.0,0.0,0.0],
         [0.0,1.0,0.0],
-        [-0.766044,0.0,0.642788],
-        [721.304,9.59464,-708.588]
+        [0.0,0.0,1.0],
+        [995.279,23.2381,169.61]
       ],
       "objLayer": 0,
       "props": []
@@ -597,7 +597,7 @@
         [1.0,0.0,0.0],
         [0.0,1.0,0.0],
         [0.0,0.0,1.0],
-        [-699.181,3.46753,-752.965]
+        [-1011.88,16.8598,46.0347]
       ],
       "objLayer": 0,
       "props": []
@@ -608,29 +608,7 @@
         [29.905,0.0,0.0],
         [0.0,70.0,0.0],
         [0.0,0.0,29.905],
-        [-20.8032,6.01614,117.597]
-      ],
-      "objLayer": 0,
-      "props": []
-    },
-    "briefing_t2_tankSpawn_Sb_01": {
-      "type": "Point",
-      "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-699.181,3.46753,-752.965]
-      ],
-      "objLayer": 0,
-      "props": []
-    },
-    "briefing_t1_tankSpawn_Sb_01": {
-      "type": "Point",
-      "tm": [
-        [0.642788,0.0,0.766044],
-        [0.0,1.0,0.0],
-        [-0.766044,0.0,0.642788],
-        [721.304,9.59464,-708.588]
+        [-29.0183,6.01611,118.7]
       ],
       "objLayer": 0,
       "props": []
@@ -641,7 +619,7 @@
         [29.905,0.0,0.0],
         [0.0,70.0,0.0],
         [0.0,0.0,29.905],
-        [-20.8032,6.01614,117.597]
+        [-29.0181,6.01611,118.541]
       ],
       "objLayer": 0,
       "props": []
@@ -660,9 +638,9 @@
     "briefing_conq_battle_area_hardcore": {
       "type": "Box",
       "tm": [
-        [-1900.0,0.0,0.0],
+        [-2400.0,0.0,0.0],
         [0.0,644.0,0.0],
-        [0.0,0.0,-1900.0],
+        [0.0,0.0,-2400.0],
         [0.0,0.368408,-536.0]
       ],
       "objLayer": 5,
@@ -671,9 +649,9 @@
     "briefing_conq_battle_area_realistic": {
       "type": "Box",
       "tm": [
-        [-1900.0,0.0,0.0],
+        [-2400.0,0.0,0.0],
         [0.0,644.0,0.0],
-        [0.0,0.0,-1900.0],
+        [0.0,0.0,-2400.0],
         [0.0,0.368408,-536.0]
       ],
       "objLayer": 5,

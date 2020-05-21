@@ -29,7 +29,7 @@ class ::gui_handlers.assignModalButtonWindow extends ::gui_handlers.BaseGuiHandl
 
     dev = [];
     btn = [];
-    for (local i = 0; i < 3; i++)
+    for (local i = 0; i < 4; i++)
     {
       if (obj["device" + i]!="" && obj["button" + i]!="")
       {
@@ -58,7 +58,7 @@ class ::gui_handlers.assignModalButtonWindow extends ::gui_handlers.BaseGuiHandl
     local curBtnText = ""
     local numButtons = 0
     local curPreset = ::g_controls_manager.getCurPreset()
-    for (local i = 0; i < 3; i++)
+    for (local i = 0; i < 4; i++)
     {
       local devId = obj["device" + i]
       local btnId = obj["button" + i]
