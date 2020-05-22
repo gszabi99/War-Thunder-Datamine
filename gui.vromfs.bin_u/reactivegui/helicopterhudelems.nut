@@ -18,6 +18,7 @@ enum GuidanceLockResult {
   RESULT_WARMING_UP = 1
   RESULT_LOCKING = 2
   RESULT_TRACKING = 3
+  RESULT_LOCK_AFTER_LAUNCH = 4
 }
 
 local verticalSpeedInd = function(line_style, height, isBackground) {
@@ -207,28 +208,34 @@ local getThrottleCaption = function() {
 local getAGCaption = function() {
   local text = ""
   if (helicopterState.AgmGuidanceLockState.value == GuidanceLockResult.RESULT_INVALID)
-    text = ::loc("HUD/AGM_SHORT")
+    text = ::loc("HUD/TXT_AGM_SHORT")
   else if (helicopterState.AgmGuidanceLockState.value == GuidanceLockResult.RESULT_STANDBY)
-    text = ::loc("HUD/TXT_LASER_MISSILE_STANDBY")
+    text = ::loc("HUD/TXT_AGM_STANDBY")
   else if (helicopterState.AgmGuidanceLockState.value == GuidanceLockResult.RESULT_WARMING_UP)
-    text = ::loc("HUD/TXT_LASER_MISSILE_WARM_UP")
+    text = ::loc("HUD/TXT_AGM_WARM_UP")
   else if (helicopterState.AgmGuidanceLockState.value == GuidanceLockResult.RESULT_LOCKING)
-    text = ::loc("HUD/TXT_LASER_MISSILE_LOCK")
+    text = ::loc("HUD/TXT_AGM_LOCK")
   else if (helicopterState.AgmGuidanceLockState.value == GuidanceLockResult.RESULT_TRACKING)
-    text = ::loc("HUD/TXT_LASER_MISSILE_TRACK")
+    text = ::loc("HUD/TXT_AGM_TRACK")
+  else if (helicopterState.AgmGuidanceLockState.value == GuidanceLockResult.RESULT_LOCK_AFTER_LAUNCH)
+    text = ::loc("HUD/TXT_AGM_LOCK_AFTER_LAUNCH")
   return text
 }
 
 local getAACaption = function() {
   local text = ""
-  if (aamAimState.GuidanceLockState.value == GuidanceLockResult.RESULT_STANDBY)
-    text = ::loc("HUD/IR_MISSILE_STANDBY")
+  if (aamAimState.GuidanceLockState.value == GuidanceLockResult.RESULT_INVALID)
+    text = ::loc("HUD/TXT_AAM_SHORT")
+  else if (aamAimState.GuidanceLockState.value == GuidanceLockResult.RESULT_STANDBY)
+    text = ::loc("HUD/TXT_AAM_STANDBY")
   else if (aamAimState.GuidanceLockState.value == GuidanceLockResult.RESULT_WARMING_UP)
-    text = ::loc("HUD/TXT_IR_MISSILE_WARM_UP")
+    text = ::loc("HUD/TXT_AAM_WARM_UP")
   else if (aamAimState.GuidanceLockState.value == GuidanceLockResult.RESULT_LOCKING)
-    text = ::loc("HUD/IR_MISSILE_LOCK")
+    text = ::loc("HUD/TXT_AAM_LOCK")
   else if (aamAimState.GuidanceLockState.value == GuidanceLockResult.RESULT_TRACKING)
-    text = ::loc("HUD/IR_MISSILE_TRACK")
+    text = ::loc("HUD/TXT_AAM_TRACK")
+  else if (aamAimState.GuidanceLockState.value == GuidanceLockResult.RESULT_LOCK_AFTER_LAUNCH)
+    text = ::loc("HUD/TXT_AAM_LOCK_AFTER_LAUNCH")
   return text
 }
 
@@ -385,7 +392,7 @@ local textParamsMap = {
     valuesWatched = helicopterState.IsHighRateOfFire
   },
   [HelicopterParams.AAM] = {
-    title = @() helicopterState.Aam.count.value <= 0 ? ::loc("HUD/AAM_SHORT") : getAACaption()
+    title = @() helicopterState.Aam.count.value <= 0 ? ::loc("HUD/TXT_AAM_SHORT") : getAACaption()
     value = @() aamAimState.GuidanceLockState.value != GuidanceLockResult.RESULT_INVALID ? getAABullets() : ""
     titleWatched = [helicopterState.Aam.count, aamAimState.GuidanceLockState]
     valuesWatched = [helicopterState.Aam.count, helicopterState.Aam.seconds, helicopterState.IsAamEmpty,

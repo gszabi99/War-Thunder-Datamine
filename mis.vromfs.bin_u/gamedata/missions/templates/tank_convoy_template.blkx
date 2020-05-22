@@ -12,10 +12,10 @@
     "mission": {
       "level": "levels/water.bin",
       "type": "singleMission",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
-      "weather": "hazy"
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
     },
     "spectator_points": []
   },
@@ -92,7 +92,10 @@
             "target": "tank_convoy_template_init3"
           },
           {
-            "target": "show_first_point"
+            "target": "show_first_point_A"
+          },
+          {
+            "target": "currentLineBlinkA"
           }
         ]
       },
@@ -119,7 +122,10 @@
               "target": "tank_convoy_template_init3"
             },
             {
-              "target": "show_first_point"
+              "target": "show_first_point_B"
+            },
+            {
+              "target": "currentLineBlinkB"
             }
           ]
         },
@@ -284,7 +290,7 @@
       ],
       "else_actions": []
     },
-    "show_first_point": {
+    "show_first_point_A": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -302,7 +308,32 @@
         "missionShowMapIcon": {
           "show": true,
           "iconName": "ui/gameuiskin#radar_object_waypoint",
-          "areaName": "@current_waypoint_str"
+          "areaName": "@prev_waypoint_str",
+          "colorCode": "Team A"
+        }
+      },
+      "else_actions": []
+    },
+    "show_first_point_B": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "missionShowMapIcon": {
+          "show": true,
+          "iconName": "ui/gameuiskin#radar_object_waypoint",
+          "areaName": "@prev_waypoint_str",
+          "colorCode": "Team B"
         }
       },
       "else_actions": []
@@ -365,19 +396,20 @@
           }
         },
         {
+          "missionShowMapIcon": {
+            "show": true,
+            "iconName": "ui/gameuiskin#radar_object_waypoint",
+            "areaName": "@linPointStr_next",
+            "colorCode": "Team A"
+          }
+        },
+        {
           "missionShowMapLine": {
             "areaNameFrom": "@linePointStr",
             "areaNameTo": "@linPointStr_next",
             "show": true,
             "colorCode": "Team A",
-            "scale": 0.5
-          }
-        },
-        {
-          "missionShowMapIcon": {
-            "show": true,
-            "iconName": "ui/gameuiskin#radar_object_waypoint",
-            "areaName": "@linPointStr_next"
+            "scale": 1.0
           }
         }
       ],
@@ -441,19 +473,134 @@
           }
         },
         {
+          "missionShowMapIcon": {
+            "show": true,
+            "iconName": "ui/gameuiskin#radar_object_waypoint",
+            "areaName": "@linPointStr_next",
+            "colorCode": "Team B"
+          }
+        },
+        {
           "missionShowMapLine": {
             "areaNameFrom": "@linePointStr",
             "areaNameTo": "@linPointStr_next",
             "show": true,
             "colorCode": "Team B",
-            "scale": 0.5
+            "scale": 1.0
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "currentLineBlinkA": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "missionShowMapLine": {
+            "areaNameFrom": "@prev_waypoint_str",
+            "areaNameTo": "@current_waypoint_str",
+            "show": true,
+            "colorCode": "Neutral",
+            "transparency": 50
           }
         },
         {
           "missionShowMapIcon": {
             "show": true,
             "iconName": "ui/gameuiskin#radar_object_waypoint",
-            "areaName": "@linPointStr_next"
+            "areaName": "@prev_waypoint_str",
+            "colorCode": "Neutral",
+            "opacity": 120
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "missionShowMapLine": {
+            "areaNameFrom": "@prev_waypoint_str",
+            "areaNameTo": "@current_waypoint_str",
+            "show": true,
+            "colorCode": "Team A"
+          }
+        },
+        {
+          "missionShowMapIcon": {
+            "show": true,
+            "iconName": "ui/gameuiskin#radar_object_waypoint",
+            "areaName": "@prev_waypoint_str",
+            "colorCode": "Team A"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "currentLineBlinkB": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "missionShowMapLine": {
+            "areaNameFrom": "@prev_waypoint_str",
+            "areaNameTo": "@current_waypoint_str",
+            "show": true,
+            "colorCode": "Neutral",
+            "transparency": 50
+          }
+        },
+        {
+          "missionShowMapIcon": {
+            "show": true,
+            "iconName": "ui/gameuiskin#radar_object_waypoint",
+            "areaName": "@prev_waypoint_str",
+            "colorCode": "Neutral",
+            "opacity": 120
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "missionShowMapLine": {
+            "areaNameFrom": "@prev_waypoint_str",
+            "areaNameTo": "@current_waypoint_str",
+            "show": true,
+            "colorCode": "Team B"
+          }
+        },
+        {
+          "missionShowMapIcon": {
+            "show": true,
+            "iconName": "ui/gameuiskin#radar_object_waypoint",
+            "areaName": "@prev_waypoint_str",
+            "colorCode": "Team B"
           }
         }
       ],
@@ -581,8 +728,7 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object": "@convoy_sq_name",
-          "target": "@current_waypoint_str",
-          "object_var_value": 0
+          "target": "@current_waypoint_str"
         }
       },
       "actions": {
@@ -856,6 +1002,24 @@
       "conditions": [],
       "actions": [
         {
+          "missionShowMapLine": {
+            "areaNameFrom": "@prev_waypoint_str",
+            "areaNameTo": "@current_waypoint_str",
+            "show": true,
+            "colorCode": "Neutral",
+            "transparency": 50
+          }
+        },
+        {
+          "missionShowMapIcon": {
+            "show": true,
+            "iconName": "ui/gameuiskin#radar_object_waypoint",
+            "areaName": "@prev_waypoint_str",
+            "colorCode": "Neutral",
+            "opacity": 120
+          }
+        },
+        {
           "varSetString": {
             "value": "",
             "var": "prev_waypoint_str",
@@ -874,20 +1038,6 @@
             "digits": 2,
             "var": "current_waypoint_str",
             "input_var": "current_waypoint"
-          }
-        },
-        {
-          "missionShowMapLine": {
-            "areaNameFrom": "@prev_waypoint_str",
-            "areaNameTo": "@current_waypoint_str",
-            "show": false
-          }
-        },
-        {
-          "missionShowMapIcon": {
-            "show": false,
-            "iconName": "ui/gameuiskin#radar_object_waypoint",
-            "areaName": "@prev_waypoint_str"
           }
         }
       ],
@@ -1233,7 +1383,7 @@
     "prev_waypoint_str": "convoy_waypoint00",
     "current_waypoint": 1,
     "last_waypoint": "convoy_waypoint",
-    "linePointCount": 1,
+    "linePointCount": 0,
     "linePointStr": "",
     "linPointStr_next": "",
     "current_spawnpoint_str": "t1_tanks_spawn01",

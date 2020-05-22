@@ -195,6 +195,9 @@ local function getTierIcon(weaponry, size, itemsNum, isBlock)
   if (triggerType == TRIGGER_TYPE.AAM)
     return isBlock || isGroup ? $"{path}missile_air_to_air_group" : $"{path}missile_air_to_air"
 
+  if (triggerType == TRIGGER_TYPE.FLARES)
+    return $"{path}ltc"
+
   local wStr = isBlock && triggerType == TRIGGER_TYPE.ROCKETS ? "nar" : triggerType
   local groupStr = isBlock || isGroup ? $"{size}_group" : size
 

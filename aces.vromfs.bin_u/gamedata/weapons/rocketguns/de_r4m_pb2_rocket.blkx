@@ -6,40 +6,28 @@
   "mesh": "de_r4m_pb2_rocket",
   "rocket": [
     {
-      "normalizationPreset": "heat"
+      "normalizationPreset": "default"
     },
     {
-      "ricochetPreset": "heat"
+      "ricochetPreset": "defaultExt"
     },
     {
       "secondaryShattersPreset": "ap"
     },
     {
-      "stabilityThreshold": 0.1
+      "stabilityThreshold": 0.05
     },
     {
-      "stabilityCaliberToArmorThreshold": 100.0
+      "stabilityCaliberToArmorThreshold": 5.0
     },
     {
-      "stabilityReductionAfterRicochet": 0.3
+      "stabilityReductionAfterRicochet": 0.5
     },
     {
-      "stabilityReductionAfterPenetration": 0.01
+      "stabilityReductionAfterPenetration": 0.15
     },
     {
-      "bulletType": "heat_tank"
-    },
-    {
-      "cumulativeSecondaryShattersPreset": "heat_fs"
-    },
-    {
-      "explodeOnRendinst": true
-    },
-    {
-      "modelName": "tank_bullet_heat"
-    },
-    {
-      "fresnel": [0.23,0.1,2.0]
+      "bulletType": "aam"
     },
     {
       "caliber": 0.088
@@ -246,10 +234,20 @@
       "iconType": "rockets_ap_small_group"
     },
     {
-      "stabilityRicochetModifier": {
-        "mod1": [0.0,0.0],
-        "mod2": [20.0,1.0]
-      }
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.05]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod3": [30.0,0.2]
+        },
+        {
+          "mod3": [45.0,0.3]
+        }
+      ]
     },
     {
       "collisions": {

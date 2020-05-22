@@ -116,5 +116,7 @@
     return ::loc("yn1/error/PSN_RESTRICTED")
   if (response == ::YU2_NO_MONEY)
     return ::loc("YU2/error/NOMONEY")
+  if (response == ::YU2_FORBIDDEN_NEED_2STEP)
+    return ::loc("YU2/error/NEED_2STEP")
   return ::loc("charServer/notAvailableYet")
 }

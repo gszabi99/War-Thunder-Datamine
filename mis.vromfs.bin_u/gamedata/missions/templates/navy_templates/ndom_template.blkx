@@ -11,8 +11,6 @@
     "mission": {
       "level": "levels/avg_stalingrad_factory.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
       "scoreLimit": 17000,
@@ -20,6 +18,8 @@
       "deathPenaltyMul": 1.0,
       "country_axis": "germany",
       "country_allies": "ussr",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "editSlotbar": {
         "keepOwnUnits": false,
         "country_usa": {
@@ -126,40 +126,22 @@
     },
     "spectator_points": []
   },
-  "imports": [
-    {
-      "import_record": {
-        "file": "gameData/missions/templates/navy_templates/ship_spawn_template.blk",
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
-        "file": "gameData/missions/templates/navy_templates/buoys_template.blk",
-        "importAreas": false,
-        "importUnits": true,
-        "importTriggers": false,
-        "importMissionObjectives": false,
-        "importWayPoints": false,
-        "showAreas": false,
-        "showUnits": true,
-        "showTriggers": false,
-        "showMissionObjectives": false,
-        "showWayPoints": false,
-        "excludes": []
-      }
+  "imports": {
+    "import_record": {
+      "file": "gameData/missions/templates/navy_templates/ship_spawn_template.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "excludes": []
     }
-  ],
+  },
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -206,12 +188,6 @@
         },
         {
           "varSetString": {
-            "value": "ndom_buoy_circles_squad",
-            "var": "buoy_circle_squad"
-          }
-        },
-        {
-          "varSetString": {
             "value": "ndom_",
             "var": "modename"
           }
@@ -238,11 +214,6 @@
       "conditions": [],
       "actions": [
         {
-          "unitPutToSleep": {
-            "target": "@buoy_circle_squad"
-          }
-        },
-        {
           "missionMarkAsCaptureZone": {
             "army": 0,
             "name_for_respawn_base": "",
@@ -255,7 +226,6 @@
             "canCaptureByGM": true,
             "auto_smoke": true,
             "markUnitPreset": "ship_buoys",
-            "markUnits": "squad_buoy_03",
             "zoneDefenders": [],
             "tags": {
               "air": false,
@@ -278,7 +248,6 @@
             "canCaptureByGM": true,
             "auto_smoke": true,
             "markUnitPreset": "ship_buoys",
-            "markUnits": "squad_buoy_02",
             "zoneDefenders": [],
             "tags": {
               "air": false,
@@ -301,7 +270,6 @@
             "canCaptureByGM": true,
             "auto_smoke": true,
             "markUnitPreset": "ship_buoys",
-            "markUnits": "squad_buoy_01",
             "zoneDefenders": [],
             "tags": {
               "air": false,
@@ -347,8 +315,7 @@
     "modename": "ndom_",
     "zone_01_name": "",
     "zone_02_name": "",
-    "zone_03_name": "",
-    "buoy_circle_squad": ""
+    "zone_03_name": ""
   },
   "dialogs": [],
   "airfields": [],

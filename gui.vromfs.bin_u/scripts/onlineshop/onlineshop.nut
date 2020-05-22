@@ -9,6 +9,7 @@ local payMethodsCfg = [
   { id = ::YU2_PAY_PAYPAL,      name = "paypal" }
   { id = ::YU2_PAY_WEBMONEY,    name = "webmoney" }
   { id = ::YU2_PAY_AMAZON,      name = "amazon" }
+  { id = ::YU2_PAY_GJN,         name = "gjncoins" }
 ]
 
 const MIN_DISPLAYED_PERCENT_SAVING = 5

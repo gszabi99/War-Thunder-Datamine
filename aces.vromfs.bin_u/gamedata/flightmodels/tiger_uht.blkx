@@ -1770,7 +1770,26 @@
       "preset": {
         "name": "tiger_uht_gun_fn_m3p_rocket",
         "blk": "gameData/flightModels/weaponPresets/tiger_uht_gun_fn_m3p_rocket.blk",
-        "reqModification": "tiger_hmp400_lcc"
+        "reqModification": "tiger_hmp400_lcc",
+        "weaponConfig": [
+          {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "tier": {
+                "idx": 5
+              }
+            }
+          },
+          {
+            "Weapon": {
+              "blk": "gameData/Weapons/gunFN_M3P.blk",
+              "amountPerTier": 1.0,
+              "tier": {
+                "idx": 7
+              }
+            }
+          }
+        ]
       }
     },
     {
@@ -1778,13 +1797,52 @@
         "name": "tiger_uht_gun_fn_m3p_hvar",
         "blk": "gameData/flightModels/weaponPresets/tiger_uht_gun_fn_m3p_hvar.blk",
         "reqModification": "tiger_rmp_lc",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
-            "amountPerTier": 3.0,
-            "iconType": "rockets_ap_middle_group_x3"
+        "weaponConfig": [
+          {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk"
+              },
+              {
+                "amountPerTier": 3.0
+              },
+              {
+                "tier": {
+                  "idx": 7,
+                  "iconType": "machine_gun_rockets"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 5,
+                  "iconType": "machine_gun_rockets"
+                }
+              }
+            ]
+          },
+          {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/gunFN_M3P.blk"
+              },
+              {
+                "amountPerTier": 1.0
+              },
+              {
+                "tier": {
+                  "idx": 7,
+                  "iconType": "machine_gun_rockets"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 5,
+                  "iconType": "machine_gun_rockets"
+                }
+              }
+            ]
           }
-        }
+        ]
       }
     },
     {
@@ -1792,13 +1850,37 @@
         "name": "tiger_uht_gun_fn_m3p_hvar_rocket",
         "blk": "gameData/flightModels/weaponPresets/tiger_uht_gun_fn_m3p_hvar_rocket.blk",
         "reqModification": "tiger_rmp_lc",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
-            "amountPerTier": 3.0,
-            "iconType": "rockets_ap_middle_group_x3"
+        "weaponConfig": [
+          {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "amountPerTier": 19.0,
+              "tier": {
+                "idx": 5
+              }
+            }
+          },
+          {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "amountPerTier": 3.0,
+              "tier": {
+                "idx": 7,
+                "iconType": "machine_gun_rockets"
+              }
+            }
+          },
+          {
+            "Weapon": {
+              "blk": "gameData/Weapons/gunFN_M3P.blk",
+              "amountPerTier": 1.0,
+              "tier": {
+                "idx": 7,
+                "iconType": "machine_gun_rockets"
+              }
+            }
           }
-        }
+        ]
       }
     },
     {
@@ -1821,6 +1903,27 @@
         },
         {
           "reqModification": "tiger_hmp400_lcc"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/euro_hot3.blk",
+                "tier": {
+                  "idx": 5
+                }
+              }
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/gunFN_M3P.blk",
+                "amountPerTier": 1.0,
+                "tier": {
+                  "idx": 7
+                }
+              }
+            }
+          ]
         }
       ]
     },
@@ -1839,13 +1942,36 @@
           "reqModification": "tiger_rmp_lc"
         },
         {
-          "weaponConfig": {
-            "Weapon": {
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
-              "amountPerTier": 3.0,
-              "iconType": "rockets_ap_middle_group_x3"
+          "weaponConfig": [
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/euro_hot3.blk",
+                "tier": {
+                  "idx": 5
+                }
+              }
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+                "amountPerTier": 3.0,
+                "tier": {
+                  "idx": 7,
+                  "iconType": "machine_gun_rockets"
+                }
+              }
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/gunFN_M3P.blk",
+                "amountPerTier": 1.0,
+                "tier": {
+                  "idx": 7,
+                  "iconType": "machine_gun_rockets"
+                }
+              }
             }
-          }
+          ]
         }
       ]
     },
@@ -1853,7 +1979,24 @@
       "preset": {
         "name": "tiger_uht_stinger",
         "blk": "gameData/flightModels/weaponPresets/tiger_uht_stinger.blk",
-        "reqModification": "stinger_aam"
+        "reqModification": "stinger_aam",
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/rocketGuns/us_aim92_stinger.blk"
+            },
+            {
+              "tier": {
+                "idx": 4
+              }
+            },
+            {
+              "tier": {
+                "idx": 8
+              }
+            }
+          ]
+        }
       }
     },
     {
@@ -1892,6 +2035,45 @@
         },
         {
           "reqModification": "stinger_aam"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+                "amountPerTier": 19.0,
+                "tier": {
+                  "idx": 5
+                }
+              }
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/gunFN_M3P.blk",
+                "amountPerTier": 1.0,
+                "tier": {
+                  "idx": 7
+                }
+              }
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim92_stinger.blk"
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -1910,13 +2092,69 @@
           "reqModification": "stinger_aam"
         },
         {
-          "weaponConfig": {
-            "Weapon": {
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
-              "amountPerTier": 3.0,
-              "iconType": "rockets_ap_middle_group_x3"
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk"
+                },
+                {
+                  "amountPerTier": 3.0
+                },
+                {
+                  "tier": {
+                    "idx": 7,
+                    "iconType": "machine_gun_rockets"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5,
+                    "iconType": "machine_gun_rockets"
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/gunFN_M3P.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 7,
+                    "iconType": "machine_gun_rockets"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5,
+                    "iconType": "machine_gun_rockets"
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim92_stinger.blk"
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
             }
-          }
+          ]
         }
       ]
     },
@@ -1935,13 +2173,54 @@
           "reqModification": "stinger_aam"
         },
         {
-          "weaponConfig": {
-            "Weapon": {
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
-              "amountPerTier": 3.0,
-              "iconType": "rockets_ap_middle_group_x3"
+          "weaponConfig": [
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+                "amountPerTier": 19.0,
+                "tier": {
+                  "idx": 5
+                }
+              }
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+                "amountPerTier": 3.0,
+                "tier": {
+                  "idx": 7,
+                  "iconType": "machine_gun_rockets"
+                }
+              }
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/gunFN_M3P.blk",
+                "amountPerTier": 1.0,
+                "tier": {
+                  "idx": 7,
+                  "iconType": "machine_gun_rockets"
+                }
+              }
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim92_stinger.blk"
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
             }
-          }
+          ]
         }
       ]
     },
@@ -1977,6 +2256,44 @@
         },
         {
           "reqModification": "tiger_hmp400_lcc"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/euro_hot3.blk",
+                "tier": {
+                  "idx": 5
+                }
+              }
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/gunFN_M3P.blk",
+                "amountPerTier": 1.0,
+                "tier": {
+                  "idx": 7
+                }
+              }
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim92_stinger.blk"
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -1998,13 +2315,53 @@
           "reqModification": "tiger_rmp_lc"
         },
         {
-          "weaponConfig": {
-            "Weapon": {
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
-              "amountPerTier": 3.0,
-              "iconType": "rockets_ap_middle_group_x3"
+          "weaponConfig": [
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/euro_hot3.blk",
+                "tier": {
+                  "idx": 5
+                }
+              }
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+                "amountPerTier": 3.0,
+                "tier": {
+                  "idx": 7,
+                  "iconType": "machine_gun_rockets"
+                }
+              }
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/gunFN_M3P.blk",
+                "amountPerTier": 1.0,
+                "tier": {
+                  "idx": 7,
+                  "iconType": "machine_gun_rockets"
+                }
+              }
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim92_stinger.blk"
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
             }
-          }
+          ]
         }
       ]
     },
@@ -2028,6 +2385,27 @@
         },
         {
           "reqModification": "tiger_atgw3"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/euro_atgw3.blk",
+                "tier": {
+                  "idx": 5
+                }
+              }
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/gunFN_M3P.blk",
+                "amountPerTier": 1.0,
+                "tier": {
+                  "idx": 7
+                }
+              }
+            }
+          ]
         }
       ]
     },
@@ -2046,13 +2424,36 @@
           "reqModification": "tiger_atgw3"
         },
         {
-          "weaponConfig": {
-            "Weapon": {
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
-              "amountPerTier": 3.0,
-              "iconType": "rockets_ap_middle_group_x3"
+          "weaponConfig": [
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/euro_atgw3.blk",
+                "tier": {
+                  "idx": 5
+                }
+              }
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+                "amountPerTier": 3.0,
+                "tier": {
+                  "idx": 7,
+                  "iconType": "machine_gun_rockets"
+                }
+              }
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/gunFN_M3P.blk",
+                "amountPerTier": 1.0,
+                "tier": {
+                  "idx": 7,
+                  "iconType": "machine_gun_rockets"
+                }
+              }
             }
-          }
+          ]
         }
       ]
     },
@@ -2072,6 +2473,43 @@
         },
         {
           "reqModification": "tiger_atgw3"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/euro_atgw3.blk",
+                "tier": {
+                  "idx": 5
+                }
+              }
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/gunFN_M3P.blk",
+                "tier": {
+                  "idx": 7
+                }
+              }
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim92_stinger.blk"
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -2093,13 +2531,53 @@
           "reqModification": "tiger_atgw3"
         },
         {
-          "weaponConfig": {
-            "Weapon": {
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
-              "amountPerTier": 3.0,
-              "iconType": "rockets_ap_middle_group_x3"
+          "weaponConfig": [
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/euro_atgw3.blk",
+                "tier": {
+                  "idx": 5
+                }
+              }
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+                "amountPerTier": 3.0,
+                "tier": {
+                  "idx": 7,
+                  "iconType": "machine_gun_rockets"
+                }
+              }
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/gunFN_M3P.blk",
+                "amountPerTier": 1.0,
+                "tier": {
+                  "idx": 7,
+                  "iconType": "machine_gun_rockets"
+                }
+              }
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim92_stinger.blk"
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
             }
-          }
+          ]
         }
       ]
     },

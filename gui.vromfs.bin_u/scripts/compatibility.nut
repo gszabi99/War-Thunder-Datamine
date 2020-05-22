@@ -116,7 +116,6 @@
     )
   }
 })
-
 //----------------------------wop_1_97_1_X---------------------------------//
 ::have_per_vehicle_zoom_sens <- "OPTION_GUNNER_VIEW_ZOOM_SENS" in ::getroottable()
                              && "OPTION_ATGM_AIM_ZOOM_SENS_HELICOPTER" in ::getroottable()
@@ -126,3 +125,9 @@
   TP_PS4 = 7
   CONTROLS_ALLOW_ENGINE_AUTOSTART = false
 })
+//----------------------------wop_1_97_2_X---------------------------------//
+::apply_compatibilities({
+  YU2_PAY_GJN = 32
+  YU2_FORBIDDEN_NEED_2STEP = 32
+})
+

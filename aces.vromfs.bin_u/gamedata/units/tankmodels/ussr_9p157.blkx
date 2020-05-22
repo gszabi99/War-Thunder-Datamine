@@ -111,6 +111,9 @@
     "radarAnimPitchVar": "radar_drive2"
   },
   {
+    "radarDeployTime": 3.0
+  },
+  {
     "rearmTimeOnField": 45.0
   },
   {
@@ -229,6 +232,12 @@
         },
         "ex_decor_r_07_dm": {
           "armorThickness": 13.0
+        },
+        "ex_decor_l_09_dm": {
+          "armorThickness": 13.0
+        },
+        "ex_armor_04_dm": {
+          "armorThickness": 15.0
         }
       },
       "body_shields": {
@@ -248,7 +257,6 @@
         "ex_armor_l_05_dm": [],
         "ex_armor_r_05_dm": [],
         "ex_decor_03_dm": [],
-        "ex_decor_l_09_dm": [],
         "ex_decor_l_04_dm": [],
         "ex_armor_05_dm": [],
         "timber": {
@@ -1454,17 +1462,28 @@
         }
       },
       {
-        "animatedBones": [
-          {
-            "node": "antenna_target_tagging"
+        "Weapon": {
+          "dummy": true,
+          "trigger": "gunner2",
+          "triggerGroup": "primary",
+          "blk": "gameData/Weapons/dummy_weapon.blk",
+          "emitter": "antenna_target_tagging",
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "parkForDisableRadar": true,
+          "barrelDP": "antenna_target_tagging_dm",
+          "speedYaw": 25.0,
+          "speedPitch": 25.0,
+          "bullets": 1,
+          "turret": {
+            "head": "bone_turret_02",
+            "gun": "antenna_target_tagging"
           },
-          {
-            "node": "antenna_target_tagging_mount"
-          },
-          {
-            "node": "ex_armor_04"
+          "limits": {
+            "yaw": [-90.0,90.0],
+            "pitch": [-10.0,20.0]
           }
-        ]
+        }
       }
     ]
   },
@@ -2140,7 +2159,7 @@
         "blk": "gameData/sensors/su_khrizantema.blk",
         "dmPart": "antenna_target_tagging_dm",
         "turretIndex": 0,
-        "designationFromBody": true,
+        "designationFromBody": false,
         "designationTurretIndex": 0
       }
     }

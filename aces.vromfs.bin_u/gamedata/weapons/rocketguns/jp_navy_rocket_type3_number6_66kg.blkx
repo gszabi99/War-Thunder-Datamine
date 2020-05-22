@@ -18,13 +18,13 @@
       "length": 1.41
     },
     {
-      "normalizationPreset": "heat"
+      "normalizationPreset": "default"
     },
     {
-      "ricochetPreset": "he"
+      "ricochetPreset": "defaultExt"
     },
     {
-      "secondaryShattersPreset": "ap_rocket"
+      "secondaryShattersPreset": "ap"
     },
     {
       "stabilityThreshold": 0.05
@@ -39,22 +39,7 @@
       "stabilityReductionAfterPenetration": 0.15
     },
     {
-      "bulletType": "rocket_tank"
-    },
-    {
-      "slopeEffectPreset": "ap"
-    },
-    {
-      "modelName": "tank_bullet_he"
-    },
-    {
-      "fresnel": [0.23,0.1,2.0]
-    },
-    {
-      "explodeOnRendinst": true
-    },
-    {
-      "useEffectiveArmorThicknessForShatter": true
+      "bulletType": "aam"
     },
     {
       "explosiveType": "tnt"
@@ -246,11 +231,20 @@
       "iconType": "rockets_large"
     },
     {
-      "stabilityRicochetModifier": {
-        "mod1": [0.0,0.5],
-        "mod2": [20.0,0.6],
-        "mod3": [30.0,1.0]
-      }
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.05]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod3": [30.0,0.2]
+        },
+        {
+          "mod3": [45.0,0.3]
+        }
+      ]
     },
     {
       "collisions": {
