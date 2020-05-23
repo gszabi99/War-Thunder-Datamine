@@ -108,6 +108,7 @@ local helicopterState = {
   Flares = {
     count = Watched(0)
     seconds = Watched(-1)
+    mode = Watched(0)
   }
 
   IsMachineGunEmpty = Watched(false)
@@ -231,8 +232,9 @@ local helicopterState = {
   helicopterState.Bombs.seconds.update(sec)
 }
 
-::interop.updateFlares <- function(count, sec = -1) {
+::interop.updateFlares <- function(count, mode = 0, sec = -1) {
   helicopterState.Flares.count.update(count)
+  helicopterState.Flares.mode.update(mode)
   helicopterState.Flares.seconds.update(sec)
 }
 

@@ -1827,17 +1827,48 @@
         "reqModification": "tiger_hot3",
         "weaponConfig": [
           {
-            "Weapon": {
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_TDA.blk",
-              "amountPerTier": 12.0
-            }
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_md_460.blk"
+              },
+              {
+                "amountPerTier": 12.0
+              },
+              {
+                "tier": {
+                  "idx": 4,
+                  "iconType": "nar_ap_rocket_s"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 8,
+                  "iconType": "nar_ap_rocket_s"
+                }
+              }
+            ]
           },
           {
-            "Weapon": {
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_md_460.blk",
-              "amountPerTier": 12.0,
-              "iconType": "nar_ap_rocket_s"
-            }
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/rocketGuns/euro_hot3.blk"
+              },
+              {
+                "amountPerTier": 4.0
+              },
+              {
+                "tier": {
+                  "idx": 5,
+                  "iconType": "atgm_type1_x4"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 7,
+                  "iconType": "atgm_type1_x4"
+                }
+              }
+            ]
           }
         ]
       }
@@ -1846,7 +1877,29 @@
       "preset": {
         "name": "tiger_hap_france_mistral",
         "blk": "gameData/flightModels/weaponPresets/tiger_hap_france_mistral.blk",
-        "reqModification": "heli_atam_mistral"
+        "reqModification": "heli_atam_mistral",
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/rocketGuns/atam_mistral.blk"
+            },
+            {
+              "amountPerTier": 2.0
+            },
+            {
+              "tier": {
+                "idx": 4,
+                "iconType": "missile_air_to_air_group"
+              }
+            },
+            {
+              "tier": {
+                "idx": 8,
+                "iconType": "missile_air_to_air_group"
+              }
+            }
+          ]
+        }
       }
     },
     {
@@ -1893,13 +1946,50 @@
           "reqModification": "heli_atam_mistral"
         },
         {
-          "weaponConfig": {
-            "Weapon": {
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_md_460.blk",
-              "amountPerTier": 12.0,
-              "iconType": "nar_ap_rocket_s"
+          "weaponConfig": [
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23_md_460.blk",
+                "amountPerTier": 12.0,
+                "tier": {
+                  "idx": 4,
+                  "iconType": "nar_ap_rocket_s"
+                }
+              }
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/euro_hot3.blk"
+                },
+                {
+                  "amountPerTier": 4.0
+                },
+                {
+                  "tier": {
+                    "idx": 5,
+                    "iconType": "atgm_type1_x4"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7,
+                    "iconType": "atgm_type1_x4"
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/atam_mistral.blk",
+                "amountPerTier": 2.0,
+                "tier": {
+                  "idx": 8,
+                  "iconType": "missile_air_to_air_group"
+                }
+              }
             }
-          }
+          ]
         }
       ]
     }

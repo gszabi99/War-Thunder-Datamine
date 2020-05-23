@@ -3209,7 +3209,14 @@
       {
         "preset": {
           "name": "he-177a-5_default",
-          "blk": "gameData/FlightModels/weaponPresets/he-177a-5_48xsc50.blk"
+          "blk": "gameData/FlightModels/weaponPresets/he-177a-5_48xsc50.blk",
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
+              "amountPerTier": 12.0,
+              "iconType": "bombs_small_group"
+            }
+          }
         }
       },
       {
@@ -3237,21 +3244,63 @@
         "preset": {
           "name": "he-177a-5_2xsc1800b",
           "blk": "gameData/FlightModels/weaponPresets/he-177a-5_2xsc1800b.blk",
-          "reqModification": "etc1800"
+          "reqModification": "etc1800",
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/de_sc1800b.blk",
+              "amountPerTier": 1.0,
+              "iconType": "bombs_heavy"
+            }
+          }
         }
       },
       {
         "preset": {
           "name": "he-177a-5_2xsc1800b_6xsc500",
           "blk": "gameData/FlightModels/weaponPresets/he-177a-5_2xsc1800b_6xsc500.blk",
-          "reqModification": "etc1800"
+          "reqModification": "etc1800",
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/de_sc1800b.blk",
+              "amountPerTier": 1.0,
+              "iconType": "bombs_heavy"
+            }
+          }
         }
       },
       {
         "preset": {
           "name": "he-177a-5_3x_de_fx1400",
           "blk": "gameData/FlightModels/weaponPresets/he-177a-5_3x_de_fx1400.blk",
-          "reqModification": "fx1400"
+          "reqModification": "fx1400",
+          "weaponConfig": {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/BombGuns/de_fx1400.blk"
+              },
+              {
+                "amountPerTier": 1.0
+              },
+              {
+                "tier": {
+                  "idx": 4,
+                  "iconType": "bombs_guided"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 6,
+                  "iconType": "bombs_guided"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 8,
+                  "iconType": "bombs_guided"
+                }
+              }
+            ]
+          }
         }
       }
     ]

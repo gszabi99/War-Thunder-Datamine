@@ -91,7 +91,7 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getMainFocusObj()
   {
-    return queueToShow ? null : getObj("items_list")
+    return queueToShow ? queueInfoHandlerWeak?.getObj("custom_mode_checkbox") : getObj("items_list")
   }
 
   //----CONTROLLER----//
@@ -445,8 +445,12 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
     local queueObj = showSceneBtn("div_before_chapters_list", true)
     queueObj.height = "ph"
     local queueHandlerClass = queueToShow && ::queues.getQueuePreferredViewClass(queueToShow)
-    local queueHandler = ::handlersManager.loadHandler(queueHandlerClass,
-                           { scene = queueObj  })
+    local queueHandler = ::handlersManager.loadHandler(queueHandlerClass, {
+      scene = queueObj,
+      onWrapUpCb = ::Callback(onWrapUp, this),
+      onWrapDownCb = ::Callback(onWrapDown, this),
+      leaveQueueCb = ::Callback(onLeaveEvent, this)
+    })
     registerSubHandler(queueHandler)
     queueInfoHandlerWeak = queueHandler
   }

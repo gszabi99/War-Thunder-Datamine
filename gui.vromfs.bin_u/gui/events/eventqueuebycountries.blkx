@@ -97,18 +97,27 @@
       }
     },
     {
-      "SwitchBox": {
-        "id": "custom_mode_checkbox",
+      "tdiv": {
+        "behaviour": "wrapNavigator",
+        "navigatorShortcuts": "cancel",
+        "on_wrap_up": "onWrapUp",
+        "on_wrap_down": "onWrapDown",
+        "on_cancel_edit": "leaveQueue",
+        "childsActivate": "yes",
         "halign": "center",
-        "textChecked": "#options/enabled",
-        "textUnchecked": "#options/disabled",
-        "tooltip": "#events/playersRooms/tooltip",
-        "display": "hide",
-        "enable": "no",
-        "on_change_value": "onCustomModeCheckbox",
-        "SwitchSliderBg": {
-          "SwitchSliderBgOn": [],
-          "SwitchSlider": []
+        "SwitchBox": {
+          "id": "custom_mode_checkbox",
+          "textChecked": "#options/enabled",
+          "textUnchecked": "#options/disabled",
+          "tooltip": "#events/playersRooms/tooltip",
+          "on_change_value": "onCustomModeCheckbox",
+          "selectable": "yes",
+          "display": "hide",
+          "enable": "no",
+          "SwitchSliderBg": {
+            "SwitchSliderBgOn": [],
+            "SwitchSlider": []
+          }
         }
       }
     }

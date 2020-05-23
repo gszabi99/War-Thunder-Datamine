@@ -2,6 +2,7 @@ local time = require("scripts/time.nut")
 local spectatorWatchedHero = require("scripts/replays/spectatorWatchedHero.nut")
 local replayMetadata = require("scripts/replays/replayMetadata.nut")
 local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
+local { getPlayerName } = require("scripts/clientState/platform.nut")
 
 enum SPECTATOR_MODE {
   RESPAWN     // Common multiplayer battle participant between respawns or after death.
@@ -435,8 +436,9 @@ class Spectator extends ::gui_handlers.BaseGuiHandlerWT
     local name = player && needClanTag ? ::g_contacts.getPlayerFullName(player.name, player.clanTag)
       : player ? player.name
       : ""
+
     local color = getPlayerColor(player, colored)
-    return ::colorize(color, name)
+    return ::colorize(color, getPlayerName(name))
   }
 
   function getPlayerColor(player, colored)
@@ -507,7 +509,7 @@ class Spectator extends ::gui_handlers.BaseGuiHandlerWT
 
   function getTargetPlayer()
   {
-    local name = ::get_spectator_target_name()
+    local name = ::get_spectator_target_name() //It returns already trimmed player name
 
     if (!isMultiplayer)
       return (name.len() && teams.len() && teams[0].players.len()) ? teams[0].players[0] : null
@@ -767,12 +769,10 @@ class Spectator extends ::gui_handlers.BaseGuiHandlerWT
     statTblUpdateSelection(tab2)
   }
 
-  function switchTargetPlayer(id = null, index = null)
+  function switchTargetPlayer(id)
   {
     if (id >= 0)
       ::switch_spectator_target_by_id(id)
-    else if (index)
-      ::switch_spectator_target(index > 0)
   }
 
   function selectControlsBlock(obj)

@@ -239,6 +239,17 @@ local getAACaption = function() {
   return text
 }
 
+local getFlaresCaption = function() {
+  local text = ::loc("HUD/FLARES_SHORT")
+  if (helicopterState.Flares.mode.value & FlaresMode.PERIODIC_FLARES)
+    text += " " + ::loc("HUD/FLARE_PERIODIC")
+  if (helicopterState.Flares.mode.value == (FlaresMode.PERIODIC_FLARES | FlaresMode.MLWS_SLAVED_FLARES))
+    text += ::loc("HUD/FLARE_MODE_SEPARATION")
+  if (helicopterState.Flares.mode.value & FlaresMode.MLWS_SLAVED_FLARES)
+    text += " " + ::loc("HUD/FLARE_MLWS")
+  return text
+}
+
 local function isInsideAgmLaunchAngularRange() {
   return helicopterState.IsInsideLaunchZoneYawPitch.value
 }
@@ -400,8 +411,9 @@ local textParamsMap = {
     alertWatched = [helicopterState.IsAamEmpty]
   },
   [HelicopterParams.FLARES] = {
-    title = @() ::loc("HUD/FLARES_SHORT")
+    title = @() helicopterState.Flares.count.value <= 0 ? ::loc("HUD/FLARES_SHORT") : getFlaresCaption()
     value = generateBulletsTextFunction(helicopterState.Flares.count, helicopterState.Flares.seconds)
+    titleWatched = [helicopterState.Flares.count, helicopterState.Flares.mode]
     valuesWatched = [helicopterState.Flares.count, helicopterState.Flares.seconds, helicopterState.IsFlrEmpty]
     alertWatched = [helicopterState.IsFlrEmpty]
   },

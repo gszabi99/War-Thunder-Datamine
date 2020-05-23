@@ -164,6 +164,9 @@ global enum AIR_MOUSE_USAGE {
     "USEROPT_BOMB_ACTIVATION_TIME",
     "USEROPT_DEPTHCHARGE_ACTIVATION_TIME",
     "USEROPT_MINE_DEPTH",
+    "USEROPT_FLARES_PERIODS", // how much time between every flares
+    "USEROPT_FLARES_SERIES", // how many flares in a series
+    "USEROPT_FLARES_SERIES_PERIODS", // gow many time between every series
     "USEROPT_USE_PERFECT_RANGEFINDER",
     "USEROPT_ROCKET_FUSE_DIST",
     "USEROPT_FRIENDS_ONLY",

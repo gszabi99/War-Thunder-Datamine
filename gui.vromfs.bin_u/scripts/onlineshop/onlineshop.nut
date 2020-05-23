@@ -585,7 +585,7 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
         items.append({
           name = name
           icon = "!#ui/gameuiskin/payment_" + method.name + ".svg"
-          callback = ::Callback(@() onYuplayPurchase(purchaseTask, payMethodId), this)
+          callback = ::Callback(@() onYuplayPurchase(purchaseTask, payMethodId, name), this)
         })
         selItem = selItem || name
       }
@@ -601,16 +601,13 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
     ::gui_modal_payment({items = items, owner = this, selItem = selItem, cancel_fn = function() {}})
   }
 
-  function onYuplayPurchase(purchaseTask, payMethod)
+  function onYuplayPurchase(purchaseTask, payMethod, nameLocId)
   {
-    local costGold = ("goldCost" in goods[purchaseTask]) ?
-      ::get_entitlement_cost_gold(goods[purchaseTask].name) : 0
-    local price = ::Cost(0, costGold)
-    local msgText = ::warningIfGold(
-      ::loc("onlineShop/needMoneyQuestion",
-        {purchase = ent.getEntitlementName(goods[purchaseTask]), cost = price.getTextAccordingToBalance()}),
-      price)
-    msgBox("purchase_ask", msgText,
+    local msgText = ::loc("onlineShop/needMoneyQuestion/onlinePaymentSystem", {
+      purchase = ::colorize("activeTextColor", ent.getEntitlementName(goods[purchaseTask])),
+      paymentSystem = ::colorize("userlogColoredText", ::loc(nameLocId))
+    })
+    msgBox("yuplay_purchase_ask", msgText,
       [ ["yes", @() doYuplayPurchase(purchaseTask, payMethod) ],
         ["no", function(){}]
       ], "yes", { cancel_fn = function(){}})

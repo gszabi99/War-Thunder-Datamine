@@ -5674,6 +5674,20 @@
       "modClass": "firepower",
       "deactivationIsAllowed": false
     },
+    "152mm_it_contro_aerea_naval_he": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "reqModification": "152mm_it_contro_aerea_naval_he_ammo_pack",
+      "group": "152mm_HE",
+      "effects": {
+        "additiveBulletMod": "152mm_it_contro_aerea_naval_he"
+      }
+    },
+    "152mm_it_contro_aerea_naval_he_ammo_pack": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "tier": 4,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
+    },
     "203mm_ansaldo_50_53_navy_he": {
       "image": "#ui/gameuiskin#tank_ammo",
       "isReserve": true,
@@ -10166,7 +10180,6 @@
       "invertEnableLogic": true,
       "effects": {
         "mulSuspensionDampeningMoment": 0.85,
-        "mulSuspensionResting": 1.1,
         "mulSuspensionMinLimit": 1.0,
         "mulSuspensionMaxLimit": 1.0
       }
@@ -15487,11 +15500,9 @@
     },
     "challenger_dorchester_protection_improvement": {
       "image": "#ui/gameuiskin#tank_additional_armor",
-      "reqModification": "tank_smoke_screen_system_mod",
       "requiresModelReload": true,
-      "tier": 4,
+      "tier": 3,
       "modClass": "protection",
-      "group": "smoke_mod",
       "effects": {
         "fakeParam": 1.01
       }

@@ -1855,6 +1855,7 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
           curPreset.params[optionName] <- value
       }
     ::set_gui_options_mode(mainOptionsMode)
+    ::set_current_controls(curPreset, ::g_controls_manager.getShortcutGroupMap())
   }
 
   function onManageBackup()

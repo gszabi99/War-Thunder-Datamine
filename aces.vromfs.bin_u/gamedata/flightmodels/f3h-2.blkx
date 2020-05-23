@@ -1231,6 +1231,24 @@
           "name": "tail_dm"
         },
         {
+          "onHit": {
+            "damage": 30.0,
+            "cut": 0.25
+          }
+        },
+        {
+          "onHit": {
+            "damage": 50.0,
+            "cut": 0.5
+          }
+        },
+        {
+          "onHit": {
+            "damage": 65.0,
+            "cut": 1.0
+          }
+        },
+        {
           "onKill": {
             "tailcontrol_dm": 1.0,
             "nothing": 19.0
@@ -1241,6 +1259,33 @@
             "damage": 10.0,
             "tailcontrol_dm": 1.0,
             "nothing": 9.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 4.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 30.0,
+            "cut": 1.0,
+            "nothing": 3.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 50.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 65.0,
+            "cut": 1.0
           }
         }
       ]
@@ -2441,7 +2486,14 @@
       "preset": {
         "name": "f3h-2_bomb_m118",
         "blk": "gameData/flightModels/weaponPresets/f3h-2_bomb_m118.blk",
-        "reqModification": "us_3000lb_mk118"
+        "reqModification": "us_3000lb_mk118",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/us_3000lb_m118.blk",
+            "amountPerTier": 1.0,
+            "iconType": "bombs_heavy"
+          }
+        }
       }
     },
     {
@@ -2811,7 +2863,7 @@
     "emtr_break_wing1_r_to": [0.067078,-0.383105,-3.10618],
     "emtr_break_wing2_r_from": [0.067078,-0.383105,-4.02916],
     "emtr_break_wing2_r_to": [0.067078,-0.383105,-4.58748],
-    "emtr_break_wing_tail": [-3.60617,0.0,0.0],
+    "emtr_break_wing_tail": [-5.0,0.0,0.0],
     "finCut": true,
     "emtr_break_tail_from": [-4.10541,0.110825,2.25703e-08],
     "emtr_break_tail_to": [-8.4888,0.110825,2.25703e-08]

@@ -25,6 +25,7 @@ local defaultAvailableWeapons = {
   hasBombs = false
   hasDepthCharges = false
   hasMines = false
+  hasFlares = false
 }
 
 local Unit = class
@@ -612,6 +613,7 @@ local Unit = class
     availableWeapons = clone defaultAvailableWeapons
 
     if (unitBlk?.weapon_presets != null)
+    {
       foreach (block in (unitBlk.weapon_presets % "preset"))
         if (block.name == secondaryWep)
         {
@@ -630,11 +632,29 @@ local Unit = class
               availableWeapons.hasDepthCharges = true
             if (weapBlk?.bomb.isMine)
               availableWeapons.hasMines = true
+            if (weapBlk?.rocket && (weapBlk.rocket?.isFlare ?? true))
+              availableWeapons.hasFlares = true
 
             weaponsBlkArray.append(weap.blk)
           }
           break
         }
+        //check primary in that case
+      if (!availableWeapons.hasFlares)
+        foreach (block in (unitBlk.weapon_presets % "preset"))
+        {
+            weaponDataBlock = ::DataBlock(block.blk)
+            foreach (weap in (weaponDataBlock % "Weapon"))
+            {
+              if (!weap?.blk || weap?.dummy || ::isInArray(weap.blk, weaponsBlkArray))
+                continue
+
+              local weapBlk = ::DataBlock(weap.blk)
+              if (weapBlk?.rocket && (weapBlk.rocket?.isFlare ?? true))
+                availableWeapons.hasFlares = true
+            }
+        }
+    }
 
     availableWeaponsByWeaponName[secondaryWep] <- availableWeapons
     return availableWeapons

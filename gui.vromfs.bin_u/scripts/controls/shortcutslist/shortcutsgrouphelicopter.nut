@@ -276,6 +276,16 @@ return [
     checkAssign = false
   }
   {
+    id = "ID_TOGGLE_PERIODIC_FLARES_HELICOPTER"
+    checkGroup = ctrlGroups.HELICOPTER
+    checkAssign = false
+  }
+  {
+    id = "ID_TOGGLE_MLWS_FLARES_SLAVING_HELICOPTER"
+    checkGroup = ctrlGroups.HELICOPTER
+    checkAssign = false
+  }
+  {
     id = "ID_ATGM_HELICOPTER"
     checkGroup = ctrlGroups.HELICOPTER
     needShowInHelp = true

@@ -51,6 +51,12 @@ enum ESwitchSpectatorTarget
     user_option = ::USEROPT_ROCKET_FUSE_DIST, isShowForRandomUnit =false },
   {id = "fuel",        hint = "options/fuel_amount",
     user_option = ::USEROPT_LOAD_FUEL_AMOUNT, isShowForRandomUnit =false },
+  {id = "flares_periods",        hint = "options/flares_periods",
+    user_option = ::USEROPT_FLARES_PERIODS, isShowForRandomUnit =false },
+  {id = "flares_series",         hint = "options/flares_series",
+    user_option = ::USEROPT_FLARES_SERIES, isShowForRandomUnit =false },
+  {id = "flares_series_periods", hint = "options/flares_series_periods",
+    user_option = ::USEROPT_FLARES_SERIES_PERIODS, isShowForRandomUnit =false },
   {id = "respawn_base",hint = "options/respawn_base",        cb = "onRespawnbaseOptionUpdate", use_margin_top = true},
 ]
 
@@ -136,6 +142,9 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
   fuelDescr = null
   bombDescr = null
   rocketDescr = null
+  flaresPeriodsDescr = null
+  flaresSeriesDescr = null
+  flaresSeriesPeriodsDescr = null
 
   skins = null
 
@@ -1076,6 +1085,39 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       && unit.getAvailableSecondaryWeapons().hasMines)
   }
 
+  function checkFlaresPeriodsRow()
+  {
+    local unit = getCurSlotUnit()
+    if (!unit)
+      return
+
+    local option = ::get_option(::USEROPT_FLARES_PERIODS)
+    showOptionRow(option.id, (unit.isAir() || unit.isHelicopter())
+      && unit.getAvailableSecondaryWeapons().hasFlares)
+  }
+
+  function checkFlaresSeriesRow()
+  {
+    local unit = getCurSlotUnit()
+    if (!unit)
+      return
+
+    local option = ::get_option(::USEROPT_FLARES_SERIES)
+    showOptionRow(option.id, (unit.isAir() || unit.isHelicopter())
+      && unit.getAvailableSecondaryWeapons().hasFlares)
+  }
+
+  function checkFlaresSeriesPeriodsRow()
+  {
+    local unit = getCurSlotUnit()
+    if (!unit)
+      return
+
+    local option = ::get_option(::USEROPT_FLARES_SERIES_PERIODS)
+    showOptionRow(option.id, (unit.isAir() || unit.isHelicopter())
+      && unit.getAvailableSecondaryWeapons().hasFlares)
+  }
+
   function updateSkin()
   {
     local air = getCurSlotUnit()
@@ -1222,6 +1264,54 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       && air.getAvailableSecondaryWeapons().hasMines)
   }
 
+  function updateFlaresOptions(rocket = true)
+  {
+    local air = getCurSlotUnit()
+    local aircraft = air.isAir() || air.isHelicopter()
+
+    flaresPeriodsDescr = ::get_option(::USEROPT_FLARES_PERIODS)
+    local flarePeriodsObj = scene.findObject(flaresPeriodsDescr.id)
+    if (::checkObj(flarePeriodsObj))
+    {
+      flaresPeriodsDescr = ::get_option(::USEROPT_FLARES_PERIODS)
+      local markup = ""
+      foreach (idx, item in flaresPeriodsDescr.items)
+        if (canChangeAircraft || idx == flaresPeriodsDescr.value)
+          markup += build_option_blk(item.text, "", idx == flaresPeriodsDescr.value, true, "", false, item.tooltip)
+      guiScene.replaceContentFromText(flarePeriodsObj, markup, markup.len(), this)
+    }
+    showOptionRow(flaresPeriodsDescr.id,
+      aircraft && rocket && air.getAvailableSecondaryWeapons().hasFlares)
+
+    flaresSeriesDescr = ::get_option(::USEROPT_FLARES_SERIES)
+    local flareSeriesObj = scene.findObject(flaresSeriesDescr.id)
+    if (::checkObj(flareSeriesObj))
+    {
+      flaresSeriesDescr = ::get_option(::USEROPT_FLARES_SERIES)
+      local markup = ""
+      foreach (idx, item in flaresSeriesDescr.items)
+        if (canChangeAircraft || idx == flaresSeriesDescr.value)
+          markup += build_option_blk(item.text, "", idx == flaresSeriesDescr.value, true, "", false, item.tooltip)
+      guiScene.replaceContentFromText(flareSeriesObj, markup, markup.len(), this)
+    }
+    showOptionRow(flaresSeriesDescr.id,
+      aircraft && rocket && air.getAvailableSecondaryWeapons().hasFlares)
+
+    flaresSeriesPeriodsDescr = ::get_option(::USEROPT_FLARES_SERIES_PERIODS)
+    local flareSeriesPeriodsObj = scene.findObject(flaresSeriesPeriodsDescr.id)
+    if (::checkObj(flareSeriesPeriodsObj))
+    {
+      flaresSeriesPeriodsDescr = ::get_option(::USEROPT_FLARES_SERIES_PERIODS)
+      local markup = ""
+      foreach (idx, item in flaresSeriesPeriodsDescr.items)
+        if (canChangeAircraft || idx == flaresSeriesPeriodsDescr.value)
+          markup += build_option_blk(item.text, "", idx == flaresSeriesPeriodsDescr.value, true, "", false, item.tooltip)
+      guiScene.replaceContentFromText(flareSeriesPeriodsObj, markup, markup.len(), this)
+    }
+    showOptionRow(flaresSeriesPeriodsDescr.id,
+      aircraft && rocket && air.getAvailableSecondaryWeapons().hasFlares)
+  }
+
   function updateOtherOptions()
   {
     local air = getCurSlotUnit()
@@ -1296,6 +1386,9 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       guiScene.replaceContentFromText(fuelObj, data, data.len(), this)
       fuelObj.setValue(fuelDescr.value)
     }
+
+    updateFlaresOptions(rocket)
+
     showOptionRow("fuel", aircraft) //TODO: fuel for tanks
   }
 
@@ -2480,6 +2573,9 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     checkDepthChargeActivationTimeRow()
     checkMineDepthRow()
     checkReady()
+    checkFlaresPeriodsRow()
+    checkFlaresSeriesRow()
+    checkFlaresSeriesPeriodsRow()
   }
 
   function onEventBulletsGroupsChanged(p)

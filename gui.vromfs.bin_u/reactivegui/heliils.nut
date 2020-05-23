@@ -64,6 +64,20 @@ local function ilsHud(elemStyle, isBackground) {
       hudElems.vertSpeed(ilsStyle, pilotSh(5), pilotSh(40), pilotSw(50) + pilotHdpx(330), pilotSh(45), isBackground)
       hudElems.horSpeed(ilsStyle, isBackground, pilotSw(50), pilotSh(80), pilotHdpx(100))
       hudElems.compassElem(ilsStyle, isBackground, pilotSw(100), pilotSh(13), pilotSw(50) - 0.5 * pilotSw(100), pilotSh(15))
+    ]
+    : null
+  }
+}
+
+local function ilsMovingMarks(elemStyle, isBackground) {
+  local ilsStyle = elemStyle.__merge({
+    lineWidth = LINE_WIDTH * 3
+    color = helicopterState.MfdColor.value
+  })
+  return @(){
+    watch = helicopterState.IsIlsEnabled
+    children = helicopterState.IsIlsEnabled.value ?
+    [
       hudElems.rocketAim(ilsStyle, pilotSw(4), pilotSh(8), isBackground)
       hudElems.taTarget(ilsStyle, pilotSw(25), pilotSh(25), isBackground)
     ]
@@ -74,6 +88,7 @@ local function ilsHud(elemStyle, isBackground) {
 local function ilsHUD(colorStyle, isBackground) {
   return [
     ilsHud(colorStyle, isBackground)
+    ilsMovingMarks(colorStyle, isBackground)
   ]
 }
 

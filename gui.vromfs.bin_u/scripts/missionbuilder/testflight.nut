@@ -155,6 +155,9 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
       [::USEROPT_BOMB_ACTIVATION_TIME, "spinner"],
       [::USEROPT_ROCKET_FUSE_DIST, "spinner"],
       [::USEROPT_LOAD_FUEL_AMOUNT, "spinner"],
+      [::USEROPT_FLARES_SERIES, "spinner"],
+      [::USEROPT_FLARES_SERIES_PERIODS, "spinner"],
+      [::USEROPT_FLARES_PERIODS, "spinner"],
     ]
 
     local common_options = [

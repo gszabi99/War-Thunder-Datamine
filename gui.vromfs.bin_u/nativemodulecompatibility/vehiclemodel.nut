@@ -6,14 +6,18 @@ return{
   getEngineControlBitMask = @() 0
   hasEngineExtinguishers = @() false
   hasSchraegeMusik = @() false
+  hasCountermeasureFlareGuns = @() false
   canToggleMouseAimRollOverride = @() false
   hasCollimatorSight = @() false
+  hasSightStabilization = @() false
+  hasCCIPSightMode = @() false
   hasBallisticComputer = @() false
   hasLaserDesignator = @() false
   hasNightVision = @() false
   hasInfraredProjector = @() false
   canUseRangefinder = @() false
   canUseTargetTracking = @() false
+  hasMissileLaunchWarningSystem = @() false
   getCockpitDisplaysCount = @() 0
   hasGunners = @() false
   hasAiGunners = @() false
@@ -21,4 +25,5 @@ return{
   hasGunStabilizer = @() false
   hasAlternativeShotFrequency = @() false
   hasBombview = @() false
+  hasMissionBombingZones = @() false
 }

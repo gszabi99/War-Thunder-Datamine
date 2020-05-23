@@ -158,6 +158,14 @@ return [
     checkAssign = false
   }
   {
+    id = "ID_TOGGLE_PERIODIC_FLARES"
+    checkAssign = false
+  }
+  {
+    id = "ID_TOGGLE_MLWS_FLARES_SLAVING"
+    checkAssign = false
+  }
+  {
     id = "weapon_aim_heading"
     type = CONTROL_TYPE.AXIS
     checkAssign = false

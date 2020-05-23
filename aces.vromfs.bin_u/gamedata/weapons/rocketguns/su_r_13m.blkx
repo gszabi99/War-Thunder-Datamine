@@ -63,16 +63,19 @@
       "distFromCmToStab": 0.1
     },
     {
+      "wingAreaMult": 1.4
+    },
+    {
       "CxK": 3.2
     },
     {
       "WdK": [0.1,0.1,0.1]
     },
     {
-      "finsAoaHor": 0.08
+      "finsAoaHor": 0.16
     },
     {
-      "finsAoaVer": 0.08
+      "finsAoaVer": 0.16
     },
     {
       "force": 26000.0
@@ -213,7 +216,7 @@
       "machMax": 2.4
     },
     {
-      "loadFactorMax": 10.0
+      "loadFactorMax": 15.0
     },
     {
       "rangeMax": 9000.0
@@ -387,8 +390,8 @@
     },
     {
       "arcadeProp": {
-        "finsAoaHor": 0.08,
-        "finsAoaVer": 0.08,
+        "finsAoaHor": 0.18,
+        "finsAoaVer": 0.18,
         "timeFire": 2.2
       }
     },
@@ -396,11 +399,12 @@
       "propNavGuidance": {
         "timeOut": 0.5,
         "propNavMult": 4.0,
-        "propNavAccelMax": 16.0,
-        "accelControlProp": 2.0,
-        "accelControlIntg": 0.05,
-        "accelControlIntgLim": 0.5,
-        "accelControlDiff": 0.2
+        "propNavAccelMax": 15.0,
+        "baseIndSpeed": 1800.0,
+        "accelControlProp": 0.01,
+        "accelControlIntg": 0.005,
+        "accelControlIntgLim": 0.75,
+        "accelControlDiff": 0.002
       }
     },
     {

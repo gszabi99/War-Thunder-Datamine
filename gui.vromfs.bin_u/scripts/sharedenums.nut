@@ -126,3 +126,9 @@ global enum RadarViewMode
   MODE_COUNT = 2
 };
 
+global enum FlaresMode
+{
+  PERIODIC_FLARES    = 1,
+  MLWS_SLAVED_FLARES = 2
+};
+

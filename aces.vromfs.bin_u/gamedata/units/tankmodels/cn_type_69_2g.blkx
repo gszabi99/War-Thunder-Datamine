@@ -111,6 +111,21 @@
     "canReloadNonGuns": true
   },
   {
+    "smokeScreenActivateTime": 5.0
+  },
+  {
+    "smokeScreenEffectTime": 7.0
+  },
+  {
+    "smokeScreenRad": 12.0
+  },
+  {
+    "smokeScreenOffset": [-3.0,0.0,2.0]
+  },
+  {
+    "smokeScreenFxType": "tank_smokescreen"
+  },
+  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "RHA_tank",
@@ -240,7 +255,8 @@
         "ex_decor_l_02_dm": [],
         "ex_decor_l_04_dm": [],
         "ex_decor_l_01_dm": [],
-        "ex_armor_01_dm": []
+        "ex_armor_01_dm": [],
+        "turret_02_back_dm": []
       },
       "turret_grille_armor": {
         "hp": 300.0,
@@ -370,10 +386,6 @@
           "armorThickness": 200.0,
           "hp": 10000.0,
           "variableThickness": true
-        },
-        "turret_02_back_dm": {
-          "armorThickness": 40.0,
-          "hp": 10000.0
         },
         "turret_side_dm": {
           "armorThickness": 155.0
@@ -2077,9 +2089,9 @@
   {
     "VehiclePhys": {
       "Mass": {
-        "Empty": 37200.0,
+        "Empty": 36500.0,
         "Fuel": 500.0,
-        "TakeOff": 37700.0,
+        "TakeOff": 37000.0,
         "momentOfInertia": [2.5,6.0,6.0],
         "CenterOfGravity": [0.2,0.5,0.0],
         "CenterOfGravityClampY": [0.0,0.5],
@@ -2876,6 +2888,7 @@
       "tank_tool_kit": [],
       "art_support": [],
       "tank_new_gun": [],
+      "tank_engine_smoke_screen_system": [],
       "tank_medical_kit": {
         "image": "#ui/gameuiskin#tank_reinforcement_cn"
       },
@@ -3233,6 +3246,11 @@
         "from": "ussr_camo_green*",
         "to": "ussr_camo_winter*"
       }
+    }
+  },
+  {
+    "smokeScreenExhaustEmitters": {
+      "emitter": "emtr_exhaust_01"
     }
   }
 ]

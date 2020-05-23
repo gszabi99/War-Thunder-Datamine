@@ -75,6 +75,9 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
     checkBombActivationTimeRow()
     checkVehicleModificationRow()
     checkDepthChargeActivationTimeRow()
+    checkFlaresPeriodsRow()
+    checkFlaresSeriesRow()
+    checkFlaresSeriesPeriodsRow()
     checkMineDepthRow()
     onLayoutChange(null)
     checkMissionCountries()
@@ -316,7 +319,9 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
     checkRocketDisctanceFuseRow()
     checkBombActivationTimeRow()
     checkDepthChargeActivationTimeRow()
-    checkMineDepthRow()
+    checkFlaresPeriodsRow()
+    checkFlaresSeriesRow()
+    checkFlaresSeriesPeriodsRow()
   }
 
   function checkBulletsRows()
@@ -353,6 +358,36 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
     local unit = ::getAircraftByName(::aircraft_for_weapons)
     showOptionRow(option,
       !!unit && unit.getAvailableSecondaryWeapons().hasBombs)
+  }
+
+  function checkFlaresPeriodsRow()
+  {
+    local option = ::get_option(::USEROPT_FLARES_PERIODS)
+    if (!option)
+      return
+    local unit = ::getAircraftByName(::aircraft_for_weapons)
+    showOptionRow(option,
+      !!unit && unit.getAvailableSecondaryWeapons().hasFlares)
+  }
+
+  function checkFlaresSeriesRow()
+  {
+    local option = ::get_option(::USEROPT_FLARES_SERIES)
+    if (!option)
+      return
+    local unit = ::getAircraftByName(::aircraft_for_weapons)
+    showOptionRow(option,
+      !!unit && unit.getAvailableSecondaryWeapons().hasFlares)
+  }
+
+  function checkFlaresSeriesPeriodsRow()
+  {
+    local option = ::get_option(::USEROPT_FLARES_SERIES_PERIODS)
+    if (!option)
+      return
+    local unit = ::getAircraftByName(::aircraft_for_weapons)
+    showOptionRow(option,
+     !!unit && unit.getAvailableSecondaryWeapons().hasFlares)
   }
 
   function setLastBulletsCache(unit)
