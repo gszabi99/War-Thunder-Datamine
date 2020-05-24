@@ -357,14 +357,29 @@
             }
           }
         },
-        "designationLockResponce": {
+        "checkDesignationType0": {
           "stateFrom": "search",
           "command": "designateTarget",
+          "stateTo": "checkDesignationType0",
+          "actions": {
+            "checkDesignationTypeEquals": {
+              "value": 0
+            }
+          }
+        },
+        "designationLockResponce": {
+          "stateFrom": "checkDesignationType0",
+          "event": "designationTypeEquals",
           "stateTo": "designationLock",
           "actions": {
             "resetSearchMode": [],
             "setDesignationLockMode": []
           }
+        },
+        "returnToSearchMode": {
+          "stateFrom": "checkDesignationType0",
+          "event": "designationTypeNotEquals",
+          "stateTo": "search"
         },
         "designationTrack": {
           "stateFrom": "designationLock",
@@ -559,7 +574,7 @@
           "actions": {
             "designateActiveDetectedTarget": {
               "type": 0,
-              "sensorIndex": 1
+              "sensorIndex": 0
             }
           }
         }
