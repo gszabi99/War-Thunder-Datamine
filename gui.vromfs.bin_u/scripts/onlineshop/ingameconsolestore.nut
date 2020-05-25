@@ -1,4 +1,5 @@
 local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
+local { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 class ::gui_handlers.IngameConsoleStore extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -388,13 +389,13 @@ class ::gui_handlers.IngameConsoleStore extends ::gui_handlers.BaseGuiHandlerWT
     if (showMainAction)
     {
       buttonObj.visualStyle = "secondary"
-      ::set_double_text_to_button(scene, "btn_main_action", ::loc(storeLocId))
+      setColoredDoubleTextToButton(scene, "btn_main_action", ::loc(storeLocId))
     }
 
     local showSecondAction = openStoreLocId != "" && (item?.isBought ?? false)
     showSceneBtn("btn_alt_action", showSecondAction)
     if (showSecondAction)
-      ::set_double_text_to_button(scene, "btn_alt_action", ::loc(openStoreLocId))
+      setColoredDoubleTextToButton(scene, "btn_alt_action", ::loc(openStoreLocId))
 
     showSceneBtn("warning_text", showSecondAction)
   }

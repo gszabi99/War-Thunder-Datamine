@@ -5,6 +5,7 @@ local unitActions = require("scripts/unit/unitActions.nut")
 local unitStatus = require("scripts/unit/unitStatus.nut")
 local contentPreview = require("scripts/customization/contentPreview.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
+local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 local { canUseIngameShop, getShopItemsTable } = ::is_platform_ps4? require("scripts/onlineShop/ps4ShopData.nut")
   : ::is_platform_xboxone? require("scripts/onlineShop/xboxShopData.nut")
@@ -742,7 +743,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     local bObj = showSceneBtn("btn_buy", canBuyIngame)
     if (::checkObj(bObj) && canBuyIngame)
     {
-      ::placePriceTextToButton(scene,
+      placePriceTextToButton(scene,
                                "btn_buy",
                                ::loc("mainmenu/btnOrder"),
                                ::Cost(::wp_get_cost(unit.name), ::wp_get_cost_gold(unit.name)))
@@ -776,7 +777,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       if (canBuySkin)
       {
         local price = skinDecorator.getCost()
-        ::placePriceTextToButton(scene, "btn_buy_skin", ::loc("mainmenu/btnOrder"), price)
+        placePriceTextToButton(scene, "btn_buy_skin", ::loc("mainmenu/btnOrder"), price)
       }
     }
 

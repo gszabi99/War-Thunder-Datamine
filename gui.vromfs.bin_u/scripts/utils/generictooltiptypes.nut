@@ -6,6 +6,7 @@ local { getSkillCategoryByName } = require("scripts/crew/crewSkills.nut")
 local { getSkillCategoryTooltipContent } = require("scripts/crew/crewSkillsView.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { updateModType,
+        getTierDescTbl,
         updateSpareType,
         updateWeaponTooltip } = require("scripts/weaponry/weaponryVisual.nut")
 
@@ -724,6 +725,26 @@ enums.addTypesByGlobalName("g_tooltip_type", {
     }
   }
 
+  TIER = {
+    getTooltipId = @(unitName, weaponry, presetName)
+      _buildId(unitName, {weaponry = weaponry, presetName = presetName })
+
+    isCustomTooltipFill = true
+    fillTooltip = function(obj, handler, unitName, params)
+    {
+      if (!::check_obj(obj))
+        return false
+
+      local unit = getAircraftByName(unitName)
+      if (!unit)
+        return false
+      local data = ::handyman.renderCached(("gui/weaponry/weaponTooltip"),
+        getTierDescTbl(unit, params.weaponry, params.presetName))
+      obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
+
+      return true
+    }
+  }
 }, null, "typeName")
 
 g_tooltip_type.addTooltipType <- function addTooltipType(tTypes)

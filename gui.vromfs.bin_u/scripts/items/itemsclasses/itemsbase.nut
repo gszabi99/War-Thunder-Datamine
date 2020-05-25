@@ -117,6 +117,7 @@ class ::BaseItem
     iconStyle = blk?.iconStyle ?? id
     link = blk?.link ?? ""
     forceExternalBrowser = blk?.forceExternalBrowser ?? false
+    shouldAutoConsume = blk?.shouldAutoConsume ?? false
 
     shopFilterMask = iType
     local types = blk % "additionalShopItemType"
@@ -766,7 +767,7 @@ class ::BaseItem
   isCraftResult = @() false
   getCraftResultItem = @() null
   hasCraftResult = @() !!getCraftResultItem()
-  isHiddenItem = @() !isEnabled() || isCraftResult()
+  isHiddenItem = @() !isEnabled() || isCraftResult() || shouldAutoConsume
   getAdditionalTextInAmmount = @(needColorize = true, showOnlyIcon = false) ""
   cancelCrafting = @(...) false
   getRewardListLocId = @() "mainmenu/rewardsList"
@@ -781,4 +782,5 @@ class ::BaseItem
   getIconName = @() getSmallIconName()
   canCraftOnlyInCraftTree = @() false
   getLocIdsList = @() { reachedMaxAmount = "item/reached_max_amount" }
+  consume = @(cb, params) false
 }

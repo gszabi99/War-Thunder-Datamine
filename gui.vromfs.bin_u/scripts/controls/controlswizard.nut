@@ -1,4 +1,5 @@
 local globalEnv = require_native("globalEnv")
+local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 ::aircraft_controls_wizard_config <- [
   { id="helpers_mode"
@@ -793,7 +794,7 @@ class ::gui_handlers.controlsWizardModalHandler extends ::gui_handlers.Hotkeys
     local coloredText = ::format(sampleText, "<color=@" + (isEnabled? "goodTextColor" : "warningTextColor") + ">", "</color>")
     local NotColoredText = ::format(sampleText, "", "")
 
-    ::setDoubleTextToButton(scene, "btn_switchAllModes", NotColoredText, coloredText)
+    setDoubleTextToButton(scene, "btn_switchAllModes", NotColoredText, coloredText)
   }
 
   function switchAllListenModes(obj)

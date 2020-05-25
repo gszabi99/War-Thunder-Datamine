@@ -1,6 +1,7 @@
 local vehiclesModal = require("scripts/unit/vehiclesModal.nut")
 local unitActions = require("scripts/unit/unitActions.nut")
 local squadronUnitAction = require("scripts/unit/squadronUnitAction.nut")
+local { setColoredDoubleTextToButton, placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 local handlerClass = class extends vehiclesModal.handlerClass
 {
@@ -89,7 +90,7 @@ local handlerClass = class extends vehiclesModal.handlerClass
 
     local locText = ::loc("shop/btnOrderUnit", { unit = ::getUnitName(lastSelectedUnit.name) })
     local unitCost = (canBuyIngame && !canBuyOnline) ? ::getUnitCost(lastSelectedUnit) : ::Cost()
-    ::placePriceTextToButton(scene.findObject("nav-help"),      "btn_buy_unit", locText, unitCost)
+    placePriceTextToButton(scene.findObject("nav-help"),      "btn_buy_unit", locText, unitCost)
   }
 
   function updateSpendExpBtn()
@@ -114,7 +115,7 @@ local handlerClass = class extends vehiclesModal.handlerClass
       {text = ::Cost().setSap(flushExp).tostring()}) : ""
     local coloredText = textWord + textValue
 
-    ::set_double_text_to_button(scene, "btn_spend_exp", coloredText)
+    setColoredDoubleTextToButton(scene, "btn_spend_exp", coloredText)
   }
 
   function onSpendExcessExp()

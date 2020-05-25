@@ -1499,6 +1499,7 @@ playerStateIcon {
   re-type:9rect;
   background-repeat:expand;
   size:1@tableIcoSize, 1@tableIcoSize;
+  background-svg-size:@tableIcoSize, @tableIcoSize;
 }
 
 playerStateIcon[background-image=""] {
@@ -2480,6 +2481,7 @@ airInfoBlock {
   min-height:4@sIco;
   css-hier-invalidate:yes;
   total-input-transparent:yes;
+  behaviour:Timer;
 }
 
 airInfoBlock > bgGradientLeft {

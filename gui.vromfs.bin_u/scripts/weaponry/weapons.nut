@@ -33,6 +33,8 @@ local { WEAPON_TAG,
         setLastWeapon,
         getSecondaryWeaponsList } = require("scripts/weaponry/weaponryInfo.nut")
 local tutorAction = require("scripts/tutorials/tutorialActions.nut")
+local { setDoubleTextToButton, setColoredDoubleTextToButton,
+  placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 ::header_len_per_cell <- 17
 ::tooltip_display_delay <- 2
@@ -117,7 +119,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (::checkObj(imageBlock))
       imageBlock.show(researchMode)
 
-    ::setDoubleTextToButton(scene, "btn_spendExcessExp",
+    setDoubleTextToButton(scene, "btn_spendExcessExp",
         ::getRpPriceText(::loc("mainmenu/spendExcessExp") + " ", false),
         ::getRpPriceText(::loc("mainmenu/spendExcessExp") + " ", true))
 
@@ -548,7 +550,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     local show = !cost.isZero() && ::isUnitUsable(air) && ::has_feature("BuyAllModifications")
     showSceneBtn(btnId, show)
     if (show)
-      ::placePriceTextToButton(scene, btnId, ::loc("mainmenu/btnBuyAll"), cost)
+      placePriceTextToButton(scene, btnId, ::loc("mainmenu/btnBuyAll"), cost)
   }
 
   function updateAllItems()
@@ -608,7 +610,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (showResearchButton)
     {
       local flushExp = item.reqExp < availableFlushExp ? item.reqExp : availableFlushExp
-      ::set_double_text_to_button(scene, "btn_nav_research",
+      setColoredDoubleTextToButton(scene, "btn_nav_research",
         ::format(::loc("weaponry/research") + " (%s)", ::Cost().setRp(flushExp).tostring()))
     }
 
@@ -619,7 +621,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     showSceneBtn("btn_buy_mod", showPurchaseButton)
     if (showPurchaseButton)
-      ::placePriceTextToButton(scene, "btn_buy_mod", ::loc("mainmenu/btnBuy"), getItemCost(air, item).wp)
+      placePriceTextToButton(scene, "btn_buy_mod", ::loc("mainmenu/btnBuy"), getItemCost(air, item).wp)
 
     local textObj = scene.findObject("no_action_text")
     if (::checkObj(textObj))
@@ -1753,7 +1755,7 @@ class ::gui_handlers.MultiplePurchase extends ::gui_handlers.BaseGuiHandlerWT
 
     local wpCost = buyValue * itemCost.wp
     local eaCost = buyValue * itemCost.gold
-    ::placePriceTextToButton(scene, "item_price", ::loc("mainmenu/btnBuy"), wpCost, eaCost)
+    placePriceTextToButton(scene, "item_price", ::loc("mainmenu/btnBuy"), wpCost, eaCost)
   }
 
   function onBuy(obj)

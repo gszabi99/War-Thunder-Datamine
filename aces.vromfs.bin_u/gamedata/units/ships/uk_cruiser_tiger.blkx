@@ -797,22 +797,7 @@
         "stopChanceOnDeadPart": 1.0,
         "armorClass": "ship_structural_steel",
         "armorThickness": 56.4,
-        "fireDamageMult": 0.1,
-        "ex_armor_01_dm": {
-          "hp": 500.0
-        },
-        "ex_armor_02_dm": {
-          "hp": 500.0
-        },
-        "ex_armor_03_dm": {
-          "hp": 500.0
-        },
-        "ex_armor_04_dm": {
-          "hp": 500.0
-        },
-        "ex_armor_06_dm": {
-          "hp": 500.0
-        }
+        "fireDamageMult": 0.1
       },
       "bulges": {
         "stopChanceOnDeadPart": 1.0,
@@ -1023,7 +1008,49 @@
       "radiolocation": {
         "armorClass": "ship_structural_steel",
         "armorThickness": 5.0,
-        "dmgState": 0.0
+        "dmgState": 0.0,
+        "antenna_target_location_01_dm": {
+          "hp": 350.0
+        },
+        "antenna_target_location_02_dm": {
+          "hp": 350.0
+        },
+        "antenna_target_tagging_01_dm": {
+          "hp": 350.0
+        },
+        "antenna_target_tagging_02_dm": {
+          "hp": 350.0
+        },
+        "antenna_target_tagging_03_dm": {
+          "hp": 350.0
+        },
+        "antenna_target_tagging_04_dm": {
+          "hp": 350.0
+        },
+        "antenna_target_tagging_05_dm": {
+          "hp": 350.0
+        },
+        "antenna_target_tagging_06_dm": {
+          "hp": 350.0
+        },
+        "antenna_target_tagging_mount_01_dm": {
+          "hp": 350.0
+        },
+        "antenna_target_tagging_mount_02_dm": {
+          "hp": 381.0
+        },
+        "antenna_target_tagging_mount_03_dm": {
+          "hp": 381.0
+        },
+        "antenna_target_tagging_mount_04_dm": {
+          "hp": 381.0
+        },
+        "antenna_target_tagging_mount_05_dm": {
+          "hp": 381.0
+        },
+        "antenna_target_tagging_mount_06_dm": {
+          "hp": 381.0
+        }
       }
     }
   },
@@ -2132,6 +2159,49 @@
   {
     "commonWeapons": [
       {
+        "animatedBones": [
+          {
+            "node": "antenna_target_location_01"
+          },
+          {
+            "node": "antenna_target_tagging_01"
+          },
+          {
+            "node": "antenna_target_tagging_mount_01"
+          },
+          {
+            "node": "antenna_target_tagging_02"
+          },
+          {
+            "node": "antenna_target_tagging_mount_02"
+          },
+          {
+            "node": "antenna_target_tagging_03"
+          },
+          {
+            "node": "antenna_target_tagging_mount_03"
+          },
+          {
+            "node": "antenna_target_tagging_04"
+          },
+          {
+            "node": "antenna_target_tagging_mount_04"
+          },
+          {
+            "node": "antenna_target_tagging_05"
+          },
+          {
+            "node": "antenna_target_tagging_mount_05"
+          },
+          {
+            "node": "antenna_target_tagging_06"
+          },
+          {
+            "node": "antenna_target_tagging_mount_06"
+          }
+        ]
+      },
+      {
         "Weapon": [
           {
             "trigger": "gunner0"
@@ -2227,34 +2297,12 @@
             "errExplTime": 0.0
           },
           {
-            "turret": [
-              {
-                "head": "main_caliber_turret_01"
-              },
-              {
-                "gun": "main_caliber_gun_01"
-              },
-              {
-                "barrel": "gun_barrel_01"
-              },
-              {
-                "gunnerDm": "main_caliber_turret_01_dm"
-              },
-              {
-                "linkedAnimPart": {
-                  "horNode": "ex_armor_01",
-                  "horLimits": [-180.0,180.0],
-                  "horOriginLimits": [-180.0,180.0]
-                }
-              },
-              {
-                "linkedAnimPart": {
-                  "verNode": "ex_decor_14",
-                  "verLimits": [-5.0,80.0],
-                  "verOriginLimits": [-5.0,80.0]
-                }
-              }
-            ]
+            "turret": {
+              "head": "main_caliber_turret_01",
+              "gun": "main_caliber_gun_01",
+              "barrel": "gun_barrel_01",
+              "gunnerDm": "main_caliber_turret_01_dm"
+            }
           },
           {
             "limits": {
@@ -2533,41 +2581,12 @@
             "errExplTime": 0.0
           },
           {
-            "turret": [
-              {
-                "head": "main_caliber_turret_02"
-              },
-              {
-                "gun": "main_caliber_gun_02"
-              },
-              {
-                "barrel": "gun_barrel_09"
-              },
-              {
-                "gunnerDm": "main_caliber_turret_02_dm"
-              },
-              {
-                "linkedAnimPart": {
-                  "horNode": "ex_armor_06",
-                  "horLimits": [-180.0,180.0],
-                  "horOriginLimits": [-180.0,180.0]
-                }
-              },
-              {
-                "linkedAnimPart": {
-                  "verNode": "ex_decor_18",
-                  "verLimits": [-5.0,80.0],
-                  "verOriginLimits": [-5.0,80.0]
-                }
-              },
-              {
-                "linkedAnimPart": {
-                  "verNode": "ex_decor_19",
-                  "verLimits": [-5.0,80.0],
-                  "verOriginLimits": [-5.0,80.0]
-                }
-              }
-            ]
+            "turret": {
+              "head": "main_caliber_turret_02",
+              "gun": "main_caliber_gun_02",
+              "barrel": "gun_barrel_09",
+              "gunnerDm": "main_caliber_turret_02_dm"
+            }
           },
           {
             "limits": {
@@ -2864,34 +2883,12 @@
             "errExplTime": 0.0
           },
           {
-            "turret": [
-              {
-                "head": "auxiliary_caliber_turret_01"
-              },
-              {
-                "gun": "auxiliary_caliber_gun_01"
-              },
-              {
-                "barrel": "gun_barrel_03"
-              },
-              {
-                "gunnerDm": "auxiliary_caliber_turret_01_dm"
-              },
-              {
-                "linkedAnimPart": {
-                  "horNode": "ex_armor_02",
-                  "horLimits": [-180.0,180.0],
-                  "horOriginLimits": [-180.0,180.0]
-                }
-              },
-              {
-                "linkedAnimPart": {
-                  "verNode": "ex_decor_15",
-                  "verLimits": [-15.0,89.0],
-                  "verOriginLimits": [-15.0,89.0]
-                }
-              }
-            ]
+            "turret": {
+              "head": "auxiliary_caliber_turret_01",
+              "gun": "auxiliary_caliber_gun_01",
+              "barrel": "gun_barrel_03",
+              "gunnerDm": "auxiliary_caliber_turret_01_dm"
+            }
           },
           {
             "limits": {
@@ -3131,34 +3128,12 @@
           "errMeasureVelDir": 3.0,
           "errTargetting": 1.0,
           "errExplTime": 0.0,
-          "turret": [
-            {
-              "head": "auxiliary_caliber_turret_02"
-            },
-            {
-              "gun": "auxiliary_caliber_gun_02"
-            },
-            {
-              "barrel": "gun_barrel_05"
-            },
-            {
-              "gunnerDm": "auxiliary_caliber_turret_02_dm"
-            },
-            {
-              "linkedAnimPart": {
-                "horNode": "ex_armor_03",
-                "horLimits": [-180.0,180.0],
-                "horOriginLimits": [-180.0,180.0]
-              }
-            },
-            {
-              "linkedAnimPart": {
-                "verNode": "ex_decor_17",
-                "verLimits": [-15.0,89.0],
-                "verOriginLimits": [-15.0,89.0]
-              }
-            }
-          ],
+          "turret": {
+            "head": "auxiliary_caliber_turret_02",
+            "gun": "auxiliary_caliber_gun_02",
+            "barrel": "gun_barrel_05",
+            "gunnerDm": "auxiliary_caliber_turret_02_dm"
+          },
           "limits": {
             "yaw": [-180.0,180.0],
             "pitch": [-15.0,89.0]
@@ -3315,34 +3290,12 @@
           "errMeasureVelDir": 3.0,
           "errTargetting": 1.0,
           "errExplTime": 0.0,
-          "turret": [
-            {
-              "head": "auxiliary_caliber_turret_03"
-            },
-            {
-              "gun": "auxiliary_caliber_gun_03"
-            },
-            {
-              "barrel": "gun_barrel_07"
-            },
-            {
-              "gunnerDm": "auxiliary_caliber_turret_03_dm"
-            },
-            {
-              "linkedAnimPart": {
-                "horNode": "ex_armor_04",
-                "horLimits": [-180.0,180.0],
-                "horOriginLimits": [-180.0,180.0]
-              }
-            },
-            {
-              "linkedAnimPart": {
-                "verNode": "ex_decor_16",
-                "verLimits": [-15.0,89.0],
-                "verOriginLimits": [-15.0,89.0]
-              }
-            }
-          ],
+          "turret": {
+            "head": "auxiliary_caliber_turret_03",
+            "gun": "auxiliary_caliber_gun_03",
+            "barrel": "gun_barrel_07",
+            "gunnerDm": "auxiliary_caliber_turret_03_dm"
+          },
           "limits": {
             "yaw": [-180.0,180.0],
             "pitch": [-15.0,89.0]
@@ -3488,6 +3441,89 @@
       "TrackSoundNameAi": "tracks_ai_mid",
       "turret_turn": "turret_turn_big"
     }
+  },
+  {
+    "sensors": [
+      {
+        "sensor": [
+          {
+            "blk": "gameData/sensors/su_foot_n.blk"
+          },
+          {
+            "designationFromBody": true
+          },
+          {
+            "designationTurretIndex": 1
+          },
+          {
+            "dmPart": "antenna_target_location_01_dm"
+          },
+          {
+            "dmPart": "antenna_target_location_02_dm"
+          }
+        ]
+      },
+      {
+        "sensor": [
+          {
+            "blk": "gameData/sensors/su_mr_105.blk"
+          },
+          {
+            "dmPart": "antenna_target_tagging_01_dm"
+          },
+          {
+            "dmPart": "antenna_target_tagging_mount_01_dm"
+          },
+          {
+            "dmPart": "antenna_target_tagging_02_dm"
+          },
+          {
+            "dmPart": "antenna_target_tagging_mount_02_dm"
+          },
+          {
+            "dmPart": "antenna_target_tagging_03_dm"
+          },
+          {
+            "dmPart": "antenna_target_tagging_mount_03_dm"
+          },
+          {
+            "dmPart": "antenna_target_tagging_04_dm"
+          },
+          {
+            "dmPart": "antenna_target_tagging_mount_04_dm"
+          },
+          {
+            "dmPart": "antenna_target_tagging_05_dm"
+          },
+          {
+            "dmPart": "antenna_target_tagging_mount_05_dm"
+          },
+          {
+            "dmPart": "antenna_target_tagging_06_dm"
+          },
+          {
+            "dmPart": "antenna_target_tagging_mount_06_dm"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "radarAnimations": [
+      {
+        "anim": {
+          "radarAnimVar": "radar_target_yaw_rotate",
+          "animatedRadarIdx": 0
+        }
+      },
+      {
+        "anim": {
+          "radarAnimVar": "target_tagging_yaw_rotate",
+          "animatedRadarIdx": 1,
+          "radarAnimPitchVar": "target_tagging_pitch_rotate"
+        }
+      }
+    ]
   },
   {
     "modifications": {

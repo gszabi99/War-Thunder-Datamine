@@ -1,6 +1,7 @@
 local stdMath = require("std/math.nut")
 local clustersModule = require("scripts/clusterSelect.nut")
 local antiCheat = require("scripts/penitentiary/antiCheat.nut")
+local { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 enum eRoomFlags { //bit enum. sorted by priority
   CAN_JOIN              = 0x8000 //set by CAN_JOIN_MASK, used for sorting
@@ -288,7 +289,7 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (battlePriceText.len() > 0 && reasonData.activeJoinButton)
       startText += ::format(" (%s)", battlePriceText)
 
-    ::set_double_text_to_button(scene, "btn_join_event", startText)
+    setColoredDoubleTextToButton(scene, "btn_join_event", startText)
     local reasonTextObj = showSceneBtn("cant_join_reason", reasonData.reasonText.len() > 0)
     reasonTextObj.setValue(reasonData.reasonText)
 

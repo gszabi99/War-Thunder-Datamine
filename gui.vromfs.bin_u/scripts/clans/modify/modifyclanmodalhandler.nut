@@ -1,5 +1,6 @@
 local { clearBorderSymbols } = require("std/string.nut")
 local dirtyWordsFilter = require("scripts/dirtyWords/dirtyWords.nut")
+local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 class ::gui_handlers.ModifyClanModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -63,7 +64,7 @@ class ::gui_handlers.ModifyClanModalHandler extends ::gui_handlers.BaseGuiHandle
 
   function setSubmitButtonText(buttonText, cost = 0)
   {
-    ::placePriceTextToButton(scene, "btn_submit", buttonText, cost)
+    placePriceTextToButton(scene, "btn_submit", buttonText, cost)
   }
 
   function getSelectedClanType()

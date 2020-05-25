@@ -1,5 +1,6 @@
 local progressMsg = require("sqDagui/framework/progressMsg.nut")
 local { missionsListCampaignId } = require("scripts/missions/getMissionsListCampaignId.nut")
+local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 ::current_campaign <- null
 ::current_campaign_name <- ""

@@ -1,3 +1,5 @@
+local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+
 ::gui_start_dynamic_summary <- function gui_start_dynamic_summary()
 {
   ::handlersManager.loadHandler(::gui_handlers.CampaignPreview, { isFinal = false })
@@ -106,10 +108,10 @@ class ::gui_handlers.CampaignPreview extends ::gui_handlers.BaseGuiHandlerWT
     if (isFinal)
     {
       ::showBtn("btn_back", false, scene)
-      ::setDoubleTextToButton(scene, "btn_apply", ::loc("mainmenu/btnOk"))
+      setDoubleTextToButton(scene, "btn_apply", ::loc("mainmenu/btnOk"))
     } else
       if (!::first_generation)
-        ::setDoubleTextToButton(scene, "btn_apply", ::loc("mainmenu/btnNext"))
+        setDoubleTextToButton(scene, "btn_apply", ::loc("mainmenu/btnNext"))
   }
 
   function buildLogLine(blk)

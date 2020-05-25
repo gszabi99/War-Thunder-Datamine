@@ -1,6 +1,7 @@
 local statsd = require("statsd")
 local { animBgLoad } = require("scripts/loading/animBg.nut")
 local showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
+local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 class ::gui_handlers.LoginWndHandlerPs4 extends ::BaseGuiHandler
 {
@@ -10,7 +11,7 @@ class ::gui_handlers.LoginWndHandlerPs4 extends ::BaseGuiHandler
   function initScreen()
   {
     animBgLoad()
-    ::setVersionText(scene)
+    setVersionText(scene)
     ::setProjectAwards(this)
     showTitleLogo(scene, 128)
     ::set_gui_options_mode(::OPTIONS_MODE_GAMEPLAY)

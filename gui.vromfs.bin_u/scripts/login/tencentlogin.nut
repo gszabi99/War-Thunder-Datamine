@@ -1,6 +1,7 @@
 local statsd = require("statsd")
 local { clearBorderSymbols } = require("std/string.nut")
 local { animBgLoad } = require("scripts/loading/animBg.nut")
+local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 class ::gui_handlers.LoginWndHandlerTencent extends ::BaseGuiHandler
 {
@@ -9,7 +10,7 @@ class ::gui_handlers.LoginWndHandlerTencent extends ::BaseGuiHandler
   function initScreen()
   {
     animBgLoad()
-    ::setVersionText()
+    setVersionText()
     ::setProjectAwards(this)
 
     guiScene.performDelayed(this, function() { doLogin() })

@@ -47,6 +47,7 @@ div {
           background-image:t='<<unitClassIcon>>';
           shopItemType:t='<<shopItemType>>';
           size:t='@tableIcoSize, @tableIcoSize';
+          background-svg-size:t='@tableIcoSize, @tableIcoSize';
         }
         activeText {
           id:t='air_name';

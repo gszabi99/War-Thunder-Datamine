@@ -54,13 +54,21 @@ OnlineShopModel.showGoods <- function showGoods(searchRequest, requestOrigin)
       foreach (goodsName in searchResult)
       {
         local bundleId = getBundleId(goodsName)
-        if (bundleId != "" && getShopItem(bundleId) != null)
+        if (bundleId != "")
         {
           if (::is_ps4_or_xbox)
-            openIngameStore({ curItemId = bundleId, openedFrom = requestOrigin })
+          {
+            if (getShopItem(bundleId) != null)
+            {
+              openIngameStore({ curItemId = bundleId, openedFrom = requestOrigin })
+              return
+            }
+          }
           else
+          {
             doBrowserPurchase(goodsName)
-          return
+            return
+          }
         }
       }
 

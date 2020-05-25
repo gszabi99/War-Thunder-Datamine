@@ -118,6 +118,14 @@ weaponry_item > ButtonImg {
   position:'absolute';
 }
 
+weaponryPreset > ButtonImg {
+  height: 1@cIco;
+  background-svg-size: 1@cIco, 1@cIco;
+  position:'relative';
+  top:50%ph-50%h;
+}
+
+
 ButtonImg.independent {
   height:1@cIco;
   background-svg-size: 1@cIco, 1@cIco;
@@ -955,7 +963,8 @@ textareaNoTab.highlightButton[btnName=Y],
 DummyButton[btnName=Y], mapStateBox[btnName=Y],
 ComboBox[btnName=Y]                    { accessKey:'J:Y'; }
 
-Button_text.switch[btnName=Y]          { accessKey:'J:Y | Space'; }
+Button_text.switch[btnName=Y], weaponryPreset[btnName=Y]
+                                       { accessKey:'J:Y | Space'; }
 Button_text[btnName=RB], CheckBox[btnName=RB],
 DummyButton[btnName=RB], emptyButton[btnName=RB], ComboBox[btnName=RB]
                                        { accessKey:'J:RB'; }

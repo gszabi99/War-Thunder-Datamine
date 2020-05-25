@@ -4,6 +4,7 @@ local antiCheat = require("scripts/penitentiary/antiCheat.nut")
 local { isChatEnabled } = require("scripts/chat/chatStates.nut")
 local fillSessionInfo = require("scripts/matchingRooms/fillSessionInfo.nut")
 local { mpLobbyBlkPath } = require("scripts/matchingRooms/getMPLobbyBlkPath.nut")
+local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 ::session_player_rmenu <- function session_player_rmenu(handler, player, chatLog = null, position = null, orientation = null)
 {
@@ -386,7 +387,7 @@ class ::gui_handlers.MPLobby extends ::gui_handlers.BaseGuiHandlerWT
   {
     local readyData = getReadyData()
     local readyBtn = showSceneBtn("btn_ready", readyData.readyBtnText.len())
-    ::setDoubleTextToButton(scene, "btn_ready", readyData.readyBtnText)
+    setDoubleTextToButton(scene, "btn_ready", readyData.readyBtnText)
     readyBtn.inactiveColor = readyData.isVisualDisabled ? "yes" : "no"
     scene.findObject("cant_ready_reason").setValue(readyData.readyBtnHint)
 

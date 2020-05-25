@@ -88,6 +88,7 @@ tdiv {
   <<#classIco>>
   img {
     size:t='1@tableIcoSize, 1@tableIcoSize'
+    background-svg-size:t='@tableIcoSize, @tableIcoSize'
     pos:t='0.5@dIco-0.5@tableIcoSize, 50%ph-50%h'; position:t='relative'
     background-image:t='<<classIco>>'
     shopItemType:t='<<shopItemType>>'

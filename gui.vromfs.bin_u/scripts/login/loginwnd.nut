@@ -2,6 +2,7 @@ local statsd = require("statsd")
 local { animBgLoad } = require("scripts/loading/animBg.nut")
 local showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
+local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 
@@ -48,7 +49,7 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
   function initScreen()
   {
     animBgLoad()
-    ::setVersionText()
+    setVersionText()
     ::setProjectAwards(this)
     showTitleLogo(scene, 128)
     initLanguageSwitch()

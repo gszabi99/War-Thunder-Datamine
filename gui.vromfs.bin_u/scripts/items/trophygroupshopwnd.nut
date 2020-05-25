@@ -1,4 +1,5 @@
 local stdMath = require("std/math.nut")
+local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 ::gui_start_open_trophy_group_shop_wnd <- function gui_start_open_trophy_group_shop_wnd(trophy)
 {
@@ -218,7 +219,7 @@ class ::gui_handlers.TrophyGroupShopWnd extends ::gui_handlers.BaseGuiHandlerWT
     local isPurchased = isTrophyPurchased(obj.getValue())
     local mainActionData = trophy.getMainActionData()
     showSceneBtn("btn_main_action", !isPurchased)
-    ::setDoubleTextToButton(scene,
+    setDoubleTextToButton(scene,
                             "btn_main_action",
                             mainActionData?.btnName,
                             mainActionData?.btnColoredName || mainActionData?.btnName)

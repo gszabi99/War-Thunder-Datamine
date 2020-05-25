@@ -1,5 +1,6 @@
 local globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
 local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
+local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 ::g_unlock_view <- {
   function fillSimplifiedUnlockInfo(unlockBlk, unlockObj, context) {
@@ -393,7 +394,7 @@ g_unlock_view.fillUnlockPurchaseButton <- function fillUnlockPurchaseButton(unlo
   local show = isPurchaseTime && canSpendGold && !haveStages && !isUnlocked && !cost.isZero()
   purchButtonObj.show(show)
   if (show)
-    ::placePriceTextToButton(unlockObj, "purchase_button", ::loc("mainmenu/btnBuy"), cost)
+    placePriceTextToButton(unlockObj, "purchase_button", ::loc("mainmenu/btnBuy"), cost)
 
   if (!show && !cost.isZero())
   {

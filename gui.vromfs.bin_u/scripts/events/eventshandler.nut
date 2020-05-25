@@ -5,6 +5,7 @@ local { getTextWithCrossplayIcon,
         needShowCrossPlayInfo } = require("scripts/social/crossplay.nut")
 local clustersModule = require("scripts/clusterSelect.nut")
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
+local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 const COLLAPSED_CHAPTERS_SAVE_ID = "events_collapsed_chapters"
 const ROOMS_LIST_OPEN_COUNT_SAVE_ID = "tutor/roomsListOpenCount"
@@ -500,7 +501,7 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
         event, "activeTextColor", true, false))
     }
 
-    ::setDoubleTextToButton(scene, "btn_join_event", uncoloredStartText, startText)
+    setDoubleTextToButton(scene, "btn_join_event", uncoloredStartText, startText)
     local leaveButtonObj = scene.findObject("btn_leave_event")
     leaveButtonObj.show(isInQueue)
     leaveButtonObj.enable(isInQueue)

@@ -1,4 +1,5 @@
 local time = require("scripts/time.nut")
+local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 ::gui_start_battle_tasks_wnd <- function gui_start_battle_tasks_wnd(taskId = null, tabType = null)
 {
@@ -412,7 +413,7 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
     ::showBtn("btn_reroll", showRerollButton, taskObj)
     ::showBtn("btn_recieve_reward", canGetReward, taskObj)
     if (showRerollButton)
-      ::placePriceTextToButton(taskObj, "btn_reroll", ::loc("mainmenu/battleTasks/reroll"), ::g_battle_tasks.rerollCost)
+      placePriceTextToButton(taskObj, "btn_reroll", ::loc("mainmenu/battleTasks/reroll"), ::g_battle_tasks.rerollCost)
     showSceneBtn("btn_requirements_list", ::show_console_buttons && ::getTblValue("names", config, []).len() != 0)
 
     local id = config?.id ?? ""

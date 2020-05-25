@@ -1,4 +1,5 @@
 local time = require("scripts/time.nut")
+local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 class ::gui_handlers.EditClanModalhandler extends ::gui_handlers.ModifyClanModalHandler
 {
@@ -188,7 +189,7 @@ class ::gui_handlers.EditClanModalhandler extends ::gui_handlers.ModifyClanModal
     {
       local cost = ::clan_get_admin_editor_mode() ? ::Cost() : clanData.type.getMembersUpgradeCost(clanData.mlimit)
       local upgStep = clanData.type.getMembersUpgradeStep()
-      ::placePriceTextToButton(scene, "btn_upg_members", ::loc("clan/members_upgrade_button", {step = upgStep}), cost)
+      placePriceTextToButton(scene, "btn_upg_members", ::loc("clan/members_upgrade_button", {step = upgStep}), cost)
     }
 
     showSceneBtn("btn_upg_members", upgradeMembersButtonVisible)

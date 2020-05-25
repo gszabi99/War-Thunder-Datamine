@@ -164,7 +164,7 @@ local list = {
   CHANGE_LOG = {
     text = @() "#mainmenu/btnChangelog"
     onClickFunc = @(...) openChangelog()
-    isHidden = @(...) !::has_feature("Changelog")
+    isHidden = @(...) !::has_feature("Changelog") || !::isInMenu()
   }
   EXIT = {
     text = @() "#mainmenu/btnExit"

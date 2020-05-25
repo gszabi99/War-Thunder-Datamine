@@ -1104,7 +1104,8 @@ local { getEntitlementConfig, getEntitlementName, getEntitlementPrice } = requir
     local itemId = ::getTblValue("id", log, "")
     local item = ::ItemsManager.findItemById(itemId)
     res.logImg = (item && item.getSmallIconName() ) || ::BaseItem.typeIcon
-    res.name = ::loc("userlog/" + logName, {
+    local nameId = (item?.isSpecialOffer ?? false) ? "specialOffer/recived" : logName
+    res.name = ::loc($"userlog/{nameId}", {
                      itemName = ::colorize("userlogColoredText", item ? item.getName() : "")
                    })
     if ("itemType" in log && log.itemType == "wager")
@@ -1129,7 +1130,8 @@ local { getEntitlementConfig, getEntitlementName, getEntitlementPrice } = requir
     local itemId = ::getTblValue("id", log, "")
     local item = ::ItemsManager.findItemById(itemId)
     local reason = ::getTblValue("reason", log, "unknown")
-    local locId = "userlog/" + logName + "/" + reason
+    local nameId = (item?.isSpecialOffer ?? false) ? "specialOffer" : logName
+    local locId = $"userlog/{nameId}/{reason}"
     if (reason == "replaced")
     {
       local replaceItemId = ::getTblValue("replaceId", log, "")

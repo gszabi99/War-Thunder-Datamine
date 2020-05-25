@@ -29,6 +29,7 @@ tdiv {
       <<#icon>>
       img {
         size:t='@tableIcoSize, @tableIcoSize'
+        background-svg-size:t='@tableIcoSize, @tableIcoSize'
         pos:t='0, 50%ph-50%h'
         position:t='relative'
         background-image:t='<<icon>>'
@@ -99,6 +100,7 @@ tdiv {
       <<#icon>>
       img {
         size:t='@tableIcoSize, @tableIcoSize'
+        background-svg-size:t='@tableIcoSize, @tableIcoSize'
         pos:t='0, 50%ph-50%h'
         position:t='relative'
         background-image:t='<<icon>>'

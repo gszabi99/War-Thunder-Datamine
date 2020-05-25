@@ -1,5 +1,6 @@
 local statsd = require("statsd")
 local { animBgLoad } = require("scripts/loading/animBg.nut")
+local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 class ::gui_handlers.LoginWndHandlerDMM extends ::BaseGuiHandler
 {
@@ -8,7 +9,7 @@ class ::gui_handlers.LoginWndHandlerDMM extends ::BaseGuiHandler
   function initScreen()
   {
     animBgLoad()
-    ::setVersionText()
+    setVersionText()
     ::setProjectAwards(this)
 
     guiScene.performDelayed(this, function() { doLogin() })

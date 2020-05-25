@@ -3,6 +3,7 @@ local time = require("scripts/time.nut")
 local penalty = require_native("penalty")
 local platformModule = require("scripts/clientState/platform.nut")
 local stdMath = require("std/math.nut")
+local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 ::usageRating_amount <- [0.0003, 0.0005, 0.001, 0.002]
 ::allowingMultCountry <- [1.5, 2, 2.5, 3, 4, 5]
@@ -521,8 +522,8 @@ foreach (i, v in ::cssColorsMapDark)
 
         if (showButtons)
         {
-          ::placePriceTextToButton(obj, "btn_unlock_crew", ::loc("mainmenu/btn_crew_unlock"), crewCost, 0)
-          ::placePriceTextToButton(obj, "btn_unlock_crew_gold", ::loc("mainmenu/btn_crew_unlock"), 0, crewCostGold)
+          placePriceTextToButton(obj, "btn_unlock_crew", ::loc("mainmenu/btn_crew_unlock"), crewCost, 0)
+          placePriceTextToButton(obj, "btn_unlock_crew_gold", ::loc("mainmenu/btn_crew_unlock"), 0, crewCostGold)
         }
         ::showBtn("btn_unlock_crew", showButtons && crewCost, obj)
         ::showBtn("btn_unlock_crew_gold", showButtons && crewCostGold, obj)
@@ -1396,46 +1397,6 @@ foreach (i, v in ::cssColorsMapDark)
   })(handler, gm))
 }
 
-::setDoubleTextToButton <- function setDoubleTextToButton(nestObj, firstBtnId, firstText, secondText = null)
-{
-  if (!::checkObj(nestObj) || firstBtnId == "")
-    return null
-
-  if (!secondText)
-    secondText = firstText
-
-  local fObj = nestObj.findObject(firstBtnId)
-  if(!::checkObj(fObj))
-    return null
-  fObj.setValue(firstText)
-
-  local secondBtnId = firstBtnId + "_text"
-  local sObj = fObj.findObject(secondBtnId)
-  if(::checkObj(sObj))
-    sObj.setValue(secondText)
-  return fObj
-}
-
-::set_double_text_to_button <- function set_double_text_to_button(nestObj, btnId, coloredText)
-{
-  return ::setDoubleTextToButton(nestObj, btnId, ::g_dagui_utils.removeTextareaTags(coloredText), coloredText)
-}
-
-//instead of wpCost you can use direc Cost  (instance of money)
-
-/**
- * placePriceTextToButton(nestObj, btnId, localizedText, wpCost (int), goldCost (int))
- * placePriceTextToButton(nestObj, btnId, localizedText, cost (Cost) )
- */
-::placePriceTextToButton <- function placePriceTextToButton(nestObj, btnId, localizedText, arg1=0, arg2=0)
-{
-  local cost = ::u.isMoney(arg1) ? arg1 : ::Cost(arg1, arg2)
-  local textFormat = "%s" + (cost.isZero() ? "" : " (%s)")
-  local priceText = ::format(textFormat, localizedText, cost.getUncoloredText())
-  local priceTextColored = ::format(textFormat, localizedText, cost.getTextAccordingToBalance())
-  ::setDoubleTextToButton(nestObj, btnId, priceText, priceTextColored)
-}
-
 ::get_profile_country_sq <- @() ::get_profile_country() ?? "country_0"
 
 ::switch_profile_country <- function switch_profile_country(country)
@@ -1446,22 +1407,6 @@ foreach (i, v in ::cssColorsMapDark)
   ::set_profile_country(country)
   ::g_squad_utils.updateMyCountryData()
   ::broadcastEvent("CountryChanged")
-}
-
-::set_help_text_on_loading <- function set_help_text_on_loading(nestObj = null)
-{
-  if (!::checkObj(nestObj))
-    return
-
-  local text = ::show_console_buttons? ::loc("loading/help_consoleTip") : ::loc("loading/help_tip01")
-  nestObj.setValue(text)
-}
-
-::setVersionText <- function setVersionText(scene=null)
-{
-  local verObj = scene ? scene.findObject("version_text") : ::get_cur_gui_scene()["version_text"]
-  if(::checkObj(verObj))
-    verObj.setValue(::format(::loc("mainmenu/version"), ::get_game_version_str()))
 }
 
 ::flushExcessExpToUnit <- function flushExcessExpToUnit(unit)

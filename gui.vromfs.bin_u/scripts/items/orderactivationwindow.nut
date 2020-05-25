@@ -1,4 +1,5 @@
-local sheets = ::require("scripts/items/itemsShopSheets.nut")
+local sheets = require("scripts/items/itemsShopSheets.nut")
+local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 ::gui_start_order_activation_window <- function gui_start_order_activation_window(params = null)
 {
@@ -21,7 +22,7 @@ class ::gui_handlers.OrderActivationWindow extends ::gui_handlers.ItemsList
     if (showMainAction)
     {
       buttonObj.visualStyle = curTab == itemsTab.INVENTORY? "secondary" : "purchase"
-      ::setDoubleTextToButton(scene, "btn_main_action", mainActionData.btnName,
+      setDoubleTextToButton(scene, "btn_main_action", mainActionData.btnName,
                               mainActionData?.btnColoredName || mainActionData.btnName)
     }
 

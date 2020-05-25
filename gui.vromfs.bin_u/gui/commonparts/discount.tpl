@@ -1,8 +1,7 @@
 tdiv {
   <<#needHeader>>
-    textarea {
-      text:t='<<?ugm/price>><<?ui/colon>>'
-      removeParagraphIndent:t='yes'
+    textareaNoTab {
+      text:t='<<#headerText>><<headerText>><</headerText>><<^headerText>><<?ugm/price>><<?ui/colon>><</headerText>>'
     }
   <</needHeader>>
 
@@ -16,11 +15,12 @@ tdiv {
     }
   <</havePsPlusDiscount>>
 
-  textarea {
+  <<^needDiscountOnRight>>
+  textareaNoTab {
     text:t='<<priceText>>'
-    removeParagraphIndent:t='yes'
 
     <<#haveDiscount>>
+      margin-right:t='0.01@scrn_tgt'
       <<#havePsPlusDiscount>>
         overlayTextColor:t='psplus'
       <</havePsPlusDiscount>>
@@ -29,13 +29,12 @@ tdiv {
       <</havePsPlusDiscount>>
     <</haveDiscount>>
   }
+  <</needDiscountOnRight>>
 
   <<#haveDiscount>>
-    textarea {
+    textareaNoTab {
       text:t='<<listPriceText>>'
-      removeParagraphIndent:t='yes'
       overlayTextColor:t='faded'
-      margin-left:t='0.01@scrn_tgt'
       tdiv {
         size:t='pw, 1@dp'
         position:t='absolute'
@@ -44,4 +43,21 @@ tdiv {
       }
     }
   <</haveDiscount>>
+
+  <<#needDiscountOnRight>>
+  textareaNoTab {
+    text:t='<<priceText>>'
+
+    <<#haveDiscount>>
+      margin-left:t='0.01@scrn_tgt'
+      overlayTextColor:t='good'
+    <</haveDiscount>>
+  }
+  <</needDiscountOnRight>>
+
+  <<#endText>>
+    textareaNoTab {
+      text:t='<<endText>>'
+    }
+  <</endText>>
 }

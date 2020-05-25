@@ -6,6 +6,7 @@ local { updateModItem,
         createModItem,
         getReqModsText,
         updateWeaponTooltip } = require("scripts/weaponry/weaponryVisual.nut")
+local { setDoubleTextToButton, placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 ::researched_items_table <- null
 ::abandoned_researched_items_for_session <- []
@@ -1165,7 +1166,7 @@ class ::gui_handlers.nextResearchChoice extends ::gui_handlers.showAllResearched
         local repairBtnId = "btn_repair"
         ::showBtn(repairBtnId, isBroken, scene)
         if (isBroken)
-          ::placePriceTextToButton(scene, repairBtnId, ::loc("mainmenu/btnRepair"), repairPrice)
+          placePriceTextToButton(scene, repairBtnId, ::loc("mainmenu/btnRepair"), repairPrice)
         else
           func.call(handler, scene)
 
@@ -1223,7 +1224,7 @@ class ::gui_handlers.nextResearchChoice extends ::gui_handlers.showAllResearched
     local showBtnBuy = !isItemBought(researchConfig)
     showSceneBtn(buyBtnId, showBtnBuy)
     if (showBtnBuy)
-      ::placePriceTextToButton(scene, buyBtnId, ::loc("mainmenu/btnBuy"), getItemPrice(researchConfig))
+      placePriceTextToButton(scene, buyBtnId, ::loc("mainmenu/btnBuy"), getItemPrice(researchConfig))
 
     if (!researchConfig.isMod)
       return
@@ -1446,7 +1447,7 @@ class ::gui_handlers.nextResearchChoice extends ::gui_handlers.showAllResearched
 
     if (!itemsTable.len())
     {
-      ::setDoubleTextToButton(scene, "btn_apply", ::loc("mainmenu/btnOk"))
+      setDoubleTextToButton(scene, "btn_apply", ::loc("mainmenu/btnOk"))
       return
     }
 

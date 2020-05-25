@@ -89,93 +89,13 @@ local function getTypeByPurpose(weaponry)
     "UNIVERSAL" : ::isInArray("AIR_TO_SEA", res) ? "AIR_TO_SEA" : "AIR_TO_GROUND"
 }
 
-local function getWeaponryByPresetInfo(unit, chooseMenuList = null)
-{
-  // Get list clone to avoid adding properties such as isEnabled, isDefault, chapterOrd in presets
-  local res = {weaponrySizes = {}, presets = [],
-    presetsList = _clone(getPresetsList(unit, chooseMenuList))}
-  local presets = res.presets
-  local presetsList = res.presetsList
-  local sizes = res.weaponrySizes
-  local isOwn = ::isUnitUsable(unit)
-
-  foreach(idx, preset in presetsList)
-  {
-    local weaponry = getUnitWeaponry(unit, {isPrimary = false, weaponPreset = preset.name})
-    local pType = preset?.presetType ?? getTypeByPurpose(weaponry)
-    if(preset?.presetType && !::isInArray(preset.presetType, PURPOSE_TYPE_ORDER))
-      PURPOSE_TYPE_ORDER.append(preset.presetType) // Needs add custom preset type in order array to get right chapter order
-    if (preset?.isEnabled == null)
-      preset.isEnabled <- ::is_weapon_enabled(unit, preset) ||
-        (isOwn && ::is_weapon_unlocked(unit, preset))
-    preset.isDefault <- preset.name.indexof("default") != null
-    preset.chapterOrd <- PURPOSE_TYPE_ORDER.findindex(@(p) p == pType)
-    presets.append({
-        id = preset.name
-        cost = preset.cost
-        image = preset.image
-        totalItemsAmount = 0
-        purposeType = pType
-        chapterOrd = preset.chapterOrd
-        isDefault = preset.isDefault
-        isEnabled = preset.isEnabled
-      })
-    local p = presets[idx]
-    foreach (weaponType, triggers in weaponry)
-      foreach (t in triggers)
-      {
-        if (!p?[t.trigger])
-          p[t.trigger] <- []
-        local w = p[t.trigger]
-        foreach (weaponName, weapon in t)
-          if (typeof(weapon) == "table")
-          {
-            w.append({
-              name = weaponName
-              num = weapon.num
-              ammo = weapon.ammo
-              massKg = weapon.massKg
-              caliber = weapon.caliber
-              iconType = weapon.iconType
-              amountPerTier = weapon.amountPerTier
-              bulletType = weapon.bulletType
-              tiers = weapon.tiers
-            })
-
-            p.totalItemsAmount += weapon.num / (weapon.amountPerTier ?? 1)
-
-            if (!sizes?[t.trigger])
-              sizes[t.trigger] <- []
-            local s = sizes[t.trigger]
-            if(!::isInArray(weapon.massKg, s))
-              s.append(weapon.massKg)
-          }
-        w.sort(@(a, b) b.massKg <=> a.massKg)
-      }
-  }
-
-  foreach (inst in sizes)
-    inst.sort(@(a, b) a <=> b)
-
-  presets.sort(@(a, b)
-    a.chapterOrd <=> b.chapterOrd
-    || b.isEnabled <=> a.isEnabled
-    || b.isDefault <=> a.isDefault)
-
-  presetsList.sort(@(a, b)
-    a.chapterOrd <=> b.chapterOrd
-    || b.isEnabled <=> a.isEnabled
-    || b.isDefault <=> a.isDefault)
-
-  return res
-}
-
-local function getTierIcon(weaponry, size, itemsNum, isBlock)
+local function getTierIcon(weaponry, size, itemsNum)
 {
   local path = "#ui/gameuiskin#"
   local triggerType = weaponry.tType
   local iconType = weaponry.iconType
   local isGroup = itemsNum > 1
+  local isBlock = (weaponry?.amountPerTier ?? 0) > 1
   if (iconType != null)
     return $"{path}{iconType}"
 
@@ -204,20 +124,17 @@ local function getTierIcon(weaponry, size, itemsNum, isBlock)
   return $"{path}{wStr}_{groupStr}"
 }
 
-local function createTier(weaponry, sizes, itemsNum = 0)
+local function createTier(weaponry, sizes, presetName, itemsNum = 0)
 {
+  local tierWeaponry = weaponry.__merge({ itemsNum = itemsNum })
   local size = getWeaponrySize(sizes[weaponry.tType], weaponry.massKg)
-  local isBlock = weaponry?.isBlock ?? false
   itemsNum = itemsNum > 0 ? itemsNum : weaponry.num
   local res = {
     tierId  = weaponry?.tierId ?? -1
-    triggerType = weaponry.tType
-    itemsNum = itemsNum
-    size = size
-    img = getTierIcon(weaponry, size, itemsNum, isBlock)
+    weaponry = tierWeaponry
+    img = getTierIcon(weaponry, size, itemsNum)
+    tierTooltipId = ::g_tooltip_type.TIER.getTooltipId(unit.name, tierWeaponry, presetName)
   }
-  if (isBlock)
-    res.isBlock <- isBlock
 
   return res
 }
@@ -233,33 +150,29 @@ local function getBlocks(weaponry)
   local res = []
   if (count > 0)
     res.append(weaponry.__merge({
-      isBlock = true
       num = count
-      ammo = amountPerTier
+      amountPerTier = amountPerTier
     }))
   if (rest > 0)
-    res.append(weaponry.__merge({
-      num = rest
-      ammo = 1
-    }))
+    res.append(weaponry.__merge({ num = rest }))
 
   return res
 }
 
-local function getWeaponryDistribution(weaponry, sizes, totalItemsAmount, isCentral = false)
+local function getWeaponryDistribution(weaponry, sizes, preset, isCentral = false)
 {
   local isEvenCount = weaponry.num % 2 == 0
-  local isAllocateByGroup = totalItemsAmount > TIERS_NUMBER
+  local isAllocateByGroup = preset.totalItemsAmount > TIERS_NUMBER
   // Group weapons when numbers of free tiers less then weapon items amount
   if (isAllocateByGroup)
   {
     if (!isCentral && isEvenCount)
     {
-      local tier = createTier(weaponry, sizes, weaponry.num / 2)
+      local tier = createTier(weaponry, sizes, preset.id, weaponry.num / 2)
       return [tier, clone tier]
     }
     else
-      return [createTier(weaponry, sizes)]
+      return [createTier(weaponry, sizes, preset.id)]
   }
   // Place one weapon item per one tier when tiers amount is enough
   local res = []
@@ -268,7 +181,7 @@ local function getWeaponryDistribution(weaponry, sizes, totalItemsAmount, isCent
     // Set empty tier in center when count is EVEN
     if (isCentral && isEvenCount && i == weaponry.num / 2)
       res.append({tierId = -1})
-    res.append(createTier(weaponry, sizes, 1))
+    res.append(createTier(weaponry, sizes, preset.id, 1))
   }
 
   return res
@@ -341,19 +254,34 @@ local function getPredefinedTiers(preset, sizes)
               // Create additional tiers info and add it on already existing tier if two weapons placed per one tier
               local currTier = ::u.search(res, @(p) p.tierId == idx)
               if (currTier)
-                currTier.addWTier <- createTier(weaponry.__merge(params),
-                  sizes, weaponry.num / (tier?.amountPerTier ?? amountPerTier))
+              {
+                currTier.weaponry.addWeaponry <- weaponry.__merge(params.__merge({
+                  itemsNum = weaponry.num / (tier?.amountPerTier ?? amountPerTier)}))
+                currTier.tierTooltipId = ::g_tooltip_type.TIER.getTooltipId(unit.name,
+                  currTier.weaponry, preset.id)
+              }
+
               continue
             }
             else
               filledTiers[idx] <- weaponry
 
             res.append(createTier(weaponry.__merge(params),
-              sizes, weaponry.num / (tier?.amountPerTier ?? amountPerTier)))
+              sizes, preset.id, weaponry.num / (tier?.amountPerTier ?? amountPerTier)))
           }
         }
         else
           return []
+
+  if (res.len()) // Add empty tiers in set if predefined tiers exist
+    for (local i = res.len(); i < TIERS_NUMBER; i++)
+      for (local j = 0; j < TIERS_NUMBER; j++)
+        if (filledTiers?[j] == null)
+        {
+          res.append({tierId = j})
+          filledTiers[j] <- {}
+        }
+
   return res
 }
 
@@ -363,6 +291,7 @@ local function getTiers(unit, preset, sizes)
   unAllocatedTiers = []
 
   if (!res.len())
+  {
     for (local i = 0; i < GROUP_ORDER.len(); i++)
       foreach (triggerType in GROUP_ORDER[i])
         if (preset?[triggerType])
@@ -370,35 +299,113 @@ local function getTiers(unit, preset, sizes)
           local group = getWeaponryGroup(preset, GROUP_ORDER[i])
           for (local j = 0; j < group.len(); j++)
             res.extend(getIndexedTiers(getWeaponryDistribution(group[j], sizes,
-              preset.totalItemsAmount, res.len() == 0), res.len()))
+              preset, res.len() == 0), res.len()))
         }
 
-  // Сheck tiers count and remove excess tiers
-  if (res.len() > TIERS_NUMBER)
-    do {
-      unAllocatedTiers.append(res.remove(0), res.pop())
-    }
-    while (res.len() > TIERS_NUMBER)
+    // Сheck tiers count and remove excess tiers
+    if (res.len() > TIERS_NUMBER)
+      do {
+        unAllocatedTiers.append(res.remove(0), res.pop())
+      }
+      while (res.len() > TIERS_NUMBER)
 
-  // Add empty tiers if it's needed and allocate them symmetric
-  local emptyTiers = []
-  for (local i = res.len(); i < TIERS_NUMBER; i++)
-    emptyTiers.append({tierId = -1})
-  res.extend(getIndexedTiers(emptyTiers, res.len()))
+    // Add empty tiers if it's needed and allocate them symmetric
+    local emptyTiers = []
+    for (local i = res.len(); i < TIERS_NUMBER; i++)
+      emptyTiers.append({tierId = -1})
+    res.extend(getIndexedTiers(emptyTiers, res.len()))
 
-  // Add unallocated tiers on free places from central tier if it's free
-  foreach (idx, tier in res)
-    if (!tier?.img  && unAllocatedTiers.len())
-      foreach (prop, value in unAllocatedTiers.pop())
-        if (prop != "tierId")
-          tier[prop] <- value
-  res.sort(@(a, b) b.tierId  <=> a.tierId)
+    // Add unallocated tiers on free places from central tier if it's free
+    foreach (idx, tier in res)
+      if (!tier?.img  && unAllocatedTiers.len())
+        foreach (prop, value in unAllocatedTiers.pop())
+          if (prop != "tierId")
+            tier[prop] <- value
+  }
+  res.sort(@(a, b) a.tierId  <=> b.tierId)
+
+  return res
+}
+
+local function getWeaponryByPresetInfo(unit, chooseMenuList = null)
+{
+  // Get list clone to avoid adding properties such as isEnabled, isDefault, chapterOrd in presets
+  local res = {weaponrySizes = {}, presets = [],
+    presetsList = _clone(getPresetsList(unit, chooseMenuList))}
+  local presets = res.presets
+  local presetsList = res.presetsList
+  local sizes = res.weaponrySizes
+  local isOwn = ::isUnitUsable(unit)
+
+  foreach(idx, preset in presetsList)
+  {
+    local weaponry = getUnitWeaponry(unit, {isPrimary = false, weaponPreset = preset.name})
+    local pType = preset?.presetType ?? getTypeByPurpose(weaponry)
+    if(preset?.presetType && !::isInArray(preset.presetType, PURPOSE_TYPE_ORDER))
+      PURPOSE_TYPE_ORDER.append(preset.presetType) // Needs add custom preset type in order array to get right chapter order
+    if (preset?.isEnabled == null)
+      preset.isEnabled <- ::is_weapon_enabled(unit, preset) ||
+        (isOwn && ::is_weapon_unlocked(unit, preset))
+    preset.isDefault <- preset.name.indexof("default") != null
+    preset.chapterOrd <- PURPOSE_TYPE_ORDER.findindex(@(p) p == pType)
+    presets.append({
+        id = preset.name
+        cost = preset.cost
+        image = preset.image
+        totalItemsAmount = 0
+        purposeType = pType
+        chapterOrd = preset.chapterOrd
+        isDefault = preset.isDefault
+        isEnabled = preset.isEnabled
+      })
+    local p = presets[idx]
+    foreach (weaponType, triggers in weaponry)
+      foreach (t in triggers)
+      {
+        if (!p?[t.trigger])
+          p[t.trigger] <- []
+        local w = p[t.trigger]
+        foreach (weaponName, weapon in t)
+          if (typeof(weapon) == "table")
+          {
+            w.append(weapon.__update(
+              {
+                name = weaponName
+                purposeType = pType
+              }))
+
+            p.totalItemsAmount += weapon.num / (weapon.amountPerTier ?? 1)
+
+            if (!sizes?[t.trigger])
+              sizes[t.trigger] <- []
+            local s = sizes[t.trigger]
+            if(!::isInArray(weapon.massKg, s))
+              s.append(weapon.massKg)
+          }
+        w.sort(@(a, b) b.massKg <=> a.massKg)
+      }
+  }
+
+  foreach (inst in sizes)
+    inst.sort(@(a, b) a <=> b)
+
+  presets.sort(@(a, b)
+    a.chapterOrd <=> b.chapterOrd
+    || b.isEnabled <=> a.isEnabled
+    || b.isDefault <=> a.isDefault)
+
+  presetsList.sort(@(a, b)
+    a.chapterOrd <=> b.chapterOrd
+    || b.isEnabled <=> a.isEnabled
+    || b.isDefault <=> a.isDefault)
+
+  foreach (idx, preset in presets)
+    presetsList[idx].tiers <- getTiers(unit, preset, sizes)
 
   return res
 }
 
 return {
   TIERS_NUMBER            = TIERS_NUMBER
-  getTiers                = getTiers
   getWeaponryByPresetInfo = getWeaponryByPresetInfo
 }

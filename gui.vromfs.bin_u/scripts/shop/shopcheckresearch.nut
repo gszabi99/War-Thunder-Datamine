@@ -1,6 +1,7 @@
 local tutorialModule = ::require("scripts/user/newbieTutorialDisplay.nut")
 local unitActions = require("scripts/unit/unitActions.nut")
 local tutorAction = require("scripts/tutorials/tutorialActions.nut")
+local { setColoredDoubleTextToButton, placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
 {
@@ -262,8 +263,8 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
     {
       local locText = ::loc("shop/btnOrderUnit", { unit = ::getUnitName(unit.name) })
       local unitCost = (canBuyIngame && !canBuyOnline) ? ::getUnitCost(unit) : ::Cost()
-      ::placePriceTextToButton(navBarObj,      "btn_buy_unit", locText, unitCost)
-      ::placePriceTextToButton(navBarGroupObj, "btn_buy_unit", locText, unitCost)
+      placePriceTextToButton(navBarObj,      "btn_buy_unit", locText, unitCost)
+      placePriceTextToButton(navBarGroupObj, "btn_buy_unit", locText, unitCost)
     }
   }
 
@@ -294,7 +295,7 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
       spendExpBtn.show(showSpendBtn)
       spendExpBtn.enable(showSpendBtn)
       if (showSpendBtn)
-        ::set_double_text_to_button(navBar, "btn_spend_exp", coloredText)
+        setColoredDoubleTextToButton(navBar, "btn_spend_exp", coloredText)
     }
   }
 

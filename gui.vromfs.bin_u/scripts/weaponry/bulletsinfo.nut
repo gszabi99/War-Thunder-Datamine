@@ -1166,7 +1166,8 @@ local function getArmorPiercingViewData(armorPiercing, dist)
   return res
 }
 
-local function buildPiercingData(unit, bullet_parameters, descTbl, bulletsSet = null, needAdditionalInfo = false)
+local buildPiercingData = ::kwarg(function buildPiercingData(bullet_parameters, descTbl,
+  bulletsSet = null, needAdditionalInfo = false, weaponName = "")
 {
   local param = { armorPiercing = array(0, null) , armorPiercingDist = array(0, null)}
   local needAddParams = bullet_parameters.len() == 1
@@ -1379,11 +1380,15 @@ local function buildPiercingData(unit, bullet_parameters, descTbl, bulletsSet = 
   }
   descTbl.bulletParams.append({ props = p })
 
-  local bulletName = ""
+  local currWeaponName = ""
   if("weaponBlkPath" in param)
-    bulletName = ::loc("weapons/{0}".subst(::get_weapon_name_by_blk_path(param.weaponBlkPath)))
+    currWeaponName = ::get_weapon_name_by_blk_path(param.weaponBlkPath)
 
-  local apData = getArmorPiercingViewData(param.armorPiercing, param.armorPiercingDist)
+  local bulletName = currWeaponName != "" ? ::loc("weapons/{0}".subst(currWeaponName)) : ""
+  local apData = null
+  if ((weaponName != "" ? weaponName : currWeaponName) == currWeaponName)
+    apData = getArmorPiercingViewData(param.armorPiercing, param.armorPiercingDist)
+
   if (apData)
   {
     local header = ::loc("bullet_properties/armorPiercing")
@@ -1391,7 +1396,7 @@ local function buildPiercingData(unit, bullet_parameters, descTbl, bulletsSet = 
       + "\n" + ::format("(%s / %s)", ::loc("distance"), ::loc("bullet_properties/hitAngle"))
     descTbl.bulletParams.append({ props = apData, header = header })
   }
-}
+})
 
 local function addBulletsParamToDesc(descTbl, unit, item)
 {
@@ -1436,7 +1441,11 @@ local function addBulletsParamToDesc(descTbl, unit, item)
       getModificationBulletsEffect(searchName),
     useDefaultBullet, false)
 
-  buildPiercingData(unit, bullet_parameters, descTbl, bulletsSet, true)
+  buildPiercingData({
+    bullet_parameters = bullet_parameters,
+    descTbl = descTbl,
+    bulletsSet = bulletsSet,
+    needAdditionalInfo = true})
 }
 
 return {

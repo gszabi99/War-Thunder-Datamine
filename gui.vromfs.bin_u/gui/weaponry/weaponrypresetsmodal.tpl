@@ -42,6 +42,7 @@ root {
         flow:t='vertical'
         size:t='1@narrowTooltipWidth+1@scrollBarSize+1@blockInterval, ph'
         tdiv{
+          flow:t='vertical'
           width:t='pw'
           max-height:t='ph'
           overflow-y:t='auto'
@@ -49,6 +50,13 @@ root {
           descriptionNest {
             id:t='desc'
             width:t='pw'
+            padding:t='0, 1@blockInterval'
+          }
+          rowSeparator{}
+          descriptionNest {
+            id:t='tierDesc'
+            width:t='pw'
+            padding:t='0, 1@blockInterval'
           }
         }
       }

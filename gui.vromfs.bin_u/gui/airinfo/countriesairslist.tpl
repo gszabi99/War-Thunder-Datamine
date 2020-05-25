@@ -61,6 +61,7 @@ tdiv {
               background-image:t='<<ico>>';
               shopItemType:t='<<type>>';
               size:t='@tableIcoSize, @tableIcoSize';
+              background-svg-size:t='@tableIcoSize, @tableIcoSize';
             }
             textareaNoTab {
               id:t='air_name';

@@ -1,37 +1,53 @@
 <<#presets>>
 weaponryPreset {
+  id:t='preset'
   presetId:t='<<presetId>>'
   width:t='pw'
   padding:t='0, 1@blockInterval'
+  showOrNoneOn:t='selectedOnConsole'
+  ButtonImg {}
   <<#isCollapsable>>
   height:t='@buttonHeight'
   collapse_header:t='yes'
   collapsed:t='no'
   collapsing:t='no'
   on_click:t='onCollapse'
-  bgcolor:t='@menuButtonColorHover'
   btnName:t='A'
-  showOrNoneOn:t='selectedOnConsole'
-  ButtonImg {}
   <</isCollapsable>>
   <<^isCollapsable>>
   height:t='@tierIconSize'
-  on_click:t='onModItemClick'
-  on_dbl_click:t='onModItemDblClick'
+  on_click:t='onPresetClick'
+  btnName:t='Y'
   <</isCollapsable>>
 
   tdiv {
     width:t='pw'
     overflow:t='hidden'
     position:t='absolute'
+    <<#isShowConsoleBtn>>
+    pos:t='@cIco, 0'
+    <</isShowConsoleBtn>>
     <<#weaponryItem>>
     tdiv {
+      id:t='tiersNest'
       flow:t='horizontal'
       <<#isSelected>>
       selected:t='yes'
       <</isSelected>>
-      tdiv {
+      behaviour:t='posNavigator'
+      showSelect:t='always'
+      navigatorShortcuts:t='yes'
+      css-hier-invalidate:t='yes'
+      total-input-transparent:t='yes'
+      on_select:t='onTierSelect'
+      presetHeader {
+        id:t='presetHeader'
+        presetId:t='<<presetId>>'
         size:t='<<presetTextWidth>>, @tierIconSize'
+        behaviour:t='button'
+        css-hier-invalidate:t='yes'
+        on_click:t='onPresetClick'
+        on_dbl_click:t='onModItemDblClick'
         <<^hideWarningIcon>>
         warning_icon{
           position:t='relative'
@@ -64,19 +80,30 @@ weaponryPreset {
             upgradeStatus:t=''
           }
         }
+        focus_border {}
       }
       <<#tiers>>
-      tdiv{
+      weaponryTier{
+        id:t='tier'
+        tierId:t='<<tierId>>'
         size:t='@tierIconSize, @tierIconSize'
-        border:t='yes'
-        border-color:t='@separatorBlockColor'
+        on_click:t='onTierClick'
+        on_dbl_click:t='onModItemDblClick'
         img {
           size:t='pw, ph'
           position:t='relative'
           background-image:t='<<#img>><<img>><</img>>'
-          background-position:t='6'
           background-repeat:t='expand'
         }
+        title:t='$tooltipObj'
+        tooltipObj {
+          id:t='tierTooltip'
+          tooltipId:t='<<tierTooltipId>>'
+          on_tooltip_open:t='onGenericTooltipOpen'
+          on_tooltip_close:t='onTooltipObjClose'
+          display:t='hide'
+        }
+        focus_border {}
       }
       <</tiers>>
     }
@@ -85,13 +112,14 @@ weaponryPreset {
 
   <<#isCollapsable>>
   fullSizeCollapseBtn {
+    size:t='pw, ph'
     total-input-transparent:t='yes'
     css-hier-invalidate:t='yes'
     activeText{}
     ButtonImg {}
     text {
       position:t='relative'
-      pos:t='0.5pw-0.5w, 0.5ph-0.5h'
+      pos:t='<<chapterPos>>-0.5w-1@sIco, 0'
       text:t='<<purposeTypeName>>'
     }
   }

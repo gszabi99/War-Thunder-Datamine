@@ -1,5 +1,6 @@
 local { getSlotItem, getCurPreset, setUnit } = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 local slotbarWidget = require("scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
+local { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 local class CrewModalByVehiclesGroups extends ::gui_handlers.CrewModalHandler
 {
@@ -66,7 +67,7 @@ local class CrewModalByVehiclesGroups extends ::gui_handlers.CrewModalHandler
       local cost = rawCost? ::Cost(rawCost.cost, rawCost.costGold) : ::Cost()
       local text = "".concat(::loc("shop/recruitCrew"),
         ::loc("ui/parentheses/space", { text = cost.getTextAccordingToBalance() }))
-      ::set_double_text_to_button(scene, "btn_recruit", text)
+      setColoredDoubleTextToButton(scene, "btn_recruit", text)
     }
   }
 

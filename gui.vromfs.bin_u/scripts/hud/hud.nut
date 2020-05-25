@@ -530,12 +530,17 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
       timeToKickAlertObj.setValue(afkTimeToKick > 0
         ? ::loc("inBattle/timeToKick", {timeToKick = time.secondsToString(afkTimeToKick, true, true)})
         : "")
+
       local curTime = ::dagor.getCurTime()
-      local prevSeconds = sec? ((curTime - sec * 1000) / sec).tointeger() : 0
-      local currSeconds = sec? (curTime / sec).tointeger() : 0
-      timeToKickAlertObj["_blink"] = currSeconds != prevSeconds? "yes" : "no"
+      local prevSeconds = ((curTime - 1000 * sec) / 1000).tointeger()
+      local currSeconds = (curTime / 1000).tointeger()
+
       if (currSeconds != prevSeconds)
+      {
+        timeToKickAlertObj["_blink"] = "yes"
         ::play_gui_sound("kick_alert")
+      }
+
     }
     else if (showTimerText)
       timeToKickAlertObj.setValue(::loc("inBattle/timeToKickAlert"))

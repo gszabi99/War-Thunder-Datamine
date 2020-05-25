@@ -88,6 +88,7 @@ root {
                     background-image:t='<<ico>>'
                     shopItemType:t='<<type>>'
                     size:t='@tableIcoSize, @tableIcoSize'
+                    background-svg-size:t='@tableIcoSize, @tableIcoSize'
                     input-transparent:t='yes'
                   }
                   activeText {

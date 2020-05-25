@@ -1,6 +1,7 @@
 local time = require("scripts/time.nut")
 local bhvUnseen = ::require("scripts/seen/bhvUnseen.nut")
 local seenWarbondsShop = ::require("scripts/seen/seenList.nut").get(SEEN.WARBONDS_SHOP)
+local { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 
 class ::gui_handlers.WarbondsShop extends ::gui_handlers.BaseGuiHandlerWT
@@ -214,7 +215,7 @@ class ::gui_handlers.WarbondsShop extends ::gui_handlers.BaseGuiHandlerWT
     {
       mainActionBtn.visualStyle = "purchase"
       mainActionBtn.inactiveColor = award.canBuy() ? "no" : "yes"
-      ::set_double_text_to_button(scene, "btn_main_action", award.getBuyText(false))
+      setColoredDoubleTextToButton(scene, "btn_main_action", award.getBuyText(false))
     }
   }
 

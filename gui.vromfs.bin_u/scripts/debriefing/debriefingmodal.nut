@@ -6,6 +6,8 @@ local workshopPreview = ::require("scripts/items/workshop/workshopPreview.nut")
 local { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/entitlements.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
+local { setDoubleTextToButton, setColoredDoubleTextToButton,
+  placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -2370,7 +2372,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     ::showBtn("btn_reroll", showRerollButton, taskObj)
     ::showBtn("btn_recieve_reward", canGetReward, taskObj)
     if (showRerollButton)
-      ::placePriceTextToButton(taskObj, "btn_reroll", ::loc("mainmenu/battleTasks/reroll"), ::g_battle_tasks.rerollCost)
+      placePriceTextToButton(taskObj, "btn_reroll", ::loc("mainmenu/battleTasks/reroll"), ::g_battle_tasks.rerollCost)
   }
 
   function updateBattleTasksRequirementsList()
@@ -3016,7 +3018,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       : ::g_squad_manager.isSquadMember() ? "mainmenu/btnReady"
       : "mainmenu/toBattle"
 
-    ::setDoubleTextToButton(scene, "btn_next", ::loc(btnNextLocId))
+    setDoubleTextToButton(scene, "btn_next", ::loc(btnNextLocId))
 
     local backBtnTextLocId = "mainmenu/btnQuit"
     if (isToBattleBtnVisible)
@@ -3248,7 +3250,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     local actionData = getInvetoryGiftActionData()
     local actionBtn = showSceneBtn("btn_inventory_gift_action", actionData != null)
     if (actionData && actionBtn)
-      ::set_double_text_to_button(scene, "btn_inventory_gift_action", actionData.btnText)
+      setColoredDoubleTextToButton(scene, "btn_inventory_gift_action", actionData.btnText)
   }
 
   function onInventoryGiftAction()

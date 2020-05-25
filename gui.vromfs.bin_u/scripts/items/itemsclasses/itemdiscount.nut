@@ -14,7 +14,9 @@ class ::items_classes.Discount extends ::BaseItem
   discountDescriptionDataItems = null
 
   showAmountInsteadPercent = false //work only for units atm.
-
+  isSpecialOffer = false
+  specialOfferImage = null
+  specialOfferImageRatio = null
   //params which must be equal to stack items
   static stackBases =    ["category", "type", "aircraftName"]
   //params which can can be different in stack but still need for stack description
@@ -28,6 +30,10 @@ class ::items_classes.Discount extends ::BaseItem
     purchasesCount = invBlk?.purchasesCount ?? 0
 
     showAmountInsteadPercent = blk?.showAmountInsteadPercent ?? false
+    isSpecialOffer = blk?.isSpecialOffer ?? false
+    shouldAutoConsume = shouldAutoConsume || isSpecialOffer
+    specialOfferImage = blk?.specialOfferImage
+    specialOfferImageRatio = blk?.specialOfferImageRatio
   }
 
   function _initPersonalDiscountParams(blk)
@@ -163,46 +169,51 @@ class ::items_classes.Discount extends ::BaseItem
 
   function getDataItemDescription(dataItem)
   {
-    local locId = "item/discount/description/" + dataItem.category
+    local nameId = isSpecialOffer ? "specialOffer" : "discount"
+    local locId = $"item/{nameId}/description/{dataItem.category}"
     if ("type" in dataItem)
       locId += "/" + dataItem.type
+    local locParams = getLocParamsDescription(dataItem)
+    return ::loc(locId, locParams)
+  }
+
+  function getLocParamsDescription(dataItem) {
     local locParams = {
       discount = _getDataItemDiscountText(dataItem)
+      discountValue = dataItem?.discountValue ?? 0
+      discountMax = dataItem?.discountMax ?? 0
+      discountMin = dataItem?.discountMin ?? 0
     }
 
-    local countryName = ::getTblValue("countryName", dataItem)
+    local countryName = dataItem?.countryName
     if (countryName != null)
-      locParams.countryNameOptional <- " (" + ::loc(countryName) + ")"
+      locParams.countryNameOptional <- $" ({::loc(countryName)})"
     else
       locParams.countryNameOptional <- ""
 
-    local aircraftName = ::getTblValue("aircraftName", dataItem)
-    if (aircraftName != null)
-    {
+    local aircraftName = dataItem?.aircraftName
+    if (aircraftName != null) {
       local unit = ::getAircraftByName(aircraftName)
-      if (unit != null)
-      {
+      if (unit != null) {
         locParams.aircraftName <- ::getUnitName(unit, true)
+        locParams.unit <- unit
         if (showAmountInsteadPercent)
           locParams.discount = _getDataItemDiscountText(dataItem,
-                                 (@(unit) function(val) {
-                                   return ::getUnitRealCost(unit).multiply(0.01 * val).tostring()
-                                 })(unit))
+            @(val) ::getUnitRealCost(unit).multiply(0.01 * val).tostring())
       }
     }
 
-    local rank = ::getTblValue("rank", dataItem)
+    local rank = dataItem?.rank
     if (rank != null)
       locParams.rank <- ::get_roman_numeral(rank)
 
-    local entitlementName = ::getTblValue("entitlementName", dataItem)
-    if (entitlementName != null)
-    {
+    local entitlementName = dataItem?.entitlementName
+    if (entitlementName != null) {
       local entitlementConfig = getEntitlementConfig(entitlementName)
       locParams.entitlementName <- getEntitlementName(entitlementConfig)
     }
     locParams.discount = ::colorize("activeTextColor", locParams.discount)
-    return ::loc(locId, locParams)
+    return locParams
   }
 
   function getMaxDiscountByCategoryAndType(category, dType)
@@ -304,4 +315,10 @@ class ::items_classes.Discount extends ::BaseItem
     layerCfg.text <- getLayerText()
     return ::LayersIcon.getTextDataFromLayer(layerCfg)
   }
+
+  consume = @(cb, params) activateDiscount(cb, null)
+
+  getSpecialOfferLocParams = @() discountDescriptionDataItems.len() > 0
+    ? getLocParamsDescription(discountDescriptionDataItems[0])
+    : null
 }

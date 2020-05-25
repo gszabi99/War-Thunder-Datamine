@@ -30,6 +30,7 @@ tdiv {
           flow:t='horizontal'
           img {
             size:t="1@tableIcoSize, 1@tableIcoSize"
+            background-svg-size:t='@tableIcoSize, @tableIcoSize'
             position:t='relative'
             padding-left:t='1@blockInterval'
             background-image:t='<<icon>>'

@@ -1,5 +1,6 @@
 local { animBgLoad } = require("scripts/loading/animBg.nut")
 local showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
+local { setHelpTextOnLoading, setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 ::gui_start_loading <- function gui_start_loading(isMissionLoading = false)
 {
@@ -29,8 +30,8 @@ class ::gui_handlers.LoadingHandler extends ::BaseGuiHandler
   function initScreen()
   {
     animBgLoad()
-    ::setVersionText()
-    ::set_help_text_on_loading(scene.findObject("help_text"))
+    setVersionText()
+    setHelpTextOnLoading(scene.findObject("help_text"))
 
     local updObj = scene.findObject("cutscene_update")
     if (::checkObj(updObj))

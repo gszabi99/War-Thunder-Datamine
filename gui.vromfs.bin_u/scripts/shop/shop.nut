@@ -4,6 +4,7 @@ local slotActions = require("scripts/slotbar/slotActions.nut")
 local unitActions = require("scripts/unit/unitActions.nut")
 local { topMenuHandler, topMenuShopActive } = require("scripts/mainmenu/topMenuStates.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 local lastUnitType = null
 
@@ -472,8 +473,8 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
       return
 
     local locText = ::loc("mainmenu/btnRepairAll")
-    ::placePriceTextToButton(navBarObj, "btn_repairall", locText, repairAllCost)
-    ::placePriceTextToButton(navBarGroupObj, "btn_repairall", locText, repairAllCost)
+    placePriceTextToButton(navBarObj, "btn_repairall", locText, repairAllCost)
+    placePriceTextToButton(navBarGroupObj, "btn_repairall", locText, repairAllCost)
   }
 
   function onEventOnlineShopPurchaseSuccessful(params)

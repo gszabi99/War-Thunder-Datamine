@@ -1,3 +1,5 @@
+local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+
 class ::gui_handlers.SkipableMsgBox extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
@@ -35,7 +37,7 @@ class ::gui_handlers.SkipableMsgBox extends ::gui_handlers.BaseGuiHandlerWT
       btnCancelObj.setValue(::loc(ableToStartAndSkip ? "mainmenu/btnCancel" : "mainmenu/btnOk"))
 
     if (startBtnText != "")
-      ::setDoubleTextToButton(scene, "btn_select", startBtnText)
+      setDoubleTextToButton(scene, "btn_select", startBtnText)
   }
 
   function updateSkipCheckBox()

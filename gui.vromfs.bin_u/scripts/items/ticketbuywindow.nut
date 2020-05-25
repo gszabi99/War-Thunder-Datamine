@@ -1,3 +1,5 @@
+local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+
 class ::gui_handlers.TicketBuyWindow extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
@@ -162,7 +164,7 @@ class ::gui_handlers.TicketBuyWindow extends ::gui_handlers.BaseGuiHandlerWT
   {
     local mainActionData = getCurItem().getMainActionData()
     if (mainActionData)
-      ::setDoubleTextToButton(
+      setDoubleTextToButton(
         scene,
         "btn_apply",
         mainActionData.btnName,

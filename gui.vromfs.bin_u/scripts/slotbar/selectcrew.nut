@@ -1,6 +1,7 @@
 local slotbarWidget = require("scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
 local slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 local tutorAction = require("scripts/tutorials/tutorialActions.nut")
+local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 ::gui_start_selecting_crew <- function gui_start_selecting_crew(config)
 {
@@ -240,7 +241,7 @@ class ::gui_handlers.SelectCrew extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateButtons()
   {
-    ::placePriceTextToButton(scene, "btn_set_air", ::loc("mainmenu/btnTakeAircraft"), getTakeAirCost())
+    placePriceTextToButton(scene, "btn_set_air", ::loc("mainmenu/btnTakeAircraft"), getTakeAirCost())
   }
 
   function onEventOnlineShopPurchaseSuccessful(p)

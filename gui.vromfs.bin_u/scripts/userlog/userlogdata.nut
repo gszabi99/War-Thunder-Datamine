@@ -459,6 +459,39 @@ local clanActionNames = {
       ::g_popups.add(name, ::g_string.implode(desc, "\n"))
       markDisabled = true
     }
+    else if (blk?.type == ::EULT_ACTIVATE_ITEM)
+    {
+      local uid = blk?.body.uid
+      local item = ::ItemsManager.findItemByUid(uid, itemType.DISCOUNT)
+      if (item?.isSpecialOffer ?? false) {
+        local locParams = item.getSpecialOfferLocParams()
+        local unit = locParams?.unit
+        if (unit != null) {
+          local unitName = unit.name
+          local desc = [::loc("specialOffer/unitDiscount", {
+            unitName = ::colorize("userlogColoredText", ::getUnitName(unit, false))
+            discount = locParams.discount
+          })]
+
+          local expireTimeText = item.getExpireTimeTextShort()
+          if (expireTimeText != "")
+            desc.append(::loc("specialOffer/TimeSec", {
+              time = ::colorize("userlogColoredText", expireTimeText)
+            }))
+
+          rentsTable[$"special_offer_{unitName}"] <- {
+            unitName = unitName
+            name = ::loc("specialOffer")
+            desc = "\n".join(desc)
+            descAlign = "center"
+            popupImage = item?.specialOfferImage ?? ""
+            ratioHeight = item?.specialOfferImageRatio ?? "0.75w"
+            disableLogId = blk.id
+          }
+        }
+      }
+      markDisabled = true
+    }
     else if (blk?.type == ::EULT_REMOVE_ITEM)
     {
       local reason = ::getTblValue("reason", blk.body, "unknown")

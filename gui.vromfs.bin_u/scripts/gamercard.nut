@@ -2,6 +2,7 @@ local time = require("scripts/time.nut")
 local platformModule = require("scripts/clientState/platform.nut")
 local { isChatEnabled } = require("scripts/chat/chatStates.nut")
 local showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
+local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 ::fill_gamer_card <- function fill_gamer_card(cfg = null, prefix = "gc_", scene = null, save_scene=true)
 {
@@ -251,7 +252,7 @@ local showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
   }
 
   ::g_discount.updateDiscountNotifications(scene)
-  ::setVersionText(scene)
+  setVersionText(scene)
   ::server_message_update_scene(scene)
   ::update_gc_invites(scene)
 }

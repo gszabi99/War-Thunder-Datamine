@@ -33,6 +33,9 @@ local WEAPON_TYPE = {
   AGM         = "agm"       // Air-to-Ground Missile, Anti-Tank Guided Missiles
 }
 
+local CONSUMABLE_TYPES = [ WEAPON_TYPE.AAM, WEAPON_TYPE.AGM, WEAPON_TYPE.ROCKETS,
+  WEAPON_TYPE.TORPEDOES, WEAPON_TYPE.BOMBS, WEAPON_TYPE.SMOKE, WEAPON_TYPE.FLARES ]
+
 local WEAPON_TAG = {
   ADD_GUN          = "additionalGuns"
   BULLET           = "bullet"
@@ -170,6 +173,7 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
       dropHeightRange = null
       iconType = null
       amountPerTier = null
+      isGun = null
       bulletType = null
       tiers = {}
     }
@@ -192,6 +196,7 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
     {
       local itemBlk = weaponBlk[weaponTag]
       local isGun = ::isInArray(currentTypeName, [WEAPON_TYPE.GUNS, WEAPON_TYPE.CANNONS])
+      item.isGun = isGun
       item.caliber = itemBlk?.caliber ?? item.caliber
       item.massKg = itemBlk?.mass ?? item.massKg
       item.massLbs = itemBlk?.mass_lbs ?? item.massLbs
@@ -536,6 +541,7 @@ return {
   TRIGGER_TYPE            = TRIGGER_TYPE
   WEAPON_TYPE             = WEAPON_TYPE
   WEAPON_TAG              = WEAPON_TAG
+  CONSUMABLE_TYPES        = CONSUMABLE_TYPES
   WEAPON_TEXT_PARAMS      = WEAPON_TEXT_PARAMS
   getLastWeapon           = getLastWeapon
   setLastWeapon           = setLastWeapon

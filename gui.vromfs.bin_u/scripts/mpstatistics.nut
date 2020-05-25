@@ -204,7 +204,7 @@ local { WEAPON_TAG } = require("scripts/weaponry/weaponryInfo.nut")
       else if (hdr[j] == "unitIcon")
       {
         //creating empty unit class/dead icon and weapons icons, to be filled in update func
-        local images = [ "img { id:t='unit-ico'; size:t='@tableIcoSize,@tableIcoSize'; background-image:t=''; shopItemType:t=''; }" ]
+        local images = [ "img { id:t='unit-ico'; size:t='@tableIcoSize,@tableIcoSize'; background-svg-size:t='@tableIcoSize, @tableIcoSize'; background-image:t=''; shopItemType:t=''; }" ]
         foreach(id, weap in ::getWeaponTypeIcoByWeapon("", ""))
           images.insert(0, ::format("img { id:t='%s-ico'; size:t='0.375@tableIcoSize,@tableIcoSize'; background-image:t=''; margin:t='2@dp, 0' }", id))
         if (isRowInvert)

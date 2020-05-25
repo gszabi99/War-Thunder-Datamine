@@ -5,6 +5,7 @@ local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
 local workshopCraftTreeWnd = require("scripts/items/workshop/workshopCraftTreeWnd.nut")
 local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
 local tutorAction = require("scripts/tutorials/tutorialActions.nut")
+local { setDoubleTextToButton, setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 ::gui_start_itemsShop <- function gui_start_itemsShop(params = null)
 {
@@ -569,7 +570,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
       local btnColoredText = canCraftOnlyInCraftTree
         ? openCraftTreeBtnText
         : mainActionData?.btnColoredName ?? mainActionData.btnName
-      ::setDoubleTextToButton(scene, "btn_main_action", btnText, btnColoredText)
+      setDoubleTextToButton(scene, "btn_main_action", btnText, btnColoredText)
     }
 
     local activateText = !showMainAction && item?.isInventoryItem && item.amount ? item.getActivateInfo() : ""
@@ -578,7 +579,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
 
     local altActionText = item ? item.getAltActionName() : ""
     showSceneBtn("btn_alt_action", altActionText != "")
-    ::set_double_text_to_button(scene, "btn_alt_action", altActionText)
+    setColoredDoubleTextToButton(scene, "btn_alt_action", altActionText)
 
     local warningText = ""
     if (!limitsCheckResult && item && !item.isInventoryItem)
@@ -590,7 +591,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     if (showLinkAction)
     {
       local linkActionText = ::loc(item.linkActionLocId)
-      ::setDoubleTextToButton(scene, "btn_link_action", linkActionText, linkActionText)
+      setDoubleTextToButton(scene, "btn_link_action", linkActionText, linkActionText)
       if (item.linkActionIcon != "")
       {
         linkObj["class"] = "image"

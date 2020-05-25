@@ -13,6 +13,7 @@ local { AMMO,
         getAmmoMaxAmountInSession,
         getAmmoAmountData } = require("scripts/weaponry/ammoInfo.nut")
 local { isChatEnabled } = require("scripts/chat/chatStates.nut")
+local { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 ::last_ca_aircraft <- null
 ::used_planes <- {}
@@ -1796,7 +1797,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
 
     foreach (btnId in mainButtonsId)
     {
-      local buttonSelectObj = ::set_double_text_to_button(scene.findObject("nav-help"), btnId, applyText)
+      local buttonSelectObj = setColoredDoubleTextToButton(scene.findObject("nav-help"), btnId, applyText)
       buttonSelectObj.tooltip = isSpectate ? tooltipText : tooltipText + tooltipEndText
       buttonSelectObj.isCancel = isApplyPressed ? "yes" : "no"
       buttonSelectObj.inactiveColor = (isAvailResp && !isCrewDelayed) ? "no" : "yes"
@@ -1804,7 +1805,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
 
     local crew = getCurCrew()
     local slotObj = crew && ::get_slot_obj(scene, crew.idCountry, crew.idInCountry)
-    local slotBtnObj = ::set_double_text_to_button(slotObj, "slotBtn_battle", applyTextShort)
+    local slotBtnObj = setColoredDoubleTextToButton(slotObj, "slotBtn_battle", applyTextShort)
     if (slotBtnObj)
     {
       slotBtnObj.isCancel = isApplyPressed ? "yes" : "no"
@@ -2211,7 +2212,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       btnText += ::loc("ui/parentheses/space", { text = countdown  + ::loc("mainmenu/seconds") })
 
     foreach (btnId in mainButtonsId)
-      ::set_double_text_to_button(scene, btnId, btnText)
+      setColoredDoubleTextToButton(scene, btnId, btnText)
 
     local textObj = scene.findObject("autostart_countdown_text")
     if (!::checkObj(textObj))

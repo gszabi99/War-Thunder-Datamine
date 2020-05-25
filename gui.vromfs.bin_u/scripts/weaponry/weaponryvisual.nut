@@ -31,6 +31,7 @@ local { isBullets,
         getModificationBulletsGroup } = require("scripts/weaponry/bulletsInfo.nut")
 local { WEAPON_TYPE,
         TRIGGER_TYPE,
+        CONSUMABLE_TYPES,
         WEAPON_TEXT_PARAMS,
         getLastWeapon,
         getUnitWeaponry,
@@ -60,8 +61,6 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
   local unitType = ::get_es_unit_type(unit)
   if (::u.isEmpty(weapons) && p.needTextWhenNoWeapons)
     text += getTextNoWeapons(unit, p.isPrimary)
-  local consumableWeapons = [ WEAPON_TYPE.AAM, WEAPON_TYPE.AGM, WEAPON_TYPE.ROCKETS,
-    WEAPON_TYPE.TORPEDOES, WEAPON_TYPE.BOMBS, WEAPON_TYPE.SMOKE, WEAPON_TYPE.FLARES ]
   local stackableWeapons = [WEAPON_TYPE.TURRETS]
   foreach (index, weaponType in WEAPON_TYPE)
   {
@@ -117,7 +116,7 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
           if (tText != "" && weapTypeCount==0)
             tText += p.newLine
 
-          if (::isInArray(weaponType, consumableWeapons))
+          if (::isInArray(weaponType, CONSUMABLE_TYPES))
           {
             if (isShortDesc)
             {
@@ -987,12 +986,14 @@ getItemDescTbl = function(unit, item, params = null, effect = null, updateEffect
   {
     name = ""
     desc = getWeaponInfoText(unit, { isPrimary = false, weaponPreset = item.name,
-      detail = INFO_DETAIL.EXTENDED, weaponsFilterFunc = params?.weaponsFilterFunc })
+      detail = params?.detail ?? INFO_DETAIL.EXTENDED, weaponsFilterFunc = params?.weaponsFilterFunc })
 
-    if(item.rocket || item.bomb)
+    if((item.rocket || item.bomb) &&
+      (params?.detail ?? INFO_DETAIL.EXTENDED) == INFO_DETAIL.EXTENDED)
     {
-      buildPiercingData(unit.name,
-        ::calculate_tank_bullet_parameters(unit.name, item.name, true, true), res)
+      buildPiercingData({
+        bullet_parameters = ::calculate_tank_bullet_parameters(unit.name, item.name, true, true),
+        descTbl = res})
     }
 
     if (effect)
@@ -1005,7 +1006,7 @@ getItemDescTbl = function(unit, item, params = null, effect = null, updateEffect
   {
     name = ""
     desc = getWeaponInfoText(unit, { isPrimary = true, weaponPreset = item.name,
-      detail = INFO_DETAIL.EXTENDED, weaponsFilterFunc = params?.weaponsFilterFunc })
+      detail = params?.detail ?? INFO_DETAIL.EXTENDED, weaponsFilterFunc = params?.weaponsFilterFunc })
     local upgradesList = getItemUpgradesList(item)
     if(upgradesList)
     {
@@ -1225,6 +1226,60 @@ local function updateModType(unit, mod)
   return
 }
 
+local function getTierDescTbl(unit, weaponry, presetName)
+{
+  local isBlock = (weaponry.amountPerTier ?? 0) > 0
+  local res = { desc = ::loc($"weapons/{weaponry.name}") }
+  if (::isInArray(weaponry.tType, CONSUMABLE_TYPES))
+  {
+    if (isBlock)
+      res.desc = "".concat(res.desc, ::format(::loc("weapons/counter"), weaponry.amountPerTier))
+    if (::get_es_unit_type(unit) != ::ES_UNIT_TYPE_TANK)
+      res.desc = "".concat(res.desc, getWeaponExtendedInfo(weaponry, weaponry.tType, unit, null,
+        "".concat("\n", ::nbsp, ::nbsp, ::nbsp, ::nbsp)))
+  }
+  else
+  {
+    if (weaponry.ammo > 0)
+      res.desc = "".concat(res.desc, " (", ::loc("shop/ammo"), ::loc("ui/colon"),
+        isBlock && !weaponry.isGun ? weaponry.amountPerTier : weaponry.ammo, ")")
+
+    if (!unit.unitType.canUseSeveralBulletsForGun)
+    {
+      local rTime = ::get_reload_time_by_caliber(weaponry.caliber, null)
+      if (rTime)
+      {
+        local difficulty = ::get_difficulty_by_ediff(::get_current_ediff())
+        local key = ::isCaliberCannon(weaponry.caliber) ? "cannonReloadSpeedK" : "gunReloadSpeedK"
+        local speedK = unit.modificators?[difficulty.crewSkillName]?[key] ?? 1.0
+        if (speedK)
+          rTime = stdMath.round_by_value(rTime / speedK, 1.0).tointeger()
+
+        res.desc = "".concat(res.desc, " ", ::loc("bullet_properties/cooldown"), " ",
+          time.secondsToString(rTime, true, true))
+      }
+    }
+  }
+  if(::isInArray(weaponry.tType, [WEAPON_TYPE.ROCKETS, WEAPON_TYPE.BOMBS]))
+    buildPiercingData({
+      bullet_parameters = ::calculate_tank_bullet_parameters(unit.name, presetName, true, true),
+      descTbl = res,
+      weaponName = weaponry.name})
+
+  if (weaponry?.addWeaponry != null)
+  {
+    local addDescBlock = getTierDescTbl(unit, weaponry.addWeaponry, presetName)
+    res.desc = $"{res.desc}\n{addDescBlock.desc}"
+    if ("bulletParams" in addDescBlock)
+    {
+      if (!("bulletParams" in res))
+        res.bulletParams <- []
+      res.bulletParams.extend(addDescBlock.bulletParams)
+    }
+  }
+  return res
+}
+
 return {
   getWeaponInfoText               = getWeaponInfoText
   getWeaponNameText               = getWeaponNameText
@@ -1246,4 +1301,5 @@ return {
   updateItemBulletsSlider         = updateItemBulletsSlider
   updateSpareType                 = updateSpareType
   updateModType                   = updateModType
+  getTierDescTbl                  = getTierDescTbl
 }

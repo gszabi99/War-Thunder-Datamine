@@ -466,21 +466,29 @@ weapon_item_unit, weapon_item_unit > td {
   css-hier-invalidate:yes;
 }
 
-weaponryPreset {
+weaponryTier {
+  background-position:1;
+  background-color:@frameHeaderColor;
+}
+
+weaponryPreset, weaponryTier {
   behaviour:button;
   css-hier-invalidate:yes;
 }
 
 weaponryPreset [selected=yes] {
-  background-color:@weaponryItemSelected;
+  background-position:1;
+  background-color:@chosenPresetColor;
 }
 
 weaponryPreset:hover {
   background-color:@evenTrColor;
 }
 
-[show_console_buttons=no] weaponryPreset:focus {
+[show_console_buttons=no] weaponryPreset:focus,
+[show_console_buttons=no] weaponryTier[selected=yes],
+[show_console_buttons=no] presetHeader[selected=yes]{
   border:yes;
   border-offset:@dp;
-  border-color:@white;
+  border-color:@selectedPresetBorderColor;
 }

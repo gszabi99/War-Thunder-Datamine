@@ -146,6 +146,34 @@ foreach (fn in [
 
   refreshBoostersTask = -1
   boostersTaskUpdateFlightTime = -1
+
+  function getBestSpecialOfferItemByUnit(unit) {
+    local res = []
+    for (local i = 0; i < ::get_current_personal_discount_count(); i++) {
+      local uid = ::get_current_personal_discount_uid(i)
+      local item = ::ItemsManager.findItemByUid(uid, itemType.DISCOUNT)
+      if (item == null || !(item?.isSpecialOffer ?? false) || !item.isActive())
+        continue
+
+      local locParams = item.getSpecialOfferLocParams()
+      local itemUnit = locParams?.unit
+      if (itemUnit == unit)
+        res.append({
+          item = item
+          discountValue = locParams.discountValue
+          discountMax = locParams.discountMax
+          discountMin = locParams.discountMin
+        })
+    }
+
+    if (res.len() == 0)
+      return null
+
+    res.sort(@(a, b) b.discountValue <=> a.discountValue
+      || b.discountMax <=> a.discountMax
+      || b.discountMin <=> a.discountMin)
+    return res[0].item
+  }
 }
 
 ItemsManager.fillFakeItemsList <- function fillFakeItemsList()
@@ -522,7 +550,10 @@ ItemsManager._checkInventoryUpdate <- function _checkInventoryUpdate()
       continue //skip removed items
     }
 
-    inventory.append(createItem(iType, blk, invItemBlk, slot))
+    local item = createItem(iType, blk, invItemBlk, slot)
+    inventory.append(item)
+    if (item.shouldAutoConsume && !item.isActive())
+      shouldCheckAutoConsume = true
   }
 
   ::ItemsManager.fillFakeItemsList()

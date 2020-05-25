@@ -1,10 +1,10 @@
 local { TIERS_NUMBER,
-        getTiers,
         getWeaponryByPresetInfo } = require("scripts/weaponry/weaponryPresetsParams.nut")
 local { getLastWeapon,
         setLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 local { getItemAmount } = require("scripts/weaponry/itemInfo.nut")
-local { getWeaponItemViewParams,
+local { getTierDescTbl,
+        getWeaponItemViewParams,
         updateWeaponTooltip } = require("scripts/weaponry/weaponryVisual.nut")
 
 class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerWT
@@ -25,12 +25,15 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
   isWorldWarUnit       = false
   onChangeValueCb      = null
   weaponItemParams     = null
+  isTiersNestSelected  = false
 
   function getSceneTplView()
   {
-    local tiersAndDescWidth = ::to_pixels(
-      "".concat(TIERS_NUMBER,
-        "@tierIconSize+1@narrowTooltipWidth+6@blockInterval+2@scrollBarSize+2@frameHeaderPad"))
+    local tiersWidth = ::to_pixels("".concat(TIERS_NUMBER, "@tierIconSize"))
+    local iconWidth = ::show_console_buttons ? ::to_pixels("1@cIco") : 0
+    local tiersAndDescWidth = ::to_pixels("".concat(
+      "1@narrowTooltipWidth+4@blockInterval+2@scrollBarSize+2@frameHeaderPad"))
+        + tiersWidth + iconWidth
     presetTextWidth = ::min(::to_pixels("1@srw") - tiersAndDescWidth,
       ::to_pixels("1@modPresetTextMaxWidth"))
     weaponryByPresetInfo = getWeaponryByPresetInfo(unit, chooseMenuList)
@@ -44,14 +47,15 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
       headerText = "".concat(::loc("modification/category/secondaryWeapon"), " ",
         ::loc("ui/mdash"), " ", ::getUnitName(unit))
       wndWidth = tiersAndDescWidth + presetTextWidth
+      chapterPos = presetTextWidth + 0.5 * tiersWidth + iconWidth
       presets = presetsMarkup
+      isShowConsoleBtn = ::show_console_buttons
     }
   }
 
   function initScreen()
   {
-    curPresetIdx = chosenPresetIdx
-    selectCurrentPreset()
+    selectPreset(chosenPresetIdx)
   }
 
   function getPresetsMarkup()
@@ -81,7 +85,11 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
         weaponryItem = getWeaponItemViewParams($"item_{idx}", unit, presetsList[idx],
           params).__update({
               presetTextWidth = presetTextWidth
-              tiers = getTiers(unit, preset, weaponryByPresetInfo.weaponrySizes)
+              tiers = presetsList[idx].tiers.map(@(t) {
+                tierId        = t.tierId
+                img           = t?.img ?? ""
+                tierTooltipId = t?.tierTooltipId ?? ""
+              })
             })
       })
     }
@@ -91,34 +99,92 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
 
   function onItemSelect(obj)
   {
-    local listObj = obj.getChild(obj.getValue())
-    if (!listObj)
+    local presetObj = obj.getChild(obj.getValue())
+    if (!::check_obj(presetObj))
       return
-    curPresetIdx = listObj.presetId != "" ? listObj.presetId.tointeger() : -1
-    listObj.select()
+    curPresetIdx = presetObj.presetId != "" ? presetObj.presetId.tointeger() : -1
+    presetObj.select()
     updateDesc()
   }
 
-  function selectCurrentPreset()
+  function getCurrPresetObjParams()
   {
     local nestObj = scene.findObject("presetNest")
     for (local i=0; i < nestObj.childrenCount(); i++)
     {
-      local obj = nestObj.getChild(i)
-      if (obj.presetId == curPresetIdx.tostring())
-      {
-        nestObj.setValue(i)
-        obj.select()
-        return
-      }
+      local presetObj = nestObj.getChild(i)
+      if (presetObj.presetId == curPresetIdx.tostring())
+        return {idx = i, obj = presetObj}
     }
-    restoreFocus()
+
+    return null
   }
 
-  function onModItemClick(obj)
+  function selectPreset(presetIdx)
   {
-    curPresetIdx = obj.presetId.tointeger()
-    selectCurrentPreset()
+    curPresetIdx = presetIdx
+    local nestObj = scene.findObject("presetNest")
+    local params = getCurrPresetObjParams()
+    if (params == null)
+    {
+      restoreFocus()
+      return
+    }
+
+    nestObj.setValue(params.idx)
+    params.obj.select()
+  }
+
+  function onTierClick(obj)
+  {
+    local nestObj = obj.getParent()
+    if (!::check_obj(nestObj))
+      return
+
+    selectPreset(nestObj.findObject("presetHeader").presetId.tointeger())
+    nestObj.setValue(obj.tierId.tointeger() + 1)
+    nestObj.select()
+    updateTierDesc(obj.tierId.tointeger())
+    isTiersNestSelected = true
+  }
+
+  function onPresetClick(obj)
+  {
+    selectPreset(obj.presetId.tointeger())
+    local isPreset = (obj?.id ?? "") == "preset"
+    if (!isPreset)
+      return
+
+    local selectObj = isTiersNestSelected ?
+      getCurrPresetObjParams()?.obj : obj.findObject("tiersNest")
+    if (!::check_obj(selectObj))
+      return
+
+    selectObj.select()
+    updateTierDesc(isTiersNestSelected ?
+      null : selectObj.getChild(selectObj.getValue())?.tierId.tointeger())
+    isTiersNestSelected = !isTiersNestSelected
+  }
+
+  function updateTierDesc(tierId)
+  {
+    local data = ""
+    local descObj = scene.findObject("tierDesc")
+    if (!::check_obj(descObj))
+      return
+    if (tierId != null)
+    {
+      local item = presetsList[curPresetIdx]
+      local weaponry = ::u.search(item.tiers, @(p) p.tierId == tierId)?.weaponry
+      data = weaponry ? ::handyman.renderCached(("gui/weaponry/weaponTooltip"),
+        getTierDescTbl(unit, weaponry, item.name)) : ""
+    }
+    guiScene.replaceContentFromText(descObj, data, data.len())
+  }
+
+  function onTierSelect(obj)
+  {
+    updateTierDesc(obj.getChild(obj.getValue())?.tierId.tointeger())
   }
 
   function onModItemDblClick(obj)
@@ -204,7 +270,7 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
         showSceneBtn("altActionBtn", false)
         return
       }
-    updateWeaponTooltip(descObj, unit, presetsList[curPresetIdx], this)
+    updateWeaponTooltip(descObj, unit, presetsList[curPresetIdx], this, {detail = INFO_DETAIL.FULL})
     local idx = curPresetIdx
     local itemParams = ::u.search(presetsMarkup, @(i) i?.presetId == idx)
     local btnText = itemParams?.weaponryItem.actionBtnText ?? ""
@@ -229,7 +295,7 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
     if (!::check_obj(presetObj))
       return
     guiScene.replaceContentFromText(presetObj, data, data.len(), this)
-    selectCurrentPreset()
+    selectPreset(curPresetIdx)
   }
 
   function onEventWeaponPurchased(params) { updateAllItems() }

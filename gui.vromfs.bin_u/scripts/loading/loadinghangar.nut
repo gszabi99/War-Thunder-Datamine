@@ -1,4 +1,5 @@
 local { animBgLoad } = require("scripts/loading/animBg.nut")
+local { setHelpTextOnLoading, setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 class ::gui_handlers.LoadingHangarHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -10,8 +11,8 @@ class ::gui_handlers.LoadingHangarHandler extends ::gui_handlers.BaseGuiHandlerW
   function initScreen()
   {
     animBgLoad()
-    ::setVersionText()
-    ::set_help_text_on_loading(scene.findObject("help_text"))
+    setVersionText()
+    setHelpTextOnLoading(scene.findObject("help_text"))
 
     initFocusArray()
 
