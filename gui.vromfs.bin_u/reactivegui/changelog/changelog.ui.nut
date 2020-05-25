@@ -30,7 +30,7 @@ local borderWidth = ::dp(1)
 local minTabCount = 5
 
 local scrollHandler = ::ScrollHandler()
-local scrollStep = ::fpx(250)
+local scrollStep = ::fpx(75)
 
 local function getTabColorCtor(sf, style, isCurrent) {
   if (isCurrent)        return style.current
@@ -138,7 +138,7 @@ scrollPatchnoteWatch.subscribe(function(value) {
     return
 
   scrollPatchnote()
-  ::gui_scene.setInterval(0.5, scrollPatchnote)
+  ::gui_scene.setInterval(0.1, scrollPatchnote)
 })
 
 local scrollPatchnoteBtn = @(hotkey, watchValue) {

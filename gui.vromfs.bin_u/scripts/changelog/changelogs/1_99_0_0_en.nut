@@ -229,7 +229,7 @@ return [
 "We are starting the CBT for the Italian Navy. The research and purchase of the Italian Naval Forces is available only to owners of the Naval early access packs and testers (players who perform special tasks to get access). Don’t miss more info and terms for the CBT in the news."
 
 {t="bullets" v = [
-{t="url" v= "Naval early access packs" url="https://store.gaijin.net/catalog.php?search=wt_italian_navy&tag=1"}
+{t="url" v= "Naval early access packs" url="https://store.gaijin.net/catalog.php?search=wt_italian_navy&tag=1" platform="pc"}
 ]}
 {t="sep"}
 {t="bullets" v = [
