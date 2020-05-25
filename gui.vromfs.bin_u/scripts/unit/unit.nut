@@ -632,7 +632,7 @@ local Unit = class
               availableWeapons.hasDepthCharges = true
             if (weapBlk?.bomb.isMine)
               availableWeapons.hasMines = true
-            if (weapBlk?.rocket && (weapBlk.rocket?.isFlare ?? true))
+            if (weapBlk?.rocket && weapBlk.rocket?.isFlare)
               availableWeapons.hasFlares = true
 
             weaponsBlkArray.append(weap.blk)
@@ -650,7 +650,7 @@ local Unit = class
                 continue
 
               local weapBlk = ::DataBlock(weap.blk)
-              if (weapBlk?.rocket && (weapBlk.rocket?.isFlare ?? true))
+              if (weapBlk?.rocket && weapBlk.rocket?.isFlare)
                 availableWeapons.hasFlares = true
             }
         }

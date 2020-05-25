@@ -1,0 +1,650 @@
+{
+  "type": "radar",
+  "showMissileLaunchZone": true,
+  "transivers": {
+    "common": {
+      "sideLobesAttenuation": -26.0,
+      "power": 200.0,
+      "band": 8,
+      "rcs": 5.0,
+      "range": 40000.0,
+      "rangeMax": 100000.0,
+      "backScatteringBandNum": 0,
+      "timeGainControl": false,
+      "antenna": {
+        "angleHalfSens": 5.0,
+        "sideLobesSensitivity": -32.0
+      }
+    }
+  },
+  "scanPatterns": {
+    "searchExp": {
+      "type": "pyramide",
+      "azimuthLimits": [-58.0,58.0],
+      "elevationLimits": [-58.0,58.0],
+      "rollStabLimit": 70.0,
+      "period": 0.8,
+      "width": 10.0,
+      "barHeight": 4.1,
+      "barsCount": 3,
+      "rowMajor": true,
+      "barsOneWay": true
+    },
+    "searchNarrow": {
+      "type": "pyramide",
+      "azimuthLimits": [-58.0,58.0],
+      "elevationLimits": [-58.0,58.0],
+      "rollStabLimit": 70.0,
+      "period": 2.5,
+      "width": 30.0,
+      "barHeight": 4.1,
+      "barsCount": 3,
+      "rowMajor": true,
+      "barsOneWay": true
+    },
+    "searchWide": {
+      "type": "pyramide",
+      "azimuthLimits": [-58.0,58.0],
+      "elevationLimits": [-58.0,58.0],
+      "rollStabLimit": 70.0,
+      "period": 5.0,
+      "width": 50.0,
+      "barHeight": 4.1,
+      "barsCount": 3,
+      "rowMajor": true,
+      "barsOneWay": true
+    },
+    "boresightLock": {
+      "type": "cone",
+      "azimuthLimits": [-58.0,58.0],
+      "elevationLimits": [-58.0,58.0],
+      "period": 1.0,
+      "width": 3.3,
+      "indicate": true
+    },
+    "designationLock": {
+      "type": "pyramide",
+      "azimuthLimits": [-58.0,58.0],
+      "elevationLimits": [-58.0,58.0],
+      "period": 0.5,
+      "width": 6.2,
+      "barHeight": 3.3,
+      "barsCount": 2,
+      "rowMajor": false,
+      "indicate": true
+    },
+    "track": {
+      "type": "no",
+      "azimuthLimits": [-58.0,58.0],
+      "elevationLimits": [-58.0,58.0]
+    }
+  },
+  "signals": {
+    "search": {
+      "dynamicRange": [40.0,10.0],
+      "groundClutter": true,
+      "aircraftAsTarget": true,
+      "friendFoeId": true,
+      "distance": {
+        "presents": true,
+        "minValue": 500.0,
+        "maxValue": 370000.0,
+        "width": 600.0
+      }
+    },
+    "track": {
+      "dynamicRange": [40.0,10.0],
+      "groundClutter": true,
+      "aircraftAsTarget": true,
+      "angularAccuracy": 0.06,
+      "distanceAccuracy": 25.0,
+      "track": true,
+      "distance": {
+        "presents": true,
+        "minValue": 200.0,
+        "maxValue": 92500.0,
+        "width": 300.0
+      }
+    }
+  },
+  "scanPatternSets": {
+    "common": {
+      "scanPattern1": "searchNarrow",
+      "scanPattern2": "searchWide",
+      "scanPattern3": "searchExp"
+    },
+    "boresightLock": {
+      "scanPattern1": "boresightLock"
+    }
+  },
+  "scopeRangeSets": {
+    "common": {
+      "range1": 18500.0,
+      "range2": 92500.0,
+      "range3": 185000.0,
+      "range4": 370000.0
+    },
+    "boresightLock": {
+      "range1": 9250.0
+    }
+  },
+  "fsms": {
+    "main": {
+      "stateInit": "init",
+      "actionsTemplates": {
+        "init": {
+          "setEnabled": {
+            "value": false
+          },
+          "setTransiver": {
+            "transiver": "common"
+          },
+          "setSignal": {
+            "signal": "search"
+          },
+          "setTargetDesignationRange": {
+            "azimuthRange": [-50.0,50.0],
+            "distanceRange": [0.0,92500.0]
+          }
+        },
+        "setStandbyMode": {
+          "setModeName": {
+            "name": "standby"
+          },
+          "setEnabled": {
+            "value": false
+          },
+          "setCenterAzimuth": {
+            "source": "constant",
+            "value": 0.0
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": -2.0
+          },
+          "clearTargets": [],
+          "clearTargetsOfInterest": [],
+          "setSignal": {
+            "signal": "search"
+          },
+          "setScanPatternSet": {
+            "scanPatternSet": "common"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "common"
+          }
+        },
+        "setSearchMode": {
+          "setModeName": {
+            "name": "search"
+          },
+          "setEnabled": {
+            "value": true
+          },
+          "setFsmActive": {
+            "fsm": "search",
+            "active": true
+          },
+          "setCenterAzimuth": {
+            "source": "constant",
+            "value": 0.0
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": -2.0
+          },
+          "clearTargets": [],
+          "clearTargetsOfInterest": [],
+          "setSignal": {
+            "signal": "search"
+          },
+          "setScanPatternSet": {
+            "scanPatternSet": "common"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "common"
+          }
+        },
+        "resetSearchMode": {
+          "setFsmActive": {
+            "fsm": "search",
+            "active": false
+          }
+        },
+        "setDesignationLockMode": {
+          "setModeName": {
+            "name": "acquisition"
+          },
+          "setEnabled": {
+            "value": true
+          },
+          "clearTargetsOfInterest": [],
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
+          },
+          "setCenterElevation": {
+            "source": "targetDesignation"
+          },
+          "setDistGatePos": {
+            "source": "targetDesignation",
+            "width": 1000.0
+          },
+          "setScanPatternSet": [],
+          "setScanPattern": {
+            "scanPattern": "designationLock"
+          },
+          "resetScanPhase": [],
+          "setFsmActive": {
+            "fsm": "lock",
+            "active": true
+          },
+          "setSignal": {
+            "signal": "track"
+          },
+          "clearTargets": []
+        },
+        "setBoresightLockMode": {
+          "setModeName": {
+            "name": "ACM"
+          },
+          "setEnabled": {
+            "value": true
+          },
+          "clearTargets": [],
+          "clearTargetsOfInterest": [],
+          "setScanPatternSet": {
+            "scanPatternSet": "boresightLock"
+          },
+          "setScanPattern": {
+            "scanPattern": "boresightLock"
+          },
+          "resetScanPhase": [],
+          "setCenterAzimuth": {
+            "source": "constant",
+            "value": 0.0
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": -2.0
+          },
+          "setFsmActive": {
+            "fsm": "lock",
+            "active": true
+          },
+          "setSignal": {
+            "signal": "track"
+          },
+          "setDistGatePos": {
+            "source": "constRange",
+            "pos": 2000.0,
+            "width": 4000.0
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "boresightLock"
+          }
+        },
+        "setTrackMode": {
+          "setModeName": {
+            "name": "track"
+          },
+          "setEnabled": {
+            "value": true
+          },
+          "setScanPatternSet": [],
+          "setScanPattern": {
+            "scanPattern": "track"
+          },
+          "clearTargetsOfInterest": [],
+          "addTargetOfInterest": [],
+          "setLastTargetOfInterestActive": [],
+          "updateActiveTargetOfInterest": [],
+          "setCenterAzimuth": {
+            "source": "activeTargetOfInterest"
+          },
+          "setCenterElevation": {
+            "source": "activeTargetOfInterest"
+          },
+          "setDistGatePos": {
+            "source": "activeTargetOfInterest",
+            "width": 0.0
+          },
+          "setFsmActive": {
+            "fsm": "track",
+            "active": true
+          },
+          "setSignal": {
+            "signal": "track"
+          }
+        }
+      },
+      "transitions": {
+        "init": {
+          "stateFrom": "init",
+          "event": "init",
+          "stateTo": "standby",
+          "actions": {
+            "init": [],
+            "setStandbyMode": []
+          }
+        },
+        "switchOn": {
+          "stateFrom": "standby",
+          "command": "switch",
+          "event": "enable",
+          "stateTo": "search",
+          "actions": {
+            "setSearchMode": []
+          }
+        },
+        "switchOff": {
+          "stateFrom": "search",
+          "command": "switch",
+          "event": "disable",
+          "stateTo": "standby",
+          "actions": {
+            "resetSearchMode": [],
+            "setStandbyMode": []
+          }
+        },
+        "designationLock": {
+          "stateFrom": "search",
+          "command": "selectTarget",
+          "actions": {
+            "designateActiveDetectedTarget": {
+              "type": 0,
+              "sensorIndex": 0
+            }
+          }
+        },
+        "checkDesignationType0": {
+          "stateFrom": "search",
+          "command": "designateTarget",
+          "stateTo": "checkDesignationType0",
+          "actions": {
+            "checkDesignationTypeEquals": {
+              "value": 0
+            }
+          }
+        },
+        "designationLockResponce": {
+          "stateFrom": "checkDesignationType0",
+          "event": "designationTypeEquals",
+          "stateTo": "designationLock",
+          "actions": {
+            "resetSearchMode": [],
+            "setDesignationLockMode": []
+          }
+        },
+        "returnToSearchMode": {
+          "stateFrom": "checkDesignationType0",
+          "event": "designationTypeNotEquals",
+          "stateTo": "search"
+        },
+        "designationTrack": {
+          "stateFrom": "designationLock",
+          "event": "targetDetected",
+          "stateTo": "designationTrack",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "lock",
+              "active": false
+            },
+            "setTrackMode": []
+          }
+        },
+        "failedDesignationLock": {
+          "stateFrom": "designationLock",
+          "event": "scanFinished",
+          "stateTo": "search",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "lock",
+              "active": false
+            },
+            "setSearchMode": []
+          }
+        },
+        "finishedDesignationTrack": {
+          "stateFrom": "designationTrack",
+          "event": "activeTargetOfInterestInertialTimeOut",
+          "command": "selectTarget",
+          "stateTo": "search",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "track",
+              "active": false
+            },
+            "setSearchMode": []
+          }
+        },
+        "boresightLockFromSearch": {
+          "stateFrom": "search",
+          "command": "modeSwitch",
+          "stateTo": "boresightLock",
+          "actions": {
+            "resetSearchMode": [],
+            "setBoresightLockMode": []
+          }
+        },
+        "boresightLockFromStandby": {
+          "stateFrom": "standby",
+          "command": "selectTarget",
+          "stateTo": "boresightLock",
+          "actions": {
+            "resetSearchMode": [],
+            "setBoresightLockMode": []
+          }
+        },
+        "boresightTrack": {
+          "stateFrom": "boresightLock",
+          "event": "targetDetected",
+          "stateTo": "boresightTrack",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "lock",
+              "active": false
+            },
+            "setTrackMode": []
+          }
+        },
+        "failedBoresightLock": {
+          "stateFrom": "boresightLock",
+          "command": "selectTarget",
+          "stateTo": "standby",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "lock",
+              "active": false
+            },
+            "setStandbyMode": []
+          }
+        },
+        "switchToSearch": [
+          {
+            "stateFrom": "boresightLock"
+          },
+          {
+            "command": "switch"
+          },
+          {
+            "command": "modeSwitch"
+          },
+          {
+            "stateTo": "search"
+          },
+          {
+            "actions": {
+              "setFsmActive": {
+                "fsm": "lock",
+                "active": false
+              },
+              "setSearchMode": []
+            }
+          }
+        ],
+        "brokenBoresightTrack": {
+          "stateFrom": "boresightTrack",
+          "event": "activeTargetOfInterestInertialTimeOut",
+          "stateTo": "boresightLock",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "track",
+              "active": false
+            },
+            "setBoresightLockMode": []
+          }
+        },
+        "finishedBoresightTrack": {
+          "stateFrom": "boresightTrack",
+          "command": "selectTarget",
+          "stateTo": "standby",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "track",
+              "active": false
+            },
+            "setStandbyMode": []
+          }
+        },
+        "switchScanPattern": [
+          {
+            "stateFrom": "standby"
+          },
+          {
+            "stateFrom": "search"
+          },
+          {
+            "command": "scanPatternSwitch"
+          },
+          {
+            "actions": {
+              "setNextScanPattern": []
+            }
+          }
+        ],
+        "switchScopeRange": {
+          "command": "rangeSwitch",
+          "actions": {
+            "setNextScopeRange": []
+          }
+        }
+      }
+    },
+    "search": {
+      "stateInit": "search",
+      "transitions": {
+        "scan": {
+          "event": "update",
+          "actions": {
+            "scan": []
+          }
+        },
+        "detect": {
+          "event": "targetInSight",
+          "actions": {
+            "setDistGatePos": {
+              "source": "continuousScale",
+              "width": 0.0
+            },
+            "detectTarget": []
+          }
+        },
+        "addTarget": {
+          "event": "targetDetected",
+          "actions": {
+            "addTarget": [],
+            "updateActiveDetectedTarget": []
+          }
+        },
+        "switchSelectedTarget": {
+          "command": "switchTarget",
+          "actions": {
+            "setNextDetectedTargetActive": []
+          }
+        },
+        "setSelectedTarget": {
+          "command": "switchToTarget",
+          "actions": {
+            "setDetectedTargetActive": []
+          }
+        },
+        "designateTarget": {
+          "command": "selectTarget",
+          "actions": {
+            "designateActiveDetectedTarget": {
+              "type": 0,
+              "sensorIndex": 0
+            }
+          }
+        }
+      }
+    },
+    "lock": {
+      "stateInit": "lock",
+      "transitions": {
+        "scan": {
+          "event": "update",
+          "actions": {
+            "scan": []
+          }
+        },
+        "detect": {
+          "event": "targetInSight",
+          "actions": {
+            "detectTarget": []
+          }
+        }
+      }
+    },
+    "track": {
+      "stateInit": "track",
+      "transitions": {
+        "detect": {
+          "event": "update",
+          "actions": {
+            "detectTarget": []
+          }
+        },
+        "track": {
+          "event": "targetDetected",
+          "actions": {
+            "updateActiveTargetOfInterest": [],
+            "setCenterAzimuth": {
+              "source": "activeTargetOfInterest"
+            },
+            "setCenterElevation": {
+              "source": "activeTargetOfInterest"
+            },
+            "setDistGatePos": {
+              "source": "activeTargetOfInterest",
+              "width": 0.0
+            },
+            "setRelSpeedGatePos": {
+              "source": "activeTargetOfInterest",
+              "width": 0.0
+            }
+          }
+        },
+        "extrapolate": {
+          "event": "targetNotDetected",
+          "actions": {
+            "extrapolateActiveTargetOfInterest": [],
+            "setCenterAzimuth": {
+              "source": "activeTargetOfInterest"
+            },
+            "setCenterElevation": {
+              "source": "activeTargetOfInterest"
+            },
+            "setDistGatePos": {
+              "source": "activeTargetOfInterest",
+              "width": 0.0
+            },
+            "checkActiveTargetOfInerestInertialTimeout": {
+              "timeOut": 1.0
+            }
+          }
+        }
+      }
+    }
+  }
+}

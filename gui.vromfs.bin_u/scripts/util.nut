@@ -1990,7 +1990,8 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
   local needEvent = ::is_mplayer_peer()
   ::destroy_session()
   if (needEvent)
-    ::broadcastEvent("SessionDestroyed")
+    //need delay after destroy session before is_multiplayer become false
+    ::get_gui_scene().performDelayed({}, @() ::broadcastEvent("SessionDestroyed"))
 }
 
 ::show_not_available_msg_box <- function show_not_available_msg_box()

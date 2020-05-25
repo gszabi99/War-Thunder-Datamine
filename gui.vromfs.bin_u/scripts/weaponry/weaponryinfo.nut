@@ -176,6 +176,7 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
       isGun = null
       bulletType = null
       tiers = {}
+      blk = null
     }
 
     if (wConf)
@@ -206,6 +207,7 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
       item.amountPerTier = isGun ? weaponBlk?.amountPerTier
         : item.amountPerTier ?? itemBlk?.amountPerTier
       item.bulletType = itemBlk?.bulletType
+      item.blk = weapon.blk
 
       if (::isInArray(currentTypeName, [ WEAPON_TYPE.ROCKETS, WEAPON_TYPE.AGM, WEAPON_TYPE.AAM ]))
       {

@@ -362,9 +362,10 @@ local function getWeaponryByPresetInfo(unit, chooseMenuList = null)
     foreach (weaponType, triggers in weaponry)
       foreach (t in triggers)
       {
-        if (!p?[t.trigger])
-          p[t.trigger] <- []
-        local w = p[t.trigger]
+        local tType = weaponType == TRIGGER_TYPE.TURRETS ? weaponType : t.trigger
+        if (!p?[tType])
+          p[tType] <- []
+        local w = p[tType]
         foreach (weaponName, weapon in t)
           if (typeof(weapon) == "table")
           {
@@ -376,9 +377,9 @@ local function getWeaponryByPresetInfo(unit, chooseMenuList = null)
 
             p.totalItemsAmount += weapon.num / (weapon.amountPerTier ?? 1)
 
-            if (!sizes?[t.trigger])
-              sizes[t.trigger] <- []
-            local s = sizes[t.trigger]
+            if (!sizes?[tType])
+              sizes[tType] <- []
+            local s = sizes[tType]
             if(!::isInArray(weapon.massKg, s))
               s.append(weapon.massKg)
           }

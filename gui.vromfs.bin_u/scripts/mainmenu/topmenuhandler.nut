@@ -328,7 +328,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
         shopWeak.setUnitType(unitType)
     }
 
-    enableHangarControls(!shouldActivate, false)
+    enableHangarControls(!shouldActivate)
   }
 
   function goBack(obj)
@@ -400,8 +400,10 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
     base.onSceneActivate(show)
     if (topMenuShopActive.value && shopWeak)
       shopWeak.onSceneActivate(show)
-    if (show)
+    if (show) {
       ::set_show_aircraft(getCurSlotUnit())
+      enableHangarControls(!topMenuShopActive.value)
+    }
   }
 
   function getWndHelpConfig()

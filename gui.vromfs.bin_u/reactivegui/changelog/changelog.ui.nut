@@ -29,6 +29,9 @@ local blockInterval = ::fpx(6)
 local borderWidth = ::dp(1)
 local minTabCount = 5
 
+local scrollHandler = ::ScrollHandler()
+local scrollStep = ::fpx(250)
+
 local function getTabColorCtor(sf, style, isCurrent) {
   if (isCurrent)        return style.current
   if (sf & S_ACTIVE)    return style.active
@@ -121,6 +124,30 @@ local seeMoreUrl = {
   margin = [::fpx(50), 0, 0, 0]
 }
 
+local scrollPatchnoteWatch = Watched(0)
+
+local function scrollPatchnote() {  //FIX ME: Remove this code, when native scroll will have opportunity to scroll by hotkeys.
+  local element = scrollHandler.elem
+  if (element != null)
+    scrollHandler.scrollToY(element.getScrollOffsY() + scrollPatchnoteWatch.value * scrollStep)
+}
+
+scrollPatchnoteWatch.subscribe(function(value) {
+  ::gui_scene.clearTimer(scrollPatchnote)
+  if (value == 0)
+    return
+
+  scrollPatchnote()
+  ::gui_scene.setInterval(0.5, scrollPatchnote)
+})
+
+local scrollPatchnoteBtn = @(hotkey, watchValue) {
+  behavior = Behaviors.Button
+  onElemState = @(sf) scrollPatchnoteWatch((sf & S_ACTIVE) ? watchValue : 0)
+  hotkeys = [[hotkey]]
+  onDetach = @() scrollPatchnoteWatch(0)
+}
+
 local function selPatchnote(){
   local text = curVersionInfo.value ?? missedPatchnoteText
   if (::cross_call.hasFeature("AllowExternalLink")) {
@@ -132,10 +159,17 @@ local function selPatchnote(){
   return {
     watch = [curVersionInfo]
     size = flex()
-    children = scrollbar.makeSideScroll({
-      size = [flex(), SIZE_TO_CONTENT]
-      children = formatText(text)
-    })
+    children = [
+      scrollbar.makeSideScroll({
+        size = [flex(), SIZE_TO_CONTENT]
+        children = formatText(text)
+      }, {
+        scrollHandler = scrollHandler
+        joystickScroll = false
+      }),
+      scrollPatchnoteBtn("^J:R.Thumb.Up | PageUp", -1),
+      scrollPatchnoteBtn("^J:R.Thumb.Down | PageDown", 1)
+    ]
   }
 }
 

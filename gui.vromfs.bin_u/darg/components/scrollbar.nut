@@ -148,6 +148,7 @@ local DEF_SIDE_SCROLL_OPTIONS = { //const
   maxHeight = null
   needReservePlace = true //need reserve place for scrollbar when it not visible
   clipChildren  = true
+  joystickScroll = true
 }
 
 local function makeSideScroll(content, options = DEF_SIDE_SCROLL_OPTIONS) {
@@ -170,7 +171,7 @@ local function makeSideScroll(content, options = DEF_SIDE_SCROLL_OPTIONS) {
       scrollHandler = scrollHandler
       wheelStep = 0.8
       orientation = options.orientation
-      joystickScroll = true
+      joystickScroll = options.joystickScroll
       maxHeight = options.maxHeight
       maxWidth = options.maxWidth
 

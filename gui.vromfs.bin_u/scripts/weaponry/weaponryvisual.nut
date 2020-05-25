@@ -1260,11 +1260,10 @@ local function getTierDescTbl(unit, weaponry, presetName)
       }
     }
   }
-  if(::isInArray(weaponry.tType, [WEAPON_TYPE.ROCKETS, WEAPON_TYPE.BOMBS]))
+  if(::isInArray(weaponry.tType, [TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.ATGM]))
     buildPiercingData({
-      bullet_parameters = ::calculate_tank_bullet_parameters(unit.name, presetName, true, true),
-      descTbl = res,
-      weaponName = weaponry.name})
+      bullet_parameters = ::calculate_tank_bullet_parameters(unit.name, weaponry.blk, true, false),
+      descTbl = res})
 
   if (weaponry?.addWeaponry != null)
   {
