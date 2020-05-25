@@ -166,7 +166,6 @@ local handlerClass = class extends vehiclesModal.handlerClass
   static function isHaveNonApprovedResearches()
   {
     if (!::isInMenu() || !::has_feature("ClanVehicles")
-      || (!::has_feature("ClansXBOXOnPC") && ::is_platform_xboxone)
       || ::checkIsInQueue()
       || squadronUnitAction.isAllVehiclesResearched())
       return false

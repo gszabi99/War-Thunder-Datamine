@@ -244,8 +244,6 @@ local defaults = ::Watched({  //def value when feature not found in game_setting
   AllowSteamAccountLinking = true
   AllowXboxAccountLinking = false
 
-  ClansXBOXOnPC = false
-
   MapPreferences = false
   TournamentInvites = true
 

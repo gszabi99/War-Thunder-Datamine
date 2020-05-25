@@ -503,16 +503,9 @@ global enum CheckFeatureLockAction
         return false
       }
 
-      local button = []
-      local defButton = "cancel"
+      local button = [["#mainmenu/btnFindSquadron", @() ::gui_modal_clans()]]
+      local defButton = "#mainmenu/btnFindSquadron"
       local msg = [::loc("mainmenu/needJoinSquadronForResearch")]
-      if (!::has_feature("ClansXBOXOnPC") && ::is_platform_xboxone)
-        msg.append(::colorize("warningTextColor", ::loc("clan/consolePlayerOnPC")))
-      else
-      {
-        button.append(["#mainmenu/btnFindSquadron", @() ::gui_modal_clans()])
-        defButton = "#mainmenu/btnFindSquadron"
-      }
 
       local canBuyNotResearchedUnit = unitStatus.canBuyNotResearched(unit)
       local priceText = unit.getOpenCost().getTextAccordingToBalance()
@@ -1821,9 +1814,6 @@ global enum CheckFeatureLockAction
         addInfoTextsList.append(::colorize("badTextColor", ::loc("mainmenu/needJoinSquadronForResearch/continue")))
       else
         addInfoTextsList.append(::colorize("badTextColor", ::loc("mainmenu/needJoinSquadronForResearch")))
-
-      if (!::has_feature("ClansXBOXOnPC") && ::is_platform_xboxone)
-        addInfoTextsList.append(::colorize("warningTextColor", ::loc("clan/consolePlayerOnPC")))
     }
   }
 

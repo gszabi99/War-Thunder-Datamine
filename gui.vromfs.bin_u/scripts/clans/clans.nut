@@ -631,10 +631,7 @@ g_clans.membershipRequestSend <- function membershipRequestSend(clanId)
       return
     }
 
-    local text = ::loc("clan/requestSent")
-    if (::has_feature("ClansXBOXOnPC"))
-      text += "\n" + ::colorize("warningTextColor", ::loc("clan/consolePlayerOnPC"))
-    ::g_popups.add("", text)
+    ::g_popups.add("", ::loc("clan/requestSent"))
     ::broadcastEvent("ClanMembershipRequested")
   }
   ::g_tasker.addTask(taskId, {showProgressBox = true}, onSuccess)

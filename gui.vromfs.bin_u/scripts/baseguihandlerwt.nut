@@ -405,10 +405,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function onMyClanOpen()
   {
-    if (::has_feature("Clans"))
-      ::gui_modal_clans("my_clan")
-    else
-      ::showInfoMsgBox(::loc("clan/consolePlayerOnPC"))
+    ::gui_modal_clans("my_clan")
   }
 
   function onGC_chat(obj)
