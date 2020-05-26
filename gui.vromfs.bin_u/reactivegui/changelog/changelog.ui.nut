@@ -148,6 +148,8 @@ local scrollPatchnoteBtn = @(hotkey, watchValue) {
   onDetach = @() scrollPatchnoteWatch(0)
 }
 
+curVersionInfo.subscribe(@(value) scrollHandler.scrollToY(0))
+
 local function selPatchnote(){
   local text = curVersionInfo.value ?? missedPatchnoteText
   if (::cross_call.hasFeature("AllowExternalLink")) {
@@ -162,6 +164,7 @@ local function selPatchnote(){
     children = [
       scrollbar.makeSideScroll({
         size = [flex(), SIZE_TO_CONTENT]
+        margin = [0 ,blockInterval]
         children = formatText(text)
       }, {
         scrollHandler = scrollHandler
@@ -238,6 +241,14 @@ local changelogRoot = {
       },
       headerParams = {
         closeBtn = { onClick = onCloseAction }
+        content = @() {
+          watch = curPatchnote
+          rendObj = ROBJ_DTEXT
+          font = fontsState.get("medium")
+          color = colors.menu.activeTextColor
+          text = curPatchnote.value?.headerTitle ?? ""
+          margin = [0, 0, 0, ::fpx(15)]
+        }
       }
     })
   ]

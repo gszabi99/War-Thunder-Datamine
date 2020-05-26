@@ -26,11 +26,20 @@ local function updateVersions() {
     })
     .map(function(v) {
       local version = mkVersionFromString(v.version)
-      local title = v?.title?[::g_language.getLanguageName().tolower()] ?? v?.title?["english"] ?? v?.title["def"] ?? v?.title
+      local langName = ::g_language.getLanguageName().tolower()
+      local title = v?.title?[langName] ?? v?.title?["english"] ?? v?.title["def"] ?? v?.title
+      local headerTitle = v?.headerTitle?[langName] ?? v?.headerTitle?["english"] ?? v?.headerTitle
       local tVersion = ".".join(version)
       if (::type(title)!="string")
         title = tVersion
-      return {version = version, iVersion = versionToInt(version), tVersion = tVersion, versionType = v?.type, title=title}
+      return {
+        version = version,
+        iVersion = versionToInt(version),
+        tVersion = tVersion,
+        versionType = v?.type,
+        title=title
+        headerTitle = headerTitle ?? title
+      }
     })
   )
 }

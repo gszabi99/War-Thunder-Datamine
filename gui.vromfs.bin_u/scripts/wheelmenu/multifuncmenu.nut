@@ -159,13 +159,6 @@ class ::gui_handlers.multifuncMenuHandler extends ::gui_handlers.wheelMenuHandle
 
   wndControlsAllowMaskWhenInactive = CtrlsInGui.CTRL_ALLOW_FULL
 
-  wndControlsAllowMaskOnShortcutPc      = CtrlsInGui.CTRL_IN_MULTIFUNC_MENU
-                                        | CtrlsInGui.CTRL_ALLOW_FULL
-
-  wndControlsAllowMaskOnShortcutXinput  = CtrlsInGui.CTRL_IN_MULTIFUNC_MENU
-                                        | CtrlsInGui.CTRL_ALLOW_WHEEL_MENU
-                                        | CtrlsInGui.CTRL_ALLOW_VEHICLE_KEYBOARD
-
   curSectionId = null
   path = null
 
@@ -188,22 +181,13 @@ class ::gui_handlers.multifuncMenuHandler extends ::gui_handlers.wheelMenuHandle
 
   function toggleShortcut(shortcutId)
   {
-    if ("emulate_shortcut" in ::getroottable())
-    {
-      ::emulate_shortcut(shortcutId)
-    }
-    else // Compatibility with client 1.97.1.X and older
-    {
-      switchControlsAllowMask(::is_xinput_device() ? wndControlsAllowMaskOnShortcutXinput
-                                                   : wndControlsAllowMaskOnShortcutPc)
-      ::handlersManager.doDelayed(::Callback(function() {
-        ::toggle_shortcut(shortcutId)
-        ::handlersManager.doDelayed(::Callback(function() {
-          switchControlsAllowMask(isActive ? wndControlsAllowMaskWhenActive
-                                           : wndControlsAllowMaskWhenInactive)
-        }, this))
-      }, this))
-    }
+    if (::is_xinput_device())
+      switchControlsAllowMask(wndControlsAllowMaskWhenInactive)
+
+    ::emulate_shortcut(shortcutId)
+
+    if (::is_xinput_device() && isActive)
+      switchControlsAllowMask(wndControlsAllowMaskWhenActive)
   }
 
   function gotoPrevMenuOrQuit()

@@ -18,7 +18,9 @@ local frameHeader = @(headerParams) {
   rendObj = ROBJ_SOLID
   color = colors.menu.frameHeaderColor
   margin = frameHeaderPad
+  valign = ALIGN_CENTER
   children = [
+    headerParams?.content
     closeBtn(headerParams?.closeBtn ?? {})
   ]
 }.__update(headerParams)

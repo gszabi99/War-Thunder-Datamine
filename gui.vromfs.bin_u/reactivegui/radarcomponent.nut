@@ -842,7 +842,7 @@ local noiseSignal = function(size, pos1, pos2)
 
   return @(){
     size = SIZE_TO_CONTENT
-    children = getChildren()
+    children = !radarState.MfdRadarEnabled.value ? getChildren() : []
     watch = [
       radarState.IsRadarVisible,
       radarState.IsRadar2Visible,
@@ -857,6 +857,8 @@ local radToDeg = 180.0 / 3.14159
 
 local makeRadarModeText = function ()
 {
+  if (radarState.MfdRadarEnabled.value)
+    return ""
   local text = ""
   if (radarState.RadarModeNameId.value >= 0)
     text += ::loc(modeNames[radarState.RadarModeNameId.value])
@@ -867,6 +869,8 @@ local makeRadarModeText = function ()
 
 local makeRadar2ModeText = function ()
 {
+  if (radarState.MfdRadarEnabled.value)
+    return ""
   local text = ""
   if (radarState.Radar2ModeNameId.value >= 0)
     text += ::loc(modeNames[radarState.Radar2ModeNameId.value])

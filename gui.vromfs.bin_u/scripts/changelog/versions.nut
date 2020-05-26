@@ -3,11 +3,13 @@
  platform is optional
  type can be "hotfix" or "major"
  title can be text or table with localization title={english="Black Sun", Russian = "Черное солнце"}
+ headerTitle can be text or table with localization headerTitle={english="Black Sun", Russian = "Черное солнце"}
+   if headerTitle not exist, then is taken "title" parameter for window header.
 */
 
 return [
   {version="1.99.0.0", type="major", title={
-  english="Major Update 'Starfighters'"
+    english="Major Update 'Starfighters'"
     russian="Обновление 'Starfighters'"
   }}
   {version="1.99.0.01", type="hotfix", title={

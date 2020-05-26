@@ -98,7 +98,7 @@ return [
 ]}
 
 {t="sep"}
-{t="h2" v="Звук"}
+{t="h2" v="Sound"}
 {t="bullets" v = [
 "New sound events for all machine guns for ground vehicles and naval vessels have been created. The principle of sound formation in burst fire has been changed. Now it is a sequence of single shots and in the past it was a pre-render of the whole burst."
 "Changes in the direction of greater sound integrity and increasing dynamics have been made to the sound events of ground vehicle engines."
