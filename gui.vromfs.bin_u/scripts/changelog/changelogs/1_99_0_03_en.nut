@@ -1,124 +1,315 @@
 return [
-{t="h2" v="Customization"}
-{t="bullets" v = [
-"“Helmet” decorations for China and Sweden with the possibility of receiving them for performing tasks and purchase for GE have been added."
-"Achievements for Italian fleet have been added."
-"Decals for Swedish aviation and ground vehicles with the possibility of receiving them for performing tasks and purchase for GE have been added."
-"Player icons for Swedish crew with the possibility of receiving them for performing tasks have been added."
+{t="h1" v="New vehicles"}
+"Starfighters, a brand new major update that introduces the Italian Fleet, Japanese helicopters, several iconic jet aircraft, including the famous F-104 family! New ground vehicles, reworked maps as well as many improvements, fixes and a plethora of other surprises awaits!"
+{t="sep"}
+{t="h2" v="Aircraft"}
+"More than 60 new machines! Over a dozen of new aircraft! Among them iconic jets like F-104 Starfighter and Mirage IIIC!"
+{t="horizontal" v = [
+  {t="vertical" v = [
+    {t="horizontal" halign = ALIGN_CENTER padding = [fpx(8), fpx(10)] v = [
+      {t="image" v = "!ui/aircrafts/f3h-2" size = [fpx(282), fpx(188)]}
+    ]}
+    {t="vertical" margin = [0, fpx(50)] v = [
+      {t="emphasis" v="USA"}
+      {t="bullets" v = [
+        "F3H-2"
+        "F-104A"
+        "F-104C"
+      ]}
+    ]}
+  ]}
+  {t="vertical" v = [
+    {t="horizontal" halign = ALIGN_CENTER padding = [fpx(8), fpx(10)] v = [
+      {t="image" v = "!ui/aircrafts/f-86k_late_german" size = [fpx(282), fpx(188)]}
+    ]}
+    {t="vertical" margin = [0, fpx(50)] v = [
+      {t="emphasis" v="Germany"}
+      {t="bullets" v = [
+        "F-86K"
+        "G.91 R/4 Premium"
+        "F-104G"
+      ]}
+    ]}
+  ]}
+  {t="vertical" v = [
+    {t="horizontal" halign = ALIGN_CENTER padding = [fpx(8), fpx(10)] v = [
+      {t="image" v = "!ui/aircrafts/su-7b" size = [fpx(282), fpx(188)]}
+    ]}
+    {t="vertical" margin = [0, fpx(50)] v = [
+      {t="emphasis" v="USSR"}
+      {t="bullets" v = [
+        "Su-7B"
+      ]}
+    ]}
+  ]}
+  {t="vertical" v = [
+    {t="horizontal" halign = ALIGN_CENTER padding = [fpx(8), fpx(10)] v = [
+      {t="image" v = "!ui/aircrafts/scimitar_f1" size = [fpx(282), fpx(188)]}
+    ]}
+    {t="vertical" margin = [0, fpx(50)] v = [
+      {t="emphasis" v="Great Britain"}
+      {t="bullets" v = [
+        "Scimitar F Mk.1"
+        "Phantom FG. Mk1"
+        "Spitfire Mk.IIa Venture I Premium"
+      ]}
+    ]}
+  ]}
+]}
+"\n"
+{t="horizontal" v = [
+  {t="vertical" v = [
+    {t="horizontal" halign = ALIGN_CENTER padding = [fpx(11), fpx(17)] v = [
+      {t="image" v = "!ui/aircrafts/f-104j" size = [fpx(278), fpx(178)]}
+    ]}
+    {t="vertical" margin = [0, fpx(50)] v = [
+      {t="emphasis" v="Japan"}
+      {t="bullets" v = [
+        "F-104J"
+        "B6N2 Model 12"
+        "Ki-27 otsu Tachiarai Premium"
+        "Ki-44-I 34 Premium"
+        "Ki-61-I hei Tada’s Premium"
+      ]}
+    ]}
+  ]}
+  {t="vertical" v = [
+    {t="horizontal" halign = ALIGN_CENTER padding = [fpx(6), fpx(15)] v = [
+      {t="image" v = "!ui/aircrafts/f-86f-40_china" size = [fpx(282), fpx(190)]}
+    ]}
+    {t="vertical" margin = [0, fpx(50)] v = [
+      {t="emphasis" v="China"}
+      {t="bullets" v = [
+        "F-86F-40"
+        "F-104A"
+        "F-104G"
+      ]}
+    ]}
+  ]}
+  {t="vertical" v = [
+    {t="horizontal" halign = ALIGN_CENTER padding = [fpx(11), fpx(17)] v = [
+      {t="image" v = "!ui/aircrafts/f-104s" size = [fpx(278), fpx(178)]}
+    ]}
+    {t="vertical" margin = [0, fpx(50)] v = [
+      {t="emphasis" v="Italy"}
+      {t="bullets" v = [
+        "F-104S"
+        "Re.2001 gruppo 22 Premium"
+      ]}
+    ]}
+  ]}
+  {t="vertical" v = [
+    {t="horizontal" halign = ALIGN_CENTER padding = [fpx(11), fpx(17)] v = [
+      {t="image" v = "!ui/aircrafts/mirage_3c" size = [fpx(278), fpx(178)]}
+    ]}
+    {t="vertical" margin = [0, fpx(50)] v = [
+      {t="emphasis" v="France"}
+      {t="bullets" v = [
+        "Mirage IIIC"
+      ]}
+    ]}
+  ]}
 ]}
 {t="sep"}
-{t="h2" v="Interface"}
-{t="bullets" v = [
-"Suspended weaponry menu has been reworked."
-"In the hint for most air-to-air missiles the maximum speed has been fixed."
-"In the main menu in the “Help” section you can now see the changelog."
-{t="vertical" v = [
-"For Windows and Mac OS:"
-{t="bullets" v = [
-"When activated, “Multifunctional menu” full control over your vehicles is now available."
-"In the “Multifunctional menu” are not available (gray) points which can not be applied to the current player’s vehicle."
+{t="h2" v="Ground Vehicles"}
+"Over a dozen of new ground vehicles with futuristic HSTV-L ahead!"
+{t="horizontal" v = [
+  {t="vertical" v = [
+    {t="horizontal" halign = ALIGN_CENTER padding = [fpx(11), fpx(17)] v = [
+      {t="image" v = "!ui/tanks/us_hstv_l" size = [fpx(278), fpx(178)]}
+    ]}
+    {t="vertical" margin = [0, fpx(48)] v = [
+      {t="emphasis" v="USA"}
+      {t="bullets" v = [
+        "HSTV-L"
+      ]}
+    ]}
+  ]}
+  {t="vertical" v = [
+    {t="horizontal" halign = ALIGN_CENTER padding = [fpx(11), fpx(17)] v = [
+      {t="image" v = "!ui/tanks/germ_mkpz_super_m48" size = [fpx(278), fpx(178)]}
+    ]}
+    {t="vertical" margin = [0, fpx(48)] v = [
+      {t="emphasis" v="Germany"}
+      {t="bullets" v = [
+        "Kampfpanzer M48 Super"
+      ]}
+    ]}
+  ]}
+  {t="vertical" v = [
+    {t="horizontal" halign = ALIGN_CENTER padding = [fpx(11), fpx(17)] v = [
+      {t="image" v = "!ui/tanks/ussr_9p157" size = [fpx(278), fpx(178)]}
+    ]}
+    {t="vertical" margin = [0, fpx(48)] v = [
+      {t="emphasis" v="USSR"}
+      {t="bullets" v = [
+        "9P157-2 Khrizantema-Sn"
+      ]}
+    ]}
+  ]}
+  {t="vertical" v = [
+    {t="horizontal" halign = ALIGN_CENTER padding = [fpx(11), fpx(17)] v = [
+      {t="image" v = "!ui/tanks/uk_challenger_2_dorchester" size = [fpx(278), fpx(178)]}
+    ]}
+    {t="vertical" margin = [0, fpx(48)] v = [
+      {t="emphasis" v="Great Britain"}
+      {t="bullets" v = [
+        "Challenger 2F"
+        "Stuart I"
+        "Stuart III"
+      ]}
+    ]}
+  ]}
 ]}
+"\n"
+{t="horizontal" v = [
+  {t="vertical" v = [
+    {t="horizontal" halign = ALIGN_CENTER padding = [fpx(11), fpx(17)] v = [
+      {t="image" v = "!ui/tanks/jp_type_93" size = [fpx(278), fpx(178)]}
+    ]}
+    {t="vertical" margin = [0, fpx(48)] v = [
+      {t="emphasis" v="Japan"}
+      {t="bullets" v = [
+        "Type 93"
+      ]}
+    ]}
+  ]}
+  {t="vertical" v = [
+    {t="image" v = "!ui/tanks/cn_zsd63_pg87" size = [fpx(312), fpx(200)]}
+    {t="vertical" margin = [0, fpx(48)] v = [
+      {t="emphasis" v="China"}
+      {t="bullets" v = [
+        "ZSD63"
+        "T-69 II G (pack)"
+      ]}
+    ]}
+  ]}
+  {t="vertical" v = [
+    {t="image" v = "!ui/tanks/it_sherman_75_37" size = [fpx(312), fpx(200)]}
+    {t="vertical" margin = [0, fpx(48)] v = [
+      {t="emphasis" v="Italy"}
+      {t="bullets" v = [
+        "M4 Hybrid (Premium)"
+        "M3A3"
+        "M24"
+        "M4A4"
+        "Sherman Vc"
+        "M18"
+      ]}
+    ]}
+  ]}
+  {t="vertical" v = [
+    {t="image" v = "!ui/tanks/fr_amx_13_chaffee" size = [fpx(312), fpx(200)]}
+    {t="vertical" margin = [0, fpx(48)] v = [
+      {t="emphasis" v="France"}
+      {t="bullets" v = [
+        "AMX-13-M24 (Premium)"
+        "M4A4"
+        "Renault D2"
+      ]}
+    ]}
+  ]}
 ]}
+{t="horizontal" padding = [fpx(11), fpx(17)] margin = [0, fpx(27)] v = [
+  {t="image" v = "!ui/tanks/sw_strf_9056" size = [fpx(278), fpx(178)]}
+]}
+{t="vertical" margin = [0, fpx(48)] v = [
+  {t="emphasis" v="Sweden"}
+  "Swedish ground vehicles are now available to all players for research and purchase."
+  {t="bullets" v = [
+    "Strf 9056"
+  ]}
 ]}
 {t="sep"}
-{t="h2" v="Game mechanics"}
-{t="bullets" v = [
-"New game mechanics have been added - target designation inside a squad. You can specify a point on the surface through a third person view, by using sight or binocular for your squad members. The target designation will also be duplicated on the minimap. You can do it when using aircraft or ground vehicles. To do this you need to assign the specific key in the control settings in general. The target point will be now displayed to your squad members with a small random accuracy deviation which varies depending on the distance to the point. The maximum error value is 15metres."
-"New mechanics for locating the last enemy vehicle has been added to air RB mode. It will activate after 15 minutes from when the mission begins and only a single (last) player is left. It marks a sector on the map corresponding to the position of the last player for the opposing team. This indicator will be updated every 20 seconds."
-"Invulnerability at the respawn point will be disabled when you use artillery strike."
-{t="vertical" v = [
-"In ground battles in RB game mode the parameters of active scouting have been changed:"
-{t="bullets" v = [
-"Delay between successful uses: 10 > 6 seconds."
-"Delay between failed uses: 60 > 45 seconds."
-"Duration of the marker for the spotted enemy: 30 > 45 seconds."
+{t="h2" v="Helicopters"}
+{t="horizontal" padding = [fpx(11), fpx(17)] margin = [0, fpx(27)] v = [
+  {t="image" v = "!ui/aircrafts/ah_64d_japan" size = [fpx(278), fpx(178)]}
 ]}
+{t="vertical" margin = [0, fpx(48)] v = [
+  {t="emphasis" v="Japan"}
+  {t="bullets" v = [
+    "UH-1B"
+    "AH-1S early"
+    "AH-1S"
+    "AH-64DJP"
+  ]}
+]}
+{t="sep"}
+{t="h2" v="Naval Fleet"}
+{t="horizontal" valign = ALIGN_CENTER v = [
+  {t="vertical" v = [
+    {t="image" v = "!ui/ships/us_cruiser_cleveland_class_cleveland" size = [fpx(312), fpx(200)]}
+    {t="vertical" margin = [0, fpx(50)] v = [
+      {t="emphasis" v="USA"}
+      {t="bullets" v = [
+        "USS Cleveland (CL-55)"
+      ]}
+    ]}
+  ]}
+  {t="vertical" v = [
+    {t="image" v = "!ui/ships/ussr_destroyer_pr56_spokoinyy" size = [fpx(312), fpx(200)]}
+    {t="vertical" margin = [0, fpx(50)] v = [
+      {t="emphasis" v="USSR"}
+      {t="bullets" v = [
+        "Pr. 56 Spokoinyy"
+      ]}
+    ]}
+  ]}
+  {t="vertical" v = [
+    {t="image" v = "!ui/ships/uk_cruiser_york" size = [fpx(312), fpx(200)]}
+    {t="vertical" margin = [0, fpx(50)] v = [
+      {t="emphasis" v="Great Britain"}
+      {t="bullets" v = [
+        "HMS York (90)"
+      ]}
+    ]}
+  ]}
+  {t="vertical" v = [
+    {t="image" v = "!ui/ships/jp_cruiser_tone" size = [fpx(312), fpx(200)]}
+    {t="vertical" margin = [0, fpx(50)] v = [
+      {t="emphasis" v="Japan"}
+      {t="bullets" v = [
+        "IJN Tone"
+      ]}
+    ]}
+  ]}
 ]}
 
-{t="vertical" v = [
-"The basic costs for respawn (in respawn scores) for ground RB has been changed for following vehicles:"
-{t="bullets" v = [
-"OTOMATIC: 220 > 150"
-"ADATS: 220 > 130"
-"WZ305: 110 > 150"
-"M24 Chaffee (all modifications and nations): 90 > 110"
-"PT-76B: 90 > 110"
-"BMP-3: 150 > 110"
-"Object 685: 150 > 110"
-"Type 89: 150 > 110"
-"PT-76 (China): 150 > 110"
-"Type 63-I: 150 > 110"
-"Type 62: 150 > 110"
-"ZBD86: 150 > 110"
-"AMX-13 (FL11): 150 > 110"
-"Ikv 91: 150 > 110"
-"Strf 90C: 150 > 110"
-"CV90120: 150 > 110"
-"Strv 74: 150 > 110"
-"CV90105 TML: 150 > 110"
-"Strv m/31: 150 > 80"
-"Strv m/38: 150 > 80"
-"Ho.229 V3: 750 > 600"
+"\n"
+{t="horizontal" margin = [0, fpx(27)] v = [
+  {t="image" v = "!ui/ships/it_destroyer_soldati_serie1_geniere" size = [fpx(312), fpx(200)]}
 ]}
-]}
-]}
-{t="sep"}
-{t="h2" v="Examples of bugs corrected by player reports"}
-"We want to thank you for correctly creating bug reports! Below you will find some of the bug fixes that were possible with your help. You as usual, continue to assist us to make War Thunder better!"
-{t="bullets" v = [
-"Issues with the sound of the rocket reload on the Begleitpanzer 57 have been fixed."
-"Discrepency in several flight technical specification values of the Ki-100-1 concerning data in the vehicle passport on the forum has been fixed."
-"Efficiency of the air brake on the Saab fighters like  B18A, B18B, T18B-1 has been improved."
-"Caernarvon’s armour model in the area of the turret turning mechanism has been fixed."
-"Incorrect draw distance of the ground vehicles when viewing from aircraft in the locations Mozdok, Jungle, 38th parallel, Karelia has been fixed."
-"The thickness of the armour behind the gun mantlet of the Strv 101 has been changed from 152mm to 139mm according to the Centurion Mk.10 for Sweden, Acceptance of first production vehicle at Messrs. Vickers-Amstrongs, Ltd., Newcastle, November 1959."
-"The armour model for the hatch for expended C1 Ariete spent cartridges which didn’t generate accompanying fragments upon penetration has been fixed."
-"Anti-aircraft gun has been removed from the runway in Finland."
-"The thickness of the front armour of the Nb.Fz. has been changed from 13mm to 20mm according to the Tanks of the Second World War. P 61. Panzer Tracts No.4."
-"Self-destruct parameters of the 28mm shell on the Somers (DD-381), Porter (DD-356), USS Atlanta (CL-51), USS Trenton (CL-11) have been fixed."
-"Fire rate of the Soviet naval 70-K 37mm cannon has been fixed according to the internal documentation."
-"The inclination angle of thr IJN Tone armoured belt has been changed to 20 degrees."
-
-]}
-{t="sep" platform="ps4"}
-{t="h2" v="Changes specific to the PlayStation®4 platform" platform="ps4"}
-{t="bullets" v = [
-"Initial support for touchpad gestures has been added. “Tap”, “Flick Left/Right/Up/Down” gestures can be assigned to various in-game actions like any other button."
-"Touchpad tap no longer conflicts with LMB click making it an independent action bindable in controls settings. (Double Tap should be used to activate objects in GUI.)"
-"“Pinch to Zoom” can now be used to zoom the view in the hangar."
-"Toggle “Use touchpad for aiming” has been added to Common Controls for those who prefer legacy touchpad behaviour (it disables Flick gestures)."
-"New option “Cross-platform gameplay” has been added that, when disabled, will limit matchmaking to PlayStation®4 players only."
-"New option “Only PlayStation®4 players in leaderboards” has been added."
-] platform="ps4"}
-
-{t="sep"}
-{t="h2" v="Graphical"}
-{t="bullets" v = [
-"The mechanism of the indication on the ILS of modern battle helicopters has been improved. Now the indication will be displayed according to the physical principles of such devices."
-]}
-
-{t="sep"}
-{t="h2" v="Sound"}
-{t="bullets" v = [
-"New sound events for all machine guns for ground vehicles and naval vessels have been created. The principle of sound formation in burst fire has been changed. Now it is a sequence of single shots and in the past it was a pre-render of the whole burst."
-"Changes in the direction of greater sound integrity and increasing dynamics have been made to the sound events of ground vehicle engines."
-"Authentic sound for the engines and tracks of the T-34 tank modifications have been added."
-"Authentic sound for the engines and tracks of the T-72 tank modifications have been added."
-"The shock wave from supersonic aircraft flying over sounds now more obvious. Previously it wasn’t sufficiently distinguished among other engine sound events."
-"New sound event for the suspension of wheeled vehicles has been added."
-"The dynamic sound system for wheel/track friction on a surface depending on its type (dirt, sand, snow, etc) has been added for ground vehicles."
-]}
-{t="sep"}
-{t="h2" v="Controls"}
-{t="bullets" v = [
-"A bug preventing the use of the mouse wheel as a throttle if the throttle axis was not set to relative mode has been fixed."
-"Slider “Cursor control speed” has been removed from “Options -> Gamepad options” - it has had no effect for some time already but was still visible in the UI."
-"“Mouse smoothing” toggle has been moved from Aircraft controls to Common controls since it affects all vehicles."
-"A bug that caused the “Mouse Aim” control mode to be forcibly selected when loading a previously saved control preset has been fixed."
-]}
-{t="sep"}
-{t="h2" v="Other"}
-{t="bullets" v = [
-"PlayStation®4 and Xbox One players can now meet each other in battles."
+{t="vertical" margin = [0, fpx(48)] v = [
+  {t="emphasis" v="Italy"}
+  "Over 20 new vessels with brand new Italian Naval Forces!"
+  "\n"
+  "We are starting the CBT for the Italian Navy. The research and purchase of the Italian Naval Forces is available only to owners of the Naval early access packs and testers (players who perform special tasks to get access). Don’t miss more info and terms for the CBT in the news."
+  {t="bullets" v = [
+    {t="url" v= "Naval early access packs" url="https://store.gaijin.net/catalog.php?search=wt_italian_navy&tag=1" platform="pc"}
+  ]}
+  "\n"
+  {t="bullets" v = [
+    "MAS 555"
+    "MS-15"
+    "VAS 201"
+    "Stefano Turr"
+    "MS-53"
+    "Vosper 70' GIS 811"
+    "MS-472"
+    "MV-611"
+    "MS-473"
+    "Folgore P-490"
+    "Saetta P-494"
+    "Turbine"
+    "Dardo"
+    "Corazziere"
+    "Attilio Regolo"
+    "Bartolomeo Colleoni"
+    "Raimondo Montecuccoli"
+    "Trento"
+    "MAS 569 (Premium)"
+    "Sparviero (pack)"
+    "Geniere (pack)"
+  ]}
 ]}
 ]

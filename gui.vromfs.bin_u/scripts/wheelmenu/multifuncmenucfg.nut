@@ -14,17 +14,21 @@ local hasFlaps = ::memoize(@(unitId) ::get_fm_file(unitId)?.AvailableControls.ha
 local hasGear  = ::memoize(@(unitId) ::get_fm_file(unitId)?.AvailableControls.hasGearControl ?? false)
 local hasAirbrake = ::memoize(@(unitId) ::get_fm_file(unitId)?.AvailableControls.hasAirbrake ?? false)
 local hasChite = ::memoize(@(unitId) ::get_full_unit_blk(unitId)?.parachutes != null)
+local hasCockpitDoor = ::memoize(@(unitId) ::get_fm_file(unitId)?.AvailableControls.hasCockpitDoorControl ?? false)
 local hasBayDoor = memoizeByMission(@(unitId) vehicleModel.hasBayDoor())
 local hasSchraegeMusik = ::memoize(@(unitId) vehicleModel.hasSchraegeMusik())
+local hasCountermeasureFlareGuns = ::memoize(@(unitId) vehicleModel.hasCountermeasureFlareGuns())
 
 local hasCollimatorSight = ::memoize(@(unitId) vehicleModel.hasCollimatorSight())
+local hasSightStabilization = ::memoize(@(unitId) vehicleModel.hasSightStabilization())
+local hasCCIPSightMode = ::memoize(@(unitId) vehicleModel.hasCCIPSightMode())
 local hasBallisticComputer = ::memoize(@(unitId) vehicleModel.hasBallisticComputer())
 local hasLaserDesignator = ::memoize(@(unitId) vehicleModel.hasLaserDesignator())
 local hasNightVision = ::memoize(@(unitId) vehicleModel.hasNightVision())
 local hasInfraredProjector = ::memoize(@(unitId) vehicleModel.hasInfraredProjector())
 local canUseRangefinder = memoizeByMission(@(unitId) vehicleModel.canUseRangefinder())
 local canUseTargetTracking = memoizeByMission(@(unitId) vehicleModel.canUseTargetTracking())
-local hasCockpitDoor = ::memoize(@(unitId) ::get_fm_file(unitId)?.AvailableControls.hasCockpitDoorControl ?? false)
+local hasMissileLaunchWarningSystem = ::memoize(@(unitId) vehicleModel.hasMissileLaunchWarningSystem())
 local getCockpitDisplaysCount = ::memoize(@(unitId) vehicleModel.getCockpitDisplaysCount())
 
 local hasAiGunners = memoizeByMission(@(unitId) vehicleModel.hasAiGunners())
@@ -42,6 +46,8 @@ local hasCameraExternal       = @(unitId) ::get_mission_difficulty_int() < ::DIF
 local hasCameraVirtualCockpit = @(unitId) ::get_mission_difficulty_int() < ::DIFFICULTY_HARDCORE
 local hasCameraGunner   = ::memoize(@(unitId) vehicleModel.hasGunners())
 local hasCameraBombview = ::memoize(@(unitId) vehicleModel.hasBombview())
+
+local hasMissionBombingZones = memoizeByMission(@(unitId) vehicleModel.hasMissionBombingZones())
 
 local savedManualEngineControlValue = false
 local function enableManualEngineControl() {
@@ -205,13 +211,13 @@ local cfg = {
   ["weapons_air"] = {
     title = "hotkeys/ID_PLANE_FIRE_HEADER"
     items = [
-      { shortcut = [ "ID_TOGGLE_COLLIMATOR" ], enable = hasCollimatorSight }
       { shortcut = [ "ID_TOGGLE_CANNONS_AND_ROCKETS_BALLISTIC_COMPUTER" ], enable = hasBallisticComputer }
+      null
       null
       { shortcut = [ "ID_TOGGLE_GUNNERS" ], enable = hasAiGunners }
       { shortcut = [ "ID_BAY_DOOR" ], enable = hasBayDoor }
       { shortcut = [ "ID_SCHRAEGE_MUSIK" ], enable = hasSchraegeMusik }
-      null
+      { section = "flares" }
       null
     ]
   },
@@ -219,11 +225,27 @@ local cfg = {
   ["weapons_heli"] = {
     title = "hotkeys/ID_PLANE_FIRE_HEADER"
     items = [
-      { shortcut = [ "ID_TOGGLE_COLLIMATOR_HELICOPTER" ], enable = hasCollimatorSight }
       { shortcut = [ "ID_TOGGLE_CANNONS_AND_ROCKETS_BALLISTIC_COMPUTER_HELICOPTER" ], enable = hasBallisticComputer }
       { shortcut = [ "ID_TOGGLE_LASER_DESIGNATOR_HELICOPTER" ], enable = hasLaserDesignator }
       { shortcut = [ "ID_CHANGE_SHOT_FREQ_HELICOPTER" ], enable = hasAlternativeShotFrequency }
-      null // TODO: Flares shooting mode
+      null
+      null
+      null
+      { section = "flares" }
+      null
+    ]
+  },
+
+  ["flares"] = {
+    title = "hotkeys/ID_FLARES_HEADER"
+    items = [
+      { shortcut = [ "ID_TOGGLE_PERIODIC_FLARES", "ID_TOGGLE_PERIODIC_FLARES_HELICOPTER" ],
+          enable = hasCountermeasureFlareGuns }
+      { shortcut = [ "ID_TOGGLE_MLWS_FLARES_SLAVING", "ID_TOGGLE_MLWS_FLARES_SLAVING_HELICOPTER" ],
+          enable =  @(unitId) hasCountermeasureFlareGuns && hasMissileLaunchWarningSystem }
+      null
+      null
+      null
       null
       null
       null
@@ -423,13 +445,13 @@ local cfg = {
   ["cockpit"] = {
     title = "hotkeys/ID_COCKPIT_HEADER"
     items = [
-      { shortcut = [ "ID_TOGGLE_COCKPIT_DOOR", "ID_TOGGLE_COCKPIT_DOOR_HELICOPTER" ], enable = hasCockpitDoor }
+      { shortcut = [ "ID_TOGGLE_COLLIMATOR", "ID_TOGGLE_COLLIMATOR_HELICOPTER" ], enable = hasCollimatorSight }
+      { shortcut = [ "ID_LOCK_TARGETING_AT_POINT", "ID_LOCK_TARGETING_AT_POINT_HELICOPTER" ], enable = hasSightStabilization }
+      { shortcut = [ "ID_UNLOCK_TARGETING_AT_POINT", "ID_UNLOCK_TARGETING_AT_POINT_HELICOPTER" ], enable = hasSightStabilization }
       { shortcut = [ "ID_TOGGLE_COCKPIT_LIGHTS", "ID_TOGGLE_COCKPIT_LIGHTS_HELICOPTER" ] }
-      null
-      null
-      null
-      null
-      null
+      { shortcut = [ "ID_TOGGLE_COCKPIT_DOOR", "ID_TOGGLE_COCKPIT_DOOR_HELICOPTER" ], enable = hasCockpitDoor }
+      { shortcut = [ "ID_SWITCH_REGISTERED_BOMB_TARGETING_POINT" ], enable = hasMissionBombingZones }
+      { shortcut = [ "ID_SWITCH_COCKPIT_SIGHT_MODE", "ID_SWITCH_COCKPIT_SIGHT_MODE_HELICOPTER" ], enable = hasCCIPSightMode }
       null
     ]
   },

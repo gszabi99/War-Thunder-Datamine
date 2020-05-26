@@ -8,19 +8,19 @@
 */
 
 return [
-  {version="1.99.0.0", type="major", title={
+  {version="1.99.0.03", type="major", title={
     english="Major Update 'Starfighters'"
     russian="Обновление 'Starfighters'"
   }}
-  {version="1.99.0.01", type="hotfix", title={
+  {version="1.99.0.02", type="hotfix", title={
     english="'Starfighters' — Locations and missions"
     russian="'Starfighters' - Локации и миссии"
   }}
-  {version="1.99.0.02", type="hotfix", title={
+  {version="1.99.0.01", type="hotfix", title={
     english="'Starfighters' — FM, DM, Economics"
     russian="'Starfighters' - ФМ, ДМ, Экономика"
   }}
-  {version="1.99.0.03", type="hotfix", title={
+  {version="1.99.0.00", type="hotfix", title={
     english="'Starfighters' — Game mechanics, sound and other"
     russian="'Starfighters' - Игровая механика, звук и другое"
   }}
