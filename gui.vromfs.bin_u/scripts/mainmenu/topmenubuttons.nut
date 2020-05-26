@@ -211,8 +211,8 @@ local list = {
     isDelayed = false
     link = "#url/streamsAndReplays"
     isLink = @() !::has_feature("ShowUrlQrCode")
-    isHidden = @(...) (!::has_feature("AllowExternalLink") && !::has_feature("ShowUrlQrCode") && !::has_feature("ServerReplay"))
-      || ::is_vendor_tencent() || !::isInMenu()
+    isHidden = @(...) !::has_feature("ServerReplay") || (!::has_feature("AllowExternalLink") && !::has_feature("ShowUrlQrCode"))
+       || ::is_vendor_tencent() || !::isInMenu()
   }
   EAGLES = {
     text = @() "#charServer/chapter/eagles"
