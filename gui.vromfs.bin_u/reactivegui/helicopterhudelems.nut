@@ -1,6 +1,7 @@
 local math = require("std/math.nut")
 local helicopterState = require("helicopterState.nut")
 local aamAimState = require("rocketAamAimState.nut")
+local agmAimState = require("agmAimState.nut")
 local compass = require("compass.nut")
 
 local backgroundColor = Color(0, 0, 0, 150)
@@ -207,17 +208,17 @@ local getThrottleCaption = function() {
 
 local getAGCaption = function() {
   local text = ""
-  if (helicopterState.AgmGuidanceLockState.value == GuidanceLockResult.RESULT_INVALID)
+  if (agmAimState.GuidanceLockState.value == GuidanceLockResult.RESULT_INVALID)
     text = ::loc("HUD/TXT_AGM_SHORT")
-  else if (helicopterState.AgmGuidanceLockState.value == GuidanceLockResult.RESULT_STANDBY)
+  else if (agmAimState.GuidanceLockState.value == GuidanceLockResult.RESULT_STANDBY)
     text = ::loc("HUD/TXT_AGM_STANDBY")
-  else if (helicopterState.AgmGuidanceLockState.value == GuidanceLockResult.RESULT_WARMING_UP)
+  else if (agmAimState.GuidanceLockState.value == GuidanceLockResult.RESULT_WARMING_UP)
     text = ::loc("HUD/TXT_AGM_WARM_UP")
-  else if (helicopterState.AgmGuidanceLockState.value == GuidanceLockResult.RESULT_LOCKING)
+  else if (agmAimState.GuidanceLockState.value == GuidanceLockResult.RESULT_LOCKING)
     text = ::loc("HUD/TXT_AGM_LOCK")
-  else if (helicopterState.AgmGuidanceLockState.value == GuidanceLockResult.RESULT_TRACKING)
+  else if (agmAimState.GuidanceLockState.value == GuidanceLockResult.RESULT_TRACKING)
     text = ::loc("HUD/TXT_AGM_TRACK")
-  else if (helicopterState.AgmGuidanceLockState.value == GuidanceLockResult.RESULT_LOCK_AFTER_LAUNCH)
+  else if (agmAimState.GuidanceLockState.value == GuidanceLockResult.RESULT_LOCK_AFTER_LAUNCH)
     text = ::loc("HUD/TXT_AGM_LOCK_AFTER_LAUNCH")
   return text
 }
@@ -375,11 +376,11 @@ local textParamsMap = {
     alertWatched = [helicopterState.IsRktEmpty]
   },
   [HelicopterParams.AGM] = {
-    title = @() getAGCaption()
-    value = @() getAGBullets()
+    title = @() helicopterState.Agm.count.value <= 0 ? ::loc("HUD/TXT_AGM_SHORT") : getAGCaption()
+    value = @() agmAimState.GuidanceLockState.value != GuidanceLockResult.RESULT_INVALID ? getAGBullets() : ""
     blink = @() getAGBlink()
     titleWatched = [
-      helicopterState.AgmGuidanceLockState,
+      agmAimState.GuidanceLockState,
       helicopterState.IsSightHudVisible, helicopterState.IsAgmLaunchZoneVisible, helicopterState.IsAgmLaunchZoneVisible,
       helicopterState.IsInsideLaunchZoneYawPitch, helicopterState.IsInsideLaunchZoneDist
     ]
@@ -387,7 +388,7 @@ local textParamsMap = {
     valuesWatched = [
       helicopterState.IsSightHudVisible, helicopterState.IsAgmLaunchZoneVisible, helicopterState.IsAgmLaunchZoneVisible,
       helicopterState.Agm.count, helicopterState.Agm.seconds, helicopterState.Agm.timeToHit, helicopterState.Agm.timeToWarning,
-      helicopterState.IsAgmEmpty, helicopterState.AgmGuidanceLockState
+      helicopterState.IsAgmEmpty, agmAimState.GuidanceLockState
     ]
     alertWatched = [helicopterState.IsAgmEmpty]
   },

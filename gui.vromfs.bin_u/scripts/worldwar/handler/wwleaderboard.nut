@@ -1,6 +1,8 @@
 local wwLeaderboardData = require("scripts/worldWar/operations/model/wwLeaderboardData.nut")
 local wwRewards = ::require("scripts/worldWar/handler/wwRewards.nut")
 local time = require("scripts/time.nut")
+local { getSeparateLeaderboardPlatformName,
+        getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.nut")
 
 ::ww_leaderboards_list <- [
   ::g_lb_category.UNIT_RANK
@@ -55,10 +57,7 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
     if (!lb_presets)
       lb_presets = ::ww_leaderboards_list
 
-    platform = ::has_feature("PS4SeparateLeaderboards")
-      && ::get_gui_option_in_mode(::USEROPT_PS4_ONLY_LEADERBOARD, ::OPTIONS_MODE_GAMEPLAY) == true
-        ? "ps4"
-        : ""
+    platform = getSeparateLeaderboardPlatformName()
 
     initTable()
     fillMapsList()
@@ -123,6 +122,9 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
     lbMode = null
     lbModesList = []
 
+    local isAvailableWWSeparateLb = !getSeparateLeaderboardPlatformValue()
+     || ::has_feature("ConsoleSeparateWWLeaderboards")
+
     local data = ""
     foreach(idx, modeData in wwLeaderboardData.modes)
     {
@@ -130,10 +132,8 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
         (modeData?.needFeature && !::has_feature(modeData.needFeature)))
         continue
 
-      if (!::has_feature("PS4SeparateWWLeaderboards")
-          && ::get_gui_option_in_mode(::USEROPT_PS4_ONLY_LEADERBOARD, ::OPTIONS_MODE_GAMEPLAY) == true
-          && modeData?.needShowConsoleFilter == true)
-          continue
+      if (!isAvailableWWSeparateLb && modeData?.needShowConsoleFilter == true)
+        continue
 
       lbModesList.append(modeData)
       local optionText = ::g_string.stripTags(

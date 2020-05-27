@@ -27,7 +27,7 @@ local getMainOptions = function()
     options = [
       ["options/mainParameters"],
       [::USEROPT_PS4_CROSSPLAY, "spinner", ::is_platform_ps4 && ::has_feature("PS4CrossNetwork") && !::is_in_flight()],
-      [::USEROPT_PS4_ONLY_LEADERBOARD, "spinner", ::is_platform_ps4 && ::has_feature("PS4SeparateLeaderboards")],
+      [::USEROPT_PS4_ONLY_LEADERBOARD, "spinner", ::is_platform_ps4 && ::has_feature("ConsoleSeparateLeaderboards")],
       [::USEROPT_LANGUAGE, "spinner", ! ::is_in_flight() && ::canSwitchGameLocalization()],
       [::USEROPT_AUTOLOGIN, "spinner", ! ::is_in_flight() && !::is_ps4_or_xbox],
       [::USEROPT_FONTS_CSS, "spinner"],

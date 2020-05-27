@@ -65,6 +65,7 @@ root {
                 size:t='1@tableIcoSize, 1@tableIcoSize'
                 background-svg-size:t='@tableIcoSize, @tableIcoSize'
                 background-image:t='<<icon>>'
+                background-repeat:t='aspect-ratio'
                 shopItemType:t='<<shopItemType>>'
               }
               <</icon>>

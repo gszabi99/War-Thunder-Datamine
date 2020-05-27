@@ -89,6 +89,7 @@ root {
                     shopItemType:t='<<type>>'
                     size:t='@tableIcoSize, @tableIcoSize'
                     background-svg-size:t='@tableIcoSize, @tableIcoSize'
+                    background-repeat:t='aspect-ratio'
                     input-transparent:t='yes'
                   }
                   activeText {

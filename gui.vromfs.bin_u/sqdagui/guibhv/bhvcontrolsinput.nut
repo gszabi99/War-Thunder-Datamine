@@ -32,8 +32,11 @@ class gui_bhv.ControlsInput
   function getCurrentBtnIndex(obj)
   {
     for (local i = 0; i < ::TOTAL_DEVICES; i++)
-      if (!obj["device" + i].len())
+    {
+      local deviceId = $"device{i}"
+      if (obj?[deviceId] && !obj[deviceId].len())
         return i
+    }
 
     return -1
   }

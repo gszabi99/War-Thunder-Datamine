@@ -48,6 +48,7 @@ div {
           shopItemType:t='<<shopItemType>>';
           size:t='@tableIcoSize, @tableIcoSize';
           background-svg-size:t='@tableIcoSize, @tableIcoSize';
+          background-repeat:t='aspect-ratio';
         }
         activeText {
           id:t='air_name';

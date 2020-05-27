@@ -80,8 +80,52 @@ local function getBitStatus(unit, params = {})
   return bitStatus
 }
 
+local availablePrimaryWeaponsMod = {}
+local defaultPrimaryWeaponsMod = {
+  flares = null
+}
+
+local function isAvailablePrimaryWeapon(unit, weaponName) {
+  local availableWeapons = availablePrimaryWeaponsMod?[unit.name]
+  if (availableWeapons != null)
+    return ::get_last_primary_weapon(unit) == availableWeapons[weaponName]
+
+  local unitBlk = ::get_full_unit_blk(unit.name)
+  if (!unitBlk)
+    return false
+
+  availableWeapons = clone defaultPrimaryWeaponsMod
+  if (unitBlk?.modifications != null)
+    foreach(modName, modification in unitBlk.modifications) {
+      local commonWeapons = modification?.effects?.commonWeapons
+      if (commonWeapons == null)
+        continue
+      foreach (weap in (commonWeapons % "Weapon")) {
+        if (!weap?.blk || weap?.dummy)
+          continue
+
+        local weapBlk = ::DataBlock(weap.blk)
+        if (availableWeapons!=null && (weapBlk?.rocket.isFlare ?? false))
+          availableWeapons.flares = modName
+      }
+    }
+
+  availablePrimaryWeaponsMod[unit.name] <-availableWeapons
+  return ::get_last_primary_weapon(unit) == availableWeapons[weaponName]
+}
+
+
+local function hasFlares(unit) {
+  if (unit == null)
+    return false
+
+  return unit.getAvailableSecondaryWeapons().hasFlares
+    || isAvailablePrimaryWeapon(unit, "flares")
+}
+
 return {
   canBuyNotResearched = canBuyNotResearched
   isShipWithoutPurshasedTorpedoes = isShipWithoutPurshasedTorpedoes
   getBitStatus = getBitStatus
+  hasFlares = hasFlares
 }

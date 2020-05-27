@@ -6,6 +6,7 @@ local { getLastWeapon,
         setLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local crossplayModule = require("scripts/social/crossplay.nut")
+local { hasFlares } = require("scripts/unit/unitStatus.nut")
 
 ::generic_options <- null
 
@@ -71,14 +72,8 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
   function updateLinkedOptions()
   {
     checkBulletsRows()
-    checkRocketDisctanceFuseRow()
-    checkBombActivationTimeRow()
     checkVehicleModificationRow()
-    checkDepthChargeActivationTimeRow()
-    checkFlaresPeriodsRow()
-    checkFlaresSeriesRow()
-    checkFlaresSeriesPeriodsRow()
-    checkMineDepthRow()
+    updateWeaponOptions()
     onLayoutChange(null)
     checkMissionCountries()
     checkAllowedUnitTypes()
@@ -316,12 +311,7 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
     else if ("hint" in option)
       obj.tooltip = ::g_string.stripTags( ::loc(option.hint, "") )
     checkBulletsRows()
-    checkRocketDisctanceFuseRow()
-    checkBombActivationTimeRow()
-    checkDepthChargeActivationTimeRow()
-    checkFlaresPeriodsRow()
-    checkFlaresSeriesRow()
-    checkFlaresSeriesPeriodsRow()
+    updateWeaponOptions()
   }
 
   function checkBulletsRows()
@@ -366,8 +356,7 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
     if (!option)
       return
     local unit = ::getAircraftByName(::aircraft_for_weapons)
-    showOptionRow(option,
-      !!unit && unit.getAvailableSecondaryWeapons().hasFlares)
+    showOptionRow(option, hasFlares(unit))
   }
 
   function checkFlaresSeriesRow()
@@ -376,8 +365,7 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
     if (!option)
       return
     local unit = ::getAircraftByName(::aircraft_for_weapons)
-    showOptionRow(option,
-      !!unit && unit.getAvailableSecondaryWeapons().hasFlares)
+    showOptionRow(option, hasFlares(unit))
   }
 
   function checkFlaresSeriesPeriodsRow()
@@ -386,8 +374,7 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
     if (!option)
       return
     local unit = ::getAircraftByName(::aircraft_for_weapons)
-    showOptionRow(option,
-     !!unit && unit.getAvailableSecondaryWeapons().hasFlares)
+    showOptionRow(option, hasFlares(unit))
   }
 
   function setLastBulletsCache(unit)
@@ -511,13 +498,32 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
       && unit.getAvailableSecondaryWeapons().hasMines)
   }
 
-  function onEventUnitWeaponChanged(p)
-  {
+  function updateFlaresOptions() {
+    checkFlaresPeriodsRow()
+    checkFlaresSeriesRow()
+    checkFlaresSeriesPeriodsRow()
+  }
+
+  function updateWeaponOptions() {
     checkRocketDisctanceFuseRow()
     checkBombActivationTimeRow()
-    checkVehicleModificationRow()
     checkDepthChargeActivationTimeRow()
     checkMineDepthRow()
+    updateFlaresOptions()
+  }
+
+  function onEventUnitWeaponChanged(p)
+  {
+    checkVehicleModificationRow()
+    updateWeaponOptions()
+  }
+
+  function onEventModificationChanged(p) {
+    doWhenActiveOnce("updateFlaresOptions")
+  }
+
+  function onEventModificationPurchased(p) {
+    doWhenActiveOnce("updateFlaresOptions")
   }
 
   function onEventBulletsGroupsChanged(p) {

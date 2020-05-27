@@ -27,7 +27,8 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
 {
   local esUnitType = ::get_es_unit_type(unit)
   local t = unitTypes.getByEsUnitType(esUnitType)
-  local fileExt = esUnitType == ::ES_UNIT_TYPE_AIRCRAFT ? ".svg" : ""
+  local fileExt = [ ::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_HELICOPTER ]
+    .indexof(esUnitType) != null ? ".svg" : ""
   return $"{t.uiClassSkin}{iconName}{fileExt}"
 }
 

@@ -145,6 +145,9 @@ local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.n
     local unlockType = getUnlockType(unlockConfig)
     local decoratorType = ::g_decorator_type.getTypeByUnlockedItemType(unlockType)
     local decorator = ::g_decorator.getDecorator(unlockConfig.id, decoratorType)
+    if (!decorator)
+      return {}
+
     local nameColor = decorator ? decorator.getRarityColor() : "activeTextColor"
     local isHave = decoratorType.isPlayerHaveDecorator(unlockConfig.id)
     local buttons = getDecoratorActionButtonsView(decorator, decoratorType)

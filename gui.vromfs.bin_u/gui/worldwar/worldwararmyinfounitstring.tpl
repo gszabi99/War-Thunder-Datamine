@@ -33,6 +33,7 @@ tdiv {
         pos:t='0, 50%ph-50%h'
         position:t='relative'
         background-image:t='<<icon>>'
+        background-repeat:t='aspect-ratio'
         shopItemType:t='<<shopItemType>>'
       }
       <</icon>>
@@ -104,6 +105,7 @@ tdiv {
         pos:t='0, 50%ph-50%h'
         position:t='relative'
         background-image:t='<<icon>>'
+        background-repeat:t='aspect-ratio'
         shopItemType:t='<<shopItemType>>'
       }
       <</icon>>

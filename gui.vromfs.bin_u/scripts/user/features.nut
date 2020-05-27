@@ -254,6 +254,10 @@ local defaults = ::Watched({  //def value when feature not found in game_setting
   ShowWeapPresetsMenu = false
   Changelog = false
   ShowUrlQrCode = false
+
+  ConsoleSeparateLeaderboards = false
+  ConsoleSeparateEventsLeaderboards = false
+  ConsoleSeparateWWLeaderboards = false
 })
 
 local override = ::Watched({})

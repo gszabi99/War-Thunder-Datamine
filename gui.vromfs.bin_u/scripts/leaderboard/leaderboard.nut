@@ -2,6 +2,7 @@ local time = require("scripts/time.nut")
 local playerContextMenu = ::require("scripts/user/playerContextMenu.nut")
 local clanContextMenu = ::require("scripts/clans/clanContextMenu.nut")
 local { hasAllFeatures } = require("scripts/user/features.nut")
+local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay.nut")
 
 ::leaderboards_list <- [
   ::g_lb_category.PVP_RATIO
@@ -439,10 +440,7 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
 
     curLbCategory = lb_presets[0]
     lbType = ::loadLocalByAccount("leaderboards_type", ::ETTI_VALUE_INHISORY)
-    platform = ::has_feature("PS4SeparateLeaderboards")
-      && ::get_gui_option_in_mode(::USEROPT_PS4_ONLY_LEADERBOARD, ::OPTIONS_MODE_GAMEPLAY) == true
-        ? "ps4"
-        : ""
+    platform = getSeparateLeaderboardPlatformName()
     pos = 0
     rowsInPage = 16
 

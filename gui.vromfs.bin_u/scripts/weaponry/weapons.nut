@@ -1467,6 +1467,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     local taskSuccessCallback = (@(air, item) function() {
       ::updateAirAfterSwitchMod(air, item.name)
+      ::broadcastEvent("ModificationChanged", {unit = air, modName = item.name})
       wndUpdateItems()
     }) (air, item)
 

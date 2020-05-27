@@ -77,6 +77,31 @@ local setCrossNetworkChatStatus = function(boolVal)
 
 local getTextWithCrossplayIcon = @(addIcon, text) (addIcon? (::loc("icon/cross_play") + " " ) : "") + text
 
+local getSeparateLeaderboardPlatformValue = function() {
+  if (::has_feature("ConsoleSeparateLeaderboards"))
+  {
+    if (::is_platform_ps4)
+      return ::get_gui_option_in_mode(::USEROPT_PS4_ONLY_LEADERBOARD, ::OPTIONS_MODE_GAMEPLAY) == true
+
+    if (::is_platform_xboxone)
+      return !isCrossNetworkPlayEnabled()
+  }
+
+  return false
+}
+
+local getSeparateLeaderboardPlatformName = function() {
+  if (getSeparateLeaderboardPlatformValue())
+  {
+    if (::is_platform_ps4)
+      return "ps4"
+    if (::is_platform_xboxone)
+      return "xboxone"
+  }
+
+  return ""
+}
+
 local invalidateCache = function()
 {
   resetCrossPlayStatus()
@@ -101,4 +126,7 @@ return {
   setCrossNetworkChatStatus = setCrossNetworkChatStatus
   isCrossNetworkChatEnabled = isCrossNetworkChatEnabled
   getTextWithCrossplayIcon = getTextWithCrossplayIcon
+
+  getSeparateLeaderboardPlatformName = getSeparateLeaderboardPlatformName
+  getSeparateLeaderboardPlatformValue = getSeparateLeaderboardPlatformValue
 }

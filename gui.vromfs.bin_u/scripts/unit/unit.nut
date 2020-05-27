@@ -639,21 +639,6 @@ local Unit = class
           }
           break
         }
-        //check primary in that case
-      if (!availableWeapons.hasFlares)
-        foreach (block in (unitBlk.weapon_presets % "preset"))
-        {
-            weaponDataBlock = ::DataBlock(block.blk)
-            foreach (weap in (weaponDataBlock % "Weapon"))
-            {
-              if (!weap?.blk || weap?.dummy || ::isInArray(weap.blk, weaponsBlkArray))
-                continue
-
-              local weapBlk = ::DataBlock(weap.blk)
-              if (weapBlk?.rocket && weapBlk.rocket?.isFlare)
-                availableWeapons.hasFlares = true
-            }
-        }
     }
 
     availableWeaponsByWeaponName[secondaryWep] <- availableWeapons

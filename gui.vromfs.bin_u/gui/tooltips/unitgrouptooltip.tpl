@@ -34,6 +34,7 @@ tdiv {
             position:t='relative'
             padding-left:t='1@blockInterval'
             background-image:t='<<icon>>'
+            background-repeat:t='aspect-ratio'
             shopItemType:t='<<shopItemType>>'
           }
           textareaNoTab {

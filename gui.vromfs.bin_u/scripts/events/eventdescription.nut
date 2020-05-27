@@ -1,6 +1,7 @@
 local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 local time = require("scripts/time.nut")
 local platformModule = require("scripts/clientState/platform.nut")
+local { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.nut")
 
 ::create_event_description <- function create_event_description(parent_scene, event = null, needEventHeader = true)
 {
@@ -345,9 +346,8 @@ class ::gui_handlers.EventDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function isLeaderboardsAvailable()
   {
-    return !::is_platform_ps4
-      || ::get_gui_option_in_mode(::USEROPT_PS4_ONLY_LEADERBOARD, ::OPTIONS_MODE_GAMEPLAY) != true
-      || ::has_feature("PS4SeparateEventsLeaderboards")
+    return !getSeparateLeaderboardPlatformValue()
+      || ::has_feature("ConsoleSeparateEventsLeaderboards")
   }
 
   function fetchLbData()

@@ -14,6 +14,7 @@ local { AMMO,
         getAmmoAmountData } = require("scripts/weaponry/ammoInfo.nut")
 local { isChatEnabled } = require("scripts/chat/chatStates.nut")
 local { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { hasFlares } = require("scripts/unit/unitStatus.nut")
 
 ::last_ca_aircraft <- null
 ::used_planes <- {}
@@ -138,14 +139,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
   spectator_switch_direction = ESwitchSpectatorTarget.E_DO_NOTHING
   lastSpectatorTargetName = ""
 
-  gunDescr = null
   bulletsDescr = array(::BULLETS_SETS_QUANTITY, null)
-  fuelDescr = null
-  bombDescr = null
-  rocketDescr = null
-  flaresPeriodsDescr = null
-  flaresSeriesDescr = null
-  flaresSeriesPeriodsDescr = null
 
   skins = null
 
@@ -1043,82 +1037,6 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     return null
   }
 
-  function checkRocketDisctanceFuseRow()
-  {
-    local air = getCurSlotUnit()
-    if (!air)
-      return
-
-    local option = get_option(::USEROPT_ROCKET_FUSE_DIST)
-    showOptionRow(option.id, air.getAvailableSecondaryWeapons().hasRocketDistanceFuse)
-  }
-
-  function checkBombActivationTimeRow()
-  {
-    local air = getCurSlotUnit()
-    if (!air)
-      return
-
-    local option = get_option(::USEROPT_BOMB_ACTIVATION_TIME)
-    showOptionRow(option.id, (air.isAir() || air.isHelicopter())
-      && air.getAvailableSecondaryWeapons().hasBombs)
-  }
-
-  function checkDepthChargeActivationTimeRow()
-  {
-    local unit = getCurSlotUnit()
-    if (!unit)
-      return
-
-    local option = ::get_option(::USEROPT_DEPTHCHARGE_ACTIVATION_TIME)
-    showOptionRow(option.id, unit.isDepthChargeAvailable()
-      && unit.getAvailableSecondaryWeapons().hasDepthCharges)
-  }
-
-  function checkMineDepthRow()
-  {
-    local unit = getCurSlotUnit()
-    if (!unit)
-      return
-
-    local option = ::get_option(::USEROPT_MINE_DEPTH)
-    showOptionRow(option.id, unit.isMinesAvailable()
-      && unit.getAvailableSecondaryWeapons().hasMines)
-  }
-
-  function checkFlaresPeriodsRow()
-  {
-    local unit = getCurSlotUnit()
-    if (!unit)
-      return
-
-    local option = ::get_option(::USEROPT_FLARES_PERIODS)
-    showOptionRow(option.id, (unit.isAir() || unit.isHelicopter())
-      && unit.getAvailableSecondaryWeapons().hasFlares)
-  }
-
-  function checkFlaresSeriesRow()
-  {
-    local unit = getCurSlotUnit()
-    if (!unit)
-      return
-
-    local option = ::get_option(::USEROPT_FLARES_SERIES)
-    showOptionRow(option.id, (unit.isAir() || unit.isHelicopter())
-      && unit.getAvailableSecondaryWeapons().hasFlares)
-  }
-
-  function checkFlaresSeriesPeriodsRow()
-  {
-    local unit = getCurSlotUnit()
-    if (!unit)
-      return
-
-    local option = ::get_option(::USEROPT_FLARES_SERIES_PERIODS)
-    showOptionRow(option.id, (unit.isAir() || unit.isHelicopter())
-      && unit.getAvailableSecondaryWeapons().hasFlares)
-  }
-
   function updateSkin()
   {
     local air = getCurSlotUnit()
@@ -1236,10 +1154,10 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       gunVerticalObj.enable(canChangeAircraft)
   }
 
-  function updateShipOptions(air)
+  function updateShipOptions(air, needUpdateOptionItems = true)
   {
     local depthChargeDescr = ::get_option(::USEROPT_DEPTHCHARGE_ACTIVATION_TIME)
-    if (air.isDepthChargeAvailable())
+    if (air.isDepthChargeAvailable() && needUpdateOptionItems)
     {
       local data = ""
       foreach (idx, item in depthChargeDescr.items)
@@ -1252,7 +1170,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       && air.getAvailableSecondaryWeapons().hasDepthCharges)
 
     local minesDescr = ::get_option(::USEROPT_MINE_DEPTH)
-    if (air.isMinesAvailable())
+    if (air.isMinesAvailable() && needUpdateOptionItems)
     {
       local data = ""
       foreach (idx, item in minesDescr.items)
@@ -1265,52 +1183,82 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       && air.getAvailableSecondaryWeapons().hasMines)
   }
 
-  function updateFlaresOptions(rocket = true)
+  function updateAircraftWeaponsOptions(unit, needUpdateOptionItems = true)
   {
-    local air = getCurSlotUnit()
-    local aircraft = air.isAir() || air.isHelicopter()
+    local aircraft = unit.isAir() || unit.isHelicopter()
+    local bomb = false
+    local rocket = false
 
-    flaresPeriodsDescr = ::get_option(::USEROPT_FLARES_PERIODS)
-    local flarePeriodsObj = scene.findObject(flaresPeriodsDescr.id)
-    if (::checkObj(flarePeriodsObj))
+    local weaponName = getSelWeapon()
+    foreach(w in unit.weapons) {
+      if (w.name == weaponName)
+      {
+        bomb = w.bomb
+        rocket = w.rocket
+      }
+    }
+
+    local bombDescr = ::get_option(::USEROPT_BOMB_ACTIVATION_TIME)
+    local bombTimeObj = scene.findObject(bombDescr.id)
+    if (needUpdateOptionItems && ::check_obj(bombTimeObj))
     {
-      flaresPeriodsDescr = ::get_option(::USEROPT_FLARES_PERIODS)
+      local markup = ""
+      foreach (idx, item in bombDescr.items)
+        if (canChangeAircraft || idx == bombDescr.value)
+          markup += build_option_blk(item.text, "", idx == bombDescr.value, true, "", false, item.tooltip)
+      guiScene.replaceContentFromText(bombTimeObj, markup, markup.len(), this)
+    }
+    showOptionRow(bombDescr.id, aircraft && bomb && unit.getAvailableSecondaryWeapons().hasBombs)
+
+    local rocketDescr = ::get_option(::USEROPT_ROCKET_FUSE_DIST)
+    local rocketdistObj = scene.findObject(rocketDescr.id)
+    if (needUpdateOptionItems && ::check_obj(rocketdistObj))
+    {
+      local markup = ""
+      foreach (idx, item in rocketDescr.items)
+        if (canChangeAircraft || idx == rocketDescr.value)
+          markup += build_option_blk(item, "", idx == rocketDescr.value)
+      guiScene.replaceContentFromText(rocketdistObj, markup, markup.len(), this)
+      rocketdistObj.setValue(rocketDescr.value)
+    }
+    showOptionRow(rocketDescr.id,
+      aircraft && rocket && unit.getAvailableSecondaryWeapons().hasRocketDistanceFuse)
+
+    local flaresPeriodsDescr = ::get_option(::USEROPT_FLARES_PERIODS)
+    local flarePeriodsObj = scene.findObject(flaresPeriodsDescr.id)
+    if (needUpdateOptionItems && ::check_obj(flarePeriodsObj))
+    {
       local markup = ""
       foreach (idx, item in flaresPeriodsDescr.items)
         if (canChangeAircraft || idx == flaresPeriodsDescr.value)
           markup += build_option_blk(item.text, "", idx == flaresPeriodsDescr.value, true, "", false, item.tooltip)
       guiScene.replaceContentFromText(flarePeriodsObj, markup, markup.len(), this)
     }
-    showOptionRow(flaresPeriodsDescr.id,
-      aircraft && rocket && air.getAvailableSecondaryWeapons().hasFlares)
+    showOptionRow(flaresPeriodsDescr.id, aircraft && rocket && hasFlares(unit))
 
-    flaresSeriesDescr = ::get_option(::USEROPT_FLARES_SERIES)
+    local flaresSeriesDescr = ::get_option(::USEROPT_FLARES_SERIES)
     local flareSeriesObj = scene.findObject(flaresSeriesDescr.id)
-    if (::checkObj(flareSeriesObj))
+    if (needUpdateOptionItems && ::check_obj(flareSeriesObj))
     {
-      flaresSeriesDescr = ::get_option(::USEROPT_FLARES_SERIES)
       local markup = ""
       foreach (idx, item in flaresSeriesDescr.items)
         if (canChangeAircraft || idx == flaresSeriesDescr.value)
           markup += build_option_blk(item.text, "", idx == flaresSeriesDescr.value, true, "", false, item.tooltip)
       guiScene.replaceContentFromText(flareSeriesObj, markup, markup.len(), this)
     }
-    showOptionRow(flaresSeriesDescr.id,
-      aircraft && rocket && air.getAvailableSecondaryWeapons().hasFlares)
+    showOptionRow(flaresSeriesDescr.id, aircraft && rocket && hasFlares(unit))
 
-    flaresSeriesPeriodsDescr = ::get_option(::USEROPT_FLARES_SERIES_PERIODS)
+    local flaresSeriesPeriodsDescr = ::get_option(::USEROPT_FLARES_SERIES_PERIODS)
     local flareSeriesPeriodsObj = scene.findObject(flaresSeriesPeriodsDescr.id)
-    if (::checkObj(flareSeriesPeriodsObj))
+    if (needUpdateOptionItems && ::check_obj(flareSeriesPeriodsObj))
     {
-      flaresSeriesPeriodsDescr = ::get_option(::USEROPT_FLARES_SERIES_PERIODS)
       local markup = ""
       foreach (idx, item in flaresSeriesPeriodsDescr.items)
         if (canChangeAircraft || idx == flaresSeriesPeriodsDescr.value)
           markup += build_option_blk(item.text, "", idx == flaresSeriesPeriodsDescr.value, true, "", false, item.tooltip)
       guiScene.replaceContentFromText(flareSeriesPeriodsObj, markup, markup.len(), this)
     }
-    showOptionRow(flaresSeriesPeriodsDescr.id,
-      aircraft && rocket && air.getAvailableSecondaryWeapons().hasFlares)
+    showOptionRow(flaresSeriesPeriodsDescr.id, aircraft && rocket && hasFlares(unit))
   }
 
   function updateOtherOptions()
@@ -1320,23 +1268,12 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       return
 
     updateShipOptions(air)
+    updateAircraftWeaponsOptions(air)
     updateRespawnBases(air)
 
     local aircraft = air.isAir() || air.isHelicopter()
-    local bomb = false
-    local rocket = false
 
-    local weaponName = getSelWeapon()
-    foreach(w in air.weapons)
-    {
-      if (w.name == weaponName)
-      {
-        bomb = w.bomb
-        rocket = w.rocket
-      }
-    }
-
-    gunDescr = ::get_option(::USEROPT_GUN_TARGET_DISTANCE)
+    local gunDescr = ::get_option(::USEROPT_GUN_TARGET_DISTANCE)
     local data = ""
     foreach (idx, item in gunDescr.items)
       if (canChangeAircraft || idx == gunDescr.value)
@@ -1348,38 +1285,10 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
 
     updateGunVerticalOption(air)
 
-    bombDescr = ::get_option(::USEROPT_BOMB_ACTIVATION_TIME)
-    local bombTimeObj = scene.findObject(bombDescr.id)
-    if (::checkObj(bombTimeObj))
-    {
-      bombDescr = ::get_option(::USEROPT_BOMB_ACTIVATION_TIME)
-      local markup = ""
-      foreach (idx, item in bombDescr.items)
-        if (canChangeAircraft || idx == bombDescr.value)
-          markup += build_option_blk(item.text, "", idx == bombDescr.value, true, "", false, item.tooltip)
-      guiScene.replaceContentFromText(bombTimeObj, markup, markup.len(), this)
-    }
-    showOptionRow(bombDescr.id,
-      aircraft && bomb && air.getAvailableSecondaryWeapons().hasBombs)
-
-    rocketDescr = ::get_option(::USEROPT_ROCKET_FUSE_DIST)
-    local rocketdistObj = scene.findObject(rocketDescr.id)
-    if (::checkObj(rocketdistObj))
-    {
-      local markup = ""
-      foreach (idx, item in rocketDescr.items)
-        if (canChangeAircraft || idx == rocketDescr.value)
-          markup += build_option_blk(item, "", idx == rocketDescr.value)
-      guiScene.replaceContentFromText(rocketdistObj, markup, markup.len(), this)
-      rocketdistObj.setValue(rocketDescr.value)
-    }
-    showOptionRow(rocketDescr.id,
-      aircraft && rocket && air.getAvailableSecondaryWeapons().hasRocketDistanceFuse)
-
     local fuelObj = scene.findObject("fuel")
     if (::checkObj(fuelObj))
     {
-      fuelDescr = ::get_option(::USEROPT_LOAD_FUEL_AMOUNT)
+      local fuelDescr = ::get_option(::USEROPT_LOAD_FUEL_AMOUNT)
       data = ""
       foreach (idx, item in fuelDescr.items)
         if (canChangeAircraft || idx == fuelDescr.value)
@@ -1387,8 +1296,6 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       guiScene.replaceContentFromText(fuelObj, data, data.len(), this)
       fuelObj.setValue(fuelDescr.value)
     }
-
-    updateFlaresOptions(rocket)
 
     showOptionRow("fuel", aircraft) //TODO: fuel for tanks
   }
@@ -2569,14 +2476,9 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     if (missionRules.hasRespawnCost)
       updateCrewSlot(crew)
 
-    checkRocketDisctanceFuseRow()
-    checkBombActivationTimeRow()
-    checkDepthChargeActivationTimeRow()
-    checkMineDepthRow()
+    updateShipOptions(unit, false)
+    updateAircraftWeaponsOptions(unit, false)
     checkReady()
-    checkFlaresPeriodsRow()
-    checkFlaresSeriesRow()
-    checkFlaresSeriesPeriodsRow()
   }
 
   function onEventBulletsGroupsChanged(p)

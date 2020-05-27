@@ -165,8 +165,6 @@ local helicopterState = {
 
   GunOverheatState = Watched(0)
 
-  AgmGuidanceLockState = Watched(-1)
-
   IsCompassVisible = Watched(false)
 }
 

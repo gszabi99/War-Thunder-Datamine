@@ -645,11 +645,6 @@ return [
     value = @(joyParams) 100.0 * ::get_option_multiplier(::OPTION_AIM_ACCELERATION_DELAY_AIR)
     setValue = @(joyParams, objValue) ::set_option_multiplier(::OPTION_AIM_ACCELERATION_DELAY_AIR, objValue / 100.0)
   }
-  {
-    id = "joy_camera_sensitivity"
-    type = CONTROL_TYPE.SLIDER
-    optionType = ::USEROPT_MOUSE_AIM_SENSE
-  }
 //-------------------------------------------------------
   {
     id = "ID_PLANE_JOYSTICK_HEADER"

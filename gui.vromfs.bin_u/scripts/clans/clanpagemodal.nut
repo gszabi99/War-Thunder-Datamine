@@ -6,6 +6,7 @@ local wwLeaderboardData = require("scripts/worldWar/operations/model/wwLeaderboa
 local clanMembershipAcceptance = ::require("scripts/clans/clanMembershipAcceptance.nut")
 local clanRewardsModal = require("scripts/rewards/clanRewardsModal.nut")
 local clanInfoView = require("scripts/clans/clanInfoView.nut")
+local { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.nut")
 
 local clan_member_list = [
   {id = "onlineStatus", type = ::g_lb_data_type.TEXT, myClanOnly = true, iconStyle = true, needHeader = false}
@@ -696,19 +697,20 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
       "inactive:t='yes'; commonTextColor:t='yes'; bigIcons:t='yes'; style:t='height:0.05sh;'; insetHeader = 'yes';")
 
     local rowIdx = 0
-    local isOnlyPS4Players = ::has_feature("PS4SeparateLeaderboards")
-      && ::get_gui_option_in_mode(::USEROPT_PS4_ONLY_LEADERBOARD, ::OPTIONS_MODE_GAMEPLAY) == true
-    foreach(member in membersData)
-    {
-      if (isOnlyPS4Players)
-      {
-        if (member?.platform != null)
-        {
-          if (member.platform != ::TP_PS4)
+    local isConsoleOnlyPlayers = getSeparateLeaderboardPlatformValue()
+    local consoleConst = ::is_platform_ps4? ::TP_PS4 : ::is_platform_xboxone? ::TP_XBOXONE : ::TP_UNKNOWN
+
+    foreach(member in membersData) {
+      if (isConsoleOnlyPlayers) {
+        if (member?.platform != null) {
+          if (member.platform != consoleConst)
             continue
         }
-        else if (!platformModule.isPlayerFromPS4(member.nick))
-          continue
+        else {
+          if ((::is_platform_ps4 && !platformModule.isPlayerFromPS4(member.nick))
+            || (::is_platform_xboxone && !platformModule.isPlayerFromXboxOne(member.nick)))
+            continue
+        }
       }
 
       local rowName = "row_" + rowIdx
@@ -1190,9 +1192,8 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
     if (!::is_worldwar_enabled() || !::has_feature("WorldWarLeaderboards"))
       return []
 
-    if (::get_gui_option_in_mode(::USEROPT_PS4_ONLY_LEADERBOARD, ::OPTIONS_MODE_GAMEPLAY) == true
-      && !::has_feature("PS4SeparateWWLeaderboards"))
-        return []
+    if (getSeparateLeaderboardPlatformValue() && !::has_feature("ConsoleSeparateWWLeaderboards"))
+      return []
 
     requestWwMembersList()
     return [{

@@ -654,6 +654,7 @@ local function getWeaponItemViewParams(id, unit, item, params = {})
       (canResearchItem(unit, visualItem, false) &&
       (flushExp > 0 || !canShowResearch)))
       btnText = ::loc("mainmenu/btnResearch")
+    btnText = params?.actionBtnText ?? btnText
     res.actionBtnCanShow = btnText == "" ? "no"
       : !res.isBundle || params?.isMenuBtn ? "yes" : "console"
     res.actionBtnText = btnText

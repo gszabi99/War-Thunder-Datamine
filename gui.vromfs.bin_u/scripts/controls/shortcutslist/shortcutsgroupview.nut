@@ -46,6 +46,11 @@ return [
     optionType = ::USEROPT_MOUSE_SENSE
   }
   {
+    id = "joy_camera_sensitivity"
+    type = CONTROL_TYPE.SLIDER
+    optionType = ::USEROPT_MOUSE_AIM_SENSE
+  }
+  {
     id = "camera_mouse_speed"
     type = CONTROL_TYPE.SLIDER
     value = @(joyParams) 100.0*(::get_option_multiplier(::OPTION_CAMERA_MOUSE_SPEED) - min_camera_speed) / (max_camera_speed - min_camera_speed)
