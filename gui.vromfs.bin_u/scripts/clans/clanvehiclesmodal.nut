@@ -8,7 +8,7 @@ local handlerClass = class extends vehiclesModal.handlerClass
   canQuitByGoBack       = false
 
   wndTitleLocId         = "clan/vehicles"
-  slotbarActions        = [ "research", "buy", "take", "weapons", "info" ]
+  slotbarActions        = [ "research", "buy", "take","sec_weapons", "weapons", "info" ]
   unitsFilter = @(u) u.isVisibleInShop() && u.isSquadronVehicle() && ::canResearchUnit(u)
 
   hasSpendExpProcess = false

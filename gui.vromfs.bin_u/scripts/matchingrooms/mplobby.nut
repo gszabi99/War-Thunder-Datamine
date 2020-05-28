@@ -60,7 +60,7 @@ class ::gui_handlers.MPLobby extends ::gui_handlers.BaseGuiHandlerWT
   waitBox = null
   optionsBox = null
   curGMmode = -1
-  slotbarActions = ["autorefill", "aircraft", "crew", "weapons", "repair"]
+  slotbarActions = ["autorefill", "aircraft", "crew", "sec_weapons", "weapons", "repair"]
 
   playersListWidgetWeak = null
   tableTeams = null

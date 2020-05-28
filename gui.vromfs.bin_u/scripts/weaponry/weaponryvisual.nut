@@ -1229,38 +1229,21 @@ local function updateModType(unit, mod)
 
 local function getTierDescTbl(unit, weaponry, presetName)
 {
-  local isBlock = (weaponry.amountPerTier ?? 0) > 0
-  local res = { desc = ::loc($"weapons/{weaponry.name}") }
+  local isBlock = (weaponry.amountPerTier ?? 0) > 1
+  local header = ::loc($"weapons/{weaponry.name}")
+  local desc = getWeaponInfoText(unit, { isPrimary = false, weaponPreset = presetName,
+    detail = INFO_DETAIL.EXTENDED, weaponsFilterFunc = (@(path, blk) path == weaponry.blk) })
   if (::isInArray(weaponry.tType, CONSUMABLE_TYPES))
-  {
-    if (isBlock)
-      res.desc = "".concat(res.desc, ::format(::loc("weapons/counter"), weaponry.amountPerTier))
-    if (::get_es_unit_type(unit) != ::ES_UNIT_TYPE_TANK)
-      res.desc = "".concat(res.desc, getWeaponExtendedInfo(weaponry, weaponry.tType, unit, null,
-        "".concat("\n", ::nbsp, ::nbsp, ::nbsp, ::nbsp)))
-  }
-  else
-  {
-    if (weaponry.ammo > 0)
-      res.desc = "".concat(res.desc, " (", ::loc("shop/ammo"), ::loc("ui/colon"),
-        isBlock && !weaponry.isGun ? weaponry.amountPerTier : weaponry.ammo, ")")
+    header = isBlock ?
+      "".concat(header, ::format(::loc("weapons/counter"), weaponry.amountPerTier)) : header
+  else if (weaponry.ammo > 0)
+    header = "".concat(header, " (", ::loc("shop/ammo"), ::loc("ui/colon"),
+      isBlock && !weaponry.isGun ? weaponry.amountPerTier : weaponry.ammo, ")")
 
-    if (!unit.unitType.canUseSeveralBulletsForGun)
-    {
-      local rTime = ::get_reload_time_by_caliber(weaponry.caliber, null)
-      if (rTime)
-      {
-        local difficulty = ::get_difficulty_by_ediff(::get_current_ediff())
-        local key = ::isCaliberCannon(weaponry.caliber) ? "cannonReloadSpeedK" : "gunReloadSpeedK"
-        local speedK = unit.modificators?[difficulty.crewSkillName]?[key] ?? 1.0
-        if (speedK)
-          rTime = stdMath.round_by_value(rTime / speedK, 1.0).tointeger()
-
-        res.desc = "".concat(res.desc, " ", ::loc("bullet_properties/cooldown"), " ",
-          time.secondsToString(rTime, true, true))
-      }
-    }
-  }
+  // Need to replace header with new one contains right weapons amount calculated per tier
+  local descArr = desc.split(WEAPON_TEXT_PARAMS.newLine)
+  descArr[0] = header
+  local res = { desc = descArr.reduce(@(a, b) "".concat(a, WEAPON_TEXT_PARAMS.newLine, b))}
   if(::isInArray(weaponry.tType, [TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.ATGM]))
     buildPiercingData({
       bullet_parameters = ::calculate_tank_bullet_parameters(unit.name, weaponry.blk, true, false),

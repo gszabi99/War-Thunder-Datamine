@@ -59,8 +59,8 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
 
   function initScreen()
   {
-    initFocusArray()
     selectPreset(chosenPresetIdx)
+    initFocusArray()
   }
 
   function getPresetsMarkup()
@@ -147,10 +147,19 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
     if (!::check_obj(nestObj))
       return
 
-    selectPreset(nestObj.findObject("presetHeader").presetId.tointeger())
-    nestObj.setValue(obj.tierId.tointeger() + 1)
+    local presetId = nestObj.findObject("presetHeader").presetId.tointeger()
+    local tierId = obj.tierId.tointeger()
+    selectPreset(presetId)
+    if (!presetsList[presetId].tiers[tierId]?.img)
+    {
+      isTiersNestSelected = false
+      updateTierDesc(null)
+      return
+    }
+
+    updateTierDesc(tierId)
+    nestObj.setValue(tierId + 1)
     nestObj.select()
-    updateTierDesc(obj.tierId.tointeger())
     isTiersNestSelected = true
   }
 

@@ -5,7 +5,7 @@ class ::gui_handlers.WwOperationDescriptionCustomHandler extends ::gui_handlers.
   sceneTplTeamStrenght = "gui/worldWar/wwOperationDescriptionSideStrenght"
   sceneTplTeamArmyGroups = "gui/worldWar/wwOperationDescriptionSideArmyGroups"
 
-  slotbarActions = [ "weapons", "repair", "info" ]
+  slotbarActions = [ "sec_weapons", "weapons", "repair", "info" ]
 
   function setDescItem(newDescItem)
   {

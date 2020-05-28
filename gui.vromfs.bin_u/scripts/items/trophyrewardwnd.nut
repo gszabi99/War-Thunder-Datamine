@@ -75,7 +75,7 @@ class ::gui_handlers.trophyRewardWnd extends ::gui_handlers.BaseGuiHandlerWT
   unit = null
   rentTimeHours = 0
 
-  slotbarActions = [ "take", "weapons", "info" ]
+  slotbarActions = [ "take", "sec_weapons", "weapons", "info" ]
 
   decorator = null
   decoratorUnit = null

@@ -6,6 +6,7 @@ local unitStatus = require("scripts/unit/unitStatus.nut")
 local contentPreview = require("scripts/customization/contentPreview.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
 local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local weaponryPresetsModal = require("scripts/weaponry/weaponryPresetsModal.nut")
 
 local { canUseIngameShop, getShopItemsTable } = ::is_platform_ps4? require("scripts/onlineShop/ps4ShopData.nut")
   : ::is_platform_xboxone? require("scripts/onlineShop/xboxShopData.nut")
@@ -813,6 +814,8 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
           btn_testflight = !isInEditMode && !isDecoratorsListOpen && can_testflight
           btn_info       = !isInEditMode && !isDecoratorsListOpen && ::isUnitDescriptionValid(unit) && !access_WikiOnline
           btn_info_online = !isInEditMode && !isDecoratorsListOpen && ::isUnitDescriptionValid(unit) && access_WikiOnline
+          btn_sec_weapons    = !isInEditMode && !isDecoratorsListOpen &&
+            (unit.isAir() || unit.isHelicopter()) && ::has_feature("ShowWeapPresetsMenu")
           btn_weapons    = !isInEditMode && !isDecoratorsListOpen
 
           btn_decal_edit   = ::show_console_buttons && !isInEditMode && !isDecoratorsListOpen && !focusedSlot.isEmpty && focusedSlot.unlocked
@@ -2143,6 +2146,11 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
   function onWeaponsInfo(obj)
   {
     ::open_weapons_for_unit(unit)
+  }
+
+  function onSecWeaponsInfo(obj)
+  {
+    weaponryPresetsModal.open({ unit = unit })
   }
 
   function getTwoSidedState()

@@ -9,7 +9,7 @@ local { openUrl } = require("scripts/onlineShop/url.nut")
 local { updateWeaponTooltip } = require("scripts/weaponry/weaponryVisual.nut")
 
 local stickedDropDown = null
-local defaultSlotbarActions = [ "autorefill", "aircraft", "weapons", "showroom", "testflight", "crew", "info", "repair" ]
+local defaultSlotbarActions = [ "autorefill", "aircraft", "sec_weapons", "weapons", "showroom", "testflight", "crew", "info", "repair" ]
 
 local class BaseGuiHandlerWT extends ::BaseGuiHandler {
   defaultFocusArray = [

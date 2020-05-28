@@ -10,7 +10,7 @@ class ::gui_handlers.CreateEventRoomWnd extends ::gui_handlers.GenericOptionsMod
   applyAtClose = false
   roomCreationContext = null
 
-  slotbarActions = ["aircraft", "crew", "weapons", "showroom", "repair"]
+  slotbarActions = ["aircraft", "crew", "sec_weapons", "weapons", "showroom", "repair"]
 
   function initScreen()
   {

@@ -16,7 +16,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   sceneTplName         = "gui/unit/vehiclesModal"
   sceneCheckBoxListTpl = "gui/commonParts/checkbox"
   wndTitleLocId         = "itemTypes/vehicles"
-  slotbarActions        = [ "research", "buy", "take", "weapons", "showroom", "testflight", "info", "repair" ]
+  slotbarActions        = [ "research", "buy", "take", "sec_weapons", "weapons", "showroom", "testflight", "info", "repair" ]
 
   function getSceneTplView()
   {

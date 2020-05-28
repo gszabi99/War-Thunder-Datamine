@@ -11,6 +11,7 @@ local selectGroupHandler = require("scripts/slotbar/selectGroupHandler.nut")
 local crewModalByVehiclesGroups = require("scripts/crew/crewModalByVehiclesGroups.nut")
 local { getBundleId } = require("scripts/onlineShop/onlineBundles.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
+local weaponryPresetsModal = require("scripts/weaponry/weaponryPresetsModal.nut")
 
 local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,
@@ -104,6 +105,19 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
         else
           ::gui_modal_crew(params)
       }
+    }
+    else if (action == "sec_weapons")
+    {
+      if (hasSlotbarByUnitsGroups)
+        continue
+
+      actionText = ::loc("options/secondary_weapons")
+      icon       = "#ui/gameuiskin#slot_preset.svg"
+      haveWarning = ::checkUnitWeapons(unit) != UNIT_WEAPONS_READY
+      haveDiscount = ::get_max_weaponry_discount_by_unitName(unit.name) > 0
+      showAction = inMenu && !::g_crews_list.isSlotbarOverrided &&
+        (unit.isAir() || unit.isHelicopter()) && ::has_feature("ShowWeapPresetsMenu")
+      actionFunc = @() weaponryPresetsModal.open({ unit = unit })
     }
     else if (action == "weapons")
     {

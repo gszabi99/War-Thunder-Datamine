@@ -23,7 +23,7 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
   showRankLockedMsgBoxOnce = false
 
   shopResearchMode = true
-  slotbarActions = [ "research", "buy", "take", "weapons", "info", "repair" ]
+  slotbarActions = [ "research", "buy", "take", "sec_weapons", "weapons", "info", "repair" ]
 
   function getSceneTplView() { return {hasMaxWindowSize = ::is_small_screen} }
 

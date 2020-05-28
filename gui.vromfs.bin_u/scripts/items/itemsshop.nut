@@ -47,7 +47,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
   shouldSetPageByItem = false
   currentFocusItem = 3
 
-  slotbarActions = [ "preview", "testflightforced", "weapons", "info" ]
+  slotbarActions = [ "preview", "testflightforced", "sec_weapons", "weapons", "info" ]
   displayItemTypes = null
   sheetsArray = null
 

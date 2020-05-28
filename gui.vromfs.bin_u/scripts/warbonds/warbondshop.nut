@@ -18,7 +18,7 @@ class ::gui_handlers.WarbondsShop extends ::gui_handlers.BaseGuiHandlerWT
   curPageAwards = null
   itemsPerPage = 1
 
-  slotbarActions = [ "preview", "testflight", "weapons", "info" ]
+  slotbarActions = [ "preview", "testflight", "sec_weapons", "weapons", "info" ]
 
   function initScreen()
   {

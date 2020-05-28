@@ -34,7 +34,7 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
   sceneTplTeamRight = "gui/worldWar/wwBattleDescriptionTeamUnitsInfo"
   sceneTplTeamHeaderInfo = "gui/worldWar/wwBattleDescriptionTeamInfo"
 
-  slotbarActions = [ "autorefill", "aircraft", "weapons", "crew", "info", "repair" ]
+  slotbarActions = [ "autorefill", "aircraft", "sec_weapons", "weapons", "crew", "info", "repair" ]
   shouldCheckCrewsReady = true
   hasSquadsInviteButton = true
   hasBattleFilter = false

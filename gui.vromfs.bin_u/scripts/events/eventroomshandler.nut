@@ -47,7 +47,7 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
   collapsedChapterNamesArray = null
   viewRoomList = null
 
-  slotbarActions = ["aircraft", "crew", "weapons", "showroom", "repair"]
+  slotbarActions = ["aircraft", "crew", "sec_weapons", "weapons", "showroom", "repair"]
 
   eventDescription = null
 

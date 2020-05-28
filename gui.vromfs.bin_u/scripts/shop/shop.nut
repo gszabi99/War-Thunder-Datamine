@@ -60,7 +60,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
   _timer = 0.0
 
   shopData = null
-  slotbarActions = [ "research", "find_in_market", "buy", "take", "weapons", "showroom", "testflight", "crew", "info", "repair" ]
+  slotbarActions = [ "research", "find_in_market", "buy", "take", "sec_weapons", "weapons", "showroom", "testflight", "crew", "info", "repair" ]
   needUpdateSlotbar = false
   needUpdateSquadInfo = false
   shopResearchMode = false

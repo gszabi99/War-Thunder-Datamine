@@ -58,7 +58,7 @@ class ::gui_handlers.ShowUnlockHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   config = null
   unit = null
-  slotbarActions = [ "take", "weapons", "info" ]
+  slotbarActions = [ "take", "sec_weapons", "weapons", "info" ]
 
   function initScreen()
   {
