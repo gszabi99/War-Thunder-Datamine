@@ -960,7 +960,7 @@ local B_ScopeSquare = function(width, height) {
       B_ScopeSquareTargetSectorComponent(width, radarState.TurretAzimuth, radarState.TargetRadarDist, radarState.TargetRadarAzimuthWidth, height, targetSectorColor),
       B_ScopeSquareAzimuthComponent(width, height, radarState.TurretAzimuth, null, null, true),
       {
-        size = [width, width]
+        size = [width, height]
         rendObj = ROBJ_RADAR_GROUND_REFLECTIONS
         isSquare = true
         xFragments = 30
