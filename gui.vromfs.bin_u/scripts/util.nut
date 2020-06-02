@@ -4,6 +4,7 @@ local penalty = require_native("penalty")
 local platformModule = require("scripts/clientState/platform.nut")
 local stdMath = require("std/math.nut")
 local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { isCrossPlayEnabled } = require("scripts/social/crossplay.nut")
 
 ::usageRating_amount <- [0.0003, 0.0005, 0.001, 0.002]
 ::allowingMultCountry <- [1.5, 2, 2.5, 3, 4, 5]
@@ -1571,7 +1572,9 @@ foreach (i, v in ::cssColorsMapDark)
 
 ::is_worldwar_enabled <- function is_worldwar_enabled()
 {
-  return ::has_feature("WorldWar") && ("g_world_war" in ::getroottable())
+  return ::has_feature("WorldWar")
+    && ("g_world_war" in ::getroottable())
+    && (!::is_platform_ps4 || isCrossPlayEnabled())
 }
 
 ::init_use_touchscreen <- function init_use_touchscreen()
@@ -1971,18 +1974,6 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
     pos = obj.getPosRC()
     visible = obj.isVisible()
   }
-}
-
-::get_object_value <- function get_object_value(parentObj, id, defValue = null)
-{
-  if (!::checkObj(parentObj))
-    return defValue
-
-  local obj = parentObj.findObject(id)
-  if (::checkObj(obj))
-    return obj.getValue()
-
-  return defValue
 }
 
 ::destroy_session_scripted <- function destroy_session_scripted()

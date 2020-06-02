@@ -4,7 +4,7 @@ return [
   {
     id = "ID_REPLAY_CONTROL_HEADER"
     type = CONTROL_TYPE.HEADER
-    showFunc = @() ::has_feature("Replays") || ::has_feature("Spectator")
+    showFunc = @() ::has_feature("ClientReplay") || ::has_feature("ServerReplay") || ::has_feature("Spectator")
   }
   {
     id = "ID_TOGGLE_FOLLOWING_CAMERA"
@@ -105,7 +105,7 @@ return [
     id = "ID_REPLAY_AVI_WRITER"
     checkGroup = ctrlGroups.REPLAY
     checkAssign = false
-    showFunc = @() ::has_feature("Replays")
+    showFunc = @() ::has_feature("ClientReplay")
   }
   {
     id = "ID_REPLAY_SHOW_MARKERS"

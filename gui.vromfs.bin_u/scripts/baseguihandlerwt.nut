@@ -1098,6 +1098,10 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
     }
   }
 
+  function onEventClosedUnitItemMenu(params)
+  {
+    restoreFocus()
+  }
 
   function onHeaderTabSelect() {} //empty frame
 

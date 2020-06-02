@@ -374,6 +374,18 @@ local DEFAULT_OVERRIDE_PARAMS = {
   return value
 }
 
+::get_object_value <- function get_object_value(parentObj, id, defValue = null)
+{
+  if (!::check_obj(parentObj))
+    return defValue
+
+  local obj = parentObj.findObject(id)
+  if (::check_obj(obj))
+    return obj.getValue()
+
+  return defValue
+}
+
 ::show_obj <- function show_obj(obj, status) {
   if (!::check_obj(obj))
     return null

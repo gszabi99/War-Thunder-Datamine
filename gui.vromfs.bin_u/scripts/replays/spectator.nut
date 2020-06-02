@@ -128,14 +128,14 @@ class Spectator extends ::gui_handlers.BaseGuiHandlerWT
   ]
 
   focusArray = [
+    "controls_div"
     "table_team1"
     "table_team2"
     "tabs"
     "chat_input"
-    "controls_div"
   ]
 
-  currentFocusItem = 2
+  currentFocusItem = 0
 
 
   function initScreen()
@@ -287,6 +287,7 @@ class Spectator extends ::gui_handlers.BaseGuiHandlerWT
     scene.findObject("update_timer").setUserData(this)
 
     updateClientHudOffset()
+    restoreFocus()
   }
 
   function reinitScreen()
@@ -549,7 +550,7 @@ class Spectator extends ::gui_handlers.BaseGuiHandlerWT
     guiScene.setUpdatesEnabled(true, true)
   }
 
-  function updateTarget(targetSwitched = false)
+  function updateTarget(targetSwitched = false, needFocusTargetTable = false)
   {
     local player = getTargetPlayer()
 
@@ -560,16 +561,18 @@ class Spectator extends ::gui_handlers.BaseGuiHandlerWT
       spectatorWatchedHero.name    = player?.name ?? ""
     }
 
+    local isFocused = false
     if (player)
     {
       lastTargetId = player ? player.id : null
       local playerTeamIndex = teamIdToIndex(player.team)
       statSelPlayerId[playerTeamIndex] = player.id
       local tblObj = getTeamTableObj(player.team)
-      if (tblObj)
-      {
-        if (targetSwitched)
+      if (tblObj) {
+        if (needFocusTargetTable) {
+          isFocused = true
           tblObj.select()
+        }
         onStatTblFocus(tblObj)
       }
     }
@@ -580,11 +583,24 @@ class Spectator extends ::gui_handlers.BaseGuiHandlerWT
     recalculateLayout()
 
     setTargetInfo(player)
+    return isFocused
+  }
+
+  function onWrapUpTabs(obj)
+  {
+    if(!selectLastChoosedTeam(obj))
+      selectControlsBlock(obj)
+  }
+
+  function onWrapDownControls(obj)
+  {
+    if(!selectLastChoosedTeam(obj))
+      scene.findObject("tabs").select()
   }
 
   function selectLastChoosedTeam(obj)
   {
-    updateTarget(true)
+    return updateTarget(true, true)
   }
 
   function updateControls(targetSwitched = false)
@@ -733,14 +749,13 @@ class Spectator extends ::gui_handlers.BaseGuiHandlerWT
 
   function onPlayersTblWrapUp(obj)
   {
-    if (::get_is_console_mode_enabled())
-      onWrapUp(obj)
+    selectControlsBlock(obj)
   }
 
   function onPlayersTblWrapDown(obj)
   {
     if (::get_is_console_mode_enabled())
-      onWrapDown(obj)
+      scene.findObject("tabs").select()
   }
 
   function onSwitchPlayersTbl(obj)

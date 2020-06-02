@@ -212,6 +212,7 @@ local clanActionNames = {
   local entitlementRewards = {}
   local unlocksRewards = {}
   local rentsTable = {}
+  local specialOffers = {}
   local ignoreRentItems = []
   local total = ::get_user_logs_count()
   local unlocksNeedsPopupWnd = false
@@ -479,7 +480,7 @@ local clanActionNames = {
               time = ::colorize("userlogColoredText", expireTimeText)
             }))
 
-          rentsTable[$"special_offer_{unitName}"] <- {
+          specialOffers[$"special_offer_{unitName}"] <- {
             unitName = unitName
             name = ::loc("specialOffer")
             desc = "\n".join(desc)
@@ -537,6 +538,8 @@ local clanActionNames = {
         ::showUnlockWnd(config)
     }
   })
+
+  specialOffers.each(@(config) handler.doWhenActive(@() ::showUnlockWnd(config)))
 
   foreach(name, table in combinedUnitTiersUserLogs)
   {

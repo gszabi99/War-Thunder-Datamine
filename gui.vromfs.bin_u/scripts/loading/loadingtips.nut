@@ -252,5 +252,6 @@ g_tips.genNewTip <- function genNewTip(unitTypeMask = 0)
 
 g_tips.onEventLoginComplete <- function onEventLoginComplete(p) { isTipsValid = false }
 g_tips.onEventGameLocalizationChanged <- function onEventGameLocalizationChanged(p) { isTipsValid = false }
+g_tips.onEventSignOut <- function onEventSignOut(p) { isTipsValid = false }
 
 ::subscribe_handler(::g_tips, ::g_listener_priority.DEFAULT_HANDLER)

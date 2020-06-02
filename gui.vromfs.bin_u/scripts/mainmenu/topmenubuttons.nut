@@ -154,7 +154,7 @@ local list = {
   REPLAY = {
     text = @() "#mainmenu/btnReplays"
     onClickFunc = @(obj, handler) ::is_platform_ps4? ::show_not_available_msg_box() : handler.checkedNewFlight(::gui_start_replays)
-    isHidden = @(...) !::has_feature("Replays")
+    isHidden = @(...) !::has_feature("ClientReplay")
   }
   VIRAL_AQUISITION = {
     text = @() "#mainmenu/btnGetLink"

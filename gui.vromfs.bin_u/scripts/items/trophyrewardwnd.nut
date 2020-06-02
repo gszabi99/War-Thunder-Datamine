@@ -37,9 +37,8 @@ local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
   local trophyItem = ::ItemsManager.findItemById(itemId)
   if (!trophyItem)
   {
-    ::dagor.logerr($"Trophy Reward: Not found item {itemId}")
-    local configsArrayString = ::toString(configsTable) // warning disable: -declared-never-used
-    ::script_net_assert_once($"not found {itemId}", $"Trophy Reward: Not found item {itemId}. Don't show reward.")
+    local configsArrayString = ::toString(configsArray, 2) // warning disable: -declared-never-used
+    ::script_net_assert_once("not found trophyItem", "Trophy Reward: Not found item. Don't show reward.")
     return
   }
 

@@ -48,6 +48,9 @@
     "gyroscopicSightOverSensors": true
   },
   {
+    "gyroSight": false
+  },
+  {
     "type": "typeFighter"
   },
   {
@@ -3042,27 +3045,15 @@
         }
       },
       {
-        "multifunctionDisplays": [
-          {
-            "display": {
-              "textureArea": [0.0,0.5,0.5,1.0],
-              "page": {
-                "type": "radar",
-                "radarScale": 0.67
-              }
-            }
-          },
-          {
-            "display": {
-              "textureArea": [0.0,0.0,0.5,0.5],
-              "page": {
-                "type": "plane_ils",
-                "ilsNode": "collimator_glass",
-                "ilsSize": [0.112,0.103]
-              }
+        "multifunctionDisplays": {
+          "display": {
+            "textureArea": [0.0,0.5,0.5,1.0],
+            "page": {
+              "type": "radar",
+              "radarScale": 0.67
             }
           }
-        ]
+        }
       },
       {
         "parts_holes_dmg": {
@@ -3554,13 +3545,13 @@
           "sensors": [
             {
               "sensor": {
-                "blk": "gameData/sensors/us_an_apr_25.blk"
+                "blk": "gameData/sensors/us_an_apq_100.blk",
+                "dmPart": "radar_dm"
               }
             },
             {
               "sensor": {
-                "blk": "gameData/sensors/us_an_apq_100.blk",
-                "dmPart": "radar_dm"
+                "blk": "gameData/sensors/us_an_apr_25.blk"
               }
             }
           ]

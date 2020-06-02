@@ -311,11 +311,6 @@ class ::BaseGuiHandler
       delayedRestoreFocus()
   }
 
-  function onEventClosedUnitItemMenu(params)
-  {
-    restoreFocus()
-  }
-
   function delayedRestoreFocus()
   {
     guiScene.performDelayed(this, function() {

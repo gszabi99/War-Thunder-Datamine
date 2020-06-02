@@ -154,7 +154,7 @@ class ::gui_handlers.ActionsList extends ::BaseGuiHandler
 
   function onAction(obj)
   {
-    goBack()
+    close()
     local actionName = obj?.id ?? ""
     if (actionName == "")
       return

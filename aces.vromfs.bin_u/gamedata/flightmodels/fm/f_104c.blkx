@@ -336,7 +336,7 @@
       "alphaCritLow": -20.0,
       "ClCritHigh": 0.2,
       "ClCritLow": -0.2,
-      "CdMin": 0.0052
+      "CdMin": 0.0055
     },
     "Stab": {
       "OswaldsEfficiencyNumber": 0.8,
@@ -452,8 +452,8 @@
       "ThrottleBoost": 1.01,
       "AfterburnerBoost": 1.1,
       "RPMMin": 4900.0,
-      "RPMMax": 7650.0,
-      "RPMAfterburner": 7650.0,
+      "RPMMax": 7510.0,
+      "RPMAfterburner": 7510.0,
       "RPMMaxAllowed": 10000.0,
       "StandbyFriction": 0.055,
       "FuelConsumptionOnIdle": 0.108,
@@ -467,13 +467,13 @@
       "MaxThrMult": 1.0,
       "IsWaterCooled": false,
       "EngineInertiaMoment": 1.0,
-      "RPMAmplitude0": [7650.0,0.0],
-      "RPMAmplitude1": [0.0,70.0],
+      "RPMAmplitude0": [7460.0,0.0],
+      "RPMAmplitude1": [0.0,50.0],
       "ThrottleRPMAuto0": [0.0,4900.0],
-      "ThrottleRPMAuto1": [1.0,7950.0],
-      "ThrottleRPMAuto2": [1.1,7951.0],
+      "ThrottleRPMAuto1": [1.0,7460.0],
+      "ThrottleRPMAuto2": [1.1,7510.0],
       "ShaftRPMMin": 4900.0,
-      "ShaftRPMMax": 7950.0,
+      "ShaftRPMMax": 7510.0,
       "ShaftRpmController": false,
       "Power": 1200.0,
       "ConsumptionOmegaMax": 1.05,
@@ -868,7 +868,7 @@
       },
       "Mode0": {
         "Throttle": 0.0,
-        "RPM": 0.62,
+        "RPM": 0.66,
         "ThrustMult": 0.05,
         "TorqueMultMinRpm": 0.15,
         "TorqueMultMaxRpm": 0.05,
@@ -904,7 +904,7 @@
       },
       "Mode4": {
         "Throttle": 1.0,
-        "RPM": 0.99,
+        "RPM": 0.993,
         "ThrustMult": 1.0,
         "TorqueMultMinRpm": 3.0,
         "TorqueMultMaxRpm": 1.0,
@@ -964,30 +964,36 @@
       "OilFlowEffectPower": 1.0,
       "WaterPropFlowSpeedCoeff": 1.0,
       "OilPropFlowSpeedCoeff": 1.0,
-      "WaterTemperatureInertia": 6.7,
-      "OilTemperatureInertia": 12.2,
+      "WaterTemperatureInertia": 5.0,
+      "OilTemperatureInertia": 10.0,
       "Mode0": {
         "Altitude": 1000.0,
-        "RPM": 3000.0,
+        "RPM": 4900.0,
         "WaterTemperature": 420.0,
         "OilTemperature": 55.0
       },
       "Mode1": {
         "Altitude": 1000.0,
-        "RPM": 7200.0,
-        "WaterTemperature": 620.0,
-        "OilTemperature": 65.0
+        "RPM": 5600.0,
+        "WaterTemperature": 380.0,
+        "OilTemperature": 60.0
       },
       "Mode2": {
         "Altitude": 1000.0,
-        "RPM": 7650.0,
-        "WaterTemperature": 680.0,
-        "OilTemperature": 75.0
+        "RPM": 7000.0,
+        "WaterTemperature": 510.0,
+        "OilTemperature": 65.0
       },
       "Mode3": {
         "Altitude": 1000.0,
-        "RPM": 7690.0,
-        "WaterTemperature": 688.0,
+        "RPM": 7460.0,
+        "WaterTemperature": 600.0,
+        "OilTemperature": 75.0
+      },
+      "Mode4": {
+        "Altitude": 1000.0,
+        "RPM": 7510.0,
+        "WaterTemperature": 630.0,
         "OilTemperature": 80.0
       },
       "Load0": {
@@ -1007,13 +1013,13 @@
         "RecoverTime": 1800.0
       },
       "Load3": {
-        "WaterTemperature": 688.0,
+        "WaterTemperature": 630.0,
         "OilTemperature": 80.0,
         "WorkTime": 1800.0,
         "RecoverTime": 900.0
       },
       "Load4": {
-        "WaterTemperature": 715.0,
+        "WaterTemperature": 650.0,
         "OilTemperature": 90.0,
         "WorkTime": 60.0,
         "RecoverTime": 30.0
@@ -1053,34 +1059,34 @@
     },
     "Stages": {
       "Stage1": {
-        "minTime": 0.5,
-        "maxTime": 1.0,
+        "minTime": 8.0,
+        "maxTime": 10.0,
         "fromRPM": 0.0,
-        "toRPM": 20.0
+        "toRPM": 500.0
       },
       "Stage2": {
-        "minTime": 2.0,
-        "maxTime": 4.2,
-        "fromRPM": 20.0,
-        "toRPM": 35.0
+        "minTime": 0.0,
+        "maxTime": 0.0,
+        "fromRPM": 0.0,
+        "toRPM": 0.0
       },
       "Stage3": {
-        "minTime": 0.1,
-        "maxTime": 0.2,
-        "fromRPM": 35.0,
-        "toRPM": 120.0
+        "minTime": 0.0,
+        "maxTime": 0.0,
+        "fromRPM": 0.0,
+        "toRPM": 0.0
       },
       "Stage4": {
-        "minTime": 0.5,
-        "maxTime": 1.0,
-        "fromRPM": 120.0,
-        "toRPM": 120.0
+        "minTime": 0.0,
+        "maxTime": 0.0,
+        "fromRPM": 0.0,
+        "toRPM": 0.0
       },
       "Stage5": {
-        "minTime": 0.5,
-        "maxTime": 1.0,
-        "fromRPM": 120.0,
-        "toRPM": 240.0
+        "minTime": 0.0,
+        "maxTime": 0.0,
+        "fromRPM": 0.0,
+        "toRPM": 0.0
       }
     }
   },

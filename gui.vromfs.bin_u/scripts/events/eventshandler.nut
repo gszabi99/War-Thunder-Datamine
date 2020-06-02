@@ -535,49 +535,52 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillEventsList()
   {
-    local totalRows = 0
-    local selIdx = -1
-
     local chapters = ::events.getChapters()
+    local needSkipCrossplayEvent = ::is_platform_ps4 && !isCrossPlayEnabled()
 
     local view = { items = [] }
-    foreach(chapter in chapters)
+    foreach (chapter in chapters)
     {
-      if (chapter.getEvents().len() > 0)
-      {
-        totalRows++
-        view.items.append({
-          itemTag = "campaign_item"
-          id = chapter.name
-          itemText = chapter.getLocName()
-          isCollapsable = true
-        })
-      }
+      local eventItems = []
       foreach (eventName in chapter.getEvents())
       {
-        totalRows++
-        if (eventName == curEventId || selIdx < 0)
-          selIdx = totalRows
         local event = ::events.getEvent(eventName)
-        view.items.append({
+        if (needSkipCrossplayEvent && !::events.isEventPlatformOnlyAllowed(event))
+          continue
+
+        eventItems.append({
           itemIcon = ::events.getDifficultyImg(eventName)
           id = eventName
           itemText = getEventNameForListBox(event)
           unseenIcon = bhvUnseen.makeConfigStr(SEEN.EVENTS, eventName)
         })
       }
+
+      if (eventItems.len() > 0)
+        eventItems.insert(0, {
+          itemTag = "campaign_item"
+          id = chapter.name
+          itemText = chapter.getLocName()
+          isCollapsable = true
+        })
+
+      view.items.extend(eventItems)
     }
 
     local data = ::handyman.renderCached("gui/missions/missionBoxItemsList", view)
     guiScene.replaceContentFromText(eventsListObj, data, data.len(), this)
 
-    if (selIdx >= 0)
-      eventsListObj.setValue(selIdx - 1)
-    else
+    local cId = curEventId
+    local selIdx = view.items.findindex(@(i) i.id == cId ) ?? 0
+
+    if (selIdx <= 0)
     {
+      selIdx = 1 //0 index is header
       curEventId = "" //curEvent not found
       curChapterId = ""
     }
+
+    eventsListObj.setValue(selIdx)
     onItemSelectAction(false)
 
     foreach (chapterId, value in getCollapsedChapters())

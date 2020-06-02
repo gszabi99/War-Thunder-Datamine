@@ -377,7 +377,7 @@ local textParamsMap = {
   },
   [HelicopterParams.AGM] = {
     title = @() helicopterState.Agm.count.value <= 0 ? ::loc("HUD/TXT_AGM_SHORT") : getAGCaption()
-    value = @() agmAimState.GuidanceLockState.value != GuidanceLockResult.RESULT_INVALID ? getAGBullets() : ""
+    value = @() getAGBullets()
     blink = @() getAGBlink()
     titleWatched = [
       agmAimState.GuidanceLockState,
@@ -405,7 +405,7 @@ local textParamsMap = {
   },
   [HelicopterParams.AAM] = {
     title = @() helicopterState.Aam.count.value <= 0 ? ::loc("HUD/TXT_AAM_SHORT") : getAACaption()
-    value = @() aamAimState.GuidanceLockState.value != GuidanceLockResult.RESULT_INVALID ? getAABullets() : ""
+    value = @() getAABullets()
     titleWatched = [helicopterState.Aam.count, aamAimState.GuidanceLockState]
     valuesWatched = [helicopterState.Aam.count, helicopterState.Aam.seconds, helicopterState.IsAamEmpty,
       aamAimState.GuidanceLockState]

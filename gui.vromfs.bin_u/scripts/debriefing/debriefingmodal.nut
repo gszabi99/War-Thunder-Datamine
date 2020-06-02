@@ -745,6 +745,9 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       checkFunc = function(userlog) { return trophyItemId == userlog.body.id }
     })
 
+    if (filteredLogs.len() == 0)
+      return
+
     ::gui_start_open_trophy({ [trophyItemId] = filteredLogs })
   }
 
@@ -2636,7 +2639,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
   function updateListsButtons()
   {
     local isAnimDone = state==debrState.done
-    local isReplayReady = ::has_feature("Replays") && ::is_replay_present() && ::is_replay_turned_on()
+    local isReplayReady = ::has_feature("ClientReplay") && ::is_replay_present() && ::is_replay_turned_on()
     local player = getSelectedPlayer()
     local buttonsList = {
       btn_show_all = isAnimDone && giftItems != null && giftItems.len() > VISIBLE_GIFT_NUMBER

@@ -120,7 +120,7 @@ subscriptions.addListenersWithoutEnv({
 return {
   isCrossPlayEnabled = isCrossNetworkPlayEnabled
   setCrossPlayStatus = setCrossNetworkPlayStatus
-  needShowCrossPlayInfo = @() ::is_platform_xboxone || (::is_platform_ps4 && ::has_feature("PS4CrossNetwork"))
+  needShowCrossPlayInfo = @() ::is_platform_xboxone
 
   getCrossNetworkChatStatus = getCrossNetworkChatStatus
   setCrossNetworkChatStatus = setCrossNetworkChatStatus

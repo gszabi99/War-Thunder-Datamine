@@ -1,3 +1,5 @@
+local gestureInProgress = false
+
 class gui_bhv.ControlsInput
 {
   eventMask = ::EV_MOUSE_L_BTN | ::EV_PROCESS_SHORTCUTS | ::EV_MOUSE_EXT_BTN | ::EV_KBD_UP | ::EV_KBD_DOWN | ::EV_JOYSTICK | ::EV_GESTURE
@@ -58,7 +60,7 @@ class gui_bhv.ControlsInput
 
   function setMouseButton(obj, button, is_up)
   {
-    if (!checkActive(obj))
+    if (!checkActive(obj) || gestureInProgress)
       return
     if (!is_up)
     {
@@ -178,6 +180,7 @@ class gui_bhv.ControlsInput
 
     if (event == ::EV_GESTURE_START)
     {
+      gestureInProgress = true
       local btnIndex = getCurrentBtnIndex(obj)
       if (btnIndex >= 0 && !obj["device" + btnIndex].len())
       {
@@ -194,6 +197,7 @@ class gui_bhv.ControlsInput
     {
       if (obj["device0"] != "" && obj["button0"] != "")
         obj.sendNotify("end_edit")
+      gestureInProgress = false
     }
 
     return ::RETCODE_HALT

@@ -272,7 +272,7 @@ local cfg = {
       { shortcut = [ "ID_CAMERA_TPS_HELICOPTER" ], enable = hasCameraExternal }
       { shortcut = [ "ID_CAMERA_VIRTUAL_FPS_HELICOPTER" ], enable = hasCameraVirtualCockpit }
       { shortcut = [ "ID_CAMERA_GUNNER_HELICOPTER" ], enable = hasCameraGunner }
-      { shortcut = [ "ID_CAMERA_VIRTUAL_TARGET_FPS_HELICOPTER" ], enable = hasCameraGunner }
+      { shortcut = [ "ID_CAMERA_VIRTUAL_TARGET_FPS_HELICOPTER" ] }
       null
       null
     ]
