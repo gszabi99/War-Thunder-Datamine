@@ -8,7 +8,8 @@ local { openChangelog } = require("scripts/changelog/openChangelog.nut")
 local openPersonalUnlocksModal = require("scripts/unlocks/personalUnlocksModal.nut")
 local { openUrlByObj } = require("scripts/onlineShop/url.nut")
 local openQrWindow = require("scripts/wndLib/qrWindow.nut")
-local { getTextWithCrossplayIcon, needShowCrossPlayInfo } = require("scripts/social/crossplay.nut")
+local { getTextWithCrossplayIcon,
+        needShowCrossPlayInfo } = require("scripts/social/crossplay.nut")
 
 local cache = { byId = {} }
 
@@ -193,12 +194,13 @@ local list = {
     isHidden = @(handler = null) !::has_feature("Credits") || !(handler && handler instanceof ::gui_handlers.TopMenu)
   }
   TSS = {
-    text = @() "#topmenu/tss"
+    text = @() getTextWithCrossplayIcon(needShowCrossPlayInfo(), ::loc("topmenu/tss"))
     onClickFunc = @(obj, handler) openUrlByObj(obj)
     isDelayed = false
     link = "#url/tss"
     isLink = @() true
-    isHidden = @(...) !::has_feature("AllowExternalLink") || ::is_vendor_tencent()
+    isFeatured = @() true
+    isHidden = @(...) !::has_feature("AllowExternalLink") || !::has_feature("Tournaments") || ::is_vendor_tencent() || ::is_me_newbie()
   }
   STREAMS_AND_REPLAYS = {
     text = @() "#topmenu/streamsAndReplays"
@@ -211,6 +213,7 @@ local list = {
     isDelayed = false
     link = "#url/streamsAndReplays"
     isLink = @() !::has_feature("ShowUrlQrCode")
+    isFeatured = @() !::has_feature("ShowUrlQrCode")
     isHidden = @(...) !::has_feature("ServerReplay") || (!::has_feature("AllowExternalLink") && !::has_feature("ShowUrlQrCode"))
        || ::is_vendor_tencent() || !::isInMenu()
   }

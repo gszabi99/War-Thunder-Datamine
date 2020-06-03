@@ -1,4 +1,6 @@
 local antiCheat = require("scripts/penitentiary/antiCheat.nut")
+local { getTextWithCrossplayIcon,
+        needShowCrossPlayInfo } = require("scripts/social/crossplay.nut")
 
 class ::g_invites_classes.TournamentBattle extends ::BaseInvite
 {
@@ -27,24 +29,30 @@ class ::g_invites_classes.TournamentBattle extends ::BaseInvite
 
   function getTournamentBattleLink()
   {
-    return ::BaseInvite.chatLinkPrefix + "TB_" + battleId;
+    return $"{::BaseInvite.chatLinkPrefix}TB_{battleId}"
   }
 
   function getChatInviteText()
   {
-    local nameF = "<Link=%s><Color="+inviteActiveColor+">%s</Color></Link>"
-
-    return ::format(nameF, getTournamentBattleLink(), ::loc("multiplayer/invite_to_tournament_battle_link_text"))
+    return "<Link={0}>{1}</Link>".subst(
+      getTournamentBattleLink(),
+      ::colorize(inviteActiveColor,
+        getTextWithCrossplayIcon(
+          needShowCrossPlayInfo(),
+          ::loc("multiplayer/invite_to_tournament_battle_link_text")
+        )
+      )
+    )
   }
 
   function getInviteText()
   {
-    return ::loc("multiplayer/invite_to_tournament_battle_message")
+    return getTextWithCrossplayIcon(needShowCrossPlayInfo(), ::loc("multiplayer/invite_to_tournament_battle_message"))
   }
 
   function getPopupText()
   {
-    return ::loc("multiplayer/invite_to_tournament_battle_message")
+    return getInviteText()
   }
 
   function getIcon()
@@ -83,6 +91,24 @@ class ::g_invites_classes.TournamentBattle extends ::BaseInvite
     }
   }
 
+  function haveRestrictions()
+  {
+    return !::isInMenu() || !isAvailableByCrossPlay() || isOutdated()
+  }
+
+  function getRestrictionText()
+  {
+    if (!haveRestrictions())
+      return ""
+
+    if (isOutdated())
+      return ::loc("multiplayer/invite_is_overtimed")
+
+    if (!isAvailableByCrossPlay())
+      return ::loc("xbox/crossPlayRequired")
+
+    return ::loc("invite/session/cant_apply_in_flight")
+  }
 
   function accept()
   {
@@ -95,7 +121,10 @@ class ::g_invites_classes.TournamentBattle extends ::BaseInvite
     if (!antiCheat.showMsgboxIfEacInactive({enableEAC = true}))
       return
 
-    ::dagor.debug("Going to join to battleId(" + battleId + ") via accepted invite");
+    if (!isAvailableByCrossPlay())
+      return ::g_popups.add(null, ::loc("xbox/crossPlayRequired"))
+
+    ::dagor.debug($"Going to join to battleId({battleId}) via accepted invite")
     ::SessionLobby.joinBattle(battleId)
 
     isAccepted = true

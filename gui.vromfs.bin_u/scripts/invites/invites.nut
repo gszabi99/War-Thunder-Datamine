@@ -256,7 +256,7 @@ g_invites.fetchNewInvitesFromUserlogs <- function fetchNewInvitesFromUserlogs()
     }
     else if (blk.type == ::EULT_INVITE_TO_TOURNAMENT)
     {
-      if (!::has_feature("TournamentInvites"))
+      if (!::has_feature("Tournaments"))
       {
         ::disable_user_log_entry(i)
         continue

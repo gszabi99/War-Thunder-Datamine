@@ -2,6 +2,9 @@ local time = require("scripts/time.nut")
 local { getWeaponNameText } = require("scripts/weaponry/weaponryVisual.nut")
 local { getModificationName } = require("scripts/weaponry/bulletsInfo.nut")
 local { getEntitlementConfig, getEntitlementName, getEntitlementPrice } = require("scripts/onlineShop/entitlements.nut")
+local { isCrossPlayEnabled,
+        getTextWithCrossplayIcon,
+        needShowCrossPlayInfo } = require("scripts/social/crossplay.nut")
 
 ::update_repair_cost <- function update_repair_cost(units, repairCost)
 {
@@ -1452,8 +1455,8 @@ local { getEntitlementConfig, getEntitlementName, getEntitlementPrice } = requir
 
         if (desc!="")
           res.description <- desc
-        if (log?.battleId && ::has_feature("TournamentInvites"))
-          res.buttonName = ::loc("chat/btnJoin")
+        if (log?.battleId && ::has_feature("Tournaments") && isCrossPlayEnabled())
+          res.buttonName = getTextWithCrossplayIcon(needShowCrossPlayInfo(), ::loc("chat/btnJoin"))
     }
   }
   else if (log.type == ::EULT_CLAN_UNITS)

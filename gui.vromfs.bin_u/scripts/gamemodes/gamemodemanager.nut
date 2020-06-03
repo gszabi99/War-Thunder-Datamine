@@ -2,7 +2,8 @@ local RB_GM_TYPE = require("scripts/gameModes/rbGmTypes.nut")
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
-local { isCrossPlayEnabled, needShowCrossPlayInfo } = require("scripts/social/crossplay.nut")
+local { isCrossPlayEnabled,
+        needShowCrossPlayInfo } = require("scripts/social/crossplay.nut")
 
 ::featured_modes <- [
   {
@@ -47,12 +48,32 @@ local { isCrossPlayEnabled, needShowCrossPlayInfo } = require("scripts/social/cr
     modeId = "tss_featured_game_mode"
     text = @() ::loc("mainmenu/btnTournamentsTSS")
     textDescription = @() null
-    startFunction = @() openUrl(::loc("url/tss_all_tournaments"), false, false)
+    startFunction = function() {
+      if (isCrossPlayEnabled())
+        openUrl(::loc("url/tss_all_tournaments"), false, false)
+      else
+        ::showInfoMsgBox(::loc("xbox/actionNotAvailableCrossNetworkPlay"))
+    }
     isWide = false
     image = @() "#ui/images/game_modes_tiles/tss_" + (isWide ? "wide" : "thin") + ".jpg?P1"
     videoPreview = null
-    isVisible = @() !::is_me_newbie() && ::is_platform_pc
+    isVisible = @() !::is_vendor_tencent() && !::is_me_newbie() && ::has_feature("Tournaments") && ::has_feature("AllowExternalLink")
     hasNewIconWidget = true
+    isCrossPlayRequired = needShowCrossPlayInfo
+    inactiveColor = @() !isCrossPlayEnabled()
+    crossPlayRestricted = @() !isCrossPlayEnabled()
+    crossplayTooltip = function() {
+      if (!needShowCrossPlayInfo()) //No need tooltip on other platforms
+        return null
+
+      //Always send to other platform if enabled
+      //Need to notify about it
+      if (isCrossPlayEnabled())
+        return ::loc("xbox/crossPlayEnabled")
+
+      //Notify that crossplay is strongly required
+      return ::loc("xbox/crossPlayRequired")
+    }
   }
   {
     /*events*/

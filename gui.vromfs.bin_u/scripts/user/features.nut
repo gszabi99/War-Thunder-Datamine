@@ -245,7 +245,7 @@ local defaults = ::Watched({  //def value when feature not found in game_setting
   AllowXboxAccountLinking = false
 
   MapPreferences = false
-  TournamentInvites = true
+  Tournaments = true
 
   PS4CrossNetwork = false
 

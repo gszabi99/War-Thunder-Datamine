@@ -1,4 +1,5 @@
 local antiCheat = require("scripts/penitentiary/antiCheat.nut")
+local { isCrossPlayEnabled } = require("scripts/social/crossplay.nut")
 
 ::hidden_userlogs <- [
   ::EULT_NEW_STREAK,
@@ -480,6 +481,9 @@ class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
 
       if (!antiCheat.showMsgboxIfEacInactive({enableEAC = true}))
         return
+
+      if (!isCrossPlayEnabled())
+        return ::g_popups.add(null, ::colorize("warningTextColor", ::loc("xbox/crossPlayRequired")))
 
       ::dagor.debug($"join to tournament battle with id {battleId}")
       ::SessionLobby.joinBattle(log.battleId)
