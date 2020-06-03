@@ -49,7 +49,7 @@ local { isCrossPlayEnabled,
     text = @() ::loc("mainmenu/btnTournamentsTSS")
     textDescription = @() null
     startFunction = function() {
-      if (isCrossPlayEnabled())
+      if (!needShowCrossPlayInfo() || isCrossPlayEnabled())
         openUrl(::loc("url/tss_all_tournaments"), false, false)
       else
         ::showInfoMsgBox(::loc("xbox/actionNotAvailableCrossNetworkPlay"))
@@ -60,8 +60,8 @@ local { isCrossPlayEnabled,
     isVisible = @() !::is_vendor_tencent() && !::is_me_newbie() && ::has_feature("Tournaments") && ::has_feature("AllowExternalLink")
     hasNewIconWidget = true
     isCrossPlayRequired = needShowCrossPlayInfo
-    inactiveColor = @() !isCrossPlayEnabled()
-    crossPlayRestricted = @() !isCrossPlayEnabled()
+    inactiveColor = @() needShowCrossPlayInfo() && !isCrossPlayEnabled()
+    crossPlayRestricted = @() needShowCrossPlayInfo() && !isCrossPlayEnabled()
     crossplayTooltip = function() {
       if (!needShowCrossPlayInfo()) //No need tooltip on other platforms
         return null

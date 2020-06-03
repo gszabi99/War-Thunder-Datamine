@@ -1455,7 +1455,7 @@ local { isCrossPlayEnabled,
 
         if (desc!="")
           res.description <- desc
-        if (log?.battleId && ::has_feature("Tournaments") && isCrossPlayEnabled())
+        if (log?.battleId && ::has_feature("Tournaments") && (!needShowCrossPlayInfo() || isCrossPlayEnabled()))
           res.buttonName = getTextWithCrossplayIcon(needShowCrossPlayInfo(), ::loc("chat/btnJoin"))
     }
   }

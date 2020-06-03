@@ -9,7 +9,8 @@ local openPersonalUnlocksModal = require("scripts/unlocks/personalUnlocksModal.n
 local { openUrlByObj } = require("scripts/onlineShop/url.nut")
 local openQrWindow = require("scripts/wndLib/qrWindow.nut")
 local { getTextWithCrossplayIcon,
-        needShowCrossPlayInfo } = require("scripts/social/crossplay.nut")
+        needShowCrossPlayInfo,
+        isCrossPlayEnabled } = require("scripts/social/crossplay.nut")
 
 local cache = { byId = {} }
 
@@ -195,7 +196,12 @@ local list = {
   }
   TSS = {
     text = @() getTextWithCrossplayIcon(needShowCrossPlayInfo(), ::loc("topmenu/tss"))
-    onClickFunc = @(obj, handler) openUrlByObj(obj)
+    onClickFunc = function(obj, handler) {
+      if (!needShowCrossPlayInfo() || isCrossPlayEnabled())
+        openUrlByObj(obj)
+      else
+        ::showInfoMsgBox(::loc("xbox/actionNotAvailableCrossNetworkPlay"))
+    }
     isDelayed = false
     link = "#url/tss"
     isLink = @() true
