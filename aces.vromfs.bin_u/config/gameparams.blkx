@@ -67,6 +67,8 @@
   "detectSpawnIndicatorRandomRange": [5.0,500.0],
   "detectIndicatorTreeTransparencyThreshold": 0.01,
   "squadTargetIndicatorRandomRange": [15.0,500.0],
+  "rocketIndicatorColdRocketTimeOut": 2.0,
+  "rocketIndicatorShowFriendly": false,
   "preciseForestall": false,
   "bombDropDownOnRendInstCollision": false,
   "criticalHillAngle": 25.0,
@@ -1566,6 +1568,7 @@
       "aircraftFriendlyFireForBanOnly": true,
       "enableLeaveKills": true,
       "airToAirMissileDetection": true,
+      "rocketSpotting": false,
       "nightVisionInTPS": true,
       "hudDetectAlly": false,
       "keepDeadShipOnMap": true,
@@ -1626,6 +1629,7 @@
       "aircraftFriendlyFireForBanOnly": false,
       "enableLeaveKills": true,
       "airToAirMissileDetection": true,
+      "rocketSpotting": false,
       "nightVisionInTPS": true,
       "hudDetectAlly": false,
       "keepDeadShipOnMap": true,
@@ -1686,6 +1690,7 @@
       "aircraftFriendlyFireForBanOnly": false,
       "enableLeaveKills": true,
       "airToAirMissileDetection": false,
+      "rocketSpotting": false,
       "nightVisionInTPS": false,
       "hudDetectAlly": true,
       "keepDeadShipOnMap": true,
@@ -1748,6 +1753,7 @@
       "aircraftFriendlyFireForBanOnly": false,
       "enableLeaveKills": true,
       "airToAirMissileDetection": true,
+      "rocketSpotting": false,
       "nightVisionInTPS": true,
       "hudDetectAlly": false,
       "keepDeadShipOnMap": true,
@@ -1809,6 +1815,7 @@
       "aircraftFriendlyFireForBanOnly": false,
       "enableLeaveKills": true,
       "airToAirMissileDetection": false,
+      "rocketSpotting": false,
       "nightVisionInTPS": false,
       "hudDetectAlly": true,
       "keepDeadShipOnMap": true,
@@ -1870,6 +1877,7 @@
       "aircraftFriendlyFireForBanOnly": true,
       "enableLeaveKills": true,
       "airToAirMissileDetection": true,
+      "rocketSpotting": false,
       "nightVisionInTPS": true,
       "hudDetectAlly": false,
       "keepDeadShipOnMap": true,
@@ -1931,6 +1939,7 @@
       "aircraftFriendlyFireForBanOnly": false,
       "enableLeaveKills": true,
       "airToAirMissileDetection": true,
+      "rocketSpotting": false,
       "nightVisionInTPS": true,
       "hudDetectAlly": false,
       "keepDeadShipOnMap": true,
@@ -2023,6 +2032,7 @@
         "hudDrawBombingZoneThroughCloud": true,
         "shipBrokenRangefinderErrorMult": 2.0,
         "blockCooldownAfterEarlyAttemptToAirstreak": 10.0,
+        "multRocketDistanceIndicator": 1.0,
         "repairWithoutToolkitAutomatically": true,
         "HeliFlutter_Effect": true,
         "UseGunDirForATMG": false,
@@ -2086,6 +2096,7 @@
         "shipBrokenRangefinderErrorMult": 2.0,
         "blockCooldownAfterEarlyAttemptToAirstreak": 10.0,
         "multTorpedoDistanceIndicator": 0.125,
+        "multRocketDistanceIndicator": 1.0,
         "repairWithoutToolkitAutomatically": false,
         "HeliFlutter_Effect": true,
         "UseGunDirForATMG": true,
@@ -2148,6 +2159,7 @@
         "hudDrawBombingZoneThroughCloud": true,
         "shipBrokenRangefinderErrorMult": 2.0,
         "blockCooldownAfterEarlyAttemptToAirstreak": 10.0,
+        "multRocketDistanceIndicator": 1.0,
         "HeliFlutter_Effect": true,
         "UseGunDirForATMG": true,
         "autoSightDistanceCorrection": true
@@ -3151,6 +3163,14 @@
       },
       "on": {
         "airToAirMissileDetection": true
+      }
+    },
+    "rocketSpotting": {
+      "off": {
+        "rocketSpotting": false
+      },
+      "on": {
+        "rocketSpotting": true
       }
     },
     "nightVisionInTPS": {

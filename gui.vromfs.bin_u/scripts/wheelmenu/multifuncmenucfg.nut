@@ -242,7 +242,7 @@ local cfg = {
       { shortcut = [ "ID_TOGGLE_PERIODIC_FLARES", "ID_TOGGLE_PERIODIC_FLARES_HELICOPTER" ],
           enable = hasCountermeasureFlareGuns }
       { shortcut = [ "ID_TOGGLE_MLWS_FLARES_SLAVING", "ID_TOGGLE_MLWS_FLARES_SLAVING_HELICOPTER" ],
-          enable =  @(unitId) hasCountermeasureFlareGuns && hasMissileLaunchWarningSystem }
+          enable =  @(unitId) hasCountermeasureFlareGuns(unitId) && hasMissileLaunchWarningSystem(unitId) }
       null
       null
       null

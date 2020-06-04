@@ -1539,221 +1539,608 @@
     }
   },
   {
-    "indicators": {
-      "hpProgressSize": [80.0,10.0],
-      "hpProgressTextColor": "#e1ffffff",
-      "distanceIndicators": 1100.0,
-      "distanceSmallIndicators": 4500.0,
-      "distanceFarAway": 9000.0,
-      "distancePreSpecifiedTarget": 1500.0,
-      "distanceSpecifiedTarget": 1200.0,
-      "distanceFullySpecifiedTarget": 500.0,
-      "alphaNotLockedTarget": 0.75,
-      "alphaLockedTarget": 0.95,
-      "objectivesBlinkColor": "#80808094",
-      "objectivesBlinkFxColor": "#80808094",
-      "blinkFreq": 2.0,
-      "showIndicatorCenterAngle": 10.0,
-      "font": "tiny_text_hud",
-      "smallFont": "very_tiny_text_hud",
-      "fontColorFriend": "#1429c9f5",
-      "fontColorEnemy": "#8c0400ff",
-      "fontColorTeam": "#24d921e6",
-      "fontColorUseless": "#320a0a76",
-      "fontColorOwnPlayer": "#fac81eff",
-      "fontFxScale": 24,
-      "fontFxColor": "#00000050",
-      "uselessFontFxOpacity": 0.3,
-      "fontColorFriendV2": "#fafaffff",
-      "fontColorEnemyV2": "#fffafaff",
-      "fontColorTeamV2": "#f0f5f0ff",
-      "fontColorUselessV2": "#b4b4b4dc",
-      "fontColorOwnPlayerV2": "#fafaf0ff",
-      "fontFxScaleV2": 45,
-      "notVisibleTextMultiplier": 0.7,
-      "uselessFontFxOpacityV2": 0.7,
-      "fontFxType": 3,
-      "fontFxOffset": 0,
-      "notVisibleColorAlpha": 128,
-      "notVisibleK": 0.75,
-      "notVisibleTextAlpha": 100,
-      "notVisibleTextK": 0.25,
-      "colorFriend": "#4880ffff",
-      "colorFriendGround": "#3548f0ff",
-      "colorEnemy": "#fa2032ff",
-      "colorEnemyGround": "#d2241dff",
-      "colorTeam": "#24d921ff",
-      "colorTeamGround": "#57d756ff",
-      "colorOwnPlayer": "#fac81eff",
-      "colorUseless": "#320a0aff",
-      "colorAirWaypoint": "#efff37ff",
-      "colorFarAway": "#00000082",
-      "colorWaypoint": "#ffaa14ff",
-      "colorWaypointAlly": "#145cffff",
-      "colorWaypointEnemy": "#e6001eff",
-      "alphaRange": [3000.0,5000.0],
-      "targetIndicatorOffset": [0.0,0.0],
-      "colorEnemyObjective": "#75000096",
-      "objectivesEnemyBlinkColor": "#c89608c8",
-      "colorFriendObjective": "#03159696",
-      "objectivesEnemyBlinkFxColor": "#00000032",
-      "colorWinch": "#ffffffc8",
-      "colorWinchHover": "#ffff32ff",
-      "colorHitUnitIndicator": "#c83208e6",
-      "colorSquadTargetIndicator": "#fafa08e6",
-      "iconMoving": "moving",
-      "iconFighter": "fighter",
-      "iconFighterLoS": "fighter_los",
-      "iconFighterSmall": "fighter_small",
-      "iconBomber": "bomber",
-      "iconBomberLoS": "bomber_los",
-      "iconBomberSmall": "bomber_small",
-      "iconAssault": "assault",
-      "iconAssaultLoS": "assault_los",
-      "iconGround": "mark_land",
-      "iconGroundTarget": "target_land",
-      "iconGroundSmall": "mark_land_small",
-      "iconGroundSmallTarget": "target_land_small",
-      "iconWaypoint": "waypoint",
-      "iconFarAway": "far_away_object",
-      "iconResque": "radar_circle",
-      "iconTarget": "target_selected",
-      "iconWinch": "winch_icon",
-      "iconHitUnitIndicator": "hit_unit_icon",
-      "iconWwUnitIndicator": "big_bomber_radar",
-      "iconWwMissionTargetUnitIndicator": "target_unit_icon",
-      "iconRearmZone": "icon_weapons_in_progress",
-      "iconRearmZoneSmall": "icon_weapons_in_progress",
-      "iconExitZone": "objective_base_exit",
-      "iconScoutBinocular": "binocular",
-      "iconExitZoneSmall": "objective_base_exit",
-      "iconBreach": "icon_repair_in_progress",
-      "iconBreachLeft": "waypoint_big",
-      "iconLeakage": "leaking_icon",
-      "iconShipAiGunnersTarget0": "ship_main_caliber_sight",
-      "iconShipAiGunnersTarget1": "ship_secondary_caliber_sight",
-      "iconShipAiGunnersTarget3": "ship_aa_caliber_sight",
-      "iconModulesOfAirfieldAirfield": "basezone_landing_strip.svg:60:60:K",
-      "iconModulesOfAirfieldStorage": "basezone_warehouses.svg:60:60:K",
-      "iconModulesOfAirfieldDwelling": "basezone_parking.svg:60:60:K",
-      "iconModulesOfAirfieldParking": "basezone_living_sector.svg:60:60:K",
-      "possitionIconModAirfieldAirfield": [0.5,0.5],
-      "possitionIconModAirfieldStorage": [0.5,-0.5],
-      "possitionIconModAirfieldDwelling": [-0.5,-0.5],
-      "possitionIconModAirfieldParking": [-0.5,0.5],
-      "aiTargetIconScale": 2.0,
-      "iconBomb": "bomb_mark",
-      "colorBomb": "#ff4646ff",
-      "iconTorpedoTrail": "big_wheeled_radar",
-      "torpedoTrailCount": 20,
-      "torpedoTrailInterval": 0.2,
-      "torpedoTrailOpacity": [0.8,0.1],
-      "torpedoTrailScale": [0.7,0.3],
-      "iconTorpedo": "big_wheeled_radar",
-      "iconTorpedoWithActiveSonar": "big_wheeled_radar",
-      "colorTorpedo": "#ff4646ff",
-      "colorTorpedoFriend": "#4646ffff",
-      "maxTorpedoDistanceIndicator": 400.0,
-      "maxFriendTorpedoDistanceIndicator": 1000.0,
-      "iconRocket": "objective_captureZone_next_default",
-      "textRocket": "msl.",
-      "maxRocketDistanceIndicator": 300.0,
-      "offsetRocket": 0.5,
-      "scaleRocket": 1.0,
-      "iconCounterMeasure": "anti_acoustic_mark",
-      "colorCounterMeasure": "#ffffffff",
-      "iconDiveBomb": "depth_charge_mark",
-      "colorDiveBomb": "#ff4646ff",
-      "iconMine": "naval_mine_mark",
-      "colorMine": "#ff4646ff",
-      "colorMineFriend": "#4646ffff",
-      "targetFrameMaxScreenHeightPart": 0.15,
-      "targetFrameMaxScale": 2.0,
-      "targetFrameOpacityWithoutZ": 0.5,
-      "markerVerticalShift": 7.0,
-      "markerVerticalShiftMeters": 10.0,
-      "markerVerticalShiftScreenMin": 6.0,
-      "markerVerticalShiftScreenMax": 8.0,
-      "iconWpPrimBig": "waypoint_big_prim",
-      "iconWpPrimSmall": "waypoint_small_prim",
-      "iconWpPrimBigLos": "waypoint_big_prim_los",
-      "iconWpPrimSmallLos": "waypoint_small_prim_los",
-      "iconWpSecBig": "waypoint_big_sec",
-      "iconWpSecSmall": "waypoint_small_sec",
-      "iconWpSecBigLos": "waypoint_big_sec_los",
-      "iconWpSecSmallLos": "waypoint_small_sec_los",
-      "wpSmallIconsDist": 5000.0,
-      "wpLOSAlpha": 0.12,
-      "smallFighterFriend": "mark_small_fighter_friend",
-      "smallFighterEnemy": "mark_small_fighter_enemy",
-      "smallFighterTeam": "mark_small_fighter_team",
-      "smallBomberFriend": "mark_small_bomber_friend",
-      "smallBomberEnemy": "mark_small_bomber_enemy",
-      "smallBomberTeam": "mark_small_bomber_team",
-      "smallLandFriend": "mark_small_land_friend",
-      "smallLandEnemy": "mark_small_land_enemy",
-      "smallAirportFriend": "mark_small_airport_friend",
-      "smallAirportEnemy": "mark_small_airport_enemy",
-      "smallFighterFriendUseless": "mark_small_fighter_friend_useless",
-      "smallFighterEnemyUseless": "mark_small_fighter_enemy_useless",
-      "smallFighterTeamUseless": "mark_small_fighter_team_useless",
-      "smallBomberFriendUseless": "mark_small_bomber_friend_useless",
-      "smallBomberEnemyUseless": "mark_small_bomber_enemy_useless",
-      "smallBomberTeamUseless": "mark_small_bomber_team_useless",
-      "smallLandFriendUseless": "mark_small_land_friend_useless",
-      "smallLandEnemyUseless": "mark_small_land_enemy_useless",
-      "smallAirportFriendUseless": "mark_small_airport_friend_useless",
-      "smallAirportEnemyUseless": "mark_small_airport_enemy_useless",
-      "smallFighterFriendTarget": "target_small_fighter_friend",
-      "smallFighterEnemyTarget": "target_small_fighter_enemy",
-      "smallFighterTeamTarget": "target_small_fighter_team",
-      "smallBomberFriendTarget": "target_small_bomber_friend",
-      "smallBomberEnemyTarget": "target_small_bomber_enemy",
-      "smallBomberTeamTarget": "target_small_bomber_team",
-      "smallLandFriendTarget": "target_small_land_friend",
-      "smallLandEnemyTarget": "target_small_land_enemy",
-      "smallAirportFriendTarget": "target_small_airport_friend",
-      "smallAirportEnemyTarget": "target_small_airport_enemy",
-      "markAttack": "mark_attack",
-      "markCover": "mark_cover",
-      "metricDivider": 0.1,
-      "feetDivider": 0.01,
-      "fortificationRadius": 7.0,
-      "ourCarrierIndicatorDistance": 200.0,
-      "tankHudIndicatorAlpha": 140,
-      "tankHudIconScaleNear": 0.7,
-      "tankHudIconScaleFar": 0.7,
-      "tankHudIconDistNear": 200.0,
-      "tankHudIconDistFar": 1000.0,
-      "squadTargetGroundIndicatorScale": 1.0,
-      "squadTargetAirIndicatorScale": 1.0,
-      "topPictureShift": 0.0,
-      "airfieldIndicatorHeight": 50.0,
-      "indicatorsForTanks": {
-        "distanceFullySpecifiedTarget": 50.0
+    "indicators": [
+      {
+        "hpProgressSize": [80.0,10.0]
       },
-      "airfieldModulesColors": [
-        {
-          "row": [0.0,0.0,0.0,0.0]
-        },
-        {
-          "row": [255.0,70.0,70.0,0.25]
-        },
-        {
-          "row": [255.0,255.0,70.0,0.75]
-        },
-        {
-          "row": [70.0,255.0,70.0,1.0]
+      {
+        "hpProgressTextColor": "#e1ffffff"
+      },
+      {
+        "distanceIndicators": 1100.0
+      },
+      {
+        "distanceSmallIndicators": 4500.0
+      },
+      {
+        "distanceFarAway": 9000.0
+      },
+      {
+        "distancePreSpecifiedTarget": 1500.0
+      },
+      {
+        "distanceSpecifiedTarget": 1200.0
+      },
+      {
+        "distanceFullySpecifiedTarget": 500.0
+      },
+      {
+        "alphaNotLockedTarget": 0.75
+      },
+      {
+        "alphaLockedTarget": 0.95
+      },
+      {
+        "objectivesBlinkColor": "#80808094"
+      },
+      {
+        "objectivesBlinkFxColor": "#80808094"
+      },
+      {
+        "blinkFreq": 2.0
+      },
+      {
+        "showIndicatorCenterAngle": 10.0
+      },
+      {
+        "font": "tiny_text_hud"
+      },
+      {
+        "smallFont": "very_tiny_text_hud"
+      },
+      {
+        "fontColorFriend": "#1429c9f5"
+      },
+      {
+        "fontColorEnemy": "#8c0400ff"
+      },
+      {
+        "fontColorTeam": "#24d921e6"
+      },
+      {
+        "fontColorUseless": "#320a0a76"
+      },
+      {
+        "fontColorOwnPlayer": "#fac81eff"
+      },
+      {
+        "fontFxScale": 24
+      },
+      {
+        "fontFxColor": "#00000050"
+      },
+      {
+        "uselessFontFxOpacity": 0.3
+      },
+      {
+        "fontColorFriendV2": "#fafaffff"
+      },
+      {
+        "fontColorEnemyV2": "#fffafaff"
+      },
+      {
+        "fontColorTeamV2": "#f0f5f0ff"
+      },
+      {
+        "fontColorUselessV2": "#b4b4b4dc"
+      },
+      {
+        "fontColorOwnPlayerV2": "#fafaf0ff"
+      },
+      {
+        "fontFxScaleV2": 45
+      },
+      {
+        "notVisibleTextMultiplier": 0.7
+      },
+      {
+        "uselessFontFxOpacityV2": 0.7
+      },
+      {
+        "fontFxType": 3
+      },
+      {
+        "fontFxOffset": 0
+      },
+      {
+        "notVisibleColorAlpha": 128
+      },
+      {
+        "notVisibleK": 0.75
+      },
+      {
+        "notVisibleTextAlpha": 100
+      },
+      {
+        "notVisibleTextK": 0.25
+      },
+      {
+        "colorFriend": "#4880ffff"
+      },
+      {
+        "colorFriendGround": "#3548f0ff"
+      },
+      {
+        "colorEnemy": "#fa2032ff"
+      },
+      {
+        "colorEnemyGround": "#d2241dff"
+      },
+      {
+        "colorTeam": "#24d921ff"
+      },
+      {
+        "colorTeamGround": "#57d756ff"
+      },
+      {
+        "colorOwnPlayer": "#fac81eff"
+      },
+      {
+        "colorUseless": "#320a0aff"
+      },
+      {
+        "colorAirWaypoint": "#efff37ff"
+      },
+      {
+        "colorFarAway": "#00000082"
+      },
+      {
+        "colorWaypoint": "#ffaa14ff"
+      },
+      {
+        "colorWaypointAlly": "#145cffff"
+      },
+      {
+        "colorWaypointEnemy": "#e6001eff"
+      },
+      {
+        "alphaRange": [3000.0,5000.0]
+      },
+      {
+        "targetIndicatorOffset": [0.0,0.0]
+      },
+      {
+        "colorEnemyObjective": "#75000096"
+      },
+      {
+        "objectivesEnemyBlinkColor": "#c89608c8"
+      },
+      {
+        "colorFriendObjective": "#03159696"
+      },
+      {
+        "objectivesEnemyBlinkFxColor": "#00000032"
+      },
+      {
+        "colorWinch": "#ffffffc8"
+      },
+      {
+        "colorWinchHover": "#ffff32ff"
+      },
+      {
+        "colorHitUnitIndicator": "#c83208e6"
+      },
+      {
+        "colorSquadTargetIndicator": "#fafa08e6"
+      },
+      {
+        "iconMoving": "moving"
+      },
+      {
+        "iconFighter": "fighter"
+      },
+      {
+        "iconFighterLoS": "fighter_los"
+      },
+      {
+        "iconFighterSmall": "fighter_small"
+      },
+      {
+        "iconBomber": "bomber"
+      },
+      {
+        "iconBomberLoS": "bomber_los"
+      },
+      {
+        "iconBomberSmall": "bomber_small"
+      },
+      {
+        "iconAssault": "assault"
+      },
+      {
+        "iconAssaultLoS": "assault_los"
+      },
+      {
+        "iconGround": "mark_land"
+      },
+      {
+        "iconGroundTarget": "target_land"
+      },
+      {
+        "iconGroundSmall": "mark_land_small"
+      },
+      {
+        "iconGroundSmallTarget": "target_land_small"
+      },
+      {
+        "iconWaypoint": "waypoint"
+      },
+      {
+        "iconFarAway": "far_away_object"
+      },
+      {
+        "iconResque": "radar_circle"
+      },
+      {
+        "iconTarget": "target_selected"
+      },
+      {
+        "iconWinch": "winch_icon"
+      },
+      {
+        "iconHitUnitIndicator": "hit_unit_icon"
+      },
+      {
+        "iconWwUnitIndicator": "big_bomber_radar"
+      },
+      {
+        "iconWwMissionTargetUnitIndicator": "target_unit_icon"
+      },
+      {
+        "iconRearmZone": "icon_weapons_in_progress"
+      },
+      {
+        "iconRearmZoneSmall": "icon_weapons_in_progress"
+      },
+      {
+        "iconExitZone": "objective_base_exit"
+      },
+      {
+        "iconScoutBinocular": "binocular"
+      },
+      {
+        "iconExitZoneSmall": "objective_base_exit"
+      },
+      {
+        "iconBreach": "icon_repair_in_progress"
+      },
+      {
+        "iconBreachLeft": "waypoint_big"
+      },
+      {
+        "iconLeakage": "leaking_icon"
+      },
+      {
+        "iconShipAiGunnersTarget0": "ship_main_caliber_sight"
+      },
+      {
+        "iconShipAiGunnersTarget1": "ship_secondary_caliber_sight"
+      },
+      {
+        "iconShipAiGunnersTarget3": "ship_aa_caliber_sight"
+      },
+      {
+        "iconModulesOfAirfieldAirfield": "basezone_landing_strip.svg:60:60:K"
+      },
+      {
+        "iconModulesOfAirfieldStorage": "basezone_warehouses.svg:60:60:K"
+      },
+      {
+        "iconModulesOfAirfieldDwelling": "basezone_parking.svg:60:60:K"
+      },
+      {
+        "iconModulesOfAirfieldParking": "basezone_living_sector.svg:60:60:K"
+      },
+      {
+        "possitionIconModAirfieldAirfield": [0.5,0.5]
+      },
+      {
+        "possitionIconModAirfieldStorage": [0.5,-0.5]
+      },
+      {
+        "possitionIconModAirfieldDwelling": [-0.5,-0.5]
+      },
+      {
+        "possitionIconModAirfieldParking": [-0.5,0.5]
+      },
+      {
+        "aiTargetIconScale": 2.0
+      },
+      {
+        "iconBomb": "bomb_mark"
+      },
+      {
+        "colorBomb": "#ff4646ff"
+      },
+      {
+        "iconTorpedoTrail": "big_wheeled_radar"
+      },
+      {
+        "torpedoTrailCount": 20
+      },
+      {
+        "torpedoTrailInterval": 0.2
+      },
+      {
+        "torpedoTrailOpacity": [0.8,0.1]
+      },
+      {
+        "torpedoTrailScale": [0.7,0.3]
+      },
+      {
+        "iconTorpedo": "big_wheeled_radar"
+      },
+      {
+        "iconTorpedoWithActiveSonar": "big_wheeled_radar"
+      },
+      {
+        "colorTorpedo": "#ff4646ff"
+      },
+      {
+        "colorTorpedoFriend": "#4646ffff"
+      },
+      {
+        "maxTorpedoDistanceIndicator": 400.0
+      },
+      {
+        "maxFriendTorpedoDistanceIndicator": 1000.0
+      },
+      {
+        "maxRocketDistanceIndicator": 3500.0
+      },
+      {
+        "iconMissile": "objective_captureZone_next_default"
+      },
+      {
+        "iconRocket": "objective_captureZone_next_default"
+      },
+      {
+        "maxRocketDistanceIndicator": 300.0
+      },
+      {
+        "offsetRocket": 0.5
+      },
+      {
+        "scaleRocket": 1.0
+      },
+      {
+        "iconCounterMeasure": "anti_acoustic_mark"
+      },
+      {
+        "colorCounterMeasure": "#ffffffff"
+      },
+      {
+        "iconDiveBomb": "depth_charge_mark"
+      },
+      {
+        "colorDiveBomb": "#ff4646ff"
+      },
+      {
+        "iconMine": "naval_mine_mark"
+      },
+      {
+        "colorMine": "#ff4646ff"
+      },
+      {
+        "colorMineFriend": "#4646ffff"
+      },
+      {
+        "targetFrameMaxScreenHeightPart": 0.15
+      },
+      {
+        "targetFrameMaxScale": 2.0
+      },
+      {
+        "targetFrameOpacityWithoutZ": 0.5
+      },
+      {
+        "markerVerticalShift": 7.0
+      },
+      {
+        "markerVerticalShiftMeters": 10.0
+      },
+      {
+        "markerVerticalShiftScreenMin": 6.0
+      },
+      {
+        "markerVerticalShiftScreenMax": 8.0
+      },
+      {
+        "iconWpPrimBig": "waypoint_big_prim"
+      },
+      {
+        "iconWpPrimSmall": "waypoint_small_prim"
+      },
+      {
+        "iconWpPrimBigLos": "waypoint_big_prim_los"
+      },
+      {
+        "iconWpPrimSmallLos": "waypoint_small_prim_los"
+      },
+      {
+        "iconWpSecBig": "waypoint_big_sec"
+      },
+      {
+        "iconWpSecSmall": "waypoint_small_sec"
+      },
+      {
+        "iconWpSecBigLos": "waypoint_big_sec_los"
+      },
+      {
+        "iconWpSecSmallLos": "waypoint_small_sec_los"
+      },
+      {
+        "wpSmallIconsDist": 5000.0
+      },
+      {
+        "wpLOSAlpha": 0.12
+      },
+      {
+        "smallFighterFriend": "mark_small_fighter_friend"
+      },
+      {
+        "smallFighterEnemy": "mark_small_fighter_enemy"
+      },
+      {
+        "smallFighterTeam": "mark_small_fighter_team"
+      },
+      {
+        "smallBomberFriend": "mark_small_bomber_friend"
+      },
+      {
+        "smallBomberEnemy": "mark_small_bomber_enemy"
+      },
+      {
+        "smallBomberTeam": "mark_small_bomber_team"
+      },
+      {
+        "smallLandFriend": "mark_small_land_friend"
+      },
+      {
+        "smallLandEnemy": "mark_small_land_enemy"
+      },
+      {
+        "smallAirportFriend": "mark_small_airport_friend"
+      },
+      {
+        "smallAirportEnemy": "mark_small_airport_enemy"
+      },
+      {
+        "smallFighterFriendUseless": "mark_small_fighter_friend_useless"
+      },
+      {
+        "smallFighterEnemyUseless": "mark_small_fighter_enemy_useless"
+      },
+      {
+        "smallFighterTeamUseless": "mark_small_fighter_team_useless"
+      },
+      {
+        "smallBomberFriendUseless": "mark_small_bomber_friend_useless"
+      },
+      {
+        "smallBomberEnemyUseless": "mark_small_bomber_enemy_useless"
+      },
+      {
+        "smallBomberTeamUseless": "mark_small_bomber_team_useless"
+      },
+      {
+        "smallLandFriendUseless": "mark_small_land_friend_useless"
+      },
+      {
+        "smallLandEnemyUseless": "mark_small_land_enemy_useless"
+      },
+      {
+        "smallAirportFriendUseless": "mark_small_airport_friend_useless"
+      },
+      {
+        "smallAirportEnemyUseless": "mark_small_airport_enemy_useless"
+      },
+      {
+        "smallFighterFriendTarget": "target_small_fighter_friend"
+      },
+      {
+        "smallFighterEnemyTarget": "target_small_fighter_enemy"
+      },
+      {
+        "smallFighterTeamTarget": "target_small_fighter_team"
+      },
+      {
+        "smallBomberFriendTarget": "target_small_bomber_friend"
+      },
+      {
+        "smallBomberEnemyTarget": "target_small_bomber_enemy"
+      },
+      {
+        "smallBomberTeamTarget": "target_small_bomber_team"
+      },
+      {
+        "smallLandFriendTarget": "target_small_land_friend"
+      },
+      {
+        "smallLandEnemyTarget": "target_small_land_enemy"
+      },
+      {
+        "smallAirportFriendTarget": "target_small_airport_friend"
+      },
+      {
+        "smallAirportEnemyTarget": "target_small_airport_enemy"
+      },
+      {
+        "markAttack": "mark_attack"
+      },
+      {
+        "markCover": "mark_cover"
+      },
+      {
+        "metricDivider": 0.1
+      },
+      {
+        "feetDivider": 0.01
+      },
+      {
+        "fortificationRadius": 7.0
+      },
+      {
+        "ourCarrierIndicatorDistance": 200.0
+      },
+      {
+        "tankHudIndicatorAlpha": 140
+      },
+      {
+        "tankHudIconScaleNear": 0.7
+      },
+      {
+        "tankHudIconScaleFar": 0.7
+      },
+      {
+        "tankHudIconDistNear": 200.0
+      },
+      {
+        "tankHudIconDistFar": 1000.0
+      },
+      {
+        "squadTargetGroundIndicatorScale": 1.0
+      },
+      {
+        "squadTargetAirIndicatorScale": 1.0
+      },
+      {
+        "topPictureShift": 0.0
+      },
+      {
+        "airfieldIndicatorHeight": 50.0
+      },
+      {
+        "indicatorsForTanks": {
+          "distanceFullySpecifiedTarget": 50.0
         }
-      ],
-      "shipsShootingTracking": {
-        "borderColor": "#00a000ff",
-        "fillColor": "#00dc00ff",
-        "lineColor": "#00dc00ff",
-        "scale": 10.0,
-        "height": 0.3
+      },
+      {
+        "airfieldModulesColors": [
+          {
+            "row": [0.0,0.0,0.0,0.0]
+          },
+          {
+            "row": [255.0,70.0,70.0,0.25]
+          },
+          {
+            "row": [255.0,255.0,70.0,0.75]
+          },
+          {
+            "row": [70.0,255.0,70.0,1.0]
+          }
+        ]
+      },
+      {
+        "shipsShootingTracking": {
+          "borderColor": "#00a000ff",
+          "fillColor": "#00dc00ff",
+          "lineColor": "#00dc00ff",
+          "scale": 10.0,
+          "height": 0.3
+        }
       }
-    }
+    ]
   },
   {
     "messages": {
