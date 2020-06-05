@@ -2,7 +2,7 @@ local xboxShop = require("scripts/onlineShop/xboxShop.nut")
 local ps4Shop = require("scripts/onlineShop/ps4Shop.nut")
 local contentStateModule = require("scripts/clientState/contentState.nut")
 local workshop = require("scripts/items/workshop/workshop.nut")
-local { canSpendRealMoney, isMePS4PlayerOnPC } = require("scripts/clientState/platform.nut")
+local platform = require("scripts/clientState/platform.nut")
 local encyclopedia = require("scripts/encyclopedia.nut")
 local { openChangelog } = require("scripts/changelog/openChangelog.nut")
 local openPersonalUnlocksModal = require("scripts/unlocks/personalUnlocksModal.nut")
@@ -21,7 +21,7 @@ local template = {
   link = null
   isLink = @() false
   isFeatured = @() false
-  needDiscountIcon = @() false
+  needDiscountIcon = false
   unseenIcon = null
   onClickFunc = @(obj, handler = null) null
   onChangeValueFunc = @(value) null
@@ -229,28 +229,21 @@ local list = {
       ? handler.startOnlineShop("eagles", null, "topmenu")
       : ::showInfoMsgBox(::loc("msgbox/notAvailbleGoldPurchase"))
     image = @() "#ui/gameuiskin#shop_warpoints_premium"
-    isVisualDisabled = @() !::has_feature("EnableGoldPurchase")
-    needDiscountIcon = @() true
+    needDiscountIcon = true
     isHidden = @(...) !::has_feature("SpendGold") || !::isInMenu()
   }
   PREMIUM = {
     text = @() "#charServer/chapter/premium"
     onClickFunc = @(obj, handler) handler.startOnlineShop("premium")
     image = @() "#ui/gameuiskin#sub_premiumaccount"
-    link = ""
-    isLink = isMePS4PlayerOnPC
-    isFeatured = isMePS4PlayerOnPC
-    needDiscountIcon = @() !isMePS4PlayerOnPC()
+    needDiscountIcon = true
     isHidden = @(...) !::has_feature("EnablePremiumPurchase") || !::isInMenu()
   }
   WARPOINTS = {
     text = @() "#charServer/chapter/warpoints"
     onClickFunc = @(obj, handler) handler.startOnlineShop("warpoints")
     image = @() "#ui/gameuiskin#shop_warpoints"
-    link = ""
-    isLink = isMePS4PlayerOnPC
-    isFeatured = isMePS4PlayerOnPC
-    needDiscountIcon = @() !isMePS4PlayerOnPC()
+    needDiscountIcon = true
     isHidden = @(...) !::has_feature("SpendGold") || !::isInMenu()
   }
   INVENTORY = {
@@ -290,7 +283,7 @@ local list = {
     isLink = @() true
     isFeatured = @() true
     image = @() "#ui/gameuiskin#store_icon.svg"
-    isHidden = @(...) !::is_platform_pc || !::has_feature("SpendGold") || !::isInMenu() || !canSpendRealMoney()
+    isHidden = @(...) !::is_platform_pc || !::has_feature("SpendGold") || !::isInMenu() || !platform.canSpendRealMoney()
   }
   XBOX_ONLINE_SHOP = {
     text = @() xboxShop.canUseIngameShop()? "#topmenu/xboxIngameShop" : "#msgbox/btn_onlineShop"
@@ -299,7 +292,7 @@ local list = {
     isLink = @() !xboxShop.canUseIngameShop()
     isFeatured = @() !xboxShop.canUseIngameShop()
     image = @() xboxShop.canUseIngameShop()? "#ui/gameuiskin#xbox_store_icon.svg" : "#ui/gameuiskin#store_icon.svg"
-    needDiscountIcon = @() true
+    needDiscountIcon = true
     isHidden = @(...) !::is_platform_xboxone || !::isInMenu()
     unseenIcon = @() SEEN.EXT_XBOX_SHOP
   }
@@ -310,7 +303,7 @@ local list = {
     isLink = @() !ps4Shop.canUseIngameShop()
     isFeatured = @() !ps4Shop.canUseIngameShop()
     image = @() ps4Shop.canUseIngameShop()? "#ui/gameuiskin#xbox_store_icon.svg" : "#ui/gameuiskin#store_icon.svg"
-    needDiscountIcon = @() true
+    needDiscountIcon = true
     isHidden = @(...) !::is_platform_ps4 || !::isInMenu()
     unseenIcon = @() SEEN.EXT_PS4_SHOP
   }

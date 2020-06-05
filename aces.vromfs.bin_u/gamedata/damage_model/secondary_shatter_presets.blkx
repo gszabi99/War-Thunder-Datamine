@@ -353,6 +353,72 @@
       }
     }
   },
+  "apds_fs_25_76mm": {
+    "residualPenetrationToArmorShatterPenetrationMult": [20.0,100.0,0.7,1.5],
+    "residualPenetrationToArmorShatterDamageMult": [20.0,100.0,0.7,1.5],
+    "residualPenetrationToShellShatterPenetrationMult": [20.0,75.0,0.7,1.0],
+    "residualPenetrationToShellShatterDamageMult": [20.0,75.0,0.7,1.0],
+    "armorMassToShatterCount": [0.2,2.0,10.0,50.0],
+    "shellMassToShatterCount": [0.2,2.0,20.0,70.0],
+    "section_shellShatters0": {
+      "angles": [0.0,2.0],
+      "shatter": {
+        "shellShatter": true,
+        "distance": 6.0,
+        "size": 0.02,
+        "countPortion": 0.2,
+        "penetration": [15.0,10.0],
+        "damage": [30.0,20.0],
+        "onHitChanceMultFire": 3.0
+      }
+    },
+    "section_shellShatters1": {
+      "angles": [0.0,3.0],
+      "shatter": {
+        "shellShatter": true,
+        "distance": 4.0,
+        "size": 0.015,
+        "countPortion": 0.3,
+        "penetration": [4.0,3.0],
+        "damage": [12.0,8.0],
+        "onHitChanceMultFire": 0.0
+      }
+    },
+    "section_shellShatters2": {
+      "angles": [0.0,30.0],
+      "shatter": {
+        "shellShatter": true,
+        "distance": 1.5,
+        "size": 0.01,
+        "countPortion": 0.5,
+        "penetration": [2.0,2.0],
+        "damage": [3.0,3.0],
+        "onHitChanceMultFire": 0.0
+      }
+    },
+    "section_armorShatters0": {
+      "angles": [0.0,10.0],
+      "shatter": {
+        "distance": 5.0,
+        "size": 0.01,
+        "countPortion": 0.4,
+        "penetration": [3.0,3.0],
+        "damage": [6.0,6.0],
+        "onHitChanceMultFire": 2.0
+      }
+    },
+    "section_armorShatters1": {
+      "angles": [0.0,30.0],
+      "shatter": {
+        "distance": 2.0,
+        "size": 0.005,
+        "countPortion": 0.6,
+        "penetration": [2.0,2.0],
+        "damage": [2.0,2.0],
+        "onHitChanceMultFire": 2.0
+      }
+    }
+  },
   "apds_fs": {
     "residualArmorPenetrationToShatterCountMult": [50.0,400.0,0.6,3.0],
     "residualArmorPenetrationToShatterPenetrationMult": [50.0,400.0,0.7,1.2],

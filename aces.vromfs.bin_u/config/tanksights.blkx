@@ -1,55 +1,74 @@
 {
-  "ussr_t_64a_1971": {
-    "ussr_tpd2_49": {
-      "drawDistanceCorrection": true,
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "rangefinderTextScale": 1.0,
+  "all_tanks": {
+    "short_range_sight": {
+      "crosshairHorVertSize": [3.0,2.0],
+      "rangefinderProgressBarColor1": "#00ff0040",
+      "rangefinderProgressBarColor2": "#ffffff40",
+      "rangefinderTextScale": 0.7,
+      "rangefinderUseThousandth": false,
+      "rangefinderVerticalOffset": 0.1,
+      "rangefinderHorizontalOffset": 5.0,
+      "detectAllyTextScale": 0.7,
+      "detectAllyOffset": [4.0,0.05],
+      "fontSizeMult": 1.0,
+      "lineSizeMult": 1.0,
+      "drawCentralLineVert": true,
+      "drawCentralLineHorz": true,
+      "drawSightMask": true,
       "crosshairDistHorSizeMain": [0.03,0.02],
       "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "crosshairHorVertSize": [3.0,2.0],
-      "rangefinderVerticalOffset": 15.0,
-      "rangefinderHorizontalOffset": 5.0,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "fontSizeMult": 1.5,
-      "lineSizeMult": 1.5,
-      "drawLines": [
+      "distanceCorrectionPos": [-0.2,-0.05],
+      "drawDistanceCorrection": true,
+      "matchExpClass": {
+        "exp_tank": true,
+        "exp_heavy_tank": true,
+        "exp_tank_destroyer": true,
+        "exp_SPAA": true
+      },
+      "crosshair_distances": [
         {
-          "line": {
-            "line": [0.0,-1.0,0.0,-0.03],
-            "move": false
-          }
+          "distance": [200.0,0.0,0.0]
         },
         {
-          "line": {
-            "line": [0.0,0.03,0.0,1.0],
-            "move": false
-          }
+          "distance": [400.0,4.0,0.0]
         },
         {
-          "line": {
-            "line": [-1.0,0.0,-0.02,0.0]
-          }
+          "distance": [600.0,0.0,0.0]
         },
         {
-          "line": {
-            "line": [0.02,0.0,1.0,0.0]
-          }
+          "distance": [800.0,8.0,0.0]
         },
         {
-          "line": {
-            "line": [0.0,0.0,-0.01,0.01],
-            "move": false
-          }
+          "distance": [1000.0,0.0,0.0]
         },
         {
-          "line": {
-            "line": [0.0,0.0,0.01,0.01],
-            "move": false
-          }
+          "distance": [1200.0,12.0,0.0]
+        },
+        {
+          "distance": [1400.0,0.0,0.0]
+        },
+        {
+          "distance": [1600.0,16.0,0.0]
+        },
+        {
+          "distance": [1800.0,0.0,0.0]
+        },
+        {
+          "distance": [2000.0,20.0,0.0]
+        },
+        {
+          "distance": [2200.0,0.0,0.0]
+        },
+        {
+          "distance": [2400.0,24.0,0.0]
+        },
+        {
+          "distance": [2600.0,0.0,0.0]
+        },
+        {
+          "distance": [2800.0,28.0,0.0]
         }
       ],
-      "crosshair_distances": [],
       "crosshair_hor_ranges": [
         {
           "range": [-32.0,32.0]
@@ -99,10 +118,34 @@
         {
           "range": [32.0,32.0]
         }
-      ]
-    }
-  },
-  "it_p_26_40": {
+      ],
+      "drawLines": {
+        "line": {
+          "line": [0.0,0.0,0.0,0.0],
+          "move": false
+        }
+      }
+    },
+    "test_crosshair": {
+      "crosshairHorVertSize": [0.0,0.0],
+      "rangefinderProgressBarColor1": "#00ff0040",
+      "rangefinderProgressBarColor2": "#ffffff40",
+      "rangefinderTextScale": 0.7,
+      "rangefinderVerticalOffset": 550.0,
+      "rangefinderHorizontalOffset": 550.0,
+      "fontSizeMult": 1.25,
+      "lineSizeMult": 1.2,
+      "drawCentralLineVert": false,
+      "drawCentralLineHorz": false,
+      "crosshairDistHorSizeMain": [0.03,0.02],
+      "crosshairDistHorSizeAdditional": [0.005,0.003],
+      "distanceCorrectionPos": [-0.2,-0.05],
+      "drawDistanceCorrection": false,
+      "matchExpClass": {
+        "exp_helicopter": true
+      },
+      "crosshair_hor_ranges": []
+    },
     "it_san_giorgio_x4": {
       "crosshairHorVertSize": [0.0,0.0],
       "rangefinderProgressBarColor1": "#00ff0040",
@@ -118,11 +161,16 @@
       "crosshairDistHorSizeAdditional": [0.005,0.003],
       "distanceCorrectionPos": [-0.2,-0.05],
       "drawDistanceCorrection": true,
+      "matchExpClass": {
+        "it_p_26_40": true,
+        "it_p_40": true,
+        "it_semovente_m42_75_34": true
+      },
       "ballistics": [
         {
           "bullet": {
             "bulletType": "apcbc_tank",
-            "speed": 624.0,
+            "speed": 637.0,
             "drawAdditionalLines": false,
             "drawDistanceCorrection": true,
             "distanceCorrectionPos": [-0.15,-0.15],
@@ -168,7 +216,7 @@
         },
         {
           "bullet": {
-            "bulletType": "he_frag_tank",
+            "bulletType": "heat_tank",
             "speed": 552.0,
             "drawAdditionalLines": false,
             "drawDistanceCorrection": false,
@@ -425,6 +473,878 @@
         {
           "line": {
             "line": [-70.0,0.0,-70.0,5.0],
+            "thousandth": true
+          }
+        }
+      ]
+    }
+  },
+  "ussr_t_64a_1971": {
+    "tpd_2_49": {
+      "crosshairHorVertSize": [0.0,0.0],
+      "rangefinderProgressBarColor1": "#00ff0040",
+      "rangefinderProgressBarColor2": "#ffffff40",
+      "rangefinderTextScale": 0.7,
+      "rangefinderVerticalOffset": -10.0,
+      "rangefinderHorizontalOffset": -120.0,
+      "fontSizeMult": 2.0,
+      "lineSizeMult": 1.25,
+      "drawCentralLineVert": false,
+      "drawCentralLineHorz": false,
+      "crosshairDistHorSizeMain": [0.0,0.0],
+      "crosshairDistHorSizeAdditional": [0.0,0.0],
+      "distanceCorrectionPos": [-0.075,-0.15],
+      "drawDistanceCorrection": true,
+      "crosshair_distances": [],
+      "crosshair_hor_ranges": [],
+      "drawTexts": [
+        {
+          "text": {
+            "text": "ПУЛ",
+            "align": 0,
+            "pos": [-3.0,38.0],
+            "move": false,
+            "thousandth": true,
+            "size": 0.6
+          }
+        },
+        {
+          "text": {
+            "text": "ОФ",
+            "align": 0,
+            "pos": [3.0,38.0],
+            "move": false,
+            "thousandth": true,
+            "size": 0.6
+          }
+        },
+        {
+          "text": {
+            "text": "18",
+            "align": 0,
+            "pos": [-2.0,37.0],
+            "move": false,
+            "thousandth": true,
+            "size": 0.4
+          }
+        },
+        {
+          "text": {
+            "text": "16",
+            "align": 0,
+            "pos": [-2.0,32.0],
+            "move": false,
+            "thousandth": true,
+            "size": 0.4
+          }
+        },
+        {
+          "text": {
+            "text": "14",
+            "align": 0,
+            "pos": [-2.0,27.0],
+            "move": false,
+            "thousandth": true,
+            "size": 0.4
+          }
+        },
+        {
+          "text": {
+            "text": "12",
+            "align": 0,
+            "pos": [-2.0,21.0],
+            "move": false,
+            "thousandth": true,
+            "size": 0.4
+          }
+        },
+        {
+          "text": {
+            "text": "10",
+            "align": 0,
+            "pos": [-2.0,16.0],
+            "move": false,
+            "thousandth": true,
+            "size": 0.4
+          }
+        },
+        {
+          "text": {
+            "text": "8",
+            "align": 0,
+            "pos": [-1.5,8.0],
+            "move": false,
+            "thousandth": true,
+            "size": 0.4
+          }
+        },
+        {
+          "text": {
+            "text": "6",
+            "align": 0,
+            "pos": [-1.0,5.0],
+            "move": false,
+            "thousandth": true,
+            "size": 0.4
+          }
+        },
+        {
+          "text": {
+            "text": "4",
+            "align": 0,
+            "pos": [-0.75,2.5],
+            "move": false,
+            "thousandth": true,
+            "size": 0.4
+          }
+        },
+        {
+          "text": {
+            "text": "3",
+            "align": 0,
+            "pos": [-0.1,1.2],
+            "move": false,
+            "thousandth": true,
+            "size": 0.4
+          }
+        },
+        {
+          "text": {
+            "text": "50",
+            "align": 0,
+            "pos": [2.0,20.0],
+            "move": false,
+            "thousandth": true,
+            "size": 0.4
+          }
+        },
+        {
+          "text": {
+            "text": "46",
+            "align": 0,
+            "pos": [2.0,10.0],
+            "move": false,
+            "thousandth": true,
+            "size": 0.4
+          }
+        },
+        {
+          "text": {
+            "text": "5",
+            "align": 0,
+            "pos": [40.5,16.0],
+            "move": false,
+            "thousandth": true,
+            "size": 0.4
+          }
+        },
+        {
+          "text": {
+            "text": "10",
+            "align": 0,
+            "pos": [38.0,19.0],
+            "move": false,
+            "thousandth": true,
+            "size": 0.4
+          }
+        },
+        {
+          "text": {
+            "text": "15",
+            "align": 0,
+            "pos": [35.5,20.0],
+            "move": false,
+            "thousandth": true,
+            "size": 0.4
+          }
+        },
+        {
+          "text": {
+            "text": "20",
+            "align": 0,
+            "pos": [33.0,21.0],
+            "move": false,
+            "thousandth": true,
+            "size": 0.4
+          }
+        },
+        {
+          "text": {
+            "text": "25",
+            "align": 0,
+            "pos": [30.5,21.5],
+            "move": false,
+            "thousandth": true,
+            "size": 0.4
+          }
+        },
+        {
+          "text": {
+            "text": "30",
+            "align": 0,
+            "pos": [28.0,22.0],
+            "move": false,
+            "thousandth": true,
+            "size": 0.4
+          }
+        },
+        {
+          "text": {
+            "text": "35",
+            "align": 0,
+            "pos": [25.5,22.0],
+            "move": false,
+            "thousandth": true,
+            "size": 0.4
+          }
+        },
+        {
+          "text": {
+            "text": "40",
+            "align": 0,
+            "pos": [23.0,22.0],
+            "move": false,
+            "thousandth": true,
+            "size": 0.4
+          }
+        }
+      ],
+      "drawLines": [
+        {
+          "line": {
+            "line": [0.0,0.2,0.0,0.01],
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [0.0,0.0,-2.0,4.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [0.0,0.0,2.0,4.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-1.0,0.0,-1.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-2.0,0.0,-2.0,1.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-3.0,0.0,-3.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-4.0,0.0,-4.0,2.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-5.0,0.0,-5.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-6.0,0.0,-6.0,1.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-7.0,0.0,-7.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-8.0,0.0,-8.5,2.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-8.0,0.0,-7.5,2.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-9.0,0.0,-9.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-10.0,0.0,-10.0,1.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-11.0,0.0,-11.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-12.0,0.0,-12.0,2.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-13.0,0.0,-13.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-14.0,0.0,-14.0,1.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-15.0,0.0,-15.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-16.0,0.0,-16.5,2.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-16.0,0.0,-15.5,2.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-17.0,0.0,-17.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-18.0,0.0,-18.0,1.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-19.0,0.0,-19.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-20.0,0.0,-20.0,2.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-21.0,0.0,-21.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-22.0,0.0,-22.0,1.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-23.0,0.0,-23.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-24.0,0.0,-24.5,2.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-24.0,0.0,-23.5,2.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-25.0,0.0,-25.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-26.0,0.0,-26.0,1.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-27.0,0.0,-27.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-28.0,0.0,-28.0,2.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-29.0,0.0,-29.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-30.0,0.0,-30.0,1.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-31.0,0.0,-31.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-32.0,0.0,-32.5,2.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [-32.0,0.0,-31.5,2.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [1.0,0.0,1.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [2.0,0.0,2.0,1.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [3.0,0.0,3.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [4.0,0.0,4.0,2.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [5.0,0.0,5.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [6.0,0.0,6.0,1.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [7.0,0.0,7.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [8.0,0.0,8.5,2.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [8.0,0.0,7.5,2.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [9.0,0.0,9.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [10.0,0.0,10.0,1.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [11.0,0.0,11.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [12.0,0.0,12.0,2.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [13.0,0.0,13.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [14.0,0.0,14.0,1.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [15.0,0.0,15.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [16.0,0.0,16.5,2.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [16.0,0.0,15.5,2.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [17.0,0.0,17.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [18.0,0.0,18.0,1.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [19.0,0.0,19.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [20.0,0.0,20.0,2.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [21.0,0.0,21.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [22.0,0.0,22.0,1.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [23.0,0.0,23.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [24.0,0.0,24.5,2.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [24.0,0.0,23.5,2.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [25.0,0.0,25.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [26.0,0.0,26.0,1.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [27.0,0.0,27.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [28.0,0.0,28.0,2.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [29.0,0.0,29.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [30.0,0.0,30.0,1.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [31.0,0.0,31.0,0.5],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [32.0,0.0,32.5,2.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [32.0,0.0,31.5,2.0],
+            "thousandth": true,
+            "move": false
+          }
+        },
+        {
+          "line": {
+            "line": [22.0,25.0,42.0,25.0],
+            "thousandth": true
+          }
+        },
+        {
+          "line": {
+            "line": [22.0,24.15,24.0,24.15],
+            "thousandth": true
+          }
+        },
+        {
+          "line": {
+            "line": [24.5,24.1,26.5,24.1],
+            "thousandth": true
+          }
+        },
+        {
+          "line": {
+            "line": [27.0,24.0,29.0,24.0],
+            "thousandth": true
+          }
+        },
+        {
+          "line": {
+            "line": [29.5,23.8,31.5,23.8],
+            "thousandth": true
+          }
+        },
+        {
+          "line": {
+            "line": [32.0,23.5,34.0,23.5],
+            "thousandth": true
+          }
+        },
+        {
+          "line": {
+            "line": [34.5,23.0,36.5,23.0],
+            "thousandth": true
+          }
+        },
+        {
+          "line": {
+            "line": [37.0,21.8,39.0,21.8],
+            "thousandth": true
+          }
+        },
+        {
+          "line": {
+            "line": [39.5,19.0,41.5,19.0],
+            "thousandth": true
+          }
+        },
+        {
+          "line": {
+            "line": [23.0,23.0,23.0,24.0],
+            "thousandth": true
+          }
+        },
+        {
+          "line": {
+            "line": [25.5,23.0,25.5,24.0],
+            "thousandth": true
+          }
+        },
+        {
+          "line": {
+            "line": [28.0,23.0,28.0,24.0],
+            "thousandth": true
+          }
+        },
+        {
+          "line": {
+            "line": [30.5,22.5,30.5,23.8],
+            "thousandth": true
+          }
+        },
+        {
+          "line": {
+            "line": [33.0,23.5,33.0,22.0],
+            "thousandth": true
+          }
+        },
+        {
+          "line": {
+            "line": [35.5,22.8,35.5,21.0],
+            "thousandth": true
+          }
+        },
+        {
+          "line": {
+            "line": [38.0,21.8,38.0,19.8],
+            "thousandth": true
+          }
+        },
+        {
+          "line": {
+            "line": [40.5,19.0,40.5,17.0],
+            "thousandth": true
+          }
+        },
+        {
+          "line": {
+            "line": [0.0,20.0,1.0,20.0],
+            "thousandth": true
+          }
+        },
+        {
+          "line": {
+            "line": [0.0,10.0,1.0,10.0],
             "thousandth": true
           }
         }
@@ -1697,880 +2617,6 @@
           }
         }
       ]
-    }
-  },
-  "mi_24v": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "mi_24d": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "mi_24a": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "mi_4av": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "mi_24p": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "mi_35m": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "uh_1c": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "uh_1c_xm_30": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "uh_1b": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "ah_1g": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "ah_1f": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "ah_1s": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "ah_1s_early": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "ah_1s_late": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "ah_1z": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "sa_313b": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "sa_313b_france": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "sa_316b": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "iar_316b": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "sa_342m": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "sa_341f": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "uh_1d": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "mi_24p_german": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "mi_24p_german_hfs80": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "bo_105pah1": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "bo_105pah1_a1": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "bo_105cb2": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "tiger_had_france": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "tiger_hap_france": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "lynx_ah_mk1": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "scout_ah_mk1": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "wasp_has_mk1": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "g_lynx": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "tiger_uht": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "ka_50": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "a_129_a": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "h_34": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "h_34_france": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "mi_28n": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "ah_64a": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "ah_mk1": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "ah_64a_peten": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "ah_64d": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "ka_52": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "ka_29": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
-    }
-  },
-  "ah_64d_japan": {
-    "test_crosshair": {
-      "crosshairHorVertSize": [0.0,0.0],
-      "rangefinderProgressBarColor1": "#00ff0040",
-      "rangefinderProgressBarColor2": "#ffffff40",
-      "rangefinderTextScale": 0.7,
-      "rangefinderVerticalOffset": 550.0,
-      "rangefinderHorizontalOffset": 550.0,
-      "fontSizeMult": 1.25,
-      "lineSizeMult": 1.2,
-      "drawCentralLineVert": false,
-      "drawCentralLineHorz": false,
-      "crosshairDistHorSizeMain": [0.03,0.02],
-      "crosshairDistHorSizeAdditional": [0.005,0.003],
-      "distanceCorrectionPos": [-0.2,-0.05],
-      "drawDistanceCorrection": false,
-      "crosshair_hor_ranges": []
     }
   }
 }

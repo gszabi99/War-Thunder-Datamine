@@ -7,8 +7,6 @@ local { getShopItem = @(id) null,
 local callbackWhenAppWillActive = require("scripts/clientState/callbackWhenAppWillActive.nut")
 local { getBundleId } = require("scripts/onlineShop/onlineBundles.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
-local { isMePS4PlayerOnPC } = require("scripts/clientState/platform.nut")
-
 /*
  * Search in price.blk:
  * Search parapm is a table of request fields
@@ -398,16 +396,6 @@ OnlineShopModel.openShopUrl <- function openShopUrl(baseUrl, isAlreadyAuthentica
 //return true when custom Url found
 OnlineShopModel.checkAndOpenCustomPurchaseUrl <- function checkAndOpenCustomPurchaseUrl(chapter, needMsgBox = false)
 {
-  if (isMePS4PlayerOnPC())
-  {
-    local urlPostfix = chapter
-    if (chapter != "premium" && chapter != "warpoints")
-      urlPostfix = "shop"
-
-    openShopUrl(::loc($"url/gjn/{urlPostfix}"))
-    return true
-  }
-
   local customUrl = getCustomPurchaseUrl(chapter)
   if (customUrl == "")
     return false
