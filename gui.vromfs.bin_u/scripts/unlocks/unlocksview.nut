@@ -92,19 +92,20 @@ local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.n
     }]
   }
 
-  function getUnitViewDataItem(unlockConfig) {
+  function getUnitViewDataItem(unlockConfig, params = {}) {
     local unit = ::getAircraftByName(unlockConfig.id)
     if (!unit)
       return null
 
-    local isBought = unit.isBought()
+    local ignoreAvailability = params?.ignoreAvailability
+    local isBought = ignoreAvailability ? false : unit.isBought()
     local buttons = getUnitActionButtonsView(unit)
     local receiveOnce = "mainmenu/receiveOnlyOnce"
 
     local unitPlate = ::build_aircraft_item(unit.name, unit, {
       hasActions = true,
-      status = isBought ? "locked" : "canBuy",
-      isLocalState = true
+      status = ignoreAvailability ? "owned" : isBought ? "locked" : "canBuy",
+      isLocalState = !ignoreAvailability
       showAsTrophyContent = true
       tooltipParams = {
         showLocalState = true
@@ -141,7 +142,7 @@ local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.n
     }]
   }
 
-  function getDecoratorViewDataItem(unlockConfig) {
+  function getDecoratorViewDataItem(unlockConfig, params = {}) {
     local unlockType = getUnlockType(unlockConfig)
     local decoratorType = ::g_decorator_type.getTypeByUnlockedItemType(unlockType)
     local decorator = ::g_decorator.getDecorator(unlockConfig.id, decoratorType)
@@ -149,7 +150,7 @@ local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.n
       return {}
 
     local nameColor = decorator ? decorator.getRarityColor() : "activeTextColor"
-    local isHave = decoratorType.isPlayerHaveDecorator(unlockConfig.id)
+    local isHave = params?.ignoreAvailability ? false : decoratorType.isPlayerHaveDecorator(unlockConfig.id)
     local buttons = getDecoratorActionButtonsView(decorator, decoratorType)
     local locName = decoratorType.getLocName(unlockConfig.id, true)
 
@@ -169,15 +170,15 @@ local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.n
     }
   }
 
-  function getViewDataItem(unlockConfig) {
+  function getViewDataItem(unlockConfig, params = {}) {
     local unlockType = getUnlockType(unlockConfig)
     if (unlockType == ::UNLOCKABLE_AIRCRAFT)
-      return getUnitViewDataItem(unlockConfig)
+      return getUnitViewDataItem(unlockConfig, params)
 
     if (unlockType == ::UNLOCKABLE_DECAL
       || unlockType == ::UNLOCKABLE_SKIN
       || unlockType == ::UNLOCKABLE_ATTACHABLE)
-      return getDecoratorViewDataItem(unlockConfig)
+      return getDecoratorViewDataItem(unlockConfig, params)
 
     if (unlockType == ::UNLOCKABLE_PILOT)
       return getPilotViewDataItem(unlockConfig)
@@ -199,7 +200,7 @@ local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.n
 
   function getViewItem(unlockConfig, params = {}) {
     local view = params
-    view.list <- [getViewDataItem(unlockConfig)]
+    view.list <- [getViewDataItem(unlockConfig, params)]
     return ::handyman.renderCached("gui/items/trophyDesc", view)
   }
 }

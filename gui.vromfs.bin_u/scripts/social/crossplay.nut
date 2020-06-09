@@ -22,7 +22,7 @@ local updateCrossNetworkPlayStatus = function()
   persistentData.crossNetworkPlayStatus = true
   if (::is_platform_xboxone)
     persistentData.crossNetworkPlayStatus = ::check_crossnetwork_play_privilege()
-  else if (::is_platform_ps4 && ::has_feature("PS4CrossNetwork"))
+  else if (::is_platform_ps4 && ::has_feature("PS4CrossNetwork") && ::g_login.isProfileReceived())
     persistentData.crossNetworkPlayStatus = ::load_local_account_settings(PS4_CROSSPLAY_OPT_ID, true)
 
   ::broadcastEvent("CrossPlayOptionChanged")
@@ -108,13 +108,16 @@ local invalidateCache = function()
   resetCrossNetworkChatStatus()
 }
 
+local function reinitCrossNetworkStatus() {
+  invalidateCache()
+  updateCrossNetworkPlayStatus()
+  updateCrossNetworkChatStatus()
+}
+
 subscriptions.addListenersWithoutEnv({
-  XboxSystemUIReturn = function(p) {
-    invalidateCache()
-    updateCrossNetworkPlayStatus()
-    updateCrossNetworkChatStatus()
-  }
+  XboxSystemUIReturn = @(p) reinitCrossNetworkStatus
   SignOut = @(p) invalidateCache()
+  ProfileReceived = @(p) reinitCrossNetworkStatus
 }, ::g_listener_priority.CONFIG_VALIDATION)
 
 return {

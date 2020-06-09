@@ -526,8 +526,8 @@ local clanActionNames = {
   if (trophyRewardsTable.len() > 0)
     handler.doWhenActive(@() ::gui_start_open_trophy(trophyRewardsTable))
 
-  entitlementRewards.each(@(key, entId) handler.doWhenActive(@() showEntitlement(entId)))
-  unlocksRewards.each(@(key, unlockId) handler.doWhenActive(@() showUnlock(unlockId)))
+  entitlementRewards.each(@(key, entId) handler.doWhenActive(@() showEntitlement(entId, { ignoreAvailability = true })))
+  unlocksRewards.each(@(key, unlockId) handler.doWhenActive(@() showUnlock(unlockId, { ignoreAvailability = true })))
 
   rentsTable.each(function(config, key) {
     if (!::isInArray(key, ignoreRentItems))

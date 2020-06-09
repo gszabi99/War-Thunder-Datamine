@@ -328,6 +328,8 @@ class ::gui_handlers.NextTutorialHandler extends ::gui_handlers.BaseGuiHandlerWT
          (::get_es_unit_type(unit) == unitType || unitType == ::ES_UNIT_TYPE_INVALID) &&
          !::isInArray(unit.name, ignoreUnits) &&
          ::is_default_aircraft(unit.name) &&
+         unit.isBought() &&
+         unit.isVisibleInShop() &&
          (ignoreSlotbarCheck || !::isUnitInSlotbar(unit)))
 }
 

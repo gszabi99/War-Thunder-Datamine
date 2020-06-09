@@ -319,11 +319,12 @@ local { WEAPON_TAG } = require("scripts/weaponry/weaponryInfo.nut")
   return data
 }
 
-::update_team_css_label <- function update_team_css_label(nestObj)
+::update_team_css_label <- function update_team_css_label(nestObj, customPlayerTeam = null)
 {
   if (!::check_obj(nestObj))
     return
-  local teamCode = (::SessionLobby.status == lobbyStates.IN_LOBBY)? ::SessionLobby.team : ::get_local_team_for_mpstats()
+  local teamCode = (::SessionLobby.status == lobbyStates.IN_LOBBY)? ::SessionLobby.team
+    : (customPlayerTeam ?? ::get_local_team_for_mpstats())
   nestObj.playerTeam = ::g_team.getTeamByCode(teamCode).cssLabel
 }
 
@@ -1055,7 +1056,7 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
 
     initStatsMissionParams()
 
-    local playerTeam = ::get_local_team_for_mpstats()
+    local playerTeam = getLocalTeam()
     local friendlyTeam = ::get_player_army_for_hud()
     local teamObj1 = scene.findObject("team1_info")
     local teamObj2 = scene.findObject("team2_info")
@@ -1214,7 +1215,7 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
     {
       if (!isTeamplay)
       {
-        local commonTbl = ::get_mplayers_list(::GET_MPLAYERS_LIST, true)
+        local commonTbl = getMplayersList(::GET_MPLAYERS_LIST)
         sortTable(commonTbl)
         if (commonTbl.len() > 0)
         {
@@ -1239,7 +1240,7 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
         }
       }
       else
-        tbl = ::get_mplayers_list(team, true)
+        tbl = getMplayersList(team)
     }
     else if (!isTeamplay && customTbl && objTbl.id == "table_kills_team2")
       minRow = numMaxPlayers
@@ -1284,7 +1285,7 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
                        playersInfo = customTbl?.playersInfo
                      }
       ::set_mp_table(objTbl, tbl, params)
-      ::update_team_css_label(objTbl)
+      ::update_team_css_label(objTbl, getLocalTeam())
       objTbl.num_rows = tbl.len()
 
       if (friendlyTeam > 0 && team > 0)
@@ -1310,7 +1311,7 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
 
     if (!isTeamplay)
     {
-      local tbl1 = ::get_mplayers_list(::GET_MPLAYERS_LIST, true)
+      local tbl1 = getMplayersList(::GET_MPLAYERS_LIST)
       sortTable(tbl1)
 
       local tbl2 = []
@@ -1343,16 +1344,16 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
     {
       if (showLocalTeamOnly)
       {
-        local playerTeam = ::get_local_team_for_mpstats()
-        local tbl = ::get_mplayers_list(playerTeam, true)
+        local playerTeam = getLocalTeam()
+        local tbl = getMplayersList(playerTeam)
         numRows1 = numMaxPlayers
         numRows2 = 0
         createKillsTbl(tblObj1, tbl, {num_rows = numRows1, showAircrafts = showAircrafts})
       }
       else
       {
-        local tbl1 = ::get_mplayers_list(1, true)
-        local tbl2 = ::get_mplayers_list(2, true)
+        local tbl1 = getMplayersList(1)
+        local tbl2 = getMplayersList(2)
         local num_in_one_row = ::global_max_players_versus / 2
         if (tbl1.len() <= num_in_one_row && tbl2.len() <= num_in_one_row)
         {
@@ -1373,7 +1374,7 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
         local tblConfig1 = {tbl = tbl2, team = Team.A, num_rows = numRows2, showAircrafts = showAircrafts, invert = true}
         local tblConfig2 = {tbl = tbl1, team = Team.B, num_rows = numRows1, showAircrafts = showEnemyAircrafts}
 
-        if (::get_local_team_for_mpstats() == Team.A)
+        if (getLocalTeam() == Team.A)
         {
           tblConfig1.tbl = tbl1
           tblConfig1.num_rows = numRows1
@@ -1393,7 +1394,7 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
     {
       numRows1 = (gameType & ::GT_COOPERATIVE)? ::global_max_players_coop : numMaxPlayers
       numRows2 = 0
-      local tbl = ::get_mplayers_list(::GET_MPLAYERS_LIST, true)
+      local tbl = getMplayersList(::GET_MPLAYERS_LIST)
       createKillsTbl(tblObj2, tbl, {num_rows = numRows1, showAircrafts = showAircrafts})
 
       tblObj1.show(false)
@@ -1470,9 +1471,9 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
     }
   }
 
-  function updateStats(customTbl = null, customTblTeams = null, customPlayerTeam = null, customFriendlyTeam = null)
+  function updateStats(customTbl = null, customTblTeams = null, customFriendlyTeam = null)
   {
-    local playerTeam   = ::get_local_team_for_mpstats(customPlayerTeam ?? ::get_mp_local_team())
+    local playerTeam   = getLocalTeam()
     local friendlyTeam = customFriendlyTeam ?? ::get_player_army_for_hud()
     local tblObj1 = scene.findObject("table_kills_team1")
     local tblObj2 = scene.findObject("table_kills_team2")
@@ -1511,7 +1512,7 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
       numberOfWinningPlaces = ::get_race_winners_count()
     }
 
-    ::update_team_css_label(scene.findObject("num_teams"))
+    ::update_team_css_label(scene.findObject("num_teams"), playerTeam)
   }
 
   function updateTables(dt)
@@ -1856,7 +1857,7 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
    */
   function updateCountryFlags()
   {
-    local playerTeam = ::get_local_team_for_mpstats()
+    local playerTeam = getLocalTeam()
     if (!needPlayersTbl || playerTeam <= 0)
       return
     local teamObj1 = scene.findObject("team1_info")
@@ -1894,7 +1895,7 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
   function getCountriesByTeam(team)
   {
     local countries = []
-    local players = ::get_mplayers_list(team, true)
+    local players = getMplayersList(team)
     foreach (player in players)
     {
       local country = ::getTblValue("country", player, null)
@@ -2008,6 +2009,9 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
   {
     return mpChatModel.getLogForBanhammer()
   }
+
+  getLocalTeam = @() ::get_local_team_for_mpstats()
+  getMplayersList = @(team) ::get_mplayers_list(team, true)
 }
 
 class ::gui_handlers.MPStatScreen extends ::gui_handlers.MPStatistics

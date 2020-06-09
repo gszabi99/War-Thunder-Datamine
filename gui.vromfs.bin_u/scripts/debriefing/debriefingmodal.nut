@@ -2151,7 +2151,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
         playersTblDone = playersTblDone && curPlayersTbl[t].len() == playersTbl[t].len()
       }
       updateStats({ playersTbl = curPlayersTbl, playersInfo = playersInfo }, ::debriefing_result.mpTblTeams,
-        ::debriefing_result.localTeam, ::debriefing_result.friendlyTeam)
+        ::debriefing_result.friendlyTeam)
       statsTimer += playersRowTime
 
       if (hasLocalPlayer)
@@ -3324,6 +3324,11 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
   {
     return ::Cost(::get_premium_reward_wp(), 0, ::get_premium_reward_xp()).tostring()
   }
+
+  getLocalTeam = @() ::get_local_team_for_mpstats(::debriefing_result.localTeam)
+  getMplayersList = @(team) team == ::GET_MPLAYERS_LIST
+    ? ::debriefing_result.mplayers_list
+    : ::debriefing_result.mplayers_list.filter(@(player) player.team == team)
 
   isInited = true
   state = 0

@@ -235,7 +235,7 @@ digCategory = function(response, err = null)
     statsd.send_counter("sq.ingame_store.request", 1,
       {status = "error", request = "dig_category", error = err.code})
 
-    if (err.code < 500 || err.code >= 600)
+    if (::u.isString(err.code) || err.code < 500 || err.code >= 600)
       ::script_net_assert_once("psn_categories_error", "PSN: Shop Data: Dig Category: received error: " + ::toString(err))
     return
   }

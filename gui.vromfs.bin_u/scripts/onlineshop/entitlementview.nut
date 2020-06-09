@@ -74,11 +74,11 @@ local function getDecoratorActionButtonsView(decorator, decoratorType) {
   }]
 }
 
-local getDecoratorGiftView = @(giftArray, decoratorType) (giftArray ?? []).map(function(giftId) {
+local getDecoratorGiftView = @(giftArray, decoratorType, params) (giftArray ?? []).map(function(giftId) {
   local locName = decoratorType.getLocName(giftId, true)
   local decorator = ::g_decorator.getDecorator(giftId, decoratorType)
   local nameColor = decorator ? decorator.getRarityColor() : "activeTextColor"
-  local isHave = decoratorType.isPlayerHaveDecorator(giftId)
+  local isHave = params?.ignoreAvailability ? false : decoratorType.isPlayerHaveDecorator(giftId)
   local buttons = getDecoratorActionButtonsView(decorator, decoratorType)
 
   return {
@@ -104,21 +104,22 @@ local function getUnitActionButtonsView(unit) {
   }]
 }
 
-local getUnitsGiftView = @(entitlement) (entitlement?.aircraftGift ?? []).map(function(unitName) {
+local getUnitsGiftView = @(entitlement, params) (entitlement?.aircraftGift ?? []).map(function(unitName) {
   local unit = ::getAircraftByName(unitName)
   if (!unit)
     return null
 
-  local isBought = unit.isBought()
+  local ignoreAvailability = params?.ignoreAvailability
+  local isBought = ignoreAvailability ? false : unit.isBought()
   local classIco = ::getUnitClassIco(unit)
   local shopItemType = getUnitRole(unit)
   local buttons = getUnitActionButtonsView(unit)
   local receiveOnce = "mainmenu/receiveOnlyOnce"
 
   local unitPlate = ::build_aircraft_item(unitName, unit, {
-    hasActions = true,
-    status = isBought ? "locked" : "canBuy",
-    isLocalState = true
+    hasActions = true
+    status = ignoreAvailability ? "owned" : isBought ? "locked" : "canBuy"
+    isLocalState = !ignoreAvailability
     showAsTrophyContent = true
     tooltipParams = {
       showLocalState = true
@@ -146,9 +147,9 @@ local function getEntitlementView(entitlement, params = {}) {
   view.list.extend(getIncomeView(entitlement?.goldIncome, entitlement?.wpIncome))
   view.list.extend(getEntitlementGiftView(entitlement))
   view.list.extend(getUnlockView(entitlement))
-  view.list.extend(getDecoratorGiftView(entitlement?.decalGift, ::g_decorator_type.DECALS))
-  view.list.extend(getDecoratorGiftView(entitlement?.skinGift, ::g_decorator_type.SKINS))
-  view.list.extend(getUnitsGiftView(entitlement))
+  view.list.extend(getDecoratorGiftView(entitlement?.decalGift, ::g_decorator_type.DECALS, params))
+  view.list.extend(getDecoratorGiftView(entitlement?.skinGift, ::g_decorator_type.SKINS, params))
+  view.list.extend(getUnitsGiftView(entitlement, params))
   return ::handyman.renderCached(template, view)
 }
 

@@ -1120,10 +1120,9 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
         obj = [curCrewSlot]
         text = ::loc("tutorials/upg_crew/skill_points_info") + " " + ::loc("tutorials/upg_crew/press_to_crew")
         actionType = tutorAction.OBJ_CLICK
-        cb = function()
-        {
-          openUnitActionsList(curCrewSlot, false, true)
-        }
+        shortcut = ::GAMEPAD_ENTER_SHORTCUT
+        nextActionShortcut = "help/OBJ_CLICK"
+        cb = @() openUnitActionsList(curCrewSlot, false, true)
       },
       {
         actionType = tutorAction.WAIT_ONLY
@@ -1135,6 +1134,8 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
         }]
         text = ::loc("tutorials/upg_crew/select_crew")
         actionType = tutorAction.OBJ_CLICK
+        shortcut = ::GAMEPAD_ENTER_SHORTCUT
+        nextActionShortcut = "help/OBJ_CLICK"
         cb = function() {
           ::gui_modal_crew({
             countryId = curCrew.idCountry,

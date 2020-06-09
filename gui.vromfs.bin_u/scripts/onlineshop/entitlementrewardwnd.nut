@@ -13,6 +13,8 @@ class ::gui_handlers.EntitlementRewardWnd extends ::gui_handlers.trophyRewardWnd
   getTitle = @() getEntitlementName(entitlementConfig)
   isRouletteStarted = @() false
 
+  viewParams = null
+
   function openChest() {
     if (opened)
       return false
@@ -81,11 +83,11 @@ class ::gui_handlers.EntitlementRewardWnd extends ::gui_handlers.trophyRewardWnd
     if (!::checkObj(obj))
       return
 
-    local data = getEntitlementView(entitlementConfig, {
+    local data = getEntitlementView(entitlementConfig, (viewParams ?? {}).__update({
       header = ::loc("mainmenu/you_received")
       multiAwardHeader = true
       widthByParentParent = true
-    })
+    }))
 
     guiScene.replaceContentFromText(obj, data, data.len(), this)
   }
@@ -97,7 +99,7 @@ class ::gui_handlers.EntitlementRewardWnd extends ::gui_handlers.trophyRewardWnd
 }
 
 return {
-  showEntitlement = function(entitlementId) {
+  showEntitlement = function(entitlementId, params = {}) {
     local config = getEntitlementConfig(entitlementId)
     if (!config)
     {
@@ -105,6 +107,9 @@ return {
       return
     }
 
-    ::handlersManager.loadHandler(::gui_handlers.EntitlementRewardWnd, {entitlementConfig = config})
+    ::handlersManager.loadHandler(::gui_handlers.EntitlementRewardWnd, {
+      entitlementConfig = config
+      viewParams = params
+    })
   }
 }

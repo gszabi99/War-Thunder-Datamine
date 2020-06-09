@@ -1,6 +1,7 @@
 local shipState = require("shipState.nut")
-local crewState = require("crewState.nut")
-local hudState = require("hudState.nut")
+local { bestMinCrewMembersCount, minCrewMembersCount, totalCrewMembersCount,
+  aliveCrewMembersCount, driverAlive } = require("crewState.nut")
+local { isVisibleDmgIndicator } = require("hudState.nut")
 local dmModule = require("dmModule.nut")
 local colors = require("style/colors.nut")
 local setHudBg = require("style/hudBackground.nut")
@@ -262,16 +263,15 @@ local crewCountColor = function(minimum, current) {
   return colors.hud.damageModule.active
 }
 
-local getMaxCrewLeftPercent = @() (100.0 *
-  (1.0 + (crewState.bestMinCrewMembersCount.value.tofloat() - crewState.minCrewMembersCount.value)
-    / crewState.totalCrewMembersCount.value)
-  + 0.5).tointeger()
+local getMaxCrewLeftPercent = @() totalCrewMembersCount.value > 0
+  ? (100.0 * (1.0 + (bestMinCrewMembersCount.value.tofloat() - minCrewMembersCount.value)
+      / totalCrewMembersCount.value)
+    + 0.5).tointeger()
+  : 0
 local countCrewLeftPercent = @()
-  ::clamp(mathEx.lerp(
-    crewState.minCrewMembersCount.value - 1, crewState.totalCrewMembersCount.value,
-    0, getMaxCrewLeftPercent(),
-    crewState.aliveCrewMembersCount.value),
-  0, 100)
+  ::clamp(mathEx.lerp(minCrewMembersCount.value - 1, totalCrewMembersCount.value,
+      0, getMaxCrewLeftPercent(), aliveCrewMembersCount.value),
+    0, 100)
 
 local crewBlock = @() {
   vplace = ALIGN_BOTTOM
@@ -284,8 +284,8 @@ local crewBlock = @() {
       marigin = [hdpx(STATE_ICON_MARGIN), 0]
       rendObj = ROBJ_IMAGE
       image = images.driver
-      color = crewState.driverAlive.value ? colors.hud.damageModule.inactive : colors.hud.damageModule.alert
-      watch = crewState.driverAlive
+      color = driverAlive.value ? colors.hud.damageModule.inactive : colors.hud.damageModule.alert
+      watch = driverAlive
     }
     @() {
       size = [hdpx(STATE_ICON_SIZE), hdpx(STATE_ICON_SIZE)]
@@ -293,12 +293,12 @@ local crewBlock = @() {
       rendObj = ROBJ_IMAGE
       image = images.shipCrew
       color = crewCountColor(
-        crewState.minCrewMembersCount.value,
-        crewState.aliveCrewMembersCount.value
+        minCrewMembersCount.value,
+        aliveCrewMembersCount.value
       )
       watch = [
-        crewState.aliveCrewMembersCount
-        crewState.minCrewMembersCount
+        aliveCrewMembersCount
+        minCrewMembersCount
       ]
       children = {
         vplace = ALIGN_BOTTOM
@@ -437,9 +437,9 @@ local updateFunc = null
 return @() setHudBg({
   size = SIZE_TO_CONTENT
   flow = FLOW_VERTICAL
-  padding = hudState.isVisibleDmgIndicator.value ? hdpx(10) : 0
-  gap = hudState.isVisibleDmgIndicator.value ? {size=[flex(),hdpx(5)]} : 0
-  watch = hudState.isVisibleDmgIndicator
+  padding = isVisibleDmgIndicator.value ? hdpx(10) : 0
+  gap = isVisibleDmgIndicator.value ? {size=[flex(),hdpx(5)]} : 0
+  watch = isVisibleDmgIndicator
   onAttach = function(elem)
   {
     if(updateFunc)
@@ -464,7 +464,7 @@ return @() setHudBg({
       updateFunc = null
     }
   }
-  children = hudState.isVisibleDmgIndicator.value
+  children = isVisibleDmgIndicator.value
     ? [
         speed
         shipStateDisplay

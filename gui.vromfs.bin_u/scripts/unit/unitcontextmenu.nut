@@ -116,7 +116,8 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
       haveWarning = ::checkUnitWeapons(unit) != UNIT_WEAPONS_READY
       haveDiscount = ::get_max_weaponry_discount_by_unitName(unit.name) > 0
       showAction = inMenu && !::g_crews_list.isSlotbarOverrided &&
-        (unit.isAir() || unit.isHelicopter()) && ::has_feature("ShowWeapPresetsMenu")
+        (unit.isAir() || unit.isHelicopter()) && ::isAirHaveSecondaryWeapons(unit) &&
+          ::has_feature("ShowWeapPresetsMenu")
       actionFunc = @() weaponryPresetsModal.open({ unit = unit })
     }
     else if (action == "weapons")

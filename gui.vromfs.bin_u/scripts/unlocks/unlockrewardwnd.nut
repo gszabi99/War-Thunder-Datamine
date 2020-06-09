@@ -13,6 +13,8 @@ class ::gui_handlers.UnlockRewardWnd extends ::gui_handlers.trophyRewardWnd
   getTitle = @() ::get_unlock_type_text(unlockData.type, unlockData.id)
   isRouletteStarted = @() false
 
+  viewParams = null
+
   function openChest() {
     if (opened)
       return false
@@ -79,11 +81,11 @@ class ::gui_handlers.UnlockRewardWnd extends ::gui_handlers.trophyRewardWnd
     if (!::checkObj(obj))
       return
 
-    local data = ::g_unlock_view.getViewItem(unlockData, {
+    local data = ::g_unlock_view.getViewItem(unlockData, (viewParams ?? {}).__update({
       header = ::loc("mainmenu/you_received")
       multiAwardHeader = true
       widthByParentParent = true
-    })
+    }))
 
     guiScene.replaceContentFromText(obj, data, data.len(), this)
   }
@@ -95,7 +97,7 @@ class ::gui_handlers.UnlockRewardWnd extends ::gui_handlers.trophyRewardWnd
 }
 
 return {
-  showUnlock = function(unlockId) {
+  showUnlock = function(unlockId, viewParams = {}) {
     local config = ::g_unlocks.getUnlockById(unlockId)
     if (!config)
     {
@@ -105,9 +107,10 @@ return {
 
     local unlockConditions = ::build_conditions_config(config)
     ::handlersManager.loadHandler(::gui_handlers.UnlockRewardWnd, {
-      unlockConfig = config,
+      unlockConfig = config
       unlockConditions = unlockConditions
       unlockData = ::build_log_unlock_data(unlockConditions)
+      viewParams = viewParams
     })
   }
 }
