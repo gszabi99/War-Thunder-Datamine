@@ -1,5 +1,5 @@
 local { generateQrBlocks } = require("std/qrCode.nut")
-local { getAuthenticatedUrlConfig } = require("scripts/onlineShop/url.nut")
+local { getAuthenticatedUrlConfig, getUrlWithQrRedirect } = require("scripts/onlineShop/url.nut")
 
 local mulArr = @(arr, mul) $"{arr[0] * mul}, {arr[1] * mul}"
 
@@ -11,6 +11,8 @@ local class qrWindow extends ::gui_handlers.BaseGuiHandlerWT {
   baseUrl = ""
   urlWithoutTags = ""
   qrSize = null
+
+  needUrlWithQrRedirect = false
 
   function getSceneTplView()
   {
@@ -37,7 +39,8 @@ local class qrWindow extends ::gui_handlers.BaseGuiHandlerWT {
       return null
 
     urlWithoutTags = urlConfig.urlWithoutTags
-    local list = generateQrBlocks(urlConfig.url)
+    local urlForQr = needUrlWithQrRedirect ? getUrlWithQrRedirect(urlConfig.url) : urlConfig.url
+    local list = generateQrBlocks(urlForQr)
     local cellSize = ((qrSize ?? ::to_pixels("0.5@sf")).tofloat() / (list.size + 8)).tointeger()
     local size = cellSize * (list.size + 8)
     return {

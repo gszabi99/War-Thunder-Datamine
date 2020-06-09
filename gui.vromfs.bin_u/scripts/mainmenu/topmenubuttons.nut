@@ -214,6 +214,7 @@ local list = {
       ? openQrWindow({
           headerText = ::loc("topmenu/streamsAndReplays")
           baseUrl = ::loc("url/streamsAndReplays")
+          needUrlWithQrRedirect = true
         })
       : openUrlByObj(obj)
     isDelayed = false

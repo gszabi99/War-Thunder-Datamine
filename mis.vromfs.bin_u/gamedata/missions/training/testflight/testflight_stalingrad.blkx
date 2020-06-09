@@ -12,12 +12,12 @@
     "mission": {
       "level": "levels/stalingrad.bin",
       "type": "testFlight",
-      "restoreType": "manual",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "good",
       "windDirection": [1.0,0.0,0.0],
-      "locName": "missions/testFlight"
+      "locName": "missions/testFlight",
+      "restoreType": "manual",
+      "optionalTakeOff": false
     },
     "spectator_points": [],
     "briefing": {
@@ -141,6 +141,59 @@
           "runwayName": "airfield00",
           "objects": "armada_01"
         }
+      },
+      "else_actions": []
+    },
+    "destroy_bridges_for_ship": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "unitDamage": [
+          {
+            "power": 1.0
+          },
+          {
+            "useEffect": false
+          },
+          {
+            "countEffects": 1
+          },
+          {
+            "delay": [1.0,1.0]
+          },
+          {
+            "offset": [0.0,0.0,0.0]
+          },
+          {
+            "radiusOffset": [10.0,15.0]
+          },
+          {
+            "target": "bridge_09"
+          },
+          {
+            "target": "bridge_02"
+          },
+          {
+            "target": "bridge_08"
+          },
+          {
+            "partName": "body"
+          },
+          {
+            "doExplosion": true
+          }
+        ]
       },
       "else_actions": []
     }
