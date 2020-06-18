@@ -2609,7 +2609,7 @@ local function getWeaponFeatures(weaponsBlkList)
     if (w.gotSchraegeMusik)
       controls.append("ID_SCHRAEGE_MUSIK")
 
-    if (hasControllableRadar)
+    if (hasControllableRadar && !::is_xinput_device())
     {
       controls.append("ID_SENSOR_SWITCH")
       controls.append("ID_SENSOR_TARGET_SWITCH")
@@ -2665,7 +2665,7 @@ local function getWeaponFeatures(weaponsBlkList)
       }
     }
 
-    if (hasControllableRadar)
+    if (hasControllableRadar && !::is_xinput_device())
     {
       controls.append("ID_SENSOR_TARGET_SWITCH_TANK")
       controls.append("ID_SENSOR_TARGET_LOCK_TANK")
