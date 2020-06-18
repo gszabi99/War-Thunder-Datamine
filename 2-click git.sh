@@ -4,3 +4,4 @@ git add .
 git commit -am "$VER"
 git tag $VER
 git push origin $VER
+git push
