@@ -224,6 +224,9 @@ g_decorator.isAutoSkinAvailable <- function isAutoSkinAvailable(unitName)
 
 g_decorator.getLastSkin <- function getLastSkin(unitName)
 {
+  local unit = getAircraftByName(unitName)
+  if (!unit.isUsable() && unit.getPreviewSkinId() != "")
+    return unit.getPreviewSkinId()
   if (!isAutoSkinAvailable(unitName))
     return ::hangar_get_last_skin(unitName)
   return ::load_local_account_settings(getSkinSaveId(unitName))

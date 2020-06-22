@@ -135,6 +135,13 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     ::hangar_model_load_manager.loadModel(unit.name)
 
+    if (!isUnitOwn && !previewMode)
+    {
+      local skinId = unit.getPreviewSkinId()
+      if (skinId != "" && skinId != initialAppliedSkinId)
+        applySkin(skinId, true)
+    }
+
     initFocusArray()
 
     if (preSelectDecorator)
@@ -1827,7 +1834,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     local skinId = skinList.values[skinNum]
     local access = skinList.access[skinNum]
 
-    if (access.isOwn && !previewMode)
+    if (isUnitOwn && access.isOwn && !previewMode)
     {
       local curSkinId = ::hangar_get_last_skin(unit.name)
       if (!previewSkinId && (skinId == curSkinId || (skinId == "" && curSkinId == "default")))
