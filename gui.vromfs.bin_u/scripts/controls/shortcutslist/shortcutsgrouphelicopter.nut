@@ -220,12 +220,12 @@ return [
   {
     id = "ID_WEAPON_LOCK_HELICOPTER"
     checkGroup = ctrlGroups.HELICOPTER
-    needShowInHelp = true
+    checkAssign = false
   }
   {
     id = "ID_AGM_LOCK_HELICOPTER"
     checkGroup = ctrlGroups.HELICOPTER
-    needShowInHelp = true
+    checkAssign = false
   }
   {
     id = "ID_TOGGLE_LASER_DESIGNATOR_HELICOPTER"

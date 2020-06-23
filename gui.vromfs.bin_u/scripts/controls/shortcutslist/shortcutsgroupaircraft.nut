@@ -151,7 +151,7 @@ return [
   }
   {
     id = "ID_WEAPON_LOCK"
-    needShowInHelp = true
+    checkAssign = false
   }
   {
     id = "ID_FLARES"
