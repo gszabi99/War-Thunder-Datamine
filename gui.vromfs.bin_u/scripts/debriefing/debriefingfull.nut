@@ -542,6 +542,11 @@ global enum debrState {
   ::debriefing_result.exp.expMission <- ::getTblValue("expMission", exp, 0) + ::getTblValue("expRace", exp, 0)
   ::debriefing_result.exp.wpMission <- ::getTblValue("wpMission", exp, 0) + ::getTblValue("wpRace", exp, 0)
 
+  local missionRules = ::g_mis_custom_state.getCurMissionRules()
+  ::debriefing_result.overrideCountryIconByTeam <- {
+    [Team.A] = missionRules.getOverrideCountryIconByTeam(Team.A),
+    [Team.B] = missionRules.getOverrideCountryIconByTeam(Team.B)
+  }
   ::update_debriefing_exp_investment_data()
   ::calculate_debriefing_tabular_data(false)
   ::recount_debriefing_result()

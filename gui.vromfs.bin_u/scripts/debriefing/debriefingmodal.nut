@@ -3329,6 +3329,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
   getMplayersList = @(team) team == ::GET_MPLAYERS_LIST
     ? ::debriefing_result.mplayers_list
     : ::debriefing_result.mplayers_list.filter(@(player) player.team == team)
+  getOverrideCountryIconByTeam = @(team) ::debriefing_result.overrideCountryIconByTeam[team]
 
   isInited = true
   state = 0

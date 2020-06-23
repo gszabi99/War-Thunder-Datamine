@@ -82,6 +82,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
   headerObj = null
   crewsObj = null
   selectedCrewData = null
+  customViewCountryData = null
 
   static function create(params)
   {
@@ -443,7 +444,8 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
         countryIdx = countryData.id
         country = country
         tooltipText = tooltipText
-        countryIcon = ::get_country_icon(country, false, !cUnlocked || !cEnabled)
+        countryIcon = ::get_country_icon(
+          customViewCountryData?[country].icon ?? country, false, !cUnlocked || !cEnabled)
         bonusData = bonusData
         isEnabled = cEnabled && cUnlocked
       })
@@ -901,11 +903,12 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
     if (::check_obj(animBlockObj))
       return
 
+    local country = countryData.country
     local blk = ::handyman.renderCached("gui/slotbar/slotbarItem", {
       countryIdx = countryData.idx
       needSkipAnim = countriesCount == 0
       alwaysShowBorder = alwaysShowBorder
-      countryImage = ::get_country_icon(countryData.country, false)
+      countryImage = ::get_country_icon(customViewCountryData?[country].icon ?? country, false)
     })
     guiScene.appendWithBlk(crewsObj, blk, this)
   }

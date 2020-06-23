@@ -620,8 +620,9 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
 
   function getSlotbarParams()
   {
+    local playerCountry = ::get_local_player_country()
     return {
-      singleCountry = ::get_local_player_country()
+      singleCountry = playerCountry
       hasActions = false
       showNewSlot = false
       showEmptySlot = false
@@ -634,6 +635,9 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       missionRules = missionRules
       hasExtraInfoBlock = true
       shouldSelectAvailableUnit = isRespawn
+      customViewCountryData = { [playerCountry] = {
+        icon = missionRules.getOverrideCountryIconByTeam(::get_mp_local_team())
+      }}
 
       beforeSlotbarSelect = beforeSlotbarSelect
       afterSlotbarSelect = onChangeUnit

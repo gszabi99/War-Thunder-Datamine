@@ -6,6 +6,8 @@ local avatars = require("scripts/user/avatars.nut")
 local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
 local { WEAPON_TAG } = require("scripts/weaponry/weaponryInfo.nut")
 
+const OVERRIDE_COUNTRY_ID = "override_country"
+
 ::time_to_kick_show_timer <- null
 ::time_to_kick_show_alert <- null
 ::in_battle_time_to_kick_show_timer <- null
@@ -998,6 +1000,15 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
     }
   }
 
+  function updateOverrideCountry(teamObj, countryIcon) {
+    if (!::check_obj(teamObj))
+      return
+
+    local countryFlagObj = ::showBtn(OVERRIDE_COUNTRY_ID, countryIcon != null, teamObj)
+    if (::check_obj(countryFlagObj))
+      countryFlagObj["background-image"] = ::get_country_icon(countryIcon)
+  }
+
   /**
    * Places all available country
    * flags into container.
@@ -1010,12 +1021,15 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(countriesBlock))
       return
     local view = {
-      countries = ::u.map(::shopCountriesList, function (countryName) {
-        return {
+      countries = ::shopCountriesList
+        .map(@(countryName) {
           countryName = countryName
           countryIcon = ::get_country_icon(countryName)
-        }
-      })
+        })
+        .append({
+          countryName = OVERRIDE_COUNTRY_ID
+          countryIcon = ""
+        })
     }
     local result = ::handyman.renderCached("gui/countriesList", view)
     guiScene.replaceContentFromText(countriesBlock, result, result.len(), this)
@@ -1867,7 +1881,10 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
 
     if (::checkObj(teamObj1))
     {
-      countries = isTeamsWithCountryFlags ? getCountriesByTeam(playerTeam) : []
+      local teamOverrideCountryIcon = getOverrideCountryIconByTeam(playerTeam)
+      countries = isTeamsWithCountryFlags && !teamOverrideCountryIcon
+        ? getCountriesByTeam(playerTeam)
+        : []
       if (isTeamsWithCountryFlags)
         teamIco = null
       else
@@ -1875,10 +1892,15 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
           : playerTeam == Team.A ? "allies" : "axis"
       setTeamInfoTeamIco(teamObj1, teamIco)
       setTeamInfoCountries(teamObj1, countries)
+      updateOverrideCountry(teamObj1, teamOverrideCountryIcon)
     }
     if (!showLocalTeamOnly && ::checkObj(teamObj2))
     {
-      countries = isTeamsWithCountryFlags ? getCountriesByTeam(playerTeam == Team.A ? Team.B : Team.A) : []
+      local opponentTeam = playerTeam == Team.A ? Team.B : Team.A
+      local teamOverrideCountryIcon = getOverrideCountryIconByTeam(opponentTeam)
+      countries = isTeamsWithCountryFlags && !teamOverrideCountryIcon
+        ? getCountriesByTeam(opponentTeam)
+        : []
       if (isTeamsWithCountryFlags)
         teamIco = null
       else
@@ -1886,6 +1908,7 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
           : playerTeam == Team.A ? "axis" : "allies"
       setTeamInfoTeamIco(teamObj2, teamIco)
       setTeamInfoCountries(teamObj2, countries)
+      updateOverrideCountry(teamObj2, teamOverrideCountryIcon)
     }
   }
 
@@ -2012,6 +2035,8 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
 
   getLocalTeam = @() ::get_local_team_for_mpstats()
   getMplayersList = @(team) ::get_mplayers_list(team, true)
+  getOverrideCountryIconByTeam = @(team)
+    ::g_mis_custom_state.getCurMissionRules().getOverrideCountryIconByTeam(team)
 }
 
 class ::gui_handlers.MPStatScreen extends ::gui_handlers.MPStatistics

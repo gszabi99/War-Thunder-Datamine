@@ -555,6 +555,11 @@ class ::mission_rules.Base
 
     return fullGroupsList
   }
+
+  function getOverrideCountryIconByTeam(team) {
+    local icon = missionParams?[$"countryFlagTeam{team != Team.B ? "A" : "B"}"]
+    return icon == "" ? null : icon
+  }
 }
 
 //just for case when empty rules will not the same as base
