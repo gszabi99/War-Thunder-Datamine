@@ -130,4 +130,9 @@
   YU2_PAY_GJN = 32
   YU2_FORBIDDEN_NEED_2STEP = 32
 })
+//----------------------------wop_1_99_0_X---------------------------------//
+::apply_compatibilities({
+  TT_INFANTRY = 3
+})
+
 
