@@ -1,4 +1,5 @@
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
+local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 
 class ::gui_handlers.WwQueueInfo extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -101,7 +102,7 @@ class ::gui_handlers.WwQueueInfo extends ::gui_handlers.BaseGuiHandlerWT
     if (!::check_obj(countryObj))
       return
 
-    countryObj["background-image"] = ::get_country_icon(sideInfo.country, true)
+    countryObj["background-image"] = getCustomViewCountryData(sideInfo.country).icon
 
     local maxPlayersTextObj = containerObj.findObject("max_players_text")
     if (!::check_obj(maxPlayersTextObj))

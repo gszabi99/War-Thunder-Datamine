@@ -1,3 +1,5 @@
+local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+
 class ::gui_handlers.WwCommanders extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
@@ -31,7 +33,7 @@ class ::gui_handlers.WwCommanders extends ::gui_handlers.BaseGuiHandlerWT
     local groupsView = []
     local useSwitchMode = false
     local view = { items = [] }
-
+    local mapName = ::g_ww_global_status.getOperationById(::ww_get_operation_id())?.getMapId() ?? ""
     groupsHandlers = []
     foreach(side in ::g_world_war.getSidesOrder())
     {
@@ -65,9 +67,11 @@ class ::gui_handlers.WwCommanders extends ::gui_handlers.BaseGuiHandlerWT
       local selected = ::ww_get_player_side() == side
       useSwitchMode = useSwitchMode || sideGroupsView.len() > groupsInColumnMax
 
-      local countryFlagsList = ::u.map(armyCountry, function(country) { return {image = ::get_country_icon(country)} })
+      local countryFlagsList = armyCountry.map(@(country) {
+        image = getCustomViewCountryData(country, mapName).icon
+      })
 
-      local teamText = ::loc(armyCountry[0])
+      local teamText = ::loc(getCustomViewCountryData(armyCountry[0], mapName).locId)
       if (armyCountry.len() > 1)
       {
         local postfix = ::ww_get_player_side() == side? "allies" : "enemies"

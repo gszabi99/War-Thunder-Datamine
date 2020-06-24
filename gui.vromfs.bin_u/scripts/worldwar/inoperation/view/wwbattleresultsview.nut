@@ -1,5 +1,6 @@
 local time = require("scripts/time.nut")
 local wwOperationUnitsGroups = require("scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
+local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 
 enum UNIT_STATS {
   INITIAL
@@ -74,8 +75,7 @@ class ::WwBattleResultsView
 
   function getBattleDescText()
   {
-    local curOperation = ::g_ww_global_status.getOperationById(::ww_get_operation_id())
-    local operationName = curOperation ? curOperation.getNameText() : ""
+    local operationName = getOperation()?.getNameText() ?? ""
     local zoneName = battleRes.zoneName != "" ? (::loc("options/dyn_zone") + " " + battleRes.zoneName) : ""
     local dateTime = time.buildDateStr(battleRes.time) + " " + time.buildTimeStr(battleRes.time)
     return ::g_string.implode([ operationName, zoneName, dateTime ], ::loc("ui/semicolon"))
@@ -238,6 +238,7 @@ class ::WwBattleResultsView
 
   function getTeamBlock()
   {
+    local mapName = getOperation()?.getMapId() ?? ""
     local teams = []
     foreach(sideIdx, side in ::g_world_war.getSidesOrder())
     {
@@ -254,7 +255,7 @@ class ::WwBattleResultsView
 
       teams.append({
         invert = sideIdx != 0
-        countryIcon = ::get_country_icon(team.country, true)
+        countryIcon = getCustomViewCountryData(team.country, mapName).icon
         armies = armies
         statistics = getTeamStats(team, battleUnitTypes, inactiveUnitTypes)
       })
@@ -272,5 +273,10 @@ class ::WwBattleResultsView
   function getReplayBtnTooltip()
   {
     return ::loc("mainmenu/btnViewReplayTooltip", {sessionID = battleRes.getSessionId()})
+  }
+
+  function getOperation()
+  {
+    return ::g_ww_global_status.getOperationById(battleRes.getOperationId() ?? ::ww_get_operation_id())
   }
 }

@@ -1,4 +1,5 @@
 local wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 
 class ::gui_handlers.WwJoinBattleCondition extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -42,11 +43,12 @@ class ::gui_handlers.WwJoinBattleCondition extends ::gui_handlers.BaseGuiHandler
       columns.append({ unitString = wwUnitsList.slice(unitsInColumn) })
     }
 
+    local viewCountryData = getCustomViewCountryData(team.country)
     return {
       countryInfoText = ::loc("worldwar/help/country_info",
-        {country = ::colorize("@newTextColor", ::loc(team.country))})
+        {country = ::colorize("@newTextColor", ::loc(viewCountryData.locId))})
       battleConditionText = ::loc("worldwar/help/required_units_" + unitAvailability)
-      countryIcon = ::get_country_icon(team.country, true)
+      countryIcon = viewCountryData.icon
       columns = columns
     }
   }

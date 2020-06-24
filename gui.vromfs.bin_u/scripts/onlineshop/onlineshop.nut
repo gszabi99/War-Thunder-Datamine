@@ -427,7 +427,9 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
       if (renewText!="")
       {
         local realname = ("alias" in goods[task]) ? goods[task].alias : task
-        local expire = entitlement_expires_in(realname)
+        local expire = entitlement_expires_in(realname == "PremiumAccount"
+          ? ::shop_get_premium_account_ent_name()
+          : realname)
         if (expire>0)
           desc+= format("\n<color=@chapterUnlockedColor>%s</color>",
                    ::loc("subscription/activeTime") + ::loc("ui/colon") + time.getExpireText(expire)) + "\n"

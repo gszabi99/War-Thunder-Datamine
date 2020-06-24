@@ -56,14 +56,13 @@ repairIcon {
 }
 <</hasRepairIcon>>
 
-<<#hasWeaponsStatus>>
-<<#isWeaponsStatusZero>>
-weaponsStatus:t='zero'
-<</isWeaponsStatusZero>>
+<<#weaponsStatus>>
 weaponsIcon {
+  id:t='weapons_icon'
   _transp-timer:t='0'
+  weaponsStatus:t='<<weaponsStatus>>'
 }
-<</hasWeaponsStatus>>
+<</weaponsStatus>>
 }
 
 <<#hasRentIcon>>

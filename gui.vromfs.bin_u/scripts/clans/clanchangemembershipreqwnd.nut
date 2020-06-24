@@ -22,6 +22,7 @@ class ::gui_handlers.clanChangeMembershipReqWnd extends ::gui_handlers.BaseGuiHa
 
   minRankCondTypeObject = null
   autoAcceptMembershipObject = null
+  focusArray = ["optionslist"]
 
   // MembershipRequirementsBlk looks like this
   // {
@@ -41,6 +42,7 @@ class ::gui_handlers.clanChangeMembershipReqWnd extends ::gui_handlers.BaseGuiHa
     if ( !clanData )
       return goBack()
     reinitScreen()
+    initFocusArray()
   }
 
   function reinitScreen()

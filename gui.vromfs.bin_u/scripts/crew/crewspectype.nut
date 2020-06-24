@@ -341,7 +341,7 @@ g_crew_spec_type._getBtnBuyTooltipContent <- function _getBtnBuyTooltipContent(c
                            {
                              qualify = ::colorize("activeTextColor", getName())
                              unitName = ::colorize("activeTextColor", ::getUnitName(unit))
-                             cost = ::colorize("activeTextColor", 
+                             cost = ::colorize("activeTextColor",
                                                curSpecType.getUpgradeCostByCrewAndByUnit(crew, unit, code).tostring())
                            })
 

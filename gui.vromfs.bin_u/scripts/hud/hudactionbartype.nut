@@ -421,7 +421,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
 
   FORCED_WEAPON = {
     code = ::EII_FORCED_GUN
-    isForSelectWeaponMenu = @() 
+    isForSelectWeaponMenu = @()
     getTitle = function(killStreakTag = null) {
       local forceTrigger = ::get_force_weap_trigger_group()
       switch (forceTrigger)

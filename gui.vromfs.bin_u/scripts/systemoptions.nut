@@ -399,7 +399,7 @@
       ::sysopt.setGuiValue("compatibilityMode", false)
     }
   }
-  
+
   enableByCompMode = function(id, enable) {
     local desc = ::sysopt.getOptionDesc(id)
     local enabled = enable && (desc?.enabled() ?? true)
@@ -493,46 +493,43 @@
     local minH = 720
 
     local list = ::get_video_modes()
+    local isListTruncated = list.len() <= 1
     if (isNeedAuto)
       list.append("auto")
-    if (curResolution && ::find_in_array(list, curResolution) == -1)
+    if (curResolution != null && list.indexof(curResolution) == null)
       list.append(curResolution)
 
-    local data = []
-    foreach (resolution in list)
-    {
-      if (resolution == "auto")
-      {
-        data.append({
-          resolution = resolution
-          w = 0     // To be sorted first.
-          h = 0
-        })
-      }
-      else
-      {
-        local sides = split(resolution, "x")
-        foreach (i, v in sides)
-          sides[i] = strip(v).tointeger()
-        if ((sides[0] >= minW && sides[1] >= minH) || resolution == curResolution)
-          data.append({
-            resolution = resolution
-            w = sides[0]
-            h = sides[1]
-          })
+    local function parseResolution(resolution) {
+      local sides = resolution == "auto"
+        ? [ 0, 0 ] // To be sorted first.
+        : resolution.split("x").apply(@(v) ::to_integer_safe(::strip(v), 0, false))
+      return {
+        resolution = resolution
+        w = sides?[0] ?? 0
+        h = sides?[1] ?? 0
       }
     }
 
-    data.sort(function(a,b){
-      if (a.w != b.w) return (a.w > b.w) ? 1 : -1
-      if (a.h != b.h) return (a.h > b.h) ? 1 : -1
-      return 0
-    })
+    local data = list.map(parseResolution).filter(@(r)
+      (r.w >= minW && r.h >= minH) || r.resolution == curResolution || r.resolution == "auto")
 
-    local modes = []
-    foreach (v in data)
-      modes.append(v.resolution)
-    return modes
+    local sortFunc = @(a,b) a.w <=> b.w  || a.h <=> b.h
+    data.sort(sortFunc)
+
+    // Debug: Fixing the truncated list when working via Remote Desktop.
+    if (isListTruncated && ::is_dev_version && ::is_platform_pc)
+    {
+      local debugResolutions = [ "1024 x 768", "1280 x 720", "1280 x 1024",
+        "1920 x 1080", "2520 x 1080", "3840 x 1080", "3840 x 2160" ]
+      local maxW = data?[data.len() - 1].w ?? 0
+      local maxH = data?[data.len() - 1].h ?? 0
+      local bonus = debugResolutions.map(parseResolution).filter(@(r)
+        (r.w < maxW || r.h < maxH) && list.indexof(r.resolution) == null)
+      data.extend(bonus)
+      data.sort(sortFunc)
+    }
+
+    return data.map(@(r) r.resolution)
   }
 
   getCurResolution = function(blk, desc)

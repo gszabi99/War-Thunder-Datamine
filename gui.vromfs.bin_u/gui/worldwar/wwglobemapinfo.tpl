@@ -6,12 +6,13 @@ tdiv {
 
   img {
     size:t='1@wwSmallCountryFlagWidth, 1@wwSmallCountryFlagHeight'
+    background-svg-size:t='1@wwSmallCountryFlagWidth, 1@wwSmallCountryFlagHeight'
     background-image:t='<<country_0_icon>>'
   }
 
   tdiv {
     width:t='fw'
-    top:t='ph-h'
+    top:t='0.5ph-0.5h'
     position:t='relative'
 
     textareaNoTab {
@@ -44,6 +45,7 @@ tdiv {
 
   img {
     size:t='1@wwSmallCountryFlagWidth, 1@wwSmallCountryFlagHeight'
+    background-svg-size:t='1@wwSmallCountryFlagWidth, 1@wwSmallCountryFlagHeight'
     background-image:t='<<country_1_icon>>'
   }
 }

@@ -1,8 +1,9 @@
+local airfieldTypes = require("scripts/worldWar/inOperation/model/airfieldTypes.nut")
+
 class ::WwOperationModel
 {
   armies = null
   unitClassFlyoutRange = null
-  groupAirArmiesLimit = 0
 
   maxUniqueUnitsOnFlyout = 0
 
@@ -10,7 +11,6 @@ class ::WwOperationModel
   {
     armies = ::WwOperationArmies()
     maxUniqueUnitsOnFlyout = ::g_world_war.getWWConfigurableValue("maxUniqueUnitsOnFlyout", 0)
-    groupAirArmiesLimit = ::g_world_war.getWWConfigurableValue("airArmiesLimitPerArmyGroup", 0)
   }
 
   function update()
@@ -18,9 +18,12 @@ class ::WwOperationModel
     armies.statusUpdate()
   }
 
-  function getGroupAirArmiesLimit()
+  function getGroupAirArmiesLimit(airfieldTypeName)
   {
-    return groupAirArmiesLimit
+    foreach (fName, fType in airfieldTypes)
+      if (airfieldTypeName == fName)
+        return ::g_world_war.getWWConfigurableValue(fType.configurableValue, 0)
+    return 0
   }
 
   function getUnitsFlyoutRange()
@@ -45,6 +48,12 @@ class ::WwOperationModel
         },
         [WW_UNIT_CLASS.BOMBER] = {
           [WW_UNIT_CLASS.BOMBER] = ::Point2(0,0)
+        },
+        [WW_UNIT_CLASS.HELICOPTER] = {
+          [WW_UNIT_CLASS.HELICOPTER] = ::Point2(
+            ::g_world_war.getWWConfigurableValue("helipadCreateArmyUnitCountMin", 0),
+            ::g_world_war.getWWConfigurableValue("helipadCreateArmyUnitCountMax", 0)
+          )
         }
       }
 

@@ -6,6 +6,7 @@ local transportTypeByTextCode = {
   TT_GROUND    = ::TT_GROUND
   TT_AIR       = ::TT_AIR
   TT_WATER     = ::TT_WATER
+  TT_INFANTRY  = ::TT_INFANTRY
   TT_TOTAL     = ::TT_TOTAL
 }
 

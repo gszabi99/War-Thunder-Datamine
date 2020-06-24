@@ -148,8 +148,7 @@ frame {
     }
 
     tdiv {
-      width:t='0.85pw'
-      left:t='0.5(pw-w)'
+      width:t='pw'
       position:t='relative'
       include "gui/worldWar/airfieldFlyOutUnitTypeInfo"
     }

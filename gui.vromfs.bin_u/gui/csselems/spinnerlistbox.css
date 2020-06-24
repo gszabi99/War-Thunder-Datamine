@@ -1,3 +1,7 @@
+@const bigCountyIconWidth: 134@sf/@pf;
+@const bigCountyIconHeight: 70@sf/@pf;
+@const smallCountyIconWidth: 67@sf/@pf;
+
 spinnerListBox {
   behaviour:spinnerListBox;
   flow:horizontal;
@@ -135,18 +139,18 @@ optionImg {
 }
 
 [iconType=country] optionImg {
-  size:100*@sf/@pf_outdated, 52*@sf/@pf_outdated;
+  size:1@bigCountyIconWidth, 1@bigCountyIconHeight;
+  background-svg-size:1@bigCountyIconWidth, 1@bigCountyIconHeight;
   pos:0, 50%ph-50%h;
   position:relative;
 }
 img[iconType=country] {
-  size:100*@sf/@pf_outdated, 52*@sf/@pf_outdated;
-}
-img[iconType=medium_country] {
-  size:75*@sf/@pf_outdated, 39*@sf/@pf_outdated;
+  size:1@bigCountyIconWidth, 1@bigCountyIconHeight;
+  background-svg-size:1@bigCountyIconWidth, 1@bigCountyIconHeight;
 }
 img[iconType=small_country] {
-  size:50*@sf/@pf_outdated, 26*@sf/@pf_outdated;
+  size:1@smallCountyIconWidth, 1@smallCountyIconWidth;
+  background-svg-size:1@smallCountyIconWidth, 1@smallCountyIconWidth;
 }
 
 img[iconType=country_battle] {

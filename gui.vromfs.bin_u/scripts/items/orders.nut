@@ -21,7 +21,7 @@ local spectatorWatchedHero = require("scripts/replays/spectatorWatchedHero.nut")
 
 ::g_orders <- {
   [PERSISTENT_DATA_PARAMS] = ["hasActiveOrder", "activeOrder", "activeLocalOrderIds", "timesUsedByOrderItemId",
-                              "prevActiveOrder", "cooldownTimeleft", "winnerScoreDataByOrderId", 
+                              "prevActiveOrder", "cooldownTimeleft", "winnerScoreDataByOrderId",
                               "orderStatusPosition", "orderStatusSize"
                              ]
 

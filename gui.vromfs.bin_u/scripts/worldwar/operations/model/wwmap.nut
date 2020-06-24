@@ -1,6 +1,7 @@
 local time = require("scripts/time.nut")
 local wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
+local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 
 class WwMap
 {
@@ -280,23 +281,16 @@ class WwMap
   {
     local countries = getCountryToSideTbl()
     local countryNames = ::u.keys(countries)
-    local countryList = ::u.filter(countryNames,
-                          (@(countries, side) function(country) {
-                            return countries[country] == side
-                          })(countries, side)
-                        )
-
-    local res = ""
+    local mapName = name
     local iconType = hasBigCountryIcon ? "small_country" : "country_battle"
-    foreach (idx, country in countryList)
-    {
-      local countryIcon = ::get_country_icon(country, hasBigCountryIcon)
-      local margin = idx > 0 ? "margin-left:t='@blockInterval'" : ""
-
-      res += ::format("img { iconType:t='%s'; background-image:t='%s'; %s }", iconType, countryIcon, margin)
-    }
-
-    return res
+    return "".join(countryNames
+      .filter(@(country) countries[country] == side)
+      .map(@(country, idx) "img { iconType:t='{type}'; background-image:t='{countryIcon}'; {margin} }".subst({
+        countryIcon = getCustomViewCountryData(country, mapName).icon
+        margin = idx > 0 ? "margin-left:t='@blockInterval'" : ""
+        type = iconType
+      }))
+    )
   }
 
   function getMinClansCondition()

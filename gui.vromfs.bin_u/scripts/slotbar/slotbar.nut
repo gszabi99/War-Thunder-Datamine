@@ -2,7 +2,7 @@ local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 local time = require("scripts/time.nut")
 local unitStatus = require("scripts/unit/unitStatus.nut")
 local { getUnitRole, getUnitRoleIcon } = require("scripts/unit/unitInfoTexts.nut")
-local { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
+local { getLastWeapon, getWeaponsStatusName } = require("scripts/weaponry/weaponryInfo.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 /*
@@ -111,7 +111,6 @@ if need - put commented in array above
     // Item buttons view
     //
 
-    local weaponsStatus = isLocalState && isUsable ? checkUnitWeapons(air) : UNIT_WEAPONS_READY
     local crewId = params?.crewId ?? -1
     local showWarningIcon = params?.showWarningIcon ?? false
     local specType = params?.specType
@@ -144,8 +143,7 @@ if need - put commented in array above
         specIconBlock           = showWarningIcon || specType != null
         showWarningIcon         = showWarningIcon
         hasRepairIcon           = isLocalState && isBroken
-        hasWeaponsStatus        = weaponsStatus != UNIT_WEAPONS_READY
-        isWeaponsStatusZero     = weaponsStatus == UNIT_WEAPONS_ZERO
+        weaponsStatus           = getWeaponsStatusName(isLocalState && isUsable ? ::checkUnitWeapons(air) : UNIT_WEAPONS_READY)
         hasRentIcon             = rentInfo.hasIcon
         hasRentProgress         = rentInfo.hasProgress
         rentProgress            = rentInfo.progress

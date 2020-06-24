@@ -3,7 +3,7 @@ local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
 local mapAirfields = require("scripts/worldWar/inOperation/model/wwMapAirfields.nut")
 local actionModesManager = require("scripts/worldWar/inOperation/wwActionModesManager.nut")
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
-
+local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 
 class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -595,9 +595,10 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
     local side2Name = ::ww_side_val_to_name(orderArray.len() > 1? orderArray[1] : ::SIDE_NONE)
     local side2Data = ::getTblValue(side2Name, armyStrengthData, {})
 
+    local mapName = ::g_ww_global_status.getOperationById(::ww_get_operation_id())?.getMapId() ?? ""
     local view = {
-      armyCountryImg1 = (side1Data?.country ?? []).map(@(c) { image = ::get_country_icon(c) })
-      armyCountryImg2 = (side2Data?.country ?? []).map(@(c) { image = ::get_country_icon(c) })
+      armyCountryImg1 = (side1Data?.country ?? []).map(@(c) { image = getCustomViewCountryData(c, mapName).icon })
+      armyCountryImg2 = (side2Data?.country ?? []).map(@(c) { image = getCustomViewCountryData(c, mapName).icon })
       side1TotalVehicle = 0
       side2TotalVehicle = 0
       unitString = []
@@ -1256,12 +1257,15 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     local reinforcementSide = reinforcement.getArmySide()
+    local reinforcementType = reinforcement.getOverrideUnitType() || reinforcement.getUnitType()
     local highlightedZones = []
-    if (::g_ww_unit_type.isAir(reinforcement.getUnitType()))
-      highlightedZones = ::u.map(::g_world_war.getAirfieldsArrayBySide(reinforcementSide),
+    if (::g_ww_unit_type.isAir(reinforcementType)) {
+      local filterType = ::g_ww_unit_type.isHelicopter(reinforcementType) ? "AT_HELIPAD" : "AT_RUNWAY"
+      highlightedZones = ::u.map(::g_world_war.getAirfieldsArrayBySide(reinforcementSide, filterType),
         function(airfield) {
           return ::ww_get_zone_name(::ww_get_zone_idx_world(airfield.getPos()))
         })
+    }
     else
       highlightedZones = ::g_world_war.getRearZonesOwnedToSide(reinforcementSide)
 

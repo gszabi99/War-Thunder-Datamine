@@ -1,6 +1,8 @@
 div {
   id:t='country_choice_list_box';
-  width:t='pw'
+  left:t='50%pw-50%w'
+  position:t='relative'
+  width:t='<<width>>'
   flow:t='h-flow'
   total-input-transparent:t='yes'
 
@@ -12,23 +14,19 @@ div {
 
   <<#countries>>
   firstChoiceItem {
-    width:t='@countryChoiceImageWidth'
     class:t='country'
 
     firstChoiceImage {
       background-image:t='<<backgroundImage>>'
     }
 
-    <<#isLocked>>
+    <<#lockText>>
     enable:t='no';
     img {
       background-image:t='#ui/gameuiskin#locked';
       position:t='absolute';
       size:t='@mIco, @mIco';
     }
-    <</isLocked>>
-
-    <<#lockText>>
     textAreaCentered {
       width:t='pw - 2@countryChoiceInterval'
       pos:t='50%pw-50%w, @countryChoiceImageHeight -  h - @countryChoiceInterval'

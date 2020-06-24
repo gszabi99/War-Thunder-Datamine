@@ -212,7 +212,7 @@ class ::gui_handlers.wwObjective extends ::BaseGuiHandler
     local countryIcon = ""
     local groups = ::g_world_war.getArmyGroupsBySide(side)
     if (groups.len() > 0)
-      countryIcon = groups[0].getCountryIcon(false)
+      countryIcon = groups[0].getCountryIcon()
 
     local objectiveBlocks = []
     foreach (name in ["primary", "secondary"])

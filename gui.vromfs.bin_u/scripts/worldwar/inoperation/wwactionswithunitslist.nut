@@ -123,7 +123,7 @@ local function getUnitMarkUp(name, unit, group, overrideParams = {}) {
 }
 
 local function getMaxFlyTime(unit) {
-  if (!unit?.isAir())
+  if (!unit?.isAir() && !unit?.isHelicopter())
     return 0
 
   local maxFlyTime = unit.getUnitWpCostBlk().maxFlightTimeMinutes ??

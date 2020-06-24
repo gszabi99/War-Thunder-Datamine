@@ -258,22 +258,23 @@ class ::WwBattleResults
 
     // Collecting armies
 
-    local wwArmies = ::u.mapAdvanced(initialArmies, (@(userlog) function(val, armyName, ...) {
-      local initialArmy = userlog?.wwSharedPool.initialArmies[armyName] ?? {}
-      local armyState = userlog?.wwBattleResult.armyStates[armyName] ?? {}
+    local wwArmies = initialArmies.map(function(initialArmy, armyName) {
+      local armyState = wwBattleResult?.armyStates[armyName] ?? {}
 
       local side  = ::ww_side_name_to_val(::getTblValue("side", initialArmy, ""))
       local country = ::getTblValue("country", initialArmy, "")
       local clanTag = ::getTblValue("armyGroupName", armyState, "")
       local unitTypeTextCode = ::getTblValue("unitType", initialArmy, "")
       local wwUnitType = ::g_ww_unit_type.getUnitTypeByTextCode(unitTypeTextCode)
+      local wwArmy = ::g_world_war.getArmyByName(armyName)
+      local hasFoundArmy = wwArmy.getUnitType() != ::g_ww_unit_type.UNKNOWN.code
 
       local armyView = {
         getTeamColor      = side == sideInBattle ? "blue" : "red"
         isBelongsToMyClan = clanTag == ::clan_get_my_clan_tag()
         getTextAfterIcon  = clanTag
-        getUnitTypeText   = wwUnitType.fontIcon
-        getUnitTypeCustomText = wwUnitType.fontIcon
+        getUnitTypeText   = hasFoundArmy ? wwArmy.getView().getUnitTypeText() : wwUnitType.fontIcon
+        getUnitTypeCustomText = hasFoundArmy ? wwArmy.getView().getUnitTypeCustomText() : wwUnitType.fontIcon
       }
 
       return {
@@ -284,7 +285,7 @@ class ::WwBattleResults
         deathReason = ""
         getView = @() armyView
       }
-    })(userlog))
+    })
 
     // Updating
 

@@ -751,10 +751,8 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     local bObj = showSceneBtn("btn_buy", canBuyIngame)
     if (::checkObj(bObj) && canBuyIngame)
     {
-      placePriceTextToButton(scene,
-                               "btn_buy",
-                               ::loc("mainmenu/btnOrder"),
-                               ::Cost(::wp_get_cost(unit.name), ::wp_get_cost_gold(unit.name)))
+      local price = canBuyNotResearchedUnit ? unit.getOpenCost() : ::getUnitCost(unit)
+      placePriceTextToButton(scene, "btn_buy", ::loc("mainmenu/btnOrder"), price)
 
       ::showUnitDiscount(bObj.findObject("buy_discount"), unit)
     }

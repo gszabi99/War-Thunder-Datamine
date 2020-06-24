@@ -72,10 +72,11 @@ global enum WW_BATTLE_ACCESS
 
 global enum WW_UNIT_CLASS
 {
-  FIGHTER  = 0x0001
-  BOMBER   = 0x0002
-  ASSAULT  = 0x0004
-  UNKNOWN  = 0x0008
+  FIGHTER    = 0x0001
+  BOMBER     = 0x0002
+  ASSAULT    = 0x0004
+  HELICOPTER = 0x0008
+  UNKNOWN    = 0x0010
 
   NONE     = 0x0000
   COMBINED = 0x0003
@@ -141,6 +142,7 @@ global enum WW_MAP_HIGHLIGHT {
 
 global enum WW_UNIT_SORT_CODE {
   AIR,
+  HELICOPTER,
   GROUND,
   WATER,
   ARTILLERY,
@@ -934,13 +936,14 @@ g_world_war.getAirfieldsCount <- function getAirfieldsCount()
   return ::ww_get_airfields_count();
 }
 
-g_world_war.getAirfieldsArrayBySide <- function getAirfieldsArrayBySide(side)
+g_world_war.getAirfieldsArrayBySide <- function getAirfieldsArrayBySide(side, filterType = "ANY")
 {
   local res = []
   for (local index = 0; index < getAirfieldsCount(); index++)
   {
     local field = getAirfieldByIndex(index)
-    if (field.isMySide(side))
+    local airfieldType = field.airfieldType
+    if (field.isMySide(side) && (filterType == "ANY" || filterType == airfieldType))
       res.append(field)
   }
 
@@ -1211,13 +1214,12 @@ g_world_war.moveSelectedArmiesToCell <- function moveSelectedArmiesToCell(cellId
 }
 
 
-g_world_war.playArmyActionSound <- function playArmyActionSound(soundId, wwArmy, wwUnitTypeCode = null)
+g_world_war.playArmyActionSound <- function playArmyActionSound(soundId, wwArmy)
 {
-  if ((!wwArmy || !wwArmy.isValid()) && !wwUnitTypeCode)
+  if (!wwArmy || !wwArmy.isValid())
     return
 
-  local unitTypeCode = wwUnitTypeCode ||
-                       wwArmy.getOverrideUnitType() ||
+  local unitTypeCode = wwArmy.getOverrideUnitType() ||
                        wwArmy.getUnitType()
   local armyType = ::g_ww_unit_type.getUnitTypeByCode(unitTypeCode)
   ::play_gui_sound(armyType[soundId])
@@ -1340,8 +1342,9 @@ g_world_war.moveSelectedAircraftsToCell <- function moveSelectedAircraftsToCell(
     return -1
 
   local params = ::DataBlock()
+  local airfieldIdx = ::ww_get_selected_airfield()
   params.addInt("targetCellIdx", cellIdx)
-  params.addInt("airfield", ::ww_get_selected_airfield())
+  params.addInt("airfield", airfieldIdx)
   params.addStr("side", ::ww_side_val_to_name(owner.side))
   params.addStr("country", owner.country)
   params.addInt("armyGroupIdx", owner.armyGroupIdx)
@@ -1361,7 +1364,8 @@ g_world_war.moveSelectedAircraftsToCell <- function moveSelectedAircraftsToCell(
   if (target)
     params.addStr("targetName", target)
 
-  playArmyActionSound("moveSound", null, ::UT_AIR)
+  local airfield = ::g_world_war.getAirfieldByIndex(airfieldIdx)
+  ::play_gui_sound(airfield.airfieldType.flyoutSound)
 
   return ::ww_send_operation_request("cln_ww_move_army_to", params)
 }

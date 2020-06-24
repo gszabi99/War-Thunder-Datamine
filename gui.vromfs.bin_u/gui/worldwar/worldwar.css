@@ -47,7 +47,7 @@
 
 @const wwArmySmallIconWidth: 36*@sf/@pf;
 @const wwSmallCountryFlagWidth: 67*@sf/@pf;
-@const wwSmallCountryFlagHeight: 35*@sf/@pf;
+@const wwSmallCountryFlagHeight: 1@wwSmallCountryFlagWidth;
 
 @const wwGlobeTooltipPadding: 15@sf/@pf;
 
@@ -173,24 +173,39 @@ objectiveBlock wwObjective taskIcon[background-image=""] {
   display:hide;
 }
 
-imageButton[type=wwAirfield] {
+imageButton[type=ww_helipad] {
+  background-image:#ui/gameuiskin#map_helipad;
+}
+
+imageButton[type=ww_helipad]:hover {
+  background-image:#ui/gameuiskin#map_helipad_hover;
+}
+
+imageButton[type=ww_airfield] {
   background-image:#ui/gameuiskin#map_airfield;
 }
 
-imageButton[type=wwAirfield]:hover {
+imageButton[type=ww_airfield]:hover {
   background-image:#ui/gameuiskin#map_airfield_hover;
 }
 
-imageButton[type=wwAirfield]:hover > textarea {
+imageButton[type=ww_helipad]:hover > textarea,
+imageButton[type=ww_airfield]:hover > textarea {
   color:@hoverTextColor;
 }
 
-imageButton[type=wwAirfield][selected=yes] {
+imageButton[type=ww_helipad][selected=yes] {
+  background-color:@white;
+  background-image:#ui/gameuiskin#map_helipad_selected;
+}
+
+imageButton[type=ww_airfield][selected=yes] {
   background-color:@white;
   background-image:#ui/gameuiskin#map_airfield_selected;
 }
 
-imageButton[type=wwAirfield][selected=yes] > textarea {
+imageButton[type=ww_helipad][selected=yes] > textarea,
+imageButton[type=ww_airfield][selected=yes] > textarea {
   color:@userlogColoredText;
 }
 
@@ -683,10 +698,11 @@ wwUnitClass > classIcon[zeroPos=yes]
   position: relative;
 }
 
-wwUnitClass > classIcon[unitType=fighter]  { color: @medium_fighterColor; }
-wwUnitClass > classIcon[unitType=assault]  { color: @common_assaultColor; }
-wwUnitClass > classIcon[unitType=bomber]   { color: @medium_bomberColor; }
-[isEnabled=no] wwUnitClass > classIcon     { color: @fadedTextColor; }
+wwUnitClass > classIcon[unitType=fighter]      { color: @medium_fighterColor; }
+wwUnitClass > classIcon[unitType=assault]      { color: @common_assaultColor; }
+wwUnitClass > classIcon[unitType=bomber]       { color: @medium_bomberColor; }
+wwUnitClass > classIcon[unitType=helicopter]   { color: @attack_helicopterColor; }
+[isEnabled=no] wwUnitClass > classIcon         { color: @fadedTextColor; }
 
 wwTopNest {
   width:pw;

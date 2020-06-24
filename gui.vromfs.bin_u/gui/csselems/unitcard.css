@@ -638,6 +638,8 @@ img[shopItemType=jet_bomber]        { background-color:@jet_bomberColor; }
 img[shopItemType=dive_bomber]       { background-color:@dive_bomberColor; }
 img[shopItemType=common_assault]    { background-color:@common_assaultColor; }
 img[shopItemType=strike_fighter]    { background-color:@strike_fighterColor; }
+img[shopItemType=attack_helicopter] { background-color:@attack_helicopterColor; }
+img[shopItemType=utility_helicopter]{ background-color:@utility_helicopterColor; }
 img[shopItemType=light_tank]        { background-color:@light_tankColor; }
 img[shopItemType=medium_tank]       { background-color:@medium_tankColor; }
 img[shopItemType=heavy_tank]        { background-color:@heavy_tankColor; }
@@ -774,7 +776,12 @@ weaponsIcon {
   background-image:#ui/gameuiskin#btn_weapons.svg;
   background-color:@weaponLightWarning;
 }
-[weaponsStatus=zero] > weaponsIcon {
+
+weaponsIcon[weaponsStatus=ready] {
+  display:hide;
+}
+
+weaponsIcon[weaponsStatus=zero] {
   background-color:@weaponWarning;
 }
 

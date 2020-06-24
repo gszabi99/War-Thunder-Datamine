@@ -118,7 +118,6 @@ local missedPatchnoteText = formatText([::loc("NoUpdateInfo", "Oops... No inform
 
 local seeMoreUrl = {
   t="url"
-  platform="pc,ps4"
   url=::loc("url/news")
   v=::loc("visitGameSite", "See game website for more details")
   margin = [::fpx(50), 0, 0, 0]

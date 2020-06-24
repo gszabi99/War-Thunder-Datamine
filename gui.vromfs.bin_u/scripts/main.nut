@@ -27,6 +27,8 @@ require("scripts/sqModuleHelpers.nut")
 ::g_script_reloader.loadOnce("scripts/compatibility.nut")
 ::g_script_reloader.loadOnce("scripts/clientState/errorHandling.nut")
 local { get_local_unixtime } = ::require_native("dagor.time")
+if (::disable_network())
+  ::get_charserver_time_sec = get_local_unixtime
 
 ::nda_version <- -1
 ::nda_version_tanks <-5

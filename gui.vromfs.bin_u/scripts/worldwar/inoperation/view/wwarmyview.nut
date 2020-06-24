@@ -1,7 +1,7 @@
 local time = require("scripts/time.nut")
 local wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 local wwTransportManager = require("scripts/worldWar/inOperation/wwTransportManager.nut")
-
+local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 
 class ::WwArmyView
 {
@@ -307,9 +307,9 @@ class ::WwArmyView
     return ::loc("worldwar/tooltip/ammo_refill_time")
   }
 
-  function getCountryIcon(big = false)
+  function getCountryIcon()
   {
-    return ::get_country_icon(formation.getArmyCountry(), big)
+    return getCustomViewCountryData(formation.getArmyCountry()).icon
   }
 
   function getClanId()

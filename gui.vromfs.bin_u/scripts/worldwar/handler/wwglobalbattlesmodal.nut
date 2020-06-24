@@ -2,6 +2,7 @@ local globalBattlesListData = require("scripts/worldWar/operations/model/wwGloba
 local WwGlobalBattle = require("scripts/worldWar/operations/model/wwGlobalBattle.nut")
 local wwBattlesFilterMenu = require("scripts/worldWar/handler/wwBattlesFilterMenu.nut")
 local slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 
 const WW_GLOBAL_BATTLES_FILTER_ID = "worldWar/ww_global_battles_filter"
 local MAX_VISIBLE_BATTLES_PER_GROUP = 5
@@ -106,11 +107,13 @@ class ::gui_handlers.WwGlobalBattlesModal extends ::gui_handlers.WwBattleDescrip
     updateButtons()
     updateDurationTimer()
     isBattleInited = true
+    updateTitle()
   }
 
   function getTitleText()
   {
-    return ::loc("worldwar/global_battle/title", {country = ::loc(::get_profile_country_sq())})
+    return ::loc("worldwar/global_battle/title", {
+      country = ::loc(getCustomViewCountryData(::get_profile_country_sq()).locId)})
   }
 
   function updateSlotbar()

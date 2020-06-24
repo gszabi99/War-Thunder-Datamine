@@ -400,7 +400,7 @@ local REPAIR_SHOW_TIME_THRESHOLD = 1.5
     local timeTextObj = placeObj.findObject("time_text")
     timeTextObj.setValue(debuffs_data.charge.tointeger().tostring());
     local timebarObj = placeObj.findObject("timer")
-    
+
     ::g_time_bar.setPeriod(timebarObj, 0)
     ::g_time_bar.setCurrentTime(timebarObj, 0)
   }

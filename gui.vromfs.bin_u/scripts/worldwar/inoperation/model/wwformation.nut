@@ -218,7 +218,10 @@ class ::WwFormation
   {
     switch (overrideIconId)
     {
-      case "infantry": return ::g_ww_unit_type.INFANTRY.code
+      case "infantry":
+        return ::g_ww_unit_type.INFANTRY.code
+      case "helicopter":
+        return ::g_ww_unit_type.HELICOPTER.code
     }
 
     return null

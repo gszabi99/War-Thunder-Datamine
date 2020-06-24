@@ -1,3 +1,5 @@
+local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+
 class ::WwArmyGroup
 {
   clanId               = ""
@@ -76,9 +78,9 @@ class ::WwArmyGroup
     return ::format("%d %s", getArmyGroupIdx(), name)
   }
 
-  function getCountryIcon(big = true)
+  function getCountryIcon()
   {
-    return ::get_country_icon(getArmyCountry(), big)
+    return getCustomViewCountryData(getArmyCountry()).icon
   }
 
   function showArmyGroupText()

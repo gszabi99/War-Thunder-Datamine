@@ -3,7 +3,8 @@ local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
 
 local fakeInfantryUnitName = "fake_infantry"
 const ALL_WW_UNITS_CODE = -2
-local WW_TRANSPORT_CODE = -3
+const WW_TRANSPORT_CODE = -3
+const WW_HELICOPTER_CODE = -4
 
 ::g_ww_unit_type <- {
   types = []
@@ -46,6 +47,17 @@ enums.addTypesByGlobalName("g_ww_unit_type", {
     deploySound = "ww_unit_move_airplanes"
     canBeControlledByPlayer = true
   }
+  HELICOPTER = {
+    code = WW_HELICOPTER_CODE
+    textCode = "HELICOPTER"
+    sortCode = WW_UNIT_SORT_CODE.HELICOPTER
+    esUnitCode = ::ES_UNIT_TYPE_HELICOPTER
+    name = "Helicopter"
+    fontIcon = ::loc("worldwar/iconHelicopter")
+    moveSound = "ww_unit_move_helicopters"
+    deploySound = "ww_unit_move_helicopters"
+    canBeControlledByPlayer = true
+  }
   GROUND = {
     code = ::UT_GROUND
     textCode = "UT_GROUND"
@@ -76,7 +88,7 @@ enums.addTypesByGlobalName("g_ww_unit_type", {
     moveSound = "ww_unit_move_infantry"
     deploySound = "ww_unit_move_infantry"
     getUnitName = @(name) ::loc("mainmenu/type_infantry")
-    getUnitClassIcon = @(unit) "#ui/gameuiskin#icon_infantry"
+    getUnitClassIcon = @(unit) "#ui/gameuiskin#icon_infantry.svg"
     getUnitRole = @(unit) "infantry"
   }
   ARTILLERY = {
@@ -89,7 +101,7 @@ enums.addTypesByGlobalName("g_ww_unit_type", {
     moveSound = "ww_unit_move_artillery"
     deploySound = "ww_unit_move_artillery"
     getUnitName = @(name) ::loc("mainmenu/type_artillery")
-    getUnitClassIcon = @(unit) "#ui/gameuiskin#icon_artillery"
+    getUnitClassIcon = @(unit) "#ui/gameuiskin#icon_artillery.svg"
     getUnitRole = @(unit) "artillery"
   }
   TRANSPORT = {
@@ -175,7 +187,13 @@ g_ww_unit_type.getUnitTypeFontIcon <- function getUnitTypeFontIcon(wwUnitTypeCod
 
 g_ww_unit_type.isAir <- function isAir(wwUnitTypeCode)
 {
-  return wwUnitTypeCode == AIR.code
+  return wwUnitTypeCode == AIR.code || wwUnitTypeCode == HELICOPTER.code
+}
+
+
+g_ww_unit_type.isHelicopter <- function isHelicopter(wwUnitTypeCode)
+{
+  return wwUnitTypeCode == HELICOPTER.code
 }
 
 

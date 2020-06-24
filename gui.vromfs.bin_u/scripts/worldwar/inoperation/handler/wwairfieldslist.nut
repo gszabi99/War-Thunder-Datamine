@@ -56,6 +56,7 @@ class ::gui_handlers.WwAirfieldsList extends ::BaseGuiHandler
         id = getAirfieldId(field.index)
         text = (idx+1)
         selected = selAirfield == field.index
+        type = "".concat("ww_",field.airfieldType.objName)
       })
     }
 
@@ -226,10 +227,14 @@ class ::gui_handlers.WwAirfieldsList extends ::BaseGuiHandler
     if (!::check_obj(airfieldInfoObj))
       return
 
-    local airfieldUnitsText = ::loc("worldwar/airfield_units") + ::loc("ui/colon")
+    local airfieldUnitsText = "".concat(
+      ::loc("".concat("worldwar/", airfield.airfieldType.objName, "_units")),
+        ::loc("ui/colon"))
     local airfieldInFlyText = ::loc("worldwar/airfield_in_fly") + ::loc("ui/colon")
-    local airfieldCapacityText = ::loc("worldwar/airfield_capacity") + ::loc("ui/colon")
-    local iconText = ::g_ww_unit_type.AIR.fontIcon
+    local airfieldCapacityText = "".concat(
+      ::loc("".concat("worldwar/", airfield.airfieldType.objName, "_capacity")),
+        ::loc("ui/colon"))
+    local iconText = airfield.airfieldType.unitType.fontIcon
 
     local airfieldUnitsNumber = airfield.getUnitsNumber()
     local inFlyUnitsNumber = airfield.getUnitsInFlyNumber()
@@ -263,7 +268,7 @@ class ::gui_handlers.WwAirfieldsList extends ::BaseGuiHandler
 
     local text = hasFormationUnits ? ::loc("worldwar/state/ready_to_fly") + ::loc("ui/colon")
       : hasCooldownUnits ? ::loc("worldwar/state/no_units_to_fly")
-      : ::loc("worldwar/state/airfield_empty")
+      : ::loc($"worldwar/state/{airfield.airfieldType.objName}_empty")
     formationTextObj.setValue(text)
 
     local hasEnoughToFly = airfield.hasEnoughUnitsToFly()

@@ -29,15 +29,15 @@ class ::gui_handlers.fxOptions extends ::BaseGuiHandler
     {
       s.min *= s.scale
       s.max *= s.scale
-      local val = ::getroottable()?["get_{id}".subst(s)]()
+      local val = ::getroottable()?[$"get_{s.id}"]() ?? 0
       if (s?.recScale)
         val *= s.scale
 
       view.rows.append({
-        id = "{id}".subst(s)
+        id = $"{s.id}"
         option = ::create_option_slider(s.id, val.tointeger(), "onSettingChanged", true, "slider", s)
         leftInfoRows = [{
-          label = "#options/{id}".subst(s)
+          label = $"#options/{s.id}"
           leftInfoWidth = "0.45pw"
         }]
       })
@@ -71,15 +71,15 @@ class ::gui_handlers.fxOptions extends ::BaseGuiHandler
       val /= curSetting.scale
 
     updateSliderTextValue(obj.id, val)
-    ::getroottable()?["set_{id}".subst(curSetting)](val, true)
+    ::getroottable()?[$"set_{curSetting.id}"](val, true)
   }
 
   function onResetToDefaults()
   {
     foreach (s in settings)
     {
-      local defVal = ::getroottable()?["get_default_"  + s.id]()
-      ::getroottable()?["set_" + s.id](defVal, true)
+      local defVal = ::getroottable()?[$"get_default_{s.id}"]() ?? 0
+      ::getroottable()?[$"set_{s.id}"](defVal, true)
       updateSliderTextValue(s.id, defVal)
       if (s?.recScale)
         defVal *= s.scale
@@ -98,7 +98,7 @@ class ::gui_handlers.fxOptions extends ::BaseGuiHandler
 
   function updateSliderTextValue(name, value)
   {
-    local valueObj = scene.findObject("value_" + name)
+    local valueObj = scene.findObject($"value_{name}")
     if (::check_obj(valueObj))
       valueObj.setValue(value.tostring())
   }

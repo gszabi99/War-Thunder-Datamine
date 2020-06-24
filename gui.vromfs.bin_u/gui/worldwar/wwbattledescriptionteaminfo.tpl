@@ -8,6 +8,7 @@ tdiv {
     <<^invert>>
     img {
       size:t='1@wwSmallCountryFlagWidth, 1@wwSmallCountryFlagHeight'
+      background-svg-size:t='1@wwSmallCountryFlagWidth, 1@wwSmallCountryFlagHeight'
       margin:t='1@framePadding, 0'
       background-image:t='<<countryIconBig>>'
     }
@@ -21,6 +22,7 @@ tdiv {
     left:t='pw-w'; position:t='relative'
     img {
       size:t='1@wwSmallCountryFlagWidth, 1@wwSmallCountryFlagHeight'
+      background-svg-size:t='1@wwSmallCountryFlagWidth, 1@wwSmallCountryFlagHeight'
       margin:t='1@framePadding, 0'
       background-image:t='<<countryIconBig>>'
     }

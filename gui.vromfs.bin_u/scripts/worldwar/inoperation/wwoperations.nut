@@ -40,15 +40,17 @@ g_operations.getArmiesCache <- function getArmiesCache()
   return getCurrentOperation().armies.armiesByStatusCache
 }
 
-g_operations.getAirArmiesNumberByGroupIdx <- function getAirArmiesNumberByGroupIdx(groupIdx)
+g_operations.getAirArmiesNumberByGroupIdx <- function getAirArmiesNumberByGroupIdx(groupIdx,
+  overrideUnitType)
 {
   local armyCount = 0
   foreach (wwArmyByStatus in getArmiesCache())
     foreach (wwArmyByGroup in wwArmyByStatus)
       foreach (wwArmy in wwArmyByGroup)
-        if (wwArmy.getArmyGroupIdx() == groupIdx &&
-            !(wwArmy.getArmyFlags() & EAF_NO_AIR_LIMIT_ACCOUNTING) &&
-            ::g_ww_unit_type.isAir(wwArmy.getUnitType()))
+        if (wwArmy.getArmyGroupIdx() == groupIdx
+          && !(wwArmy.getArmyFlags() & EAF_NO_AIR_LIMIT_ACCOUNTING)
+            && ::g_ww_unit_type.isAir(wwArmy.getUnitType())
+              && wwArmy.getOverrideUnitType() == overrideUnitType)
           armyCount++
 
   return armyCount

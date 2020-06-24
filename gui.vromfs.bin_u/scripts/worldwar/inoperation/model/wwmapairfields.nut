@@ -18,6 +18,7 @@ local function updateMapIcons()
         hasUnitsToFly = airfield.hasEnoughUnitsToFly()
         unitsAmount = airfield.getUnitsNumber(false)
         zoneName = ::ww_get_zone_name(::ww_get_zone_idx_world(airfield.getPos()))
+        spriteType = airfield.airfieldType.spriteType
       }
 
   foreach (idx, airfield in curAirfields)
@@ -26,11 +27,12 @@ local function updateMapIcons()
     if (::u.isEqual(airfield, lastAirfield))
       continue
 
+    local spriteType = airfield.spriteType
     if ((airfield.hasUnitsToFly && airfield.hasUnitsToFly != lastAirfield?.hasUnitsToFly)
          || (airfield.unitsAmount > (lastAirfield?.unitsAmount ?? 0)))
-      ::ww_turn_on_sector_sprites("Airfield", [airfield.zoneName], 5000)
+      ::ww_turn_on_sector_sprites(spriteType, [airfield.zoneName], 5000)
     else if (!airfield.hasUnitsToFly && airfield.hasUnitsToFly != lastAirfield?.hasUnitsToFly)
-      ::ww_turn_off_sector_sprites("Airfield", [airfield.zoneName])
+      ::ww_turn_off_sector_sprites(spriteType, [airfield.zoneName])
   }
 
   savedAirfields = curAirfields

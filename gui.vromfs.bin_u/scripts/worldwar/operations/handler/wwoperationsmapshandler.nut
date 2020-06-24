@@ -5,6 +5,7 @@ local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
 local wwTopLeaderboard = require("scripts/worldWar/leaderboards/wwTopLeaderboard.nut")
 local wwLeaderboardData = require("scripts/worldWar/operations/model/wwLeaderboardData.nut")
 local { getCurrenNotCompletedUnlocks, unlocksChapterName } = require("scripts/worldWar/unlocks/wwUnlocks.nut")
+local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 
 local WW_DAY_SEASON_OVER_NOTICE = "worldWar/seasonOverNotice/day"
 local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
@@ -28,8 +29,8 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
 
   mode = WW_OM_WND_MODE.PLAYER
 
-  mapsTbl = {}
-  countryData = {}
+  mapsTbl = null
+  countryData = null
 
   selMap = null
   mapsListObj = null
@@ -56,6 +57,8 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
 
   function initScreen()
   {
+    mapsTbl = {}
+    countryData = {}
     mapsListObj = scene.findObject("maps_list")
     setSceneTitle(::loc("mainmenu/btnWorldwar"))
 
@@ -230,7 +233,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
       foreach (countryId in map.getCountries())
         countries.append({
           id = ::format(formatCheckboxMapCountry, mapId, countryId)
-          useImage = ::get_country_icon(countryId)
+          useImage = getCustomViewCountryData(countryId, map.getId()).icon
           value = checkBoxesData?[mapId]?[countryId] ?? false
           funcName = "onMapCountrySelect"
           specialParams = "mapId:t= '"+mapId+"'; countryId:t= '"+countryId+"';"
@@ -673,7 +676,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
       if (countryData[countryId].total > 0)
         countries.append({
           id = objIdPrefixSelectAllCountry + countryId
-          useImage = ::get_country_icon(countryId)
+          useImage = getCustomViewCountryData(countryId, map.getId()).icon
           value = countryData[countryId].selected >= countryData[countryId].total
           funcName = "onCountrySelectAll"
           specialParams = "countryId:t= '"+countryId+"';"
@@ -834,9 +837,12 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
     if(isMyClanOperation)
     {
       local joinBtnFlagsObj = joinBtn.findObject("country_icon")
-      if (::check_obj(joinBtnFlagsObj))
-        joinBtnFlagsObj["background-image"] = ::get_country_icon(
-          ::g_ww_global_status.getMyClanOperation()?.getMyClanCountry() ?? "")
+      if (::check_obj(joinBtnFlagsObj)) {
+        joinBtnFlagsObj["background-image"] = getCustomViewCountryData(
+          ::g_ww_global_status.getMyClanOperation()?.getMyClanCountry() ?? "",
+          selMap.getId()
+        ).icon
+      }
     }
 
     if ((queuesJoinTime > 0) != isInQueue)
@@ -1195,7 +1201,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
     local callback = ::Callback(
       function(countriesData) {
         local statistics = wwLeaderboardData.convertWwLeaderboardData(countriesData).rows
-        local view = getStatisticsView(statistics, map.getCountries())
+        local view = getStatisticsView(statistics, map)
         local markup = ::handyman.renderCached("gui/worldWar/wwGlobeMapInfo", view)
         guiScene.replaceContentFromText(statisticsObj, markup, markup.len(), this)
       }, this)
@@ -1211,16 +1217,18 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
       @(countriesData) callback(countriesData))
   }
 
-  function getStatisticsView(statistics, countries)
+  function getStatisticsView(statistics, map)
   {
+    local countries = map.getCountries()
     if (countries.len() > 2)
       return {}
 
     local sideAHueOption = ::get_option(::USEROPT_HUE_SPECTATOR_ALLY)
     local sideBHueOption = ::get_option(::USEROPT_HUE_SPECTATOR_ENEMY)
+    local mapName = map.getId()
     local view = {
-      country_0_icon = ::get_country_icon(countries[0], true)
-      country_1_icon = ::get_country_icon(countries[1], true)
+      country_0_icon = getCustomViewCountryData(countries[0], mapName).icon
+      country_1_icon = getCustomViewCountryData(countries[1], mapName).icon
       rate_0 = 50
       rate_1 = 50
       side_0_color = ::get_block_hsv_color(sideAHueOption.values[sideAHueOption.value])

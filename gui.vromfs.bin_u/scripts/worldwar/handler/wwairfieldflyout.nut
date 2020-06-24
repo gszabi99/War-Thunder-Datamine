@@ -4,6 +4,35 @@ local { updateModItem, createModItem } = require("scripts/weaponry/weaponryVisua
 local wwUnitClassParams = require("scripts/worldWar/inOperation/wwUnitClassParams.nut")
 local wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 local wwOperationUnitsGroups = require("scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
+local airfieldTypes = require("scripts/worldWar/inOperation/model/airfieldTypes.nut")
+
+local unitsTypesList = {
+  [airfieldTypes.AT_HELIPAD] = [
+    {
+      unitType = WW_UNIT_CLASS.HELICOPTER
+      classIcons = [{ name = "Helicopter", type = "helicopter" }]
+    }
+  ],
+  [airfieldTypes.AT_RUNWAY] = [
+    {
+      unitType = WW_UNIT_CLASS.FIGHTER
+      classIcons = [{ name = "Fighter", type = "fighter" }]
+    },
+    {
+       unitType = WW_UNIT_CLASS.BOMBER
+       classIcons = [
+         { name = "Assault", type = "assault" },
+         { name = "Bomber", type = "bomber", hasSeparator = true }
+       ]
+    }
+  ]
+}
+
+local armyIdByMask = {
+  [WW_UNIT_CLASS.FIGHTER]    = "fighter",
+  [WW_UNIT_CLASS.HELICOPTER] = "helicopter",
+  [WW_UNIT_CLASS.COMBINED]   = "combined"
+}
 
 class ::gui_handlers.WwAirfieldFlyOut extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -65,10 +94,12 @@ class ::gui_handlers.WwAirfieldFlyOut extends ::gui_handlers.BaseGuiHandlerWT
     return {
       unitString = getUnitsList()
       headerTabs = getHeaderTabs()
-      unitTypes = getUnitsTypesList()
-      hintText = ::loc("worldwar/airfield/armies_hint_title")
-        + "\n" + ::loc("worldwar/airfield/fighter_armies_hint", getAirsTypeViewParams())
-        + "\n" + ::loc("worldwar/airfield/combined_armies_hint", getAirsTypeViewParams())
+      unitTypes = unitsTypesList[airfield.airfieldType]
+      hintText = airfield.airfieldType != airfieldTypes.AT_HELIPAD
+        ? "\n".concat(::loc("worldwar/airfield/armies_hint_title"),
+          ::loc("worldwar/airfield/fighter_armies_hint", getAirsTypeViewParams()),
+            ::loc("worldwar/airfield/combined_armies_hint", getAirsTypeViewParams()))
+        : null
       hasUnitsGroups = unitsGroups != null
     }
   }
@@ -138,23 +169,6 @@ class ::gui_handlers.WwAirfieldFlyOut extends ::gui_handlers.BaseGuiHandlerWT
       assaultIcon = wwUnitClassParams.getIconText(WW_UNIT_CLASS.ASSAULT, true)
       bomberIcon = wwUnitClassParams.getIconText(WW_UNIT_CLASS.BOMBER, true)
     }
-  }
-
-  function getUnitsTypesList()
-  {
-    return [
-      {
-        unitType = WW_UNIT_CLASS.FIGHTER
-        classIcons = [{ name = "Fighter", type = "fighter" }]
-      },
-      {
-        unitType = WW_UNIT_CLASS.BOMBER
-        classIcons = [
-          { name = "Assault", type = "assault" },
-          { name = "Bomber", type = "bomber", hasSeparator = true }
-        ]
-      }
-    ]
   }
 
   function getFlyTimeText(timeInSeconds)
@@ -262,16 +276,18 @@ class ::gui_handlers.WwAirfieldFlyOut extends ::gui_handlers.BaseGuiHandlerWT
 
   function canSendToFlyMoreArmy()
   {
-    return selectedGroupFlyArmies < currentOperation.getGroupAirArmiesLimit()
+    return selectedGroupFlyArmies < currentOperation.getGroupAirArmiesLimit(airfield.airfieldType.name)
   }
 
   function calcSelectedGroupAirArmiesNumber()
   {
-    local armyCount = ::g_operations.getAirArmiesNumberByGroupIdx(selectedGroupIdx)
+    local armyCount = ::g_operations.getAirArmiesNumberByGroupIdx(selectedGroupIdx,
+      airfield.airfieldType.overrideUnitType)
     for (local idx = 0; idx < ::g_world_war.getAirfieldsCount(); idx++)
     {
       local af = ::g_world_war.getAirfieldByIndex(idx)
-      armyCount += af.getCooldownArmiesNumberByGroupIdx(selectedGroupIdx)
+      if (airfield.airfieldType == af.airfieldType)
+        armyCount += af.getCooldownArmiesNumberByGroupIdx(selectedGroupIdx)
     }
 
     return armyCount
@@ -338,8 +354,8 @@ class ::gui_handlers.WwAirfieldFlyOut extends ::gui_handlers.BaseGuiHandlerWT
         {
           selUnitsInfo.classes[utClass].amount += unitTable.value
           selUnitsInfo.classes[utClass].names.append(unitTable.unitName)
-          selUnitsInfo.selectedUnitsMask = selUnitsInfo.selectedUnitsMask |
-                                           utClass | WW_UNIT_CLASS.FIGHTER
+          selUnitsInfo.selectedUnitsMask = selUnitsInfo.selectedUnitsMask
+            | utClass | airfield.airfieldType.wwUnitClass
         }
       }
 
@@ -388,17 +404,21 @@ class ::gui_handlers.WwAirfieldFlyOut extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(textObj))
       return
 
-    textObj.setValue(::loc("worldwar/group_air_armies_limit",
-      { cur = selectedGroupFlyArmies,
-        max = currentOperation.getGroupAirArmiesLimit() }))
+    local armiesLimit = currentOperation.getGroupAirArmiesLimit(airfield.airfieldType.name)
+    textObj.setValue(
+      ::loc("".concat("worldwar/group_", airfield.airfieldType.locId, "_armies_limit"),
+        { cur = selectedGroupFlyArmies,
+          max = armiesLimit }))
   }
 
   function fillFlyOutDescription(needFullUpdate = false)
   {
     local selUnitsInfo = getSelectedUnitsInfo()
     local bomberAmount = getReqDataFromSelectedUnitsInfo(selUnitsInfo, WW_UNIT_CLASS.BOMBER, "amount", 0)
-    local formedArmyId = bomberAmount > 0 ? "combined" : "fighter"
-    local formedArmyMask = bomberAmount > 0 ? WW_UNIT_CLASS.COMBINED : WW_UNIT_CLASS.FIGHTER
+    local formedArmyMask = bomberAmount > 0
+      ? WW_UNIT_CLASS.COMBINED
+      : airfield.airfieldType.wwUnitClass
+    local formedArmyId = armyIdByMask[formedArmyMask]
 
     updateFormedArmyTitle(formedArmyId, selUnitsInfo, needFullUpdate)
     updateFormedArmyInfo(formedArmyMask, selUnitsInfo, needFullUpdate)
@@ -425,8 +445,8 @@ class ::gui_handlers.WwAirfieldFlyOut extends ::gui_handlers.BaseGuiHandlerWT
             { types = maxValue }))
           armyInfoText += ::loc("ui/parentheses/space", { text = maxValueText })
         }
-        armyTypeTextObj.tooltip = ::loc("worldwar/airfield/" + formedArmyId + "_armies_hint",
-          getAirsTypeViewParams())
+        armyTypeTextObj.tooltip = ::loc(
+          "worldwar/airfield/" + formedArmyId + "_armies_hint", getAirsTypeViewParams(), "")
       }
       armyTypeTextObj.setValue(armyInfoText)
     }

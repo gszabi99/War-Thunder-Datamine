@@ -100,7 +100,7 @@ class WwQueue
     }
     local clansInQueueNumber = clansInQueue.len()
     return !clansInQueueNumber ? "" :
-      ::loc("worldwar/сlansInQueueTotal", {number = clansInQueueNumber})
+      ::loc("worldwar/clansInQueueTotal", {number = clansInQueueNumber})
   }
 
   function getArmyGroupsAmountTotal()
@@ -251,4 +251,6 @@ class WwQueue
   {
     return map.getClansConditionText()
   }
+
+  getId = @() map.getId()
 }

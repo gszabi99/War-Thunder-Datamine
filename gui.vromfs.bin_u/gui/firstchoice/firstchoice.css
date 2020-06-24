@@ -1,9 +1,15 @@
 @const unitChoiceImageWidth: (450*@sf/@pf)\1; @const unitChoiceImageHeight: 1@unitChoiceImageWidth/2;
 @const countryChoiceImageWidth: (348@sf/@pf)\1;
-@const countryChoiceImageHeight: 248@sf/@pf;
+@const countryChoiceImageHeight: (230@sf/@pf)\1;
 @const countryChoiceInterval: (10@sf/@pf)\1;
 @const firstChoiceTextBlockHeight: 70@sf/@pf;
 @const firstChoiceSelSizeInc: (5@sf/@pf)\1;
+
+@const firstChoiceMargin: 30@sf/@pf;
+@const firstChoiceHeaderHeight: 0.05@scrn_tgt;
+
+@const firstChoiceAvailableHeight: 1@rh - 1@firstChoiceHeaderHeight - 1@frameFooterHeight;
+@const firstChoiceCountryFullHeight: 1@countryChoiceImageHeight + 1@dp + 1@firstChoiceTextBlockHeight;
 
 @const firstChoiceColor         : #cccccc;
 @const firstChoiceColorDisabled : #444444;
@@ -14,19 +20,19 @@
 @const firstChoiceTextBgSelectedColor   : #e0e0e0;
 
 firstChoiceItem {
-  margin:@countryChoiceInterval;
+  margin:1@countryChoiceInterval;
   flow:vertical;
   css-hier-invalidate:yes;
 }
 
 firstChoiceItem.unit {
-  width:@unitChoiceImageWidth;
+  width:1@unitChoiceImageWidth;
   height:1@unitChoiceImageHeight + 1@dp + 1@firstChoiceTextBlockHeight;
 }
 
 firstChoiceItem.country {
-  width:@countryChoiceImageWidth;
-  height:1@countryChoiceImageHeight + 1@dp + 1@firstChoiceTextBlockHeight;
+  width:1@countryChoiceImageWidth;
+  height:1@firstChoiceCountryFullHeight;
 }
 
 firstChoiceImage {

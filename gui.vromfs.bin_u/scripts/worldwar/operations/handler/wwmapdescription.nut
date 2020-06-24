@@ -1,3 +1,5 @@
+local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+
 //show info about WwMap, WwOperation or WwOperationgroup
 class ::gui_handlers.WwMapDescription extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -101,16 +103,13 @@ class ::gui_handlers.WwMapDescription extends ::gui_handlers.BaseGuiHandlerWT
   function mapCountriesToView(countries)
   {
     local teamsInfoText = descItem.getMinClansCondition()
+    local mapName = descItem.getId()
     return {
-      countries = ::u.map(countries,
-                    function (countryName) {
-                      return {
-                        countryName = countryName
-                        countryIcon = ::get_country_icon(countryName)
-                        teamsInfoText = teamsInfoText
-                      }
-                    }
-                  )
+      countries = countries.map(@(countryName) {
+        countryName = countryName
+        countryIcon = getCustomViewCountryData(countryName, mapName).icon
+        teamsInfoText = teamsInfoText
+      })
     }
   }
 

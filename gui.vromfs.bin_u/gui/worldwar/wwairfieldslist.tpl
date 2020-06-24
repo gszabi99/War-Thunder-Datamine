@@ -1,7 +1,7 @@
 <<#airfields>>
 imageButton {
   id:t='<<id>>'
-  type:t='wwAirfield'
+  type:t='<<type>>'
   <<#selected>>
     selected:t='yes'
   <</selected>>

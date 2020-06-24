@@ -29,7 +29,10 @@ local actionModesById = {
     }
     makeArtilleryFire = function makeArtilleryFire(mapPos, army) {
       if (army.canFire())
+      {
+        ::play_gui_sound("ww_artillery_player")
         startArtilleryFire(mapPos, army)
+      }
       else
         ::g_popups.add(getTitle(), ::loc("worldwar/artillery/notReadyToFire"),
           null, null, null, "cant_fire")

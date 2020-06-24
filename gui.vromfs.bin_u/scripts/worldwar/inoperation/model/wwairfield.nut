@@ -1,4 +1,5 @@
 local wwUnitClassParams = require("scripts/worldWar/inOperation/wwUnitClassParams.nut")
+local airfieldTypes = require("scripts/worldWar/inOperation/model/airfieldTypes.nut")
 
 class ::WwAirfield
 {
@@ -6,6 +7,7 @@ class ::WwAirfield
   size   = 0
   side   = ::SIDE_NONE
   pos    = null
+  airfieldType = null
   armies = null
   formations = null
   cooldownFormations = null
@@ -15,6 +17,7 @@ class ::WwAirfield
 
   constructor(airfieldIndex)
   {
+    airfieldType = airfieldTypes.AT_RUNWAY
     index  = airfieldIndex
     pos    = ::Point2()
     armies = []
@@ -51,6 +54,7 @@ class ::WwAirfield
       side = blk.specs?.side ? ::ww_side_name_to_val(blk.specs.side) : side
       size = blk.specs?.size || size
       pos = blk.specs?.pos || pos
+      airfieldType = airfieldTypes?[blk.specs?.type] ?? airfieldType
     }
 
     if ("groups" in blk)
@@ -73,8 +77,8 @@ class ::WwAirfield
             allyFormation = ::WwCustomFormation(itemBlk, this)
             allyFormation.setFormationID(WW_ARMY_RELATION_ID.ALLY)
             allyFormation.setName("formation_" + WW_ARMY_RELATION_ID.ALLY)
-            allyFormation.setUnitType(::WwAirfieldFormation.unitType)
-            allyFormation.setMapObjectName(::WwAirfieldFormation.mapObjectName)
+            allyFormation.setUnitType(airfieldType.unitType.code)
+            allyFormation.setMapObjectName(airfieldType.objName)
           }
           allyFormation.addUnits(itemBlk)
         }
@@ -96,7 +100,7 @@ class ::WwAirfield
 
   function _tostring()
   {
-    local returnText = "AIRFIELD: index = " + index + ", side = " + side + ", size = " + size + ", pos = " + ::toString(pos)
+    local returnText = "AIRFIELD: index = " + index + ", side = " + side + ", size = " + size + ", pos = " + ::toString(pos) + ", airfieldType = " + airfieldType.name
     if (formations.len())
       returnText += ", groups len = " + formations.len()
     if (armies.len())
@@ -190,7 +194,8 @@ class ::WwAirfield
 
     local airClassesAmount = {
       [WW_UNIT_CLASS.FIGHTER] = 0,
-      [WW_UNIT_CLASS.BOMBER] = 0
+      [WW_UNIT_CLASS.BOMBER] = 0,
+      [WW_UNIT_CLASS.HELICOPTER] = 0
     }
     local customClassAmount = 0
     foreach (unit in formation.units)
@@ -210,13 +215,12 @@ class ::WwAirfield
 
     local operation = ::g_operations.getCurrentOperation()
     local flyoutRange = operation.getUnitsFlyoutRange()
-    foreach (mask in [WW_UNIT_CLASS.FIGHTER, WW_UNIT_CLASS.COMBINED])
+    foreach (mask in [WW_UNIT_CLASS.FIGHTER, WW_UNIT_CLASS.COMBINED, WW_UNIT_CLASS.HELICOPTER])
     {
       local additionalAirs = 0
       local hasEnough = false
-      foreach (unitClass in [WW_UNIT_CLASS.FIGHTER, WW_UNIT_CLASS.BOMBER])
+      foreach (unitClass, amount in airClassesAmount)
       {
-        local amount = airClassesAmount?[unitClass] ?? 0
         local unitRange = operation.getQuantityToFlyOut(unitClass, mask, flyoutRange)
 
         hasEnough = amount + additionalAirs >= unitRange.x

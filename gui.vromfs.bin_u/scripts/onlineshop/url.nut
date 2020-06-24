@@ -51,15 +51,8 @@ local function getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated = false
 
     if (authData.yuplayResult == ::YU2_OK)
       url = authData.url + (shouldEncode ? "&ret_enc=1" : "") //This parameter is needed for coded complex links.
-    else if (authData.yuplayResult == ::YU2_WRONG_LOGIN) {
-      ::send_error_log("Authorize url: failed to get authenticated url with error ::YU2_WRONG_LOGIN",
-        false, AUTH_ERROR_LOG_COLLECTION)
-      ::gui_start_logout()
-      return null
-    }
-    else
-      ::send_error_log("Authorize url: failed to get authenticated url with error " + authData.yuplayResult,
-        false, AUTH_ERROR_LOG_COLLECTION)
+    else ::send_error_log("Authorize url: failed to get authenticated url with error " + authData.yuplayResult,
+      false, AUTH_ERROR_LOG_COLLECTION)
   }
 
   return {

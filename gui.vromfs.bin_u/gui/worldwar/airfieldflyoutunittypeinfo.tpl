@@ -1,10 +1,11 @@
 tdiv {
-  width:t='pw'
+  position:t='relative'
+  pos:t='0.5pw-0.5w'
 
   <<#unitTypes>>
   wwUnitClassNest {
     id:t='unit_class_<<unitType>>'
-    width:t='0.5pw'
+    padding:t='4@blockInterval, 0'
     css-hier-invalidate:t='yes'
     isEnabled:t='no'
 

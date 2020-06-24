@@ -521,10 +521,12 @@ class ::ChatHandler
     playerContextMenu.showMenu(null, this, {
       playerName = playerName
       isMPChat = true
-      chatLog = ingame_chat.getLogForBanhammer()
+      chatLog = getChatLogForBanhammer()
       canComplain = true
     })
   }
+
+  getChatLogForBanhammer = @() ingame_chat.getLogForBanhammer()
 
   function onChatLinkClick(obj, itype, link)  { onChatLink(obj, link, ::is_platform_pc) }
   function onChatLinkRClick(obj, itype, link) { onChatLink(obj, link, false) }

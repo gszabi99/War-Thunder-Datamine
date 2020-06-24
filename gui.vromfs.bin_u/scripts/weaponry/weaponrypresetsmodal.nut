@@ -241,6 +241,7 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
       }
       setLastWeapon(unit.name, item.name)
       ::check_secondary_weapon_mods_recount(unit)
+      checkSaveBulletsAndDo()
     }
     guiScene.performDelayed(this, @()goBack())
   }
@@ -254,7 +255,7 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
     })(unit, item), this))
   }
 
-  function checkSaveBulletsAndDo(func)
+  function checkSaveBulletsAndDo(func = null)
   {
     local needSave = false
     if (lastWeapon != "" && lastWeapon != getLastWeapon(unit.name))

@@ -1,3 +1,5 @@
+local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+
 class ::gui_handlers.WwQueueDescriptionCustomHandler extends ::gui_handlers.WwMapDescription
 {
   function mapCountriesToView(countries, amountByCountry, joinedCountries)
@@ -9,15 +11,14 @@ class ::gui_handlers.WwQueueDescriptionCustomHandler extends ::gui_handlers.WwMa
 
       return (isJoined ? ::colorize("@userlogColoredText", text) : text) + "/" + minTeamsInfoText
     }
-
+    local mapName = descItem.getId()
     return {
-      countries = ::u.map(countries,
-        @(countryName) {
-          countryName   = countryName
-          countryIcon   = ::get_country_icon(countryName)
-          isJoined      = ::isInArray(countryName, joinedCountries)
-          teamsInfoText = getTeamsInfoText(countryName)
-        })
+      countries = countries.map(@(countryName) {
+        countryName   = countryName
+        countryIcon   = getCustomViewCountryData(countryName, mapName).icon
+        isJoined      = ::isInArray(countryName, joinedCountries)
+        teamsInfoText = getTeamsInfoText(countryName)
+      })
     }
   }
 

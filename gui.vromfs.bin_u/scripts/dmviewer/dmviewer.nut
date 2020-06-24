@@ -886,7 +886,7 @@ const AFTERBURNER_CHAMBER = 3
           desc.append(txt)
         }
         if (stowageInfo.isAutoLoad)
-            desc.append(::loc("xray/ammo/auto_load"))
+          desc.append(::loc("xray/ammo/mechanized_ammo_rack"))
         break
 
       case "drive_turret_h":

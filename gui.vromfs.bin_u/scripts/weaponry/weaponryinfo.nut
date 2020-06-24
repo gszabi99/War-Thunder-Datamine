@@ -5,6 +5,12 @@ global const UNIT_WEAPONS_WARNING = 1
 global const UNIT_WEAPONS_READY   = 2
 const KGF_TO_NEWTON = 9.807
 
+local weaponsStatusNameByStatusCode = {
+  [UNIT_WEAPONS_ZERO]    = "zero",
+  [UNIT_WEAPONS_WARNING] = "warning",
+  [UNIT_WEAPONS_READY]   = "ready"
+}
+
 local TRIGGER_TYPE = {
   MACHINE_GUN = "machine gun"
   CANNON      = "cannon"
@@ -538,6 +544,8 @@ local function getPresetsList(unit, chooseMenuList)
   return weaponsList
 }
 
+local getWeaponsStatusName = @(weaponsStatus) weaponsStatusNameByStatusCode[weaponsStatus]
+
 return {
   KGF_TO_NEWTON           = KGF_TO_NEWTON
   TRIGGER_TYPE            = TRIGGER_TYPE
@@ -552,4 +560,5 @@ return {
   addWeaponsFromBlk       = addWeaponsFromBlk
   getWeaponExtendedInfo   = getWeaponExtendedInfo
   getUnitWeaponry         = getUnitWeaponry
+  getWeaponsStatusName    = getWeaponsStatusName
 }
