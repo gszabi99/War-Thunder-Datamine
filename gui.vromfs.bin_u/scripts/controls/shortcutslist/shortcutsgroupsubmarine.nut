@@ -193,7 +193,7 @@ return [
   {
     id = "ID_SUBMARINE_KILLSTREAK_WHEEL_MENU"
     checkGroup = ctrlGroups.SUBMARINE
-    showFunc = @() !(::is_platform_pc && !::is_xinput_device())
+    showFunc = @() ::is_ps4_or_xbox || ::is_xinput_device()
     checkAssign = false
   }
   {

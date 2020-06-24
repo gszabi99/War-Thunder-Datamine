@@ -477,7 +477,7 @@ return [
     id = "ID_KILLSTREAK_WHEEL_MENU"
     checkGroup = ctrlGroups.TANK
     checkAssign = false
-    showFunc = @() !(::is_platform_pc && !::is_xinput_device())
+    showFunc = @() ::is_ps4_or_xbox || ::is_xinput_device()
   }
   {
     id = "ID_SCOUT"
@@ -515,7 +515,7 @@ return [
     axisDirection = AxisDirection.X
     checkGroup = ctrlGroups.TANK
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = @() ::is_xinput_device() && isWheelmenuAxisConfigurable()
+    showFunc = @() (::is_ps4_or_xbox || ::is_xinput_device()) && isWheelmenuAxisConfigurable()
   }
   {
     id = "gm_wheelmenu_y"
@@ -523,6 +523,6 @@ return [
     axisDirection = AxisDirection.Y
     checkGroup = ctrlGroups.TANK
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = @() ::is_xinput_device() && isWheelmenuAxisConfigurable()
+    showFunc = @() (::is_ps4_or_xbox || ::is_xinput_device()) && isWheelmenuAxisConfigurable()
   }
 ]

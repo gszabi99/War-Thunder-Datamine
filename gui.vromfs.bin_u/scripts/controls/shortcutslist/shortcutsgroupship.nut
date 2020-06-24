@@ -367,7 +367,7 @@ return [
     id = "ID_SHIP_KILLSTREAK_WHEEL_MENU"
     checkGroup = ctrlGroups.SHIP
     checkAssign = false
-    showFunc = @() !(::is_platform_pc && !::is_xinput_device())
+    showFunc = @() ::is_ps4_or_xbox || ::is_xinput_device()
   }
   {
     id = "ID_SHIP_ACTION_BAR_ITEM_6"
@@ -420,7 +420,7 @@ return [
     axisDirection = AxisDirection.X
     checkGroup = ctrlGroups.SHIP
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = @() ::is_xinput_device() && isWheelmenuAxisConfigurable()
+    showFunc = @() (::is_ps4_or_xbox || ::is_xinput_device()) && isWheelmenuAxisConfigurable()
   }
   {
     id = "ship_wheelmenu_y"
@@ -428,6 +428,6 @@ return [
     axisDirection = AxisDirection.Y
     checkGroup = ctrlGroups.SHIP
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = @() ::is_xinput_device() && isWheelmenuAxisConfigurable()
+    showFunc = @() (::is_ps4_or_xbox || ::is_xinput_device()) && isWheelmenuAxisConfigurable()
   }
 ]
