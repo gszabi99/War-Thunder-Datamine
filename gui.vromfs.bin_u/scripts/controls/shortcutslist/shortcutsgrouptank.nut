@@ -434,7 +434,7 @@ return [
     id = "ID_ACTION_BAR_ITEM_5"
     checkGroup = ctrlGroups.TANK
     checkAssign = false
-    showFunc = @() ::is_platform_pc && !::is_xinput_device()
+    showFunc = @() !::is_xinput_device()
     needShowInHelp = true
   }
   {
