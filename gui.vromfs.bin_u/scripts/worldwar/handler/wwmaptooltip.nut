@@ -206,17 +206,16 @@ class ::gui_handlers.wwMapTooltip extends ::gui_handlers.BaseGuiHandlerWT
     battleTimerValueObj.setValue(descValue)
     battleTimerObj.show(hasDurationTime || hasActivateLeftTime || timeStartAutoBattle != "")
 
-    local side = ::ww_get_player_side()
     local statusObj = scene.findObject("battle_status_text")
     if (::check_obj(statusObj))
-      statusObj.setValue(battleView.getBattleStatusWithCanJoinText(side))
+      statusObj.setValue(battleView.getBattleStatusWithCanJoinText())
 
     local needShowWinChance = battleView.needShowWinChance()
     local winCahnceObj = showSceneBtn("win_chance", needShowWinChance)
     if (!needShowWinChance || !winCahnceObj)
       return
     local winCahnceTextObj = winCahnceObj.findObject("win_chance_text")
-    local percent = battleView.getAutoBattleWinChancePercentText(side)
+    local percent = battleView.getAutoBattleWinChancePercentText()
     if (::check_obj(winCahnceTextObj) && percent != "")
       winCahnceTextObj.setValue(percent)
     else

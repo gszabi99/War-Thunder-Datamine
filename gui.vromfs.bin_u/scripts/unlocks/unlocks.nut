@@ -957,6 +957,12 @@ class ::gui_handlers.showUnlocksGroupModal extends ::gui_handlers.BaseGuiHandler
     case ::UNLOCKABLE_WEAPON:
       return ""
 
+    case ::UNLOCKABLE_ACHIEVEMENT:
+      local unlockBlk = ::g_unlocks.getUnlockById(id)
+      if (unlockBlk?.locId)
+        return get_locId_name(unlockBlk)
+      return ::loc(id + "/name")
+
     case ::UNLOCKABLE_DIFFICULTY:
       return ::getDifficultyLocalizationText(id)
 
@@ -981,6 +987,9 @@ class ::gui_handlers.showUnlocksGroupModal extends ::gui_handlers.BaseGuiHandler
              // + " " + (::loc("pilots/"+id+"/lastName"))
 
     case ::UNLOCKABLE_STREAK:
+      local unlockBlk = ::g_unlocks.getUnlockById(id)
+      if (unlockBlk?.locId)
+        return get_locId_name(unlockBlk)
       local res = ::loc("streaks/" + id)
       if (res.indexof("%d") != null)
           res = ::loc("streaks/" + id + "/multiple")

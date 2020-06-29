@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 30.0
-    },
     "player": {
       "army": 1,
       "wing": "t1_player01"
@@ -16,13 +12,17 @@
     "mission": {
       "level": "levels/water.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "clear",
       "scoreLimit": 6400,
       "timeLimit": 25,
-      "deathPenaltyMul": 0.0
+      "deathPenaltyMul": 0.0,
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 30.0
     },
     "spectator_points": []
   },
@@ -186,7 +186,7 @@
             "object": "t2_zoneDef_sq"
           },
           {
-            "accuracy": 1.0
+            "accuracy": 0.7
           },
           {
             "checkVisibilityTarget": true

@@ -177,9 +177,17 @@ class ::WwBattle
     return !team || team.players == team.maxPlayers
   }
 
-  function getLocName()
+  function getLocName(side = null)
   {
-    return localizeConfig ? ::get_locId_name(localizeConfig, "locName") : id
+    side = side ?? getSide(::get_profile_country_sq())
+    local teamName = getTeamNameBySide(side)
+    if (localizeConfig == null)
+      return id
+
+    local locId = ((localizeConfig?[$"locNameTeam{teamName}"].len() ?? 0) > 0)
+      ? $"locNameTeam{teamName}"
+      : "locName"
+    return ::get_locId_name(localizeConfig, locId)
   }
 
   function getOrdinalNumber()
@@ -197,9 +205,9 @@ class ::WwBattle
     return !::u.isEmpty(missionName) ? missionName : ""
   }
 
-  function getView()
+  function getView(customPlayerSide = null)
   {
-    return ::WwBattleView(this)
+    return ::WwBattleView(this, customPlayerSide)
   }
 
   function getSessionId()
@@ -211,7 +219,11 @@ class ::WwBattle
   {
     localizeConfig = {
       locName = descBlk?.locName ?? ""
+      locNameTeamA = descBlk?.locNameTeamA ?? ""
+      locNameTeamB = descBlk?.locNameTeamB ?? ""
       locDesc = descBlk?.locDesc ?? ""
+      locDescTeamA = descBlk?.locDescTeamA ?? ""
+      locDescTeamB = descBlk?.locDescTeamB ?? ""
     }
   }
 
@@ -817,7 +829,7 @@ class ::WwBattle
       side = ::ww_get_player_side()
 
     local team = getTeamBySide(side)
-    return ::g_string.cutPrefix(team.name, "team")
+    return team ? ::g_string.cutPrefix(team.name, "team") : ""
   }
 
   function getTeamBySide(side)

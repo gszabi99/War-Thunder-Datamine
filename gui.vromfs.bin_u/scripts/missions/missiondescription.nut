@@ -253,7 +253,9 @@ class ::gui_handlers.MissionDescription extends ::gui_handlers.BaseGuiHandlerWT
       config.maintext += (config.maintext.len() ? "\n\n" : "") + timeLimitText
     }
 
-    if ("locDesc" in blk && blk.locDesc.len() > 0)
+    if ((blk?["locDescTeamA"].len() ?? 0) > 0)
+      config.objective <- ::get_locId_name(blk, "locDescTeamA")
+    else if ((blk?.locDesc.len() ?? 0) > 0)
       config.objective <- ::get_locId_name(blk, "locDesc")
     if (blk.getStr("recommendedPlayers","") != "")
       config.maintext += ::format(::loc("players_recommended"), blk.getStr("recommendedPlayers","1-4")) + "\n"

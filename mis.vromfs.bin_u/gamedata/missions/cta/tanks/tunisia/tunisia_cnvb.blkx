@@ -210,8 +210,6 @@
     "mission": {
       "level": "levels/avg_tunisia_desert.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "clear",
       "locName": "missions/_CnvB;tunisia/name",
@@ -225,6 +223,8 @@
       "remapAiTankModels": true,
       "country_axis": "germany",
       "country_allies": "ussr",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": true,
@@ -264,6 +264,9 @@
               },
               {
                 "point": "briefing_tanks"
+              },
+              {
+                "point": "convoy_waypoint00"
               },
               {
                 "point": "convoy_waypoint01"
@@ -1361,6 +1364,17 @@
         [0.0,1.0,0.0],
         [0.619412,0.0,-0.785066],
         [321.258,72.0264,2708.95]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "convoy_waypoint00": {
+      "type": "Point",
+      "tm": [
+        [-28.0762,0.0,95.9777],
+        [0.0,100.0,0.0],
+        [-95.9777,0.0,-28.0762],
+        [3401.5,12.117,1437.14]
       ],
       "objLayer": 0,
       "props": []

@@ -707,8 +707,10 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
       local name = cb.getStr("id", "")
       local unlockType = cb?.type ?? ""
       local unlockTypeId = ::get_unlock_type(unlockType)
+      local isForceVisibleInTree = cb?.isForceVisibleInTree ?? false
       if (unlockTypeId != pageTypeId
-          && (!isUnlockTree || !::isInArray(unlockTypeId, unlockTypesToShow)))
+          && (!isUnlockTree || !::isInArray(unlockTypeId, unlockTypesToShow))
+          && !isForceVisibleInTree)
         continue
       if (isUnlockTree && cb?.isRevenueShare)
         continue

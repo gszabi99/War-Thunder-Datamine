@@ -23,9 +23,8 @@ local wwTooltipTypes = {
       if (!battle.isValid())
         return ""
 
-      local battleSides = ::g_world_war.getSidesOrder()
       local view = battle.getView()
-      view.defineTeamBlock(::ww_get_player_side(), battleSides)
+      view.defineTeamBlock(::g_world_war.getSidesOrder())
       view.showBattleStatus = true
       view.hideDesc = true
       return ::handyman.renderCached("gui/worldWar/battleDescription", view)

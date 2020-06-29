@@ -29,12 +29,14 @@ class ::WwBattleView
   controlHelpText = @() !::show_console_buttons && hasControlTooltip()
     ? ::loc("key/LMB") : null
 
-  constructor(_battle = null)
+  playerSide = null // need for show view for global battle
+
+  constructor(_battle = null, customPlayerSide = null)
   {
     battle = _battle || ::WwBattle()
-
+    playerSide = customPlayerSide ?? battle.getSide(::get_profile_country_sq())
     missionName = battle.getMissionName()
-    name = battle.isStarted() ? battle.getLocName() : ""
+    name = battle.isStarted() ? battle.getLocName(playerSide) : ""
     desc = battle.getLocDesc()
     maxPlayersPerArmy = battle.maxPlayersPerArmy
   }
@@ -64,54 +66,42 @@ class ::WwBattleView
 
   function getFullBattleName()
   {
-    return ::g_string.implode([getBattleName(), battle.getLocName()], ::loc("ui/comma"))
+    return ::g_string.implode([getBattleName(), battle.getLocName(playerSide)], ::loc("ui/comma"))
   }
 
-  function defineTeamBlock(playerSide, sides)
+  function defineTeamBlock(sides)
   {
-    teamBlock = getTeamBlockByIconSize(playerSide, sides, WW_ARMY_GROUP_ICON_SIZE.BASE)
+    teamBlock = getTeamBlockByIconSize(sides, WW_ARMY_GROUP_ICON_SIZE.BASE)
   }
 
-  function getTeamDataBySide(playerSide, sides, iconSize = null)
-  {
-    iconSize = iconSize || WW_ARMY_GROUP_ICON_SIZE.BASE
+  getTeamsDataBySides = @(sides) getTeamBlockByIconSize(sides, WW_ARMY_GROUP_ICON_SIZE.BASE, true)
 
-    local currentTeamBlock = getTeamBlockByIconSize(playerSide, sides, iconSize, true)
-    local teamName = "team" + battle.getTeamNameBySide(playerSide)
-
-    foreach(team in currentTeamBlock)
-      if (team.teamName == teamName)
-        return team
-
-    return null
-  }
-
-  function getTeamBlockByIconSize(playerSide, sides, iconSize, isInBattlePanel = false, param = null)
+  function getTeamBlockByIconSize(sides, iconSize, isInBattlePanel = false, param = null)
   {
     if (iconSize == WW_ARMY_GROUP_ICON_SIZE.MEDIUM)
     {
       if (largeArmyGroupIconTeamBlock == null)
-        largeArmyGroupIconTeamBlock = getTeamsData(playerSide, sides, iconSize, isInBattlePanel, param)
+        largeArmyGroupIconTeamBlock = getTeamsData(sides, iconSize, isInBattlePanel, param)
 
       return largeArmyGroupIconTeamBlock
     }
     else if (iconSize == WW_ARMY_GROUP_ICON_SIZE.SMALL)
     {
       if (mediumArmyGroupIconTeamBlock == null)
-        mediumArmyGroupIconTeamBlock = getTeamsData(playerSide, sides, iconSize, isInBattlePanel, param)
+        mediumArmyGroupIconTeamBlock = getTeamsData(sides, iconSize, isInBattlePanel, param)
 
       return mediumArmyGroupIconTeamBlock
     }
     else
     {
       if (teamBlock == null)
-        teamBlock = getTeamsData(playerSide, sides, WW_ARMY_GROUP_ICON_SIZE.BASE, isInBattlePanel, param)
+        teamBlock = getTeamsData(sides, WW_ARMY_GROUP_ICON_SIZE.BASE, isInBattlePanel, param)
 
       return teamBlock
     }
   }
 
-  function getTeamsData(playerSide, sides, iconSize, isInBattlePanel, param)
+  function getTeamsData(sides, iconSize, isInBattlePanel, param)
   {
     local teams = []
     local maxSideArmiesNumber = 0
@@ -292,9 +282,9 @@ class ::WwBattleView
     return "worldwar/battle_finished"
   }
 
-  function getAutoBattleWinChancePercentText(side)
+  function getAutoBattleWinChancePercentText()
   {
-    local percent = battle.getTeamBySide(side)?.autoBattleWinChancePercent
+    local percent = battle.getTeamBySide(playerSide)?.autoBattleWinChancePercent
     return percent != null ? percent + ::loc("measureUnits/percent") : ""
   }
 
@@ -313,9 +303,9 @@ class ::WwBattleView
     return battle.isValid() ? ::loc(getBattleStatusTextLocId() + "/desc") : ""
   }
 
-  function getCanJoinText(side)
+  function getCanJoinText()
   {
-    if (side == ::SIDE_NONE || ::g_squad_manager.isSquadMember())
+    if (playerSide == ::SIDE_NONE || ::g_squad_manager.isSquadMember())
       return ""
 
     local currentBattleQueue = ::queues.findQueueByName(battle.getQueueId(), true)
@@ -324,7 +314,7 @@ class ::WwBattleView
       canJoinLocKey = "worldWar/canJoinStatus/in_queue"
     else if (battle.isStarted())
     {
-      local cantJoinReasonData = battle.getCantJoinReasonData(side, false)
+      local cantJoinReasonData = battle.getCantJoinReasonData(playerSide, false)
       if (cantJoinReasonData.canJoin)
         canJoinLocKey = battle.isPlayerTeamFull()
           ? "worldWar/canJoinStatus/no_free_places"
@@ -346,13 +336,13 @@ class ::WwBattleView
     return text
   }
 
-  function getBattleStatusWithCanJoinText(side)
+  function getBattleStatusWithCanJoinText()
   {
     if (!battle.isValid())
       return ""
 
     local text = getBattleStatusText()
-    local canJoinText = getCanJoinText(side)
+    local canJoinText = getCanJoinText()
     if (!::u.isEmpty(canJoinText))
       text += ::loc("ui/dot") + " " + canJoinText
 
@@ -413,16 +403,16 @@ class ::WwBattleView
     return battle.isValid() && battle.hasQueueInfo()
   }
 
-  function getTotalPlayersInfoText(side)
+  function getTotalPlayersInfoText()
   {
     return ::loc("worldwar/totalPlayers") + ::loc("ui/colon") +
-      ::colorize("newTextColor", battle.getTotalPlayersInfo(side))
+      ::colorize("newTextColor", battle.getTotalPlayersInfo(playerSide))
   }
 
-  function getTotalQueuePlayersInfoText(side)
+  function getTotalQueuePlayersInfoText()
   {
     return ::loc("worldwar/totalInQueue") + ::loc("ui/colon") +
-      ::colorize("newTextColor", battle.getTotalPlayersInQueueInfo(side))
+      ::colorize("newTextColor", battle.getTotalPlayersInQueueInfo(playerSide))
   }
   needShowTimer = @() !battle.isFinished()
 

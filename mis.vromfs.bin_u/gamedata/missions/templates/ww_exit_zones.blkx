@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 30.0
-    },
     "player": {
       "army": 1
     },
@@ -15,13 +11,17 @@
     "mission": {
       "level": "levels/water.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "clear",
       "scoreLimit": 6400,
       "timeLimit": 25,
-      "deathPenaltyMul": 0.0
+      "deathPenaltyMul": 0.0,
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 30.0
     },
     "spectator_points": []
   },
@@ -136,14 +136,24 @@
           "missionMarkAsExitZone": {
             "army": 1,
             "area_name": "@t1_exitZoneName",
-            "enabled": true
+            "enabled": true,
+            "tags": {
+              "type_bomber": true,
+              "type_fighter": true,
+              "type_assault": true
+            }
           }
         },
         {
           "missionMarkAsExitZone": {
             "army": 2,
             "area_name": "@t2_exitZoneName",
-            "enabled": true
+            "enabled": true,
+            "tags": {
+              "type_bomber": true,
+              "type_fighter": true,
+              "type_assault": true
+            }
           }
         }
       ],
