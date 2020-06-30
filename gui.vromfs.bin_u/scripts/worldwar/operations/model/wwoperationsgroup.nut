@@ -124,7 +124,7 @@ class WwOperationsGroup
   {
     local res = 0
     if (hasActiveOperations())
-      res = res | WW_MAP_PRIORITY.HAS_ACTIVE_OPERATIONS
+      res = res | WW_MAP_PRIORITY.HAS_ACTIVE
 
     foreach(op in getOperationsList())
       res = res | op.getPriority()

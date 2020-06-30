@@ -1,5 +1,16 @@
 local stdMath = require("std/math.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
+
+const WW_GLOBAL_BATTLES_FILTER_ID = "worldWar/ww_global_battles_filter"
+
+enum UNAVAILABLE_BATTLES_CATEGORIES {
+  NO_AVAILABLE_UNITS  = 0x0001
+  NO_FREE_SPACE       = 0x0002
+  IS_UNBALANCED       = 0x0004
+  LOCK_BY_TIMER       = 0x0008
+  NOT_STARTED         = 0x0010
+}
 
 local battlesFilters = [
   {
@@ -79,6 +90,71 @@ local battlesFilters = [
   }
 ]
 
+local battlesFilterMask = null
+
+local function validateFilterMask(filterMask) {
+  local validFilterMask = null
+  if (::u.isDataBlock(filterMask))    //  needs because it saves as boolean before
+    validFilterMask = ::buildTableFromBlk(filterMask)
+  else
+    validFilterMask = { by_available_battles = (filterMask ?? 0).tointeger() }
+
+  return validFilterMask
+}
+
+local function battlesFilterMaskInitOnce() {
+  if (battlesFilterMask != null)
+    return
+
+  battlesFilterMask = validateFilterMask(::load_local_account_settings(WW_GLOBAL_BATTLES_FILTER_ID))
+}
+
+local function getBattlesFilterMask() {
+  battlesFilterMaskInitOnce()
+  return battlesFilterMask
+}
+
+local function setBattlesFilterMask(bitMask) {
+  battlesFilterMask = bitMask
+  ::save_local_account_settings(WW_GLOBAL_BATTLES_FILTER_ID, bitMask)
+}
+
+local function isMatchFilterMask(battle, country, team, side, needCheckUnitType = true)
+{
+  local filterMask = getBattlesFilterMask()
+  local curFilterMask = filterMask?.by_available_battles ?? 0
+
+  if (team && !(UNAVAILABLE_BATTLES_CATEGORIES.NO_AVAILABLE_UNITS & curFilterMask)
+      && !battle.hasUnitsToFight(country, team, side))
+    return false
+
+  if (team && !(UNAVAILABLE_BATTLES_CATEGORIES.NO_FREE_SPACE & curFilterMask)
+      && !battle.hasEnoughSpaceInTeam(team))
+    return false
+
+  if (team && !(UNAVAILABLE_BATTLES_CATEGORIES.IS_UNBALANCED & curFilterMask)
+      && battle.isLockedByExcessPlayers(battle.getSide(country), team.name))
+    return false
+
+  if (!(UNAVAILABLE_BATTLES_CATEGORIES.LOCK_BY_TIMER & curFilterMask)
+      && battle.getBattleActivateLeftTime() > 0)
+   return false
+
+  if (!(UNAVAILABLE_BATTLES_CATEGORIES.NOT_STARTED & curFilterMask)
+      && battle.isStarting())
+    return false
+
+  curFilterMask = filterMask?.by_unit_type ?? {}
+  if (needCheckUnitType && !(curFilterMask?[battle.unitTypeMask.tostring()] ?? true))
+    return false
+
+  return true
+}
+
+subscriptions.addListenersWithoutEnv({
+  SignOut = @(p) battlesFilterMask = null
+})
+
 class ::gui_handlers.wwBattlesFilterMenu extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType      = handlerType.MODAL
@@ -95,6 +171,7 @@ class ::gui_handlers.wwBattlesFilterMenu extends ::gui_handlers.BaseGuiHandlerWT
 
   function getSceneTplView()
   {
+    filterBitMasks = getBattlesFilterMask()
     initListValues()
 
     return {
@@ -158,8 +235,9 @@ class ::gui_handlers.wwBattlesFilterMenu extends ::gui_handlers.BaseGuiHandlerWT
     local apply = ::Callback(function(id, selBitMask)
       {
         filterBitMasks[id] <- selBitMask
+        setBattlesFilterMask(filterBitMasks)
         if (onChangeValuesBitMaskCb)
-          onChangeValuesBitMaskCb(filterBitMasks)
+          onChangeValuesBitMaskCb()
       }, this)
     local cancel = ::Callback(function(id)
       {
@@ -175,18 +253,7 @@ class ::gui_handlers.wwBattlesFilterMenu extends ::gui_handlers.BaseGuiHandlerWT
   }
 }
 
-local validateFilterMask = function(filterMask)
-{
-  local validFilterMask = null
-  if (::u.isDataBlock(filterMask))    //  needs because it saves as boolean before
-    validFilterMask = ::buildTableFromBlk(filterMask)
-  else
-    validFilterMask = { by_available_battles = (filterMask ?? 0).tointeger() }
-
-  return validFilterMask
-}
-
 return {
-  open = @(params = {}) ::gui_start_modal_wnd(::gui_handlers.wwBattlesFilterMenu, params)
-  validateFilterMask = validateFilterMask
+  openBattlesFilterMenu = @(params = {}) ::gui_start_modal_wnd(::gui_handlers.wwBattlesFilterMenu, params)
+  isMatchFilterMask = isMatchFilterMask
 }

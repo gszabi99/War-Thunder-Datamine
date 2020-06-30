@@ -1469,7 +1469,8 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
         else
           currentHeader = null
       }
-      if (!currentHeader || item.isHidden || !item.checkAssign)
+      local isRequired = typeof(item.checkAssign) == "function" ? item.checkAssign() : item.checkAssign
+      if (!currentHeader || item.isHidden || !isRequired)
         continue
       if (filter == globalEnv.EM_MOUSE_AIM && !item.reqInMouseAim)
         continue

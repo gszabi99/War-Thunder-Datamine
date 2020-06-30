@@ -135,21 +135,6 @@
           "size": "sw-2@bw, 1@maxWindowHeightNoSrh"
         },
         {
-          "div": {
-            "id": "select_all_countries",
-            "pos": "pw-w, 27@sf/@pf - h/2",
-            "position": "absolute",
-            "display": "hide",
-            "text": {
-              "id": "select_all_countries_text",
-              "text": "#ui/select_all"
-            },
-            "tdiv": {
-              "id": "select_all_countries_checkboxes"
-            }
-          }
-        },
-        {
           "wwMainMenuBackgroundShadow": [
             {
               "id": "panel_left"
@@ -214,75 +199,6 @@
                 "id": "trophy_list",
                 "flow": "vertical"
               }
-            },
-            {
-              "div": [
-                {
-                  "id": "top_list"
-                },
-                {
-                  "width": "0.3sh"
-                },
-                {
-                  "flow": "vertical"
-                },
-                {
-                  "overflow-y": "auto"
-                },
-                {
-                  "scroll-align": "left"
-                },
-                {
-                  "display": "hide"
-                },
-                {
-                  "behaviour": "posNavigator"
-                },
-                {
-                  "moveY": "linear"
-                },
-                {
-                  "navigatorShortcuts": "yes"
-                },
-                {
-                  "on_wrap_up": "onWrapUp"
-                },
-                {
-                  "on_wrap_down": "onWrapDown"
-                },
-                {
-                  "on_wrap_left": "onWrapDown"
-                },
-                {
-                  "on_wrap_right": "onWrapUp"
-                },
-                {
-                  "wwTopNest": {
-                    "id": "top_daily_players"
-                  }
-                },
-                {
-                  "wwTopNest": {
-                    "id": "top_global_players"
-                  }
-                },
-                {
-                  "wwTopNest": {
-                    "id": "top_global_managers"
-                  }
-                },
-                {
-                  "wwTopNest": {
-                    "id": "top_global_clans"
-                  }
-                }
-              ]
-            },
-            {
-              "DummyButton": {
-                "btnName": "RB",
-                "on_click": "onOpenSelectedTopLeaderboard"
-              }
             }
           ]
         },
@@ -292,26 +208,76 @@
             "width": "50%sh",
             "widthModeNormal": "50%sh",
             "type": "right",
-            "div": {
-              "id": "maps_list",
-              "size": "pw -10%sh, ph",
-              "pos": "pw-w, 0",
-              "position": "relative",
-              "total-input-transparent": "yes",
-              "flow": "vertical",
-              "overflow-y": "auto",
-              "css-hier-invalidate": "yes",
-              "focus": "yes",
-              "behaviour": "posNavigator",
-              "moveY": "linear",
-              "navigatorShortcuts": "yes",
-              "on_select": "onItemSelect",
-              "on_dbl_click": "onJoinOperation",
-              "on_wrap_up": "onWrapUp",
-              "on_wrap_down": "onWrapDown",
-              "on_wrap_left": "onWrapDown",
-              "on_wrap_right": "onWrapUp",
-              "snd_select": "ww_globe_battle_select"
+            "div": [
+              {
+                "id": "top_list"
+              },
+              {
+                "width": "0.3sh"
+              },
+              {
+                "pos": "pw-w, 0"
+              },
+              {
+                "position": "relative"
+              },
+              {
+                "flow": "vertical"
+              },
+              {
+                "overflow-y": "auto"
+              },
+              {
+                "scroll-align": "right"
+              },
+              {
+                "display": "hide"
+              },
+              {
+                "behaviour": "posNavigator"
+              },
+              {
+                "moveY": "linear"
+              },
+              {
+                "navigatorShortcuts": "yes"
+              },
+              {
+                "on_wrap_up": "onWrapUp"
+              },
+              {
+                "on_wrap_down": "onWrapDown"
+              },
+              {
+                "on_wrap_left": "onWrapDown"
+              },
+              {
+                "on_wrap_right": "onWrapUp"
+              },
+              {
+                "wwTopNest": {
+                  "id": "top_daily_players"
+                }
+              },
+              {
+                "wwTopNest": {
+                  "id": "top_global_players"
+                }
+              },
+              {
+                "wwTopNest": {
+                  "id": "top_global_managers"
+                }
+              },
+              {
+                "wwTopNest": {
+                  "id": "top_global_clans"
+                }
+              }
+            ],
+            "DummyButton": {
+              "btnName": "RB",
+              "on_click": "onOpenSelectedTopLeaderboard"
             }
           }
         },
@@ -352,15 +318,6 @@
               }
             ],
             "navRight": [
-              {
-                "activeText": {
-                  "id": "cant_join_queue_reason",
-                  "position": "relative",
-                  "pos": "0, 50%ph-50%h",
-                  "padding-right": "1@blockInterval",
-                  "text": ""
-                }
-              },
               {
                 "tdiv": {
                   "id": "queues_wait_time_div",
@@ -406,12 +363,26 @@
               },
               {
                 "Button_text": {
-                  "id": "btn_join_operation",
-                  "text": "#worldwar/operationsList",
+                  "id": "btn_operation_descr",
+                  "text": "#worldwar/scenarioDescription",
                   "btnName": "A",
                   "display": "hide",
                   "enable": "no",
-                  "_on_click": "onJoinOperation",
+                  "_on_click": "onOperationDescr",
+                  "buttonWink": {
+                    "_transp-timer": "0"
+                  },
+                  "ButtonImg": []
+                }
+              },
+              {
+                "Button_text": {
+                  "id": "btn_operation_list",
+                  "text": "#worldwar/operationsList",
+                  "btnName": "R3",
+                  "display": "hide",
+                  "enable": "no",
+                  "_on_click": "onOperationListSwitch",
                   "buttonWink": {
                     "_transp-timer": "0"
                   },
@@ -422,7 +393,7 @@
                 "Button_text": {
                   "id": "btn_map_action",
                   "text": "",
-                  "btnName": "A",
+                  "btnName": "RB",
                   "display": "hide",
                   "enable": "no",
                   "_on_click": "onMapAction",
@@ -430,118 +401,6 @@
                     "_transp-timer": "0"
                   },
                   "ButtonImg": []
-                }
-              },
-              {
-                "Button_text": {
-                  "id": "btn_clans_queue",
-                  "class": "battle",
-                  "text": "#worldwar/btnCreateOperation",
-                  "navButtonFont": "yes",
-                  "btnName": "Y",
-                  "hasConsoleImage": "yes",
-                  "display": "hide",
-                  "enable": "no",
-                  "_on_click": "onClansQueue",
-                  "pattern": [],
-                  "buttonWink": {
-                    "_transp-timer": "0"
-                  },
-                  "buttonGlance": [],
-                  "ButtonImg": [],
-                  "btnText": {
-                    "id": "btn_join_operation_text",
-                    "text": "#worldwar/btnCreateOperation"
-                  }
-                }
-              },
-              {
-                "Button_text": {
-                  "id": "btn_join_queue",
-                  "class": "battle",
-                  "text": "#worldwar/btnJoinQueue",
-                  "navButtonFont": "yes",
-                  "btnName": "Y",
-                  "hasConsoleImage": "yes",
-                  "display": "hide",
-                  "enable": "no",
-                  "_on_click": "onJoinQueue",
-                  "pattern": [],
-                  "buttonWink": {
-                    "_transp-timer": "0"
-                  },
-                  "buttonGlance": [],
-                  "ButtonImg": [],
-                  "btnText": {
-                    "id": "btn_join_queue_text",
-                    "text": "#worldwar/btnJoinQueue"
-                  }
-                }
-              },
-              {
-                "Button_text": {
-                  "id": "btn_join_clan_operation",
-                  "width": "1@bigButtonWidth",
-                  "class": "battle",
-                  "text": "#events/join_event",
-                  "navButtonFont": "yes",
-                  "btnName": "Y",
-                  "hasConsoleImage": "yes",
-                  "display": "hide",
-                  "enable": "no",
-                  "_on_click": "onJoinClanOperation",
-                  "pattern": [],
-                  "buttonWink": {
-                    "_transp-timer": "0"
-                  },
-                  "buttonGlance": [],
-                  "ButtonImg": [],
-                  "btnContent": {
-                    "cardImg": {
-                      "id": "is_clan_participate_img",
-                      "margin-right": "@blockInterval",
-                      "background-image": "#ui/gameuiskin#lb_victories_battles.svg"
-                    },
-                    "btnText": {
-                      "id": "btn_join_operation_text",
-                      "text": "#events/join_event"
-                    },
-                    "tdiv": {
-                      "margin-left": "@blockInterval",
-                      "pos": "0, 50%ph-50%h",
-                      "position": "relative",
-                      "img": {
-                        "id": "country_icon",
-                        "iconType": "country_battle",
-                        "margin-left": "@blockInterval",
-                        "background-image": ""
-                      }
-                    }
-                  }
-                }
-              },
-              {
-                "Button_text": {
-                  "id": "btn_leave_queue",
-                  "class": "battle",
-                  "text": "#worldwar/btnLeaveQueue",
-                  "navButtonFont": "yes",
-                  "isCancel": "yes",
-                  "btnName": "Y",
-                  "hasConsoleImage": "yes",
-                  "display": "hide",
-                  "enable": "no",
-                  "_on_click": "onLeaveQueue",
-                  "pattern": [],
-                  "buttonWink": {
-                    "_transp-timer": "0"
-                  },
-                  "buttonGlance": [],
-                  "ButtonImg": [],
-                  "btnText": {
-                    "id": "btn_leave_queue_text",
-                    "text": "#worldwar/btnLeaveQueue"
-                  }
                 }
               }
             ]
@@ -554,6 +413,13 @@
         "id": "ww_status_check_timer",
         "timer_handler_func": "onTimerStatusCheck",
         "timer_interval_msec": "60000"
+      }
+    },
+    {
+      "timer": {
+        "id": "global_battles_update_timer",
+        "timer_handler_func": "onUpdateGlobalBattles",
+        "timer_interval_msec": "3000"
       }
     },
     {
@@ -1488,6 +1354,41 @@
           }
         }
       ]
+    },
+    {
+      "frame": {
+        "id": "operation_list",
+        "size": "50%sh, 1@maxWindowHeightNoSrh-1@navBarBattleButtonHeight -9@sf/@pf_outdated",
+        "widthModeNormal": "50%sh",
+        "right": "0.5pw-0.5(sw-2@bw)",
+        "top": "1@minYposWindow",
+        "position": "absolute",
+        "class": "wndNav",
+        "frame_header": {
+          "activeText": {
+            "caption": "yes",
+            "text": "#worldwar/operationsList"
+          }
+        },
+        "div": {
+          "id": "maps_list",
+          "size": "pw, ph+1@frameHeaderHeight",
+          "total-input-transparent": "yes",
+          "flow": "vertical",
+          "overflow-y": "auto",
+          "css-hier-invalidate": "yes",
+          "focus": "yes",
+          "behaviour": "posNavigator",
+          "moveY": "linear",
+          "navigatorShortcuts": "yes",
+          "on_select": "onItemSelect",
+          "on_wrap_up": "onWrapUp",
+          "on_wrap_down": "onWrapDown",
+          "on_wrap_left": "onWrapDown",
+          "on_wrap_right": "onWrapUp",
+          "snd_select": "ww_globe_battle_select"
+        }
+      }
     }
   ],
   "tooltipObj": [

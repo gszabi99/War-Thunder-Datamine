@@ -1,12 +1,11 @@
 ww_map_item {
   class:t='header'
-  isReflected:t='yes'
 
   textareaNoTab{
     id:t='header_text'
     position:t='relative'
-    top:t='0.5(ph-h)'
-    padding-left:t='1@framePadding'
+    pos:t='pw-w, 0.5(ph-h)'
+    padding-right:t='1@framePadding'
     text:t='<<titleText>>'
     input-transparent:t='yes'
     overlayTextColor:t='silver'
@@ -16,7 +15,7 @@ ww_map_item {
 
 table {
   width:t='pw'
-  margin-left:t='1@blockInterval'
+  margin-right:t='1@blockInterval'
   class:t='lbTable'
   <<#rows>>
     <<@row>>

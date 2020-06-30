@@ -115,6 +115,19 @@ local WwGlobalBattle = class extends ::WwBattle
     return map.isVisible()
   }
 
+  function isAvaliableForMap(mapName)
+  {
+    local operation = ::g_ww_global_status.getOperationById(operationId)
+    if (!operation)
+      return false
+
+    local map = operation.getMap()
+    if (!map)
+      return false
+
+    return map.name == mapName
+  }
+
   function setOperationId(operId)
   {
     operationId = operId

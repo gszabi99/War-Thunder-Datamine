@@ -14,12 +14,6 @@ local list = {
     onClickFunc = @(obj, handler) ::g_world_war.openOperationsOrQueues()
     elementType = TOP_MENU_ELEMENT_TYPE.BUTTON
   }
-  WW_GLOBAL_BATTLES = {
-    text = "#worldWar/btn_all_battles"
-    onClickFunc = @(obj, handler) ::g_world_war.openOperationsOrQueues(true)
-    tooltip = @() ::loc("worldWar/btn_all_battles_full_text")
-    elementType = TOP_MENU_ELEMENT_TYPE.BUTTON
-  }
   WW_OPERATIONS = {
     text = "#worldWar/menu/selectOperation"
     onClickFunc = function(obj, handler)
@@ -31,6 +25,7 @@ local list = {
       ::g_world_war.openOperationsOrQueues(false,
         ::g_ww_global_status.getMapByName(curOperation.data.map))
     }
+    isHidden = @(...) !::has_feature("WWOperationsList")
     elementType = TOP_MENU_ELEMENT_TYPE.BUTTON
   }
   WW_HANGAR = {

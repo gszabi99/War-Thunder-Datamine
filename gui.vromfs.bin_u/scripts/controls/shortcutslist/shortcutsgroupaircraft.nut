@@ -569,6 +569,7 @@ return [
     checkGroup = ctrlGroups.AIR
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
     showFunc = @() (::is_ps4_or_xbox || ::is_xinput_device()) && isWheelmenuAxisConfigurable()
+    checkAssign = @() ::is_xinput_device() && isWheelmenuAxisConfigurable()
   }
   {
     id = "wheelmenu_y"
@@ -577,6 +578,7 @@ return [
     checkGroup = ctrlGroups.AIR
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
     showFunc = @() (::is_ps4_or_xbox || ::is_xinput_device()) && isWheelmenuAxisConfigurable()
+    checkAssign = @() ::is_xinput_device() && isWheelmenuAxisConfigurable()
   }
 //-------------------------------------------------------
   {

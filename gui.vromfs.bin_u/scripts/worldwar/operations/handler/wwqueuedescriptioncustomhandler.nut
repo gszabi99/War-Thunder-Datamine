@@ -2,22 +2,26 @@ local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOpe
 
 class ::gui_handlers.WwQueueDescriptionCustomHandler extends ::gui_handlers.WwMapDescription
 {
-  function mapCountriesToView(countries, amountByCountry, joinedCountries)
+  function mapCountriesToView(side, amountByCountry, joinedCountries)
   {
-    local minTeamsInfoText = descItem.getMinClansCondition()
-    local getTeamsInfoText = function (countryName) {
-      local isJoined = ::isInArray(countryName, joinedCountries)
-      local text = ::getTblValue(countryName, amountByCountry, "").tostring()
-
-      return (isJoined ? ::colorize("@userlogColoredText", text) : text) + "/" + minTeamsInfoText
-    }
+    local cuntriesByTeams = descItem.getCountriesByTeams()
+    local countries = cuntriesByTeams?[side] ?? {}
     local mapName = descItem.getId()
     return {
-      countries = countries.map(@(countryName) {
-        countryName   = countryName
-        countryIcon   = getCustomViewCountryData(countryName, mapName).icon
-        isJoined      = ::isInArray(countryName, joinedCountries)
-        teamsInfoText = getTeamsInfoText(countryName)
+      countries = countries.map(function(countryId) {
+        local customViewCountryData = getCustomViewCountryData(countryId, mapName)
+        local customLocId = customViewCountryData.locId
+        local countryNameText = countryId == customLocId
+          ? ::loc(countryId)
+          : "".concat(::loc(customLocId), ::loc("ui/parentheses/space", {text = ::loc(countryId)}))
+        return {
+          countryNameText = countryNameText
+          countryId       = countryId
+          countryIcon     = customViewCountryData.icon
+          isJoined        = ::isInArray(countryId, joinedCountries)
+          side            = side
+          isLeftAligned   = side == ::SIDE_1
+        }
       })
     }
   }
@@ -28,13 +32,13 @@ class ::gui_handlers.WwQueueDescriptionCustomHandler extends ::gui_handlers.WwMa
     if (!::checkObj(obj))
       return
 
-    local cuntriesByTeams = descItem.getCountriesByTeams()
     local amountByCountry = descItem.getArmyGroupsAmountByCountries()
     local joinedCountries = descItem.getMyClanCountries()
-
+    local sides = []
+    foreach (side in ::g_world_war.getCommonSidesOrder())
+      sides.append(mapCountriesToView(side, amountByCountry, joinedCountries))
     local view = {
-      side1 = mapCountriesToView(::getTblValue(::SIDE_1, cuntriesByTeams, {}), amountByCountry, joinedCountries)
-      side2 = mapCountriesToView(::getTblValue(::SIDE_2, cuntriesByTeams, {}), amountByCountry, joinedCountries)
+      sides = sides
       vsText = ::loc("country/VS") + "\n "
     }
     local data = ::handyman.renderCached("gui/worldWar/wwOperationCountriesInfo", view)

@@ -5,6 +5,7 @@ local { setCurPreset } = require("scripts/slotbar/slotbarPresetsByVehiclesGroups
 local WwHelpSlotbarGroupsModal = require("scripts/worldWar/handler/WwHelpSlotbarGroupsModal.nut")
 local { getBestPresetData, generatePreset } = require("scripts/slotbar/generatePreset.nut")
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
+local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 
 // Temporary image. Has to be changed after receiving correct art
 const WW_OPERATION_DEFAULT_BG_IMAGE = "#ui/bkg/login_layer_h1_0"
@@ -347,11 +348,7 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
     for(local i = 0; i < total; i++)
       updateBattleInList(i, curBattleListItems?[i], newList?[i])
 
-    local showEmptyBattlesListInfo = !curBattleListMap.len()
-    showSceneBtn("no_active_battles_text", showEmptyBattlesListInfo)
-    showSceneBtn("active_country_info", showEmptyBattlesListInfo)
-    if (showEmptyBattlesListInfo)
-      createActiveCountriesInfo()
+    showSceneBtn("no_active_battles_text", curBattleListMap.len() == 0)
 
     guiScene.setUpdatesEnabled(true, true)
     if (!needUpdatePrefixWidth || view.items.len() <= 0)
@@ -443,10 +440,12 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
 
     createSlotbar(
       {
-        customCountry = assignCountry
+        singleCountry = assignCountry
+        customViewCountryData = {[assignCountry]  = getCustomViewCountryData(assignCountry, map.getId(), true)}
         availableUnits = availableUnits
         customUnitsList = hasSlotbarByUnitsGroups ? null : operationUnits
-      }.__update(getSlotbarParams())
+      }.__update(getSlotbarParams()),
+      "nav-slotbar"
     )
   }
 
@@ -456,7 +455,10 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
       showEmptySlot = true
       needPresetsPanel = !hasSlotbarByUnitsGroups
       shouldCheckCrewsReady = true
+      hasExtraInfoBlock = true
+      showNewSlot = true
       customUnitsListName = getCustomUnitsListNameText()
+      shouldAppendToObject = false
     }
   }
 
@@ -1229,10 +1231,6 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
     local battles = ::g_world_war.getBattles(::g_world_war.isBattleAvailableToPlay)
     battles.sort(battlesSort)
     return battles
-  }
-
-  function createActiveCountriesInfo()
-  {
   }
 
   function getQueueBattle(queue)

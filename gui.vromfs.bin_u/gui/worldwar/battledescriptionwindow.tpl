@@ -6,7 +6,7 @@ root {
     largeNavBarHeight:t='yes'
     type:t='dark'
 
-    size:t='1@slotbarWidthFull, 1@maxWindowHeightWithSlotbar'
+    size:t='1@slotbarWidthFullExt, 1@maxWindowHeightWithSlotbar +1@slotbar_top_shade +1@slotbarTop'
     pos:t='50%pw-50%w, 1@minYposWindow'
     position:t='absolute'
 
@@ -57,14 +57,6 @@ root {
           margin-top:t='0.01@scrn_tgt'
           text-align:t='center'
           text:t='#worldwar/operation/noActiveBattles'
-        }
-
-        tdiv {
-          id:t='active_country_info'
-          width:t='pw'
-          margin-right:t='1@framePadding'
-          margin-top:t='0.05@scrn_tgt'
-          flow:t='vertical'
         }
 
         listbox {
@@ -292,6 +284,14 @@ root {
             id:t='btn_leave_event_text'
             text:t='#mainmenu/btnCancel'
           }
+        }
+      }
+      slotbarNest {
+        pos:t='50%sw-50%w, sh-h-1@slotbarOffset'
+        position:t='root'
+
+        slotbarDiv {
+          id:t='nav-slotbar'
         }
       }
     }

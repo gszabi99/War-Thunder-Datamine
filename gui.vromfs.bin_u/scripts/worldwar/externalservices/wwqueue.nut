@@ -122,7 +122,7 @@ class WwQueue
 
   function getGeoCoordsText()
   {
-    return ""
+    return  map.getGeoCoordsText()
   }
 
   function getCountriesByTeams()

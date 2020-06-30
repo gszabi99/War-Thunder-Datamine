@@ -52,11 +52,11 @@ global enum WW_GLOBAL_STATUS_TYPE //bit enum
 global enum WW_MAP_PRIORITY //bit enum
 {
   NONE                       = 0
-  HAS_ACTIVE_OPERATIONS      = 0x0001
-  CAN_JOIN_BY_ARMY_RELATIONS = 0x0002
+  NEAREST                    = 0x0001
+  HAS_ACTIVE                 = 0x0002
+  CAN_JOIN_BY_ARMY_RELATIONS = 0x0003
   MY_CLAN_IN_QUEUE           = 0x0004
-  CAN_JOIN_BY_MY_CLAN        = 0x0008
-  LAST_PLAYED                = 0x0010
+  CAN_JOIN_BY_MY_CLAN        = 0x0011
 
   MAX                        = 0xFFFF
 }

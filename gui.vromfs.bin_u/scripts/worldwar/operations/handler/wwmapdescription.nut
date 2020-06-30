@@ -8,34 +8,48 @@ class ::gui_handlers.WwMapDescription extends ::gui_handlers.BaseGuiHandlerWT
   descItem = null //WwMap, WwQueue, WwOperation, WwOperationGroup
   map = null
   needEventHeader = true
+  descParams = null
+  onJoinQueue = null
+  onLeaveQueue = null
+  onJoinClanOperation = null
+  onLeaveCountriesBlock = null
+  onBattlesBtnClick = null
+  onCountrySelect = null
 
   rootDescId = "item_desc"
 
   //this handler dosnt create own scene, just search objects in already exist scene.
-  static function link(_scene, _descItem = null, _map = null)
+  static function link(_scene, _descItem = null, _map = null, _descParams = {})
   {
     local params = {
       scene = _scene
       descItem = _descItem
       map = _map
+      descParams = _descParams
     }
 
     if ((!_descItem && _map) || (_descItem instanceof ::WwOperation))
       return ::handlersManager.loadHandler(::gui_handlers.WwOperationDescriptionCustomHandler, params)
     else if (_descItem instanceof ::WwQueue)
       return ::handlersManager.loadHandler(::gui_handlers.WwQueueDescriptionCustomHandler, params)
-    else
-      return ::handlersManager.loadHandler(::gui_handlers.WwMapDescription, params)
   }
 
   function initScreen()
   {
+    onJoinQueue = descParams?.onJoinQueue ?? @() null
+    onLeaveQueue = descParams?.onLeaveQueue ?? @() null
+    onJoinClanOperation = descParams?.onJoinClanOperation ?? @() null
+    onLeaveCountriesBlock = descParams?.onLeaveCountriesBlock ?? @(obj) null
+    onBattlesBtnClick = descParams?.onBattlesBtnClick ?? @() null
+    onCountrySelect = descParams?.onCountrySelect ?? @(obj) null
     scene.setUserData(this) //to not unload handler even when scene not loaded
     updateView()
 
     local timerObj = scene.findObject("ww_map_description_timer")
     if (timerObj)
       timerObj.setUserData(this)
+
+    initFocusArray()
   }
 
   function setDescItem(newDescItem)
@@ -102,13 +116,11 @@ class ::gui_handlers.WwMapDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function mapCountriesToView(countries)
   {
-    local teamsInfoText = descItem.getMinClansCondition()
     local mapName = descItem.getId()
     return {
       countries = countries.map(@(countryName) {
         countryName = countryName
         countryIcon = getCustomViewCountryData(countryName, mapName).icon
-        teamsInfoText = teamsInfoText
       })
     }
   }
@@ -120,11 +132,14 @@ class ::gui_handlers.WwMapDescription extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     local cuntriesByTeams = descItem.getCountriesByTeams()
+    local sides = []
+    foreach (side in ::g_world_war.getCommonSidesOrder())
+      sides.append(mapCountriesToView(cuntriesByTeams?.side ?? {}))
     local view = {
-      side1 = mapCountriesToView(::getTblValue(::SIDE_1, cuntriesByTeams, {}))
-      side2 = mapCountriesToView(::getTblValue(::SIDE_2, cuntriesByTeams, {}))
+      sides = sides
       vsText = ::loc("country/VS") + "\n "
     }
+
     local data = ::handyman.renderCached("gui/worldWar/wwOperationCountriesInfo", view)
     guiScene.replaceContentFromText(obj, data, data.len(), this)
     obj.show(true)

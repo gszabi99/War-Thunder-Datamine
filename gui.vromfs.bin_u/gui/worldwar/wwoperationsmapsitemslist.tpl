@@ -69,21 +69,5 @@
       activeText{}
     }
     <</isCollapsable>>
-
-    <<#isCreateOperationMode>>
-    tdiv {
-      id:t='countries_selection_<<id>>'
-      pos:t='pw-w, ph/2-h/2'
-      position:t='absolute'
-
-      behaviour:t='posNavigator'
-      navigatorShortcuts:t='yes'
-      on_wrap_up:t='onMapCountriesUp'
-      on_wrap_down:t='onMapCountriesDown'
-      showSelect:t='yes'
-
-      include "gui/commonParts/checkbox"
-    }
-    <</isCreateOperationMode>>
   }
 <</items>>

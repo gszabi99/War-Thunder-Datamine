@@ -1,20 +1,10 @@
 local globalBattlesListData = require("scripts/worldWar/operations/model/wwGlobalBattlesList.nut")
 local WwGlobalBattle = require("scripts/worldWar/operations/model/wwGlobalBattle.nut")
-local wwBattlesFilterMenu = require("scripts/worldWar/handler/wwBattlesFilterMenu.nut")
+local { openBattlesFilterMenu, isMatchFilterMask } = require("scripts/worldWar/handler/wwBattlesFilterMenu.nut")
 local slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 
-const WW_GLOBAL_BATTLES_FILTER_ID = "worldWar/ww_global_battles_filter"
 local MAX_VISIBLE_BATTLES_PER_GROUP = 5
-
-global enum UNAVAILABLE_BATTLES_CATEGORIES
-{
-  NO_AVAILABLE_UNITS  = 0x0001
-  NO_FREE_SPACE       = 0x0002
-  IS_UNBALANCED       = 0x0004
-  LOCK_BY_TIMER       = 0x0008
-  NOT_STARTED         = 0x0010
-}
 
 class ::gui_handlers.WwGlobalBattlesModal extends ::gui_handlers.WwBattleDescription
 {
@@ -26,9 +16,9 @@ class ::gui_handlers.WwGlobalBattlesModal extends ::gui_handlers.WwBattleDescrip
   needUpdatePrefixWidth = false
   minCountBattlesInList = 100
   needFullUpdateList = true
-  filterMask = null
+  country = null
 
-  static function open(battle = null)
+  static function open(battle = null, _country = null)
   {
     if (!battle || !battle.isValid())
       battle = WwGlobalBattle()
@@ -36,22 +26,17 @@ class ::gui_handlers.WwGlobalBattlesModal extends ::gui_handlers.WwBattleDescrip
     ::handlersManager.loadHandler(::gui_handlers.WwGlobalBattlesModal, {
         curBattleInList = battle
         operationBattle = ::WwBattle()
+        country = _country ?? ::get_profile_country_sq()
       })
   }
 
   function initScreen()
   {
     battlesList = []
-    updateBattlesFilter()
     globalBattlesListData.requestList()
     base.initScreen()
 
     ::checkNonApprovedResearches(true)
-  }
-
-  function updateBattlesFilter()
-  {
-    filterMask = wwBattlesFilterMenu.validateFilterMask(::loadLocalByAccount(WW_GLOBAL_BATTLES_FILTER_ID))
   }
 
   function getSceneTplView()
@@ -113,7 +98,7 @@ class ::gui_handlers.WwGlobalBattlesModal extends ::gui_handlers.WwBattleDescrip
   function getTitleText()
   {
     return ::loc("worldwar/global_battle/title", {
-      country = ::loc(getCustomViewCountryData(::get_profile_country_sq()).locId)})
+      country = ::loc(getCustomViewCountryData(country).locId)})
   }
 
   function updateSlotbar()
@@ -137,14 +122,17 @@ class ::gui_handlers.WwGlobalBattlesModal extends ::gui_handlers.WwBattleDescrip
     if (hasSlotbarByUnitsGroups)
       slotbarPresets.setCurPreset(map.getId() ,unitsGroupsByCountry)
 
+    local assignCountry = country
     createSlotbar(
       {
-        customCountry = ::get_profile_country_sq()
+        singleCountry = assignCountry
+        customViewCountryData = {[assignCountry]  = getCustomViewCountryData(assignCountry, map?.getId(), true)}
         availableUnits = availableUnits.len() ? availableUnits : null
         customUnitsList = hasSlotbarByUnitsGroups || operationUnits.len() == 0
           ? null
           : operationUnits
-      }.__update(getSlotbarParams())
+      }.__update(getSlotbarParams()),
+      "nav-slotbar"
     )
   }
 
@@ -222,51 +210,6 @@ class ::gui_handlers.WwGlobalBattlesModal extends ::gui_handlers.WwBattleDescrip
     return battleListMap
   }
 
-  function createActiveCountriesInfo()
-  {
-    local countryListObj = scene.findObject("active_country_info")
-    if (!::check_obj(battlesListObj))
-      return
-
-    local countriesInfo = getActiveCountriesData()
-
-    local view = { countries = [] }
-    foreach (country, data in countriesInfo)
-      view.countries.append({
-        name = ::loc(country)
-        countryIcon = ::get_country_icon(country)
-        value = ::loc("worldWar/battles", {number = data})
-      })
-
-    local countriesInfoData = ::handyman.renderCached("gui/worldWar/wwActiveCountriesList", view)
-    guiScene.replaceContentFromText(countryListObj, countriesInfoData, countriesInfoData.len(), this)
-
-    if (!countriesInfo.len())
-    {
-      local titleText = countryListObj.findObject("active_countries_text")
-      if (::check_obj(titleText))
-        titleText.setValue(::loc("worldWar/noParticipatingCountries"))
-    }
-  }
-
-  function getActiveCountriesData()
-  {
-    local countriesData = {}
-    local globalBattlesList = globalBattlesListData.getList().filter(@(battle)
-      battle.isOperationMapAvaliable())
-    local isMatchFilters = ::Callback(isMatchFilterMask, this)
-    ::shopCountriesList.each(function(country) {
-      local battlesListByCountry = globalBattlesList.filter(
-        @(battle) battle.hasSideCountry(country) && isMatchFilters(battle, country))
-
-      local battlesNumber = battlesListByCountry.len()
-      if (battlesNumber)
-        countriesData[country] <- battlesNumber
-    })
-
-    return countriesData
-  }
-
   function onEventCountryChanged(p)
   {
     guiScene.performDelayed(this, function() {
@@ -278,27 +221,23 @@ class ::gui_handlers.WwGlobalBattlesModal extends ::gui_handlers.WwBattleDescrip
 
   function onOpenBattlesFilters(obj)
   {
-    local applyFilter = ::Callback(function(selBitMask)
+    local applyFilter = ::Callback(function()
       {
-        filterMask = selBitMask
-        ::saveLocalByAccount(WW_GLOBAL_BATTLES_FILTER_ID, filterMask)
         reinitBattlesList(true)
         refreshList(true)
       }, this)
 
-    wwBattlesFilterMenu.open({
+    openBattlesFilterMenu({
       alignObj = scene.findObject("btn_battles_filters")
-      filterBitMasks = clone filterMask
       onChangeValuesBitMaskCb = applyFilter
     })
   }
 
   function setFilteredBattles()
   {
-    local country = ::get_profile_country_sq()
-
+    local assignCountry = country
     battlesList = globalBattlesListData.getList().filter(@(battle)
-      battle.hasSideCountry(country) && battle.isOperationMapAvaliable()
+      battle.hasSideCountry(assignCountry) && battle.isOperationMapAvaliable()
       && battle.hasAvailableUnits())
 
     if (currViewMode != WW_BATTLE_VIEW_MODES.BATTLE_LIST)
@@ -306,7 +245,9 @@ class ::gui_handlers.WwGlobalBattlesModal extends ::gui_handlers.WwBattleDescrip
 
     battlesList = battlesList.filter(
       function(battle) {
-        return isMatchFilterMask(battle, country)
+        local side = getPlayerSide(battle)
+        local team = battle.getTeamBySide(side)
+        return isMatchFilterMask(battle, assignCountry, team, side)
       }.bindenv(this))
   }
 
@@ -353,39 +294,6 @@ class ::gui_handlers.WwGlobalBattlesModal extends ::gui_handlers.WwBattleDescrip
 
   function updateNoAvailableBattleInfo()
   {
-  }
-
-  function isMatchFilterMask(battle, country)
-  {
-    local side = getPlayerSide(battle)
-    local team = battle.getTeamBySide(side)
-    local curFilterMask = filterMask?.by_available_battles ?? 0
-
-    if (team && !(UNAVAILABLE_BATTLES_CATEGORIES.NO_AVAILABLE_UNITS & curFilterMask)
-        && !battle.hasUnitsToFight(country, team, side))
-      return false
-
-    if (team && !(UNAVAILABLE_BATTLES_CATEGORIES.NO_FREE_SPACE & curFilterMask)
-        && !battle.hasEnoughSpaceInTeam(team))
-      return false
-
-    if (team && !(UNAVAILABLE_BATTLES_CATEGORIES.IS_UNBALANCED & curFilterMask)
-        && battle.isLockedByExcessPlayers(battle.getSide(country), team.name))
-      return false
-
-    if (!(UNAVAILABLE_BATTLES_CATEGORIES.LOCK_BY_TIMER & curFilterMask)
-        && battle.getBattleActivateLeftTime() > 0)
-      return false
-
-    if (!(UNAVAILABLE_BATTLES_CATEGORIES.NOT_STARTED & curFilterMask)
-        && battle.isStarting())
-      return false
-
-    curFilterMask = filterMask?.by_unit_type ?? {}
-    if (!(curFilterMask?[battle.unitTypeMask.tostring()] ?? true))
-      return false
-
-    return true
   }
 
   function getFilteredBattlesByMaxCountPerGroup()

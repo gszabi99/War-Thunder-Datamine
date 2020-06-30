@@ -107,6 +107,16 @@ g_ww_global_status.getMyClanOperation <- function getMyClanOperation()
                     function(o) { return o.isMyClanParticipate() })
 }
 
+g_ww_global_status.getNearestAvailableMap <- function getNearestAvailableMap()
+{
+  local nearestAvailable = []
+  foreach(map in  ::g_ww_global_status_type.MAPS.getList())
+    if (map.isWillAvailable())
+      nearestAvailable.append(map)
+  nearestAvailable.sort(@(a, b) a.getChangeStateTime() <=> b.getChangeStateTime())
+  return nearestAvailable?[0]
+}
+
 g_ww_global_status.getMapByName <- function getMapByName(mapName)
 {
   return ::getTblValue(mapName, ::g_ww_global_status_type.MAPS.getList())

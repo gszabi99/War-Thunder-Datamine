@@ -274,6 +274,10 @@ class WwMap
     local res = getOpGroup().getPriority()
     if (getQueue().isMyClanJoined())
       res = res | WW_MAP_PRIORITY.MY_CLAN_IN_QUEUE
+    if (isActive())
+      res = res | WW_MAP_PRIORITY.HAS_ACTIVE
+    if (::g_ww_global_status.getNearestAvailableMap()?.name == name)
+      res = res | WW_MAP_PRIORITY.NEAREST
     return res
   }
 

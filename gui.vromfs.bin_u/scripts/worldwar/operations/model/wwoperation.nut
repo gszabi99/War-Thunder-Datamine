@@ -331,8 +331,7 @@ class WwOperation
       res = res | WW_MAP_PRIORITY.CAN_JOIN_BY_MY_CLAN
     if (getMyAssignCountry() && (availableByMyClan || !getMyClanGroup()))
       res = res | WW_MAP_PRIORITY.CAN_JOIN_BY_ARMY_RELATIONS
-    if (isLastPlayed())
-      res = res | WW_MAP_PRIORITY.LAST_PLAYED
+
     return res
   }
 }

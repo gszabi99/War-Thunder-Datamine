@@ -258,6 +258,7 @@ local defaults = ::Watched({  //def value when feature not found in game_setting
   ConsoleSeparateLeaderboards = false
   ConsoleSeparateEventsLeaderboards = false
   ConsoleSeparateWWLeaderboards = false
+  WWOperationsList = false
 })
 
 local override = ::Watched({})
