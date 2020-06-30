@@ -114,6 +114,21 @@
     "canReloadNonGuns": true
   },
   {
+    "smokeScreenActivateTime": 5.0
+  },
+  {
+    "smokeScreenEffectTime": 7.0
+  },
+  {
+    "smokeScreenRad": 12.0
+  },
+  {
+    "smokeScreenOffset": [-3.0,0.0,2.0]
+  },
+  {
+    "smokeScreenFxType": "tank_smokescreen"
+  },
+  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "RHA_tank_modern",
@@ -2970,6 +2985,7 @@
       "new_tank_vertical_aiming": [],
       "art_support": [],
       "tank_new_gun": [],
+      "tank_engine_smoke_screen_system": [],
       "tank_medical_kit": {
         "image": "#ui/gameuiskin#tank_reinforcement_fr"
       },
@@ -2995,16 +3011,16 @@
                 "blk": "gameData/Weapons/groundModels_weapons/120mm_GIAT_CN120_25_G1_user_cannon.blk",
                 "emitter": "bone_gun_barrel",
                 "flash": "emtr_gun_flame",
-                "recoilOffset": 1.2,
+                "recoilOffset": 0.5,
                 "maxAdditionalPitch": 0.0,
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
                 "barrelDP": "gun_barrel_dm",
                 "breechDP": "cannon_breech_dm",
                 "speedYaw": 25.0,
-                "speedPitch": 6.0,
+                "speedPitch": 5.5,
                 "fireConeAngle": 1.0,
-                "bullets": 40,
+                "bullets": 38,
                 "salvoAmount": 100.0,
                 "ChainfireTime": 0.0,
                 "DelayAfterShoot": 5.0,
@@ -3028,11 +3044,11 @@
                 },
                 "limits": {
                   "yaw": [-180.0,180.0],
-                  "pitch": [-7.0,20.0]
+                  "pitch": [-8.0,20.0]
                 },
                 "limitsTable": {
                   "lim1": [-180.0,-130.0,1.0,20.0],
-                  "lim2": [-130.0,130.0,-10.0,20.0],
+                  "lim2": [-130.0,130.0,-8.0,20.0],
                   "lim3": [130.0,180.0,1.0,20.0]
                 },
                 "gunStabilizer": {
@@ -3100,7 +3116,7 @@
                   "fireConeAngle": 1.0
                 },
                 {
-                  "bullets": 800
+                  "bullets": 480
                 },
                 {
                   "fireConeAngle": 15.0
@@ -3167,7 +3183,7 @@
                 "parkInDeadzone": false,
                 "speedYaw": 30.0,
                 "speedPitch": 20.0,
-                "bullets": 2150,
+                "bullets": 2170,
                 "isBulletBelt": true,
                 "fireConeAngle": 15.0,
                 "ChainfireTime": 0.5,
@@ -3412,6 +3428,11 @@
         "from": "fr_camo_vert_olive_arme*",
         "to": "ger_camo_carc*"
       }
+    }
+  },
+  {
+    "smokeScreenExhaustEmitters": {
+      "emitter": "emtr_exhaust_01"
     }
   }
 ]

@@ -1176,7 +1176,6 @@ class Spectator extends ::gui_handlers.BaseGuiHandlerWT
     {
       ignoreUiInput = true
       objTbl.setValue(selIndex)
-      objTbl.cur_row = selIndex
       ignoreUiInput = false
     }
 
