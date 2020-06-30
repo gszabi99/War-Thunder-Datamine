@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": -10.0
-    },
     "player": {
       "army": 1,
       "wing": "flt_armada"
@@ -14,12 +10,16 @@
       "army": 2
     },
     "mission": {
-      "level": "levels/water.bin",
+      "level": "levels/malta.bin",
       "type": "singleMission",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
-      "weather": "hazy"
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": -10.0
     },
     "spectator_points": []
   },
@@ -606,6 +606,9 @@
               "var": "flt_area_24_state"
             },
             {
+              "var": "flt_area_30_state"
+            },
+            {
               "var": "flt_area_31_state"
             },
             {
@@ -625,6 +628,9 @@
             },
             {
               "var": "flt_area_12_state"
+            },
+            {
+              "var": "flt_area_13_state"
             },
             {
               "var": "flt_area_18_state"
@@ -649,6 +655,40 @@
           "triggerEnable": {
             "target": "flt_army_state_start"
           }
+        },
+        {
+          "comment": {
+            "value": "тестовые значения"
+          }
+        },
+        {
+          "__varSetInt": [
+            {
+              "value": 1
+            },
+            {
+              "var": "flt_area_20_state"
+            },
+            {
+              "var": "flt_area_25_state"
+            }
+          ]
+        },
+        {
+          "__varSetInt": [
+            {
+              "value": 2
+            },
+            {
+              "var": "flt_area_30_state"
+            },
+            {
+              "var": "flt_area_32_state"
+            },
+            {
+              "var": "flt_area_24_state"
+            }
+          ]
         },
         {
           "comment": {
