@@ -15,7 +15,7 @@ class WwQueue
 
   function isMapActive()
   {
-    return map.isActive() || map.getOpGroup().hasActiveOperations()
+    return map.isActive()
   }
 
   function getArmyGroupsByCountry(country, defValue = null)

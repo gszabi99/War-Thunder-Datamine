@@ -9,6 +9,12 @@ class ::gui_handlers.WwMapDescription extends ::gui_handlers.BaseGuiHandlerWT
   map = null
   needEventHeader = true
   descParams = null
+  onJoinQueue = null
+  onLeaveQueue = null
+  onJoinClanOperation = null
+  onLeaveCountriesBlock = null
+  onBattlesBtnClick = null
+  onCountrySelect = null
 
   rootDescId = "item_desc"
 
@@ -30,6 +36,12 @@ class ::gui_handlers.WwMapDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function initScreen()
   {
+    onJoinQueue = descParams?.onJoinQueue ?? @() null
+    onLeaveQueue = descParams?.onLeaveQueue ?? @() null
+    onJoinClanOperation = descParams?.onJoinClanOperation ?? @() null
+    onLeaveCountriesBlock = descParams?.onLeaveCountriesBlock ?? @(obj) null
+    onBattlesBtnClick = descParams?.onBattlesBtnClick ?? @() null
+    onCountrySelect = descParams?.onCountrySelect ?? @(obj) null
     scene.setUserData(this) //to not unload handler even when scene not loaded
     updateView()
 
@@ -155,12 +167,4 @@ class ::gui_handlers.WwMapDescription extends ::gui_handlers.BaseGuiHandlerWT
   {
     updateAvailableText()
   }
-
-  onWrapUp = @(obj) descParams?.onWrapUpCb(obj)
-  onWrapDown = @(obj) descParams?.onWrapDownCb(obj)
-  onJoinQueue = @(obj) descParams?.onJoinQueueCb(obj)
-  onLeaveQueue = @() descParams?.onLeaveQueueCb()
-  onJoinClanOperation = @(obj) descParams?.onJoinClanOperationCb(obj)
-  onBattlesBtnClick = @(obj) descParams?.onBattlesBtnClickCb(obj)
-  onCountrySelect = @(obj) descParams?.onCountrySelectCb(obj)
 }

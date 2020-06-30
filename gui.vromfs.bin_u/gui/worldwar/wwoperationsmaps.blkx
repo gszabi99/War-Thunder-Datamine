@@ -153,12 +153,6 @@
             },
             {
               "div": {
-                "id": "trophy_list",
-                "flow": "vertical"
-              }
-            },
-            {
-              "div": {
                 "id": "unlocks_block",
                 "flow": "vertical",
                 "ww_map_item": {
@@ -192,11 +186,18 @@
                   "flow": "vertical",
                   "width": "0.3sh",
                   "itemInterval": "@unlocksListboxItemInterval",
+                  "max-height": "3@unlockSimplifiedHeight",
                   "overflow": "auto",
                   "scroll-align": "left",
                   "navigatorShortcuts": "cancel",
                   "scrollbarShortcuts": "yes"
                 }
+              }
+            },
+            {
+              "div": {
+                "id": "trophy_list",
+                "flow": "vertical"
               }
             }
           ]
@@ -248,10 +249,10 @@
                 "on_wrap_down": "onWrapDown"
               },
               {
-                "on_wrap_left": "onWrapUp"
+                "on_wrap_left": "onWrapDown"
               },
               {
-                "on_wrap_right": "onWrapDown"
+                "on_wrap_right": "onWrapUp"
               },
               {
                 "wwTopNest": {
@@ -1383,8 +1384,8 @@
           "on_select": "onItemSelect",
           "on_wrap_up": "onWrapUp",
           "on_wrap_down": "onWrapDown",
-          "on_wrap_left": "onWrapUp",
-          "on_wrap_right": "onWrapDown",
+          "on_wrap_left": "onWrapDown",
+          "on_wrap_right": "onWrapUp",
           "snd_select": "ww_globe_battle_select"
         }
       }
