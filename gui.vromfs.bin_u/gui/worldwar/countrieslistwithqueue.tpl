@@ -9,6 +9,8 @@ flow:t='vertical'
 css-hier-invalidate:t='yes'
 total-input-transparent:t='yes'
 
+focus_border {}
+
 textarea {
   pos:t='0.5pw-0.5w, 0'
   position:t='relative'
@@ -97,6 +99,7 @@ Button_text {
 
 Button_text {
   id:t='btn_join_clan_operation'
+  countryId:t='<<countryId>>'
   width:t='1@bigButtonWidth'
   pos:t='0.5pw-0.5w, 1@blockInterval'
   position:t='relative'
@@ -119,24 +122,12 @@ Button_text {
       id:t='is_clan_participate_img'
       margin-right:t='@blockInterval'
       background-image:t='#ui/gameuiskin#lb_victories_battles.svg'
+      display:t='hide'
     }
     btnText {
       id:t='btn_join_operation_text'
       text:t='#events/join_event'
     }
-    tdiv {
-      margin-left:t='@blockInterval'
-      pos:t='0, 50%ph-50%h'
-      position:t='relative'
-      img {
-        id:t='country_icon'
-        iconType:t='country_battle'
-        margin-left:t='@blockInterval'
-        background-image:t=''
-      }
-    }
   }
 }
-
-focus_border {}
 <</countries>>

@@ -85,11 +85,16 @@ expandable {
     }
 
     hiddenDiv{
-      id:t='hidden_block';
-      isSmallView:t = 'yes';
-      width:t='pw';
+      id:t='hidden_block'
+      isSmallView:t = 'yes'
       padding:t='0, 0, 1*@scrn_tgt/100.0, 0'
+      <<^isSimpleList>>
+      width:t='pw'
       flow:t='h-flow'
+      <</isSimpleList>>
+      <<#isSimpleList>>
+      flow:t='vertical'
+      <</isSimpleList>>
     }
   }
 }

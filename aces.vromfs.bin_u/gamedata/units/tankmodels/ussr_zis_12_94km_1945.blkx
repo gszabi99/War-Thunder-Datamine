@@ -2099,13 +2099,13 @@
       "Mass": {
         "Empty": 2850.0,
         "Fuel": 100.0,
-        "TakeOff": 7000.0,
-        "momentOfInertia": [2.0,2.0,5.0],
+        "TakeOff": 2950.0,
+        "momentOfInertia": [2.0,4.0,4.0],
         "CenterOfGravity": [-0.5,0.3,0.0],
-        "CenterOfGravityClampY": [0.0,0.7],
-        "AdvancedMass": false,
+        "CenterOfGravityClampY": [0.0,0.6],
+        "AdvancedMass": true,
         "trackMass": 40.0,
-        "engineInertialMass": 400.0
+        "engineInertialMass": 100.0
       },
       "tracks": {
         "animationMultiplier": 0.5,
@@ -2114,11 +2114,10 @@
         "trackPhysMat": "wheel"
       },
       "collisionProps": {
-        "cls_turret_01": "convex_hull",
+        "cls_turret": "convex_hull",
         "cls_body_01": "convex_hull",
         "cls_body_02": "convex_hull",
-        "cls_body_03": "convex_hull",
-        "cls_body_04": "convex_hull"
+        "cls_body_03": "convex_hull"
       },
       "engine": {
         "horsePowers": 70.0,

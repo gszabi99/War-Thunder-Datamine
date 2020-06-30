@@ -2220,13 +2220,28 @@
     }
   },
   {
-    "default_skin": {
-      "name": "olive",
-      "replace_tex": {
-        "from": "jp_camo_olive_kusairo*",
-        "to": "jp_camo_olive*"
+    "default_skin": [
+      {
+        "replace_tex": {
+          "from": "jp_camo_olive_kusairo*",
+          "to": "jp_camo_early_three_color*"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "type_1_chi_he_turret_c*",
+          "to": "type_1_chi_he_skin_turret_c*",
+          "param": "camo_skin_tex"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "type_3_chi_nu_body_c*",
+          "to": "type_3_chi_nu_skin_body_c*",
+          "param": "camo_skin_tex"
+        }
       }
-    }
+    ]
   },
   {
     "skin": {

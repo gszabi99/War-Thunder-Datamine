@@ -2842,23 +2842,28 @@
     }
   },
   {
-    "user_skin": {
-      "name": "uk_crusader_mk_2",
-      "replace_tex": {
-        "from": "uk_camo_very_dark_drab*"
+    "default_skin": [
+      {
+        "replace_tex": {
+          "from": "uk_camo_very_dark_drab*",
+          "to": "uk_camo_earth_yellow*"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "crusader_mk_2_body_c*",
+          "to": "crusader_mk_2_skin_body_c*",
+          "param": "camo_skin_tex"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "crusader_mk_2_turret_c*",
+          "to": "crusader_mk_2_skin_turret_c*",
+          "param": "camo_skin_tex"
+        }
       }
-    }
-  },
-  {
-    "skin": {
-      "name": "uk_camo_earth_yellow",
-      "nameLocId": "skin/uk_camo_earth_yellow",
-      "descLocId": "skin/uk_camo_earth_yellow/desc",
-      "replace_tex": {
-        "from": "uk_camo_very_dark_drab*",
-        "to": "uk_camo_earth_yellow*"
-      }
-    }
+    ]
   },
   {
     "skin": {
@@ -2945,6 +2950,17 @@
       "replace_tex": {
         "from": "uk_camo_very_dark_drab*",
         "to": "fr_camo_winter_green_white*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "uk_camo_very_dark_drab",
+      "nameLocId": "skin/uk_camo_very_dark_drab",
+      "descLocId": "skin/uk_camo_very_dark_drab/desc",
+      "replace_tex": {
+        "from": "uk_camo_very_dark_drab*",
+        "to": "uk_camo_very_dark_drab*"
       }
     }
   }

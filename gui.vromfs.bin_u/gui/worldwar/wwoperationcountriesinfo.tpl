@@ -17,12 +17,13 @@ tdiv {
       pos:t='0.5pw-0.5w, 0'
       position:t='relative'
       behaviour:t='posNavigator'
-      navigatorShortcuts:t='SpaceA'
+      navigatorShortcuts:t='yes'
       css-hier-invalidate:t='yes'
       total-input-transparent:t='yes'
       on_select:t='onCountrySelect'
-      on_wrap_up:t='onLeaveCountriesBlock'
-      on_wrap_down:t='onLeaveCountriesBlock'
+      on_wrap_up:t='onWrapUp'
+      on_wrap_down:t='onWrapDown'
+      on_wrap_right:t='onWrapDown'
       <<#sides>>
       tdiv {
         include "gui/worldWar/countriesListWithQueue"
