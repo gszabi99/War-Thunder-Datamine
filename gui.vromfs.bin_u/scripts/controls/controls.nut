@@ -2919,7 +2919,7 @@ local function getWeaponFeatures(weaponsBlkList)
     if (blk?[p] != null && blk[p] != axis?[p])
       return false
 
-  local axisFloats = ["innerDeadzone", /*"outerDeadzone",*/
+  local axisFloats = ["innerDeadzone",
                       /*"rangeMin", "rangeMax", */
                       "nonlinearity",
                       "kAdd", "kMul",
