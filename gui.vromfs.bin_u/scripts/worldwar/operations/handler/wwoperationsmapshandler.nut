@@ -686,13 +686,13 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
   {
     local mapName = selMap?.name ?? ""
     return globalBattlesListData.getList().findvalue(function(battle) {
-      if (!battle.hasSideCountry(country)
-         || !battle.isAvaliableForMap(mapName)
-         || ! battle.hasAvailableUnits())
-       return false
-
       local side = battle.getSideByCountry(country)
       local team = battle.getTeamBySide(side)
+      if (!battle.hasSideCountry(country)
+         || !battle.isAvaliableForMap(mapName)
+         || ! battle.hasAvailableUnits(team))
+       return false
+
       return isMatchFilterMask(battle, country, team, side, false)
     }) != null
   }
@@ -809,7 +809,8 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
       return
     }
 
-    ::gui_handlers.WwGlobalBattlesModal.open(null, country)
+    ::switch_profile_country(country)
+    openGlobalBattlesModal()
   }
 
   function onStart()
@@ -820,9 +821,9 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
       openOperationsListModal()
   }
 
-  function openGlobalBattlesModal(country = null)
+  function openGlobalBattlesModal()
   {
-    ::gui_handlers.WwGlobalBattlesModal.open(null, country)
+    ::gui_handlers.WwGlobalBattlesModal.open()
   }
 
   function openOperationsListModal()

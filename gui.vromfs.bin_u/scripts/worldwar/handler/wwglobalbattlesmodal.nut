@@ -16,9 +16,8 @@ class ::gui_handlers.WwGlobalBattlesModal extends ::gui_handlers.WwBattleDescrip
   needUpdatePrefixWidth = false
   minCountBattlesInList = 100
   needFullUpdateList = true
-  country = null
 
-  static function open(battle = null, _country = null)
+  static function open(battle = null)
   {
     if (!battle || !battle.isValid())
       battle = WwGlobalBattle()
@@ -26,7 +25,6 @@ class ::gui_handlers.WwGlobalBattlesModal extends ::gui_handlers.WwBattleDescrip
     ::handlersManager.loadHandler(::gui_handlers.WwGlobalBattlesModal, {
         curBattleInList = battle
         operationBattle = ::WwBattle()
-        country = _country ?? ::get_profile_country_sq()
       })
   }
 
@@ -98,7 +96,7 @@ class ::gui_handlers.WwGlobalBattlesModal extends ::gui_handlers.WwBattleDescrip
   function getTitleText()
   {
     return ::loc("worldwar/global_battle/title", {
-      country = ::loc(getCustomViewCountryData(country).locId)})
+      country = ::loc(getCustomViewCountryData(::get_profile_country_sq()).locId)})
   }
 
   function updateSlotbar()
@@ -122,7 +120,7 @@ class ::gui_handlers.WwGlobalBattlesModal extends ::gui_handlers.WwBattleDescrip
     if (hasSlotbarByUnitsGroups)
       slotbarPresets.setCurPreset(map.getId() ,unitsGroupsByCountry)
 
-    local assignCountry = country
+    local assignCountry = ::get_profile_country_sq()
     createSlotbar(
       {
         singleCountry = assignCountry
@@ -235,7 +233,7 @@ class ::gui_handlers.WwGlobalBattlesModal extends ::gui_handlers.WwBattleDescrip
 
   function setFilteredBattles()
   {
-    local assignCountry = country
+    local assignCountry = ::get_profile_country_sq()
     battlesList = globalBattlesListData.getList().filter(@(battle)
       battle.hasSideCountry(assignCountry) && battle.isOperationMapAvaliable()
       && battle.hasAvailableUnits())
