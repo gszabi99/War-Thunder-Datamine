@@ -26,6 +26,9 @@ local function getWwUnlocksForCash() {
     if (chapter != CHAPTER_NAME || !::is_unlock_visible(unlock))
       continue
 
+    if (!unlock?.needShowInWorldWarMenu)
+      continue
+
     if (unlock?.showAsBattleTask || ::BattleTasks.isBattleTask(unlock))
       continue
 

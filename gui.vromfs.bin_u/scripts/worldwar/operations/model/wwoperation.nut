@@ -9,6 +9,15 @@ enum WW_OPERATION_STATUSES
   ES_PAUSED = 7
 }
 
+enum WW_OPERATION_PRIORITY //bit enum
+{
+  NONE                       = 0
+  CAN_JOIN_BY_ARMY_RELATIONS = 0x0001
+  CAN_JOIN_BY_MY_CLAN        = 0x0002
+
+  MAX                        = 0xFFFF
+}
+
 class WwOperation
 {
   id = -1
@@ -156,11 +165,8 @@ class WwOperation
     }
 
     local assignCountry = getMyAssignCountry()
-    if (isMyClanParticipate())
-    {
-      if (!canJoinByMyClan())
-        res.reasonText = ::loc("worldWar/cantJoinByAnotherSideClan")
-    }
+    if (isMyClanParticipate() && !canJoinByMyClan())
+      res.reasonText = ::loc("worldWar/cantJoinByAnotherSideClan")
     else if (assignCountry && assignCountry != country)
       res.reasonText = ::loc("worldWar/cantPlayByThisSide")
     else if (!canJoinByCountry(country))
@@ -328,9 +334,9 @@ class WwOperation
     local res = 0
     local availableByMyClan = canJoinByMyClan()
     if (availableByMyClan)
-      res = res | WW_MAP_PRIORITY.CAN_JOIN_BY_MY_CLAN
+      res = res | WW_OPERATION_PRIORITY.CAN_JOIN_BY_MY_CLAN
     if (getMyAssignCountry() && (availableByMyClan || !getMyClanGroup()))
-      res = res | WW_MAP_PRIORITY.CAN_JOIN_BY_ARMY_RELATIONS
+      res = res | WW_OPERATION_PRIORITY.CAN_JOIN_BY_ARMY_RELATIONS
 
     return res
   }

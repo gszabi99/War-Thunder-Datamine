@@ -83,10 +83,9 @@ class WwOperationsGroup
     return false
   }
 
-  function hasActiveOperations()
-  {
-    return getOperationsList().len() > 0
-  }
+  hasActiveOperations = @() getOperationsList().findvalue(
+    @(o) o.isAvailableToJoin()) != null
+  hasOperations = @() getOperationsList().len() > 0
 
   function getCantJoinReasonData(country)
   {
@@ -118,18 +117,6 @@ class WwOperationsGroup
     }
 
     ::u.chooseRandom(opList).join(country)
-  }
-
-  function getPriority()
-  {
-    local res = 0
-    if (hasActiveOperations())
-      res = res | WW_MAP_PRIORITY.HAS_ACTIVE
-
-    foreach(op in getOperationsList())
-      res = res | op.getPriority()
-
-    return res
   }
 
   function isMyClanParticipate()

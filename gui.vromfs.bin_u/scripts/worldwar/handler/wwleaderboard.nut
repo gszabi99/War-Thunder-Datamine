@@ -303,7 +303,7 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
 
     local callback = ::Callback(
       function(modesData) {
-        updateModeDataByAvailableTables(modesData.modes)
+        updateModeDataByAvailableTables(modesData?.modes ?? [])
         updateModeComboBoxes(modesData?.tables)
       }, this)
 
