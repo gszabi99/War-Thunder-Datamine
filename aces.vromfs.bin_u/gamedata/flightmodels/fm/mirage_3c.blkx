@@ -13,12 +13,13 @@
   "ElevatorSens": 0.99,
   "AileronSens": 0.22,
   "RudderSensMultipler": 1.0,
-  "ElevatorSensMultipler1": [0.0,1.4],
-  "ElevatorSensMultipler2": [0.3,1.0],
-  "ElevatorSensMultipler3": [0.8,0.9],
-  "ElevatorSensMultipler4": [0.9,0.9],
-  "ElevatorSensMultipler5": [1.2,0.8],
-  "ElevatorSensMultipler6": [2.5,0.5],
+  "ElevatorSensMultipler1": [0.0,0.3],
+  "ElevatorSensMultipler2": [0.2,1.2],
+  "ElevatorSensMultipler3": [0.3,1.2],
+  "ElevatorSensMultipler4": [0.8,0.9],
+  "ElevatorSensMultipler5": [0.9,0.9],
+  "ElevatorSensMultipler6": [1.2,0.8],
+  "ElevatorSensMultipler7": [2.5,0.5],
   "AileronSensMultipler1": [0.4,1.8],
   "AileronSensMultipler2": [0.7,1.1],
   "AileronSensMultipler3": [0.9,0.8],
@@ -73,7 +74,7 @@
   "ElevatorMaxDv": 22.0,
   "RudderMaxDv": 22.0,
   "CockpitOpenedDoorBreakSpeed": 160.0,
-  "MomentOfInertia": [12000.0,40000.0,28000.0],
+  "MomentOfInertia": [12000.0,36000.0,24000.0],
   "IgnoreErrors": true,
   "AvailableControls": {
     "hasAileronControl": true,
@@ -147,14 +148,14 @@
   "Focus": {
     "FocusOffset": 0.05,
     "WingVertPos": 0.5,
-    "AlphaShift": -0.02,
+    "AlphaShift": -0.05,
     "FlapsShift": [0.02,0.04],
     "AirbrakesShift": [-0.01,-0.08],
     "GearFocusShift": [-0.01,0.01],
     "ElevonFocusShift": [0.0,0.0],
     "GearShift": 0.0,
     "WingInFocus": 0.4,
-    "WingMidFocus": 1.75,
+    "WingMidFocus": 1.45,
     "WingOutFocus": 3.2,
     "WingV": -0.5,
     "Stabilizer": 4.96,
@@ -165,7 +166,7 @@
     "RightStab": [-4.1,-0.6,-1.2],
     "VertStab": [-3.7,1.1,0.0],
     "WingVWingFocusMultiplier": 0.0,
-    "SineAOSMultiplier": -0.1
+    "SineAOSMultiplier": 0.05
   },
   "Aerodynamics": {
     "AileronCd": [0.015,0.0027],
@@ -181,15 +182,15 @@
     "FlapsPolarBlending2": [1.0,1.0],
     "ClToCmCoeff": 0.0,
     "UseSpinLoss": true,
-    "SpinClLoss": 0.03,
-    "SpinCdLoss": 0.02,
+    "SpinClLoss": 0.08,
+    "SpinCdLoss": 0.04,
     "chuteCx": 25.2,
     "OswaldsEfficiencyNumber": 0.62,
     "lineClCoeff": 0.045,
-    "AfterCritParabAngle": 1.5,
+    "AfterCritParabAngle": 0.5,
     "AfterCritDeclineCoeff": 0.01,
     "AfterCritMaxDistanceAngle": 40.0,
-    "CxAfterCoeff": 0.01,
+    "CxAfterCoeff": 0.1,
     "ClAfterCrit": 0.9,
     "MachFactor": 3,
     "MachCrit1": 0.91,
@@ -230,11 +231,11 @@
     "CombinedCl": false,
     "DownwashType": 2,
     "DownwashCoeff": 0.05,
-    "StabFlowInertia": 0.085,
-    "VertStabFlowInertia": 0.09,
+    "StabFlowInertia": 0.075,
+    "VertStabFlowInertia": 0.07,
     "NoFlaps": {
       "Cl0": 0.07,
-      "alphaCritHigh": 31.0,
+      "alphaCritHigh": 29.0,
       "alphaCritLow": -22.0,
       "ClCritHigh": 1.14,
       "ClCritLow": -0.7,
@@ -242,7 +243,7 @@
     },
     "FullFlaps": {
       "Cl0": 0.6,
-      "alphaCritHigh": 29.0,
+      "alphaCritHigh": 25.0,
       "alphaCritLow": -25.0,
       "ClCritHigh": 1.42,
       "ClCritLow": -0.35,
@@ -848,7 +849,7 @@
       "WaterPropFlowSpeedCoeff": 1.0,
       "OilPropFlowSpeedCoeff": 1.0,
       "WaterTemperatureInertia": 7.2713,
-      "OilTemperatureInertia": 20.0,
+      "OilTemperatureInertia": 11.0,
       "Mode0": {
         "Altitude": 1000.0,
         "RPM": 2750.0,
@@ -858,26 +859,26 @@
       "Mode1": {
         "Altitude": 1000.0,
         "RPM": 7700.0,
-        "WaterTemperature": 597.747,
-        "OilTemperature": 84.0
+        "WaterTemperature": 580.0,
+        "OilTemperature": 70.0
       },
       "Mode2": {
         "Altitude": 1000.0,
         "RPM": 8000.0,
-        "WaterTemperature": 647.553,
-        "OilTemperature": 90.0
+        "WaterTemperature": 620.0,
+        "OilTemperature": 80.0
       },
       "Mode3": {
         "Altitude": 1000.0,
         "RPM": 8225.0,
-        "WaterTemperature": 687.399,
-        "OilTemperature": 96.0
+        "WaterTemperature": 660.0,
+        "OilTemperature": 90.0
       },
       "Mode4": {
         "Altitude": 1000.0,
         "RPM": 8450.0,
-        "WaterTemperature": 707.323,
-        "OilTemperature": 105.0
+        "WaterTemperature": 685.0,
+        "OilTemperature": 100.0
       },
       "Load0": {
         "WaterTemperature": 540.0,
@@ -886,24 +887,30 @@
       "Load1": {
         "WaterTemperature": 600.0,
         "OilTemperature": 80.0,
+        "WorkTime": 7200.0,
+        "RecoverTime": 3600.0
+      },
+      "Load2": {
+        "WaterTemperature": 670.0,
+        "OilTemperature": 90.0,
         "WorkTime": 3600.0,
         "RecoverTime": 1800.0
       },
-      "Load2": {
-        "WaterTemperature": 650.0,
-        "OilTemperature": 90.0,
+      "Load3": {
+        "WaterTemperature": 690.0,
+        "OilTemperature": 100.0,
         "WorkTime": 1800.0,
         "RecoverTime": 900.0
       },
-      "Load3": {
-        "WaterTemperature": 695.0,
-        "OilTemperature": 100.0,
-        "WorkTime": 900.0,
-        "RecoverTime": 450.0
-      },
       "Load4": {
-        "WaterTemperature": 720.0,
+        "WaterTemperature": 710.0,
         "OilTemperature": 110.0,
+        "WorkTime": 600.0,
+        "RecoverTime": 300.0
+      },
+      "Load5": {
+        "WaterTemperature": 720.0,
+        "OilTemperature": 115.0,
         "WorkTime": 300.0,
         "RecoverTime": 150.0
       }
