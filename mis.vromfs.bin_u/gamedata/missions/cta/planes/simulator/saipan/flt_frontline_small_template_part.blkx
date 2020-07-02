@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": -10.0
-    },
     "player": {
       "army": 1,
       "wing": "flt_armada"
@@ -14,12 +10,16 @@
       "army": 2
     },
     "mission": {
-      "level": "levels/water.bin",
+      "level": "levels/saipan.bin",
       "type": "singleMission",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
-      "weather": "hazy"
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": -10.0
     },
     "spectator_points": []
   },
@@ -604,6 +604,65 @@
         }
       ],
       "else_actions": []
+    },
+    "Trigger_01": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 20.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "varSetInt": {
+            "value": 2,
+            "var": "flt_area_18_state"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "Trigger_02"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "flt_draw_frontline"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "Trigger_02": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 20.0
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "varSetInt": {
+          "value": 1,
+          "var": "flt_area_18_state"
+        },
+        "triggerEnable": {
+          "target": "flt_draw_frontline"
+        }
+      },
+      "else_actions": []
     }
   },
   "mission_objectives": {
@@ -1086,7 +1145,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [-1886.8,1388.0,-6765.8]
+          [-3727.44,1388.0,4865.9]
         ],
         "unit_class": "yak-1_early",
         "objLayer": 1,
