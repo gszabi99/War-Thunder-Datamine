@@ -23,6 +23,7 @@ local upgradeNames = ["weaponUpgrade1", "weaponUpgrade2", "weaponUpgrade3", "wea
 local defaultAvailableWeapons = {
   hasRocketDistanceFuse = false
   hasBombs = false
+  bombsNbr = -1
   hasDepthCharges = false
   hasMines = false
   hasFlares = false
@@ -618,6 +619,8 @@ local Unit = class
         if (block.name == secondaryWep)
         {
           weaponDataBlock = ::DataBlock(block.blk)
+          local nbrBomb = 0
+          dagor.debug("check unit weapon :")
           foreach (weap in (weaponDataBlock % "Weapon"))
           {
             if (!weap?.blk || weap?.dummy || ::isInArray(weap.blk, weaponsBlkArray))
@@ -625,7 +628,10 @@ local Unit = class
 
             local weapBlk = ::DataBlock(weap.blk)
             if (weapBlk?.bomb)
+            {
               availableWeapons.hasBombs = true
+              nbrBomb++
+            }
             if (weapBlk?.rocket && (weapBlk.rocket?.distanceFuse ?? true))
               availableWeapons.hasRocketDistanceFuse = true
             if (weapBlk?.bomb.isDepthCharge)
@@ -635,8 +641,10 @@ local Unit = class
             if (weapBlk?.rocket && weapBlk.rocket?.isFlare)
               availableWeapons.hasFlares = true
 
-            weaponsBlkArray.append(weap.blk)
+            if (!weapBlk?.bomb)
+              weaponsBlkArray.append(weap.blk)
           }
+          availableWeapons.bombsNbr = nbrBomb
           break
         }
     }

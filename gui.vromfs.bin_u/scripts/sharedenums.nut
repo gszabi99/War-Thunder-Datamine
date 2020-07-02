@@ -66,6 +66,7 @@ global enum DargWidgets
   ,SHIP_OBSTACLE_RF
   ,SCOREBOARD
   ,CHANGE_LOG
+  ,DAMAGE_PANEL
 };
 
 global enum HelicopterParams

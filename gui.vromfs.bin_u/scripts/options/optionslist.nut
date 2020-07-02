@@ -55,6 +55,7 @@ local getMainOptions = function()
       [::USEROPT_GUN_TARGET_DISTANCE, "spinner", ! ::is_in_flight()],
       [::USEROPT_GUN_VERTICAL_TARGETING, "spinner", ! ::is_in_flight()],
       [::USEROPT_BOMB_ACTIVATION_TIME, "spinner", ! ::is_in_flight()],
+      [::USEROPT_BOMB_SERIES, "spinner", ! ::is_in_flight()],
       [::USEROPT_FLARES_SERIES, "spinner", ! ::is_in_flight()],
       [::USEROPT_FLARES_SERIES_PERIODS, "spinner", ! ::is_in_flight()],
       [::USEROPT_FLARES_PERIODS, "spinner", ! ::is_in_flight()],
