@@ -12,10 +12,10 @@
     "mission": {
       "type": "singleMission",
       "level": "levels/water.bin",
-      "environment": "Day",
-      "weather": "hazy",
       "restoreType": "attempts",
-      "optionalTakeOff": false
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "hazy"
     },
     "spectator_points": []
   },
@@ -178,6 +178,7 @@
               "tank": false,
               "ship": true,
               "boat": true,
+              "type_frifate": true,
               "type_destroyer": true,
               "type_cruiser": true,
               "type_battleship": true
@@ -211,6 +212,7 @@
               "tank": false,
               "ship": true,
               "boat": true,
+              "type_frifate": true,
               "type_destroyer": true,
               "type_cruiser": true,
               "type_battleship": true
@@ -249,6 +251,7 @@
               "tank": false,
               "ship": true,
               "boat": true,
+              "type_frifate": true,
               "type_destroyer": true,
               "type_cruiser": true,
               "type_battleship": true
@@ -282,6 +285,7 @@
               "tank": false,
               "ship": true,
               "boat": true,
+              "type_frifate": true,
               "type_destroyer": true,
               "type_cruiser": true,
               "type_battleship": true
@@ -847,6 +851,7 @@
                 "tank": false,
                 "ship": true,
                 "boat": false,
+                "type_frifate": false,
                 "type_destroyer": false,
                 "type_cruiser": true,
                 "type_battleship": true
@@ -897,6 +902,7 @@
                 "tank": false,
                 "ship": true,
                 "boat": false,
+                "type_frifate": false,
                 "type_destroyer": false,
                 "type_cruiser": true,
                 "type_battleship": true
@@ -968,6 +974,7 @@
                 "tank": false,
                 "ship": true,
                 "boat": true,
+                "type_frifate": true,
                 "type_destroyer": true,
                 "type_cruiser": false,
                 "type_battleship": false
@@ -1018,6 +1025,7 @@
                 "tank": false,
                 "ship": true,
                 "boat": true,
+                "type_frifate": true,
                 "type_destroyer": true,
                 "type_cruiser": false,
                 "type_battleship": false
@@ -1195,6 +1203,7 @@
               },
               "capture_tags": {
                 "type_hydroplane": true,
+                "type_flying_boat": true,
                 "ship": true,
                 "boat": true
               }
@@ -1250,6 +1259,7 @@
               },
               "capture_tags": {
                 "type_hydroplane": true,
+                "type_flying_boat": true,
                 "ship": true,
                 "boat": true
               }
@@ -2932,6 +2942,7 @@
                 "tank": false,
                 "ship": true,
                 "boat": false,
+                "type_frifate": false,
                 "type_destroyer": false,
                 "type_cruiser": true,
                 "type_battleship": true
@@ -3088,6 +3099,7 @@
                 "tank": false,
                 "ship": true,
                 "boat": false,
+                "type_frifate": false,
                 "type_destroyer": false,
                 "type_cruiser": true,
                 "type_battleship": true
@@ -9234,7 +9246,7 @@
               "target": "@pt_reinforcement_t1_squad_name",
               "areas": "pt_sea_spawn_areas_squad",
               "avoidExistingSpawns": true,
-              "spawns_distance_value": 3000.0,
+              "spawns_distance_value": 15000.0,
               "avoid_team": "Both"
             }
           },
@@ -9246,7 +9258,7 @@
               "target": "@pt_reinforcement_t1_squad_name",
               "areas": "pt_sea_spawn_areas_squad",
               "avoidExistingSpawns": true,
-              "spawns_distance_value": 10000.0,
+              "spawns_distance_value": 15000.0,
               "avoid_team": "Both"
             }
           },
@@ -9357,6 +9369,7 @@
                 "artillery": false,
                 "ship": true,
                 "boat": false,
+                "type_frifate": true,
                 "type_destroyer": true,
                 "type_cruiser": true,
                 "type_battleship": true
@@ -9497,6 +9510,7 @@
                 "artillery": false,
                 "ship": true,
                 "boat": false,
+                "type_frifate": true,
                 "type_destroyer": true,
                 "type_cruiser": true,
                 "type_battleship": true
@@ -9699,7 +9713,7 @@
               "target": "@pt_reinforcement_t2_squad_name",
               "areas": "pt_sea_spawn_areas_squad",
               "avoidExistingSpawns": true,
-              "spawns_distance_value": 3000.0,
+              "spawns_distance_value": 15000.0,
               "avoid_team": "Both"
             }
           },
@@ -9711,7 +9725,7 @@
               "target": "@pt_reinforcement_t2_squad_name",
               "areas": "pt_sea_spawn_areas_squad",
               "avoidExistingSpawns": true,
-              "spawns_distance_value": 10000.0,
+              "spawns_distance_value": 15000.0,
               "avoid_team": "Both"
             }
           },
@@ -9822,6 +9836,7 @@
                 "artillery": false,
                 "ship": true,
                 "boat": false,
+                "type_frifate": true,
                 "type_destroyer": true,
                 "type_cruiser": true,
                 "type_battleship": true
@@ -9962,6 +9977,7 @@
                 "artillery": false,
                 "ship": true,
                 "boat": false,
+                "type_frifate": true,
                 "type_destroyer": true,
                 "type_cruiser": true,
                 "type_battleship": true
@@ -10058,6 +10074,7 @@
                 "ship": true,
                 "boat": true,
                 "type_destroyer": false,
+                "type_frifate": false,
                 "type_cruiser": false,
                 "type_battleship": false
               }
@@ -12908,13 +12925,6 @@
         },
         "actions": [
           {
-            "varSetString": {
-              "value": "",
-              "var": "pt_real_capture_port_area_name",
-              "input_var": "pt_capture_port_area_name"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "t1_major_task_completed"
             }
@@ -13605,6 +13615,7 @@
                 "tank": false,
                 "ship": true,
                 "boat": false,
+                "type_frifate": false,
                 "type_destroyer": false,
                 "type_cruiser": true,
                 "type_battleship": true
@@ -13667,6 +13678,7 @@
                 "tank": false,
                 "ship": true,
                 "boat": true,
+                "type_frifate": true,
                 "type_destroyer": true,
                 "type_cruiser": false,
                 "type_battleship": false
@@ -13819,13 +13831,6 @@
           }
         },
         "actions": [
-          {
-            "varSetString": {
-              "value": "",
-              "var": "pt_real_capture_port_area_name",
-              "input_var": "pt_capture_port_area_name"
-            }
-          },
           {
             "triggerEnable": {
               "target": "t2_major_task_completed"
@@ -14517,6 +14522,7 @@
                 "tank": false,
                 "ship": true,
                 "boat": false,
+                "type_frifate": false,
                 "type_destroyer": false,
                 "type_cruiser": true,
                 "type_battleship": true
@@ -14579,6 +14585,7 @@
                 "tank": false,
                 "ship": true,
                 "boat": true,
+                "type_frifate": true,
                 "type_destroyer": true,
                 "type_cruiser": false,
                 "type_battleship": false
@@ -14771,7 +14778,7 @@
         "actions": [
           {
             "getOwnArea": {
-              "name": "@pt_real_capture_port_area_name",
+              "name": "@pt_capture_port_area_name",
               "template": "flt_area_",
               "out_var": "pt_port_fronline_name"
             }
@@ -15269,8 +15276,7 @@
     "pt_attack_t2_port_name": "",
     "pt_attack_t1_attacker_name": "",
     "pt_attack_t2_attacker_name": "",
-    "pt_reinforcement_first_time_create_spawn_for_convoy": false,
-    "pt_real_capture_port_area_name": ""
+    "pt_reinforcement_first_time_create_spawn_for_convoy": false
   },
   "dialogs": [],
   "airfields": [],
