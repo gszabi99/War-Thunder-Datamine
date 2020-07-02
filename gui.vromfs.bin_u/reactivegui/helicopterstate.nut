@@ -72,20 +72,24 @@ local helicopterState = {
   CannonCount = []
   CannonReloadTime = []
   IsCannonEmpty = []
+  CannonMode = Watched(0)
 
   MachineGuns = {
     count = Watched(0)
     seconds = Watched(-1)
+    mode = Watched(0)
   }
 
   CannonsAdditional = {
     count = Watched(0)
     seconds = Watched(-1)
+    mode = Watched(0)
   }
 
   Rockets = {
     count = Watched(0)
     seconds = Watched(-1)
+    mode = Watched(0)
   }
 
   Agm = {
@@ -103,6 +107,7 @@ local helicopterState = {
   Bombs = {
     count = Watched(0)
     seconds = Watched(-1)
+    mode = Watched(0)
   }
 
   Flares = {
@@ -198,18 +203,21 @@ local helicopterState = {
   helicopterState.IlsPosSize[3] = h
 }
 
-::interop.updateMachineGuns <- function(count, sec = -1) {
+::interop.updateMachineGuns <- function(count, sec = -1, mode = 0) {
   helicopterState.MachineGuns.count.update(count)
+  helicopterState.MachineGuns.mode.update(mode)
   helicopterState.MachineGuns.seconds.update(sec)
 }
 
-::interop.updateAdditionalCannons <- function(count, sec = -1) {
+::interop.updateAdditionalCannons <- function(count, sec = -1, mode = 0) {
   helicopterState.CannonsAdditional.count.update(count)
   helicopterState.CannonsAdditional.seconds.update(sec)
+  helicopterState.CannonsAdditional.mode.update(mode)
 }
 
-::interop.updateRockets <- function(count, sec = -1) {
+::interop.updateRockets <- function(count, sec = -1, mode = 0) {
   helicopterState.Rockets.count.update(count)
+  helicopterState.Rockets.mode.update(mode)
   helicopterState.Rockets.seconds.update(sec)
 }
 
@@ -225,8 +233,9 @@ local helicopterState = {
   helicopterState.Aam.seconds.update(sec)
 }
 
-::interop.updateBombs <- function(count, sec = -1) {
+::interop.updateBombs <- function(count, sec = -1,  mode = 0) {
   helicopterState.Bombs.count.update(count)
+  helicopterState.Bombs.mode.update(mode)
   helicopterState.Bombs.seconds.update(sec)
 }
 
