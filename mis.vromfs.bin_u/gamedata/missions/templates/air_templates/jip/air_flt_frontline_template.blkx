@@ -12,11 +12,11 @@
     "mission": {
       "level": "levels/water.bin",
       "type": "singleMission",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
-      "scoreLimit": 30000,
-      "restoreType": "attempts",
-      "optionalTakeOff": false
+      "scoreLimit": 30000
     },
     "spectator_points": []
   },
@@ -4601,7 +4601,7 @@
             "missionShowMapLine": {
               "areaNameFrom": "@flt_draw_point_01",
               "areaNameTo": "@flt_draw_point_04",
-              "curve": false,
+              "curve": true,
               "clear": true
             }
           },
@@ -5446,7 +5446,7 @@
               "colorCode": "Team B-A",
               "transparency": 30,
               "scale": 1.2,
-              "curve": false
+              "curve": true
             }
           },
           {
@@ -5506,7 +5506,7 @@
               "colorCode": "Team B-A",
               "transparency": 30,
               "scale": 1.2,
-              "curve": false
+              "curve": true
             }
           },
           {
@@ -5585,7 +5585,7 @@
               "colorCode": "Team B-A",
               "transparency": 30,
               "scale": 1.2,
-              "curve": false
+              "curve": true
             }
           },
           {
@@ -5612,7 +5612,7 @@
               "colorCode": "Team B-A",
               "transparency": 30,
               "scale": 1.2,
-              "curve": false
+              "curve": true
             }
           },
           {
@@ -5661,7 +5661,7 @@
               "colorCode": "Team B-A",
               "transparency": 30,
               "scale": 1.2,
-              "curve": false
+              "curve": true
             }
           },
           {
@@ -5694,7 +5694,7 @@
               "colorCode": "Team B-A",
               "transparency": 30,
               "scale": 1.2,
-              "curve": false
+              "curve": true
             }
           },
           {
@@ -5743,7 +5743,7 @@
               "colorCode": "Team B-A",
               "transparency": 30,
               "scale": 1.2,
-              "curve": false
+              "curve": true
             }
           },
           {
@@ -5771,7 +5771,7 @@
               "colorCode": "Team B-A",
               "transparency": 30,
               "scale": 1.2,
-              "curve": false
+              "curve": true
             }
           },
           {
@@ -5922,7 +5922,7 @@
               "colorCode": "White",
               "transparency": 75,
               "scale": 1.2,
-              "curve": false
+              "curve": true
             }
           },
           {
@@ -6316,12 +6316,6 @@
             "triggerEnable": {
               "target": "flt_draw_bottom_both_points_check"
             }
-          },
-          {
-            "__missionSetTimeSpeed": {
-              "speed": 0.0,
-              "realtimeTriggers": false
-            }
           }
         ],
         "else_actions": {
@@ -6484,7 +6478,7 @@
               "colorCode": "Team B-A",
               "transparency": 30,
               "scale": 1.2,
-              "curve": false
+              "curve": true
             }
           },
           {
@@ -6525,7 +6519,7 @@
               "colorCode": "Team B-A",
               "transparency": 30,
               "scale": 1.2,
-              "curve": false
+              "curve": true
             }
           },
           {
@@ -6585,7 +6579,7 @@
               "colorCode": "Team B-A",
               "transparency": 30,
               "scale": 1.2,
-              "curve": false
+              "curve": true
             }
           },
           {
@@ -6596,24 +6590,6 @@
           {
             "triggerEnable": {
               "target": "flt_draw_frontline_col"
-            }
-          },
-          {
-            "systemLog": {
-              "value": "bottom line:",
-              "logtype": "screen_and_log"
-            }
-          },
-          {
-            "systemLog": {
-              "value": "@flt_draw_cur_cell_bottom_draw_left_point",
-              "logtype": "screen_and_log"
-            }
-          },
-          {
-            "systemLog": {
-              "value": "@flt_draw_cur_cell_bottom_draw_right_point",
-              "logtype": "screen_and_log"
             }
           }
         ],
@@ -6630,7 +6606,7 @@
               "colorCode": "Team B-A",
               "transparency": 30,
               "scale": 1.2,
-              "curve": false
+              "curve": true
             }
           },
           {
@@ -6641,24 +6617,6 @@
           {
             "triggerEnable": {
               "target": "flt_draw_frontline_col"
-            }
-          },
-          {
-            "systemLog": {
-              "value": "bottom line:",
-              "logtype": "screen_and_log"
-            }
-          },
-          {
-            "systemLog": {
-              "value": "@flt_draw_cur_cell_bottom_draw_right_point",
-              "logtype": "screen_and_log"
-            }
-          },
-          {
-            "systemLog": {
-              "value": "@flt_draw_cur_cell_bottom_draw_left_point",
-              "logtype": "screen_and_log"
             }
           }
         ]
@@ -6697,7 +6655,7 @@
               "colorCode": "Team B-A",
               "transparency": 30,
               "scale": 1.2,
-              "curve": false
+              "curve": true
             }
           },
           {
@@ -6725,7 +6683,7 @@
               "colorCode": "Team B-A",
               "transparency": 30,
               "scale": 1.2,
-              "curve": false
+              "curve": true
             }
           },
           {
@@ -6774,7 +6732,7 @@
               "colorCode": "Team B-A",
               "transparency": 30,
               "scale": 1.2,
-              "curve": false
+              "curve": true
             }
           },
           {
@@ -6802,7 +6760,7 @@
               "colorCode": "Team B-A",
               "transparency": 30,
               "scale": 1.2,
-              "curve": false
+              "curve": true
             }
           },
           {
@@ -6953,7 +6911,7 @@
               "colorCode": "White",
               "transparency": 75,
               "scale": 1.2,
-              "curve": false
+              "curve": true
             }
           },
           {
