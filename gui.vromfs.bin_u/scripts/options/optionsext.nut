@@ -14,7 +14,6 @@ local { setUnitLastBullets,
         getOptionsBulletsList } = require("scripts/weaponry/bulletsInfo.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { reloadDargUiScript } = require_native("reactiveGuiCommand")
-local {bombNbr} = require("scripts/unit/unitStatus.nut")
 
 global const TANK_ALT_CROSSHAIR_ADD_NEW = -2
 global const TANK_CAMO_SCALE_SLIDER_FACTOR = 0.1
@@ -584,44 +583,6 @@ local isWaitMeasureEvent = false
       if (::get_option_bomb_activation_time() != curValue)
         ::set_option_bomb_activation_time(curValue)
       break
-
-    case ::USEROPT_BOMB_SERIES:
-       descr.id = "bomb_series"
-       descr.values = []
-       descr.items = []
-       local nbrBomb = 0
-       local unit = ::getAircraftByName(::aircraft_for_weapons)
-       local bombSeries = [4, 6, 12, 24, 48]
-       if (unit)
-         nbrBomb = bombNbr(unit)
-       else
-         nbrBomb = 48
-       for (local i = 0; i < bombSeries.len(); ++i)
-       {
-        if (bombSeries[i].tointeger() >= nbrBomb) // max = -1
-          break
-
-        descr.values.append(bombSeries[i].tointeger())
-        local text = descr.values[i].tostring()
-        local tooltipLoc = "guiHints/bomb_series"
-        descr.items.append({
-         text = text
-         tooltip = ::loc(tooltipLoc, { num = descr.values[i] })
-         })
-       }
-
-       descr.values.append(nbrBomb)
-       local text = descr.values[descr.values.len() - 1].tostring()
-       local tooltipLoc = "guiHints/bomb_series_all"
-       descr.items.append({
-        text = text
-        tooltip = ::loc(tooltipLoc, { num = -1 })
-        })
-
-       descr.value = find_in_array(descr.values, ::get_option_bombs_series())
-       defaultValue = nbrBomb
-       break
-
 
    case ::USEROPT_FLARES_PERIODS:
        descr.id = "flares_periods"
@@ -3950,9 +3911,6 @@ local isWaitMeasureEvent = false
         ::get_bomb_activation_auto_time() : descr.values[value]
       ::set_option_bomb_activation_type(isBombActivationAssault ? 1 : 0)
       ::set_option_bomb_activation_time(bombActivationDelay)
-      break
-    case ::USEROPT_BOMB_SERIES:
-      ::set_option_bombs_series(descr.values[value])
       break
     case ::USEROPT_LOAD_FUEL_AMOUNT:
       ::set_gui_option(optionId, descr.values[value])

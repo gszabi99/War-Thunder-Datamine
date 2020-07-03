@@ -1,6 +1,7 @@
 local u = require("sqStdLibs/helpers/u.nut")
 local wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 local WwGlobalBattle = class extends ::WwBattle
 {
@@ -98,13 +99,13 @@ local WwGlobalBattle = class extends ::WwBattle
 
   function getMyAssignCountry()
   {
-    local operation = ::g_ww_global_status.getOperationById(operationId)
+    local operation = getOperationById(operationId)
     return operation ? operation.getMyAssignCountry() : null
   }
 
   function isOperationMapAvaliable()
   {
-    local operation = ::g_ww_global_status.getOperationById(operationId)
+    local operation = getOperationById(operationId)
     if (!operation)
       return false
 
@@ -117,7 +118,7 @@ local WwGlobalBattle = class extends ::WwBattle
 
   function isAvaliableForMap(mapName)
   {
-    local operation = ::g_ww_global_status.getOperationById(operationId)
+    local operation = getOperationById(operationId)
     if (!operation)
       return false
 

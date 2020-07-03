@@ -66,16 +66,18 @@ local getRwr = function(colorStyle) {
   }
 }
 
-local mkTws = @(colorStyle) @() {
-  watch = helicopterState.TwsForMfd
-  children = !helicopterState.TwsForMfd.value ? null
-    : tws({
-      colorStyle = colorStyle,
-      pos = [helicopterState.RwrPosSize[0] + helicopterState.RwrPosSize[2] * 0.17,
-        helicopterState.RwrPosSize[1] + helicopterState.RwrPosSize[3] * 0.17],
-      size = [helicopterState.RwrPosSize[2] * 0.66, helicopterState.RwrPosSize[3] * 0.66],
-      relativCircleSize = 36
-    })
+local getTws = function(colorStyle) {
+  local getChildren = function() {
+    return tws(colorStyle,
+       helicopterState.RwrPosSize[0] + helicopterState.RwrPosSize[2] * 0.17,
+       helicopterState.RwrPosSize[1] + helicopterState.RwrPosSize[3] * 0.17,
+       helicopterState.RwrPosSize[2] * 0.66,
+       helicopterState.RwrPosSize[3] * 0.66, true)
+  }
+  return @(){
+    watch = helicopterState.TwsForMfd
+    children = getChildren()
+  }
 }
 
 local mfdSightParamsTable = hudElems.paramsTable(helicopterState.MfdSightMask,
@@ -115,7 +117,7 @@ local function mfdHUD(colorStyle, isBackground) {
   return [
     mfdSightHud(colorStyle, isBackground)
     getRwr(rwrStyle)
-    mkTws(rwrStyle)
+    getTws(rwrStyle)
     radarComponent.radar(true, sw(6), sh(6), getColor(isBackground))
   ]
 }

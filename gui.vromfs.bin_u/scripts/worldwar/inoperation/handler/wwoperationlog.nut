@@ -17,6 +17,8 @@ class ::gui_handlers.WwOperationLog extends ::gui_handlers.BaseGuiHandlerWT
 
   selectedArmyName = ""
   hoveredArmyName = ""
+  onWrapUpCb = null
+  onWrapDownCb = null
 
   function getSceneTplView()
   {
@@ -694,4 +696,7 @@ class ::gui_handlers.WwOperationLog extends ::gui_handlers.BaseGuiHandlerWT
       break
     }
   }
+
+  onWrapUp = @(obj) onWrapUpCb(obj)
+  onWrapDown = @(obj) onWrapDownCb(obj)
 }

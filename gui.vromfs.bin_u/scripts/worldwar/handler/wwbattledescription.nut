@@ -6,6 +6,8 @@ local WwHelpSlotbarGroupsModal = require("scripts/worldWar/handler/WwHelpSlotbar
 local { getBestPresetData, generatePreset } = require("scripts/slotbar/generatePreset.nut")
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
 local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+local { getOperationById, getMapByName
+} = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 // Temporary image. Has to be changed after receiving correct art
 const WW_OPERATION_DEFAULT_BG_IMAGE = "#ui/bkg/login_layer_h1_0"
@@ -419,7 +421,7 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
   function updateSlotbar()
   {
     local side = getPlayerSide()
-    local availableCountries = ::g_ww_global_status.getOperationById(::ww_get_operation_id())?.getCountriesByTeams()[side]
+    local availableCountries = getOperationById(::ww_get_operation_id())?.getCountriesByTeams()[side]
     local isSlotbarVisible = (availableCountries?.len() ?? 0) > 0
     showSceneBtn("nav-slotbar", isSlotbarVisible)
     if (!isSlotbarVisible)
@@ -473,7 +475,7 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function getMap()
   {
-    local operation = ::g_ww_global_status.getOperationById(::ww_get_operation_id())
+    local operation = getOperationById(::ww_get_operation_id())
     if (operation == null)
       return null
 
@@ -486,7 +488,7 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function getCustomUnitsListNameText()
   {
-    local operation = ::g_ww_global_status.getOperationById(::ww_get_operation_id())
+    local operation = getOperationById(::ww_get_operation_id())
     if (operation)
       return operation.getMapText()
 
@@ -556,11 +558,11 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function getOperationBackground()
   {
-    local curOperation = ::g_ww_global_status.getOperationById(::ww_get_operation_id())
+    local curOperation = getOperationById(::ww_get_operation_id())
     if (!curOperation)
       return WW_OPERATION_DEFAULT_BG_IMAGE
 
-    local curMap = ::g_ww_global_status.getMapByName(curOperation.getMapId())
+    local curMap = getMapByName(curOperation.getMapId())
     if (!curMap)
       return WW_OPERATION_DEFAULT_BG_IMAGE
 

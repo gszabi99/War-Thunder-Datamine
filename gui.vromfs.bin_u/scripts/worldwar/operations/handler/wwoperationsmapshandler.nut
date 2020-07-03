@@ -7,6 +7,9 @@ local { getCurrenNotCompletedUnlocks, unlocksChapterName } = require("scripts/wo
 local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 local globalBattlesListData = require("scripts/worldWar/operations/model/wwGlobalBattlesList.nut")
 local { isMatchFilterMask } = require("scripts/worldWar/handler/wwBattlesFilterMenu.nut")
+local { getNearestAvailableMapToBattle, getMyClanOperation, getMapByName, isMyClanInQueue
+} = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+local { refreshGlobalStatusData } = require("scripts/worldWar/operations/model/wwGlobalStatus.nut")
 
 local WW_DAY_SEASON_OVER_NOTICE = "worldWar/seasonOverNotice/day"
 local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
@@ -79,7 +82,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
 
   function reinitScreen()
   {
-    hasClanOperation = ::g_ww_global_status.getMyClanOperation() != null
+    hasClanOperation = getMyClanOperation() != null
     hasRightsToQueueClan = ::g_clans.hasRightsToQueueWWar()
 
     collectMaps()
@@ -328,7 +331,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
       return false
 
     local isHeader = mapObj?.collapse_header != null
-    local newMap = isHeader ? null : ::g_ww_global_status.getMapByName(mapObj?.id)
+    local newMap = isHeader ? null : getMapByName(mapObj?.id)
     if (newMap == selMap)
       return false
     local isChanged = !newMap || !selMap || !selMap.isEqual(newMap)
@@ -484,7 +487,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
 
   function onTimerStatusCheck(obj, dt)
   {
-    ::g_ww_global_status.refreshData()
+    refreshGlobalStatusData()
   }
 
   function onOpenLeaderboard(obj)
@@ -549,33 +552,11 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
         onLeaveQueueCb = onLeaveQueue.bindenv(this)
         onJoinClanOperationCb = onJoinClanOperation.bindenv(this)
         onBattlesBtnClickCb = onBattlesBtnClick.bindenv(this)
-        onCountrySelectCb = onCountrySelect.bindenv(this)
+        onMapSideActionCb = onMapSideAction.bindenv(this)
+        onToBattlesCb = onToBattles.bindenv(this)
       } : null)
     descHandlerWeak = mapDescrObj.weakref()
     registerSubHandler(mapDescrObj)
-  }
-
-  function onCountrySelect(obj)
-  {
-    local sideObj = obj.getChild(obj.getValue())
-    local countryId = sideObj?.countryId ?? ""
-    local dummyButtonsListObj = scene.findObject("dummy_buttons_list")
-
-    local isInQueue = ::g_ww_global_status.isMyClanInQueue()
-    local isQueueJoiningEnabled =  ::WwQueue.getCantJoinAnyQueuesReasonData().canJoin
-    local isMyClanOperation = selMap != null && hasClanOperation &&
-      ::g_ww_global_status.getMyClanOperation()?.data.map == selMap?.name
-    local joinBattlesObj = ::showBtn("btn_join_battles", !isMyClanOperation
-      && !isInQueue, dummyButtonsListObj)
-    joinBattlesObj.countryId = countryId
-    local joinQueueObj = ::showBtn("btn_join_queue", selMap?.isClanQueueAvaliable()
-      && isQueueJoiningEnabled && !isInQueue, dummyButtonsListObj)
-    joinQueueObj.countryId = countryId
-    ::showBtn("btn_leave_queue", (hasClanOperation || isInQueue)
-      && hasRightsToQueueClan && isInQueue
-      && ::isInArray(sideObj.countryId, selMap.getQueue().getMyClanCountries()), dummyButtonsListObj)
-    local joinOperationObj = ::showBtn("btn_join_clan_operation", isMyClanOperation, dummyButtonsListObj)
-    joinOperationObj.countryId = countryId
   }
 
   function updateButtons()
@@ -583,15 +564,15 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
     showSceneBtn("gamercard_logo", true)
 
     local hasMap = selMap != null
-    local isInQueue = ::g_ww_global_status.isMyClanInQueue()
+    local isInQueue = isMyClanInQueue()
     local isQueueJoiningEnabled =  ::WwQueue.getCantJoinAnyQueuesReasonData().canJoin
     local isMyClanOperation = hasMap && hasClanOperation &&
-      ::g_ww_global_status.getMyClanOperation()?.data.map == selMap?.name
+      getMyClanOperation()?.data.map == selMap?.name
 
     showSceneBtn("btn_operation_descr", hasMap)
     showSceneBtn("btn_operation_list", ::has_feature("WWOperationsList"))
 
-    nearestAvailableMapToBattle = ::g_ww_global_status.getNearestAvailableMapToBattle()
+    nearestAvailableMapToBattle = getNearestAvailableMapToBattle()
     local needShowBeginMapWaitTime = !(nearestAvailableMapToBattle?.isActive?() ?? true)
     if ((queuesJoinTime > 0) != isInQueue)
       queuesJoinTime = isInQueue ? getLatestQueueJoinTime() : 0
@@ -626,7 +607,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
 
       local joinBtn = ::showBtn("btn_join_clan_operation", isMyClanOperation, sideObj)
       if (isMyClanOperation) {
-        local myCountryId = ::g_ww_global_status.getMyClanOperation()?.getMyClanCountry() ?? ""
+        local myCountryId = getMyClanOperation()?.getMyClanCountry() ?? ""
         local isMyClanSide = myCountryId == sideCountry
         joinBtn.inactiveColor = isMyClanSide ? "no" : "yes"
         ::showBtn("is_clan_participate_img", isMyClanSide, joinBtn)
@@ -660,7 +641,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
     if (!queuesJoinTime)
       return
 
-    ::g_ww_global_status.refreshData()
+    refreshGlobalStatusData()
 
     local queueInfoobj = scene.findObject("queues_wait_time_text")
     if (!::checkObj(queueInfoobj))
@@ -705,7 +686,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
     local res = selMap.getOpGroup().hasOperations() ? "" :
         ::colorize("badTextColor", ::loc("worldwar/msg/noActiveOperations"))
 
-    local operation = ::g_ww_global_status.getMyClanOperation()
+    local operation = getMyClanOperation()
     if (operation && operation.getMapId() == selMap.getId())
       return ::colorize("userlogColoredText",
         ::loc("worldwar/mapStatus/yourClanInOperation", { name = operation.getNameText(false) }))
@@ -744,8 +725,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
 
   function onJoinClanOperation(obj)
   {
-    local operation = ::g_ww_global_status.getOperationById(
-      ::g_ww_global_status.getMyClanOperation()?.id)
+    local operation = getMyClanOperation()
     if (operation == null) {
       ::showInfoMsgBox(::loc("worldwar/operationNotFound"), "cant_join_operation")
       return
@@ -770,7 +750,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
   function onLeaveQueue()
   {
     selCountryId = ""
-    if (!::g_ww_global_status.isMyClanInQueue())
+    if (!isMyClanInQueue())
       return
 
     foreach (map in mapsTbl)
@@ -881,7 +861,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
     if (hasClanOperation)
       return
 
-    local newClanOperation = ::g_ww_global_status.getMyClanOperation()
+    local newClanOperation = getMyClanOperation()
     if (!newClanOperation)
       return
     hasClanOperation = true
@@ -910,7 +890,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
     if (!::check_obj(obj))
       return
 
-    local map = params.hover ? ::g_ww_global_status.getMapByName(params.id) : null
+    local map = params.hover ? getMapByName(params.id) : null
     local show = map != null
     obj.show(show)
     if (!show)
@@ -1197,6 +1177,43 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
       return
 
     globalBattlesListData.requestList()
+  }
+
+  function getFocusedConflictSideObj() {
+    local countriesContainerObj = scene.findObject("countries_container")
+    if (!::check_obj(countriesContainerObj) || !countriesContainerObj.isFocused())
+      return null
+
+    local value = ::get_obj_valid_index(countriesContainerObj)
+    if (value < 0)
+      return null
+
+    return countriesContainerObj.getChild(value)
+  }
+
+  function onToBattles() {
+    local sideObj = getFocusedConflictSideObj()
+    if (!::check_obj(sideObj))
+      return
+
+    onBattlesBtnClick(sideObj)
+  }
+
+  function onMapSideAction() {
+    local sideObj = getFocusedConflictSideObj()
+    if (!::check_obj(sideObj))
+      return
+
+    local isInQueue = isMyClanInQueue()
+    local isQueueJoiningEnabled =  ::WwQueue.getCantJoinAnyQueuesReasonData().canJoin
+    local isMyClanOperation = selMap != null && hasClanOperation &&
+      getMyClanOperation()?.data.map == selMap?.name
+    if (selMap?.isClanQueueAvaliable() && isQueueJoiningEnabled && !isInQueue)
+      onJoinQueue(sideObj)
+    else if ((hasClanOperation || isInQueue) && hasRightsToQueueClan && isInQueue)
+      onLeaveQueue()
+    else if (isMyClanOperation)
+      onJoinClanOperation(sideObj)
   }
 }
 

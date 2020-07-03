@@ -1,6 +1,7 @@
 local time = require("scripts/time.nut")
 local wwOperationUnitsGroups = require("scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
 local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 enum UNIT_STATS {
   INITIAL
@@ -277,6 +278,6 @@ class ::WwBattleResultsView
 
   function getOperation()
   {
-    return ::g_ww_global_status.getOperationById(battleRes.getOperationId() ?? ::ww_get_operation_id())
+    return getOperationById(battleRes.getOperationId() ?? ::ww_get_operation_id())
   }
 }

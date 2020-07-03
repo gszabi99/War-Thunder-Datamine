@@ -1,3 +1,6 @@
+local { getOperationById, getOperationGroupByMapId
+} = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+
 class ::gui_handlers.WwOperationsListModal extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
@@ -30,7 +33,7 @@ class ::gui_handlers.WwOperationsListModal extends ::gui_handlers.BaseGuiHandler
 
   function getOpGroup()
   {
-    return ::g_ww_global_status.getOperationGroupByMapId(map.getId())
+    return getOperationGroupByMapId(map.getId())
   }
 
   function getSortedOperationsData()
@@ -145,7 +148,7 @@ class ::gui_handlers.WwOperationsListModal extends ::gui_handlers.BaseGuiHandler
       return false
 
     local newOperation = opObj?.collapse_header ? null
-      : ::g_ww_global_status.getOperationById(::to_integer_safe(opObj?.id))
+      : getOperationById(::to_integer_safe(opObj?.id))
     if (newOperation == selOperation)
       return false
     local isChanged = !newOperation || !selOperation || !selOperation.isEqual(newOperation)

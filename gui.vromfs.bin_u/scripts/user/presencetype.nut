@@ -83,7 +83,7 @@ enums.addTypesByGlobalName("g_presence_type", {
       local queue = ::queues.getActiveQueueWithType(queueTypeMask)
       local operationId = ::queues.getQueueOperationId(queue)
       local battleId = queue instanceof ::queue_classes.WwBattle ? queue.getQueueWwBattleId() : ""
-      local operation = ::g_ww_global_status.getOperationById(operationId)
+      local operation = ::g_ww_global_status_actions.getOperationById(operationId)
       if (!operation)
         return
       params.operationId <- operationId
@@ -92,7 +92,7 @@ enums.addTypesByGlobalName("g_presence_type", {
       params.country <- ::queues.getQueueCountry(queue)
     }
     getLocText = function(presenceParams) {
-      local map = ::g_ww_global_status.getMapByName(presenceParams?.mapId)
+      local map = ::g_ww_global_status_actions.getMapByName(presenceParams?.mapId)
       return ::loc(locId,
         { operationName = map
             ? ::WwOperation.getNameTextByIdAndMapName(presenceParams?.operationId, map.getNameText())
@@ -110,7 +110,7 @@ enums.addTypesByGlobalName("g_presence_type", {
     canInviteToWWBattle = false
     updateParams = function(params) {
       local operationId = ::SessionLobby.getOperationId()
-      local operation = ::g_ww_global_status.getOperationById(operationId)
+      local operation = ::g_ww_global_status_actions.getOperationById(operationId)
       if (!operation)
         return
       params.operationId <- operationId
@@ -119,7 +119,7 @@ enums.addTypesByGlobalName("g_presence_type", {
       params.country <- operation.getMyClanCountry() || ::get_profile_country_sq()
     }
     getLocText = function(presenceParams) {
-      local map = ::g_ww_global_status.getMapByName(presenceParams?.mapId)
+      local map = ::g_ww_global_status_actions.getMapByName(presenceParams?.mapId)
       return ::loc(locId,
         { operationName = map
             ? ::WwOperation.getNameTextByIdAndMapName(presenceParams?.operationId ?? "", map.getNameText())
@@ -140,11 +140,11 @@ enums.addTypesByGlobalName("g_presence_type", {
     }
     getLocText = function(presenceParams) {
       local operationId = presenceParams?.operationId
-      local operation = ::g_ww_global_status.getOperationById(operationId)
+      local operation = ::g_ww_global_status_actions.getOperationById(operationId)
       if (!operation)
         return ""
 
-      local map = ::g_ww_global_status.getMapByName(operation.getMapId())
+      local map = ::g_ww_global_status_actions.getMapByName(operation.getMapId())
       local text = ::loc(locId,
         { operationName = map
             ? ::WwOperation.getNameTextByIdAndMapName(operationId, map.getNameText()) : ""

@@ -162,5 +162,6 @@ class ::gui_handlers.WwMapDescription extends ::gui_handlers.BaseGuiHandlerWT
   onLeaveQueue = @() descParams?.onLeaveQueueCb()
   onJoinClanOperation = @(obj) descParams?.onJoinClanOperationCb(obj)
   onBattlesBtnClick = @(obj) descParams?.onBattlesBtnClickCb(obj)
-  onCountrySelect = @(obj) descParams?.onCountrySelectCb(obj)
+  onMapSideAction = @() descParams?.onMapSideActionCb()
+  onToBattles = @() descParams?.onToBattlesCb()
 }

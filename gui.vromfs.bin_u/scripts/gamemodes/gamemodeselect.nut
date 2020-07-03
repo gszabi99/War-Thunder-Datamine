@@ -560,7 +560,7 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
   function onEventGameModesUpdated(p) { updateContent() }
   function onEventWWLoadOperation(p) { updateContent() }
   function onEventWWStopWorldWar(p) { updateContent() }
-  function onEventWWGlobalStatusChanged(p) { updateContent() }
+  function onEventWWShortGlobalStatusChanged(p) { updateContent() }
   function onEventXboxSystemUIReturn(p) { updateContent() }
 
   function updateButtons()

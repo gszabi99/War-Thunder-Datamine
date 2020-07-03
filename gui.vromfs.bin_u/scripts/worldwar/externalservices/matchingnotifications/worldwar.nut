@@ -1,3 +1,5 @@
+local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+
 foreach (notificationName, callback in
   {
     ["worldwar.on_join_to_battle"] = function(params)
@@ -57,7 +59,7 @@ foreach (notificationName, callback in
         local text = ""
         if (messageType == "operation_finished")
         {
-          local operation = ::g_ww_global_status.getOperationById(operationId)
+          local operation = getOperationById(operationId)
           text = operation ? ::loc("worldwar/operation_complete_battle_results_ignored_full_text",
             {operationInfo = operation.getNameText()})
                            : ::loc("worldwar/operation_complete_battle_results_ignored")

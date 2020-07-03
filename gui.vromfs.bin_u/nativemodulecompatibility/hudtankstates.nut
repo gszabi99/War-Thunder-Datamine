@@ -6,5 +6,4 @@ return{
   getRpmObservable = @() null
   getDrivingDirectionMode = @() null
   getCruiseControl = @() null
-  getLwsObservable = @() null
 }

@@ -18,24 +18,24 @@ enums.addTypesByGlobalName("g_ww_map_info_type", {
 
   OBJECTIVE = {
     index = 0
-    getMainBlockHandler = function(placeObj, side = null)
+    getMainBlockHandler = function(placeObj, side = null, handlerParams = null)
     {
       return ::handlersManager.loadHandler(::gui_handlers.wwObjective, {
         scene = placeObj,
         side = side || ::ww_get_player_side()
         restrictShownObjectives = true
-      })
+      }.__update(handlerParams))
     }
   }
 
   LOG = {
     index = 1
-    getMainBlockHandler = function(placeObj, side = null)
+    getMainBlockHandler = function(placeObj, side = null, handlerParams = null)
     {
       return ::handlersManager.loadHandler(::gui_handlers.WwOperationLog, {
         scene = placeObj,
         side = side || ::ww_get_player_side()
-      })
+      }.__update(handlerParams))
     }
   }
 }, null, "name")

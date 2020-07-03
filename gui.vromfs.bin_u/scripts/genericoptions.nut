@@ -6,7 +6,7 @@ local { getLastWeapon,
         setLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local crossplayModule = require("scripts/social/crossplay.nut")
-local { hasFlares, bombNbr } = require("scripts/unit/unitStatus.nut")
+local { hasFlares } = require("scripts/unit/unitStatus.nut")
 
 ::generic_options <- null
 
@@ -350,17 +350,6 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
       !!unit && unit.getAvailableSecondaryWeapons().hasBombs)
   }
 
-  function checkBombSeriesRow()
-  {
-    local option = findOptionInContainers(::USEROPT_BOMB_SERIES)
-    if (!option)
-      return
-    local unit = ::getAircraftByName(::aircraft_for_weapons)
-    showOptionRow(option, bombNbr(unit) > 1)
-
-    updateOption(::USEROPT_BOMB_SERIES)
-  }
-
   function checkFlaresPeriodsRow()
   {
     local option = ::get_option(::USEROPT_FLARES_PERIODS)
@@ -518,7 +507,6 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
   function updateWeaponOptions() {
     checkRocketDisctanceFuseRow()
     checkBombActivationTimeRow()
-    checkBombSeriesRow()
     checkDepthChargeActivationTimeRow()
     checkMineDepthRow()
     updateFlaresOptions()

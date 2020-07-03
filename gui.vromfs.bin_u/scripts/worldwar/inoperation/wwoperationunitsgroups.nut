@@ -1,7 +1,8 @@
 local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
+local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 local function getUnitsGroups() {
-  local unitsGroupByCountry = ::g_ww_global_status.getOperationById(
+  local unitsGroupByCountry = getOperationById(
     ::ww_get_operation_id())?.getMap().getUnitsGroupsByCountry()
   if (unitsGroupByCountry == null)
     return null

@@ -881,7 +881,6 @@ local isFullScriptsLoaded = false
     "matching/serviceNotifications/mrpc.nut"
     "matching/serviceNotifications/mpresense.nut"
     "matching/serviceNotifications/msquad.nut"
-    "matching/serviceNotifications/worldwar.nut"
     "matching/serviceNotifications/mrooms.nut"
 
     "gamepadSceneSettings.nut"

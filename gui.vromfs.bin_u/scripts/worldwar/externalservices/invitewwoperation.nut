@@ -1,3 +1,5 @@
+local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+
 const WW_OPERATION_INVITE_EXPIRE_SEC = 3600
 
 class ::g_invites_classes.WwOperation extends ::BaseInvite
@@ -55,7 +57,7 @@ class ::g_invites_classes.WwOperation extends ::BaseInvite
 
   function getOperation()
   {
-    return ::g_ww_global_status.getOperationById(operationId)
+    return getOperationById(operationId)
   }
 
   function isValid()

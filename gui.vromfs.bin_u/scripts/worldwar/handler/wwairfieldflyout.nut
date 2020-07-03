@@ -2,7 +2,8 @@ local time = require("scripts/time.nut")
 local stdMath = require("std/math.nut")
 local { updateModItem, createModItem } = require("scripts/weaponry/weaponryVisual.nut")
 local wwUnitClassParams = require("scripts/worldWar/inOperation/wwUnitClassParams.nut")
-local wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+local { getMaxFlyTime } = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+local { getGroupUnitMarkUp } = require("scripts/unit/groupUnit.nut")
 local wwOperationUnitsGroups = require("scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
 local airfieldTypes = require("scripts/worldWar/inOperation/model/airfieldTypes.nut")
 
@@ -116,7 +117,7 @@ class ::gui_handlers.WwAirfieldFlyOut extends ::gui_handlers.BaseGuiHandlerWT
         local displayUnit = group?.defaultUnit ?? unit.unit
         local unitWeapon = ::g_world_war.get_last_weapon_preset(name)
         local unitClassData = wwUnitClassParams.getUnitClassData(unit, unitWeapon)
-        local maxFlyTime = (wwActionsWithUnitsList.getMaxFlyTime(displayUnit) * flightTimeFactor).tointeger()
+        local maxFlyTime = (getMaxFlyTime(displayUnit) * flightTimeFactor).tointeger()
         local value = 0
         local maxValue = unit.count
         local maxUnitClassValue = getUnitClassMaxValue(unitClassData.flyOutUnitClass)
@@ -126,7 +127,7 @@ class ::gui_handlers.WwAirfieldFlyOut extends ::gui_handlers.BaseGuiHandlerWT
           armyGroupIdx = airfieldFormation.getArmyGroupIdx()
           unit = unit
           unitName = name
-          unitItem = wwActionsWithUnitsList.getUnitMarkUp(name, displayUnit, group,
+          unitItem = getGroupUnitMarkUp(name, displayUnit, group,
             {nameLoc = ::loc(group?.name ?? "")})
           unitClassIconText = wwUnitClassParams.getIconText(unitClass)
           unitClassName = wwUnitClassParams.getText(unitClass)

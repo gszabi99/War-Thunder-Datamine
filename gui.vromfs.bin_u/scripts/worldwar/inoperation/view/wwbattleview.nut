@@ -1,6 +1,7 @@
 local time = require("scripts/time.nut")
 local wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 class ::WwBattleView
 {
@@ -122,7 +123,7 @@ class ::WwBattleView
         maxSideArmiesNumber = 0
       }
 
-      local mapName = ::g_ww_global_status.getOperationById(::ww_get_operation_id())?.getMapId() ?? ""
+      local mapName = getOperationById(::ww_get_operation_id())?.getMapId() ?? ""
       local armyViews = []
       foreach (country, armiesArray in team.countries)
       {

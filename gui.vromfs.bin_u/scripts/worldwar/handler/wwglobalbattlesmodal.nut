@@ -3,6 +3,7 @@ local WwGlobalBattle = require("scripts/worldWar/operations/model/wwGlobalBattle
 local { openBattlesFilterMenu, isMatchFilterMask } = require("scripts/worldWar/handler/wwBattlesFilterMenu.nut")
 local slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 local MAX_VISIBLE_BATTLES_PER_GROUP = 5
 
@@ -283,7 +284,7 @@ class ::gui_handlers.WwGlobalBattlesModal extends ::gui_handlers.WwBattleDescrip
     if (!::check_obj(operationInfoTextObj))
       return
 
-    local operation = ::g_ww_global_status.getOperationById(curBattleInList.getOperationId())
+    local operation = getOperationById(curBattleInList.getOperationId())
     if (!operation)
       return
 

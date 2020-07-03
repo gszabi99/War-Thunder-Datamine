@@ -1,4 +1,5 @@
-local bhvUnseen = ::require("scripts/seen/bhvUnseen.nut")
+local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
+local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 
 class ::gui_handlers.wwObjective extends ::BaseGuiHandler
@@ -19,6 +20,8 @@ class ::gui_handlers.wwObjective extends ::BaseGuiHandler
   reqFullMissionObjectsButton = true
   restrictShownObjectives = false
   hasObjectiveDesc = false
+  onWrapUpCb = null
+  onWrapDownCb = null
 
   function getSceneTplView()
   {
@@ -51,7 +54,7 @@ class ::gui_handlers.wwObjective extends ::BaseGuiHandler
 
     updateObjectivesData()
 
-    local curOperation = ::g_ww_global_status.getOperationById(::ww_get_operation_id())
+    local curOperation = getOperationById(::ww_get_operation_id())
     local unseenIcon = curOperation
       ? bhvUnseen.makeConfigStr(SEEN.WW_MAPS_OBJECTIVE, curOperation.getMapId()) : null
     local objectivesList = getObjectivesList(getObjectivesCount(false))
@@ -444,4 +447,7 @@ class ::gui_handlers.wwObjective extends ::BaseGuiHandler
   {
     ::ww_clear_outlined_zones()
   }
+
+  onWrapUp = @(obj) onWrapUpCb(obj)
+  onWrapDown = @(obj) onWrapDownCb(obj)
 }

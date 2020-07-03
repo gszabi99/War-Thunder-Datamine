@@ -394,7 +394,7 @@ class Promo
     local id = "world_war_button"
     local isWwEnabled = ::g_world_war.canJoinWorldwarBattle()
     local isVisible = ::g_promo.getShowAllPromoBlocks()
-      || (isWwEnabled && ::g_world_war.isWWSeasonActive())
+      || (isWwEnabled && ::g_world_war.isWWSeasonActive(true))
 
     local wwButton = ::showBtn(id, isVisible, scene)
     if (!isVisible || !::checkObj(wwButton))
@@ -527,7 +527,7 @@ class Promo
   function onEventShopWndVisible(p) { toggleSceneVisibility(!::getTblValue("isShopShow", p, false)) }
   function onEventWWLoadOperation(p) { updateWorldWarButton() }
   function onEventWWStopWorldWar(p) { updateWorldWarButton() }
-  function onEventWWGlobalStatusChanged(p) { updateWorldWarButton() }
+  function onEventWWShortGlobalStatusChanged(p) { updateWorldWarButton() }
   function onEventCrossPlayOptionChanged(p) { updateWorldWarButton() }
   function onEventWebPollAuthResult(p) { updateWebPollButton(p) }
   function onEventWebPollTokenInvalidated(p) {

@@ -1,4 +1,5 @@
 local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 class ::gui_handlers.WwCommanders extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -33,7 +34,7 @@ class ::gui_handlers.WwCommanders extends ::gui_handlers.BaseGuiHandlerWT
     local groupsView = []
     local useSwitchMode = false
     local view = { items = [] }
-    local mapName = ::g_ww_global_status.getOperationById(::ww_get_operation_id())?.getMapId() ?? ""
+    local mapName = getOperationById(::ww_get_operation_id())?.getMapId() ?? ""
     groupsHandlers = []
     foreach(side in ::g_world_war.getSidesOrder())
     {

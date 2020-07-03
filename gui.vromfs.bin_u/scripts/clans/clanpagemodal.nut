@@ -464,7 +464,7 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
     isWorldWarMode = tabObj?.isWorldWarMode == "yes"
     showSceneBtn("clan_members_list", !isWorldWarMode)
     showSceneBtn("lb_table_nest", isWorldWarMode)
-    showSceneBtn("season_over_notice", isWorldWarMode && !::g_world_war.isWWSeasonActive())
+    showSceneBtn("season_over_notice", isWorldWarMode && !::g_world_war.isWWSeasonActive(true))
 
     if (isWorldWarMode)
     {

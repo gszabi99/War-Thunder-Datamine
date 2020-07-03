@@ -1,3 +1,5 @@
+local { getMapByName } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+
 class WwOperationsGroup
 {
   mapId = ""
@@ -14,7 +16,7 @@ class WwOperationsGroup
 
   function getMap()
   {
-    return ::g_ww_global_status.getMapByName(mapId)
+    return getMapByName(mapId)
   }
 
   function getNameText()

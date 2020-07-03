@@ -13,8 +13,8 @@ local { isCrossPlayEnabled,
     startFunction = @() ::g_world_war.openMainWnd()
     isWide = @() ::is_me_newbie() || !::is_platform_pc
     image = function() {
-        local operation = ::g_ww_global_status.getOperationById(::g_world_war.lastPlayedOperationId)
-        if (!::u.isEmpty(operation))
+        local operation = ::g_world_war.getLastPlayedOperation()
+        if (operation != null)
           return "#ui/images/game_modes_tiles/worldwar_active_" + (isWide() ? "wide" : "thin") + ".jpg?P1"
         else
           return "#ui/images/game_modes_tiles/worldwar_live_" + (isWide() ? "wide" : "thin") + ".jpg?P1"

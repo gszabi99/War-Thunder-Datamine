@@ -4,6 +4,7 @@ local mapAirfields = require("scripts/worldWar/inOperation/model/wwMapAirfields.
 local actionModesManager = require("scripts/worldWar/inOperation/wwActionModesManager.nut")
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
 local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -111,7 +112,7 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
     if (!::check_obj(headerObj))
       return
 
-    local curOperation = ::g_ww_global_status.getOperationById(::ww_get_operation_id())
+    local curOperation = getOperationById(::ww_get_operation_id())
     headerObj.setValue(curOperation? curOperation.getNameText() : "")
   }
 
@@ -206,7 +207,12 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(operationBlockObj))
       return
 
-    mainBlockHandler = currentOperationInfoTabType.getMainBlockHandler(operationBlockObj, ::ww_get_player_side())
+    mainBlockHandler = currentOperationInfoTabType.getMainBlockHandler(operationBlockObj,
+      ::ww_get_player_side(),
+      {
+        onWrapUpCb = onWrapUp.bindenv(this)
+        onWrapDownCb = onWrapDown.bindenv(this)
+      })
     if (mainBlockHandler)
       registerSubHandler(mainBlockHandler)
   }
@@ -595,7 +601,7 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
     local side2Name = ::ww_side_val_to_name(orderArray.len() > 1? orderArray[1] : ::SIDE_NONE)
     local side2Data = ::getTblValue(side2Name, armyStrengthData, {})
 
-    local mapName = ::g_ww_global_status.getOperationById(::ww_get_operation_id())?.getMapId() ?? ""
+    local mapName = getOperationById(::ww_get_operation_id())?.getMapId() ?? ""
     local view = {
       armyCountryImg1 = (side1Data?.country ?? []).map(@(c) { image = getCustomViewCountryData(c, mapName).icon })
       armyCountryImg2 = (side2Data?.country ?? []).map(@(c) { image = getCustomViewCountryData(c, mapName).icon })
@@ -860,6 +866,13 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function getMainFocusObj2()
+  {
+    return !mainBlockHandler.isValid() ? null : currentOperationInfoTabType.name == "LOG"
+      ? mainBlockHandler.scene.findObject("ww_log_filters")
+      : mainBlockHandler.scene.findObject("btn_tasks_list")
+  }
+
+  function getMainFocusObj3()
   {
     return scene.findObject("reinforcement_pages_list")
   }
@@ -1323,7 +1336,7 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventMyClanIdChanged(p)
   {
-    local wwOperation = ::g_ww_global_status.getOperationById(::ww_get_operation_id())
+    local wwOperation = getOperationById(::ww_get_operation_id())
     if (!wwOperation)
       return
 

@@ -1,4 +1,6 @@
 local topMenuButtons = require("scripts/mainmenu/topMenuButtons.nut")
+local { getOperationById, getMapByName
+} = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 local template = {
   category = -1
@@ -18,12 +20,11 @@ local list = {
     text = "#worldWar/menu/selectOperation"
     onClickFunc = function(obj, handler)
     {
-      local curOperation = ::g_ww_global_status.getOperationById(::ww_get_operation_id())
+      local curOperation = getOperationById(::ww_get_operation_id())
       if (!curOperation)
         return ::g_world_war.openOperationsOrQueues()
 
-      ::g_world_war.openOperationsOrQueues(false,
-        ::g_ww_global_status.getMapByName(curOperation.data.map))
+      ::g_world_war.openOperationsOrQueues(false, getMapByName(curOperation.data.map))
     }
     isHidden = @(...) !::has_feature("WWOperationsList")
     elementType = TOP_MENU_ELEMENT_TYPE.BUTTON

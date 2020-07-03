@@ -2065,11 +2065,8 @@
         "country_germany": {
           "germ_leopard_I": {
             "name": "worldwar/group/mbt",
-            "defaultUnit": "germ_leopard_I",
+            "defaultUnit": "germ_mkpz_m48a2ga2",
             "unitList": [
-              {
-                "unit": "germ_leopard_I"
-              },
               {
                 "unit": "germ_mkpz_m48a2ga2"
               },
@@ -2646,9 +2643,17 @@
     "ItalyTanksInFirstCountryChoice": {
       "condition": ""
     },
-    "ItalyShipsInFirstCountryChoice": {
-      "condition": ""
-    },
+    "ItalyShipsInFirstCountryChoice": [
+      {
+        "condition": "role_DEVELOPER"
+      },
+      {
+        "condition": "role_TESTER"
+      },
+      {
+        "condition": "role_ALPHA_TESTER"
+      }
+    ],
     "FranceAircraftsInFirstCountryChoice": {
       "condition": ""
     },
@@ -3638,9 +3643,23 @@
     "SwedenTankUnlocked": {
       "condition": ""
     },
-    "ItalyShipsUnlocked": {
-      "condition": ""
-    },
+    "ItalyShipsUnlocked": [
+      {
+        "condition": "role_GAIJIN"
+      },
+      {
+        "condition": "role_DEVELOPER"
+      },
+      {
+        "condition": "role_TESTER"
+      },
+      {
+        "condition": "role_ALPHA_TESTER"
+      },
+      {
+        "condition": "wt_access_italy_ships_unlocks"
+      }
+    ],
     "CountryChina": {
       "condition": ""
     },

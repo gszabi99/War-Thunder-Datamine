@@ -55,11 +55,12 @@ local actionModesById = {
     }
   },
   [::AUT_TransportLoad] = {
+    errorGroupName = "load_transport_army_error"
     requestAction = function requestAction(transportName, armyName, cellIdx) {
       local errorId = ::ww_get_load_army_to_transport_error(transportName, armyName)
       if (errorId != "")
       {
-        ::g_world_war.popupCharErrorMsg("load_transport_army_error", "", errorId)
+        ::g_world_war.popupCharErrorMsg(errorGroupName, "", errorId)
         return
       }
 
@@ -67,18 +68,20 @@ local actionModesById = {
       params.setStr("transportName", transportName)
       params.setStr("armyName", armyName)
       local taskId = ::ww_send_operation_request("cln_ww_load_transport", params)
-      ::g_tasker.addTask(taskId, null, @() setActionMode())
+      ::g_tasker.addTask(taskId, null, @() setActionMode(),
+        ::Callback(@(errorCode) ::g_world_war.popupCharErrorMsg(errorGroupName), this))
     }
     useAction = @(clickPos) useTransportAction(clickPos, requestAction)
     setMode = @() setActionMode(::AUT_TransportLoad)
     getTitle = @() ::loc("worldwar/cant_use_transport")
   },
   [::AUT_TransportUnload] = {
+    errorGroupName = "unload_transport_army_error"
     requestAction = function requestAction(transportName, armyName, cellIdx) {
       local errorId = ::ww_get_unload_army_from_transport_error(transportName, armyName, cellIdx)
       if (errorId != "")
       {
-        ::g_world_war.popupCharErrorMsg("unload_transport_army_error", "", errorId)
+        ::g_world_war.popupCharErrorMsg(errorGroupName, "", errorId)
         return
       }
 
@@ -87,7 +90,8 @@ local actionModesById = {
       params.setStr("armyName", armyName)
       params.setInt("cellIdx", cellIdx)
       local taskId = ::ww_send_operation_request("cln_ww_unload_transport", params)
-      ::g_tasker.addTask(taskId, null, @() setActionMode())
+      ::g_tasker.addTask(taskId, null, @() setActionMode(),
+        ::Callback(@(errorCode) ::g_world_war.popupCharErrorMsg(errorGroupName), this))
     }
     requestActionForAllLoadedArmy = function requestActionForAllLoadedArmy(transportName, armyName, cellIdx) {
       local loadedTransportArmy = transportManager.getLoadedTransport()?[transportName]

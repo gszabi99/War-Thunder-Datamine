@@ -1,6 +1,6 @@
 local time = require("scripts/time.nut")
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
-
+local { getMapByName } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 enum WW_OPERATION_STATUSES
 {
@@ -28,9 +28,12 @@ class WwOperation
   _myClanGroup = null
   _assignCountry = null
 
-  constructor(_data)
+  isFromShortStatus = false
+
+  constructor(_data, _isFromShortStatus = false)
   {
     data = _data
+    isFromShortStatus = _isFromShortStatus
     id = ::getTblValue("_id", data, -1)
     status = ::getTblValue("st", data, WW_OPERATION_STATUSES.UNKNOWN)
   }
@@ -58,7 +61,7 @@ class WwOperation
 
   function getMap()
   {
-    return ::g_ww_global_status.getMapByName(getMapId())
+    return getMapByName(getMapId(), isFromShortStatus)
   }
 
   function getNameText(full = true)

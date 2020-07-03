@@ -5,6 +5,7 @@ local wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWi
 local wwOperationUnitsGroups = require("scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
 local slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 const WW_BATTLES_SORT_TIME_STEP = 120
 const WW_MAX_PLAYERS_DISBALANCE_DEFAULT = 3
@@ -1041,7 +1042,7 @@ class ::WwBattle
 
   function getMyAssignCountry()
   {
-    local operation = ::g_ww_global_status.getOperationById(::ww_get_operation_id())
+    local operation = getOperationById(::ww_get_operation_id())
     return operation ? operation.getMyAssignCountry() : null
   }
 

@@ -1,5 +1,5 @@
 local slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-local wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+local { getGroupUnitMarkUp } = require("scripts/unit/groupUnit.nut")
 local { getParamsFromSlotbarConfig } = require("scripts/slotbar/selectUnitHandler.nut")
 
 local class SelectGroupHandler extends ::gui_handlers.SelectUnitHandler
@@ -58,7 +58,7 @@ local class SelectGroupHandler extends ::gui_handlers.SelectUnitHandler
         slotbarPresets.getVehiclesGroupByUnit(unit, countryGroupsList)?.name ?? "")
     }
 
-    local markup = wwActionsWithUnitsList.getUnitMarkUp(unit.name, unit, group, unitItemParams)
+    local markup = getGroupUnitMarkUp(unit.name, unit, group, unitItemParams)
     guiScene.replaceContentFromText(objSlot, markup, markup.len(), this)
   }
 

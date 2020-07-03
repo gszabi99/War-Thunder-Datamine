@@ -1,5 +1,16 @@
-local enums = ::require("sqStdlibs/helpers/enums.nut")
-local seenWWMapsAvailable = ::require("scripts/seen/seenList.nut").get(SEEN.WW_MAPS_AVAILABLE)
+local enums = require("sqStdlibs/helpers/enums.nut")
+local seenWWMapsAvailable = require("scripts/seen/seenList.nut").get(SEEN.WW_MAPS_AVAILABLE)
+local { refreshGlobalStatusData,
+  getValidGlobalStatusListMask,
+  setValidGlobalStatusListMask,
+  getGlobalStatusData
+} = require("scripts/worldWar/operations/model/wwGlobalStatus.nut")
+local {
+  refreshShortGlobalStatusData,
+  getValidShortGlobalStatusListMask,
+  setValidShortGlobalStatusListMask,
+  getShortGlobalStatusData
+} = require("scripts/worldWar/operations/model/wwShortGlobalStatus.nut")
 
 const MAPS_OUT_OF_DATE_DAYS = 1
 
@@ -12,29 +23,58 @@ const MAPS_OUT_OF_DATE_DAYS = 1
   charDataId = null //data id on request "cln_ww_global_stats"
   invalidateByOtherStatusType = 0 //mask of WW_GLOBAL_STATUS_TYPE
   emptyCharData = []
+  isAvailableInShortStatus = false
 
   cachedList = null
+  cachedShortStatusList = null
   getList = function(filterFunc = null)
   {
-    ::g_ww_global_status.refreshData()
-    if (!cachedList || !(::g_ww_global_status.validListsMask & type))
+    refreshGlobalStatusData()
+    local validListsMask = getValidGlobalStatusListMask()
+    if (!cachedList || !(validListsMask & type))
     {
       loadList()
-      ::g_ww_global_status.validListsMask = ::g_ww_global_status.validListsMask | type
+      setValidGlobalStatusListMask(validListsMask | type)
     }
     if (filterFunc)
       return ::u.filter(cachedList, filterFunc)
     return cachedList
   }
 
-  getData = function(globalStatusData = null)
+  getShortStatusList = function(filterFunc = null)
   {
-    return !charDataId || ::getTblValue(charDataId, globalStatusData || ::g_ww_global_status.curData, emptyCharData)
+    refreshShortGlobalStatusData()
+    local validListsMask = getValidShortGlobalStatusListMask()
+    if (!cachedShortStatusList || !(validListsMask & type))
+    {
+      loadList(true)
+      setValidShortGlobalStatusListMask(validListsMask | type)
+    }
+    if (filterFunc)
+      return ::u.filter(cachedShortStatusList, filterFunc)
+    return cachedShortStatusList
   }
 
-  loadList = function()
+  getData = function(globalStatusData = null, needShortStatus = false)
   {
-    cachedList = getData()
+    if (charDataId == null)
+      return null
+    local curData = globalStatusData ?? (needShortStatus
+      ? getShortGlobalStatusData()
+      : getGlobalStatusData())
+    return curData?[charDataId] ?? emptyCharData
+  }
+
+  loadList = function(needShortStatus = false)
+  {
+    setCachedList(getData(null, needShortStatus), needShortStatus)
+  }
+
+  setCachedList = function(cache, isShortStatus) {
+    if (isShortStatus)
+      cachedShortStatusList = cache
+    else
+      cachedList = cache
   }
 }
 
@@ -46,36 +86,45 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
 
     emptyCharData = {}
 
-    loadList = function()
+    loadList = function(needShortStatus = false)
     {
-      cachedList = {}
-      local data = getData()
-      if (!::u.isTable(data))
+      local cacheList = {}
+      local data = getData(null, needShortStatus)
+      if (!::u.isTable(data)) {
+        setCachedList(cacheList, needShortStatus)
         return
+      }
 
       local mapsList = ::g_ww_global_status_type.MAPS.getList()
       foreach(mapId, map in mapsList)
-        cachedList[mapId] <-::WwQueue(map, ::getTblValue(mapId, data))
+        cacheList[mapId] <-::WwQueue(map, ::getTblValue(mapId, data))
+
+      setCachedList(cacheList, needShortStatus)
     }
   }
 
   ACTIVE_OPERATIONS = {
     type = WW_GLOBAL_STATUS_TYPE.ACTIVE_OPERATIONS
     charDataId = "activeOperations"
+    isAvailableInShortStatus = true
 
-    loadList = function()
+    loadList = function(needShortStatus = false)
     {
-      cachedList = []
-      local data = getData()
-      if (!::u.isArray(data))
+      local cacheList = []
+      local data = getData(null, needShortStatus)
+      if (!::u.isArray(data)) {
+        setCachedList(cacheList, needShortStatus)
         return
+      }
 
       foreach(opData in data)
       {
-        local operation = ::WwOperation(opData)
+        local operation = ::WwOperation(opData, needShortStatus)
         if (operation.isValid())
-          cachedList.append(operation)
+          cacheList.append(operation)
       }
+
+      setCachedList(cacheList, needShortStatus)
     }
   }
 
@@ -83,18 +132,24 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
     type = WW_GLOBAL_STATUS_TYPE.MAPS
     charDataId = "maps"
     emptyCharData = {}
+    isAvailableInShortStatus = true
 
-    loadList = function()
+    loadList = function(needShortStatus = false)
     {
-      cachedList = {}
-      local data = getData()
-      if (!::u.isTable(data) || (data.len() <= 0))
+      local cacheList = {}
+      local data = getData(null, needShortStatus)
+      if (!::u.isTable(data) || (data.len() <= 0)) {
+        setCachedList(cacheList, needShortStatus)
         return
+      }
 
       foreach(name, mapData in data)
-        cachedList[name] <-::WwMap(name, mapData)
+        cacheList[name] <-::WwMap(name, mapData, needShortStatus)
 
+      setCachedList(cacheList, needShortStatus)
       local guiScene = ::get_cur_gui_scene()
+      if (!needShortStatus)
+        return
       if (guiScene) //need all other configs invalidate too before push event
         guiScene.performDelayed(this,
           function() {
@@ -108,16 +163,16 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
     type = WW_GLOBAL_STATUS_TYPE.OPERATIONS_GROUPS
     invalidateByOtherStatusType = WW_GLOBAL_STATUS_TYPE.ACTIVE_OPERATIONS | WW_GLOBAL_STATUS_TYPE.MAPS
 
-    loadList = function()
+    loadList = function(needShortStatus = false)
     {
       local mapsList = ::g_ww_global_status_type.MAPS.getList()
-      cachedList = ::u.map(mapsList, function(map) { return ::WwOperationsGroup(map.name) })
+      setCachedList(::u.map(mapsList, @(map) ::WwOperationsGroup(map.name)), needShortStatus)
     }
   }
 })
 
 seenWWMapsAvailable.setListGetter(function() {
   return ::u.map(
-    ::g_ww_global_status_type.MAPS.getList().filter(@(map) map.isAnnounceAndNotDebug()),
+    ::g_ww_global_status_type.MAPS.getShortStatusList().filter(@(map) map.isAnnounceAndNotDebug()),
     @(map) map.name)
 })
