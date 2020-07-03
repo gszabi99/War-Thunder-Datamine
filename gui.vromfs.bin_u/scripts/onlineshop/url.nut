@@ -82,7 +82,7 @@ local function open(baseUrl, forceExternal=false, isAlreadyAuthenticated = false
   if (!forceExternal && ::use_embedded_browser() && !::steam_is_running() && hasFeature)
   {
     // Embedded browser
-    ::open_browser_modal(url, urlConfig.urlTags)
+    ::open_browser_modal(url, urlConfig.urlTags, baseUrl)
     ::broadcastEvent("BrowserOpened", { url = url, external = false })
     return
   }

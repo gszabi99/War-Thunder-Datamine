@@ -696,6 +696,13 @@ class HudTank extends ::gui_handlers.BaseUnitHud
   actionBar    = null
   sceneBlkName = "gui/hud/hudTank.blk"
 
+  widgetsList = [
+    {
+      widgetId = DargWidgets.DAMAGE_PANEL
+      placeholderId = "xray_render_dmg_indicator"
+    }
+  ]
+
   function initScreen()
   {
     ::g_hud_display_timers.init(scene, ::ES_UNIT_TYPE_TANK)

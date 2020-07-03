@@ -36,7 +36,7 @@ local widgetsMap = {
       return airHud
     }
     else if (hudUnitType.isTank())
-      return tankHud
+      return tankHud.Root
     else if (hudUnitType.isShip() && !hudState.isPlayingReplay.value)
       return shipHud
     else if (hudUnitType.isSubmarine() && !hudState.isPlayingReplay.value)
@@ -66,7 +66,9 @@ local widgetsMap = {
   [DargWidgets.CHANGE_LOG] = @() {
     size = flex()
     children = changelog
-  }
+  },
+
+  [DargWidgets.DAMAGE_PANEL] = tankHud.tankTws
 }
 
 

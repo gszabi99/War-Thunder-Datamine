@@ -14,7 +14,7 @@ local { AMMO,
         getAmmoAmountData } = require("scripts/weaponry/ammoInfo.nut")
 local { isChatEnabled } = require("scripts/chat/chatStates.nut")
 local { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-local { hasFlares } = require("scripts/unit/unitStatus.nut")
+local { hasFlares , bombNbr } = require("scripts/unit/unitStatus.nut")
 
 ::last_ca_aircraft <- null
 ::used_planes <- {}
@@ -45,6 +45,8 @@ enum ESwitchSpectatorTarget
   {id = "gunvertical", hint = "options/gun_vertical_targeting", user_option = ::USEROPT_GUN_VERTICAL_TARGETING},
   {id = "bomb_activation_type",    hint = "options/bomb_activation_time",
     user_option = ::USEROPT_BOMB_ACTIVATION_TIME, isShowForRandomUnit =false },
+  {id = "bomb_series",    hint = "options/bomb_series",
+    user_option = ::USEROPT_BOMB_SERIES, isShowForRandomUnit =false },
   {id = "depthcharge_activation_time",  hint = "options/depthcharge_activation_time",
      user_option = ::USEROPT_DEPTHCHARGE_ACTIVATION_TIME, isShowForRandomUnit =false },
   {id = "mine_depth",  hint = "options/mine_depth",
@@ -1214,6 +1216,20 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     }
     showOptionRow(bombDescr.id, aircraft && bomb && unit.getAvailableSecondaryWeapons().hasBombs)
 
+    local bombSeriesDescr = ::get_option(::USEROPT_BOMB_SERIES)
+    local bombSeriesObj = scene.findObject(bombSeriesDescr.id)
+
+    updateOptionImpl(bombSeriesDescr)
+    if (needUpdateOptionItems && ::check_obj(bombSeriesObj))
+    {
+      local markup = ""
+      foreach (idx, item in bombSeriesDescr.items)
+        if (canChangeAircraft || idx == bombSeriesDescr.value)
+          markup += build_option_blk(item.text, "", idx == bombSeriesDescr.value, true, "", false, item.tooltip)
+      guiScene.replaceContentFromText(bombSeriesObj, markup, markup.len(), this)
+    }
+    showOptionRow(bombSeriesDescr.id, aircraft && bomb && bombNbr(unit) > 0)
+
     local rocketDescr = ::get_option(::USEROPT_ROCKET_FUSE_DIST)
     local rocketdistObj = scene.findObject(rocketDescr.id)
     if (needUpdateOptionItems && ::check_obj(rocketdistObj))
@@ -1238,7 +1254,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
           markup += build_option_blk(item.text, "", idx == flaresPeriodsDescr.value, true, "", false, item.tooltip)
       guiScene.replaceContentFromText(flarePeriodsObj, markup, markup.len(), this)
     }
-    showOptionRow(flaresPeriodsDescr.id, aircraft && rocket && hasFlares(unit))
+    showOptionRow(flaresPeriodsDescr.id, aircraft && hasFlares(unit))
 
     local flaresSeriesDescr = ::get_option(::USEROPT_FLARES_SERIES)
     local flareSeriesObj = scene.findObject(flaresSeriesDescr.id)
@@ -1250,7 +1266,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
           markup += build_option_blk(item.text, "", idx == flaresSeriesDescr.value, true, "", false, item.tooltip)
       guiScene.replaceContentFromText(flareSeriesObj, markup, markup.len(), this)
     }
-    showOptionRow(flaresSeriesDescr.id, aircraft && rocket && hasFlares(unit))
+    showOptionRow(flaresSeriesDescr.id, aircraft && hasFlares(unit))
 
     local flaresSeriesPeriodsDescr = ::get_option(::USEROPT_FLARES_SERIES_PERIODS)
     local flareSeriesPeriodsObj = scene.findObject(flaresSeriesPeriodsDescr.id)
@@ -1262,7 +1278,21 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
           markup += build_option_blk(item.text, "", idx == flaresSeriesPeriodsDescr.value, true, "", false, item.tooltip)
       guiScene.replaceContentFromText(flareSeriesPeriodsObj, markup, markup.len(), this)
     }
-    showOptionRow(flaresSeriesPeriodsDescr.id, aircraft && rocket && hasFlares(unit))
+    showOptionRow(flaresSeriesPeriodsDescr.id, aircraft && hasFlares(unit))
+  }
+
+  function updateOptionImpl(option)
+  {
+    local obj = scene.findObject(option.id)
+    if (!::check_obj(obj))
+      return
+
+    if (option.controlType == optionControlType.LIST)
+    {
+      local markup = ::create_option_combobox(option.id, option.items, option.value, null, false)
+      guiScene.replaceContentFromText(obj, markup, markup.len(), this)
+    } else
+      obj.setValue(option.value)
   }
 
   function updateOtherOptions()

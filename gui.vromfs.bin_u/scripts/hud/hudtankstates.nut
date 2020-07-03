@@ -19,6 +19,14 @@ local tankStatesByObjId = {
       updateObj = @(obj, value) obj.findObject("stabilizer").state = value == 0 ? "off" : "on"
     }]
   }
+  lws = {
+    objName = "lws"
+    updateConfigs = [{
+      watch = hudTankStates.getLwsObservable()
+      isVisible = @(value) value != -1
+      updateObj = @(obj, value) obj.findObject("lws").state = value == 0 ? "off" : "on"
+    }]
+  }
   gear = {
     objName = "gear"
     orderView = ORDER.GEAR

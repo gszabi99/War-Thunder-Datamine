@@ -22,9 +22,9 @@ local { openUrl } = require("scripts/onlineShop/url.nut")
   return ::isHandlerInScene(::gui_handlers.BrowserModalHandler)
 }
 
-::open_browser_modal <- function open_browser_modal(url="", tags=[])
+::open_browser_modal <- function open_browser_modal(url="", tags=[], baseUrl = "")
 {
-  ::gui_start_modal_wnd(::gui_handlers.BrowserModalHandler, {url = url, urlTags = tags})
+  ::gui_start_modal_wnd(::gui_handlers.BrowserModalHandler, { url = url, urlTags = tags, baseUrl = baseUrl })
 }
 
 ::close_browser_modal <- function close_browser_modal()
@@ -56,16 +56,18 @@ class ::gui_handlers.BrowserModalHandler extends ::BaseGuiHandler
   sceneNavBlkName = null
   url = ""
   externalUrl = ""
-  originalUrl = ""
+  lastLoadedUrl = ""
+  baseUrl = ""
   needVoiceChat = false
   urlTags = []
+  isLoadingPage = true
 
   function initScreen()
   {
     local browserObj = scene.findObject("browser_area")
     browserObj.url=url
     browserObj.select()
-    originalUrl = url
+    lastLoadedUrl = baseUrl
     browser_go(url)
   }
 
@@ -92,11 +94,18 @@ class ::gui_handlers.BrowserModalHandler extends ::BaseGuiHandler
 
   function browserForceExternal()
   {
-    local taggedUrl = ::browser_get_current_url()
-    if (!u.isEmpty(urlTags))
-        taggedUrl = ::g_string.implode(urlTags, " ") + " " + taggedUrl
+    local taggedUrl = isLoadingPage
+      ? lastLoadedUrl
+      : ::browser_get_current_url()
+    if (!u.isEmpty(urlTags) && taggedUrl != "")
+    {
+      local tagsStr = " ".join(urlTags)
+      if (!::g_string.startsWith(taggedUrl, tagsStr))
+        taggedUrl = " ".concat(tagsStr, taggedUrl)
+    }
+
     local newUrl = u.isEmpty(externalUrl) ? taggedUrl : externalUrl
-    openUrl(u.isEmpty(newUrl) ? originalUrl : newUrl, true, false, "internal_browser")
+    openUrl(u.isEmpty(newUrl) ? baseUrl : newUrl, true, false, "internal_browser")
   }
 
   function setTitle(title)
@@ -114,6 +123,7 @@ class ::gui_handlers.BrowserModalHandler extends ::BaseGuiHandler
     switch (params.eventType)
     {
       case ::BROWSER_EVENT_DOCUMENT_READY:
+        lastLoadedUrl = ::browser_get_current_url()
         toggleWaitAnimation(false)
         break;
       case ::BROWSER_EVENT_FAIL_LOADING_FRAME:
@@ -146,6 +156,7 @@ class ::gui_handlers.BrowserModalHandler extends ::BaseGuiHandler
         }
         break;
       case ::BROWSER_EVENT_FINISH_LOADING_FRAME:
+        lastLoadedUrl = ::browser_get_current_url()
         if (params.isMainFrame)
         {
           toggleWaitAnimation(false)
@@ -180,8 +191,9 @@ class ::gui_handlers.BrowserModalHandler extends ::BaseGuiHandler
 
   function toggleWaitAnimation(show)
   {
-    local waitSpinner = scene.findObject("browserWaitAnimation");
+    isLoadingPage = show
 
+    local waitSpinner = scene.findObject("browserWaitAnimation");
     if (::checkObj(waitSpinner))
       waitSpinner.show(show);
   }
