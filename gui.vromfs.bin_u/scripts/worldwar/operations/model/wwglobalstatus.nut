@@ -1,6 +1,7 @@
 local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
 
-const REQUEST_TIMEOUT_MSEC = 300000
+const REFRESH_MIN_TIME_MSEC = 180000
+const MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH = 2  //!!!FIX ME: it is better to increase request timeout gradually starting from min request time
 
 local curData = persist("curData", @() ::Watched(null))
 local validListsMask = persist("validListsMask", @() ::Watched(0))
@@ -18,13 +19,16 @@ local function pushStatusChangedEvent(changedListsMask) {
   ::ww_event("GlobalStatusChanged", { changedListsMask = changedListsMask })
 }
 
-local function canRefreshData(refreshDelay) {
+local function canRefreshData(refreshDelay = null) {
+  if (!::has_feature("WorldWar"))
+    return false
+  local refreshMinTime = ::g_world_war.getSetting("refreshGlobalStatusMinTimeMsec", REFRESH_MIN_TIME_MSEC)
+  refreshDelay = refreshDelay ?? refreshMinTime
+  local requestTimeoutMsec = refreshMinTime * MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH
   if (lastRequestTime.value > lastUpdatetTime.value
-      && lastRequestTime.value + REQUEST_TIMEOUT_MSEC > ::dagor.getCurTime())
+      && lastRequestTime.value + requestTimeoutMsec > ::dagor.getCurTime())
     return false
   if (lastUpdatetTime.value > 0 && lastUpdatetTime.value + refreshDelay > ::dagor.getCurTime())
-    return false
-  if (!::has_feature("WorldWar"))
     return false
   return true
 }
@@ -77,7 +81,7 @@ subscriptions.addListenersWithoutEnv({
   MyClanIdChanged = onEventMyClanIdChanged
 })
 
-local function refreshGlobalStatusData(refreshDelay = WWGS_REFRESH_DELAY.LATENT_QUEUE_REFRESH) {
+local function refreshGlobalStatusData(refreshDelay = null) {
   if (canRefreshData(refreshDelay))
     actionWithGlobalStatusRequest("cln_ww_global_status", null)
 }

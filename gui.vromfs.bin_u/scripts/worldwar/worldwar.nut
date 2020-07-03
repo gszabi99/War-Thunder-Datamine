@@ -16,13 +16,6 @@ global enum WW_ARMY_RELATION_ID
   ALLY
 }
 
-global enum WWGS_REFRESH_DELAY //Msec
-{
-  FORCED = 0
-  EXTERNAL_REQUEST = 15000
-  LATENT_QUEUE_REFRESH = 60000
-}
-
 global enum WW_GLOBAL_STATUS_TYPE //bit enum
 {
   QUEUE              = 0x0001

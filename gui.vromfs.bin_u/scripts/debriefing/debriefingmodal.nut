@@ -435,7 +435,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       res.append(::build_log_unlock_data(logsList[i]))
 
     //add debugUnlocks
-    if (debugUnlocks <= res.len())
+    if (!::is_dev_version || debugUnlocks <= res.len())
       return res
 
     local dbgFilter = clone filter
@@ -443,7 +443,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     logsList = getUserLogsList(dbgFilter)
     if (!logsList.len())
     {
-      ::dlog("Not found any unlocks in userlogs for debug")
+      ::dlog("Not found any unlocks in userlogs for debug") // warning disable: -forbidden-function
       return res
     }
 

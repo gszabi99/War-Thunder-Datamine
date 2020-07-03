@@ -1,3 +1,5 @@
+// warning disable: -file:forbidden-function
+
 local dbgExportToFile = require("scripts/debugTools/dbgExportToFile.nut")
 local shopSearchCore = require("scripts/shop/shopSearchCore.nut")
 local dirtyWordsFilter = require("scripts/dirtyWords/dirtyWords.nut")
@@ -507,6 +509,12 @@ local { getWeaponInfoText, getWeaponNameText } = require("scripts/weaponry/weapo
 ::debug_tips_list <- function debug_tips_list() {
   debug_wnd("gui/debugTools/dbgTipsList.tpl",
     {tipsList = ::g_tips.getAllTips().map(@(value) { value = value })})
+}
+
+::debug_get_skyquake_path <- function debug_get_skyquake_path() {
+  local dir = ::get_exe_dir()
+  local idx = dir.indexof("/skyquake/")
+  return idx != null ? dir.slice(0, idx + 9) : ""
 }
 
 ::debug_load_anim_bg <- require("scripts/loading/animBg.nut").debugLoad

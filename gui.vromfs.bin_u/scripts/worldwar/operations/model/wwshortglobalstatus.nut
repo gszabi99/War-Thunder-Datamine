@@ -1,7 +1,7 @@
 local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
 
 const REFRESH_MIN_TIME_MSEC = 600000
-const REQUEST_TIMEOUT_MSEC = 1200000
+const MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH = 2  //!!!FIX ME: it is better to increase request timeout gradually starting from min request time
 
 local curData = persist("curData", @() ::Watched(null))
 local validListsMask = persist("validListsMask", @() ::Watched(0))
@@ -18,10 +18,13 @@ local function canRefreshData() {
     return false
   if (lastRequestUid.value != ::my_user_id_int64) //force request if user changed. Instead force request after relogin
     return true
+
+  local refreshMinTime = ::g_world_war.getSetting("refreshShortGlobalStatusMinTimeMsec", REFRESH_MIN_TIME_MSEC)
+  local requestTimeoutMsec = refreshMinTime * MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH
   if (lastRequestTime.value > lastUpdatetTime.value
-      && lastRequestTime.value + REQUEST_TIMEOUT_MSEC > ::dagor.getCurTime())
+      && lastRequestTime.value + requestTimeoutMsec > ::dagor.getCurTime())
     return false
-  if (lastUpdatetTime.value > 0 && lastUpdatetTime.value + REFRESH_MIN_TIME_MSEC > ::dagor.getCurTime())
+  if (lastUpdatetTime.value > 0 && lastUpdatetTime.value + refreshMinTime > ::dagor.getCurTime())
     return false
   return true
 }

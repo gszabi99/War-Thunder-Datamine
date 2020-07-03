@@ -1,3 +1,5 @@
+// warning disable: -file:forbidden-function
+
 ::g_hud_debug_objects <- {
   eventsPerSec = 0
   curTimerObj = null

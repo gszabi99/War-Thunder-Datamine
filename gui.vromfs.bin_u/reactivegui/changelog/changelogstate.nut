@@ -29,7 +29,7 @@ local curVersionInfo = ::Computed(function(){
     res = require_optional(langFile(curPatch.version, languageName.value.tolower())) ?? require_optional(langFile(curPatch.version, "en"))
   }
   catch(e){
-    dlog("Some errors happened during loading update info")
+    ::dlog("Some errors happened during loading update info") // warning disable: -forbidden-function
   }
   return res
 })

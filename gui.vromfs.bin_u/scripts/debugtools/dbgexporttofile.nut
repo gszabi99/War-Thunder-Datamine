@@ -1,3 +1,5 @@
+// warning disable: -file:forbidden-function
+
 /**
  *  export() is a tool for batch exporting a huge amounts of data into blk file without a freeze.
  *  It uses guiScene.performDelayed() to prosess a little part of data on every frame.
