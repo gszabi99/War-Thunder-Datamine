@@ -362,19 +362,18 @@ local modsTree = {
 
   function debugTree(branch=null, addStr="DD: ") //!!debug only
   {
-    local debugLog = ::dlog // warning disable: -forbidden-function
     if (!branch)
       branch = tree
     foreach(idx, item in branch)
       if (typeof(item)=="table") //modification
-        debugLog($"{addStr}{item.name} ({item.tier}, {item?.guiPosX ?? 0})")
+        dlog(addStr + item.name + " (" + item.tier + ", " + ("guiPosX" in item? item.guiPosX : 0) + ")")
       else if (typeof(item)=="array") //branch
       {
-        debugLog($"{addStr}[")
+        dlog(addStr + "[")
         debugTree(item, addStr + "  ")
-        debugLog($"{addStr}]")
+        dlog(addStr + "]")
       } else if (typeof(item)=="string")
-        debugLog($"{addStr}modClass = {item}")
+        dlog(addStr + "modClass = " + item)
   }
 
   function checkNotInTreeMods(notInTreeMods) //for debug and assertion only

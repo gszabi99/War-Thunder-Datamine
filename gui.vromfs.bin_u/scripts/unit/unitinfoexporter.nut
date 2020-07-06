@@ -28,7 +28,6 @@ class UnitInfoExporter
   langBeforeExport = ""
   curLang = ""
 
-  debugLog = ::dlog // warning disable: -forbidden-function
   isToStringForDebug = true
 
   fullBlk = null
@@ -73,7 +72,7 @@ class UnitInfoExporter
       return true
     }
 
-    debugLog("Exporter: Error: Previous exporter not finish process")
+    dlog("Exporter: Error: Previous exporter not finish process")
     return false
   }
 
@@ -113,14 +112,14 @@ class UnitInfoExporter
     if (!langsList.len())
     {
       remove()
-      debugLog("Exporter: DONE.")
+      dlog("Exporter: DONE.")
       return
     }
 
     curLang = langsList.pop()
     ::g_language.setGameLocalization(curLang, false, false)
 
-    debugLog($"Exporter: gen all units info to {getFullPath()}")
+    dlog("Exporter: gen all units info to " + getFullPath())
     ::get_main_gui_scene().performDelayed(this, startExport) //delay to show exporter logs
   }
 

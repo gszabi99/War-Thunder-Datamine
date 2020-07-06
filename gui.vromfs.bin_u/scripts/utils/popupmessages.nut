@@ -169,11 +169,10 @@ g_popup_msg.showPopupWndIfNeed <- function showPopupWndIfNeed(hasModalObject)
 
 g_popup_msg.showPopupDebug <- function showPopupDebug(dbgId)
 {
-  local debugLog = ::dlog // warning disable: -forbidden-function
   local popupsBlk = ::get_gui_regional_blk()?.popupItems
   if (!::u.isDataBlock(popupsBlk))
   {
-    debugLog("POPUP ERROR: No popupItems in gui_regional.blk")
+    dlog("POPUP ERROR: No popupItems in gui_regional_blk")
     return false
   }
 
@@ -188,7 +187,7 @@ g_popup_msg.showPopupDebug <- function showPopupDebug(dbgId)
     ::showUnlockWnd(popupConfig)
     return true
   }
-  debugLog($"POPUP ERROR: Not found {dbgId}")
+  dlog("POPUP ERROR: Not found " + dbgId)
   return false
 }
 
