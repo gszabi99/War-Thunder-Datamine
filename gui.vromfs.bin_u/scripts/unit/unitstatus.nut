@@ -123,9 +123,17 @@ local function hasFlares(unit) {
     || isAvailablePrimaryWeapon(unit, "flares")
 }
 
+local function bombNbr(unit) {
+  if (unit == null)
+    return -1
+
+  return unit.getAvailableSecondaryWeapons().bombsNbr
+}
+
 return {
   canBuyNotResearched = canBuyNotResearched
   isShipWithoutPurshasedTorpedoes = isShipWithoutPurshasedTorpedoes
   getBitStatus = getBitStatus
   hasFlares = hasFlares
+  bombNbr = bombNbr
 }
