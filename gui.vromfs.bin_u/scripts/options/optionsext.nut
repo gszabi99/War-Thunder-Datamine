@@ -611,11 +611,11 @@ local isWaitMeasureEvent = false
        }
 
        descr.values.append(nbrBomb)
-       local text = descr.values[descr.values.len() - 1].tostring()
+       local textLoc = "options/bomb_series_all"
        local tooltipLoc = "guiHints/bomb_series_all"
        descr.items.append({
-        text = text
-        tooltip = ::loc(tooltipLoc, { num = -1 })
+        text = ::loc(textLoc, { num = nbrBomb })
+        tooltip = ::loc(tooltipLoc)
         })
 
        descr.value = find_in_array(descr.values, ::get_option_bombs_series())
