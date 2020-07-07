@@ -1887,112 +1887,13 @@
             "time": 0.0
           }
         },
-        "conditions": {
-          "unitWhenInArea": [
-            {
-              "math": "3D"
-            },
-            {
-              "object_type": "isTeamB"
-            },
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "check_objects": "any"
-            },
-            {
-              "object": "all_ships_squad"
-            },
-            {
-              "object": "all_players_squad"
-            },
-            {
-              "target": "@pt_turning_capture_area_name"
-            }
-          ],
-          "missionIsZoneCaptured": {
-            "target": "@pt_turning_capture_area_name",
-            "army": 0
+        "conditions": [],
+        "actions": {
+          "triggerEnable": {
+            "target": "pt_port_turning_t1_players_t1_count"
           }
         },
-        "actions": [
-          {
-            "comment": {
-              "value": "игроки в зоне. прячем спавн"
-            }
-          },
-          {
-            "__missionMarkAsRespawnPoint": {
-              "loc_name": "@pt_turning_spawns_loc_string",
-              "spawnEffect": false,
-              "isStrictSpawn": false,
-              "resetStrictSpawnIndex": false,
-              "isAirfield": false,
-              "isUnit": false,
-              "useExisting": true,
-              "isIndividual": true,
-              "onlyOnePlayerPerSpawnPoint": false,
-              "removeAreas": false,
-              "replaceAreas": true,
-              "canSpawnOnNeutral": false,
-              "showOnMap": true,
-              "radius": -1.0,
-              "forceCreate": false,
-              "target": "@pt_turning_spawns_squad_name",
-              "team": "A",
-              "tags": {
-                "type_bomber": false,
-                "type_fighter": false,
-                "type_assault": false,
-                "none_can_spawn": true,
-                "helicopter": false,
-                "tank": false,
-                "ship": false,
-                "boat": false
-              }
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "pt_port_turning_t1_cruisers_and_destroyers_spawns_off"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем спавн самолетов"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "pt_port_turning_t1_enemy_at_zone_air_spawn"
-            }
-          },
-          {
-            "comment": {
-              "value": "идем дальше по циклу"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "pt_ports_turning_rotator"
-            }
-          }
-        ],
-        "else_actions": {
-          "comment": {
-            "value": "врагов нет рядом. проверяем не надо ли включить спавны"
-          },
-          "triggerEnable": {
-            "target": "pt_port_turning_t1_enemy_leave_zone"
-          }
-        }
+        "else_actions": []
       },
       "pt_port_turning_t1_enemy_at_zone_air_spawn": {
         "is_enabled": false,
@@ -2065,38 +1966,15 @@
           }
         },
         "conditions": {
-          "unitWhenInArea": [
-            {
-              "math": "notNear3D"
-            },
-            {
-              "object_type": "isTeamB"
-            },
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "check_objects": "any"
-            },
-            {
-              "object": "all_ships_squad"
-            },
-            {
-              "object": "all_players_squad"
-            },
-            {
-              "target": "@pt_turning_capture_area_name"
-            }
-          ],
           "missionIsZoneCaptured": {
             "target": "@pt_turning_capture_area_name",
             "army": 1
+          },
+          "varCompareInt": {
+            "var_value": "pt_t1_port_units_t2_count",
+            "value": 0,
+            "comparasion_func": "less",
+            "var_value_other": "pt_t1_port_units_t1_count"
           }
         },
         "actions": [
@@ -2232,112 +2110,13 @@
             "time": 0.0
           }
         },
-        "conditions": {
-          "unitWhenInArea": [
-            {
-              "math": "3D"
-            },
-            {
-              "object_type": "isTeamA"
-            },
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "check_objects": "any"
-            },
-            {
-              "object": "all_ships_squad"
-            },
-            {
-              "object": "all_players_squad"
-            },
-            {
-              "target": "@pt_turning_capture_area_name"
-            }
-          ],
-          "missionIsZoneCaptured": {
-            "target": "@pt_turning_capture_area_name",
-            "army": 0
+        "conditions": [],
+        "actions": {
+          "triggerEnable": {
+            "target": "pt_port_turning_t2_players_t1_count"
           }
         },
-        "actions": [
-          {
-            "comment": {
-              "value": "игроки в зоне. прячем спавн"
-            }
-          },
-          {
-            "__missionMarkAsRespawnPoint": {
-              "loc_name": "@pt_turning_spawns_loc_string",
-              "spawnEffect": false,
-              "isStrictSpawn": false,
-              "resetStrictSpawnIndex": false,
-              "isAirfield": false,
-              "isUnit": false,
-              "useExisting": true,
-              "isIndividual": true,
-              "onlyOnePlayerPerSpawnPoint": false,
-              "removeAreas": false,
-              "replaceAreas": true,
-              "canSpawnOnNeutral": false,
-              "showOnMap": true,
-              "radius": -1.0,
-              "forceCreate": false,
-              "target": "@pt_turning_spawns_squad_name",
-              "team": "B",
-              "tags": {
-                "type_bomber": false,
-                "type_fighter": false,
-                "type_assault": false,
-                "none_can_spawn": true,
-                "helicopter": false,
-                "tank": false,
-                "ship": false,
-                "boat": false
-              }
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "pt_port_turning_t2_cruisers_and_destroyers_spawns_off"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем спавн самолетов"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "pt_port_turning_t2_enemy_at_zone_air_spawn"
-            }
-          },
-          {
-            "comment": {
-              "value": "идем дальше по циклу"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "pt_ports_turning_rotator"
-            }
-          }
-        ],
-        "else_actions": {
-          "comment": {
-            "value": "врагов нет рядом. проверяем не надо ли включить спавны"
-          },
-          "triggerEnable": {
-            "target": "pt_port_turning_t2_enemy_leave_zone"
-          }
-        }
+        "else_actions": []
       },
       "pt_port_turning_t2_enemy_at_zone_air_spawn": {
         "is_enabled": false,
@@ -2410,38 +2189,15 @@
           }
         },
         "conditions": {
-          "unitWhenInArea": [
-            {
-              "math": "notNear3D"
-            },
-            {
-              "object_type": "isTeamA"
-            },
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "check_objects": "any"
-            },
-            {
-              "object": "all_ships_squad"
-            },
-            {
-              "object": "all_players_squad"
-            },
-            {
-              "target": "@pt_turning_capture_area_name"
-            }
-          ],
           "missionIsZoneCaptured": {
             "target": "@pt_turning_capture_area_name",
             "army": 2
+          },
+          "varCompareInt": {
+            "var_value": "pt_t2_port_units_t1_count",
+            "value": 0,
+            "comparasion_func": "less",
+            "var_value_other": "pt_t2_port_units_t2_count"
           }
         },
         "actions": [
@@ -3441,6 +3197,516 @@
             }
           }
         ]
+      },
+      "pt_port_turning_t1_players_t1_count": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "unitWhenInArea": [
+            {
+              "math": "3D"
+            },
+            {
+              "object_type": "isTeamA"
+            },
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "check_objects": "any"
+            },
+            {
+              "object": "all_ships_squad"
+            },
+            {
+              "object": "all_players_squad"
+            },
+            {
+              "target": "@pt_turning_capture_area_name"
+            }
+          ]
+        },
+        "actions": {
+          "getUnitsCount": [
+            {
+              "target": "all_ships_squad"
+            },
+            {
+              "target": "all_players_squad"
+            },
+            {
+              "useForTriggerFiltered": true
+            },
+            {
+              "var": "pt_t1_port_units_t1_count"
+            }
+          ],
+          "comment": {
+            "value": ""
+          },
+          "triggerEnable": {
+            "target": "pt_port_turning_t1_players_t2_count"
+          }
+        },
+        "else_actions": {
+          "varSetInt": {
+            "value": 0,
+            "var": "pt_t1_port_units_t1_count"
+          },
+          "comment": {
+            "value": ""
+          },
+          "triggerEnable": {
+            "target": "pt_port_turning_t1_players_t2_count"
+          }
+        }
+      },
+      "pt_port_turning_t1_players_t2_count": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "unitWhenInArea": [
+            {
+              "math": "3D"
+            },
+            {
+              "object_type": "isTeamB"
+            },
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "check_objects": "any"
+            },
+            {
+              "object": "all_ships_squad"
+            },
+            {
+              "object": "all_players_squad"
+            },
+            {
+              "target": "@pt_turning_capture_area_name"
+            }
+          ]
+        },
+        "actions": {
+          "getUnitsCount": [
+            {
+              "target": "all_ships_squad"
+            },
+            {
+              "target": "all_players_squad"
+            },
+            {
+              "useForTriggerFiltered": true
+            },
+            {
+              "var": "pt_t1_port_units_t2_count"
+            }
+          ],
+          "comment": {
+            "value": ""
+          },
+          "triggerEnable": {
+            "target": "pt_port_turning_t1_enemy_final_check"
+          }
+        },
+        "else_actions": {
+          "varSetInt": {
+            "value": 0,
+            "var": "pt_t1_port_units_t2_count"
+          },
+          "comment": {
+            "value": ""
+          },
+          "triggerEnable": {
+            "target": "pt_port_turning_t1_enemy_final_check"
+          }
+        }
+      },
+      "pt_port_turning_t2_players_t1_count": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "unitWhenInArea": [
+            {
+              "math": "3D"
+            },
+            {
+              "object_type": "isTeamA"
+            },
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "check_objects": "any"
+            },
+            {
+              "object": "all_ships_squad"
+            },
+            {
+              "object": "all_players_squad"
+            },
+            {
+              "target": "@pt_turning_capture_area_name"
+            }
+          ]
+        },
+        "actions": {
+          "getUnitsCount": [
+            {
+              "target": "all_ships_squad"
+            },
+            {
+              "target": "all_players_squad"
+            },
+            {
+              "useForTriggerFiltered": true
+            },
+            {
+              "var": "pt_t2_port_units_t1_count"
+            }
+          ],
+          "comment": {
+            "value": ""
+          },
+          "triggerEnable": {
+            "target": "pt_port_turning_t2_players_t2_count"
+          }
+        },
+        "else_actions": {
+          "varSetInt": {
+            "value": 0,
+            "var": "pt_t2_port_units_t1_count"
+          },
+          "comment": {
+            "value": ""
+          },
+          "triggerEnable": {
+            "target": "pt_port_turning_t2_players_t2_count"
+          }
+        }
+      },
+      "pt_port_turning_t2_players_t2_count": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "unitWhenInArea": [
+            {
+              "math": "3D"
+            },
+            {
+              "object_type": "isTeamB"
+            },
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "check_objects": "any"
+            },
+            {
+              "object": "all_ships_squad"
+            },
+            {
+              "object": "all_players_squad"
+            },
+            {
+              "target": "@pt_turning_capture_area_name"
+            }
+          ]
+        },
+        "actions": {
+          "getUnitsCount": [
+            {
+              "target": "all_ships_squad"
+            },
+            {
+              "target": "all_players_squad"
+            },
+            {
+              "useForTriggerFiltered": true
+            },
+            {
+              "var": "pt_t2_port_units_t2_count"
+            }
+          ],
+          "comment": {
+            "value": ""
+          },
+          "triggerEnable": {
+            "target": "pt_port_turning_t2_enemy_final_check"
+          }
+        },
+        "else_actions": {
+          "varSetInt": {
+            "value": 0,
+            "var": "pt_t2_port_units_t2_count"
+          },
+          "comment": {
+            "value": ""
+          },
+          "triggerEnable": {
+            "target": "pt_port_turning_t2_enemy_final_check"
+          }
+        }
+      },
+      "pt_port_turning_t1_enemy_final_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "missionIsZoneCaptured": {
+            "target": "@pt_turning_capture_area_name",
+            "army": 0
+          },
+          "varCompareInt": {
+            "var_value": "pt_t1_port_units_t2_count",
+            "value": 0,
+            "comparasion_func": "more",
+            "var_value_other": "pt_t1_port_units_t1_count"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "игроки в зоне. прячем спавн"
+            }
+          },
+          {
+            "__missionMarkAsRespawnPoint": {
+              "loc_name": "@pt_turning_spawns_loc_string",
+              "spawnEffect": false,
+              "isStrictSpawn": false,
+              "resetStrictSpawnIndex": false,
+              "isAirfield": false,
+              "isUnit": false,
+              "useExisting": true,
+              "isIndividual": true,
+              "onlyOnePlayerPerSpawnPoint": false,
+              "removeAreas": false,
+              "replaceAreas": true,
+              "canSpawnOnNeutral": false,
+              "showOnMap": true,
+              "radius": -1.0,
+              "forceCreate": false,
+              "target": "@pt_turning_spawns_squad_name",
+              "team": "A",
+              "tags": {
+                "type_bomber": false,
+                "type_fighter": false,
+                "type_assault": false,
+                "none_can_spawn": true,
+                "helicopter": false,
+                "tank": false,
+                "ship": false,
+                "boat": false
+              }
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "pt_port_turning_t1_cruisers_and_destroyers_spawns_off"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем спавн самолетов"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "pt_port_turning_t1_enemy_at_zone_air_spawn"
+            }
+          },
+          {
+            "comment": {
+              "value": "идем дальше по циклу"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "pt_ports_turning_rotator"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "врагов нет рядом. проверяем не надо ли включить спавны"
+          },
+          "triggerEnable": {
+            "target": "pt_port_turning_t1_enemy_leave_zone"
+          }
+        }
+      },
+      "pt_port_turning_t2_enemy_final_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "missionIsZoneCaptured": {
+            "target": "@pt_turning_capture_area_name",
+            "army": 0
+          },
+          "varCompareInt": {
+            "var_value": "pt_t2_port_units_t1_count",
+            "value": 0,
+            "comparasion_func": "more",
+            "var_value_other": "pt_t2_port_units_t2_count"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "игроки в зоне. прячем спавн"
+            }
+          },
+          {
+            "__missionMarkAsRespawnPoint": {
+              "loc_name": "@pt_turning_spawns_loc_string",
+              "spawnEffect": false,
+              "isStrictSpawn": false,
+              "resetStrictSpawnIndex": false,
+              "isAirfield": false,
+              "isUnit": false,
+              "useExisting": true,
+              "isIndividual": true,
+              "onlyOnePlayerPerSpawnPoint": false,
+              "removeAreas": false,
+              "replaceAreas": true,
+              "canSpawnOnNeutral": false,
+              "showOnMap": true,
+              "radius": -1.0,
+              "forceCreate": false,
+              "target": "@pt_turning_spawns_squad_name",
+              "team": "B",
+              "tags": {
+                "type_bomber": false,
+                "type_fighter": false,
+                "type_assault": false,
+                "none_can_spawn": true,
+                "helicopter": false,
+                "tank": false,
+                "ship": false,
+                "boat": false
+              }
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "pt_port_turning_t2_cruisers_and_destroyers_spawns_off"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем спавн самолетов"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "pt_port_turning_t2_enemy_at_zone_air_spawn"
+            }
+          },
+          {
+            "comment": {
+              "value": "идем дальше по циклу"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "pt_ports_turning_rotator"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "врагов нет рядом. проверяем не надо ли включить спавны"
+          },
+          "triggerEnable": {
+            "target": "pt_port_turning_t2_enemy_leave_zone"
+          }
+        }
       }
     },
     "pt_ports_generate_size": {
@@ -15270,7 +15536,11 @@
     "pt_attack_t1_attacker_name": "",
     "pt_attack_t2_attacker_name": "",
     "pt_reinforcement_first_time_create_spawn_for_convoy": false,
-    "pt_real_capture_port_area_name": ""
+    "pt_real_capture_port_area_name": "",
+    "pt_t1_port_units_t1_count": 0,
+    "pt_t1_port_units_t2_count": 0,
+    "pt_t2_port_units_t1_count": 0,
+    "pt_t2_port_units_t2_count": 0
   },
   "dialogs": [],
   "airfields": [],
