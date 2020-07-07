@@ -123,7 +123,7 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
     rowsInPage = 1
     pos = 0
     lbMode = ""
-    platform = ""
+    platformFilter = ""
   }
 
   function reset()
@@ -194,7 +194,8 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
     db.setStr("valueType", requestData.lbType == ::ETTI_VALUE_INHISORY? LEADERBOARD_VALUE_INHISTORY : LEADERBOARD_VALUE_TOTAL)
     db.setInt("count", requestData.rowsInPage)
     db.setStr("gameMode", requestData.lbMode)
-    db.setStr("platform", requestData.platform)
+    db.setStr("platformFilter", requestData.platformFilter)
+    db.setStr("platform",       requestData.platformFilter)  // deprecated, delete after lb-server release
     db.setInt("start", requestData.pos)
 
     local taskId = ::request_leaderboard_blk(db)
@@ -213,7 +214,8 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
     db.setStr("valueType", requestData.lbType == ::ETTI_VALUE_INHISORY? LEADERBOARD_VALUE_INHISTORY : LEADERBOARD_VALUE_TOTAL)
     db.setInt("count", 0)
     db.setStr("gameMode", requestData.lbMode)
-    db.setStr("platform", requestData.platform)
+    db.setStr("platformFilter", requestData.platformFilter)
+    db.setStr("platform",       requestData.platformFilter)  // deprecated, delete after lb-server release
 
     local taskId = ::request_leaderboard_blk(db)
     ::add_bg_task_cb(taskId, @() ::leaderboardModel.handleSelfRowLbRequest(requestData))
@@ -410,14 +412,14 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
   rowsInPage  = 16
   maxRows     = 1000
 
-  platform = ""
+  platformFilter = ""
   request = {
     lbType     = null
     lbField    = null
     rowsInPage = null
     pos        = null
     lbMode     = ""
-    platform = ""
+    platformFilter = ""
   }
   pageData    = null
   selfRowData = null
@@ -427,8 +429,6 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
 
   function initScreen()
   {
-    ::add_big_query_record("global_leaderboard.open", "")
-
     ::req_unlock_by_client("view_leaderboards", false)
     if (!lbModel)
     {
@@ -440,9 +440,11 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
 
     curLbCategory = lb_presets[0]
     lbType = ::loadLocalByAccount("leaderboards_type", ::ETTI_VALUE_INHISORY)
-    platform = getSeparateLeaderboardPlatformName()
+    platformFilter = getSeparateLeaderboardPlatformName()
     pos = 0
     rowsInPage = 16
+
+    ::add_big_query_record("global_leaderboard.open", platformFilter)
 
     initTable()
     initModes()

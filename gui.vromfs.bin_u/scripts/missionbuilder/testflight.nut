@@ -153,7 +153,6 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
       [::USEROPT_GUN_TARGET_DISTANCE, "spinner"],
       [::USEROPT_GUN_VERTICAL_TARGETING, "spinner"],
       [::USEROPT_BOMB_ACTIVATION_TIME, "spinner"],
-      [::USEROPT_BOMB_SERIES, "spinner"],
       [::USEROPT_ROCKET_FUSE_DIST, "spinner"],
       [::USEROPT_LOAD_FUEL_AMOUNT, "spinner"],
       [::USEROPT_FLARES_SERIES, "spinner"],

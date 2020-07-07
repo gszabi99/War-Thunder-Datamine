@@ -57,7 +57,8 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
     if (!lb_presets)
       lb_presets = ::ww_leaderboards_list
 
-    platform = getSeparateLeaderboardPlatformName()
+    platformFilter = getSeparateLeaderboardPlatformName()
+    ::add_big_query_record("ww_leaderboard.open", platformFilter)
 
     initTable()
     fillMapsList()
@@ -244,7 +245,7 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
       gameMode = requestData.modeName + requestData.modePostFix
       table    = requestData.day && requestData.day > 0 ? "day" + requestData.day : "season"
       category = lbField
-      platform = requestData.platform
+      platformFilter = requestData.platformFilter
     }
 
     local cb = function(hasSelfRow = false)
@@ -297,6 +298,7 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
     lbModeData = lbModesList[modeObjValue]
     lbMode = lbModeData.mode
     forClans = lbMode == "ww_clans"
+    ::add_big_query_record("ww_leaderboard.select_mode", lbMode);
 
     delayedRestoreFocus()
     checkLbCategory()
@@ -336,6 +338,7 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
       return
 
     lbDay = lbDaysList[dayObjValue]
+    ::add_big_query_record("ww_leaderboard.select_day", lbDay?.tostring() ?? "all")
 
     fetchLbData()
   }
@@ -347,6 +350,7 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
       return
 
     lbMap = lbMapsList[mapObjValue]
+    ::add_big_query_record("ww_leaderboard.select_map", lbMap?.getId() ?? "all")
 
     if (!isCountriesLeaderboard())
       updateCountriesComboBox(lbMap)
@@ -361,6 +365,7 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
       return
 
     lbCountry = lbCountriesList[countryObjValue]
+    ::add_big_query_record("ww_leaderboard.select_country", lbCountry ?? "all")
 
     if (!isCountriesLeaderboard())
       fetchLbData()
@@ -387,7 +392,7 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
       modeName = lbModeData.mode
       modePostFix = mapId + countryId
       day = lbModeData.hasDaysData ? lbDay : null
-      platform = lbModeData?.needShowConsoleFilter ? platform : ""
+      platformFilter = lbModeData?.needShowConsoleFilter ? platformFilter : ""
     }
   }
 

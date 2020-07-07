@@ -1,6 +1,6 @@
 local time = require("scripts/time.nut")
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
-local { getMapByName } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+local { getMapByName, getMapFromShortStatusByName } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 enum WW_OPERATION_STATUSES
 {
@@ -61,7 +61,10 @@ class WwOperation
 
   function getMap()
   {
-    return getMapByName(getMapId(), isFromShortStatus)
+    if (isFromShortStatus)
+      return getMapFromShortStatusByName(getMapId())
+    else
+      return getMapByName(getMapId())
   }
 
   function getNameText(full = true)

@@ -1,5 +1,3 @@
-// warning disable: -file:forbidden-function
-
 ::dlog <- function dlog(...)
 {
   for (local i = 0; i < vargv.len(); i++)
@@ -12,7 +10,7 @@
 ::clog <- function clog(...)
 {
   foreach (arg in vargv)
-    ::dagor.console_print(::type(arg) == "string" ? arg : ::toString(arg))
+    ::dagor.console_print(::toString(arg))
 }
 
 ::can_be_readed_as_datablock <- function can_be_readed_as_datablock(blk) //can be overrided by dataBlockAdapter

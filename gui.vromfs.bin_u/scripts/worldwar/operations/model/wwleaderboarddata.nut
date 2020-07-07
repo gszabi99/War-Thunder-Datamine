@@ -54,7 +54,7 @@ dataParams = {
   start    = 1  // start position lb request
   count    = 0  // count of records
   category = ::g_lb_category.WW_EVENTS_PERSONAL_ELO.field // sort field parametr
-  platform = "" //"ps4" for ps4 only players
+  platformFilter = "" //"ps4" for ps4 only players
 }
 headersParams = {
   userId = -1 //optional parameter. Equal to user id for user leaderboard and clan id for clan leaderboard

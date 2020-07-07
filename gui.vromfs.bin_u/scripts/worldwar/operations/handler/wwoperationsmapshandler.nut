@@ -7,7 +7,7 @@ local { getCurrenNotCompletedUnlocks, unlocksChapterName } = require("scripts/wo
 local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 local globalBattlesListData = require("scripts/worldWar/operations/model/wwGlobalBattlesList.nut")
 local { isMatchFilterMask } = require("scripts/worldWar/handler/wwBattlesFilterMenu.nut")
-local { getNearestAvailableMapToBattle, getMyClanOperation, getMapByName, isMyClanInQueue
+local { getNearestMapToBattle, getMyClanOperation, getMapByName, isMyClanInQueue, isRecievedGlobalStatusMaps
 } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 local { refreshGlobalStatusData } = require("scripts/worldWar/operations/model/wwGlobalStatus.nut")
 
@@ -46,6 +46,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
   mapDescrObj = null
   selCountryId = ""
   trophiesAmount = 0
+  needCheckSeasonIsOverNotice = true //need check and show notice only once on init screen
 
   function initScreen()
   {
@@ -68,7 +69,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
     }
 
     reinitScreen()
-
+    updateRightPanel()
     ::enableHangarControls(true)
     initFocusArray()
 
@@ -76,8 +77,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
       onStart()
     else if (autoOpenMapOperation)
       openOperationsListByMap(autoOpenMapOperation)
-    if(!::g_world_war.isWWSeasonActive())
-      showSeasonIsOverNotice()
+    checkSeasonIsOverNotice()
   }
 
   function reinitScreen()
@@ -87,7 +87,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
 
     collectMaps()
     findMapForSelection()
-    updatePanels()
+    updateLeftPanel()
     onClansQueue()
   }
 
@@ -112,7 +112,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
   {
     local priorityConfigMapsArray = []
     foreach(map in mapsTbl) {
-      local changeStateTime = map.getChangeStateTime()
+      local changeStateTime = map.getChangeStateTime() - ::get_charserver_time_sec()
       priorityConfigMapsArray.append({
         hasActiveOperations = map.getOpGroup().hasActiveOperations()
         isActive = map.isActive()
@@ -216,7 +216,8 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
     selMap = null //force refresh description
     if (selIdx >= 0)
       mapsListObj.setValue(selIdx)
-    onItemSelect()
+    else
+      onItemSelect()
 
     foreach (id in collapsedChapters)
       if (!selMap || getChapterObjId(selMap) != id)
@@ -323,17 +324,15 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
 
   function refreshSelMap()
   {
-    local idx = mapsListObj.getValue()
-    if (idx < 0 || idx >= mapsListObj.childrenCount())
-      return false
-    local mapObj = mapsListObj.getChild(idx)
-    if(!::checkObj(mapObj))
+    local mapObj = getSelectedMapObj()
+    if (!::check_obj(mapObj))
       return false
 
-    local isHeader = mapObj?.collapse_header != null
+    local isHeader = isMapObjChapter(mapObj)
     local newMap = isHeader ? null : getMapByName(mapObj?.id)
     if (newMap == selMap)
       return false
+
     local isChanged = !newMap || !selMap || !selMap.isEqual(newMap)
     selMap = newMap
     return isChanged
@@ -372,7 +371,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
     if (!::check_obj(mapObj))
       return ""
 
-    if (mapObj?.collapse_header)
+    if (isMapObjChapter(mapObj))
       return mapObj?.collapsed == "yes"
         ? ::loc("mainmenu/btnExpand")
         : ::loc("mainmenu/btnCollapse")
@@ -395,7 +394,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
   function onSelectCountriesBlock()
   {
     local mapObj = getSelectedMapObj()
-    if (!::check_obj(mapObj) || mapObj?.collapse_header)
+    if (!::check_obj(mapObj) || isMapObjChapter(mapObj))
       return
 
     local countriesContainerObj = scene.findObject("countries_container")
@@ -413,9 +412,9 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
   {
     if (!::check_obj(obj))
       return
-    local itemObj = obj?.collapse_header ? obj : obj.getParent()
+    local itemObj = isMapObjChapter(obj) ? obj : obj.getParent()
     local listObj = ::check_obj(itemObj) ? itemObj.getParent() : null
-    if (!::check_obj(listObj) || !itemObj?.collapse_header)
+    if (!::check_obj(listObj) || !isMapObjChapter(itemObj))
       return
 
     itemObj.collapsing = "yes"
@@ -441,7 +440,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
       }
       else
       {
-        if (child?.collapse_header)
+        if (isMapObjChapter(child))
           break
         child.show(isShow)
         child.enable(isShow)
@@ -462,7 +461,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
       foreach (idx in indexes)
       {
         local child = listObj.getChild(idx)
-        if (!child?.collapse_header && child.isEnabled())
+        if (!isMapObjChapter(child) && child.isEnabled())
         {
           newIdx = idx
           break
@@ -488,6 +487,8 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
   function onTimerStatusCheck(obj, dt)
   {
     refreshGlobalStatusData()
+    if (selMap != null && !selMap.hasValidStatus())
+      onSelectedMapInvalidate()
   }
 
   function onOpenLeaderboard(obj)
@@ -532,7 +533,6 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
     local obj = scene.findObject("item_status_text")
     if (::checkObj(obj))
       obj.setValue(getMapStatusText())
-
     local isCreateOperationMode = selMap != null
     local item = selMap
     if (isCreateOperationMode)
@@ -572,7 +572,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
     showSceneBtn("btn_operation_descr", hasMap)
     showSceneBtn("btn_operation_list", ::has_feature("WWOperationsList"))
 
-    nearestAvailableMapToBattle = getNearestAvailableMapToBattle()
+    nearestAvailableMapToBattle = getNearestMapToBattle()
     local needShowBeginMapWaitTime = !(nearestAvailableMapToBattle?.isActive?() ?? true)
     if ((queuesJoinTime > 0) != isInQueue)
       queuesJoinTime = isInQueue ? getLatestQueueJoinTime() : 0
@@ -778,7 +778,8 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
 
   function onBattlesBtnClick(obj)
   {
-    if (!(selMap?.isActive() ?? false)) {
+    if (selMap == null
+        || !(selMap.isActive() || selMap.getOpGroup().hasActiveOperations())) {
       ::showInfoMsgBox(::loc("worldWar/globalBattles/mapNotActive"))
       return
     }
@@ -846,8 +847,11 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
 
   function onEventWWGlobalStatusChanged(p)
   {
-    if (p.changedListsMask & (WW_GLOBAL_STATUS_TYPE.MAPS | WW_GLOBAL_STATUS_TYPE.ACTIVE_OPERATIONS))
+    if (p.changedListsMask & (WW_GLOBAL_STATUS_TYPE.MAPS | WW_GLOBAL_STATUS_TYPE.ACTIVE_OPERATIONS)) {
       reinitScreen()
+      if (needCheckSeasonIsOverNotice)
+        checkSeasonIsOverNotice()
+    }
     else if (p.changedListsMask & WW_GLOBAL_STATUS_TYPE.QUEUE)
       updateWindow()
     else
@@ -1059,12 +1063,15 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
     btnObj.findObject("btn_ww_url_text").setValue(::loc("worldwar/urlBtn/" + worldWarUrlBtnKey))
   }
 
-  function updatePanels()
+  function updateLeftPanel()
   {
     local isTrophyListVisible = fillTrophyList()
     local isUnlocksVisible =  fillUnlocksList()
-    local isTopListVisible =  fillTopList()
     showSceneBtn("panel_left", isTrophyListVisible || isUnlocksVisible)
+  }
+
+  function updateRightPanel() {
+    local isTopListVisible =  fillTopList()
     showSceneBtn("panel_right", isTopListVisible)
   }
 
@@ -1173,7 +1180,8 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
   }
 
   function onUpdateGlobalBattles(obj, dt) {
-    if (selMap == null)
+    if (selMap == null
+      || !(selMap.isActive() || selMap.getOpGroup().hasActiveOperations()))
       return
 
     globalBattlesListData.requestList()
@@ -1214,6 +1222,22 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
       onLeaveQueue()
     else if (isMyClanOperation)
       onJoinClanOperation(sideObj)
+  }
+
+  function checkSeasonIsOverNotice() {
+    if (!isRecievedGlobalStatusMaps())
+      return
+
+    needCheckSeasonIsOverNotice = false
+    if(!::g_world_war.isWWSeasonActive())
+      showSeasonIsOverNotice()
+  }
+
+  function onSelectedMapInvalidate() {
+    findMapForSelection()
+    updateDescription()
+    updateButtons()
+    restoreFocus()
   }
 }
 

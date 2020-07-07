@@ -1,5 +1,3 @@
-// warning disable: -file:forbidden-function
-
 local fonts = require_native("fonts")
 local { reloadDargUiScript } = require_native("reactiveGuiCommand")
 

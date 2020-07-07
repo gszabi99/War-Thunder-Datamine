@@ -1656,6 +1656,11 @@ g_unlocks._convertblkToCache <- function _convertblkToCache(blk)
 {
   foreach(unlock in (blk % "unlockable"))
   {
+    if (unlock?.id == null) {
+      local unlockConfigString = ::toString(unlock, 2) // warning disable: -declared-never-used
+      ::script_net_assert_once("missing id in unlock", "Unlocks: Missing id in unlock. Cannot cache unlock.")
+      continue
+    }
     cache[unlock.id] <- unlock
     cacheArray.append(unlock)
 

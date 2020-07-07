@@ -376,12 +376,12 @@
               },
               {
                 "Button_text": {
-                  "id": "btn_operation_list",
-                  "text": "#worldwar/operationsList",
-                  "btnName": "R3",
+                  "id": "btn_map_action",
+                  "text": "",
+                  "btnName": "RB",
                   "display": "hide",
                   "enable": "no",
-                  "_on_click": "onOperationListSwitch",
+                  "_on_click": "onMapAction",
                   "buttonWink": {
                     "_transp-timer": "0"
                   },
@@ -390,12 +390,12 @@
               },
               {
                 "Button_text": {
-                  "id": "btn_map_action",
-                  "text": "",
-                  "btnName": "RB",
+                  "id": "btn_operation_list",
+                  "text": "#worldwar/operationsList",
+                  "btnName": "R3",
                   "display": "hide",
                   "enable": "no",
-                  "_on_click": "onMapAction",
+                  "_on_click": "onOperationListSwitch",
                   "buttonWink": {
                     "_transp-timer": "0"
                   },
@@ -411,14 +411,14 @@
       "timer": {
         "id": "ww_status_check_timer",
         "timer_handler_func": "onTimerStatusCheck",
-        "timer_interval_msec": "60000"
+        "timer_interval_msec": "2000"
       }
     },
     {
       "timer": {
         "id": "global_battles_update_timer",
         "timer_handler_func": "onUpdateGlobalBattles",
-        "timer_interval_msec": "3000"
+        "timer_interval_msec": "10000"
       }
     },
     {

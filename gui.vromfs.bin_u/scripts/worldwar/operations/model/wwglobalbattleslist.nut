@@ -1,7 +1,8 @@
 local WwGlobalBattle = require("scripts/worldWar/operations/model/wwGlobalBattle.nut")
+local { secondsToMilliseconds } = require("scripts/time.nut")
 
-const GLOBAL_BATTLES_REFRESH_MIN_TIME = 1000 //ms
-const GLOBAL_BATTLES_REQUEST_TIME_OUT = 45000 //ms
+local refreshMinTimeSec = 3 //sec
+const MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH = 2
 const GLOBAL_BATTLES_LIST_TIME_OUT = 300000 //ms
 
 
@@ -9,7 +10,7 @@ local GlobalBattlesList = class
 {
   list = []
   lastUpdateTimeMsec = -GLOBAL_BATTLES_LIST_TIME_OUT
-  lastRequestTimeMsec = -GLOBAL_BATTLES_REQUEST_TIME_OUT
+  lastRequestTimeMsec = -1
   isInUpdate = false
 
   /* ********************************************************************************
@@ -19,14 +20,15 @@ local GlobalBattlesList = class
   function isNewest()
   {
     return (!isInUpdate &&
-            ::dagor.getCurTime() - lastUpdateTimeMsec < GLOBAL_BATTLES_REFRESH_MIN_TIME)
+            ::dagor.getCurTime() - lastUpdateTimeMsec < getRefreshMinTimeMsec())
   }
 
   function canRequestByTime()
   {
+    local refreshMinTime = getRefreshMinTimeMsec()
     local checkTime = isInUpdate
-      ? GLOBAL_BATTLES_REQUEST_TIME_OUT
-      : GLOBAL_BATTLES_REFRESH_MIN_TIME
+      ? refreshMinTime * MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH
+      : refreshMinTime
     return  ::dagor.getCurTime() - lastRequestTimeMsec >= checkTime
   }
 
@@ -106,6 +108,11 @@ local GlobalBattlesList = class
           list.append(wwBattle)
         }
     }
+  }
+
+  function getRefreshMinTimeMsec() {
+    refreshMinTimeSec = ::g_world_war.getWWConfigurableValue("refreshActiveBattlesTimeSec", refreshMinTimeSec)
+    return secondsToMilliseconds(refreshMinTimeSec)
   }
 }
 

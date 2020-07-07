@@ -1337,14 +1337,6 @@ foreach (i, v in ::cssColorsMapDark)
   return ::char_send_blk("cln_move_exp_to_module", blk)
 }
 
-::buySchemeForUnit <- function buySchemeForUnit(unit)
-{
-  local blk = ::DataBlock()
-  blk.setStr("unit", unit)
-
-  return ::char_send_blk("cln_buy_scheme", blk)
-}
-
 /**
  * Set val to slot, specified by path.
  * Checks for identity before save.

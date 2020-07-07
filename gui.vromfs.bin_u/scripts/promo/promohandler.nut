@@ -394,7 +394,7 @@ class Promo
     local id = "world_war_button"
     local isWwEnabled = ::g_world_war.canJoinWorldwarBattle()
     local isVisible = ::g_promo.getShowAllPromoBlocks()
-      || (isWwEnabled && ::g_world_war.isWWSeasonActive(true))
+      || (isWwEnabled && ::g_world_war.isWWSeasonActiveShort())
 
     local wwButton = ::showBtn(id, isVisible, scene)
     if (!isVisible || !::checkObj(wwButton))
