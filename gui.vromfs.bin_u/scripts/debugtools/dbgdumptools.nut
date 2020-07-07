@@ -1,3 +1,5 @@
+// warning disable: -file:forbidden-function
+
 local dbg_dump = require("scripts/debugTools/dbgDump.nut")
 local inventoryClient = require("scripts/inventory/inventoryClient.nut")
 local g_path = require("std/path.nut")
@@ -164,7 +166,8 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 ::debug_dump_debriefing_batch_load <- function debug_dump_debriefing_batch_load()
 {
-  local filesList = dagor_fs.scan_folder({ root = "D:/dagor2/skyquake/gameOnline",
+  local skyquakePath = ::debug_get_skyquake_path()
+  local filesList = dagor_fs.scan_folder({ root = $"{skyquakePath}/gameOnline",
     files_suffix = "*.blk", recursive = false, vromfs=false, realfs = true
   }).filter(@(v) v.indexof("debug_dump_debriefing") != null).map(@(v) g_path.fileName(v)).sort().reverse()
   local total = filesList.len()

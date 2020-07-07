@@ -395,7 +395,7 @@
       "EngineInertiaMoment": 1.0,
       "RPMAmplitude0": [8000.0,0.0],
       "RPMAmplitude1": [0.0,70.0],
-      "ConsumptionOmegaMax": 1.05,
+      "ConsumptionOmegaMax": 1.15,
       "TorqueZeroOmegaMult": 3.0,
       "TurbineTimeConstant": 3.4,
       "ThrottleRPMAuto0": [0.0,2000.0],
@@ -404,6 +404,51 @@
       "ShaftRPMMax": 8000.0,
       "ShaftRpmController": false,
       "Power": 1200.0,
+      "Mode0": {
+        "Throttle": 0.0,
+        "RPM": 0.37,
+        "ThrustMult": 0.05,
+        "TorqueMultMinRpm": 0.15,
+        "TorqueMultMaxRpm": 0.05,
+        "ConsumptionMult": 1.6,
+        "TurbineTimeConstantMult": 1.0
+      },
+      "Mode1": {
+        "Throttle": 0.3,
+        "RPM": 0.6,
+        "ThrustMult": 0.2,
+        "TorqueMultMinRpm": 0.6,
+        "TorqueMultMaxRpm": 0.2,
+        "ConsumptionMult": 1.4,
+        "TurbineTimeConstantMult": 1.0
+      },
+      "Mode2": {
+        "Throttle": 0.5,
+        "RPM": 0.8,
+        "ThrustMult": 0.5,
+        "TorqueMultMinRpm": 1.5,
+        "TorqueMultMaxRpm": 0.5,
+        "ConsumptionMult": 1.2,
+        "TurbineTimeConstantMult": 1.0
+      },
+      "Mode3": {
+        "Throttle": 0.95,
+        "RPM": 0.9873,
+        "ThrustMult": 0.96,
+        "TorqueMultMinRpm": 2.88,
+        "TorqueMultMaxRpm": 0.96,
+        "ConsumptionMult": 1.02,
+        "TurbineTimeConstantMult": 1.0
+      },
+      "Mode4": {
+        "Throttle": 1.0,
+        "RPM": 1.0,
+        "ThrustMult": 1.0,
+        "TorqueMultMinRpm": 3.0,
+        "TorqueMultMaxRpm": 1.0,
+        "ConsumptionMult": 1.0,
+        "TurbineTimeConstantMult": 1.0
+      },
       "ThrustMax": {
         "Altitude_0": 0.0,
         "Altitude_1": 3000.0,
@@ -504,51 +549,6 @@
         "TorqueMaxCoeff_5_5": 0.24,
         "ThrustMaxCoeff_5_6": 0.26,
         "TorqueMaxCoeff_5_6": 0.26
-      },
-      "Mode0": {
-        "Throttle": 0.0,
-        "RPM": 0.37,
-        "ThrustMult": 0.05,
-        "TorqueMultMinRpm": 0.15,
-        "TorqueMultMaxRpm": 0.05,
-        "ConsumptionMult": 1.6,
-        "TurbineTimeConstantMult": 1.0
-      },
-      "Mode1": {
-        "Throttle": 0.3,
-        "RPM": 0.6,
-        "ThrustMult": 0.2,
-        "TorqueMultMinRpm": 0.6,
-        "TorqueMultMaxRpm": 0.2,
-        "ConsumptionMult": 1.4,
-        "TurbineTimeConstantMult": 1.0
-      },
-      "Mode2": {
-        "Throttle": 0.5,
-        "RPM": 0.8,
-        "ThrustMult": 0.5,
-        "TorqueMultMinRpm": 1.5,
-        "TorqueMultMaxRpm": 0.5,
-        "ConsumptionMult": 1.2,
-        "TurbineTimeConstantMult": 1.0
-      },
-      "Mode3": {
-        "Throttle": 0.95,
-        "RPM": 0.9873,
-        "ThrustMult": 0.96,
-        "TorqueMultMinRpm": 2.88,
-        "TorqueMultMaxRpm": 0.96,
-        "ConsumptionMult": 1.1,
-        "TurbineTimeConstantMult": 1.0
-      },
-      "Mode4": {
-        "Throttle": 1.0,
-        "RPM": 1.0,
-        "ThrustMult": 1.0,
-        "TorqueMultMinRpm": 3.0,
-        "TorqueMultMaxRpm": 1.0,
-        "ConsumptionMult": 1.0,
-        "TurbineTimeConstantMult": 1.0
       }
     },
     "AutoThrottle": {

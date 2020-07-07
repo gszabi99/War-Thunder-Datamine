@@ -241,13 +241,68 @@ local getAACaption = function() {
 }
 
 local getFlaresCaption = function() {
-  local text = ::loc("HUD/FLARES_SHORT")
+  local text = ::loc("HUD/FLARES_SHORT") + " "
   if (helicopterState.Flares.mode.value & FlaresMode.PERIODIC_FLARES)
-    text += " " + ::loc("HUD/FLARE_PERIODIC")
+    text += ::loc("HUD/FLARE_PERIODIC")
   if (helicopterState.Flares.mode.value == (FlaresMode.PERIODIC_FLARES | FlaresMode.MLWS_SLAVED_FLARES))
-    text += ::loc("HUD/FLARE_MODE_SEPARATION")
+    text += ::loc("HUD/INDICATION_MODE_SEPARATION")
   if (helicopterState.Flares.mode.value & FlaresMode.MLWS_SLAVED_FLARES)
-    text += " " + ::loc("HUD/FLARE_MLWS")
+    text +=::loc("HUD/FLARE_MLWS")
+  return text
+}
+
+local function getMachineGunCaption(){
+  local text = ::loc("HUD/MACHINE_GUNS_SHORT") + " "
+  if (helicopterState.MachineGuns.mode.value & WeaponMode.CCIP_MODE)
+    text += ::loc("HUD/WEAPON_MODE_CCIP")
+  if (helicopterState.MachineGuns.mode.value == (WeaponMode.CCIP_MODE | WeaponMode.CCRP_MODE))
+    text += ::loc("HUD/INDICATION_MODE_SEPARATION")
+  if (helicopterState.MachineGuns.mode.value & WeaponMode.CCRP_MODE)
+    text += ::loc("HUD/WEAPON_MODE_CCRP")
+  return text
+}
+
+local function getAdditionalCannonCaption(){
+  local text = ::loc("HUD/ADDITIONAL_GUNS_SHORT") + " "
+  if (helicopterState.CannonsAdditional.mode.value & WeaponMode.CCIP_MODE)
+    text += ::loc("HUD/WEAPON_MODE_CCIP")
+  if (helicopterState.CannonsAdditional.mode.value == (WeaponMode.CCIP_MODE | WeaponMode.CCRP_MODE))
+    text += ::loc("HUD/INDICATION_MODE_SEPARATION")
+  if (helicopterState.CannonsAdditional.mode.value & WeaponMode.CCRP_MODE)
+    text += ::loc("HUD/WEAPON_MODE_CCRP")
+  return text
+}
+
+local function getRocketCaption(){
+  local text = ::loc("HUD/RKT") + " "
+  if (helicopterState.Rockets.mode.value & WeaponMode.CCIP_MODE)
+    text += ::loc("HUD/WEAPON_MODE_CCIP")
+  if (helicopterState.Rockets.mode.value == (WeaponMode.CCIP_MODE | WeaponMode.CCRP_MODE))
+    text += ::loc("HUD/INDICATION_MODE_SEPARATION")
+  if (helicopterState.Rockets.mode.value & WeaponMode.CCRP_MODE)
+    text += ::loc("HUD/WEAPON_MODE_CCRP")
+  return text
+}
+
+local function getBombCaption(){
+  local text = ::loc("HUD/BOMBS_SHORT") + " "
+  if (helicopterState.Bombs.mode.value & WeaponMode.CCIP_MODE)
+    text += ::loc("HUD/WEAPON_MODE_CCIP")
+  if (helicopterState.Bombs.mode.value == (WeaponMode.CCIP_MODE | WeaponMode.CCRP_MODE))
+    text += ::loc("HUD/INDICATION_MODE_SEPARATION")
+  if (helicopterState.Bombs.mode.value & WeaponMode.CCRP_MODE)
+    text += ::loc("HUD/WEAPON_MODE_CCRP")
+  return text
+}
+
+local function getCannonsCaption(cannonMode){
+  local text = ::loc("HUD/CANNONS_SHORT") + " "
+  if (cannonMode.value & WeaponMode.CCIP_MODE)
+    text += ::loc("HUD/WEAPON_MODE_CCIP")
+  if (cannonMode.value == (WeaponMode.CCIP_MODE | WeaponMode.CCRP_MODE))
+    text += ::loc("HUD/INDICATION_MODE_SEPARATION")
+  if (cannonMode.value & WeaponMode.CCRP_MODE)
+    text += ::loc("HUD/WEAPON_MODE_CCRP")
   return text
 }
 
@@ -354,14 +409,16 @@ local textParamsMap = {
     valuesWatched = helicopterState.Spd
   },
   [HelicopterParams.MACHINE_GUN] = {
-    title = @() ::loc("HUD/MACHINE_GUNS_SHORT")
+    title = @() getMachineGunCaption()
     value = generateBulletsTextFunction(helicopterState.MachineGuns.count, helicopterState.MachineGuns.seconds)
+    titleWatched = [helicopterState.MachineGuns.mode]
     valuesWatched = [helicopterState.MachineGuns.count, helicopterState.MachineGuns.seconds, helicopterState.IsMachineGunEmpty]
     alertWatched = [helicopterState.IsMachineGunEmpty]
   },
   [HelicopterParams.CANNON_ADDITIONAL] = {
-    title = @() ::loc("HUD/ADDITIONAL_GUNS_SHORT")
+    title = @() getAdditionalCannonCaption()
     value = generateBulletsTextFunction(helicopterState.CannonsAdditional.count, helicopterState.CannonsAdditional.seconds)
+    titleWatched = [helicopterState.CannonsAdditional.mode]
     valuesWatched = [
       helicopterState.CannonsAdditional.count,
       helicopterState.CannonsAdditional.seconds,
@@ -370,8 +427,9 @@ local textParamsMap = {
     alertWatched = [helicopterState.IsCanAdditionalEmpty]
   },
   [HelicopterParams.ROCKET] = {
-    title = @() ::loc("HUD/RKT")
+    title = @() getRocketCaption()
     value = generateBulletsTextFunction(helicopterState.Rockets.count, helicopterState.Rockets.seconds)
+    titleWatched = [helicopterState.Rockets.mode]
     valuesWatched = [helicopterState.Rockets.count, helicopterState.Rockets.seconds, helicopterState.IsRktEmpty]
     alertWatched = [helicopterState.IsRktEmpty]
   },
@@ -393,8 +451,9 @@ local textParamsMap = {
     alertWatched = [helicopterState.IsAgmEmpty]
   },
   [HelicopterParams.BOMBS] = {
-    title = @() ::loc("HUD/BOMBS_SHORT")
+    title = @() getBombCaption()
     value = generateBulletsTextFunction(helicopterState.Bombs.count, helicopterState.Bombs.seconds)
+    titleWatched = [helicopterState.Bombs.mode]
     valuesWatched = [helicopterState.Bombs.count, helicopterState.Bombs.seconds, helicopterState.IsBmbEmpty]
     alertWatched = [helicopterState.IsBmbEmpty]
   },
@@ -422,13 +481,15 @@ local textParamsMap = {
 
 foreach (i, value in helicopterState.IsCannonEmpty) {
   textParamsMap[HelicopterParams.CANNON_1 + i] <- {
-    title = @() ::loc("HUD/CANNONS_SHORT")
+    title = @() getCannonsCaption(helicopterState.CannonMode)
     value = generateBulletsTextFunction(helicopterState.CannonCount[i], helicopterState.CannonReloadTime[i])
+    titleWatched = [helicopterState.CannonMode]
     blink = @() getTurretBlink()
     valuesWatched = [
       helicopterState.CannonCount[i],
       helicopterState.CannonReloadTime[i],
-      helicopterState.IsCannonEmpty[i]
+      helicopterState.IsCannonEmpty[i],
+      helicopterState.CannonMode
     ]
     alertWatched = [helicopterState.IsCannonEmpty[i]]
   }
