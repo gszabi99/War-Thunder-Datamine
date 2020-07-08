@@ -1,3 +1,5 @@
+// warning disable: -file:forbidden-function
+
 // Profiler usage:
 // console commands:
 // "sq.script_profile_start"

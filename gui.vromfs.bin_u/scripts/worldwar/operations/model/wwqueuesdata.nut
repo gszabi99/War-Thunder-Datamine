@@ -1,5 +1,7 @@
-const WW_QUEUES_REFRESH_MIN_TIME = 1000 //ms
-const WW_QUEUES_REQUEST_TIME_OUT = 15000 //ms
+local { secondsToMilliseconds } = require("scripts/time.nut")
+
+local refreshMinTimeSec = 2 //sec
+const MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH = 2
 const WW_QUEUES_DATA_TIME_OUT = 10000 //ms
 
 
@@ -7,7 +9,7 @@ local WwQueuesData = class
 {
   data = {}
   lastUpdateTimeMsec = -WW_QUEUES_DATA_TIME_OUT
-  lastRequestTimeMsec = -WW_QUEUES_REQUEST_TIME_OUT
+  lastRequestTimeMsec = -1
   isInUpdate = false
 
   /* ********************************************************************************
@@ -17,14 +19,15 @@ local WwQueuesData = class
   function isNewest()
   {
     return (!isInUpdate &&
-      ::dagor.getCurTime() - lastUpdateTimeMsec < WW_QUEUES_REFRESH_MIN_TIME)
+      ::dagor.getCurTime() - lastUpdateTimeMsec < getRefreshMinTimeMsec())
   }
 
   function canRequestByTime()
   {
+    local refreshMinTime = getRefreshMinTimeMsec()
     local checkTime = isInUpdate
-      ? WW_QUEUES_REQUEST_TIME_OUT
-      : WW_QUEUES_REFRESH_MIN_TIME
+      ? refreshMinTime * MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH
+      : refreshMinTime
     return  ::dagor.getCurTime() - lastRequestTimeMsec >= checkTime
   }
 
@@ -80,6 +83,11 @@ local WwQueuesData = class
   function requestError(taskResult)
   {
     isInUpdate = false
+  }
+
+  function getRefreshMinTimeMsec() {
+    refreshMinTimeSec = ::g_world_war.getWWConfigurableValue("refreshQueueInfoTimeSec", refreshMinTimeSec)
+    return secondsToMilliseconds(refreshMinTimeSec)
   }
 }
 

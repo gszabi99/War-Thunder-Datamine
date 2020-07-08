@@ -55,9 +55,10 @@ local dagor_fs = require("dagor.fs")
   size      = size      || "64@sf/@pf"
   bgColor   = bgColor   || "#808080"
 
+  local skyquakePath = ::debug_get_skyquake_path()
   local dirs = [
-    "D:/dagor2/skyquake/develop/gui/hud/gui_skin"
-    "D:/dagor2/skyquake/develop/gui/hud/pkg_dev"
+    $"{skyquakePath}/develop/gui/hud/gui_skin",
+    $"{skyquakePath}/develop/gui/hud/pkg_dev",
   ]
 
   local filesList = []

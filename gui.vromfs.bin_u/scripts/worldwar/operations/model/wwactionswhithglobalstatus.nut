@@ -1,22 +1,34 @@
-local function getNearestAvailableMapToBattle(needFirstAvailable = false, checkShortStatus = false) {
-  local nearestAvailableMap = null
-  local mapsList = checkShortStatus ? ::g_ww_global_status_type.MAPS.getShortStatusList()
-    : ::g_ww_global_status_type.MAPS.getList()
-  foreach(map in mapsList) {
-    if (map.isAnnounceAndNotDebug(false))
+local getNearestMap = function(mapsList) {
+  local nearestMap = null
+  foreach(map in mapsList)
+    if (map.isAnnounceAndNotDebug(false)) {
       if (map.isActive())
         return map
       else
-        nearestAvailableMap = !nearestAvailableMap ||
-          nearestAvailableMap.getChangeStateTime() > map.getChangeStateTime()
+        nearestMap = !nearestMap
+          || nearestMap.getChangeStateTime() > map.getChangeStateTime()
             ? map
-            : nearestAvailableMap
-    if(needFirstAvailable && nearestAvailableMap)
-      return nearestAvailableMap
- }
-
-  return nearestAvailableMap
+            : nearestMap
+    }
+  return nearestMap
 }
+
+local getFirstAvailableMap = @(mapsList)
+  mapsList.findvalue(@(map) map.isAnnounceAndNotDebug(false))
+
+local hasAvailableMapToBattleShort = @()
+  getFirstAvailableMap(::g_ww_global_status_type.MAPS.getShortStatusList()) != null
+
+local getNearestMapToBattleShort = @()
+  getNearestMap(::g_ww_global_status_type.MAPS.getShortStatusList())
+
+local hasAvailableMapToBattle = @()
+  getFirstAvailableMap(::g_ww_global_status_type.MAPS.getList()) != null
+
+local getNearestMapToBattle = @()
+  getNearestMap(::g_ww_global_status_type.MAPS.getList())
+
+local isRecievedGlobalStatusMaps = @() ::g_ww_global_status_type.MAPS.getList().len() > 0
 
 local function getOperationById(operationId) {
   return ::u.search(::g_ww_global_status_type.ACTIVE_OPERATIONS.getList(),
@@ -33,19 +45,16 @@ local function getMyClanOperation() {
     @(o) o.isMyClanParticipate())
 }
 
-local getMapByName = function(mapName, needShortStatus = false) {
-  if (needShortStatus)
-    return ::g_ww_global_status_type.MAPS.getShortStatusList()?[mapName]
-  else
-    return ::g_ww_global_status_type.MAPS.getList()?[mapName]
-}
+local getMapByName = @(mapName) ::g_ww_global_status_type.MAPS.getList()?[mapName]
+
+local getMapFromShortStatusByName = @(mapName) ::g_ww_global_status_type.MAPS.getShortStatusList()?[mapName]
 
 //always return queue. do not return null
 local getQueueByMapName = @(mapName) ::g_ww_global_status_type.QUEUE.getList()?[mapName] ?? ::WwQueue(mapName)
 
 local getOperationGroupByMapId = @(mapId)
   ::u.search(::g_ww_global_status_type.OPERATIONS_GROUPS.getList(), @(og) og.mapId == mapId)
-    ?? ::WwOperationsGroup(mapName)
+    ?? ::WwOperationsGroup(mapId)
 
 local isMyClanInQueue = @() ::is_in_clan()
   && ::u.search(::g_ww_global_status_type.QUEUE.getList(), @(q) q.isMyClanJoined()) != null
@@ -56,12 +65,17 @@ local isMyClanInQueue = @() ::is_in_clan()
 }
 
 return {
-  getNearestAvailableMapToBattle = getNearestAvailableMapToBattle
+  hasAvailableMapToBattleShort = hasAvailableMapToBattleShort
+  getNearestMapToBattleShort = getNearestMapToBattleShort
+  hasAvailableMapToBattle = hasAvailableMapToBattle
+  getNearestMapToBattle = getNearestMapToBattle
   getOperationById = getOperationById
   getMyClanOperation = getMyClanOperation
   getMapByName = getMapByName
+  getMapFromShortStatusByName = getMapFromShortStatusByName
   getQueueByMapName = getQueueByMapName
   getOperationGroupByMapId = getOperationGroupByMapId
   isMyClanInQueue = isMyClanInQueue
   getOperationFromShortStatusById = getOperationFromShortStatusById
+  isRecievedGlobalStatusMaps = isRecievedGlobalStatusMaps
 }

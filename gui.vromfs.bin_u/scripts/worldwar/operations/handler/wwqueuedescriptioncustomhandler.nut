@@ -41,8 +41,13 @@ class ::gui_handlers.WwQueueDescriptionCustomHandler extends ::gui_handlers.WwMa
       sides = sides
       vsText = ::loc("country/VS") + "\n "
     }
+
+    local lastSelectedValue = ::get_obj_valid_index(obj.findObject("countries_container"))
     local data = ::handyman.renderCached("gui/worldWar/wwOperationCountriesInfo", view)
     guiScene.replaceContentFromText(obj, data, data.len(), this)
-    obj.show(descItem.isMapActive())
+    local isVisible = descItem.isMapActive()
+    obj.show(isVisible)
+    if (isVisible && lastSelectedValue >= 0)
+      obj.findObject("countries_container").setValue(lastSelectedValue)
   }
 }

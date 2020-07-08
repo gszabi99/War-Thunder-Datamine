@@ -1,6 +1,7 @@
 local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
+local { secondsToMilliseconds } = require("scripts/time.nut")
 
-const REFRESH_MIN_TIME_MSEC = 600000
+local refreshMinTimeSec = 600
 const MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH = 2  //!!!FIX ME: it is better to increase request timeout gradually starting from min request time
 
 local curData = persist("curData", @() ::Watched(null))
@@ -19,7 +20,8 @@ local function canRefreshData() {
   if (lastRequestUid.value != ::my_user_id_int64) //force request if user changed. Instead force request after relogin
     return true
 
-  local refreshMinTime = ::g_world_war.getSetting("refreshShortGlobalStatusMinTimeMsec", REFRESH_MIN_TIME_MSEC)
+  refreshMinTimeSec = ::g_world_war.getWWConfigurableValue("refreshShortGlobalStatusTimeSec", refreshMinTimeSec)
+  local refreshMinTime = secondsToMilliseconds(refreshMinTimeSec)
   local requestTimeoutMsec = refreshMinTime * MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH
   if (lastRequestTime.value > lastUpdatetTime.value
       && lastRequestTime.value + requestTimeoutMsec > ::dagor.getCurTime())
@@ -34,7 +36,7 @@ local function onGlobalStatusReceived(newData) {
   local changedListsMask = 0
   foreach(gsType in ::g_ww_global_status_type.types)
     if (gsType.isAvailableInShortStatus
-        && !::u.isEqual(gsType.getData(curData.value, true), gsType.getData(newData, true)))
+        && !::u.isEqual(gsType.getShortData(curData.value), gsType.getShortData(newData)))
       changedListsMask = changedListsMask | gsType.type
 
   if (!changedListsMask)

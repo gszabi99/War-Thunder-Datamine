@@ -1,6 +1,7 @@
 local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
+local { secondsToMilliseconds } = require("scripts/time.nut")
 
-const REFRESH_MIN_TIME_MSEC = 180000
+local refreshMinTimeSec = 180
 const MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH = 2  //!!!FIX ME: it is better to increase request timeout gradually starting from min request time
 
 local curData = persist("curData", @() ::Watched(null))
@@ -22,7 +23,8 @@ local function pushStatusChangedEvent(changedListsMask) {
 local function canRefreshData(refreshDelay = null) {
   if (!::has_feature("WorldWar"))
     return false
-  local refreshMinTime = ::g_world_war.getSetting("refreshGlobalStatusMinTimeMsec", REFRESH_MIN_TIME_MSEC)
+  refreshMinTimeSec = ::g_world_war.getWWConfigurableValue("refreshGlobalStatusTimeSec", refreshMinTimeSec)
+  local refreshMinTime = secondsToMilliseconds(refreshMinTimeSec)
   refreshDelay = refreshDelay ?? refreshMinTime
   local requestTimeoutMsec = refreshMinTime * MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH
   if (lastRequestTime.value > lastUpdatetTime.value

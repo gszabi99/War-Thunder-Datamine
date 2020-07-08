@@ -188,7 +188,7 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
   function reinitBattlesList(isForceUpdate = false)
   {
     if (!wwQueuesData.isDataValid())
-      return requestQueuesData()
+      requestQueuesData()
 
     local currentBattleListMap = createBattleListMap()
     local needRefillBattleList = isForceUpdate || hasChangedInBattleListMap(currentBattleListMap)

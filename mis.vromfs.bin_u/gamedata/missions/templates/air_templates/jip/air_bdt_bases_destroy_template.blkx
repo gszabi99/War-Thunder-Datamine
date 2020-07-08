@@ -2072,21 +2072,21 @@
           {
             "varSetString": {
               "value": "bdt_t1_zone_",
-              "var": "bdt_capture_t1_bombing_zone_name"
+              "var": "bdt_capture_t1_bombing_zone_var_name"
             }
           },
           {
             "varAddString": {
               "value": "@bdt_capture_t1_bombing_zone_idx",
               "digits": 2,
-              "var": "bdt_capture_t1_bombing_zone_name"
+              "var": "bdt_capture_t1_bombing_zone_var_name"
             }
           },
           {
             "varAddString": {
               "value": "_name",
               "digits": 0,
-              "var": "bdt_capture_t1_bombing_zone_name"
+              "var": "bdt_capture_t1_bombing_zone_var_name"
             }
           },
           {
@@ -2096,7 +2096,7 @@
           },
           {
             "varGetStringValue": {
-              "from_var_name": "@bdt_capture_t1_bombing_zone_name",
+              "from_var_name": "@bdt_capture_t1_bombing_zone_var_name",
               "var": "bdt_capture_t1_bombing_zone_name"
             }
           },
@@ -2107,7 +2107,7 @@
           },
           {
             "varGetStringValue": {
-              "from_var_name": "bdt_capture_t1_bombing_zone_name",
+              "from_var_name": "@bdt_capture_t1_bombing_zone_var_name",
               "var": "bdt_capture_t1_bombing_zone_target_name"
             }
           },
@@ -2241,7 +2241,7 @@
             }
           },
           {
-            "varAddString": {
+            "__varAddString": {
               "value": "_bomb_zone",
               "digits": 0,
               "var": "bdt_capture_t1_bomb_zone_name"
@@ -2255,7 +2255,7 @@
           {
             "missionBombingAreaDamage": {
               "target": "@bdt_capture_t1_bomb_zone_name",
-              "damageHP": 100000.0
+              "damageHP": 900000.0
             }
           },
           {
@@ -2264,7 +2264,7 @@
             }
           },
           {
-            "unitDamage": {
+            "__unitDamage": {
               "power": 1.0,
               "useEffect": false,
               "countEffects": 1,
@@ -2391,21 +2391,21 @@
           {
             "varSetString": {
               "value": "bdt_t2_zone_",
-              "var": "bdt_capture_t2_bombing_zone_name"
+              "var": "bdt_capture_t2_bombing_zone_var_name"
             }
           },
           {
             "varAddString": {
               "value": "@bdt_capture_t2_bombing_zone_idx",
               "digits": 2,
-              "var": "bdt_capture_t2_bombing_zone_name"
+              "var": "bdt_capture_t2_bombing_zone_var_name"
             }
           },
           {
             "varAddString": {
               "value": "_name",
               "digits": 0,
-              "var": "bdt_capture_t2_bombing_zone_name"
+              "var": "bdt_capture_t2_bombing_zone_var_name"
             }
           },
           {
@@ -2415,7 +2415,7 @@
           },
           {
             "varGetStringValue": {
-              "from_var_name": "@bdt_capture_t2_bombing_zone_name",
+              "from_var_name": "@bdt_capture_t2_bombing_zone_var_name",
               "var": "bdt_capture_t2_bombing_zone_name"
             }
           },
@@ -2426,7 +2426,7 @@
           },
           {
             "varGetStringValue": {
-              "from_var_name": "bdt_capture_t2_bombing_zone_name",
+              "from_var_name": "@bdt_capture_t2_bombing_zone_var_name",
               "var": "bdt_capture_t2_bombing_zone_target_name"
             }
           },
@@ -2560,7 +2560,7 @@
             }
           },
           {
-            "varAddString": {
+            "__varAddString": {
               "value": "_bomb_zone",
               "digits": 0,
               "var": "bdt_capture_t2_bomb_zone_name"
@@ -2574,7 +2574,7 @@
           {
             "missionBombingAreaDamage": {
               "target": "@bdt_capture_t2_bomb_zone_name",
-              "damageHP": 100000.0
+              "damageHP": 900000.0
             }
           },
           {
@@ -2583,7 +2583,7 @@
             }
           },
           {
-            "unitDamage": {
+            "__unitDamage": {
               "power": 1.0,
               "useEffect": false,
               "countEffects": 1,
@@ -5155,7 +5155,9 @@
     "bdt_destroy_t1_bombing_zone_object_name": "",
     "bdt_destroy_t2_bombing_zone_object_name": "",
     "bdt_destroy_t1_real_idx": 0,
-    "bdt_destroy_t2_real_idx": 0
+    "bdt_destroy_t2_real_idx": 0,
+    "bdt_capture_t1_bombing_zone_var_name": "",
+    "bdt_capture_t2_bombing_zone_var_name": ""
   },
   "dialogs": [],
   "airfields": [],

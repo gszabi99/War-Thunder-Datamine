@@ -1,4 +1,11 @@
+// warning disable: -file:forbidden-function
+
+local dagor_fs = require("dagor.fs")
+local stdpath = require("std/path.nut")
 local skinLocations = ::require("scripts/customization/skinLocations.nut")
+local unitInfoTexts = require("scripts/unit/unitInfoTexts.nut")
+
+local skyquakePath = ::debug_get_skyquake_path()
 
 ::debug_check_unlocalized_resources <- function debug_check_unlocalized_resources()
 {
@@ -260,6 +267,198 @@ local skinLocations = ::require("scripts/customization/skinLocations.nut")
   foreach (str in brief)
     dagor.screenlog(str)
   return total
+}
+
+local unitImagesCheckCfgs = [
+  {
+    imgType = "Icon"
+    mask = "*.svg"
+    pathRel = $"{skyquakePath}/develop/gui/units/icons"
+    pathDev = $"{skyquakePath}/develop/gui/units_pkgdev/icons"
+    subDirs  = { air = "aircraft", helicopter = "aircraft", tank = "tanks", ship = "ships" }
+    placeholderFn = "image_in_progress_ico.svg"
+    getUnitIdByImgFn = @(fn) fn.indexof("_ico.svg") != null ? fn.slice(0, fn.indexof("_ico.svg")) : ""
+    getImgFnByUnitId = @(unitId) $"{unitId}_ico.svg"
+    getImgFnForUnit = function(unit) {
+      local img = ::getUnitClassIco(unit)
+      return img.slice(::g_string.lastIndexOf(img, "#") + 1)
+    }
+  },
+  {
+    imgType = "Slot image"
+    mask = "*.tga"
+    pathRel = $"{skyquakePath}/develop/gui/units/slots"
+    pathDev = $"{skyquakePath}/develop/gui/units_pkgdev/slots"
+    subDirs  = { air = "aircraft", helicopter = "aircraft", tank = "tanks", ship = "ships" }
+    placeholderFn = "image_in_progress.tga"
+    getUnitIdByImgFn = @(fn) fn.indexof(".") != null ? fn.slice(0, fn.indexof(".")) : ""
+    getImgFnByUnitId = @(unitId) $"{unitId}.tga"
+    getImgFnForUnit = function(unit) {
+      local img = ::image_for_air(unit)
+      return "".concat(img.slice(::g_string.lastIndexOf(img, "#") + 1), ".tga")
+    }
+  },
+  {
+    imgType = "Tomoe slot image"
+    mask = "*.tga"
+    pathRel = $"{skyquakePath}/develop/gui/units/tomoe"
+    pathDev = $""
+    subDirs  = { air = "aircraft", helicopter = "aircraft", tank = "tanks", ship = "ships" }
+    placeholderFn = "image_in_progress.tga"
+    getUnitIdByImgFn = @(fn) fn.indexof(".") != null ? fn.slice(0, fn.indexof(".")) : ""
+    getImgFnByUnitId = @(unitId) $"{unitId}.tga"
+    getImgFnForUnit = function(unit) {
+      local img = ::image_for_air(unit)
+      return "".concat(img.slice(::g_string.lastIndexOf(img, "#") + 1), ".tga")
+    }
+    filterUnits = @(unit) ::is_tencent_unit_image_reqired(unit)
+    onStart  = function() {
+      ::_is_vendor_tencent <- ::is_vendor_tencent
+      ::is_vendor_tencent = @() true
+    }
+    onFinish = function() {
+      ::is_vendor_tencent  = ::_is_vendor_tencent
+    }
+  },
+  {
+    imgType = "Photo image"
+    mask = "*.dds"
+    pathRel = $"{skyquakePath}/develop/gui/menu/tex"
+    pathDev = $"{skyquakePath}/develop/gui/menu/pkg_dev"
+    subDirs  = { air = "aircrafts", helicopter = "aircrafts", tank = "tanks", ship = "ships" }
+    placeholderFn = "image_in_progress.dds"
+    getUnitIdByImgFn = @(fn) fn.indexof(".") != null ? fn.slice(0, fn.indexof(".")) : ""
+    getImgFnByUnitId = @(unitId) $"{unitId}.dds"
+    getImgFnForUnit = function(unit) {
+      local img = unitInfoTexts.getUnitTooltipImage(unit)
+      return "".concat(img.slice(::g_string.lastIndexOf(img, "/") + 1), ".dds")
+    }
+  },
+]
+
+local function unitImagesSearchEverywhere(fn, files, unit, cfg)
+{
+  local res = []
+  foreach (pathKey in [ "pathRel", "pathDev" ])
+    foreach (unitTag, subDir in cfg.subDirs)
+      if (files[unitTag][pathKey].indexof(fn) != null)
+      {
+        local path = ::g_string.replace("/".concat(cfg[pathKey], subDir, fn), "/", "\\")
+        if (res.findvalue(@(v) v.path == path) == null)
+          res.append({
+            path = path
+            isAccessible = unit.isPkgDev || pathKey == "pathRel"
+          })
+      }
+  return res
+}
+
+::debug_check_unit_images <- function debug_check_unit_images(verbose = false)
+{
+  local unitsList = ::all_units.values().filter(@(u) u.isInShop)
+  local errors    = 0
+  local warnings  = 0
+  local info      = 0
+
+  foreach (cfg in unitImagesCheckCfgs)
+  {
+    local files = {}
+    foreach (unitTag, subDir in cfg.subDirs)
+    {
+      files[unitTag] <- {}
+      foreach (pathKey in [ "pathRel", "pathDev" ])
+      {
+        local list = dagor_fs.scan_folder({ root = $"{cfg[pathKey]}/{subDir}",
+          files_suffix = cfg.mask, vromfs = false, realfs = true, recursive = true })
+        files[unitTag][pathKey] <- list.map(@(path) stdpath.fileName(path).tolower()).sort()
+      }
+    }
+
+    cfg?.onStart()
+    local units = cfg?.filterUnits ? unitsList.filter(cfg.filterUnits) : unitsList
+    foreach (idx, unit in units)
+    {
+      local fn = cfg.getImgFnForUnit(unit).tolower()
+      local unitTag = unit.unitType.tag
+      local unitSrc = unit.isPkgDev ? "pkg_dev" : "release"
+      local pathKey = unit.isPkgDev ? "pathDev" : "pathRel"
+
+      if (fn == "" || fn == cfg.placeholderFn)
+      {
+        local valueTxt = fn == "" ? "empty string" : $"placeholder: \"{fn}\""
+        local expectedFn = cfg.getImgFnByUnitId(unit.name).tolower()
+        local located = unitImagesSearchEverywhere(expectedFn, files, unit, cfg)?[0]
+
+        if (located != null)
+        {
+          // Image exists, no need to use a placeholder.
+          errors++
+          ::clog($"ERROR: {cfg.imgType} for {unitSrc} unit \"{unit.name}\" is {valueTxt} (but image exists: \"{located.path}\")")
+        }
+        else
+        {
+          // Image not exists, placeholder is used.
+          local isError = !unit.isPkgDev
+          if (isError)
+            errors++
+          else
+            info++
+          local accidentType = isError ? "ERROR" : "INFO"
+          if (isError || verbose)
+            ::clog($"{accidentType}: {cfg.imgType} for {unitSrc} unit \"{unit.name}\" is {valueTxt}")
+        }
+        continue
+      }
+
+      if (files[unitTag][pathKey].indexof(fn) == null)
+      {
+        // Image not exists, or has wrong location.
+        local imgUnit = ::getAircraftByName(cfg.getUnitIdByImgFn(fn))
+        if (imgUnit != null && imgUnit != unit && unit.isPkgDev && !imgUnit.isPkgDev)
+        {
+          local unitTag2 = imgUnit.unitType.tag
+          local pathKey2 = imgUnit.isPkgDev ? "pathDev" : "pathRel"
+          if (files[unitTag2][pathKey2].indexof(fn) != null)
+            continue
+        }
+
+        local located = unitImagesSearchEverywhere(fn, files, unit, cfg)?[0]
+        local isError = located == null || !located.isAccessible
+        if (isError)
+          errors++
+        else
+          warnings++
+        local accidentType = isError ? "ERROR" : "WARNING"
+        local accidentText = located == null ? "NOT FOUND"
+          : !located.isAccessible ? "MUST be here"
+          : "should be here"
+        local comment = located != null ? $" (wrong location: \"{located.path}\")" : ""
+        local expectedPath = "/".concat(cfg[pathKey], cfg.subDirs[unitTag], fn)
+        expectedPath = ::g_string.replace(expectedPath, "/", "\\")
+        ::clog($"{accidentType}: {cfg.imgType} for {unitSrc} unit \"{unit.name}\" {accidentText}: \"{expectedPath}\"{comment}")
+      }
+      else
+      {
+        // Image exists, lets search for duplicates.
+        local locatedList = unitImagesSearchEverywhere(fn, files, unit, cfg)
+        if (locatedList.len() > 1) {
+          local expectedPath = "/".concat(cfg[pathKey], cfg.subDirs[unitTag], fn)
+          expectedPath = ::g_string.replace(expectedPath, "/", "\\")
+          foreach (located in locatedList)
+            if (located.path != expectedPath)
+            {
+              warnings++
+              ::clog($"WARNING: {cfg.imgType} for {unitSrc} unit \"{unit.name}\" exists: \"{expectedPath}\" (but has a DUPLICATE: \"{located.path}\")")
+            }
+        }
+      }
+    }
+    cfg?.onFinish()
+  }
+
+  local infos = verbose ? $"{info} info, " : ""
+  clog($"Done ({errors} errors, {warnings} warnings, {infos}{unitsList.len()} total)")
+  return errors
 }
 
 ::debug_cur_level_auto_skins <- function debug_cur_level_auto_skins()

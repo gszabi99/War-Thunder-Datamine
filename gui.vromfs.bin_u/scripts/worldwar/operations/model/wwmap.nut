@@ -10,13 +10,11 @@ class WwMap
 {
   name = ""
   data = null
-  isFromShortStatus = false
 
-  constructor(_name, _data, _isFromShortStatus = false)
+  constructor(_name, _data)
   {
     data = _data
     name = _name
-    isFromShortStatus = _isFromShortStatus
   }
 
   function _tostring()
@@ -121,9 +119,6 @@ class WwMap
   function isActive()
   {
     local active = data?.active ?? false
-    if (!isFromShortStatus)
-      return active
-
     local changeStateTime = getChangeStateTime()
     local timeLeft = changeStateTime - ::get_charserver_time_sec()
     if (active && (changeStateTime == -1 || timeLeft > 0))
@@ -167,6 +162,12 @@ class WwMap
       text = ::loc("worldwar/operation/unavailable")
 
     return text
+  }
+
+  function hasValidStatus() {
+    local changeStateTimeStamp = getChangeStateTime()
+    return changeStateTimeStamp == -1
+      || (changeStateTimeStamp - ::get_charserver_time_sec()) > 0
   }
 
   function isWillAvailable(isNearFuture = true)

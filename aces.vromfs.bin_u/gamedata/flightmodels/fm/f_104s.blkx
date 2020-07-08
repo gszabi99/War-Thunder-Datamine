@@ -84,8 +84,6 @@
     "hasFlapsControl": true,
     "canTakeoffWithoutFlaps": true,
     "hasAirbrake": true,
-    "isAirBrakeAvailableOnGround": true,
-    "hasIndependentAirbrakesAndFlaps": true,
     "hasGearControl": true,
     "hasArrestorControl": true,
     "hasWingFoldControl": false,
@@ -186,9 +184,9 @@
     "ClAfterCrit": 0.72,
     "MachFactor": 3,
     "MachCrit1": 0.92,
-    "MachMax1": 1.0,
+    "MachMax1": 1.05,
     "MultMachMax1": 5.5,
-    "MultLineCoeff1": -3.0,
+    "MultLineCoeff1": -3.4,
     "MultLimit1": 1.6,
     "MachCrit2": 0.7,
     "MachMax2": 1.0,
@@ -447,7 +445,7 @@
       "ExtinguisherNum": 0,
       "Type": "Jet",
       "Cylinders": 25,
-      "Mass": 2361.0,
+      "Mass": 1740.0,
       "Thrust": 2600.0,
       "ThrottleBoost": 1.01,
       "AfterburnerBoost": 1.1,
@@ -523,12 +521,12 @@
         "ThrustMaxCoeff_0_5": 0.93,
         "ThrAftMaxCoeff_0_5": 1.32,
         "TorqueMaxCoeff_0_5": 0.93,
-        "ThrustMaxCoeff_0_6": 0.96,
+        "ThrustMaxCoeff_0_6": 0.97,
         "ThrAftMaxCoeff_0_6": 1.32,
-        "TorqueMaxCoeff_0_6": 0.96,
-        "ThrustMaxCoeff_0_7": 0.94,
+        "TorqueMaxCoeff_0_6": 0.97,
+        "ThrustMaxCoeff_0_7": 0.97,
         "ThrAftMaxCoeff_0_7": 1.14,
-        "TorqueMaxCoeff_0_7": 0.94,
+        "TorqueMaxCoeff_0_7": 0.97,
         "ThrustMaxCoeff_0_8": 0.82,
         "ThrAftMaxCoeff_0_8": 1.04,
         "TorqueMaxCoeff_0_8": 0.82,
@@ -1099,15 +1097,15 @@
     }
   },
   "Mass": {
-    "EmptyMass": 6625.0,
+    "EmptyMass": 6725.0,
     "MaxFuelMass0": 2948.0,
     "FuelAccumulatorCapacity0": 38.0,
     "MinimalLoadFactor0": -0.3,
-    "FuelAccumulatorFlowRate": 8.3,
+    "FuelAccumulatorFlowRate0": 8.3,
     "MaxNitro": 0.0,
     "OilMass": 35.0,
     "AdvancedMass": false,
-    "SeparateFuelTanks": false,
+    "SeparateFuelTanks": true,
     "Takeoff": 24000.0,
     "CenterOfGravity": [-0.16,-0.2,0.0],
     "WingCritOverload": [-220000.0,560000.0],
@@ -1116,42 +1114,50 @@
     "FlapsDestructionIndSpeedP1": [0.2,2350.0],
     "FlapsDestructionIndSpeedP2": [0.33,833.0],
     "FlapsDestructionIndSpeedP3": [1.0,444.0],
-    "Parts": {
-      "tank1_capacity": 731.6,
-      "tank1_system": 0,
-      "tank1_external": false,
-      "tank1_priority": 2,
-      "tank2_capacity": 660.0,
-      "tank2_system": 0,
-      "tank2_external": false,
-      "tank2_priority": 4,
-      "tank3_capacity": 514.0,
-      "tank3_system": 0,
-      "tank3_external": false,
-      "tank3_priority": 6,
-      "tank4_capacity": 686.0,
-      "tank4_system": 0,
-      "tank4_external": false,
-      "tank4_priority": 5,
-      "tank5_capacity": 615.0,
-      "tank5_system": 0,
-      "tank5_external": false,
-      "tank5_priority": 3,
-      "tank6_capacity": 716.0,
-      "tank6_system": 0,
-      "tank6_external": false,
-      "tank6_priority": 1,
-      "tank7_capacity": 971.0,
-      "tank7_system": 0,
-      "tank7_external": false,
-      "tank7_priority": 0,
-      "tank8_capacity": 971.0,
-      "tank8_system": 0,
-      "tank8_external": false,
-      "tank8_priority": 0,
-      "engine1_dm": 900.0,
-      "engine2_dm": 900.0
-    },
+    "Parts": [
+      {
+        "tank2_capacity": 1578.0
+      },
+      {
+        "tank2_system": 0
+      },
+      {
+        "tank2_external": false
+      },
+      {
+        "tank2_priority": 2
+      },
+      {
+        "tank3_capacity": 645.0
+      },
+      {
+        "tank3_system": 0
+      },
+      {
+        "tank3_external": false
+      },
+      {
+        "tank3_priority": 3
+      },
+      {
+        "tank1_capacity": 645.0
+      },
+      {
+        "tank1_system": 0
+      },
+      {
+        "tank1_external": false
+      },
+      {
+        "tank1_priority": 1
+      },
+      {
+        "engine1_dm": 1615.0
+      },
+      {
+        "engine1_dm": 1740.0
+      }
+    ],
     "PartsWithSurface": {
       "gear_l_dm": 55.8109,
       "wing1_l_dm": 193.461,
