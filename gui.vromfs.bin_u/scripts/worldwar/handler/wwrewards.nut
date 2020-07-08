@@ -32,6 +32,7 @@ class ::gui_handlers.WwRewards extends ::gui_handlers.BaseGuiHandlerWT
 
     showSceneBtn("nav-help", true)
     updateRerwardsStartTime()
+    initFocusArray()
 
     rewards = []
     foreach (rewardBlk in rewardsBlk)
@@ -55,8 +56,7 @@ class ::gui_handlers.WwRewards extends ::gui_handlers.BaseGuiHandlerWT
       rewards.append(reward)
     }
 
-    local markup = ::handyman.renderCached("gui/worldWar/wwRewardItem", getRewardsView())
-    guiScene.replaceContentFromText(rewardsListObj, markup, markup.len(), this)
+    updateRewardsList()
   }
 
   function getRewardData(rewardBlk, needPlace = true)
@@ -175,14 +175,28 @@ class ::gui_handlers.WwRewards extends ::gui_handlers.BaseGuiHandlerWT
     ::gui_start_open_trophy_rewards_list({ rewardsArray = rewardsArray })
   }
 
-  function onItemSelect(obj)
+  function onItemSelect(obj) {}
+
+  function updateRewardsList()
   {
+    local val = ::get_obj_valid_index(rewardsListObj)
+    local markup = ::handyman.renderCached("gui/worldWar/wwRewardItem", getRewardsView())
+    guiScene.replaceContentFromText(rewardsListObj, markup, markup.len(), this)
+
+    if (val < 0 || val >= rewardsListObj.childrenCount())
+      val = 0
+
+    rewardsListObj.setValue(val)
   }
 
   function onEventItemsShopUpdate(obj)
   {
-    local markup = ::handyman.renderCached("gui/worldWar/wwRewardItem", getRewardsView())
-    guiScene.replaceContentFromText(rewardsListObj, markup, markup.len(), this)
+    updateRewardsList()
+  }
+
+  function getMainFocusObj()
+  {
+    return "rewards_list"
   }
 }
 

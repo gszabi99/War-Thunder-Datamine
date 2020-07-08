@@ -66,6 +66,7 @@ global enum DargWidgets
   ,SHIP_OBSTACLE_RF
   ,SCOREBOARD
   ,CHANGE_LOG
+  ,DAMAGE_PANEL
 };
 
 global enum HelicopterParams
@@ -130,5 +131,11 @@ global enum FlaresMode
 {
   PERIODIC_FLARES    = 1,
   MLWS_SLAVED_FLARES = 2
+};
+
+global enum WeaponMode
+{
+  CCIP_MODE = 1,
+  CCRP_MODE = 2
 };
 

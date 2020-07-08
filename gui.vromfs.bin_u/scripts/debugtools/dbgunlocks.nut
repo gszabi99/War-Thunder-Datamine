@@ -1,3 +1,5 @@
+// warning disable: -file:forbidden-function
+
 ::debug_show_test_unlocks <- function debug_show_test_unlocks(chapter = "test", group = null)
 {
   if (!::is_dev_version)

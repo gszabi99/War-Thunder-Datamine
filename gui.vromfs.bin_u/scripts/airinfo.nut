@@ -1621,6 +1621,17 @@ global enum CheckFeatureLockAction
         format("%d / %d / %d %s", val[0], val[1],val[2], ::loc("measureUnits/mm")))
     }
 
+    // ship-antiTorpedoProtection
+    local atProtection = unitTags?.Shop.atProtection
+    holderObj.findObject("ship-antiTorpedoProtection-tr").show(atProtection != null)
+    if(atProtection != null)
+    {
+      holderObj.findObject("ship-antiTorpedoProtection-title").setValue(
+        "".concat(::loc("info/ship/antiTorpedoProtection"), ::loc("ui/colon")))
+      holderObj.findObject("ship-antiTorpedoProtection-value").setValue(
+        ::format("%d %s", atProtection, ::loc("measureUnits/kg")))
+    }
+
     local shipMaterials = getShipMaterialTexts(air.name)
 
     // ship-hullMaterial
@@ -1654,6 +1665,7 @@ global enum CheckFeatureLockAction
     holderObj.findObject("ship-displacement-tr").show(false)
     holderObj.findObject("ship-citadelArmor-tr").show(false)
     holderObj.findObject("ship-mainFireTower-tr").show(false)
+    holderObj.findObject("ship-antiTorpedoProtection-tr").show(false)
     holderObj.findObject("ship-hullMaterial-tr").show(false)
     holderObj.findObject("ship-superstructureMaterial-tr").show(false)
   }

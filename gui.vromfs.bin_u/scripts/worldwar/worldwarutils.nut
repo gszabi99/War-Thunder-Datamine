@@ -5,7 +5,11 @@ local wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWi
 local wwArmyGroupManager = require("scripts/worldWar/inOperation/wwArmyGroupManager.nut")
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
 local { isCrossPlayEnabled } = require("scripts/social/crossplay.nut")
-local { getNearestAvailableMapToBattle, getOperationById, getOperationFromShortStatusById
+local { getNearestMapToBattleShort,
+  hasAvailableMapToBattle,
+  hasAvailableMapToBattleShort,
+  getOperationById,
+  getOperationFromShortStatusById
 } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 local { actionWithGlobalStatusRequest } = require("scripts/worldWar/operations/model/wwGlobalStatus.nut")
 
@@ -88,7 +92,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
       return operation.getMapText()
 
 
-    local nearestAvailableMapToBattle = getNearestAvailableMapToBattle(false, true)
+    local nearestAvailableMapToBattle = getNearestMapToBattleShort()
     if(!nearestAvailableMapToBattle)
       return null
 
@@ -105,7 +109,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
     if (getLastPlayedOperation() != null)
       return false
 
-    local nearestAvailableMapToBattle = getNearestAvailableMapToBattle(false, true)
+    local nearestAvailableMapToBattle = getNearestMapToBattleShort()
     if (!nearestAvailableMapToBattle)
       return false
 
@@ -123,10 +127,8 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
     return true
   }
 
-  function isWWSeasonActive(checkShortStatus = false)
-  {
-    return getNearestAvailableMapToBattle(true, checkShortStatus) != null
-  }
+  isWWSeasonActive = @() hasAvailableMapToBattle()
+  isWWSeasonActiveShort = @() hasAvailableMapToBattleShort()
 }
 
 ::g_script_reloader.registerPersistentDataFromRoot("g_world_war")

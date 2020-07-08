@@ -2,6 +2,7 @@ local math = require("std/math.nut")
 local screenState = require("style/screenState.nut")
 local rwr = require("rwr.nut")
 local tws = require("tws.nut")
+local warningSystemState = require("twsState.nut")
 local radarComponent = require("radarComponent.nut")
 local helicopterState = require("helicopterState.nut")
 local aamAim = require("rocketAamAim.nut")
@@ -486,6 +487,18 @@ local function pilotHud(elemStyle, isBackground) {
   }
 }
 
+local twsPosX = screenState.safeAreaSizeHud.value.borders[1] + screenState.rw(75)
+local mkTws = @(colorStyle) @() {
+  watch = warningSystemState.IsTwsHudVisible
+  children = !warningSystemState.IsTwsHudVisible.value ? null :
+    tws({
+        colorStyle = colorStyle,
+        pos = [twsPosX, sh(70)],
+        size = [sh(20), sh(20)],
+        relativCircleSize = 43
+      })
+  }
+
 local function helicopterHUDs(colorStyle, isBackground) {
   local rwrStyle = colorStyle.__merge({
     color = getColor(isBackground)
@@ -494,14 +507,15 @@ local function helicopterHUDs(colorStyle, isBackground) {
     fillColor = getColor(isBackground)
     color = getColor(isBackground)
   })
+
   local radar = !helicopterState.IsMfdEnabled.value ? radarComponent.radar(false, sh(6), sh(6), getColor(isBackground)) : null
   return [
     helicopterMainHud(hudStyle, isBackground)
     helicopterSightHud(hudStyle, isBackground)
     gunnerHud(hudStyle, isBackground)
     pilotHud(hudStyle, isBackground)
-    tws(rwrStyle)
     rwr(rwrStyle)
+    mkTws(rwrStyle)
     radar
   ]
 }
