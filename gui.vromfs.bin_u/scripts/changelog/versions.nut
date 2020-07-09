@@ -8,6 +8,10 @@
 */
 
 return [
+  {version="1.99.1.00", type="major", title={
+    english="Update 'Regia Marina'"
+    russian="Обновление 'Regia Marina'"
+  }}
   {version="1.99.0.03", type="major", title={
     english="Major Update 'Starfighters'"
     russian="Обновление 'Starfighters'"

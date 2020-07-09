@@ -63,10 +63,8 @@ expandable {
       tdiv {
         margin-left:t='0.3pw'
 
-        tdiv {
-          smallItems:t='yes'
-          <<@trophyMarkup>>
-        }
+        <<@trophyMarkup>>
+
         textareaNoTab {
           top:t='0.5(ph-h)'
           position:t='relative'

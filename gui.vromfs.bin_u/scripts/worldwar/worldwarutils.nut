@@ -129,6 +129,15 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 
   isWWSeasonActive = @() hasAvailableMapToBattle()
   isWWSeasonActiveShort = @() hasAvailableMapToBattleShort()
+
+  function updateCurOperationStatusInGlobalStatus() {
+    local operationId = ::ww_get_operation_id()
+    if (operationId == -1)
+      return
+
+    local operation = getOperationById(operationId)
+    operation?.setFinishedStatus(isCurrentOperationFinished())
+  }
 }
 
 ::g_script_reloader.registerPersistentDataFromRoot("g_world_war")
@@ -339,6 +348,7 @@ g_world_war.stopWar <- function stopWar()
   if (!::ww_is_operation_loaded())
     return
 
+  updateCurOperationStatusInGlobalStatus()
   ::ww_stop_war()
   ::ww_event("StopWorldWar")
 }

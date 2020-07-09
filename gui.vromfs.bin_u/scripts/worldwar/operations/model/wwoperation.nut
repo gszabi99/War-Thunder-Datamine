@@ -29,6 +29,7 @@ class WwOperation
   _assignCountry = null
 
   isFromShortStatus = false
+  isFinished = false //this parametr updated from local operation when return main menu of WWar
 
   constructor(_data, _isFromShortStatus = false)
   {
@@ -45,8 +46,9 @@ class WwOperation
 
   function isAvailableToJoin()
   {
-    return status == WW_OPERATION_STATUSES.ES_ACTIVE ||
-           status == WW_OPERATION_STATUSES.ES_PAUSED
+    return !isFinished &&
+      ( status == WW_OPERATION_STATUSES.ES_ACTIVE
+        || status == WW_OPERATION_STATUSES.ES_PAUSED )
   }
 
   function isEqual(operation)
@@ -346,4 +348,6 @@ class WwOperation
 
     return res
   }
+
+  setFinishedStatus = @(isFinish) isFinished = isFinish
 }
