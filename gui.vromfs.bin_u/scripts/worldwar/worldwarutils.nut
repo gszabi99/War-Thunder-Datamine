@@ -12,6 +12,7 @@ local { getNearestMapToBattleShort,
   getOperationFromShortStatusById
 } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 local { actionWithGlobalStatusRequest } = require("scripts/worldWar/operations/model/wwGlobalStatus.nut")
+local { subscribeOperationNotifyOnce } = require("scripts/worldWar/services/wwService.nut")
 
 const WW_CUR_OPERATION_SAVE_ID = "worldWar/curOperation"
 const WW_CUR_OPERATION_COUNTRY_SAVE_ID = "worldWar/curOperationCountry"
@@ -214,7 +215,7 @@ g_world_war.openMainWnd <- function openMainWnd(forceOpenMainMenu = false)
 g_world_war.openWarMap <- function openWarMap()
 {
   local operationId = ::ww_get_operation_id()
-  ::ww_service.subscribeOperation(
+  subscribeOperationNotifyOnce(
     operationId,
     null,
     function(responce) {
@@ -328,8 +329,12 @@ g_world_war.onEventLoadingStateChange <- function onEventLoadingStateChange(p)
   ::g_squad_manager.cancelWwBattlePrepare()
   local missionRules = ::g_mis_custom_state.getCurMissionRules()
   isLastFlightWasWwBattle = missionRules.isWorldWar
-  local operationId = missionRules.getCustomRulesBlk()?.operationId
-  if (operationId != null && operationId != ::ww_get_operation_id())
+  local operationId = missionRules.getCustomRulesBlk()?.operationId.tointeger()
+  if (operationId == null)
+    return
+
+  subscribeOperationNotifyOnce(operationId)
+  if (operationId != ::ww_get_operation_id())
     updateOperationPreviewAndDo(operationId, null)   //need set operation preview if in WW battle for load operation config
 }
 

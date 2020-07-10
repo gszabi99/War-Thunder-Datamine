@@ -5,6 +5,7 @@ local actionModesManager = require("scripts/worldWar/inOperation/wwActionModesMa
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
 local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+local { subscribeOperationNotifyOnce } = require("scripts/worldWar/services/wwService.nut")
 
 class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -428,7 +429,6 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function goBackToHangar()
   {
-    ::ww_service.unsubscribeOperation(::ww_get_operation_id())
     ::g_world_war.stopWar()
     goBack()
   }
@@ -452,7 +452,7 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventMatchingConnect(params)
   {
-    ::ww_service.subscribeOperation(::ww_get_operation_id())
+    subscribeOperationNotifyOnce(::ww_get_operation_id())
   }
 
   function onArmyMove(obj)

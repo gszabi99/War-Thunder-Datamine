@@ -92,6 +92,9 @@ class WwBattleJoinProcess
 
   function joinStep4_repairInfo()
   {
+    if (wwBattle.isBattleByUnitsGroup())
+      return joinStep5_paramsForQueue()
+
     local team = wwBattle.getTeamBySide(side)
     local battleUnits = wwBattle.getTeamRemainUnits(team)
     local requiredUnits = wwBattle.getUnitsRequiredForJoin(team, side)

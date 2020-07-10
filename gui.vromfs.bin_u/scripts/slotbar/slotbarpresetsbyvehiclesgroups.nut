@@ -89,6 +89,7 @@ local function validatePresets(presetId, groupsList, countryPresets) {
       local unit = presetUnits?[i]
       if (unit == null || !canAssignInSlot(unit, groupsList, countryId))
       {
+        presetUnits[i] = null
         emptySLots.append(i)
         continue
       }

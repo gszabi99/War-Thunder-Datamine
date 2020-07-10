@@ -1124,7 +1124,8 @@ local isWaitMeasureEvent = false
       break
 
     case ::USEROPT_SOUND_ENABLE:
-      descr.id = "sound"
+      descr.id = "sound_switch"
+      descr.title = ::loc("options/sound")
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.textChecked <- ::loc("options/enabled")

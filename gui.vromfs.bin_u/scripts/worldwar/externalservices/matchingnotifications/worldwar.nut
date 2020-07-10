@@ -1,4 +1,5 @@
 local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+local { subscribeOperationNotify, unsubscribeOperationNotify } = require("scripts/worldWar/services/wwService.nut")
 
 foreach (notificationName, callback in
   {
@@ -55,7 +56,7 @@ foreach (notificationName, callback in
         if (!operationId || operationId != ::ww_get_operation_id())
           return
 
-        local side = ::ww_side_val_to_name(::ww_get_player_side())
+        local isOwnSide = (::get_local_player_country() == params?.activeSideCountry)
         local text = ""
         if (messageType == "operation_finished")
         {
@@ -66,8 +67,8 @@ foreach (notificationName, callback in
         }
         else if (messageType == "zone_captured")
         {
-          text = ::loc((side == params?.activeSide) ? "worldwar/operation_zone_captured"
-                                                    : "worldwar/operation_zone_lost",
+          text = ::loc(isOwnSide ? "worldwar/operation_zone_captured"
+                                 : "worldwar/operation_zone_lost",
             {zoneName = params?.customParam ?? ""})
         }
         else if (messageType == "reinforcements_arrived")
@@ -75,13 +76,13 @@ foreach (notificationName, callback in
           local misBlk = ::DataBlock()
           ::get_current_mission_desc(misBlk)
           if (params?.customParam == misBlk?.customRules.battleId)
-            text = ::loc((side == params?.activeSide) ? "worldwar/operation_air_reinforcements_arrived_our"
-                                                      : "worldwar/operation_air_reinforcements_arrived_enemy")
+            text = ::loc(isOwnSide ? "worldwar/operation_air_reinforcements_arrived_our"
+                                   : "worldwar/operation_air_reinforcements_arrived_enemy")
         }
         else if (messageType == "battle_finished")
         {
-          text = ::loc((side == params?.activeSide) ? "worldwar/operation_battle_won_our"
-                                                    : "worldwar/operation_battle_won_enemy",
+          text = ::loc(isOwnSide ? "worldwar/operation_battle_won_our"
+                                 : "worldwar/operation_battle_won_enemy",
             {zoneName = params?.customParam ?? ""})
         }
 
@@ -101,9 +102,9 @@ foreach (notificationName, callback in
           return
 
         if (params?.subscribe ?? false)
-          ::ww_service.subscribeOperation(operationId)
+          subscribeOperationNotify(operationId)
         else
-          ::ww_service.unsubscribeOperation(operationId)
+          unsubscribeOperationNotify(operationId)
       }
   })
   ::web_rpc.register_handler(notificationName, callback)
