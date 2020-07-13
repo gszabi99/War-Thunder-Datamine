@@ -749,52 +749,6 @@
       },
       "else_actions": []
     },
-    "dbttl_zone_captured_by_t2": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": true
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "missionIsZoneCaptured": {
-          "target": "@zone_name",
-          "army": 2
-        }
-      },
-      "actions": [
-        {
-          "moSetObjectiveStatus": {
-            "target": "avg_DBttlA_objective_01",
-            "status": 3,
-            "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "team": "A"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
-            "target": "avg_DBttlA_objective_02",
-            "status": 2,
-            "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "team": "B"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "dbttl_t2_win"
-          }
-        }
-      ],
-      "else_actions": []
-    },
     "dbttl_zone_captured_by_t1": {
       "is_enabled": false,
       "comments": "",
@@ -805,7 +759,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.5
         }
       },
       "conditions": {
@@ -834,14 +788,16 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "dbttl_t1_win"
+          "gameMPChangeScore": {
+            "value": -100,
+            "valueSystem": "percentage",
+            "team": "B"
           }
         }
       ],
       "else_actions": []
     },
-    "dbttl_t1_win": {
+    "dbttl_zone_captured_by_t2": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -854,37 +810,39 @@
           "time": 0.5
         }
       },
-      "conditions": [],
-      "actions": {
-        "gameMPChangeScore": {
-          "value": -20,
-          "valueSystem": "percentage",
-          "team": "B"
+      "conditions": {
+        "missionIsZoneCaptured": {
+          "target": "@zone_name",
+          "army": 2
         }
       },
-      "else_actions": []
-    },
-    "dbttl_t2_win": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": true
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.5
+      "actions": [
+        {
+          "moSetObjectiveStatus": {
+            "target": "avg_DBttlA_objective_01",
+            "status": 3,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
+            "team": "A"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "avg_DBttlA_objective_02",
+            "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
+            "team": "B"
+          }
+        },
+        {
+          "gameMPChangeScore": {
+            "value": -100,
+            "valueSystem": "percentage",
+            "team": "A"
+          }
         }
-      },
-      "conditions": [],
-      "actions": {
-        "gameMPChangeScore": {
-          "value": -20,
-          "valueSystem": "percentage",
-          "team": "A"
-        }
-      },
+      ],
       "else_actions": []
     },
     "set_dbttl_timer": {
@@ -1038,8 +996,10 @@
         "triggerDisable": {
           "target": "dbttl_zone_captured_by_t2"
         },
-        "triggerEnable": {
-          "target": "dbttl_t1_win"
+        "gameMPChangeScore": {
+          "value": -100,
+          "valueSystem": "percentage",
+          "team": "B"
         }
       },
       "else_actions": []
@@ -1066,8 +1026,10 @@
         "triggerDisable": {
           "target": "dbttl_zone_captured_by_t1"
         },
-        "triggerEnable": {
-          "target": "dbttl_t2_win"
+        "gameMPChangeScore": {
+          "value": -100,
+          "valueSystem": "percentage",
+          "team": "A"
         }
       },
       "else_actions": []

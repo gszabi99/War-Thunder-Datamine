@@ -288,16 +288,11 @@
     "pathAITanks": "ground/effects/ai",
     "pathShips": "naval/effects",
     "pathAIShips": "naval/effects/ai",
-    "pathSuit": "space_program/effects",
     "pathWalkers": "naval/effects",
     "eventBulletHitGround": "bullethit_ground",
     "eventBulletHitGroundDist": 200.0,
     "eventBulletHitWater": "bullethit_water",
     "eventBulletHitWaterDist": 200.0,
-    "eventLaserHitGround": "laser_burn_solid",
-    "eventLaserHitGroundDist": 200.0,
-    "eventLaserHitWater": "laser_burn_water",
-    "eventLaserHitWaterDist": 200.0,
     "eventBulletPassBy": "bullet_passby",
     "eventPropDead": "prop_dead",
     "eventPropDeadDist": 100.0,
@@ -433,7 +428,6 @@
     "eventTorpedoSplash": "torpedo_splash",
     "eventJumpOutParachute": "jump_out_parachute",
     "lowGroundEffect": "low_ground",
-    "eventMetalImpact": "rattle05/impact06",
     "eventCutDecor": "part_bounced",
     "eventBinocularsOn": "binoculars_on",
     "eventBinocularsOff": "binoculars_off",
@@ -489,7 +483,10 @@
     "tree_creak": "tree_creak",
     "tree_creakDist": 50.0,
     "tree_fallDist": 50.0,
-    "minMaxCaliber": [0.01,0.4]
+    "minMaxCaliber": [0.01,0.4],
+    "eventBoosterEngine": "engineBooster",
+    "eventBoosterCockpitEngine": "engineBooster_cockpit",
+    "eventBoosterAiEngine": "engineBooster_ai"
   },
   "explosions": {
     "path": "aircraft/explosions",
@@ -2143,22 +2140,6 @@
       "distScaleOnNotHero": 1.0
     }
   },
-  "metal_rattle04": {
-    "effects": {
-      "path": "ground/effects/metal_rattle04",
-      "eventStart": "engine_start",
-      "eventStop": "engine_stop"
-    },
-    "outside": {
-      "path": "ground/effects/metal_rattle04",
-      "eventBack": "engine",
-      "rpmSmooth": 0.02,
-      "loadScale": 6.0,
-      "loadSmooth": 0.05,
-      "distSmooth": 0.9,
-      "distScaleOnNotHero": 1.0
-    }
-  },
   "engine_tank_ai_maus": {
     "effects": {
       "path": "ground/engines/ai_maus",
@@ -3451,6 +3432,39 @@
       "leftPos": [-1.0,1.0,0.0]
     }
   },
+  "engine_su76": {
+    "effects": {
+      "path": "ground/engines/su76",
+      "wep": "",
+      "overheatOutside": "",
+      "overheatCockpit": "",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_start",
+      "eventStop": "engine_stop"
+    },
+    "outside": {
+      "path": "ground/engines/su76",
+      "eventFront": "",
+      "eventBack": "engine",
+      "eventSurround": "",
+      "eventLod1": "engine",
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0,
+      "offsetPos": [-1.5,1.0,0.0]
+    },
+    "cockpit": {
+      "path": "ground/engines/su76",
+      "event_cockpit_l": "engine_interior",
+      "event_start_cockpit_l": "engine_start_interior",
+      "event_stop_cockpit_l": "engine_stop_interior",
+      "leftPos": [-1.0,1.0,0.0]
+    }
+  },
   "engine_panzer3": {
     "effects": {
       "path": "ground/engines/panzer3",
@@ -3515,39 +3529,6 @@
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
       "leftPos": [2.0,1.0,0.0]
-    }
-  },
-  "metal_rattle03": {
-    "effects": {
-      "path": "ground/effects/metal_rattle03",
-      "wep": "",
-      "overheatOutside": "",
-      "overheatCockpit": "",
-      "dive": "engine_dive",
-      "timeFallingDown": 2.0,
-      "engineVolumeOnOverheat": 0.8,
-      "eventStart": "engine_start",
-      "eventStop": "engine_stop"
-    },
-    "outside": {
-      "path": "ground/effects/metal_rattle03",
-      "eventFront": "",
-      "eventBack": "engine",
-      "eventSurround": "",
-      "eventLod1": "engine",
-      "rpmSmooth": 0.02,
-      "loadScale": 6.0,
-      "loadSmooth": 0.05,
-      "distSmooth": 0.9,
-      "distScaleOnNotHero": 1.0,
-      "offsetPos": [1.0,1.0,0.0]
-    },
-    "cockpit": {
-      "path": "ground/effects/metal_rattle03",
-      "event_cockpit_l": "engine_interior",
-      "event_start_cockpit_l": "engine_start_interior",
-      "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [1.0,1.0,0.0]
     }
   },
   "engine_hetzer": {
@@ -4591,6 +4572,39 @@
       "leftPos": [1.0,1.0,0.0]
     }
   },
+  "engine_brdm": {
+    "effects": {
+      "path": "ground/engines/brdm",
+      "wep": "",
+      "overheatOutside": "",
+      "overheatCockpit": "",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_start",
+      "eventStop": "engine_stop"
+    },
+    "outside": {
+      "path": "ground/engines/brdm",
+      "eventFront": "",
+      "eventBack": "engine",
+      "eventSurround": "",
+      "eventLod1": "engine",
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0,
+      "offsetPos": [1.0,1.0,0.0]
+    },
+    "cockpit": {
+      "path": "ground/engines/brdm",
+      "event_cockpit_l": "engine_interior",
+      "event_start_cockpit_l": "engine_start_interior",
+      "event_stop_cockpit_l": "engine_stop_interior",
+      "leftPos": [1.0,1.0,0.0]
+    }
+  },
   "engine_chaffee_m24": {
     "effects": {
       "path": "ground/engines/chaffee_m24",
@@ -4684,6 +4698,39 @@
     },
     "cockpit": {
       "path": "ground/engines/sherman_m4a3",
+      "event_cockpit_l": "engine_interior",
+      "event_start_cockpit_l": "engine_start_interior",
+      "event_stop_cockpit_l": "engine_stop_interior",
+      "leftPos": [-1.0,1.0,0.0]
+    }
+  },
+  "engine_m60_patton": {
+    "effects": {
+      "path": "ground/engines/m60_patton",
+      "wep": "",
+      "overheatOutside": "",
+      "overheatCockpit": "",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_start",
+      "eventStop": "engine_stop"
+    },
+    "outside": {
+      "path": "ground/engines/m60_patton",
+      "eventFront": "",
+      "eventBack": "engine",
+      "eventSurround": "",
+      "eventLod1": "engine",
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0,
+      "offsetPos": [-1.0,1.0,0.0]
+    },
+    "cockpit": {
+      "path": "ground/engines/m60_patton",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
@@ -6213,105 +6260,6 @@
       }
     }
   },
-  "engine_exp_mk1": {
-    "effects": {
-      "path": "space_program/engines",
-      "wep": "",
-      "overheatOutside": "",
-      "overheatCockpit": "",
-      "dive": "engine_dive",
-      "timeFallingDown": 2.0,
-      "engineVolumeOnOverheat": 0.8,
-      "eventStart": "engine_start",
-      "eventStop": "engine_stop"
-    },
-    "outside": {
-      "path": "space_program/engines",
-      "eventFront": "",
-      "eventBack": "engine",
-      "eventSurround": "",
-      "eventLod1": "engine",
-      "rpmSmooth": 0.02,
-      "loadScale": 6.0,
-      "loadSmooth": 0.05,
-      "distSmooth": 0.9,
-      "distScaleOnNotHero": 1.0,
-      "offsetPos": [1.0,1.0,0.0]
-    },
-    "cockpit": {
-      "path": "space_program/engines",
-      "event_cockpit_l": "engine_interior",
-      "event_start_cockpit_l": "engine_start_interior",
-      "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [1.0,1.0,0.0]
-    }
-  },
-  "rattle05": {
-    "effects": {
-      "path": "ground/effects/rattle05",
-      "wep": "",
-      "overheatOutside": "",
-      "overheatCockpit": "",
-      "dive": "engine_dive",
-      "timeFallingDown": 2.0,
-      "engineVolumeOnOverheat": 0.8,
-      "eventStart": "engine_start",
-      "eventStop": "engine_stop"
-    },
-    "outside": {
-      "path": "ground/effects/rattle05",
-      "eventFront": "",
-      "eventBack": "engine",
-      "eventSurround": "",
-      "eventLod1": "engine",
-      "rpmSmooth": 0.02,
-      "loadScale": 6.0,
-      "loadSmooth": 0.05,
-      "distSmooth": 0.9,
-      "distScaleOnNotHero": 1.0,
-      "offsetPos": [1.0,1.0,0.0]
-    },
-    "cockpit": {
-      "path": "ground/effects/rattle05",
-      "event_cockpit_l": "engine_interior",
-      "event_start_cockpit_l": "engine_start_interior",
-      "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [1.0,1.0,0.0]
-    }
-  },
-  "rattle06": {
-    "effects": {
-      "path": "ground/effects/rattle06",
-      "wep": "",
-      "overheatOutside": "",
-      "overheatCockpit": "",
-      "dive": "engine_dive",
-      "timeFallingDown": 2.0,
-      "engineVolumeOnOverheat": 0.8,
-      "eventStart": "engine_start",
-      "eventStop": "engine_stop"
-    },
-    "outside": {
-      "path": "ground/effects/rattle06",
-      "eventFront": "",
-      "eventBack": "engine",
-      "eventSurround": "",
-      "eventLod1": "engine",
-      "rpmSmooth": 0.02,
-      "loadScale": 6.0,
-      "loadSmooth": 0.05,
-      "distSmooth": 0.9,
-      "distScaleOnNotHero": 1.0,
-      "offsetPos": [1.0,1.0,0.0]
-    },
-    "cockpit": {
-      "path": "ground/effects/rattle06",
-      "event_cockpit_l": "engine_interior",
-      "event_start_cockpit_l": "engine_start_interior",
-      "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [1.0,1.0,0.0]
-    }
-  },
   "engine_ctr01": {
     "effects": {
       "path": "naval/engines/ctr01",
@@ -6765,21 +6713,6 @@
       "path": "aircraft/gui",
       "event": "bombs_reload",
       "time": 1.5
-    },
-    "suit_mgun_reload": {
-      "path": "space_program/effects",
-      "event": "reload_mgun",
-      "time": 3.0
-    },
-    "suit_cannon_reload": {
-      "path": "space_program/effects",
-      "event": "reload_cannon",
-      "time": 4.0
-    },
-    "suit_launcher_reload": {
-      "path": "space_program/effects",
-      "event": "reload_launcher",
-      "time": 4.0
     },
     "grd_gun_reload": {
       "path": "ground/effects",
