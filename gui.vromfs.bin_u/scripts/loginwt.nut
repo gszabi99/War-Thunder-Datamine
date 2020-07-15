@@ -416,7 +416,7 @@ g_login.firstMainMenuLoad <- function firstMainMenuLoad()
 
 g_login.statsdOnLogin <- function statsdOnLogin()
 {
-  statsd.send_counter("sq.gameStart.login", 1)
+  statsd.send_counter("sq.game_start.login", 1)
 
   if (::get_controls_preset() == "")
   {

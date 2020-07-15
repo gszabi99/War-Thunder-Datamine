@@ -57,7 +57,7 @@ local haveItemDiscount = null
     progressMsg.destroy(XBOX_RECEIVE_CATALOG_MSG_ID)
   reqProgressMsg = false
 
-  statsd.send_counter("ingame_store.open", 1, {catalog = statsdMetric})
+  statsd.send_counter("sq.ingame_store.open", 1, {catalog = statsdMetric})
   if (onReceiveCatalogCb)
     onReceiveCatalogCb()
   onReceiveCatalogCb = null

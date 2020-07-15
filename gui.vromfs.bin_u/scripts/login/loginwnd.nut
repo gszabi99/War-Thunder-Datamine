@@ -6,6 +6,7 @@ local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 
+
 class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
 {
   sceneBlkName = "gui/loginBox.blk"
@@ -453,7 +454,7 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
     }
   }
 
-  function proceedGetTwoStepCode(data)
+  function onEventProceedGetTwoStepCode(data)
   {
     if (!isValid() || isLoginRequestInprogress)
     {
@@ -515,7 +516,7 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
         if (needTrySteamLink())
         {
           local isRemoteComp = ::get_object_value(scene, "loginbox_remote_comp", false)
-          statsd.send_counter("sq.gameStart.request_login", 1, {login_type = "steam_link"})
+          statsd.send_counter("sq.game_start.request_login", 1, {login_type = "steam_link"})
           ::dagor.debug("Steam Link Login: check_login_pass")
           local res = ::check_login_pass("", "", "steam", "steam", true, isRemoteComp)
           ::dagor.debug("Steam Link Login: link existing account, result = " + res)
@@ -543,7 +544,10 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
 
             scene.findObject("loginbox_code").select();
             currentFocusItem = 2
-            ::get_two_step_code_async(this, proceedGetTwoStepCode)
+            if ("get_two_step_code_async2" in getroottable())
+              ::get_two_step_code_async2("ProceedGetTwoStepCode")
+            else
+              ::get_two_step_code_async(this, onEventProceedGetTwoStepCode)
           })(scene))
         }
         break
