@@ -6,6 +6,42 @@ local { isCrossPlayEnabled,
         getTextWithCrossplayIcon,
         needShowCrossPlayInfo } = require("scripts/social/crossplay.nut")
 
+local imgFormat = "img {size:t='%s'; background-image:t='%s'; margin-right:t='0.01@scrn_tgt;'} "
+local textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t='%s'} "
+local descriptionBlkMultipleFormat = "tdiv { flow:t='h-flow'; width:t='pw'; {0} }"
+
+local function getResourcesConfig(resources) {
+  if (resources == null)
+    return null
+
+  local res = {
+    description = []
+    logImg = null
+    resourcesImagesMarkupArr = []
+  }
+
+  //after convertation from DataBlk to table array with 1 element becomes table.
+  //So we normalize data format.
+  if (::u.isTable(resources))
+    resources = [resources]
+
+  foreach (resource in resources) {
+    local unlock = ::get_decorator_unlock(resource.resourceId, resource.resourceType)
+    local desc = unlock?.desc ?? ""
+    if (desc != "")
+      res.description.append(desc)
+
+    res.logImg = unlock?.image ?? res.logImg
+    local descrImage = unlock?.descrImage ?? ""
+    if (descrImage != "") {
+      local imgSize = unlock?.descrImageSize ?? "0.05sh, 0.05sh"
+      res.resourcesImagesMarkupArr.append(::format(imgFormat, imgSize, unlock.descrImage))
+    }
+  }
+
+  return res
+}
+
 ::update_repair_cost <- function update_repair_cost(units, repairCost)
 {
   local idx = 0
@@ -35,9 +71,6 @@ local { isCrossPlayEnabled,
   local priceText = ::Cost(("wpCost" in log) ? log.wpCost : 0,
     ("goldCost" in log) ? log.goldCost : 0).tostring()
   if (priceText!="")  priceText = " ("+priceText+")"
-
-  local imgFormat = "img {size:t='%s'; background-image:t='%s'; margin-right:t='0.01@scrn_tgt;'} "
-  local textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t='%s'} "
 
   if (log.type == ::EULT_SESSION_START ||
       log.type == ::EULT_EARLY_SESSION_LEAVE ||
@@ -813,46 +846,16 @@ local { isCrossPlayEnabled,
 
       ::prepareMessageForWallPostAndSend(config, customConfig, bit_activity.PS4_ACTIVITY_FEED)
 
-      if ("resource" in rewardBlk)
-      {
-        //after convertation from DataBlk to table array with 1 element bocomes
-        //table. So we normalize data format.
-        if (::u.isTable(rewardBlk.resource))
-          rewardBlk.resource = [clone rewardBlk.resource]
-
-        local resourcesImagesMarkup = ""
-        for (local i = 0; i < rewardBlk.resource.len(); ++i)
-        {
-          local unlock = ::get_decorator_unlock(
-            rewardBlk.resource[i].resourceId,
-            rewardBlk.resource[i].resourceType
-          )
-
-          if (!::u.isEmpty(unlock?.desc))
-          {
-            if (!("description" in  res))
-              res.description <- ""
-            else
-              res.description += "\n\n"
-            res.description += unlock.desc
-          }
-
-          res.logImg = unlock?.image
-
-          if (::getTblValue("descrImage", unlock, "") != "")
-          {
-            local imgSize = ::getTblValue("descrImageSize", unlock, "0.05sh, 0.05sh")
-            resourcesImagesMarkup += ::format(imgFormat, imgSize, unlock.descrImage)
-          }
+      local resourcesConfig = getResourcesConfig(rewardBlk?.resource)
+      if (resourcesConfig != null) {
+        if (resourcesConfig.description.len() > 0) {
+          local desc = "\n\n".join(resourcesConfig.description)
+          res.description <- $"{res?.description ?? ""}{("description" in  res) ? "\n\n" : ""}{desc}"
         }
-
-        if (resourcesImagesMarkup.len())
-        {
-          resourcesImagesMarkup = "tdiv { flow:t='h-flow'; width:t='pw';" + resourcesImagesMarkup + "}"
-          res.descriptionBlk <- resourcesImagesMarkup
-        }
+        res.logImg = resourcesConfig.logImg
+        if (resourcesConfig.resourcesImagesMarkupArr.len() > 0)
+          res.descriptionBlk <- descriptionBlkMultipleFormat.subst("".join(resourcesConfig.resourcesImagesMarkupArr))
       }
-
     }
 
     if (rewardType == "EveryDayLoginAward" || rewardType == "PeriodicCalendarAward")
@@ -1481,47 +1484,60 @@ local { isCrossPlayEnabled,
   }
   else if (log.type == ::EULT_WW_AWARD)
   {
-    local awardsFor = log.awardsFor
-
+    res.name = ::loc("worldwar/personal/award")
+    local awardsFor = log?.awardsFor
     local descLines = []
-    local day = ::g_string.cutPrefix(awardsFor.table, "day")
+    if (awardsFor != null) {
+      local day = ::g_string.cutPrefix(awardsFor.table, "day")
+      local period = day ? ::loc("enumerated_day", {number = day}) : ::loc("worldwar/allSeason")
+      local modeStr = ::g_string.split(awardsFor.mode, "__")
+      local mapName = null
+      local country = null
+      foreach (partStr in modeStr)
+      {
+        if(::g_string.startsWith(partStr, "country_"))
+          country = partStr
+        if(::g_string.endsWith(partStr, "_wwmap"))
+          mapName = partStr
+      }
+      country = country ? ::loc(country) : ::loc("worldwar/allCountries")
+      mapName = mapName ? ::loc("worldWar/map/" + mapName) : ::loc("worldwar/allMaps")
+      local leaderboard = ::loc("mainmenu/leaderboard") + ::loc("ui/colon")
+        + ::g_string.implode([period, mapName, country], ::loc("ui/comma"))
+      descLines.append(leaderboard)
 
-    local period = day ? ::loc("enumerated_day", {number = day}) : ::loc("worldwar/allSeason")
-    local modeStr = ::g_string.split(awardsFor.mode, "__")
-    local mapName = null
-    local country = null
-    foreach (partStr in modeStr)
-    {
-      if(::g_string.startsWith(partStr, "country_"))
-        country = partStr
-      if(::g_string.endsWith(partStr, "_wwmap"))
-        mapName = partStr
+      switch (awardsFor.leaderboard_type)
+      {
+       case "user_leaderboards" :
+         res.name = ::loc("worldwar/personal/award")
+         descLines.append(::loc("multiplayer/place") + ::loc("ui/colon") + awardsFor.place)
+         break
+       case "clan_leaderboards" :
+         res.name = ::loc("worldwar/clan/award")
+         descLines.append(::loc("multiplayer/clan_place") + ::loc("ui/colon") + awardsFor.clan_place)
+         descLines.append(::loc("multiplayer/place_in_clan_leaderboard") + ::loc("ui/colon") + awardsFor.place)
+         break
+      }
     }
-    country = country ? ::loc(country) : ::loc("worldwar/allCountries")
-    mapName = mapName ? ::loc("worldWar/map/" + mapName) : ::loc("worldwar/allMaps")
-    local leaderboard = ::loc("mainmenu/leaderboard") + ::loc("ui/colon")
-      + ::g_string.implode([period, mapName, country], ::loc("ui/comma"))
-    descLines.append(leaderboard)
-
-    switch (awardsFor.leaderboard_type)
-    {
-     case "user_leaderboards" :
-       res.name = ::loc("worldwar/personal/award")
-       descLines.append(::loc("multiplayer/place") + ::loc("ui/colon") + awardsFor.place)
-       break
-     case "clan_leaderboards" :
-       res.name = ::loc("worldwar/clan/award")
-       descLines.append(::loc("multiplayer/clan_place") + ::loc("ui/colon") + awardsFor.clan_place)
-       descLines.append(::loc("multiplayer/place_in_clan_leaderboard") + ::loc("ui/colon") + awardsFor.place)
-       break
-    }
-
-    local item = ::ItemsManager.findItemById(log.itemDefId)
+    local item = ::ItemsManager.findItemById(log?.itemDefId)
     if (item)
       descLines.append(::colorize("activeTextColor", item.getName()))
-    res.logImg = (item && item.getSmallIconName() ) || ::BaseItem.typeIcon
+    res.logImg = item?.getSmallIconName()
 
-    res.descriptionBlk <- ::get_userlog_image_item(item)
+    local markupArr = []
+    local itemMarkup = ::get_userlog_image_item(item)
+    if (itemMarkup != "")
+      markupArr.append(itemMarkup)
+
+    local resourcesConfig = getResourcesConfig(log?.resources.resource)
+    if (resourcesConfig != null) {
+      if (resourcesConfig.description.len() > 0)
+        descLines.append($"\n{"\n\n".join(resourcesConfig.description)}")
+      res.logImg = res.logImg ?? resourcesConfig.logImg
+      markupArr.extend(resourcesConfig.resourcesImagesMarkupArr)
+    }
+
+    res.descriptionBlk <- descriptionBlkMultipleFormat.subst("".join(markupArr))
     res.description <- ::g_string.implode(descLines, "\n")
   }
 

@@ -10,7 +10,6 @@ local shortcutsAxisListModule = require("scripts/controls/shortcutsList/shortcut
   // PRIVATE VARIABLES
   curPreset = ::ControlsPreset()
   isControlsCommitPerformed = false
-  cachedDeviceMappingBlk = null
 
   fixesList = [
     {
@@ -84,7 +83,6 @@ local shortcutsAxisListModule = require("scripts/controls/shortcutsList/shortcut
   {
     ::dagor.debug("ControlsManager: curPreset updated")
     curPreset = otherPreset
-    cachedDeviceMappingBlk = null
     fixDeviceMapping()
     ::broadcastEvent("ControlsReloaded")
     commitControls()
@@ -102,13 +100,6 @@ local shortcutsAxisListModule = require("scripts/controls/shortcutsList/shortcut
     local blkDeviceMapping = ::DataBlock()
     ::fill_joysticks_desc(blkDeviceMapping)
 
-    if (::u.isEqual(cachedDeviceMappingBlk, blkDeviceMapping))
-      return
-
-    if (!cachedDeviceMappingBlk)
-      cachedDeviceMappingBlk = ::DataBlock()
-    cachedDeviceMappingBlk.setFrom(blkDeviceMapping)
-
     foreach (blkJoy in blkDeviceMapping)
       realMapping.append({
         name          = blkJoy["name"]
@@ -120,11 +111,7 @@ local shortcutsAxisListModule = require("scripts/controls/shortcutsList/shortcut
         connected     = !::getTblValue("disconnected", blkJoy, false)
       })
 
-
-    local mappingChanged =
-      ::g_controls_manager.getCurPreset().fixDeviceMapping(realMapping)
-
-    if (mappingChanged)
+    if (getCurPreset().updateDeviceMapping(realMapping))
       ::broadcastEvent("ControlsMappingChanged", realMapping)
   }
 

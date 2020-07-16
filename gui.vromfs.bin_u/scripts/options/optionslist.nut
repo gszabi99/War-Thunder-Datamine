@@ -3,11 +3,12 @@ local safeAreaHud = require("scripts/options/safeAreaHud.nut")
 local contentPreset = require("scripts/customization/contentPreset.nut")
 local soundDevice = require_native("soundDevice")
 local { chatStatesCanUseVoice } = require("scripts/chat/chatStates.nut")
+local { onSystemOptionsApply, canUseGraphicsOptions } = require("scripts/options/systemOptions.nut")
 
 local getSystemOptions = @() {
   name = "graphicsParameters"
   fillFuncName = "fillSystemOptions"
-  onApplyHandler = @() ::sysopt.onConfigApply()
+  onApplyHandler = @() onSystemOptionsApply()
   options = []
 }
 
@@ -270,7 +271,7 @@ local getInternetRadioOptions = @() {
 local getOptionsList = function() {
   local options = [ getMainOptions() ]
 
-  if (::sysopt.canUseGraphicsOptions())
+  if (canUseGraphicsOptions())
     options.append(getSystemOptions())
 
   options.append(getSoundOptions())

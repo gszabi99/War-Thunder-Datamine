@@ -108,6 +108,7 @@ local DEFAULT_SQUAD_PRESENCE = ::g_presence_type.IDLE.getParams()
   }
 
   onEventPresetsByGroupsChanged = @(params) updateMyMemberData()
+  onEventBeforeProfileInvalidation = @(p) reset()
 }
 
 g_squad_manager.setState <- function setState(newState)

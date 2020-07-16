@@ -7,6 +7,8 @@ local { getLastWeapon,
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local crossplayModule = require("scripts/social/crossplay.nut")
 local { hasFlares } = require("scripts/unit/unitStatus.nut")
+local { fillSystemGuiOptions, onSystemGuiOptionChanged, onRestartClient
+  } = require("scripts/options/systemOptions.nut")
 
 ::generic_options <- null
 
@@ -1654,17 +1656,17 @@ class ::gui_handlers.GroupOptionsModal extends ::gui_handlers.GenericOptionsModa
   function fillSystemOptions(group)
   {
     optionsContainers = [{ name="options_systemOptions", data=[] }]
-    ::sysopt.fillGuiOptions(scene.findObject("optionslist"), this)
+    fillSystemGuiOptions(scene.findObject("optionslist"), this)
   }
 
   function onSystemOptionChanged(obj)
   {
-    ::sysopt.onGuiOptionChanged(obj)
+    onSystemGuiOptionChanged(obj)
   }
 
   function onSystemOptionsRestartClient(obj)
   {
-    ::sysopt.onRestartClient()
+    onRestartClient()
   }
 
   function passValueToParent(obj)

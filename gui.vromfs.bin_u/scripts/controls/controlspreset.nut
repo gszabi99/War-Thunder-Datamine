@@ -386,7 +386,7 @@ class ControlsPreset {
 
   function applyControls(appliedPreset)
   {
-    appliedPreset.fixDeviceMapping(deviceMapping)
+    appliedPreset.updateDeviceMapping(deviceMapping)
 
     foreach (hotkeyName, otherHotkey in appliedPreset.hotkeys)
       setHotkey(hotkeyName, otherHotkey)
@@ -879,29 +879,6 @@ class ControlsPreset {
   }
 
 
-  function isJoyUsed(joy)
-  {
-    // Check if joy keys used
-    local minButton = joy.buttonsOffset
-    local maxButton = minButton + joy.buttonsCount - 1
-    foreach (event in hotkeys)
-      foreach (shortcut in event)
-        foreach (button in shortcut)
-          if (button.deviceId == ::JOYSTICK_DEVICE_0_ID &&
-              button.buttonId >= minButton && button.buttonId <= maxButton)
-            return true
-
-    // Check if joy axes used
-    local minAxis = joy.axesOffset
-    local maxAxis = minButton + joy.axesCount - 1
-    foreach (axis in axes)
-      if (axis.axisId != -1 && axis.axisId >= minAxis && axis.axisId <= maxAxis)
-        return true
-
-    return false
-  }
-
-
   static function isSameMapping(lhs, rhs)
   {
     local noValue = {}
@@ -926,134 +903,91 @@ class ControlsPreset {
     return true
   }
 
+  function updateDeviceMapping(newDevices) {
+    local oldDevices = deviceMapping
+    ::dagor.debug($"[CTRL] updating from {oldDevices.len()} to {newDevices.len()} devices")
+    ::debugTableData(oldDevices)
+    ::debugTableData(newDevices)
 
-  // Return true if hotkeys or axes reordered
-  function fixDeviceMapping(realMapping)
-  {
-    local usedMapping = deviceMapping
+    if (isSameMapping(oldDevices, newDevices))
+      return false // nothing to do
 
-    ::dagor.debug("ControlsPreset: usedMapping")
-    ::debugTableData(usedMapping)
+    local totalBindings = { axes = 0, buttons = 0 }
+    local ranges = []
+    local lostDevicesIndexes = []
+    foreach (oid, old in oldDevices) {
+      local found = false
+      foreach (idx, new in newDevices) {
+        if (old.devId == new.devId) {
+          found = true
+          if (new.connected) {
+            ranges.append({
+                axes = { from = old.axesOffset, to = new.axesOffset, count = new.axesCount }
+                buttons = { from = old.buttonsOffset, to = new.buttonsOffset, count = new.buttonsCount }
+              })
+            totalBindings.axes = ::max(totalBindings.axes, new.axesOffset + new.axesCount)
+            totalBindings.buttons = ::max(totalBindings.buttons, new.buttonsOffset + new.buttonsCount)
+          } else {
+            lostDevicesIndexes.append({old = oid, new = idx})
+          }
+        }
+      }
 
-    local sameMappingFlag = isSameMapping(usedMapping, realMapping)
-    if (usedMapping.len() == 0 || sameMappingFlag)
-    {
-      deviceMapping = realMapping
-      return !sameMappingFlag
+      if (!found) {
+        old["connected"] <- false
+        newDevices.append(old)
+        lostDevicesIndexes.append({old = oid, new = newDevices.len() - 1})
+      }
     }
 
-    // Get maximum elements in mapping
-    local getMax = function(mapping, offsetVarName, countVarName)
-    {
-      local count = 0
-      foreach (data in mapping)
-        count = ::max(count, data[offsetVarName] + data[countVarName])
-      return count
+    ::dagor.debug($"[CTRL] lost {lostDevicesIndexes.len()} devices")
+
+    foreach (i in lostDevicesIndexes) {
+      local old = oldDevices[i.old]
+      ranges.append({
+          axes = { from = old.axesOffset, to = totalBindings.axes, count = old.axesCount }
+          buttons = { from = old.buttonsOffset, to = totalBindings.buttons, count = old.buttonsCount }
+        })
+      newDevices[i.new].axesOffset = totalBindings.axes
+      newDevices[i.new].buttonsOffset = totalBindings.buttons
+
+      totalBindings.axes += old.axesCount
+      totalBindings.buttons += old.buttonsCount
     }
 
-    // Initialize remap table
-    local remap = {
-      buttons = []
-      axes  = []
-    }
-    remap.buttons.resize(getMax(
-      usedMapping, "buttonsOffset", "buttonsCount"), -1)
-    remap.axes.resize(getMax(
-      usedMapping, "axesOffset", "axesCount"), -1)
+    ::dagor.debug($"[CTRL] updated devices list ({newDevices.len()} devices)")
+    ::dagor.debug($"[CTRL] remapping {ranges.len()} ranges")
 
-    // Count real element count
-    local realButtonNum = getMax(realMapping, "buttonsOffset", "buttonsCount")
-    local realAxesNum = getMax(realMapping, "axesOffset", "axesCount")
-
-
-    foreach (idx, usedJoy in usedMapping)
-    {
-      if (!isJoyUsed(usedJoy))
-        continue
-
-      ::dagor.debug("Mapping " + idx.tostring() + ": used")
-
-      // Search used joy in connected joy list
-      local matchedJoy = null
-      foreach (realJoy in realMapping)
-        if (usedJoy.devId == realJoy.devId && !("used" in realJoy))
-        {
-          matchedJoy = realJoy
-          matchedJoy.used <- true
+    local shouldRemap = @(id, m) id >= m.from && id < (m.from + m.count)
+    foreach (axis in axes) {
+      foreach (remap in ranges) {
+        if (shouldRemap(axis.axisId, remap.axes)) {
+          axis.axisId = axis.axisId - remap.axes.from + remap.axes.to
           break
         }
-
-      if (!matchedJoy) {
-        // Add used joy to list in not found
-        matchedJoy = {
-          name          = usedJoy.name
-          devId         = usedJoy.devId
-          buttonsOffset = realButtonNum
-          buttonsCount  = usedJoy.buttonsCount
-          axesOffset    = realAxesNum
-          axesCount     = usedJoy.axesCount
-          connected     = false
-          used          = true
-        }
-        realButtonNum += usedJoy.buttonsCount
-        realAxesNum += usedJoy.axesCount
-        realMapping.append(matchedJoy)
-      }
-
-      // Fill remap table for used joy
-      foreach (element in ["buttons", "axes"])
-      {
-        local usedElementOffset    = usedJoy[element + "Offset"]
-        local usedElementCount     = usedJoy[element + "Count"]
-        local matchedElementOffset = matchedJoy[element + "Offset"]
-        local matchedElementCount  = matchedJoy[element + "Count"]
-        local mathedElementNum = ::min(usedElementCount, matchedElementCount)
-
-        for (local j = 0; j < mathedElementNum; j++)
-          remap[element][usedElementOffset + j] = matchedElementOffset + j
-
-        // Joy with same id's have less buttons/axes, set
-        if (matchedElementCount < usedElementCount)
-          for (local j = matchedElementCount; j < usedElementCount; j++)
-            remap[element][usedElementOffset + j] = -1
       }
     }
 
-    // Remap buttons
-    local remapButtonNum = remap.buttons.len()
-    foreach (event in hotkeys)
-      foreach (shortcut in event)
-      {
-        foreach (button in shortcut)
-          if (button.deviceId == ::JOYSTICK_DEVICE_0_ID && button.buttonId < remapButtonNum)
-            button.buttonId = remap.buttons[button.buttonId]
-
-        // Remove shortcuts with buttonId = -1
-        for (local j = shortcut.len() - 1; j >= 0; j--)
-          if (shortcut[j].buttonId == -1)
-            shortcut.remove(j)
+    foreach (event in hotkeys) {
+      foreach (shortcut in event) {
+        foreach (btn in shortcut) {
+          if (btn.deviceId == ::JOYSTICK_DEVICE_0_ID) {
+            foreach (remap in ranges) {
+              if (shouldRemap(btn.buttonId, remap.buttons)) {
+                btn.buttonId = btn.buttonId - remap.buttons.from + remap.buttons.to
+                break
+              }
+            }
+          }
+        }
       }
+    }
 
-    // Remap axes
-    local remapAxesNum = remap.axes.len()
-    foreach (axis in axes)
-      if (axis.axisId >= 0 && axis.axisId < remapAxesNum)
-        axis.axisId = remap.axes[axis.axisId]
-
-    foreach (joy in realMapping)
-      if ("used" in joy)
-        delete joy.used
-
-    // Save mapping
-    deviceMapping = realMapping
-
-    ::dagor.debug("ControlsPreset: updatedMapping")
+    deviceMapping = ::u.copy(newDevices)
+    ::dagor.debug($"[CTRL] final map for {deviceMapping.len()} devices:")
     ::debugTableData(deviceMapping)
-
     return true
   }
-
-
 
 
   /****************************************************************/

@@ -45,7 +45,6 @@ local onMainMenuReturnActions = require("scripts/mainmenu/onMainMenuReturnAction
 
   ::resetChat()
   ::clear_contacts()
-  ::g_squad_manager.reset()
   ::SessionLobby.leaveRoom()
   if (::g_battle_tasks)
     ::g_battle_tasks.reset()

@@ -170,9 +170,12 @@ class ::gui_handlers.WwRewards extends ::gui_handlers.BaseGuiHandlerWT
 
   function onBtnMoreInfo(obj)
   {
-    local rewardsArray = ::u.map(rewards?[0]?.internalRewards ?? rewards,
-      @(reward) { item = reward?.itemdefid })
-    ::gui_start_open_trophy_rewards_list({ rewardsArray = rewardsArray })
+    local rewardsArray = []
+    local addItem = @(item) ::u.appendOnce(item?.itemdefid, rewardsArray, true)
+    rewards.each(@(reward) reward?.internalRewards.each(addItem) ?? addItem(reward))
+    ::gui_start_open_trophy_rewards_list({
+      rewardsArray = rewardsArray.map(@(reward) { item = reward })
+    })
   }
 
   function onItemSelect(obj) {}

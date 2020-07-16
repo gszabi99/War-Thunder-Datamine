@@ -24,7 +24,7 @@ local needToShowDiff = false
 local presetsList = {
   SPEED = {
     measureType = MEASURE_UNIT_SPEED
-    validateValue = @(value) ::fabs(value) * 3.6 > 1.0 ? value : null
+    validateValue = @(value) ::fabs(value) * 3.6 > 0.1 ? value : null
     presize = 0.1
   }
   CLIMB_SPEED = {
@@ -322,10 +322,10 @@ enums.addTypes(effectsType, [
   { id = "reverseSpeed",           preset = "SPEED"
     canShowForUnit = @(unit) ::has_feature("Ships")
   }
-  { id = "timeToMaxSpeed",         measureType = "seconds", isInverted = true
+  { id = "timeToMaxSpeed",         measureType = "seconds", isInverted = true, presize = 0.1
     canShowForUnit = @(unit) ::has_feature("Ships")
   }
-  { id = "timeToMaxReverseSpeed",  measureType = "seconds", isInverted = true
+  { id = "timeToMaxReverseSpeed",  measureType = "seconds", isInverted = true, presize = 0.1
     canShowForUnit = @(unit) ::has_feature("Ships")
   }
 ],

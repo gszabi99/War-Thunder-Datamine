@@ -156,7 +156,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
     }
 
     getRatio = function(decorator) { return decorator?.aspect_ratio ?? 1 }
-    getImageSize = function(decorator) { return ::format("256, %d", ::floor(256.0 / getRatio(decorator) + 0.5)) }
+    getImageSize = function(decorator) { return ::format("256@sf/@pf, %d@sf/@pf", ::floor(256.0 / getRatio(decorator) + 0.5)) }
 
     getLocName = function(decoratorName, ...) { return ::loc("decals/" + decoratorName) }
     getLocDesc = function(decoratorName) { return ::loc("decals/" + decoratorName + "/desc", "") }
@@ -265,7 +265,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
         ? (decorator?.blk.image ?? "".concat("#ui/images/attachables/", decorator.id))
         : ""
     }
-    getImageSize = function(...) { return "128, 128" }
+    getImageSize = function(...) { return "128@sf/@pf, 128@sf/@pf" }
 
     getLocName = function(decoratorName, ...) { return ::loc("attachables/" + decoratorName) }
     getLocDesc = function(decoratorName) { return ::loc("attachables/" + decoratorName + "/desc", "") }

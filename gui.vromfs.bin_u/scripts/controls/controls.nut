@@ -280,8 +280,6 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
   dontCheckControlsDupes = null
   notAssignedAxis = null
 
-  deviceMapping = null
-
   inputBox = null
 
   curJoyParams = null
@@ -347,7 +345,6 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
     shortcutItems = []
     dontCheckControlsDupes = []
     notAssignedAxis = []
-    deviceMapping = []
 
     initNavigation()
     initMainParams()
@@ -384,7 +381,6 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
 
     ::g_controls_manager.restoreHardcodedKeys(::MAX_SHORTCUTS)
     shortcuts = ::get_shortcuts(shortcutNames)
-    deviceMapping = ::u.copy(::g_controls_manager.getCurPreset().deviceMapping)
 
     fillControlsType()
   }
@@ -1647,9 +1643,7 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
 
   function onEventControlsMappingChanged(realMapping)
   {
-    shortcuts = fix_shortcuts_and_axes_mapping(deviceMapping, realMapping,
-      shortcuts, shortcutNames, CONTROL_TYPE.AXIS, ::shortcutsList)
-    deviceMapping = ::u.copy(realMapping)
+    ::preset_changed = true
     fillControlGroupTab(curGroupId)
   }
 

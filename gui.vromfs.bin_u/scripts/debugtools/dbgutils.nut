@@ -4,6 +4,7 @@ local dbgExportToFile = require("scripts/debugTools/dbgExportToFile.nut")
 local shopSearchCore = require("scripts/shop/shopSearchCore.nut")
 local dirtyWordsFilter = require("scripts/dirtyWords/dirtyWords.nut")
 local { getWeaponInfoText, getWeaponNameText } = require("scripts/weaponry/weaponryVisual.nut")
+local { getVideoModes } = require("scripts/options/systemOptions.nut")
 
 ::callstack <- dagor.debug_dump_stack
 
@@ -398,7 +399,7 @@ local { getWeaponInfoText, getWeaponNameText } = require("scripts/weaponry/weapo
 ::debug_change_resolution <- function debug_change_resolution(shouldIncrease = true)
 {
   local curResolution = ::getSystemConfigOption("video/resolution")
-  local list = ::sysopt.mShared.getVideoModes(curResolution, false)
+  local list = getVideoModes(curResolution, false)
   local curIdx = list.indexof(curResolution) || 0
   local newIdx = ::clamp(curIdx + (shouldIncrease ? 1 : -1), 0, list.len() - 1)
   local newResolution = list[newIdx]

@@ -8,6 +8,7 @@ local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
 local { getFeaturePack } = require("scripts/user/features.nut")
 local { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/entitlements.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { isCompatibiliyMode } = require("scripts/options/systemOptions.nut")
 
 ::event_ids_for_main_game_mode_list <- [
   "tank_event_in_random_battles_arcade"
@@ -827,7 +828,7 @@ class Events
            && isEventAllowedByComaptibilityMode(event)
   }
 
-  isEventAllowedByComaptibilityMode = @(event) event?.isAllowedForCompatibility != false || !sysopt.isCompatibiliyMode()
+  isEventAllowedByComaptibilityMode = @(event) event?.isAllowedForCompatibility != false || !isCompatibiliyMode()
 
   function getEventsVisibleInEventsWindowCount()
   {

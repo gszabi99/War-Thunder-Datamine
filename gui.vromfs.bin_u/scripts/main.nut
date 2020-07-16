@@ -531,7 +531,6 @@ local isFullScriptsLoaded = false
 
     "measureType.nut"
     "options/optionsWnd.nut"
-    "systemOptions.nut"
     "genericOptions.nut"
     "options/framedOptionsWnd.nut"
     "options/optionsCustomDifficulty.nut"

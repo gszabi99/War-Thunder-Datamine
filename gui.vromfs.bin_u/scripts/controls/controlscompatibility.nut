@@ -59,30 +59,6 @@
 }
 
 
-::fix_shortcuts_and_axes_mapping <- function fix_shortcuts_and_axes_mapping(usedMapping, realMapping,
-  shortcuts, shortcutNames, axisType = -1, axisList = [])
-{
-  ::dagor.debug("ControlsCompatibility: RemappingWhileEditControls")
-
-  local tempPreset = ::ControlsPreset()
-  tempPreset.deviceMapping = usedMapping
-
-  ::set_shortcuts(shortcuts, shortcutNames, tempPreset)
-  for (local i = 0; i < axisList.len(); i++)
-    if (axisList[i].type == axisType && axisList[i].axisIndex >= 0)
-      tempPreset.setAxis(axisList[i].id, {axisId = axisList[i].axisIndex})
-
-  tempPreset.fixDeviceMapping(realMapping)
-
-  shortcuts = ::get_shortcuts(shortcutNames, tempPreset)
-  for (local i = 0; i < axisList.len(); i++)
-    if (axisList[i].type == axisType && axisList[i].axisIndex >= 0)
-      axisList[i].axisIndex = tempPreset.getAxis(axisList[i].id).axisId
-
-  return shortcuts
-}
-
-
 local joystick_params_template = {
   getAxis = function(idx)
   {

@@ -3,6 +3,7 @@ local onMainMenuReturnActions = require("scripts/mainmenu/onMainMenuReturnAction
 local time = require("scripts/time.nut")
 local penalties = require("scripts/penitentiary/penalties.nut")
 local itemNotifications = ::require("scripts/items/itemNotifications.nut")
+local { systemOptionsMaintain } = require("scripts/options/systemOptions.nut")
 
 //called after all first mainmenu actions
 onMainMenuReturnActions.onMainMenuReturn <- function(handler, isAfterLogin) {
@@ -27,7 +28,7 @@ onMainMenuReturnActions.onMainMenuReturn <- function(handler, isAfterLogin) {
 
   ::check_logout_scheduled()
 
-  ::sysopt.configMaintain()
+  systemOptionsMaintain()
   ::g_user_presence.init()
 
   handler.doWhenActive(@() ::checkNewNotificationUserlogs())

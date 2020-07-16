@@ -96,7 +96,7 @@ g_contacts.removeContact <- function removeContact(player, group)
 
 g_contacts.getPlayerFullName <- function getPlayerFullName(name, clanTag = "", addInfo = "")
 {
-  return ::g_string.implode([::has_feature("Clans")? clanTag : "", name, addInfo], " ")
+  return ::nbsp.join([::has_feature("Clans") ? clanTag : "", name, addInfo], true)
 }
 
 g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)

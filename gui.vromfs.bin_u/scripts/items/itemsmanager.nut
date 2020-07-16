@@ -737,7 +737,11 @@ ItemsManager.autoConsumeItems <- function autoConsumeItems()
     }
 }
 
-ItemsManager.onEventLoginComplete <- function onEventLoginComplete(p) { shouldCheckAutoConsume = true }
+ItemsManager.onEventLoginComplete <- function onEventLoginComplete(p) {
+  shouldCheckAutoConsume = true
+  _reqUpdateList = true
+}
+
 ItemsManager.onEventSignOut <- function onEventSignOut(p)
 {
   isInventoryFullUpdated = false
