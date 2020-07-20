@@ -1074,7 +1074,7 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
 
   function checkNoviceTutor()
   {
-    if (::disable_network() || !::my_stats.isStatsLoaded())
+    if (::disable_network() || !::my_stats.isStatsLoaded() || !::check_obj(toBattleButtonObj))
       return
 
     if (!tutorialModule.needShowTutorial("toBattle", 1) || ::my_stats.getPvpRespawns())
