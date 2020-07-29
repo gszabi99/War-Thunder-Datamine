@@ -1644,7 +1644,6 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
   function onEventControlsMappingChanged(realMapping)
   {
     ::preset_changed = true
-    fillControlGroupTab(curGroupId)
   }
 
   function onEventControlsChangedShortcuts(p)

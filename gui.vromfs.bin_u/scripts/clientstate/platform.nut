@@ -1,5 +1,8 @@
 local string = require("std/string.nut")
 
+local PC_ICON = ::loc("icon/pc")
+local TV_ICON = ::loc("icon/tv")
+
 local STEAM_PLAYER_POSTFIX = "@steam"
 
 local XBOX_ONE_PLAYER_PREFIX = "^"
@@ -18,19 +21,54 @@ local isPlatformXboxOne = targetPlatform == "xboxOne"
 local isPlatformPS4 = targetPlatform == "ps4"
 local isPlatformPC = ["win32", "win64", "macosx", "linux64"].indexof(targetPlatform) != null
 
-local xboxPrefixNameRegexp = ::regexp2(@"^['" + XBOX_ONE_PLAYER_PREFIX + "']")
-local xboxPostfixNameRegexp = ::regexp2(@".+(" + XBOX_ONE_PLAYER_POSTFIX + ")")
+local xboxPrefixNameRegexp = ::regexp2($"^['{XBOX_ONE_PLAYER_PREFIX}']")
+local xboxPostfixNameRegexp = ::regexp2($".+({XBOX_ONE_PLAYER_POSTFIX})")
 local isXBoxPlayerName = @(name) xboxPrefixNameRegexp.match(name) || xboxPostfixNameRegexp.match(name)
 
-local ps4PrefixNameRegexp = ::regexp2(@"^['" + PS4_PLAYER_PREFIX + "']")
-local ps4PostfixNameRegexp = ::regexp2(@".+(" + PS4_PLAYER_POSTFIX + ")")
+local ps4PrefixNameRegexp = ::regexp2($"^['{PS4_PLAYER_PREFIX}']")
+local ps4PostfixNameRegexp = ::regexp2($".+({PS4_PLAYER_POSTFIX})")
 local isPS4PlayerName = @(name) ps4PrefixNameRegexp.match(name) || ps4PostfixNameRegexp.match(name)
+
+local steamPostfixNameRegexp = ::regexp2($".+({STEAM_PLAYER_POSTFIX})")
 
 local cutPlayerNamePrefix = @(name) string.cutPrefix(name, PS4_PLAYER_PREFIX,
                                     string.cutPrefix(name, XBOX_ONE_PLAYER_PREFIX, name))
 local cutPlayerNamePostfix = @(name) string.cutPostfix(name, PS4_PLAYER_POSTFIX,
                                      string.cutPostfix(name, XBOX_ONE_PLAYER_POSTFIX,
                                      string.cutPostfix(name, STEAM_PLAYER_POSTFIX, name)))
+
+local addPlatformIcon = function(name)
+{
+  local isXboxPrefix = xboxPrefixNameRegexp.match(name)
+  local isPs4Prefix = ps4PrefixNameRegexp.match(name)
+
+  if (isXboxPrefix || isPs4Prefix)
+    name = cutPlayerNamePrefix(name)
+
+  local isXboxPostfix = xboxPostfixNameRegexp.match(name)
+  local isPs4Postfix = ps4PostfixNameRegexp.match(name)
+  local isSteamPostfix = steamPostfixNameRegexp.match(name)
+
+  if (isXboxPostfix || isPs4Postfix || isSteamPostfix)
+    name = cutPlayerNamePostfix(name)
+
+  local platformIcon = ""
+
+  if (isXboxPrefix || isXboxPostfix)
+  {
+    if (!isPlatformXboxOne)
+      platformIcon = TV_ICON
+  }
+  else if (isPs4Prefix || isPs4Postfix)
+  {
+    if (!isPlatformPS4)
+      platformIcon = TV_ICON
+  }
+  else if (!isPlatformPC)
+    platformIcon = PC_ICON
+
+  return ::nbsp.join([platformIcon, name], true)
+}
 
 local getPlayerName = function(name)
 {
@@ -41,25 +79,7 @@ local getPlayerName = function(name)
       return replaceName
   }
 
-  if (isPlatformXboxOne)
-    return cutPlayerNamePrefix(cutPlayerNamePostfix(name))
-  else if (isPlatformPS4)
-  {
-    if (isPS4PlayerName(name))
-    {
-      //Requirement for PSN, that player must have prefix only.
-      // So if he have postfix, we need to cut it down and add prefix.
-      // No need to check on prefix before add, as it cannot be.
-      // Otherwise it is char server error.
-
-      if (ps4PostfixNameRegexp.match(name))
-        name = PS4_PLAYER_PREFIX + name
-    }
-
-    return cutPlayerNamePostfix(name)
-  }
-
-  return name
+  return addPlatformIcon(name)
 }
 
 local isPlayerFromXboxOne = @(name) isPlatformXboxOne && isXBoxPlayerName(name)

@@ -55,7 +55,7 @@ class Spectator extends ::gui_handlers.BaseGuiHandlerWT
   teams = [ { players = [] }, { players = [] } ]
   lastTargetNick = ""
   lastTargetData = {
-    id = null
+    id   = -1
     team = -1
   }
   lastSelectedTableId = ""
@@ -423,15 +423,6 @@ class Spectator extends ::gui_handlers.BaseGuiHandlerWT
     }
   }
 
-  function isPlayerSpectatorTarget(player, targetNick)
-  {
-    if (!player || targetNick == "")
-      return false
-    local nickStart = getPlayerNick(player) + " ("
-    local nickStartLen = nickStart.len()
-    return targetNick.len() > nickStartLen && targetNick.slice(0, nickStartLen) == nickStart
-  }
-
   function isPlayerFriendly(player)
   {
     return player != null && player.team == ::get_player_army_for_hud()
@@ -515,20 +506,18 @@ class Spectator extends ::gui_handlers.BaseGuiHandlerWT
 
   function getTargetPlayer()
   {
-    local name = ::get_spectator_target_name() //It returns already trimmed player name
-
     if (!isMultiplayer)
-      return (name.len() && teams.len() && teams[0].players.len()) ? teams[0].players[0] : null
+      return (::get_spectator_target_name().len() && teams.len() && teams[0].players.len())
+        ? teams[0].players[0]
+        : null
 
-    if (name == "")
-      return (mode == SPECTATOR_MODE.RESPAWN && lastTargetData.id) ? getPlayer(lastTargetData.id) : null
+    local targetId = ::get_spectator_target_id()
+    if (targetId >= 0)
+      return getPlayer(targetId)
 
-    foreach (info in teams)
-      foreach (p in info.players)
-        if (isPlayerSpectatorTarget(p, name))
-          return p
-
-    return null
+    return (mode == SPECTATOR_MODE.RESPAWN && lastTargetData.id >= 0)
+      ? getPlayer(lastTargetData.id)
+      : null
   }
 
   function setTargetInfo(player)

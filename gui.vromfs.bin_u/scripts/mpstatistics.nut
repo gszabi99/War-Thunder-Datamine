@@ -110,24 +110,6 @@ const OVERRIDE_COUNTRY_ID = "override_country"
   }
 
   local data = ""
-
-  if (isHeader)
-  {
-    local headerView = {
-      trSize = trSize
-      headerCells = []
-    }
-    for (local i = 0; i < hdr.len(); ++i)
-    {
-      headerView.headerCells.append({
-        cellId = hdr[i]
-        cellText = hdr[i]
-        hasCellBorder = (i != 0)
-      })
-    }
-    data += ::handyman.renderCached("gui/mpStatistics/mpStatisticsHeader", headerView)
-  }
-
   for (local i = 0; i < numRows; i++)
   {
     local isEmpty = i >= numTblRows
@@ -182,9 +164,10 @@ const OVERRIDE_COUNTRY_ID = "override_country"
       }
       else if (hdr[j] == "name")
       {
-        local nameText = platformModule.getPlayerName(item) || ""
-        if (!isEmpty)
-          nameText = ::g_contacts.getPlayerFullName(nameText, table[i]?.clanTag ?? "")
+        local nameText = item
+
+        if (!isHeader && !isEmpty && !table?[i].isBot)
+          nameText = ::g_contacts.getPlayerFullName(platformModule.getPlayerName(nameText), table[i].clanTag ?? "")
 
         local nameWidth = markup?[hdr[j]]?.width ?? "0.5pw-0.035sh"
         local nameAlign = isRowInvert ? "text-align:t='right' " : ""
@@ -456,11 +439,12 @@ const OVERRIDE_COUNTRY_ID = "override_country"
       }
       else if (hdr == "name")
       {
-        local nameText = ""
+        local nameText = item
 
         if (!isEmpty)
         {
-          nameText = ::g_contacts.getPlayerFullName(platformModule.getPlayerName(item), table[i]?.clanTag ?? "")
+          if (!table?[i].isBot)
+            nameText = ::g_contacts.getPlayerFullName(platformModule.getPlayerName(item), table[i]?.clanTag ?? "")
 
           if (("invitedName" in table[i]) && table[i].invitedName != item)
           {

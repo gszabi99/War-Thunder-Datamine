@@ -1822,7 +1822,7 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
   }
 
   local clanTag = withClanTag ? player.clanTag : ""
-  local name = ::g_contacts.getPlayerFullName(platformModule.getPlayerName(player.name),
+  local name = ::g_contacts.getPlayerFullName(player?.isBot? player.name : platformModule.getPlayerName(player.name),
                                               clanTag,
                                               unitName)
 
