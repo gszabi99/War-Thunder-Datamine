@@ -227,7 +227,7 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
 
   function doItemAction(item)
   {
-    ::play_gui_sound("check")
+    guiScene.playSound("check")
     if (onChangeValueCb)
       onChangeValueCb(item)
     else

@@ -70,7 +70,7 @@ class ::gui_handlers.FramedMessageBox extends ::BaseGuiHandler
       buttonsObj.select()
 
     if (!u.isEmpty(onOpenSound))
-      ::play_gui_sound(onOpenSound)
+      guiScene.playSound(onOpenSound)
   }
 
   function getDefaultPos()

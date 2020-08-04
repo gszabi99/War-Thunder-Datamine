@@ -147,6 +147,21 @@ foreach (fn in [
   refreshBoostersTask = -1
   boostersTaskUpdateFlightTime = -1
 
+  //!!!BEGIN added only for debug
+  dbgTrophiesListInternal = []
+  dbgLoadedTrophiesCount = 0
+  dbgLoadedItemsInternalCount = 0
+  dbgUpdateInternalItemsCount = 0
+
+  getInternalItemsDebugInfo = @() {
+    dbgTrophiesListInternal = dbgTrophiesListInternal
+    dbgLoadedTrophiesCount = dbgLoadedTrophiesCount
+    itemsListInternal = itemsListInternal
+    dbgLoadedItemsInternalCount = dbgLoadedItemsInternalCount
+    dbgUpdateInternalItemsCount = dbgUpdateInternalItemsCount
+  }
+  //!!!END added only for debug
+
   function getBestSpecialOfferItemByUnit(unit) {
     local res = []
     for (local i = 0; i < ::get_current_personal_discount_count(); i++) {
@@ -255,6 +270,8 @@ ItemsManager.checkShopItemsUpdate <- function checkShopItemsUpdate()
     return false
   _reqUpdateList = false
   itemsListInternal.clear()
+  dbgTrophiesListInternal.clear()
+  dbgUpdateInternalItemsCount++
 
   local pBlk = ::get_price_blk()
   local trophyBlk = pBlk?.trophy
@@ -264,7 +281,9 @@ ItemsManager.checkShopItemsUpdate <- function checkShopItemsUpdate()
       local blk = trophyBlk.getBlock(i)
       local item = createItem(itemType.TROPHY, blk)
       itemsListInternal.append(item)
+      dbgTrophiesListInternal.append(item)
     }
+  dbgLoadedTrophiesCount = dbgTrophiesListInternal.len()
 
   local itemsBlk = ::get_items_blk()
   ignoreItemLimits = !!itemsBlk?.ignoreItemLimits
@@ -289,6 +308,8 @@ ItemsManager.checkShopItemsUpdate <- function checkShopItemsUpdate()
       local item = createItem(blk?.type, blk)
       itemsListInternal.append(item)
     }
+
+  dbgLoadedItemsInternalCount = itemsListInternal.len()
   return true
 }
 

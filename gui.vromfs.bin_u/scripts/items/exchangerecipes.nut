@@ -549,7 +549,7 @@ local ExchangeRecipes = class {
     if (effectOnStartCraft?.showImage != null)
       startCraftWnd(effectOnStartCraft)
     if (effectOnStartCraft?.playSound != null)
-      ::play_gui_sound(effectOnStartCraft.playSound)
+      guiScene.playSound(effectOnStartCraft.playSound)
 
     asyncActions.callAsyncActionsList(exchangeActions)
   }

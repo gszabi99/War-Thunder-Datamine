@@ -11,6 +11,7 @@ local { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 local { getModificationBulletsGroup } = require("scripts/weaponry/bulletsInfo.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { isModResearched } = require("scripts/weaponry/modificationInfo.nut")
 
 const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000
 
@@ -872,7 +873,7 @@ global enum CheckFeatureLockAction
     if (("tier" in mod) && mod.tier == tier &&
         !::wp_get_modification_cost_gold(unit.name, mod.name) &&
         getModificationBulletsGroup(mod.name) == "" &&
-        ::isModResearched(unit, mod)
+        isModResearched(unit, mod)
        )
       req--
   return max(req, 0)

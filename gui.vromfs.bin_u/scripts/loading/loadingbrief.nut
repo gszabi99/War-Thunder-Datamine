@@ -378,7 +378,7 @@ class ::gui_handlers.LoadingBrief extends ::gui_handlers.BaseGuiHandlerWT
     guiScene["slide-place"].animShow = "hide"
     if (!hideSoundPlayed)
     {
-      play_gui_sound("slide_in")
+      guiScene.playSound("slide_in")
       hideSoundPlayed = true
     }
   }
@@ -389,7 +389,7 @@ class ::gui_handlers.LoadingBrief extends ::gui_handlers.BaseGuiHandlerWT
     showProjectorSmallGlow(false)
     local place = guiScene["slide-place"]
     place.animShow = "show"
-    play_gui_sound("slide_out")
+    guiScene.playSound("slide_out")
     hideSoundPlayed = false
     if (nextSlideImg)
     {
@@ -463,7 +463,7 @@ class ::gui_handlers.LoadingBrief extends ::gui_handlers.BaseGuiHandlerWT
       if (obj)
       {
         if (obj?.animShow != "show")
-          play_gui_sound("show_map")
+          guiScene.playSound("show_map")
         obj.animShow = "show"
         obj.show(true)
       }

@@ -30,14 +30,25 @@ local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
   configsArray.sort(::trophyReward.rewardsSortComparator)
 
   local itemId = configsArray?[0]?.itemDefId
-    || configsArray?[0]?.trophyItemDefId
-    || configsArray?[0]?.id
-    || ""
+    ?? configsArray?[0]?.trophyItemDefId
+    ?? configsArray?[0]?.id
+    ?? ""
 
   local trophyItem = ::ItemsManager.findItemById(itemId)
   if (!trophyItem)
   {
     local configsArrayString = ::toString(configsArray, 2) // warning disable: -declared-never-used
+    local isLoggedIn = ::g_login.isLoggedIn()              // warning disable: -declared-never-used
+    local { dbgTrophiesListInternal, dbgLoadedTrophiesCount, itemsListInternal, // warning disable: -declared-never-used
+      dbgLoadedItemsInternalCount, dbgUpdateInternalItemsCount // warning disable: -declared-never-used
+    } = ::ItemsManager.getInternalItemsDebugInfo()  // warning disable: -declared-never-used
+    local trophiesBlk = ::get_price_blk()?.trophy
+    local currentItemsInternalCount = itemsListInternal.len() // warning disable: -declared-never-used
+    local currentTrophiesInternalCount = dbgTrophiesListInternal.len() // warning disable: -declared-never-used
+    local trophiesListInternalString = ::toString(dbgTrophiesListInternal)  // warning disable: -declared-never-used
+    local trophiesBlkString = ::toString(trophiesBlk)  // warning disable: -declared-never-used
+    local trophyBlkString = ::toString(trophiesBlk?[itemId]) // warning disable: -declared-never-used
+
     ::script_net_assert_once("not found trophyItem", "Trophy Reward: Not found item. Don't show reward.")
     return
   }
@@ -154,7 +165,7 @@ class ::gui_handlers.trophyRewardWnd extends ::gui_handlers.BaseGuiHandlerWT
       animObj.animation = "show"
       if (useSingleAnimation)
       {
-        ::play_gui_sound(singleAnimationGuiSound ?? "chest_open")
+        guiScene.playSound(singleAnimationGuiSound ?? "chest_open")
         local delay = ::to_integer_safe(animObj?.chestReplaceDelay, 0)
         ::Timer(animObj, 0.001 * delay, openChest, this)
         ::Timer(animObj, 1.0, onOpenAnimFinish, this) //!!FIX ME: Some times animation finish not apply css, and we miss onOpenAnimFinish

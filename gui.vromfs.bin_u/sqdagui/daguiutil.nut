@@ -1,4 +1,5 @@
 local g_string =  require("std/string.nut")
+local regexp2 = require("regexp2")
 
 global enum ALIGN {
   LEFT   = "left"
@@ -14,9 +15,9 @@ local DEFAULT_OVERRIDE_PARAMS = {
 
 ::g_dagui_utils <- {
   textAreaTagsRegexp = [
-    ::regexp2("</?color[^>]*>")
-    ::regexp2("</?link[^>]*>")
-    ::regexp2("</?b>")
+    regexp2("</?color[^>]*>")
+    regexp2("</?link[^>]*>")
+    regexp2("</?b>")
   ]
   /*
   * count amount of items can be filled in current obj.

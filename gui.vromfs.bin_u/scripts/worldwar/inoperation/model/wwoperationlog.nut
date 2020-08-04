@@ -322,21 +322,21 @@ g_ww_logs.playLogSound <- function playLogSound(logBlk)
     case WW_LOG_TYPES.ARTILLERY_STRIKE_DAMAGE:
       local wwArmy = getLogArmy(logBlk)
       if (wwArmy && !wwArmy.isMySide(::ww_get_player_side()))
-        ::play_gui_sound("ww_artillery_enemy")
+        ::get_cur_gui_scene()?.playSound("ww_artillery_enemy")
       break
 
     case WW_LOG_TYPES.ARMY_FLYOUT:
       local wwArmy = getLogArmy(logBlk)
       if (wwArmy && !wwArmy.isMySide(::ww_get_player_side()))
-        ::play_gui_sound("ww_enemy_airplane_incoming")
+        ::get_cur_gui_scene()?.playSound("ww_enemy_airplane_incoming")
       break
 
     case WW_LOG_TYPES.BATTLE_STARTED:
-      ::play_gui_sound("ww_battle_start")
+      ::get_cur_gui_scene()?.playSound("ww_battle_start")
       break
 
     case WW_LOG_TYPES.BATTLE_FINISHED:
-      ::play_gui_sound(isPlayerWinner(logBlk) ?
+      ::get_cur_gui_scene()?.playSound(isPlayerWinner(logBlk) ?
         "ww_battle_end_win" : "ww_battle_end_fail")
       break
   }

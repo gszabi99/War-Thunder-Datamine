@@ -326,7 +326,7 @@ class ::ww_gui_bhv.worldWarMapControls
       armyName = armyName,
       armyType = armyType,
       addToSelection = addToSelection })
-    ::play_gui_sound("ww_unit_select")
+    ::get_cur_gui_scene()?.playSound("ww_unit_select")
 
     return true
   }
@@ -365,7 +365,7 @@ class ::ww_gui_bhv.worldWarMapControls
     {
       setSelectedObject(obj, mapObjectSelect.AIRFIELD)
       sendMapEvent("AirfieldSelected", params)
-      ::play_gui_sound("ww_airfield_select")
+      ::get_cur_gui_scene()?.playSound("ww_airfield_select")
     }
     else
       sendMapEvent("AirfieldCleared")

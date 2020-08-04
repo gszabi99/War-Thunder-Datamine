@@ -3,6 +3,8 @@ local { WEAPON_TYPE,
         getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 local { AMMO,
         getAmmoAmountData } = require("scripts/weaponry/ammoInfo.nut")
+local { isModResearched,
+        isModAvailableOrFree } = require("scripts/weaponry/modificationInfo.nut")
 
 local BULLET_TYPE = {
   ROCKET_AIR     = "rocket_aircraft"
@@ -83,7 +85,7 @@ local function isWeaponTierAvailable(unit, tierNum)
     local reqMods = unit.needBuyToOpenNextInTier[tierNum-2]
     foreach(mod in unit.modifications)
       if(mod.tier == (tierNum-1) &&
-         ::isModResearched(unit, mod) &&
+         isModResearched(unit, mod) &&
          getModificationBulletsGroup(mod.name) == "" &&
          !::wp_get_modification_cost_gold(unit.name, mod.name)
         )
@@ -170,30 +172,6 @@ local function getModificationBulletsEffect(modifName)
     }
   }
   return ""
-}
-//FIX ME: Needs to relocate to another module (weaponsInfo or modificationInfo)
-local function getWeaponModIdx(weaponBlk, modsList) {
-  return modsList.findindex(@(modName) weaponBlk?[getModificationBulletsEffect(modName)]) ?? -1
-}
-//FIX ME: Needs to relocate to another module (weaponsInfo or modificationInfo)
-local function findIdenticalWeapon(weapon, weaponList, modsList) {
-  if (weapon in weaponList)
-    return weapon
-
-  local weaponBlk = ::DataBlock(weapon)
-  if (!weaponBlk)
-    return null
-
-  local cartridgeSize = weaponBlk?.bulletsCartridge || 1
-  local groupIdx = getWeaponModIdx(weaponBlk, modsList)
-
-  foreach(blkName, info in weaponList) {
-    if (info.groupIndex == groupIdx
-      && cartridgeSize == info.catridge)
-      return blkName
-  }
-
-  return null
 }
 
 local function getBulletsSetData(air, modifName, noModList = null)
@@ -470,6 +448,30 @@ local function getBulletsGroupCount(air, full = false)
     }
   }
   return full? air.bulGroups : air.bulModsGroups
+}
+
+local function getWeaponModIdx(weaponBlk, modsList) {
+  return modsList.findindex(@(modName) weaponBlk?[getModificationBulletsEffect(modName)]) ?? -1
+}
+
+local function findIdenticalWeapon(weapon, weaponList, modsList) {
+  if (weapon in weaponList)
+    return weapon
+
+  local weaponBlk = ::DataBlock(weapon)
+  if (!weaponBlk)
+    return null
+
+  local cartridgeSize = weaponBlk?.bulletsCartridge || 1
+  local groupIdx = getWeaponModIdx(weaponBlk, modsList)
+
+  foreach(blkName, info in weaponList) {
+    if (info.groupIndex == groupIdx
+      && cartridgeSize == info.catridge)
+      return blkName
+  }
+
+  return null
 }
 
 local function getBulletsInfoForPrimaryGuns(air)
@@ -829,7 +831,7 @@ local function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS)
     }
 
     if (params.needOnlyAvailable && !params.isForcedAvailable
-        && !::is_mod_available_or_free(airName, modifName))
+        && !isModAvailableOrFree(airName, modifName))
       continue
 
     local enabled = !params.isOnlyBought ||

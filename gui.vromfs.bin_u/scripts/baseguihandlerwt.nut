@@ -809,7 +809,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
       if (!::checkObj(focusObj))
         return
 
-      ::play_gui_sound("menu_appear")
+      guiScene.playSound("menu_appear")
       focusObj.select()
       checkCurrentFocusItem(focusObj)
     })

@@ -1,5 +1,6 @@
 local elemModelType = ::require("sqDagui/elemUpdater/elemModelType.nut")
 local elemViewType = ::require("sqDagui/elemUpdater/elemViewType.nut")
+local { isModUpgradeable, hasActiveOverdrive } = require("scripts/weaponry/modificationInfo.nut")
 
 elemModelType.addTypes({
   MOD_UPGRADE = {
@@ -45,7 +46,7 @@ elemViewType.addTypes({
       if (modName)
         if (::get_modification_level(unitName, modName))
           upgradeIcon = "#ui/gameuiskin#mark_upgrade.svg"
-        else if (model.needShowAvailableUpgrades() && ::is_mod_upgradeable(modName))
+        else if (model.needShowAvailableUpgrades() && isModUpgradeable(modName))
           upgradeIcon = "#ui/gameuiskin#mark_can_upgrade.svg"
       local upgradeColor = upgradeIcon ? "#FFFFFFFF" : "#00000000"
 
@@ -53,7 +54,7 @@ elemViewType.addTypes({
         obj.set_prop_latent("background-image", upgradeIcon)
       obj.set_prop_latent("background-color", upgradeColor)
       obj.set_prop_latent("foreground-color",
-        modName && ::has_active_overdrive(unitName, modName) ? "#FFFFFFFF" : "#00000000")
+        modName && hasActiveOverdrive(unitName, modName) ? "#FFFFFFFF" : "#00000000")
       obj.updateRendElem()
     }
   }

@@ -228,7 +228,7 @@ class ::gui_handlers.WwArmiesList extends ::gui_handlers.BaseGuiHandlerWT
 
     local mapObj = guiScene["worldwar_map"]
     ::ww_gui_bhv.worldWarMapControls.selectArmy.call(::ww_gui_bhv.worldWarMapControls, mapObj, obj.armyName)
-    ::play_gui_sound("ww_unit_select")
+    guiScene.playSound("ww_unit_select")
   }
 
   function setArmyViewSelection(armyName, isSelected)

@@ -33,7 +33,7 @@ class gui_bhv.posNavigator
     {
       if (!checkWrapFrom(obj))
         selectCurItem(obj)
-      ::play_gui_sound("focus")
+      obj.getScene().playSound("focus")
     }
     else if (event == ::EV_ON_FOCUS_LOST)
     {
@@ -189,7 +189,7 @@ class gui_bhv.posNavigator
     }
 
     if (needSound && needNotify)
-      ::play_gui_sound(obj?.snd_select ? obj.snd_select : "choose")
+      obj.getScene().playSound(obj?.snd_select ? obj.snd_select : "choose")
     if (needNotify)
       onSelectAction(obj)
     return true

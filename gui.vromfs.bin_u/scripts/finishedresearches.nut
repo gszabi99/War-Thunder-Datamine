@@ -7,6 +7,7 @@ local { updateModItem,
         getReqModsText,
         updateWeaponTooltip } = require("scripts/weaponry/weaponryVisual.nut")
 local { setDoubleTextToButton, placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { canBuyMod } = require("scripts/weaponry/modificationInfo.nut")
 
 ::researched_items_table <- null
 ::abandoned_researched_items_for_session <- []
@@ -896,7 +897,7 @@ class ::gui_handlers.showAllResearchedItems extends ::gui_handlers.BaseGuiHandle
     local mod = ::getModificationByName(unit, modName)
     if (!mod)
       return false
-    return ::canBuyMod(unit, mod)
+    return canBuyMod(unit, mod)
   }
 
   function getCantBuyModificationReason(unit, modName)
@@ -958,7 +959,7 @@ class ::gui_handlers.showAllResearchedItems extends ::gui_handlers.BaseGuiHandle
     local NBMods = []
     local isUnitHaveNBMods = false
     foreach(mod in unit.modifications)
-      if (::canBuyMod(unit, mod)
+      if (canBuyMod(unit, mod)
           && getAmmoMaxAmount(unit, mod.name, AMMO.MODIFICATION) == 1
           && !::wp_get_modification_cost_gold(unitName, mod.name))
       {

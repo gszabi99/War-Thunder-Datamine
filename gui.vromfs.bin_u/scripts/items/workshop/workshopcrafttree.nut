@@ -106,13 +106,6 @@ local function generateRows(branchBlk, treeRows)
     if (!::ItemsManager.isItemdefId(id))
       continue
 
-    local addReqItemId = function(itemId) {
-      itemId = itemId.tointeger()
-      itemsIdList[itemId] <- true
-      return itemId
-    }
-    local reqItemForCrafting = getReqItemsArray(iBlk % "reqItemForCrafting")
-    itemsIdList.__update(reqItemForCrafting.fullItemsIdList)
     local itemConfig = {
       id = id
       bodyIdx = bodyIdx
@@ -120,10 +113,16 @@ local function generateRows(branchBlk, treeRows)
       posXY = iBlk.posXY
       showResources = iBlk?.showResources ?? false
       reqItems = (iBlk % "reqItem").map(@(itemId)itemId.tointeger())
-      reqItemForDisplaying = (iBlk % "reqItemForDisplaying").map(addReqItemId)
-      reqItemForIdentification = (iBlk % "reqItemForIdentification").map(addReqItemId)
-      reqItemForCrafting = reqItemForCrafting.itemsIdArray
+      reqItemForDisplaying = []
+      reqItemForIdentification = []
+      reqItemForCrafting = []
       arrows = []
+    }
+
+    foreach (reqListId in ["reqItemForCrafting", "reqItemForDisplaying", "reqItemForIdentification"]) {
+      local reqItems = getReqItemsArray(iBlk % reqListId)
+      itemsIdList.__update(reqItems.fullItemsIdList)
+      itemConfig[reqListId] = reqItems.itemsIdArray
     }
 
     local posX = itemConfig.posXY.x.tointeger()

@@ -16,7 +16,7 @@ class ::gui_handlers.RankUpModal extends ::gui_handlers.BaseGuiHandlerWT
     local unitItems = []
     ::show_facebook_screenshot_button(scene)
 
-    ::play_gui_sound("new_rank")
+    guiScene.playSound("new_rank")
 
     if (country.len() > 0 && (country.slice(0, 8) == "country_"))
     {

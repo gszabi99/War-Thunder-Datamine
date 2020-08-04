@@ -1,3 +1,5 @@
+local SqratDataBlock = require("DataBlock")
+
 //to use table by DataBlock api
 //Only get Data from table, not set.
 //
@@ -14,8 +16,9 @@
 
 ::can_be_readed_as_datablock <- function can_be_readed_as_datablock(blk)
 {
-  return (typeof(blk) == "instance"
-          && (blk instanceof ::DataBlock || blk instanceof ::DataBlockAdapter))
+  return blk instanceof ::DataBlock
+      || blk instanceof ::DataBlockAdapter
+      || blk instanceof SqratDataBlock
 }
 
 class DataBlockAdapter

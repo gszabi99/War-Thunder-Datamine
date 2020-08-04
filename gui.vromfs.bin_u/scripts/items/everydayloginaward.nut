@@ -305,7 +305,7 @@ class ::gui_handlers.EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT
     if (::checkObj(animObj))
     {
       animObj.animation = "show"
-      ::play_gui_sound("chest_open")
+      guiScene.playSound("chest_open")
     }
   }
 
@@ -374,7 +374,7 @@ class ::gui_handlers.EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT
       animObj.animation = "show"
       if (useSingleAnimation)
       {
-        ::play_gui_sound("chest_open")
+        guiScene.playSound("chest_open")
         local delay = ::to_integer_safe(animObj?.chestReplaceDelay, 0)
         ::Timer(animObj, 0.001 * delay, fillOpenedChest, this)
       }

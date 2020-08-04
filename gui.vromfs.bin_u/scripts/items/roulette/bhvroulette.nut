@@ -31,7 +31,7 @@ local BhvRoulette = class
     if (!config.isJustStarted)
       return
 
-    ::play_gui_sound("roulette_start")
+    obj.getScene().playSound("roulette_start")
     ::start_gui_sound("roulette_spin")
     obj.left = "0"
   }
@@ -49,7 +49,7 @@ local BhvRoulette = class
     if (prevTime <= config.timeToStopSound && config.time > config.timeToStopSound)
     {
       ::stop_gui_sound("roulette_spin")
-      ::play_gui_sound("roulette_stop")
+      obj.getScene().playSound("roulette_stop")
     }
   }
 }

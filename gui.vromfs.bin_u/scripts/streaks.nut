@@ -168,7 +168,7 @@ g_streaks.streakPlaySound <- function streakPlaySound(streakId)
     return
 
   if (unlockBlk?.isAfterFlight)
-    ::play_gui_sound("streak_mission_complete")
+    ::get_cur_gui_scene()?.playSound("streak_mission_complete")
   else if (unlockBlk?.sound)
     ::loading_play_voice(unlockBlk.sound, true)
 }

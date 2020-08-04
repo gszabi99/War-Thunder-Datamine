@@ -8,6 +8,7 @@ local platform = require("scripts/clientState/platform.nut")
 local { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 local { unitClassType, getUnitClassTypeByExpClass } = require("scripts/unit/unitClassType.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { isModClassExpendable } = require("scripts/weaponry/modificationInfo.nut")
 
 local MOD_TIERS_COUNT = 4
 
@@ -205,7 +206,7 @@ local Unit = class
         modifications.append(mod)
         initWeaponry(mod, modBlk)
         initWeaponryUpgrades(mod, modBlk)
-        if (::is_modclass_expendable(mod))
+        if (isModClassExpendable(mod))
           mod.type = ::g_weaponry_types.EXPENDABLES.type
 
         if (modBlk?.maxToRespawn)

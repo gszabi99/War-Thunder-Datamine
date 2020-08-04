@@ -240,7 +240,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
     ::dmViewer.update()
 
     if(showButton)
-      ::play_gui_sound("menu_appear")
+      guiScene.playSound("menu_appear")
     if(::checkObj(closeResearch))
       closeResearch.show(showButton)
     activateShopImpl(topMenuShopActive.value, unitType)

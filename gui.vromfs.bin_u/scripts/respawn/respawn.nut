@@ -101,6 +101,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
 
   haveSlots = false
   haveSlotbar = false
+  isGTCooperative = false
   canChangeAircraft = false
   stayOnRespScreen = false
   haveRespawnBases = false
@@ -225,6 +226,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     haveSlotbar = (gameType & (::GT_VERSUS | ::GT_COOPERATIVE)) &&
                   (gameMode != ::GM_SINGLE_MISSION && gameMode != ::GM_DYNAMIC) &&
                   !spectator
+    isGTCooperative = (gameType & ::GT_COOPERATIVE) != 0
     canChangeAircraft = haveSlotbar && !stayOnRespScreen && isRespawn
 
     if (fetch_change_aircraft_on_start() && !stayOnRespScreen && !spectator)
@@ -400,7 +402,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
   function updateRespawnBasesStatus() //return is isNoRespawns changed
   {
     local wasIsNoRespawns = isNoRespawns
-    if (gameType & ::GT_COOPERATIVE)
+    if (isGTCooperative)
     {
       isNoRespawns = false
       updateNoRespawnText()
@@ -598,7 +600,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     {
       destroySlotbar()
       local airName = ::last_ca_aircraft
-      if (gameType & ::GT_COOPERATIVE)
+      if (isGTCooperative)
         airName = ::getTblValue("aircraftName", mplayerTable, "")
       local air = ::getAircraftByName(airName)
       if (air)
@@ -1645,7 +1647,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
   function updateApplyText()
   {
     local unit = getCurSlotUnit()
-    local isAvailResp = haveRespawnBases
+    local isAvailResp = haveRespawnBases || isGTCooperative
     local tooltipText = ""
     local tooltipEndText = ""
     local infoTextsArr = []
@@ -1661,26 +1663,29 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       if (::is_platform_pc)
         tooltipEndText = ::format(" [%s]", ::loc("key/Enter"))
 
-      local wpCost = getRespawnWpTotalCost()
-      if (wpCost > 0)
+      if (haveSlotbar)
       {
-        shortCostText = ::Cost(wpCost).getUncoloredText()
-        costTextArr.append(shortCostText)
+        local wpCost = getRespawnWpTotalCost()
+        if (wpCost > 0)
+        {
+          shortCostText = ::Cost(wpCost).getUncoloredText()
+          costTextArr.append(shortCostText)
+        }
+
+        if (missionRules.isScoreRespawnEnabled && unit)
+        {
+          local curScore = ::shop_get_spawn_score(unit.name, getSelWeapon() || "")
+          isAvailResp = isAvailResp && (curScore <= curSpawnScore)
+          if (curScore > 0)
+            costTextArr.append(::loc("shop/spawnScore", { cost = curScore }))
+        }
+
+        if (leftRespawns > 0)
+          infoTextsArr.append(::loc("respawn/leftRespawns", { num = leftRespawns.tostring() }))
+
+        infoTextsArr.append(missionRules.getRespawnInfoTextForUnit(unit))
+        isAvailResp = isAvailResp && missionRules.isRespawnAvailable(unit)
       }
-
-      if (missionRules.isScoreRespawnEnabled && unit)
-      {
-        local curScore = ::shop_get_spawn_score(unit.name, getSelWeapon() || "")
-        isAvailResp = isAvailResp && (curScore <= curSpawnScore)
-        if (curScore > 0)
-          costTextArr.append(::loc("shop/spawnScore", { cost = curScore }))
-      }
-
-      if (leftRespawns > 0)
-        infoTextsArr.append(::loc("respawn/leftRespawns", { num = leftRespawns.tostring() }))
-
-      infoTextsArr.append(missionRules.getRespawnInfoTextForUnit(unit))
-      isAvailResp = isAvailResp && missionRules.isRespawnAvailable(unit)
     }
 
     local isCrewDelayed = false
@@ -1693,6 +1698,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     //******************** combine final texts ********************************
 
     local applyTextShort = applyText //for slot battle button
+
     if (shortCostText.len())
       applyTextShort = ::format("%s<b> %s</b>", ::loc("mainmenu/toBattle/short"), shortCostText)
 
@@ -2109,7 +2115,8 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
   function updateCountdown(countdown)
   {
     local isLoadingUnitModel = !stayOnRespScreen && !::can_request_aircraft_now()
-    showLoadAnim(isLoadingUnitModel || !::g_mis_loading_state.isReadyToShowRespawn())
+    showLoadAnim(!isGTCooperative
+      && (isLoadingUnitModel || !::g_mis_loading_state.isReadyToShowRespawn()))
     updateButtons(!isLoadingUnitModel, true)
 
     if (isLoadingUnitModel || !use_autostart())

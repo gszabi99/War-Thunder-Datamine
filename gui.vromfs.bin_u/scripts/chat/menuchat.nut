@@ -1669,7 +1669,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     r.joinParams = roomJoinParamsTable?[::gchat_escape_target(id)] ??  ""
 
     if (r.type != ::g_chat_room_type.PRIVATE)
-      ::play_gui_sound("chat_join")
+      guiScene.playSound("chat_join")
     ::g_chat.addRoom(r)
 
     if (unhiddenRoomsCount() == 1)
@@ -2186,7 +2186,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
           skipMyMessages = !needLocalEcho
           ::gchat_chat_message(::gchat_escape_target(roomId), msg)
           skipMyMessages = false
-          ::play_gui_sound("chat_send")
+          guiScene.playSound("chat_send")
         }
       }
     }

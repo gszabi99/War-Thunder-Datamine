@@ -926,7 +926,7 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
       if (currSeconds != prevSeconds)
       {
         timeToKickAlertObj["_blink"] = "yes"
-        ::play_gui_sound("kick_alert")
+        guiScene.playSound("kick_alert")
       }
     }
   }
@@ -1773,7 +1773,7 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
     ::gui_bhv.TableNavigator.selectCell(tblObj, val, 0)
     tblObj.select()
     updateListsButtons()
-    ::play_gui_sound("click")
+    guiScene.playSound("click")
   }
 
   function onClick(obj)

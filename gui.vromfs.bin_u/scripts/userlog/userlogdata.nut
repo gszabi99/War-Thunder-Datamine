@@ -9,6 +9,55 @@ local { showUnlock } = require("scripts/unlocks/unlockRewardWnd.nut")
 
 ::g_script_reloader.registerPersistentData("UserlogDataGlobals", ::getroottable(), ["shown_userlog_notifications"])
 
+local function checkPopupUserLog(user_log_blk)
+{
+  if (user_log_blk == null)
+    return false
+  foreach (popupItem in ::popup_userlogs)
+  {
+    if (::u.isTable(popupItem))
+    {
+      if (popupItem.type != user_log_blk?.type)
+        continue
+      local rewardType = user_log_blk?.body.rewardType
+      local rewardTypeFilter = popupItem.rewardType
+      if (typeof(rewardTypeFilter) == "string" && rewardTypeFilter == rewardType)
+        return true
+      if (typeof(rewardTypeFilter) == "array" && ::isInArray(rewardType, rewardTypeFilter))
+        return true
+    }
+    else if (popupItem == user_log_blk?.type)
+      return true
+  }
+  return false
+}
+
+local function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsArray = [])
+{
+  local body = newUserLog?.body
+  if (!body)
+    return
+
+  if (combineKey)
+    combineKey = body?[combineKey]
+
+  if (!combineKey)
+    combineKey = newUserLog?.id
+
+  if (!(combineKey in currentData))
+    currentData[combineKey] <- {}
+
+  foreach(param, value in body)
+  {
+    local haveParam = ::getTblValue(param, currentData[combineKey])
+    if (!haveParam)
+      currentData[combineKey][param] <- [value]
+    else if (::isInArray(param, sumParamsArray))
+      currentData[combineKey][param][0] += value
+    else if (!::isInArray(value, currentData[combineKey][param]))
+      currentData[combineKey][param].append(value)
+  }
+}
 
 local logNameByType = {
   [::EULT_SESSION_START]                 = "session_start",
@@ -71,32 +120,7 @@ local logNameByType = {
   [::EULT_WW_AWARD]                      = "ww_award",
 }
 
-local clanActionNames = {
-  [ULC_CREATE]                  = "create",
-  [ULC_DISBAND]                 = "disband",
-
-  [ULC_REQUEST_MEMBERSHIP]      = "request_membership",
-  [ULC_CANCEL_MEMBERSHIP]       = "cancel_membership",
-  [ULC_REJECT_MEMBERSHIP]       = "reject_candidate",
-  [ULC_ACCEPT_MEMBERSHIP]       = "accept_candidate",
-
-  [ULC_DISMISS]                 = "dismiss_member",
-  [ULC_CHANGE_ROLE]             = "change_role",
-  [ULC_CHANGE_ROLE_AUTO]        = "change_role_auto",
-  [ULC_LEAVE]                   = "leave",
-  [ULC_DISBANDED_BY_LEADER]     = "disbanded_by_leader",
-
-  [ULC_ADD_TO_BLACKLIST]        = "add_to_blacklist",
-  [ULC_DEL_FROM_BLACKLIST]      = "remove_from_blacklist",
-  [ULC_CHANGE_CLAN_INFO]        = "clan_info_was_changed",
-  [ULC_CLAN_INFO_WAS_CHANGED]   = "clan_info_was_renamed",
-  [ULC_DISBANDED_BY_ADMIN]      = "clan_disbanded_by_admin",
-  [ULC_UPGRADE_CLAN]            = "clan_was_upgraded",
-  [ULC_UPGRADE_MEMBERS]         = "clan_max_members_count_was_increased",
-}
-
 ::getLogNameByType <- @(logType) logNameByType?[logType] ?? "unknown"
-::getClanActionName <- @(action) clanActionNames?[action] ?? "unknown"
 
 ::get_userlog_image_item <- function get_userlog_image_item(item, params = {})
 {
@@ -112,24 +136,6 @@ local clanActionNames = {
   params = ::combine_tables(params, defaultParams)
   return item ? ::handyman.renderCached(("gui/items/item"), { items = item.getViewData(params)}) : ""
 }
-
-
-::get_link_markup <- function get_link_markup(text, url, acccessKeyName=null)
-{
-  if (!::u.isString(url) || url.len() == 0 || !::has_feature("AllowExternalLink"))
-    return ""
-  local btnParams = {
-    text = text
-    isHyperlink = true
-    link = url
-  }
-  if (acccessKeyName && acccessKeyName.len() > 0)
-  {
-    btnParams.acccessKeyName <- acccessKeyName
-  }
-  return ::handyman.renderCached("gui/commonParts/button", btnParams)
-}
-
 
 ::check_new_user_logs <- function check_new_user_logs()
 {
@@ -165,29 +171,6 @@ local clanActionNames = {
         && !::isInArray(blk.id, ::shown_userlog_notifications))
       ::shown_userlog_notifications.append(blk.id)
   }
-}
-
-::checkPopupUserLog <- function checkPopupUserLog(user_log_blk)
-{
-  if (user_log_blk == null)
-    return false
-  foreach (popupItem in ::popup_userlogs)
-  {
-    if (::u.isTable(popupItem))
-    {
-      if (popupItem.type != user_log_blk?.type)
-        continue
-      local rewardType = user_log_blk?.body.rewardType
-      local rewardTypeFilter = popupItem.rewardType
-      if (typeof(rewardTypeFilter) == "string" && rewardTypeFilter == rewardType)
-        return true
-      if (typeof(rewardTypeFilter) == "array" && ::isInArray(rewardType, rewardTypeFilter))
-        return true
-    }
-    else if (popupItem == user_log_blk?.type)
-      return true
-  }
-  return false
 }
 
 ::checkAwardsOnStartFrom <- function checkAwardsOnStartFrom()
@@ -340,7 +323,7 @@ local clanActionNames = {
 
       local config = ::build_log_unlock_data(unlock)
       config.disableLogId <- blk.id
-      handler.doWhenActive(@() ::showUnlockWnd(config))
+      ::showUnlockWnd(config)
       ::shown_userlog_notifications.append(blk.id)
       continue
     }
@@ -377,7 +360,7 @@ local clanActionNames = {
     {
       if (onStartAwards || !(popupMask & USERLOG_POPUP.FINISHED_RESEARCHES))
         continue
-      ::combineUserLogs(combinedUnitTiersUserLogs, blk, "unit", ["expToInvUnit", "expToExcess"])
+      combineUserLogs(combinedUnitTiersUserLogs, blk, "unit", ["expToInvUnit", "expToExcess"])
       markDisabled = true
     }
     else if (blk?.type == ::EULT_OPEN_TROPHY
@@ -523,8 +506,7 @@ local clanActionNames = {
   if (seenIdsArray.len())
     disableSeenUserlogs(seenIdsArray)
 
-  if (trophyRewardsTable.len() > 0)
-    handler.doWhenActive(@() ::gui_start_open_trophy(trophyRewardsTable))
+  ::gui_start_open_trophy(trophyRewardsTable)
 
   entitlementRewards.each(@(key, entId) handler.doWhenActive(@() showEntitlement(entId, { ignoreAvailability = true })))
   unlocksRewards.each(@(key, unlockId) handler.doWhenActive(@() showUnlock(unlockId, { ignoreAvailability = true })))
@@ -544,33 +526,6 @@ local clanActionNames = {
   foreach(name, table in combinedUnitTiersUserLogs)
   {
     ::gui_start_mod_tier_researched(table)
-  }
-}
-
-::combineUserLogs <- function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsArray = [])
-{
-  local body = newUserLog?.body
-  if (!body)
-    return
-
-  if (combineKey)
-    combineKey = body?[combineKey]
-
-  if (!combineKey)
-    combineKey = newUserLog?.id
-
-  if (!(combineKey in currentData))
-    currentData[combineKey] <- {}
-
-  foreach(param, value in body)
-  {
-    local haveParam = ::getTblValue(param, currentData[combineKey])
-    if (!haveParam)
-      currentData[combineKey][param] <- [value]
-    else if (::isInArray(param, sumParamsArray))
-      currentData[combineKey][param][0] += value
-    else if (!::isInArray(value, currentData[combineKey][param]))
-      currentData[combineKey][param].append(value)
   }
 }
 
@@ -726,28 +681,4 @@ local clanActionNames = {
     ::save_online_job()
   }
   return logs;
-}
-
-::get_decorator_unlock <- function get_decorator_unlock(resourceId, resourceType)
-{
-  local unlock = ::create_default_unlock_data()
-  local decoratorType = null
-  unlock.id = resourceId
-  decoratorType = ::g_decorator_type.getTypeByResourceType(resourceType)
-  if (decoratorType != ::g_decorator_type.UNKNOWN)
-  {
-    unlock.name = decoratorType.getLocName(unlock.id, true)
-    unlock.desc = decoratorType.getLocDesc(unlock.id)
-    unlock.image = decoratorType.userlogPurchaseIcon
-
-    local decorator = ::g_decorator.getDecorator(unlock.id, decoratorType)
-    if (decorator && !::is_in_loading_screen())
-    {
-      unlock.descrImage <- decoratorType.getImage(decorator)
-      unlock.descrImageRatio <- decoratorType.getRatio(decorator)
-      unlock.descrImageSize <- decoratorType.getImageSize(decorator)
-    }
-  }
-
-  return unlock
 }

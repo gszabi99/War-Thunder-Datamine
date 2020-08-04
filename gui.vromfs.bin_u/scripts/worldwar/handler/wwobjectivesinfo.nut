@@ -35,7 +35,7 @@ class ::gui_handlers.WwObjectivesInfo extends ::gui_handlers.BaseGuiHandlerWT
     foreach (side in ::g_world_war.getSidesOrder())
       initSideBlock(side, ::ww_side_val_to_name(side))
     markSeenCurObjective()
-    ::play_gui_sound("ww_globe_battle_select")
+    guiScene.playSound("ww_globe_battle_select")
   }
 
   function markSeenCurObjective()

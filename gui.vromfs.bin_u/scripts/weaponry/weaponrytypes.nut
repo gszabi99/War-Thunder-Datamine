@@ -2,6 +2,7 @@ local enums = ::require("sqStdlibs/helpers/enums.nut")
 local { getWeaponNameText } = require("scripts/weaponry/weaponryVisual.nut")
 local { getModificationName } = require("scripts/weaponry/bulletsInfo.nut")
 local { getByCurBundle } = require("scripts/weaponry/itemInfo.nut")
+local { canBuyMod } = require("scripts/weaponry/modificationInfo.nut")
 
 ::g_weaponry_types <- {
   types = []
@@ -97,7 +98,7 @@ enums.addTypesByGlobalName("g_weaponry_types", {
     getCost = ::g_weaponry_types._getCost
     getAmount = ::g_weaponry_types._getAmount
     getMaxAmount = function(unit, item) { return ::wp_get_modification_max_count(unit.name, item.name) }
-    canBuy = function(unit, item) { return ::isUnitUsable(unit) && ::canBuyMod(unit, item) }
+    canBuy = function(unit, item) { return ::isUnitUsable(unit) && canBuyMod(unit, item) }
   }
 
 //********************* MODIFICATION *******************************************
@@ -112,7 +113,7 @@ enums.addTypesByGlobalName("g_weaponry_types", {
       ? 1
       : ::g_weaponry_types._getAmount(unit, item)
     getMaxAmount = function(unit, item) { return ::wp_get_modification_max_count(unit.name, item.name) }
-    canBuy = function(unit, item) { return ::isUnitUsable(unit) && ::canBuyMod(unit, item) }
+    canBuy = function(unit, item) { return ::isUnitUsable(unit) && canBuyMod(unit, item) }
   }
 
 //********************* EXPENDABLES *******************************************
@@ -123,7 +124,7 @@ enums.addTypesByGlobalName("g_weaponry_types", {
     getCost = ::g_weaponry_types._getCost
     getAmount = ::g_weaponry_types._getAmount
     getMaxAmount = function(unit, item) { return ::wp_get_modification_max_count(unit.name, item.name) }
-    canBuy = function(unit, item) { return ::isUnitUsable(unit) && ::canBuyMod(unit, item) }
+    canBuy = function(unit, item) { return ::isUnitUsable(unit) && canBuyMod(unit, item) }
   }
 
 //********************** SPARE *************************************************
@@ -148,7 +149,7 @@ enums.addTypesByGlobalName("g_weaponry_types", {
     getCost = ::g_weaponry_types._getCost
     getAmount = function(unit, item) { return ::u.isEmpty(item.name)? 1 : ::shop_is_modification_purchased(unit.name, item.name) }
     getMaxAmount = function(unit, item) { return ::wp_get_modification_max_count(unit.name, item.name) }
-    canBuy = function(unit, item) { return ::isUnitUsable(unit) && ::canBuyMod(unit, item) }
+    canBuy = function(unit, item) { return ::isUnitUsable(unit) && canBuyMod(unit, item) }
   }
 
 //****************** BUNDLE ****************************************************

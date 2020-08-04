@@ -97,7 +97,7 @@ class ::gui_handlers.WwReinforcements extends ::BaseGuiHandler
   {
     updateSelectedArmy(false, false)
     if (currentReinforcementName != obj.armyName)
-      ::play_gui_sound("ww_reinforcement_select")
+      guiScene.playSound("ww_reinforcement_select")
 
     currentReinforcementName = obj.armyName
     showDeployHint(obj?.canDeploy == "yes")

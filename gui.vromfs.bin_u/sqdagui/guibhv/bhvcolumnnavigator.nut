@@ -7,7 +7,7 @@ class gui_bhv.columnNavigator
     if (event == ::EV_ON_FOCUS_SET)
     {
       selectCurItem(obj)
-      ::play_gui_sound("focus")
+      obj.getScene().playSound("focus")
     }
     else if (event == ::EV_ON_FOCUS_LOST)
     {
@@ -263,7 +263,7 @@ class gui_bhv.columnNavigator
       return false
     td.scrollToView()
     if (needSound && ((curRow != row)||(curCol != col)))
-      ::play_gui_sound("choose")
+      obj.getScene().playSound("choose")
     if (needNotify)
       obj.sendNotify("select")
     return true

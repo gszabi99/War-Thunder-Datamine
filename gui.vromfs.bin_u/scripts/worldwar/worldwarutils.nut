@@ -1016,7 +1016,7 @@ g_world_war.playArmyActionSound <- function playArmyActionSound(soundId, wwArmy)
   local unitTypeCode = wwArmy.getOverrideUnitType() ||
                        wwArmy.getUnitType()
   local armyType = ::g_ww_unit_type.getUnitTypeByCode(unitTypeCode)
-  ::play_gui_sound(armyType[soundId])
+  ::get_cur_gui_scene()?.playSound(armyType[soundId])
 }
 
 
@@ -1123,7 +1123,7 @@ g_world_war.entrenchSelectedArmy <- function entrenchSelectedArmy()
   local params = ::DataBlock()
   foreach(idx, army in entrenchedArmies)
     params.addStr("army" + idx, army.name)
-  ::play_gui_sound("ww_unit_entrench")
+  ::get_cur_gui_scene()?.playSound("ww_unit_entrench")
   ::ww_send_operation_request("cln_ww_entrench_armies", params)
 }
 
@@ -1159,7 +1159,7 @@ g_world_war.moveSelectedAircraftsToCell <- function moveSelectedAircraftsToCell(
     params.addStr("targetName", target)
 
   local airfield = ::g_world_war.getAirfieldByIndex(airfieldIdx)
-  ::play_gui_sound(airfield.airfieldType.flyoutSound)
+  ::get_cur_gui_scene()?.playSound(airfield.airfieldType.flyoutSound)
 
   return ::ww_send_operation_request("cln_ww_move_army_to", params)
 }

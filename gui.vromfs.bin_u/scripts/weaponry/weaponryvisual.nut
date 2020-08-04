@@ -38,6 +38,9 @@ local { WEAPON_TYPE,
         addWeaponsFromBlk,
         getWeaponExtendedInfo } = require("scripts/weaponry/weaponryInfo.nut")
 
+local { weaponItemTplPath } = require("scripts/weaponry/getWeaponItemTplPath.nut")
+local { isModResearched } = require("scripts/weaponry/modificationInfo.nut")
+
 ::dagui_propid.add_name_id("_iconBulletName")
 
 local function getTextNoWeapons(unit, isPrimary)
@@ -841,7 +844,7 @@ local function createModItemLayout(id, unit, item, iType, params = {})
   if (!("type" in item))
     item.type <- iType
 
-return ::handyman.renderCached("gui/weaponry/weaponItem", getWeaponItemViewParams(id, unit, item, params))
+  return ::handyman.renderCached(weaponItemTplPath.value, getWeaponItemViewParams(id, unit, item, params))
 }
 
 local function createModItem(id, unit, item, iType, holderObj, handler, params = {})
@@ -1132,7 +1135,7 @@ updateWeaponTooltip = function(obj, unit, item, handler, params={}, effect=null)
     })
 
   local curExp = ::shop_get_module_exp(unit.name, item.name)
-  local is_researched = !isResearchableItem(item) || ((item.name.len() > 0) && ::isModResearched(unit, item))
+  local is_researched = !isResearchableItem(item) || ((item.name.len() > 0) && isModResearched(unit, item))
   local is_researching = isModInResearch(unit, item)
   local is_paused = canBeResearched(unit, item, true) && curExp > 0
 

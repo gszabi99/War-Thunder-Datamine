@@ -26,7 +26,7 @@ class gui_bhv.wrapNavigator
       //push another focus right inside from current focus update can broke scene update.
       if (!checkWrapFrom(obj))
         obj.getScene().performDelayed(this, @() ::check_obj(obj) && obj.isFocused() && selectItem(obj, 1,false))
-      ::play_gui_sound("focus")
+      obj.getScene().playSound("focus")
     }
     obj.sendNotify("set_focus")
     return ::RETCODE_HALT
@@ -121,7 +121,7 @@ class gui_bhv.wrapNavigator
       obj.setIntProp(skipFocusPID, 0)
 
     if (needSound)
-      ::play_gui_sound("choose")
+      obj.getScene().playSound("choose")
     } else
       if (obj.childrenCount())
         moveSelect(obj, -1, true)

@@ -10,6 +10,55 @@ local imgFormat = "img {size:t='%s'; background-image:t='%s'; margin-right:t='0.
 local textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t='%s'} "
 local descriptionBlkMultipleFormat = "tdiv { flow:t='h-flow'; width:t='pw'; {0} }"
 
+local clanActionNames = {
+  [ULC_CREATE]                  = "create",
+  [ULC_DISBAND]                 = "disband",
+
+  [ULC_REQUEST_MEMBERSHIP]      = "request_membership",
+  [ULC_CANCEL_MEMBERSHIP]       = "cancel_membership",
+  [ULC_REJECT_MEMBERSHIP]       = "reject_candidate",
+  [ULC_ACCEPT_MEMBERSHIP]       = "accept_candidate",
+
+  [ULC_DISMISS]                 = "dismiss_member",
+  [ULC_CHANGE_ROLE]             = "change_role",
+  [ULC_CHANGE_ROLE_AUTO]        = "change_role_auto",
+  [ULC_LEAVE]                   = "leave",
+  [ULC_DISBANDED_BY_LEADER]     = "disbanded_by_leader",
+
+  [ULC_ADD_TO_BLACKLIST]        = "add_to_blacklist",
+  [ULC_DEL_FROM_BLACKLIST]      = "remove_from_blacklist",
+  [ULC_CHANGE_CLAN_INFO]        = "clan_info_was_changed",
+  [ULC_CLAN_INFO_WAS_CHANGED]   = "clan_info_was_renamed",
+  [ULC_DISBANDED_BY_ADMIN]      = "clan_disbanded_by_admin",
+  [ULC_UPGRADE_CLAN]            = "clan_was_upgraded",
+  [ULC_UPGRADE_MEMBERS]         = "clan_max_members_count_was_increased",
+}
+local getClanActionName = @(action) clanActionNames?[action] ?? "unknown"
+
+local function getDecoratorUnlock(resourceId, resourceType)
+{
+  local unlock = ::create_default_unlock_data()
+  local decoratorType = null
+  unlock.id = resourceId
+  decoratorType = ::g_decorator_type.getTypeByResourceType(resourceType)
+  if (decoratorType != ::g_decorator_type.UNKNOWN)
+  {
+    unlock.name = decoratorType.getLocName(unlock.id, true)
+    unlock.desc = decoratorType.getLocDesc(unlock.id)
+    unlock.image = decoratorType.userlogPurchaseIcon
+
+    local decorator = ::g_decorator.getDecorator(unlock.id, decoratorType)
+    if (decorator && !::is_in_loading_screen())
+    {
+      unlock.descrImage <- decoratorType.getImage(decorator)
+      unlock.descrImageRatio <- decoratorType.getRatio(decorator)
+      unlock.descrImageSize <- decoratorType.getImageSize(decorator)
+    }
+  }
+
+  return unlock
+}
+
 local function getResourcesConfig(resources) {
   if (resources == null)
     return null
@@ -26,7 +75,7 @@ local function getResourcesConfig(resources) {
     resources = [resources]
 
   foreach (resource in resources) {
-    local unlock = ::get_decorator_unlock(resource.resourceId, resource.resourceType)
+    local unlock = getDecoratorUnlock(resource.resourceId, resource.resourceType)
     local desc = unlock?.desc ?? ""
     if (desc != "")
       res.description.append(desc)
@@ -40,6 +89,23 @@ local function getResourcesConfig(resources) {
   }
 
   return res
+}
+
+local function getLinkMarkup(text, url, acccessKeyName=null)
+{
+  if (!::u.isString(url) || url.len() == 0 || !::has_feature("AllowExternalLink"))
+    return ""
+
+  local btnParams = {
+    text = text
+    isHyperlink = true
+    link = url
+  }
+  if (acccessKeyName && acccessKeyName.len() > 0)
+  {
+    btnParams.acccessKeyName <- acccessKeyName
+  }
+  return ::handyman.renderCached("gui/commonParts/button", btnParams)
 }
 
 ::update_repair_cost <- function update_repair_cost(units, repairCost)
@@ -337,7 +403,7 @@ local function getResourcesConfig(resources) {
       {
         if (!("descriptionBlk" in res))
           res.descriptionBlk <- ""
-        res.descriptionBlk += ::get_link_markup(::loc("mainmenu/btnViewServerReplay"),
+        res.descriptionBlk += getLinkMarkup(::loc("mainmenu/btnViewServerReplay"),
                                                 ::loc("url/serv_replay", {roomId = log.roomId}), "Y")
       }
   }
@@ -695,7 +761,7 @@ local function getResourcesConfig(resources) {
     if (log.type==::EULT_BUYING_RESOURCE)
     {
       resourceType = log.resourceType
-      config = ::get_decorator_unlock(log.resourceId, log.resourceType)
+      config = getDecoratorUnlock(log.resourceId, log.resourceType)
       decoratorType = ::g_decorator_type.getTypeByResourceType(resourceType)
     }
     else if (log.type==::EULT_BUYING_UNLOCK)
@@ -1441,7 +1507,7 @@ local function getResourcesConfig(resources) {
           if (!("descriptionBlk" in res))
             res.descriptionBlk <- ""
           if("circuit" in log)
-            res.descriptionBlk += ::get_link_markup(::loc("mainmenu/btnPickTSS"),
+            res.descriptionBlk += getLinkMarkup(::loc("mainmenu/btnPickTSS"),
               ::loc("url/serv_pick_tss", {port = log.port, circuit = log.circuit}), "Y")
           desc += ::loc("invite_to_pick_tss/desc")
           break;

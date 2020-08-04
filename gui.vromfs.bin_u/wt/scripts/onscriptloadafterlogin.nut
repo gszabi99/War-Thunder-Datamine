@@ -1,6 +1,7 @@
 ::dagor.debug($"onScriptLoadAfterLogin: wt")
 require("unit/initUnitTypes.nut")
 require("controls/shortcutsList/updateShortcutsModulesList.nut")
+require("slotInfoPanel/updateSlotInfoPanelButtons.nut")
 require("mainmenu/onMainMenuReturn.nut")
 require("mainmenu/instantActionHandler.nut")
 require("mainmenu/mainMenuHandler.nut")

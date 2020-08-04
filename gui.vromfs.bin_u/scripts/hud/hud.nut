@@ -538,7 +538,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
       if (currSeconds != prevSeconds)
       {
         timeToKickAlertObj["_blink"] = "yes"
-        ::play_gui_sound("kick_alert")
+        guiScene.playSound("kick_alert")
       }
 
     }

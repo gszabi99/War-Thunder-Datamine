@@ -183,7 +183,7 @@ class gui_bhv.ControlsGrid
       if ((newRow["selected"] == "no") ||
           (col < numCols && newRow.getChild(1 + col)["selected"] == "no"))
       {
-        ::play_gui_sound("focus")
+        obj.getScene().playSound("focus")
       }
     }
 

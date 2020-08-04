@@ -997,7 +997,7 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
     {
       local isVictory = ::ww_get_operation_winner() == ::ww_get_player_side()
       statusText = ::loc(isVictory ? "debriefing/victory" : "debriefing/defeat")
-      ::play_gui_sound(isVictory ? "ww_oper_end_win" : "ww_oper_end_fail")
+      guiScene.playSound(isVictory ? "ww_oper_end_win" : "ww_oper_end_fail")
       objStartBox.show(true)
     }
     else if (isPaused)

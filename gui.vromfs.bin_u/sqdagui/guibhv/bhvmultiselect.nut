@@ -53,7 +53,7 @@ class gui_bhv.MultiSelect extends gui_bhv.posNavigator
     obj.setIntProp(valuePID, bitValue)
 
     if (needSound && needNotify && soundName)
-      ::play_gui_sound(soundName)
+      obj.getScene().playSound(soundName)
     if (needNotify)
       obj.sendNotify("select")
     return true

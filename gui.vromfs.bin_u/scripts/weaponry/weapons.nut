@@ -1,6 +1,12 @@
 local modsTree = ::require("scripts/weaponry/modsTree.nut")
 local tutorialModule = ::require("scripts/user/newbieTutorialDisplay.nut")
 local weaponryPresetsModal = require("scripts/weaponry/weaponryPresetsModal.nut")
+local { canBuyMod,
+        canResearchMod,
+        isModResearched,
+        isModUpgradeable,
+        isModClassPremium,
+        findAnyNotResearchedMod } = require("scripts/weaponry/modificationInfo.nut")
 local { getItemAmount,
         getItemCost,
         canBeResearched,
@@ -200,7 +206,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (researchMode && !isAnyModuleInResearch())
     {
-      local modForResearch = ::find_any_not_researched_mod(air)
+      local modForResearch = findAnyNotResearchedMod(air)
       if (modForResearch)
       {
         setModificatonOnResearch(modForResearch,
@@ -602,7 +608,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     local item = items[index]
     local showResearchButton = researchMode
                        && getAmmoCost(air, item.name, AMMO.MODIFICATION).gold == 0
-                       && !::isModClassPremium(item)
+                       && !isModClassPremium(item)
                        && canBeResearched(air, item, false)
                        && availableFlushExp > 0
 
@@ -616,8 +622,8 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     local showPurchaseButton = researchMode
                                && getAmmoCost(air, item.name, AMMO.MODIFICATION).gold == 0
-                               && !::isModClassPremium(item)
-                               && ::canBuyMod(air, item)
+                               && !isModClassPremium(item)
+                               && canBuyMod(air, item)
 
     showSceneBtn("btn_buy_mod", showPurchaseButton)
     if (showPurchaseButton)
@@ -649,10 +655,10 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       return false
 
     local moduleData = ::getModificationByName(air, module)
-    if (!moduleData || ::isModResearched(air, moduleData))
+    if (!moduleData || isModResearched(air, moduleData))
       return false
 
-    return !::isModClassPremium(moduleData)
+    return !isModClassPremium(moduleData)
   }
 
   function updateItemBundle(item)
@@ -849,7 +855,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
             local idx = mod.tier-1
             tiersArray[idx] = tiersArray[idx] || { researched=0, notResearched=0 }
 
-            if(::isModResearched(air, mod))
+            if(isModResearched(air, mod))
               tiersArray[idx].researched++
             else
               tiersArray[idx].notResearched++
@@ -867,8 +873,8 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (air.spare && !researchMode)
       createItem(air.spare, weaponsItem.spare, mainModsObj, nextX++, offsetY)
     foreach(mod in air.modifications)
-      if ((!researchMode || ::canResearchMod(air, mod))
-          && (::isModClassPremium(mod)
+      if ((!researchMode || canResearchMod(air, mod))
+          && (isModClassPremium(mod)
               || (mod.modClass == "" && getModificationBulletsGroup(mod.name) == "")
           ))
         createItem(mod, weaponsItem.modification, mainModsObj, nextX++, offsetY)
@@ -1101,7 +1107,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     local reason = null
     if(!isOwn)
       reason = ::format(::loc("weaponry/action_not_allowed"), ::loc("weaponry/unit_not_bought"))
-    else if (!amount && !::canBuyMod(air, item))
+    else if (!amount && !canBuyMod(air, item))
     {
       local reqTierMods = 0
       local reqMods = ""
@@ -1148,7 +1154,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       if (!::checkObj(focusObj))
         return
 
-      ::play_gui_sound("menu_appear")
+      guiScene.playSound("menu_appear")
       focusObj.select()
     })
     return
@@ -1205,7 +1211,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
         return onBuy(item.guiPosIdx)
       }
 
-      ::play_gui_sound("check")
+      guiScene.playSound("check")
       setLastWeapon(airName, item.name)
       updateItemBundle(item)
       ::check_secondary_weapon_mods_recount(air)
@@ -1269,7 +1275,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
           selectResearchModule()
           if (researchMode)
           {
-            if (item && ::isModResearched(air, item))
+            if (item && isModResearched(air, item))
               sendModResearchedStatistic(air, item.name)
           }
         })
@@ -1288,7 +1294,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
           afterDoneFunc()
       })(afterDoneFunc)
 
-    if (!item || ::isModResearched(air, item))
+    if (!item || isModResearched(air, item))
     {
       executeAfterDoneFunc()
       return
@@ -1360,7 +1366,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
     else if (item.type == weaponsItem.modification)
     {
-      if (getItemAmount(air, item) && ::is_mod_upgradeable(item.name))
+      if (getItemAmount(air, item) && isModUpgradeable(item.name))
       {
         ::gui_handlers.ModUpgradeApplyWnd.open(air, item, getItemObj(idx))
         return
@@ -1397,7 +1403,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       if (groupDef>=0)
         return
 
-      open = ::canResearchMod(air, item)
+      open = canResearchMod(air, item)
     }
 
     checkAndBuyWeaponry(item, open)
@@ -1424,7 +1430,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     local isChanged = curBullets != item.name && !("isDefaultForGroup" in item && curBullets == "")
     setUnitLastBullets(air, groupIdx, item.name)
     if (isChanged) {
-      ::play_gui_sound("check")
+      guiScene.playSound("check")
     }
     updateItemBundle(item)
     return isChanged
@@ -1453,7 +1459,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (checkCanDisable && equipped && !isCanBeDisabled(item))
       return
 
-    ::play_gui_sound(!equipped ? "check" : "uncheck")
+    guiScene.playSound(!equipped ? "check" : "uncheck")
 
     checkSaveBulletsAndDo((@(item, equipped) function() { doSwitchMod(item, equipped) })(item, equipped))
   }
@@ -1554,7 +1560,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onDestroy()
   {
-    if (researchMode && ::find_any_not_researched_mod(air))
+    if (researchMode && findAnyNotResearchedMod(air))
       ::handlersManager.requestHandlerRestore(this, ::gui_handlers.MainMenu)
 
     sendModPurchasedStatistic(air)

@@ -44,7 +44,7 @@ class gui_bhv.ActivateSelect extends gui_bhv.posNavigator
     idxObj["chosen"] = "yes"
 
     if (needSound && needNotify)
-      ::play_gui_sound("choose")
+      obj.getScene().playSound("choose")
     if (needNotify)
       obj.sendNotify("select")
     return true

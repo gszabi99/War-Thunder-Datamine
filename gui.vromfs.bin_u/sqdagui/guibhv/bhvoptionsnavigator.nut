@@ -25,7 +25,7 @@ class gui_bhv.OptionsNavigator
     if (event == ::EV_ON_FOCUS_SET)
     {
       selectCurItem(obj)
-      ::play_gui_sound("focus")
+      obj.getScene().playSound("focus")
     } else if (event == ::EV_ON_FOCUS_LOST)
       viewDeselect(obj)
 
@@ -171,7 +171,7 @@ class gui_bhv.OptionsNavigator
 
     selectCell(obj, curRow, curCol)
     if (wasRow != curRow)
-      ::play_gui_sound("choose")
+      obj.getScene().playSound("choose")
     return ::RETCODE_PROCESSED
   }
 

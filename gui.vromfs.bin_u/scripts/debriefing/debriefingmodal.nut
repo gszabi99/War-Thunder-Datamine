@@ -8,6 +8,8 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
 local { setDoubleTextToButton, setColoredDoubleTextToButton,
   placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { isModResearched,
+        findAnyNotResearchedMod } = require("scripts/weaponry/modificationInfo.nut")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -910,7 +912,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     obj["animation"] = "show"
     curTab = tabName
 
-    ::play_gui_sound("deb_players_off")
+    guiScene.playSound("deb_players_off")
   }
 
   function onUpdate(obj, dt)
@@ -980,7 +982,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       showTab("players_stats")
       skipAnim = skipAnim && ::debriefing_skip_all_at_once
       if (!skipAnim)
-        ::play_gui_sound("deb_players_on")
+        guiScene.playSound("deb_players_on")
       initPlayersTable()
       loadBattleLog()
       loadChatHistory()
@@ -1081,7 +1083,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       {
         local objStart = scene.findObject("start_bonus_place")
         ::create_ObjMoveToOBj(scene, objStart, objTarget, { time = statsBonusTime })
-        ::play_gui_sound("deb_medal")
+        guiScene.playSound("deb_medal")
       }
     }
     else if (state == debrState.done)
@@ -1438,7 +1440,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
         continue
       local unit = ::getAircraftByName(unitId)
       local mod = unit && ::getModificationByName(unit, modName)
-      if (unit && mod && ::isModResearched(unit, mod))
+      if (unit && mod && isModResearched(unit, mod))
         return true
     }
     return false
@@ -1532,7 +1534,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     else
     {
       local msg = "debriefing/but_all_mods_researched"
-      if (::find_any_not_researched_mod(unit))
+      if (findAnyNotResearchedMod(unit))
         msg = "debriefing/but_not_any_research_active"
       msg = format(::loc(msg), ::Cost().setRp(getModExp(airData) || airData.expTotal).tostring())
       obj.findObject("no_mod_text").setValue(msg)
@@ -2053,7 +2055,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
       obj["_size-timer"] = "0"
       obj.width = "0"
-      ::play_gui_sound("deb_achivement")
+      guiScene.playSound("deb_achivement")
     }
   }
 

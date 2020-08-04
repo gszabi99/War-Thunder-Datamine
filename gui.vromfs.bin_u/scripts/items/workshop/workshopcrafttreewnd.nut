@@ -185,13 +185,13 @@ local function needReqItems(itemBlock, itemsList) {
   return false
 }
 
-local function needReqItemsForCraft(itemBlock, itemsList) {
+local function isRequireCondition(reqItems, itemsList, isMetConditionFunc) {
   local needCondForCraft = false
-  foreach (reqItemBlock in (itemBlock?.reqItemForCrafting ?? [])) {
+  foreach (reqItemBlock in (reqItems)) {
     local canCraft = true
     foreach (itemId, needHave in reqItemBlock) {
-      local amount = itemsList?[itemId].getAmount() ?? 0
-      if ((needHave && amount > 0) || (!needHave && amount == 0))
+      local isMetCondition = isMetConditionFunc(itemsList, itemId)
+      if ((needHave && isMetCondition) || (!needHave && !isMetCondition))
         continue
 
       canCraft = false
@@ -207,17 +207,19 @@ local function needReqItemsForCraft(itemBlock, itemsList) {
   return needCondForCraft
 }
 
+local hasAmount = @(itemsList, itemId) (itemsList?[itemId].getAmount() ?? 0) > 0
+
 local function getConfigByItemBlock(itemBlock, itemsList, workshopSet)
 {
   local item = itemsList?[itemBlock?.id]
   local hasComponent = itemBlock?.showResources
   local itemId = item?.id ?? "-1"
   local isCraftingOrHasCraftResult = item != null && (item.isCrafting() || item.hasCraftResult())
-  local needReqItemForCraft = needReqItemsForCraft(itemBlock, itemsList)
+  local needReqItemForCraft = isRequireCondition(itemBlock?.reqItemForCrafting ?? [], itemsList, hasAmount)
   local isDisabledAction = !isCraftingOrHasCraftResult
     && (needReqItemForCraft || needReqItems(itemBlock, itemsList))
-  local isDisguised = (itemBlock?.reqItemForIdentification ?? []).findindex(
-    @(itemId) !workshopSet.isItemIdKnown(itemId)) != null
+  local isItemIdKnown = (@(itemsList, itemId) workshopSet.isItemIdKnown(itemId)).bindenv(workshopSet)
+  local isDisguised = isRequireCondition(itemBlock?.reqItemForIdentification ?? [], itemsList, isItemIdKnown)
   local hasReachedMaxAmount = item?.hasReachedMaxAmount() ?? false
   local hasItemInInventory = (item?.getAmount() ?? 0) != 0 || isCraftingOrHasCraftResult
   return {
@@ -232,8 +234,8 @@ local function getConfigByItemBlock(itemBlock, itemsList, workshopSet)
     iconInsteadAmount = hasReachedMaxAmount ? getSucessItemCraftIcon(item) : null
     conectionInRowText = itemBlock?.conectionInRowText
     isDisguised = !hasItemInInventory && isDisguised
-    isHidden = !hasItemInInventory && (itemBlock?.reqItemForDisplaying ?? []).findindex(
-        @(itemId) !workshopSet.isItemIdKnown(itemId)) != null
+    isHidden = !hasItemInInventory
+      && isRequireCondition(itemBlock?.reqItemForDisplaying ?? [], itemsList, isItemIdKnown)
   }
 }
 
@@ -562,7 +564,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     local itemBlockInterval = ::to_pixels("1@{0}raftTreeBlockInterval".subst(sizes.intervalPrefix))
     local itemBlockHeight = itemHeight + itemBlockInterval
     local headerBlockInterval = ::to_pixels("1@headerAndCraftTreeBlockInterval")
-    local isItemIdKnown = workshopSet.isItemIdKnown.bindenv(workshopSet)
+    local isItemIdKnown = (@(itemsList, itemId) workshopSet.isItemIdKnown(itemId)).bindenv(workshopSet)
     local buttonHeight = ::to_pixels("1@buttonHeight") + 2*::to_pixels("1@buttonMargin")
     local items = itemsList
     foreach (idx, rows in craftTree.treeRowsByBodies) {
@@ -574,7 +576,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
             local hasItemInInventory = item != null
               && (item.getAmount() != 0 || item.isCrafting() || item.hasCraftResult())
             return hasItemInInventory
-              || ((itemBlock?.reqItemForDisplaying ?? []).findindex(@(itemId) !isItemIdKnown(itemId)) == null)
+              || !isRequireCondition(itemBlock?.reqItemForDisplaying ?? [], items, isItemIdKnown)
           }) != null)
         {
           visibleItemsCountY = i
@@ -780,7 +782,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 
     if (!(item.isCrafting() || item.hasCraftResult())
         && (needReqItems(itemBlock, itemsList)
-          || needReqItemsForCraft(itemBlock, itemsList)))
+          || isRequireCondition(itemBlock?.reqItemForCrafting ?? [], itemsList, hasAmount)))
       return
 
     doMainAction(item, itemObj)

@@ -175,40 +175,4 @@ class ::gui_handlers.facebookReminderModal extends ::gui_handlers.BaseGuiHandler
   sceneBlkName = "gui/showUnlock.blk";
 }
 
-class ::gui_handlers.facebookMsgModal extends ::gui_handlers.GroupOptionsModal
-{
-  function initScreen() { }
-
-  function onApply()
-  {
-    local text = scene.findObject("facebook_msg").getValue()
-    if (::is_chat_message_empty(text))
-    {
-      msgBox("need_text", ::loc("facebook/needText"),
-        [["ok", function() {} ]], "ok")
-      return;
-    }
-
-    ::facebook_like(::loc("facebook/like_url"), text);
-    shared = true;
-    goBack();
-  }
-
-  function goBack()
-  {
-    base.goBack()
-  }
-
-  function afterModalDestroy()
-  {
-    if (shared && owner && ("onFacebookLikeShared" in owner) && owner.onFacebookLikeShared)
-      owner.onFacebookLikeShared.call(owner);
-  }
-
-  wndType = handlerType.MODAL
-  sceneBlkName = "gui/facebookMsgWindow.blk";
-  owner = null;
-  shared = false;
-}
-
 ::add_event_listener("DestroyEmbeddedBrowser", on_facebook_destroy_waitbox)

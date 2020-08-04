@@ -1,8 +1,11 @@
 local { clearBorderSymbols } = require("std/string.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 
+const PRESETS_VERSION = 1
+const PRESETS_VERSION_SAVE_ID = "presetsVersion"
+
 ::slotbarPresets <- {
-  [PERSISTENT_DATA_PARAMS] = ["presets", "selected"]
+  [PERSISTENT_DATA_PARAMS] = ["presets", "selected", "presetsVersion"]
 
   activeTypeBonusByCountry = null
 
@@ -20,8 +23,11 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
   /** Selected preset index by country id. */
   selected = {}
 
+  presetsVersion = 0
+
   function init()
   {
+    presetsVersion = ::loadLocalByAccount($"slotbar_presets/{PRESETS_VERSION_SAVE_ID}", 0)
     foreach(country in ::shopCountriesList)
       if (::isCountryAvailable(country))
         initCountry(country)
@@ -344,6 +350,12 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
     foreach(countryId in ::shopCountriesList)
       if (::isCountryAvailable(countryId))
         hasChanges = save(countryId, false) || hasChanges
+
+    if (presetsVersion < PRESETS_VERSION) {
+      presetsVersion = PRESETS_VERSION
+      ::saveLocalByAccount($"slotbar_presets/{PRESETS_VERSION_SAVE_ID}", presetsVersion)
+    }
+
     if (hasChanges)
       ::save_profile_offline_limited(true)
   }
@@ -384,8 +396,15 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
       if (selected[countryId] != null)
         blk.selected <- selected[countryId]
     }
+
+    if (blk == null) {
+      ::script_net_assert_once("attempt_save_not_valid_presets", "Attempt save not valid presets")
+      return false
+    }
+
     if (::u.isEqual(blk, cfgBlk))
       return false
+
     ::saveLocalByAccount("slotbar_presets/" + countryId, blk, true, shouldSaveProfile)
     return true
   }
@@ -620,7 +639,10 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
         for(local i = 0; i < unitNames.len(); i++)
         {
           local unitName = unitNames[i]
-          local crewId = ::to_integer_safe(crewIds[i], -1)
+          local crewId = crewIds[i]
+          if (crewId == "" && presetsVersion == 0)
+            continue
+          crewId = ::to_integer_safe(crewIds[i], -1)
           if (!::getAircraftByName(unitName) || crewId < 0)
             continue
 
@@ -690,6 +712,10 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
         foreach (crew in tbl.crews)
           if (("aircraft" in crew))
           {
+            local unitName = crew.aircraft
+            if (!::getAircraftByName(unitName))
+              continue
+
             units.append(crew.aircraft)
             crews.append(crew.id)
             if (selected == -1 || crew.idInCountry == ::selected_crews[crew.idCountry])

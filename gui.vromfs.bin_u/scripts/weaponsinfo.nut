@@ -12,6 +12,7 @@ local { AMMO,
         getAmmoCost } = require("scripts/weaponry/ammoInfo.nut")
 local { getWeaponInfoText,
         getWeaponNameText } = require("scripts/weaponry/weaponryVisual.nut")
+local { canBuyMod, isModClassExpendable } = require("scripts/weaponry/modificationInfo.nut")
 
 ::checkUnitWeapons <- function checkUnitWeapons(unit)
 {
@@ -75,7 +76,7 @@ local { getWeaponInfoText,
   if (!("modifications" in unit))
     return []
 
-  return ::u.filter(unit.modifications, ::is_modclass_expendable)
+  return ::u.filter(unit.modifications, isModClassExpendable)
 }
 
 ::getPrimaryWeaponsList <- function getPrimaryWeaponsList(air)
@@ -206,82 +207,6 @@ local { getWeaponInfoText,
   return ::g_weaponry_types.getUpgradeTypeByItem(item).canBuy(air, item)
 }
 
-::canBuyMod <- function canBuyMod(air, mod)
-{
-  local status = ::shop_get_module_research_status(air.name, mod.name)
-  if (status & ::ES_ITEM_STATUS_CAN_BUY)
-    return true
-
-  if (status & (::ES_ITEM_STATUS_MOUNTED | ::ES_ITEM_STATUS_OWNED))
-  {
-    local amount = getAmmoAmount(air, mod.name, AMMO.MODIFICATION)
-    local maxAmount = getAmmoMaxAmount(air, mod.name, AMMO.MODIFICATION)
-    return amount < maxAmount
-  }
-
-  return false
-}
-
-::isModResearched <- function isModResearched(air, mod)
-{
-  local status = ::shop_get_module_research_status(air.name, mod.name)
-  if (status & (::ES_ITEM_STATUS_CAN_BUY | ES_ITEM_STATUS_OWNED | ES_ITEM_STATUS_MOUNTED | ES_ITEM_STATUS_RESEARCHED))
-    return true
-
-  return false
-}
-
-::find_any_not_researched_mod <- function find_any_not_researched_mod(unit)
-{
-  if (!("modifications" in unit))
-    return null
-
-  foreach(mod in unit.modifications)
-    if (::canResearchMod(unit, mod) && !::isModResearched(unit, mod))
-      return mod
-
-  return null
-}
-
-::isModClassPremium <- function isModClassPremium(moduleData)
-{
-  return ::getTblValue("modClass", moduleData, "") == "premium"
-}
-
-::is_modclass_expendable <- function is_modclass_expendable(moduleData)
-{
-  return ::getTblValue("modClass", moduleData, "") == "expendable"
-}
-
-::canResearchMod <- function canResearchMod(air, mod, checkCurrent = false)
-{
-  local status = ::shop_get_module_research_status(air.name, mod.name)
-  local canResearch = checkCurrent ? status == ::ES_ITEM_STATUS_CAN_RESEARCH :
-                        0 != (status & (::ES_ITEM_STATUS_CAN_RESEARCH | ::ES_ITEM_STATUS_IN_RESEARCH))
-
-  return canResearch
-}
-
-::is_mod_available_or_free <- function is_mod_available_or_free(unitName, modName)
-{
-  return (::shop_is_modification_available(unitName, modName, true)
-          || (!::wp_get_modification_cost(unitName, modName) && !wp_get_modification_cost_gold(unitName, modName)))
-}
-
-local getModBlock = function(modName, blockName, templateKey)
-{
-  local modsBlk = ::get_modifications_blk()
-  local modBlock = modsBlk?.modifications?[modName]
-  if (!modBlock || modBlock?[blockName])
-    return modBlock?[blockName]
-  local tName = modBlock?[templateKey]
-  return tName ? modsBlk?.templates?[tName]?[blockName] : null
-}
-
-::is_mod_upgradeable <- @(modName) getModBlock(modName, "upgradeEffect", "modUpgradeType")
-::has_active_overdrive <- @(unitName, modName) ::get_modifications_overdrive(unitName).len() > 0
-  && getModBlock(modName, "overdriveEffect", "modOverdriveType")
-
 ::is_weapon_enabled <- function is_weapon_enabled(unit, weapon)
 {
   return ::shop_is_weapon_available(unit.name, weapon.name, true, false) //no point to check purchased unit even in respawn screen
@@ -342,26 +267,6 @@ local getModBlock = function(modName, blockName, templateKey)
     })(weaponName))
 }
 
-::getAllModsPrice <- function getAllModsPrice(unit, countGold = true)
-{
-  if (!unit)
-    return ::zero_money
-
-  local totalPrice = ::Cost()
-  foreach(modification in ::getTblValue("modifications", unit, {}))
-    if (getAmmoMaxAmount(unit, modification.name, AMMO.MODIFICATION) == 1
-      && ::wp_get_modification_cost_gold(unit.name, modification.name) == 0
-      && !::shop_is_modification_purchased(unit.name, modification.name))
-    {
-      if (::isModResearched(unit, modification))
-        totalPrice.wp += ::wp_get_modification_cost(unit.name, modification.name)
-      if (countGold)
-        totalPrice.gold += ::wp_get_modification_open_cost_gold(unit.name, modification.name)
-    }
-
-  return totalPrice
-}
-
 ::get_all_modifications_cost <- function get_all_modifications_cost(unit, open = false)
 {
   local modsCost = ::Cost()
@@ -381,7 +286,7 @@ local getModBlock = function(modName, blockName, templateKey)
         _modCost = openCost
     }
 
-    if (::canBuyMod(unit, modification))
+    if (canBuyMod(unit, modification))
     {
       local modificationCost = getItemCost(unit, modification)
       if (!modificationCost.isZero())
