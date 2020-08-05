@@ -6962,65 +6962,15 @@
     "ammoStowages": {
       "ammo1": {
         "weaponTrigger": "gunner0",
-        "explosionEvent": "ammo_explosion_1",
-        "fireEvent": "ammo_fire_1",
-        "fireParamsPreset": "ship_ammo_fire",
-        "elevator": "elevator_01_dm",
-        "dstrElevatorDisablesShooting": false,
-        "gunpowderMassToSplashParams": {
-          "gunpowderMassToInnerRadius": {
-            "p1": [0.01,0.1],
-            "p2": [50.0,2.0],
-            "p3": [500.0,5.0],
-            "p4": [1000.0,5.0],
-            "p5": [2500.0,5.0],
-            "p6": [5000.0,6.0],
-            "p7": [7500.0,6.0],
-            "p8": [10000.0,7.0],
-            "p9": [15000.0,8.0],
-            "p10": [20000.0,8.0]
-          },
-          "gunpowderMassToOuterRadius": {
-            "p1": [0.01,0.2],
-            "p2": [50.0,10.0],
-            "p3": [100.0,15.0],
-            "p4": [500.0,15.0],
-            "p5": [1000.0,16.0],
-            "p6": [2500.0,17.0],
-            "p7": [5000.0,17.0],
-            "p8": [7500.0,18.0],
-            "p9": [10000.0,19.0],
-            "p10": [15000.0,20.0],
-            "p11": [20000.0,20.0]
-          },
-          "gunpowderMassToPenetration": {
-            "p1": [0.2,1.0],
-            "p2": [50.0,3.0],
-            "p3": [100.0,4.0],
-            "p4": [500.0,5.0],
-            "p5": [1000.0,7.5],
-            "p6": [5000.0,15.0],
-            "p7": [7500.0,20.0],
-            "p8": [10000.0,20.0],
-            "p9": [20000.0,20.0]
-          },
-          "gunpowderMassToDamage": {
-            "p1": [0.2,1.0],
-            "p2": [50.0,300.0],
-            "p3": [500.0,500.0],
-            "p4": [1000.0,1000.0],
-            "p5": [2000.0,1300.0],
-            "p6": [3000.0,1500.0],
-            "p7": [4000.0,1900.0],
-            "p8": [5000.0,2300.0],
-            "p9": [10000.0,3500.0],
-            "p10": [20000.0,8000.0]
-          }
-        },
         "shells": {
           "fatalFire": true,
           "fatalExplosion": true,
           "damageEffect": "ammunition_storage_shells",
+          "explosionEvent": "ammo_explosion_1",
+          "fireEvent": "ammo_fire_1",
+          "fireParamsPreset": "ship_ammo_fire",
+          "elevator": "elevator_01_dm",
+          "dstrElevatorDisablesShooting": false,
           "ammunition_storage_shells_01_dm": {
             "count": 300
           }
@@ -7028,6 +6978,11 @@
         "charges": {
           "fatalFire": false,
           "damageEffect": "ammunition_storage_charges",
+          "explosionEvent": "ammo_explosion_1",
+          "fireEvent": "ammo_fire_1",
+          "fireParamsPreset": "ship_ammo_fire",
+          "elevator": "elevator_01_dm",
+          "dstrElevatorDisablesShooting": false,
           "ammunition_storage_charges_01_dm": {
             "count": 300
           }
@@ -7035,65 +6990,15 @@
       },
       "ammo2": {
         "weaponTrigger": "gunner1",
-        "explosionEvent": "ammo_explosion_1",
-        "fireEvent": "ammo_fire_1",
-        "fireParamsPreset": "ship_ammo_fire",
-        "elevator": "elevator_02_dm",
-        "dstrElevatorDisablesShooting": false,
-        "gunpowderMassToSplashParams": {
-          "gunpowderMassToInnerRadius": {
-            "p1": [0.01,0.1],
-            "p2": [50.0,2.0],
-            "p3": [500.0,5.0],
-            "p4": [1000.0,5.0],
-            "p5": [2500.0,5.0],
-            "p6": [5000.0,6.0],
-            "p7": [7500.0,6.0],
-            "p8": [10000.0,7.0],
-            "p9": [15000.0,8.0],
-            "p10": [20000.0,8.0]
-          },
-          "gunpowderMassToOuterRadius": {
-            "p1": [0.01,0.2],
-            "p2": [50.0,10.0],
-            "p3": [100.0,15.0],
-            "p4": [500.0,15.0],
-            "p5": [1000.0,16.0],
-            "p6": [2500.0,17.0],
-            "p7": [5000.0,17.0],
-            "p8": [7500.0,18.0],
-            "p9": [10000.0,19.0],
-            "p10": [15000.0,20.0],
-            "p11": [20000.0,20.0]
-          },
-          "gunpowderMassToPenetration": {
-            "p1": [0.2,1.0],
-            "p2": [50.0,3.0],
-            "p3": [100.0,4.0],
-            "p4": [500.0,5.0],
-            "p5": [1000.0,7.5],
-            "p6": [5000.0,15.0],
-            "p7": [7500.0,20.0],
-            "p8": [10000.0,20.0],
-            "p9": [20000.0,20.0]
-          },
-          "gunpowderMassToDamage": {
-            "p1": [0.2,1.0],
-            "p2": [50.0,300.0],
-            "p3": [500.0,500.0],
-            "p4": [1000.0,1000.0],
-            "p5": [2000.0,1300.0],
-            "p6": [3000.0,1500.0],
-            "p7": [4000.0,1900.0],
-            "p8": [5000.0,2300.0],
-            "p9": [10000.0,3500.0],
-            "p10": [20000.0,8000.0]
-          }
-        },
         "shells": {
           "fatalFire": true,
           "fatalExplosion": true,
           "damageEffect": "ammunition_storage_shells",
+          "explosionEvent": "ammo_explosion_1",
+          "fireEvent": "ammo_fire_1",
+          "fireParamsPreset": "ship_ammo_fire",
+          "elevator": "elevator_02_dm",
+          "dstrElevatorDisablesShooting": false,
           "ammunition_storage_shells_02_dm": {
             "count": 300
           }
@@ -7101,6 +7006,11 @@
         "charges": {
           "fatalFire": false,
           "damageEffect": "ammunition_storage_charges",
+          "explosionEvent": "ammo_explosion_1",
+          "fireEvent": "ammo_fire_1",
+          "fireParamsPreset": "ship_ammo_fire",
+          "elevator": "elevator_02_dm",
+          "dstrElevatorDisablesShooting": false,
           "ammunition_storage_charges_02_dm": {
             "count": 300
           }
@@ -7108,65 +7018,15 @@
       },
       "ammo3": {
         "weaponTrigger": "gunner2",
-        "explosionEvent": "ammo_explosion_2",
-        "fireEvent": "ammo_fire_2",
-        "fireParamsPreset": "ship_ammo_fire",
-        "elevator": "elevator_03_dm",
-        "dstrElevatorDisablesShooting": false,
-        "gunpowderMassToSplashParams": {
-          "gunpowderMassToInnerRadius": {
-            "p1": [0.01,0.1],
-            "p2": [50.0,2.0],
-            "p3": [500.0,5.0],
-            "p4": [1000.0,5.0],
-            "p5": [2500.0,5.0],
-            "p6": [5000.0,6.0],
-            "p7": [7500.0,6.0],
-            "p8": [10000.0,7.0],
-            "p9": [15000.0,8.0],
-            "p10": [20000.0,8.0]
-          },
-          "gunpowderMassToOuterRadius": {
-            "p1": [0.01,0.2],
-            "p2": [50.0,10.0],
-            "p3": [100.0,15.0],
-            "p4": [500.0,15.0],
-            "p5": [1000.0,16.0],
-            "p6": [2500.0,17.0],
-            "p7": [5000.0,17.0],
-            "p8": [7500.0,18.0],
-            "p9": [10000.0,19.0],
-            "p10": [15000.0,20.0],
-            "p11": [20000.0,20.0]
-          },
-          "gunpowderMassToPenetration": {
-            "p1": [0.2,1.0],
-            "p2": [50.0,3.0],
-            "p3": [100.0,4.0],
-            "p4": [500.0,5.0],
-            "p5": [1000.0,7.5],
-            "p6": [5000.0,15.0],
-            "p7": [7500.0,20.0],
-            "p8": [10000.0,20.0],
-            "p9": [20000.0,20.0]
-          },
-          "gunpowderMassToDamage": {
-            "p1": [0.2,1.0],
-            "p2": [50.0,300.0],
-            "p3": [500.0,500.0],
-            "p4": [1000.0,1000.0],
-            "p5": [2000.0,1300.0],
-            "p6": [3000.0,1500.0],
-            "p7": [4000.0,1900.0],
-            "p8": [5000.0,2300.0],
-            "p9": [10000.0,3500.0],
-            "p10": [20000.0,8000.0]
-          }
-        },
         "shells": {
           "fatalFire": true,
           "fatalExplosion": true,
           "damageEffect": "ammunition_storage_shells",
+          "explosionEvent": "ammo_explosion_2",
+          "fireEvent": "ammo_fire_2",
+          "fireParamsPreset": "ship_ammo_fire",
+          "elevator": "elevator_03_dm",
+          "dstrElevatorDisablesShooting": false,
           "ammunition_storage_shells_03_dm": {
             "count": 300
           }
@@ -7174,6 +7034,11 @@
         "charges": {
           "fatalFire": false,
           "damageEffect": "ammunition_storage_charges",
+          "explosionEvent": "ammo_explosion_2",
+          "fireEvent": "ammo_fire_2",
+          "fireParamsPreset": "ship_ammo_fire",
+          "elevator": "elevator_03_dm",
+          "dstrElevatorDisablesShooting": false,
           "ammunition_storage_charges_03_dm": {
             "count": 300
           }
@@ -7190,56 +7055,13 @@
           "weaponTrigger": "gunner5"
         },
         {
-          "fatalFire": false
-        },
-        {
-          "fatalExplosion": false
-        },
-        {
-          "explosionEvent": "ammo_aux_explosion_2"
-        },
-        {
-          "fireEvent": "ammo_aux_fire_2"
-        },
-        {
-          "fireParamsPreset": "ship_ammo_fire"
-        },
-        {
-          "gunpowderMassToSplashParams": {
-            "gunpowderMassToInnerRadius": {
-              "p1": [0.01,0.1],
-              "p2": [500.0,1.0],
-              "p3": [1000.0,3.0],
-              "p4": [5000.0,6.0],
-              "p5": [20000.0,15.0]
-            },
-            "gunpowderMassToOuterRadius": {
-              "p1": [0.01,0.1],
-              "p2": [500.0,5.0],
-              "p3": [1000.0,7.0],
-              "p4": [5000.0,15.0],
-              "p5": [20000.0,30.0]
-            },
-            "gunpowderMassToPenetration": {
-              "p1": [0.2,0.5],
-              "p3": [2500.0,5.0],
-              "p4": [4000.0,7.1],
-              "p5": [15000.0,25.4]
-            },
-            "gunpowderMassToDamage": {
-              "p1": [0.2,1.0],
-              "p2": [500.0,1000.0],
-              "p3": [1000.0,2000.0],
-              "p4": [3000.0,3000.0],
-              "p5": [5000.0,4000.0],
-              "p6": [10000.0,5000.0],
-              "p7": [20000.0,10000.0]
-            }
-          }
-        },
-        {
           "shells": {
             "damageEffect": "ammunition_storage_aux",
+            "fatalFire": false,
+            "fatalExplosion": false,
+            "explosionEvent": "ammo_aux_explosion_2",
+            "fireEvent": "ammo_aux_fire_2",
+            "fireParamsPreset": "ship_ammo_fire",
             "ammunition_storage_aux_03_dm": {
               "count": 900
             }
@@ -7257,56 +7079,13 @@
           "weaponTrigger": "gunner8"
         },
         {
-          "fatalFire": false
-        },
-        {
-          "fatalExplosion": false
-        },
-        {
-          "explosionEvent": "ammo_aux_explosion_2"
-        },
-        {
-          "fireEvent": "ammo_aux_fire_2"
-        },
-        {
-          "fireParamsPreset": "ship_ammo_fire"
-        },
-        {
-          "gunpowderMassToSplashParams": {
-            "gunpowderMassToInnerRadius": {
-              "p1": [0.01,0.1],
-              "p2": [500.0,1.0],
-              "p3": [1000.0,3.0],
-              "p4": [5000.0,6.0],
-              "p5": [20000.0,15.0]
-            },
-            "gunpowderMassToOuterRadius": {
-              "p1": [0.01,0.1],
-              "p2": [500.0,5.0],
-              "p3": [1000.0,7.0],
-              "p4": [5000.0,15.0],
-              "p5": [20000.0,30.0]
-            },
-            "gunpowderMassToPenetration": {
-              "p1": [0.2,0.5],
-              "p3": [2500.0,5.0],
-              "p4": [4000.0,7.1],
-              "p5": [15000.0,25.4]
-            },
-            "gunpowderMassToDamage": {
-              "p1": [0.2,1.0],
-              "p2": [500.0,1000.0],
-              "p3": [1000.0,2000.0],
-              "p4": [3000.0,3000.0],
-              "p5": [5000.0,4000.0],
-              "p6": [10000.0,5000.0],
-              "p7": [20000.0,10000.0]
-            }
-          }
-        },
-        {
           "shells": {
             "damageEffect": "ammunition_storage_aux",
+            "fatalFire": false,
+            "fatalExplosion": false,
+            "explosionEvent": "ammo_aux_explosion_2",
+            "fireEvent": "ammo_aux_fire_2",
+            "fireParamsPreset": "ship_ammo_fire",
             "ammunition_storage_aux_04_dm": {
               "count": 900
             }
@@ -7342,56 +7121,13 @@
           "weaponTrigger": "gunner21"
         },
         {
-          "fatalFire": false
-        },
-        {
-          "fatalExplosion": false
-        },
-        {
-          "explosionEvent": "ammo_aux_explosion_1"
-        },
-        {
-          "fireEvent": "ammo_aux_fire_1"
-        },
-        {
-          "fireParamsPreset": "ship_ammo_fire"
-        },
-        {
-          "gunpowderMassToSplashParams": {
-            "gunpowderMassToInnerRadius": {
-              "p1": [0.01,0.1],
-              "p2": [500.0,1.0],
-              "p3": [1000.0,3.0],
-              "p4": [5000.0,6.0],
-              "p5": [20000.0,15.0]
-            },
-            "gunpowderMassToOuterRadius": {
-              "p1": [0.01,0.1],
-              "p2": [500.0,5.0],
-              "p3": [1000.0,7.0],
-              "p4": [5000.0,15.0],
-              "p5": [20000.0,30.0]
-            },
-            "gunpowderMassToPenetration": {
-              "p1": [0.2,0.5],
-              "p3": [2500.0,5.0],
-              "p4": [4000.0,7.1],
-              "p5": [15000.0,25.4]
-            },
-            "gunpowderMassToDamage": {
-              "p1": [0.2,1.0],
-              "p2": [500.0,1000.0],
-              "p3": [1000.0,2000.0],
-              "p4": [3000.0,3000.0],
-              "p5": [5000.0,4000.0],
-              "p6": [10000.0,5000.0],
-              "p7": [20000.0,10000.0]
-            }
-          }
-        },
-        {
           "shells": {
             "damageEffect": "ammunition_storage_aux",
+            "fatalFire": false,
+            "fatalExplosion": false,
+            "explosionEvent": "ammo_aux_explosion_1",
+            "fireEvent": "ammo_aux_fire_1",
+            "fireParamsPreset": "ship_ammo_fire",
             "ammunition_storage_aux_01_dm": {
               "count": 4500
             }
@@ -7412,158 +7148,15 @@
           "weaponTrigger": "gunner12"
         },
         {
-          "fatalFire": false
-        },
-        {
-          "fatalExplosion": false
-        },
-        {
-          "explosionEvent": "ammo_aux_explosion_1"
-        },
-        {
-          "fireEvent": "ammo_aux_fire_1"
-        },
-        {
-          "fireParamsPreset": "ship_ammo_fire"
-        },
-        {
-          "gunpowderMassToSplashParams": {
-            "gunpowderMassToInnerRadius": {
-              "p1": [0.01,0.1],
-              "p2": [500.0,1.0],
-              "p3": [1000.0,3.0],
-              "p4": [5000.0,6.0],
-              "p5": [20000.0,15.0]
-            },
-            "gunpowderMassToOuterRadius": {
-              "p1": [0.01,0.1],
-              "p2": [500.0,5.0],
-              "p3": [1000.0,7.0],
-              "p4": [5000.0,15.0],
-              "p5": [20000.0,30.0]
-            },
-            "gunpowderMassToPenetration": {
-              "p1": [0.2,0.5],
-              "p3": [2500.0,5.0],
-              "p4": [4000.0,7.1],
-              "p5": [15000.0,25.4]
-            },
-            "gunpowderMassToDamage": {
-              "p1": [0.2,1.0],
-              "p2": [500.0,1000.0],
-              "p3": [1000.0,2000.0],
-              "p4": [3000.0,3000.0],
-              "p5": [5000.0,4000.0],
-              "p6": [10000.0,5000.0],
-              "p7": [20000.0,10000.0]
-            }
-          }
-        },
-        {
           "shells": {
             "damageEffect": "ammunition_storage_aux",
+            "fatalFire": false,
+            "fatalExplosion": false,
+            "explosionEvent": "ammo_aux_explosion_1",
+            "fireEvent": "ammo_aux_fire_1",
+            "fireParamsPreset": "ship_ammo_fire",
             "ammunition_storage_aux_02_dm": {
               "count": 8000
-            }
-          }
-        }
-      ],
-      "ammo8": [
-        {
-          "weaponTrigger": "gunner22"
-        },
-        {
-          "fatalFire": false
-        },
-        {
-          "fatalExplosion": false
-        },
-        {
-          "fireEvent": "torpedo_fire"
-        },
-        {
-          "explosionEvent": "torpedo_explosion"
-        },
-        {
-          "fireParamsPreset": "ship_torpedo_fire"
-        },
-        {
-          "splashRadiusConstraint": 15.0
-        },
-        {
-          "shatterRadiusConstraint": 15.0
-        },
-        {
-          "shells": {
-            "damageEffect": "ammunition_torpedoes",
-            "torpedo_01_dm": {
-              "count": 1
-            }
-          }
-        },
-        {
-          "shells": {
-            "damageEffect": "ammunition_torpedoes",
-            "torpedo_02_dm": {
-              "count": 1
-            }
-          }
-        },
-        {
-          "shells": {
-            "damageEffect": "ammunition_torpedoes",
-            "torpedo_03_dm": {
-              "count": 1
-            }
-          }
-        }
-      ],
-      "ammo9": [
-        {
-          "weaponTrigger": "gunner23"
-        },
-        {
-          "fatalFire": false
-        },
-        {
-          "fatalExplosion": false
-        },
-        {
-          "fireEvent": "torpedo_fire"
-        },
-        {
-          "explosionEvent": "torpedo_explosion"
-        },
-        {
-          "fireParamsPreset": "ship_torpedo_fire"
-        },
-        {
-          "splashRadiusConstraint": 15.0
-        },
-        {
-          "shatterRadiusConstraint": 15.0
-        },
-        {
-          "shells": {
-            "damageEffect": "ammunition_torpedoes",
-            "torpedo_04_dm": {
-              "count": 1
-            }
-          }
-        },
-        {
-          "shells": {
-            "damageEffect": "ammunition_torpedoes",
-            "torpedo_05_dm": {
-              "count": 1
-            }
-          }
-        },
-        {
-          "shells": {
-            "damageEffect": "ammunition_torpedoes",
-            "torpedo_06_dm": {
-              "count": 1
             }
           }
         }
