@@ -2156,7 +2156,7 @@
     {
       "Weapon": {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonMK11_mod5.blk",
+        "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod0.blk",
         "emitter": "flare1",
         "flash": "flare1",
         "shell": "emtr_shellrejection1",
@@ -2168,7 +2168,7 @@
     {
       "Weapon": {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonMK11_mod5.blk",
+        "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod0.blk",
         "emitter": "flare2",
         "flash": "flare2",
         "dm": "cannon2_dm",
@@ -2179,7 +2179,7 @@
     {
       "Weapon": {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonMK11_mod5.blk",
+        "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod0.blk",
         "emitter": "flare3",
         "flash": "flare3",
         "dm": "cannon3_dm",
@@ -2190,7 +2190,7 @@
     {
       "Weapon": {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonMK11_mod5.blk",
+        "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod0.blk",
         "emitter": "flare4",
         "flash": "flare4",
         "shell": "emtr_shellrejection2",
@@ -2484,30 +2484,47 @@
     "CdMin_Fuse": [],
     "new_cover": [],
     "structure_str": [],
+    "hydravlic_power": {
+      "effects": {
+        "aileronBooster": 0.9,
+        "elevatorBooster": 0.9
+      }
+    },
     "hp_105_jet": [],
     "g_suit": [],
     "new_compressor_jet": [],
+    "mk_12_mod3_universal": [],
+    "mk_12_mod3_ground_targets": [],
+    "mk_12_mod3_air_targets": [],
+    "mk_12_mod3_stealth": [],
+    "mk_12_mod3_belt_pack": {
+      "tier": 1
+    },
+    "mk_12_mod3_new_gun": {
+      "reqModification": "mk_12_mod3_belt_pack",
+      "tier": 3
+    },
     "us_500lb_mk82": {
       "modClass": "weapon",
-      "tier": 1
+      "tier": 2
     },
     "us_1000lb_mk83": {
       "modClass": "weapon",
-      "tier": 3,
+      "tier": 4,
       "reqModification": "us_500lb_mk82"
     },
     "us_2_75_in_ffar_aero_6a": {
-      "tier": 2,
+      "tier": 1,
       "modClass": "weapon"
     },
     "us_2_75_in_ffar_aero_7d": {
       "reqModification": "us_2_75_in_ffar_aero_6a",
-      "tier": 3,
+      "tier": 2,
       "modClass": "weapon"
     },
     "us_aim_9b": {
       "reqModification": "us_2_75_in_ffar_aero_7d",
-      "tier": 4,
+      "tier": 3,
       "modClass": "weapon"
     }
   },

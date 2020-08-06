@@ -527,6 +527,47 @@
         }
       },
       {
+        "ammunition_storage_fixed": {
+          "onKill": {
+            "expl": 1.0,
+            "fHitCritical": false
+          },
+          "onHit": {
+            "damageType": "fire",
+            "expl": 1.0,
+            "damage": 200.0,
+            "fHitCritical": false
+          }
+        }
+      },
+      {
+        "ammunition_first_stage": [
+          {
+            "onKill": {
+              "fire": 1.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "fire",
+              "fire": 1.0,
+              "damage": 200.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "explosion",
+              "expl": 0.11,
+              "fire": 1.0,
+              "damage": 300.0,
+              "fHitCritical": false
+            }
+          }
+        ]
+      },
+      {
         "ammunition_torpedoes": [
           {
             "onHit": {

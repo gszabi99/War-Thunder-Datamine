@@ -249,7 +249,8 @@
         "createSecondaryShatters": false,
         "hidableInViewer": true,
         "ex_decor_l_02_dm": [],
-        "ex_decor_r_02_dm": []
+        "ex_decor_r_02_dm": [],
+        "ex_armor_01_dm": []
       },
       "mask": {
         "gun_mask_dm": {
@@ -289,6 +290,14 @@
           "hp": 20.0
         },
         "optic_turret_03_dm": {
+          "armorThickness": 3.0,
+          "hp": 20.0
+        },
+        "optic_turret_04_dm": {
+          "armorThickness": 3.0,
+          "hp": 20.0
+        },
+        "optic_turret_05_dm": {
           "armorThickness": 3.0,
           "hp": 20.0
         },
@@ -336,8 +345,8 @@
       },
       "gun": {
         "armorClass": "tank_barrel",
-        "hp": 100.0,
-        "armorThickness": 10.0,
+        "hp": 200.0,
+        "armorThickness": 20.0,
         "gun_barrel_dm": [],
         "gun_barrel_02_dm": {
           "armorThrough": 10.0,
@@ -345,6 +354,11 @@
           "hp": 50.0
         },
         "gun_barrel_03_dm": {
+          "armorThrough": 10.0,
+          "armorThickness": 5.0,
+          "hp": 50.0
+        },
+        "gun_barrel_05_dm": {
           "armorThrough": 10.0,
           "armorThickness": 5.0,
           "hp": 50.0
@@ -689,6 +703,14 @@
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
       }
+    }
+  },
+  {
+    "dmgAngles": {
+      "hatch_01": [20.0,30.0],
+      "hatch_02": [20.0,30.0],
+      "hatch_10": [20.0,30.0],
+      "hatch_09": [20.0,30.0]
     }
   },
   {
@@ -1879,6 +1901,44 @@
           "limits": {
             "yaw": [0.0,0.0],
             "pitch": [-10.0,25.0]
+          }
+        }
+      },
+      {
+        "Weapon": {
+          "trigger": "gunner2",
+          "triggerGroup": "machinegun",
+          "blk": "gameData/Weapons/groundModels_weapons/8mm_Ksp_m36_user_machinegun.blk",
+          "emitter": "bone_mg_aa_v_01",
+          "flash": "emtr_mg_flame_04",
+          "barrelDP": "gun_barrel_05_dm",
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "parkInDeadzone": false,
+          "speedYaw": 30.0,
+          "speedPitch": 20.0,
+          "bullets": 2000,
+          "isBulletBelt": true,
+          "fireConeAngle": 15.0,
+          "ChainfireTime": 0.5,
+          "DelayAfterShoot": 2.0,
+          "accuracyAir": 1.5,
+          "accuracyGnd": 0.0,
+          "errMeasureVel": 0.0,
+          "errMeasureVelFast": 0.0,
+          "errMeasureVelFwdShift": 0.0,
+          "errMeasureVelDir": 0.0,
+          "errTargettingOn100kmph": 0.0,
+          "errTargetting": 3.0,
+          "errExplTime": 0.0,
+          "turret": {
+            "head": "bone_mg_aa_h_01",
+            "gun": "bone_mg_aa_v_01",
+            "gunnerDm": "commander_dm"
+          },
+          "limits": {
+            "yaw": [-180.0,180.0],
+            "pitch": [-10.0,65.0]
           }
         }
       }
