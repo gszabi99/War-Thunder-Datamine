@@ -3881,7 +3881,7 @@
       "type": "decal",
       "chapter": "decals",
       "group": "japan",
-      "hidden": true,
+      "hideUntilUnlocked": true,
       "mode": [
         {
           "type": "char_unlocks"
@@ -3904,7 +3904,7 @@
       "type": "decal",
       "chapter": "decals",
       "group": "japan",
-      "hidden": true,
+      "hideUntilUnlocked": true,
       "mode": [
         {
           "type": "char_unlocks"
@@ -3959,7 +3959,7 @@
       "type": "decal",
       "chapter": "decals",
       "group": "japan_tanks",
-      "hidden": true,
+      "hideUntilUnlocked": true,
       "mode": [
         {
           "type": "killedPlayersScore"
@@ -4014,7 +4014,7 @@
       "type": "decal",
       "chapter": "decals",
       "group": "japan",
-      "hidden": true,
+      "hideUntilUnlocked": true,
       "mode": [
         {
           "type": "killedPlayersScore"
@@ -4069,7 +4069,7 @@
       "type": "decal",
       "chapter": "decals",
       "group": "japan_ships",
-      "hidden": true,
+      "hideUntilUnlocked": true,
       "mode": [
         {
           "type": "killedPlayersScore"
@@ -4124,7 +4124,7 @@
       "type": "decal",
       "chapter": "decals",
       "group": "japan_tanks",
-      "hidden": true,
+      "hideUntilUnlocked": true,
       "mode": [
         {
           "type": "missionsWonScore"
@@ -4185,7 +4185,7 @@
       "type": "decal",
       "chapter": "decals",
       "group": "japan",
-      "hidden": true,
+      "hideUntilUnlocked": true,
       "mode": [
         {
           "type": "missionsWonScore"
@@ -4246,7 +4246,7 @@
       "type": "decal",
       "chapter": "decals",
       "group": "japan_ships",
-      "hidden": true,
+      "hideUntilUnlocked": true,
       "mode": [
         {
           "type": "missionsWonScore"
@@ -13714,6 +13714,73 @@
         "type": "char_unlocks",
         "num": 1,
         "unlock": "2019_vvs_ussr"
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "2020_vvs_ussr",
+      "type": "achievement",
+      "chapter": "vvs_ussr",
+      "mode": [
+        {
+          "type": "missionsWonScore"
+        },
+        {
+          "num": 3
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "activity",
+            "percent": 60
+          }
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "maxRank": 7,
+            "inSession": false
+          }
+        },
+        {
+          "condition": {
+            "type": "playerTag",
+            "tag": "country_ussr"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerType",
+            "unitType": "aircraft"
+          }
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2020-08-12 09:00:00",
+            "endDate": "2020-08-13 07:30:00"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "vks_russia_emblem_trophy",
+      "userLogId": "vks_russia_emblem_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "2020_vvs_ussr"
       }
     }
   },
