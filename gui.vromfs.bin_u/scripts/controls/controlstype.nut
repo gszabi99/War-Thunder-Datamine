@@ -71,6 +71,7 @@ class ::gui_handlers.ControlType extends ::gui_handlers.BaseGuiHandlerWT
     if (startControlsWizard)
       ::gui_modal_controlsWizard()
     ::preset_changed = true
+    ::broadcastEvent("PresetChanged")
   }
 
   function onControlTypeApply()

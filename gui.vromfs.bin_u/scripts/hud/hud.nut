@@ -573,6 +573,7 @@ class HudCutscene extends ::gui_handlers.BaseUnitHud
 
   function initScreen()
   {
+    base.initScreen()
   }
 
   function reinitScreen(params = {})
@@ -586,6 +587,7 @@ class HudAir extends ::gui_handlers.BaseUnitHud
 
   function initScreen()
   {
+    base.initScreen()
     ::g_hud_display_timers.init(scene, ::ES_UNIT_TYPE_AIRCRAFT)
 
     updateTacticalMapVisibility()
@@ -693,7 +695,6 @@ class HudTouchAir extends ::HudAir
 
 class HudTank extends ::gui_handlers.BaseUnitHud
 {
-  actionBar    = null
   sceneBlkName = "gui/hud/hudTank.blk"
 
   widgetsList = [
@@ -705,6 +706,7 @@ class HudTank extends ::gui_handlers.BaseUnitHud
 
   function initScreen()
   {
+    base.initScreen()
     ::g_hud_display_timers.init(scene, ::ES_UNIT_TYPE_TANK)
     ::g_hud_tank_debuffs.init(scene)
     ::g_hud_crew_state.init(scene)
@@ -745,11 +747,11 @@ class HudTank extends ::gui_handlers.BaseUnitHud
 
 class HudHelicopter extends ::gui_handlers.BaseUnitHud
 {
-  actionBar    = null
   sceneBlkName = "gui/hud/hudHelicopter.blk"
 
   function initScreen()
   {
+    base.initScreen()
     ::hudEnemyDamage.init(scene)
     actionBar = ActionBar(scene.findObject("hud_action_bar"))
     updatePosHudMultiplayerScore()
@@ -826,7 +828,6 @@ class HudTouchTank extends ::HudTank
 
 class HudShip extends ::gui_handlers.BaseUnitHud
 {
-  actionBar    = null
   sceneBlkName = "gui/hud/hudShip.blk"
   widgetsList = [
     {
@@ -837,6 +838,7 @@ class HudShip extends ::gui_handlers.BaseUnitHud
 
   function initScreen()
   {
+    base.initScreen()
     ::hudEnemyDamage.init(scene)
     ::g_hud_display_timers.init(scene, ::ES_UNIT_TYPE_SHIP)
     ::hud_request_hud_ship_debuffs_state()

@@ -49,7 +49,10 @@ class ::gui_handlers.ControlsBackupManager extends ::gui_handlers.SaveDataDialog
   {
     showWaitAnimation(false)
     if (params.success)
+    {
       ::preset_changed = true
+      ::broadcastEvent("PresetChanged")
+    }
     else
       ::showInfoMsgBox(::loc("msgbox/errorSavingPreset"))
     goBack()

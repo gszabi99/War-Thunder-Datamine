@@ -126,6 +126,7 @@ local { isMultifuncMenuAvailable, isWheelmenuAxisConfigurable } = require("scrip
 
   ::set_controls_preset("")
   ::set_shortcuts(changeList, changeNames)
+  ::broadcastEvent("PresetChanged")
 }
 
 ::switch_helpers_mode_and_option <- function switch_helpers_mode_and_option(preset = "")
@@ -171,6 +172,7 @@ local { isMultifuncMenuAvailable, isWheelmenuAxisConfigurable } = require("scrip
     ::switch_helpers_mode_and_option(preset)
 
   ::save_profile_offline_limited()
+  ::broadcastEvent("PresetChanged")
 }
 
 ::isShortcutMapped <- function isShortcutMapped(shortcut)
@@ -1141,6 +1143,7 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
     ::reset_default_control_settings()
     ::apply_joy_preset_xchange(preset);
     ::preset_changed=true
+    ::broadcastEvent("PresetChanged")
   }
 
   function onClearAll()
@@ -1178,6 +1181,7 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
       shortcuts[item.shortcutId] = []
       ::set_controls_preset("")
       updateShortcutText(item.shortcutId)
+      ::broadcastEvent("PresetChanged")
     })
   }
 
@@ -1287,6 +1291,7 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
 
     ::set_controls_preset(""); //custom mode
     updateShortcutText(shortcutId)
+    ::broadcastEvent("PresetChanged")
   }
 
   function updateShortcutText(shortcutId)
@@ -1426,6 +1431,7 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
     local device = ::joystick_get_default()
     curJoyParams.applyParams(device)
     updateSceneOptions()
+    ::broadcastEvent("PresetChanged")
   }
 
   function setAxisBind(axisIdx, axisNum)
@@ -1435,6 +1441,7 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
     local device = ::joystick_get_default()
     curJoyParams.applyParams(device)
     updateSceneOptions()
+    ::broadcastEvent("PresetChanged")
   }
 
   function onChangeAxisRelative(obj)
@@ -1644,6 +1651,7 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
   function onEventControlsMappingChanged(realMapping)
   {
     ::preset_changed = true
+    ::broadcastEvent("PresetChanged")
   }
 
   function onEventControlsChangedShortcuts(p)
@@ -1894,7 +1902,10 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
         onSelectCallback = function(path) {
           local isOpened = ::import_current_layout_by_path(path)
           if (isOpened)
+          {
             ::preset_changed = true
+            ::broadcastEvent("PresetChanged")
+          }
           else
             ::showInfoMsgBox(::loc("msgbox/errorLoadingPreset"))
           return isOpened && ::is_last_load_controls_succeeded
@@ -1906,7 +1917,10 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
     else
     {
       if (::import_current_layout())
+      {
         ::preset_changed = true
+        ::broadcastEvent("PresetChanged")
+      }
       else
         msgBox("errorLoadingPreset", ::loc("msgbox/errorLoadingPreset"),
                [["ok", function() {} ]], "ok", { cancel_fn = function() {}})

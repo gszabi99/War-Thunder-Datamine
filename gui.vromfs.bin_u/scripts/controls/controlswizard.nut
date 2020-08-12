@@ -1634,6 +1634,7 @@ class ::gui_handlers.controlsWizardModalHandler extends ::gui_handlers.Hotkeys
     guiScene.sleepKeyRepeat(false)
     ::set_bind_mode(false)
     ::preset_changed = true
+    ::broadcastEvent("PresetChanged")
   }
 
   function showMsg(msg=null, config=null, time = 1.0)
