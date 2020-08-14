@@ -1,3 +1,5 @@
+local { getPlayerName } = require("scripts/clientState/platform.nut")
+
 ::gui_start_change_role_wnd <- function gui_start_change_role_wnd(contact, clanData)
 {
   if (!::clan_get_admin_editor_mode())
@@ -43,7 +45,8 @@ class ::gui_handlers.clanChangeRoleModal extends ::gui_handlers.BaseGuiHandlerWT
     local myRole = adminMode? ::ECMR_CLANADMIN : ::clan_get_my_role()
     local myRank = ::clan_get_role_rank(myRole)
 
-    if (titleObj) titleObj.setValue(::loc("clan/changeRoleTitle")+" "+changeRolePlayer.name);
+    if (::check_obj(titleObj))
+      titleObj.setValue("{0} {1}".subst(::loc("clan/changeRoleTitle"), getPlayerName(changeRolePlayer.name)))
 
     for (local role = 0; role<::ECMR_MAX_TOTAL; role++)
     {

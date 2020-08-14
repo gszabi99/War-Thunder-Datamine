@@ -2,7 +2,7 @@ local { unixtime_to_utc_timetbl } = ::require_native("dagor.time")
 local time = require("scripts/time.nut")
 local clanRewardsModal = require("scripts/rewards/clanRewardsModal.nut")
 local dirtyWordsFilter = require("scripts/dirtyWords/dirtyWords.nut")
-
+local { getPlayerName } = require("scripts/clientState/platform.nut")
 
 const CLAN_ID_NOT_INITED = ""
 global const CLAN_SEASON_NUM_IN_YEAR_SHIFT = 1 // Because numInYear is zero-based.
@@ -422,7 +422,7 @@ g_clans.parseSeenCandidates <- function parseSeenCandidates()
     if(seenCandidatesBlk?[candidate.uid] != null)
       continue
     seenCandidatesBlk[candidate.uid] <- false
-    newCandidatesNicknames.append(candidate.nick)
+    newCandidatesNicknames.append(getPlayerName(candidate.nick))
     isChanged = true
   }
 
@@ -810,7 +810,7 @@ g_clans.checkSquadronExpChangedEvent <- function checkSquadronExpChangedEvent()
 }
 
 ::clan_candidate_list <- [
-  { id = "nick", type = ::g_lb_data_type.TEXT }
+  { id = "nick", type = ::g_lb_data_type.NICK }
   { id = "date", type = ::g_lb_data_type.DATE }
 ];
 

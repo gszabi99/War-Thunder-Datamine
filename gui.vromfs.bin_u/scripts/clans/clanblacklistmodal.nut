@@ -1,6 +1,6 @@
 local clanBlackList = [
-  { id = "nick", type = ::g_lb_data_type.TEXT },
-  { id = "initiator_nick", type = ::g_lb_data_type.TEXT },
+  { id = "nick", type = ::g_lb_data_type.NICK },
+  { id = "initiator_nick", type = ::g_lb_data_type.NICK },
   { id = "date", type = ::g_lb_data_type.DATE }]
 
 ::gui_start_clan_blacklist <- function gui_start_clan_blacklist(clanData = null)

@@ -1,7 +1,7 @@
-local enums = ::require("sqStdlibs/helpers/enums.nut")
+local enums = require("sqStdlibs/helpers/enums.nut")
 local time = require("scripts/time.nut")
 local stdMath = require("std/math.nut")
-
+local { getPlayerName } = require("scripts/clientState/platform.nut")
 
 ::g_lb_data_type <- {
   types = []
@@ -180,11 +180,13 @@ enums.addTypesByGlobalName("g_lb_data_type", {
     }
   }
 
-  TEXT = {
+  NICK = {
+    getFullTextByValue = function (value, allowNegative = false) {
+      return getPlayerName(value.tostring())
+    }
   }
-
-  UNKNOWN = {
-  }
+  TEXT = {}
+  UNKNOWN = {}
 })
 
 g_lb_data_type.getTypeById <- function getTypeById(id)

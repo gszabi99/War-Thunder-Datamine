@@ -10,7 +10,7 @@ local { getSeparateLeaderboardPlatformValue } = require("scripts/social/crosspla
 
 local clan_member_list = [
   {id = "onlineStatus", type = ::g_lb_data_type.TEXT, myClanOnly = true, iconStyle = true, needHeader = false}
-  {id = "nick", type = ::g_lb_data_type.TEXT, align = "left"}
+  {id = "nick", type = ::g_lb_data_type.NICK, align = "left"}
   {id = ::ranked_column_prefix, type = ::g_lb_data_type.NUM, loc = "rating", byDifficulty = true
     tooltip = "#clan/personal/dr_era/desc"}
   {
@@ -772,7 +772,7 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
   {
     local id = getFieldId(column)
     local res = {
-      text = ""
+      text = column.type.getShortTextByValue(member[id])
       tdAlign = ::getTblValue("align", column, "center")
     }
 
@@ -790,8 +790,6 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
       res.width    <- "0.01@sf"
     }
 
-    local text = column.type.getShortTextByValue(member[id])
-    res.text = id == "nick"? platformModule.getPlayerName(text) : text
     return res
   }
 
