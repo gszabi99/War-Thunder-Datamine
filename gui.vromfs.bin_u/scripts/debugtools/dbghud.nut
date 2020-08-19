@@ -105,10 +105,10 @@
   ::add_streak_message(header, wp, 0, streakId)
 }
 
-::hud_mission_result_debug <- function hud_mission_result_debug(result = ::GO_WIN, waitingForResult = false, noLives = false)
+::hud_mission_result_debug <- function hud_mission_result_debug(result = ::GO_WIN, checkResending = false, noLives = false)
 {
   ::g_hud_event_manager.onHudEvent("MissionResult", {resultNum = result,
-                                                     waitingForResult = waitingForResult,
+                                                     checkResending = checkResending,
                                                      noLives = noLives})
 }
 

@@ -432,4 +432,9 @@ return [
     showFunc = @() (::is_ps4_or_xbox || ::is_xinput_device()) && isWheelmenuAxisConfigurable()
     checkAssign = @() ::is_xinput_device() && isWheelmenuAxisConfigurable()
   }
+  {
+    id = "ID_EVENT_ACTION"
+    checkGroup = ctrlGroups.SHIP
+    checkAssign = false
+  }
 ]

@@ -358,6 +358,20 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     }
   }
 
+  SPEED_BOOSTER = {
+    code = ::EII_SPEED_BOOSTER
+    isForWheelMenu = @() true
+    _name = "speed_booster"
+    _title = ::loc("hotkeys/ID_EVENT_ACTION")
+    getShortcut = @(actionItem, unit = null) "ID_EVENT_ACTION"
+
+    getIcon = function (killStreakTag = null, unit = null) {
+      unit = unit || ::getAircraftByName(::get_action_bar_unit_name())
+      local mod = getModificationByName(unit, "ship_race_speed_boost")
+      return mod?.image ?? ""
+    }
+  }
+
   WINCH = {
     code = ::EII_WINCH
     backgroundImage = "#ui/gameuiskin#winch_request"

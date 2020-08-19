@@ -112,6 +112,7 @@ tdiv {
 
         <<#label>>
         textareaNoTab {
+          id:t='lable_<<id>>'
           pos:t='pw/2-w/2, 4/720@shHud'
           position:t='relative'
           max-width:t='pw'

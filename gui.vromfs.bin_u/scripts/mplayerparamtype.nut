@@ -34,6 +34,7 @@ g_mplayer_param_type._newer <- function _newer(old, new) {
   getTooltip = function(val, player, defText) {
     return defText
   }
+  getName = @(val = 0) ::loc(tooltip)
   diffFunc = ::g_mplayer_param_type._substract
 
   width = null
@@ -44,7 +45,7 @@ g_mplayer_param_type._newer <- function _newer(old, new) {
   {
     local res = {
       fontIcon = fontIcon
-      tooltip = tooltip || ""
+      tooltip = getName()
       pareText = pareText
     }
 
@@ -72,7 +73,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
 
   NAME = {
     id = "name"
-    tooltip = "#multiplayer/name"
+    tooltip = "multiplayer/name"
     defVal = ""
     printFunc = function(val, player) {
       return ::build_mplayer_name(player, false)
@@ -89,7 +90,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
 
   AIRCRAFT_NAME = {
     id = "aircraftName"
-    tooltip = "#options/unit"
+    tooltip = "options/unit"
     defVal = ""
     relWidth = 30
     pareText = true
@@ -108,28 +109,28 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
   SCORE = {
     id = "score"
     fontIcon = "#icon/mpstats/score"
-    tooltip = "#multiplayer/score"
+    tooltip = "multiplayer/score"
     relWidth = 25
   }
 
   AIR_KILLS = {
     id = "kills"
     fontIcon = "#icon/mpstats/kills"
-    tooltip = "#multiplayer/air_kills"
+    tooltip = "multiplayer/air_kills"
     missionObjective = MISSION_OBJECTIVE.KILLS_AIR
   }
 
   GROUND_KILLS = {
     id = "groundKills"
-    fontIcon = @() "#icon/mpstats/groundKills"
-    tooltip = @() "#multiplayer/ground_kills"
+    fontIcon = "#icon/mpstats/groundKills"
+    tooltip = "multiplayer/ground_kills"
     missionObjective = MISSION_OBJECTIVE.KILLS_GROUND
   }
 
   NAVAL_DAMAGE = {
     id = "awardDamage"
     fontIcon = "#icon/mpstats/navalDamage"
-    tooltip = "#multiplayer/naval_damage"
+    tooltip = "multiplayer/naval_damage"
     relWidth = 25
     missionObjective = MISSION_OBJECTIVE.KILLS_NAVAL
     isVisibleByGameMode = @(gm) gm != ::GM_SKIRMISH
@@ -138,35 +139,35 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
   NAVAL_KILLS = {
     id = "navalKills"
     fontIcon = "#icon/mpstats/navalKills"
-    tooltip = "#multiplayer/naval_kills"
+    tooltip = "multiplayer/naval_kills"
     missionObjective = MISSION_OBJECTIVE.KILLS_NAVAL
   }
 
   AI_AIR_KILLS = {
     id = "aiKills"
     fontIcon = "#icon/mpstats/aiKills"
-    tooltip = "#multiplayer/air_kills_ai"
+    tooltip = "multiplayer/air_kills_ai"
     missionObjective = MISSION_OBJECTIVE.KILLS_AIR_AI
   }
 
   AI_GROUND_KILLS = {
     id = "aiGroundKills"
     fontIcon = "#icon/mpstats/aiGroundKills"
-    tooltip = "#multiplayer/ground_kills_ai"
+    tooltip = "multiplayer/ground_kills_ai"
     missionObjective = MISSION_OBJECTIVE.KILLS_GROUND_AI
   }
 
   AI_NAVAL_KILLS = {
     id = "aiNavalKills"
     fontIcon = "#icon/mpstats/aiNavalKills"
-    tooltip = "#multiplayer/naval_kills_ai"
+    tooltip = "multiplayer/naval_kills_ai"
     missionObjective = MISSION_OBJECTIVE.KILLS_NAVAL_AI
   }
 
   AI_TOTAL_KILLS = {
     id = "aiTotalKills"
     fontIcon = "#icon/mpstats/aiTotalKills"
-    tooltip = "#multiplayer/total_kills_ai"
+    tooltip = "multiplayer/total_kills_ai"
     missionObjective = MISSION_OBJECTIVE.KILLS_TOTAL_AI
     getVal = function(player) {
       local res = 0
@@ -182,7 +183,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
   ASSISTS = {
     id = "assists"
     fontIcon = "#icon/mpstats/assists"
-    tooltip = "#multiplayer/assists"
+    tooltip = "multiplayer/assists"
     isVisibleByGameType = @(gt) ::is_mode_with_teams(gt)
     getVal = function(player) {
       local res = 0
@@ -215,20 +216,20 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
   DEATHS = {
     id = "deaths"
     fontIcon = "#icon/mpstats/deaths"
-    tooltip = "#multiplayer/deaths"
+    tooltip = "multiplayer/deaths"
   }
 
   CAPTURE_ZONE = {
     id = "captureZone"
     fontIcon = "#icon/mpstats/captureZone"
-    tooltip = "#multiplayer/zone_captures"
+    tooltip = "multiplayer/zone_captures"
     missionObjective = MISSION_OBJECTIVE.ZONE_CAPTURE
   }
 
   DAMAGE_ZONE = {
     id = "damageZone"
     fontIcon = "#icon/mpstats/damageZone"
-    tooltip = "#debriefing/Damage"
+    tooltip = "debriefing/Damage"
     relWidth = 15
     missionObjective = MISSION_OBJECTIVE.ZONE_BOMBING
     printFunc = function(val, player) {
@@ -239,14 +240,14 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
   ROW_NO = {
     id = "rowNo"
     fontIcon = "#icon/mpstats/rowNo"
-    tooltip = "#multiplayer/place"
+    tooltip = "multiplayer/place"
     diffFunc = ::g_mplayer_param_type._newer
   }
 
   RACE_LAST_CHECKPOINT = {
     id = "raceLastCheckpoint"
     fontIcon = "#icon/mpstats/raceLastCheckpoint"
-    tooltip = "#multiplayer/raceLastCheckpoint"
+    tooltip = "multiplayer/raceLastCheckpoint"
     relWidth = 15
     printFunc = function(val, player) {
       local total = ::get_race_checkpioints_count()
@@ -261,7 +262,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
   RACE_LAST_CHECKPOINT_TIME = {
     id = "raceLastCheckpointTime"
     fontIcon = "#icon/mpstats/raceLastCheckpointTime"
-    tooltip = "#multiplayer/raceLastCheckpointTime"
+    tooltip = "multiplayer/raceLastCheckpointTime"
     relWidth = 30
     defVal = -1
     printFunc = function(val, player) {
@@ -273,13 +274,13 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
   RACE_LAP = {
     id = "raceLap"
     fontIcon = "#icon/mpstats/raceLap"
-    tooltip = "#multiplayer/raceLap"
+    tooltip = "multiplayer/raceLap"
     diffFunc = ::g_mplayer_param_type._newer
   }
 
   RACE_BEST_LAP_TIME = {
     id = "raceBestLapTime"
-    tooltip = "#multiplayer/each_player_fastlap"
+    tooltip = "multiplayer/each_player_fastlap"
     relWidth = 30
     defVal = -1
     printFunc = function(val, player) {
@@ -292,7 +293,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
 
   RACE_FINISH_TIME = {
     id = "raceFinishTime"
-    tooltip = "#HUD_RACE_FINISH"
+    tooltip = "HUD_RACE_FINISH"
     relWidth = 30
     defVal = -1
     isForceUpdate = true // Because it shows race completion percentage.
@@ -313,31 +314,49 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     relWidth = 30
   }
 
+  RACE_PENALTY_TIME = {
+    id = "penaltyTime"
+    relWidth = 30
+    defVal = 0
+    printFunc = function(val, player) {
+      if (val == 0)
+        return ""
+
+      return "".concat(val > 0 ? "+" : "", val, ::loc("debriefing/timeSec"))
+    }
+    getName = function(val = 0) {
+      if (val >= 0)
+        return ::loc("HUD_RACE_PENALTY_TIME")
+
+      return ::loc("HUD_RACE_BONUS_TIME")
+    }
+  }
+
   FOOTBALL_GOALS = {
     id = "footballGoals"
     fontIcon = "#icon/mpstats/football_goals"
-    tooltip = "#multiplayer/football/goals"
+    tooltip = "multiplayer/football/goals"
     relWidth = 10
   }
 
   FOOTBALL_ASSISTS = {
     id = "footballAssists"
     fontIcon = "#icon/mpstats/assists"
-    tooltip = "#multiplayer/football/assists"
+    tooltip = "multiplayer/football/assists"
     relWidth = 10
   }
 
   FOOTBALL_SAVES = {
     id = "footballSaves"
     fontIcon = "#icon/mpstats/football_saves"
-    tooltip = "#multiplayer/football/saves"
+    tooltip = "multiplayer/football/saves"
     relWidth = 10
   }
 
   FOOTBALL_SCORE = {
     id = "footballScore"
     fontIcon = "#icon/mpstats/score"
-    tooltip = "#multiplayer/score"
+    tooltip = "multiplayer/score"
     relWidth = 15
   }
 
@@ -358,7 +377,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
 
   ALIVE_TIME = {
     id = "missionAliveTime"
-    tooltip = "#multiplayer/lifetime"
+    tooltip = "multiplayer/lifetime"
     fontIcon = "#icon/timer"
     relWidth = 15
     missionObjective = MISSION_OBJECTIVE.ALIVE_TIME

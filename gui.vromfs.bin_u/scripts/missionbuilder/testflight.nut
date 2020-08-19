@@ -528,4 +528,9 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
 
     applyOptions()
   }
+
+  function onEventCountryChanged(p)
+  {
+    doWhenActiveOnce("setUnitFromSlotbar")
+  }
 }

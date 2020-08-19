@@ -37,15 +37,27 @@ class ::gui_handlers.AxisControls extends ::gui_handlers.Hotkeys
     changedShortcuts = []
     changedAxes = []
 
+    local titleObj = scene.findObject("axis_title")
+    if (::check_obj(titleObj))
+      titleObj.setValue(::loc("controls/" + axisItem.id))
+
+    initFocusArray()
+    reinitScreen()
+    dontCheckControlsDupes = ::refillControlsDupes()
+
+    local timerObj = scene.findObject("axis_test_box")
+    if (::check_obj(timerObj))
+      timerObj.setUserData(this)
+
+    ::update_gamercards()
+  }
+
+  function reinitScreen() {
     curDevice = ::joystick_get_default()
     setupAxisMode = axisItem.axisIndex
 
     local axis = curJoyParams.getAxis(setupAxisMode)
     bindAxisNum = axis.axisId
-
-    local titleObj = scene.findObject("axis_title")
-    if (::checkObj(titleObj))
-      titleObj.setValue(::loc("controls/" + axisItem.id))
 
     reinitAutodetectAxis()
 
@@ -56,14 +68,6 @@ class ::gui_handlers.AxisControls extends ::gui_handlers.Hotkeys
     fillAxisDropright()
     fillAxisTable(axis)
     updateAxisRelativeOptions(axis.relative)
-    dontCheckControlsDupes = ::refillControlsDupes()
-
-    local timerObj = scene.findObject("axis_test_box")
-    if (::checkObj(timerObj))
-      timerObj.setUserData(this)
-
-    ::update_gamercards()
-    initFocusArray()
     restoreFocus()
   }
 
@@ -693,11 +697,6 @@ class ::gui_handlers.AxisControls extends ::gui_handlers.Hotkeys
       doAxisApply()
   }
 
-  function onEventControlsMappingChanged(realMapping)
-  {
-    doAxisApply()
-  }
-
   function afterModalDestroy()
   {
     ::broadcastEvent("ControlsChangedShortcuts", {changedShortcuts = changedShortcuts})
@@ -707,5 +706,14 @@ class ::gui_handlers.AxisControls extends ::gui_handlers.Hotkeys
   function goBack()
   {
     onApply()
+  }
+
+  function setShortcutsParams(params) {
+    curJoyParams = params.curJoyParams
+    shortcuts = params.shortcuts
+    shortcutItems = params.shortcutItems
+    local axisId = axisItem.id
+    axisItem = ::shortcutsList.findvalue(@(s) s.id == axisId) ?? axisItem
+    reinitScreen()
   }
 }

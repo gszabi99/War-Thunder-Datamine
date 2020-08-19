@@ -990,7 +990,10 @@ SessionLobby.resetParams <- function resetParams()
   needJoinSessionAfterMyInfoApply = false
   isLeavingLobbySession = false
   playersInfo.clear()
-  overrideSlotbar = null
+  if (overrideSlotbar != null) {
+    overrideSlotbar = null
+    ::broadcastEvent("OverrideSlotbarChanged")
+  }
   overrrideSlotbarMissionName = ""
   ::g_user_presence.setPresence({in_game_ex = null})
 }

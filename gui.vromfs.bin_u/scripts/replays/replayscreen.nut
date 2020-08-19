@@ -474,12 +474,13 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
       if (!paramType.isVisible(missionObjectivesMask, gameType, gameMode))
         continue
 
+      local tooltip = paramType.getName()
       headerArray.append(id)
       rowHeader.append({
-        tooltip       = paramType.tooltip
+        tooltip       = tooltip
         fontIcon      = paramType.fontIcon
         fontIconType  = "fontIcon32"
-        text          = paramType.fontIcon ? null : paramType.tooltip
+        text          = paramType.fontIcon ? null : tooltip
         tdAlign       = "center"
         active        = false
       })

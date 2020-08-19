@@ -307,6 +307,8 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
 
   currentFocusItem = 7
 
+  axisControlsHandlerWeak = null
+
   function getMainFocusObj()
   {
     return ::show_console_buttons? "header_buttons" : null
@@ -720,6 +722,7 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
       return
 
     initMainParams()
+    updateAxisControlsHandlerParams()
     ::preset_changed = false
     if (forceLoadWizard)
     {
@@ -1387,19 +1390,25 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
     return res
   }
 
+  getAxisHandlerParams = @() {
+    curJoyParams = curJoyParams,
+    shortcuts = shortcuts,
+    shortcutItems = shortcutItems
+  }
+
   function openAxisBox(axisItem)
   {
     if (!curJoyParams || !axisItem || axisItem.axisIndex < 0 )
       return
 
-    local params = {
-      axisItem = axisItem,
-      curJoyParams = curJoyParams,
-      shortcuts = shortcuts,
-      shortcutItems = shortcutItems
-    }
+    local handler = ::handlersManager.loadHandler(::gui_handlers.AxisControls,
+      getAxisHandlerParams().__update({ axisItem = axisItem }))
+    axisControlsHandlerWeak = handler.weakref()
+  }
 
-    ::gui_start_modal_wnd(::gui_handlers.AxisControls, params)
+  function updateAxisControlsHandlerParams() {
+    if (axisControlsHandlerWeak?.isValid() ?? false)
+      axisControlsHandlerWeak.setShortcutsParams(getAxisHandlerParams())
   }
 
   function onAxisReset()

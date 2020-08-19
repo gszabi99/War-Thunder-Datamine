@@ -842,11 +842,20 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     onAircraftUpdate()
   }
 
+  function getOverrideBullets(unit)
+  {
+    if (!unit)
+      return null
+    local editSlotbarBlk = ::g_crews_list.getMissionEditSlotbarBlk(::get_current_mission_name())
+    local editSlotbarUnitBlk = editSlotbarBlk?[unit.shopCountry]?[unit.name]
+    return editSlotbarUnitBlk?["bulletsCount0"] != null ? editSlotbarUnitBlk : null
+  }
+
   function updateWeaponsSelector(isUnitChanged)
   {
     local unit = getCurSlotUnit()
     local isRandomUnit = unit && missionRules && missionRules.getRandomUnitsGroupName(unit.name)
-    local shouldShowWeaponry = !isRandomUnit || !isRespawn
+    local shouldShowWeaponry = (!isRandomUnit || !isRespawn) && !getOverrideBullets(unit)
     local canChangeWeaponry = canChangeAircraft && shouldShowWeaponry
 
     local weaponsSelectorObj = scene.findObject("unit_weapons_selector")
@@ -1500,6 +1509,14 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       bulletInd++;
     }
 
+    local editSlotbarBullets = getOverrideBullets(air);
+    if (editSlotbarBullets)
+      for (local i = 0; i < ::BULLETS_SETS_QUANTITY; i++)
+      {
+        res["bullets" + i] = editSlotbarBullets?["bullets" + i] ?? ""
+        res["bulletCount" + i] = editSlotbarBullets?["bulletsCount" + i] ?? 0
+      }
+
     foreach(optId in [::USEROPT_GUN_TARGET_DISTANCE, ::USEROPT_GUN_VERTICAL_TARGETING,
                       ::USEROPT_BOMB_ACTIVATION_TIME,
                       ::USEROPT_ROCKET_FUSE_DIST, ::USEROPT_LOAD_FUEL_AMOUNT
@@ -1755,6 +1772,8 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
 
   function checkChosenBulletsCount(applyFunc, bulletsManager)
   {
+    if (getOverrideBullets(getCurSlotUnit()))
+      return true
     local readyCounts = bulletsManager.checkBulletsCountReady()
     if (readyCounts.status == bulletsAmountState.READY
         || (readyCounts.status == bulletsAmountState.HAS_UNALLOCATED && ::get_gui_option(::USEROPT_SKIP_LEFT_BULLETS_WARNING)))

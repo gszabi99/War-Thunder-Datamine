@@ -773,10 +773,10 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "1st_fire_range_squad",
+          "object": "all_targets_squad",
           "object_type": "isMarked",
           "object_marking_var": "player_number_area01_int",
-          "stealthRadius": 5000.0
+          "stealthRadius": 2500.0
         },
         "unitSetIndication": {
           "target_marking": 1,
@@ -784,7 +784,7 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0,
           "set": true,
-          "target": "1st_fire_range_squad",
+          "target": "all_targets_squad",
           "target_type": "isMarked",
           "target_marking_var": "player_number_area01_int"
         },
@@ -797,7 +797,7 @@
           "player_var_name": "",
           "player_var_comp_op": "equal",
           "player_var_value": 0,
-          "target": "1st_fire_range_squad",
+          "target": "all_targets_squad",
           "target_type": "isMarked",
           "target_marking_var": "player_number_area01_int",
           "player": "players_squad",
@@ -842,7 +842,7 @@
       "else_actions": []
     },
     "marking_reset_area01_p01": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -956,7 +956,7 @@
       "else_actions": []
     },
     "marking_reset_area01_p02": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -1070,7 +1070,7 @@
       "else_actions": []
     },
     "marking_reset_area01_p03": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -1184,7 +1184,7 @@
       "else_actions": []
     },
     "marking_reset_area01_p04": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -1335,7 +1335,7 @@
             "ressurectIfDead": true,
             "fullRestore": true,
             "target_marking": 1,
-            "target": "2nd_fire_range_squad",
+            "target": "all_targets_squad",
             "target_type": "isMarked"
           }
         },
@@ -1346,7 +1346,7 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "set": false,
-            "target": "2nd_fire_range_squad",
+            "target": "all_targets_squad",
             "target_type": "isMarked"
           }
         },
@@ -1356,7 +1356,7 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "2nd_fire_range_squad",
+            "object": "all_targets_squad",
             "object_type": "isMarked",
             "isImmortal": true,
             "stealthRadius": 0.0
@@ -1374,14 +1374,9 @@
           }
         },
         {
-          "triggerEnable": [
-            {
-              "target": "marking_reset_area02_p01_units"
-            },
-            {
-              "target": "marking_reset_area01_p01"
-            }
-          ]
+          "triggerEnable": {
+            "target": "marking_reset_area02_p01_units"
+          }
         }
       ],
       "else_actions": []
@@ -1463,7 +1458,7 @@
             "ressurectIfDead": true,
             "fullRestore": true,
             "target_marking": 2,
-            "target": "2nd_fire_range_squad",
+            "target": "all_targets_squad",
             "target_type": "isMarked"
           }
         },
@@ -1474,7 +1469,7 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "set": false,
-            "target": "2nd_fire_range_squad",
+            "target": "all_targets_squad",
             "target_type": "isMarked"
           }
         },
@@ -1484,7 +1479,7 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "2nd_fire_range_squad",
+            "object": "all_targets_squad",
             "object_type": "isMarked",
             "isImmortal": true,
             "stealthRadius": 0.0
@@ -1502,14 +1497,9 @@
           }
         },
         {
-          "triggerEnable": [
-            {
-              "target": "marking_reset_area02_p02_units"
-            },
-            {
-              "target": "marking_reset_area01_p02"
-            }
-          ]
+          "triggerEnable": {
+            "target": "marking_reset_area02_p02_units"
+          }
         }
       ],
       "else_actions": []
@@ -1591,7 +1581,7 @@
             "ressurectIfDead": true,
             "fullRestore": true,
             "target_marking": 3,
-            "target": "2nd_fire_range_squad",
+            "target": "all_targets_squad",
             "target_type": "isMarked"
           }
         },
@@ -1602,7 +1592,7 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "set": false,
-            "target": "2nd_fire_range_squad",
+            "target": "all_targets_squad",
             "target_type": "isMarked"
           }
         },
@@ -1612,7 +1602,7 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "2nd_fire_range_squad",
+            "object": "all_targets_squad",
             "object_type": "isMarked",
             "isImmortal": true,
             "stealthRadius": 0.0
@@ -1630,14 +1620,9 @@
           }
         },
         {
-          "triggerEnable": [
-            {
-              "target": "marking_reset_area02_p03_units"
-            },
-            {
-              "target": "marking_reset_area01_p03"
-            }
-          ]
+          "triggerEnable": {
+            "target": "marking_reset_area02_p03_units"
+          }
         }
       ],
       "else_actions": []
@@ -1719,7 +1704,7 @@
             "ressurectIfDead": true,
             "fullRestore": true,
             "target_marking": 4,
-            "target": "2nd_fire_range_squad",
+            "target": "all_targets_squad",
             "target_type": "isMarked"
           }
         },
@@ -1730,7 +1715,7 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "set": false,
-            "target": "2nd_fire_range_squad",
+            "target": "all_targets_squad",
             "target_type": "isMarked"
           }
         },
@@ -1740,7 +1725,7 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "2nd_fire_range_squad",
+            "object": "all_targets_squad",
             "object_type": "isMarked",
             "isImmortal": true,
             "stealthRadius": 0.0
@@ -1758,14 +1743,9 @@
           }
         },
         {
-          "triggerEnable": [
-            {
-              "target": "marking_reset_area02_p04_units"
-            },
-            {
-              "target": "marking_reset_area01_p04"
-            }
-          ]
+          "triggerEnable": {
+            "target": "marking_reset_area02_p04_units"
+          }
         }
       ],
       "else_actions": []

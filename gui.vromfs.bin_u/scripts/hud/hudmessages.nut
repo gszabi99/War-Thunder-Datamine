@@ -1,5 +1,6 @@
 local enums = ::require("sqStdlibs/helpers/enums.nut")
 local time = require("scripts/time.nut")
+local { getPlayerName } = require("scripts/clientState/platform.nut")
 
 local heightPID = ::dagui_propid.add_name_id("height")
 
@@ -607,11 +608,79 @@ enums.addTypesByGlobalName("g_hud_messages", {
               }
               else if (param == "place")
                 text = value > 0? value.tostring() : ""
+              else if (param == "name")
+                text = getPlayerName(text)
+
               textObj.setValue(text)
             }
           }
         }
       }
+    }
+  }
+
+  RACE_TIME_UPDATE = {
+    nestId = "hud_messages_race_bonus_time"
+    messageEvent = "RaceTimeUpdate"
+    showSec = 6
+    messagesMax = 1
+
+    onMessage = function (messageData)
+    {
+      if (!::checkObj(nest) || !(::get_game_type() & ::GT_RACE))
+        return
+
+      if (!::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.RACE_INFO))
+        return
+
+      addMessage(messageData)
+    }
+
+    updatePlayerPlaceAnimation = function(nestObj, animationValue) {
+      if (!::check_obj(nestObj))
+        return
+
+      foreach (objName in ["time"])
+        nestObj.findObject(objName)["wink"] = animationValue
+    }
+
+    addMessage = function (messageData)
+    {
+      cleanUp()
+      local message = {
+        timer = null
+        messageData = messageData
+        obj = null
+      }
+      stack.append(message)
+      local deltaTime = messageData.deltaTime
+      local view = {
+        text = ::loc(deltaTime > 0 ? "hints/penalty_time" : "hints/bonus_time", { timeSec = deltaTime })
+      }
+      local blk = ::handyman.renderCached("gui/hud/messageStack/playerDamageMessage", view)
+      guiScene.appendWithBlk(nest, blk, blk.len(), this)
+      message.obj = nest.getChild(nest.childrenCount() - 1)
+
+      if (nest.isVisible())
+      {
+        message.obj["height-end"] = message.obj.getSize()[1]
+        message.obj.setIntProp(heightPID, 0)
+        message.obj.slideDown = "yes"
+        guiScene.setUpdatesEnabled(true, true)
+      }
+
+      local racePlaceNest = scene.findObject("hud_messages_race_messages")
+      local playerPlaceObj = null
+      if (::check_obj(racePlaceNest))
+        playerPlaceObj = racePlaceNest.findObject("player")
+      updatePlayerPlaceAnimation(playerPlaceObj, "fast")
+
+      message.timer = timers.addTimer(showSec, function () {
+        if (::check_obj(message.obj))
+          message.obj.remove = "yes"
+        updatePlayerPlaceAnimation(playerPlaceObj, "no")
+        removeMessage(message)
+      }.bindenv(this)).weakref()
     }
   }
 
@@ -633,21 +702,21 @@ enums.addTypesByGlobalName("g_hud_messages", {
       local oldResultIdx = ::getTblValue("resultIdx", stack, ::GO_NONE)
 
       local resultIdx = ::getTblValue("resultNum", eventData, ::GO_NONE)
-      local waitingForResult = ::getTblValue("waitingForResult", eventData, false)
+      local checkResending = eventData?.checkResending ?? eventData?.waitingForResult ?? false //!!! waitingForResult need only for compatibiliti with 1.99.0.X
 
       /*Have to check this, because, on guiStateChange GUI_STATE_FINISH_SESSION
-        send waitingForResult=true after real mission result sended.
+        send checkResending=true after real mission result sended.
         But call saved in code, if it'll be needed to use somewhere else.
         For now it's working as if we already receive result WIN OR FAIL.
       */
-      if (waitingForResult && (oldResultIdx == ::GO_WIN || oldResultIdx == ::GO_FAIL))
+      if (checkResending && (oldResultIdx == ::GO_WIN || oldResultIdx == ::GO_FAIL))
         return
 
       local noLives = ::getTblValue("noLives", eventData, false)
       local place = ::getTblValue("place", eventData, -1)
       local total = ::getTblValue("total", eventData, -1)
 
-      local resultLocId = getMissionResultLocId(resultIdx, waitingForResult, noLives)
+      local resultLocId = getMissionResultLocId(resultIdx, checkResending, noLives)
       local text = ::loc(resultLocId)
       if (place >= 0 && total >= 0)
         text += "\n" + ::loc("HUD_RACE_PLACE", {place = place, total = total})
@@ -673,7 +742,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       }
     }
 
-    getMissionResultLocId = function (resultNum, waitingForResult, noLives)
+    getMissionResultLocId = function (resultNum, checkResending, noLives)
     {
       if (noLives)
         return "MF_NoAttempts"
@@ -688,9 +757,9 @@ enums.addTypesByGlobalName("g_hud_messages", {
           return "MISSION_FAIL"
         case ::GO_EARLY:
           return "MISSION_IN_PROGRESS"
+        case ::GO_WAITING_FOR_RESULT:
+          return "FINALIZING"
         default:
-          if (waitingForResult)
-            return "FINALIZING"
           return ::getTblValue("result", stack, "")
       }
       return ""

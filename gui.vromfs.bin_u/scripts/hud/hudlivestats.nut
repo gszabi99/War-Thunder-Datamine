@@ -27,6 +27,7 @@ enum LIVE_STATS_MODE {
   isAwaitingSpawn = false
   spawnStartState = null
   isMissionFinished = false
+  missionResult = null
   gameType = 0
 
   hero = {
@@ -52,9 +53,9 @@ enum LIVE_STATS_MODE {
                                   "aiKills", "aiGroundKills", "aiNavalKills", "aiTotalKills", "assists", "deaths" ],
     },
     [::GT_RACE] = {
-      [LIVE_STATS_MODE.SPAWN] = [ "rowNo", "raceFinishTime", "raceBestLapTime" ],
-      [LIVE_STATS_MODE.FINAL] = [ "rowNo", "raceFinishTime", "raceBestLapTime", "deaths" ],
-      [LIVE_STATS_MODE.WATCH] = [ "rowNo", "name", "raceFinishTime", "raceBestLapTime", "deaths" ],
+      [LIVE_STATS_MODE.SPAWN] = [ "rowNo", "raceFinishTime", "raceBestLapTime", "penaltyTime" ],
+      [LIVE_STATS_MODE.FINAL] = [ "rowNo", "raceFinishTime", "raceBestLapTime", "penaltyTime", "deaths" ],
+      [LIVE_STATS_MODE.WATCH] = [ "rowNo", "name", "raceFinishTime", "raceBestLapTime", "penaltyTime", "deaths" ],
     },
     [::GT_FOOTBALL] = {
       [LIVE_STATS_MODE.SPAWN] = [ "footballGoals", "footballAssists", "footballScore" ],
@@ -81,6 +82,7 @@ enum LIVE_STATS_MODE {
     isMissionTeamplay = ::is_mode_with_teams(gameType)
     isMissionRace = !!(gameType & ::GT_RACE)
     isMissionFinished = false
+    missionResult = null
     missionObjectives = ::g_mission_type.getCurrentObjectives()
     isMissionLastManStanding = !!(gameType & ::GT_LAST_MAN_STANDING)
 
@@ -101,9 +103,7 @@ enum LIVE_STATS_MODE {
     {
       isAwaitingSpawn = true
 
-      ::g_hud_event_manager.subscribe("MissionResult", function(data) {
-        onMissionResult()
-      }, this)
+      ::g_hud_event_manager.subscribe("MissionResult", onMissionResult, this)
       ::g_hud_event_manager.subscribe("LocalPlayerAlive", function (data) {
         checkPlayerSpawned()
       }, this)
@@ -141,7 +141,7 @@ enum LIVE_STATS_MODE {
       lifetime  = 0.0
     }
 
-    if (isMissionRace)
+    if (isMissionRace && missionResult != ::GO_WAITING_FOR_RESULT)
       state.player["rowNo"] <- getPlayerPlaceInTeam(state.player)
 
     foreach (id in curColumnsOrder)
@@ -215,7 +215,7 @@ enum LIVE_STATS_MODE {
     local state = getState(curViewPlayerId, isCompareStates ? spawnStartState : null)
 
     local title = ""
-    if (curViewMode == LIVE_STATS_MODE.WATCH)
+    if (curViewMode == LIVE_STATS_MODE.WATCH || missionResult == ::GO_WAITING_FOR_RESULT)
       title = ""
     else if (curViewMode == LIVE_STATS_MODE.SPAWN && !isMissionLastManStanding)
     {
@@ -242,11 +242,13 @@ enum LIVE_STATS_MODE {
     foreach (id in curColumnsOrder)
     {
       local param = ::g_mplayer_param_type.getTypeById(id)
+      local value = state.player?[id] ?? param.defVal
+      local lableName = param.getName(value)
       view.player.append({
-        id      = id
+        id       = id
         fontIcon = param.fontIcon
-        label   = param.tooltip
-        tooltip = param.tooltip
+        label    = lableName
+        tooltip  = lableName
       })
     }
 
@@ -299,6 +301,12 @@ enum LIVE_STATS_MODE {
       local txtObj = scene.findObject("txt_" + id)
       if (::checkObj(txtObj) && txtObj.getValue() != text)
         txtObj.setValue(text)
+
+      local lableName = param.getName(value)
+      plateObj["tooltip"] = lableName
+      txtObj = scene.findObject($"lable_{id}")
+      if (::checkObj(txtObj) && txtObj.getValue() != lableName)
+        txtObj.setValue(lableName)
     }
 
     if (isCompareStates && (!visState || visState.lifetime != state.lifetime) && !isMissionLastManStanding)
@@ -387,11 +395,12 @@ enum LIVE_STATS_MODE {
     hero.streaks.append(::getTblValue("id", params))
   }
 
-  function onMissionResult()
+  function onMissionResult(eventData)
   {
     if (!isSelfTogglable || isMissionFinished)
       return
     isMissionFinished = true
+    missionResult = eventData?.resultNum ?? ::GO_NONE
     show(true, LIVE_STATS_MODE.FINAL)
   }
 

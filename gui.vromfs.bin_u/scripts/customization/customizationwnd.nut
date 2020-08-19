@@ -107,6 +107,8 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
   preSelectDecorator = null
   preSelectDecoratorSlot = -1
 
+  unitInfoPanelWeak = null
+
   function initScreen()
   {
     owner = this
@@ -126,7 +128,10 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     ::hangar_focus_model(true)
 
-    registerSubHandler(::create_slot_info_panel(scene, false, "showroom"))
+    local unitInfoPanel = ::create_slot_info_panel(scene, false, "showroom")
+    registerSubHandler(unitInfoPanel)
+    unitInfoPanelWeak = unitInfoPanel.weakref()
+
     initPreviewMode()
     initMainParams()
     showDecoratorsList()
@@ -837,7 +842,6 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
           previewed_decorator_div  = !isInEditMode && decoratorPreview
           previewed_decorator_unit = !isInEditMode && decoratorPreview && initialUnitId && initialUnitId != unit?.name
 
-          slot_info_side_panel = !isInEditMode && !isDecoratorsListOpen && !isDmgSkinPreviewMode
           btn_dm_viewer = !isInEditMode && !isDecoratorsListOpen && ::dmViewer.canUse()
 
           decor_layout_presets = !isInEditMode && !isDecoratorsListOpen && isUnitOwn &&
@@ -847,6 +851,9 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
           dmg_skin_div = ::has_feature("DamagedSkinPreview") && !isInEditMode && !isDecoratorsListOpen
           dmg_skin_buttons_div = isDmgSkinPreviewMode && (unit.isAir() || unit.isHelicopter())
     })
+
+    if (unitInfoPanelWeak?.isValid() ?? false)
+      unitInfoPanelWeak.onSceneActivate(!isInEditMode && !isDecoratorsListOpen && !isDmgSkinPreviewMode)
 
     if (needUpdateSlotDivs)
       updateSlotsDivsVisibility(decoratorType)

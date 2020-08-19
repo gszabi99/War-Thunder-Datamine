@@ -234,7 +234,7 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
 
     updateTestDriveButtonText(unit)
     updateWeaponryDiscounts(unit)
-    ::showAirInfo(unit, true)
+    ::showAirInfo(unit, true, contentObj)
     ::showBtn("aircraft-name", false, scene)
     updateHeader(::getUnitName(unit))
   }
