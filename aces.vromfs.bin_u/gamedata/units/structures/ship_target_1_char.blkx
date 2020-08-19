@@ -1,0 +1,155 @@
+[
+  {
+    "hasQualityModels": false
+  },
+  {
+    "useBotForAi": false
+  },
+  {
+    "expClass": "exp_ship"
+  },
+  {
+    "collidesTorpedo": true
+  },
+  {
+    "collidesAircraft": true
+  },
+  {
+    "dynCollisionGeom": true
+  },
+  {
+    "model": "ship_target_1"
+  },
+  {
+    "subclass": "warShip"
+  },
+  {
+    "timeToFire": 20.0
+  },
+  {
+    "timeToSmoke": 23.0
+  },
+  {
+    "hasExpl": false
+  },
+  {
+    "exhaustFx": "ps_exhaust"
+  },
+  {
+    "dynCollisionGeom": true
+  },
+  {
+    "moveType": "ship"
+  },
+  {
+    "maxFwdSpeed": 80.0
+  },
+  {
+    "maxRevSpeed": 5.0
+  },
+  {
+    "maxAngSpeed": 15.0
+  },
+  {
+    "maxAccel": 20.0
+  },
+  {
+    "maxDecel": 5.0
+  },
+  {
+    "maxAngAccel": 15.0
+  },
+  {
+    "maxAngAccel0": 2.0
+  },
+  {
+    "maxAngAccelV": 15.0
+  },
+  {
+    "groundNormSmoothViscosity": 0.1
+  },
+  {
+    "customUpdateDiv": 5
+  },
+  {
+    "SoundMove": "models.Ship"
+  },
+  {
+    "tailStartOffset": 0.0
+  },
+  {
+    "class_tags": {
+      "pacific": true,
+      "mediterran": true,
+      "westernfront": true
+    }
+  },
+  {
+    "DamageEffects": {
+      "part": {
+        "name": "body_dm",
+        "onHit": {
+          "smoke": 0.0,
+          "fire": 0.0
+        },
+        "onKill": {
+          "expl": 0.0
+        }
+      }
+    }
+  },
+  {
+    "DamageParts": {
+      "formatVersion": 2,
+      "metal": {
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 2.0,
+        "ex_decor_l_01_dm": {
+          "hp": 50.0
+        },
+        "ex_decor_l_02_dm": {
+          "hp": 50.0
+        },
+        "ex_decor_l_03_dm": {
+          "hp": 50.0
+        },
+        "ex_decor_r_01_dm": {
+          "hp": 50.0
+        },
+        "ex_decor_r_02_dm": {
+          "hp": 50.0
+        },
+        "ex_decor_r_03_dm": {
+          "hp": 50.0
+        }
+      },
+      "wood": {
+        "armorClass": "ship_wood",
+        "armorThickness": 60.0,
+        "genericDamageMult": 0.002,
+        "body_dm": {
+          "hp": 10000.0
+        }
+      }
+    }
+  },
+  {
+    "ShipPhys": {
+      "mass": {
+        "Empty": 1000000.0,
+        "momentOfInertia": [60.0,1480.0,920.0],
+        "CenterOfGravity": [-0.0,-20.55,0.0]
+      },
+      "collisionProps": {
+        "cls_body": "convex_hull"
+      }
+    }
+  },
+  {
+    "sound": {
+      "path": "sounds/engines",
+      "pathStudio": "aircraft/engines",
+      "engine": "boat"
+    }
+  }
+]
