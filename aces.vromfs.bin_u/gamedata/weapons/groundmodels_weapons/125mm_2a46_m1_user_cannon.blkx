@@ -338,6 +338,174 @@
       }
     }
   },
+  "125mm_ussr_Practice": {
+    "bullet": {
+      "mass": 19.0,
+      "caliber": 0.125,
+      "Cx": 0.025,
+      "speed": 905.0,
+      "maxDistance": 7000.0,
+      "normalizationPreset": "heat",
+      "ricochetPreset": "heat_fs",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.05,
+      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterPenetration": 0.15,
+      "bulletType": "practice_tank",
+      "slopeEffectPreset": "ap",
+      "modelName": "tank_bullet_heat_fs",
+      "fresnel": [0.23,0.1,2.0],
+      "bulletName": "125mm_practice",
+      "relativeVelHitShift": [300.0,1000.0],
+      "hitPowerMult": 800.0,
+      "relativeVelArmorShift": [200.0,1000.0],
+      "explodeTreshold": 0.1,
+      "ricochetEffect": "cannon_ricochet",
+      "waterCollisionEffect": "120-203_water_splash",
+      "waterFxScale": [0.8,1.0],
+      "explosionPatchRadius": 1.5,
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.05]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod3": [30.0,0.2]
+        },
+        {
+          "mod3": [45.0,0.3]
+        }
+      ],
+      "hitpower": {
+        "HitPower0m": [0.85,500.0],
+        "HitPower10000m": [0.8,10000.0]
+      },
+      "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 0.9,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
+        }
+      },
+      "visual": {
+        "range_percent_of_ammo": [100.0,0.0],
+        "traceFreq": 1,
+        "tracer": "100mmRed",
+        "trail": "black"
+      },
+      "collisions": {
+        "default": {
+          "fx": "75_122_ap_hit_ground",
+          "fxScale": [0.7,0.9]
+        },
+        "horLandMesh": {
+          "fx": "75_122_ap_hit_ground",
+          "fxScale": [0.7,0.9]
+        },
+        "soil": {
+          "fx": "75_122_ap_hit_ground",
+          "fxScale": [0.7,0.9]
+        },
+        "dirt": {
+          "fx": "75_122_ap_hit_ground",
+          "fxScale": [0.7,0.9]
+        },
+        "road": {
+          "fx": "75_122_ap_hit_ground",
+          "fxScale": [0.7,0.9]
+        },
+        "roadSoil": {
+          "fx": "75_122_ap_hit_ground",
+          "fxScale": [0.7,0.9]
+        },
+        "sand": {
+          "fx": "75_122_ap_hit_ground",
+          "fxScale": [0.7,0.9]
+        },
+        "duneSand": {
+          "fx": "75_122_ap_hit_ground",
+          "fxScale": [0.7,0.9]
+        },
+        "roadSand": {
+          "fx": "75_122_ap_hit_ground",
+          "fxScale": [0.7,0.9]
+        },
+        "quickSand": {
+          "fx": "75_122_ap_hit_ground",
+          "fxScale": [0.7,0.9]
+        },
+        "snow": {
+          "fx": "75_122_ap_hit_snow",
+          "fxScale": [0.7,0.9]
+        },
+        "ice": {
+          "fx": "75_122_ap_hit_snow",
+          "fxScale": [0.7,0.9]
+        },
+        "roadSnow": {
+          "fx": "75_122_ap_hit_snow",
+          "fxScale": [0.7,0.9]
+        },
+        "snowLower": {
+          "fx": "75_122_ap_hit_snow",
+          "fxScale": [0.7,0.9]
+        },
+        "wood": {
+          "fx": "ad_wood_big",
+          "fxScale": [0.7,0.9]
+        },
+        "steel": {
+          "fx": "cannon_hit_apds",
+          "fxScale": [1.1,1.3]
+        },
+        "metal": {
+          "fx": "cannon_hit_apds",
+          "fxScale": [1.1,1.3]
+        },
+        "glass": {
+          "fx": "75_122_ap_hit_stone",
+          "fxScale": [0.7,0.9]
+        },
+        "buildings": {
+          "fx": "75_122_ap_hit_stone",
+          "fxScale": [0.7,0.9]
+        },
+        "verLandMesh": {
+          "fx": "75_122_ap_hit_stone",
+          "fxScale": [0.7,0.9]
+        },
+        "beton": {
+          "fx": "75_122_ap_hit_stone",
+          "fxScale": [0.7,0.9]
+        },
+        "bricks_red": {
+          "fx": "75_122_ap_hit_stone",
+          "fxScale": [0.7,0.9]
+        },
+        "rocks": {
+          "fx": "75_122_ap_hit_stone",
+          "fxScale": [0.7,0.9]
+        },
+        "rocksSlippery": {
+          "fx": "75_122_ap_hit_stone",
+          "fxScale": [0.7,0.9]
+        },
+        "fabric": {
+          "fx": "75_122_ap_hit_stone",
+          "fxScale": [0.7,0.9]
+        },
+        "stone_snow": {
+          "fx": "75_122_ap_hit_snow_stone",
+          "fxScale": [0.7,0.9]
+        }
+      }
+    }
+  },
   "125mm_ussr_3BM42_APDS_FS": {
     "bullet": {
       "mass": 4.85,
