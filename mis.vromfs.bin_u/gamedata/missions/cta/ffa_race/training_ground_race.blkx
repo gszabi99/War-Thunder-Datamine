@@ -1339,7 +1339,7 @@
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
         "conditionsType": "ALL",
-        "enableAfterComplete": false
+        "enableAfterComplete": true
       },
       "events": {
         "periodicEvent": {
@@ -1349,13 +1349,14 @@
       "conditions": {
         "unitWhenInArea": {
           "math": "2D",
-          "object_type": "isActive",
+          "object_type": "isNotMarked",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "check_objects": "any",
           "object": "players_squad",
-          "target": "spawnpoint01"
+          "target": "spawnpoint01",
+          "unit_type_ex": "isActive"
         }
       },
       "actions": [
@@ -1569,7 +1570,7 @@
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
         "conditionsType": "ALL",
-        "enableAfterComplete": false
+        "enableAfterComplete": true
       },
       "events": {
         "periodicEvent": {
@@ -1579,13 +1580,14 @@
       "conditions": {
         "unitWhenInArea": {
           "math": "2D",
-          "object_type": "isActive",
+          "object_type": "isNotMarked",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "check_objects": "any",
           "object": "players_squad",
-          "target": "spawnpoint02"
+          "target": "spawnpoint02",
+          "unit_type_ex": "isActive"
         }
       },
       "actions": {
@@ -1773,7 +1775,7 @@
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
         "conditionsType": "ALL",
-        "enableAfterComplete": false
+        "enableAfterComplete": true
       },
       "events": {
         "periodicEvent": {
@@ -1783,13 +1785,14 @@
       "conditions": {
         "unitWhenInArea": {
           "math": "2D",
-          "object_type": "isActive",
+          "object_type": "isNotMarked",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "check_objects": "any",
           "object": "players_squad",
-          "target": "spawnpoint03"
+          "target": "spawnpoint03",
+          "unit_type_ex": "isActive"
         }
       },
       "actions": [
@@ -2003,7 +2006,7 @@
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
         "conditionsType": "ALL",
-        "enableAfterComplete": false
+        "enableAfterComplete": true
       },
       "events": {
         "periodicEvent": {
@@ -2013,13 +2016,14 @@
       "conditions": {
         "unitWhenInArea": {
           "math": "2D",
-          "object_type": "isActive",
+          "object_type": "isNotMarked",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "check_objects": "any",
           "object": "players_squad",
-          "target": "spawnpoint04"
+          "target": "spawnpoint04",
+          "unit_type_ex": "isActive"
         }
       },
       "actions": [
@@ -2279,67 +2283,6 @@
       },
       "else_actions": [
         {
-          "missionMarkAsRespawnPoint": [
-            {
-              "loc_name": ""
-            },
-            {
-              "spawnEffect": false
-            },
-            {
-              "isStrictSpawn": false
-            },
-            {
-              "resetStrictSpawnIndex": false
-            },
-            {
-              "isAirfield": false
-            },
-            {
-              "isUnit": false
-            },
-            {
-              "forceCreate": false
-            },
-            {
-              "useExisting": false
-            },
-            {
-              "isIndividual": false
-            },
-            {
-              "onlyOnePlayerPerSpawnPoint": false
-            },
-            {
-              "removeAreas": true
-            },
-            {
-              "replaceAreas": false
-            },
-            {
-              "canSpawnOnNeutral": false
-            },
-            {
-              "showOnMap": true
-            },
-            {
-              "radius": -1.0
-            },
-            {
-              "target": "spawnpoint01"
-            },
-            {
-              "target": "spawnpoint02"
-            },
-            {
-              "target": "spawnpoint03"
-            },
-            {
-              "target": "spawnpoint04"
-            }
-          ]
-        },
-        {
           "unitSetProperties": {
             "object_marking": 0,
             "object_var_name": "",
@@ -2393,6 +2336,16 @@
           }
         },
         {
+          "triggerDisable": {
+            "target": "race_start_timer"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
           "triggerDisable": [
             {
               "target": "player_in_spawnpoint01"
@@ -2407,11 +2360,6 @@
               "target": "player_in_spawnpoint04"
             }
           ]
-        },
-        {
-          "triggerDisable": {
-            "target": "race_start_timer"
-          }
         }
       ]
     },
