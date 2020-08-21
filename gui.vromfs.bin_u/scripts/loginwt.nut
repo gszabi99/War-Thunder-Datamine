@@ -158,6 +158,11 @@ g_login.initConfigs <- function initConfigs(cb)
       if (!::g_login.hasState(LOGIN_STATE.PROFILE_RECEIVED | LOGIN_STATE.CONFIGS_RECEIVED))
         return PT_STEP_STATUS.SUSPEND
 
+      ::configs.PRICE.checkUpdate()
+      ::configs.ENTITLEMENTS_PRICE.checkUpdate()
+      return null
+    }
+    function() {
       contentStateModule.updateConsoleClientDownloadStatus()
       ::get_profile_info() //update ::my_user_name
       ::init_selected_crews(true)

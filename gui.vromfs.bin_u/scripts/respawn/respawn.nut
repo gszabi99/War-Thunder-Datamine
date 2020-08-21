@@ -1760,8 +1760,11 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     if (doRespawnCalled)
       return
 
-    if (!haveSlots || leftRespawns == 0)
+    if (!haveSlots || leftRespawns == 0) {
+      if (isNoRespawns)
+        ::g_popups.add(null, noRespText)
       return
+    }
 
     reset_mp_autostart_countdown()
     if (readyForRespawn)
