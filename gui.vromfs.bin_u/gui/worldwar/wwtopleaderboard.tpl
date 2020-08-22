@@ -14,6 +14,7 @@ ww_map_item {
 }
 
 table {
+  id:t='lb_table'
   width:t='pw'
   margin-right:t='1@blockInterval'
   class:t='lbTable'

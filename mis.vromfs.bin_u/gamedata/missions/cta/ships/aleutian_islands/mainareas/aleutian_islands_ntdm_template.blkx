@@ -1,0 +1,2963 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "mission": {
+      "type": "domination",
+      "environment": "Day",
+      "weather": "clear",
+      "level": "levels/avn_aleutian_islands.bin",
+      "scoreLimit": 18000,
+      "timeLimit": 35,
+      "deathPenaltyMul": 1.0,
+      "country_axis": "usa",
+      "country_allies": "germany",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": true,
+        "isTanksAllowed": false,
+        "isShipsAllowed": true,
+        "isHelicoptersAllowed": false
+      }
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "spectator_points": [],
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01"
+    }
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "area_squad": {
+        "name": "ntdm_t1_destroyer_spawn_01",
+        "tm": [
+          [1.2917e-08,0.0,1.0],
+          [0.0,1.0,0.0],
+          [-1.0,0.0,1.2917e-08],
+          [-590.5,0.0,1119.8]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_big_fleet_spawn_area01"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn_area02"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn_area03"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn_area04"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn_area05"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn_area06"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn_area07"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn_area08"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn_area09"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn_area10"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn_area11"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn_area12"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn_area13"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn_area14"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn_area15"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn_area16"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "ntdm_t2_destroyer_spawn_01",
+        "tm": [
+          [-0.741153,0.0,0.671336],
+          [0.0,1.0,0.0],
+          [-0.671336,0.0,-0.741153],
+          [10919.2,0.0,-13603.0]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_big_fleet_spawn_area01"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn_area02"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn_area03"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn_area04"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn_area05"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn_area06"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn_area07"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn_area08"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn_area09"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn_area10"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn_area11"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn_area12"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn_area13"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn_area14"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn_area15"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn_area16"
+          }
+        ]
+      }
+    },
+    {
+      "ships": {
+        "name": "t2_ai_ship07",
+        "tm": [
+          [-0.986792,0.0,-0.161991],
+          [0.0,1.0,0.0],
+          [0.161991,0.0,-0.986792],
+          [11687.3,0.0,-6600.04]
+        ],
+        "unit_class": "germ_destroyer_class1939_t22",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "t2_ai_ship05",
+        "tm": [
+          [-0.91754,0.0,-0.397646],
+          [0.0,1.0,0.0],
+          [0.397646,0.0,-0.91754],
+          [11374.8,0.0,-6215.61]
+        ],
+        "unit_class": "germ_destroyer_class1939_t22",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "t2_ai_ship08",
+        "tm": [
+          [-0.979579,0.0,0.201062],
+          [0.0,1.0,0.0],
+          [-0.201062,0.0,-0.979579],
+          [10851.2,0.0,-7119.3]
+        ],
+        "unit_class": "germ_destroyer_class1939_t22",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "t2_ai_ship02",
+        "tm": [
+          [-0.91754,0.0,-0.397646],
+          [0.0,1.0,0.0],
+          [0.397646,0.0,-0.91754],
+          [11340.4,0.0,-5499.86]
+        ],
+        "unit_class": "germ_cruiser_emden_1944",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "t2_ai_ship01",
+        "tm": [
+          [-0.890779,0.0,0.454437],
+          [0.0,1.0,0.0],
+          [-0.454437,0.0,-0.890779],
+          [11388.3,0.0,-4798.77]
+        ],
+        "unit_class": "germ_cargo_ship_goldenfels",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "t2_ai_ship03",
+        "tm": [
+          [-0.917539,0.0,-0.397646],
+          [0.0,1.0,0.0],
+          [0.397646,0.0,-0.917539],
+          [10789.3,0.0,-5097.39]
+        ],
+        "unit_class": "germ_cargo_ship_goldenfels",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "t2_ai_ship04",
+        "tm": [
+          [-0.997837,0.0,-0.0657342],
+          [0.0,1.0,0.0],
+          [0.0657342,0.0,-0.997837],
+          [10447.3,0.0,-5838.0]
+        ],
+        "unit_class": "germ_cargo_ship_goldenfels",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "t2_ai_ship06",
+        "tm": [
+          [-0.999201,0.0,0.0399613],
+          [0.0,1.0,0.0],
+          [-0.0399613,0.0,-0.999201],
+          [10237.5,0.0,-6697.81]
+        ],
+        "unit_class": "germ_cargo_ship_goldenfels",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "t2_ai_ship09",
+        "tm": [
+          [-0.812736,0.0,0.582632],
+          [0.0,1.0,0.0],
+          [-0.582632,0.0,-0.812736],
+          [10264.6,0.0,-7681.24]
+        ],
+        "unit_class": "germ_cargo_ship_goldenfels",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "t2_ai_ship10",
+        "tm": [
+          [-0.917539,0.0,-0.397646],
+          [0.0,1.0,0.0],
+          [0.397646,0.0,-0.917539],
+          [11953.3,0.0,-5891.27]
+        ],
+        "unit_class": "germ_cargo_ship_goldenfels",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "t1_ai_ship01",
+        "tm": [
+          [0.282712,0.0,-0.959204],
+          [0.0,1.0,0.0],
+          [0.959204,0.0,0.282712],
+          [-4085.98,-0.000976563,-7756.1]
+        ],
+        "unit_class": "germ_cargo_ship_goldenfels",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "t1_ai_ship02",
+        "tm": [
+          [0.379598,0.0,0.925152],
+          [0.0,1.0,0.0],
+          [-0.925152,0.0,0.379598],
+          [-5229.26,0.0,-6720.6]
+        ],
+        "unit_class": "germ_destroyer_class1939_t22",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "t1_ai_ship03",
+        "tm": [
+          [0.379598,0.0,0.925152],
+          [0.0,1.0,0.0],
+          [-0.925152,0.0,0.379598],
+          [-4801.48,-0.000976563,-6346.2]
+        ],
+        "unit_class": "germ_destroyer_class1939_t22",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "t1_ai_ship04",
+        "tm": [
+          [0.891387,0.0,0.453244],
+          [0.0,1.0,0.0],
+          [-0.453244,0.0,0.891387],
+          [-5551.21,0.0,-5941.7]
+        ],
+        "unit_class": "germ_destroyer_class1939_t22",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "t1_ai_ship05",
+        "tm": [
+          [0.379598,0.0,0.925152],
+          [0.0,1.0,0.0],
+          [-0.925152,0.0,0.379598],
+          [-4277.31,-0.000976563,-6834.8]
+        ],
+        "unit_class": "germ_cruiser_emden_1944",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "t1_ai_ship06",
+        "tm": [
+          [0.379598,0.0,0.925152],
+          [0.0,1.0,0.0],
+          [-0.925152,0.0,0.379598],
+          [-3601.75,-0.000976563,-6738.4]
+        ],
+        "unit_class": "germ_cargo_ship_goldenfels",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "t1_ai_ship07",
+        "tm": [
+          [0.379598,0.0,0.925152],
+          [0.0,1.0,0.0],
+          [-0.925152,0.0,0.379598],
+          [-3873.72,-0.000976563,-5969.3]
+        ],
+        "unit_class": "germ_cargo_ship_goldenfels",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "t1_ai_ship08",
+        "tm": [
+          [-0.844271,0.0,0.535918],
+          [0.0,1.0,0.0],
+          [-0.535918,0.0,-0.844271],
+          [-5029.26,-0.000976563,-4521.7]
+        ],
+        "unit_class": "germ_cargo_ship_goldenfels",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "t1_ai_ship10",
+        "tm": [
+          [0.981504,0.0,-0.191442],
+          [0.0,1.0,0.0],
+          [0.191442,0.0,0.981504],
+          [-5733.16,0.0,-4715.45]
+        ],
+        "unit_class": "germ_cargo_ship_goldenfels",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "ntdm_t1_ai_ship_squad",
+        "tm": [
+          [-0.645341,0.0,0.763894],
+          [0.0,1.0,0.0],
+          [-0.763894,0.0,-0.645341],
+          [-6091.04,-0.000976563,-4165.7]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "t1_ai_ship01"
+          },
+          {
+            "squad_members": "t1_ai_ship02"
+          },
+          {
+            "squad_members": "t1_ai_ship03"
+          },
+          {
+            "squad_members": "t1_ai_ship04"
+          },
+          {
+            "squad_members": "t1_ai_ship05"
+          },
+          {
+            "squad_members": "t1_ai_ship06"
+          },
+          {
+            "squad_members": "t1_ai_ship07"
+          },
+          {
+            "squad_members": "t1_ai_ship08"
+          },
+          {
+            "squad_members": "t1_ai_ship10"
+          },
+          {
+            "squad_members": "t1_ai_ship09"
+          }
+        ]
+      }
+    },
+    {
+      "ships": {
+        "name": "t1_ai_ship09",
+        "tm": [
+          [-0.225996,0.0,0.974128],
+          [0.0,1.0,0.0],
+          [-0.974128,0.0,-0.225996],
+          [-4323.64,25.199,-5207.1]
+        ],
+        "unit_class": "germ_cargo_ship_goldenfels",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "ntdm_t2_ai_ship_squad",
+        "tm": [
+          [0.0100104,0.0,0.99995],
+          [0.0,1.0,0.0],
+          [-0.99995,0.0,0.0100104],
+          [8790.1,0.0,-4023.9]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "t2_ai_ship07"
+          },
+          {
+            "squad_members": "t2_ai_ship05"
+          },
+          {
+            "squad_members": "t2_ai_ship08"
+          },
+          {
+            "squad_members": "t2_ai_ship02"
+          },
+          {
+            "squad_members": "t2_ai_ship01"
+          },
+          {
+            "squad_members": "t2_ai_ship03"
+          },
+          {
+            "squad_members": "t2_ai_ship04"
+          },
+          {
+            "squad_members": "t2_ai_ship06"
+          },
+          {
+            "squad_members": "t2_ai_ship09"
+          },
+          {
+            "squad_members": "t2_ai_ship10"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "ntdm_t2_boat_spawn_01",
+        "tm": [
+          [0.0100104,0.0,0.99995],
+          [0.0,1.0,0.0],
+          [-0.99995,0.0,0.0100104],
+          [8026.86,-0.00048829,-4527.6]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_01_boat_spawn01"
+          },
+          {
+            "squad_members": "t2_01_boat_spawn02"
+          },
+          {
+            "squad_members": "t2_01_boat_spawn03"
+          },
+          {
+            "squad_members": "t2_01_boat_spawn04"
+          },
+          {
+            "squad_members": "t2_01_boat_spawn05"
+          },
+          {
+            "squad_members": "t2_01_boat_spawn06"
+          },
+          {
+            "squad_members": "t2_01_boat_spawn07"
+          },
+          {
+            "squad_members": "t2_01_boat_spawn08"
+          },
+          {
+            "squad_members": "t2_01_boat_spawn09"
+          },
+          {
+            "squad_members": "t2_01_boat_spawn10"
+          },
+          {
+            "squad_members": "t2_01_boat_spawn11"
+          },
+          {
+            "squad_members": "t2_01_boat_spawn12"
+          },
+          {
+            "squad_members": "t2_01_boat_spawn13"
+          },
+          {
+            "squad_members": "t2_01_boat_spawn14"
+          },
+          {
+            "squad_members": "t2_01_boat_spawn15"
+          },
+          {
+            "squad_members": "t2_01_boat_spawn16"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "ntdm_t2_boat_spawn_02",
+        "tm": [
+          [-0.969396,0.0,-0.245504],
+          [0.0,1.0,0.0],
+          [0.245504,0.0,-0.969396],
+          [7635.0,0.00048829,-9722.79]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_02_boat_spawn01"
+          },
+          {
+            "squad_members": "t2_02_boat_spawn02"
+          },
+          {
+            "squad_members": "t2_02_boat_spawn03"
+          },
+          {
+            "squad_members": "t2_02_boat_spawn04"
+          },
+          {
+            "squad_members": "t2_02_boat_spawn05"
+          },
+          {
+            "squad_members": "t2_02_boat_spawn06"
+          },
+          {
+            "squad_members": "t2_02_boat_spawn07"
+          },
+          {
+            "squad_members": "t2_02_boat_spawn08"
+          },
+          {
+            "squad_members": "t2_02_boat_spawn09"
+          },
+          {
+            "squad_members": "t2_02_boat_spawn10"
+          },
+          {
+            "squad_members": "t2_02_boat_spawn11"
+          },
+          {
+            "squad_members": "t2_02_boat_spawn12"
+          },
+          {
+            "squad_members": "t2_02_boat_spawn13"
+          },
+          {
+            "squad_members": "t2_02_boat_spawn14"
+          },
+          {
+            "squad_members": "t2_02_boat_spawn15"
+          },
+          {
+            "squad_members": "t2_02_boat_spawn16"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "ntdm_t1_boat_spawn_01",
+        "tm": [
+          [-0.725441,0.0,0.688284],
+          [0.0,1.0,0.0],
+          [-0.688284,0.0,-0.725441],
+          [-1214.33,0.0,-10444.1]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_01_boat_spawn01"
+          },
+          {
+            "squad_members": "t1_01_boat_spawn02"
+          },
+          {
+            "squad_members": "t1_01_boat_spawn03"
+          },
+          {
+            "squad_members": "t1_01_boat_spawn04"
+          },
+          {
+            "squad_members": "t1_01_boat_spawn05"
+          },
+          {
+            "squad_members": "t1_01_boat_spawn06"
+          },
+          {
+            "squad_members": "t1_01_boat_spawn07"
+          },
+          {
+            "squad_members": "t1_01_boat_spawn08"
+          },
+          {
+            "squad_members": "t1_01_boat_spawn09"
+          },
+          {
+            "squad_members": "t1_01_boat_spawn10"
+          },
+          {
+            "squad_members": "t1_01_boat_spawn11"
+          },
+          {
+            "squad_members": "t1_01_boat_spawn12"
+          },
+          {
+            "squad_members": "t1_01_boat_spawn13"
+          },
+          {
+            "squad_members": "t1_01_boat_spawn14"
+          },
+          {
+            "squad_members": "t1_01_boat_spawn15"
+          },
+          {
+            "squad_members": "t1_01_boat_spawn16"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "ntdm_t1_boat_spawn_02",
+        "tm": [
+          [1.2917e-08,0.0,1.0],
+          [0.0,1.0,0.0],
+          [-1.0,0.0,1.2917e-08],
+          [-4390.64,0.0,-4101.7]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_02_boat_spawn01"
+          },
+          {
+            "squad_members": "t1_02_boat_spawn02"
+          },
+          {
+            "squad_members": "t1_02_boat_spawn03"
+          },
+          {
+            "squad_members": "t1_02_boat_spawn04"
+          },
+          {
+            "squad_members": "t1_02_boat_spawn05"
+          },
+          {
+            "squad_members": "t1_02_boat_spawn06"
+          },
+          {
+            "squad_members": "t1_02_boat_spawn07"
+          },
+          {
+            "squad_members": "t1_02_boat_spawn08"
+          },
+          {
+            "squad_members": "t1_02_boat_spawn09"
+          },
+          {
+            "squad_members": "t1_02_boat_spawn10"
+          },
+          {
+            "squad_members": "t1_02_boat_spawn11"
+          },
+          {
+            "squad_members": "t1_02_boat_spawn12"
+          },
+          {
+            "squad_members": "t1_02_boat_spawn13"
+          },
+          {
+            "squad_members": "t1_02_boat_spawn14"
+          },
+          {
+            "squad_members": "t1_02_boat_spawn15"
+          },
+          {
+            "squad_members": "t1_02_boat_spawn16"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "ntdm_t2_destroyer_spawn_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [11981.4,0.0,-9559.53]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_big_fleet_spawn2_area01"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn2_area02"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn2_area03"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn2_area04"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn2_area05"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn2_area06"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn2_area07"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn2_area08"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn2_area09"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn2_area10"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn2_area11"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn2_area12"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn2_area13"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn2_area14"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn2_area15"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn2_area16"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "ntdm_t1_destroyer_spawn_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-5572.11,0.0,-13570.2]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_big_fleet_spawn2_area01"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn2_area02"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn2_area03"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn2_area04"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn2_area05"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn2_area06"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn2_area07"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn2_area08"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn2_area09"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn2_area10"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn2_area11"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn2_area12"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn2_area13"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn2_area14"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn2_area15"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn2_area16"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "ntdm_t1_cruiser_spawn_01",
+        "tm": [
+          [1.2917e-08,0.0,1.0],
+          [0.0,1.0,0.0],
+          [-1.0,0.0,1.2917e-08],
+          [-590.5,154.054,1119.8]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_big_fleet_spawn_area01"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn_area02"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn_area03"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn_area04"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn_area05"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn_area06"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn_area07"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn_area08"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn_area09"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn_area10"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn_area11"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn_area12"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn_area13"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn_area14"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn_area15"
+          },
+          {
+            "squad_members": "t1_big_fleet_spawn_area16"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "ntdm_t2_cruiser_spawn_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [11981.4,317.12,-9559.53]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_big_fleet_spawn2_area01"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn2_area02"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn2_area03"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn2_area04"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn2_area05"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn2_area06"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn2_area07"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn2_area08"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn2_area09"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn2_area10"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn2_area11"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn2_area12"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn2_area13"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn2_area14"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn2_area15"
+          },
+          {
+            "squad_members": "t2_big_fleet_spawn2_area16"
+          }
+        ]
+      }
+    }
+  ],
+  "areas": {
+    "battlearea": {
+      "type": "Box",
+      "tm": [
+        [-0.00020513,0.0,-18432.0],
+        [0.0,100.0,0.0],
+        [18432.0,0.0,-0.00020513],
+        [3072.0,0.0,-7168.0]
+      ],
+      "objLayer": 3,
+      "props": []
+    },
+    "ntdm_t2_capture_area": {
+      "type": "Cylinder",
+      "tm": [
+        [-1551.68,0.0,1261.86],
+        [0.0,1000.0,0.0],
+        [-1261.86,0.0,-1551.68],
+        [11072.0,3.05176e-05,-6372.0]
+      ],
+      "objLayer": 3,
+      "props": []
+    },
+    "ntdm_t1_capture_area": {
+      "type": "Cylinder",
+      "tm": [
+        [-1290.68,0.0,1527.79],
+        [0.0,1000.0,0.0],
+        [-1527.79,0.0,-1290.68],
+        [-4928.0,3.05176e-05,-6372.0]
+      ],
+      "objLayer": 3,
+      "props": []
+    },
+    "t2_big_fleet_spawn_area01": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [10859.0,0.0,-14338.1]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_01_boat_spawn01": {
+      "type": "Sphere",
+      "tm": [
+        [199.999,0.0,-1.90735e-06],
+        [0.0,200.0,0.0],
+        [1.90735e-06,0.0,199.999],
+        [-628.0,0.0,-12120.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_01_boat_spawn02": {
+      "type": "Sphere",
+      "tm": [
+        [199.999,0.0,-1.90735e-06],
+        [0.0,200.0,0.0],
+        [1.90735e-06,0.0,199.999],
+        [-596.08,0.0,-12343.2]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_01_boat_spawn03": {
+      "type": "Sphere",
+      "tm": [
+        [199.999,0.0,-1.90735e-06],
+        [0.0,200.0,0.0],
+        [1.90735e-06,0.0,199.999],
+        [-564.16,0.0,-12566.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_01_boat_spawn04": {
+      "type": "Sphere",
+      "tm": [
+        [199.999,0.0,-1.90735e-06],
+        [0.0,200.0,0.0],
+        [1.90735e-06,0.0,199.999],
+        [-532.22,0.0,-12788.9]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_01_boat_spawn05": {
+      "type": "Sphere",
+      "tm": [
+        [199.999,0.0,-1.90735e-06],
+        [0.0,200.0,0.0],
+        [1.90735e-06,0.0,199.999],
+        [-500.29,0.0,-13011.8]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_01_boat_spawn06": {
+      "type": "Sphere",
+      "tm": [
+        [199.999,0.0,-1.90735e-06],
+        [0.0,200.0,0.0],
+        [1.90735e-06,0.0,199.999],
+        [-884.85,0.0,-12281.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_01_boat_spawn07": {
+      "type": "Sphere",
+      "tm": [
+        [199.999,0.0,-1.90735e-06],
+        [0.0,200.0,0.0],
+        [1.90735e-06,0.0,199.999],
+        [-852.93,0.0,-12504.1]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_01_boat_spawn08": {
+      "type": "Sphere",
+      "tm": [
+        [199.999,0.0,-1.90735e-06],
+        [0.0,200.0,0.0],
+        [1.90735e-06,0.0,199.999],
+        [-820.99,0.0,-12727.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_01_boat_spawn09": {
+      "type": "Sphere",
+      "tm": [
+        [199.999,0.0,-1.90735e-06],
+        [0.0,200.0,0.0],
+        [1.90735e-06,0.0,199.999],
+        [-789.06,0.0,-12949.9]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_01_boat_spawn10": {
+      "type": "Sphere",
+      "tm": [
+        [199.999,0.0,-1.90735e-06],
+        [0.0,200.0,0.0],
+        [1.90735e-06,0.0,199.999],
+        [-757.14,0.0,-13172.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_01_boat_spawn11": {
+      "type": "Sphere",
+      "tm": [
+        [199.999,0.0,-1.90735e-06],
+        [0.0,200.0,0.0],
+        [1.90735e-06,0.0,199.999],
+        [-1175.82,0.0,-12204.1]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_01_boat_spawn12": {
+      "type": "Sphere",
+      "tm": [
+        [199.999,0.0,-1.90735e-06],
+        [0.0,200.0,0.0],
+        [1.90735e-06,0.0,199.999],
+        [-1143.89,0.0,-12426.9]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_01_boat_spawn13": {
+      "type": "Sphere",
+      "tm": [
+        [199.999,0.0,-1.90735e-06],
+        [0.0,200.0,0.0],
+        [1.90735e-06,0.0,199.999],
+        [-1111.96,0.0,-12649.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_01_boat_spawn14": {
+      "type": "Sphere",
+      "tm": [
+        [199.999,0.0,-1.90735e-06],
+        [0.0,200.0,0.0],
+        [1.90735e-06,0.0,199.999],
+        [-1080.02,0.0,-12872.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_01_boat_spawn15": {
+      "type": "Sphere",
+      "tm": [
+        [199.999,0.0,-1.90735e-06],
+        [0.0,200.0,0.0],
+        [1.90735e-06,0.0,199.999],
+        [-1048.08,0.0,-13095.5]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_01_boat_spawn16": {
+      "type": "Sphere",
+      "tm": [
+        [199.999,0.0,-1.90735e-06],
+        [0.0,200.0,0.0],
+        [1.90735e-06,0.0,199.999],
+        [-1015.41,0.0,-13323.5]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_02_boat_spawn01": {
+      "type": "Sphere",
+      "tm": [
+        [200.0,0.0,0.0],
+        [0.0,200.0,0.0],
+        [0.0,0.0,200.0],
+        [-1530.05,0.0,-2602.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_02_boat_spawn02": {
+      "type": "Sphere",
+      "tm": [
+        [200.0,0.0,0.0],
+        [0.0,200.0,0.0],
+        [0.0,0.0,200.0],
+        [-1530.05,0.0,-2372.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_02_boat_spawn03": {
+      "type": "Sphere",
+      "tm": [
+        [200.0,0.0,0.0],
+        [0.0,200.0,0.0],
+        [0.0,0.0,200.0],
+        [-1530.05,0.0,-2147.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_02_boat_spawn04": {
+      "type": "Sphere",
+      "tm": [
+        [200.0,0.0,0.0],
+        [0.0,200.0,0.0],
+        [0.0,0.0,200.0],
+        [-1530.05,0.0,-1922.09]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_02_boat_spawn05": {
+      "type": "Sphere",
+      "tm": [
+        [200.0,0.0,0.0],
+        [0.0,200.0,0.0],
+        [0.0,0.0,200.0],
+        [-1530.05,0.0,-1696.99]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_02_boat_spawn06": {
+      "type": "Sphere",
+      "tm": [
+        [200.0,0.0,0.0],
+        [0.0,200.0,0.0],
+        [0.0,0.0,200.0],
+        [-1530.05,0.0,-1471.9]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_02_boat_spawn07": {
+      "type": "Sphere",
+      "tm": [
+        [200.0,0.0,0.0],
+        [0.0,200.0,0.0],
+        [0.0,0.0,200.0],
+        [-1252.97,0.0,-2490.2]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_02_boat_spawn08": {
+      "type": "Sphere",
+      "tm": [
+        [200.0,0.0,0.0],
+        [0.0,200.0,0.0],
+        [0.0,0.0,200.0],
+        [-1252.97,0.0,-2264.9]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_02_boat_spawn09": {
+      "type": "Sphere",
+      "tm": [
+        [200.0,0.0,0.0],
+        [0.0,200.0,0.0],
+        [0.0,0.0,200.0],
+        [-1252.97,0.0,-2039.9]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_02_boat_spawn10": {
+      "type": "Sphere",
+      "tm": [
+        [200.0,0.0,0.0],
+        [0.0,200.0,0.0],
+        [0.0,0.0,200.0],
+        [-1252.97,0.0,-1814.8]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_02_boat_spawn11": {
+      "type": "Sphere",
+      "tm": [
+        [200.0,0.0,0.0],
+        [0.0,200.0,0.0],
+        [0.0,0.0,200.0],
+        [-1252.97,0.0,-1589.49]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_02_boat_spawn12": {
+      "type": "Sphere",
+      "tm": [
+        [200.0,0.0,0.0],
+        [0.0,200.0,0.0],
+        [0.0,0.0,200.0],
+        [-975.89,0.0,-2367.2]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_02_boat_spawn13": {
+      "type": "Sphere",
+      "tm": [
+        [200.0,0.0,0.0],
+        [0.0,200.0,0.0],
+        [0.0,0.0,200.0],
+        [-975.89,0.0,-2141.99]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_02_boat_spawn14": {
+      "type": "Sphere",
+      "tm": [
+        [200.0,0.0,0.0],
+        [0.0,200.0,0.0],
+        [0.0,0.0,200.0],
+        [-975.89,0.0,-1916.99]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_02_boat_spawn15": {
+      "type": "Sphere",
+      "tm": [
+        [200.0,0.0,0.0],
+        [0.0,200.0,0.0],
+        [0.0,0.0,200.0],
+        [-975.89,0.0,-1691.8]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_02_boat_spawn16": {
+      "type": "Sphere",
+      "tm": [
+        [200.0,0.0,0.0],
+        [0.0,200.0,0.0],
+        [0.0,0.0,200.0],
+        [-975.89,0.0,-1466.59]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_02_boat_spawn01": {
+      "type": "Sphere",
+      "tm": [
+        [-200.0,0.0,4.76838e-05],
+        [0.0,200.0,0.0],
+        [-4.76838e-05,0.0,-200.0],
+        [7569.0,0.0,-1170.46]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_02_boat_spawn02": {
+      "type": "Sphere",
+      "tm": [
+        [-200.0,0.0,4.76838e-05],
+        [0.0,200.0,0.0],
+        [-4.76838e-05,0.0,-200.0],
+        [7571.31,0.0,-940.063]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_02_boat_spawn03": {
+      "type": "Sphere",
+      "tm": [
+        [-200.0,0.0,4.76838e-05],
+        [0.0,200.0,0.0],
+        [-4.76838e-05,0.0,-200.0],
+        [7267.85,0.0,-160.35]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_02_boat_spawn04": {
+      "type": "Sphere",
+      "tm": [
+        [-200.0,0.0,4.76838e-05],
+        [0.0,200.0,0.0],
+        [-4.76838e-05,0.0,-200.0],
+        [7270.11,0.0,63.7278]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_02_boat_spawn05": {
+      "type": "Sphere",
+      "tm": [
+        [-199.339,0.0,-16.2489],
+        [0.0,200.0,0.0],
+        [16.2489,0.0,-199.339],
+        [7272.37,0.0,288.931]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_02_boat_spawn06": {
+      "type": "Sphere",
+      "tm": [
+        [-199.339,0.0,-16.2489],
+        [0.0,200.0,0.0],
+        [16.2489,0.0,-199.339],
+        [7274.62,0.0,513.931]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_02_boat_spawn07": {
+      "type": "Sphere",
+      "tm": [
+        [-200.0,0.0,4.76838e-05],
+        [0.0,200.0,0.0],
+        [-4.76838e-05,0.0,-200.0],
+        [7772.42,0.0,-1275.46]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_02_boat_spawn08": {
+      "type": "Sphere",
+      "tm": [
+        [-200.0,0.0,4.76838e-05],
+        [0.0,200.0,0.0],
+        [-4.76838e-05,0.0,-200.0],
+        [7774.67,0.0,-1050.26]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_02_boat_spawn09": {
+      "type": "Sphere",
+      "tm": [
+        [-200.0,0.0,4.76838e-05],
+        [0.0,200.0,0.0],
+        [-4.76838e-05,0.0,-200.0],
+        [7776.93,0.0,-825.16]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_02_boat_spawn10": {
+      "type": "Sphere",
+      "tm": [
+        [-200.0,0.0,4.76838e-05],
+        [0.0,200.0,0.0],
+        [-4.76838e-05,0.0,-200.0],
+        [7473.49,0.0,-46.4715]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_02_boat_spawn11": {
+      "type": "Sphere",
+      "tm": [
+        [-199.339,0.0,-16.2489],
+        [0.0,200.0,0.0],
+        [16.2489,0.0,-199.339],
+        [7475.74,0.0,178.63]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_02_boat_spawn12": {
+      "type": "Sphere",
+      "tm": [
+        [-200.0,0.0,4.76838e-05],
+        [0.0,200.0,0.0],
+        [-4.76838e-05,0.0,-200.0],
+        [7982.55,0.0,-1146.36]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_02_boat_spawn13": {
+      "type": "Sphere",
+      "tm": [
+        [-200.0,0.0,4.76838e-05],
+        [0.0,200.0,0.0],
+        [-4.76838e-05,0.0,-200.0],
+        [7984.8,0.0,-921.359]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_02_boat_spawn14": {
+      "type": "Sphere",
+      "tm": [
+        [-200.0,0.0,4.76838e-05],
+        [0.0,200.0,0.0],
+        [-4.76838e-05,0.0,-200.0],
+        [7681.35,0.0,-141.651]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_02_boat_spawn15": {
+      "type": "Sphere",
+      "tm": [
+        [-200.0,0.0,4.76838e-05],
+        [0.0,200.0,0.0],
+        [-4.76838e-05,0.0,-200.0],
+        [7683.61,0.0,82.5285]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_02_boat_spawn16": {
+      "type": "Sphere",
+      "tm": [
+        [-199.339,0.0,-16.2489],
+        [0.0,200.0,0.0],
+        [16.2489,0.0,-199.339],
+        [7685.87,0.0,307.63]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_01_boat_spawn01": {
+      "type": "Sphere",
+      "tm": [
+        [-179.955,0.0,-87.2714],
+        [0.0,200.0,0.0],
+        [87.2714,0.0,-179.955],
+        [8264.42,0.0,-12236.2]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_01_boat_spawn02": {
+      "type": "Sphere",
+      "tm": [
+        [-179.955,0.0,-87.2714],
+        [0.0,200.0,0.0],
+        [87.2714,0.0,-179.955],
+        [8215.29,0.0,-12455.9]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_01_boat_spawn03": {
+      "type": "Sphere",
+      "tm": [
+        [-179.955,0.0,-87.2714],
+        [0.0,200.0,0.0],
+        [87.2714,0.0,-179.955],
+        [8166.16,0.0,-12675.5]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_01_boat_spawn04": {
+      "type": "Sphere",
+      "tm": [
+        [-200.0,0.0,4.57764e-05],
+        [0.0,200.0,0.0],
+        [-4.57764e-05,0.0,-200.0],
+        [8117.01,0.0,-12895.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_01_boat_spawn05": {
+      "type": "Sphere",
+      "tm": [
+        [-200.0,0.0,4.57764e-05],
+        [0.0,200.0,0.0],
+        [-4.57764e-05,0.0,-200.0],
+        [8067.88,0.0,-13115.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_01_boat_spawn06": {
+      "type": "Sphere",
+      "tm": [
+        [-179.955,0.0,-87.2714],
+        [0.0,200.0,0.0],
+        [87.2714,0.0,-179.955],
+        [7967.19,0.0,-12295.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_01_boat_spawn07": {
+      "type": "Sphere",
+      "tm": [
+        [-179.955,0.0,-87.2714],
+        [0.0,200.0,0.0],
+        [87.2714,0.0,-179.955],
+        [7918.04,0.0,-12515.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_01_boat_spawn08": {
+      "type": "Sphere",
+      "tm": [
+        [-200.0,0.0,4.57764e-05],
+        [0.0,200.0,0.0],
+        [-4.57764e-05,0.0,-200.0],
+        [7868.91,0.0,-12735.1]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_01_boat_spawn09": {
+      "type": "Sphere",
+      "tm": [
+        [-200.0,0.0,4.57764e-05],
+        [0.0,200.0,0.0],
+        [-4.57764e-05,0.0,-200.0],
+        [7819.77,0.0,-12954.8]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_01_boat_spawn10": {
+      "type": "Sphere",
+      "tm": [
+        [-200.0,0.0,4.57764e-05],
+        [0.0,200.0,0.0],
+        [-4.57764e-05,0.0,-200.0],
+        [7770.62,0.0,-13174.5]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_01_boat_spawn11": {
+      "type": "Sphere",
+      "tm": [
+        [-179.955,0.0,-87.2714],
+        [0.0,200.0,0.0],
+        [87.2714,0.0,-179.955],
+        [7722.49,0.0,-12120.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_01_boat_spawn12": {
+      "type": "Sphere",
+      "tm": [
+        [-179.955,0.0,-87.2714],
+        [0.0,200.0,0.0],
+        [87.2714,0.0,-179.955],
+        [7673.37,0.0,-12340.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_01_boat_spawn13": {
+      "type": "Sphere",
+      "tm": [
+        [-179.955,0.0,-87.2714],
+        [0.0,200.0,0.0],
+        [87.2714,0.0,-179.955],
+        [7624.24,0.0,-12559.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_01_boat_spawn14": {
+      "type": "Sphere",
+      "tm": [
+        [-200.0,0.0,4.57764e-05],
+        [0.0,200.0,0.0],
+        [-4.57764e-05,0.0,-200.0],
+        [7575.09,0.0,-12779.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_01_boat_spawn15": {
+      "type": "Sphere",
+      "tm": [
+        [-200.0,0.0,4.57764e-05],
+        [0.0,200.0,0.0],
+        [-4.57764e-05,0.0,-200.0],
+        [7525.96,0.0,-12999.1]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_01_boat_spawn16": {
+      "type": "Sphere",
+      "tm": [
+        [-200.0,0.0,4.57764e-05],
+        [0.0,200.0,0.0],
+        [-4.57764e-05,0.0,-200.0],
+        [7475.67,0.0,-13223.9]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "p1": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [-5312.5,0.0,-15548.2]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "p2": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [11071.5,0.0,835.801]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_big_fleet_spawn_area02": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [10859.0,0.0,-14114.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_big_fleet_spawn_area03": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [10859.0,0.0,-13890.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_big_fleet_spawn_area04": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [10859.0,0.0,-13667.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_big_fleet_spawn_area05": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [10859.0,0.0,-13443.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_big_fleet_spawn_area06": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [11072.0,0.0,-13443.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_big_fleet_spawn_area07": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [11072.0,0.0,-14338.1]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_big_fleet_spawn_area08": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [11072.0,0.0,-14114.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_big_fleet_spawn_area09": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [11072.0,0.0,-13890.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_big_fleet_spawn_area10": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [11072.0,0.0,-13667.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_big_fleet_spawn_area11": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [11285.0,0.0,-13443.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_big_fleet_spawn_area12": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [11285.0,0.0,-14338.1]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_big_fleet_spawn_area13": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [11285.0,0.0,-14114.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_big_fleet_spawn_area14": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [11285.0,0.0,-13890.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_big_fleet_spawn_area15": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [11285.0,0.0,-13667.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_big_fleet_spawn_area16": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [11072.0,0.0,-14572.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_big_fleet_spawn2_area01": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [10859.0,0.0,-9638.1]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_big_fleet_spawn2_area02": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [10859.0,0.0,-9414.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_big_fleet_spawn2_area03": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [10859.0,0.0,-9190.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_big_fleet_spawn2_area04": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [10859.0,0.0,-8967.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_big_fleet_spawn2_area05": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [10859.0,0.0,-8743.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_big_fleet_spawn2_area06": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [11072.0,0.0,-8743.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_big_fleet_spawn2_area07": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [11072.0,0.0,-9638.1]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_big_fleet_spawn2_area08": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [11072.0,0.0,-9414.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_big_fleet_spawn2_area09": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [11072.0,0.0,-9190.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_big_fleet_spawn2_area10": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [11072.0,0.0,-8967.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_big_fleet_spawn2_area11": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [11285.0,0.0,-8743.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_big_fleet_spawn2_area12": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [11285.0,0.0,-9638.1]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_big_fleet_spawn2_area13": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [11285.0,0.0,-9414.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_big_fleet_spawn2_area14": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [11285.0,0.0,-9190.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_big_fleet_spawn2_area15": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [11285.0,0.0,-8967.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_big_fleet_spawn2_area16": {
+      "type": "Sphere",
+      "tm": [
+        [-194.565,0.0,46.3065],
+        [0.0,200.0,0.0],
+        [-46.3065,0.0,-194.565],
+        [11072.0,0.0,-9872.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn_area01": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-4689.5,0.0,-8836.77]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn_area02": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-4689.5,0.0,-9116.07]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn_area03": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-4689.5,0.0,-9395.27]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn_area04": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-4689.5,0.0,-9674.47]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn_area05": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-4689.5,0.0,-9953.67]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn_area06": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-4928.0,0.0,-8836.77]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn_area07": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-4928.0,0.0,-9116.07]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn_area08": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-4928.0,0.0,-9395.27]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn_area09": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-4928.0,0.0,-9674.47]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn_area10": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-4928.0,0.0,-9953.67]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn_area11": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-5166.5,0.0,-8836.77]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn_area12": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-5166.5,0.0,-9116.07]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn_area13": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-5166.5,0.0,-9395.27]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn_area14": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-5166.5,0.0,-9674.47]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn_area15": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-5166.5,0.0,-9953.67]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn_area16": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-4928.0,0.0,-10209.5]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn2_area01": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-4689.5,0.0,-13199.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn2_area02": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-4689.5,0.0,-13478.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn2_area03": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-4689.5,0.0,-13757.8]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn2_area04": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-4689.5,0.0,-14037.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn2_area05": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-4689.5,0.0,-14316.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn2_area06": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-4928.0,0.0,-13199.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn2_area07": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-4928.0,0.0,-13478.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn2_area08": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-4928.0,0.0,-13757.8]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn2_area09": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-4928.0,0.0,-14037.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn2_area10": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-4928.0,0.0,-14316.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn2_area11": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-5166.5,0.0,-13199.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn2_area12": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-5166.5,0.0,-13478.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn2_area13": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-5166.5,0.0,-13757.8]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn2_area14": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-5166.5,0.0,-14037.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn2_area15": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-5166.5,0.0,-14316.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_big_fleet_spawn2_area16": {
+      "type": "Sphere",
+      "tm": [
+        [199.919,0.0,-5.67915],
+        [0.0,200.0,0.0],
+        [5.67915,0.0,199.919],
+        [-4928.0,0.0,-14572.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": false
+      }
+    }
+  ],
+  "wayPoints": []
+}

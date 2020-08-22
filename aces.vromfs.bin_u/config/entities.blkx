@@ -2,6 +2,11 @@
   "replicating": {
     "replication": []
   },
+  "msg_sink": {
+    "_extends": "replicating",
+    "_singleton": true,
+    "msg_sink": []
+  },
   "root": {
     "active": true
   },
@@ -26,6 +31,9 @@
     },
     {
       "unitVersion": 0
+    },
+    {
+      "unitType": -1
     },
     {
       "_replicated": "^(uid)$"
@@ -80,15 +88,12 @@
       "name": "tank_medical_kit_expendable",
       "enabled_without_mod": false
     },
-    "track_sound_outside": {
+    "track_sound": {
       "_tags": "sound"
     }
   },
   "player_tank": {
-    "_extends": "tank",
-    "track_sound_cockpit": {
-      "_tags": "sound"
-    }
+    "_extends": "tank"
   },
   "simple_ship": {
     "_extends": "simple_ground_unit"
@@ -96,15 +101,12 @@
   "ship": {
     "_extends": "ground_unit",
     "extinguisher.enabled_without_mod": false,
-    "track_sound_outside": {
+    "track_sound": {
       "_tags": "sound"
     }
   },
   "player_ship": {
-    "_extends": "ship",
-    "track_sound_cockpit": {
-      "_tags": "sound"
-    }
+    "_extends": "ship"
   },
   "walker": {
     "_extends": "ground_unit"

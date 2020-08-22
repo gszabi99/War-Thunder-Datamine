@@ -56,6 +56,7 @@ local getMainOptions = function()
       [::USEROPT_GUN_TARGET_DISTANCE, "spinner", ! ::is_in_flight()],
       [::USEROPT_GUN_VERTICAL_TARGETING, "spinner", ! ::is_in_flight()],
       [::USEROPT_BOMB_ACTIVATION_TIME, "spinner", ! ::is_in_flight()],
+      [::USEROPT_BOMB_SERIES, "spinner", ! ::is_in_flight()],
       [::USEROPT_FLARES_SERIES, "spinner", ! ::is_in_flight()],
       [::USEROPT_FLARES_SERIES_PERIODS, "spinner", ! ::is_in_flight()],
       [::USEROPT_FLARES_PERIODS, "spinner", ! ::is_in_flight()],
@@ -68,6 +69,7 @@ local getMainOptions = function()
       [::USEROPT_AUTOREARM_ON_AIRFIELD, "spinner"],
       [::USEROPT_ACTIVATE_AIRBORNE_RADAR_ON_SPAWN, "spinner"],
       [::USEROPT_USE_RECTANGULAR_RADAR_INDICATOR, "spinner"],
+      [::USEROPT_USE_RADAR_HUD_IN_COCKPIT, "spinner"],
       [::USEROPT_AIR_RADAR_SIZE, "slider"],
       [::USEROPT_CROSSHAIR_TYPE, "combobox"],
       [::USEROPT_CROSSHAIR_COLOR, "combobox"],
@@ -102,7 +104,6 @@ local getMainOptions = function()
 
       ["options/header/ship"],
       [::USEROPT_DEPTHCHARGE_ACTIVATION_TIME, "spinner", ! ::is_in_flight()],
-      [::USEROPT_MINE_DEPTH, "spinner", ! ::is_in_flight()],
       [::USEROPT_USE_PERFECT_RANGEFINDER, "spinner", ::has_feature("Ships")],
       [::USEROPT_SAVE_AI_TARGET_TYPE, "spinner", ::has_feature("Ships")],
       [::USEROPT_DEFAULT_AI_TARGET_TYPE, "spinner", ::has_feature("Ships")],

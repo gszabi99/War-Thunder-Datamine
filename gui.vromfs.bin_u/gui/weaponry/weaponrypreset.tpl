@@ -120,7 +120,7 @@ weaponryPreset {
     text {
       position:t='relative'
       pos:t='<<chapterPos>>-0.5w-1@sIco, 0'
-      text:t='<<purposeTypeName>>'
+      text:t='<<chapterName>>'
     }
   }
   <</isCollapsable>>

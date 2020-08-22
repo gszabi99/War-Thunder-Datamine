@@ -1,10 +1,17 @@
 local stdMath = require("std/math.nut")
 local { WEAPON_TYPE,
-        getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
+        getLastWeapon,
+        getLinkedGunIdx,
+        isCaliberCannon,
+        getCommonWeaponsBlk,
+        getLastPrimaryWeapon,
+        getPrimaryWeaponsList,
+        getWeaponNameByBlkPath } = require("scripts/weaponry/weaponryInfo.nut")
 local { AMMO,
         getAmmoAmountData } = require("scripts/weaponry/ammoInfo.nut")
 local { isModResearched,
-        isModAvailableOrFree } = require("scripts/weaponry/modificationInfo.nut")
+        isModAvailableOrFree,
+        getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
 
 local BULLET_TYPE = {
   ROCKET_AIR     = "rocket_aircraft"
@@ -107,15 +114,12 @@ local function setUnitLastBullets(unit, groupIndex, value)
   if (unit.unitType.canUseSeveralBulletsForGun)
     ::set_unit_option(unit.name, ::USEROPT_BULLETS0 + groupIndex, value)
 
-  local saveValue = value
-  local modif = ::getModificationByName(unit, value)
-  if (!modif) //default modification
-    saveValue = ""
+  local saveValue = getModificationByName(unit, value)? value : "" //'' = default modification
 
-  //if (bulletsValue != null && ::get_gui_options_mode() == ::OPTIONS_MODE_TRAINING)
-  dagor.debug("set_last_bullets " + value)
   local curBullets = ::get_last_bullets(unit.name, groupIndex)
-  if (curBullets != saveValue) {
+  if (curBullets != saveValue)
+  {
+    ::dagor.debug($"Bullets Info: {unit.name}: bullet {groupIndex}: Set unit last bullets: change from '{curBullets}' to '{saveValue}'")
     ::set_last_bullets(unit.name, groupIndex, saveValue)
     ::broadcastEvent("UnitBulletsChanged", { unit = unit,
       groupIdx = groupIndex, bulletName = value })
@@ -129,7 +133,7 @@ local function getBulletsItemsList(unit, bulletsList, groupIndex)
   local isCurBulletsValid = false
   foreach(i, value in bulletsList.values)
   {
-    local bItem = ::getModificationByName(unit, value)
+    local bItem = getModificationByName(unit, value)
     isCurBulletsValid = isCurBulletsValid || value == curBulletsName ||
       (!bItem && curBulletsName == "")
     if (!bItem) //default
@@ -146,7 +150,7 @@ local function getBulletsSearchName(unit, modifName) //need for default bullets,
 {
   if (!("modifications" in unit))
     return ""
-  if (::getModificationByName(unit, modifName))
+  if (getModificationByName(unit, modifName))
     return modifName  //not default modification
 
   local groupName = getModificationBulletsGroup(modifName)
@@ -193,14 +197,14 @@ local function getBulletsSetData(air, modifName, noModList = null)
     searchName = getBulletsSearchName(air, modifName)
     if (searchName=="")
       return res
-    mod = ::getModificationByName(air, modifName)
+    mod = getModificationByName(air, modifName)
   }
 
   local wpList = []
-  local primaryList = ::getPrimaryWeaponsList(air)
+  local primaryList = getPrimaryWeaponsList(air)
   foreach(primaryMod in primaryList)
   {
-    local primaryBlk = ::getCommonWeaponsBlk(airBlk, primaryMod)
+    local primaryBlk = getCommonWeaponsBlk(airBlk, primaryMod)
     if (primaryBlk)
       foreach (weapon in (primaryBlk % "Weapon"))
         if (weapon?.blk && !weapon?.dummy && !::isInArray(weapon.blk, wpList))
@@ -488,7 +492,7 @@ local function getBulletsInfoForPrimaryGuns(air)
   if (!airBlk)
     return res
 
-  local commonWeaponBlk = ::getCommonWeaponsBlk(airBlk, "")
+  local commonWeaponBlk = getCommonWeaponsBlk(airBlk, "")
   if (!commonWeaponBlk)
     return res
 
@@ -556,16 +560,46 @@ local function getFakeBulletName(bulletIdx)
   return ::fakeBullets_prefix + bulletIdx + "_default"
 }
 //FIX ME: Needs to relocate to visual module
-local function getUniqModificationText(unit, modifName, isShortDesc)
+
+local function getUniqModificationText(modifName, isShortDesc)
 {
   if (modifName == "premExpMul")
   {
-    local value = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(::get_premExpMul_add_value(unit), false)
+    local value = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(
+      (::get_ranks_blk()?.goldPlaneExpMul ?? 1.0) - 1.0, false)
     local ending = isShortDesc? "" : "/desc"
     return ::loc("modification/" + modifName + ending, "", { value = value })
   }
   return null
 }
+
+
+local function updateRelationModificationList(unit, modifName)
+{
+  local mod = getModificationByName(unit, modifName)
+  if (mod && !("relationModification" in mod))
+  {
+    local blk = ::get_modifications_blk();
+    mod.relationModification <- [];
+    foreach(ind, m in unit.modifications)
+    {
+      if ("reqModification" in m && ::isInArray(modifName, m.reqModification))
+      {
+        local modification = blk?.modifications?[m.name]
+        if (modification?.effects)
+          foreach (effectType, effect in modification.effects)
+          {
+            if (effectType == "additiveBulletMod")
+            {
+              mod.relationModification.append(m.name)
+              break;
+            }
+          }
+      }
+    }
+  }
+}
+
 //FIX ME: Needs to relocate to visual module
 // Generate text description for air.modifications[modificationNo]
 local function getModificationInfo(air, modifName, isShortDesc=false, limitedName = false,
@@ -577,24 +611,24 @@ local function getModificationInfo(air, modifName, isShortDesc=false, limitedNam
   if (!air)
     return res
 
-  local uniqText = getUniqModificationText(air, modifName, isShortDesc)
+  local uniqText = getUniqModificationText(modifName, isShortDesc)
   if (uniqText)
   {
     res.desc = uniqText
     return res
   }
 
-  local mod = ::getModificationByName(air, modifName)
+  local mod = getModificationByName(air, modifName)
 
   local ammo_pack_len = 0
   if (modifName.indexof("_ammo_pack") != null && mod)
   {
-    ::updateRelationModificationList(air, modifName);
+    updateRelationModificationList(air, modifName);
     if ("relationModification" in mod && mod.relationModification.len() > 0)
     {
       modifName = mod.relationModification[0];
       ammo_pack_len = mod.relationModification.len()
-      mod = ::getModificationByName(air, modifName)
+      mod = getModificationByName(air, modifName)
     }
   }
 
@@ -625,7 +659,7 @@ local function getModificationInfo(air, modifName, isShortDesc=false, limitedNam
         }
 
       locId = "modification/" + locId
-      if (::isCaliberCannon(caliber))
+      if (isCaliberCannon(caliber))
         res.desc = ::locEnding(locId + "/cannon", ending, "")
       if (res.desc=="")
         res.desc = ::locEnding(locId, ending)
@@ -668,7 +702,7 @@ local function getModificationInfo(air, modifName, isShortDesc=false, limitedNam
       shortDescr = ::loc(locId + "/name")
     if (set?.bulletNames?[0]
       && (set.weaponType != WEAPON_TYPE.GUNS || !set.isBulletBelt ||
-      (::isCaliberCannon(caliber) && air.unitType.canUseSeveralBulletsForGun)))
+      (isCaliberCannon(caliber) && air.unitType.canUseSeveralBulletsForGun)))
     {
       locId = set.bulletNames[0]
       shortDescr = ::loc(locId, ::loc("weapons/" + locId + "/short", locId))
@@ -792,9 +826,9 @@ local function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS)
     return descr
   }
 
-  local linked_index = ::get_linked_gun_index(groupIdx, modTotal, bulletSetsQuantity, canBeDuplicate)
+  local linked_index = getLinkedGunIdx(groupIdx, modTotal, bulletSetsQuantity, canBeDuplicate)
   descr.duplicate = canBeDuplicate && groupIdx > 0 &&
-    linked_index == ::get_linked_gun_index(groupIdx - 1, modTotal, bulletSetsQuantity, canBeDuplicate)
+    linked_index == getLinkedGunIdx(groupIdx - 1, modTotal, bulletSetsQuantity, canBeDuplicate)
 
   local groups = []
   for (local modifNo = 0; modifNo < air.modifications.len(); modifNo++)
@@ -854,7 +888,7 @@ local function getActiveBulletsGroupIntForDuplicates(unit, checkPurchased = true
   local maxCatridges = 0
   local bulletSetsQuantity = unit.unitType.bulletSetsQuantity
   for (local i = 0; i < bulletSetsQuantity; i++) {
-    local linkedIdx = ::get_linked_gun_index(i, groupsCount, bulletSetsQuantity)
+    local linkedIdx = getLinkedGunIdx(i, groupsCount, bulletSetsQuantity)
     if (linkedIdx == lastLinkedIdx) {
       duplicates++
     } else {
@@ -903,7 +937,7 @@ local function getBulletGroupIndex(airName, bulletName)
 
 local function getActiveBulletsGroupInt(air, checkPurchased = true)
 {
-  local primaryWeapon = ::get_last_primary_weapon(air)
+  local primaryWeapon = getLastPrimaryWeapon(air)
   local secondaryWeapon = getLastWeapon(air.name)
   if (!(primaryWeapon in air.primaryBullets) || !(secondaryWeapon in air.secondaryBullets))
   {
@@ -921,13 +955,13 @@ local function getActiveBulletsGroupInt(air, checkPurchased = true)
     if (!(primaryWeapon in air.primaryBullets))
     {
       local primary = 0
-      local primaryList = ::getPrimaryWeaponsList(air)
+      local primaryList = getPrimaryWeaponsList(air)
       if (primaryList.len() > 0)
       {
         local airBlk = ::get_full_unit_blk(air.name)
         if (airBlk)
         {
-          local primaryBlk = ::getCommonWeaponsBlk(airBlk, primaryWeapon)
+          local primaryBlk = getCommonWeaponsBlk(airBlk, primaryWeapon)
           primary = getActiveBulletsIntByWeaponsBlk(air, primaryBlk, weaponToFakeBulletMask)
         }
       }
@@ -1038,9 +1072,9 @@ local function getBulletsIconItem(unit, item)
 
   if (item.type == weaponsItem.modification)
   {
-    ::updateRelationModificationList(unit, item.name)
+    updateRelationModificationList(unit, item.name)
     if ("relationModification" in item && item.relationModification.len() == 1)
-      return ::getModificationByName(unit, item.relationModification[0])
+      return getModificationByName(unit, item.relationModification[0])
   }
   return null
 }
@@ -1052,7 +1086,7 @@ local function getBulletImage(bulletsSet, bulletIndex, needFullPath = true)
     imgId = bulletsSet.customIconsMap[imgId]
   if (imgId.indexof("@") != null)
     imgId = imgId.slice(0, imgId.indexof("@"))
-  local defaultImgId = ::isCaliberCannon(1000 * (bulletsSet?.caliber ?? 0.0))
+  local defaultImgId = isCaliberCannon(1000 * (bulletsSet?.caliber ?? 0.0))
     ? "default_shell" : "default_ball"
   local textureId = bulletIcons?[imgId] ?? bulletIcons?[defaultImgId]
   return needFullPath ? $"#ui/gameuiskin#{textureId}" : textureId
@@ -1284,7 +1318,7 @@ local buildPiercingData = ::kwarg(function buildPiercingData(bullet_parameters, 
   {
     if (param.caliber > 0)
       addProp(p, ::loc("bullet_properties/caliber"),
-                stdMath.round_by_value(param.caliber, ::isCaliberCannon(param.caliber) ? 1 : 0.01) + " " + ::loc("measureUnits/mm"))
+                stdMath.round_by_value(param.caliber, isCaliberCannon(param.caliber) ? 1 : 0.01) + " " + ::loc("measureUnits/mm"))
     if (param.mass > 0)
       addProp(p, ::loc("bullet_properties/mass"),
                 ::g_measure_type.getTypeByName("kg", true).getMeasureUnitsText(param.mass))
@@ -1384,7 +1418,7 @@ local buildPiercingData = ::kwarg(function buildPiercingData(bullet_parameters, 
 
   local currWeaponName = ""
   if("weaponBlkPath" in param)
-    currWeaponName = ::get_weapon_name_by_blk_path(param.weaponBlkPath)
+    currWeaponName = getWeaponNameByBlkPath(param.weaponBlkPath)
 
   local bulletName = currWeaponName != "" ? ::loc("weapons/{0}".subst(currWeaponName)) : ""
   local apData = null
@@ -1450,6 +1484,29 @@ local function addBulletsParamToDesc(descTbl, unit, item)
     needAdditionalInfo = true})
 }
 
+local function getFakeBulletsModByName(unit, modName)
+{
+  if (isFakeBullet(modName))
+  {
+    local groupIdxStr = ::g_string.slice(
+      modName, ::fakeBullets_prefix.len(), ::fakeBullets_prefix.len() + 1)
+    local groupIdx = ::to_integer_safe(groupIdxStr, -1)
+    if (groupIdx < 0)
+      return null
+    return {
+      name = modName
+      isDefaultForGroup = groupIdx
+    }
+  }
+
+  // Attempt to get modification from group index (e.g. default modification).
+  local groupIndex = getBulletGroupIndex(unit.name, modName)
+  if (groupIndex >= 0)
+    return { name = modName, isDefaultForGroup = groupIndex }
+
+  return null
+}
+
 return {
   BULLET_TYPE                           = BULLET_TYPE
   getModificationBulletsGroup           = getModificationBulletsGroup
@@ -1478,4 +1535,5 @@ return {
   addBulletsParamToDesc                 = addBulletsParamToDesc
   buildPiercingData                     = buildPiercingData
   getBulletsIconView                    = getBulletsIconView
+  getFakeBulletsModByName               = getFakeBulletsModByName
 }

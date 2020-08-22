@@ -82,11 +82,12 @@ local function validatePresets(presetId, groupsList, countryPresets) {
     }
 
     local defaultUnitsListByGroups = clone countryGroupsList.defaultUnitsListByGroups
+    local maxVisibleSlots = ::max(::get_crew_count(countryId), defaultUnitsListByGroups.len())
     local presetUnits = countryPreset.units
+    presetUnits.resize(maxVisibleSlots, null)
     local emptySLots = []
-    for(local i = 0; i < ::max(presetUnits.len(), defaultUnitsListByGroups.len()); i++)
+    foreach (i, unit in presetUnits)
     {
-      local unit = presetUnits?[i]
       if (unit == null || !canAssignInSlot(unit, groupsList, countryId))
       {
         presetUnits[i] = null
@@ -108,11 +109,8 @@ local function validatePresets(presetId, groupsList, countryPresets) {
     local i = 0
     foreach(defaultUnit in defaultUnitsListByGroups)
     {
-      local slotIdx = emptySLots?[i] ?? presetUnits.len()
-      if (slotIdx in presetUnits)
-        presetUnits[slotIdx] = defaultUnit
-      else
-        presetUnits.append(defaultUnit)
+      local slotIdx = emptySLots[i]
+      presetUnits[slotIdx] = defaultUnit
       i++
     }
   }

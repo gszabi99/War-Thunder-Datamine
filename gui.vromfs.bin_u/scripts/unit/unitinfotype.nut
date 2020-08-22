@@ -5,7 +5,10 @@ local { getUnitRole, getUnitBasicRole, getRoleText, getUnitTooltipImage,
   getFullUnitRoleText, getShipMaterialTexts } = require("scripts/unit/unitInfoTexts.nut")
 local { countMeasure } = ::require("scripts/options/optionsMeasureUnits.nut")
 local { getWeaponInfoText } = require("scripts/weaponry/weaponryVisual.nut")
-local { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
+local { isWeaponAux,
+        getLastWeapon,
+        getLastPrimaryWeapon } = require("scripts/weaponry/weaponryInfo.nut")
+local { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 local UNIT_INFO_ARMY_TYPE  = {
@@ -496,7 +499,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
       {
         foreach(idx, weapon in unit.weapons)
         {
-          if (::isWeaponAux(weapon))
+          if (isWeaponAux(weapon))
             continue
           value++
         }
@@ -513,8 +516,8 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     infoArmyType = UNIT_INFO_ARMY_TYPE.AIR
     addToExportDataBlock = function(blk, unit)
     {
-      local lastPrimaryWeaponName = ::get_last_primary_weapon(unit)
-      local lastPrimaryWeapon = ::getModificationByName(unit, lastPrimaryWeaponName)
+      local lastPrimaryWeaponName = getLastPrimaryWeapon(unit)
+      local lastPrimaryWeapon = getModificationByName(unit, lastPrimaryWeaponName)
       local massPerSecValue = ::getTblValue("mass_per_sec_diff", lastPrimaryWeapon, 0)
 
       local weaponIndex = -1
@@ -524,7 +527,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
         weaponIndex = 0
         foreach(idx, weapon in unit.weapons)
         {
-          if (::isWeaponAux(weapon))
+          if (isWeaponAux(weapon))
             continue
           if (lastWeapon == weapon.name && "mass_per_sec" in weapon)
             weaponIndex = idx
@@ -925,7 +928,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
       {
         foreach(idx, weapon in unit.weapons)
         {
-          if (::isWeaponAux(weapon))
+          if (isWeaponAux(weapon))
             continue
           value++
         }

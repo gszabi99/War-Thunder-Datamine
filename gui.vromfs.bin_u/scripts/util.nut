@@ -1627,11 +1627,13 @@ foreach (i, v in ::cssColorsMapDark)
   return ::is_myself_moderator() || ::is_myself_grand_moderator() || ::is_myself_chat_moderator()
 }
 
-::unlockCrew <- function unlockCrew(crewId, byGold)
+::unlockCrew <- function unlockCrew(crewId, byGold, cost)
 {
   local blk = ::DataBlock()
-  blk.setInt("crew", crewId)
-  blk.setBool("gold", byGold)
+  blk["crew"] = crewId
+  blk["gold"] = byGold
+  blk["cost"] = cost?.wp ?? 0
+  blk["costGold"] = cost?.gold ?? 0
 
   return ::char_send_blk("cln_unlock_crew", blk)
 }

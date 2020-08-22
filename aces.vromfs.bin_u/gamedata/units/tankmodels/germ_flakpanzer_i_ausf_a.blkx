@@ -1846,7 +1846,7 @@
             "expl": 1.0,
             "conditionDamage": 250.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -1855,7 +1855,16 @@
             "expl": 1.0,
             "conditionDamage": 100.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "generic",
+            "expl": 1.0,
+            "conditionDamage": 700.0,
+            "kill": true,
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -1863,7 +1872,7 @@
             "expl": 1.0,
             "conditionDead": true,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         }
       ],
@@ -1895,7 +1904,7 @@
             "expl": 1.0,
             "conditionDamage": 250.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -1904,7 +1913,16 @@
             "expl": 1.0,
             "conditionDamage": 100.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "generic",
+            "expl": 1.0,
+            "conditionDamage": 700.0,
+            "kill": true,
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -1912,7 +1930,7 @@
             "expl": 1.0,
             "conditionDead": true,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         }
       ]
@@ -1960,16 +1978,31 @@
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
-        "turret": {
-          "head": "bone_turret",
-          "gun": "bone_gun",
-          "barrel": "bone_gun_barrel",
-          "linkedAnimPart": {
-            "verNode": "bone_camera_gunner",
-            "verLimits": [-180.0,180.0],
-            "verOriginLimits": [-180.0,180.0]
+        "turret": [
+          {
+            "head": "bone_turret"
+          },
+          {
+            "gun": "bone_gun"
+          },
+          {
+            "barrel": "bone_gun_barrel"
+          },
+          {
+            "linkedAnimPart": {
+              "verNode": "bone_mount_camera",
+              "verLimits": [-180.0,180.0],
+              "verOriginLimits": [-180.0,180.0]
+            }
+          },
+          {
+            "linkedAnimPart": {
+              "verNode": "bone_mount_camera_01",
+              "verLimits": [-190.0,190.0],
+              "verOriginLimits": [-180.0,180.0]
+            }
           }
-        },
+        ],
         "limits": {
           "yaw": [-180.0,180.0],
           "pitch": [-10.0,87.0]

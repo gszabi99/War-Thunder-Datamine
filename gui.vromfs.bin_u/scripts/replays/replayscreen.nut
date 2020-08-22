@@ -5,7 +5,6 @@ const REPLAY_SESSION_ID_MIN_LENGHT = 16
 
 ::autosave_replay_max_count <- 100
 ::autosave_replay_prefix <- "#"
-::replays_per_page <- 20
 
 ::current_replay <- ""
 ::current_replay_author <- null
@@ -133,6 +132,7 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
   replays = null
   isReplayPressed = false
   curPage = 0
+  replaysPerPage = 20
 
   statsColumnsOrderPvp  = [ "team", "name", "missionAliveTime", "score", "kills", "groundKills", "navalKills", "awardDamage", "aiKills",
                             "aiGroundKills", "aiNavalKills", "aiTotalKills", "assists", "captureZone", "damageZone", "deaths" ]
@@ -162,14 +162,14 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
       foreach(index, replay in replays)
         if (replay.path == ::current_replay)
         {
-          curPage = index / ::replays_per_page
+          curPage = index / replaysPerPage
           selItem = index
           break
         }
       ::current_replay = ""
       ::current_replay_author = null
     }
-
+    calculateReplaysPerPage()
     refreshList(selItem)
   }
 
@@ -182,7 +182,7 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
   function loadReplays()
   {
     replays = ::get_replays_list()
-    replays.sort(@(a,b) b.startTime <=> a.startTime)
+    replays.sort(@(a,b) b.startTime <=> a.startTime || b.name <=> a.name)
   }
 
   function refreshList(selItem = 0)
@@ -201,12 +201,12 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
           index = 0
         selItem = index
       }
-      selItem += curPage * ::replays_per_page
+      selItem += curPage * replaysPerPage
     }
 
     local view = { items = [] }
-    local lastIdx = ::min(replays.len(), ((curPage + 1) * ::replays_per_page))
-    for (local i = curPage * ::replays_per_page; i < lastIdx; i++)
+    local lastIdx = ::min(replays.len(), ((curPage + 1) * replaysPerPage))
+    for (local i = curPage * replaysPerPage; i < lastIdx; i++)
     {
       local iconName = "";
       local autosave = ::g_string.startsWith(replays[i].name, ::autosave_replay_prefix)
@@ -230,7 +230,7 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
     //depends on ::get_new_replay_filename() format
     local defaultReplayNameMask =
       regexp2(@"2\d\d\d\.[0-3]\d\.[0-3]\d [0-2]\d\.[0-5]\d\.[0-5]\d*");
-    for (local i = curPage * ::replays_per_page; i < lastIdx; i++)
+    for (local i = curPage * replaysPerPage; i < lastIdx; i++)
     {
       local obj = scene.findObject("txt_replay_" + i);
       local name = replays[i].name;
@@ -263,7 +263,7 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
     ::generatePaginator(scene.findObject("paginator_place"),
                         this,
                         curPage,
-                        ((replays.len() - 1) / ::replays_per_page).tointeger())
+                        ((replays.len() - 1) / replaysPerPage).tointeger())
   }
 
   function doOpenInfo(index)
@@ -516,7 +516,7 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
   function getCurrentReplayIndex()
   {
     local list = scene.findObject("items_list")
-    return list.getValue() + ::replays_per_page * curPage
+    return list.getValue() + replaysPerPage * curPage
   }
 
   function onItemSelect(obj)
@@ -642,6 +642,12 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
   function onChapterSelect(obj) {}
   function onSelect(obj) {}
   function onListItemsFocusChange(obj) {}
+
+  function calculateReplaysPerPage() {
+    guiScene.applyPendingChanges(false)
+    local replaysListObj = scene.findObject("items_list")
+    replaysPerPage = ::g_dagui_utils.countSizeInItems(replaysListObj, 1, "1@baseTrHeight", 0, 0).itemsCountY
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

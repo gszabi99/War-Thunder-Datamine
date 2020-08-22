@@ -5,6 +5,7 @@ local shopSearchCore = require("scripts/shop/shopSearchCore.nut")
 local dirtyWordsFilter = require("scripts/dirtyWords/dirtyWords.nut")
 local { getWeaponInfoText, getWeaponNameText } = require("scripts/weaponry/weaponryVisual.nut")
 local { getVideoModes } = require("scripts/options/systemOptions.nut")
+local { isWeaponAux, getWeaponNameByBlkPath } = require("scripts/weaponry/weaponryInfo.nut")
 
 ::callstack <- dagor.debug_dump_stack
 
@@ -149,7 +150,7 @@ local { getVideoModes } = require("scripts/options/systemOptions.nut")
     itemProcessFunc = function(unit) {
       local blk = ::DataBlock()
       foreach(weapon in unit.weapons)
-        if (!::isWeaponAux(weapon))
+        if (!isWeaponAux(weapon))
         {
           blk[weapon.name + "_short"] <- getWeaponNameText(unit, false, weapon.name, ", ")
           local rowsList = ::split(getWeaponInfoText(unit,
@@ -337,7 +338,7 @@ local { getVideoModes } = require("scripts/options/systemOptions.nut")
     local locName = ::getUnitName(unit)
     local army = unit.unitType.getArmyLocName()
     local country = ::loc(::getUnitCountry(unit))
-    local rank = ::get_roman_numeral(::getUnitRank(unit))
+    local rank = ::get_roman_numeral(unit?.rank ?? -1)
     local prem = (::isUnitSpecial(unit) || ::isUnitGift(unit)) ? ::loc("shop/premiumVehicle/short") : ""
     local hidden = !unit.isInShop ? ::loc("controls/NA") : unit.isVisibleInShop() ? "" : ::loc("worldWar/hided_logs")
     return unit.name + "; \"" + locName + "\" (" + ::g_string.implode([ army, country, rank, prem, hidden ], ", ") + ")"
@@ -360,7 +361,7 @@ local { getVideoModes } = require("scripts/options/systemOptions.nut")
 
 ::debug_show_weapon <- function debug_show_weapon(weaponName)
 {
-  weaponName = ::get_weapon_name_by_blk_path(weaponName)
+  weaponName = getWeaponNameByBlkPath(weaponName)
   foreach (u in ::all_units)
   {
     if (!u.isInShop)
@@ -375,7 +376,7 @@ local { getVideoModes } = require("scripts/options/systemOptions.nut")
       if (!presetBlk)
         continue
       foreach (weaponMetaBlk in (presetBlk % "Weapon"))
-        if (weaponName == ::get_weapon_name_by_blk_path(weaponMetaBlk?.blk ?? ""))
+        if (weaponName == getWeaponNameByBlkPath(weaponMetaBlk?.blk ?? ""))
         {
           ::open_weapons_for_unit(u)
           return $"{u.name} / {weaponMetaBlk.blk}"

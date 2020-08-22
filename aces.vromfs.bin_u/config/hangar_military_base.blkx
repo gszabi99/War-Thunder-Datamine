@@ -102,22 +102,25 @@
     "mouseDecalSizeSpeed": 0.001
   },
   {
-    "dof_near_proc_cam_settings": [0.9,0.4,1.0]
+    "dof_near_proc_cam_settings": [3.0,0.1,0.01]
   },
   {
-    "dof_far_proc_cam_settings": [40.0,250.0,0.75]
+    "dof_far_proc_cam_settings": [30.0,10000.0,0.001]
   },
   {
-    "dof_near_settings": [3.0,0.5,0.8]
+    "dof_near_settings": [3.0,0.1,0.1]
   },
   {
     "dof_near_base_radius": 7.0
   },
   {
-    "dof_far_settings_unzoom": [400.0,1400.0,0.5]
+    "dof_far_base_radius": 20.0
   },
   {
-    "dof_far_settings_zoom": [40.0,120.0,0.6]
+    "dof_far_settings_unzoom": [100.0,10000.0,0.0]
+  },
+  {
+    "dof_far_settings_zoom": [20.0,10000.0,0.001]
   },
   {
     "timeForMouselookCamera": 90.0
@@ -179,6 +182,9 @@
       },
       {
         "cameraEllipsoidWeights": [0.1,0.0,0.0,0.6]
+      },
+      {
+        "cameraLookatEllipseScale": 0.4
       },
       {
         "cameraMinDistanceToModel": 10.0

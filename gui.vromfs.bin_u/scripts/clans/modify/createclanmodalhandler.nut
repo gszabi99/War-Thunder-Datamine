@@ -87,7 +87,7 @@ class ::gui_handlers.CreateClanModalHandler extends ::gui_handlers.ModifyClanMod
     setSubmitButtonText(::loc("clan/create_clan_submit_button"), createCost)
   }
 
-  function createClan()
+  function createClan(createCost)
   {
     if (isObsceneWord())
       return
@@ -101,6 +101,8 @@ class ::gui_handlers.CreateClanModalHandler extends ::gui_handlers.ModifyClanMod
       newClanAnnouncement,
       newClanRegion
     )
+    createParams["cost"] = createCost.wp
+    createParams["costGold"] = createCost.gold
     ::g_clans.createClan(createParams, this)
   }
 
@@ -110,13 +112,13 @@ class ::gui_handlers.CreateClanModalHandler extends ::gui_handlers.ModifyClanMod
       return
     local createCost = newClanType.getCreateCost()
     if (createCost <= ::zero_money)
-      createClan()
+      createClan(createCost)
     else if (::check_balance_msgBox(createCost))
     {
       local msgText = warningIfGold(format(::loc("clan/needMoneyQuestion_createClan"),
           createCost.getTextAccordingToBalance()),
         createCost)
-      msgBox("need_money", msgText, [["ok", function() { createClan() } ],
+      msgBox("need_money", msgText, [["ok", function() { createClan(createCost) } ],
         ["cancel"]], "ok")
     }
   }

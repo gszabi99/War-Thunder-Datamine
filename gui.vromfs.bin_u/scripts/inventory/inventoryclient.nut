@@ -247,7 +247,7 @@ local InventoryClient = class {
     if (!url)
       return null
 
-    return "auto_login " + url + "?a=" + ::WT_APPID +
+    return "auto_login auto_local " + url + "?a=" + ::WT_APPID +
       (::steam_is_running()
         ? ::format("&app_id=%d&steam_id=%s", steam_get_app_id(), steam_get_my_id())
         : "")
@@ -515,26 +515,38 @@ local InventoryClient = class {
     {
       local parsedRecipe = {
         components = []
+        reqItems = []
         requirement = null
         recipeStr = recipe
       }
       foreach (component in ::split(recipe, ","))
       {
         local requirement = ::g_string.cutPrefix(component, "require=")
-        if (requirement != null)
-        {
+        if (requirement != null) {
           parsedRecipe.requirement = requirement
+          continue
         }
-        else
-        {
-          local pair = ::split(component, "x")
-          if (!pair.len())
-            continue
-          parsedRecipe.components.append({
-            itemdefid = ::to_integer_safe(pair[0])
-            quantity  = (1 in pair) ? ::to_integer_safe(pair[1]) : 1
-          })
+        local reqItems = ::g_string.cutPrefix(component, "req_items=")
+        if (reqItems != null) {
+          foreach (reqItem in ::split(reqItems, "+")) {
+            local pair = ::split(reqItem, "x")
+            if (!pair.len())
+              continue
+            parsedRecipe.reqItems.append({
+              itemdefid = ::to_integer_safe(pair[0])
+              quantity  = (1 in pair) ? ::to_integer_safe(pair[1]) : 1
+            })
+          }
+          continue
         }
+
+        local pair = ::split(component, "x")
+        if (!pair.len())
+          continue
+        parsedRecipe.components.append({
+          itemdefid = ::to_integer_safe(pair[0])
+          quantity  = (1 in pair) ? ::to_integer_safe(pair[1]) : 1
+        })
       }
       recipes.append(parsedRecipe)
     }

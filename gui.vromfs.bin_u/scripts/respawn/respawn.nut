@@ -6,15 +6,19 @@ local gamepadIcons = require("scripts/controls/gamepadIcons.nut")
 local contentPreset = require("scripts/customization/contentPreset.nut")
 local actionBarInfo = require("scripts/hud/hudActionBarInfo.nut")
 local { getWeaponNameText } = require("scripts/weaponry/weaponryVisual.nut")
-local { getLastWeapon, setLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
+local { getLastWeapon,
+        setLastWeapon,
+        isWeaponEnabled,
+        isWeaponVisible } = require("scripts/weaponry/weaponryInfo.nut")
 local { getModificationName } = require("scripts/weaponry/bulletsInfo.nut")
 local { AMMO,
         getAmmoAmount,
         getAmmoMaxAmountInSession,
         getAmmoAmountData } = require("scripts/weaponry/ammoInfo.nut")
+local { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
 local { isChatEnabled } = require("scripts/chat/chatStates.nut")
 local { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-local { hasFlares } = require("scripts/unit/unitStatus.nut")
+local { hasFlares , bombNbr } = require("scripts/unit/unitStatus.nut")
 
 ::last_ca_aircraft <- null
 ::used_planes <- {}
@@ -45,10 +49,10 @@ enum ESwitchSpectatorTarget
   {id = "gunvertical", hint = "options/gun_vertical_targeting", user_option = ::USEROPT_GUN_VERTICAL_TARGETING},
   {id = "bomb_activation_type",    hint = "options/bomb_activation_time",
     user_option = ::USEROPT_BOMB_ACTIVATION_TIME, isShowForRandomUnit =false },
+  {id = "bomb_series",    hint = "options/bomb_series",
+    user_option = ::USEROPT_BOMB_SERIES, isShowForRandomUnit =false },
   {id = "depthcharge_activation_time",  hint = "options/depthcharge_activation_time",
      user_option = ::USEROPT_DEPTHCHARGE_ACTIVATION_TIME, isShowForRandomUnit =false },
-  {id = "mine_depth",  hint = "options/mine_depth",
-    user_option = ::USEROPT_MINE_DEPTH, isShowForRandomUnit =false },
   {id = "rocket_fuse_dist",  hint = "options/rocket_fuse_dist",
     user_option = ::USEROPT_ROCKET_FUSE_DIST, isShowForRandomUnit =false },
   {id = "fuel",        hint = "options/fuel_amount",
@@ -1183,19 +1187,6 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     }
     showOptionRow(depthChargeDescr.id, air.isDepthChargeAvailable()
       && air.getAvailableSecondaryWeapons().hasDepthCharges)
-
-    local minesDescr = ::get_option(::USEROPT_MINE_DEPTH)
-    if (air.isMinesAvailable() && needUpdateOptionItems)
-    {
-      local data = ""
-      foreach (idx, item in minesDescr.items)
-        data += build_option_blk(item, "", idx == minesDescr.value)
-      local minesTimeObj = scene.findObject(minesDescr.id)
-      if (::checkObj(minesTimeObj))
-        guiScene.replaceContentFromText(minesTimeObj, data, data.len(), this)
-    }
-    showOptionRow(minesDescr.id, air.isMinesAvailable()
-      && air.getAvailableSecondaryWeapons().hasMines)
   }
 
   function updateAircraftWeaponsOptions(unit, needUpdateOptionItems = true)
@@ -1213,7 +1204,8 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       }
     }
 
-    local bombDescr = ::get_option(::USEROPT_BOMB_ACTIVATION_TIME)
+    local bombDescr = ::get_option(::USEROPT_BOMB_ACTIVATION_TIME,
+      {diffCode = ::get_difficulty_by_ediff(getCurrentEdiff()).diffCode})
     local bombTimeObj = scene.findObject(bombDescr.id)
     if (needUpdateOptionItems && ::check_obj(bombTimeObj))
     {
@@ -1224,6 +1216,25 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       guiScene.replaceContentFromText(bombTimeObj, markup, markup.len(), this)
     }
     showOptionRow(bombDescr.id, aircraft && bomb && unit.getAvailableSecondaryWeapons().hasBombs)
+
+    local bombSeriesDescr = ::get_option(::USEROPT_BOMB_SERIES)
+    local bombSeriesObj = scene.findObject(bombSeriesDescr.id)
+
+    updateOptionImpl(bombSeriesDescr)
+    if (needUpdateOptionItems && ::check_obj(bombSeriesObj))
+    {
+      local markup = ""
+      foreach (idx, item in bombSeriesDescr.items)
+        if (canChangeAircraft || idx == bombSeriesDescr.value)
+        {
+          if (idx == 0)
+            markup += build_option_blk(item, "", idx == bombSeriesDescr.value)
+          else
+            markup += build_option_blk(item.text, "", idx == bombSeriesDescr.value, true, "", false, item.tooltip)
+        }
+      guiScene.replaceContentFromText(bombSeriesObj, markup, markup.len(), this)
+    }
+    showOptionRow(bombSeriesDescr.id, aircraft && bomb && bombNbr(unit) > 0)
 
     local rocketDescr = ::get_option(::USEROPT_ROCKET_FUSE_DIST)
     local rocketdistObj = scene.findObject(rocketDescr.id)
@@ -1249,7 +1260,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
           markup += build_option_blk(item.text, "", idx == flaresPeriodsDescr.value, true, "", false, item.tooltip)
       guiScene.replaceContentFromText(flarePeriodsObj, markup, markup.len(), this)
     }
-    showOptionRow(flaresPeriodsDescr.id, aircraft && rocket && hasFlares(unit))
+    showOptionRow(flaresPeriodsDescr.id, aircraft && hasFlares(unit))
 
     local flaresSeriesDescr = ::get_option(::USEROPT_FLARES_SERIES)
     local flareSeriesObj = scene.findObject(flaresSeriesDescr.id)
@@ -1261,7 +1272,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
           markup += build_option_blk(item.text, "", idx == flaresSeriesDescr.value, true, "", false, item.tooltip)
       guiScene.replaceContentFromText(flareSeriesObj, markup, markup.len(), this)
     }
-    showOptionRow(flaresSeriesDescr.id, aircraft && rocket && hasFlares(unit))
+    showOptionRow(flaresSeriesDescr.id, aircraft && hasFlares(unit))
 
     local flaresSeriesPeriodsDescr = ::get_option(::USEROPT_FLARES_SERIES_PERIODS)
     local flareSeriesPeriodsObj = scene.findObject(flaresSeriesPeriodsDescr.id)
@@ -1273,7 +1284,21 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
           markup += build_option_blk(item.text, "", idx == flaresSeriesPeriodsDescr.value, true, "", false, item.tooltip)
       guiScene.replaceContentFromText(flareSeriesPeriodsObj, markup, markup.len(), this)
     }
-    showOptionRow(flaresSeriesPeriodsDescr.id, aircraft && rocket && hasFlares(unit))
+    showOptionRow(flaresSeriesPeriodsDescr.id, aircraft && hasFlares(unit))
+  }
+
+  function updateOptionImpl(option)
+  {
+    local obj = scene.findObject(option.id)
+    if (!::check_obj(obj))
+      return
+
+    if (option.controlType == optionControlType.LIST)
+    {
+      local markup = ::create_option_combobox(option.id, option.items, option.value, null, false)
+      guiScene.replaceContentFromText(obj, markup, markup.len(), this)
+    } else
+      obj.setValue(option.value)
   }
 
   function updateOtherOptions()
@@ -1352,8 +1377,8 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       return
 
     foreach(weapon in (unit?.weapons ?? []))
-      if (::is_weapon_visible(unit, weapon)
-          && ::is_weapon_enabled(unit, weapon)
+      if (isWeaponVisible(unit, weapon)
+          && isWeaponEnabled(unit, weapon)
           && missionRules.getUnitWeaponRespawnsLeft(unit, weapon) > 0) //limited and available
      {
        setLastWeapon(unit.name, weapon.name)
@@ -1385,7 +1410,6 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     updateUnitOptions()
     checkReady()
   }
-  function onWeaponOptionUpdate(obj) {}
 
   function getSelWeapon()
   {
@@ -1495,7 +1519,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       if (bulGroup.canChangeBulletsCount() && bulGroup.bulletsCount <= 0)
         continue
 
-      if (::getModificationByName(air, modName)) //!default bullets (fake)
+      if (getModificationByName(air, modName)) //!default bullets (fake)
         res["bullets" + bulletInd] <- modName
       else
         res["bullets" + bulletInd] <- ""

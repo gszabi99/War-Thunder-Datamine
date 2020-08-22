@@ -24,6 +24,7 @@ local createDefaultOption = function() {
     items = null
     values = null
     needShowValueText = false
+    diffCode = null
 
     getTrId = @() id + "_tr"
 

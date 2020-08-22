@@ -2570,24 +2570,44 @@
     }
   },
   {
-    "default_skin": {
-      "name": "fire_range",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "camo_hangar_red_lead*"
+    "skin": [
+      {
+        "name": "fire_range"
+      },
+      {
+        "nameLocId": "skin/fire_range"
+      },
+      {
+        "descLocId": "skin/fire_range/desc"
+      },
+      {
+        "replace_tex": {
+          "from": "ussr_camo_green*",
+          "to": "camo_hangar_red_lead*"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "kv_220_body_c*",
+          "to": "kv_220_skin_body_c*",
+          "param": "camo_skin_tex"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "kv_220_turret_c*",
+          "to": "kv_220_skin_turret_c*",
+          "param": "camo_skin_tex"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "kv_220_gun_c*",
+          "to": "kv_220_skin_gun_c*",
+          "param": "camo_skin_tex"
+        }
       }
-    }
-  },
-  {
-    "skin": {
-      "name": "kv_220",
-      "nameLocId": "skin/ussr_camo_green",
-      "descLocId": "skin/ussr_camo_green/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_green*"
-      }
-    }
+    ]
   },
   {
     "skin": {

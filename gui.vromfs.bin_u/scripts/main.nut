@@ -483,7 +483,6 @@ local isFullScriptsLoaded = false
 
   // Independed Modules with mainHandler. Need load this befor rest handlers
   require("scripts/baseGuiHandlerWT.nut")
-  require("scripts/mainmenu/topMenuHandler.nut")
   // end of Independed Modules with mainHandler
 
   ::dagor.debug($"LOAD GAME SCRIPTS AFTER LOGIN: {game}")
@@ -502,7 +501,6 @@ local isFullScriptsLoaded = false
     "gamercard.nut"
     "popups/popups.nut"
     "popups/popup.nut"
-    "weaponsInfo.nut"
 
     "wheelmenu/wheelmenu.nut"
     "guiLines.nut"
@@ -530,7 +528,6 @@ local isFullScriptsLoaded = false
     "countryChoiceWnd.nut"
 
     "measureType.nut"
-    "options/optionsWnd.nut"
     "genericOptions.nut"
     "options/framedOptionsWnd.nut"
     "options/optionsCustomDifficulty.nut"

@@ -4,6 +4,7 @@ local time = require("scripts/time.nut")
 local penalties = require("scripts/penitentiary/penalties.nut")
 local itemNotifications = ::require("scripts/items/itemNotifications.nut")
 local { systemOptionsMaintain } = require("scripts/options/systemOptions.nut")
+local { checkJoystickThustmasterHotas } = require("scripts/controls/hotas.nut")
 
 //called after all first mainmenu actions
 onMainMenuReturnActions.onMainMenuReturn <- function(handler, isAfterLogin) {
@@ -22,7 +23,7 @@ onMainMenuReturnActions.onMainMenuReturn <- function(handler, isAfterLogin) {
     if (isAllowPopups && !::disable_network())
     {
       handler.doWhenActive(::g_user_utils.checkShowRateWnd)
-      handler.doWhenActive(::check_joystick_thustmaster_hotas)
+      handler.doWhenActive(checkJoystickThustmasterHotas)
     }
   }
 

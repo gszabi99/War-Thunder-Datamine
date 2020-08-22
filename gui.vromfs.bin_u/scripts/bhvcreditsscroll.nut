@@ -48,5 +48,5 @@ class gui_bhv.CreditsScroll
 {
   if (!canceled)
     ::req_unlock_by_client("view_credits", false)
-  topMenuHandler.value?.onTopMenuMain.call(topMenuHandler.value, null)
+  topMenuHandler.value?.topMenuGoBack.call(topMenuHandler.value)
 }
