@@ -1,3 +1,14 @@
+<<#bodyBackground>>
+crafBodyBackground {
+  size:t='<<bodyBackgroundSize>>'
+  pos:t='<<bodyBackgroundPos>>'
+  position:t='absolute'
+  background-image:t='<<bodyBackground>>'
+  background-repeat:t='repeat'
+  background-color:t='#FFFFFF'
+  enable:t='no'
+}
+<</bodyBackground>>
 <<#bodyTitles>>
   craftBranchHeader {
     size:t='<<titleSize>>'

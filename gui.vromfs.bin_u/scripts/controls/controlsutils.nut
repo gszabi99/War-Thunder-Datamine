@@ -75,6 +75,49 @@ if (::is_platform_xboxone)
       return val == checkValue
     return ::get_option(optName).value == checkValue
   }
+
+  function isShortcutEqual(sc1, sc2) {
+    if (sc1.len() != sc2.len())
+      return false
+
+    foreach(i, sb in sc2)
+      if (!::is_bind_in_shortcut(sb, sc1))
+        return false
+    return true
+  }
+
+  function restoreShortcuts(scList, scNames) {
+    local changeList = []
+    local changeNames = []
+    local curScList = ::get_shortcuts(scNames)
+    foreach(idx, sc in curScList)
+    {
+      local prevSc = scList[idx]
+      if (!isShortcutMapped(prevSc))
+        continue
+
+      if (isShortcutEqual(sc, prevSc))
+        continue
+
+      changeList.append(prevSc)
+      changeNames.append(scNames[idx])
+    }
+    if (!changeList.len())
+      return
+
+    ::set_controls_preset("")
+    ::set_shortcuts(changeList, changeNames)
+    ::broadcastEvent("PresetChanged")
+  }
+
+  function isShortcutMapped(shortcut) {
+    foreach (button in shortcut)
+      if (button && button.dev.len() >= 0)
+        foreach(d in button.dev)
+          if (d > 0 && d <= ::STD_GESTURE_DEVICE_ID)
+              return true
+    return false
+  }
 }
 
 ::g_script_reloader.registerPersistentDataFromRoot("g_controls_utils")

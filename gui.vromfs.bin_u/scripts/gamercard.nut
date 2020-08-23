@@ -68,7 +68,7 @@ local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
           obj.tooltip = "".concat(::loc("ugm/total"), ::loc("ui/colon"), ::g_language.decimalFormat(cfg.exp))
           break
         case "clanTag":
-          local isVisible = val != ""
+          local isVisible = ::has_feature("Clans") && val != ""
           showClanTag = isVisible
           if (isVisible)
           {
@@ -210,7 +210,7 @@ local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
                              gc_shop = is_in_menu && canSpendGold
                              gc_eagles = canSpendGold
                              gc_warpoints = ::has_feature("WarpointsInMenu")
-                             gc_PremiumAccount = (canSpendGold && featureEnablePremiumPurchase) || hasPremiumAccount
+                             gc_PremiumAccount = ::has_feature("showPremiumAccount") && ((canSpendGold && featureEnablePremiumPurchase) || hasPremiumAccount)
                              gc_dropdown_premium_button = featureEnablePremiumPurchase
                              gc_dropdown_shop_eagles_button = canSpendGold
                              gc_free_exp = ::has_feature("SpendGold") && ::has_feature("SpendFreeRP")

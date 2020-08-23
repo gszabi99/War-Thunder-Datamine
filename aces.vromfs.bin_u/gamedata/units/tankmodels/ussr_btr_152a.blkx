@@ -1931,9 +1931,10 @@
         "turret_front_dm": {
           "armorThickness": 6.0
         },
-        "optic_turret_01_dm": {
+        "optic_gun_dm": {
           "armorThickness": 3.0,
-          "hp": 20.0
+          "hp": 20.0,
+          "armorClass": "optics_tank"
         },
         "turret_02_back_dm": {
           "armorThickness": 12.0,
@@ -2583,7 +2584,7 @@
             "expl": 1.0,
             "conditionDamage": 250.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -2592,7 +2593,16 @@
             "expl": 1.0,
             "conditionDamage": 100.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "generic",
+            "expl": 1.0,
+            "conditionDamage": 700.0,
+            "kill": true,
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -2600,7 +2610,7 @@
             "expl": 1.0,
             "conditionDead": true,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         }
       ],
@@ -2641,7 +2651,7 @@
             "expl": 1.0,
             "conditionDamage": 250.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -2650,7 +2660,16 @@
             "expl": 1.0,
             "conditionDamage": 100.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "generic",
+            "expl": 1.0,
+            "conditionDamage": 700.0,
+            "kill": true,
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -2658,7 +2677,7 @@
             "expl": 1.0,
             "conditionDead": true,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         }
       ]

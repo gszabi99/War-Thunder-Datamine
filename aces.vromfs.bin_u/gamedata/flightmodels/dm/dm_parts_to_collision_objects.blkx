@@ -1,8 +1,5 @@
 [
   {
-    "impulseVelLimits": [3.0,10.0]
-  },
-  {
     "object": [
       {
         "dm": "fuse_dm"
@@ -14,37 +11,51 @@
   },
   {
     "object": {
-      "dm": "tail_dm"
+      "dm": "tail_dm",
+      "impulseVelLimits": [3.0,10.0],
+      "dmCut": "tail_dm"
     }
   },
   {
     "object": {
-      "dm": "wing_l_dm"
+      "dm": "wing_l_dm",
+      "impulseVelLimits": [3.0,10.0],
+      "dmCut": "spar_l_dm"
     }
   },
   {
     "object": {
-      "dm": "wing1_l_dm"
+      "dm": "wing1_l_dm",
+      "impulseVelLimits": [3.0,10.0],
+      "dmCut": "spar1_l_dm"
     }
   },
   {
     "object": {
-      "dm": "wing2_l_dm"
+      "dm": "wing2_l_dm",
+      "impulseVelLimits": [3.0,10.0],
+      "dmCut": "spar2_l_dm"
     }
   },
   {
     "object": {
-      "dm": "wing_r_dm"
+      "dm": "wing_r_dm",
+      "impulseVelLimits": [3.0,10.0],
+      "dmCut": "spar_r_dm"
     }
   },
   {
     "object": {
-      "dm": "wing1_r_dm"
+      "dm": "wing1_r_dm",
+      "impulseVelLimits": [3.0,10.0],
+      "dmCut": "spar1_r_dm"
     }
   },
   {
     "object": {
-      "dm": "wing2_r_dm"
+      "dm": "wing2_r_dm",
+      "impulseVelLimits": [3.0,10.0],
+      "dmCut": "spar2_r_dm"
     }
   },
   {
@@ -60,6 +71,15 @@
       },
       {
         "dm": "elevator%d_dm"
+      },
+      {
+        "impulseVelLimits": [3.0,10.0]
+      },
+      {
+        "dmCut": "stab_dm"
+      },
+      {
+        "dmCut": "stab%d_dm"
       }
     ]
   },
@@ -70,6 +90,12 @@
       },
       {
         "dm": "rudder_dm"
+      },
+      {
+        "impulseVelLimits": [3.0,10.0]
+      },
+      {
+        "dmCut": "fin_dm"
       }
     ]
   },
@@ -80,6 +106,12 @@
       },
       {
         "dm": "rudder0_dm"
+      },
+      {
+        "impulseVelLimits": [3.0,10.0]
+      },
+      {
+        "dmCut": "fin1_dm"
       }
     ]
   },
@@ -90,6 +122,12 @@
       },
       {
         "dm": "rudder1_dm"
+      },
+      {
+        "impulseVelLimits": [3.0,10.0]
+      },
+      {
+        "dmCut": "fin2_dm"
       }
     ]
   },
@@ -163,6 +201,9 @@
       },
       {
         "impulseVelLimits": [2.0,6.0]
+      },
+      {
+        "dmCut": "gear_l_dm"
       }
     ]
   },
@@ -194,6 +235,9 @@
       },
       {
         "impulseVelLimits": [2.0,6.0]
+      },
+      {
+        "dmCut": "gear_1l_dm"
       }
     ]
   },
@@ -225,6 +269,9 @@
       },
       {
         "impulseVelLimits": [2.0,6.0]
+      },
+      {
+        "dmCut": "gear_r_dm"
       }
     ]
   },
@@ -256,6 +303,9 @@
       },
       {
         "impulseVelLimits": [2.0,6.0]
+      },
+      {
+        "dmCut": "gear_1r_dm"
       }
     ]
   },
@@ -287,6 +337,9 @@
       },
       {
         "impulseVelLimits": [2.0,6.0]
+      },
+      {
+        "dmCut": "gear_c_dm"
       }
     ]
   },
@@ -318,6 +371,9 @@
       },
       {
         "impulseVelLimits": [2.0,6.0]
+      },
+      {
+        "dmCut": "gear_2c_dm"
       }
     ]
   },
@@ -349,6 +405,9 @@
       },
       {
         "impulseVelLimits": [2.0,6.0]
+      },
+      {
+        "dmCut": "gear_3c_dm"
       }
     ]
   },

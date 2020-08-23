@@ -275,8 +275,10 @@ class ::items_classes.Trophy extends ::BaseItem
   function _requestBuy(params = {})
   {
     local blk = ::DataBlock()
-    blk.setStr("name", id)
-    blk.setInt("index", ::getTblValue("index", params, -1))
+    blk["name"] = id
+    blk["index"] = ::getTblValue("index", params, -1)
+    blk["cost"] = params.cost
+    blk["costGold"] = params.costGold
     return ::char_send_blk("cln_buy_trophy", blk)
   }
 

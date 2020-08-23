@@ -1600,19 +1600,26 @@
     "tank_crew": {
       "changeTimeMult": 1.0,
       "gunner": {
-        "dmPart": "commander_dm",
+        "dmPart": "gunner_dm",
         "role": "tank_gunner",
-        "substitute": "loader"
+        "substitute": "commander"
       },
       "driver": {
         "dmPart": "driver_dm",
         "role": "driver",
-        "substitute": "loader"
+        "substitute": "commander"
       },
-      "loader": {
-        "dmPart": "loader_dm",
-        "role": "loader"
-      }
+      "commander": [
+        {
+          "dmPart": "commander_dm"
+        },
+        {
+          "role": "commander"
+        },
+        {
+          "role": "loader"
+        }
+      ]
     }
   },
   {

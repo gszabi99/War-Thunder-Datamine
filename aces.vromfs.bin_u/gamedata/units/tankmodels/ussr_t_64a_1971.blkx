@@ -217,9 +217,10 @@
         },
         "turret_02_side_dm": {
           "armorThickness": 75.0,
-          "genericArmorQuality": 0.9,
-          "cumulativeArmorQuality": 1.0,
-          "secondaryShatterArmorQuality": 0.0
+          "genericArmorQuality": 0.65,
+          "cumulativeArmorQuality": 0.75,
+          "secondaryShatterArmorQuality": 0.0,
+          "ArmorQuality": 1.0
         }
       },
       "turret": {
@@ -227,7 +228,7 @@
         "turret_03_front_dm": {
           "armorThickness": 330.0,
           "variableThickness": true,
-          "solidArmorTestDepth": 900.0
+          "solidArmorTestDepth": 500.0
         },
         "turret_01_front_dm": {
           "armorThickness": 40.0
@@ -2768,15 +2769,9 @@
       "tank_engine_smoke_screen_system": [],
       "125mm_ussr_HE": [],
       "125mm_ussr_3OF26_HE": [],
-      "125mm_ussr_APDS_FS": {
-        "modCostMul": 0.95
-      },
-      "125mm_ussr_3BM12_APDS_FS": {
-        "modCostMul": 1.45
-      },
-      "125mm_ussr_3BM15_APDS_FS": {
-        "modCostMul": 2.85
-      },
+      "125mm_ussr_APDS_FS": [],
+      "125mm_ussr_3BM12_APDS_FS": [],
+      "125mm_ussr_3BM15_APDS_FS": [],
       "125mm_ussr_3OF26_HE_ammo_pack": [],
       "125mm_ussr_APDS_FS_ammo_pack": [],
       "125mm_ussr_3BM12_APDS_FS_ammo_pack": [],
@@ -3169,6 +3164,17 @@
       "replace_tex": {
         "from": "ussr_camo_green*",
         "to": "ussr_camo_finland_polygonal_threecolor*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "ussr_modern_green",
+      "nameLocId": "skin/ussr_modern_green",
+      "descLocId": "skin/ussr_modern_green/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_modern_green*"
       }
     }
   },

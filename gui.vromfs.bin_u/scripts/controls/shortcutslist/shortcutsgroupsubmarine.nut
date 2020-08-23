@@ -7,7 +7,7 @@ return [
     type = CONTROL_TYPE.HEADER
     unitType = unitTypes.SHIP
     unitTag = "submarine"
-    showFunc = @() ::has_feature("SpecialShips") || ::is_submarine(::get_player_cur_unit())
+    showFunc = @() ::has_feature("SpecialShips") || ::get_player_cur_unit()?.isSubmarine()
     needShowInHelp = true
   }
 //-------------------------------------------------------

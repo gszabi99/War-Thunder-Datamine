@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 30.0
-    },
     "player": {
       "army": 1
     },
@@ -15,8 +11,6 @@
     "mission": {
       "level": "levels/avg_guadalcanal.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "clear",
       "scoreLimit": 6400,
@@ -25,60 +19,13 @@
       "randomSpawnTeams": true,
       "remapAiTankModels": true,
       "country_axis": "germany",
-      "country_allies": "ussr"
+      "country_allies": "ussr",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
     },
-    "spectator_points": [],
-    "briefing": {
-      "place_loc": "",
-      "date_loc": "",
-      "objective_loc": "",
-      "music": "action_01",
-      "part": {
-        "event": "",
-        "minTime": 0,
-        "slide": [
-          {
-            "map": true
-          },
-          {
-            "minTime": 4
-          },
-          {
-            "picture": ""
-          },
-          {
-            "showAirMap": false
-          },
-          {
-            "icon": {
-              "icontype": "tank",
-              "side": "ally",
-              "target": "bttl_t1_spawn_01"
-            }
-          },
-          {
-            "icon": {
-              "icontype": "tank",
-              "side": "player",
-              "target": "bttl_t2_spawn_01"
-            }
-          },
-          {
-            "captureZone": {
-              "area": "bttl_t1_capture_area",
-              "side": "ally",
-              "type": "ground"
-            }
-          },
-          {
-            "captureZone": {
-              "area": "bttl_t2_capture_area",
-              "side": "enemy",
-              "type": "ground"
-            }
-          }
-        ]
-      }
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 30.0
     }
   },
   "imports": [],

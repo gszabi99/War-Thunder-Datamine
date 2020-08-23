@@ -9,6 +9,7 @@ local { openUrl } = require("scripts/onlineShop/url.nut")
 local { setDoubleTextToButton, setColoredDoubleTextToButton,
   placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 local { isModResearched,
+        getModificationByName,
         findAnyNotResearchedMod } = require("scripts/weaponry/modificationInfo.nut")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
@@ -1439,7 +1440,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       if (modName == "")
         continue
       local unit = ::getAircraftByName(unitId)
-      local mod = unit && ::getModificationByName(unit, modName)
+      local mod = unit && getModificationByName(unit, modName)
       if (unit && mod && isModResearched(unit, mod))
         return true
     }
@@ -1501,7 +1502,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
   {
     local curResearch = airData.investModuleName
     if (curResearch != "")
-      return ::getModificationByName(air, curResearch)
+      return getModificationByName(air, curResearch)
     return null
   }
 

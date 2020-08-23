@@ -173,6 +173,9 @@
           },
           "setScopeRangeSet": {
             "scopeRangeSet": "common"
+          },
+          "setIllumination": {
+            "illumination": false
           }
         },
         "setSearchMode": {
@@ -204,6 +207,9 @@
           },
           "setScopeRangeSet": {
             "scopeRangeSet": "common"
+          },
+          "setIllumination": {
+            "illumination": false
           }
         },
         "resetSearchMode": {
@@ -242,7 +248,10 @@
           "setSignal": {
             "signal": "track"
           },
-          "clearTargets": []
+          "clearTargets": [],
+          "setIllumination": {
+            "illumination": false
+          }
         },
         "setBoresightLockMode": {
           "setModeName": {
@@ -282,6 +291,9 @@
           },
           "setScopeRangeSet": {
             "scopeRangeSet": "boresightLock"
+          },
+          "setIllumination": {
+            "illumination": false
           }
         },
         "setTrackMode": {
@@ -315,6 +327,9 @@
           },
           "setSignal": {
             "signal": "track"
+          },
+          "setIllumination": {
+            "illumination": true
           }
         }
       },
@@ -353,6 +368,7 @@
           "actions": {
             "designateActiveDetectedTarget": {
               "type": 0,
+              "self": true,
               "sensorIndex": 0
             }
           }
@@ -574,7 +590,8 @@
           "actions": {
             "designateActiveDetectedTarget": {
               "type": 0,
-              "sensorIndex": 0
+              "sensorIndex": 0,
+              "self": true
             }
           }
         }

@@ -1,3 +1,5 @@
+local topMenuHandlerClass = require("scripts/mainmenu/topMenuHandler.nut")
+
 ::gui_start_credits <- function gui_start_credits()
 {
   ::handlersManager.loadHandler(::gui_handlers.CreditsMenu)
@@ -11,7 +13,7 @@
 class ::gui_handlers.CreditsMenu extends ::gui_handlers.BaseGuiHandlerWT
 {
   sceneBlkName = "gui/credits.blk"
-  rootHandlerClass = ::gui_handlers.TopMenu
+  rootHandlerClass = topMenuHandlerClass.getHandler()
   static hasTopMenuResearch = false
 
   function initScreen()

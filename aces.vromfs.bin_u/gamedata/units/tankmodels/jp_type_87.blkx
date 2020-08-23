@@ -1808,7 +1808,7 @@
       },
       "optics": {
         "armorClass": "optics_tank",
-        "optic_turret_01_dm": {
+        "optic_gun_dm": {
           "armorThickness": 3.0,
           "hp": 20.0
         },
@@ -1835,6 +1835,13 @@
         "wheel_l_drive_dm": [],
         "wheel_l_front_dm": [],
         "wheel_r_front_dm": [],
+        "submodule": {
+          "armorClass": "tank_traks",
+          "armorThickness": 20.0,
+          "createSecondaryShatters": false,
+          "hp": 200.0,
+          "ex_armor_body_01_dm": []
+        },
         "body_shields": {
           "armorClass": "tank_structural_steel",
           "armorThickness": 5.0,
@@ -2356,7 +2363,7 @@
             "expl": 1.0,
             "conditionDamage": 250.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -2365,7 +2372,16 @@
             "expl": 1.0,
             "conditionDamage": 100.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "generic",
+            "expl": 1.0,
+            "conditionDamage": 700.0,
+            "kill": true,
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -2373,7 +2389,7 @@
             "expl": 1.0,
             "conditionDead": true,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         }
       ]

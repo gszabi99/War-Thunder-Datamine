@@ -1,42 +1,34 @@
 [
   {
+    "hideNodes": [
+      {
+        "node": "ex_decor_r_04"
+      },
+      {
+        "node": "ex_decor_l_04"
+      },
+      {
+        "node": "mine_01"
+      },
+      {
+        "node": "mine_02"
+      },
+      {
+        "node": "mine_03"
+      },
+      {
+        "node": "mine_04"
+      }
+    ]
+  },
+  {
     "Weapon": {
       "trigger": "gunner5",
       "triggerGroup": "torpedoes",
       "external": true,
       "blk": "gameData/Weapons/torpedoes/de_533mm_g7a_torpedo.blk",
-      "emitter": "bone_torpedo_02",
-      "bullets": 1,
-      "launchAnimVar": "anim_launch_torpedo_02",
-      "animLaunchTime": 1.8,
-      "launchTime": 0.38,
-      "ammoDP": "torpedo_02_dm",
-      "barrelDP": "tt_02_dm",
-      "brokenBarrelAllowShoot": false,
-      "enableCourseCorrection": false,
-      "startFx": "start_torpedo",
-      "startFxOffset": [4.5,0.0,0.0],
-      "startSpeed": 18.0,
-      "useStartSpeed": true,
-      "allowableDelta": 180.0,
-      "turret": {
-        "head": "bone_torpedo_02",
-        "gun": "bone_torpedo_02"
-      },
-      "limits": {
-        "yaw": [0.0,0.0],
-        "pitch": [0.0,0.0]
-      }
-    }
-  },
-  {
-    "Weapon": {
-      "trigger": "gunner6",
-      "triggerGroup": "torpedoes",
-      "external": true,
-      "blk": "gameData/Weapons/torpedoes/de_533mm_g7a_torpedo.blk",
       "emitter": "bone_torpedo_01",
-      "bullets": 1,
+      "bullets": 2,
       "launchAnimVar": "anim_launch_torpedo_01",
       "animLaunchTime": 1.8,
       "launchTime": 0.38,
@@ -52,6 +44,36 @@
       "turret": {
         "head": "bone_torpedo_01",
         "gun": "bone_torpedo_01"
+      },
+      "limits": {
+        "yaw": [0.0,0.0],
+        "pitch": [0.0,0.0]
+      }
+    }
+  },
+  {
+    "Weapon": {
+      "trigger": "gunner6",
+      "triggerGroup": "torpedoes",
+      "external": true,
+      "blk": "gameData/Weapons/torpedoes/de_533mm_g7a_torpedo.blk",
+      "emitter": "bone_torpedo_02",
+      "bullets": 2,
+      "launchAnimVar": "anim_launch_torpedo_02",
+      "animLaunchTime": 1.8,
+      "launchTime": 0.38,
+      "ammoDP": "torpedo_02_dm",
+      "barrelDP": "tt_02_dm",
+      "brokenBarrelAllowShoot": false,
+      "enableCourseCorrection": false,
+      "startFx": "start_torpedo",
+      "startFxOffset": [4.5,0.0,0.0],
+      "startSpeed": 18.0,
+      "useStartSpeed": true,
+      "allowableDelta": 180.0,
+      "turret": {
+        "head": "bone_torpedo_02",
+        "gun": "bone_torpedo_02"
       },
       "limits": {
         "yaw": [0.0,0.0],

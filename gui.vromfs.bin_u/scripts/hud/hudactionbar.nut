@@ -213,7 +213,7 @@ class ActionBar
       return
     }
 
-    local ship = ::isShip(getActionBarUnit())
+    local ship = getActionBarUnit()?.isShip()
 
     foreach(item in actionItems)
     {

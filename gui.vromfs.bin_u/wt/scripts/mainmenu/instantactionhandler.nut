@@ -1059,7 +1059,7 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
     local msg = ::format("%s %s?", ::loc("msgbox/question_crew_unlock"), cost.getTextAccordingToBalance())
     msgBox("unlock_crew", msg, [
         ["yes", (@(crewId, isGold) function() {
-          taskId = ::unlockCrew( crewId, isGold )
+          taskId = ::unlockCrew( crewId, isGold, cost )
           ::sync_handler_simulate_signal("profile_reload")
           if (taskId >= 0)
           {

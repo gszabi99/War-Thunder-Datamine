@@ -1183,6 +1183,9 @@
               "timeMultiplier": 1.0,
               "disableZone": false,
               "name_for_respawn_base": "",
+              "showBorderOnMap": false,
+              "borderWidthCoef": 1.0,
+              "borderTransparencyCoef": 1.0,
               "target": "@pt_generate_capture_area_name",
               "canCaptureOnGround": true,
               "playAirfieldSound": false,
@@ -1238,6 +1241,9 @@
               "timeMultiplier": 1.0,
               "disableZone": false,
               "name_for_respawn_base": "",
+              "showBorderOnMap": false,
+              "borderWidthCoef": 1.0,
+              "borderTransparencyCoef": 1.0,
               "target": "@pt_generate_capture_area_name",
               "canCaptureOnGround": true,
               "playAirfieldSound": false,
@@ -1973,7 +1979,7 @@
           "varCompareInt": {
             "var_value": "pt_t1_port_units_t2_count",
             "value": 0,
-            "comparasion_func": "less",
+            "comparasion_func": "notMore",
             "var_value_other": "pt_t1_port_units_t1_count"
           }
         },
@@ -2196,7 +2202,7 @@
           "varCompareInt": {
             "var_value": "pt_t2_port_units_t1_count",
             "value": 0,
-            "comparasion_func": "less",
+            "comparasion_func": "notMore",
             "var_value_other": "pt_t2_port_units_t2_count"
           }
         },
@@ -3065,6 +3071,7 @@
             "unitRestore": {
               "ressurectIfDead": true,
               "fullRestore": true,
+              "target_marking": 0,
               "target": "@pt_port_turning_defenders_squad_name",
               "randomTargetsCount": 1,
               "useForTriggerFiltered": true
@@ -3151,6 +3158,7 @@
             "unitRestore": {
               "ressurectIfDead": true,
               "fullRestore": true,
+              "target_marking": 0,
               "target": "@pt_port_turning_defenders_squad_name",
               "randomTargetsCount": 1,
               "useForTriggerFiltered": true
@@ -3251,6 +3259,9 @@
               "target": "all_players_squad"
             },
             {
+              "target_type": "isOnGround"
+            },
+            {
               "useForTriggerFiltered": true
             },
             {
@@ -3328,6 +3339,9 @@
             },
             {
               "target": "all_players_squad"
+            },
+            {
+              "target_type": "isOnGround"
             },
             {
               "useForTriggerFiltered": true
@@ -3409,6 +3423,9 @@
               "target": "all_players_squad"
             },
             {
+              "target_type": "isOnGround"
+            },
+            {
               "useForTriggerFiltered": true
             },
             {
@@ -3486,6 +3503,9 @@
             },
             {
               "target": "all_players_squad"
+            },
+            {
+              "target_type": "isOnGround"
             },
             {
               "useForTriggerFiltered": true
@@ -7060,6 +7080,18 @@
                 "name": "@pt_reinforcement_t1_squad_name"
               },
               {
+                "object_marking": 0
+              },
+              {
+                "object_var_name": ""
+              },
+              {
+                "object_var_comp_op": "equal"
+              },
+              {
+                "object_var_value": 0
+              },
+              {
                 "object": "dst_t1_destroyers_head_squad"
               },
               {
@@ -8581,6 +8613,18 @@
                 "name": "@pt_reinforcement_t2_squad_name"
               },
               {
+                "object_marking": 0
+              },
+              {
+                "object_var_name": ""
+              },
+              {
+                "object_var_comp_op": "equal"
+              },
+              {
+                "object_var_value": 0
+              },
+              {
                 "object": "dst_t2_destroyers_head_squad"
               },
               {
@@ -9554,16 +9598,28 @@
             "target": "pt_reinforcement_t1_enemy_spawn_create"
           }
         },
-        "else_actions": {
-          "triggerEnable": [
-            {
-              "target": "pt_reinforcement_t1_enemy_spawn_end_ship_spawn"
-            },
-            {
-              "target": "pt_reinforcement_t1_enemy_spawn_end_boat_spawn"
+        "else_actions": [
+          {
+            "triggerEnable": [
+              {
+                "target": "pt_reinforcement_t1_enemy_spawn_end_ship_spawn"
+              },
+              {
+                "target": "pt_reinforcement_t1_enemy_spawn_end_boat_spawn"
+              }
+            ]
+          },
+          {
+            "comment": {
+              "value": ""
             }
-          ]
-        }
+          },
+          {
+            "triggerEnable": {
+              "target": "pt_reinforcement_t1_enemy_spawn_restart"
+            }
+          }
+        ]
       },
       "pt_reinforcement_t1_enemy_spawn_create": {
         "is_enabled": false,
@@ -10019,16 +10075,28 @@
             "target": "pt_reinforcement_t2_enemy_spawn_create"
           }
         },
-        "else_actions": {
-          "triggerEnable": [
-            {
-              "target": "pt_reinforcement_t2_enemy_spawn_end_ship_spawn"
-            },
-            {
-              "target": "pt_reinforcement_t2_enemy_spawn_end_boat_spawn"
+        "else_actions": [
+          {
+            "triggerEnable": [
+              {
+                "target": "pt_reinforcement_t2_enemy_spawn_end_ship_spawn"
+              },
+              {
+                "target": "pt_reinforcement_t2_enemy_spawn_end_boat_spawn"
+              }
+            ]
+          },
+          {
+            "comment": {
+              "value": ""
             }
-          ]
-        }
+          },
+          {
+            "triggerEnable": {
+              "target": "pt_reinforcement_t2_enemy_spawn_restart"
+            }
+          }
+        ]
       },
       "pt_reinforcement_t2_enemy_spawn_create": {
         "is_enabled": false,
@@ -11934,6 +12002,10 @@
           },
           "makeSquadFromUnits": {
             "name": "@pt_attack_port_squad_name",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "pt_naval_ships_squad",
             "useForTriggerFiltered": true
           },
@@ -15329,24 +15401,32 @@
     "pt_port_04_name": "",
     "pt_port_05_name": "",
     "pt_port_06_name": "",
+    "pt_port_07_name": "",
+    "pt_port_08_name": "",
     "pt_port_01_army": 0,
     "pt_port_02_army": 0,
     "pt_port_03_army": 0,
     "pt_port_04_army": 0,
     "pt_port_05_army": 0,
     "pt_port_06_army": 0,
+    "pt_port_07_army": 0,
+    "pt_port_08_army": 0,
     "pt_port_01_size": 0,
     "pt_port_02_size": 0,
     "pt_port_03_size": 0,
     "pt_port_04_size": 0,
     "pt_port_05_size": 0,
     "pt_port_06_size": 0,
+    "pt_port_07_size": 0,
+    "pt_port_08_size": 0,
     "pt_port_01_reinforcement_timer": 0,
     "pt_port_02_reinforcement_timer": 0,
     "pt_port_03_reinforcement_timer": 0,
     "pt_port_04_reinforcement_timer": 0,
     "pt_port_05_reinforcement_timer": 0,
     "pt_port_06_reinforcement_timer": 0,
+    "pt_port_07_reinforcement_timer": 0,
+    "pt_port_08_reinforcement_timer": 0,
     "pt_port_reinforcement_base_timer": 1200,
     "pt_generate_spawns_cur_idx": 0,
     "pt_generate_spawns_army_var_name": "",
@@ -15525,6 +15605,9 @@
     "pt_port_04_restore_timer": 30,
     "pt_port_05_restore_timer": 30,
     "pt_port_06_restore_timer": 30,
+    "pt_port_07_restore_timer": 30,
+    "pt_port_08_restore_timer": 30,
+    "restore_timer": 30,
     "pt_port_turning_restore_timer_var_name": "",
     "pt_port_turning_restore_timer_value": 0,
     "pt_port_default_restore_time": 30,

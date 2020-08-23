@@ -45,7 +45,7 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
     foreach(unitType in unitTypes.types)
     {
       local isAvailable = false
-      foreach(country in ::get_countries_by_unit_type(unitType.esUnitType))
+      foreach(country in getCountriesByUnitType(unitType.esUnitType))
         if (unitType.isAvailableForFirstChoice(country))
         {
           isAvailable = true
@@ -188,7 +188,7 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
     local availUnitTypes = []
     foreach(unitType in unitTypes.types)
       if (unitType.isAvailableForFirstChoice(country)
-        && ::isInArray(country, ::get_countries_by_unit_type(unitType.esUnitType)))
+        && ::isInArray(country, getCountriesByUnitType(unitType.esUnitType)))
         availUnitTypes.append(unitType)
 
     if (availUnitTypes.len())
@@ -240,7 +240,7 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
     local screenSize = updateScreenSize()
     setFrameWidth(screenSize.width)
 
-    local availCountries = selectedUnitType ? ::get_countries_by_unit_type(selectedUnitType.esUnitType) : countries
+    local availCountries = selectedUnitType ? getCountriesByUnitType(selectedUnitType.esUnitType) : countries
     for (local i = availCountries.len() - 1; i >= 0; i--)
       if (!isCountryAvailable(availCountries[i], selectedUnitType))
         availCountries.remove(i)
@@ -379,7 +379,7 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
       foreach(unitType in unitTypes.types)
       {
         if (!unitType.isAvailable()
-            || !::get_countries_by_unit_type(unitType.esUnitType).len())
+            || !getCountriesByUnitType(unitType.esUnitType).len())
           continue
 
         local tasksData = createReserveTasksData(country, unitType, false, true)
@@ -482,5 +482,15 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
       ::add_big_query_record("choose_unit_type_screen", selectedUnitType.lowerName)
     else if (state == CChoiceState.COUNTRY_SELECT)
       ::add_big_query_record("choose_country_screen", selectedCountry)
+  }
+
+  function getCountriesByUnitType(unitType)
+  {
+    local res = []
+    foreach (countryName, countryData in ::get_unit_types_in_countries())
+      if (::getTblValue(unitType, countryData))
+        res.append(countryName)
+
+    return res
   }
 }

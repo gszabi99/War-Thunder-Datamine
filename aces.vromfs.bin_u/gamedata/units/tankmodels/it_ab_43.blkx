@@ -158,6 +158,18 @@
         "turret_bottom_dm": [],
         "turret_top_dm": []
       },
+      "body_shields": {
+        "armorClass": "tank_structural_steel",
+        "hp": 1000.0,
+        "armorThickness": 4.0,
+        "stopChanceOnDeadPart": 0.0,
+        "createSecondaryShatters": false,
+        "ex_decor_l_01_dm": [],
+        "ex_decor_l_06_dm": [],
+        "ex_decor_r_01_dm": [],
+        "ex_decor_r_05_dm": [],
+        "ex_decor_r_07_dm": []
+      },
       "optics": {
         "armorClass": "optics_tank",
         "optic_gun_dm": {
@@ -1696,7 +1708,7 @@
             "expl": 1.0,
             "conditionDamage": 250.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -1705,7 +1717,16 @@
             "expl": 1.0,
             "conditionDamage": 100.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "generic",
+            "expl": 1.0,
+            "conditionDamage": 700.0,
+            "kill": true,
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -1713,7 +1734,7 @@
             "expl": 1.0,
             "conditionDead": true,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         }
       ],
@@ -1757,7 +1778,7 @@
             "expl": 1.0,
             "conditionDamage": 250.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -1766,7 +1787,16 @@
             "expl": 1.0,
             "conditionDamage": 100.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "generic",
+            "expl": 1.0,
+            "conditionDamage": 700.0,
+            "kill": true,
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -1774,7 +1804,7 @@
             "expl": 1.0,
             "conditionDead": true,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         }
       ]

@@ -1,109 +1,77 @@
-{
-  "cannon": false,
-  "weaponType": 1,
-  "aimMinDist": 0.05,
-  "aimMaxDist": 1500.0,
-  "maxDeltaAngle": 0.1,
-  "attackMaxDist": 1000.0,
-  "shotFreq": 8.333,
-  "bullets": 900,
-  "bulletsCartridge": 20,
-  "reloadTime": 2.5,
-  "recoilOffset": 0.0,
-  "traceFreq": 4,
-  "bulletsCluster": 2,
-  "fxMultipleSpawn": true,
-  "fxType": "machine_gun_flame",
-  "fxScale": 1.0,
-  "shouldCollideWithRendinsts": true,
-  "sfxReloadBullet": "naval_gun_reload",
-  "sound_path": "tanks/weapon_tanks/mguns",
-  "sound_pathStudio": "naval/weapon/mguns",
-  "sound": "8mm_breda_mod30",
-  "soundLoop": true,
-  "isBulletBelt": false,
-  "notUseDefaultBulletInGui": true,
-  "bullet": {
-    "mass": 0.0104,
-    "caliber": 0.0065,
-    "speed": 630.0,
-    "Cx": 0.15,
-    "maxDistance": 2000.0,
-    "normalizationPreset": "default",
-    "ricochetPreset": "default",
-    "stabilityThreshold": 0.05,
-    "stabilityCaliberToArmorThreshold": 5.0,
-    "stabilityReductionAfterRicochet": 0.5,
-    "stabilityReductionAfterPenetration": 0.3,
-    "bulletType": "ball",
-    "slopeEffectPreset": "ap",
-    "hitPowerMult": 2.8,
-    "onHitChanceMultFire": 1.5,
-    "dynamicKv": true,
-    "waterCollisionEffect": "water_splash",
-    "waterFxScale": [1.2,1.2],
-    "stabilityRicochetModifier": [
-      {
-        "mod1": [0.0,0.05]
-      },
-      {
-        "mod2": [20.0,0.1]
-      },
-      {
-        "mod3": [30.0,0.2]
-      },
-      {
-        "mod3": [45.0,0.3]
-      }
-    ],
-    "damage": {
-      "kinetic": {
-        "damageType": "generic",
-        "demarrePenetrationK": 0.44,
-        "demarreSpeedPow": 1.43,
-        "demarreMassPow": 0.71,
-        "demarreCaliberPow": 1.07
-      }
-    },
-    "hitpower": {
-      "HitPower0m": [1.0,500.0],
-      "HitPower2000m": [0.6,2000.0],
-      "HitPower2500m": [0.1,2500.0]
-    },
-    "visual": {
-      "range_percent_of_ammo": [100.0,0.0],
-      "traceFreq": 1,
-      "tracer": "7mmWhite",
-      "trail": "noTrail"
-    },
-    "collisions": {
-      "default": {
-        "fx": "7_20_hit_ground",
-        "fxScale": [1.0,1.0]
-      },
-      "steel": {
-        "fx": "bullet_hit_armor_cumulative",
-        "fxScale": [0.6,0.6]
-      },
-      "armor": {
-        "fx": "bullet_hit_armor_cumulative",
-        "fxScale": [0.6,0.6]
-      },
-      "wood": {
-        "fx": "bullet_hit_light",
-        "fxScale": [0.7,0.7]
-      },
-      "buildings": {
-        "fx": "7_20_hit_stone",
-        "fxScale": [0.5,0.5]
-      },
-      "beton": {
-        "fx": "7_20_hit_stone",
-        "fxScale": [0.5,0.5]
-      }
-    }
+[
+  {
+    "cannon": false
   },
-  "6_5mm_it_fiat_mod26_universal": {
+  {
+    "weaponType": 1
+  },
+  {
+    "aimMinDist": 0.05
+  },
+  {
+    "aimMaxDist": 1500.0
+  },
+  {
+    "maxDeltaAngle": 0.1
+  },
+  {
+    "attackMaxDist": 1000.0
+  },
+  {
+    "shotFreq": 8.333
+  },
+  {
+    "bullets": 900
+  },
+  {
+    "bulletsCartridge": 20
+  },
+  {
+    "reloadTime": 2.5
+  },
+  {
+    "recoilOffset": 0.0
+  },
+  {
+    "traceFreq": 4
+  },
+  {
+    "bulletsCluster": 2
+  },
+  {
+    "fxMultipleSpawn": true
+  },
+  {
+    "fxType": "machine_gun_flame"
+  },
+  {
+    "fxScale": 1.0
+  },
+  {
+    "shouldCollideWithRendinsts": true
+  },
+  {
+    "sfxReloadBullet": "naval_gun_reload"
+  },
+  {
+    "sound_path": "tanks/weapon_tanks/mguns"
+  },
+  {
+    "sound_pathStudio": "naval/weapon/mguns"
+  },
+  {
+    "sound": "8mm_breda_mod30"
+  },
+  {
+    "soundLoop": true
+  },
+  {
+    "isBulletBelt": false
+  },
+  {
+    "notUseDefaultBulletInGui": true
+  },
+  {
     "bullet": {
       "mass": 0.0104,
       "caliber": 0.0065,
@@ -119,7 +87,6 @@
       "bulletType": "ball",
       "slopeEffectPreset": "ap",
       "hitPowerMult": 2.8,
-      "onHitChanceMultFire": 1.5,
       "dynamicKv": true,
       "waterCollisionEffect": "water_splash",
       "waterFxScale": [1.2,1.2],
@@ -184,5 +151,576 @@
         }
       }
     }
+  },
+  {
+    "bullet": {
+      "mass": 0.0104,
+      "caliber": 0.0065,
+      "speed": 630.0,
+      "Cx": 0.15,
+      "maxDistance": 2000.0,
+      "normalizationPreset": "default",
+      "ricochetPreset": "default",
+      "stabilityThreshold": 0.05,
+      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterPenetration": 0.3,
+      "bulletType": "ball",
+      "slopeEffectPreset": "ap",
+      "hitPowerMult": 2.8,
+      "dynamicKv": true,
+      "waterCollisionEffect": "water_splash",
+      "waterFxScale": [1.2,1.2],
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.05]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod3": [30.0,0.2]
+        },
+        {
+          "mod3": [45.0,0.3]
+        }
+      ],
+      "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 0.44,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
+        }
+      },
+      "hitpower": {
+        "HitPower0m": [1.0,500.0],
+        "HitPower2000m": [0.6,2000.0],
+        "HitPower2500m": [0.1,2500.0]
+      },
+      "visual": {
+        "range_percent_of_ammo": [100.0,0.0],
+        "traceFreq": 1,
+        "tracer": "7mmWhite",
+        "trail": "noTrail"
+      },
+      "collisions": {
+        "default": {
+          "fx": "7_20_hit_ground",
+          "fxScale": [1.0,1.0]
+        },
+        "steel": {
+          "fx": "bullet_hit_armor_cumulative",
+          "fxScale": [0.6,0.6]
+        },
+        "armor": {
+          "fx": "bullet_hit_armor_cumulative",
+          "fxScale": [0.6,0.6]
+        },
+        "wood": {
+          "fx": "bullet_hit_light",
+          "fxScale": [0.7,0.7]
+        },
+        "buildings": {
+          "fx": "7_20_hit_stone",
+          "fxScale": [0.5,0.5]
+        },
+        "beton": {
+          "fx": "7_20_hit_stone",
+          "fxScale": [0.5,0.5]
+        }
+      }
+    }
+  },
+  {
+    "bullet": {
+      "mass": 0.0104,
+      "caliber": 0.0065,
+      "speed": 630.0,
+      "Cx": 0.15,
+      "maxDistance": 2000.0,
+      "normalizationPreset": "default",
+      "ricochetPreset": "default",
+      "stabilityThreshold": 0.05,
+      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterPenetration": 0.3,
+      "bulletType": "ball",
+      "slopeEffectPreset": "ap",
+      "hitPowerMult": 2.8,
+      "dynamicKv": true,
+      "waterCollisionEffect": "water_splash",
+      "waterFxScale": [1.2,1.2],
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.05]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod3": [30.0,0.2]
+        },
+        {
+          "mod3": [45.0,0.3]
+        }
+      ],
+      "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 0.44,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
+        }
+      },
+      "hitpower": {
+        "HitPower0m": [1.0,500.0],
+        "HitPower2000m": [0.6,2000.0],
+        "HitPower2500m": [0.1,2500.0]
+      },
+      "visual": {
+        "range_percent_of_ammo": [100.0,0.0],
+        "traceFreq": 1,
+        "tracer": "7mmWhite",
+        "trail": "noTrail"
+      },
+      "collisions": {
+        "default": {
+          "fx": "7_20_hit_ground",
+          "fxScale": [1.0,1.0]
+        },
+        "steel": {
+          "fx": "bullet_hit_armor_cumulative",
+          "fxScale": [0.6,0.6]
+        },
+        "armor": {
+          "fx": "bullet_hit_armor_cumulative",
+          "fxScale": [0.6,0.6]
+        },
+        "wood": {
+          "fx": "bullet_hit_light",
+          "fxScale": [0.7,0.7]
+        },
+        "buildings": {
+          "fx": "7_20_hit_stone",
+          "fxScale": [0.5,0.5]
+        },
+        "beton": {
+          "fx": "7_20_hit_stone",
+          "fxScale": [0.5,0.5]
+        }
+      }
+    }
+  },
+  {
+    "bullet": {
+      "mass": 0.0104,
+      "caliber": 0.0065,
+      "speed": 630.0,
+      "Cx": 0.15,
+      "maxDistance": 2000.0,
+      "normalizationPreset": "default",
+      "ricochetPreset": "default",
+      "stabilityThreshold": 0.05,
+      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterPenetration": 0.3,
+      "bulletType": "t_ball",
+      "slopeEffectPreset": "ap",
+      "hitPowerMult": 2.8,
+      "dynamicKv": true,
+      "waterCollisionEffect": "water_splash",
+      "waterFxScale": [1.2,1.2],
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.05]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod3": [30.0,0.2]
+        },
+        {
+          "mod3": [45.0,0.3]
+        }
+      ],
+      "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 0.44,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
+        }
+      },
+      "hitpower": {
+        "HitPower0m": [1.0,500.0],
+        "HitPower2000m": [0.6,2000.0],
+        "HitPower2500m": [0.1,2500.0]
+      },
+      "visual": {
+        "range_percent_of_ammo": [100.0,0.0],
+        "traceFreq": 1,
+        "tracer": "7mmWhite",
+        "trail": "noTrail"
+      },
+      "collisions": {
+        "default": {
+          "fx": "7_20_hit_ground",
+          "fxScale": [1.0,1.0]
+        },
+        "steel": {
+          "fx": "bullet_hit_armor_cumulative",
+          "fxScale": [0.6,0.6]
+        },
+        "armor": {
+          "fx": "bullet_hit_armor_cumulative",
+          "fxScale": [0.6,0.6]
+        },
+        "wood": {
+          "fx": "bullet_hit_light",
+          "fxScale": [0.7,0.7]
+        },
+        "buildings": {
+          "fx": "7_20_hit_stone",
+          "fxScale": [0.5,0.5]
+        },
+        "beton": {
+          "fx": "7_20_hit_stone",
+          "fxScale": [0.5,0.5]
+        }
+      }
+    }
+  },
+  {
+    "6_5mm_it_fiat_mod26_universal": [
+      {
+        "bullet": {
+          "mass": 0.0104,
+          "caliber": 0.0065,
+          "speed": 630.0,
+          "Cx": 0.15,
+          "maxDistance": 2000.0,
+          "normalizationPreset": "default",
+          "ricochetPreset": "default",
+          "stabilityThreshold": 0.05,
+          "stabilityCaliberToArmorThreshold": 5.0,
+          "stabilityReductionAfterRicochet": 0.5,
+          "stabilityReductionAfterPenetration": 0.3,
+          "bulletType": "ball",
+          "slopeEffectPreset": "ap",
+          "hitPowerMult": 2.8,
+          "dynamicKv": true,
+          "waterCollisionEffect": "water_splash",
+          "waterFxScale": [1.2,1.2],
+          "stabilityRicochetModifier": [
+            {
+              "mod1": [0.0,0.05]
+            },
+            {
+              "mod2": [20.0,0.1]
+            },
+            {
+              "mod3": [30.0,0.2]
+            },
+            {
+              "mod3": [45.0,0.3]
+            }
+          ],
+          "damage": {
+            "kinetic": {
+              "damageType": "generic",
+              "demarrePenetrationK": 0.44,
+              "demarreSpeedPow": 1.43,
+              "demarreMassPow": 0.71,
+              "demarreCaliberPow": 1.07
+            }
+          },
+          "hitpower": {
+            "HitPower0m": [1.0,500.0],
+            "HitPower2000m": [0.6,2000.0],
+            "HitPower2500m": [0.1,2500.0]
+          },
+          "visual": {
+            "range_percent_of_ammo": [100.0,0.0],
+            "traceFreq": 1,
+            "tracer": "7mmWhite",
+            "trail": "noTrail"
+          },
+          "collisions": {
+            "default": {
+              "fx": "7_20_hit_ground",
+              "fxScale": [1.0,1.0]
+            },
+            "steel": {
+              "fx": "bullet_hit_armor_cumulative",
+              "fxScale": [0.6,0.6]
+            },
+            "armor": {
+              "fx": "bullet_hit_armor_cumulative",
+              "fxScale": [0.6,0.6]
+            },
+            "wood": {
+              "fx": "bullet_hit_light",
+              "fxScale": [0.7,0.7]
+            },
+            "buildings": {
+              "fx": "7_20_hit_stone",
+              "fxScale": [0.5,0.5]
+            },
+            "beton": {
+              "fx": "7_20_hit_stone",
+              "fxScale": [0.5,0.5]
+            }
+          }
+        }
+      },
+      {
+        "bullet": {
+          "mass": 0.0104,
+          "caliber": 0.0065,
+          "speed": 630.0,
+          "Cx": 0.15,
+          "maxDistance": 2000.0,
+          "normalizationPreset": "default",
+          "ricochetPreset": "default",
+          "stabilityThreshold": 0.05,
+          "stabilityCaliberToArmorThreshold": 5.0,
+          "stabilityReductionAfterRicochet": 0.5,
+          "stabilityReductionAfterPenetration": 0.3,
+          "bulletType": "ball",
+          "slopeEffectPreset": "ap",
+          "hitPowerMult": 2.8,
+          "dynamicKv": true,
+          "waterCollisionEffect": "water_splash",
+          "waterFxScale": [1.2,1.2],
+          "stabilityRicochetModifier": [
+            {
+              "mod1": [0.0,0.05]
+            },
+            {
+              "mod2": [20.0,0.1]
+            },
+            {
+              "mod3": [30.0,0.2]
+            },
+            {
+              "mod3": [45.0,0.3]
+            }
+          ],
+          "damage": {
+            "kinetic": {
+              "damageType": "generic",
+              "demarrePenetrationK": 0.44,
+              "demarreSpeedPow": 1.43,
+              "demarreMassPow": 0.71,
+              "demarreCaliberPow": 1.07
+            }
+          },
+          "hitpower": {
+            "HitPower0m": [1.0,500.0],
+            "HitPower2000m": [0.6,2000.0],
+            "HitPower2500m": [0.1,2500.0]
+          },
+          "visual": {
+            "range_percent_of_ammo": [100.0,0.0],
+            "traceFreq": 1,
+            "tracer": "7mmWhite",
+            "trail": "noTrail"
+          },
+          "collisions": {
+            "default": {
+              "fx": "7_20_hit_ground",
+              "fxScale": [1.0,1.0]
+            },
+            "steel": {
+              "fx": "bullet_hit_armor_cumulative",
+              "fxScale": [0.6,0.6]
+            },
+            "armor": {
+              "fx": "bullet_hit_armor_cumulative",
+              "fxScale": [0.6,0.6]
+            },
+            "wood": {
+              "fx": "bullet_hit_light",
+              "fxScale": [0.7,0.7]
+            },
+            "buildings": {
+              "fx": "7_20_hit_stone",
+              "fxScale": [0.5,0.5]
+            },
+            "beton": {
+              "fx": "7_20_hit_stone",
+              "fxScale": [0.5,0.5]
+            }
+          }
+        }
+      },
+      {
+        "bullet": {
+          "mass": 0.0104,
+          "caliber": 0.0065,
+          "speed": 630.0,
+          "Cx": 0.15,
+          "maxDistance": 2000.0,
+          "normalizationPreset": "default",
+          "ricochetPreset": "default",
+          "stabilityThreshold": 0.05,
+          "stabilityCaliberToArmorThreshold": 5.0,
+          "stabilityReductionAfterRicochet": 0.5,
+          "stabilityReductionAfterPenetration": 0.3,
+          "bulletType": "ball",
+          "slopeEffectPreset": "ap",
+          "hitPowerMult": 2.8,
+          "dynamicKv": true,
+          "waterCollisionEffect": "water_splash",
+          "waterFxScale": [1.2,1.2],
+          "stabilityRicochetModifier": [
+            {
+              "mod1": [0.0,0.05]
+            },
+            {
+              "mod2": [20.0,0.1]
+            },
+            {
+              "mod3": [30.0,0.2]
+            },
+            {
+              "mod3": [45.0,0.3]
+            }
+          ],
+          "damage": {
+            "kinetic": {
+              "damageType": "generic",
+              "demarrePenetrationK": 0.44,
+              "demarreSpeedPow": 1.43,
+              "demarreMassPow": 0.71,
+              "demarreCaliberPow": 1.07
+            }
+          },
+          "hitpower": {
+            "HitPower0m": [1.0,500.0],
+            "HitPower2000m": [0.6,2000.0],
+            "HitPower2500m": [0.1,2500.0]
+          },
+          "visual": {
+            "range_percent_of_ammo": [100.0,0.0],
+            "traceFreq": 1,
+            "tracer": "7mmWhite",
+            "trail": "noTrail"
+          },
+          "collisions": {
+            "default": {
+              "fx": "7_20_hit_ground",
+              "fxScale": [1.0,1.0]
+            },
+            "steel": {
+              "fx": "bullet_hit_armor_cumulative",
+              "fxScale": [0.6,0.6]
+            },
+            "armor": {
+              "fx": "bullet_hit_armor_cumulative",
+              "fxScale": [0.6,0.6]
+            },
+            "wood": {
+              "fx": "bullet_hit_light",
+              "fxScale": [0.7,0.7]
+            },
+            "buildings": {
+              "fx": "7_20_hit_stone",
+              "fxScale": [0.5,0.5]
+            },
+            "beton": {
+              "fx": "7_20_hit_stone",
+              "fxScale": [0.5,0.5]
+            }
+          }
+        }
+      },
+      {
+        "bullet": {
+          "mass": 0.0104,
+          "caliber": 0.0065,
+          "speed": 630.0,
+          "Cx": 0.15,
+          "maxDistance": 2000.0,
+          "normalizationPreset": "default",
+          "ricochetPreset": "default",
+          "stabilityThreshold": 0.05,
+          "stabilityCaliberToArmorThreshold": 5.0,
+          "stabilityReductionAfterRicochet": 0.5,
+          "stabilityReductionAfterPenetration": 0.3,
+          "bulletType": "t_ball",
+          "slopeEffectPreset": "ap",
+          "hitPowerMult": 2.8,
+          "dynamicKv": true,
+          "waterCollisionEffect": "water_splash",
+          "waterFxScale": [1.2,1.2],
+          "stabilityRicochetModifier": [
+            {
+              "mod1": [0.0,0.05]
+            },
+            {
+              "mod2": [20.0,0.1]
+            },
+            {
+              "mod3": [30.0,0.2]
+            },
+            {
+              "mod3": [45.0,0.3]
+            }
+          ],
+          "damage": {
+            "kinetic": {
+              "damageType": "generic",
+              "demarrePenetrationK": 0.44,
+              "demarreSpeedPow": 1.43,
+              "demarreMassPow": 0.71,
+              "demarreCaliberPow": 1.07
+            }
+          },
+          "hitpower": {
+            "HitPower0m": [1.0,500.0],
+            "HitPower2000m": [0.6,2000.0],
+            "HitPower2500m": [0.1,2500.0]
+          },
+          "visual": {
+            "range_percent_of_ammo": [100.0,0.0],
+            "traceFreq": 1,
+            "tracer": "7mmWhite",
+            "trail": "noTrail"
+          },
+          "collisions": {
+            "default": {
+              "fx": "7_20_hit_ground",
+              "fxScale": [1.0,1.0]
+            },
+            "steel": {
+              "fx": "bullet_hit_armor_cumulative",
+              "fxScale": [0.6,0.6]
+            },
+            "armor": {
+              "fx": "bullet_hit_armor_cumulative",
+              "fxScale": [0.6,0.6]
+            },
+            "wood": {
+              "fx": "bullet_hit_light",
+              "fxScale": [0.7,0.7]
+            },
+            "buildings": {
+              "fx": "7_20_hit_stone",
+              "fxScale": [0.5,0.5]
+            },
+            "beton": {
+              "fx": "7_20_hit_stone",
+              "fxScale": [0.5,0.5]
+            }
+          }
+        }
+      }
+    ]
   }
-}
+]

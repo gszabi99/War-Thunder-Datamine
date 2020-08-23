@@ -1,4 +1,5 @@
 local time = require("scripts/time.nut")
+local { isObjHaveActiveChilds } = require("sqDagui/guiBhv/guiBhvUtils.nut")
 
 
 class ::gui_handlers.ChatThreadsListView extends ::gui_handlers.BaseGuiHandlerWT
@@ -257,7 +258,7 @@ class ::gui_handlers.ChatThreadsListView extends ::gui_handlers.BaseGuiHandlerWT
 
   function getMainFocusObj()
   {
-    return ::is_obj_have_active_childs(listObj) ? listObj : null
+    return isObjHaveActiveChilds(listObj) ? listObj : null
   }
 
   function getMainFocusObj2()

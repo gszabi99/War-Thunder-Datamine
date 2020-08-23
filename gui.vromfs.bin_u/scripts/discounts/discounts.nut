@@ -11,7 +11,7 @@ local { haveDiscount = @() false,
 local { getEntitlementId } = require("scripts/onlineShop/onlineBundles.nut")
 local { getEntitlementConfig } = require("scripts/onlineShop/entitlements.nut")
 
-local { buttonsList } = require("scripts/mainmenu/topMenuButtons.nut")
+local buttonsList = require("scripts/mainmenu/topMenuButtons.nut").buttonsListWatch.value
 local topMenuOnlineShopId = isPlatformPS4 ? buttonsList.PS4_ONLINE_SHOP.id
   : isPlatformXboxOne ? buttonsList.XBOX_ONLINE_SHOP.id
   : ""

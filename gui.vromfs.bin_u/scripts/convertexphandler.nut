@@ -127,6 +127,12 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
     return expToBuy
   }
 
+  function getCountryResearchUnit(countryName, unitType)
+  {
+    local unitName = ::shop_get_researchable_unit_name(countryName, unitType)
+    return ::getAircraftByName(unitName)
+  }
+
   //----VIEW----//
   function initCountriesList()
   {
@@ -244,7 +250,7 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
       local btnObj = ::showBtn(unitType.armyId, isShow, listObj)
       if (btnObj)
       {
-        btnObj.inactive = ::getCountryResearchUnit(country, unitType.esUnitType)? "no" : "yes"
+        btnObj.inactive = getCountryResearchUnit(country, unitType.esUnitType)? "no" : "yes"
         btnObj.enable(unitType.canSpendGold())
       }
     }
@@ -482,7 +488,7 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
     listType = unitType
     loadUnitList(unitType)
     fillUnitList()
-    unit = ::getCountryResearchUnit(country, unitType)
+    unit = getCountryResearchUnit(country, unitType)
     updateWindow()
   }
 
@@ -491,7 +497,7 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
     local newUnit = null
     //try to get unit of same type as previous unit is
     if (::isCountryHaveUnitType(country, ::get_es_unit_type(unit)))
-      newUnit = ::getCountryResearchUnit(country, ::get_es_unit_type(unit))
+      newUnit = getCountryResearchUnit(country, ::get_es_unit_type(unit))
     if (!newUnit)
     {
       foreach (unitType in unitTypes.types)
@@ -500,7 +506,7 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
           continue
 
         if (unitType.haveAnyUnitInCountry(country))
-          newUnit = ::getCountryResearchUnit(country, unitType.esUnitType)
+          newUnit = getCountryResearchUnit(country, unitType.esUnitType)
 
         if (newUnit)
           break
@@ -540,11 +546,15 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onApply()
   {
+    if (::get_gui_balance().gold <= 0)
+      return ::check_balance_msgBox(::Cost(0, curGoldValue), ::Callback(updateWindow, this)) //In fact, for displaying propper message box, with 'buy' func
+
     local curGold = curGoldValue - minGoldValue
     if (curGold == 0)
-      return msgBox("no_exp_msgbox", ::loc("exp/convert/noGold"), [["ok", function () {}]], "ok")
-    else if (availableExp < expPerGold)
-      return msgBox("no_rp_msgbox", ::loc("msgbox/no_rp"), [["ok", function () {}]], "ok")
+      return ::showInfoMsgBox(::loc("exp/convert/noGold"), "no_exp_msgbox")
+
+    if (availableExp < expPerGold)
+      return ::showInfoMsgBox(::loc("msgbox/no_rp"), "no_rp_msgbox")
 
     local curExp = getCurExpValue()
     local cost = ::Cost(0, curGold)
