@@ -1887,11 +1887,15 @@
         "Empty": 10650.0,
         "Fuel": 200.0,
         "TakeOff": 10850.0,
-        "momentOfInertia": [1.4,2.5,2.5],
-        "CenterOfGravity": [0.4,0.5,0.0],
+        "momentOfInertia": [2.5,2.5,6.0],
+        "CenterOfGravity": [0.0,0.5,0.0],
+        "AdvancedMass": false,
+        "trackMass": 500.0,
         "CenterOfGravityClampY": [0.0,0.7],
-        "AdvancedMass": true,
-        "trackMass": 500.0
+        "cls_turret": 0.5,
+        "cls_body_01": 0.5,
+        "cls_body_02": 0.5,
+        "cls_body_03": 0.5
       },
       "tracks": {
         "animationMultiplier": 0.5,
@@ -1937,11 +1941,12 @@
         ]
       },
       "suspension": {
-        "suspensionOffsets": [-0.1,-0.13,0.07],
+        "maxDisplacementOffsets": [-0.02,0.01],
+        "suspensionOffsets": [-0.15,-0.13,0.07],
         "defaultGearRadius": 0.385,
         "topGearRadius": 0.1,
         "frontBackGearRadius": 0.2515,
-        "defaultDampeningForce": [40000.0,40000.0],
+        "defaultDampeningForce": [50000.0,50000.0],
         "dampeningRelaxationRatio": 0.4,
         "dampeningCompressionRatio": 0.15
       }

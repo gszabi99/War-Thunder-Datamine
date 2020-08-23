@@ -210,14 +210,12 @@ enums.addTypesByGlobalName("g_decorator_type", {
       return res.success
     }
 
-    buyFunc = function(unitName, id, cost, afterSuccessFunc)
+    buyFunc = function(unitName, id, afterSuccessFunc)
     {
       local blk = ::DataBlock()
       blk["name"] = id
       blk["type"] = "decal"
       blk["unitName"] = unitName
-      blk["cost"] = cost.wp
-      blk["costGold"] = cost.gold
 
       local taskId = ::char_send_blk("cln_buy_resource", blk)
       local taskOptions = { showProgressBox = true, progressBoxText = ::loc("charServer/purchase") }
@@ -290,7 +288,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
     getDecoratorGroupInSlot = function(slotIdx, ...) { return ::hangar_get_attachable_group(slotIdx) }
 
     isAvailable = @(unit, checkUnitUsable = true) !!unit && ::has_feature("AttachablesUse")
-      && unit.isTank() && (!checkUnitUsable || unit.isUsable())
+      && ::isTank(unit) && (!checkUnitUsable || unit.isUsable())
     isPlayerHaveDecorator = memoizeByProfile(::player_have_attachable)
 
     getBlk = function() { return ::get_attachable_blk() }
@@ -310,14 +308,12 @@ enums.addTypesByGlobalName("g_decorator_type", {
       return res
     }
 
-    buyFunc = function(unitName, id, cost, afterSuccessFunc)
+    buyFunc = function(unitName, id, afterSuccessFunc)
     {
       local blk = ::DataBlock()
       blk["name"] = id
       blk["type"] = "attachable"
       blk["unitName"] = unitName
-      blk["cost"] = cost.wp
-      blk["costGold"] =-cost.gold
 
       local taskId = ::char_send_blk("cln_buy_resource", blk)
       local taskOptions = { showProgressBox = true, progressBoxText = ::loc("charServer/purchase") }
@@ -436,14 +432,12 @@ enums.addTypesByGlobalName("g_decorator_type", {
 
     getBlk = function() { return ::get_skins_blk() }
 
-    buyFunc = function(unitName, id, cost, afterSuccessFunc)
+    buyFunc = function(unitName, id, afterSuccessFunc)
     {
       local blk = ::DataBlock()
       blk["name"] = id
       blk["type"] = "skin"
       blk["unitName"] = unitName
-      blk["cost"] = cost.wp
-      blk["costGold"] = cost.gold
 
       local taskId = ::char_send_blk("cln_buy_resource", blk)
       local taskOptions = { showProgressBox = true, progressBoxText = ::loc("charServer/purchase") }

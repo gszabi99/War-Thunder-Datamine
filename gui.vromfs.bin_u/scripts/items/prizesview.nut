@@ -678,7 +678,7 @@ PrizesView.getViewDataMod <- function getViewDataMod(unitName, modName, params)
   if (modName == "premExpMul") //talisman
     icon = "#ui/gameuiskin#item_type_talisman"
   else
-    icon = unit?.isTank() ? "#ui/gameuiskin#item_type_modification_tank" : "#ui/gameuiskin#item_type_modification_aircraft"
+    icon = ::isTank(unit) ? "#ui/gameuiskin#item_type_modification_tank" : "#ui/gameuiskin#item_type_modification_aircraft"
 
   return {
     icon = icon

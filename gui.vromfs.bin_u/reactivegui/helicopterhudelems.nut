@@ -4,8 +4,6 @@ local aamAimState = require("rocketAamAimState.nut")
 local agmAimState = require("agmAimState.nut")
 local compass = require("compass.nut")
 
-local warningSystemState = require("twsState.nut")
-
 local backgroundColor = Color(0, 0, 0, 150)
 
 const NUM_ENGINES_MAX = 3
@@ -1130,83 +1128,6 @@ local detectAllyComponent = function(elemStyle, posX, posY, isBackground) {
   }
 }
 
-local centeredAircraftIcon = ::kwarg(function(colorStyle, pos = [0, 0], size = flex())
-{
-  local indicatorRadius = 70.0
-  local tailW = 25
-  local tailH = 10
-  local tailOffset1 = 10
-  local tailOffset2 = 5
-  local tailOffset3 = 25
-  local fuselageWHalf = 10
-  local wingOffset1 = 45
-  local wingOffset2 = 30
-  local wingW = 32
-  local wingH = 18
-  local wingOffset3 = 30
-  local noseOffset = 5
-
-
-  local aircraftIcon = colorStyle.__merge({
-    rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = hdpx(1) * 2.0
-    fillColor = Color(0, 0, 0, 0)
-    vplace = ALIGN_CENTER
-    hplace = ALIGN_CENTER
-    size = [pw(33), ph(33)]
-    pos = [0, 0]
-    opacity = 0.42
-    commands = [
-      [VECTOR_POLY,
-        // tail left
-        50, 100 - tailOffset1,
-        50 - tailW, 100 - tailOffset2,
-        50 - tailW, 100 - tailOffset2 - tailH,
-        50 - fuselageWHalf, 100 - tailOffset3,
-        // wing left
-        50 - fuselageWHalf, 100 - wingOffset1,
-        50 - fuselageWHalf - wingW, 100 - wingOffset2,
-        50 - fuselageWHalf - wingW, 100 - wingOffset2 - wingH,
-        50 - fuselageWHalf, wingOffset3,
-        // nose
-        50, noseOffset,
-        // wing rigth
-        50 + fuselageWHalf, wingOffset3,
-        50 + fuselageWHalf + wingW, 100 - wingOffset2 - wingH,
-        50 + fuselageWHalf + wingW, 100 - wingOffset2,
-        50 + fuselageWHalf, 100 - wingOffset1,
-        // tail right
-        50 + fuselageWHalf, 100 - tailOffset3,
-        50 + tailW, 100 - tailOffset2 - tailH,
-        50 + tailW, 100 - tailOffset2
-      ]
-    ]
-  })
-
-  local function getChildren() {
-    return [
-      colorStyle.__merge({
-        rendObj = ROBJ_VECTOR_CANVAS
-        size = flex()
-        fillColor = warningSystemState.EnableBackGroundColor.value ? backgroundColor : Color(0, 0, 0, 0)
-        lineWidth = hdpx(1) * LINE_WIDTH
-        commands = [
-          [VECTOR_ELLIPSE, 50, 50, indicatorRadius * 0.33, indicatorRadius * 0.33]
-        ]
-      }),
-      aircraftIcon
-    ]
-  }
-
-  return @()
-  {
-    size = flex()
-    children = getChildren()
-    watch = warningSystemState.EnableBackGroundColor
-  }
-})
-
-
 return {
   vertSpeed = HelicopterVertSpeed
   paramsTable = generateParamsTable
@@ -1221,5 +1142,4 @@ return {
   lockSight = lockSightComponent
   rocketAim = helicopterRocketAim
   detectAlly = detectAllyComponent
-  aircraftIcon = centeredAircraftIcon
 }

@@ -5,8 +5,6 @@ local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
 local { getSkillCategoryByName } = require("scripts/crew/crewSkills.nut")
 local { getSkillCategoryTooltipContent } = require("scripts/crew/crewSkillsView.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
-local { getFakeBulletsModByName } = require("scripts/weaponry/bulletsInfo.nut")
 local { updateModType,
         getTierDescTbl,
         updateSpareType,
@@ -181,7 +179,7 @@ enums.addTypesByGlobalName("g_tooltip_type", {
       if (restricionsDesc.len())
         desc += (desc.len() ? "\n" : "") + restricionsDesc
 
-      if (decoratorType == ::g_decorator_type.SKINS && ::getAircraftByName(::g_unlocks.getPlaneBySkinId(id))?.isTank())
+      if (decoratorType == ::g_decorator_type.SKINS && ::isTank(::getAircraftByName(::g_unlocks.getPlaneBySkinId(id))))
       {
         local mask = skinLocations.getSkinLocationsMaskBySkinId(id, false)
         local locations = mask ? skinLocations.getLocationsLoc(mask) : []
@@ -516,7 +514,7 @@ enums.addTypesByGlobalName("g_tooltip_type", {
         return false
 
       local modName = ::getTblValue("modName", params, "")
-      local mod = getModificationByName(unit, modName) ?? getFakeBulletsModByName(unit, modName)
+      local mod = ::getModificationByName(unit, modName, true)
       if (!mod)
         return false
 

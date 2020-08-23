@@ -167,6 +167,7 @@
       "bulletType": "t_ball",
       "slopeEffectPreset": "ap",
       "hitPowerMult": 2.8,
+      "onHitChanceMultFire": 1.5,
       "dynamicKv": true,
       "waterCollisionEffect": "water_splash",
       "waterFxScale": [1.2,1.2],
@@ -330,6 +331,7 @@
           "bulletType": "t_ball",
           "slopeEffectPreset": "ap",
           "hitPowerMult": 2.8,
+          "onHitChanceMultFire": 1.5,
           "dynamicKv": true,
           "waterCollisionEffect": "water_splash",
           "waterFxScale": [1.2,1.2],
@@ -491,6 +493,7 @@
           "bulletType": "t_ball",
           "slopeEffectPreset": "ap",
           "hitPowerMult": 2.8,
+          "onHitChanceMultFire": 1.5,
           "dynamicKv": true,
           "waterCollisionEffect": "water_splash",
           "waterFxScale": [1.2,1.2],
@@ -816,6 +819,7 @@
           "bulletType": "t_ball",
           "slopeEffectPreset": "ap",
           "hitPowerMult": 2.8,
+          "onHitChanceMultFire": 1.5,
           "dynamicKv": true,
           "waterCollisionEffect": "water_splash",
           "waterFxScale": [1.2,1.2],
@@ -902,7 +906,7 @@
           "bulletType": "i_t_ball",
           "slopeEffectPreset": "ap",
           "hitPowerMult": 1.0,
-          "onHitChanceMultFire": 40.0,
+          "onHitChanceMultFire": 5.0,
           "dynamicKv": true,
           "waterCollisionEffect": "water_splash",
           "waterFxScale": [1.2,1.2],
@@ -985,7 +989,7 @@
           "bulletType": "i_t_ball",
           "slopeEffectPreset": "ap",
           "hitPowerMult": 1.0,
-          "onHitChanceMultFire": 40.0,
+          "onHitChanceMultFire": 5.0,
           "dynamicKv": true,
           "waterCollisionEffect": "water_splash",
           "waterFxScale": [1.2,1.2],
@@ -1068,7 +1072,7 @@
           "bulletType": "i_t_ball",
           "slopeEffectPreset": "ap",
           "hitPowerMult": 1.0,
-          "onHitChanceMultFire": 40.0,
+          "onHitChanceMultFire": 5.0,
           "dynamicKv": true,
           "waterCollisionEffect": "water_splash",
           "waterFxScale": [1.2,1.2],
@@ -1136,25 +1140,22 @@
       },
       {
         "bullet": {
-          "mass": 0.0091,
+          "mass": 0.0108,
           "caliber": 0.0077,
-          "speed": 920.0,
+          "speed": 853.0,
           "Cx": 0.15,
           "maxDistance": 2000.0,
-          "groundFxScale": [0.4,0.6],
           "normalizationPreset": "default",
           "ricochetPreset": "default",
-          "stabilityThreshold": 0.0,
+          "stabilityThreshold": 0.05,
           "stabilityCaliberToArmorThreshold": 5.0,
-          "stabilityReductionAfterRicochet": 0.01,
-          "stabilityReductionAfterPenetration": 0.01,
-          "bulletType": "i_t_ball",
+          "stabilityReductionAfterRicochet": 0.5,
+          "stabilityReductionAfterPenetration": 0.3,
+          "bulletType": "ap_ball",
           "slopeEffectPreset": "ap",
-          "hitPowerMult": 1.0,
-          "onHitChanceMultFire": 40.0,
           "dynamicKv": true,
           "waterCollisionEffect": "water_splash",
-          "waterFxScale": [1.2,1.2],
+          "waterFxScale": [1.0,1.0],
           "stabilityRicochetModifier": [
             {
               "mod1": [0.0,0.05]
@@ -1186,7 +1187,7 @@
           "visual": {
             "range_percent_of_ammo": [100.0,0.0],
             "traceFreq": 1,
-            "tracer": "7mmWhite",
+            "tracer": "noColor",
             "trail": "noTrail"
           },
           "collisions": {
@@ -1195,16 +1196,16 @@
               "fxScale": [1.0,1.0]
             },
             "steel": {
-              "fx": "bullet_hit_armor_cumulative",
-              "fxScale": [0.6,0.6]
+              "fx": "bullet_hit_light",
+              "fxScale": [0.5,0.5]
             },
             "armor": {
-              "fx": "bullet_hit_armor_cumulative",
-              "fxScale": [0.6,0.6]
+              "fx": "bullet_hit_armor",
+              "fxScale": [0.5,0.5]
             },
             "wood": {
               "fx": "bullet_hit_light",
-              "fxScale": [0.7,0.7]
+              "fxScale": [0.5,0.5]
             },
             "buildings": {
               "fx": "7_20_hit_stone",

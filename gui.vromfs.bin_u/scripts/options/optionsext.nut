@@ -14,7 +14,6 @@ local { setUnitLastBullets,
         getOptionsBulletsList } = require("scripts/weaponry/bulletsInfo.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { reloadDargUiScript } = require_native("reactiveGuiCommand")
-local {bombNbr} = require("scripts/unit/unitStatus.nut")
 
 global const TANK_ALT_CROSSHAIR_ADD_NEW = -2
 global const TANK_CAMO_SCALE_SLIDER_FACTOR = 0.1
@@ -557,13 +556,8 @@ local isWaitMeasureEvent = false
     case ::USEROPT_BOMB_ACTIVATION_TIME:
       local isBombActivationAssault = ::get_option_bomb_activation_type() == 1
       local assaultFuseTime = ::get_bomb_activation_auto_time()
-      local diffOptions = ::get_option(::USEROPT_DIFFICULTY)
-      local diffCode = context?.diffCode ?? diffOptions.diffCode[diffOptions.value]
-      local bombActivationTime = ::max(::load_local_account_settings(
-        $"useropt/bomb_activation_time/{diffCode}",
-          ::get_option_bomb_activation_time()), assaultFuseTime)
+      local bombActivationTime = ::max(::get_option_bomb_activation_time(), assaultFuseTime)
 
-      descr.diffCode = diffCode
       descr.id = "bomb_activation_type"
       descr.values = [::BOMB_ASSAULT_FUSE_TIME_OPT_VALUE]
       local activationTimeArray = [0.0, 0.5, 1.0, 1.5, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]
@@ -589,48 +583,6 @@ local isWaitMeasureEvent = false
       if (::get_option_bomb_activation_time() != curValue)
         ::set_option_bomb_activation_time(curValue)
       break
-
-    case ::USEROPT_BOMB_SERIES:
-       descr.id = "bomb_series"
-       descr.values = []
-       descr.items = []
-       local nbrBomb = 0
-       local unit = ::getAircraftByName(::aircraft_for_weapons)
-       local bombSeries = [0, 4, 6, 12, 24, 48]
-       if (unit)
-         nbrBomb = bombNbr(unit)
-       else
-         nbrBomb = 48
-
-       descr.values.append(0)
-       descr.items.append("options/bomb_series_null")
-
-       for (local i = 1; i < bombSeries.len(); ++i)
-       {
-        if (bombSeries[i].tointeger() >= nbrBomb) // max = -1
-          break
-
-        descr.values.append(bombSeries[i].tointeger())
-        local text = descr.values[i].tostring()
-        local tooltipLoc = "guiHints/bomb_series"
-        descr.items.append({
-         text = text
-         tooltip = ::loc(tooltipLoc, { num = descr.values[i] })
-         })
-       }
-
-       descr.values.append(nbrBomb)
-       local text = descr.values[descr.values.len() - 1].tostring()
-       local tooltipLoc = "guiHints/bomb_series_all"
-       descr.items.append({
-        text = text
-        tooltip = ::loc(tooltipLoc, { num = -1 })
-        })
-
-       descr.value = find_in_array(descr.values, ::get_option_bombs_series())
-       defaultValue = bombSeries[0].tointeger()
-       break
-
 
    case ::USEROPT_FLARES_PERIODS:
        descr.id = "flares_periods"
@@ -693,6 +645,18 @@ local isWaitMeasureEvent = false
         descr.values.append(i)
       }
       descr.value = ::find_in_array(descr.values, ::get_option_depthcharge_activation_time())
+      break
+
+   case ::USEROPT_MINE_DEPTH:
+      descr.id = "mine_depth"
+      descr.items = []
+      descr.values = []
+      for(local i = 1; i <= 10; i++)
+      {
+        descr.items.append("" + i)
+        descr.values.append(i)
+      }
+      descr.value = ::find_in_array(descr.values, ::get_option_mine_depth())
       break
 
    case ::USEROPT_USE_PERFECT_RANGEFINDER:
@@ -2027,13 +1991,6 @@ local isWaitMeasureEvent = false
       descr.value = ::get_option_use_rectangular_radar_indicator()
       break
 
-    case ::USEROPT_USE_RADAR_HUD_IN_COCKPIT:
-      descr.id = "use_radar_hud_in_cockpit"
-      descr.controlType = optionControlType.CHECKBOX
-      descr.controlName <- "switchbox"
-      descr.value = ::get_option_use_radar_hud_in_cockpit()
-      break
-
     case ::USEROPT_SAVE_AI_TARGET_TYPE:
       descr.id = "save_ai_target_type"
       descr.controlType = optionControlType.CHECKBOX
@@ -2190,11 +2147,6 @@ local isWaitMeasureEvent = false
             }
         }
         descr.cb = "onMyWeaponOptionUpdate"
-      }
-      else {
-        ::dagor.logerr($"Options: USEROPT_BULLET{groupIndex}: get: Wrong 'aircraft_for_weapons' type")
-        ::debugTableData(::aircraft_for_weapons)
-        ::callstack()
       }
       break
 
@@ -3852,9 +3804,7 @@ local isWaitMeasureEvent = false
       break
 
     default:
-      ::dagor.logerr($"[ERROR] Options: Get: Unsupported type {optionId}")
-      ::debugTableData(::aircraft_for_weapons)
-      ::callstack()
+      print("[ERROR] Unsupported type " + optionId)
   }
 
   if (!descr.hint)
@@ -3962,10 +3912,6 @@ local isWaitMeasureEvent = false
         ::get_bomb_activation_auto_time() : descr.values[value]
       ::set_option_bomb_activation_type(isBombActivationAssault ? 1 : 0)
       ::set_option_bomb_activation_time(bombActivationDelay)
-      ::save_local_account_settings($"useropt/bomb_activation_time/{descr.diffCode}", bombActivationDelay)
-      break
-    case ::USEROPT_BOMB_SERIES:
-      ::set_option_bombs_series(descr.values[value])
       break
     case ::USEROPT_LOAD_FUEL_AMOUNT:
       ::set_gui_option(optionId, descr.values[value])
@@ -3974,6 +3920,9 @@ local isWaitMeasureEvent = false
       break
     case ::USEROPT_DEPTHCHARGE_ACTIVATION_TIME:
       ::set_option_depthcharge_activation_time(descr.values[value])
+      break
+    case ::USEROPT_MINE_DEPTH:
+      ::set_option_mine_depth(descr.values[value])
       break
     case ::USEROPT_FLARES_PERIODS:
       ::set_option_flares_periods(descr.values[value])
@@ -4391,9 +4340,6 @@ local isWaitMeasureEvent = false
     case ::USEROPT_USE_RECTANGULAR_RADAR_INDICATOR:
       ::set_option_use_rectangular_radar_indicator(value)
       break;
-    case ::USEROPT_USE_RADAR_HUD_IN_COCKPIT:
-      ::set_option_use_radar_hud_in_cockpit(value)
-      break;
     case ::USEROPT_SAVE_AI_TARGET_TYPE:
       ::set_option_ai_target_type(value ? 1 : 0)
       break;
@@ -4715,14 +4661,14 @@ local isWaitMeasureEvent = false
     case ::USEROPT_BULLETS3:
     case ::USEROPT_BULLETS4:
     case ::USEROPT_BULLETS5:
-      ::set_gui_option(optionId, value)
+      local bulletsValue = ::getTblValue(value, descr.values)
+      if (bulletsValue == null)
+        break
+
+      ::set_gui_option(optionId, bulletsValue)
       local air = ::getAircraftByName(::aircraft_for_weapons)
       if (air)
-        setUnitLastBullets(air, optionId - ::USEROPT_BULLETS0, value)
-      else {
-        ::dagor.logerr($"Options: USEROPT_BULLET{groupIndex}: set: Wrong 'aircraft_for_weapons' type")
-        ::debugTableData(::aircraft_for_weapons)
-      }
+        setUnitLastBullets(air, optionId - ::USEROPT_BULLETS0, bulletsValue)
       break
 
     case ::USEROPT_HELPERS_MODE_GM:
@@ -4992,12 +4938,11 @@ local isWaitMeasureEvent = false
       break
 
     case ::USEROPT_PS4_ONLY_LEADERBOARD:
-      ::broadcastEvent("PS4OnlyLeaderboardsValueChanged")
       ::set_gui_option(optionId, value)
       break
 
     default:
-      ::dagor.logerr($"[ERROR] Options: Set: Unsupported type {optionId} - {value}")
+      print("[ERROR] Unsupported type " + optionId)
   }
   return true
 }

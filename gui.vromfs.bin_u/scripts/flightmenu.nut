@@ -1,5 +1,3 @@
-local { openOptionsWnd } = require("scripts/options/handlers/optionsWnd.nut")
-
 ::gui_start_flight_menu <- function gui_start_flight_menu()
 {
   ::flight_menu_handler = ::handlersManager.loadHandler(::gui_handlers.FlightMenu)
@@ -198,7 +196,7 @@ class ::gui_handlers.FlightMenu extends ::gui_handlers.BaseGuiHandlerWT
 
   function onOptions(obj)
   {
-    openOptionsWnd()
+    ::gui_start_options(this)
   }
 
   function onControls(obj)

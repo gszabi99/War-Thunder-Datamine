@@ -194,7 +194,7 @@ enums.addTypes(effectsType, [
   { id = "elevThrSpd",             preset = "SPEED" }
 
   { id = "horsePowers",             measureType = "hp", presize = 0.1
-    canShowForUnit = @(unit) !unit?.isTank() || ::has_feature("TankModEffect")
+    canShowForUnit = @(unit) !isTank(unit) || ::has_feature("TankModEffect")
     getLocId = function(unit, effects) {
       local key = effects?.modifName == "new_tank_transmission" ? "horsePowersTransmission" : "horsePowers"
       return "modification/" + key + "_change"

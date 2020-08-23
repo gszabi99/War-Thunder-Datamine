@@ -5,7 +5,13 @@ local menuChatRoom = require("scripts/chat/menuChatRoom.nut")
 local { topMenuBorders } = require("scripts/mainmenu/topMenuStates.nut")
 local { isChatEnabled, isChatEnableWithPlayer,
   isCrossNetworkMessageAllowed, chatStatesCanUseVoice } = require("scripts/chat/chatStates.nut")
-local { isObjHaveActiveChilds } = require("sqDagui/guiBhv/guiBhvUtils.nut")
+
+global enum MESSAGE_TYPE {
+  MY          = "my"
+  INCOMMING   = "incomming"
+  SYSTEM      = "system"
+  CUSTOM      = "custom"
+}
 
 const CHAT_ROOMS_LIST_SAVE_ID = "chatRooms"
 const VOICE_CHAT_SHOW_COUNT_SAVE_ID = "voiceChatShowCount"
@@ -1292,7 +1298,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
           room.canBeClosed = true
           updateRoomTabById(room.id)
         }
-        addRoomMsg(room.id, "", ::format(::loc(msgId), room.getRoomName()))
+        addRoomMsg(room.id, "", format(::loc(msgId), room.getRoomName()))
         sceneChanged = true
         onRoomChanged()
         ::broadcastEvent("ChatRoomLeave", { room = room })
@@ -1366,22 +1372,19 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
           if (roomData == curRoom || roomData.hidden)
             updateChatText()
 
-          if (roomId != ""
-              && (roomData.type.needCountAsImportant || mBlock.important)
-              && !mBlock.isMeSender
-              && (!::last_chat_scene_show || curRoom != roomData)
-             )
+          if (roomId != "" && (!::last_chat_scene_show || curRoom != roomData) &&
+              ((privateMsg && !myPrivate) || mBlock.important))
           {
             roomData.newImportantMessagesCount++
+            updateRoomsIcons()
             newMessagesGC()
-
-            if (roomData.type.needShowMessagePopup)
-              showRoomPopup(mBlock, roomData.id)
+            showRoomPopup(mBlock, roomData.id)
           }
           else if (roomId == "" && mBlock.important
             && curRoom.type == ::g_chat_room_type.SYSTEM && !::last_chat_scene_show)
           {
             roomData.newImportantMessagesCount++
+            updateRoomsIcons()
             newMessagesGC()
           }
         }
@@ -1514,13 +1517,8 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
             ::sync_handler_simulate_signal("profile_reload")
         }
       }
-      addRoomMsg(
-        roomId,
-        userContact || user,
-        message,
-        privateMsg,
-        myPrivate
-      )
+      addRoomMsg(roomId, userContact || user, message,
+                 privateMsg, myPrivate, null, ::g_chat.isRoomSquad(roomId))
     }
     else if (db?.type == "error")
     {
@@ -2852,7 +2850,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
   function getButtonsObj()
   {
     local obj = scene.findObject("buttons_list")
-    return (::checkObj(obj) && isObjHaveActiveChilds(obj))? obj : null
+    return (::checkObj(obj) && ::is_obj_have_active_childs(obj))? obj : null
   }
 
   function checkListValue(obj)

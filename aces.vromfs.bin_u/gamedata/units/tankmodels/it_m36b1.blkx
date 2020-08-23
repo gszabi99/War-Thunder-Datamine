@@ -785,9 +785,7 @@
           "ex_armor_body_l_04_dm": [],
           "ex_armor_body_l_05_dm": [],
           "ex_armor_body_l_06_dm": [],
-          "ex_armor_body_l_07_dm": [],
-          "ex_armor_l_02_dm": [],
-          "ex_armor_r_02_dm": []
+          "ex_armor_body_l_07_dm": []
         }
       },
       "tracks": {
@@ -2327,7 +2325,31 @@
         "defaultDampeningForce": [120000.0,120000.0],
         "dampeningRelaxationRatio": 0.4,
         "dampeningCompressionRatio": 0.15
-      }
+      },
+      "physNode": [
+        {
+          "type": "verlet_string"
+        },
+        {
+          "stiffness": 1.0
+        },
+        {
+          "straightening": 0.5
+        },
+        {
+          "point": {
+            "name": "antenna",
+            "mass": 1.0,
+            "fixed": true
+          }
+        },
+        {
+          "point": {
+            "name": "bone_phx_antenna",
+            "mass": 3.0
+          }
+        }
+      ]
     }
   },
   {

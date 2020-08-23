@@ -1,23 +1,7 @@
-local { isWeaponAux, getLastPrimaryWeapon } = require("scripts/weaponry/weaponryInfo.nut")
-local { getWeaponInfoText} = require("scripts/weaponry/weaponryVisual.nut")
-
 local canBuyNotResearched = @(unit) unit.isVisibleInShop()
   && ::canResearchUnit(unit)
   && unit.isSquadronVehicle()
   && !unit.getOpenCost().isZero()
-
-
-local function isUnitHaveSecondaryWeapons(unit)
-{
-  local foundWeapon = false
-  for (local i = 0; i < unit.weapons.len(); i++)
-    if (!isWeaponAux(unit.weapons[i]))
-      if (foundWeapon)
-        return true
-      else
-        foundWeapon = true
-  return "" != getWeaponInfoText(unit, { isPrimary = false, weaponPreset = 0, needTextWhenNoWeapons = false })
-}
 
 local function isShipWithoutPurshasedTorpedoes(unit)
 {
@@ -25,7 +9,7 @@ local function isShipWithoutPurshasedTorpedoes(unit)
     return false
 
   local torpedoes = null
-  if (isUnitHaveSecondaryWeapons(unit))
+  if (::isAirHaveSecondaryWeapons(unit))
     torpedoes = ::u.search(unit.weapons, @(weapon) weapon.name == "torpedoes")    //!!! FIX ME: Need determine weapons by weapon mask. WeaponMask now available only for air
 
   if (!torpedoes)
@@ -104,7 +88,7 @@ local defaultPrimaryWeaponsMod = {
 local function isAvailablePrimaryWeapon(unit, weaponName) {
   local availableWeapons = availablePrimaryWeaponsMod?[unit.name]
   if (availableWeapons != null)
-    return getLastPrimaryWeapon(unit) == availableWeapons[weaponName]
+    return ::get_last_primary_weapon(unit) == availableWeapons[weaponName]
 
   local unitBlk = ::get_full_unit_blk(unit.name)
   if (!unitBlk)
@@ -127,7 +111,7 @@ local function isAvailablePrimaryWeapon(unit, weaponName) {
     }
 
   availablePrimaryWeaponsMod[unit.name] <-availableWeapons
-  return getLastPrimaryWeapon(unit) == availableWeapons[weaponName]
+  return ::get_last_primary_weapon(unit) == availableWeapons[weaponName]
 }
 
 
@@ -139,18 +123,9 @@ local function hasFlares(unit) {
     || isAvailablePrimaryWeapon(unit, "flares")
 }
 
-local function bombNbr(unit) {
-  if (unit == null)
-    return -1
-
-  return unit.getAvailableSecondaryWeapons().bombsNbr
-}
-
 return {
-  canBuyNotResearched             = canBuyNotResearched
+  canBuyNotResearched = canBuyNotResearched
   isShipWithoutPurshasedTorpedoes = isShipWithoutPurshasedTorpedoes
-  getBitStatus                    = getBitStatus
-  hasFlares                       = hasFlares
-  bombNbr                         = bombNbr
-  isUnitHaveSecondaryWeapons      = isUnitHaveSecondaryWeapons
+  getBitStatus = getBitStatus
+  hasFlares = hasFlares
 }

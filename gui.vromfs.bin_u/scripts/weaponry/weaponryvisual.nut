@@ -35,13 +35,8 @@ local { WEAPON_TYPE,
         WEAPON_TEXT_PARAMS,
         getLastWeapon,
         getUnitWeaponry,
-        isWeaponEnabled,
-        isCaliberCannon,
         addWeaponsFromBlk,
-        getCommonWeaponsBlk,
-        getLastPrimaryWeapon,
-        getWeaponExtendedInfo,
-        getPrimaryWeaponsList } = require("scripts/weaponry/weaponryInfo.nut")
+        getWeaponExtendedInfo } = require("scripts/weaponry/weaponryInfo.nut")
 
 local { weaponItemTplPath } = require("scripts/weaponry/getWeaponItemTplPath.nut")
 local { isModResearched } = require("scripts/weaponry/modificationInfo.nut")
@@ -52,14 +47,6 @@ local function getTextNoWeapons(unit, isPrimary)
 {
   return isPrimary ? ::loc("weapon/noPrimaryWeapon") : (unit.isAir() || unit.isHelicopter()) ?
     ::loc("weapon/noSecondaryWeapon") : ::loc("weapon/noAdditionalWeapon")
-}
-
-local function getReloadTimeByCaliber(caliber, ediff = null)
-{
-  local diff = ::get_difficulty_by_ediff(ediff ?? ::get_current_ediff())
-  if (diff != ::g_difficulty.ARCADE)
-    return null
-  return ::reload_cooldown_time?[caliber]
 }
 
 local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
@@ -176,13 +163,13 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
 
               if (!unit.unitType.canUseSeveralBulletsForGun)
               {
-                local rTime = getReloadTimeByCaliber(weapon.caliber, p.ediff)
+                local rTime = ::get_reload_time_by_caliber(weapon.caliber, p.ediff)
                 if (rTime)
                 {
                   if (p.isLocalState)
                   {
                     local difficulty = ::get_difficulty_by_ediff(p.ediff ?? ::get_current_ediff())
-                    local key = isCaliberCannon(weapon.caliber) ? "cannonReloadSpeedK" : "gunReloadSpeedK"
+                    local key = ::isCaliberCannon(weapon.caliber) ? "cannonReloadSpeedK" : "gunReloadSpeedK"
                     local speedK = unit.modificators?[difficulty.crewSkillName]?[key] ?? 1.0
                     if (speedK)
                       rTime = stdMath.round_by_value(rTime / speedK, 1.0).tointeger()
@@ -250,10 +237,10 @@ local function getWeaponXrayDescText(weaponBlk, unit, ediff)
 local function getWeaponDescTextByTriggerGroup(triggerGroup, unit, ediff)
 {
   local unitBlk = ::get_full_unit_blk(unit.name)
-  local primaryWeapon = getLastPrimaryWeapon(unit)
+  local primaryWeapon = ::get_last_primary_weapon(unit)
   local secondaryWeapon = getLastWeapon(unit.name)
 
-  local primaryBlk = getCommonWeaponsBlk(unitBlk, primaryWeapon)
+  local primaryBlk = ::getCommonWeaponsBlk(unitBlk, primaryWeapon)
   local weaponTypes = {}
   if (primaryBlk)
     weaponTypes = addWeaponsFromBlk(weaponTypes, primaryBlk, unit)
@@ -361,7 +348,7 @@ local function getBulletsListHeader(unit, bulletsList)
   else if (bulletsList.weaponType == WEAPON_TYPE.GUNS)
   {
     if (unit.unitType.canUseSeveralBulletsForGun)
-      locId = isCaliberCannon(bulletsList.caliber)? "modification/_tank_gun_pack" : "modification/_tank_minigun_pack"
+      locId = ::isCaliberCannon(bulletsList.caliber)? "modification/_tank_gun_pack" : "modification/_tank_minigun_pack"
     else
       locId = bulletsList.isTurretBelt ? "modification/_turret_belt_pack/short" : "modification/_belt_pack/short"
   }
@@ -523,7 +510,7 @@ local function getWeaponItemViewParams(id, unit, item, params = {})
   if (bIcoItem)
   {
     local bulletsSet = getBulletsSetData(unit, bIcoItem.name)
-    ::dagor.assertf(unit?.isTank() || bulletsSet!=null,
+    dagor.assertf(isTank(unit) || bulletsSet!=null,
           $"No bullets in bullets set {visualItem.name} for {unit.name}")
 
     res.iconBulletName = bIcoItem.name
@@ -946,7 +933,7 @@ local function getReqTextWorldWarArmy(unit, item)
     return text
 
   local isEnabledByMission = misRules.isUnitWeaponAllowed(unit, item)
-  local isEnabledForUnit = isWeaponEnabled(unit, item)
+  local isEnabledForUnit = ::is_weapon_enabled(unit, item)
   if (!isEnabledByMission)
     text = "<color=@badTextColor>" + ::loc("worldwar/weaponry/inArmyIsDisabled") + "</color>"
   else if (isEnabledByMission && !isEnabledForUnit)
@@ -1231,7 +1218,7 @@ local function updateModType(unit, mod)
     return
 
   local name = mod.name
-  local primaryWeaponsNames = getPrimaryWeaponsList(unit)
+  local primaryWeaponsNames = ::getPrimaryWeaponsList(unit)
   foreach(modName in primaryWeaponsNames)
     if (modName == name)
     {
