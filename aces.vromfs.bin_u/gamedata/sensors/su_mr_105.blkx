@@ -2,14 +2,14 @@
   "type": "radar",
   "transivers": {
     "track": {
-      "power": 150.0,
-      "band": 4,
+      "power": 500.0,
+      "band": 8,
       "rcs": 100.0,
       "range": 22000.0,
       "rangeMax": 30000.0,
       "antenna": {
         "angleHalfSens": 2.0,
-        "sideLobesSensitivity": -30.0
+        "sideLobesSensitivity": -40.0
       }
     }
   },
@@ -54,9 +54,9 @@
   "signals": {
     "track": {
       "aircraftAsTarget": true,
-      "groundVehiclesAsTarget": true,
+      "groundVehiclesAsTarget": false,
       "groundClutter": false,
-      "angularAccuracy": 0.1,
+      "angularAccuracy": 0.03,
       "distanceAccuracy": 10.0,
       "track": true,
       "distance": {
@@ -122,7 +122,7 @@
           {
             "setCenterElevation": {
               "source": "constant",
-              "value": 5.5
+              "value": 5.0
             }
           }
         ],
@@ -147,7 +147,7 @@
           },
           "setCenterElevation": {
             "source": "constant",
-            "value": 5.5
+            "value": 5.0
           },
           "setDistGatePos": {
             "source": "targetDesignation",

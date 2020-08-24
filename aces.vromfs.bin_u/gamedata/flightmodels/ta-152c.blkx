@@ -65,9 +65,6 @@
       }
     },
     "armor8": {
-      "armor10_dm": {
-        "hp": 40.0
-      },
       "armor3_dm": {
         "hp": 40.0
       }
@@ -87,13 +84,17 @@
         "genericDamageMult": 0.3,
         "hp": 23.8
       },
+      "elevator_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 28.0
+      },
       "elevator0_dm": {
         "genericDamageMult": 0.3,
-        "hp": 14.5
+        "hp": 28.0
       },
       "elevator1_dm": {
         "genericDamageMult": 0.3,
-        "hp": 14.5
+        "hp": 28.0
       },
       "fin_dm": {
         "hp": 25.5
@@ -138,6 +139,14 @@
       "wing2_r_dm": {
         "genericDamageMult": 0.3,
         "hp": 40.5
+      },
+      "wing_l_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 80.5
+      },
+      "wing_r_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 80.5
       }
     },
     "dural": {
@@ -214,10 +223,10 @@
     },
     "steel_tank_s": {
       "tank1_dm": {
-        "hp": 40.4
+        "hp": 43.2
       },
       "tank2_dm": {
-        "hp": 55.6
+        "hp": 58.5
       },
       "tank3_dm": {
         "hp": 39.5
@@ -233,14 +242,6 @@
       },
       "tank7_dm": {
         "hp": 39.5
-      }
-    },
-    "wood": {
-      "wing_l_dm": {
-        "hp": 95.2
-      },
-      "wing_r_dm": {
-        "hp": 95.2
       }
     }
   },
@@ -361,11 +362,6 @@
     },
     {
       "part": {
-        "name": "armor10_dm"
-      }
-    },
-    {
-      "part": {
         "name": "armor1_dm"
       }
     },
@@ -443,6 +439,63 @@
       "part": {
         "name": "cover2_dm"
       }
+    },
+    {
+      "part": [
+        {
+          "name": "elevator_dm"
+        },
+        {
+          "onHit": {
+            "damage": 10.0,
+            "cut": 0.1
+          }
+        },
+        {
+          "onHit": {
+            "damage": 20.0,
+            "cut": 0.4
+          }
+        },
+        {
+          "onHit": {
+            "damage": 30.0,
+            "cut": 0.7
+          }
+        },
+        {
+          "onHit": {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        },
+        {
+          "onKill": {
+            "cut": 1.0,
+            "nothing": 4.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 30.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        }
+      ]
     },
     {
       "part": [

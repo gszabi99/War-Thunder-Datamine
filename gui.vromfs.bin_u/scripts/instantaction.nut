@@ -1,6 +1,5 @@
 local time = require("scripts/time.nut")
 local unitStatus = require("scripts/unit/unitStatus.nut")
-local { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 local { AMMO,
         getAmmoCost,
         getUnitNotReadyAmmoList } = require("scripts/weaponry/ammoInfo.nut")
@@ -46,8 +45,7 @@ local { AMMO,
         if (!crew || ::is_crew_locked_by_prev_battle(crew))
           res.canFlyoutIfRepair = false
 
-        local ammoList = getUnitNotReadyAmmoList(
-          air, getLastWeapon(air.name), UNIT_WEAPONS_WARNING)
+        local ammoList = getUnitNotReadyAmmoList(air, UNIT_WEAPONS_WARNING)
         if (ammoList.len())
           unreadyAmmo.extend(ammoList)
         else
@@ -82,8 +80,7 @@ local { AMMO,
           if (!::is_crew_locked_by_prev_battle(crew))
             have_unlocked_in_country = true
 
-          local ammoList = getUnitNotReadyAmmoList(
-            unit, getLastWeapon(unit.name), UNIT_WEAPONS_WARNING)
+          local ammoList = getUnitNotReadyAmmoList(unit, UNIT_WEAPONS_WARNING)
           if (ammoList.len())
             unreadyAmmo.extend(ammoList)
           else

@@ -218,26 +218,9 @@ return [
     showFunc = @() ::has_feature("ConstantlyComputedWeaponSight")
   }
   {
-    id = "ID_SWITCH_COCKPIT_SIGHT_MODE"
-    checkAssign = false
-    showFunc = @() ::has_feature("ConstantlyComputedWeaponSight")
-  }
-  {
     id = "ID_SWITCH_REGISTERED_BOMB_TARGETING_POINT"
     checkAssign = false
     showFunc = @() ::has_feature("ConstantlyComputedWeaponSight")
-  }
-  {
-    id = "ID_LOCK_TARGETING_AT_POINT"
-    checkAssign = false
-    needShowInHelp = true
-    showFunc = @() ::has_feature("PointOfInterestDesignator")
-  }
-  {
-    id = "ID_UNLOCK_TARGETING_AT_POINT"
-    checkAssign = false
-    needShowInHelp = true
-    showFunc = @() ::has_feature("PointOfInterestDesignator")
   }
 //-------------------------------------------------------
   {
@@ -442,6 +425,18 @@ return [
     needShowInHelp = true
   }
   {
+    id = "ID_LOCK_TARGETING_AT_POINT"
+    checkAssign = false
+    needShowInHelp = true
+    showFunc = @() ::has_feature("PointOfInterestDesignator")
+  }
+  {
+    id = "ID_UNLOCK_TARGETING_AT_POINT"
+    checkAssign = false
+    needShowInHelp = true
+    showFunc = @() ::has_feature("PointOfInterestDesignator")
+  }
+  {
     id = "ID_CAMERA_FPS"
     checkAssign = false
     needShowInHelp = true
@@ -561,6 +556,11 @@ return [
   {
     id = "ID_TOGGLE_COLLIMATOR"
     filterShow = [globalEnv.EM_FULL_REAL]
+  }
+  {
+    id = "ID_SWITCH_COCKPIT_SIGHT_MODE"
+    checkAssign = false
+    showFunc = @() ::has_feature("ConstantlyComputedWeaponSight")
   }
   {
     id = "wheelmenu_x"

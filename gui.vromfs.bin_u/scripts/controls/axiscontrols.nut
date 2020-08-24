@@ -655,7 +655,7 @@ class ::gui_handlers.AxisControls extends ::gui_handlers.Hotkeys
                    btn = btns
                 })
 
-    if (event.len() > max_shortcuts)
+    if (event.len() > ::MAX_SHORTCUTS)
       event.remove(0)
 
     ::set_controls_preset("") //custom mode

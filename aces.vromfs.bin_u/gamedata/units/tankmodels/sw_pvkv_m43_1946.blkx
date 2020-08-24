@@ -551,7 +551,7 @@
           "armorThickness": 4.0
         },
         "turret_02_front_dm": {
-          "armorThickness": 70.0
+          "armorThickness": 60.0
         },
         "turret_04_front_dm": {
           "armorThickness": 10.0
@@ -606,7 +606,7 @@
         }
       },
       "inner_armor": {
-        "armorClass": "RHA_tank",
+        "armorClass": "spaced_armor_air",
         "composite_armor_hull_01_dm": {
           "armorThickness": 5.0
         }
@@ -646,6 +646,10 @@
         "gun_mask_02_dm": {
           "armorThickness": 20.0
         }
+      },
+      "dmgAngles": {
+        "hatch_05": [10.0,13.0],
+        "hatch_06": [10.0,13.0]
       },
       "chassis": {
         "armorClass": "tank_steel_wheels",
@@ -2059,19 +2063,6 @@
     }
   },
   {
-    "xray_viewer_data": {
-      "armorArrayTurret3": {
-        "xrayDmPart": "composite_armor_hull_01_dm",
-        "titleLoc": "RHA_tank",
-        "armorArrayText": {
-          "layer": {
-            "dmPart": "composite_armor_hull_01_dm"
-          }
-        }
-      }
-    }
-  },
-  {
     "sound": {
       "EngineName": "engine_stug40",
       "TrackSoundPath": "tanks/engines_tanks",
@@ -3009,12 +3000,6 @@
         "from": "se_camo_green*",
         "to": "fr_camo_winter_green_white*"
       }
-    }
-  },
-  {
-    "dmgAngles": {
-      "hatch_05": [10.0,13.0],
-      "hatch_06": [10.0,13.0]
     }
   }
 ]

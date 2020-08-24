@@ -331,17 +331,12 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
     enableHangarControls(!shouldActivate)
   }
 
-  function goBack()
+  function goBack(obj)
   {
-    topMenuGoBack(true)
+    onTopMenuMain(obj, true)
   }
 
-  function onTopMenuMain()
-  {
-    topMenuGoBack()
-  }
-
-  function topMenuGoBack(checkTopMenuButtons = false)
+  function onTopMenuMain(obj, checkTopMenuButtons = false)
   {
     if (topMenuShopActive.value)
       shopWndSwitch()
@@ -514,11 +509,4 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-return {
-  getHandler = function() {
-    if (!::gui_handlers?.TopMenu)
-      ::gui_handlers.TopMenu <- TopMenu
-
-    return ::gui_handlers.TopMenu
-  }
-}
+::gui_handlers.TopMenu <- TopMenu

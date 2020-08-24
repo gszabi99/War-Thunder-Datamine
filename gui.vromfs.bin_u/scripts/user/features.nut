@@ -146,7 +146,6 @@ local defaults = ::Watched({  //def value when feature not found in game_setting
   AllowedToSkipBaseTankTutorials = true
   EnableGoldPurchase = true
   EnablePremiumPurchase = true
-  showPremiumAccount = true
   OnlineShopPacks = true
   ManuallyUpdateBalance = true //!!debug only
   PaymentMethods = true

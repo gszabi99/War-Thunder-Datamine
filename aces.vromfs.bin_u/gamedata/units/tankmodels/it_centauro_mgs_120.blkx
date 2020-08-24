@@ -184,6 +184,20 @@
     ]
   },
   {
+    "sensors": [
+      {
+        "sensor": {
+          "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+        }
+      },
+      {
+        "sensor": {
+          "blk": "gameData/sensors/it_ralm-101.blk"
+        }
+      }
+    ]
+  },
+  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "RHA_tank",
@@ -2993,7 +3007,6 @@
       "art_support": [],
       "tank_new_gun": [],
       "modern_tank_laser_rangefinder": [],
-      "laser_warning_system": [],
       "tank_medical_kit": {
         "image": "#ui/gameuiskin#tank_reinforcement_it"
       },
@@ -3004,8 +3017,12 @@
       "improved_optics": {
         "tier": 3
       },
-      "120mm_NATO_APDS_FS": [],
-      "120mm_DM_APDS_FS": [],
+      "120mm_NATO_APDS_FS": {
+        "modCostMul": 0.32
+      },
+      "120mm_DM_APDS_FS": {
+        "modCostMul": 0.98
+      },
       "120mm_DM_APDS_FS_ammo_pack": [],
       "120mm_NATO_APDS_FS_ammo_pack": [],
       "tank_smoke_screen_system_mod": {

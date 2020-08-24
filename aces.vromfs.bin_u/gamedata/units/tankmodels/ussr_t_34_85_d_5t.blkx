@@ -117,40 +117,6 @@
     }
   },
   {
-    "MetaParts": {
-      "crew": [
-        {
-          "killAllPartsForDeath": true
-        },
-        {
-          "killNumPartsForDeath": 4
-        },
-        {
-          "part": "loader_dm"
-        },
-        {
-          "part": "driver_dm"
-        },
-        {
-          "part": "gunner_dm"
-        },
-        {
-          "part": "machine_gunner_dm"
-        },
-        {
-          "part": "commander_dm"
-        },
-        {
-          "effects": {
-            "killUnit": {
-              "nothing": 1.0
-            }
-          }
-        }
-      ]
-    }
-  },
-  {
     "gunConvergence": {
       "distance": 800.0,
       "vertical": true,
@@ -216,9 +182,9 @@
         "dampeningCompressionRatio": 0.15
       },
       "Mass": {
-        "Empty": 31400.0,
+        "Empty": 30300.0,
         "Fuel": 600.0,
-        "TakeOff": 32000.0,
+        "TakeOff": 30900.0,
         "momentOfInertia": [2.5,2.5,6.0],
         "CenterOfGravity": [0.05,0.5,0.0],
         "CenterOfGravityClampY": [0.0,0.7],
@@ -923,9 +889,6 @@
         "ex_decor_r_04_dm": {
           "armorThickness": 5.0
         },
-        "turret_01_bottom_dm": {
-          "armorThickness": 5.0
-        },
         "submodule": {
           "armorClass": "tank_traks",
           "armorThickness": 20.0,
@@ -943,6 +906,9 @@
         },
         "turret_01_top_dm": {
           "armorThickness": 20.0
+        },
+        "turret_01_bottom_dm": {
+          "armorThickness": 30.0
         }
       },
       "optics": {
@@ -983,13 +949,13 @@
       "CHA_armor": {
         "armorClass": "CHA_tank",
         "turret_back_dm": {
-          "armorThickness": 54.0
+          "armorThickness": 52.0
         },
         "turret_side_dm": {
-          "armorThickness": 54.0
+          "armorThickness": 75.0
         },
         "turret_front_dm": {
-          "armorThickness": 54.0
+          "armorThickness": 90.0
         },
         "body_front_hatch_dm": {
           "armorThickness": 75.0,
@@ -1438,6 +1404,37 @@
           "genericDamageMult": 3.0
         }
       }
+    }
+  },
+  {
+    "MetaParts": {
+      "crew": [
+        {
+          "killAllPartsForDeath": true
+        },
+        {
+          "killNumPartsForDeath": 3
+        },
+        {
+          "part": "loader_dm"
+        },
+        {
+          "part": "driver_dm"
+        },
+        {
+          "part": "machine_gunner_dm"
+        },
+        {
+          "part": "commander_dm"
+        },
+        {
+          "effects": {
+            "killUnit": {
+              "nothing": 1.0
+            }
+          }
+        }
+      ]
     }
   },
   {

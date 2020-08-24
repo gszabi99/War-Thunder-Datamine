@@ -199,6 +199,13 @@
       }
     },
     {
+      "extends": {
+        "source": "config/damageModel.blk:explosiveTypeToSplashParams",
+        "target": "damage/explosive/explosiveTypeToSplash",
+        "checkTargetExists": true
+      }
+    },
+    {
       "preset": {
         "param": "explosiveType",
         "presets": "gamedata/damage_model/explosive.blk:explosiveTypes",

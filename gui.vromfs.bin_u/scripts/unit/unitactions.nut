@@ -1,11 +1,9 @@
 local squadronUnitAction = ::require("scripts/unit/squadronUnitAction.nut")
 
-local function repairRequest(unit, price, onSuccessCb = null)
+local function repairRequest(unit, onSuccessCb = null)
 {
   local blk = ::DataBlock()
-  blk["name"] = unit.name
-  blk["cost"] = price.wp
-  blk["costGold"] = price.gold
+  blk.setStr("name", unit.name)
 
   local taskId = ::char_send_blk("cln_prepare_aircraft", blk)
 
@@ -28,7 +26,7 @@ local function repair(unit, onSuccessCb = null)
     return onSuccessCb && onSuccessCb()
 
   if (::check_balance_msgBox(price))
-    repairRequest(unit, price, onSuccessCb)
+    repairRequest(unit, onSuccessCb)
 }
 
 local function repairWithMsgBox(unit, onSuccessCb = null)
