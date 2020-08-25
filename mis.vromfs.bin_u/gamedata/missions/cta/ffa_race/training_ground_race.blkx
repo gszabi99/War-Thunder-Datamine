@@ -620,6 +620,16 @@
           "triggerEnable": {
             "target": "a_player_is_active_requirement"
           }
+        },
+        {
+          "raceParamsModify": {
+            "playerKickTime": 0.0,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "players_squad"
+          }
         }
       ],
       "else_actions": []
@@ -1328,8 +1338,87 @@
         }
       },
       "else_actions": {
+        "triggerEnable": {
+          "target": "players_recount"
+        },
         "triggerDisable": {
           "target": "players_count"
+        }
+      }
+    },
+    "players_recount": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "func": "less",
+          "value": 1,
+          "object": "players_squad",
+          "var": "players_online_int"
+        }
+      },
+      "actions": {
+        "varModify": {
+          "operator": "subAB",
+          "value": 1.0,
+          "var": "players_online_int"
+        },
+        "triggerEnable": {
+          "target": "delayed_players_remove"
+        }
+      },
+      "else_actions": []
+    },
+    "delayed_players_remove": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenStatus": {
+          "object_type": "isInactive",
+          "check_objects": "all",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object": "players_squad"
+        }
+      },
+      "actions": {
+        "unitMark": {
+          "target_marking": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true
+        }
+      },
+      "else_actions": {
+        "triggerDisable": {
+          "target": "delayed_players_remove"
         }
       }
     },
@@ -1339,7 +1428,7 @@
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
         "conditionsType": "ALL",
-        "enableAfterComplete": true
+        "enableAfterComplete": false
       },
       "events": {
         "periodicEvent": {
@@ -1399,6 +1488,9 @@
             },
             {
               "target": "player_pillar_warning01"
+            },
+            {
+              "target": "player_allow_bailout01"
             }
           ]
         },
@@ -1439,8 +1531,47 @@
             "target": "players_squad",
             "useForTriggerFiltered": true
           }
+        },
+        {
+          "playerOptions": {
+            "allowBailout": false,
+            "useForTriggerFiltered": true
+          }
         }
       ],
+      "else_actions": []
+    },
+    "player_allow_bailout01": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "2D",
+          "object_type": "isMarked",
+          "object_marking": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "check_objects": "any",
+          "object": "players_squad",
+          "target": "waypoint02"
+        }
+      },
+      "actions": {
+        "playerOptions": {
+          "allowBailout": true,
+          "useForTriggerFiltered": true
+        }
+      },
       "else_actions": []
     },
     "player_pillar_warning01": {
@@ -1570,7 +1701,7 @@
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
         "conditionsType": "ALL",
-        "enableAfterComplete": true
+        "enableAfterComplete": false
       },
       "events": {
         "periodicEvent": {
@@ -1611,6 +1742,9 @@
           },
           {
             "target": "player_pillar_warning02"
+          },
+          {
+            "target": "player_allow_bailout02"
           }
         ],
         "unitMark": {
@@ -1644,6 +1778,43 @@
           "isImmortal": true,
           "cannotShoot": true,
           "cannotMove": true
+        },
+        "playerOptions": {
+          "allowBailout": false,
+          "useForTriggerFiltered": true
+        }
+      },
+      "else_actions": []
+    },
+    "player_allow_bailout02": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "2D",
+          "object_type": "isMarked",
+          "object_marking": 2,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "check_objects": "any",
+          "object": "players_squad",
+          "target": "waypoint02"
+        }
+      },
+      "actions": {
+        "playerOptions": {
+          "allowBailout": true,
+          "useForTriggerFiltered": true
         }
       },
       "else_actions": []
@@ -1775,7 +1946,7 @@
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
         "conditionsType": "ALL",
-        "enableAfterComplete": true
+        "enableAfterComplete": false
       },
       "events": {
         "periodicEvent": {
@@ -1835,6 +2006,9 @@
             },
             {
               "target": "player_pillar_warning03"
+            },
+            {
+              "target": "player_allow_bailout03"
             }
           ]
         },
@@ -1875,8 +2049,47 @@
             "cannotShoot": true,
             "cannotMove": true
           }
+        },
+        {
+          "playerOptions": {
+            "allowBailout": false,
+            "useForTriggerFiltered": true
+          }
         }
       ],
+      "else_actions": []
+    },
+    "player_allow_bailout03": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "2D",
+          "object_type": "isMarked",
+          "object_marking": 3,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "check_objects": "any",
+          "object": "players_squad",
+          "target": "waypoint02"
+        }
+      },
+      "actions": {
+        "playerOptions": {
+          "allowBailout": true,
+          "useForTriggerFiltered": true
+        }
+      },
       "else_actions": []
     },
     "player_pillar_warning03": {
@@ -2006,7 +2219,7 @@
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
         "conditionsType": "ALL",
-        "enableAfterComplete": true
+        "enableAfterComplete": false
       },
       "events": {
         "periodicEvent": {
@@ -2066,6 +2279,9 @@
             },
             {
               "target": "player_pillar_warning04"
+            },
+            {
+              "target": "player_allow_bailout04"
             }
           ]
         },
@@ -2106,8 +2322,47 @@
             "cannotShoot": true,
             "cannotMove": true
           }
+        },
+        {
+          "playerOptions": {
+            "allowBailout": false,
+            "useForTriggerFiltered": true
+          }
         }
       ],
+      "else_actions": []
+    },
+    "player_allow_bailout04": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "2D",
+          "object_type": "isMarked",
+          "object_marking": 4,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "check_objects": "any",
+          "object": "players_squad",
+          "target": "waypoint02"
+        }
+      },
+      "actions": {
+        "playerOptions": {
+          "allowBailout": true,
+          "useForTriggerFiltered": true
+        }
+      },
       "else_actions": []
     },
     "player_pillar_warning04": {
@@ -2336,8 +2591,13 @@
           }
         },
         {
-          "triggerDisable": {
-            "target": "race_start_timer"
+          "raceParamsModify": {
+            "playerKickTime": 40.0,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "players_squad"
           }
         },
         {
@@ -2360,6 +2620,11 @@
               "target": "player_in_spawnpoint04"
             }
           ]
+        },
+        {
+          "triggerDisable": {
+            "target": "race_start_timer"
+          }
         }
       ]
     },
@@ -2673,6 +2938,15 @@
           "value": "hints/biathlon_1st_range_targets_counter",
           "var": "player01_range_hint_str"
         },
+        "raceParamsModify": {
+          "playerKickTime": 0.0,
+          "object_marking": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "players_squad",
+          "object_type": "isMarked"
+        },
         "wait": {
           "time": 0.1
         },
@@ -2724,8 +2998,93 @@
           },
           {
             "target": "target_units_killed_p01"
+          },
+          {
+            "target": "player01_moved_away"
           }
         ]
+      },
+      "else_actions": []
+    },
+    "player01_moved_away": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "notNear2D",
+          "object_type": "isMarked",
+          "object_marking": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "check_objects": "any",
+          "object": "players_squad",
+          "target": "waypoint46.1"
+        }
+      },
+      "actions": {
+        "raceParamsModify": {
+          "playerKickTime": 20.0,
+          "object_marking": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "players_squad",
+          "object_type": "isMarked"
+        },
+        "triggerEnable": {
+          "target": "player01_is_back"
+        }
+      },
+      "else_actions": []
+    },
+    "player01_is_back": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "2D",
+          "object_type": "isMarked",
+          "object_marking": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "check_objects": "any",
+          "object": "players_squad",
+          "target": "waypoint46.1"
+        }
+      },
+      "actions": {
+        "raceParamsModify": {
+          "playerKickTime": 0.0,
+          "object_marking": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "players_squad",
+          "object_type": "isMarked"
+        },
+        "triggerEnable": {
+          "target": "player01_moved_away"
+        }
       },
       "else_actions": []
     },
@@ -2928,6 +3287,12 @@
           },
           {
             "target": "target_units_killing_progress_p01"
+          },
+          {
+            "target": "player01_moved_away"
+          },
+          {
+            "target": "player01_is_back"
           }
         ],
         "unitSetProperties": {
@@ -2974,6 +3339,15 @@
         },
         "triggerEnable": {
           "target": "2nd_range_shooting_start_p01"
+        },
+        "raceParamsModify": {
+          "playerKickTime": 40.0,
+          "object_marking": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "players_squad",
+          "object_type": "isMarked"
         }
       },
       "else_actions": []
@@ -3133,6 +3507,9 @@
               "target": "2nd_range_targets_killed_p01"
             }
           ]
+        },
+        {
+          "playerOptions": []
         }
       ],
       "else_actions": []
@@ -3175,6 +3552,15 @@
           "object": "players_squad",
           "object_type": "isMarked",
           "addToSum": true
+        },
+        "raceParamsModify": {
+          "playerKickTime": 0.0,
+          "object_marking": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "players_squad",
+          "object_type": "isMarked"
         },
         "triggerEnable": [
           {
@@ -3453,6 +3839,15 @@
           "object_type": "isMarked",
           "addToSum": true
         },
+        "raceParamsModify": {
+          "playerKickTime": 40.0,
+          "object_marking": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "players_squad",
+          "object_type": "isMarked"
+        },
         "triggerDisable": {
           "target": "2nd_range_player_on_optional_path_p01"
         }
@@ -3545,6 +3940,15 @@
           "value": "hints/biathlon_1st_range_targets_counter",
           "var": "player02_range_hint_str"
         },
+        "raceParamsModify": {
+          "playerKickTime": 0.0,
+          "object_marking": 2,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "players_squad",
+          "object_type": "isMarked"
+        },
         "wait": {
           "time": 0.1
         },
@@ -3584,8 +3988,96 @@
           },
           {
             "target": "target_units_killed_p02"
+          },
+          {
+            "target": "player02_moved_away"
+          },
+          {
+            "target": "player02_is_back"
           }
         ]
+      },
+      "else_actions": []
+    },
+    "player02_moved_away": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "notNear2D",
+          "object_type": "isMarked",
+          "object_marking": 2,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "check_objects": "any",
+          "object": "players_squad",
+          "target": "waypoint46.2"
+        }
+      },
+      "actions": {
+        "raceParamsModify": {
+          "playerKickTime": 20.0,
+          "object_marking": 2,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "players_squad",
+          "object_type": "isMarked"
+        },
+        "triggerEnable": {
+          "target": "player02_is_back"
+        }
+      },
+      "else_actions": []
+    },
+    "player02_is_back": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "2D",
+          "object_type": "isMarked",
+          "object_marking": 2,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "check_objects": "any",
+          "object": "players_squad",
+          "target": "waypoint46.2"
+        }
+      },
+      "actions": {
+        "raceParamsModify": {
+          "playerKickTime": 0.0,
+          "object_marking": 2,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "players_squad",
+          "object_type": "isMarked"
+        },
+        "triggerEnable": {
+          "target": "player02_moved_away"
+        }
       },
       "else_actions": []
     },
@@ -3788,6 +4280,12 @@
           },
           {
             "target": "target_units_killing_progress_p02"
+          },
+          {
+            "target": "player02_moved_away"
+          },
+          {
+            "target": "player02_is_back"
           }
         ],
         "unitSetProperties": {
@@ -3831,6 +4329,15 @@
         "varSetInt": {
           "value": 0,
           "var": "player02_target_int"
+        },
+        "raceParamsModify": {
+          "playerKickTime": 40.0,
+          "object_marking": 2,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "players_squad",
+          "object_type": "isMarked"
         },
         "triggerEnable": {
           "target": "2nd_range_shooting_start_p02"
@@ -4035,6 +4542,15 @@
           "object": "players_squad",
           "object_type": "isMarked",
           "addToSum": true
+        },
+        "raceParamsModify": {
+          "playerKickTime": 0.0,
+          "object_marking": 2,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "players_squad",
+          "object_type": "isMarked"
         },
         "triggerEnable": [
           {
@@ -4313,6 +4829,15 @@
           "object_type": "isMarked",
           "addToSum": true
         },
+        "raceParamsModify": {
+          "playerKickTime": 40.0,
+          "object_marking": 2,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "players_squad",
+          "object_type": "isMarked"
+        },
         "triggerDisable": {
           "target": "2nd_range_player_on_optional_path_p02"
         }
@@ -4405,6 +4930,15 @@
           "value": "hints/biathlon_1st_range_targets_counter",
           "var": "player03_range_hint_str"
         },
+        "raceParamsModify": {
+          "playerKickTime": 0.0,
+          "object_marking": 3,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "players_squad",
+          "object_type": "isMarked"
+        },
         "wait": {
           "time": 0.1
         },
@@ -4444,8 +4978,96 @@
           },
           {
             "target": "target_units_killed_p03"
+          },
+          {
+            "target": "player03_moved_away"
+          },
+          {
+            "target": "player03_is_back"
           }
         ]
+      },
+      "else_actions": []
+    },
+    "player03_moved_away": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "notNear2D",
+          "object_type": "isMarked",
+          "object_marking": 3,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "check_objects": "any",
+          "object": "players_squad",
+          "target": "waypoint46.3"
+        }
+      },
+      "actions": {
+        "raceParamsModify": {
+          "playerKickTime": 20.0,
+          "object_marking": 3,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "players_squad",
+          "object_type": "isMarked"
+        },
+        "triggerEnable": {
+          "target": "player03_is_back"
+        }
+      },
+      "else_actions": []
+    },
+    "player03_is_back": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "2D",
+          "object_type": "isMarked",
+          "object_marking": 3,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "check_objects": "any",
+          "object": "players_squad",
+          "target": "waypoint46.3"
+        }
+      },
+      "actions": {
+        "raceParamsModify": {
+          "playerKickTime": 0.0,
+          "object_marking": 3,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "players_squad",
+          "object_type": "isMarked"
+        },
+        "triggerEnable": {
+          "target": "player03_moved_away"
+        }
       },
       "else_actions": []
     },
@@ -4648,6 +5270,12 @@
           },
           {
             "target": "target_units_killing_progress_p03"
+          },
+          {
+            "target": "player03_moved_away"
+          },
+          {
+            "target": "player03_is_back"
           }
         ],
         "unitSetProperties": {
@@ -4687,6 +5315,15 @@
           "shouldBlink": false,
           "target": "players_squad",
           "target_type": "isMarked"
+        },
+        "raceParamsModify": {
+          "playerKickTime": 40.0,
+          "object_marking": 3,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "players_squad",
+          "object_type": "isMarked"
         },
         "varSetInt": {
           "value": 0,
@@ -4895,6 +5532,15 @@
           "object": "players_squad",
           "object_type": "isMarked",
           "addToSum": true
+        },
+        "raceParamsModify": {
+          "playerKickTime": 0.0,
+          "object_marking": 3,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "players_squad",
+          "object_type": "isMarked"
         },
         "triggerEnable": [
           {
@@ -5173,136 +5819,19 @@
           "object_type": "isMarked",
           "addToSum": true
         },
+        "raceParamsModify": {
+          "playerKickTime": 40.0,
+          "object_marking": 3,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "players_squad",
+          "object_type": "isMarked"
+        },
         "triggerDisable": {
           "target": "2nd_range_player_on_optional_path_p03"
         }
       },
-      "else_actions": []
-    },
-    "debug01": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "unitWhenInArea": {
-          "math": "3D",
-          "object_type": "isAlive",
-          "object_marking": 0,
-          "check_objects": "any",
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "players_squad",
-          "target": "waypoint46.1"
-        }
-      },
-      "actions": [
-        {
-          "missionMarkAsWaypoint": {
-            "visible": false,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "scale": 0.1,
-            "target": "waypoint46.1"
-          }
-        },
-        {
-          "triggerDisable": {
-            "target": "players_count"
-          }
-        },
-        {
-          "unitRestore": {
-            "ressurectIfDead": false,
-            "fullRestore": false,
-            "target_marking": 0,
-            "target": "players_squad",
-            "ammoRestore": true,
-            "useForTriggerFiltered": true
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "standard",
-            "name": "TARGET SPAWNED",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false,
-            "target": "players_squad",
-            "useForTriggerFiltered": true
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "players_squad",
-            "useForTriggerFiltered": true,
-            "cannotShoot": false
-          }
-        },
-        {
-          "unitGetRandomNameFromSquad": {
-            "string_var": "player01_target_str",
-            "check_objects": "any",
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "squad": "1st_polygon_targets_group01",
-            "object_type": "isAlive"
-          }
-        },
-        {
-          "unitWakeUp": {
-            "target": "structures_01"
-          }
-        },
-        {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "standard",
-            "name": "TARGET UP",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
-          }
-        },
-        {
-          "unitPlayAnim": {
-            "animName": "work_anim",
-            "target": "structures_01"
-          }
-        }
-      ],
       "else_actions": []
     },
     "target_units_wake_up04": {
@@ -5391,6 +5920,15 @@
           "value": "hints/biathlon_1st_range_targets_counter",
           "var": "player04_range_hint_str"
         },
+        "raceParamsModify": {
+          "playerKickTime": 0.0,
+          "object_marking": 4,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "players_squad",
+          "object_type": "isMarked"
+        },
         "wait": {
           "time": 0.1
         },
@@ -5430,8 +5968,96 @@
           },
           {
             "target": "target_units_killed_p04"
+          },
+          {
+            "target": "player04_moved_away"
+          },
+          {
+            "target": "player04_is_back"
           }
         ]
+      },
+      "else_actions": []
+    },
+    "player04_moved_away": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "notNear2D",
+          "object_type": "isMarked",
+          "object_marking": 4,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "check_objects": "any",
+          "object": "players_squad",
+          "target": "waypoint46.4"
+        }
+      },
+      "actions": {
+        "raceParamsModify": {
+          "playerKickTime": 20.0,
+          "object_marking": 4,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "players_squad",
+          "object_type": "isMarked"
+        },
+        "triggerEnable": {
+          "target": "player04_is_back"
+        }
+      },
+      "else_actions": []
+    },
+    "player04_is_back": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "2D",
+          "object_type": "isMarked",
+          "object_marking": 4,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "check_objects": "any",
+          "object": "players_squad",
+          "target": "waypoint46.4"
+        }
+      },
+      "actions": {
+        "raceParamsModify": {
+          "playerKickTime": 0.0,
+          "object_marking": 4,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "players_squad",
+          "object_type": "isMarked"
+        },
+        "triggerEnable": {
+          "target": "player03_is_back"
+        }
       },
       "else_actions": []
     },
@@ -5634,6 +6260,12 @@
           },
           {
             "target": "target_units_killing_progress_p04"
+          },
+          {
+            "target": "player04_moved_away"
+          },
+          {
+            "target": "player04_is_back"
           }
         ],
         "unitSetProperties": {
@@ -5673,6 +6305,15 @@
           "shouldBlink": false,
           "target": "players_squad",
           "target_type": "isMarked"
+        },
+        "raceParamsModify": {
+          "playerKickTime": 40.0,
+          "object_marking": 4,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "players_squad",
+          "object_type": "isMarked"
         },
         "varSetInt": {
           "value": 0,
@@ -5881,6 +6522,15 @@
           "object": "players_squad",
           "object_type": "isMarked",
           "addToSum": true
+        },
+        "raceParamsModify": {
+          "playerKickTime": 0.0,
+          "object_marking": 4,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "players_squad",
+          "object_type": "isMarked"
         },
         "triggerEnable": [
           {
@@ -6159,13 +6809,22 @@
           "object_type": "isMarked",
           "addToSum": true
         },
+        "raceParamsModify": {
+          "playerKickTime": 40.0,
+          "object_marking": 4,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "players_squad",
+          "object_type": "isMarked"
+        },
         "triggerDisable": {
           "target": "2nd_range_player_on_optional_path_p04"
         }
       },
       "else_actions": []
     },
-    "target_units_wake_up05": {
+    "debug01": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -6180,417 +6839,30 @@
       },
       "conditions": {
         "unitWhenInArea": {
-          "math": "2D",
-          "object_type": "isMarked",
-          "object_marking": 5,
-          "check_objects": "any",
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "players_squad",
-          "target": "waypoint46.5"
-        }
-      },
-      "actions": {
-        "unitSetProperties": {
-          "object_marking": 5,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "players_squad",
-          "object_type": "isMarked",
-          "isImmortal": true,
-          "cannotShoot": false
-        },
-        "varAddString": {
-          "value": "1st_polygon_targets_group05",
-          "digits": 0,
-          "var": "player05_target_squad_str"
-        },
-        "unitGetRandomNameFromSquad": {
-          "string_var": "player05_target_str",
-          "check_objects": "any",
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "squad": "1st_polygon_targets_group05",
-          "object_type": "isAlive"
-        },
-        "unitWakeUp": {
-          "target": "@player05_target_str"
-        },
-        "raceRangeEnable": {
-          "from": "waypoint01",
-          "to": "waypoint44",
-          "enable": false,
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "all": false,
-          "object": "players_squad",
-          "useForTriggerFiltered": true
-        },
-        "playHint": {
-          "hintType": "standard",
-          "name": "hints/biathlon_1st_range_start",
-          "action": "show",
-          "shouldFadeOut": false,
-          "isOverFade": false,
-          "time": -1.0,
-          "priority": 0,
-          "target_marking": 5,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "shouldBlink": false,
-          "target": "players_squad",
-          "target_type": "isMarked"
-        },
-        "varSetString": {
-          "value": "hints/biathlon_1st_range_targets_counter",
-          "var": "player05_range_hint_str"
-        },
-        "wait": {
-          "time": 0.1
-        },
-        "unitPlayAnim": {
-          "animName": "work_anim",
-          "target": "@player05_target_str"
-        },
-        "unitSetStealth": {
-          "set": true,
-          "radius": 10000.0,
-          "target": "@player05_target_str"
-        },
-        "unitSetIndication": {
-          "target_marking": 0,
-          "set": true,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target": "@player05_target_str"
-        },
-        "unitVulnerableFrom": {
-          "target_marking": 0,
-          "player_marking": 5,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "player_var_name": "",
-          "player_var_comp_op": "equal",
-          "player_var_value": 0,
-          "target": "@player05_target_str",
-          "player": "players_squad",
-          "player_type": "isMarked"
-        },
-        "triggerEnable": [
-          {
-            "target": "target_units_killing_progress_p05"
-          },
-          {
-            "target": "target_units_killed_p05"
-          }
-        ]
-      },
-      "else_actions": []
-    },
-    "target_units_killing_progress_p05": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": true
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "unitWhenStatus": {
-          "object_type": "isKilled",
-          "check_objects": "any",
-          "object_marking": 0,
-          "target_type": "isAlive",
-          "check_period": 1.0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "@player05_target_str"
-        },
-        "unitWhenCountMatches": {
+          "math": "3D",
           "object_type": "isAlive",
           "object_marking": 0,
-          "func": "more",
-          "value": 0,
+          "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object": "@player05_target_squad_str"
+          "object": "players_squad",
+          "target": "waypoint46.1"
         }
       },
       "actions": [
         {
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "player05_target_int"
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 0.1,
+            "target": "waypoint46.1"
           }
         },
         {
-          "varSetString": {
-            "value": "",
-            "var": "player05_counter_hint_id_str",
-            "input_var": "player05_range_hint_str"
-          }
-        },
-        {
-          "varAddString": {
-            "value": "@player05_target_int",
-            "digits": 2,
-            "var": "player05_counter_hint_id_str"
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "standard",
-            "name": "@player05_counter_hint_id_str",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 5,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false,
-            "target": "players_squad",
-            "target_type": "isMarked"
-          }
-        },
-        {
-          "missionKillEffects": {
-            "area": "kill_effects_area",
-            "effect": true,
-            "wreckage": true
-          }
-        },
-        {
-          "wait": {
-            "time": 4.0
-          }
-        },
-        {
-          "unitGetRandomNameFromSquad": {
-            "string_var": "player05_target_str",
-            "check_objects": "any",
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "squad": "@player05_target_squad_str",
-            "object_type": "isAlive"
-          }
-        },
-        {
-          "unitWakeUp": {
-            "target": "@player05_target_str"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.1
-          }
-        },
-        {
-          "unitVulnerableFrom": {
-            "target_marking": 0,
-            "player_marking": 5,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "player_var_name": "",
-            "player_var_comp_op": "equal",
-            "player_var_value": 0,
-            "target": "@player05_target_str",
-            "player": "players_squad",
-            "player_type": "isMarked"
-          }
-        },
-        {
-          "unitPlayAnim": {
-            "animName": "work_anim",
-            "target": "@player05_target_str"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.4
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "standard",
-            "name": "",
-            "action": "hideCur",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 5,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false,
-            "target": "players_squad",
-            "target_type": "isMarked"
-          }
-        },
-        {
-          "unitSetStealth": {
-            "set": true,
-            "radius": 10000.0,
-            "target": "@player05_target_str"
-          }
-        },
-        {
-          "unitSetIndication": {
-            "target_marking": 0,
-            "set": true,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "@player05_target_str"
-          }
-        }
-      ],
-      "else_actions": []
-    },
-    "target_units_killed_p05": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ANY",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "unitWhenCountMatches": {
-          "object_type": "isAlive",
-          "object_marking": 0,
-          "func": "equal",
-          "value": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "1st_polygon_targets_group05"
-        }
-      },
-      "actions": {
-        "triggerDisable": [
-          {
-            "target": "target_units_wake_up05"
-          },
-          {
-            "target": "target_units_killing_progress_p05"
-          }
-        ],
-        "unitSetProperties": {
-          "object_marking": 5,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "players_squad",
-          "object_type": "isMarked",
-          "isImmortal": true,
-          "cannotShoot": true
-        },
-        "raceRangeEnable": {
-          "from": "waypoint47",
-          "to": "waypoint49",
-          "enable": true,
-          "object_marking": 5,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "all": false,
-          "object": "players_squad",
-          "object_type": "isMarked"
-        },
-        "playHint": {
-          "hintType": "standard",
-          "name": "hints/biathlon_all_targets_destroyed",
-          "action": "show",
-          "shouldFadeOut": false,
-          "isOverFade": false,
-          "time": -1.0,
-          "priority": 0,
-          "target_marking": 5,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "shouldBlink": false,
-          "target": "players_squad",
-          "target_type": "isMarked"
-        },
-        "varSetInt": {
-          "value": 0,
-          "var": "player05_target_int"
-        },
-        "triggerEnable": {
-          "target": "2nd_range_shooting_start_p05"
-        }
-      },
-      "else_actions": []
-    },
-    "2nd_range_shooting_start_p05": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "unitWhenInArea": {
-          "math": "2D",
-          "object_type": "isMarked",
-          "object_marking": 5,
-          "check_objects": "any",
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "players_squad",
-          "target": "dont_stop_area"
-        }
-      },
-      "actions": [
-        {
-          "unitGetRandomNameFromSquad": {
-            "string_var": "player05_target_str",
-            "check_objects": "any",
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "squad": "2nd_polygon_targets_group05",
-            "object_type": "isAlive"
-          }
-        },
-        {
-          "varSetString": {
-            "value": "2nd_polygon_targets_group05",
-            "var": "player05_target_squad_str"
+          "triggerDisable": {
+            "target": "players_count"
           }
         },
         {
@@ -6604,2512 +6876,75 @@
           }
         },
         {
-          "unitSetProperties": {
-            "object_marking": 5,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "players_squad",
-            "object_type": "isMarked",
-            "isImmortal": true,
-            "cannotShoot": false
-          }
-        },
-        {
-          "varSetString": {
-            "value": "hints/biathlon_2nd_range_targets_counter",
-            "var": "player05_range_hint_str"
-          }
-        },
-        {
           "playHint": {
             "hintType": "standard",
-            "name": "hints/biathlon_2nd_range_start",
+            "name": "TARGET SPAWNED",
             "action": "show",
             "shouldFadeOut": false,
             "isOverFade": false,
             "time": -1.0,
             "priority": 0,
-            "target_marking": 5,
+            "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false,
             "target": "players_squad",
-            "target_type": "isMarked"
-          }
-        },
-        {
-          "wait": {
-            "time": 4.0
-          }
-        },
-        {
-          "unitWakeUp": {
-            "target": "@player05_target_str"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.1
-          }
-        },
-        {
-          "unitPlayAnim": {
-            "animName": "work_anim",
-            "target": "@player05_target_str"
-          }
-        },
-        {
-          "unitVulnerableFrom": {
-            "target_marking": 0,
-            "player_marking": 5,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "player_var_name": "",
-            "player_var_comp_op": "equal",
-            "player_var_value": 0,
-            "target": "@player05_target_str",
-            "player": "players_squad",
-            "player_type": "isMarked"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.4
-          }
-        },
-        {
-          "unitSetStealth": {
-            "set": true,
-            "radius": 12000.0,
-            "target": "@player05_target_str"
-          }
-        },
-        {
-          "unitSetIndication": {
-            "target_marking": 0,
-            "set": true,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "@player05_target_str"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "target_units_killing_progress_p05"
-            },
-            {
-              "target": "2nd_range_end_area_p05"
-            },
-            {
-              "target": "2nd_range_targets_killed_p05"
-            }
-          ]
-        }
-      ],
-      "else_actions": []
-    },
-    "2nd_range_end_area_p05": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "unitWhenInArea": {
-          "math": "2D",
-          "object_type": "isMarked",
-          "object_marking": 5,
-          "check_objects": "any",
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "players_squad",
-          "target": "waypoint49"
-        }
-      },
-      "actions": {
-        "raceRangeEnable": {
-          "from": "waypoint50.5",
-          "to": "waypoint50.5",
-          "enable": true,
-          "object_marking": 5,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "all": false,
-          "object": "players_squad",
-          "object_type": "isMarked",
-          "addToSum": true
-        }
-      },
-      "else_actions": []
-    },
-    "2nd_range_targets_killed_p05": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ANY",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "unitWhenCountMatches": {
-          "object_type": "isAlive",
-          "object_marking": 0,
-          "func": "equal",
-          "value": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "2nd_polygon_targets_group05"
-        }
-      },
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "target_units_wake_up05"
-            },
-            {
-              "target": "target_units_killing_progress_p05"
-            },
-            {
-              "target": "target_units_killed_p05"
-            },
-            {
-              "target": "2nd_range_shooting_start_p05"
-            },
-            {
-              "target": "2nd_range_end_area_p05"
-            }
-          ]
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 5,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "players_squad",
-            "object_type": "isMarked",
-            "isImmortal": true,
-            "cannotShoot": true
-          }
-        },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "player05_target_int"
-          }
-        },
-        {
-          "raceRangeEnable": {
-            "from": "waypoint50.5",
-            "to": "waypoint50.5",
-            "enable": false,
-            "object_marking": 5,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "all": false,
-            "object": "players_squad",
-            "object_type": "isMarked",
-            "addToSum": true
-          }
-        },
-        {
-          "raceRangeEnable": {
-            "from": "waypoint51",
-            "to": "waypoint59",
-            "enable": true,
-            "object_marking": 5,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "all": false,
-            "object": "players_squad",
-            "object_type": "isMarked"
-          }
-        },
-        {
-          "raceRangeEnable": {
-            "from": "waypoint01",
-            "to": "waypoint44",
-            "enable": true,
-            "object_marking": 5,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "all": false,
-            "object": "players_squad",
-            "object_type": "isMarked"
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "standard",
-            "name": "hints/biathlon_all_targets_destroyed",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 5,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false,
-            "target": "players_squad",
-            "target_type": "isMarked"
-          }
-        },
-        {
-          "wait": {
-            "time": 7.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "standard",
-            "name": "",
-            "action": "hideCur",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 5,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false,
-            "target": "players_squad",
-            "target_type": "isMarked"
-          }
-        }
-      ],
-      "else_actions": []
-    },
-    "target_units_wake_up06": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "unitWhenInArea": {
-          "math": "2D",
-          "object_type": "isMarked",
-          "object_marking": 6,
-          "check_objects": "any",
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "players_squad",
-          "target": "waypoint46.6"
-        }
-      },
-      "actions": {
-        "unitSetProperties": {
-          "object_marking": 6,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "players_squad",
-          "object_type": "isMarked",
-          "isImmortal": true,
-          "cannotShoot": false
-        },
-        "varAddString": {
-          "value": "1st_polygon_targets_group06",
-          "digits": 0,
-          "var": "player06_target_squad_str"
-        },
-        "unitGetRandomNameFromSquad": {
-          "string_var": "player06_target_str",
-          "check_objects": "any",
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "squad": "1st_polygon_targets_group06",
-          "object_type": "isAlive"
-        },
-        "unitWakeUp": {
-          "target": "@player06_target_str"
-        },
-        "raceRangeEnable": {
-          "from": "waypoint01",
-          "to": "waypoint44",
-          "enable": false,
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "all": false,
-          "object": "players_squad",
-          "useForTriggerFiltered": true
-        },
-        "playHint": {
-          "hintType": "standard",
-          "name": "hints/biathlon_1st_range_start",
-          "action": "show",
-          "shouldFadeOut": false,
-          "isOverFade": false,
-          "time": -1.0,
-          "priority": 0,
-          "target_marking": 6,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "shouldBlink": false,
-          "target": "players_squad",
-          "target_type": "isMarked"
-        },
-        "varSetString": {
-          "value": "hints/biathlon_1st_range_targets_counter",
-          "var": "player06_range_hint_str"
-        },
-        "wait": {
-          "time": 0.1
-        },
-        "unitPlayAnim": {
-          "animName": "work_anim",
-          "target": "@player06_target_str"
-        },
-        "unitSetStealth": {
-          "set": true,
-          "radius": 10000.0,
-          "target": "@player06_target_str"
-        },
-        "unitSetIndication": {
-          "target_marking": 0,
-          "set": true,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target": "@player06_target_str"
-        },
-        "unitVulnerableFrom": {
-          "target_marking": 0,
-          "player_marking": 6,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "player_var_name": "",
-          "player_var_comp_op": "equal",
-          "player_var_value": 0,
-          "target": "@player06_target_str",
-          "player": "players_squad",
-          "player_type": "isMarked"
-        },
-        "triggerEnable": [
-          {
-            "target": "target_units_killing_progress_p06"
-          },
-          {
-            "target": "target_units_killed_p06"
-          }
-        ]
-      },
-      "else_actions": []
-    },
-    "target_units_killing_progress_p06": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": true
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "unitWhenStatus": {
-          "object_type": "isKilled",
-          "check_objects": "any",
-          "object_marking": 0,
-          "target_type": "isAlive",
-          "check_period": 1.0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "@player06_target_str"
-        },
-        "unitWhenCountMatches": {
-          "object_type": "isAlive",
-          "object_marking": 0,
-          "func": "more",
-          "value": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "@player06_target_squad_str"
-        }
-      },
-      "actions": [
-        {
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "player06_target_int"
-          }
-        },
-        {
-          "varSetString": {
-            "value": "",
-            "var": "player06_counter_hint_id_str",
-            "input_var": "player06_range_hint_str"
-          }
-        },
-        {
-          "varAddString": {
-            "value": "@player06_target_int",
-            "digits": 2,
-            "var": "player06_counter_hint_id_str"
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "standard",
-            "name": "@player06_counter_hint_id_str",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 6,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false,
-            "target": "players_squad",
-            "target_type": "isMarked"
-          }
-        },
-        {
-          "missionKillEffects": {
-            "area": "kill_effects_area",
-            "effect": true,
-            "wreckage": true
-          }
-        },
-        {
-          "wait": {
-            "time": 4.0
-          }
-        },
-        {
-          "unitGetRandomNameFromSquad": {
-            "string_var": "player06_target_str",
-            "check_objects": "any",
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "squad": "@player06_target_squad_str",
-            "object_type": "isAlive"
-          }
-        },
-        {
-          "unitWakeUp": {
-            "target": "@player06_target_str"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.1
-          }
-        },
-        {
-          "unitVulnerableFrom": {
-            "target_marking": 0,
-            "player_marking": 6,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "player_var_name": "",
-            "player_var_comp_op": "equal",
-            "player_var_value": 0,
-            "target": "@player06_target_str",
-            "player": "players_squad",
-            "player_type": "isMarked"
-          }
-        },
-        {
-          "unitPlayAnim": {
-            "animName": "work_anim",
-            "target": "@player06_target_str"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.4
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "standard",
-            "name": "",
-            "action": "hideCur",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 6,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false,
-            "target": "players_squad",
-            "target_type": "isMarked"
-          }
-        },
-        {
-          "unitSetStealth": {
-            "set": true,
-            "radius": 10000.0,
-            "target": "@player06_target_str"
-          }
-        },
-        {
-          "unitSetIndication": {
-            "target_marking": 0,
-            "set": true,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "@player06_target_str"
-          }
-        }
-      ],
-      "else_actions": []
-    },
-    "target_units_killed_p06": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ANY",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "unitWhenCountMatches": {
-          "object_type": "isAlive",
-          "object_marking": 0,
-          "func": "equal",
-          "value": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "1st_polygon_targets_group06"
-        }
-      },
-      "actions": {
-        "triggerDisable": [
-          {
-            "target": "target_units_wake_up06"
-          },
-          {
-            "target": "target_units_killing_progress_p06"
-          }
-        ],
-        "unitSetProperties": {
-          "object_marking": 6,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "players_squad",
-          "object_type": "isMarked",
-          "isImmortal": true,
-          "cannotShoot": true
-        },
-        "raceRangeEnable": {
-          "from": "waypoint47",
-          "to": "waypoint49",
-          "enable": true,
-          "object_marking": 6,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "all": false,
-          "object": "players_squad",
-          "object_type": "isMarked"
-        },
-        "playHint": {
-          "hintType": "standard",
-          "name": "hints/biathlon_all_targets_destroyed",
-          "action": "show",
-          "shouldFadeOut": false,
-          "isOverFade": false,
-          "time": -1.0,
-          "priority": 0,
-          "target_marking": 6,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "shouldBlink": false,
-          "target": "players_squad",
-          "target_type": "isMarked"
-        },
-        "varSetInt": {
-          "value": 0,
-          "var": "player06_target_int"
-        },
-        "triggerEnable": {
-          "target": "2nd_range_shooting_start_p06"
-        }
-      },
-      "else_actions": []
-    },
-    "2nd_range_shooting_start_p06": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "unitWhenInArea": {
-          "math": "2D",
-          "object_type": "isMarked",
-          "object_marking": 6,
-          "check_objects": "any",
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "players_squad",
-          "target": "dont_stop_area"
-        }
-      },
-      "actions": [
-        {
-          "unitGetRandomNameFromSquad": {
-            "string_var": "player06_target_str",
-            "check_objects": "any",
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "squad": "2nd_polygon_targets_group06",
-            "object_type": "isAlive"
-          }
-        },
-        {
-          "varSetString": {
-            "value": "2nd_polygon_targets_group06",
-            "var": "player06_target_squad_str"
-          }
-        },
-        {
-          "unitRestore": {
-            "ressurectIfDead": false,
-            "fullRestore": false,
-            "target_marking": 0,
-            "target": "players_squad",
-            "ammoRestore": true,
             "useForTriggerFiltered": true
           }
         },
         {
           "unitSetProperties": {
-            "object_marking": 6,
+            "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "object": "players_squad",
-            "object_type": "isMarked",
-            "isImmortal": true,
+            "useForTriggerFiltered": true,
             "cannotShoot": false
           }
         },
         {
-          "varSetString": {
-            "value": "hints/biathlon_2nd_range_targets_counter",
-            "var": "player06_range_hint_str"
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "standard",
-            "name": "hints/biathlon_2nd_range_start",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 6,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false,
-            "target": "players_squad",
-            "target_type": "isMarked"
-          }
-        },
-        {
-          "wait": {
-            "time": 4.0
-          }
-        },
-        {
-          "unitWakeUp": {
-            "target": "@player06_target_str"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.1
-          }
-        },
-        {
-          "unitPlayAnim": {
-            "animName": "work_anim",
-            "target": "@player06_target_str"
-          }
-        },
-        {
-          "unitVulnerableFrom": {
-            "target_marking": 0,
-            "player_marking": 6,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "player_var_name": "",
-            "player_var_comp_op": "equal",
-            "player_var_value": 0,
-            "target": "@player06_target_str",
-            "player": "players_squad",
-            "player_type": "isMarked"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.4
-          }
-        },
-        {
-          "unitSetStealth": {
-            "set": true,
-            "radius": 12000.0,
-            "target": "@player06_target_str"
-          }
-        },
-        {
-          "unitSetIndication": {
-            "target_marking": 0,
-            "set": true,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "@player06_target_str"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "target_units_killing_progress_p06"
-            },
-            {
-              "target": "2nd_range_end_area_p06"
-            },
-            {
-              "target": "2nd_range_targets_killed_p06"
-            }
-          ]
-        }
-      ],
-      "else_actions": []
-    },
-    "2nd_range_end_area_p06": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "unitWhenInArea": {
-          "math": "2D",
-          "object_type": "isMarked",
-          "object_marking": 6,
-          "check_objects": "any",
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "players_squad",
-          "target": "waypoint49"
-        }
-      },
-      "actions": {
-        "raceRangeEnable": {
-          "from": "waypoint50.6",
-          "to": "waypoint50.6",
-          "enable": true,
-          "object_marking": 6,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "all": false,
-          "object": "players_squad",
-          "object_type": "isMarked"
-        }
-      },
-      "else_actions": []
-    },
-    "2nd_range_targets_killed_p06": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ANY",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "unitWhenCountMatches": {
-          "object_type": "isAlive",
-          "object_marking": 0,
-          "func": "equal",
-          "value": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "2nd_polygon_targets_group06"
-        }
-      },
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "target_units_wake_up06"
-            },
-            {
-              "target": "target_units_killing_progress_p06"
-            },
-            {
-              "target": "target_units_killed_p06"
-            },
-            {
-              "target": "2nd_range_shooting_start_p06"
-            },
-            {
-              "target": "2nd_range_end_area_p06"
-            }
-          ]
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 6,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "players_squad",
-            "object_type": "isMarked",
-            "isImmortal": true,
-            "cannotShoot": true
-          }
-        },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "player06_target_int"
-          }
-        },
-        {
-          "raceRangeEnable": {
-            "from": "waypoint50.6",
-            "to": "waypoint50.6",
-            "enable": false,
-            "object_marking": 6,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "all": false,
-            "object": "players_squad",
-            "object_type": "isMarked"
-          }
-        },
-        {
-          "raceRangeEnable": {
-            "from": "waypoint51",
-            "to": "waypoint59",
-            "enable": true,
-            "object_marking": 6,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "all": false,
-            "object": "players_squad",
-            "object_type": "isMarked"
-          }
-        },
-        {
-          "raceRangeEnable": {
-            "from": "waypoint01",
-            "to": "waypoint44",
-            "enable": true,
-            "object_marking": 6,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "all": false,
-            "object": "players_squad",
-            "object_type": "isMarked"
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "standard",
-            "name": "hints/biathlon_all_targets_destroyed",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 6,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false,
-            "target": "players_squad",
-            "target_type": "isMarked"
-          }
-        },
-        {
-          "wait": {
-            "time": 7.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "standard",
-            "name": "",
-            "action": "hideCur",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 6,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false,
-            "target": "players_squad",
-            "target_type": "isMarked"
-          }
-        }
-      ],
-      "else_actions": []
-    },
-    "target_units_wake_up07": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "unitWhenInArea": {
-          "math": "2D",
-          "object_type": "isMarked",
-          "object_marking": 7,
-          "check_objects": "any",
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "players_squad",
-          "target": "waypoint46.7"
-        }
-      },
-      "actions": {
-        "unitSetProperties": {
-          "object_marking": 7,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "players_squad",
-          "object_type": "isMarked",
-          "isImmortal": true,
-          "cannotShoot": false
-        },
-        "varAddString": {
-          "value": "1st_polygon_targets_group07",
-          "digits": 0,
-          "var": "player07_target_squad_str"
-        },
-        "unitGetRandomNameFromSquad": {
-          "string_var": "player07_target_str",
-          "check_objects": "any",
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "squad": "1st_polygon_targets_group07",
-          "object_type": "isAlive"
-        },
-        "unitWakeUp": {
-          "target": "@player07_target_str"
-        },
-        "raceRangeEnable": {
-          "from": "waypoint01",
-          "to": "waypoint44",
-          "enable": false,
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "all": false,
-          "object": "players_squad",
-          "useForTriggerFiltered": true
-        },
-        "playHint": {
-          "hintType": "standard",
-          "name": "hints/biathlon_1st_range_start",
-          "action": "show",
-          "shouldFadeOut": false,
-          "isOverFade": false,
-          "time": -1.0,
-          "priority": 0,
-          "target_marking": 7,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "shouldBlink": false,
-          "target": "players_squad",
-          "target_type": "isMarked"
-        },
-        "varSetString": {
-          "value": "hints/biathlon_1st_range_targets_counter",
-          "var": "player07_range_hint_str"
-        },
-        "wait": {
-          "time": 0.1
-        },
-        "unitPlayAnim": {
-          "animName": "work_anim",
-          "target": "@player07_target_str"
-        },
-        "unitSetStealth": {
-          "set": true,
-          "radius": 10000.0,
-          "target": "@player07_target_str"
-        },
-        "unitSetIndication": {
-          "target_marking": 0,
-          "set": true,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target": "@player07_target_str"
-        },
-        "unitVulnerableFrom": {
-          "target_marking": 0,
-          "player_marking": 7,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "player_var_name": "",
-          "player_var_comp_op": "equal",
-          "player_var_value": 0,
-          "target": "@player07_target_str",
-          "player": "players_squad",
-          "player_type": "isMarked"
-        },
-        "triggerEnable": [
-          {
-            "target": "target_units_killing_progress_p07"
-          },
-          {
-            "target": "target_units_killed_p07"
-          }
-        ]
-      },
-      "else_actions": []
-    },
-    "target_units_killing_progress_p07": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": true
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "unitWhenStatus": {
-          "object_type": "isKilled",
-          "check_objects": "any",
-          "object_marking": 0,
-          "target_type": "isAlive",
-          "check_period": 1.0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "@player07_target_str"
-        },
-        "unitWhenCountMatches": {
-          "object_type": "isAlive",
-          "object_marking": 0,
-          "func": "more",
-          "value": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "@player07_target_squad_str"
-        }
-      },
-      "actions": [
-        {
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "player07_target_int"
-          }
-        },
-        {
-          "varSetString": {
-            "value": "",
-            "var": "player07_counter_hint_id_str",
-            "input_var": "player07_range_hint_str"
-          }
-        },
-        {
-          "varAddString": {
-            "value": "@player07_target_int",
-            "digits": 2,
-            "var": "player07_counter_hint_id_str"
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "standard",
-            "name": "@player07_counter_hint_id_str",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 7,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false,
-            "target": "players_squad",
-            "target_type": "isMarked"
-          }
-        },
-        {
-          "missionKillEffects": {
-            "area": "kill_effects_area",
-            "effect": true,
-            "wreckage": true
-          }
-        },
-        {
-          "wait": {
-            "time": 4.0
-          }
-        },
-        {
           "unitGetRandomNameFromSquad": {
-            "string_var": "player07_target_str",
+            "string_var": "player01_target_str",
             "check_objects": "any",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "squad": "@player07_target_squad_str",
+            "squad": "1st_polygon_targets_group01",
             "object_type": "isAlive"
           }
         },
         {
           "unitWakeUp": {
-            "target": "@player07_target_str"
+            "target": "structures_01"
           }
         },
         {
           "wait": {
-            "time": 0.1
+            "time": 3.0
           }
         },
         {
-          "unitVulnerableFrom": {
+          "playHint": {
+            "hintType": "standard",
+            "name": "TARGET UP",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
             "target_marking": 0,
-            "player_marking": 7,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "player_var_name": "",
-            "player_var_comp_op": "equal",
-            "player_var_value": 0,
-            "target": "@player07_target_str",
-            "player": "players_squad",
-            "player_type": "isMarked"
+            "object_var_value": 0
           }
         },
         {
           "unitPlayAnim": {
             "animName": "work_anim",
-            "target": "@player07_target_str"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.4
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "standard",
-            "name": "",
-            "action": "hideCur",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 7,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false,
-            "target": "players_squad",
-            "target_type": "isMarked"
-          }
-        },
-        {
-          "unitSetStealth": {
-            "set": true,
-            "radius": 10000.0,
-            "target": "@player07_target_str"
-          }
-        },
-        {
-          "unitSetIndication": {
-            "target_marking": 0,
-            "set": true,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "@player07_target_str"
-          }
-        }
-      ],
-      "else_actions": []
-    },
-    "target_units_killed_p07": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ANY",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "unitWhenCountMatches": {
-          "object_type": "isAlive",
-          "object_marking": 0,
-          "func": "equal",
-          "value": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "1st_polygon_targets_group07"
-        }
-      },
-      "actions": {
-        "triggerDisable": [
-          {
-            "target": "target_units_wake_up07"
-          },
-          {
-            "target": "target_units_killing_progress_p07"
-          }
-        ],
-        "unitSetProperties": {
-          "object_marking": 7,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "players_squad",
-          "object_type": "isMarked",
-          "isImmortal": true,
-          "cannotShoot": true
-        },
-        "raceRangeEnable": {
-          "from": "waypoint47",
-          "to": "waypoint49",
-          "enable": true,
-          "object_marking": 7,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "all": false,
-          "object": "players_squad",
-          "object_type": "isMarked"
-        },
-        "playHint": {
-          "hintType": "standard",
-          "name": "hints/biathlon_all_targets_destroyed",
-          "action": "show",
-          "shouldFadeOut": false,
-          "isOverFade": false,
-          "time": -1.0,
-          "priority": 0,
-          "target_marking": 7,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "shouldBlink": false,
-          "target": "players_squad",
-          "target_type": "isMarked"
-        },
-        "varSetInt": {
-          "value": 0,
-          "var": "player07_target_int"
-        },
-        "triggerEnable": {
-          "target": "2nd_range_shooting_start_p07"
-        }
-      },
-      "else_actions": []
-    },
-    "2nd_range_shooting_start_p07": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "unitWhenInArea": {
-          "math": "2D",
-          "object_type": "isMarked",
-          "object_marking": 7,
-          "check_objects": "any",
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "players_squad",
-          "target": "dont_stop_area"
-        }
-      },
-      "actions": [
-        {
-          "unitGetRandomNameFromSquad": {
-            "string_var": "player07_target_str",
-            "check_objects": "any",
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "squad": "2nd_polygon_targets_group07",
-            "object_type": "isAlive"
-          }
-        },
-        {
-          "varSetString": {
-            "value": "2nd_polygon_targets_group07",
-            "var": "player07_target_squad_str"
-          }
-        },
-        {
-          "unitRestore": {
-            "ressurectIfDead": false,
-            "fullRestore": false,
-            "target_marking": 0,
-            "target": "players_squad",
-            "ammoRestore": true,
-            "useForTriggerFiltered": true
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 7,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "players_squad",
-            "object_type": "isMarked",
-            "isImmortal": true,
-            "cannotShoot": false
-          }
-        },
-        {
-          "varSetString": {
-            "value": "hints/biathlon_2nd_range_targets_counter",
-            "var": "player07_range_hint_str"
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "standard",
-            "name": "hints/biathlon_2nd_range_start",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 7,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false,
-            "target": "players_squad",
-            "target_type": "isMarked"
-          }
-        },
-        {
-          "wait": {
-            "time": 4.0
-          }
-        },
-        {
-          "unitWakeUp": {
-            "target": "@player07_target_str"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.1
-          }
-        },
-        {
-          "unitPlayAnim": {
-            "animName": "work_anim",
-            "target": "@player07_target_str"
-          }
-        },
-        {
-          "unitVulnerableFrom": {
-            "target_marking": 0,
-            "player_marking": 7,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "player_var_name": "",
-            "player_var_comp_op": "equal",
-            "player_var_value": 0,
-            "target": "@player07_target_str",
-            "player": "players_squad",
-            "player_type": "isMarked"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.4
-          }
-        },
-        {
-          "unitSetStealth": {
-            "set": true,
-            "radius": 12000.0,
-            "target": "@player07_target_str"
-          }
-        },
-        {
-          "unitSetIndication": {
-            "target_marking": 0,
-            "set": true,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "@player07_target_str"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "target_units_killing_progress_p07"
-            },
-            {
-              "target": "2nd_range_end_area_p07"
-            },
-            {
-              "target": "2nd_range_targets_killed_p07"
-            }
-          ]
-        }
-      ],
-      "else_actions": []
-    },
-    "2nd_range_end_area_p07": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "unitWhenInArea": {
-          "math": "2D",
-          "object_type": "isMarked",
-          "object_marking": 7,
-          "check_objects": "any",
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "players_squad",
-          "target": "waypoint49"
-        }
-      },
-      "actions": {
-        "raceRangeEnable": {
-          "from": "waypoint50.7",
-          "to": "waypoint50.7",
-          "enable": true,
-          "object_marking": 7,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "all": false,
-          "object": "players_squad",
-          "object_type": "isMarked"
-        }
-      },
-      "else_actions": []
-    },
-    "2nd_range_targets_killed_p07": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ANY",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "unitWhenCountMatches": {
-          "object_type": "isAlive",
-          "object_marking": 0,
-          "func": "equal",
-          "value": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "2nd_polygon_targets_group07"
-        }
-      },
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "target_units_wake_up07"
-            },
-            {
-              "target": "target_units_killing_progress_p07"
-            },
-            {
-              "target": "target_units_killed_p07"
-            },
-            {
-              "target": "2nd_range_shooting_start_p07"
-            },
-            {
-              "target": "2nd_range_end_area_p07"
-            }
-          ]
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 7,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "players_squad",
-            "object_type": "isMarked",
-            "isImmortal": true,
-            "cannotShoot": true
-          }
-        },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "player07_target_int"
-          }
-        },
-        {
-          "raceRangeEnable": {
-            "from": "waypoint50.7",
-            "to": "waypoint50.7",
-            "enable": false,
-            "object_marking": 7,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "all": false,
-            "object": "players_squad",
-            "object_type": "isMarked"
-          }
-        },
-        {
-          "raceRangeEnable": {
-            "from": "waypoint51",
-            "to": "waypoint59",
-            "enable": true,
-            "object_marking": 7,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "all": false,
-            "object": "players_squad",
-            "object_type": "isMarked"
-          }
-        },
-        {
-          "raceRangeEnable": {
-            "from": "waypoint01",
-            "to": "waypoint44",
-            "enable": true,
-            "object_marking": 7,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "all": false,
-            "object": "players_squad",
-            "object_type": "isMarked"
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "standard",
-            "name": "hints/biathlon_all_targets_destroyed",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 7,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false,
-            "target": "players_squad",
-            "target_type": "isMarked"
-          }
-        },
-        {
-          "wait": {
-            "time": 7.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "standard",
-            "name": "",
-            "action": "hideCur",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 7,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false,
-            "target": "players_squad",
-            "target_type": "isMarked"
-          }
-        }
-      ],
-      "else_actions": []
-    },
-    "target_units_wake_up08": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "unitWhenInArea": {
-          "math": "2D",
-          "object_type": "isMarked",
-          "object_marking": 8,
-          "check_objects": "any",
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "players_squad",
-          "target": "waypoint46.8"
-        }
-      },
-      "actions": {
-        "unitSetProperties": {
-          "object_marking": 8,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "players_squad",
-          "object_type": "isMarked",
-          "isImmortal": true,
-          "cannotShoot": false
-        },
-        "varAddString": {
-          "value": "1st_polygon_targets_group08",
-          "digits": 0,
-          "var": "player08_target_squad_str"
-        },
-        "unitGetRandomNameFromSquad": {
-          "string_var": "player08_target_str",
-          "check_objects": "any",
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "squad": "1st_polygon_targets_group08",
-          "object_type": "isAlive"
-        },
-        "unitWakeUp": {
-          "target": "@player08_target_str"
-        },
-        "raceRangeEnable": {
-          "from": "waypoint01",
-          "to": "waypoint44",
-          "enable": false,
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "all": false,
-          "object": "players_squad",
-          "useForTriggerFiltered": true
-        },
-        "playHint": {
-          "hintType": "standard",
-          "name": "hints/biathlon_1st_range_start",
-          "action": "show",
-          "shouldFadeOut": false,
-          "isOverFade": false,
-          "time": -1.0,
-          "priority": 0,
-          "target_marking": 8,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "shouldBlink": false,
-          "target": "players_squad",
-          "target_type": "isMarked"
-        },
-        "varSetString": {
-          "value": "hints/biathlon_1st_range_targets_counter",
-          "var": "player08_range_hint_str"
-        },
-        "wait": {
-          "time": 0.1
-        },
-        "unitPlayAnim": {
-          "animName": "work_anim",
-          "target": "@player08_target_str"
-        },
-        "unitSetStealth": {
-          "set": true,
-          "radius": 10000.0,
-          "target": "@player08_target_str"
-        },
-        "unitSetIndication": {
-          "target_marking": 0,
-          "set": true,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target": "@player08_target_str"
-        },
-        "unitVulnerableFrom": {
-          "target_marking": 0,
-          "player_marking": 8,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "player_var_name": "",
-          "player_var_comp_op": "equal",
-          "player_var_value": 0,
-          "target": "@player08_target_str",
-          "player": "players_squad",
-          "player_type": "isMarked"
-        },
-        "triggerEnable": [
-          {
-            "target": "target_units_killing_progress_p08"
-          },
-          {
-            "target": "target_units_killed_p08"
-          }
-        ]
-      },
-      "else_actions": []
-    },
-    "target_units_killing_progress_p08": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": true
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "unitWhenStatus": {
-          "object_type": "isKilled",
-          "check_objects": "any",
-          "object_marking": 0,
-          "target_type": "isAlive",
-          "check_period": 1.0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "@player08_target_str"
-        },
-        "unitWhenCountMatches": {
-          "object_type": "isAlive",
-          "object_marking": 0,
-          "func": "more",
-          "value": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "@player08_target_squad_str"
-        }
-      },
-      "actions": [
-        {
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "player08_target_int"
-          }
-        },
-        {
-          "varSetString": {
-            "value": "",
-            "var": "player08_counter_hint_id_str",
-            "input_var": "player08_range_hint_str"
-          }
-        },
-        {
-          "varAddString": {
-            "value": "@player08_target_int",
-            "digits": 2,
-            "var": "player08_counter_hint_id_str"
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "standard",
-            "name": "@player08_counter_hint_id_str",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 8,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false,
-            "target": "players_squad",
-            "target_type": "isMarked"
-          }
-        },
-        {
-          "missionKillEffects": {
-            "area": "kill_effects_area",
-            "effect": true,
-            "wreckage": true
-          }
-        },
-        {
-          "wait": {
-            "time": 4.0
-          }
-        },
-        {
-          "unitGetRandomNameFromSquad": {
-            "string_var": "player08_target_str",
-            "check_objects": "any",
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "squad": "@player08_target_squad_str",
-            "object_type": "isAlive"
-          }
-        },
-        {
-          "unitWakeUp": {
-            "target": "@player08_target_str"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.1
-          }
-        },
-        {
-          "unitVulnerableFrom": {
-            "target_marking": 0,
-            "player_marking": 8,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "player_var_name": "",
-            "player_var_comp_op": "equal",
-            "player_var_value": 0,
-            "target": "@player08_target_str",
-            "player": "players_squad",
-            "player_type": "isMarked"
-          }
-        },
-        {
-          "unitPlayAnim": {
-            "animName": "work_anim",
-            "target": "@player08_target_str"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.4
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "standard",
-            "name": "",
-            "action": "hideCur",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 8,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false,
-            "target": "players_squad",
-            "target_type": "isMarked"
-          }
-        },
-        {
-          "unitSetStealth": {
-            "set": true,
-            "radius": 10000.0,
-            "target": "@player08_target_str"
-          }
-        },
-        {
-          "unitSetIndication": {
-            "target_marking": 0,
-            "set": true,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "@player08_target_str"
-          }
-        }
-      ],
-      "else_actions": []
-    },
-    "target_units_killed_p08": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ANY",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "unitWhenCountMatches": {
-          "object_type": "isAlive",
-          "object_marking": 0,
-          "func": "equal",
-          "value": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "1st_polygon_targets_group08"
-        }
-      },
-      "actions": {
-        "triggerDisable": [
-          {
-            "target": "target_units_wake_up08"
-          },
-          {
-            "target": "target_units_killing_progress_p08"
-          }
-        ],
-        "unitSetProperties": {
-          "object_marking": 8,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "players_squad",
-          "object_type": "isMarked",
-          "isImmortal": true,
-          "cannotShoot": true
-        },
-        "raceRangeEnable": {
-          "from": "waypoint47",
-          "to": "waypoint49",
-          "enable": true,
-          "object_marking": 8,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "all": false,
-          "object": "players_squad",
-          "object_type": "isMarked"
-        },
-        "playHint": {
-          "hintType": "standard",
-          "name": "hints/biathlon_all_targets_destroyed",
-          "action": "show",
-          "shouldFadeOut": false,
-          "isOverFade": false,
-          "time": -1.0,
-          "priority": 0,
-          "target_marking": 8,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "shouldBlink": false,
-          "target": "players_squad",
-          "target_type": "isMarked"
-        },
-        "varSetInt": {
-          "value": 0,
-          "var": "player08_target_int"
-        },
-        "triggerEnable": {
-          "target": "2nd_range_shooting_start_p08"
-        }
-      },
-      "else_actions": []
-    },
-    "2nd_range_shooting_start_p08": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "unitWhenInArea": {
-          "math": "2D",
-          "object_type": "isMarked",
-          "object_marking": 8,
-          "check_objects": "any",
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "players_squad",
-          "target": "dont_stop_area"
-        }
-      },
-      "actions": [
-        {
-          "unitGetRandomNameFromSquad": {
-            "string_var": "player08_target_str",
-            "check_objects": "any",
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "squad": "2nd_polygon_targets_group08",
-            "object_type": "isAlive"
-          }
-        },
-        {
-          "varSetString": {
-            "value": "2nd_polygon_targets_group08",
-            "var": "player08_target_squad_str"
-          }
-        },
-        {
-          "unitRestore": {
-            "ressurectIfDead": false,
-            "fullRestore": false,
-            "target_marking": 0,
-            "target": "players_squad",
-            "ammoRestore": true,
-            "useForTriggerFiltered": true
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 8,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "players_squad",
-            "object_type": "isMarked",
-            "isImmortal": true,
-            "cannotShoot": false
-          }
-        },
-        {
-          "varSetString": {
-            "value": "hints/biathlon_2nd_range_targets_counter",
-            "var": "player08_range_hint_str"
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "standard",
-            "name": "hints/biathlon_2nd_range_start",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 8,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false,
-            "target": "players_squad",
-            "target_type": "isMarked"
-          }
-        },
-        {
-          "wait": {
-            "time": 4.0
-          }
-        },
-        {
-          "unitWakeUp": {
-            "target": "@player08_target_str"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.1
-          }
-        },
-        {
-          "unitPlayAnim": {
-            "animName": "work_anim",
-            "target": "@player08_target_str"
-          }
-        },
-        {
-          "unitVulnerableFrom": {
-            "target_marking": 0,
-            "player_marking": 8,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "player_var_name": "",
-            "player_var_comp_op": "equal",
-            "player_var_value": 0,
-            "target": "@player08_target_str",
-            "player": "players_squad",
-            "player_type": "isMarked"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.4
-          }
-        },
-        {
-          "unitSetStealth": {
-            "set": true,
-            "radius": 12000.0,
-            "target": "@player08_target_str"
-          }
-        },
-        {
-          "unitSetIndication": {
-            "target_marking": 0,
-            "set": true,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "@player08_target_str"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "target_units_killing_progress_p08"
-            },
-            {
-              "target": "2nd_range_end_area_p08"
-            },
-            {
-              "target": "2nd_range_targets_killed_p08"
-            }
-          ]
-        }
-      ],
-      "else_actions": []
-    },
-    "2nd_range_end_area_p08": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "unitWhenInArea": {
-          "math": "2D",
-          "object_type": "isMarked",
-          "object_marking": 8,
-          "check_objects": "any",
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "players_squad",
-          "target": "waypoint49"
-        }
-      },
-      "actions": {
-        "raceRangeEnable": {
-          "from": "waypoint50.8",
-          "to": "waypoint50.8",
-          "enable": true,
-          "object_marking": 8,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "all": false,
-          "object": "players_squad",
-          "object_type": "isMarked"
-        }
-      },
-      "else_actions": []
-    },
-    "2nd_range_targets_killed_p08": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ANY",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "unitWhenCountMatches": {
-          "object_type": "isAlive",
-          "object_marking": 0,
-          "func": "equal",
-          "value": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "2nd_polygon_targets_group08"
-        }
-      },
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "target_units_wake_up08"
-            },
-            {
-              "target": "target_units_killing_progress_p08"
-            },
-            {
-              "target": "target_units_killed_p08"
-            },
-            {
-              "target": "2nd_range_shooting_start_p08"
-            },
-            {
-              "target": "2nd_range_end_area_p08"
-            }
-          ]
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 8,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "players_squad",
-            "object_type": "isMarked",
-            "isImmortal": true,
-            "cannotShoot": true
-          }
-        },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "player08_target_int"
-          }
-        },
-        {
-          "raceRangeEnable": {
-            "from": "waypoint50.8",
-            "to": "waypoint50.8",
-            "enable": false,
-            "object_marking": 8,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "all": false,
-            "object": "players_squad",
-            "object_type": "isMarked"
-          }
-        },
-        {
-          "raceRangeEnable": {
-            "from": "waypoint51",
-            "to": "waypoint59",
-            "enable": true,
-            "object_marking": 8,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "all": false,
-            "object": "players_squad",
-            "object_type": "isMarked"
-          }
-        },
-        {
-          "raceRangeEnable": {
-            "from": "waypoint01",
-            "to": "waypoint44",
-            "enable": true,
-            "object_marking": 8,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "all": false,
-            "object": "players_squad",
-            "object_type": "isMarked"
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "standard",
-            "name": "hints/biathlon_all_targets_destroyed",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 8,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false,
-            "target": "players_squad",
-            "target_type": "isMarked"
-          }
-        },
-        {
-          "wait": {
-            "time": 7.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "standard",
-            "name": "",
-            "action": "hideCur",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 8,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false,
-            "target": "players_squad",
-            "target_type": "isMarked"
+            "target": "structures_01"
           }
         }
       ],
@@ -9154,15 +6989,6 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0
-        },
-        "raceTimeModify": {
-          "function": "add",
-          "value": 10,
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "players_squad"
         }
       },
       "else_actions": []
@@ -28513,7 +26339,7 @@
           [-0.943994,0.0,0.329963],
           [0.0,1.0,0.0],
           [-0.329963,0.0,-0.943994],
-          [1649.61,220.243,781.145]
+          [1651.36,220.243,781.248]
         ],
         "unit_class": "unit_pillar_explosive_a",
         "objLayer": 1,
@@ -28587,44 +26413,7 @@
           [-0.943994,0.0,0.329963],
           [0.0,1.0,0.0],
           [-0.329963,0.0,-0.943994],
-          [1652.24,220.592,777.912]
-        ],
-        "unit_class": "unit_pillar_explosive_a",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "pillar_border307",
-        "tm": [
-          [-0.943994,0.0,0.329963],
-          [0.0,1.0,0.0],
-          [-0.329963,0.0,-0.943994],
-          [1654.86,220.592,781.605]
+          [1650.33,220.592,777.638]
         ],
         "unit_class": "unit_pillar_explosive_a",
         "objLayer": 1,
@@ -28693,80 +26482,6 @@
     },
     {
       "structures": {
-        "name": "pillar_border309",
-        "tm": [
-          [-0.943994,0.0,0.329963],
-          [0.0,1.0,0.0],
-          [-0.329963,0.0,-0.943994],
-          [1655.82,220.703,776.89]
-        ],
-        "unit_class": "unit_pillar_explosive_a",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "pillar_border310",
-        "tm": [
-          [-0.943994,0.0,0.329963],
-          [0.0,1.0,0.0],
-          [-0.329963,0.0,-0.943994],
-          [1658.36,220.703,780.695]
-        ],
-        "unit_class": "unit_pillar_explosive_a",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
         "name": "pillar_border311",
         "tm": [
           [-0.943994,0.0,0.329963],
@@ -28804,49 +26519,12 @@
     },
     {
       "structures": {
-        "name": "pillar_border312",
-        "tm": [
-          [-0.943994,0.0,0.329963],
-          [0.0,1.0,0.0],
-          [-0.329963,0.0,-0.943994],
-          [1659.2,220.932,774.687]
-        ],
-        "unit_class": "unit_pillar_explosive_a",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
         "name": "pillar_border313",
         "tm": [
           [-0.943994,0.0,0.329963],
           [0.0,1.0,0.0],
           [-0.329963,0.0,-0.943994],
-          [1660.84,220.932,778.284]
+          [1656.54,220.932,781.692]
         ],
         "unit_class": "unit_pillar_explosive_a",
         "objLayer": 1,
@@ -28994,7 +26672,7 @@
           [-0.943994,0.0,0.329963],
           [0.0,1.0,0.0],
           [-0.329963,0.0,-0.943994],
-          [1663.78,221.011,776.49]
+          [1663.6,221.011,776.3]
         ],
         "unit_class": "unit_pillar_explosive_a",
         "objLayer": 1,
@@ -29692,43 +27370,6 @@
     },
     {
       "structures": {
-        "name": "pillar_border334",
-        "tm": [
-          [-0.943994,0.0,0.329963],
-          [0.0,1.0,0.0],
-          [-0.329963,0.0,-0.943994],
-          [1701.22,215.598,767.077]
-        ],
-        "unit_class": "unit_pillar_explosive_a",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
         "name": "pillar_border335",
         "tm": [
           [-0.943994,0.0,0.329963],
@@ -29772,43 +27413,6 @@
           [0.0,1.0,0.0],
           [-0.329963,0.0,-0.943994],
           [1705.82,215.268,762.962]
-        ],
-        "unit_class": "unit_pillar_explosive_a",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "pillar_border337",
-        "tm": [
-          [-0.943994,0.0,0.329963],
-          [0.0,1.0,0.0],
-          [-0.329963,0.0,-0.943994],
-          [1706.14,215.268,768.562]
         ],
         "unit_class": "unit_pillar_explosive_a",
         "objLayer": 1,
@@ -30526,22 +28130,10 @@
             "squad_members": "pillar_border306"
           },
           {
-            "squad_members": "pillar_border307"
-          },
-          {
             "squad_members": "pillar_border308"
           },
           {
-            "squad_members": "pillar_border309"
-          },
-          {
-            "squad_members": "pillar_border310"
-          },
-          {
             "squad_members": "pillar_border311"
-          },
-          {
-            "squad_members": "pillar_border312"
           },
           {
             "squad_members": "pillar_border313"
@@ -30613,16 +28205,10 @@
             "squad_members": "pillar_border333"
           },
           {
-            "squad_members": "pillar_border334"
-          },
-          {
             "squad_members": "pillar_border335"
           },
           {
             "squad_members": "pillar_border336"
-          },
-          {
-            "squad_members": "pillar_border337"
           },
           {
             "squad_members": "pillar_border338"
@@ -31294,7 +28880,7 @@
     "waypoint.p3_10": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [3.98059,0.0,5.01337],
         [1700.14,217.25,1174.65]
@@ -31307,7 +28893,7 @@
     "waypoint.p3_11": {
       "type": "Box",
       "tm": [
-        [4.00328,0.0,-3.17858],
+        [5.48176,0.0,-4.35249],
         [0.0,5.2,0.0],
         [3.98059,0.0,5.01337],
         [1698.81,217.25,1157.96]
@@ -31320,7 +28906,7 @@
     "waypoint.p3_12": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [3.98059,0.0,5.01337],
         [1681.83,217.241,1152.95]
@@ -31333,7 +28919,7 @@
     "waypoint.p3_13": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [3.98059,0.0,5.01337],
         [1680.4,217.25,1135.37]
@@ -31346,7 +28932,7 @@
     "waypoint.p3_14": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [3.98059,0.0,5.01337],
         [1664.16,217.25,1130.37]
@@ -31359,7 +28945,7 @@
     "waypoint.p3_15": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [3.98059,0.0,5.01337],
         [1662.4,217.25,1112.71]
@@ -31372,7 +28958,7 @@
     "waypoint.p3_16": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [3.98059,0.0,5.01337],
         [1646.13,217.25,1107.91]
@@ -31385,7 +28971,7 @@
     "waypoint.p3_17": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [3.98059,0.0,5.01337],
         [1646.0,217.25,1090.94]
@@ -31398,7 +28984,7 @@
     "waypoint.p3_18": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [3.98059,0.0,5.01337],
         [1629.75,217.25,1086.92]
@@ -31411,7 +28997,7 @@
     "waypoint.p3_19": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [3.98059,0.0,5.01337],
         [1628.68,217.25,1068.66]
@@ -31984,7 +29570,7 @@
     "waypoint.p4_19": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [4.10634,0.0,5.17175],
         [1613.51,217.25,1080.88]
@@ -31997,10 +29583,10 @@
     "waypoint.p4_18": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [4.10634,0.0,5.17175],
-        [1614.59,217.25,1099.13]
+        [1615.16,217.25,1098.8]
       ],
       "objLayer": 0,
       "props": {
@@ -32010,7 +29596,7 @@
     "waypoint.p4_17": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [4.10634,0.0,5.17175],
         [1630.84,217.25,1103.15]
@@ -32023,7 +29609,7 @@
     "waypoint.p4_16": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [4.10634,0.0,5.17175],
         [1631.29,217.25,1120.03]
@@ -32036,7 +29622,7 @@
     "waypoint.p4_15": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [4.10634,0.0,5.17175],
         [1647.98,217.25,1124.98]
@@ -32049,10 +29635,10 @@
     "waypoint.p4_14": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [4.10634,0.0,5.17175],
-        [1649.33,217.25,1142.96]
+        [1650.07,217.25,1142.53]
       ],
       "objLayer": 0,
       "props": {
@@ -32062,7 +29648,7 @@
     "waypoint.p4_13": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [4.10634,0.0,5.17175],
         [1665.23,217.25,1147.58]
@@ -32075,7 +29661,7 @@
     "waypoint.p4_12": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [4.10634,0.0,5.17175],
         [1666.66,217.241,1165.16]
@@ -32088,7 +29674,7 @@
     "waypoint.p4_11": {
       "type": "Box",
       "tm": [
-        [4.00328,0.0,-3.17858],
+        [5.48176,0.0,-4.35249],
         [0.0,5.2,0.0],
         [4.10634,0.0,5.17175],
         [1683.65,217.25,1170.17]
@@ -32101,7 +29687,7 @@
     "waypoint.p4_10": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [4.10634,0.0,5.17175],
         [1684.98,217.25,1186.86]
@@ -32127,7 +29713,7 @@
     "waypoint.p2_19": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [3.99716,0.0,5.03424],
         [1643.0,217.25,1056.74]
@@ -32140,10 +29726,10 @@
     "waypoint.p2_18": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [3.99716,0.0,5.03424],
-        [1644.35,217.25,1074.58]
+        [1644.64,217.25,1074.41]
       ],
       "objLayer": 0,
       "props": {
@@ -32153,7 +29739,7 @@
     "waypoint.p2_17": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [3.99716,0.0,5.03424],
         [1660.38,217.25,1078.78]
@@ -32166,10 +29752,10 @@
     "waypoint.p2_16": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [3.99716,0.0,5.03424],
-        [1660.87,217.25,1095.8]
+        [1661.41,217.25,1095.49]
       ],
       "objLayer": 0,
       "props": {
@@ -32179,7 +29765,7 @@
     "waypoint.p2_15": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [3.99716,0.0,5.03424],
         [1676.57,217.25,1100.71]
@@ -32192,7 +29778,7 @@
     "waypoint.p2_14": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [3.99716,0.0,5.03424],
         [1678.52,217.25,1118.19]
@@ -32205,7 +29791,7 @@
     "waypoint.p2_13": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [3.99716,0.0,5.03424],
         [1694.43,217.25,1122.81]
@@ -32218,10 +29804,10 @@
     "waypoint.p2_12": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [3.99716,0.0,5.03424],
-        [1695.86,217.241,1140.39]
+        [1696.49,217.241,1139.65]
       ],
       "objLayer": 0,
       "props": {
@@ -32231,7 +29817,7 @@
     "waypoint.p2_11": {
       "type": "Box",
       "tm": [
-        [4.00328,0.0,-3.17858],
+        [5.48176,0.0,-4.35249],
         [0.0,5.2,0.0],
         [3.99716,0.0,5.03424],
         [1712.84,217.25,1145.4]
@@ -32244,7 +29830,7 @@
     "waypoint.p2_10": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [3.99716,0.0,5.03424],
         [1714.18,217.25,1162.09]
@@ -32270,7 +29856,7 @@
     "waypoint.p1_19": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [4.7351,0.0,5.96364],
         [1658.43,217.25,1043.86]
@@ -32283,7 +29869,7 @@
     "waypoint.p1_18": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [4.7351,0.0,5.96364],
         [1660.04,217.25,1061.45]
@@ -32296,7 +29882,7 @@
     "waypoint.p1_17": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [4.7351,0.0,5.96364],
         [1675.56,217.25,1065.63]
@@ -32309,7 +29895,7 @@
     "waypoint.p1_16": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [4.7351,0.0,5.96364],
         [1676.3,217.25,1082.92]
@@ -32322,7 +29908,7 @@
     "waypoint.p1_15": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [4.7351,0.0,5.96364],
         [1692.39,217.25,1087.45]
@@ -32335,7 +29921,7 @@
     "waypoint.p1_14": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [4.7351,0.0,5.96364],
         [1693.95,217.25,1105.31]
@@ -32348,7 +29934,7 @@
     "waypoint.p1_13": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [4.7351,0.0,5.96364],
         [1709.86,217.25,1109.93]
@@ -32361,7 +29947,7 @@
     "waypoint.p1_12": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [4.7351,0.0,5.96364],
         [1711.87,217.241,1127.28]
@@ -32374,7 +29960,7 @@
     "waypoint.p1_11": {
       "type": "Box",
       "tm": [
-        [4.00328,0.0,-3.17858],
+        [5.48176,0.0,-4.35249],
         [0.0,5.2,0.0],
         [4.7351,0.0,5.96364],
         [1728.27,217.25,1132.52]
@@ -32387,7 +29973,7 @@
     "waypoint.p1_10": {
       "type": "Box",
       "tm": [
-        [4.07242,0.0,-3.23348],
+        [5.57644,0.0,-4.42766],
         [0.0,5.2,0.0],
         [4.7351,0.0,5.96364],
         [1729.6,217.25,1149.21]
@@ -32885,7 +30471,7 @@
   "wayPoints": [],
   "__viewPoints": {
     "viewpt_01": {
-      "pos": [1786.61,-377.315,1585.91],
+      "pos": [1786.61,-366.99,1585.91],
       "ht": 2.0647
     }
   }
