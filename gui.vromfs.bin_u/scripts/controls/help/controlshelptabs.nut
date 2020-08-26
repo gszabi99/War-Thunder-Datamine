@@ -78,7 +78,7 @@ local function getPrefferableType(contentSet)
     return helpTypes.MISSION_OBJECTIVES
 
   local unit = ::get_player_cur_unit()
-  local unitTag = ::is_submarine(unit) ? "submarine" : null
+  local unitTag = unit?.isSubmarine() ? "submarine" : null
 
   foreach (pattern in [
     CONTROL_HELP_PATTERN.HOTAS4,

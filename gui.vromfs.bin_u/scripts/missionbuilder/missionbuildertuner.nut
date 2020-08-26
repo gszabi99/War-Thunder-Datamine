@@ -1,4 +1,9 @@
-local { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
+local { getLastWeapon, isWeaponVisible } = require("scripts/weaponry/weaponryInfo.nut")
+local { getWeaponInfoText,
+        getWeaponNameText } = require("scripts/weaponry/weaponryVisual.nut")
+local { AMMO,
+        getAmmoCost,
+        getAmmoAmountData } = require("scripts/weaponry/ammoInfo.nut")
 
 ::gui_start_builder_tuner <- function gui_start_builder_tuner()
 {
@@ -67,11 +72,11 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
 
   function buildWeaponOptions(aircraft, curW, weapTags)
   {
-    local weapons = get_weapons_list(aircraft, false, weapTags, false, false) //check_aircraft_purchased=false
+    local weapons = getWeaponsList(aircraft, false, weapTags, false, false) //check_aircraft_purchased=false
     if (weapons.values.len() == 0)
     {
       dagor.debug("bomber without bombs: "+aircraft)
-      weapons = get_weapons_list(aircraft, false, null, false, false) //check_aircraft_purchased=false
+      weapons = getWeaponsList(aircraft, false, null, false, false) //check_aircraft_purchased=false
     }
 
     local ret = ""
@@ -217,7 +222,7 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
           }
         if (!tagsOk)
           continue
-        if (get_weapons_list(unit.name, false, weapTags, false, false).values.len() < 1) //check_aircraft_purchased=false
+        if (getWeaponsList(unit.name, false, weapTags, false, false).values.len() < 1) //check_aircraft_purchased=false
           continue
         if (isPlayer)
         {
@@ -354,11 +359,11 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
 
         local optlist = ""
 
-        local weapons = get_weapons_list(aircraft, false, wtags[i], false, false) //check_aircraft_purchased=false
+        local weapons = getWeaponsList(aircraft, false, wtags[i], false, false) //check_aircraft_purchased=false
         if (weapons.values.len() == 0)
         {
           dagor.debug("bomber without bombs: "+aircraft)
-          weapons = get_weapons_list(aircraft, false, null, false, false) //check_aircraft_purchased=false
+          weapons = getWeaponsList(aircraft, false, null, false, false) //check_aircraft_purchased=false
         }
 
         for (local j = 0; j < weapons.values.len(); j++)
@@ -485,5 +490,49 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
   function onBack(obj)
   {
     goBack()
+  }
+
+  function getWeaponsList(aircraft, need_cost, weapTags, only_bought=false, check_aircraft_purchased=true)
+  {
+    local descr = {}
+    descr.items <- []
+    descr.values <- []
+    descr.cost <- []
+    descr.costGold <- []
+    descr.hints <- []
+
+    local unit = ::getAircraftByName(aircraft)
+    if (!unit)
+      return descr
+
+    local optionSeparator = ", "
+    local hintSeparator = "\n"
+
+    foreach(weapNo, weapon in unit.weapons)
+    {
+      local weaponName = weapon.name
+      if (!isWeaponVisible(unit, weapon, only_bought, weapTags))
+        continue
+
+      local cost = getAmmoCost(unit, weaponName, AMMO.WEAPON)
+      descr.cost.append(cost.wp)
+      descr.costGold.append(cost.gold)
+      descr.values.append(weaponName)
+
+      local costText = (need_cost && cost > ::zero_money)? "(" + cost.getUncoloredWpText() + ") " : ""
+      local amountText = check_aircraft_purchased && ::is_game_mode_with_spendable_weapons() ?
+        getAmmoAmountData(unit, weaponName, AMMO.WEAPON).text : "";
+
+      local tooltip = costText + getWeaponInfoText(unit, { isPrimary = false, weaponPreset = weapNo, newLine = hintSeparator })
+        + amountText
+
+      descr.items.append({
+        text = costText + getWeaponNameText(unit, false, weapNo, optionSeparator) + amountText
+        tooltip = tooltip
+      })
+      descr.hints.append(tooltip)
+    }
+
+    return descr
   }
 }

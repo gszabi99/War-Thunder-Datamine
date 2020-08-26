@@ -1272,7 +1272,7 @@
       },
       "optics": {
         "armorClass": "optics_tank",
-        "optic_turret_dm": {
+        "optic_gun_dm": {
           "armorThickness": 10.0,
           "hp": 50.0
         },
@@ -2756,14 +2756,40 @@
           "errTargettingOn100kmph": 0.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
-          "turret": {
-            "head": "bone_turret",
-            "gun": "bone_gun",
-            "barrel": "bone_gun_barrel_01",
-            "gunnerDm": "gunner_dm",
-            "verDriveDm": "drive_turret_v_dm",
-            "horDriveDm": "drive_turret_h_dm"
-          },
+          "turret": [
+            {
+              "head": "bone_turret"
+            },
+            {
+              "gun": "bone_gun"
+            },
+            {
+              "barrel": "bone_gun_barrel_01"
+            },
+            {
+              "gunnerDm": "gunner_dm"
+            },
+            {
+              "verDriveDm": "drive_turret_v_dm"
+            },
+            {
+              "horDriveDm": "drive_turret_h_dm"
+            },
+            {
+              "linkedAnimPart": {
+                "verNode": "bone_mount_camera",
+                "verLimits": [-180.0,180.0],
+                "verOriginLimits": [-180.0,180.0]
+              }
+            },
+            {
+              "linkedAnimPart": {
+                "verNode": "bone_mount_camera_01",
+                "verLimits": [-180.0,180.0],
+                "verOriginLimits": [-180.0,180.0]
+              }
+            }
+          ],
           "limits": {
             "yaw": [-180.0,180.0],
             "pitch": [-10.0,90.0]

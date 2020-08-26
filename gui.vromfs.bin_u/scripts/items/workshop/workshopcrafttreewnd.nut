@@ -486,6 +486,21 @@ local function getButtonView(bodyConfig, itemSizes) {
   return buttonView
 }
 
+local function getBodyBackground(bodiesConfig, itemSizes, fullBodiesHeight) {
+  local backgroundView = []
+  foreach (body in bodiesConfig)
+    if (body.bodyTiledBackImage != "") {
+      local posY = itemSizes.itemsOffsetByBodies[body.bodyIdx]
+      backgroundView.append({
+        bodyBackground = body.bodyTiledBackImage
+        bodyBackgroundPos = posFormatString.subst(0, posY)
+        bodyBackgroundSize = posFormatString.subst("pw",
+          (itemSizes.bodiesOffset?[body.bodyIdx + 1] ?? fullBodiesHeight) - posY)
+      })
+    }
+  return backgroundView
+}
+
 local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType          = handlerType.MODAL
@@ -566,6 +581,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     local headerBlockInterval = ::to_pixels("1@headerAndCraftTreeBlockInterval")
     local isItemIdKnown = (@(itemsList, itemId) workshopSet.isItemIdKnown(itemId)).bindenv(workshopSet)
     local buttonHeight = ::to_pixels("1@buttonHeight") + 2*::to_pixels("1@buttonMargin")
+    local titleMargin = ::to_pixels("1@dp")
     local items = itemsList
     foreach (idx, rows in craftTree.treeRowsByBodies) {
       local visibleItemsCountY = 0
@@ -591,8 +607,10 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
             + visibleItemsCountYByBodies[idx-1] * itemBlockHeight + headerBlockInterval
             + (bodiesConfig[idx-1].button != null ? buttonHeight : 0)
           )
+      local curBodyTitlesCount = bodiesConfig[idx].bodyTitlesCount
       itemsOffsetByBodies.append(curBodiesOffset
-        + (isShowHeaderPlace ? 0 : (bodiesConfig[idx].bodyTitlesCount * titleHeight)))
+        + (isShowHeaderPlace ? 0 : (curBodyTitlesCount * titleHeight
+          + (curBodyTitlesCount -1) * titleMargin)))
       bodiesOffset.append(curBodiesOffset)
       visibleItemsCountYByBodies.append(visibleItemsCountY)
     }
@@ -600,6 +618,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     return sizes.__update({
       itemHeight = itemHeight
       itemHeightFull = ::to_pixels("1@itemHeight")
+      titleMargin = titleMargin
       itemInterval = itemInterval
       itemBlockInterval = itemBlockInterval
       resourceWidth = resourceWidth
@@ -693,7 +712,9 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
           bodyTitleText = ::loc(branch.locId)
           titlePos = posFormatString.subst(posX * itemSizes.itemBlockWidth
               + itemSizes.columnOffests[posX],
-            $"1@dp + {itemSizes.bodiesOffset[branch.bodyIdx] + (bodyConfig.title != "" ? itemSizes.titleHeight : 0)}")
+            (bodiesConfig[branch.bodyIdx].bodyTitlesCount > 1 ? itemSizes.titleMargin : 0)
+              + itemSizes.bodiesOffset[branch.bodyIdx]
+              + (bodyConfig.title != "" ? itemSizes.titleHeight : 0))
           titleSize = posFormatString.subst(getBranchWidth(branch, false),
             itemSizes.titleHeight)
           hasSeparator = posX != 0
@@ -727,6 +748,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     }
     return {
       bodyTitles = bodyTitles
+      bodyBackground = getBodyBackground(bodiesConfig, itemSizes, fullBodyHeightWithoutResult)
       bodyHeight = fullBodyHeightWithoutResult
         + (hasCraftResult
           ? (itemSizes.headerBlockInterval + itemSizes.itemHeightFull + itemSizes.itemBlockInterval)

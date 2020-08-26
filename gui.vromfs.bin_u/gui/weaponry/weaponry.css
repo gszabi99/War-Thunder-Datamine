@@ -9,8 +9,7 @@ weaponry_item > weaponBody > weaponInfoBg:hover,
 weaponry_item[equipped=yes] > weaponBody > weaponInfoBg {
   background-color:@weaponryItemFocus;
 }
-[show_console_buttons=yes] weaponry_item[selected=yes] > weaponBody > weaponInfoBg,
-[show_console_buttons=yes] .weaponryTable > tr > td[selected=yes] > weaponry_item > weaponBody > weaponInfoBg {
+[show_console_buttons=yes] weaponry_item[selected=yes] > weaponBody > weaponInfoBg {
   background-color:@weaponryItemSelected;
 }
 
@@ -84,7 +83,6 @@ weaponry_item[isBundle=yes] > weaponBody RadioButton {
 
 modIcon:hover,
 weaponry_item > weaponBody:hover > modIcon,
-[show_console_buttons=yes] .weaponryTable > tr > td[selected=yes] > weaponry_item > weaponBody > modIcon,
 .researchesTable > tr > td > .unitItem > weaponry_item:hover > weaponBody > modIcon
 {
   hoverStyle:yes;
@@ -122,7 +120,6 @@ modIcon > wallpaper{
 }
 
 [show_console_buttons=yes] weaponry_item[selected=yes] > weaponBody modIcon > wallpaper,
-[show_console_buttons=yes] .weaponryTable > tr > td[selected=yes] > weaponry_item > weaponBody modIcon > wallpaper,
 [show_console_buttons=yes] weaponry_item[selected=yes] > weaponBody:hover modIcon > wallpaper,
 modIcon[hoverStyle=yes] > wallpaper{
   foreground-image: #ui/gameuiskin#item_glow;
@@ -172,8 +169,7 @@ modIcon[equipped=yes]                      > wallpaper{ background-image:#ui/gam
 modIcon[equipped=yes][hoverStyle=yes]      > wallpaper{ background-image:#ui/gameuiskin#item_mounted; background-color:@shopItemEquippedFocus; }
 modIcon[status=research]                     itemWinkBlock{ display:show; transp-time:3000;}
 modIcon[status=waiting]                    > wallpaper{ background-color:@shopItemWaiting; }
-modIcon[status=waiting][hoverStyle=yes] > wallpaper,
-[show_console_buttons=yes] .weaponryTable > tr > td[selected=yes] wallpaper { background-color:@shopItemWaitingFocus; }
+modIcon[status=waiting][hoverStyle=yes]    > wallpaper{ background-color:@shopItemWaitingFocus; }
 
 weaponBody:hover > modIcon[status=research] itemWinkBlock,
 modIcon[status=research]:hover itemWinkBlock {display:hide;}
@@ -183,14 +179,12 @@ weaponry_item[status=disabled] > weaponBody text {
   color-factor:150;
 }
 
-.weaponryTable > tr,
 .researchesTable > tr,
 .researchesTable > tr > td > img[selectRowImage=yes] {
   background-color:@transparent;
 }
 
-[show_console_buttons=yes] weaponry_item[selected=yes] > selImg,
-[show_console_buttons=yes] .weaponryTable > tr > td[selected=yes] > weaponry_item > selImg {
+[show_console_buttons=yes] weaponry_item[selected=yes] > selImg {
   size:pw+10*@sf/@pf_outdated, ph+8*@sf/@pf_outdated;
   pos:50%pw-50%w, 50%ph-50%h;
   position:absolute;
@@ -227,7 +221,6 @@ weaponry_item[status=disabled] > weaponBody text {
   background-color:@white;
 }
 
-.weaponryTable > tr > td,
 .researchesTable .unitItem > td {
   input-transparent:yes;
   size:@slot_width, @slot_height + 2@slot_vert_pad;
@@ -235,15 +228,10 @@ weaponry_item[status=disabled] > weaponBody text {
   css-hier-invalidate:yes;
 }
 
-.weaponryTable > tr > td{
-  padding:@slot_interval, @slot_vert_pad + 0.25@discountBoxDownHeight;
-  size:@slot_width, @slot_height + 2@slot_vert_pad + 0.5@discountBoxDownHeight;
-}
 .researchesTable > tr > td{
   padding:0,0.5@discountBoxDownHeight;
 }
 
-.weaponryTable > tr > td > weaponry_item,
 .unitItem > weaponry_item {
   pos:50%pw-50%w, 50%ph-50%h;
   position:relative;

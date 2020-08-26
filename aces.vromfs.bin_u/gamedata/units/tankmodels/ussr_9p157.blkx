@@ -99,6 +99,12 @@
     "destroysTrees": true
   },
   {
+    "waterBreakerAnimVar": "9p157_break_water_action"
+  },
+  {
+    "waterBreakerToggleTime": 4.0
+  },
+  {
     "type": "typeTankDestroyer"
   },
   {
@@ -1416,6 +1422,7 @@
           "maxSpeedForFire": 5.0,
           "lagStopForFireTime": 2.0,
           "changeBulletTypeForSet": true,
+          "recoilMultiplier": 0.01,
           "parkForReload": true,
           "circleAim": true,
           "createGunEffects": true,
@@ -1472,11 +1479,11 @@
           "bullets": 1,
           "turret": {
             "head": "bone_turret_02",
-            "gun": "antenna_target_tagging"
+            "gun": "bone_gun_02"
           },
           "limits": {
             "yaw": [-90.0,90.0],
-            "pitch": [-10.0,20.0]
+            "pitch": [0.0,0.0]
           }
         }
       }
@@ -2300,6 +2307,28 @@
       "replace_tex": {
         "from": "ussr_camo_green*",
         "to": "ussr_camo_deform*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "ussr_modern_green",
+      "nameLocId": "skin/ussr_modern_green",
+      "descLocId": "skin/ussr_modern_green/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_modern_green*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "ussr_camo_modern_desert_deform",
+      "nameLocId": "skin/ussr_camo_modern_desert_deform",
+      "descLocId": "skin/ussr_camo_modern_desert_deform/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_camo_modern_desert_deform*"
       }
     }
   },

@@ -64,6 +64,14 @@ root {
     navBar {
       navRight {
         Button_text{
+          id:t='favoriteBtn'
+          text:t=''
+          on_click:t='onChangeFavorite'
+          display:t='hide'
+          btnName:t='LT'
+          ButtonImg {}
+        }
+        Button_text{
           id:t='altActionBtn'
           text:t=''
           display:t='hide'

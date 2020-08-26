@@ -2237,4 +2237,6 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     onSpendExcessExp = ::Callback(onSpendExcessExp, this)
     onCloseShop = ::Callback(onCloseShop, this)
   }
+
+  checkAirShopReq = @(air) air?.shopReq ?? true
 }

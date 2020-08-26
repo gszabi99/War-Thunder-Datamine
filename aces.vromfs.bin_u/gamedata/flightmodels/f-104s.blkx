@@ -2,7 +2,6 @@
   "model": "f_104s",
   "fmFile": "fm/f_104s.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
-  "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gearSinkRangeLR": 0.178,
   "gearSinkRangeC": 0.164,
   "JetNozzlesAnim1": [0.3,0.5],
@@ -2004,6 +2003,29 @@
       }
     },
     {
+      "preset": {
+        "name": "f-104s_aim_7e",
+        "blk": "gameData/FlightModels/weaponPresets/f-104s_aim_7e.blk",
+        "reqModification": "us_aim_7e"
+      }
+    },
+    {
+      "preset": [
+        {
+          "name": "f-104s_aim_9b_aim_7e"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f-104s_aim_9b_aim_7e.blk"
+        },
+        {
+          "reqModification": "us_aim_9b"
+        },
+        {
+          "reqModification": "us_aim_7e"
+        }
+      ]
+    },
+    {
       "preset": [
         {
           "name": "f-104s_bomb_mk81_aim9b"
@@ -2287,9 +2309,14 @@
       "tier": 2,
       "modClass": "weapon"
     },
-    "us_aim_9b": {
+    "us_aim_7e": {
       "reqModification": "f4c_zuni",
       "tier": 3,
+      "modClass": "weapon"
+    },
+    "us_aim_9b": {
+      "reqModification": "us_aim_7e",
+      "tier": 4,
       "modClass": "weapon"
     }
   },

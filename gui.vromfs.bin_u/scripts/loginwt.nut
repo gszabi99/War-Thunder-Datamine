@@ -5,8 +5,8 @@ local contentStateModule = require("scripts/clientState/contentState.nut")
 local checkUnlocksByAbTest = require("scripts/unlocks/checkUnlocksByAbTest.nut")
 local fxOptions = require("scripts/options/fxOptions.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
-
 local onMainMenuReturnActions = require("scripts/mainmenu/onMainMenuReturnActions.nut")
+local { checkBadWeapons } = require("scripts/weaponry/weaponryInfo.nut")
 
 ::my_user_id_str <- ""
 ::my_user_id_int64 <- -1
@@ -181,7 +181,7 @@ g_login.initConfigs <- function initConfigs(cb)
 
       ::shown_userlog_notifications.clear()
       ::collectOldNotifications()
-      ::check_bad_weapons()
+      checkBadWeapons()
       return null
     }
     function() {

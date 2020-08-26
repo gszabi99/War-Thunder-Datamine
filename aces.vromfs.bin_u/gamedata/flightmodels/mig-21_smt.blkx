@@ -2239,10 +2239,49 @@
     },
     {
       "preset": {
+        "name": "mig_21_smt_4x_r3r",
+        "blk": "gameData/FlightModels/weaponPresets/mig_21_smt_4x_r3r.blk",
+        "reqModification": "mig_21_r3r"
+      }
+    },
+    {
+      "preset": [
+        {
+          "name": "mig_21_smt_2x_r3r_2x_r3s"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/mig_21_smt_2x_r3r_2x_r3s"
+        },
+        {
+          "reqModification": "mig_19_r3s"
+        },
+        {
+          "reqModification": "mig_21_r3r"
+        }
+      ]
+    },
+    {
+      "preset": {
         "name": "mig_21_smt_4x_r60",
         "blk": "gameData/FlightModels/weaponPresets/mig_21_smt_4x_r60.blk",
         "reqModification": "mi_24_r_60"
       }
+    },
+    {
+      "preset": [
+        {
+          "name": "mig_21_smt_2x_r60_2x_r3r"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/mig_21_smt_2x_r60_2x_r3r.blk"
+        },
+        {
+          "reqModification": "mig_21_r3r"
+        },
+        {
+          "reqModification": "mi_24_r_60"
+        }
+      ]
     },
     {
       "preset": [
@@ -2254,6 +2293,22 @@
         },
         {
           "reqModification": "mig_19_r3s"
+        },
+        {
+          "reqModification": "mig_21_ub32"
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "mig_21_smt_2xr3r_2x_ub32"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/mig_21_smt_2xr3r_2x_ub32.blk"
+        },
+        {
+          "reqModification": "mig_21_r3r"
         },
         {
           "reqModification": "mig_21_ub32"
@@ -2286,6 +2341,22 @@
         },
         {
           "reqModification": "mig_19_r3s"
+        },
+        {
+          "reqModification": "il_28sh_s24"
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "mig_21_smt_2xr3r_2xs_24"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/mig_21_smt_2xr3r_2xs_24.blk"
+        },
+        {
+          "reqModification": "mig_21_r3r"
         },
         {
           "reqModification": "il_28sh_s24"
@@ -2332,6 +2403,22 @@
         },
         {
           "reqModification": "mig_19_r3s"
+        },
+        {
+          "reqModification": "mi_24_fab_250"
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "mig_21_smt_2xr3r_2x_ofab250"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/mig_21_smt_2xr3r_2x_ofab250.blk"
+        },
+        {
+          "reqModification": "mig_21_r3r"
         },
         {
           "reqModification": "mi_24_fab_250"
@@ -2655,8 +2742,13 @@
       "tier": 2,
       "modClass": "weapon"
     },
-    "mi_24_r_60": {
+    "mig_21_r3r": {
       "reqModification": "mig_19_r3s",
+      "tier": 3,
+      "modClass": "weapon"
+    },
+    "mi_24_r_60": {
+      "reqModification": "mig_21_r3r",
       "modClass": "weapon",
       "tier": 4
     }

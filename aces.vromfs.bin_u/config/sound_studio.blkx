@@ -461,7 +461,7 @@
     "eventTireScreech": "tire_screech",
     "eventVibrationOverload": "vibration_overload",
     "eventWreckScrape": "wreck_scrape",
-    "bulletPassByRadius": 80.0,
+    "bulletPassByRadius": 18.0,
     "eventBulletHitShipMgun": "hit_mgun",
     "eventBulletHitShipSmall": "hit_small",
     "eventBulletHitShipMid": "hit_mid",
@@ -7611,6 +7611,34 @@
           "delayTime": 0.7,
           "minSpeechInterval": 5.0
         },
+        "mineInView": {
+          "event": "voice_message_mine",
+          "playerRole": "sailor",
+          "player": 1,
+          "delayTime": 0.7,
+          "minSpeechInterval": 5.0
+        },
+        "mineInViewLeft": {
+          "event": "voice_message_mine_left",
+          "playerRole": "sailor",
+          "player": 1,
+          "delayTime": 0.7,
+          "minSpeechInterval": 5.0
+        },
+        "mineInViewRight": {
+          "event": "voice_message_mine_right",
+          "playerRole": "sailor",
+          "player": 1,
+          "delayTime": 0.7,
+          "minSpeechInterval": 5.0
+        },
+        "mineInViewRear": {
+          "event": "voice_message_mine_rear",
+          "playerRole": "sailor",
+          "player": 1,
+          "delayTime": 0.7,
+          "minSpeechInterval": 5.0
+        },
         "aircraftInView": {
           "event": "voice_message_air_alert",
           "playerRole": "sailor",
@@ -7674,6 +7702,12 @@
     "attack": 10.0,
     "release": 100.0,
     "gainmakeup": 0.0
+  },
+  "turret_fall_sfx": {
+    "pathStudio": "ground/effects",
+    "nameHitGround": "turret_fall",
+    "nameHitBuilding": "turret_fall",
+    "nameHitUnit": "turret_fall"
   },
   "cachedMusic": {
     "enabled": true

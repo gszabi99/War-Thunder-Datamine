@@ -14,3 +14,11 @@
 @const fontNormalBold:  small_accented_text<<set>>;
 @const fontMedium:      medium_text<<set>>;
 @const fontBigBold:     big_text<<set>>;
+
+/* font heights in pixels */
+@const fontHeightTiny:        <<fontHeight_very_tiny_text>>;
+@const fontHeightSmall:       <<fontHeight_tiny_text>>;
+@const fontHeightNormal:      <<fontHeight_small_text>>;
+@const fontHeightNormalBold:  <<fontHeight_small_accented_text>>;
+@const fontHeightMedium:      <<fontHeight_medium_text>>;
+@const fontHeightBigBold:     <<fontHeight_big_text>>;

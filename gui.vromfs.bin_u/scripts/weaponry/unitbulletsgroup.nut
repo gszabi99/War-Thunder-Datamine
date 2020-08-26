@@ -1,4 +1,5 @@
 local { getBulletsListHeader } = require("scripts/weaponry/weaponryVisual.nut")
+local { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
 local { getBulletsSetData,
         setUnitLastBullets,
         getOptionsBulletsList } = require("scripts/weaponry/bulletsInfo.nut")
@@ -117,7 +118,7 @@ class BulletGroup
     if (!isAmmoFree(unit, selectedName, AMMO.PRIMARY))
     {
       local boughtCount = (getAmmoAmount(unit, selectedName, AMMO.PRIMARY) / guns).tointeger()
-      maxBulletsCount = ::min(boughtCount, gunInfo.total)
+      maxBulletsCount = isForcedAvailable? gunInfo.total : ::min(boughtCount, gunInfo.total)
 
       local bulletsSet = getBulletsSetData(unit, selectedName)
       local maxToRespawn = ::getTblValue("maxToRespawn", bulletsSet, 0)
@@ -160,9 +161,16 @@ class BulletGroup
     return getBulletsListHeader(unit, bullets)
   }
 
+  function getBulletNameForCode(bulName) {
+    //Code read '' empty string as default bullet,
+    //but for other purpose uses fake name with 'default' in the end
+    local mod = getModByBulletName(bulName)
+    return "isDefaultForGroup" in mod? "" : mod.name
+  }
+
   function getModByBulletName(bulName)
   {
-    local mod = ::getModificationByName(unit, bulName)
+    local mod = getModificationByName(unit, bulName)
     if (!mod) //default
       mod = { name = bulName, isDefaultForGroup = groupIndex, type = weaponsItem.modification }
     return mod

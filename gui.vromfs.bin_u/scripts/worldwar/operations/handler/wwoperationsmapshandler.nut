@@ -10,6 +10,7 @@ local { isMatchFilterMask } = require("scripts/worldWar/handler/wwBattlesFilterM
 local { getNearestMapToBattle, getMyClanOperation, getMapByName, isMyClanInQueue, isRecievedGlobalStatusMaps
 } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 local { refreshGlobalStatusData } = require("scripts/worldWar/operations/model/wwGlobalStatus.nut")
+local { addClanTagToNameInLeaderbord } = require("scripts/leaderboard/leaderboardView.nut")
 
 local WW_DAY_SEASON_OVER_NOTICE = "worldWar/seasonOverNotice/day"
 local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
@@ -1238,6 +1239,10 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
     updateDescription()
     updateButtons()
     restoreFocus()
+  }
+
+  function onEventUpdateClansInfoList(p) {
+    addClanTagToNameInLeaderbord(scene.findObject("top_global_managers"), p?.clansInfoList ?? {})
   }
 }
 

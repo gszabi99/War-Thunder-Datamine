@@ -111,7 +111,7 @@
     "destroysTrees": true
   },
   {
-    "waterBreakerAnimVar": "bmp_2_break_water_action"
+    "waterBreakerAnimVar": "bmp_3_break_water_action"
   },
   {
     "waterBreakerToggleTime": 4.0
@@ -253,6 +253,9 @@
         "turret_04_front_dm": {
           "armorThickness": 20.0
         },
+        "turret_05_back_dm": {
+          "armorThickness": 20.0
+        },
         "turret_front_dm": {
           "armorThickness": 70.0
         },
@@ -315,7 +318,7 @@
           "armorThickness": 10.0,
           "hp": 50.0
         },
-        "optic_gun_1_dm": {
+        "optic_gun_01_dm": {
           "armorThickness": 10.0,
           "hp": 50.0
         },
@@ -981,6 +984,21 @@
           },
           {
             "name": "ammo_body_50_dm"
+          },
+          {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
           },
           {
             "name": "ammo_body_l_01_dm"
@@ -1949,6 +1967,7 @@
           "blk": "gameData/Weapons/groundModels_weapons/100mm_2A70_user_cannon.blk",
           "emitter": "bone_gun_barrel_01",
           "flash": "emtr_gun_flame_01",
+          "useEmitter": true,
           "sleeveEmitter": "emtr_shell",
           "sleeveMesh": "semi_combustible_cartridge_case",
           "hatchAnimVar": "hatch_toggle",
@@ -2064,6 +2083,7 @@
           "blk": "gameData/Weapons/groundModels_weapons/30mm_2A72_user_cannon.blk",
           "emitter": "bone_gun_barrel_02",
           "flash": "emtr_gun_flame_02",
+          "useEmitter": true,
           "sleeveEmitter": "emtr_shell_01",
           "sleeveMesh": "auto_cannon_cartridge_case",
           "sleevesLifeTime": 5.0,
@@ -3132,6 +3152,28 @@
     }
   },
   {
+    "skin": {
+      "name": "ussr_modern_green",
+      "nameLocId": "skin/ussr_modern_green",
+      "descLocId": "skin/ussr_modern_green/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_modern_green*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "ussr_camo_modern_desert_deform",
+      "nameLocId": "skin/ussr_camo_modern_desert_deform",
+      "descLocId": "skin/ussr_camo_modern_desert_deform/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_camo_modern_desert_deform*"
+      }
+    }
+  },
+  {
     "modifications": {
       "new_tank_tracks": [],
       "new_tank_suspension": [],
@@ -3181,26 +3223,28 @@
         "turn_it_off": false,
         "effects": {
           "rcostAddParam": 0.92,
-          "irProjectorNode": "",
+          "irProjectorNode": "emtr_lantern_03",
           "nightVision": {
             "gunnerThermal": {
               "resolution": [800,600],
               "noiseFactor": 0.04
             },
-            "commanderThermal": {
-              "resolution": [800,600],
-              "noiseFactor": 0.04
+            "commanderIr": {
+              "resolution": [1600,1200],
+              "lightMult": 9.0,
+              "ghosting": 0.6,
+              "noiseFactor": 0.2
             },
             "driverIr": {
-              "resolution": [1200,800],
-              "lightMult": 7.0,
+              "resolution": [800,600],
+              "lightMult": 5.0,
               "ghosting": 0.6,
               "noiseFactor": 0.2
             }
           },
           "hideNodes": [
             {
-              "node": "gun_mask_02"
+              "node": "turret_05_back"
             },
             {
               "node": "ex_lantern_01"
@@ -3228,9 +3272,6 @@
             },
             {
               "node": "turret_part_bmp_3"
-            },
-            {
-              "node": "gun_mask_01"
             }
           ]
         },
@@ -3269,6 +3310,7 @@
                 "blk": "gameData/Weapons/groundModels_weapons/100mm_2A70_user_cannon.blk",
                 "emitter": "bone_gun_barrel_01",
                 "flash": "emtr_gun_flame_01",
+                "useEmitter": true,
                 "sleeveEmitter": "emtr_shell",
                 "sleeveMesh": "semi_combustible_cartridge_case",
                 "hatchAnimVar": "hatch_toggle",
@@ -3384,6 +3426,7 @@
                 "blk": "gameData/Weapons/groundModels_weapons/30mm_2A72_user_cannon.blk",
                 "emitter": "bone_gun_barrel_02",
                 "flash": "emtr_gun_flame_02",
+                "useEmitter": true,
                 "sleeveEmitter": "emtr_shell_01",
                 "sleeveMesh": "auto_cannon_cartridge_case",
                 "sleevesLifeTime": 5.0,

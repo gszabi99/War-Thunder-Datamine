@@ -178,6 +178,14 @@
         "ex_armor_02_dm": {
           "armorThickness": 25.4,
           "armorClass": "tank_structural_steel"
+        },
+        "composite_armor_turret_03_dm": {
+          "armorThickness": 1.0,
+          "armorEffectiveThicknessMax": 1.0
+        },
+        "composite_armor_hull_05_dm": {
+          "armorThickness": 25.0,
+          "hidableInXrayViewer": true
         }
       },
       "hull_turret_spaced_armor": {
@@ -198,12 +206,6 @@
           "genericArmorQuality": 0.5,
           "hidableInXrayViewer": true,
           "createSecondaryShatters": false
-        },
-        "composite_armor_turret_03_dm": {
-          "armorThickness": 300.0,
-          "armorEffectiveThicknessMax": 220.0,
-          "cumulativeArmorQuality": 0.55,
-          "genericArmorQuality": 0.0
         },
         "composite_armor_turret_05_dm": {
           "armorThickness": 300.0,
@@ -232,11 +234,6 @@
         },
         "composite_armor_hull_04_dm": {
           "armorThickness": 5.0,
-          "armorClass": "RHA_tank_modern",
-          "hidableInXrayViewer": true
-        },
-        "composite_armor_hull_05_dm": {
-          "armorThickness": 25.0,
           "armorClass": "RHA_tank_modern",
           "hidableInXrayViewer": true
         },
@@ -306,7 +303,7 @@
           "armorThickness": 60.0
         },
         "turret_06_top_dm": {
-          "armorThickness": 50.0
+          "armorThickness": 60.0
         },
         "turret_07_top_dm": {
           "armorThickness": 38.0,
@@ -316,7 +313,7 @@
           "armorThickness": 25.0
         },
         "turret_08_side_dm": {
-          "armorThickness": 15.0
+          "armorThickness": 60.0
         },
         "turret_04_back_dm": {
           "armorThickness": 10.0,
@@ -327,6 +324,9 @@
           "armorThickness": 10.0
         },
         "turret_02_back_dm": {
+          "armorThickness": 44.0
+        },
+        "turret_08_back_dm": {
           "armorThickness": 44.0
         },
         "turret_06_back_dm": {
@@ -498,10 +498,6 @@
           "armorClass": "tank_structural_steel"
         },
         "ex_armor_r_09_dm": {
-          "armorThickness": 4.0,
-          "armorClass": "tank_structural_steel"
-        },
-        "turret_08_back_dm": {
           "armorThickness": 4.0,
           "armorClass": "tank_structural_steel"
         },
@@ -2071,6 +2067,42 @@
     }
   },
   {
+    "fuelTanks": {
+      "r1": {
+        "part": "fuel_tank_exterior_r_01_dm",
+        "external": true
+      },
+      "r2": {
+        "part": "fuel_tank_exterior_r_02_dm",
+        "external": true
+      },
+      "r3": {
+        "part": "fuel_tank_exterior_r_03_dm",
+        "external": true
+      },
+      "r4": {
+        "part": "fuel_tank_exterior_r_04_dm",
+        "external": true
+      },
+      "l1": {
+        "part": "fuel_tank_exterior_l_01_dm",
+        "external": true
+      },
+      "l2": {
+        "part": "fuel_tank_exterior_l_02_dm",
+        "external": true
+      },
+      "l3": {
+        "part": "fuel_tank_exterior_l_03_dm",
+        "external": true
+      },
+      "l4": {
+        "part": "fuel_tank_exterior_l_04_dm",
+        "external": true
+      }
+    }
+  },
+  {
     "xray_viewer_data": [
       {
         "armorArrayHullFront": {
@@ -2135,7 +2167,8 @@
           "titleLoc": "RHA_tank_modern",
           "armorArrayText": {
             "layer": {
-              "dmPart": "composite_armor_hull_03_dm"
+              "dmPart": "composite_armor_hull_03_dm",
+              "xrayTextThickness": [50.0,200.0]
             }
           }
         }
@@ -2790,7 +2823,7 @@
           },
           "limits": {
             "yaw": [-180.0,180.0],
-            "pitch": [-10.0,50.0]
+            "pitch": [-10.0,25.0]
           }
         }
       }
@@ -3494,6 +3527,9 @@
               "node": "ex_armor_r_08"
             },
             {
+              "node": "ex_armor_r_09"
+            },
+            {
               "node": "ex_armor_l_06"
             },
             {
@@ -3503,10 +3539,19 @@
               "node": "ex_armor_l_08"
             },
             {
+              "node": "ex_armor_l_09"
+            },
+            {
               "node": "ex_lantern_r_02"
             },
             {
               "node": "ex_lantern_l_02"
+            },
+            {
+              "node": "ex_decor_14"
+            },
+            {
+              "node": "body_02"
             }
           ]
         },
@@ -3955,7 +4000,7 @@
                 },
                 "limits": {
                   "yaw": [-180.0,180.0],
-                  "pitch": [-10.0,50.0]
+                  "pitch": [-10.0,25.0]
                 }
               }
             },

@@ -28,7 +28,7 @@ local { setColoredDoubleTextToButton, placePriceTextToButton } = require("script
     return ::gui_handlers.TournamentRewardReceivedWnd.open(config)
   else if (unlockType == ::UNLOCKABLE_AIRCRAFT)
   {
-    if (!::has_feature("Tanks") && ::isTank(::getAircraftByName(::getTblValue("id", config))))
+    if (!::has_feature("Tanks") && ::getAircraftByName(config?.id)?.isTank())
       return false
   }
 

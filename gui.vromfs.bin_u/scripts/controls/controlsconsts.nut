@@ -5,8 +5,7 @@ global const max_camera_smooth = 0.9
 global const min_camera_speed = 0.5
 global const max_camera_speed = 8
 
-const ACTION_BAR_NUM_SHELL_TYPE_ACTIONS = 4
-const ACTION_BAR_FIRE_EXTINGUISHER_IDX = 5
+global const max_shortcuts = 3
 
 global enum CONTROL_TYPE {
   HEADER

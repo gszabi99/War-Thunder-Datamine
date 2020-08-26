@@ -773,13 +773,14 @@
   },
   {
     "sound": {
-      "EngineName": "engine_chaffee_m24",
+      "EngineName": "engine_panther",
       "TrackSoundPath": "tanks/engines_tanks",
       "TrackSoundPathStudio": "ground/engines",
       "TrackSoundName": "tracks_light",
       "TrackSoundNameCockpit": "tracks_light_interior",
       "EngineNameAi": "engine_tank_ai_light",
       "TrackSoundNameAi": "tracks_ai_light",
+      "turret_turn": "turret_turn_servo",
       "gun_turn": "turret_turn_mg_light"
     }
   },
@@ -939,6 +940,21 @@
           },
           {
             "name": "ammo_body_50_dm"
+          },
+          {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
           },
           {
             "name": "ammo_body_l_01_dm"
@@ -1910,7 +1926,7 @@
             "expl": 1.0,
             "conditionDamage": 250.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -1919,7 +1935,16 @@
             "expl": 1.0,
             "conditionDamage": 100.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "generic",
+            "expl": 1.0,
+            "conditionDamage": 700.0,
+            "kill": true,
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -1927,7 +1952,7 @@
             "expl": 1.0,
             "conditionDead": true,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         }
       ]
@@ -2795,7 +2820,7 @@
     "cockpit": {
       "zoomOutFov": 10.21,
       "zoomInFov": 9.21,
-      "sightFov": 10.0,
+      "sightFov": 5.0,
       "sightName": "tzf_la",
       "headPos": [0.0,4.0,-8.5],
       "headPosOnShooting": [-1.3,3.1,0.57],
@@ -3359,7 +3384,7 @@
   },
   {
     "user_skin": {
-      "name": "begleitpanzer_57",
+      "name": "thyssen_henschel_tam",
       "replace_tex": {
         "from": "ger_camo_bronzegruen*"
       }

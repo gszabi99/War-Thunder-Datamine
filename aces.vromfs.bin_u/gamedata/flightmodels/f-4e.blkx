@@ -2969,25 +2969,69 @@
     ]
   },
   {
-    "commonWeapons": {
-      "hideNodes": [
-        {
-          "node": "pylon_l_ltc_in"
-        },
-        {
-          "node": "pylon_r_ltc_in"
+    "commonWeapons": [
+      {
+        "hideNodes": [
+          {
+            "node": "pylon_l_ltc_in"
+          },
+          {
+            "node": "pylon_r_ltc_in"
+          }
+        ]
+      },
+      {
+        "Weapon": {
+          "trigger": "cannon",
+          "blk": "gameData/Weapons/cannonM61.blk",
+          "emitter": "flare4",
+          "flash": "flare4",
+          "dm": "cannon4_dm",
+          "bullets": 640,
+          "spread": 1.0
         }
-      ],
-      "Weapon": {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonM61.blk",
-        "emitter": "flare4",
-        "flash": "flare4",
-        "dm": "cannon4_dm",
-        "bullets": 640,
-        "spread": 1.0
+      },
+      {
+        "Weapon": {
+          "trigger": "flares",
+          "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk",
+          "emitter": "emtr_flare1",
+          "bullets": 30,
+          "external": true,
+          "separate": false
+        }
+      },
+      {
+        "Weapon": {
+          "trigger": "flares",
+          "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk",
+          "emitter": "emtr_flare2",
+          "bullets": 30,
+          "external": true,
+          "separate": false
+        }
+      },
+      {
+        "Weapon": {
+          "trigger": "flares",
+          "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk",
+          "emitter": "emtr_flare3",
+          "bullets": 15,
+          "external": true,
+          "separate": false
+        }
+      },
+      {
+        "Weapon": {
+          "trigger": "flares",
+          "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk",
+          "emitter": "emtr_flare4",
+          "bullets": 15,
+          "external": true,
+          "separate": false
+        }
       }
-    }
+    ]
   },
   {
     "weapon_presets": [
@@ -3059,11 +3103,65 @@
           "blk": "gameData/flightModels/weaponPresets/f_4e_rockets_lau18.blk",
           "reqModification": "us_2_75_in_ffar_lau_3a",
           "weaponConfig": {
-            "Weapon": {
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
-              "amountPerTier": 28.5,
-              "iconType": "nar_ap_large"
-            }
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk"
+              },
+              {
+                "tier": {
+                  "idx": 2,
+                  "iconType": "nar_ap_large_group"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 3,
+                  "iconType": "nar_ap_large_group"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 4,
+                  "iconType": "nar_ap_large_group"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 5,
+                  "iconType": "nar_ap_large"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 6,
+                  "iconType": "nar_ap_large"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 7,
+                  "iconType": "nar_ap_large"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 8,
+                  "iconType": "nar_ap_large_group"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 9,
+                  "iconType": "nar_ap_large_group"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 10,
+                  "iconType": "nar_ap_large_group"
+                }
+              }
+            ]
           }
         }
       },
@@ -3383,6 +3481,1166 @@
             "reqModification": "us_aim_9j"
           }
         ]
+      },
+      {
+        "preset": {
+          "name": "f_4e_rockets_aim7e",
+          "blk": "gameData/flightModels/weaponPresets/f_4e_rockets_aim7e.blk",
+          "reqModification": "us_aim_7e",
+          "weaponConfig": [
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/cannonM61.blk",
+                "tier": {
+                  "idx": 6,
+                  "iconType": "multibarrel_box"
+                }
+              }
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim7e_sparrow.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 5,
+                    "iconType": "missile_type_b_air_to_air_midrange"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7,
+                    "iconType": "missile_type_b_air_to_air_midrange"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 4,
+                    "iconType": "missile_type_b_air_to_air_midrange"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8,
+                    "iconType": "missile_type_b_air_to_air_midrange"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "preset": [
+          {
+            "name": "f_4e_aim9e_aim7e"
+          },
+          {
+            "blk": "gameData/flightModels/weaponPresets/f_4e_aim9e_aim7e.blk"
+          },
+          {
+            "reqModification": "us_aim_9e"
+          },
+          {
+            "reqModification": "us_aim_7e"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_aim7e_sparrow.blk"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 5,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 4,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_aim9e_sidewinder.blk"
+                  },
+                  {
+                    "amountPerTier": 2.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 3,
+                      "iconType": "missile_air_to_air_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9,
+                      "iconType": "missile_air_to_air_group"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "f_4e_aim9j_aim7e"
+          },
+          {
+            "blk": "gameData/flightModels/weaponPresets/f_4e_aim9j_aim7e.blk"
+          },
+          {
+            "reqModification": "us_aim_9j"
+          },
+          {
+            "reqModification": "us_aim_7e"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_aim7e_sparrow.blk"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 5,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 4,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_aim9j_sidewinder.blk"
+                  },
+                  {
+                    "amountPerTier": 2.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 3,
+                      "iconType": "missile_type_b_air_to_air_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9,
+                      "iconType": "missile_type_b_air_to_air_group"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "f_4e_bomb_mk82_aim7e"
+          },
+          {
+            "blk": "gameData/flightModels/weaponPresets/f_4e_bomb_mk82_aim7e.blk"
+          },
+          {
+            "reqModification": "us_500lb_mk82"
+          },
+          {
+            "reqModification": "us_aim_7e"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_aim7e_sparrow.blk"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 4,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 5,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk"
+                  },
+                  {
+                    "amountPerTier": 3.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 0,
+                      "iconType": "bombs_middle_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 1,
+                      "iconType": "bombs_middle_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 2,
+                      "iconType": "bombs_middle_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 3,
+                      "iconType": "bombs_middle_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9,
+                      "iconType": "bombs_middle_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 10,
+                      "iconType": "bombs_middle_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 11,
+                      "iconType": "bombs_middle_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 12,
+                      "iconType": "bombs_middle_group"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "f_4e_bomb_m117_aim7e"
+          },
+          {
+            "blk": "gameData/flightModels/weaponPresets/f_4e_bomb_m117_aim7e.blk"
+          },
+          {
+            "reqModification": "us_750lb_m117a1"
+          },
+          {
+            "reqModification": "us_aim_7e"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_aim7e_sparrow.blk"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 4,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 5,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk"
+                  },
+                  {
+                    "amountPerTier": 2.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 0,
+                      "iconType": "bombs_large_group_x2"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 1,
+                      "iconType": "bombs_large_group_x2"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 2,
+                      "iconType": "bombs_large_group_x2"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 3,
+                      "iconType": "bombs_large_group_x2"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9,
+                      "iconType": "bombs_large_group_x2"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 10,
+                      "iconType": "bombs_large_group_x2"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 11,
+                      "iconType": "bombs_large_group_x2"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 12,
+                      "iconType": "bombs_large_group_x2"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "f_4e_bomb_mk83_aim7e"
+          },
+          {
+            "blk": "gameData/flightModels/weaponPresets/f_4e_bomb_mk83_aim7e.blk"
+          },
+          {
+            "reqModification": "us_1000lb_mk83"
+          },
+          {
+            "reqModification": "us_aim_7e"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_aim7e_sparrow.blk"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 4,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 5,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk"
+                  },
+                  {
+                    "tier": {
+                      "idx": 1,
+                      "iconType": "bombs_special_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 2,
+                      "iconType": "bombs_special_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 3,
+                      "iconType": "bombs_special"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9,
+                      "iconType": "bombs_special"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 10,
+                      "iconType": "bombs_special_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 11,
+                      "iconType": "bombs_special_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 6,
+                      "iconType": "bombs_special"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "f_4e_bomb_mk82_aim9e_aim7e"
+          },
+          {
+            "blk": "gameData/flightModels/weaponPresets/f_4e_bomb_mk82_aim9e_aim7e.blk"
+          },
+          {
+            "reqModification": "us_500lb_mk82"
+          },
+          {
+            "reqModification": "us_aim_9e"
+          },
+          {
+            "reqModification": "us_aim_7e"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_aim7e_sparrow.blk"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 4,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 5,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_aim9e_sidewinder.blk"
+                  },
+                  {
+                    "amountPerTier": 2.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 3,
+                      "iconType": "missile_air_to_air_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9,
+                      "iconType": "missile_air_to_air_group"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk"
+                  },
+                  {
+                    "amountPerTier": 3.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 0,
+                      "iconType": "bombs_middle_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 1,
+                      "iconType": "bombs_middle_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 2,
+                      "iconType": "bombs_middle_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 10,
+                      "iconType": "bombs_middle_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 11,
+                      "iconType": "bombs_middle_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 12,
+                      "iconType": "bombs_middle_group"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "f_4e_bomb_mk82_aim9j_aim7e"
+          },
+          {
+            "blk": "gameData/flightModels/weaponPresets/f_4e_bomb_mk82_aim9j_aim7e.blk"
+          },
+          {
+            "reqModification": "us_500lb_mk82"
+          },
+          {
+            "reqModification": "us_aim_9j"
+          },
+          {
+            "reqModification": "us_aim_7e"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_aim7e_sparrow.blk"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 4,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 5,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_aim9j_sidewinder.blk"
+                  },
+                  {
+                    "amountPerTier": 2.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 3,
+                      "iconType": "missile_type_b_air_to_air_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9,
+                      "iconType": "missile_type_b_air_to_air_group"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk"
+                  },
+                  {
+                    "amountPerTier": 3.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 0,
+                      "iconType": "bombs_middle_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 1,
+                      "iconType": "bombs_middle_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 2,
+                      "iconType": "bombs_middle_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 10,
+                      "iconType": "bombs_middle_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 11,
+                      "iconType": "bombs_middle_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 12,
+                      "iconType": "bombs_middle_group"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "f_4e_bomb_m117_aim9e_aim7e"
+          },
+          {
+            "blk": "gameData/flightModels/weaponPresets/f_4e_bomb_m117_aim9e_aim7e.blk"
+          },
+          {
+            "reqModification": "us_750lb_m117a1"
+          },
+          {
+            "reqModification": "us_aim_9e"
+          },
+          {
+            "reqModification": "us_aim_7e"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": {
+                  "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk",
+                  "amountPerTier": 2.0,
+                  "iconType": "bombs_large_group"
+                }
+              },
+              {
+                "Weapon": {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim9e_sidewinder.blk",
+                  "amountPerTier": 1.0,
+                  "iconType": "missile_air_to_air"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "f_4e_bomb_m117_aim9j_aim7e"
+          },
+          {
+            "blk": "gameData/flightModels/weaponPresets/f_4e_bomb_m117_aim9j_aim7e.blk"
+          },
+          {
+            "reqModification": "us_750lb_m117a1"
+          },
+          {
+            "reqModification": "us_aim_9j"
+          },
+          {
+            "reqModification": "us_aim_7e"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_aim7e_sparrow.blk"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 4,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 5,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_aim9j_sidewinder.blk"
+                  },
+                  {
+                    "amountPerTier": 2.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 3,
+                      "iconType": "missile_type_b_air_to_air_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9,
+                      "iconType": "missile_type_b_air_to_air_group"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk"
+                  },
+                  {
+                    "tier": {
+                      "idx": 1,
+                      "iconType": "bombs_large_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 2,
+                      "iconType": "bombs_large_group_x2"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 10,
+                      "iconType": "bombs_large_group_x2"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 11,
+                      "iconType": "bombs_large_group"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "f_4e_bomb_mk83_aim9e_aim7e"
+          },
+          {
+            "blk": "gameData/flightModels/weaponPresets/f_4e_bomb_mk83_aim9e_aim7e.blk"
+          },
+          {
+            "reqModification": "us_1000lb_mk83"
+          },
+          {
+            "reqModification": "us_aim_9e"
+          },
+          {
+            "reqModification": "us_aim_7e"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_aim7e_sparrow.blk"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 4,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 5,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_aim9e_sidewinder.blk"
+                  },
+                  {
+                    "amountPerTier": 2.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 3,
+                      "iconType": "missile_air_to_air_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9,
+                      "iconType": "missile_air_to_air_group"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk"
+                  },
+                  {
+                    "tier": {
+                      "idx": 1,
+                      "iconType": "bombs_special_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 2,
+                      "iconType": "bombs_special"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 10,
+                      "iconType": "bombs_special"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 11,
+                      "iconType": "bombs_special_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 6,
+                      "iconType": "bombs_special"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "f_4e_bomb_mk83_aim9j_aim7e"
+          },
+          {
+            "blk": "gameData/flightModels/weaponPresets/f_4e_bomb_mk83_aim9j_aim7e.blk"
+          },
+          {
+            "reqModification": "us_1000lb_mk83"
+          },
+          {
+            "reqModification": "us_aim_9j"
+          },
+          {
+            "reqModification": "us_aim_7e"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_aim7e_sparrow.blk"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 4,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 5,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8,
+                      "iconType": "missile_type_b_air_to_air_midrange"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_aim9j_sidewinder.blk"
+                  },
+                  {
+                    "amountPerTier": 2.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 3,
+                      "iconType": "missile_type_b_air_to_air_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9,
+                      "iconType": "missile_type_b_air_to_air_group"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk"
+                  },
+                  {
+                    "tier": {
+                      "idx": 1,
+                      "iconType": "bombs_special_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 2,
+                      "iconType": "bombs_special"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 10,
+                      "iconType": "bombs_special"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 11,
+                      "iconType": "bombs_special_group"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 6,
+                      "iconType": "bombs_special"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -3608,6 +4866,16 @@
         "effects": {
           "commonWeapons": [
             {
+              "hideNodes": [
+                {
+                  "node": "pylon_l_in"
+                },
+                {
+                  "node": "pylon_r_in"
+                }
+              ]
+            },
+            {
               "Weapon": {
                 "trigger": "cannon",
                 "blk": "gameData/Weapons/cannonM61.blk",
@@ -3669,6 +4937,11 @@
       "us_aim_9j": {
         "reqModification": "us_aim_9e",
         "tier": 3,
+        "modClass": "weapon"
+      },
+      "us_aim_7e": {
+        "reqModification": "us_aim_9j",
+        "tier": 4,
         "modClass": "weapon"
       }
     }

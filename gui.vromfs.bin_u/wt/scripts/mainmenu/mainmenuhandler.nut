@@ -1,11 +1,12 @@
 local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 local time = require("scripts/time.nut")
 local contentStateModule = require("scripts/clientState/contentState.nut")
+local topMenuHandlerClass = require("scripts/mainmenu/topMenuHandler.nut")
 local { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
 
 class ::gui_handlers.MainMenu extends ::gui_handlers.InstantDomination
 {
-  rootHandlerClass = ::gui_handlers.TopMenu
+  rootHandlerClass = topMenuHandlerClass.getHandler()
 
   onlyDevicesChoice    = true
   startControlsWizard  = false

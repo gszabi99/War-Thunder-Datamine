@@ -1,5 +1,6 @@
 local enums = ::require("sqStdlibs/helpers/enums.nut")
 local screenInfo = ::require("scripts/options/screenInfo.nut")
+local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
 const FONTS_SAVE_PATH = "fonts_css"
 const FONTS_SAVE_PATH_CONFIG = "video/fonts"
 
@@ -72,6 +73,8 @@ local getFontsSh = screenInfo.getScreenHeightForFonts
       isWide = isLowWidthScreen() ? 0 : 1
       pxFontTgtOutdated = getPixelToPixelFontSizeOutdatedPx(sWidth, sHeight)
     }
+    foreach(prefixId in daguiFonts.getRealFontNamePrefixesMap())
+      config[$"fontHeight_{prefixId}"] <- daguiFonts.getFontLineHeightPx(null, $"{prefixId}{fontGenId}")
     return ::handyman.renderCached("gui/const/const_fonts_css", config)
   }
 

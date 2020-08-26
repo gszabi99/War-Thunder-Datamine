@@ -1,0 +1,256 @@
+{
+  "rocketGun": true,
+  "preset_cost": 20,
+  "bullets": 1,
+  "shotFreq": 1000.25,
+  "sound": "weapon.rocketgun_132",
+  "helicopterGroup": 2,
+  "mesh": "100mm_tba_ecc_rocket",
+  "tags": {
+    "antiTankRocket": true,
+    "antiShipRocket": true
+  },
+  "rocket": [
+    {
+      "caliber": 0.103
+    },
+    {
+      "mass": 38.8
+    },
+    {
+      "explosiveType": "rdx_tnt"
+    },
+    {
+      "normalizationPreset": "heat"
+    },
+    {
+      "ricochetPreset": "heat_fs"
+    },
+    {
+      "secondaryShattersPreset": "ap"
+    },
+    {
+      "stabilityThreshold": 0.1
+    },
+    {
+      "stabilityCaliberToArmorThreshold": 100.0
+    },
+    {
+      "stabilityReductionAfterRicochet": 0.3
+    },
+    {
+      "stabilityReductionAfterPenetration": 0.001
+    },
+    {
+      "bulletType": "heat_fs_tank"
+    },
+    {
+      "cumulativeSecondaryShattersPreset": "heat_fs"
+    },
+    {
+      "explodeOnRendinst": true
+    },
+    {
+      "modelName": "tank_bullet_heat_fs"
+    },
+    {
+      "fresnel": [0.23,0.1,2.0]
+    },
+    {
+      "explosiveMass": 2.8
+    },
+    {
+      "massEnd": 20.5
+    },
+    {
+      "maxDeltaAngle": 2.5
+    },
+    {
+      "dragCx": 0.003
+    },
+    {
+      "length": 2.48
+    },
+    {
+      "distFromCmToStab": 0.01
+    },
+    {
+      "CxK": 0.01
+    },
+    {
+      "WdK": [0.1,0.1,0.1]
+    },
+    {
+      "force": 4900.0
+    },
+    {
+      "timeFire": 0.9
+    },
+    {
+      "spawnExplosionFx": false
+    },
+    {
+      "spawnExplosionWreckage": false
+    },
+    {
+      "explosionEffect": "atgm_hit"
+    },
+    {
+      "defFxScale": [1.5,1.6]
+    },
+    {
+      "groundCollisionEffect": "art_ground_splash"
+    },
+    {
+      "groundFxScale": [1.3,1.5]
+    },
+    {
+      "ricochetEffect": "cannon_ricochet"
+    },
+    {
+      "waterCollisionEffect": "120-203_he_water_splash"
+    },
+    {
+      "waterFxScale": [1.1,1.2]
+    },
+    {
+      "explosionPatchRadius": 3.4
+    },
+    {
+      "smokeEffect": "hydra_smoke"
+    },
+    {
+      "maxDistance": 4000.0
+    },
+    {
+      "minDistance": 30.0
+    },
+    {
+      "hitPowerMult": 1.0
+    },
+    {
+      "nearHitPower": [1.0,50.0]
+    },
+    {
+      "midHitPower": [0.9,400.0]
+    },
+    {
+      "farHitPower": [0.1,1000.0]
+    },
+    {
+      "endHitPower": [0.01,1500.0]
+    },
+    {
+      "relativeVelHitShift": [300.0,1000.0]
+    },
+    {
+      "nearArmorPower": [10.0,50.0]
+    },
+    {
+      "midArmorPower": [7.0,400.0]
+    },
+    {
+      "farArmorPower": [0.2,700.0]
+    },
+    {
+      "relativeVelArmorShift": [200.0,1000.0]
+    },
+    {
+      "distanceFuse": false
+    },
+    {
+      "explodeTreshold": 0.01
+    },
+    {
+      "explodeHitPower": 550.0
+    },
+    {
+      "explodeArmorPower": 75.0
+    },
+    {
+      "explodeRadius": [1.0,3.5]
+    },
+    {
+      "explosionPatchRadius": 5.0
+    },
+    {
+      "rendinstDamageRadius": 15.0
+    },
+    {
+      "statType": "hydra"
+    },
+    {
+      "advancedMissiles": false
+    },
+    {
+      "useStartSpeed": true
+    },
+    {
+      "startSpeed": 30.0
+    },
+    {
+      "endSpeed": 800.0
+    },
+    {
+      "maxSpeed": 600.0
+    },
+    {
+      "speedViscosity": 0.2
+    },
+    {
+      "timeToLive": 20.0
+    },
+    {
+      "price": 3000.0
+    },
+    {
+      "amountPerTier": 18.0
+    },
+    {
+      "iconType": "nar_ap_middle"
+    },
+    {
+      "stabilityRicochetModifier": {
+        "mod1": [0.0,0.0],
+        "mod2": [20.0,1.0]
+      }
+    },
+    {
+      "collisions": {
+        "steel": {
+          "fx": "atgm_hit",
+          "fxScale": [4.0,4.2]
+        },
+        "armor": {
+          "fx": "atgm_hit",
+          "fxScale": [4.0,4.2]
+        },
+        "buildings": {
+          "fx": "atgm_hit",
+          "fxScale": [4.0,4.2]
+        },
+        "wood": {
+          "fx": "atgm_hit",
+          "fxScale": [4.0,4.2]
+        }
+      }
+    },
+    {
+      "DamageParts": {
+        "body": {
+          "hp": 5.0,
+          "armorClass": "tank_structural_steel",
+          "armorThickness": 1.0
+        }
+      }
+    },
+    {
+      "cumulativeDamage": {
+        "armorPower": 500.0,
+        "distance": 3.0,
+        "damage": 400.0,
+        "onHitChanceMultFire": 15.0
+      }
+    }
+  ]
+}

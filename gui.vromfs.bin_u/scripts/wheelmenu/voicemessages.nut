@@ -118,10 +118,9 @@ local function showVoiceMessageList(show, category, squad, targetName) {
     return false
   }
 
-  local categories = [];
+  local categories = []
   local menu = []
-  local air = ::getAircraftByName(::last_ca_aircraft)
-  local heroIsTank = air ? isTank(air) : false;
+  local heroIsTank = ::getAircraftByName(::last_ca_aircraft)?.isTank() ?? false
   local shortcutTable = {}
 
   foreach(idx, record in voiceMessageNames)

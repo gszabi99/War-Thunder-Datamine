@@ -1,8 +1,11 @@
 local unitActions = require("scripts/unit/unitActions.nut")
 local { getModItemName } = require("scripts/weaponry/weaponryVisual.nut")
-local { getItemStatusTbl,
-        getItemUnlockCost,
-        getItemCost } = require("scripts/weaponry/itemInfo.nut")
+local { getWeaponByName } = require("scripts/weaponry/weaponryInfo.nut")
+local { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
+local { getItemCost,
+        getAllModsCost,
+        getItemStatusTbl,
+        getItemUnlockCost } = require("scripts/weaponry/itemInfo.nut")
 
 class WeaponsPurchase
 {
@@ -72,7 +75,7 @@ class WeaponsPurchase
 
   function getAllModificationsPrice()
   {
-    local _modsCost = ::get_all_modifications_cost(unit, open)
+    local _modsCost = getAllModsCost(unit, open)
     return ::Cost(_modsCost.wp, open? _modsCost.gold : 0)
   }
 
@@ -81,7 +84,7 @@ class WeaponsPurchase
     if (::u.isEmpty(modItem))
       return getAllModificationsPrice()
 
-    if (::can_buy_weapons_item(unit, modItem))
+    if (::g_weaponry_types.getUpgradeTypeByItem(modItem).canBuy(unit, modItem))
       return getItemCost(unit, modItem)
 
     return getItemUnlockCost(unit, modItem)
@@ -180,8 +183,10 @@ class WeaponsPurchase
   function sendPurchaseAllModsRequest(amount = 1)
   {
     local blk = ::DataBlock()
-    blk.setStr("unit", unit.name)
-    blk.setBool("forceOpen", open)
+    blk["unit"] = unit.name
+    blk["forceOpen"] = open
+    blk["cost"] = cost.wp
+    blk["costGold"] = cost.gold
 
     local taskId = ::char_send_blk("cln_buy_all_modification", blk)
     local taskOptions = { showProgressBox = true, progressBoxText = ::loc("charServer/purchase") }
@@ -262,10 +267,12 @@ class WeaponsPurchase
   function sendPurchaseModificationRequest(amount = 1)
   {
     local blk = ::DataBlock()
-    blk.setStr("aircraft", unit.name)
-    blk.setStr("modification", modName)
-    blk.setBool("open", open)
-    blk.setInt("count", amount)
+    blk["aircraft"] = unit.name
+    blk["modification"] = modName
+    blk["open"] = open
+    blk["count"] = amount
+    blk["cost"] = cost.wp
+    blk["costGold"] = cost.gold
 
     local hadUnitModResearch = ::shop_get_researchable_module_name(unit.name)
     local taskId = ::char_send_blk("cln_buy_modification", blk)
@@ -307,9 +314,11 @@ class WeaponsPurchase
   function sendPurchaseWeaponRequest(amount = 1)
   {
     local blk = ::DataBlock()
-    blk.setStr("aircraft", unit.name)
-    blk.setStr("weapon", modName)
-    blk.setInt("count", amount)
+    blk["aircraft"] = unit.name
+    blk["weapon"] = modName
+    blk["count"] = amount
+    blk["cost"] = cost.wp
+    blk["costGold"] = cost.gold
 
     local taskId = ::char_send_blk("cln_buy_weapon", blk)
     local taskOptions = { showProgressBox = true, progressBoxText = ::loc("charServer/purchase") }
@@ -342,8 +351,10 @@ class WeaponsPurchase
   function sendPurchaseSpareRequest(amount = 1)
   {
     local blk = ::DataBlock()
-    blk.setStr("aircraft", unit.name)
-    blk.setInt("count", amount)
+    blk["aircraft"] =  unit.name
+    blk["count"] = amount
+    blk["cost"] = cost.wp
+    blk["costGold"] = cost.gold
 
     local taskId = ::char_send_blk("cln_buy_spare_aircrafts", blk)
     local taskOptions = { showProgressBox = true, progressBoxText = ::loc("charServer/purchase") }
@@ -383,12 +394,12 @@ class WeaponsPurchase
 
     if (itemType == weaponsItem.weapon)
     {
-      local item = ::get_weapon_by_name(unit, itemName)
+      local item = getWeaponByName(unit, itemName)
       if (!::u.isEmpty(item))
         return item
     }
 
-    local item = ::getModificationByName(unit, itemName)
+    local item = getModificationByName(unit, itemName)
     if (!::u.isEmpty(item))
       return item
 
@@ -408,13 +419,4 @@ class WeaponsPurchase
 
     return ::colorize("userlogColoredText", text)
   }
-}
-
-::buyAllMods <- function buyAllMods(unit, forceOpen) //maded it's double. Need to remove this.
-{
-  local blk = ::DataBlock()
-  blk.setStr("unit", unit)
-  blk.setBool("forceOpen", forceOpen)
-
-  return ::char_send_blk("cln_buy_all_modification", blk)
 }

@@ -179,8 +179,10 @@
         "turret_02_bottom_dm": {
           "armorThickness": 20.0
         },
-        "body_shield_dm": {
-          "armorThickness": 5.0
+        "composite_armor_hull_01_dm": {
+          "armorThickness": 4.9,
+          "armorClass": "tank_structural_steel",
+          "hidableInXrayViewer": true
         }
       },
       "optics": {
@@ -648,6 +650,19 @@
     }
   },
   {
+    "xray_viewer_data": {
+      "armorArrayHull": {
+        "xrayDmPart": "composite_armor_hull_01_dm",
+        "titleLoc": "tank_structural_steel",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_01_dm"
+          }
+        }
+      }
+    }
+  },
+  {
     "DamageEffects": [
       {
         "part": [
@@ -803,6 +818,21 @@
           },
           {
             "name": "ammo_body_50_dm"
+          },
+          {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
           },
           {
             "name": "ammo_body_l_01_dm"
@@ -1765,31 +1795,7 @@
         "defaultDampeningForce": [94500.0,94500.0],
         "dampeningRelaxationRatio": 0.4,
         "dampeningCompressionRatio": 0.15
-      },
-      "physNode": [
-        {
-          "type": "verlet_string"
-        },
-        {
-          "stiffness": 1.0
-        },
-        {
-          "straightening": 0.5
-        },
-        {
-          "point": {
-            "name": "antenna",
-            "mass": 1.0,
-            "fixed": true
-          }
-        },
-        {
-          "point": {
-            "name": "bone_phx_antenna",
-            "mass": 3.0
-          }
-        }
-      ]
+      }
     }
   },
   {

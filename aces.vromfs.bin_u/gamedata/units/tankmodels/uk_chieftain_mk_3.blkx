@@ -301,6 +301,20 @@
           "armorThickness": 19.0
         }
       },
+      "hull_turret_spaced_armor": {
+        "hp": 5000.0,
+        "armorClass": "leopard_2a5_turret_nera",
+        "composite_armor_hull_01_dm": {
+          "armorThickness": 5.0,
+          "armorClass": "RHA_tank_modern",
+          "hidableInXrayViewer": true
+        },
+        "composite_armor_hull_02_dm": {
+          "armorThickness": 5.0,
+          "armorClass": "RHA_tank_modern",
+          "hidableInXrayViewer": true
+        }
+      },
       "body_shields": {
         "armorClass": "tank_structural_steel",
         "hp": 400.0,
@@ -2171,6 +2185,32 @@
         }
       }
     }
+  },
+  {
+    "xray_viewer_data": [
+      {
+        "armorArrayHullSideInner": {
+          "xrayDmPart": "composite_armor_hull_01_dm",
+          "titleLoc": "RHA_tank_modern",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_hull_01_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayHullSideInner": {
+          "xrayDmPart": "composite_armor_hull_02_dm",
+          "titleLoc": "RHA_tank_modern",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_hull_02_dm"
+            }
+          }
+        }
+      }
+    ]
   },
   {
     "ammo": {

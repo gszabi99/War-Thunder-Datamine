@@ -15,47 +15,19 @@ local mMaintainDone = false
 local mRowHeightScale = 1.0
 //-------------------------------------------------------------------------------
 /*
-  compMode=true - option is enabled in GUI in Compatibility Mode. Otherwise it will be disabled.
+  compMode=true - option is enabled in GUI in Compatibility Mode. Otherwise from graphicsPresets it will be disabled.
+  fullMode=false - option is disabled in GUI in not Compatibility Mode. Otherwise from graphicsPresets it will be enabled.
 */
-local mQualityPresets = [
-  {k="texQuality",           v={ultralow="low",low="medium",medium="high",high="high",  max="high",movie="high"}, compMode=true}
-  {k="shadowQuality",        v={ultralow="ultralow",low="ultralow",medium="low",high="medium",max="high",movie="ultrahigh"}}
-  {k="anisotropy",           v={ultralow="off",low="off",medium="2X", high="8X", max="16X",movie="16X"}, compMode=true}
-  {k="rendinstGlobalShadows",v={ultralow=false,low=false,medium=false,high=true, max=true, movie=true}}
-  {k="ssaoQuality",          v={ultralow=0,low=0,medium=0,high=1,max=2,movie=2}}
-  {k="ssrQuality",           v={ultralow=0,low=0,medium=0,high=0,max=0,movie=1}}
-  {k="contactShadowsQuality",v={ultralow=0,low=0,medium=0,high=0, max=1, movie=2}}
-  {k="lenseFlares",          v={ultralow=false,low=false,medium=false,high=true ,max=true, movie=true}}
-  {k="shadows",              v={ultralow=false,low=true,medium=true ,high=true ,max=true, movie=true}}
-  {k="selfReflection",       v={ultralow=false,low=false,medium=true ,high=true ,max=true, movie=true}}
-  {k="waterQuality",         v={ultralow="low",low="low",medium="medium",high="high", max="high", movie="ultrahigh"}, compMode=false}
-  {k="giQuality",            v={ultralow="low", low="low", medium="low", high="low", max="medium", movie="high"}, compMode=false}
-  {k="grass",                v={ultralow=false,low=false,medium=false,high=true ,max=true, movie=true}}
-  {k="displacementQuality",  v={ultralow=0,low=0,medium=0,high=1, max=2, movie=3}}
-  {k="dirtSubDiv",           v={ultralow="high",low="high",medium="high",high="high", max="ultrahigh", movie="ultrahigh"}, compMode=true}
-  {k="tireTracksQuality"     v={ultralow="none",low="none",medium="medium", high="high", max="high", movie="ultrahigh"}, compMode=true}
-  {k="alpha_to_coverage",    v={ultralow=false,low=false,medium=false,high=false ,max=true, movie=true}}
-  {k="msaa",                 v={ultralow="off",low="off",medium="off",high="off", max="off", movie="off"}, compMode=true, fullMode=false}
-  {k="antialiasing",         v={ultralow="none",low="none",medium="fxaa", high="high_fxaa",
-    max= ::is_opengl_driver() ? "high_fxaa" : "high_taa",movie= ::is_opengl_driver() ? "high_fxaa" : "high_taa"}}
-  {k="ssaa",                 v={ultralow="none",low="none",medium="none", high="none", max="none",movie="none"}}
-  {k="enableSuspensionAnimation",v={ultralow=false,low=false,medium=false,high=false ,max=true, movie=true}}
-  {k="haze",                 v={ultralow=false,low=false,medium=false,high=false ,max=true, movie=true}}
-  {k="softFx",               v={ultralow=false,low=false,medium=true ,high=true ,max=true, movie=true}}
-  {k="lastClipSize",         v={ultralow=false,low=false,medium=false,high=false,max=true, movie=true}, compMode=true}
-  {k="landquality",          v={ultralow=0,low=0,medium=0 ,high=2,max=3,movie=4}}
-  {k="rendinstDistMul",      v={ultralow=50,low=50,medium=85 ,high=100,max=130,movie=180}}
-  {k="fxDensityMul",         v={ultralow=20,low=30,medium=75 ,high=80,max=95,movie=100}}
-  {k="grassRadiusMul",       v={ultralow=10, low=10, medium=45,high=75,max=100,movie=135}}
-  {k="backgroundScale",      v={ultralow=2, low=1, medium=2,high=2,max=2,movie=2}}
-  {k="physicsQuality",       v={ultralow=0, low=1, medium=2,high=3,max=4,movie=5}}
-  {k="advancedShore",        v={ultralow=false,low=false,medium=false,high=false,max=true, movie=true}}
-  {k="panoramaResolution",   v={ultralow=4,low=4,medium=6,high=8,max=10, movie=12}}
-  {k="cloudsQuality",        v={ultralow=0,low=0,medium=1,high=1,max=1, movie=2}}
-  {k="skyQuality",           v={ultralow=0,low=0,medium=1,high=1,max=1, movie=1}}
-  {k="staticShadowsOnEffects", v={ultralow=false,low=false,medium=false,high=false,max=true, movie=true}}
-  {k="compatibilityMode",    v={ultralow=true,low=false,medium=false,high=false ,max=false, movie=false}, compMode=true}
-]
+local mQualityPresets = ::DataBlock("config/graphicsPresets.blk")
+local compModeGraphicsOptions = {
+  texQuality        = { compMode=true }
+  anisotropy        = { compMode=true }
+  dirtSubDiv        = { compMode=true }
+  tireTracksQuality = { compMode=true }
+  msaa              = { compMode=true, fullMode=false }
+  lastClipSize      = { compMode=true }
+  compatibilityMode = { compMode=true }
+}
 //------------------------------------------------------------------------------
 local mUiStruct = [
   {
@@ -341,17 +313,16 @@ local function localize(optionId, valueId) {
 //------------------------------------------------------------------------------
 mShared = {
   setQualityPreset = function(preset) {
-    foreach (i in mQualityPresets) {
-      if (i.v.rawin(preset))
-        setGuiValue(i.k, i.v[preset])
-      else if (i.v.rawin("medium"))
-        setGuiValue(i.k, i.v["medium"])
+    foreach (k, v in mQualityPresets) {
+      local value = v?[preset] ?? v?["medium"]
+      if (value != null)
+        setGuiValue(k, value)
     }
   }
 
   setGraphicsQuality = function() {
     local quality = getGuiValue("graphicsQuality", "high")
-    if ((!mQualityPresets[0].v.rawin(quality)) && quality!="custom") {
+    if (mQualityPresets?.texQuality[quality] == null && quality!="custom") {
       quality = getGuiValue("compatibilityMode", false) ? "ultralow" : "high"
       setGuiValue("graphicsQuality", quality)
     }
@@ -370,14 +341,14 @@ mShared = {
   setCompatibilityMode = function() {
     if (getGuiValue("compatibilityMode")) {
       setGuiValue("backgroundScale",2)
-      foreach (i in mQualityPresets) {
-        local enabled = ::getTblValue("compMode", i, false)
-        mShared.enableByCompMode(i.k, enabled)
+      foreach (k, v in mQualityPresets) {
+        local enabled = compModeGraphicsOptions?[k].compMode ?? false
+        mShared.enableByCompMode(k, enabled)
       }
     } else {
-      foreach (i in mQualityPresets) {
-        local enabled = ::getTblValue("fullMode", i, true)
-        mShared.enableByCompMode(i.k, enabled)
+      foreach (k, v in mQualityPresets) {
+        local enabled = compModeGraphicsOptions?[k].fullMode ?? true
+        mShared.enableByCompMode(k, enabled)
       }
       setGuiValue("compatibilityMode", false)
     }
@@ -878,16 +849,14 @@ local function validateInternalConfigs() {
     }
   }
 
-  foreach (index, i in mQualityPresets)
+  foreach (k, v in mQualityPresets)
   {
-    local k = ::getTblValue("k", i)
-    local v = ::getTblValue("v", i, {})
-    if (!k || type(v)!="table" || !v.len())
+    if (v.paramCount() == 0)
       errorsList.append(logError("sysopt.validateInternalConfigs()",
-       "Quality presets - 'qualityPresets' array index "+index+" contains invalid data."))
-    if (k && !(k in mSettings))
+       $"Quality presets - 'qualityPresets' k='{k}' contains invalid data."))
+    if (!(k in mSettings))
       errorsList.append(logError("sysopt.validateInternalConfigs()",
-        "Quality presets - k='"+k+"' is not found in 'settings' table."))
+        $"Quality presets - k='{k}' is not found in 'settings' table."))
     if (type(v)=="table" && ("graphicsQuality" in mSettings) && ("values" in mSettings.graphicsQuality))
     {
       local qualityValues = mSettings.graphicsQuality.values
@@ -895,10 +864,10 @@ local function validateInternalConfigs() {
       {
         if (!isInArray(qualityId, qualityValues))
           errorsList.append(logError("sysopt.validateInternalConfigs()",
-            "Quality presets - k="+k+", graphics quality '"+qualityId+"' not exists."))
+            $"Quality presets - k='{k}', graphics quality '{qualityId}' not exists."))
         if (value != validateGuiValue(k, value))
           errorsList.append(logError("sysopt.validateInternalConfigs()",
-            "Quality presets - k="+k+", v."+qualityId+"='"+value+"' is invalid value for '"+k+"'."))
+            $"Quality presets - k='{k}', v.{qualityId}='{value}' is invalid value for '{k}'."))
       }
     }
   }

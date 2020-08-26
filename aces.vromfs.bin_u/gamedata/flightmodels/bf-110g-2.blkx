@@ -2646,13 +2646,55 @@
         "name": "bf-110f-2_8xSC50",
         "blk": "gameData/FlightModels/weaponPresets/bf-110g-2_12xsc50.blk",
         "reqModification": "Bf-110C-7_SC1000_SC250",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
-            "amountPerTier": 6.0,
-            "iconType": "bombs_small_group"
+        "weaponConfig": [
+          {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/cannonMG15120.blk"
+              },
+              {
+                "tier": {
+                  "idx": 5,
+                  "iconType": "machine_gun"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 7,
+                  "iconType": "machine_gun"
+                }
+              }
+            ]
+          },
+          {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/BombGuns/de_sc50.blk"
+              },
+              {
+                "amountPerTier": 4.0
+              },
+              {
+                "tier": {
+                  "idx": 6,
+                  "iconType": "bombs_small_group_x4"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 4,
+                  "iconType": "bombs_small_group_x4"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 8,
+                  "iconType": "bombs_small_group_x4"
+                }
+              }
+            ]
           }
-        }
+        ]
       }
     },
     {
@@ -2701,14 +2743,109 @@
       "preset": {
         "name": "Bf-110G-2_BK20",
         "blk": "gameData/FlightModels/weaponPresets/bf-110g-2_bk20.blk",
-        "reqModification": "mg15120gunpod_mod_bf110"
+        "reqModification": "mg15120gunpod_mod_bf110",
+        "weaponConfig": [
+          {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/cannonMG15120.blk"
+              },
+              {
+                "tier": {
+                  "idx": 5,
+                  "iconType": "machine_gun"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 7,
+                  "iconType": "machine_gun"
+                }
+              }
+            ]
+          },
+          {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/cannonMG15120_underwing.blk"
+              },
+              {
+                "tier": {
+                  "idx": 4,
+                  "iconType": "machine_gun"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 8,
+                  "iconType": "machine_gun"
+                }
+              }
+            ]
+          }
+        ]
       }
     },
     {
       "preset": {
         "name": "Bf-110G-2_rockets",
         "blk": "gameData/FlightModels/weaponPresets/bf-110g-2_rockets.blk",
-        "reqModification": "Fw-190A-5_R6"
+        "reqModification": "Fw-190A-5_R6",
+        "weaponConfig": [
+          {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/cannonMG15120.blk"
+              },
+              {
+                "tier": {
+                  "idx": 5,
+                  "iconType": "machine_gun"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 7,
+                  "iconType": "machine_gun"
+                }
+              }
+            ]
+          },
+          {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/rocketGuns/de_br20.blk"
+              },
+              {
+                "amountPerTier": 1.0
+              },
+              {
+                "tier": {
+                  "idx": 3,
+                  "iconType": "rockets_he_large"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 4,
+                  "iconType": "rockets_he_large"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 8,
+                  "iconType": "rockets_he_large"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 9,
+                  "iconType": "rockets_he_large"
+                }
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -2724,6 +2861,82 @@
         },
         {
           "reqModification": "mg15120gunpod_mod_bf110"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/cannonMG15120.blk"
+                },
+                {
+                  "tier": {
+                    "idx": 5,
+                    "iconType": "machine_gun"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7,
+                    "iconType": "machine_gun"
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/cannonMG15120_underwing.blk"
+                },
+                {
+                  "tier": {
+                    "idx": 4,
+                    "iconType": "machine_gun"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8,
+                    "iconType": "machine_gun"
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/de_br20.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 3,
+                    "iconType": "rockets_he_large"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 2,
+                    "iconType": "rockets_he_large"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 10,
+                    "iconType": "rockets_he_large"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9,
+                    "iconType": "rockets_he_large"
+                  }
+                }
+              ]
+            }
+          ]
         }
       ]
     },

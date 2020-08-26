@@ -1,9 +1,5 @@
 local { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
-local { AMMO, getAmmoMaxAmount } = require("scripts/weaponry/ammoInfo.nut")
-local { getBulletsSetData,
-        isBulletGroupActive,
-        getBulletsGroupCount,
-        getBulletsInfoForPrimaryGuns } = require("scripts/weaponry/bulletsInfo.nut")
+local { hasFlares, bombNbr } = require("scripts/unit/unitStatus.nut")
 
 ::missionBuilderVehicleConfigForBlk <- {} //!!FIX ME: Should to remove this
 ::last_called_gui_testflight <- null
@@ -41,6 +37,8 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
   needSlotbar = false
 
   weaponsSelectorWeak = null
+  lastBulletsCache = null
+  lastWeaponCache = null
 
   slobarActions = ["autorefill", "aircraft", "crew", "weapons", "repair"]
 
@@ -93,6 +91,39 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
     checkCurrentFocusItem(focusObj)
   }
 
+  function updateLinkedOptions() {
+    checkBulletsRows()
+    checkVehicleModificationRow()
+    updateWeaponOptions()
+  }
+
+  function updateWeaponOptions() {
+    checkRocketDisctanceFuseRow()
+    checkBombActivationTimeRow()
+    checkBombSeriesRow()
+    checkDepthChargeActivationTimeRow()
+    updateFlaresOptions()
+  }
+
+  function updateFlaresOptions() {
+    checkFlaresPeriodsRow()
+    checkFlaresSeriesRow()
+    checkFlaresSeriesPeriodsRow()
+  }
+
+  function checkBulletsRows()
+  {
+    if (typeof(::aircraft_for_weapons) != "string")
+      return
+    local air = ::getAircraftByName(::aircraft_for_weapons)
+    if (!air)
+      return
+
+    local bulletGroups = weaponsSelectorWeak?.bulletsManager.getBulletsGroups() ?? []
+    foreach(idx, bulGroup in bulletGroups)
+      showOptionRow(bulGroup.getOption(), bulGroup.active)
+  }
+
   function getMainFocusObj()
   {
     return weaponsSelectorWeak && weaponsSelectorWeak.getMainFocusObj()
@@ -117,7 +148,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
                                        { scene = weaponryObj
                                          unit = unit
                                          parentHandlerWeak = this
-                                         canChangeBulletsAmount = false
+                                         canChangeBulletsAmount = true
                                          isForcedAvailable = ::isUnitSpecial(unit)
                                        })
 
@@ -137,7 +168,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
     options = [
       [::USEROPT_DIFFICULTY, "spinner"],
     ]
-    if (::isAircraft(unit) || unit?.isHelicopter?())
+    if (unit?.isAir() || unit?.isHelicopter?())
     {
       options.append([::USEROPT_LIMITED_FUEL, "spinner"])
       options.append([::USEROPT_LIMITED_AMMO, "spinner"])
@@ -149,42 +180,39 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
     if (::has_feature("UserSkins"))
       skin_options.append([::USEROPT_USER_SKIN, "spinner"])
 
-    local aircraft_options = [
-      [::USEROPT_GUN_TARGET_DISTANCE, "spinner"],
-      [::USEROPT_GUN_VERTICAL_TARGETING, "spinner"],
-      [::USEROPT_BOMB_ACTIVATION_TIME, "spinner"],
-      [::USEROPT_ROCKET_FUSE_DIST, "spinner"],
-      [::USEROPT_LOAD_FUEL_AMOUNT, "spinner"],
-      [::USEROPT_FLARES_SERIES, "spinner"],
-      [::USEROPT_FLARES_SERIES_PERIODS, "spinner"],
-      [::USEROPT_FLARES_PERIODS, "spinner"],
-    ]
+    options.extend(skin_options)
+    if (unit?.isAir() || unit?.isHelicopter?())
+      options.append(
+        [::USEROPT_GUN_TARGET_DISTANCE, "spinner"],
+        [::USEROPT_GUN_VERTICAL_TARGETING, "spinner"],
+        [::USEROPT_BOMB_ACTIVATION_TIME, "spinner"],
+        [::USEROPT_BOMB_SERIES, "spinner"],
+        [::USEROPT_ROCKET_FUSE_DIST, "spinner"],
+        [::USEROPT_LOAD_FUEL_AMOUNT, "spinner"],
+        [::USEROPT_FLARES_SERIES, "spinner"],
+        [::USEROPT_FLARES_SERIES_PERIODS, "spinner"],
+        [::USEROPT_FLARES_PERIODS, "spinner"]
+      )
 
-    local common_options = [
+    if (unit?.isShip())
+      options.append(
+        [::USEROPT_DEPTHCHARGE_ACTIVATION_TIME, "spinner"],
+        [::USEROPT_ROCKET_FUSE_DIST, "spinner"]
+      )
+
+    options.append(
       [::USEROPT_MODIFICATIONS, "spinner"],
       [::USEROPT_TIME, "spinner"],
-      [::USEROPT_WEATHER, "spinner"],
-    ]
-
-    local ship_options = [
-      [::USEROPT_DEPTHCHARGE_ACTIVATION_TIME, "spinner"],
-      [::USEROPT_MINE_DEPTH, "spinner"],
-      [::USEROPT_ROCKET_FUSE_DIST, "spinner"],
-    ]
-
-    options.extend(skin_options)
-    if (::isAircraft(unit) || unit?.isHelicopter?())
-      options.extend(aircraft_options)
-
-    if (::isShip(unit))
-      options.extend(ship_options)
-
-    options.extend(common_options)
+      [::USEROPT_WEATHER, "spinner"]
+    )
     return options
   }
 
   function updateAircraft()
   {
+    lastBulletsCache = null
+    lastWeaponCache = null
+
     updateButtons()
     updateWeaponsSelector()
 
@@ -353,8 +381,11 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
     local limitedAmmo = ::get_option(::USEROPT_LIMITED_AMMO)
 
     ::aircraft_for_weapons = unit.name
-    enable_bullets_modifications(::aircraft_for_weapons)
-    enable_current_modifications(::aircraft_for_weapons)
+
+    updateBulletCountOptions(unit)
+
+    ::enable_bullets_modifications(::aircraft_for_weapons)
+    ::enable_current_modifications(::aircraft_for_weapons)
 
     ::missionBuilderVehicleConfigForBlk = {
         selectedSkin  = skinValue,
@@ -363,112 +394,46 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
         isLimitedAmmo = limitedAmmo.value,
         fuelAmount    = (fuelValue.tofloat()/1000000.0),
     }
-
-    if (unit.unitType.canUseSeveralBulletsForGun)
-      updateBulletCountOptions(unit)
   }
 
   function updateBulletCountOptions(updUnit)
   {
-    //prepare data to calc amounts
-    local groupsCount = getBulletsGroupCount(updUnit, false)
-    local bulletsInfo = getBulletsInfoForPrimaryGuns(updUnit)
-    local gunsData = []
-    for(local i = 0; i < groupsCount; i++)
+    local bulIdx = 0
+    local bulletGroups = weaponsSelectorWeak ? weaponsSelectorWeak.bulletsManager.getBulletsGroups() : []
+    foreach(idx, bulGroup in bulletGroups)
     {
-      local bInfo = ::getTblValue(i, bulletsInfo, null)
-      gunsData.append({
-        gunsAmount = ::getTblValue("guns", bInfo, 0)
-        catridge = ::getTblValue("catridge", bInfo, 0)
-        leftCatridges = ::getTblValue("total", bInfo, 0)
-        leftGroups = 0
-      })
-    }
+      local modName = bulGroup.active ? bulGroup.getBulletNameForCode(bulGroup.selectedName) : ""
 
-    local bulletSetsQuantity = updUnit.unitType.bulletSetsQuantity
-    local bulDataList = []
-    for (local groupIdx = 0; groupIdx < bulletSetsQuantity; groupIdx++)
-    {
-      local isActive = isBulletGroupActive(updUnit, groupIdx)
-
-      local gunIdx = ::get_linked_gun_index(groupIdx, groupsCount, bulletSetsQuantity)
-      local modName = ::get_last_bullets(updUnit.name, groupIdx)
-      local maxToRespawn = 0
-
-      if (isActive)
-      {
-        local bulletsSet = getBulletsSetData(updUnit, modName)
-        maxToRespawn = ::getTblValue("maxToRespawn", bulletsSet, 0)
-        if (maxToRespawn <= 0)
-          maxToRespawn = getAmmoMaxAmount(updUnit, modName, AMMO.PRIMARY)
-
-        gunsData[gunIdx].leftGroups++
-      }
-
-      bulDataList.append({
-        groupIdx = groupIdx
-        gunIdx = gunIdx
-        modName = modName
-        isActive = isActive
-        maxAmount = maxToRespawn
-        amountToSet = 0
-      })
-    }
-
-    //calc bullets amount
-    bulDataList.sort(function(a, b) {
-      if (a.maxAmount != b.maxAmount)
-        if (!a.maxAmount || !b.maxAmount)
-          return a.maxAmount ? -1 : 1
-        else
-          return a.maxAmount - b.maxAmount
-      return 0
-    })
-    foreach(bulData in bulDataList)
-    {
-      if (!bulData.isActive)
+      if (bulGroup.canChangeBulletsCount() && bulGroup.bulletsCount <= 0)
         continue
 
-      local gun = gunsData[bulData.gunIdx]
-      local catridgesToSet = (gun.leftCatridges / (gun.leftGroups || 1)).tointeger()
-      if (bulData.maxAmount)
-      {
-        local catridgesMax = (bulData.maxAmount / gun.gunsAmount).tointeger() || 1
-        catridgesToSet = ::min(catridgesToSet, catridgesMax)
-      }
-      gun.leftCatridges -= catridgesToSet
-      gun.leftGroups--
-      bulData.amountToSet = catridgesToSet * gun.gunsAmount
-    }
+      local count = bulGroup.bulletsCount * bulGroup.guns
 
-    //save bullets and count
-    bulDataList.sort(function(a, b) {
-      if (a.isActive != b.isActive)
-        return a.isActive ? -1 : 1
-      return a.groupIdx - b.groupIdx
-    })
-    foreach(bulIdx, bulData in bulDataList)
-    {
-      local modName = bulData.isActive ? bulData.modName : ""
       ::set_unit_option(updUnit.name, ::USEROPT_BULLETS0 + bulIdx, modName)
-      ::set_gui_option(::USEROPT_BULLETS0 + bulIdx, modName)
-      ::set_gui_option(::USEROPT_BULLET_COUNT0 + bulIdx, bulData.amountToSet)
+      ::set_option(::USEROPT_BULLETS0 + bulIdx, modName)
+      ::set_gui_option(::USEROPT_BULLET_COUNT0 + bulIdx, count)
+      bulIdx++
     }
-    for (local bulIdx = bulletSetsQuantity; bulIdx < ::BULLETS_SETS_QUANTITY; bulIdx++)
+    while(bulIdx < ::BULLETS_SETS_QUANTITY)
     {
       ::set_unit_option(updUnit.name, ::USEROPT_BULLETS0 + bulIdx, "")
-      ::set_gui_option(::USEROPT_BULLETS0 + bulIdx, "")
+      ::set_option(::USEROPT_BULLETS0 + bulIdx, "")
       ::set_gui_option(::USEROPT_BULLET_COUNT0 + bulIdx, 0)
+      bulIdx++
     }
   }
 
   function onDifficultyChange(obj)
   {
-    base.onDifficultyChange(obj)
+    updateVerticalTargetingOption()
     updateSceneDifficulty()
 
-    ::set_option(::USEROPT_DIFFICULTY, obj.getValue(), findOptionInContainers(::USEROPT_DIFFICULTY))
+    local diffOptionCont = findOptionInContainers(::USEROPT_DIFFICULTY)
+    ::set_option(::USEROPT_DIFFICULTY, obj.getValue(), diffOptionCont)
     updateOption(::USEROPT_LOAD_FUEL_AMOUNT)
+    ::set_option(::USEROPT_BOMB_ACTIVATION_TIME, ::get_option(
+      ::USEROPT_BOMB_ACTIVATION_TIME, {diffCode = diffOptionCont.diffCode[obj.getValue()]}).value)
+    updateOption(::USEROPT_BOMB_ACTIVATION_TIME)
   }
 
   function updateSceneDifficulty()
@@ -510,6 +475,11 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
     doWhenActiveOnce("setUnitFromSlotbar")
   }
 
+  function onEventCountryChanged(p)
+  {
+    doWhenActiveOnce("setUnitFromSlotbar")
+  }
+
   function setUnitFromSlotbar()
   {
     if (!needSlotbar)
@@ -529,8 +499,209 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
     applyOptions()
   }
 
-  function onEventCountryChanged(p)
+  function onUserModificationsUpdate(obj) {
+    local option = get_option_by_id(obj?.id)
+    if (!option)
+      return
+
+    if (option.value != obj.getValue()) {
+      guiScene.performDelayed(this, function() {
+        ::set_option(option.type, obj.getValue())
+        updateOption(option.type)
+      })
+    }
+
+    if (!weaponsSelectorWeak)
+      return
+
+    if (!obj.getValue()) {//default mod option selected
+      lastWeaponCache = weaponsSelectorWeak.getCurWeapon().name
+      setLastBulletsCache()
+
+      local defaultWeap = unit.getDefaultWeapon()
+      if (defaultWeap)
+        weaponsSelectorWeak.setWeapon(defaultWeap)
+
+      local bulletGroups = weaponsSelectorWeak.bulletsManager.getBulletsGroups()
+      foreach(idx, bulGroup in bulletGroups) {
+        if (!bulGroup.active)
+          continue
+
+        local defBulletName = bulGroup.getBulletNameByIdx(0)
+        if (bulletGroups.findvalue(@(gr) gr.selectedName == defBulletName) != null)
+          continue
+
+        weaponsSelectorWeak.bulletsManager.changeBulletsValue(bulGroup, defBulletName)
+      }
+    }
+    else//current mod option selected
+    {
+      if (lastWeaponCache)
+        weaponsSelectorWeak.setWeapon(lastWeaponCache)
+      setUnitLastBulletsFromCache()
+    }
+
+    ::enable_bullets_modifications(unit.name)
+    ::enable_current_modifications(unit.name)
+  }
+
+  function onMyWeaponOptionUpdate(obj)
   {
-    doWhenActiveOnce("setUnitFromSlotbar")
+    local option = get_option_by_id(obj?.id)
+    if (!option) return
+
+    ::set_option(option.type, obj.getValue(), option)
+    if ("hints" in option)
+      obj.tooltip = option.hints[ obj.getValue() ]
+    else if ("hint" in option)
+      obj.tooltip = ::g_string.stripTags( ::loc(option.hint, "") )
+    checkBulletsRows()
+    updateWeaponOptions()
+  }
+
+  function setLastBulletsCache()
+  {
+    local bulletGroups = weaponsSelectorWeak ? weaponsSelectorWeak.bulletsManager.getBulletsGroups() : []
+    lastBulletsCache = bulletGroups.filter(@(bulGroup) bulGroup.active).map(@(bulGroup) {
+      groupIndex = bulGroup.groupIndex,
+      bulletName = bulGroup.selectedName
+    })
+  }
+
+  function setUnitLastBulletsFromCache()
+  {
+    if (!weaponsSelectorWeak)
+      return
+
+    if ((lastBulletsCache?.len() ?? 0) == 0)
+      return
+
+    foreach (groupInfo in lastBulletsCache)
+    {
+      local bulGroup = weaponsSelectorWeak.getBulletGroupByIndex(groupInfo.groupIndex)
+      if (bulGroup)
+        weaponsSelectorWeak.bulletsManager.changeBulletsValue(bulGroup, groupInfo.bulletName)
+    }
+  }
+
+  function checkVehicleModificationRow() {
+    local option = findOptionInContainers(::USEROPT_MODIFICATIONS)
+    if (option && !option.value) {
+      local referenceWeap = unit.getDefaultWeapon() == getLastWeapon(unit.name)
+
+      if (referenceWeap) {
+        local bulletGroups = weaponsSelectorWeak.bulletsManager.getBulletsGroups()
+        foreach(idx, bulGroup in bulletGroups) {
+          local defBulletName = bulGroup.getBulletNameByIdx(0)
+          if (bulGroup.selectedName != defBulletName) {
+            referenceWeap = false
+            break
+          }
+        }
+      }
+
+      if (!referenceWeap) {
+        guiScene.performDelayed(this, function() {
+          ::set_option(option.type, 1)
+          updateOption(option.type)
+        })
+      }
+    }
+  }
+
+  function checkRocketDisctanceFuseRow()
+  {
+    local option = findOptionInContainers(::USEROPT_ROCKET_FUSE_DIST)
+    if (!option)
+      return
+
+    showOptionRow(option, !!unit && unit.getAvailableSecondaryWeapons().hasRocketDistanceFuse)
+  }
+
+  function checkBombActivationTimeRow()
+  {
+    local option = findOptionInContainers(::USEROPT_BOMB_ACTIVATION_TIME)
+    if (!option)
+      return
+
+    showOptionRow(option, !!unit && unit.getAvailableSecondaryWeapons().hasBombs)
+  }
+
+  function checkBombSeriesRow()
+  {
+    local option = findOptionInContainers(::USEROPT_BOMB_SERIES)
+    if (!option)
+      return
+
+    showOptionRow(option, bombNbr(unit) > 1)
+
+    updateOption(::USEROPT_BOMB_SERIES)
+  }
+
+  function checkFlaresPeriodsRow()
+  {
+    local option = ::get_option(::USEROPT_FLARES_PERIODS)
+    if (!option)
+      return
+
+    showOptionRow(option, hasFlares(unit))
+  }
+
+  function checkFlaresSeriesRow()
+  {
+    local option = ::get_option(::USEROPT_FLARES_SERIES)
+    if (!option)
+      return
+
+    showOptionRow(option, hasFlares(unit))
+  }
+
+  function checkFlaresSeriesPeriodsRow()
+  {
+    local option = ::get_option(::USEROPT_FLARES_SERIES_PERIODS)
+    if (!option)
+      return
+
+    showOptionRow(option, hasFlares(unit))
+  }
+
+  function checkDepthChargeActivationTimeRow()
+  {
+    local option = findOptionInContainers(::USEROPT_DEPTHCHARGE_ACTIVATION_TIME)
+    if (!option)
+      return
+
+    showOptionRow(option, unit?.isDepthChargeAvailable?()
+      && unit.getAvailableSecondaryWeapons().hasDepthCharges)
+  }
+
+  function updateVerticalTargetingOption()
+  {
+    local optList = find_options_in_containers([::USEROPT_GUN_VERTICAL_TARGETING])
+    if (!optList.len())
+      return
+    local diffName = getOptValue(::USEROPT_DIFFICULTY, false)
+    if (diffName == null) //no such option in current options list
+      return
+
+    foreach(option in optList)
+      showOptionRow(option, diffName != ::g_difficulty.ARCADE.name)
+  }
+
+  function onEventBulletsGroupsChanged(p) {
+    checkVehicleModificationRow()
+  }
+
+  function onEventUnitWeaponChanged(p) {
+    checkVehicleModificationRow()
+    updateWeaponOptions()
+  }
+
+  function onEventModificationChanged(p) {
+    doWhenActiveOnce("updateFlaresOptions")
+  }
+
+  function onEventModificationPurchased(p) {
+    doWhenActiveOnce("updateFlaresOptions")
   }
 }

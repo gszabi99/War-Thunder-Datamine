@@ -11,7 +11,6 @@ if (!("gui_bhv_deprecated" in ::getroottable()))
 foreach (fn in [
                  "wrapDir.nut"
                  "lastNavigatorWrap.nut"
-                 "guiBhvUtils.nut"
                  "bhvOptionsNavigator.nut"
                  "bhvTableNavigator.nut" //depend on OptionsNavigator
                  "bhvColumnNavigator.nut"

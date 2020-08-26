@@ -12,6 +12,10 @@
   "RudderSens": 0.3,
   "ElevatorSens": 0.4,
   "AileronSens": 0.17,
+  "RudderSensMultipler": 1.0,
+  "ElevatorSensMultipler": 1.0,
+  "AileronSensMultipler": 1.0,
+  "ElevatorSensCl": 0.0,
   "GearActuatorSpeed": 0.1,
   "CockpitDoorSpeedOpen": [150.0,300.0,0.5,0.02],
   "CockpitDoorSpeedClose": [150.0,300.0,0.5,1.0],
@@ -41,7 +45,9 @@
   "RudderAngles": [39.0,39.0],
   "InterceptorType": 0,
   "Elevon": false,
+  "ElevonPitchAngleSens": 0.0,
   "VSlats": [135.0,170.0],
+  "FlapsToSlats": [0.0,0.0,0.0,0.0],
   "Vne": 715.0,
   "VneControl": 715.0,
   "VneMach": 0.85,
@@ -54,11 +60,12 @@
   "RollLeveling": true,
   "ArcadeMaxRollCoeff": 1.0,
   "ArcadeYawMutilpliers": [2.0,4.0,1.0],
+  "ArcadePitchModificators": [0.0,1.0,1.0],
   "AileronMaxDv": 8.9286,
   "ElevatorMaxDv": 3.7271,
   "RudderMaxDv": 5.618,
   "CockpitOpenedDoorBreakSpeed": -1.0,
-  "MomentOfInertia": [22923.0,50000.0,27703.0],
+  "MomentOfInertia": [36446.0,80908.0,46362.0],
   "AvailableControls": {
     "hasAileronControl": true,
     "hasAileronTrimControl": false,
@@ -74,8 +81,6 @@
     "dvRudderTrim": 0.09,
     "hasFlapsControl": true,
     "canTakeoffWithoutFlaps": true,
-    "hasTakeoffFlapsPosition": true,
-    "hasCombatFlapsPosition": true,
     "hasAirbrake": false,
     "hasGearControl": true,
     "hasArrestorControl": false,
@@ -90,14 +95,14 @@
     "PreciseRotStopDetection": false
   },
   "Areas": {
-    "WingLeftIn": 9.0,
+    "WingLeftIn": 7.5,
     "WingLeftMid": 5.8,
-    "WingLeftOut": 4.4,
-    "WingRightIn": 9.0,
+    "WingLeftOut": 4.1,
+    "WingRightIn": 7.5,
     "WingRightMid": 5.8,
-    "WingRightOut": 4.4,
+    "WingRightOut": 4.1,
     "Aileron": 1.12,
-    "Fuselage": 38.4,
+    "Fuselage": 28.4,
     "Stabilizer": 3.6,
     "Elevator": 1.744,
     "Keel": 1.5,
@@ -110,6 +115,7 @@
     "FlapsShift": [0.05,0.0],
     "AirbrakesShift": [0.0,0.0],
     "GearFocusShift": [0.0,0.0],
+    "ElevonFocusShift": [0.0,0.0],
     "GearShift": -0.15,
     "WingInFocus": 1.3,
     "WingMidFocus": 3.2,
@@ -135,8 +141,6 @@
     "FuseCd": 0.0,
     "AirbrakeCd": 0.0,
     "CockpitDoorCd": 0.007,
-    "FlapsPolarBlending1": [0.0,0.0],
-    "FlapsPolarBlending2": [1.0,1.0],
     "ClToCmCoeff": 0.0,
     "UseSpinLoss": true,
     "SpinClLoss": 0.2,
@@ -190,19 +194,51 @@
     "DownwashCoeff": 1.0,
     "StabFlowInertia": 0.04,
     "VertStabFlowInertia": 0.04,
+    "FlapsAxis": {
+      "Retracted": {
+        "Presents": true,
+        "Flaps": 0.0
+      },
+      "Combat": {
+        "Presents": true,
+        "Flaps": 0.2
+      },
+      "Takeoff": {
+        "Presents": true,
+        "Flaps": 0.33
+      },
+      "Landing": {
+        "Presents": true,
+        "Flaps": 1.0
+      }
+    },
+    "Flaps0": {
+      "Flaps": 0.0,
+      "FlapsPolarBlending": 0.0,
+      "FlapsAnimation": 0.0,
+      "Stab": 0.0,
+      "Slats": 0.0
+    },
+    "Flaps1": {
+      "Flaps": 1.0,
+      "FlapsPolarBlending": 1.0,
+      "FlapsAnimation": 1.0,
+      "Stab": 0.0,
+      "Slats": 0.0
+    },
     "NoFlaps": {
       "Cl0": 0.1,
-      "alphaCritHigh": 18.2,
+      "alphaCritHigh": 17.2,
       "alphaCritLow": -14.0,
-      "ClCritHigh": 1.33,
+      "ClCritHigh": 1.2,
       "ClCritLow": -0.9,
       "CdMin": 0.012
     },
     "FullFlaps": {
       "Cl0": 0.8,
-      "alphaCritHigh": 17.1,
+      "alphaCritHigh": 16.1,
       "alphaCritLow": -17.0,
-      "ClCritHigh": 1.95,
+      "ClCritHigh": 1.75,
       "ClCritLow": -0.3,
       "CdMin": 0.095
     },
@@ -1138,7 +1174,7 @@
   "Propeller0": {
     "Type": 0,
     "AxisDirection": [-0.0,0.0],
-    "CyclicPitchAxisDirectionPitch": [0.0,90.0],
+    "CyclicPitchAxisDirectionPitch": [-180.0,90.0],
     "Pos": [2.65,0.0,2.35],
     "Geometry": {
       "RotationDirection": 1
@@ -1147,7 +1183,7 @@
   "Propeller1": {
     "Type": 1,
     "AxisDirection": [-0.0,0.0],
-    "CyclicPitchAxisDirectionPitch": [0.0,90.0],
+    "CyclicPitchAxisDirectionPitch": [-180.0,90.0],
     "Pos": [2.65,0.0,-2.35],
     "Geometry": {
       "RotationDirection": 1
@@ -1300,7 +1336,7 @@
   },
   "Gear": {
     "SinkFactor": 1000.0,
-    "SinkRateMult": 0.2057,
+    "SinkRateMult": 0.2091,
     "WaterFriction": 1.0,
     "WaterFrictionDefault": 3.0,
     "UseCenterOfGravity": false,
@@ -1573,15 +1609,12 @@
   "Autopilot": {
     "Roll": {
       "RateMax": [0.0,0.0],
-      "RateDeadZone": 0.0,
       "AngleMax": [0.0,0.0],
-      "AngleDeadZone": 0.0,
       "VelMax": [0.0,0.0],
-      "VelDeadZone": 0.0,
-      "PosHoldVelTreshold": 2.0,
-      "PosHoldTimeOut": 2.0,
-      "AngleLimByRaltitude": [0.0,190.0,0.0,190.0],
       "AngleLim": 190.0,
+      "RollTimeMult": 1.0,
+      "AutoAngleMax": [0.0,0.0],
+      "AutoAngleToAutoRateMult": 3.0,
       "RatePID": {
         "Kp": 0.0,
         "Ki": 0.0,
@@ -1607,6 +1640,14 @@
         "Lim": [-2147440000.0,2147440000.0]
       },
       "PosPID": {
+        "Kp": 0.0,
+        "Ki": 0.0,
+        "Imax": 0.0,
+        "Kd": 0.0,
+        "dTau": 0.0208,
+        "Lim": [-2147440000.0,2147440000.0]
+      },
+      "AutoRatePidMult": {
         "Kp": 0.0,
         "Ki": 0.0,
         "Imax": 0.0,
@@ -1617,15 +1658,17 @@
     },
     "Pitch": {
       "RateMax": [0.0,0.0],
-      "RateDeadZone": 0.0,
       "AngleMax": [0.0,0.0],
-      "AngleDeadZone": 0.0,
       "VelMax": [0.0,0.0],
-      "VelDeadZone": 0.0,
-      "PosHoldVelTreshold": 2.0,
-      "PosHoldTimeOut": 2.0,
-      "AngleLimByRaltitude": [0.0,190.0,0.0,190.0],
       "AngleLim": 190.0,
+      "BalanceLoadFactor": true,
+      "MaxAoaFactorMult": 0.95,
+      "LoadFactorTimeMult": 1.0,
+      "AoaTimeMult": 1.0,
+      "AoaDiffMax": 2147440000.0,
+      "AoaDiffSpeedMax": 2147440000.0,
+      "ClimbAngleMax": [0.0,0.0],
+      "ClimbAngleToLoadFactor": 0.7,
       "RatePID": {
         "Kp": 0.0,
         "Ki": 0.0,
@@ -1657,13 +1700,32 @@
         "Kd": 0.0,
         "dTau": 0.0208,
         "Lim": [-2147440000.0,2147440000.0]
+      },
+      "LoadFactorPidMult": {
+        "Kp": 0.0,
+        "Ki": 0.0,
+        "Imax": 0.0,
+        "Kd": 0.0,
+        "dTau": 0.0208,
+        "Lim": [-2147440000.0,2147440000.0]
+      },
+      "AoaPidMult": {
+        "Kp": 0.0,
+        "Ki": 0.0,
+        "Imax": 0.0,
+        "Kd": 0.0,
+        "dTau": 0.0208,
+        "Lim": [-2147440000.0,2147440000.0]
       }
     },
     "Yaw": {
       "RateMax": [0.0,0.0],
-      "RateDeadZone": 0.0,
-      "HeadingHoldRateTreshold": 2.0,
-      "HeadingHoldTimeOut": 0.5,
+      "LateralLoadFactorTimeMult": 1.0,
+      "AosTimeMult": 1.0,
+      "Trim": {
+        "Source": "",
+        "PropTorqueAxis": [0.0,0.0,0.0]
+      },
       "RatePID": {
         "Kp": 0.0,
         "Ki": 0.0,
@@ -1680,9 +1742,21 @@
         "dTau": 0.0208,
         "Lim": [-2147440000.0,2147440000.0]
       },
-      "Trim": {
-        "Source": "",
-        "PropTorqueAxis": [0.0,0.0,0.0]
+      "LoadFactorPidMult": {
+        "Kp": 0.0,
+        "Ki": 0.0,
+        "Imax": 0.0,
+        "Kd": 0.0,
+        "dTau": 0.0208,
+        "Lim": [-2147440000.0,2147440000.0]
+      },
+      "AosPidMult": {
+        "Kp": 0.0,
+        "Ki": 0.0,
+        "Imax": 0.0,
+        "Kd": 0.0,
+        "dTau": 0.0208,
+        "Lim": [-2147440000.0,2147440000.0]
       }
     },
     "Propulsor": {
@@ -1694,10 +1768,6 @@
     "Throttle": {
       "Limits": [0.0,1.0],
       "ClimbMax": [0.0,0.0],
-      "ClimbDeadZone": 0.0,
-      "AltMax": [0.0,0.0],
-      "AltDeadZone": 0.0,
-      "AltHoldClimbTreshold": 0.0,
       "ClimbMinLimByHorSpeed": [0.0,-2147440000.0,0.0,-2147440000.0],
       "ClimbMinLimByRAltitude": [0.0,-2147440000.0,0.0,-2147440000.0],
       "ClimbPID": {
@@ -1719,16 +1789,13 @@
     },
     "Aim": {
       "Horizontal": true,
-      "AxesTreshold": 0.0,
       "HeadingToRoll": [0.0,0.0,0.0,0.0],
-      "RollLimByRaltitude": [0.0,190.0,0.0,190.0],
       "RollRateMax": 0.0,
       "HeadingToRollMultByIas": [0.0,0.0,0.0,0.0],
       "RollLim": 180.0,
       "DriftControlByRoll": [0.0,0.0],
       "OverridenRollLim": 30.0,
       "PitchMax": 0.0,
-      "PitchLimByRaltitude": [0.0,190.0,0.0,190.0],
       "PitchRateMax": 0.0,
       "PitchLim": 180.0,
       "YawHeadingToYawRateMultByIas": [0.0,0.0,0.0,0.0],

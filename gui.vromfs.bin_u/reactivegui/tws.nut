@@ -1,5 +1,6 @@
 local screenState = require("style/screenState.nut")
 local warningSystemState = require("twsState.nut")
+local helicopterElem = require("helicopterHudElems.nut");
 
 local backgroundColor = Color(0, 0, 0, 50)
 
@@ -67,7 +68,11 @@ local function background(colorStyle) {
     local backgroundTargets = []
     backgroundTargets.append(createCircle(colorStyle))
     backgroundTargets.append(createAzimuthMark(colorStyle))
-
+    backgroundTargets.append(helicopterElem.aircraftIcon({
+      colorStyle = colorStyle,
+      pos = [0, 0],
+      size = [pw(33), ph(33)]
+    }))
      return backgroundTargets
   }
 
@@ -192,7 +197,7 @@ local function createLwsTarget(index, colorStyle)
     pos = [pw(50), ph(50)]
     transform = {
       pivot = [0.0, 0.0]
-      rotate = math.atan2(target.y, target.x) * (180.0 / math.PI) + 135
+      rotate = math.atan2(target.y, target.x) * (180.0 / math.PI) - 45
     }
     children = [
       targetComponent

@@ -325,6 +325,16 @@ return [
     checkGroup = ctrlGroups.HELICOPTER
     checkAssign = false
   }
+  {
+    id = "ID_TOGGLE_CANNONS_AND_ROCKETS_BALLISTIC_COMPUTER_HELICOPTER"
+    checkAssign = false
+    showFunc = @() ::has_feature("ConstantlyComputedWeaponSight")
+  }
+  {
+    id = "ID_SWITCH_COCKPIT_SIGHT_MODE_HELICOPTER"
+    checkAssign = false
+    showFunc = @() ::has_feature("ConstantlyComputedWeaponSight")
+  }
 //-------------------------------------------------------
   {
     id = "ID_HELICOPTER_VIEW_HEADER"
@@ -579,16 +589,6 @@ return [
     id = "ID_THERMAL_WHITE_IS_HOT_HELI"
     checkGroup = ctrlGroups.HELICOPTER
     checkAssign = false
-  }
-  {
-    id = "ID_TOGGLE_CANNONS_AND_ROCKETS_BALLISTIC_COMPUTER_HELICOPTER"
-    checkAssign = false
-    showFunc = @() ::has_feature("ConstantlyComputedWeaponSight")
-  }
-  {
-    id = "ID_SWITCH_COCKPIT_SIGHT_MODE_HELICOPTER"
-    checkAssign = false
-    showFunc = @() ::has_feature("ConstantlyComputedWeaponSight")
   }
   {
     id = "ID_REQUEST_DETECT_ALLY_HELI"

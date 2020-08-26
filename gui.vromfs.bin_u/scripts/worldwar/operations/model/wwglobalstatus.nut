@@ -63,6 +63,11 @@ local function actionWithGlobalStatusRequest(actionName, requestBlk, taskOptions
     if (onSuccessCb)
       onSuccessCb()
   }, this)
+  if (requestBlk == null)
+    requestBlk = ::DataBlock()
+
+  requestBlk.addBlock("reqParams")
+  requestBlk.reqParams.ERF_FAIL_ONCE = true
 
   ::g_tasker.charRequestJson(actionName, requestBlk, taskOptions, cb, onErrorCb)
 }
