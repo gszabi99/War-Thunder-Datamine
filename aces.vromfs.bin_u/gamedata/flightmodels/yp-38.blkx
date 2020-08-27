@@ -2,9 +2,7 @@
   "model": "yp_38",
   "thisIsFakeDM": true,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_fighter_metaparts.blk",
-  "fmFile": "fm/yp-38.blk",
-  "gearSinkRangeLR": 0.22,
-  "gearSinkRangeC": 0.168,
+  "fmFile": "fm/p-38g.blk",
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "advancedInstructor": true,
@@ -18,7 +16,7 @@
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
-  "fireParamsPreset": "600kph",
+  "fireParamsPreset": "700kph",
   "DamageParts": {
     "wood": {
       "elevator_dm": {
@@ -994,21 +992,21 @@
     {
       "Weapon": {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning30_usaaf.blk",
+        "blk": "gameData/Weapons/gunBrowning50_usaaf.blk",
         "emitter": "flare1",
         "flash": "flare1",
         "bullets": 500,
-        "dm": "mgun5_dm",
+        "dm": "mgun1_dm",
         "spread": 1.0
       }
     },
     {
       "Weapon": {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning50_early.blk",
+        "blk": "gameData/Weapons/gunBrowning50_usaaf.blk",
         "emitter": "flare2",
         "flash": "flare2",
-        "bullets": 200,
+        "bullets": 500,
         "dm": "mgun2_dm",
         "traceOffset": 1,
         "spread": 1.0
@@ -1017,10 +1015,10 @@
     {
       "Weapon": {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning50_early.blk",
+        "blk": "gameData/Weapons/gunBrowning50_usaaf.blk",
         "emitter": "flare3",
         "flash": "flare3",
-        "bullets": 200,
+        "bullets": 500,
         "dm": "mgun3_dm",
         "traceOffset": 2,
         "spread": 1.0
@@ -1029,11 +1027,11 @@
     {
       "Weapon": {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning30_usaaf.blk",
+        "blk": "gameData/Weapons/gunBrowning50_usaaf.blk",
         "emitter": "flare4",
         "flash": "flare4",
         "bullets": 500,
-        "dm": "mgun6_dm",
+        "dm": "mgun4_dm",
         "traceOffset": 3,
         "spread": 1.0
       }
@@ -1041,21 +1039,56 @@
     {
       "Weapon": {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonM4.blk",
+        "blk": "gameData/Weapons/cannonAN_M2.blk",
         "emitter": "flare5",
         "flash": "flare5",
-        "bullets": 15,
-        "dm": "cannon2_dm",
+        "bullets": 150,
+        "dm": "cannon1_dm",
         "spread": 1.0
+      }
+    },
+    {
+      "hideDmParts": [
+        {
+          "node": "cannon2_dm"
+        },
+        {
+          "node": "mgun5_dm"
+        },
+        {
+          "node": "mgun6_dm"
+        }
+      ]
+    },
+    {
+      "hideNodes": [
+        {
+          "node": "mgun_7_62_1"
+        },
+        {
+          "node": "mgun_7_62_2"
+        },
+        {
+          "node": "gun37"
+        }
+      ]
+    }
+  ],
+  "weapon_presets": [
+    {
+      "preset": {
+        "name": "p-38g_default",
+        "blk": "gameData/FlightModels/weaponPresets/p-38g_default.blk"
+      }
+    },
+    {
+      "preset": {
+        "name": "p-38g_6xbazooka",
+        "blk": "gameData/FlightModels/weaponPresets/p-38j_6xbazooka.blk",
+        "reqModification": "bazooka_pylon"
       }
     }
   ],
-  "weapon_presets": {
-    "preset": {
-      "name": "p-38g_default",
-      "blk": "gameData/FlightModels/weaponPresets/p-38g_default.blk"
-    }
-  },
   "jetwash": {
     "radius": 10.0,
     "minDist": 50.0,
@@ -1072,7 +1105,7 @@
     "radiusSpeed": 2.0
   },
   "fireParams": {
-    "engineExtinguishFireSpeed": [82.0,194.0],
+    "engineExtinguishFireSpeed": [138.0,223.0],
     "engineExtinguishFireSpeedChance": [0.01,0.1],
     "fireDamagePowerRel": 0.05,
     "nonExtinguishFireTime": 5.0
@@ -1224,35 +1257,120 @@
     "new_radiator": [],
     "new_compressor": [],
     "new_engine_injection": [],
-    "30cal_universal": [],
-    "30cal_tracer": [],
-    "30cal_stealth": [],
-    "bmg30_belt_pack": {
-      "tier": 1
-    },
-    "bmg30_new_gun": {
-      "reqModification": "bmg30_belt_pack",
-      "tier": 2
-    },
     "50cal_universal": [],
     "50cal_ground_targets": [],
     "50cal_tracers": [],
     "50cal_stealth": [],
-    "bmg50_belt_pack": {
-      "tier": 3
-    },
+    "bmg50_belt_pack": [],
     "bmg50_new_gun": {
-      "reqModification": "bmg50_belt_pack",
-      "tier": 4
+      "reqModification": "bmg50_belt_pack"
     },
-    "m4_universal": [],
-    "m4_ground_targets": [],
-    "m4_belt_pack": {
-      "tier": 1
+    "an_m2_universal": [],
+    "an_m2_ground_targets": [],
+    "an_m2_air_targets": [],
+    "an_m2_stealth": [],
+    "anm2_belt_pack": [],
+    "anm2_new_gun": {
+      "reqModification": "anm2_belt_pack"
     },
-    "m4_new_gun": {
+    "bazooka_pylon": {
       "tier": 3,
-      "reqModification": "m4_belt_pack"
+      "modClass": "weapon"
+    },
+    "yp_38_37mm_mod": {
+      "modClass": "weapon",
+      "invertEnableLogic": false,
+      "effects": {
+        "commonWeapons": [
+          {
+            "Weapon": {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunBrowning50_usaaf.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "shell": "emtr_shellrejection1",
+              "dm": "mgun1_dm",
+              "bullets": 500,
+              "spread": 1.0,
+              "traceOffset": 1
+            }
+          },
+          {
+            "Weapon": {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunBrowning30_usaaf.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "shell": "emtr_shellrejection2",
+              "dm": "mgun5_dm",
+              "bullets": 500,
+              "spread": 1.0
+            }
+          },
+          {
+            "Weapon": {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunBrowning30_usaaf.blk",
+              "emitter": "flare3",
+              "flash": "flare3",
+              "shell": "emtr_shellrejection2",
+              "dm": "mgun6_dm",
+              "bullets": 500,
+              "spread": 1.0
+            }
+          },
+          {
+            "Weapon": {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunBrowning50_usaaf.blk",
+              "emitter": "flare4",
+              "flash": "flare4",
+              "shell": "emtr_shellrejection4",
+              "dm": "mgun4_dm",
+              "bullets": 500,
+              "spread": 1.0
+            }
+          },
+          {
+            "Weapon": {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonAN_M2.blk",
+              "emitter": "flare5",
+              "flash": "flare5",
+              "dm": "cannon2_dm",
+              "bullets": 15,
+              "spread": 1.0,
+              "counterIndex": 2
+            }
+          },
+          {
+            "hideDmParts": [
+              {
+                "node": "cannon1_dm"
+              },
+              {
+                "node": "mgun2_dm"
+              },
+              {
+                "node": "mgun3_dm"
+              }
+            ]
+          },
+          {
+            "hideNodes": [
+              {
+                "node": "gun3"
+              },
+              {
+                "node": "gun2"
+              },
+              {
+                "node": "gun20"
+              }
+            ]
+          }
+        ]
+      }
     }
   },
   "user_skin": [

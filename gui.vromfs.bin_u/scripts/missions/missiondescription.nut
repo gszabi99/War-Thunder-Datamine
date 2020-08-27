@@ -12,8 +12,6 @@
 */
 
 local { getWeaponNameText } = require("scripts/weaponry/weaponryVisual.nut")
-local { checkJoystickThustmasterHotas } = require("scripts/controls/hotas.nut")
-
 class ::gui_handlers.MissionDescription extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
@@ -179,7 +177,7 @@ class ::gui_handlers.MissionDescription extends ::gui_handlers.BaseGuiHandlerWT
       config.objectiveItem <- ::loc("sm_objective") + ::loc("ui/colon")
       config.objective <- ::loc("missions/"+mission.id+"/objective")
 
-      if (checkJoystickThustmasterHotas(false) && gm == ::GM_TRAINING)
+      if (::check_joystick_thustmaster_hotas(false) && gm == ::GM_TRAINING)
       {
         if (::is_mission_for_unittype(blk, ::ES_UNIT_TYPE_TANK))
           config.hotas4_tutorial_usage_restriction <- ::loc("tutorials/hotas_restriction/tank")

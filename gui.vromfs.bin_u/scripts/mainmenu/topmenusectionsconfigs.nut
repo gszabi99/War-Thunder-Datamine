@@ -1,7 +1,5 @@
-require("scripts/mainmenu/topMenuButtonsConfigs.nut") //Independed Module. Need for init buttons configs
-
-local enums = require("sqStdlibs/helpers/enums.nut")
-local buttonsList = require("scripts/mainmenu/topMenuButtons.nut").buttonsListWatch.value
+local enums = ::require("sqStdlibs/helpers/enums.nut")
+local { buttonsList } = require("scripts/mainmenu/topMenuButtons.nut")
 
 // Priority for separation on buttons.
 enum topMenuLeftSideMergeIndex {

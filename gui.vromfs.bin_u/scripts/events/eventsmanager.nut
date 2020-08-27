@@ -2746,10 +2746,6 @@ class Events
     recalcAllEventsDisplayType()
   }
 
-  function onEventPS4OnlyLeaderboardsValueChanged(p) {
-    _leaderboards.resetLbCache()
-  }
-
   // game mode allows to join either from queue or from rooms list
   function isLobbyGameMode(mGameMode)
   {

@@ -1,5 +1,4 @@
 local stdMath = require("std/math.nut")
-local { checkJoystickThustmasterHotas } = require("scripts/controls/hotas.nut")
 
 const NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID = "statistic:new_player_tutorial_choice"
 ::skip_tutorial_bitmask_id <- "skip_tutorial_bitmask"
@@ -215,7 +214,7 @@ class ::gui_handlers.NextTutorialHandler extends ::gui_handlers.BaseGuiHandlerWT
   local usePresetFileName = ""
   local preset = ::g_controls_presets.getCurrentPreset()
   if (preset.name.indexof("hotas4") != null
-      && checkJoystickThustmasterHotas(false)
+      && ::check_joystick_thustmaster_hotas(false)
       && ! ::has_feature("DisableSwitchPresetOnTutorialForHotas4"))
     {
       usePresetFileName = preset.fileName
@@ -474,9 +473,9 @@ class ::gui_handlers.ShowTutorialRewardHandler extends ::gui_handlers.BaseGuiHan
   local tutorial = "fighter"
 
   local curUnit = ::get_show_aircraft()
-  if (curUnit?.isTank() && ::has_feature("Tanks"))
+  if (curUnit && ::isTank(curUnit) && ::has_feature("Tanks"))
     tutorial = "lightTank"
-  else if (curUnit?.isShip() && ::has_feature("Ships"))
+  else if (curUnit && ::isShip(curUnit) && ::has_feature("Ships"))
     tutorial = "boat"
 
   if (!::gui_start_checkTutorial(tutorial))

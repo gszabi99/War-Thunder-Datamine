@@ -1,10 +1,4 @@
 local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
-local { AMMO,
-        getAmmoCost,
-        getAmmoAmount,
-        getAmmoMaxAmount,
-        getAmmoAmountData } = require("scripts/weaponry/ammoInfo.nut")
 
 global const UNIT_WEAPONS_ZERO    = 0
 global const UNIT_WEAPONS_WARNING = 1
@@ -75,56 +69,6 @@ local WEAPON_TEXT_PARAMS = { //const
   weaponsFilterFunc     = null //function. When set, only filtered weapons are collected from weaponPreset.
 }
 
-local function isWeaponAux(weapon)
-{
-  local aux = false
-  foreach (tag in weapon.tags)
-    if (tag == "aux")
-    {
-      aux = true
-      break
-    }
-  return aux
-}
-
-local function isWeaponEnabled(unit, weapon)
-{
-  return ::shop_is_weapon_available(unit.name, weapon.name, true, false) //no point to check purchased unit even in respawn screen
-         //temporary hack: check ammo amount for forced units by mission,
-         //because shop_is_weapon_available function work incorrect with them
-         && (!::is_game_mode_with_spendable_weapons()
-             || getAmmoAmount(unit, weapon.name, AMMO.WEAPON)
-             || !getAmmoMaxAmount(unit, weapon.name, AMMO.WEAPON)
-            )
-         && (!::is_in_flight()
-             || ::g_mis_custom_state.getCurMissionRules().isUnitWeaponAllowed(unit, weapon))
-}
-
-local function isWeaponVisible(unit, weapon, onlyBought = true, weaponTags = null)
-{
-  if (isWeaponAux(weapon))
-    return false
-
-  if (weaponTags != null)
-  {
-    local hasTag = false
-    foreach(t in weaponTags)
-      if (weapon?.t)
-      {
-        hasTag = true
-        break
-      }
-    if (!hasTag)
-      return false
-  }
-
-  if (onlyBought &&  !::shop_is_weapon_purchased(unit.name, weapon.name)
-      && getAmmoCost(unit, weapon.name, AMMO.WEAPON) > ::zero_money)
-    return false
-
-  return true
-}
-
 local function getLastWeapon(unitName)
 {
   local res = ::get_last_weapon(unitName)
@@ -136,8 +80,8 @@ local function getLastWeapon(unitName)
   if (!unit)
     return res
   foreach(weapon in unit.weapons)
-    if (isWeaponVisible(unit, weapon)
-        && isWeaponEnabled(unit, weapon))
+    if (::is_weapon_visible(unit, weapon)
+        && ::is_weapon_enabled(unit, weapon))
     {
       ::set_last_weapon(unitName, weapon.name)
       return weapon.name
@@ -152,30 +96,6 @@ local function setLastWeapon(unitName, weaponName)
 
   ::set_last_weapon(unitName, weaponName)
   ::broadcastEvent("UnitWeaponChanged", { unitName = unitName, weaponName = weaponName })
-}
-
-local function getWeaponNameByBlkPath(weaponBlkPath)
-{
-  local idxLastSlash = ::g_string.lastIndexOf(weaponBlkPath, "/")
-  local idxStart = idxLastSlash != ::g_string.INVALID_INDEX ? (idxLastSlash + 1) : 0
-  local idxEnd = ::g_string.endsWith(weaponBlkPath, ".blk") ? -4 : weaponBlkPath.len()
-  return weaponBlkPath.slice(idxStart, idxEnd)
-}
-
-local function isWeaponParamsEqual(item1, item2)
-{
-  if (typeof(item1) != "table" || typeof(item2) != "table" || !item1.len() || !item2.len())
-    return false
-  local skipParams = [ "num", "ammo" ]
-  foreach (idx, val in item1)
-    if (!::isInArray(idx, skipParams) && !::u.isEqual(val, item2?[idx]))
-      return false
-  return true
-}
-
-local function isCaliberCannon(caliber_mm)
-{
-  return caliber_mm >= 15
 }
 
 local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null, wConf = null)
@@ -234,7 +154,7 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
     { //not a turret
       currentTypeName = WEAPON_TYPE.GUNS
       if (weaponBlk?.bullet && typeof(weaponBlk?.bullet) == "instance"
-          && isCaliberCannon(1000 * ::getTblValue("caliber", weaponBlk?.bullet, 0)))
+          && ::isCaliberCannon(1000 * ::getTblValue("caliber", weaponBlk?.bullet, 0)))
         currentTypeName = WEAPON_TYPE.CANNONS
     }
     else if (weaponBlk?.fuelTankGun || weaponBlk?.boosterGun || weaponBlk?.airDropGun || weaponBlk?.undercarriageGun)
@@ -366,11 +286,11 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
     if (!(currentTypeName in weapons))
       weapons[ currentTypeName ] <- []
 
-    local weaponName = getWeaponNameByBlkPath(weapon.blk)
+    local weaponName = ::get_weapon_name_by_blk_path(weapon.blk)
     local trIdx = -1
     foreach(idx, t in weapons[currentTypeName])
       if (weapon.trigger == t.trigger ||
-          ((weaponName in t) && isWeaponParamsEqual(item, t[weaponName])))
+          ((weaponName in t) && ::is_weapon_params_equal(item, t[weaponName])))
       {
         trIdx = idx
         break
@@ -380,7 +300,7 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
     // (except guns, because there exists different guns with equal params)
     if (trIdx >= 0 && !(weaponName in weapons[currentTypeName][trIdx]) && weaponTag != WEAPON_TAG.BULLET)
       foreach (name, existingItem in weapons[currentTypeName][trIdx])
-        if (isWeaponParamsEqual(item, existingItem))
+        if (::is_weapon_params_equal(item, existingItem))
         {
           weaponName = name
           break
@@ -469,11 +389,10 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
     local torpedoMod = "torpedoes_movement_mode"
     if (::shop_is_modification_enabled(unit.name, torpedoMod))
     {
-      local mod = getModificationByName(unit, torpedoMod)
+      local mod = ::getModificationByName(unit, torpedoMod)
       local diffId = ::get_difficulty_by_ediff(ediff ?? ::get_current_ediff()).crewSkillName
       local effects = mod?.effects?[diffId]
-      local torpedoAffected = effects?.torpedoAffected ?? ""
-      if (effects && (torpedoAffected == "" || torpedoAffected == weapon.blk))
+      if (effects)
       {
         weapon = clone weapon
         foreach (k, v in weapon)
@@ -534,50 +453,6 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
   return "".concat(res.len() ? newLine : "", newLine.join(res))
 }
 
-local function getPrimaryWeaponsList(unit)
-{
-  if(unit.primaryWeaponMods)
-    return unit.primaryWeaponMods
-
-  unit.primaryWeaponMods = [""]
-
-  local airBlk = ::get_full_unit_blk(unit.name)
-  if(!airBlk || !airBlk?.modifications)
-    return unit.primaryWeaponMods
-
-  foreach(modName, modification in airBlk.modifications)
-    if (modification?.effects?.commonWeapons)
-      unit.primaryWeaponMods.append(modName)
-
-  return unit.primaryWeaponMods
-}
-
-local function getLastPrimaryWeapon(unit)
-{
-  local primaryList = getPrimaryWeaponsList(unit)
-  foreach(modName in primaryList)
-    if (modName!="" && ::shop_is_modification_enabled(unit.name, modName))
-      return modName
-  return ""
-}
-
-
-local function getCommonWeaponsBlk(airBlk, primaryMod)
-{
-  if (primaryMod == "" && airBlk?.commonWeapons)
-    return airBlk.commonWeapons
-
-  if (airBlk?.modifications)
-    foreach(modName, modification in airBlk.modifications)
-      if (modName == primaryMod)
-      {
-        if (modification?.effects.commonWeapons)
-          return modification.effects.commonWeapons
-        break
-      }
-  return null
-}
-
 local function getUnitWeaponry(unit, p = WEAPON_TEXT_PARAMS)
 {
   if (!unit)
@@ -597,7 +472,7 @@ local function getUnitWeaponry(unit, p = WEAPON_TEXT_PARAMS)
     {
       local curWeap = (typeof(p.weaponPreset) == "string") ? p.weaponPreset : getLastWeapon(unit.name)
       foreach(idx, w in unit.weapons)
-        if (w.name == curWeap || (weaponPresetIdx < 0 && !isWeaponAux(w)))
+        if (w.name == curWeap || (weaponPresetIdx < 0 && !::isWeaponAux(w)))
           weaponPresetIdx = idx
       if (weaponPresetIdx < 0)
         return weapons
@@ -605,13 +480,13 @@ local function getUnitWeaponry(unit, p = WEAPON_TEXT_PARAMS)
     if (p.isPrimary && typeof(p.weaponPreset)=="string")
       primaryMod = p.weaponPreset
     else
-      primaryMod = getLastPrimaryWeapon(unit)
+      primaryMod = ::get_last_primary_weapon(unit)
   } else
     weaponPresetIdx = p.weaponPreset
 
   if (p.isPrimary || p.isPrimary==null)
   {
-    local primaryBlk = getCommonWeaponsBlk(unitBlk, primaryMod)
+    local primaryBlk = ::getCommonWeaponsBlk(unitBlk, primaryMod)
     if (primaryBlk)
       weapons = addWeaponsFromBlk({}, primaryBlk, unit, p.weaponsFilterFunc)
   }
@@ -647,7 +522,7 @@ local function getSecondaryWeaponsList(unit)
   local lastWeapon = ::get_last_weapon(unitName)
   foreach(weapon in unit.weapons)
   {
-    if(isWeaponAux(weapon))
+    if(::isWeaponAux(weapon))
       continue
 
     weaponsList.append(weapon)
@@ -671,113 +546,19 @@ local function getPresetsList(unit, chooseMenuList)
 
 local getWeaponsStatusName = @(weaponsStatus) weaponsStatusNameByStatusCode[weaponsStatus]
 
-local function isWeaponUnlocked(unit, weapon)
-{
-  foreach(rp in ["reqWeapon", "reqModification"])
-      if (rp in weapon)
-        foreach (req in weapon[rp])
-          if (rp == "reqWeapon" && !::shop_is_weapon_purchased(unit.name, req))
-            return false
-          else
-          if (rp == "reqModification" && !::shop_is_modification_purchased(unit.name, req))
-            return false
-  return true
-}
-
-local function getWeaponByName(unit, weaponName)
-{
-  if (!("weapons" in unit))
-    return null
-
-  return ::u.search(unit.weapons, (@(weaponName) function(weapon) {
-      return weapon.name == weaponName
-    })(weaponName))
-}
-
-local function isUnitHaveAnyWeaponsTags(unit, tags, checkPurchase = true)
-{
-  if (!unit)
-    return false
-
-  foreach(w in unit.weapons)
-    if (::shop_is_weapon_purchased(unit.name, w.name) > 0 || !checkPurchase)
-      foreach(tag in tags)
-        if ((tag in w) && w[tag])
-          return true
-  return false
-}
-
-local function getLinkedGunIdx(groupIdx, totalGroups, bulletSetsQuantity, canBeDuplicate = true)
-{
-  if (!canBeDuplicate)
-    return groupIdx
-  return (groupIdx.tofloat() * totalGroups / bulletSetsQuantity + 0.001).tointeger()
-}
-
-local function checkUnitWeapons(unit)
-{
-  local weapon = getLastWeapon(unit.name)
-  local weaponText = getAmmoAmountData(unit, weapon, AMMO.WEAPON)
-  if (weaponText.warning)
-    return weaponText.amount? UNIT_WEAPONS_WARNING : UNIT_WEAPONS_ZERO
-
-  for (local i = 0; i < unit.unitType.bulletSetsQuantity; i++)
-  {
-    local modifName = ::get_last_bullets(unit.name, i);
-    if (modifName && modifName != "" && ::shop_is_modification_enabled(unit.name, modifName))
-    {
-      local modificationText = getAmmoAmountData(unit, modifName, AMMO.MODIFICATION)
-      if (modificationText.warning)
-        return modificationText.amount? UNIT_WEAPONS_WARNING : UNIT_WEAPONS_ZERO
-    }
-  }
-
-  return UNIT_WEAPONS_READY
-}
-
-local function checkBadWeapons()
-{
-  foreach(unit in ::all_units)
-  {
-    if (!unit.isUsable())
-      continue
-
-    local curWeapon = getLastWeapon(unit.name)
-    if (curWeapon=="")
-      continue
-
-    if (!::shop_is_weapon_available(unit.name, curWeapon, false, false) && !::shop_is_weapon_purchased(unit.name, curWeapon))
-      setLastWeapon(unit.name, "")
-  }
-}
-
 return {
-  KGF_TO_NEWTON            = KGF_TO_NEWTON
-  TRIGGER_TYPE             = TRIGGER_TYPE
-  WEAPON_TYPE              = WEAPON_TYPE
-  WEAPON_TAG               = WEAPON_TAG
-  CONSUMABLE_TYPES         = CONSUMABLE_TYPES
-  WEAPON_TEXT_PARAMS       = WEAPON_TEXT_PARAMS
-  getLastWeapon            = getLastWeapon
-  setLastWeapon            = setLastWeapon
-  getSecondaryWeaponsList  = getSecondaryWeaponsList
-  getPresetsList           = getPresetsList
-  addWeaponsFromBlk        = addWeaponsFromBlk
-  getWeaponExtendedInfo    = getWeaponExtendedInfo
-  isWeaponAux              = isWeaponAux
-  getUnitWeaponry          = getUnitWeaponry
-  getWeaponsStatusName     = getWeaponsStatusName
-  getWeaponNameByBlkPath   = getWeaponNameByBlkPath
-  isCaliberCannon          = isCaliberCannon
-  getPrimaryWeaponsList    = getPrimaryWeaponsList
-  getLastPrimaryWeapon     = getLastPrimaryWeapon
-  getCommonWeaponsBlk      = getCommonWeaponsBlk
-  isWeaponUnlocked         = isWeaponUnlocked
-  getWeaponByName          = getWeaponByName
-  isUnitHaveAnyWeaponsTags = isUnitHaveAnyWeaponsTags
-  getLinkedGunIdx          = getLinkedGunIdx
-  checkUnitWeapons         = checkUnitWeapons
-  isWeaponEnabled          = isWeaponEnabled
-  isWeaponVisible          = isWeaponVisible
-  checkBadWeapons          = checkBadWeapons
+  KGF_TO_NEWTON           = KGF_TO_NEWTON
+  TRIGGER_TYPE            = TRIGGER_TYPE
+  WEAPON_TYPE             = WEAPON_TYPE
+  WEAPON_TAG              = WEAPON_TAG
+  CONSUMABLE_TYPES        = CONSUMABLE_TYPES
+  WEAPON_TEXT_PARAMS      = WEAPON_TEXT_PARAMS
+  getLastWeapon           = getLastWeapon
+  setLastWeapon           = setLastWeapon
+  getSecondaryWeaponsList = getSecondaryWeaponsList
+  getPresetsList          = getPresetsList
+  addWeaponsFromBlk       = addWeaponsFromBlk
+  getWeaponExtendedInfo   = getWeaponExtendedInfo
+  getUnitWeaponry         = getUnitWeaponry
+  getWeaponsStatusName    = getWeaponsStatusName
 }

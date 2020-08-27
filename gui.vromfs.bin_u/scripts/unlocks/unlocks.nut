@@ -105,9 +105,11 @@ local unlockConditionUnitclasses = {
                          totalStages = ::colorize("unlockActiveColor", item.stages.len())
                        })
 
-  local progressText = ::UnlockConditions.getMainConditionText(item.conditions, item.curVal, item.maxVal, params)
+  local showProgress = ::getTblValue("showProgress", params, true)
+  local progressText = ::UnlockConditions.getMainConditionText(item.conditions,
+    item.curVal < item.maxVal ? "%d" : null, "%d", params)
                        //to generate progress text for stages
-  item.showProgress <- (params?.showProgress ?? true) && (progressText != "")
+  item.showProgress <- showProgress && (progressText != "")
   item.progressText <- progressText
   item.shortText <- ::g_string.implode([item.text, item.progressText], "\n")
 
@@ -129,16 +131,11 @@ local unlockConditionUnitclasses = {
   if ("desc" in data)
     descData.append(data.desc)
 
-  local curVal = params?.curVal
+  local curVal = ::getTblValue("curVal", params)
   if (curVal == null)
-  {
-    local isComplete = ::UnlockConditions.isBitModeType(data.type)
-      ? stdMath.number_of_set_bits(data.curVal) >= stdMath.number_of_set_bits(data.maxVal)
-      : data.curVal >= data.maxVal
-    curVal = isComplete ? null : data.curVal
-  }
+    curVal = data.curVal < data.maxVal ? data.curVal : null
 
-  local maxVal = params?.maxVal
+  local maxVal = ::getTblValue("maxVal", params)
   if (maxVal == null)
     maxVal = data.maxVal
 
@@ -565,7 +562,7 @@ local unlockConditionUnitclasses = {
       return mode.unitClass == "tank" || ::getTblValue(mode.unitClass, ::mapWpUnitClassToWpUnitType, "") == "Tank"
 
     if (mode.type == "char_unit_exist")
-      return ::getAircraftByName(mode.unit)?.isTank()
+      return ::isTank(::getAircraftByName(mode.unit))
     else if (mode.type == "char_unlocks")
     {
       foreach (unlockId in mode % "unlock")
@@ -587,7 +584,7 @@ local unlockConditionUnitclasses = {
       else if (condition.type == "playerUnit")
       {
         foreach (unitId in condition % "class")
-          if (::getAircraftByName(unitId)?.isTank())
+          if (::isTank(::getAircraftByName(unitId)))
             return true
       }
     }

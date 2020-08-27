@@ -1,5 +1,3 @@
-local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay.nut")
-
 ::events._leaderboards = {
   cashLifetime = 60000
   __cache = {
@@ -97,23 +95,21 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
 
   function updateEventLbInternal(requestData, id, requestFunc, handleFunc)
   {
-    local requestAction = ::Callback(function() {
-      requestFunc(
-        requestData,
-        ::Callback(function(successData) {
-          canRequestEventLb = false
-          handleFunc(requestData, id, successData)
+    local requestAction = ::Callback(function () {
+      local taskId = requestFunc(requestData)
+      if (taskId < 0)
+        return
 
-          if (leaderboardsRequestStack.len())
-            leaderboardsRequestStack.remove(0).fn()
-          else
-            canRequestEventLb = true
-        }, this),
-        ::Callback(function(errorId) {
-          ::script_net_assert_once("event leaderboards error", errorId)
+      canRequestEventLb = false
+      ::add_bg_task_cb(taskId, ::Callback(function() {
+        handleFunc(requestData, id)
+
+        if (leaderboardsRequestStack.len())
+          leaderboardsRequestStack.remove(0).fn()
+        else
           canRequestEventLb = true
-        }, this)
-      )}, this)
+      }, this))
+    }, this)
 
     if (canRequestEventLb)
       return requestAction()
@@ -140,49 +136,44 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
    * To request persoanl data for clan tournaments (TM_ELO_GROUP)
    * need to override tournament_mode by TM_ELO_GROUP_DETAIL
    */
-  function requestUpdateEventLb(requestData, onSuccessCb, onErrorCb)
+  function requestUpdateEventLb(requestData)
   {
-    local blk = ::DataBlock()
-    blk.event = requestData.economicName
-    blk.sortField = requestData.lbField
-    blk.start = requestData.pos
-    blk.count = requestData.rowsInPage
-    blk.inverse = requestData.inverse
-    blk.clan = requestData.forClans
-    blk.tournamentMode = GAME_EVENT_TYPE.TM_NONE
-    blk.version = 1
-    blk.targetPlatformFilter = getSeparateLeaderboardPlatformName()
-
     local event = ::events.getEvent(requestData.economicName)
     if (requestData.tournament || ::events.isRaceEvent(event))
-      blk.tournamentMode = requestData.tournament_mode
-
-    return ::g_tasker.charRequestBlk("cln_get_events_leaderboard", blk, null, onSuccessCb, onErrorCb)
+      return ::events_req_leaderboard_tm(requestData.economicName,
+                                         requestData.lbField,
+                                         requestData.pos,
+                                         requestData.rowsInPage,
+                                         requestData.inverse,
+                                         requestData.forClans,
+                                         requestData.tournament_mode)
+    else
+      return ::events_req_leaderboard(requestData.economicName,
+                                      requestData.lbField,
+                                      requestData.pos,
+                                      requestData.rowsInPage,
+                                      requestData.inverse,
+                                      requestData.forClans)
   }
 
   /**
    * to request persoanl data for clan tournaments (TM_ELO_GROUP)
    * need to override tournament_mode by TM_ELO_GROUP_DETAIL
    */
-  function requestEventLbSelfRow(requestData, onSuccessCb, onErrorCb)
+  function requestEventLbSelfRow(requestData)
   {
-    local blk = ::DataBlock()
-    blk.event = requestData.economicName
-    blk.sortField = requestData.lbField
-    blk.start = -1
-    blk.count = -1
-    blk.clanId = ::clan_get_my_clan_id();
-    blk.inverse = requestData.inverse
-    blk.clan = requestData.forClans
-    blk.version = 1
-    blk.tournamentMode = GAME_EVENT_TYPE.TM_NONE
-    blk.targetPlatformFilter = getSeparateLeaderboardPlatformName()
-
     local event = ::events.getEvent(requestData.economicName)
     if (requestData.tournament || ::events.isRaceEvent(event))
-      blk.tournamentMode = requestData.tournament_mode
-
-    return ::g_tasker.charRequestBlk("cln_get_events_leaderboard", blk, null, onSuccessCb, onErrorCb)
+      return events_req_leaderboard_position_tm(requestData.economicName,
+                                                  requestData.lbField,
+                                                  requestData.inverse,
+                                                  requestData.forClans,
+                                                  requestData.tournament_mode)
+    else
+      return events_req_leaderboard_position(requestData.economicName,
+                                               requestData.lbField,
+                                               requestData.inverse,
+                                               requestData.forClans)
   }
 
   /**
@@ -200,15 +191,16 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
     return res
   }
 
-  function handleLbRequest(requestData, id, requestResult)
+  function handleLbRequest(requestData, id)
   {
-    local lbData = getLbDataFromBlk(requestResult, requestData)
+
+    local blData = getLbDataFromBlk(::events_get_leaderboard_blk(), requestData)
 
     if (!(requestData.economicName in __cache.leaderboards))
       __cache.leaderboards[requestData.economicName] <- {}
 
     __cache.leaderboards[requestData.economicName][hashLbRequest(requestData)] <- {
-      data = lbData
+      data = blData
       timestamp = ::dagor.getCurTime()
     }
 
@@ -219,20 +211,20 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
 
     if ("callBack" in requestData)
       if ("handler" in requestData)
-        requestData.callBack.call(requestData.handler, lbData)
+        requestData.callBack.call(requestData.handler, blData)
       else
-        requestData.callBack(lbData)
+        requestData.callBack(blData)
   }
 
-  function handleLbSelfRowRequest(requestData, id, requestResult)
+  function handleLbSelfRowRequest(requestData, id)
   {
-    local lbData = getSelfRowDataFromBlk(requestResult, requestData)
+    local blData = getSelfRowDataFromBlk(::events_get_leaderboard_blk(), requestData)
 
     if (!(requestData.economicName in __cache.selfRow))
       __cache.selfRow[requestData.economicName] <- {}
 
     __cache.selfRow[requestData.economicName][hashLbRequest(requestData)] <- {
-      data = lbData
+      data = blData
       timestamp = ::dagor.getCurTime()
     }
 
@@ -242,9 +234,9 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
 
     if ("callBack" in requestData)
       if ("handler" in requestData)
-        requestData.callBack.call(requestData.handler, lbData)
+        requestData.callBack.call(requestData.handler, blData)
       else
-        requestData.callBack(lbData)
+        requestData.callBack(blData)
   }
 
   /**
@@ -415,10 +407,5 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
       //if (searchIdx + 1 < name.len())
       //  lbRow.name <- name.slice(searchIdx + 1)
     }
-  }
-
-  function resetLbCache() {
-    __cache.leaderboards.clear()
-    __cache.selfRow.clear()
   }
 }

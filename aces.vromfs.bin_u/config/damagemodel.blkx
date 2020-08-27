@@ -31,7 +31,6 @@
   "cumulativePierceDispersion": 0.2,
   "minSecondaryShatterAngleFromArmor": 15.0,
   "defaultCaliberToArmorForGuiPenetrationTable": 1.25,
-  "secondaryShattersCountLimitForTest": 30,
   "massKineticRange": 7.0,
   "massKineticHitPowerK": 0.0,
   "massKineticArmorPowerK": 0.0001,
@@ -226,23 +225,6 @@
     "p1": [0.15,0.4],
     "p2": [0.3,0.5],
     "p3": [0.4,0.75]
-  },
-  "traceStrategy": {
-    "pattern1": {
-      "caliber": 5.0,
-      "circleCount": 1,
-      "pointCount": 4
-    },
-    "pattern2": {
-      "caliber": 20.0,
-      "circleCount": 1,
-      "pointCount": 6
-    },
-    "pattern3": {
-      "caliber": 85.0,
-      "circleCount": 2,
-      "pointCount": 6
-    }
   },
   "normalizationPresets": {
     "default": {
@@ -1008,9 +990,9 @@
       }
     },
     "apds_fs_long": {
-      "residualArmorPenetrationToShatterCountMult": [50.0,400.0,0.6,1.5],
+      "residualArmorPenetrationToShatterCountMult": [50.0,400.0,0.6,3.0],
       "residualArmorPenetrationToShatterPenetrationMult": [50.0,400.0,0.7,1.2],
-      "residualArmorPenetrationToShatterDamageMult": [50.0,400.0,0.85,2.5],
+      "residualArmorPenetrationToShatterDamageMult": [50.0,400.0,0.85,1.8],
       "caliberToArmorToShatterCountMult": [0.5,1.0,0.9,1.0],
       "section0": {
         "angles": [0.0,2.5],
@@ -1179,9 +1161,9 @@
       }
     },
     "apds_fs": {
-      "residualArmorPenetrationToShatterCountMult": [50.0,400.0,0.6,1.5],
+      "residualArmorPenetrationToShatterCountMult": [50.0,400.0,0.6,3.0],
       "residualArmorPenetrationToShatterPenetrationMult": [50.0,400.0,0.7,1.2],
-      "residualArmorPenetrationToShatterDamageMult": [50.0,400.0,0.85,2.5],
+      "residualArmorPenetrationToShatterDamageMult": [50.0,400.0,0.85,1.8],
       "caliberToArmorToShatterCountMult": [0.5,1.0,0.9,1.0],
       "section0": {
         "angles": [0.0,2.5],
@@ -1382,6 +1364,381 @@
           "damage": [25.0,20.0],
           "onHitChanceMultFire": 0.0
         }
+      }
+    }
+  },
+  "explosiveTypeToSplashParams": {
+    "explosiveMassToInnerRadius": [
+      {
+        "p0": [0.013,0.1]
+      },
+      {
+        "p0": [0.1,0.12]
+      },
+      {
+        "p1": [0.2,0.13]
+      },
+      {
+        "p2": [0.6,0.17]
+      },
+      {
+        "p3": [3.0,0.25]
+      },
+      {
+        "p4": [5.0,0.5]
+      },
+      {
+        "p5": [6.0,0.75]
+      },
+      {
+        "p6": [8.0,0.9]
+      },
+      {
+        "p7": [25.0,1.5]
+      },
+      {
+        "p8": [40.0,2.0]
+      },
+      {
+        "p9": [120.0,2.5]
+      },
+      {
+        "p10": [300.0,4.0]
+      },
+      {
+        "p11": [500.0,5.0]
+      },
+      {
+        "p12": [700.0,6.0]
+      },
+      {
+        "p13": [1500.0,10.0]
+      },
+      {
+        "p14": [3500.0,15.0]
+      }
+    ],
+    "explosiveMassToOuterRadius": {
+      "p0": [0.01,0.15],
+      "p1": [0.2,0.4],
+      "p2": [0.6,0.5],
+      "p3": [3.0,0.85],
+      "p4": [5.0,1.2],
+      "p5": [6.0,1.5],
+      "p6": [8.0,2.0],
+      "p7": [25.0,3.5],
+      "p8": [40.0,5.0],
+      "p9": [120.0,8.0],
+      "p10": [300.0,20.0],
+      "p11": [500.0,25.0],
+      "p12": [700.0,30.0],
+      "p13": [1500.0,60.0],
+      "p14": [3500.0,120.0]
+    },
+    "explosiveMassToPenetration": {
+      "p0": [0.005,2.0],
+      "p1": [0.1,4.0],
+      "p2": [0.2,5.0],
+      "p3": [2.0,25.0],
+      "p4": [3.0,35.0],
+      "p5": [5.0,40.0],
+      "p6": [6.0,50.0],
+      "p7": [8.0,60.0],
+      "p8": [25.0,80.0],
+      "p9": [40.0,90.0],
+      "p10": [120.0,100.0],
+      "p11": [300.0,120.0],
+      "p12": [500.0,150.0],
+      "p13": [700.0,200.0],
+      "p14": [1500.0,300.0],
+      "p15": [3500.0,350.0]
+    },
+    "explosiveMassToDamage": [
+      {
+        "p0": [0.01,45.0]
+      },
+      {
+        "p1": [0.03,70.0]
+      },
+      {
+        "p1": [0.1,110.0]
+      },
+      {
+        "p2": [0.2,130.0]
+      },
+      {
+        "p3": [0.6,250.0]
+      },
+      {
+        "p4": [3.0,350.0]
+      },
+      {
+        "p5": [8.0,450.0]
+      },
+      {
+        "p6": [25.0,500.0]
+      },
+      {
+        "p7": [40.0,850.0]
+      },
+      {
+        "p8": [120.0,1800.0]
+      },
+      {
+        "p9": [250.0,4000.0]
+      },
+      {
+        "p10": [500.0,10000.0]
+      },
+      {
+        "p11": [700.0,12500.0]
+      },
+      {
+        "p12": [1500.0,21000.0]
+      },
+      {
+        "p13": [3500.0,30000.0]
+      }
+    ]
+  },
+  "explosiveTypeToShattersParams": {
+    "aphe_sc": {
+      "fillingRatio": 0.0005,
+      "explosiveMassToRadius": {
+        "p0": [0.01,1.5],
+        "p1": [0.2,5.0],
+        "p2": [0.6,7.0],
+        "p3": [3.0,12.0],
+        "p4": [7.0,15.0]
+      },
+      "explosiveMassToPenetration": {
+        "p0": [0.01,4.0],
+        "p1": [0.05,5.0],
+        "p2": [0.2,6.0],
+        "p3": [0.6,8.0],
+        "p4": [3.0,9.0],
+        "p5": [7.0,12.0]
+      },
+      "explosiveMassToDamage": {
+        "p0": [0.01,5.0],
+        "p1": [0.2,17.0],
+        "p2": [0.6,22.0],
+        "p3": [3.0,25.0],
+        "p4": [7.0,27.0]
+      },
+      "bodyMassToShattersCount": {
+        "p0": [0.05,5.0],
+        "p1": [0.5,30.0],
+        "p2": [5.0,120.0],
+        "p3": [10.0,250.0],
+        "p4": [25.0,450.0],
+        "p5": [50.0,650.0]
+      }
+    },
+    "aphe_hc": {
+      "fillingRatio": 0.02,
+      "explosiveMassToRadius": {
+        "p0": [0.01,1.5],
+        "p1": [0.2,4.0],
+        "p2": [0.6,7.0],
+        "p3": [3.0,12.0],
+        "p4": [7.0,15.0]
+      },
+      "explosiveMassToPenetration": {
+        "p0": [0.01,3.0],
+        "p1": [0.05,5.0],
+        "p2": [0.2,6.0],
+        "p3": [0.6,8.0],
+        "p4": [3.0,9.0],
+        "p5": [7.0,12.0]
+      },
+      "explosiveMassToDamage": {
+        "p0": [0.01,5.0],
+        "p1": [0.2,18.0],
+        "p2": [0.6,23.0],
+        "p3": [3.0,25.0],
+        "p4": [7.0,27.0]
+      },
+      "bodyMassToShattersCount": {
+        "p0": [0.05,6.0],
+        "p1": [0.5,35.0],
+        "p2": [5.0,160.0],
+        "p3": [10.0,270.0],
+        "p4": [25.0,470.0],
+        "p5": [50.0,700.0]
+      }
+    },
+    "he_frag": {
+      "fillingRatio": 0.06,
+      "explosiveMassToRadius": {
+        "p0": [0.01,1.5],
+        "p1": [0.2,7.0],
+        "p2": [0.6,15.0],
+        "p3": [3.0,30.0],
+        "p4": [7.0,45.0]
+      },
+      "explosiveMassToPenetration": [
+        {
+          "p0": [0.01,4.0]
+        },
+        {
+          "p1": [0.03,5.0]
+        },
+        {
+          "p1": [0.2,5.5]
+        },
+        {
+          "p2": [0.6,6.0]
+        },
+        {
+          "p3": [3.0,9.0]
+        },
+        {
+          "p4": [7.0,12.0]
+        }
+      ],
+      "explosiveMassToDamage": [
+        {
+          "p0": [0.01,4.0]
+        },
+        {
+          "p1": [0.03,4.7]
+        },
+        {
+          "p1": [0.2,5.5]
+        },
+        {
+          "p2": [0.6,6.0]
+        },
+        {
+          "p3": [2.5,20.0]
+        },
+        {
+          "p4": [7.0,50.0]
+        }
+      ],
+      "bodyMassToShattersCount": [
+        {
+          "p0": [0.05,15.0]
+        },
+        {
+          "p1": [0.5,50.0]
+        },
+        {
+          "p1": [0.7,70.0]
+        },
+        {
+          "p2": [5.0,300.0]
+        },
+        {
+          "p3": [10.0,350.0]
+        },
+        {
+          "p4": [25.0,900.0]
+        },
+        {
+          "p5": [50.0,1300.0]
+        }
+      ]
+    },
+    "he_heat": {
+      "fillingRatio": 0.3,
+      "explosiveMassToRadius": {
+        "p0": [0.01,1.5],
+        "p1": [0.2,7.0],
+        "p2": [0.6,15.0],
+        "p3": [3.0,25.0],
+        "p4": [7.0,45.0],
+        "p5": [25.0,70.0],
+        "p6": [40.0,100.0]
+      },
+      "explosiveMassToPenetration": {
+        "p0": [0.01,3.0],
+        "p1": [0.2,5.0],
+        "p2": [0.6,6.0],
+        "p3": [3.0,7.0],
+        "p4": [7.0,8.0],
+        "p5": [25.0,10.0],
+        "p6": [40.0,13.0]
+      },
+      "explosiveMassToDamage": {
+        "p0": [0.01,4.0],
+        "p1": [0.2,4.0],
+        "p2": [0.6,5.0],
+        "p3": [2.5,25.0],
+        "p4": [7.0,30.0],
+        "p5": [25.0,35.0],
+        "p6": [40.0,40.0]
+      },
+      "bodyMassToShattersCount": {
+        "p0": [0.05,20.0],
+        "p1": [0.5,100.0],
+        "p2": [5.0,350.0],
+        "p3": [10.0,600.0],
+        "p4": [25.0,1100.0],
+        "p5": [50.0,2200.0],
+        "p6": [100.0,3000.0]
+      }
+    },
+    "bombs_he_frag": {
+      "fillingRatio": 1.2,
+      "explosiveMassToRadius": {
+        "p0": [0.01,1.5],
+        "p1": [0.2,7.0],
+        "p2": [0.6,15.0],
+        "p3": [3.0,25.0],
+        "p4": [7.0,45.0],
+        "p5": [25.0,70.0],
+        "p6": [40.0,100.0],
+        "p7": [120.0,120.0],
+        "p8": [300.0,150.0],
+        "p9": [500.0,200.0],
+        "p10": [2000.0,300.0],
+        "p11": [3000.0,330.0],
+        "p12": [3500.0,370.0]
+      },
+      "explosiveMassToPenetration": {
+        "p0": [0.01,3.0],
+        "p1": [0.2,5.0],
+        "p2": [0.6,6.0],
+        "p3": [3.0,7.0],
+        "p4": [7.0,8.0],
+        "p5": [25.0,10.0],
+        "p6": [40.0,13.0],
+        "p7": [120.0,13.0],
+        "p8": [300.0,15.0],
+        "p9": [2000.0,17.0],
+        "p10": [3000.0,18.0],
+        "p11": [3500.0,19.0]
+      },
+      "explosiveMassToDamage": {
+        "p0": [0.01,4.0],
+        "p1": [0.2,4.0],
+        "p2": [0.6,5.0],
+        "p3": [3.0,6.0],
+        "p4": [7.0,7.0],
+        "p5": [25.0,10.0],
+        "p6": [40.0,12.0],
+        "p7": [120.0,15.0],
+        "p8": [300.0,16.0],
+        "p9": [2000.0,20.0],
+        "p10": [3000.0,21.0],
+        "p11": [3500.0,22.0]
+      },
+      "bodyMassToShattersCount": {
+        "p0": [0.05,20.0],
+        "p1": [0.5,100.0],
+        "p2": [5.0,350.0],
+        "p3": [10.0,700.0],
+        "p4": [25.0,1500.0],
+        "p5": [50.0,5000.0],
+        "p6": [100.0,10000.0],
+        "p7": [250.0,20000.0],
+        "p8": [500.0,40000.0],
+        "p9": [1000.0,80000.0],
+        "p10": [2000.0,100000.0],
+        "p11": [3000.0,120000.0],
+        "p12": [3500.0,150000.0]
       }
     }
   },
@@ -2472,8 +2829,8 @@
     "germ_escort_typem1943": 35,
     "germ_frigate_koln": 100,
     "germ_kanonenboot_k2": 80,
-    "germ_ls4_class": 35,
-    "germ_ls_class": 35,
+    "germ_ls4_class": 31,
+    "germ_ls_class": 31,
     "germ_mz_1": 47,
     "germ_pr_206": 45,
     "germ_rboot_r130": 35,
@@ -2484,8 +2841,8 @@
     "germ_s_100_class": 34,
     "germ_s_100_s204_lang": 34,
     "germ_s_100_s_174_class": 35,
-    "germ_sf40_leichte_flakkampffaehre": 76,
-    "germ_sf40_schwere_flakkampffaehre": 76,
+    "germ_sf40_leichte_flakkampffaehre": 21,
+    "germ_sf40_schwere_flakkampffaehre": 21,
     "germ_type140_jaguar": 42,
     "germ_type143_albatros": 42,
     "germ_vs10_hydrofoil": 32,
@@ -2494,9 +2851,9 @@
     "it_a1_vosper": 31,
     "it_cruiser_bartolomeocolleoni_1940": 126,
     "it_cruiser_capitani_romani_class_attilio_regolo": 120,
-    "it_cruiser_montecuccoli": 140,
     "it_cruiser_trento": 140,
     "it_destroyer_dardo": 100,
+    "it_destroyer_soldati_serie1": 100,
     "it_destroyer_soldati_serie1_camicianera": 100,
     "it_destroyer_soldati_serie1_geniere": 100,
     "it_destroyer_turbine": 100,
@@ -2509,11 +2866,12 @@
     "it_ms473_2a": 35,
     "it_ms473_2a_art": 35,
     "it_ms53_2a": 35,
+    "it_ms74_2a": 35,
     "it_p420_sparviero": 42,
     "it_p493_freccia": 35,
     "it_p494_saetta": 35,
     "it_vas_baglietto_68t_1serie": 31,
-    "jp_abtei_pr1": 42,
+    "jp_abtei_pr1": 56,
     "jp_abtei_pr4": 42,
     "jp_cruiser_agano": 140,
     "jp_cruiser_furutaka": 140,
@@ -2593,7 +2951,7 @@
     "uk_sgb_304": 34,
     "uk_sgb_309": 35,
     "us_ashville_class": 47,
-    "us_cruiser_atlanta_class_atlanta": 100,
+    "us_cruiser_atlanta_class_atlanta": 105,
     "us_cruiser_brooklyn_class_brooklyn": 140,
     "us_cruiser_brooklyn_class_helena": 140,
     "us_cruiser_cleveland_class_cleveland": 140,
@@ -2620,7 +2978,7 @@
     "us_elco_80ft_pt_boat_thunderbolt": 31,
     "us_higgins_78ft_pt625": 31,
     "us_higgins_78ft_pt71": 31,
-    "us_lcs_l_3": 35,
+    "us_lcs_l_3": 47,
     "us_nasty_ptf": 32,
     "us_pc_451": 42,
     "us_pc_466_carmi": 47,
@@ -2640,7 +2998,6 @@
     "ussr_cruiser_kirov": 140,
     "ussr_cruiser_krasnyi_kavkaz": 140,
     "ussr_cruiser_krasnyi_krim": 100,
-    "ussr_cruiser_maxim_gorky": 140,
     "ussr_cruiser_sverdlov": 120,
     "ussr_d3": 33,
     "ussr_destroyer_7y": 100,
@@ -2656,10 +3013,10 @@
     "ussr_g5_mtb_landing_craft": 31,
     "ussr_g5_mtb_shvak": 31,
     "ussr_g5_rct": 16,
-    "ussr_mbk_161_1943": 42,
+    "ussr_mbk_161_1943": 44,
     "ussr_mbk_161_1944": 44,
     "ussr_mkl_186": 42,
-    "ussr_mkl_186_mk85": 43,
+    "ussr_mkl_186_mk85": 42,
     "ussr_mo_4": 35,
     "ussr_mpk_122a": 35,
     "ussr_mpk_122bis": 41,
@@ -2746,31 +3103,6 @@
       "completely": true
     },
     "funnel_05_dm": {
-      "speed": 14.0,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "funnel_06_dm": {
-      "speed": 14.0,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "funnel_07_dm": {
-      "speed": 14.0,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "funnel_08_dm": {
-      "speed": 14.0,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "funnel_09_dm": {
-      "speed": 14.0,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "funnel_10_dm": {
       "speed": 14.0,
       "partRepairHp": 1.0,
       "completely": true
@@ -3285,106 +3617,6 @@
       "completely": true,
       "modRequired": true
     },
-    "aa_gun_21_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_22_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_23_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_24_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_25_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_26_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_27_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_28_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_29_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_30_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_31_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_32_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_33_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_34_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_35_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_36_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_37_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_38_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_39_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_40_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
     "aa_turret_01_dm": {
       "speed": 7.0,
       "completely": true,
@@ -3481,106 +3713,6 @@
       "modRequired": true
     },
     "aa_turret_20_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_21_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_22_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_23_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_24_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_25_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_26_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_27_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_28_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_29_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_30_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_31_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_32_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_33_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_34_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_35_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_36_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_37_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_38_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_39_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_40_dm": {
       "speed": 7.0,
       "completely": true,
       "modRequired": true

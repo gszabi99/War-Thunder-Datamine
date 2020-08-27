@@ -117,20 +117,6 @@
     "arcadePowerMult": 1.5
   },
   {
-    "sensors": [
-      {
-        "sensor": {
-          "blk": "gameData/sensors/LaserDesignatorSensor.blk"
-        }
-      },
-      {
-        "sensor": {
-          "blk": "gameData/sensors/LaserWarningSensor.blk"
-        }
-      }
-    ]
-  },
-  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "RHA_tank_modern",
@@ -1198,21 +1184,6 @@
           },
           {
             "name": "ammo_body_50_dm"
-          },
-          {
-            "name": "ammo_body_51_dm"
-          },
-          {
-            "name": "ammo_body_52_dm"
-          },
-          {
-            "name": "ammo_body_53_dm"
-          },
-          {
-            "name": "ammo_body_54_dm"
-          },
-          {
-            "name": "ammo_body_55_dm"
           },
           {
             "name": "ammo_body_l_01_dm"
@@ -2365,7 +2336,7 @@
           "barrelDP": "gun_barrel_dm",
           "breechDP": "cannon_breech_dm",
           "speedYaw": 40.0,
-          "speedPitch": 20.0,
+          "speedPitch": 40.0,
           "fireConeAngle": 1.0,
           "bullets": 42,
           "salvoAmount": 100.0,
@@ -2406,6 +2377,7 @@
             "verticalOmegaMult": 1.0,
             "verticalSpeedLimitKPH": 75.0,
             "speedFromVehicleVerticalMult": -1.0,
+            "speedPitch": 20.0,
             "errorKPHToDegrees": [
               {
                 "row": [5.0,0.0]
@@ -2512,7 +2484,7 @@
           {
             "limits": {
               "yaw": [-0.0,0.0],
-              "pitch": [-4.0,5.0]
+              "pitch": [0.0,0.0]
             }
           }
         ]
@@ -3255,14 +3227,17 @@
       "tank_medical_kit_expendable": {
         "image": "#ui/gameuiskin#tank_reinforcement_it"
       },
-      "120mm_NATO_APDS_FS": [],
-      "120mm_DM_APDS_FS": [],
+      "120mm_NATO_APDS_FS": {
+        "modCostMul": 0.32
+      },
+      "120mm_DM_APDS_FS": {
+        "modCostMul": 0.98
+      },
       "120mm_DM_APDS_FS_ammo_pack": [],
       "120mm_NATO_APDS_FS_ammo_pack": [],
       "modern_tank_laser_rangefinder": [],
-      "laser_warning_system": [],
       "tank_smoke_screen_system_mod": {
-        "tier": 2,
+        "tier": 3,
         "effects": {
           "commonWeapons": [
             {
@@ -3280,7 +3255,7 @@
                 "barrelDP": "gun_barrel_dm",
                 "breechDP": "cannon_breech_dm",
                 "speedYaw": 40.0,
-                "speedPitch": 20.0,
+                "speedPitch": 40.0,
                 "fireConeAngle": 1.0,
                 "bullets": 42,
                 "salvoAmount": 100.0,
@@ -3321,6 +3296,7 @@
                   "verticalOmegaMult": 1.0,
                   "verticalSpeedLimitKPH": 75.0,
                   "speedFromVehicleVerticalMult": -1.0,
+                  "speedPitch": 20.0,
                   "errorKPHToDegrees": [
                     {
                       "row": [5.0,0.0]
@@ -3427,7 +3403,7 @@
                 {
                   "limits": {
                     "yaw": [-0.0,0.0],
-                    "pitch": [-4.0,5.0]
+                    "pitch": [0.0,0.0]
                   }
                 }
               ]

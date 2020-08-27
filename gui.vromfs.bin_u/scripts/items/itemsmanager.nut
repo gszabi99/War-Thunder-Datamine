@@ -894,31 +894,25 @@ ItemsManager.fillItemDescr <- function fillItemDescr(item, holderObj, handler = 
 
 ItemsManager.fillItemTableInfo <- function fillItemTableInfo(item, holderObj)
 {
-  if (!::check_obj(holderObj))
+  if (!::checkObj(holderObj))
     return
 
-  local hasItemAdditionalDescTable = ::ItemsManager.fillItemTable(item, holderObj)
+  ::ItemsManager.fillItemTable(item, holderObj)
 
   local obj = holderObj.findObject("item_desc_above_table")
-  local text = item?.getDescriptionAboveTable() ?? ""
-  if (::check_obj(obj))
-    obj.setValue(text)
-  hasItemAdditionalDescTable = hasItemAdditionalDescTable || text != ""
+  if (::checkObj(obj))
+    obj.setValue(item && item?.getDescriptionAboveTable ? item.getDescriptionAboveTable() : "")
 
   obj = holderObj.findObject("item_desc_under_table")
-  text = item?.getDescriptionUnderTable() ?? ""
-  if (::check_obj(obj))
-    obj.setValue(text)
-  hasItemAdditionalDescTable = hasItemAdditionalDescTable || text != ""
-
-  ::showBtn("item_additional_desc_table", hasItemAdditionalDescTable, holderObj)
+  if (::checkObj(obj))
+    obj.setValue(item && item?.getDescriptionUnderTable ? item.getDescriptionUnderTable() : "")
 }
 
 ItemsManager.fillItemTable <- function fillItemTable(item, holderObj)
 {
   local containerObj = holderObj.findObject("item_table_container")
   if (!::checkObj(containerObj))
-    return false
+    return
 
   local tableData = item && item?.getTableData ? item.getTableData() : null
   local show = tableData != null
@@ -926,7 +920,6 @@ ItemsManager.fillItemTable <- function fillItemTable(item, holderObj)
 
   if (show)
     holderObj.getScene().replaceContentFromText(containerObj, tableData, tableData.len(), this)
-  return show
 }
 
 ItemsManager.getActiveBoostersArray <- function getActiveBoostersArray(effectType = null)

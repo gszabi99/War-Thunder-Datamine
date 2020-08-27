@@ -299,7 +299,7 @@ local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nu
   ::gui_start_modal_wnd(::gui_handlers.controlsWizardModalHandler)
 }
 
-class ::gui_handlers.controlsWizardModalHandler extends ::gui_handlers.BaseGuiHandlerWT
+class ::gui_handlers.controlsWizardModalHandler extends ::gui_handlers.Hotkeys
 {
   wndType = handlerType.MODAL
   sceneBlkName = "gui/controlsWizard.blk"
@@ -914,7 +914,7 @@ class ::gui_handlers.controlsWizardModalHandler extends ::gui_handlers.BaseGuiHa
           if (isKbd == isKbdOrMouse(shortcuts[shortcutId][i].dev))
             shortcuts[shortcutId].remove(i)   //remove shortcuts by same device type
         shortcuts[shortcutId].append({dev = devs, btn = btns})
-        if (shortcuts[shortcutId].len() > max_shortcuts)
+        if (shortcuts[shortcutId].len() > ::MAX_SHORTCUTS)
           shortcuts[shortcutId].remove(0)
       }
     }

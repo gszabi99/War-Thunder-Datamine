@@ -1,7 +1,6 @@
 local enums = ::require("sqStdlibs/helpers/enums.nut")
 local helpMarkup = require("scripts/controls/help/controlsHelpMarkup.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { checkJoystickThustmasterHotas } = require("scripts/controls/hotas.nut")
 
 local result = {
   types = []
@@ -57,7 +56,7 @@ enums.addTypes(result, {
     showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
     helpPattern = CONTROL_HELP_PATTERN.HOTAS4
 
-    specificCheck = @() checkJoystickThustmasterHotas(false)
+    specificCheck = @() ::check_joystick_thustmaster_hotas(false)
     checkFeature = unitTypes.AIRCRAFT.isAvailable
     pageUnitTypeBit = unitTypes.AIRCRAFT.bit
 

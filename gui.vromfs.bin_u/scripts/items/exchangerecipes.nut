@@ -55,7 +55,6 @@ local ExchangeRecipes = class {
   localizationPresetName = null
   sortReqQuantityComponents = 0
   effectOnStartCraftPresetName = null
-  reqItems = null
 
   constructor(params)
   {
@@ -69,13 +68,10 @@ local ExchangeRecipes = class {
     local parsedRecipe = params.parsedRecipe
 
     initedComponents = parsedRecipe.components
-    reqItems = parsedRecipe.reqItems
     sortReqQuantityComponents = initedComponents.map(@(component) component.quantity).reduce(@(res, value) res + value, 0)
-      + reqItems.map(@(component) component.quantity).reduce(@(res, value) res + value, 0)
     requirement = parsedRecipe.requirement
 
-    local recipeStr = (requirement != null || reqItems.len() > 0) ? getRecipeStr() : parsedRecipe.recipeStr
-    uid = $"{generatorId};{recipeStr}"
+    uid = generatorId + ";" + (requirement ? getRecipeStr() : parsedRecipe.recipeStr)
 
     updateComponents()
     loadStateRecipe()
@@ -83,18 +79,17 @@ local ExchangeRecipes = class {
 
   function updateComponents()
   {
-    local componentsArray = (clone initedComponents).extend(reqItems)
-    local componentsCount = componentsArray.len()
+    local componentsCount = initedComponents.len()
     isUsable = componentsCount > 0
     isMultipleItems = componentsCount > 1
 
     local extraItemsCount = 0
     components = []
-    local componentItemdefArray = componentsArray.map(@(c) c.itemdefid)
+    local componentItemdefArray = initedComponents.map(@(c) c.itemdefid)
     local items = ::ItemsManager.getInventoryList(itemType.ALL,
       @(item) ::isInArray(item.id, componentItemdefArray))
     hasChestInComponents = ::u.search(items, @(i) i.iType == itemType.CHEST) != null
-    foreach (component in componentsArray)
+    foreach (component in initedComponents)
     {
       local curQuantity = items.filter(@(i) i.id == component.itemdefid).reduce(
         @(res, item) res + item.amount, 0)
@@ -502,8 +497,6 @@ local ExchangeRecipes = class {
   {
     local res = []
     components.each(function(component) {
-      if (reqItems.findvalue(@(c) c.itemdefid == component.itemdefId) != null)
-        return
       local leftCount = component.reqQuantity
       local itemsList = ::ItemsManager.getInventoryList(itemType.ALL, @(item) item.id == component.itemdefId)
       foreach(item in itemsList)
@@ -524,7 +517,7 @@ local ExchangeRecipes = class {
         if (!leftCount)
           break
       }
-    }.bindenv(this))
+    })
     return res
   }
 

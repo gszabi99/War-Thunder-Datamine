@@ -4,14 +4,10 @@ local { AMMO,
         getAmmoAmount,
         getAmmoMaxAmount,
         getAmmoWarningMinimum } = require("scripts/weaponry/ammoInfo.nut")
-local { getLastWeapon,
-        isWeaponEnabled,
-        isWeaponUnlocked,
-        getLastPrimaryWeapon } = require("scripts/weaponry/weaponryInfo.nut")
+local { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 local { canBuyMod,
         canResearchMod,
-        isModUpgradeable,
-        getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
+        isModUpgradeable } = require("scripts/weaponry/modificationInfo.nut")
 
 local function getItemAmount(unit, item)
 {
@@ -64,12 +60,12 @@ local function getItemStatusTbl(unit, item)
     res.amountWarningValue = getAmmoWarningMinimum(AMMO.WEAPON, unit, res.maxAmount)
     res.canBuyMore = res.amount < res.maxAmount
     res.equipped = res.amount && getLastWeapon(unit.name) == item.name
-    res.unlocked = isWeaponEnabled(unit, item) || (isOwn && isWeaponUnlocked(unit, item))
+    res.unlocked = ::is_weapon_enabled(unit, item) || (isOwn && ::is_weapon_unlocked(unit, item))
     res.discountType = "weapons"
   }
   else if (item.type == weaponsItem.primaryWeapon)
   {
-    res.equipped = getLastPrimaryWeapon(unit) == item.name
+    res.equipped = ::get_last_primary_weapon(unit) == item.name
     if (item.name == "") //default
       res.unlocked = isOwn
     else
@@ -170,7 +166,7 @@ local function getBundleCurItem(unit, bundle)
   }
   else if (bundle.itemsType == weaponsItem.primaryWeapon)
   {
-    local curPrimaryWeaponName = getLastPrimaryWeapon(unit)
+    local curPrimaryWeaponName = ::get_last_primary_weapon(unit)
     foreach (item in bundle.itemsList)
       if(item.name == curPrimaryWeaponName)
         return item
@@ -256,8 +252,8 @@ local function getItemUpgradesStatus(unit, item)
   }
   if (item.type == weaponsItem.modification)
   {
-    local curPrimWeaponName = getLastPrimaryWeapon(unit)
-    local weapMod = getModificationByName(unit, curPrimWeaponName)
+    local curPrimWeaponName = ::get_last_primary_weapon(unit)
+    local weapMod = ::getModificationByName(unit, curPrimWeaponName)
     local upgradesList = getItemUpgradesList(weapMod || unit) //default weapon upgrades stored in unit
     if (upgradesList)
       foreach(list in upgradesList)
@@ -282,50 +278,6 @@ local function getDiscountPath(unit, item, discountType)
   return discountPath
 }
 
-local function getAllModsCost(unit, open = false)
-{
-  local modsCost = ::Cost()
-  foreach(modification in (unit?.modifications ?? {}))
-  {
-    local statusTbl = getItemStatusTbl(unit, modification)
-    if (statusTbl.maxAmount == statusTbl.amount)
-      continue
-
-    local skipSummary = false
-    local _modCost = ::Cost()
-
-    if (open)
-    {
-      local openCost = getItemUnlockCost(unit, modification)
-      if (!openCost.isZero())
-        _modCost = openCost
-    }
-
-    if (canBuyMod(unit, modification))
-    {
-      local modificationCost = getItemCost(unit, modification)
-      if (!modificationCost.isZero())
-      {
-        skipSummary = statusTbl.maxAmount > 1
-
-        if (modificationCost.gold > 0)
-          skipSummary = true
-
-        _modCost = modificationCost
-      }
-    }
-
-    // premium modifications or ammo is separated,
-    // so no need to show it's price with other modifications.
-    if (skipSummary)
-      continue
-
-    modsCost += _modCost
-  }
-
-  return modsCost
-}
-
 return {
   getItemAmount         = getItemAmount
   isResearchableItem    = isResearchableItem
@@ -343,5 +295,4 @@ return {
   getItemUpgradesStatus = getItemUpgradesStatus
   getRepairCostCoef     = getRepairCostCoef
   getDiscountPath       = getDiscountPath
-  getAllModsCost        = getAllModsCost
 }

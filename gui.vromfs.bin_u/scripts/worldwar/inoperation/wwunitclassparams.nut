@@ -1,5 +1,3 @@
-local { getWeaponByName } = require("scripts/weaponry/weaponryInfo.nut")
-
 local sortIdxByExpClass = {
   fighter = 0
   assault = 1
@@ -91,7 +89,7 @@ local function getUnitClassData(unit, weapPreset = null)
 
   if (unit.expClass == "fighter" && weapPreset != null)
   {
-    local weaponmask = getWeaponByName(unit.unit, weapPreset)?.weaponmask ?? 0
+    local weaponmask = ::get_weapon_by_name(unit.unit, weapPreset)?.weaponmask ?? 0
     local requiredWeaponmask = ::g_world_war.getWWConfigurableValue("fighterToAssaultWeaponMask", 0)
     local isFighter = !(weaponmask & requiredWeaponmask)
     res.unitClass = isFighter ? WW_UNIT_CLASS.FIGHTER : WW_UNIT_CLASS.ASSAULT

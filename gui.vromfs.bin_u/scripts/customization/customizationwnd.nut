@@ -2,12 +2,11 @@ local time = require("scripts/time.nut")
 local penalty = require_native("penalty")
 local decorLayoutPresets = require("scripts/customization/decorLayoutPresetsWnd.nut")
 local unitActions = require("scripts/unit/unitActions.nut")
+local unitStatus = require("scripts/unit/unitStatus.nut")
 local contentPreview = require("scripts/customization/contentPreview.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
 local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 local weaponryPresetsModal = require("scripts/weaponry/weaponryPresetsModal.nut")
-local { canBuyNotResearched,
-        isUnitHaveSecondaryWeapons } = require("scripts/unit/unitStatus.nut")
 
 local { canUseIngameShop, getShopItemsTable } = ::is_platform_ps4? require("scripts/onlineShop/ps4ShopData.nut")
   : ::is_platform_xboxone? require("scripts/onlineShop/xboxShopData.nut")
@@ -180,7 +179,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
   function initMainParams()
   {
     isUnitOwn = unit.isUsable()
-    isUnitTank = unit.isTank()
+    isUnitTank = ::isTank(unit)
 
     access_Decals      = !previewMode && isUnitOwn && ::g_decorator_type.DECALS.isAvailable(unit)
     access_Attachables = !previewMode && isUnitOwn && ::g_decorator_type.ATTACHABLES.isAvailable(unit)
@@ -741,7 +740,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     local isGift   = ::isUnitGift(unit)
     local canBuyOnline = ::canBuyUnitOnline(unit)
-    local canBuyNotResearchedUnit = canBuyNotResearched(unit)
+    local canBuyNotResearchedUnit = unitStatus.canBuyNotResearched(unit)
     local canBuyIngame = !canBuyOnline && (::canBuyUnit(unit) || canBuyNotResearchedUnit)
 
     if (isGift && canUseIngameShop() && getShopItemsTable().len() == 0)
@@ -827,7 +826,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
           btn_info_online = !isInEditMode && !isDecoratorsListOpen && ::isUnitDescriptionValid(unit) && access_WikiOnline
           btn_sec_weapons    = !isInEditMode && !isDecoratorsListOpen &&
             (unit.isAir() || unit.isHelicopter()) && ::has_feature("ShowWeapPresetsMenu") &&
-              isUnitHaveSecondaryWeapons(unit)
+              ::isAirHaveSecondaryWeapons(unit)
           btn_weapons    = !isInEditMode && !isDecoratorsListOpen
 
           btn_decal_edit   = ::show_console_buttons && !isInEditMode && !isDecoratorsListOpen && !focusedSlot.isEmpty && focusedSlot.unlocked
@@ -1141,14 +1140,13 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     if (skinDecorator.canBuyUnlock(unit))
     {
-      local cost = skinDecorator.getCost()
-      local priceText = cost.getTextAccordingToBalance()
+      local priceText = skinDecorator.getCost().getTextAccordingToBalance()
       local msgText = ::warningIfGold(
         ::loc("decals/needToBuySkin",
           {purchase = skinDecorator.getName(), cost = priceText}),
         skinDecorator.getCost())
       msgBox("skin_locked", msgText,
-        [["ok", (@(previewSkinId) function() { buySkin(previewSkinId, cost) })(previewSkinId) ],
+        [["ok", (@(previewSkinId) function() { buySkin(previewSkinId) })(previewSkinId) ],
         ["cancel", function() {} ]], "ok")
     }
     else
@@ -1615,7 +1613,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     stopDecalEdition()
   }
 
-  function buyDecorator(decorator, cost, afterPurchDo = null)
+  function buyDecorator(decorator, afterPurchDo = null)
   {
     if (!::check_balance_msgBox(decorator.getCost()))
       return false
@@ -1629,7 +1627,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
         afterPurchDo()
     })(decorator, afterPurchDo), this)
 
-    decorator.decoratorType.buyFunc(unit.name, decorator.id, cost, afterSuccessFunc)
+    decorator.decoratorType.buyFunc(unit.name, decorator.id, afterSuccessFunc)
     return true
   }
 
@@ -1730,16 +1728,15 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function askBuyDecorator(decorator, afterPurchDo = null)
   {
-    local cost = decorator.getCost()
     local msgText = ::warningIfGold(
       ::loc("shop/needMoneyQuestion_purchaseDecal",
         {purchase = ::colorize("userlogColoredText", decorator.getName()),
-          cost = cost.getTextAccordingToBalance()}),
+          cost = decorator.getCost().getTextAccordingToBalance()}),
       decorator.getCost())
     msgBox("buy_decorator_on_preview", msgText,
       [["ok", (@(decorator, afterPurchDo) function() {
           currentState = decoratorEditState.PURCHASE
-          if (!buyDecorator(decorator, cost, afterPurchDo))
+          if (!buyDecorator(decorator, afterPurchDo))
             return forceResetInstalledDecorators()
 
           ::dmViewer.update()
@@ -1968,12 +1965,12 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     msgBox("need_money", msgText,
           [["ok", (@(previewSkinId, cost) function() {
             if (::check_balance_msgBox(cost))
-              buySkin(previewSkinId, cost)
+              buySkin(previewSkinId)
           })(previewSkinId, cost)],
           ["cancel", function() {} ]], "ok")
   }
 
-  function buySkin(skinName, cost)
+  function buySkin(skinName)
   {
     local afterSuccessFunc = ::Callback((@(skinName) function() {
         ::update_gamercards()
@@ -1981,7 +1978,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
         updateMainGuiElements()
       })(skinName), this)
 
-    ::g_decorator_type.SKINS.buyFunc(unit.name, skinName, cost, afterSuccessFunc)
+    ::g_decorator_type.SKINS.buyFunc(unit.name, skinName, afterSuccessFunc)
   }
 
   function onBtnMarketplaceFindSkin(obj)

@@ -816,7 +816,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     local unit = ::getAircraftByName(unitName)
     if (unit == null)
       return false
-    if (!::has_feature("Tanks") && unit?.isTank())
+    if (!::has_feature("Tanks") && ::isTank(unit))
       return false
     return unit.isVisibleInShop()
   }

@@ -1,11 +1,7 @@
 local { updateModItem,
         createModItemLayout,
         updateItemBulletsSlider } = require("scripts/weaponry/weaponryVisual.nut")
-local { getLastWeapon,
-        setLastWeapon,
-        isWeaponEnabled,
-        isWeaponVisible } = require("scripts/weaponry/weaponryInfo.nut")
-local { isUnitHaveSecondaryWeapons } = require("scripts/unit/unitStatus.nut")
+local { getLastWeapon, setLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 
 class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -267,10 +263,10 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
   function getColumnsAircraft()
   {
     local res = getEmptyColumnsConfig()
-    if (isUnitHaveSecondaryWeapons(unit))
+    if (::isAirHaveSecondaryWeapons(unit))
       res.columns.append([getCellConfig(weaponItemId, ::g_weaponry_types.WEAPON.getHeader(unit), weaponsItem.weapon)])
 
-    local groups = getBulletsGroups()
+    local groups = bulletsManager.getBulletsGroups(isForcedAvailable)
     local offset = res.columns.len() < modsInRow ? res.columns.len() : 0
     local totalColumns = ::min(offset + groups.len(), modsInRow)
     for(local i = res.columns.len(); i < totalColumns; i++)
@@ -287,7 +283,7 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getColumnsTank()
   {
-    local groups = getBulletsGroups()
+    local groups = bulletsManager.getBulletsGroups(isForcedAvailable)
     local gunsCount = bulletsManager.getGunTypesCount()
     if (!gunsCount)
       return null
@@ -366,7 +362,7 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function addSecondaryWeaponToTankColumns(colData)
   {
-    if (!isUnitHaveSecondaryWeapons(unit))
+    if (!::isAirHaveSecondaryWeapons(unit))
       return colData
 
     local weaponCell = getCellConfig(weaponItemId, ::g_weaponry_types.WEAPON.getHeader(unit), weaponsItem.weapon)
@@ -397,7 +393,7 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
         continue
 
       if (!isForcedAvailable &&
-          (!isWeaponVisible(unit, weapon) || !isWeaponEnabled(unit, weapon)))
+          (!::is_weapon_visible(unit, weapon) || !::is_weapon_enabled(unit, weapon)))
         continue
 
       if (found)
@@ -407,12 +403,8 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
         defWeapon = weapon
     }
     if (defWeapon) //validate selected weapon
-      setWeapon(defWeapon.name)
+      setLastWeapon(unit.name, defWeapon.name)
     return defWeapon
-  }
-
-  function setWeapon(name) {
-    setLastWeapon(unit.name, name)
   }
 
   function hasWeaponsToChooseFrom()
@@ -421,7 +413,7 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
     local hasOnlyBought = !::is_in_flight() || !::g_mis_custom_state.getCurMissionRules().isWorldWar
     foreach(weapon in unit.weapons)
     {
-      if (!isForcedAvailable && !isWeaponVisible(unit, weapon, hasOnlyBought))
+      if (!isForcedAvailable && !::is_weapon_visible(unit, weapon, hasOnlyBought))
         continue
 
       count++
@@ -431,8 +423,10 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
     return false
   }
 
-  getBulletsGroups = @() bulletsManager.getBulletsGroups(isForcedAvailable)
-  getBulletGroupByIndex = @(groupIdx) getBulletsGroups()?[groupIdx]
+  function getBulletGroupByIndex(groupIdx)
+  {
+    return ::getTblValue(groupIdx, bulletsManager.getBulletsGroups(isForcedAvailable))
+  }
 
   function getCurBullet(groupIdx)
   {
@@ -442,7 +436,7 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateWeapon()
   {
-    if (!isUnitHaveSecondaryWeapons(unit))
+    if (!::isAirHaveSecondaryWeapons(unit))
       return
 
     local itemObj = scene.findObject(weaponItemId)
@@ -461,7 +455,7 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateBullets()
   {
-    local groups = getBulletsGroups()
+    local groups = bulletsManager.getBulletsGroups(isForcedAvailable)
     foreach(gIdx, bulGroup in groups)
     {
       local itemObj = scene.findObject(getBulletsItemId(gIdx))
@@ -486,7 +480,7 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
   //included to updateBullets but much faster than full bullets update
   function updateAllBulletCountSliders()
   {
-    local groups = getBulletsGroups()
+    local groups = bulletsManager.getBulletsGroups(isForcedAvailable)
     foreach(gIdx, bulGroup in groups)
       updateBulletCountSlider(bulGroup, gIdx)
   }

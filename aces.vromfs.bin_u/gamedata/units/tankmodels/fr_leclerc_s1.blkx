@@ -344,9 +344,6 @@
         "ex_armor_turret_l_06_dm": {
           "armorThickness": 10.0
         },
-        "ex_armor_turret_r_07_dm": {
-          "armorThickness": 10.0
-        },
         "turret_09_back_dm": {
           "armorThickness": 20.0
         },
@@ -476,6 +473,9 @@
           "armorThickness": 4.0
         },
         "turret_02_front_dm": {
+          "armorThickness": 5.0
+        },
+        "ex_armor_turret_r_07_dm": {
           "armorThickness": 5.0
         }
       },
@@ -1184,21 +1184,6 @@
           },
           {
             "name": "ammo_body_50_dm"
-          },
-          {
-            "name": "ammo_body_51_dm"
-          },
-          {
-            "name": "ammo_body_52_dm"
-          },
-          {
-            "name": "ammo_body_53_dm"
-          },
-          {
-            "name": "ammo_body_54_dm"
-          },
-          {
-            "name": "ammo_body_55_dm"
           },
           {
             "name": "ammo_body_l_01_dm"
@@ -3106,11 +3091,15 @@
         "image": "#ui/gameuiskin#tank_reinforcement_fr"
       },
       "120mm_NATO_HEAT_FS": [],
-      "120mm_DM_APDS_FS": [],
+      "120mm_DM_APDS_FS": {
+        "modCostMul": 0.32
+      },
       "120mm_DM_APDS_FS_ammo_pack": {
         "tier": 1
       },
-      "120mm_NATO_APDS_FS": [],
+      "120mm_NATO_APDS_FS": {
+        "modCostMul": 0.98
+      },
       "120mm_NATO_APDS_FS_ammo_pack": {
         "tier": 4
       },

@@ -1,19 +1,14 @@
 local modsTree = ::require("scripts/weaponry/modsTree.nut")
 local tutorialModule = ::require("scripts/user/newbieTutorialDisplay.nut")
 local weaponryPresetsModal = require("scripts/weaponry/weaponryPresetsModal.nut")
-local prepareUnitsForPurchaseMods = require("scripts/weaponry/prepareUnitsForPurchaseMods.nut")
 local { canBuyMod,
         canResearchMod,
         isModResearched,
         isModUpgradeable,
         isModClassPremium,
-        isModClassExpendable,
-        getModificationByName,
         findAnyNotResearchedMod } = require("scripts/weaponry/modificationInfo.nut")
-local { isUnitHaveSecondaryWeapons } = require("scripts/unit/unitStatus.nut")
 local { getItemAmount,
         getItemCost,
-        getAllModsCost,
         canBeResearched,
         getByCurBundle,
         getItemStatusTbl,
@@ -42,10 +37,7 @@ local { AMMO, getAmmoCost } = require("scripts/weaponry/ammoInfo.nut")
 local { WEAPON_TAG,
         getLastWeapon,
         setLastWeapon,
-        getLastPrimaryWeapon,
-        getPrimaryWeaponsList,
-        getSecondaryWeaponsList,
-        isUnitHaveAnyWeaponsTags } = require("scripts/weaponry/weaponryInfo.nut")
+        getSecondaryWeaponsList } = require("scripts/weaponry/weaponryInfo.nut")
 local tutorAction = require("scripts/tutorials/tutorialActions.nut")
 local { setDoubleTextToButton, setColoredDoubleTextToButton,
   placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
@@ -397,7 +389,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
         goBack()
       }
 
-      setModificatonOnResearch(getModificationByName(air, curResModuleName), afterDoneFunc)
+      setModificatonOnResearch(::getModificationByName(air, curResModuleName), afterDoneFunc)
       return
     }
 
@@ -560,7 +552,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
   function updateBuyAllButton()
   {
     local btnId = "btn_buyAll"
-    local cost = getAllModsCost(air, true)
+    local cost = ::get_all_modifications_cost(air, true)
     local show = !cost.isZero() && ::isUnitUsable(air) && ::has_feature("BuyAllModifications")
     showSceneBtn(btnId, show)
     if (show)
@@ -662,7 +654,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (module == "")
       return false
 
-    local moduleData = getModificationByName(air, module)
+    local moduleData = ::getModificationByName(air, module)
     if (!moduleData || isModResearched(air, moduleData))
       return false
 
@@ -902,23 +894,15 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       }
   }
 
-  function getExpendableModificationsArray(unit)
-  {
-    if (!("modifications" in unit))
-      return []
-
-    return ::u.filter(unit.modifications, isModClassExpendable)
-  }
-
   function fillWeaponsAndBullets(offsetX, offsetY)
   {
     local columnsList = []
     //add primary weapons bundle
-    local primaryWeaponsNames = getPrimaryWeaponsList(air)
+    local primaryWeaponsNames = ::getPrimaryWeaponsList(air)
     local primaryWeaponsList = []
     foreach(i, modName in primaryWeaponsNames)
     {
-      local mod = (modName=="")? null : getModificationByName(air, modName)
+      local mod = (modName=="")? null : ::getModificationByName(air, modName)
       local item = { name = modName, weaponMod = mod }
 
       if (mod)
@@ -940,7 +924,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     lastWeapon = getLastWeapon(airName) //real weapon or ..._default
     dagor.debug("initial set lastWeapon " + lastWeapon )
-    if (isUnitHaveSecondaryWeapons(air))
+    if (::isAirHaveSecondaryWeapons(air))
     {
       //add secondary weapons bundle
       createBundle(getSecondaryWeaponsList(air), weaponsItem.weapon, 0, mainModsObj,
@@ -972,7 +956,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
 
     //add expendables
-    local expendablesArray = getExpendableModificationsArray(air)
+    local expendablesArray = ::get_expendable_modifications_array(air)
     if (expendablesArray.len())
     {
       columnsList.append(getWeaponsColumnData(::loc("modification/category/expendables")))
@@ -988,7 +972,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function canBomb(checkPurchase)
   {
-    return isUnitHaveAnyWeaponsTags(air, [WEAPON_TAG.ROCKET, WEAPON_TAG.BOMB], checkPurchase)
+    return ::isAirHaveAnyWeaponsTags(air, [WEAPON_TAG.ROCKET, WEAPON_TAG.BOMB], checkPurchase)
   }
 
   function getItemBundle(searchItem)
@@ -1461,10 +1445,10 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function setLastPrimary(item)
   {
-    local lastPrimary = getLastPrimaryWeapon(air)
+    local lastPrimary = ::get_last_primary_weapon(air)
     if (lastPrimary==item.name)
       return
-    local mod = getModificationByName(air, (item.name=="") ? lastPrimary : item.name)
+    local mod = ::getModificationByName(air, (item.name=="")? lastPrimary : item.name)
     if (mod)
       switchMod(mod, false)
   }
@@ -1511,7 +1495,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
           lastBullets[groupIndex] = ::get_last_bullets(airName, groupIndex)
         }
     }
-    if (isUnitHaveSecondaryWeapons(air) && lastWeapon!="" && lastWeapon != getLastWeapon(airName))
+    if (isAirHaveSecondaryWeapons(air) && lastWeapon!="" && lastWeapon != getLastWeapon(airName))
     {
       dagor.debug("force cln_update due lastWeapon '" + lastWeapon + "' != " + getLastWeapon(airName))
       needSave = true;
@@ -1557,21 +1541,21 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     {
       local curResName = ::shop_get_researchable_module_name(airName)
       if (::getTblValue("name", lastResearchMod, "") != curResName)
-        setModificatonOnResearch(getModificationByName(air, curResName))
+        setModificatonOnResearch(::getModificationByName(air, curResName))
     }
 
     if (getAutoPurchaseValue())
       onBuyAll(false, true)
     else if (researchMode)
-      prepareUnitsForPurchaseMods.addUnit(air)
+      ::prepareUnitsForPurchaseMods.addUnit(air)
 
     base.goBack()
   }
 
   function afterModalDestroy()
   {
-    if (!::checkNonApprovedResearches(false) && prepareUnitsForPurchaseMods.haveUnits())
-      prepareUnitsForPurchaseMods.checkUnboughtMods()
+    if (!::checkNonApprovedResearches(false) && ::prepareUnitsForPurchaseMods.haveUnits())
+      ::prepareUnitsForPurchaseMods.checkUnboughtMods()
   }
 
   function onDestroy()
@@ -1634,6 +1618,19 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     purchasedModifications.clear()
   }
 }
+
+::isWeaponAux <- function isWeaponAux(weapon)
+{
+  local aux = false
+  foreach (tag in weapon.tags)
+    if (tag == "aux")
+    {
+      aux = true
+      break
+    }
+  return aux
+}
+
 
 class ::gui_handlers.MultiplePurchase extends ::gui_handlers.BaseGuiHandlerWT
 {

@@ -2,14 +2,13 @@ local inventoryClient = require("scripts/inventory/inventoryClient.nut")
 local ItemExternal = require("scripts/items/itemsClasses/itemExternal.nut")
 local ItemGenerators = require("scripts/items/itemsClasses/itemGenerators.nut")
 local ExchangeRecipes = require("scripts/items/exchangeRecipes.nut")
-local { getPrizeChanceLegendMarkup } = require("scripts/items/prizeChance.nut")
 
 class ::items_classes.Chest extends ItemExternal {
   static iType = itemType.CHEST
   static defaultLocId = "chest"
   static typeIcon = "#ui/gameuiskin#item_type_trophies"
   static openingCaptionLocId = "mainmenu/chestConsumed/title"
-  static isPreferMarkupDescInTooltip = true
+  static isPreferMarkupDescInTooltip = false
   static userlogOpenLoc = "open_trophy"
   static hasTopRewardAsFirstItem = false
   static includeInRecentItems = false
@@ -113,7 +112,6 @@ class ::items_classes.Chest extends ItemExternal {
   {
     params = params || {}
     params.receivedPrizes <- false
-    params.needShowDropChance <- needShowDropChance()
 
     local content = getContent()
     local hasContent = content.len() != 0
@@ -179,18 +177,4 @@ class ::items_classes.Chest extends ItemExternal {
     msgBoxCantUse                = "msgBox/chestOpen/cant"
     msgBoxConfirm                = "msgBox/chestOpen/confirm"
   })
-
-  needShowDropChance = @() ::has_feature("ShowDropChanceInTrophy")
-    && (itemDef?.tags?.showDropChance ?? false)
-
-  function getTableData() {
-    if (!needShowDropChance())
-      return null
-
-    local markup = getPrizeChanceLegendMarkup()
-    if (markup == "")
-      return null
-
-    return markup
-  }
 }

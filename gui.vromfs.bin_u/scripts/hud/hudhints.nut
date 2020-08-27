@@ -1280,7 +1280,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     noKeyLocId = "hints/ready_to_bailout_nokey"
     getShortcuts =  function(data)
     {
-      return ::get_player_cur_unit()?.isShip() ?
+      return ::isShip(::get_player_cur_unit()) ?
         ::g_hud_action_bar_type.TOOLKIT.getVisualShortcut()
         //
 

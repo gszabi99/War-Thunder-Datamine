@@ -1,5 +1,3 @@
-local { getPrizeChanceLegendMarkup } = require("scripts/items/prizeChance.nut")
-
 class ::items_classes.Trophy extends ::BaseItem
 {
   static iType = itemType.TROPHY
@@ -28,7 +26,6 @@ class ::items_classes.Trophy extends ::BaseItem
   isGroupTrophy = false
   groupTrophyStyle = ""
   numTotal = -1
-  showDropChance = false
 
   constructor(blk, invBlk = null, slotData = null)
   {
@@ -43,7 +40,6 @@ class ::items_classes.Trophy extends ::BaseItem
     isGroupTrophy = numTotal > 0 && !blk?.repeatable //for repeatable work as usual
     groupTrophyStyle = blk?.groupTrophyStyle ?? iconStyle
     openingCaptionLocId = blk?.captionLocId
-    showDropChance = blk?.showDropChance ?? false
 
     local blksArray = [blk]
     if (::u.isDataBlock(blk?.prizes))
@@ -247,7 +243,6 @@ class ::items_classes.Trophy extends ::BaseItem
     params = params || {}
     params.showAsTrophyContent <- true
     params.receivedPrizes <- false
-    params.needShowDropChance <- needShowDropChance()
 
     return ::PrizesView.getPrizesStacksView(getContent(), _getDescHeader, params)
   }
@@ -280,10 +275,8 @@ class ::items_classes.Trophy extends ::BaseItem
   function _requestBuy(params = {})
   {
     local blk = ::DataBlock()
-    blk["name"] = id
-    blk["index"] = ::getTblValue("index", params, -1)
-    blk["cost"] = params.cost
-    blk["costGold"] = params.costGold
+    blk.setStr("name", id)
+    blk.setInt("index", ::getTblValue("index", params, -1))
     return ::char_send_blk("cln_buy_trophy", blk)
   }
 
@@ -324,17 +317,4 @@ class ::items_classes.Trophy extends ::BaseItem
 
   function getHiddenTopPrizeParams() { return null }
   function isHiddenTopPrize(prize) { return false }
-
-  needShowDropChance = @() ::has_feature("ShowDropChanceInTrophy") && showDropChance
-
-  function getTableData() {
-    if (!needShowDropChance())
-      return null
-
-    local markup = getPrizeChanceLegendMarkup()
-    if (markup == "")
-      return null
-
-    return markup
-  }
 }

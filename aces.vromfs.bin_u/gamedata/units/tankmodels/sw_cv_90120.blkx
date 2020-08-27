@@ -264,9 +264,6 @@
         },
         "turret_top_dm": {
           "armorThickness": 20.0
-        },
-        "ex_decor_02_dm": {
-          "armorThickness": 5.0
         }
       },
       "mask": {
@@ -1103,21 +1100,6 @@
           },
           {
             "name": "ammo_body_50_dm"
-          },
-          {
-            "name": "ammo_body_51_dm"
-          },
-          {
-            "name": "ammo_body_52_dm"
-          },
-          {
-            "name": "ammo_body_53_dm"
-          },
-          {
-            "name": "ammo_body_54_dm"
-          },
-          {
-            "name": "ammo_body_55_dm"
           },
           {
             "name": "ammo_body_l_01_dm"
@@ -1985,11 +1967,11 @@
           "defaultPitch": 0.0,
           "barrelDP": "gun_barrel_dm",
           "breechDP": "cannon_breech_dm",
-          "autoLoader": true,
+          "autoLoad": true,
           "speedYaw": 30.0,
           "speedPitch": 8.0,
           "fireConeAngle": 1.0,
-          "bullets": 45,
+          "bullets": 40,
           "salvoAmount": 100.0,
           "ChainfireTime": 0.0,
           "DelayAfterShoot": 5.0,
@@ -2907,9 +2889,6 @@
       "new_tank_vertical_aiming": [],
       "art_support": [],
       "tank_new_gun": [],
-      "laser_warning_system": {
-        "tier": 4
-      },
       "modern_tank_laser_rangefinder": {
         "tier": 1
       },
@@ -2930,11 +2909,11 @@
                 "defaultPitch": 0.0,
                 "barrelDP": "gun_barrel_dm",
                 "breechDP": "cannon_breech_dm",
-                "autoLoader": true,
+                "autoLoad": true,
                 "speedYaw": 30.0,
                 "speedPitch": 8.0,
                 "fireConeAngle": 1.0,
-                "bullets": 45,
+                "bullets": 40,
                 "salvoAmount": 100.0,
                 "ChainfireTime": 0.0,
                 "DelayAfterShoot": 5.0,
@@ -3110,11 +3089,15 @@
           }
         }
       },
-      "120mm_NATO_APDS_FS": [],
+      "120mm_NATO_APDS_FS": {
+        "modCostMul": 0.32
+      },
       "120mm_NATO_APDS_FS_ammo_pack": [],
       "120mm_DM_HE_FS": [],
       "120mm_DM_HE_FS_ammo_pack": [],
-      "120mm_DM_APDS_FS": [],
+      "120mm_DM_APDS_FS": {
+        "modCostMul": 0.98
+      },
       "120mm_DM_APDS_FS_ammo_pack": []
     }
   },
