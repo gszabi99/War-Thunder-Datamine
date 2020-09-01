@@ -139,14 +139,13 @@
       "hull_composite_armor": {
         "ex_armor_05_dm": {
           "armorThickness": 16.0,
-          "cumulativeArmorQuality": 0.75,
           "createSecondaryShatters": false,
           "hidableInViewer": true
         },
         "superstructure_front_dm": {
           "armorThickness": 60.0,
           "createSecondaryShatters": false,
-          "genericArmorQuality": 1.35,
+          "genericArmorQuality": 1.2,
           "variableThickness": true
         },
         "turret_02_front_dm": {
@@ -157,13 +156,13 @@
         },
         "turret_03_top_dm": {
           "armorClass": "tank_textolite",
-          "cumulativeArmorQuality": 0.4,
+          "cumulativeArmorQuality": 0.5,
           "armorThickness": 50.0,
           "createSecondaryShatters": false
         },
         "turret_01_bottom_dm": {
-          "armorThickness": 45.0,
-          "genericArmorQuality": 1.35
+          "armorThickness": 50.0,
+          "genericArmorQuality": 1.2
         }
       },
       "hull_ufp_armor": {
@@ -261,9 +260,6 @@
         "composite_armor_turret_01_dm": {
           "armorClass": "t_80b_composite_armor",
           "hidableInXrayViewer": true,
-          "armorThickness": 0.0,
-          "genericArmorQuality": 0.0,
-          "cumulativeArmorQuality": 0.0,
           "createSecondaryShatters": false
         },
         "composite_armor_turret_02_dm": {
@@ -418,7 +414,11 @@
         "ex_armor_l_06_dm": [],
         "ex_armor_l_07_dm": [],
         "ex_armor_l_08_dm": [],
-        "ex_armor_r_08_dm": []
+        "ex_armor_l_09_dm": [],
+        "ex_armor_l_10_dm": [],
+        "ex_armor_r_08_dm": [],
+        "ex_armor_r_09_dm": [],
+        "ex_armor_r_10_dm": []
       },
       "body_screens": {
         "armorClass": "aluminium",
@@ -1210,6 +1210,21 @@
           },
           {
             "name": "ammo_body_50_dm"
+          },
+          {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
           },
           {
             "name": "ammo_body_l_01_dm"
@@ -2249,7 +2264,7 @@
           },
           "limits": {
             "yaw": [-180.0,180.0],
-            "pitch": [-5.0,60.0]
+            "pitch": [-4.0,75.0]
           }
         }
       },
@@ -3159,7 +3174,7 @@
                 },
                 "limits": {
                   "yaw": [-180.0,180.0],
-                  "pitch": [-5.0,60.0]
+                  "pitch": [-4.0,75.0]
                 }
               }
             },
@@ -3396,6 +3411,28 @@
       "replace_tex": {
         "from": "ussr_camo_green*",
         "to": "ussr_camo_deform*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "ussr_modern_green",
+      "nameLocId": "skin/ussr_modern_green",
+      "descLocId": "skin/ussr_modern_green/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_modern_green*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "ussr_camo_modern_desert_deform",
+      "nameLocId": "skin/ussr_camo_modern_desert_deform",
+      "descLocId": "skin/ussr_camo_modern_desert_deform/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_camo_modern_desert_deform*"
       }
     }
   },

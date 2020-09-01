@@ -175,7 +175,7 @@ enums.addTypesByGlobalName("g_shortcut_type", {
 
     isAssigned = function (shortcutId, preset = null)
     {
-      return ::isShortcutMapped(::get_shortcuts([shortcutId], preset)[0])
+      return ::g_controls_utils.isShortcutMapped(::get_shortcuts([shortcutId], preset)[0])
     }
 
     getInputs = ::kwarg(function getInputs(shortcutId, preset = null,

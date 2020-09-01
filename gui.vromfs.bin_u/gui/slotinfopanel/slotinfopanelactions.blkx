@@ -1,0 +1,91 @@
+[
+  {
+    "HorizontalListBox": [
+      {
+        "id": "air_info_dmviewer_listbox"
+      },
+      {
+        "width": "pw"
+      },
+      {
+        "on_select": "onAirInfoToggleDMViewer"
+      },
+      {
+        "withImages": "yes"
+      },
+      {
+        "margin-bottom": "1@dp"
+      },
+      {
+        "smallFont": "yes"
+      },
+      {
+        "shopFilter": {
+          "width": "fw",
+          "tooltip": "#mainmenu/viewDamageModel/tooltip_none",
+          "shopFilterImg": {
+            "background-image": "#ui/gameuiskin#btn_dm_viewer_none.svg"
+          },
+          "shopFilterText": {
+            "text": "#mainmenu/listbox_dm_viewer_none"
+          }
+        }
+      },
+      {
+        "shopFilter": {
+          "width": "fw",
+          "tooltip": "#mainmenu/viewDamageModel/tooltip_armor",
+          "shopFilterImg": {
+            "background-image": "#ui/gameuiskin#btn_dm_viewer_armor.svg"
+          },
+          "shopFilterText": {
+            "text": "#mainmenu/listbox_dm_viewer_armor"
+          }
+        }
+      },
+      {
+        "shopFilter": {
+          "width": "fw",
+          "tooltip": "#mainmenu/viewDamageModel/tooltip_xray",
+          "shopFilterImg": {
+            "background-image": "#ui/gameuiskin#btn_dm_viewer_xray.svg"
+          },
+          "shopFilterText": {
+            "text": "#mainmenu/listbox_dm_viewer_xray"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "CheckBox": {
+      "id": "dmviewer_show_external_dm",
+      "text": "#mainmenu/btnShowExternalDmParts",
+      "on_change_value": "onShowExternalDmPartsChange",
+      "value": "yes",
+      "width": "pw",
+      "margin-bottom": "3@dp",
+      "display": "hide",
+      "CheckBoxImg": []
+    }
+  },
+  {
+    "CheckBox": {
+      "id": "dmviewer_show_extra_xray",
+      "text": "#mainmenu/btnShowExtraXrayParts",
+      "on_change_value": "onShowHiddenXrayPartsChange",
+      "value": "yes",
+      "width": "pw",
+      "margin-bottom": "3@dp",
+      "display": "hide",
+      "CheckBoxImg": []
+    }
+  },
+  {
+    "tdiv": {
+      "id": "buttons_place",
+      "flow": "vertical",
+      "width": "pw"
+    }
+  }
+]

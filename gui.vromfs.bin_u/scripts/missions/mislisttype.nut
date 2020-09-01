@@ -1,4 +1,6 @@
 local enums = ::require("sqStdlibs/helpers/enums.nut")
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+
 enum mislistTabsOrder {
   BASE
   UGM
@@ -276,8 +278,9 @@ g_mislist_type._getMissionNameText <- function _getMissionNameText(mission)
   infoLinkTooltipLocId = ""
   getInfoLinkData = function()
   {
-    if (::is_ps4_or_xbox || !infoLinkLocId.len())
+    if (isPlatformSony || isPlatformXboxOne || !infoLinkLocId.len())
       return null
+
     return {
       link = ::loc(infoLinkLocId)
       text = ::loc(infoLinkTextLocId)

@@ -1,5 +1,6 @@
 local globalEnv = require_native("globalEnv")
 local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 ::aircraft_controls_wizard_config <- [
   { id="helpers_mode"
@@ -29,7 +30,7 @@ local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nu
     }
   { id="msg/use_mouse_for_control", type= CONTROL_TYPE.MSG_BOX
     filterHide = [globalEnv.EM_MOUSE_AIM]
-    needSkip = @() ::is_ps4_or_xbox
+    needSkip = @() (isPlatformSony || isPlatformXboxOne)
     options = ["controls/useMouseControl", "controls/useMouseView", "controls/UseMouseNone"],
     skip = [null, null, ["msg/mouseWheelAction", "ID_CAMERA_NEUTRAL"]]
     onButton = function(value)
@@ -299,7 +300,7 @@ local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nu
   ::gui_start_modal_wnd(::gui_handlers.controlsWizardModalHandler)
 }
 
-class ::gui_handlers.controlsWizardModalHandler extends ::gui_handlers.Hotkeys
+class ::gui_handlers.controlsWizardModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
   sceneBlkName = "gui/controlsWizard.blk"
@@ -914,7 +915,7 @@ class ::gui_handlers.controlsWizardModalHandler extends ::gui_handlers.Hotkeys
           if (isKbd == isKbdOrMouse(shortcuts[shortcutId][i].dev))
             shortcuts[shortcutId].remove(i)   //remove shortcuts by same device type
         shortcuts[shortcutId].append({dev = devs, btn = btns})
-        if (shortcuts[shortcutId].len() > ::MAX_SHORTCUTS)
+        if (shortcuts[shortcutId].len() > max_shortcuts)
           shortcuts[shortcutId].remove(0)
       }
     }

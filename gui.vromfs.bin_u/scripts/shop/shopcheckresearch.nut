@@ -56,6 +56,25 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
     selectRequiredUnit()
   }
 
+  function getNotResearchedUnitByFeature()
+  {
+    foreach(unit in ::all_units)
+      if (    (!unitCountry || ::getUnitCountry(unit) == unitCountry)
+           && (unitType == null || ::get_es_unit_type(unit) == unitType)
+           && ::isUnitFeatureLocked(unit)
+         )
+        return unit
+    return null
+  }
+
+  function getMaxEraAvailableByCountry()
+  {
+    for (local era = 1; era <= ::max_country_rank; era++)
+      if (!::is_era_available(unitCountry, era, unitType))
+        return (era - 1)
+    return ::max_country_rank
+  }
+
   function showRankRestrictionMsgBox()
   {
     if (!hasNextResearch() || showRankLockedMsgBoxOnce || !isSceneActiveNoModals())
@@ -63,13 +82,13 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
 
     showRankLockedMsgBoxOnce = true
 
-    local rank = ::get_max_era_available_by_country(unitCountry, unitType)
+    local rank = getMaxEraAvailableByCountry()
     local nextRank = rank + 1
 
     if (nextRank > ::max_country_rank)
       return
 
-    local unitLockedByFeature = ::getNotResearchedUnitByFeature(unitCountry, unitType)
+    local unitLockedByFeature = getNotResearchedUnitByFeature()
     if (unitLockedByFeature && !::checkFeatureLock(unitLockedByFeature, CheckFeatureLockAction.RESEARCH))
       return
 
@@ -125,6 +144,30 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
       (curResearchingUnit == null || ::isUnitResearched(curResearchingUnit))
   }
 
+  function getMaxRankUnboughtUnitByCountry()
+  {
+    local unit = null
+    foreach (newUnit in ::all_units)
+      if (!unitCountry || unitCountry == ::getUnitCountry(newUnit))
+        if (::getTblValue("rank", newUnit, 0) > ::getTblValue("rank", unit, 0))
+          if (unitType == ::get_es_unit_type(newUnit)
+              && !::isUnitSpecial(newUnit)
+              && ::canBuyUnit(newUnit)
+              && ::isPrevUnitBought(newUnit))
+            unit = newUnit
+    return unit
+  }
+
+  function getMaxRankResearchingUnitByCountry()
+  {
+    local unit = null
+    foreach (newUnit in ::all_units)
+      if (unitCountry == ::getUnitCountry(newUnit))
+        if (unitType == ::get_es_unit_type(newUnit) && ::canResearchUnit(newUnit))
+          unit = (::getTblValue("rank", newUnit, 0) > ::getTblValue("rank", unit, 0))? newUnit : unit
+    return unit
+  }
+
   function selectRequiredUnit()
   {
     local unit = null
@@ -134,17 +177,17 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
         unit = curResearchingUnit
       else
       {
-        unit = ::getMaxRankResearchingUnitByCountry(unitCountry, unitType)
+        unit = getMaxRankResearchingUnitByCountry()
         setUnitOnResearch(unit)
       }
     }
     else if (!curResearchingUnit || ::isUnitResearched(curResearchingUnit))
     {
-      local nextResearchingUnit = ::getMaxRankResearchingUnitByCountry(unitCountry, unitType)
+      local nextResearchingUnit = getMaxRankResearchingUnitByCountry()
       if (nextResearchingUnit)
         unit = nextResearchingUnit
       else
-        unit = ::getMaxRankUnboughtUnitByCountry(unitCountry, unitType)
+        unit = getMaxRankUnboughtUnitByCountry()
     }
     else
       unit = curResearchingUnit

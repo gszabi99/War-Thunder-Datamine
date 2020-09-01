@@ -83,6 +83,12 @@ enum BATTLE_LOG_FILTER
       [::ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
       [::ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
     }
+    mine = {
+      [::ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_KILLED_FM",
+      [::ES_UNIT_TYPE_TANK]       = "NET_UNIT_KILLED_GM",
+      [::ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
+      [::ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
+    }
     exit = {
       [::ES_UNIT_TYPE_AIRCRAFT]   = "NET_PLAYER_EXITED",
       [::ES_UNIT_TYPE_TANK]       = "NET_PLAYER_EXITED",

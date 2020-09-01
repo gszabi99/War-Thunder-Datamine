@@ -1,7 +1,7 @@
 
 
 
-@const scrn_tgt       : sh $min (0.75sw);
+@const scrn_tgt       : (sh $min sw) $min (0.75 * (sw $max sh));
 @const isWide         : (((10(sw + 1)) \ (16@scrn_tgt))) $min 1;
 @const pf_outdated    : 900 $min 1@scrn_tgt; 
 @const sf: @scrn_tgt;
@@ -14,3 +14,11 @@
 @const fontNormalBold:  small_accented_text_hud;
 @const fontMedium:      medium_text_hud;
 @const fontBigBold:     big_text_hud;
+
+
+@const fontHeightTiny:        11;
+@const fontHeightSmall:       13;
+@const fontHeightNormal:      22;
+@const fontHeightNormalBold:  24;
+@const fontHeightMedium:      27;
+@const fontHeightBigBold:     36;

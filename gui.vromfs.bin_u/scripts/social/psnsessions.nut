@@ -1,4 +1,5 @@
-local psn = require("ps4Lib/webApi.nut")
+local psn = require("sonyLib/webApi.nut")
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
 enum PSN_SESSION_TYPE {
   SKIRMISH = "skirmish"
@@ -151,7 +152,7 @@ g_psn_sessions.leave <- function leave(session, cb=psn.noOpCb)
 
 g_psn_sessions.checkAfterFlight <- function checkAfterFlight()
 {
-  if (!::is_platform_ps4)
+  if (!isPlatformSony)
     return
 
   invitations.apply(@(i) i.processDelayed(i))
@@ -161,7 +162,7 @@ g_psn_sessions.checkAfterFlight <- function checkAfterFlight()
 
 g_psn_sessions.onEventRoomJoined <- function onEventRoomJoined(params)
 {
-  if (!::is_platform_ps4 || ::get_game_mode() != ::GM_SKIRMISH)
+  if (!isPlatformSony || ::get_game_mode() != ::GM_SKIRMISH)
     return
 
   local session = ::SessionLobby.getExternalId()
@@ -177,7 +178,7 @@ g_psn_sessions.onEventLobbyStatusChange <- function onEventLobbyStatusChange(par
   ::dagor.debug("[PSSI] onEventLobbyStatusChange in room "+::SessionLobby.isInRoom())
   // Leave psn session, join has its own event. Actually leave all skirmishes,
   // we can have only one in game but we no longer know it's psn Id in Lobby
-  if (::is_platform_ps4 && !::SessionLobby.isInRoom())
+  if (isPlatformSony && !::SessionLobby.isInRoom())
     foreach(id,s in sessions.filter(@(s) s.type == PSN_SESSION_TYPE.SKIRMISH))
       leave(id)
 }
@@ -185,7 +186,7 @@ g_psn_sessions.onEventLobbyStatusChange <- function onEventLobbyStatusChange(par
 g_psn_sessions.onEventLobbySettingsChange <- function onEventLobbySettingsChange(params)
 {
   local session = ::SessionLobby.getExternalId()
-  if (!::is_platform_ps4 || u.isEmpty(session))
+  if (!isPlatformSony || u.isEmpty(session))
     return
 
   ::dagor.debug("[PSSI] onEventLobbySettingsChange for " + session)
@@ -198,7 +199,7 @@ g_psn_sessions.onEventLobbySettingsChange <- function onEventLobbySettingsChange
 
 g_psn_sessions.onEventSquadStatusChanged <- function onEventSquadStatusChanged(params)
 {
-  if (!::is_platform_ps4)
+  if (!isPlatformSony)
     return
 
   local session = ::g_squad_manager.getPsnSessionId()

@@ -1,3 +1,6 @@
+local { openOptionsWnd } = require("scripts/options/handlers/optionsWnd.nut")
+local exitGame = require("scripts/utils/exitGame.nut")
+
 ::gui_start_flight_menu <- function gui_start_flight_menu()
 {
   ::flight_menu_handler = ::handlersManager.loadHandler(::gui_handlers.FlightMenu)
@@ -196,7 +199,7 @@ class ::gui_handlers.FlightMenu extends ::gui_handlers.BaseGuiHandlerWT
 
   function onOptions(obj)
   {
-    ::gui_start_options(this)
+    openOptionsWnd()
   }
 
   function onControls(obj)
@@ -351,9 +354,9 @@ class ::gui_handlers.FlightMenu extends ::gui_handlers.BaseGuiHandlerWT
   {
     msgBox("question_quit_flight", ::loc("flightmenu/questionQuitGame"),
       [
-        ["yes", ::exit_game],
+        ["yes", exitGame],
         ["no", selectQuitBtn]
-      ], "no")
+      ], "no", {cancel_fn = selectQuitBtn})
   }
 
   function selectBailoutBtn()

@@ -1,3 +1,6 @@
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
+local exitGame = require("scripts/utils/exitGame.nut")
+
 ::gui_start_eula <- function gui_start_eula(eulaType, isForView = false)
 {
   ::gui_start_modal_wnd(::gui_handlers.EulaWndHandler, { eulaType = eulaType, isForView = isForView })
@@ -17,7 +20,7 @@ class ::gui_handlers.EulaWndHandler extends ::gui_handlers.BaseGuiHandlerWT
     textObj["punctuation-exception"] = "-.,'\"():/\\@"
     local isEULA = eulaType == ::TEXT_EULA
     ::load_text_content_to_gui_object(textObj, isEULA ? ::loc("eula_filename") : ::loc("nda_filename"))
-    if (isEULA && ::is_platform_ps4)
+    if (isEULA && isPlatformSony)
     {
       local regionTextRootMainPart = "scee"
       if (::ps4_get_region() == ::SCE_REGION_SCEA)
@@ -59,7 +62,7 @@ class ::gui_handlers.EulaWndHandler extends ::gui_handlers.BaseGuiHandlerWT
   function onExit()
   {
     sendEulaStatistic("decline")
-    ::exit_game()
+    exitGame()
   }
 
   function sendEulaStatistic(action)

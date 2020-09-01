@@ -1,5 +1,6 @@
 local time = require("scripts/time.nut")
-local { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
+local { openOptionsWnd } = require("scripts/options/handlers/optionsWnd.nut")
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
 ::uploadLimit <- 3
 ::on_screenshot_saved <- null
@@ -115,7 +116,7 @@ const FACEBOOK_UPLOADS_SAVE_ID = "facebook/uploads"
 
 ::start_facebook_login <- function start_facebook_login()
 {
-  if (::is_platform_ps4)
+  if (isPlatformSony)
     return
 
   ::scene_msg_box("facebook_login", null, ::loc("facebook/connecting"),
@@ -145,7 +146,7 @@ const FACEBOOK_UPLOADS_SAVE_ID = "facebook/uploads"
 
 ::show_facebook_screenshot_button <- function show_facebook_screenshot_button(scene, show = true, id = "btn_upload_facebook_scrn")
 {
-  show = show && !::is_platform_ps4 && ::has_feature("FacebookScreenshots")
+  show = show && !isPlatformSony && ::has_feature("FacebookScreenshots")
   local fbObj = ::showBtn(id, show, scene)
   if (!::checkObj(fbObj))
     return
@@ -167,7 +168,7 @@ class ::gui_handlers.facebookReminderModal extends ::gui_handlers.BaseGuiHandler
 
   function onOk()
   {
-    ::gui_start_options(topMenuHandler.value, "social");
+    openOptionsWnd("social")
     ::start_facebook_login()
   }
 

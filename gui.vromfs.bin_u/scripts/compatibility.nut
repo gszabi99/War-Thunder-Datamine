@@ -143,7 +143,3 @@
     return player?.id ?? -1
   }
 })
-//----------------------------wop_1_99_1_X---------------------------------//
-::apply_compatibilities({
-  EII_SPEED_BOOSTER = 28
-})

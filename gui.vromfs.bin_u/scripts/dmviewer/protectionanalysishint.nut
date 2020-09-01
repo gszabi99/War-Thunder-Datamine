@@ -13,8 +13,11 @@ class ::gui_handlers.ProtectionAnalysisHint extends ::gui_handlers.BaseGuiHandle
   getValueByResultCfg = {
     penetratedArmor = function(params, id, resultCfg) {
       local res = 0.0
-      foreach (src in resultCfg.infoSrc)
+      foreach (src in resultCfg.infoSrc) {
         res = ::max(res, (params?[src]?[id]?.generic ?? 0.0) + (params?[src]?[id]?.cumulative ?? 0.0))
+        res = ::max(res, (params?[src]?[id]?.explosion ?? 0.0))
+        res = ::max(res, (params?[src]?[id]?.shatter ?? 0.0))
+      }
       return res
     }
     ricochetProb = function(params, id, resultCfg) {

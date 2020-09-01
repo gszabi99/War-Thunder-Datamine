@@ -1,9 +1,11 @@
 local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
 local statsd = require("statsd")
-local psn = require("ps4Lib/webApi.nut")
+local psn = require("sonyLib/webApi.nut")
 local u = require("sqStdLibs/helpers/u.nut")
 local seenList = require("scripts/seen/seenList.nut").get(SEEN.EXT_PS4_SHOP)
 local { fillBlock } = require("scripts/utils/datablockConverter.nut")
+
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
 local Ps4ShopPurchasableItem = require("scripts/onlineShop/ps4ShopPurchasableItem.nut")
 
@@ -27,7 +29,7 @@ local visibleSeenIds = []
 
 local getShopItem = @(id) persist.itemsList?[id]
 
-local canUseIngameShop = @() ::is_platform_ps4 && ::has_feature("PS4IngameShop")
+local canUseIngameShop = @() isPlatformSony && ::has_feature("PS4IngameShop")
 
 local haveItemDiscount = null
 

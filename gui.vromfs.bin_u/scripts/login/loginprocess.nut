@@ -1,3 +1,5 @@
+local exitGame = require("scripts/utils/exitGame.nut")
+
 enum LOGIN_PROGRESS
 {
   NOT_STARTED
@@ -118,7 +120,7 @@ class ::LoginProcess
       return false
 
     ::scene_msg_box("old exe version", null, ::loc("charServer/updateError/75"),
-      [["exit", ::exit_game ]], "exit",
+      [["exit", exitGame ]], "exit",
       { saved = true })
     return true
   }

@@ -274,7 +274,8 @@
         "ex_armor_turret_l_01_dm": [],
         "ex_armor_turret_l_03_dm": [],
         "ex_armor_turret_05_dm": [],
-        "ex_armor_turret_r_06_dm": []
+        "ex_armor_turret_r_06_dm": [],
+        "ex_armor_r_12_dm": []
       },
       "body_aluminium_parts": {
         "armorClass": "aluminium",
@@ -944,6 +945,21 @@
           },
           {
             "name": "ammo_body_50_dm"
+          },
+          {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
           },
           {
             "name": "ammo_body_l_01_dm"
@@ -2147,7 +2163,8 @@
           "turret": {
             "head": "bone_gun_02",
             "gun": "bone_gun_02",
-            "gunnerDm": "gunner_dm"
+            "gunnerDm": "gunner_dm",
+            "rotatedTurret": "bone_turret"
           },
           "limits": {
             "yaw": [0.0,0.0],
@@ -3099,6 +3116,28 @@
     }
   },
   {
+    "skin": {
+      "name": "ussr_modern_green",
+      "nameLocId": "skin/ussr_modern_green",
+      "descLocId": "skin/ussr_modern_green/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_modern_green*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "ussr_camo_modern_desert_deform",
+      "nameLocId": "skin/ussr_camo_modern_desert_deform",
+      "descLocId": "skin/ussr_camo_modern_desert_deform/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_camo_modern_desert_deform*"
+      }
+    }
+  },
+  {
     "modifications": {
       "new_tank_tracks": [],
       "new_tank_suspension": [],
@@ -3388,7 +3427,8 @@
                 "turret": {
                   "head": "bone_gun_02",
                   "gun": "bone_gun_02",
-                  "gunnerDm": "gunner_dm"
+                  "gunnerDm": "gunner_dm",
+                  "rotatedTurret": "bone_turret"
                 },
                 "limits": {
                   "yaw": [0.0,0.0],

@@ -50,7 +50,7 @@
   "ElevatorAngles": [28.0,15.0],
   "InvertElevator": false,
   "FlapsRadiator": 0.0,
-  "RudderAngles": [30.0,30.0],
+  "RudderAngles": [25.0,25.0],
   "InterceptorType": 0,
   "Elevon": false,
   "ElevonPitchAngleMultiplier": 0.0,
@@ -69,9 +69,9 @@
   "ArcadeMaxRollCoeff": 1.0,
   "ArcadeYawMutilpliers": [1.0,1.0,1.0],
   "ArcadePitchModificators": [0.0,1.0,1.0],
-  "AileronMaxDv": 4.0,
+  "AileronMaxDv": 8.0,
   "ElevatorMaxDv": 10.0,
-  "RudderMaxDv": 10.0,
+  "RudderMaxDv": 8.0,
   "CockpitOpenedDoorBreakSpeed": 450.0,
   "MomentOfInertia": [20000.0,95000.0,75000.0],
   "IgnoreErrors": true,
@@ -114,7 +114,7 @@
       "Mode": "Separate",
       "AileronsMode": "AutoRate",
       "ElevatorMode": "Manual",
-      "RudderMode": "AoS",
+      "RudderMode": "Rate",
       "ThrottleMode": "Manual",
       "allowOverrideByForcedStabilization": true
     },
@@ -122,13 +122,13 @@
       "Mode": "Separate",
       "AileronsMode": "AutoRate",
       "ElevatorMode": "Angle",
-      "RudderMode": "AoS",
+      "RudderMode": "Rate",
       "ThrottleMode": "Manual",
       "allowOverrideByForcedStabilization": true
     }
   },
   "MouseAim": {
-    "PreciseRotStopDetection": true
+    "PreciseRotStopDetection": false
   },
   "Areas": {
     "WingLeftIn": 12.3,
@@ -156,14 +156,14 @@
     "WingInFocus": 0.5,
     "WingMidFocus": 2.2,
     "WingOutFocus": 6.0,
-    "WingV": -2.0,
+    "WingV": 1.0,
     "Stabilizer": 4.96,
     "Keel": 6.8,
     "Rudder": 4.24,
     "Fuselage": [0.7,0.1,0.0],
     "LeftStab": [-8.0,1.1,1.0],
     "RightStab": [-8.0,1.1,-1.0],
-    "VertStab": [-5.5,1.1,0.0],
+    "VertStab": [-5.5,2.1,0.0],
     "WingVWingFocusMultiplier": 0.0,
     "SineAOSMultiplier": -0.2
   },
@@ -390,7 +390,7 @@
       "MultLimit5": 5.0,
       "MachCrit6": 0.0,
       "MachMax6": 0.15,
-      "MultMachMax6": -5.5,
+      "MultMachMax6": -3.5,
       "MultLineCoeff6": 0.0,
       "MultLimit6": 10.0,
       "MachCrit7": 0.0,
@@ -1280,10 +1280,10 @@
         "PropTorqueAxis": [0.0,0.0,0.0]
       },
       "RatePID": {
-        "Kp": 0.5,
-        "Ki": 0.05,
+        "Kp": 1.0,
+        "Ki": 0.0,
         "Imax": 1.0,
-        "Kd": 0.005,
+        "Kd": 0.0,
         "dTau": 0.0208,
         "Lim": [-2147440000.0,2147440000.0]
       },

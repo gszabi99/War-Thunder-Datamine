@@ -6,6 +6,7 @@ local { getTextWithCrossplayIcon,
 local clustersModule = require("scripts/clusterSelect.nut")
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
 local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
 const COLLAPSED_CHAPTERS_SAVE_ID = "events_collapsed_chapters"
 const ROOMS_LIST_OPEN_COUNT_SAVE_ID = "tutor/roomsListOpenCount"
@@ -536,7 +537,7 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
   function fillEventsList()
   {
     local chapters = ::events.getChapters()
-    local needSkipCrossplayEvent = ::is_platform_ps4 && !isCrossPlayEnabled()
+    local needSkipCrossplayEvent = isPlatformSony && !isCrossPlayEnabled()
 
     local view = { items = [] }
     foreach (chapter in chapters)

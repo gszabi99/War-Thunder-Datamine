@@ -2342,13 +2342,28 @@
     "20mm_ger_kwk30_AP": [],
     "20mm_ger_kwk30_APCR": []
   },
-  "default_skin": {
-    "name": "default",
-    "replace_tex": {
-      "from": "ger_camo_grey*",
-      "to": "ger_camo_dunkelgelb_africa*"
+  "default_skin": [
+    {
+      "replace_tex": {
+        "from": "ger_camo_grey*",
+        "to": "ger_camo_dunkelgelb_africa*"
+      }
+    },
+    {
+      "set_tex": {
+        "from": "pzkpfw_II_ausf_C_turret_c*",
+        "to": "pzkpfw_II_ausf_C_skin_turret_c*",
+        "param": "camo_skin_tex"
+      }
+    },
+    {
+      "set_tex": {
+        "from": "pzkpfw_II_ausf_C_body_c*",
+        "to": "pzkpfw_II_ausf_C_skin_body_c*",
+        "param": "camo_skin_tex"
+      }
     }
-  },
+  ],
   "skin": {
     "name": "winter",
     "nameLocId": "skin/winter",
@@ -2357,17 +2372,5 @@
       "from": "ger_camo_grey*",
       "to": "ger_camo_winter_grey*"
     }
-  },
-  "defaultDecals": {
-    "decal0Line0": [0.0,-2.18557e-07,5.0,-2.46811],
-    "decal0Line1": [0.0,-5.0,-2.18557e-07,7.40336],
-    "decal0HaveCP": true,
-    "decal0CP": [-0.462563,1.57737,1.52394],
-    "decal0CPNormDepth": [1.0,0.0,0.0,-1.47782],
-    "decal0RotScale": [1.5708,0.2],
-    "decal0Mirrored": false,
-    "decal0Wrap": false,
-    "decal0Abs": false,
-    "decal0Tex": "ge_afrika_korps_emblem"
   }
 }

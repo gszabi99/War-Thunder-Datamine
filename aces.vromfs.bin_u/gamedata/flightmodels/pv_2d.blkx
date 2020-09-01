@@ -3084,6 +3084,20 @@
       },
       {
         "preset": {
+          "name": "pv_2d_mine_mk13_mod0",
+          "blk": "gameData/FlightModels/weaponPresets/pv_2d_mine_mk13_mod0.blk",
+          "reqModification": "us_mine_mk13_mod0",
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/mines/us_mine_mk13_mod0.blk",
+              "amountPerTier": 3.0,
+              "iconType": "air_mines_group"
+            }
+          }
+        }
+      },
+      {
+        "preset": {
           "name": "pv_2d_tiny_tim",
           "blk": "gameData/FlightModels/weaponPresets/pv_2d_tiny_tim.blk"
         }
@@ -3231,8 +3245,13 @@
       "new_compressor": [],
       "new_engine_injection": [],
       "dgp-1_gunpod": {
-        "prevModification": "bmg50_turret_belt_pack",
+        "prevModification": "us_mine_mk13_mod0",
         "tier": 1,
+        "modClass": "weapon"
+      },
+      "us_mine_mk13_mod0": {
+        "tier": 2,
+        "prevModification": "bmg50_turret_belt_pack",
         "modClass": "weapon"
       },
       "50cal_turret_ap": [],

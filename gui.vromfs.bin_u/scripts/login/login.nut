@@ -127,6 +127,19 @@ g_login.onEventScriptsReloaded <- function onEventScriptsReloaded(p)
   afterScriptsReload()
 }
 
+g_login.getStateDebugStr <- function getStateDebugStr(state = null)
+{
+  state = state ?? curState
+  return state == 0 ? "0" : ::bit_mask_to_string("LOGIN_STATE", state)
+}
+
+g_login.debugState <- function debugState(shouldShowNotSetBits = false)
+{
+  local debugLog = ::dlog // warning disable: -forbidden-function
+  if (shouldShowNotSetBits)
+    return debugLog($"not set loginState = {getStateDebugStr(LOGIN_STATE.LOGGED_IN & ~curState)}")
+  return debugLog($"loginState = {getStateDebugStr()}")
+}
 
 ::is_logged_in <- function is_logged_in() //used from code
 {

@@ -234,11 +234,13 @@
         "body_side_dm": {
           "armorThickness": 14.0
         },
-        "body_shield_dm": {
-          "armorThickness": 5.0
-        },
         "ex_armor_body_04_dm": {
           "armorThickness": 63.5
+        },
+        "composite_armor_hull_01_dm": {
+          "armorThickness": 4.9,
+          "armorClass": "tank_structural_steel",
+          "hidableInXrayViewer": true
         }
       },
       "turret": {
@@ -263,6 +265,9 @@
         "hp": 10000.0,
         "gun_mask_dm": {
           "armorThickness": 30.0
+        },
+        "gun_mask_01_dm": {
+          "armorThickness": 20.0
         },
         "gun_mask_02_dm": {
           "armorThickness": 32.0
@@ -782,6 +787,19 @@
     }
   },
   {
+    "xray_viewer_data": {
+      "armorArrayHull": {
+        "xrayDmPart": "composite_armor_hull_01_dm",
+        "titleLoc": "tank_structural_steel",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_01_dm"
+          }
+        }
+      }
+    }
+  },
+  {
     "DamageEffects": [
       {
         "part": [
@@ -937,6 +955,21 @@
           },
           {
             "name": "ammo_body_50_dm"
+          },
+          {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
           },
           {
             "name": "ammo_body_l_01_dm"
@@ -1974,31 +2007,7 @@
         "defaultDampeningForce": [90000.0,90000.0],
         "dampeningRelaxationRatio": 0.4,
         "dampeningCompressionRatio": 0.15
-      },
-      "physNode": [
-        {
-          "type": "verlet_string"
-        },
-        {
-          "stiffness": 1.0
-        },
-        {
-          "straightening": 0.5
-        },
-        {
-          "point": {
-            "name": "antenna",
-            "mass": 1.0,
-            "fixed": true
-          }
-        },
-        {
-          "point": {
-            "name": "bone_phx_antenna",
-            "mass": 3.0
-          }
-        }
-      ]
+      }
     }
   },
   {

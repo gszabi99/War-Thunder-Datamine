@@ -2933,6 +2933,66 @@
           "blk": "gameData/FlightModels/weaponPresets/pbm_8x1000lbs.blk",
           "reqModification": "b-25_lbc"
         }
+      },
+      {
+        "preset": {
+          "name": "PBM-3_8x_mine_mk13_mod0",
+          "blk": "gameData/FlightModels/weaponPresets/pbm_8x_mine_mk13_mod0.blk",
+          "reqModification": "us_mine_mk13_mod0",
+          "weaponConfig": {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/mines/us_mine_mk13_mod0.blk"
+              },
+              {
+                "amountPerTier": 1.0
+              },
+              {
+                "iconType": "air_mines"
+              },
+              {
+                "tier": {
+                  "idx": 2
+                }
+              },
+              {
+                "tier": {
+                  "idx": 3
+                }
+              },
+              {
+                "tier": {
+                  "idx": 4
+                }
+              },
+              {
+                "tier": {
+                  "idx": 5
+                }
+              },
+              {
+                "tier": {
+                  "idx": 7
+                }
+              },
+              {
+                "tier": {
+                  "idx": 8
+                }
+              },
+              {
+                "tier": {
+                  "idx": 9
+                }
+              },
+              {
+                "tier": {
+                  "idx": 10
+                }
+              }
+            ]
+          }
+        }
       }
     ]
   },
@@ -6599,9 +6659,14 @@
       },
       "50cal_turret_ap": [],
       "50cal_turret_api": [],
+      "us_mine_mk13_mod0": {
+        "tier": 2,
+        "modClass": "weapon"
+      },
       "b-25_mbc": {
         "modClass": "weapon",
-        "tier": 2
+        "tier": 3,
+        "reqModification": "us_mine_mk13_mod0"
       },
       "b-25_lbc": {
         "modClass": "weapon",

@@ -1,0 +1,135 @@
+@const imgFrameSize: 1.45*@profileMedalSize;
+@const imgFramePad: 3*@sf/@pf_outdated;
+@const hoverFrameMargin: 4*@sf/@pf_outdated;
+imgFrame {
+  re-type:9rect;
+  background-repeat:expand;
+  background-color:@white;
+  background-position:6,6;
+  background-image:#ui/gameuiskin#window_body;
+  padding:@imgFramePad;
+}
+imgFrame {
+  margin:0, 0, @imgFramePad, @imgFramePad;
+  input-transparent: yes;
+}
+imgFrame[noMargin=yes] {
+  margin:0;
+}
+.hoverFrame > imgFrame {
+  size:@imgFrameSize, @imgFrameSize;
+  background-color:@transparent;
+  background-position:6;
+  background-repeat:expand;
+  padding:5*@sf/@pf_outdated;
+}
+
+imgButton {
+  behaviour:button;
+  background-image:#ui/gameuiskin#header_button_;
+  background-color:@white;
+  background-position:6;
+  background-repeat:expand;
+  padding:1@framePadding;
+  css-hier-invalidate:yes;
+  total-input-transparent:yes;
+}
+.hoverFrame > imgButton {
+  size:110*@sf/@pf_outdated, 110*@sf/@pf_outdated;
+}
+.hoverFrame > imgButton > img , .hoverFrame > imgFrame > img{
+  pos:50%pw-50%w, 50%ph-50%h;
+  position:absolute;
+}
+backlight {
+  size:pw, ph;
+  pos:50%pw-50%w, 50%ph-50%h;
+  position:absolute;
+  background-repeat:expand;
+  background-color:@white;
+  input-transparent:yes;
+}
+imgFrame > backlight[UnlockedObject=yes] {
+  background-image:#ui/gameuiskin#acheivement_bg_active;
+}
+imgFrame > backlight[unlockedObject=no] {
+  background-image:#ui/gameuiskin#acheivement_bg_;
+}
+imgFrame > backlight:hover, imgFrame > backlight:pushed {
+  background-image:#ui/gameuiskin#acheivement_bg_hover;
+}
+
+imgButton.decal_image:disabled, imgButton.decal_image[unlocked=no] {
+  background-image:#ui/gameuiskin#header_button_disabled;
+}
+imgButton.decal_image:disabled > img {
+  background-color:@lockedDecal;
+}
+imgButton.decal_image:pushed,
+.hoverFrame > imgButton:pushed {
+  background-image:#ui/gameuiskin#header_button_active;
+}
+
+[show_console_buttons=no] :focus > imgButton.decal_image[selected=yes] {
+  re-type:9rect;
+  foreground-color: #55555555;
+  foreground-image: #ui/gameuiskin#item_selection;
+  foreground-position: 6;
+  foreground-repeat: expand;
+}
+
+imgButton[highlighted=yes], imgButton.decal_image[highlighted=yes] {
+  background-image:#ui/gameuiskin#header_button_active;
+}
+imgButton.decal_image:hover, .hoverFrame > imgButton:hover {
+  background-image:#ui/gameuiskin#header_button_hover;
+}
+imgButton.decal_image[unlocked=no]:hover {
+  background-image:#ui/gameuiskin#header_button_active;
+}
+
+imgButton.decal_image > contentCorner {
+  background-color:@white;
+  background-image:#ui/gameuiskin#price_bg;
+  background-position:6;
+  background-repeat:expand;
+}
+
+LockedImg{
+  size:pw, ph;
+  pos:50%pw-50%w, 50%ph-50%h;
+  position:absolute;
+  background-repeat:expand;
+  input-transparent:yes;
+}
+LockedImg[statusLock=achievement],
+LockedImg[statusLock=noDLC],
+LockedImg[statusLock=limit] {
+  pos:pw-w, ph-h;
+  size:@mIco,@mIco;
+  background-color:@white;
+}
+LockedImg[statusLock=achievement] {
+  background-image:#ui/gameuiskin#locked_white;
+}
+LockedImg[statusLock=noDLC] {
+  background-image:#ui/gameuiskin#dlc_locked;
+}
+LockedImg[statusLock=limit] {
+  background-image:#ui/gameuiskin#locked;
+}
+
+LockedImg[statusLock=noPremium_1] {
+  size:pw-6*@sf/@pf_outdated, ph-6*@sf/@pf_outdated;
+  background-color:@white;
+  background-image:#ui/images/decalslot_nopremium_vertical;
+}
+LockedImg[statusLock=noPremium_2] {
+  size:pw-6*@sf/@pf_outdated, ph-6*@sf/@pf_outdated;
+  background-color:@white;
+  background-image:#ui/images/decalslot_nopremium_horizontal;
+}
+LockedImg[statusLock=country] {
+  size:@lIco,@lIco;
+  background-color:@white;
+}

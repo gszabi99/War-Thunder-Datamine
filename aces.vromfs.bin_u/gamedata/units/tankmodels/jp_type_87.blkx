@@ -286,6 +286,21 @@
             "name": "ammo_body_50_dm"
           },
           {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
+          },
+          {
             "name": "ammo_body_l_01_dm"
           },
           {
@@ -1808,7 +1823,7 @@
       },
       "optics": {
         "armorClass": "optics_tank",
-        "optic_turret_01_dm": {
+        "optic_gun_dm": {
           "armorThickness": 3.0,
           "hp": 20.0
         },
@@ -1835,6 +1850,13 @@
         "wheel_l_drive_dm": [],
         "wheel_l_front_dm": [],
         "wheel_r_front_dm": [],
+        "submodule": {
+          "armorClass": "tank_traks",
+          "armorThickness": 20.0,
+          "createSecondaryShatters": false,
+          "hp": 200.0,
+          "ex_armor_body_01_dm": []
+        },
         "body_shields": {
           "armorClass": "tank_structural_steel",
           "armorThickness": 5.0,
@@ -2356,7 +2378,7 @@
             "expl": 1.0,
             "conditionDamage": 250.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -2365,7 +2387,16 @@
             "expl": 1.0,
             "conditionDamage": 100.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "generic",
+            "expl": 1.0,
+            "conditionDamage": 700.0,
+            "kill": true,
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -2373,7 +2404,7 @@
             "expl": 1.0,
             "conditionDead": true,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         }
       ]
@@ -2756,6 +2787,9 @@
       "tank_medical_kit_expendable": {
         "image": "#ui/gameuiskin#tank_reinforcement_jp"
       },
+      "laser_warning_system": {
+        "tier": 3
+      },
       "modern_tank_laser_rangefinder": {
         "tier": 2
       },
@@ -2772,7 +2806,8 @@
       "35mm_kda_APHEI_ammo_pack": [],
       "35mm_kda_APDS_ammo_pack": [],
       "tank_smoke_screen_system_mod": {
-        "tier": 3,
+        "modClass": "protection",
+        "tier": 4,
         "effects": {
           "commonWeapons": [
             {

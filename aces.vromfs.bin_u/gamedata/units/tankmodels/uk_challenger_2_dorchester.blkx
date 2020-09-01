@@ -174,6 +174,14 @@
         "turret_08_top_dm": {
           "armorThickness": 10.0,
           "armorClass": "tank_structural_steel"
+        },
+        "composite_armor_turret_03_dm": {
+          "armorThickness": 1.0,
+          "armorEffectiveThicknessMax": 1.0
+        },
+        "composite_armor_hull_05_dm": {
+          "armorThickness": 25.0,
+          "hidableInXrayViewer": true
         }
       },
       "hull_turret_spaced_armor": {
@@ -194,12 +202,6 @@
           "genericArmorQuality": 0.5,
           "hidableInXrayViewer": true,
           "createSecondaryShatters": false
-        },
-        "composite_armor_turret_03_dm": {
-          "armorThickness": 300.0,
-          "armorEffectiveThicknessMax": 220.0,
-          "cumulativeArmorQuality": 0.55,
-          "genericArmorQuality": 0.0
         },
         "composite_armor_turret_06_dm": {
           "armorThickness": 0.001,
@@ -223,11 +225,6 @@
         },
         "composite_armor_hull_04_dm": {
           "armorThickness": 5.0,
-          "armorClass": "RHA_tank_modern",
-          "hidableInXrayViewer": true
-        },
-        "composite_armor_hull_05_dm": {
-          "armorThickness": 25.0,
           "armorClass": "RHA_tank_modern",
           "hidableInXrayViewer": true
         },
@@ -359,6 +356,9 @@
         "optic_body_02_dm": {
           "armorThickness": 165.0
         },
+        "turret_08_bottom_dm": {
+          "armorThickness": 10.0
+        },
         "turret_05_top_dm": {
           "armorThickness": 25.0
         },
@@ -451,12 +451,8 @@
         }
       },
       "grille": {
-        "armorClass": "tank_structural_steel",
+        "armorClass": "grille_structural_steel",
         "hp": 300.0,
-        "armorThickness": 15.0,
-        "armorEffectiveThicknessMax": 15.0,
-        "stopChanceOnDeadPart": 0.0,
-        "createSecondaryShatters": false,
         "ex_armor_l_03_dm": [],
         "ex_armor_r_03_dm": [],
         "ex_armor_05_dm": [],
@@ -464,10 +460,6 @@
       },
       "turret_grille_armor": {
         "hp": 300.0,
-        "cumulativeEffectiveThicknessMax": 200.0,
-        "genericArmorQuality": 0.01,
-        "cumulativeArmorQuality": 2.0,
-        "armorThickness": 50.0,
         "armorClass": "grille_air",
         "composite_armor_turret_05_dm": [],
         "composite_armor_hull_06_dm": [],
@@ -502,7 +494,6 @@
         "ex_armor_l_09_dm": [],
         "ex_armor_r_09_dm": [],
         "turret_08_back_dm": [],
-        "turret_08_bottom_dm": [],
         "ex_decor_03_dm": [],
         "ex_decor_06_dm": [],
         "ex_decor_02_dm": [],
@@ -2045,6 +2036,42 @@
     }
   },
   {
+    "fuelTanks": {
+      "r1": {
+        "part": "fuel_tank_exterior_r_01_dm",
+        "external": true
+      },
+      "r2": {
+        "part": "fuel_tank_exterior_r_02_dm",
+        "external": true
+      },
+      "r3": {
+        "part": "fuel_tank_exterior_r_03_dm",
+        "external": true
+      },
+      "r4": {
+        "part": "fuel_tank_exterior_r_04_dm",
+        "external": true
+      },
+      "l1": {
+        "part": "fuel_tank_exterior_l_01_dm",
+        "external": true
+      },
+      "l2": {
+        "part": "fuel_tank_exterior_l_02_dm",
+        "external": true
+      },
+      "l3": {
+        "part": "fuel_tank_exterior_l_03_dm",
+        "external": true
+      },
+      "l4": {
+        "part": "fuel_tank_exterior_l_04_dm",
+        "external": true
+      }
+    }
+  },
+  {
     "xray_viewer_data": [
       {
         "armorArrayHullFront": {
@@ -2109,7 +2136,8 @@
           "titleLoc": "RHA_tank_modern",
           "armorArrayText": {
             "layer": {
-              "dmPart": "composite_armor_hull_03_dm"
+              "dmPart": "composite_armor_hull_03_dm",
+              "xrayTextThickness": [50.0,200.0]
             }
           }
         }

@@ -264,7 +264,7 @@
       {
         "device": {
           "type": "turretTurnH",
-          "turnSpeed": 0.6,
+          "turnSpeed": 0.3,
           "node": "bone_roll_turret_h",
           "node_handle": "bone_roll_turret_h_handle"
         }
@@ -272,7 +272,7 @@
       {
         "device": {
           "type": "turretTurnV",
-          "turnSpeed": -1.0,
+          "turnSpeed": 0.3,
           "node": "bone_roll_turret_v",
           "node_handle": "bone_roll_turret_v_handle"
         }
@@ -1793,6 +1793,7 @@
         "trigger": "gunner0",
         "blk": "gameData/Weapons/groundModels_weapons/20mm_Lva_kan_m40_B_user_cannon.blk",
         "emitter": "bone_gun_barrel",
+        "useEmitter": true,
         "flash": "emtr_gun_flame",
         "recoilOffset": 0.01,
         "defaultYaw": 0.0,
@@ -1819,11 +1820,34 @@
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
-        "turret": {
-          "head": "bone_turret",
-          "gun": "bone_gun",
-          "barrel": "bone_gun_barrel"
-        },
+        "turret": [
+          {
+            "head": "bone_turret"
+          },
+          {
+            "gun": "bone_gun"
+          },
+          {
+            "gunnerDm": "commander_dm"
+          },
+          {
+            "barrel": "bone_gun_barrel"
+          },
+          {
+            "linkedAnimPart": {
+              "verNode": "bone_gun_piston_01",
+              "verLimits": [-14.0,52.0],
+              "verOriginLimits": [-10.0,45.0]
+            }
+          },
+          {
+            "linkedAnimPart": {
+              "verNode": "bone_gun_piston_02",
+              "verLimits": [-3.0,8.0],
+              "verOriginLimits": [-10.0,45.0]
+            }
+          }
+        ],
         "limits": {
           "yaw": [-180.0,180.0],
           "pitch": [-10.0,45.0]

@@ -5,6 +5,15 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 const UPGR_CREW_TUTORIAL_SKILL_NUMBER = 2
 
+local function isCountryHasAnyEsUnitType(country, esUnitTypeMask)
+{
+  local typesList = ::getTblValue(country, ::get_unit_types_in_countries(), {})
+  foreach(esUnitType, isInCountry in typesList)
+    if (isInCountry && (esUnitTypeMask & (1 << esUnitType)))
+      return true
+  return false
+}
+
 ::g_crew <- {
   crewLevelBySkill = 5 //crew level from any maxed out skill
   totalSkillsSteps = 5 //steps available for leveling.
@@ -192,7 +201,7 @@ g_crew.isCrewMaxLevel <- function isCrewMaxLevel(crew, unit, country, crewUnitTy
 
     foreach(skillItem in page.items)
       if ((crewUnitType < 0 || skillItem.isVisible(crewUnitType))
-          && ::is_country_has_any_es_unit_type(country,
+          && isCountryHasAnyEsUnitType(country,
             unitTypes.getEsUnitTypeMaskByCrewUnitTypeMask(skillItem.crewUnitTypeMask))
           && getMaxSkillValue(skillItem) > getSkillValue(crew.id, unit, page.id, skillItem.name))
         return false
@@ -307,7 +316,7 @@ g_crew.doWithAllSkills <- function doWithAllSkills(crew, crewUnitType, action)
 
     foreach(skillItem in page.items)
       if ((crewUnitType < 0 || skillItem.isVisible(crewUnitType))
-          && ::is_country_has_any_es_unit_type(country,
+          && isCountryHasAnyEsUnitType(country,
             unitTypes.getEsUnitTypeMaskByCrewUnitTypeMask(skillItem.crewUnitTypeMask)))
         action(page, skillItem)
   }

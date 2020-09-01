@@ -22,9 +22,9 @@
   "notUseDefaultBulletInGui": true,
   "bullet": {
     "bulletCount": 40,
-    "mass": 10.0,
-    "explosiveType": "tnt",
-    "explosiveMass": 2.5,
+    "mass": 6.66,
+    "explosiveType": "rdx_tnt",
+    "explosiveMass": 2.264,
     "caliber": 0.114,
     "speed": 457.0,
     "maxDistance": 40000.0,
@@ -36,14 +36,14 @@
     "stabilityCaliberToArmorThreshold": 10.0,
     "stabilityReductionAfterRicochet": 0.45,
     "stabilityReductionAfterPenetration": 1.0,
-    "bulletType": "he_frag_tank",
+    "bulletType": "he_frag_base_fuse_tank",
     "slopeEffectPreset": "ap",
     "modelName": "tank_bullet_he",
     "fresnel": [0.23,0.1,2.0],
     "explodeOnRendinst": true,
-    "useEffectiveArmorThicknessForShatter": true,
     "bulletName": "114mm_he_shell",
     "hitPowerMult": 50.0,
+    "dynamicKv": true,
     "relativeVelArmorShift": [200.0,1000.0],
     "fuseDelayDist": 0.0,
     "explodeTreshold": 0.1,
@@ -63,7 +63,11 @@
     },
     "damage": {
       "kinetic": {
-        "damageType": "generic"
+        "damageType": "generic",
+        "demarrePenetrationK": 0.35,
+        "demarreSpeedPow": 1.43,
+        "demarreMassPow": 0.71,
+        "demarreCaliberPow": 1.07
       },
       "shatter": [
         {
@@ -78,7 +82,7 @@
             "penetrationScale": 1.5,
             "damageScale": 1.0,
             "angles": [0.0,29.0],
-            "countPortion": 0.035,
+            "countPortion": 0.04,
             "onHitChanceMultFire": 10.0
           }
         },
@@ -88,7 +92,7 @@
             "penetrationScale": 1.0,
             "damageScale": 1.0,
             "angles": [30.0,69.0],
-            "countPortion": 0.24
+            "countPortion": 0.235
           }
         },
         {
@@ -135,7 +139,7 @@
             "penetrationScale": 1.0,
             "damageScale": 1.0,
             "angles": [291.0,329.0],
-            "countPortion": 0.24
+            "countPortion": 0.235
           }
         },
         {
@@ -144,7 +148,7 @@
             "penetrationScale": 1.5,
             "damageScale": 1.0,
             "angles": [330.0,359.0],
-            "countPortion": 0.035,
+            "countPortion": 0.04,
             "onHitChanceMultFire": 10.0
           }
         }
@@ -270,9 +274,9 @@
   "114mm_uk_he": {
     "bullet": {
       "bulletCount": 40,
-      "mass": 10.0,
-      "explosiveType": "tnt",
-      "explosiveMass": 2.5,
+      "mass": 6.66,
+      "explosiveType": "rdx_tnt",
+      "explosiveMass": 2.264,
       "caliber": 0.114,
       "speed": 457.0,
       "maxDistance": 40000.0,
@@ -284,14 +288,14 @@
       "stabilityCaliberToArmorThreshold": 10.0,
       "stabilityReductionAfterRicochet": 0.45,
       "stabilityReductionAfterPenetration": 1.0,
-      "bulletType": "he_frag_tank",
+      "bulletType": "he_frag_base_fuse_tank",
       "slopeEffectPreset": "ap",
       "modelName": "tank_bullet_he",
       "fresnel": [0.23,0.1,2.0],
       "explodeOnRendinst": true,
-      "useEffectiveArmorThicknessForShatter": true,
       "bulletName": "114mm_he_shell",
       "hitPowerMult": 50.0,
+      "dynamicKv": true,
       "relativeVelArmorShift": [200.0,1000.0],
       "fuseDelayDist": 0.0,
       "explodeTreshold": 0.1,
@@ -311,7 +315,11 @@
       },
       "damage": {
         "kinetic": {
-          "damageType": "generic"
+          "damageType": "generic",
+          "demarrePenetrationK": 0.35,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
         },
         "shatter": [
           {
@@ -326,7 +334,7 @@
               "penetrationScale": 1.5,
               "damageScale": 1.0,
               "angles": [0.0,29.0],
-              "countPortion": 0.035,
+              "countPortion": 0.04,
               "onHitChanceMultFire": 10.0
             }
           },
@@ -336,7 +344,7 @@
               "penetrationScale": 1.0,
               "damageScale": 1.0,
               "angles": [30.0,69.0],
-              "countPortion": 0.24
+              "countPortion": 0.235
             }
           },
           {
@@ -383,7 +391,7 @@
               "penetrationScale": 1.0,
               "damageScale": 1.0,
               "angles": [291.0,329.0],
-              "countPortion": 0.24
+              "countPortion": 0.235
             }
           },
           {
@@ -392,7 +400,7 @@
               "penetrationScale": 1.5,
               "damageScale": 1.0,
               "angles": [330.0,359.0],
-              "countPortion": 0.035,
+              "countPortion": 0.04,
               "onHitChanceMultFire": 10.0
             }
           }

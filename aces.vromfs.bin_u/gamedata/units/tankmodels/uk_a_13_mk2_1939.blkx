@@ -740,6 +740,21 @@
             "name": "ammo_body_50_dm"
           },
           {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
+          },
+          {
             "name": "ammo_body_l_01_dm"
           },
           {
@@ -2671,13 +2686,31 @@
     }
   },
   {
-    "default_skin": {
-      "name": "default",
-      "replace_tex": {
-        "from": "uk_camo_very_dark_drab*",
-        "to": "uk_camo_middle_deep_bronze_greens*"
+    "default_skin": [
+      {
+        "name": "default"
+      },
+      {
+        "replace_tex": {
+          "from": "uk_camo_very_dark_drab*",
+          "to": "uk_camo_middle_deep_bronze_greens*"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "a13_mk_1_body_c*",
+          "to": "a13_mk_1_skin_2_body_c*",
+          "param": "camo_skin_tex"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "a13_mk_2_1939_turret_c*",
+          "to": "a13_mk_2_skin_turret_c*",
+          "param": "camo_skin_tex"
+        }
       }
-    }
+    ]
   },
   {
     "user_skin": {
@@ -2773,53 +2806,6 @@
         "from": "uk_camo_very_dark_drab*",
         "to": "fr_camo_winter_green_white*"
       }
-    }
-  },
-  {
-    "defaultDecals": {
-      "skin_condition": 0.0,
-      "camo_scale": 0.0,
-      "camo_rotation": 0.0,
-      "decal0Line0": [0.0,-1.56112e-07,3.57143,-1.46924],
-      "decal0Line1": [0.0,-3.57143,-1.56112e-07,3.30211],
-      "decal0HaveCP": true,
-      "decal0CP": [-0.300884,1.016,2.88735],
-      "decal0CPNormDepth": [1.0,0.0,0.0,-2.85013],
-      "decal0RotScale": [1.5708,0.28],
-      "decal0Mirrored": false,
-      "decal0Wrap": false,
-      "decal0Abs": false,
-      "decal0Tex": "uk_number_8",
-      "decal1Line0": [0.0,-1.56112e-07,3.57143,2.398],
-      "decal1Line1": [0.0,-3.57143,-1.56112e-07,3.33893],
-      "decal1HaveCP": true,
-      "decal1CP": [0.777823,1.02631,2.79297],
-      "decal1CPNormDepth": [1.0,0.0,0.0,-2.85014],
-      "decal1RotScale": [1.5708,0.28],
-      "decal1Mirrored": false,
-      "decal1Wrap": false,
-      "decal1Abs": false,
-      "decal1Tex": "uk_tank_weight_15",
-      "decal2Line0": [0.0,-1.56112e-07,3.57143,3.09397],
-      "decal2Line1": [0.0,-3.57143,-1.56112e-07,6.93848],
-      "decal2HaveCP": true,
-      "decal2CP": [0.841046,2.03418,1.27971],
-      "decal2CPNormDepth": [1.0,0.0,0.0,-1.34814],
-      "decal2RotScale": [1.5708,0.28],
-      "decal2Mirrored": false,
-      "decal2Wrap": false,
-      "decal2Abs": false,
-      "decal2Tex": "uk_tactical_marking_hq",
-      "decal3Line0": [0.0,-1.56112e-07,3.57143,-2.04347],
-      "decal3Line1": [0.0,-3.57143,-1.56112e-07,6.87145],
-      "decal3HaveCP": true,
-      "decal3CP": [-0.591693,2.01542,1.40816],
-      "decal3CPNormDepth": [1.0,0.0,0.0,-1.35123],
-      "decal3RotScale": [1.5708,0.28],
-      "decal3Mirrored": false,
-      "decal3Wrap": false,
-      "decal3Abs": true,
-      "decal3Tex": "uk_tactical_marking_hq"
     }
   },
   {

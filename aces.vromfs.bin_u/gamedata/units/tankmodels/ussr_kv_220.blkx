@@ -2570,24 +2570,44 @@
     }
   },
   {
-    "default_skin": {
-      "name": "fire_range",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "camo_hangar_red_lead*"
+    "skin": [
+      {
+        "name": "fire_range"
+      },
+      {
+        "nameLocId": "skin/fire_range"
+      },
+      {
+        "descLocId": "skin/fire_range/desc"
+      },
+      {
+        "replace_tex": {
+          "from": "ussr_camo_green*",
+          "to": "camo_hangar_red_lead*"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "kv_220_body_c*",
+          "to": "kv_220_skin_body_c*",
+          "param": "camo_skin_tex"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "kv_220_turret_c*",
+          "to": "kv_220_skin_turret_c*",
+          "param": "camo_skin_tex"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "kv_220_gun_c*",
+          "to": "kv_220_skin_gun_c*",
+          "param": "camo_skin_tex"
+        }
       }
-    }
-  },
-  {
-    "skin": {
-      "name": "kv_220",
-      "nameLocId": "skin/ussr_camo_green",
-      "descLocId": "skin/ussr_camo_green/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_green*"
-      }
-    }
+    ]
   },
   {
     "skin": {
@@ -2609,53 +2629,6 @@
         "from": "ussr_camo_green*",
         "to": "ussr_camo_desert_yellow_brown*"
       }
-    }
-  },
-  {
-    "defaultDecals": {
-      "skin_condition": 0.0,
-      "camo_scale": 0.0,
-      "camo_rotation": 0.0,
-      "decal0Line0": [-1.78571,-7.80561e-08,0.0,-2.11688],
-      "decal0Line1": [1.56112e-07,-3.57143,0.0,9.60324],
-      "decal0HaveCP": true,
-      "decal0CP": [1805.38,61.4841,-1100.56],
-      "decal0CPNormDepth": [0.0,0.0,1.0,-0.775269],
-      "decal0RotScale": [1.5708,0.28],
-      "decal0Mirrored": false,
-      "decal0Wrap": false,
-      "decal0Abs": true,
-      "decal0Tex": "ussr_a113p",
-      "decal1Line0": [-0.568182,-2.4836e-08,0.0,0.514912],
-      "decal1Line1": [1.98688e-07,-4.54545,0.0,9.57145],
-      "decal1HaveCP": true,
-      "decal1CP": [1805.55,60.9309,-1099.06],
-      "decal1CPNormDepth": [0.0,0.0,1.0,-0.979431],
-      "decal1RotScale": [1.5708,0.22],
-      "decal1Mirrored": false,
-      "decal1Wrap": false,
-      "decal1Abs": true,
-      "decal1Tex": "ussr_turret_arrow",
-      "decal2Line0": [-1.78571,-7.80561e-08,0.0,3.32527],
-      "decal2Line1": [1.56112e-07,-3.57143,0.0,6.21225],
-      "decal2HaveCP": true,
-      "decal2CP": [1805.93,60.5346,-1097.56],
-      "decal2CPNormDepth": [0.0,0.0,1.0,-0.97998],
-      "decal2RotScale": [1.5708,0.28],
-      "decal2Mirrored": false,
-      "decal2Wrap": false,
-      "decal2Abs": false,
-      "decal2Tex": "ussr_crack_39mm",
-      "decal3Line0": [0.0,-1.09278e-07,2.5,0.535782],
-      "decal3Line1": [0.0,-2.5,-1.09278e-07,6.60838],
-      "decal3HaveCP": true,
-      "decal3CP": [1806.9,61.3785,-1097.78],
-      "decal3CPNormDepth": [1.0,0.0,0.0,-1.60718],
-      "decal3RotScale": [1.5708,0.4],
-      "decal3Mirrored": false,
-      "decal3Wrap": false,
-      "decal3Abs": false,
-      "decal3Tex": "ussr_divergence_22mm"
     }
   },
   {

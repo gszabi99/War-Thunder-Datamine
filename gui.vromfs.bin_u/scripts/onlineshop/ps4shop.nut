@@ -1,7 +1,7 @@
 require("ingameConsoleStore.nut")
 local statsd = require("statsd")
-local psnStore = require("ps4_api.store")
-local psnSystem = require("ps4_api.sys")
+local psnStore = require("sony.store")
+local psnSystem = require("sony.sys")
 
 local seenEnumId = SEEN.EXT_PS4_SHOP
 

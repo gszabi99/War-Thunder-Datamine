@@ -194,13 +194,8 @@
         }
       },
       "grille": {
-        "armorClass": "tank_structural_steel",
+        "armorClass": "grille_structural_steel",
         "hp": 300.0,
-        "armorThickness": 30.0,
-        "armorEffectiveThicknessMax": 30.0,
-        "stopChanceOnDeadPart": 0.0,
-        "createSecondaryShatters": false,
-        "hidableInViewer": true,
         "ex_armor_turret_01_dm": [],
         "ex_armor_turret_02_dm": [],
         "ex_armor_turret_03_dm": [],
@@ -210,10 +205,6 @@
       },
       "turret_grille_armor": {
         "hp": 300.0,
-        "cumulativeEffectiveThicknessMax": 200.0,
-        "genericArmorQuality": 0.01,
-        "cumulativeArmorQuality": 2.0,
-        "armorThickness": 50.0,
         "armorClass": "grille_air",
         "composite_armor_hull_01_dm": [],
         "composite_armor_hull_02_dm": [],
@@ -221,6 +212,14 @@
         "composite_armor_hull_04_dm": [],
         "composite_armor_hull_05_dm": [],
         "composite_armor_hull_06_dm": []
+      },
+      "body_side_screens": {
+        "armorClass": "t_90_rubber_fabric_screens",
+        "hp": 100.0,
+        "armorThickness": 4.0,
+        "createSecondaryShatters": false,
+        "ex_decor_l_05_dm": [],
+        "ex_decor_r_03_dm": []
       },
       "body_shields": {
         "armorClass": "tank_structural_steel",
@@ -230,7 +229,6 @@
         "createSecondaryShatters": false,
         "ex_decor_l_04_dm": [],
         "ex_decor_r_04_dm": [],
-        "ex_decor_l_05_dm": [],
         "ex_decor_r_05_dm": [],
         "ex_decor_l_06_dm": [],
         "ex_decor_r_06_dm": [],
@@ -1203,6 +1201,21 @@
           },
           {
             "name": "ammo_body_50_dm"
+          },
+          {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
           },
           {
             "name": "ammo_body_l_01_dm"
@@ -3434,15 +3447,13 @@
               "resolution": [800,600],
               "noiseFactor": 0.04
             },
-            "commanderIr": {
-              "resolution": [1600,1200],
-              "lightMult": 9.0,
-              "ghosting": 0.6,
-              "noiseFactor": 0.2
+            "commanderThermal": {
+              "resolution": [800,600],
+              "noiseFactor": 0.04
             },
             "driverIr": {
-              "resolution": [800,600],
-              "lightMult": 5.0,
+              "resolution": [1200,800],
+              "lightMult": 7.0,
               "ghosting": 0.6,
               "noiseFactor": 0.2
             }

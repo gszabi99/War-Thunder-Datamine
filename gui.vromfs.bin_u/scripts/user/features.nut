@@ -146,6 +146,7 @@ local defaults = ::Watched({  //def value when feature not found in game_setting
   AllowedToSkipBaseTankTutorials = true
   EnableGoldPurchase = true
   EnablePremiumPurchase = true
+  showPremiumAccount = true
   OnlineShopPacks = true
   ManuallyUpdateBalance = true //!!debug only
   PaymentMethods = true
@@ -216,6 +217,7 @@ local defaults = ::Watched({  //def value when feature not found in game_setting
 
   CheckTwoStepAuth = false
   CheckEmailVerified = false
+  CheckGaijinPass = false
 
   AerobaticTricolorSmoke = ::disable_network()
 
@@ -259,6 +261,7 @@ local defaults = ::Watched({  //def value when feature not found in game_setting
   ConsoleSeparateEventsLeaderboards = false
   ConsoleSeparateWWLeaderboards = false
   WWOperationsList = false
+  ShowDropChanceInTrophy = false
 })
 
 local override = ::Watched({})

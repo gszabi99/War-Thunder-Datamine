@@ -2,6 +2,7 @@ local statsd = require("statsd")
 local { clearBorderSymbols } = require("std/string.nut")
 local { animBgLoad } = require("scripts/loading/animBg.nut")
 local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
+local exitGame = require("scripts/utils/exitGame.nut")
 
 class ::gui_handlers.LoginWndHandlerTencent extends ::BaseGuiHandler
 {
@@ -31,16 +32,18 @@ class ::gui_handlers.LoginWndHandlerTencent extends ::BaseGuiHandler
 
     dagor.debug("yuplay2_tencent_login returned " + res)
 
-    local buttons = [["exit", ::exit_game]]
+    local buttons = [["exit", exitGame]]
     local defBtn = "exit"
+    local cancelFnFunc = exitGame
 
     if (!::isInArray(res, [::YU2_TENCENT_CLIENT_DLL_LOST, ::YU2_TENCENT_CLIENT_NOT_RUNNING]))
     {
       buttons.append(["tryAgain", ::Callback(doLogin, this)])
       defBtn = "tryAgain"
+      cancelFnFunc = ::Callback(doLogin, this)
     }
 
-    ::error_message_box("yn1/connect_error", res, buttons, defBtn, { saved = true,  cancel_fn = ::exit_game})
+    ::error_message_box("yn1/connect_error", res, buttons, defBtn, { saved = true,  cancel_fn = cancelFnFunc})
   }
 
   function onOk()

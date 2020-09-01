@@ -1,5 +1,7 @@
-local enums = ::require("sqStdlibs/helpers/enums.nut")
-local { buttonsList } = require("scripts/mainmenu/topMenuButtons.nut")
+require("scripts/mainmenu/topMenuButtonsConfigs.nut") //Independed Module. Need for init buttons configs
+
+local enums = require("sqStdlibs/helpers/enums.nut")
+local buttonsList = require("scripts/mainmenu/topMenuButtons.nut").buttonsListWatch.value
 
 // Priority for separation on buttons.
 enum topMenuLeftSideMergeIndex {
@@ -114,6 +116,7 @@ enums.addTypesByGlobalName("g_top_menu_right_side_sections", [
         buttonsList.PS4_ONLINE_SHOP
         buttonsList.DEBUG_PS4_SHOP_DATA
         buttonsList.MARKETPLACE
+        buttonsList.COLLECTIONS
       ]
     ]
   },

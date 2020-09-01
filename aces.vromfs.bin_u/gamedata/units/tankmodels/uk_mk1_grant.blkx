@@ -281,6 +281,21 @@
             "name": "ammo_body_50_dm"
           },
           {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
+          },
+          {
             "name": "ammo_body_l_01_dm"
           },
           {
@@ -2343,31 +2358,7 @@
         "defaultDampeningForce": [120000.0,120000.0],
         "dampeningRelaxationRatio": 0.4,
         "dampeningCompressionRatio": 0.15
-      },
-      "physNode": [
-        {
-          "type": "verlet_string"
-        },
-        {
-          "stiffness": 1.0
-        },
-        {
-          "straightening": 0.5
-        },
-        {
-          "point": {
-            "name": "antenna",
-            "mass": 1.0,
-            "fixed": true
-          }
-        },
-        {
-          "point": {
-            "name": "bone_phx_antenna",
-            "mass": 3.0
-          }
-        }
-      ]
+      }
     }
   },
   {
@@ -2598,7 +2589,7 @@
                   "hasVerticalGunFreeMode": false,
                   "hasHorizontal": false,
                   "horizontalOmegaMult": 1.0,
-                  "horizontalSpeedLimitKPH": 50.0,
+                  "horizontalSpeedLimitKPH": 16.0,
                   "hasVertical": true,
                   "verticalOmegaMult": 0.7,
                   "verticalSpeedLimitKPH": 16.0,
@@ -2803,7 +2794,7 @@
             "hasVerticalGunFreeMode": false,
             "hasHorizontal": false,
             "horizontalOmegaMult": 1.0,
-            "horizontalSpeedLimitKPH": 50.0,
+            "horizontalSpeedLimitKPH": 16.0,
             "hasVertical": true,
             "verticalOmegaMult": 0.7,
             "verticalSpeedLimitKPH": 16.0,
@@ -2867,7 +2858,7 @@
             "hasVerticalGunFreeMode": false,
             "hasHorizontal": false,
             "horizontalOmegaMult": 1.0,
-            "horizontalSpeedLimitKPH": 50.0,
+            "horizontalSpeedLimitKPH": 16.0,
             "hasVertical": true,
             "verticalOmegaMult": 0.7,
             "verticalSpeedLimitKPH": 16.0,
@@ -3018,12 +3009,44 @@
   },
   {
     "default_skin": {
-      "name": "fire_range",
       "replace_tex": {
         "from": "uk_camo_earth_yellow*",
-        "to": "camo_hangar_red_lead*"
+        "to": "uk_camo_very_dark_drab*"
       }
     }
+  },
+  {
+    "skin": [
+      {
+        "name": "fire_range"
+      },
+      {
+        "nameLocId": "skin/fire_range"
+      },
+      {
+        "descLocId": "skin/fire_range/desc"
+      },
+      {
+        "replace_tex": {
+          "from": "uk_camo_earth_yellow*",
+          "to": "camo_hangar_red_lead*"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "mk_I_grant_body_c*",
+          "to": "mk_I_grant_skin_body_c*",
+          "param": "camo_skin_tex"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "mk_I_grant_turret_c*",
+          "to": "mk_I_grant_skin_turret_c*",
+          "param": "camo_skin_tex"
+        }
+      }
+    ]
   },
   {
     "skin": {
@@ -3056,53 +3079,6 @@
         "from": "uk_camo_earth_yellow*",
         "to": "fr_camo_winter_green_white*"
       }
-    }
-  },
-  {
-    "defaultDecals": {
-      "skin_condition": -35.0,
-      "camo_scale": 50.0,
-      "camo_rotation": -74.0,
-      "decal0Line0": [3.57143,-1.56112e-07,0.0,0.391881],
-      "decal0Line1": [-1.56112e-07,-3.57143,0.0,5.74919],
-      "decal0HaveCP": true,
-      "decal0CP": [1807.77,60.411,-1099.62],
-      "decal0CPNormDepth": [0.0,0.0,-1.0,-1.30869],
-      "decal0RotScale": [1.5708,0.28],
-      "decal0Mirrored": false,
-      "decal0Wrap": false,
-      "decal0Abs": true,
-      "decal0Tex": "uk_text_plate",
-      "decal1Line0": [3.125,-1.36598e-07,0.0,1.76228],
-      "decal1Line1": [-2.73196e-07,-6.25,0.0,16.2357],
-      "decal1HaveCP": true,
-      "decal1CP": [1806.96,61.4589,-1099.87],
-      "decal1CPNormDepth": [0.0,0.0,-1.0,-0.587006],
-      "decal1RotScale": [1.5708,0.16],
-      "decal1Mirrored": false,
-      "decal1Wrap": false,
-      "decal1Abs": false,
-      "decal1Tex": "uk_a113p",
-      "decal2Line0": [-3.125,-1.36598e-07,0.0,-1.26086],
-      "decal2Line1": [2.73196e-07,-6.25,0.0,16.4204],
-      "decal2HaveCP": true,
-      "decal2CP": [1805.16,61.4885,-1099.57],
-      "decal2CPNormDepth": [0.0,0.0,1.0,-1.23181],
-      "decal2RotScale": [1.5708,0.16],
-      "decal2Mirrored": false,
-      "decal2Wrap": false,
-      "decal2Abs": false,
-      "decal2Tex": "uk_a113p",
-      "decal3Line0": [4.65661e-08,-4.65661e-08,1.5625,0.300301],
-      "decal3Line1": [1.10485,-1.10485,-6.8299e-08,0.0355417],
-      "decal3HaveCP": true,
-      "decal3CP": [1806.83,60.4172,-1097.46],
-      "decal3CPNormDepth": [0.707107,0.707107,0.0,-2.38461],
-      "decal3RotScale": [1.5708,0.64],
-      "decal3Mirrored": false,
-      "decal3Wrap": false,
-      "decal3Abs": false,
-      "decal3Tex": "uk_text_plate"
     }
   }
 ]

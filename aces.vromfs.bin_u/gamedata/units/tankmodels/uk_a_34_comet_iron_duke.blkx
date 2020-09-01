@@ -1919,13 +1919,28 @@
     }
   },
   {
-    "default_skin": {
-      "name": "default",
-      "replace_tex": {
-        "from": "uk_camo_earth_yellow*",
-        "to": "uk_camo_very_dark_drab*"
+    "default_skin": [
+      {
+        "replace_tex": {
+          "from": "uk_camo_earth_yellow*",
+          "to": "uk_camo_very_dark_drab*"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "a34_comet_body_c*",
+          "to": "a34_comet_duke_body_c*",
+          "param": "camo_skin_tex"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "a34_comet_turret_c*",
+          "to": "a34_comet_duke_turret_c*",
+          "param": "camo_skin_tex"
+        }
       }
-    }
+    ]
   },
   {
     "skin": {
@@ -2193,6 +2208,21 @@
           },
           {
             "name": "ammo_body_50_dm"
+          },
+          {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
           },
           {
             "name": "ammo_body_l_01_dm"
@@ -2979,43 +3009,5 @@
         }
       }
     ]
-  },
-  {
-    "defaultDecals": {
-      "skin_condition": 0.0,
-      "camo_scale": 0.0,
-      "camo_rotation": 0.0,
-      "decal3Line0": [0.0,-3.9028e-08,0.892857,0.489342],
-      "decal3Line1": [0.0,-3.57143,-1.56112e-07,3.20167],
-      "decal3HaveCP": true,
-      "decal3CP": [0.190698,0.981468,2.31664],
-      "decal3CPNormDepth": [1.0,0.0,0.0,-2.32445],
-      "decal3RotScale": [1.5708,0.28],
-      "decal3Mirrored": false,
-      "decal3Wrap": false,
-      "decal3Abs": false,
-      "decal3Tex": "uk_deer_335104_rat",
-      "decal0Tex": "",
-      "decal2Line0": [0.0,-3.9028e-08,-0.892857,0.503693],
-      "decal2Line1": [0.0,-3.57143,1.56112e-07,5.14286],
-      "decal2HaveCP": true,
-      "decal2CP": [-0.330817,1.525,-3.73379],
-      "decal2CPNormDepth": [-1.0,0.0,0.0,-3.74842],
-      "decal2RotScale": [1.5708,0.28],
-      "decal2Mirrored": false,
-      "decal2Wrap": false,
-      "decal2Abs": false,
-      "decal2Tex": "uk_deer_rat",
-      "decal1Line0": [0.961538,-4.20302e-08,0.0,0.885389],
-      "decal1Line1": [-8.40604e-08,-1.92308,0.0,4.1527],
-      "decal1HaveCP": true,
-      "decal1CP": [0.921436,2.12441,-0.482951],
-      "decal1CPNormDepth": [0.0,0.0,-1.0,-0.960022],
-      "decal1RotScale": [1.5708,0.52],
-      "decal1Mirrored": false,
-      "decal1Wrap": false,
-      "decal1Abs": true,
-      "decal1Tex": "uk_duke"
-    }
   }
 ]

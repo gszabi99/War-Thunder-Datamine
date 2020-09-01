@@ -1,6 +1,7 @@
-local psn = require("ps4Lib/webApi.nut")
+local psn = require("sonyLib/webApi.nut")
 local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
 local editContactsList = require("scripts/contacts/editContacts.nut")
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
 ::no_dump_facebook_friends <- {}
 ::LIMIT_FOR_ONE_TASK_GET_PS4_FRIENDS <- 200
@@ -112,7 +113,7 @@ local isFirstPs4FriendsUpdate = true
     return
 
   isFirstPs4FriendsUpdate = false
-  if (::is_platform_ps4 && ::dagor.getCurTime() - ::last_update_ps4_friends > ::PS4_UPDATE_TIMER_LIMIT)
+  if (isPlatformSony && ::dagor.getCurTime() - ::last_update_ps4_friends > ::PS4_UPDATE_TIMER_LIMIT)
   {
     ::last_update_ps4_friends = ::dagor.getCurTime()
     if (::isInArray(::EPLX_PS4_FRIENDS, ::contacts_groups))
@@ -173,12 +174,12 @@ local isFirstPs4FriendsUpdate = true
 
 ::isPlayerPS4Friend <- function isPlayerPS4Friend(playerName)
 {
-  return ::is_platform_ps4 && playerName in ::ps4_console_friends
+  return isPlatformSony && playerName in ::ps4_console_friends
 }
 
 ::get_psn_account_id <- function get_psn_account_id(playerName)
 {
-  if (!::is_platform_ps4)
+  if (!isPlatformSony)
     return null
 
   return ::ps4_console_friends?[playerName]?.accountId
@@ -186,7 +187,7 @@ local isFirstPs4FriendsUpdate = true
 
 ::add_psn_account_id <- function add_psn_account_id(onlineId, accountId)
 {
-  if (::is_platform_ps4)
+  if (isPlatformSony)
     ::ps4_console_friends["*"+onlineId] <- {accountId=accountId}
 }
 

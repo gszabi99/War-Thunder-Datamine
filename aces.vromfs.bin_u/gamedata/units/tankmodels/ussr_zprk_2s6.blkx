@@ -370,7 +370,8 @@
         "armorClass": "tank_traks",
         "armorThickness": 15.0,
         "hp": 150.0,
-        "ex_armor_body_01_dm": []
+        "ex_armor_body_01_dm": [],
+        "ex_armor_01_dm": []
       },
       "tracks": {
         "armorClass": "tank_traks",
@@ -2343,11 +2344,11 @@
         "model": "v_46_2s1"
       },
       "mechanics": {
-        "maxBrakeForce": 136000.0,
+        "maxBrakeForce": 220000.0,
         "driveGearRadius": 0.27,
         "mainGearRatio": 1.0,
         "sideGearRatio": 3.132,
-        "neutralGearRatio": 8.0,
+        "neutralGearRatio": 10.0,
         "gearRatios": [
           {
             "ratio": -1.0
@@ -2365,7 +2366,7 @@
             "ratio": 0.0
           },
           {
-            "ratio": 6.24
+            "ratio": 10.0
           },
           {
             "ratio": 3.177
@@ -2383,7 +2384,7 @@
         "defaultGearRadius": 0.315,
         "frontBackGearRadius": 0.272,
         "topGearRadius": 0.112,
-        "defaultDampeningForce": [90000.0,90000.0],
+        "defaultDampeningForce": [200000.0,200000.0],
         "dampeningRelaxationRatio": 0.41,
         "dampeningCompressionRatio": 0.145
       },
@@ -3211,6 +3212,28 @@
       "replace_tex": {
         "from": "ussr_camo_green*",
         "to": "ussr_camo_deform*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "ussr_modern_green",
+      "nameLocId": "skin/ussr_modern_green",
+      "descLocId": "skin/ussr_modern_green/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_modern_green*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "ussr_camo_modern_desert_deform",
+      "nameLocId": "skin/ussr_camo_modern_desert_deform",
+      "descLocId": "skin/ussr_camo_modern_desert_deform/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_camo_modern_desert_deform*"
       }
     }
   }

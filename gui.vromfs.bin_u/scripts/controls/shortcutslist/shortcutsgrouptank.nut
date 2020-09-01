@@ -1,6 +1,7 @@
 local controlsOperations = require("scripts/controls/controlsOperations.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { isWheelmenuAxisConfigurable } = require("scripts/wheelmenu/multifuncmenuShared.nut")
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 return [
   {
@@ -274,7 +275,7 @@ return [
     id = "gm_target_camera"
     type = CONTROL_TYPE.AXIS
     checkAssign = false
-    condition = @() ::is_ps4_or_xbox
+    condition = @() isPlatformSony || isPlatformXboxOne
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
   }
   {
@@ -477,7 +478,7 @@ return [
     id = "ID_KILLSTREAK_WHEEL_MENU"
     checkGroup = ctrlGroups.TANK
     checkAssign = false
-    showFunc = @() ::is_ps4_or_xbox || ::is_xinput_device()
+    showFunc = @() isPlatformSony || isPlatformXboxOne || ::is_xinput_device()
   }
   {
     id = "ID_SCOUT"
@@ -515,7 +516,7 @@ return [
     axisDirection = AxisDirection.X
     checkGroup = ctrlGroups.TANK
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = @() (::is_ps4_or_xbox || ::is_xinput_device()) && isWheelmenuAxisConfigurable()
+    showFunc = @() (isPlatformSony || isPlatformXboxOne || ::is_xinput_device()) && isWheelmenuAxisConfigurable()
     checkAssign = @() ::is_xinput_device() && isWheelmenuAxisConfigurable()
   }
   {
@@ -524,7 +525,7 @@ return [
     axisDirection = AxisDirection.Y
     checkGroup = ctrlGroups.TANK
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = @() (::is_ps4_or_xbox || ::is_xinput_device()) && isWheelmenuAxisConfigurable()
+    showFunc = @() (isPlatformSony || isPlatformXboxOne || ::is_xinput_device()) && isWheelmenuAxisConfigurable()
     checkAssign = @() ::is_xinput_device() && isWheelmenuAxisConfigurable()
   }
 ]

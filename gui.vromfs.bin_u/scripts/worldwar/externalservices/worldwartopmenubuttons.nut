@@ -1,4 +1,4 @@
-local topMenuButtons = require("scripts/mainmenu/topMenuButtons.nut")
+local { addButtonConfig } = require("scripts/mainmenu/topMenuButtonsConfigs.nut")
 local { getOperationById, getMapByName
 } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
@@ -70,6 +70,4 @@ local list = {
   }
 }
 
-list.each(@(buttonCfg, name) topMenuButtons.addButtonConfig(template.__merge(buttonCfg), name))
-
-return topMenuButtons
+list.each(@(buttonCfg, name) addButtonConfig(template.__merge(buttonCfg), name))

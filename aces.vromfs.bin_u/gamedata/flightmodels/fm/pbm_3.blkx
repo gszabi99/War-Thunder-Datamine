@@ -38,13 +38,12 @@
   "WingAngle": 3.0,
   "StabAngle": 0.8,
   "KeelAngle": 0.0,
+  "clockWiseStabAOA0": false,
   "AileronAngles": [21.0,19.25],
   "ElevatorAngles": [30.0,20.0],
   "InvertElevator": false,
   "FlapsRadiator": 0.0,
   "RudderAngles": [22.0,22.0],
-  "InterceptorType": 0,
-  "Elevon": false,
   "ElevonPitchAngleSens": 0.0,
   "VSlats": [130.0,140.0],
   "FlapsToSlats": [0.0,0.0,0.0,0.0],
@@ -88,8 +87,7 @@
     "hasWheelBrakeControl": true,
     "hasLockGearControl": false,
     "bHasBoosterSwitcher": false,
-    "hasChutes": false,
-    "hasParkingBrake": true
+    "hasChutes": false
   },
   "FlyByWire": [],
   "MouseAim": {
@@ -193,8 +191,8 @@
     "CombinedCl": false,
     "DownwashType": 2,
     "DownwashCoeff": 1.0,
-    "StabFlowInertia": 0.0502,
-    "VertStabFlowInertia": 0.1004,
+    "StabFlowInertia": 0.0504,
+    "VertStabFlowInertia": 0.1008,
     "FlapsAxis": {
       "Retracted": {
         "Presents": true,
@@ -1169,7 +1167,7 @@
   "Propeller0": {
     "Type": 0,
     "AxisDirection": [-0.0,2.9767],
-    "CyclicPitchAxisDirectionPitch": [-180.0,87.0233],
+    "CyclicPitchAxisDirectionPitch": [180.0,87.0233],
     "Pos": [3.33,2.1,3.6],
     "Geometry": {
       "RotationDirection": 1
@@ -1178,7 +1176,7 @@
   "Propeller1": {
     "Type": 1,
     "AxisDirection": [-0.0,2.9767],
-    "CyclicPitchAxisDirectionPitch": [-180.0,87.0233],
+    "CyclicPitchAxisDirectionPitch": [180.0,87.0233],
     "Pos": [3.33,2.1,-3.6],
     "Geometry": {
       "RotationDirection": 1
@@ -1324,7 +1322,7 @@
   },
   "Gear": [
     {
-      "SinkFactor": 100.0
+      "SinkFactor": 9000.0
     },
     {
       "SinkRateMult": 0.001
@@ -1375,7 +1373,7 @@
       "CenterWheelRadius": 0.078
     },
     {
-      "Height": 0.0
+      "Height": 2.3389
     },
     {
       "Pitch": 5.0
@@ -1443,7 +1441,7 @@
       "WaterPart1": {
         "Number": 0,
         "Name": "_ClipLGear",
-        "SinkFactor": 1000.0,
+        "SinkFactor": 10000.0,
         "VerticalOffset": -0.3,
         "RudderFactor": 0.0
       }
@@ -1452,7 +1450,7 @@
       "WaterPart2": {
         "Number": 1,
         "Name": "_ClipRGear",
-        "SinkFactor": 1000.0,
+        "SinkFactor": 10000.0,
         "VerticalOffset": -0.3,
         "RudderFactor": 0.0
       }
@@ -1461,7 +1459,7 @@
       "WaterPart3": {
         "Number": 2,
         "Name": "_ClipCGear",
-        "SinkFactor": 1000.0,
+        "SinkFactor": 10000.0,
         "VerticalOffset": -0.3,
         "RudderFactor": 0.0
       }
@@ -1470,7 +1468,7 @@
       "WaterPart4": {
         "Number": 3,
         "Name": "_ClipCGear_00",
-        "SinkFactor": 1000.0,
+        "SinkFactor": 10000.0,
         "VerticalOffset": -0.2,
         "RudderFactor": 0.0
       }

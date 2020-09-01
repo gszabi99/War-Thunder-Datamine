@@ -48,8 +48,10 @@
     "bulletName": "125mm_3bk_18m",
     "onHitChanceMultExplFuel": 0.3,
     "relativeVelHitShift": [300.0,1000.0],
+    "hitPower": 260.0,
+    "fuseDelayDist": 0.05,
+    "explodeTreshold": 1.0,
     "relativeVelArmorShift": [200.0,1000.0],
-    "explodeTreshold": 0.1,
     "ricochetEffect": "cannon_ricochet",
     "waterCollisionEffect": "120-203_he_water_splash",
     "waterFxScale": [1.1,1.2],
@@ -64,6 +66,10 @@
       "HitPower1500m": [0.65,1500.0],
       "HitPower2500m": [0.5,2500.0],
       "HitPower7000m": [0.0,7000.0]
+    },
+    "armorpower": {
+      "ArmorPower0m": [5.0,10.0],
+      "ArmorPower10000m": [4.0,10000.0]
     },
     "cumulativeDamage": {
       "armorPower": 550.0,
@@ -553,7 +559,9 @@
       "onHitChanceMultExplFuel": 0.3,
       "relativeVelHitShift": [300.0,1000.0],
       "relativeVelArmorShift": [200.0,1000.0],
-      "explodeTreshold": 0.1,
+      "hitPower": 260.0,
+      "fuseDelayDist": 0.05,
+      "explodeTreshold": 1.0,
       "ricochetEffect": "cannon_ricochet",
       "waterCollisionEffect": "120-203_he_water_splash",
       "waterFxScale": [1.1,1.2],
@@ -574,6 +582,10 @@
         "distance": 10.0,
         "damage": 500.0,
         "onHitChanceMultFire": 35.0
+      },
+      "armorpower": {
+        "ArmorPower0m": [5.0,10.0],
+        "ArmorPower10000m": [4.0,10000.0]
       },
       "visual": {
         "range_percent_of_ammo": [100.0,0.0],
@@ -756,13 +768,13 @@
               "caliberToArmor": 1.0,
               "slopeEffect0deg": [0.0,20.0],
               "slopeEffect10deg": [10.0,6.9],
-              "slopeEffect20deg": [20.0,3.5],
+              "slopeEffect20deg": [20.0,2.9],
               "slopeEffect30deg": [30.0,2.2],
-              "slopeEffect40deg": [40.0,1.88],
-              "slopeEffect50deg": [50.0,1.64],
-              "slopeEffect60deg": [60.0,1.22],
-              "slopeEffect70deg": [70.0,1.17],
-              "slopeEffect80deg": [80.0,1.06],
+              "slopeEffect40deg": [40.0,1.6],
+              "slopeEffect50deg": [50.0,1.41],
+              "slopeEffect60deg": [60.0,1.18],
+              "slopeEffect70deg": [70.0,1.064],
+              "slopeEffect80deg": [80.0,1.015],
               "slopeEffect90deg": [90.0,1.0]
             }
           }

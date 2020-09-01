@@ -6,6 +6,8 @@ local safeAreaHud = require("scripts/options/safeAreaHud.nut")
 local gamepadIcons = require("scripts/controls/gamepadIcons.nut")
 local focusFrame = require("scripts/viewUtils/focusFrameWT.nut")
 local { setSceneActive } = require_native("reactiveGuiCommand")
+local { startLogout } = require("scripts/login/logout.nut")
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 handlersManager[PERSISTENT_DATA_PARAMS].append("curControlsAllowMask", "isCurSceneBgBlurred")
 
@@ -84,7 +86,7 @@ handlersManager.onBaseHandlerLoadFailed <- function onBaseHandlerLoadFailed(hand
       || handler.getclass() == ::gui_handlers.MainMenu
       || handler.getclass() == ::gui_handlers.FlightMenu
      )
-    ::gui_start_logout()
+    startLogout()
   else if (::is_in_flight())
     ::gui_start_flight_menu()
   else
@@ -166,7 +168,7 @@ handlersManager.generatePreLoadCssString <- function generatePreLoadCssString()
   local menuSafearea = safeAreaMenu.getSafearea()
 
   local config = [
-    { name = "target_pc",         value = ::is_ps4_or_xbox ? "no" : "yes" }
+    { name = "target_pc",         value = (isPlatformSony || isPlatformXboxOne) ? "no" : "yes" }
     { name = "swMain",            value = screenInfo.getMainScreenSizePx()[0].tostring() }
     { name = "_safearea_menu_w",  value = ::format("%.2f", menuSafearea[0]) }
     { name = "_safearea_menu_h",  value = ::format("%.2f", menuSafearea[1]) }

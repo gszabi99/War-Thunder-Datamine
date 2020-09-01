@@ -1,0 +1,71 @@
+{
+  "root": {
+    "background-color": "@modalShadeColor",
+    "tdiv": {
+      "size": "1@twoStepLoginBgrImgWidth, 1@twoStepLoginBgrImgHeight",
+      "pos": "0.5pw-0.5w, 1@minYposWindow + 0.1*(sh - 1@minYposWindow - h)",
+      "position": "absolute",
+      "class": "wndNav",
+      "background-image": "#ui/gameuiskin/two_step_gp_banner_bg",
+      "background-color": "@white",
+      "css-hier-invalidate": "yes",
+      "total-input-transparent": "yes",
+      "frame_header": {
+        "activeText": {
+          "caption": "yes",
+          "text": "#mainmenu/2step/getGP"
+        },
+        "Button_close": {
+          "id": "btn_back"
+        }
+      },
+      "tdiv": {
+        "width": "0.4pw",
+        "pos": "70@sf/@pf, 70@sf/@pf+1@frameHeaderHeight",
+        "position": "absolute",
+        "flow": "vertical",
+        "textareaNoTab": {
+          "width": "pw",
+          "position": "relative",
+          "text": "#mainmenu/2step/getGP/reminder"
+        },
+        "Button_text": {
+          "visualStyle": "twoStepLogin",
+          "position": "relative",
+          "pos": "0, 2@blockInterval",
+          "navButtonFont": "yes",
+          "text": "#mainmenu/2step/getGP",
+          "link": "#url/2step/codeApp",
+          "on_click": "onMsgLink",
+          "btnName": "X",
+          "ButtonImg": []
+        }
+      },
+      "Button_text": {
+        "pos": "pw-w-2@blockInterval, ph-h-2@blockInterval",
+        "position": "absolute",
+        "visualStyle": "noFrame",
+        "isLink": "yes",
+        "isFeatured": "yes",
+        "link": "#url/2step/signInTroubles",
+        "on_click": "onMsgLink",
+        "btnName": "R3",
+        "btnText": {
+          "text": "#mainmenu/2step/getGP/whyNeed",
+          "underline": []
+        },
+        "ButtonImg": []
+      },
+      "CheckBox": {
+        "width": "0.5pw",
+        "pos": "2@blockInterval, ph-h-2@blockInterval",
+        "position": "absolute",
+        "text": "#options/dont_show_again",
+        "on_change_value": "onDontShowChange",
+        "btnName": "Y",
+        "ButtonImg": [],
+        "CheckBoxImg": []
+      }
+    }
+  }
+}

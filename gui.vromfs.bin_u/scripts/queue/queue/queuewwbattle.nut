@@ -89,7 +89,7 @@ class ::queue_classes.WwBattle extends ::queue_classes.Base
         slot       = idx
         type       = unit.expClass.expClassName
         mrank      = unit.getEconomicRank(::g_world_war.defaultDiffCode)
-        rank       = ::getUnitRank(unit)
+        rank       = unit?.rank ?? -1
       })
     }
     return res

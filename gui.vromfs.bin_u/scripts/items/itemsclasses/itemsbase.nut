@@ -461,8 +461,10 @@ class ::BaseItem
   function _requestBuy(params = {})
   {
     local blk = ::DataBlock()
-    blk.setStr("name", id)
-    blk.setInt("count", ::getTblValue("count", params, getSellAmount()))
+    blk["name"] = id
+    blk["count"] = ::getTblValue("count", params, getSellAmount())
+    blk["cost"] = params.cost
+    blk["costGold"] = params.costGold
 
     return ::char_send_blk("cln_buy_item", blk)
   }
@@ -504,11 +506,14 @@ class ::BaseItem
     handler = handler || ::get_cur_base_gui_handler()
 
     local name = getName()
-    local price = getCost().getTextAccordingToBalance()
+    local cost = getCost()
+    local price = cost.getTextAccordingToBalance()
     local msgText = ::warningIfGold(
       ::loc("onlineShop/needMoneyQuestion",{purchase = name, cost = price }),
-      getCost())
+      cost)
     local item = this
+    params["cost"] <- cost.wp
+    params["costGold"] <- cost.gold
     handler.msgBox("need_money", msgText,
           [["purchase", (@(item, cb, params) function() { item._buy(cb, params) })(item, cb, params) ],
           ["cancel", function() {} ]], "purchase")

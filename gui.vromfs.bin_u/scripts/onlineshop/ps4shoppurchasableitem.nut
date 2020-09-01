@@ -1,6 +1,6 @@
 local { calcPercent } = require("std/math.nut")
 
-local psnStore = require("ps4_api.store")
+local psnStore = require("sony.store")
 local statsd = require("statsd")
 
 local IMAGE_TYPE_INDEX = 1 //240x240

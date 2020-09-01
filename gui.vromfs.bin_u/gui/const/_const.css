@@ -1,4 +1,4 @@
-@const dp: ((sh/@pf + 0.5) \ 1) $max 1; 
+@const dp: (((sh $min sw)/@pf + 0.5) \ 1) $max 1; 
 
 @const rw: (@_safearea_menu_w)*sw $min (sw -2*@debugRowHeight);
 @const rh: (@_safearea_menu_h)*sh $min (sh -2*@debugRowHeight);
@@ -354,3 +354,13 @@
 @const modPresetTextMaxWidth: 350@sf/@pf;
 
 @const wwMainMenuBackgroundShadowDeltaHeight: 1@navBarBattleButtonHeight + 12@sf/@pf;
+@const twoStepLoginBgrImgWidth: 1012@sf/@pf;
+@const twoStepLoginBgrImgHeight: 626@sf/@pf;
+@const twoStepLoginImgWidth: 295@sf/@pf;
+@const twoStepLoginImgHeight: 506@sf/@pf;
+@const twoStepLoginLogoSIze: 70@sf/@pf;
+@const collectionItemSizeWithIndent:1.5@profileMedalSizeList + 1@blockInterval;
+@const collectionPrizeWidth: 1.8@profileMedalSize;
+@const collectionWidth: 5@collectionItemSizeWithIndent + 1@collectionPrizeWidth;
+@const collectionHeight: 1@buttonHeight + 2@collectionItemSizeWithIndent - 1@blockInterval;
+@const decorationInfoMaxWidth: 6@decalIconHeight;

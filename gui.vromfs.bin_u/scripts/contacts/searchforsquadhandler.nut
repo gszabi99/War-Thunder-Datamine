@@ -1,4 +1,6 @@
-local platformModule = require("scripts/clientState/platform.nut")
+local { canInteractCrossConsole,
+        isXBoxPlayerName,
+        isPlatformSony } = require("scripts/clientState/platform.nut")
 local crossplayModule = require("scripts/social/crossplay.nut")
 local xboxContactsManager = require("scripts/contacts/xboxContactsManager.nut")
 
@@ -49,7 +51,7 @@ class ::gui_handlers.SearchForSquadHandler extends ::ContactsHandler
       if (!(clanGroup in ::contacts))
         ::contacts[clanGroup] <- []
     }
-    if (::is_platform_ps4)
+    if (isPlatformSony)
     {
       sg_groups.insert(2, ::EPLX_PS4_FRIENDS)
       if (!(::EPLX_PS4_FRIENDS in ::contacts))
@@ -92,15 +94,14 @@ class ::gui_handlers.SearchForSquadHandler extends ::ContactsHandler
   {
     local contactName = curPlayer?.name ?? ""
     local isBlock = curPlayer? curPlayer.isInBlockGroup() : false
-    local canInteractCrossConsole = platformModule.canInteractCrossConsole(contactName)
-    local isXBoxOnePlayer = platformModule.isXBoxPlayerName(contactName)
+    local isXBoxOnePlayer = isXBoxPlayerName(contactName)
     local canInteractCrossPlatform = isXBoxOnePlayer || crossplayModule.isCrossPlayEnabled()
     local canInvite = curPlayer? curPlayer.canInvite() : true
 
     local showSquadInvite = !::show_console_buttons
       && ::has_feature("SquadInviteIngame")
       && !isBlock
-      && canInteractCrossConsole
+      && canInteractCrossConsole(contactName)
       && canInteractCrossPlatform
       && ::g_squad_manager.canInviteMember(curPlayer?.uid ?? "")
       && ::g_squad_manager.canInviteMemberByPlatform(contactName)

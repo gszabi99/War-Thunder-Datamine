@@ -212,6 +212,21 @@
           "name": "ammo_body_50_dm"
         },
         {
+          "name": "ammo_body_51_dm"
+        },
+        {
+          "name": "ammo_body_52_dm"
+        },
+        {
+          "name": "ammo_body_53_dm"
+        },
+        {
+          "name": "ammo_body_54_dm"
+        },
+        {
+          "name": "ammo_body_55_dm"
+        },
+        {
           "name": "ammo_body_l_01_dm"
         },
         {
@@ -1068,157 +1083,10 @@
     "TrackSoundNameCockpit": "tracks_heavy_interior",
     "turret_turn": "turret_turn_manual_y",
     "EngineNameAi": "engine_tank_ai_heavy",
-    "TrackSoundNameAi": "tracks_ai_heavy"
+    "TrackSoundNameAi": "tracks_ai_heavy",
+    "gun_turn": "turret_turn_mg_light"
   },
   "class_tags": [],
-  "commonWeapons": [
-    {
-      "Weapon": {
-        "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/75mm_Kwk42_user_cannon.blk",
-        "emitter": "bone_gun_barrel",
-        "flash": "emtr_gun_flame",
-        "recoilMultiplier": 0.8,
-        "recoilOffset": 0.43,
-        "recoilTimes": [0.1,0.65],
-        "defaultYaw": 0.0,
-        "defaultPitch": 0.0,
-        "barrelDP": "gun_barrel_dm",
-        "breechDP": "cannon_breech_dm",
-        "speedYaw": 24.0,
-        "speedPitch": 4.0,
-        "fireConeAngle": 1.0,
-        "bullets": 79,
-        "salvoAmount": 100.0,
-        "ChainfireTime": 0.0,
-        "DelayAfterShoot": 5.0,
-        "AttackMaxDistance": 1000.0,
-        "AttackMaxRadius": 1000.0,
-        "AttackMaxHeight": 1000.0,
-        "accuracyAir": 0.0,
-        "accuracyGnd": 1.5,
-        "errMeasureVel": 0.0,
-        "errMeasureVelFast": 0.0,
-        "errMeasureVelFwdShift": 0.0,
-        "errMeasureVelDir": 0.0,
-        "errTargettingOn100kmph": 0.0,
-        "errTargetting": 3.0,
-        "errExplTime": 0.0,
-        "turret": {
-          "head": "bone_turret",
-          "gun": "bone_gun",
-          "barrel": "bone_gun_barrel"
-        },
-        "limits": {
-          "yaw": [-180.0,180.0],
-          "pitch": [-8.0,20.0]
-        },
-        "limitsTable": {
-          "lim1": [-180.0,-145.0,-3.0,20.0],
-          "lim2": [-145.0,155.0,-8.0,20.0],
-          "lim3": [155.0,180.0,-5.0,20.0]
-        }
-      }
-    },
-    {
-      "Weapon": [
-        {
-          "trigger": "gunner1"
-        },
-        {
-          "triggerGroup": "coaxial"
-        },
-        {
-          "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk"
-        },
-        {
-          "emitter": "bone_mg_gun_twin"
-        },
-        {
-          "flash": "emtr_mg_flame_01"
-        },
-        {
-          "defaultYaw": 0.0
-        },
-        {
-          "defaultPitch": 0.0
-        },
-        {
-          "barrelDP": "gun_barrel_01_dm"
-        },
-        {
-          "useAnimFlashNode": true
-        },
-        {
-          "speedYaw": 5.5
-        },
-        {
-          "speedPitch": 4.0
-        },
-        {
-          "fireConeAngle": 1.0
-        },
-        {
-          "bullets": 2700
-        },
-        {
-          "fireConeAngle": 15.0
-        },
-        {
-          "ChainfireTime": 3.0
-        },
-        {
-          "DelayAfterShoot": 3.0
-        },
-        {
-          "accuracyAir": 0.0
-        },
-        {
-          "accuracyGnd": 0.0
-        },
-        {
-          "errMeasureVel": 0.0
-        },
-        {
-          "errMeasureVelFast": 0.0
-        },
-        {
-          "errMeasureVelFwdShift": 0.0
-        },
-        {
-          "errMeasureVelDir": 0.0
-        },
-        {
-          "errTargettingOn100kmph": 0.0
-        },
-        {
-          "errTargetting": 3.0
-        },
-        {
-          "errExplTime": 0.0
-        },
-        {
-          "turret": {
-            "head": "bone_mg_gun_twin",
-            "gun": "bone_mg_gun_twin",
-            "gunnerDm": "gunner_dm"
-          }
-        },
-        {
-          "limits": {
-            "yaw": [-0.0,0.0],
-            "pitch": [-0.0,0.0]
-          }
-        }
-      ]
-    }
-  ],
-  "weapon_presets": {
-    "preset": {
-      "name": "germ_pzkpfw_V_ausf_a_panther_default",
-      "blk": "gameData/units/tankModels/weaponPresets/germ_pzkpfw_V_ausf_a_panther_default.blk"
-    }
-  },
   "VehiclePhys": {
     "Mass": {
       "Empty": 44400.0,
@@ -2436,6 +2304,161 @@
       "fuel_tank_l_05_dm": []
     }
   },
+  "commonWeapons": [
+    {
+      "Weapon": {
+        "trigger": "gunner0",
+        "blk": "gameData/Weapons/groundModels_weapons/75mm_Kwk42_user_cannon.blk",
+        "emitter": "bone_gun_barrel",
+        "flash": "emtr_gun_flame",
+        "recoilMultiplier": 0.8,
+        "recoilOffset": 0.43,
+        "recoilTimes": [0.1,0.65],
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "barrelDP": "gun_barrel_dm",
+        "breechDP": "cannon_breech_dm",
+        "speedYaw": 24.0,
+        "speedPitch": 4.0,
+        "fireConeAngle": 1.0,
+        "bullets": 79,
+        "salvoAmount": 100.0,
+        "ChainfireTime": 0.0,
+        "DelayAfterShoot": 5.0,
+        "AttackMaxDistance": 1000.0,
+        "AttackMaxRadius": 1000.0,
+        "AttackMaxHeight": 1000.0,
+        "accuracyAir": 0.0,
+        "accuracyGnd": 1.5,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 0.0,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "turret": {
+          "head": "bone_turret",
+          "gun": "bone_gun",
+          "barrel": "bone_gun_barrel"
+        },
+        "limits": {
+          "yaw": [-180.0,180.0],
+          "pitch": [-8.0,20.0]
+        },
+        "limitsTable": {
+          "lim1": [-180.0,-145.0,-3.0,20.0],
+          "lim2": [-145.0,155.0,-8.0,20.0],
+          "lim3": [155.0,180.0,-5.0,20.0]
+        }
+      }
+    },
+    {
+      "Weapon": [
+        {
+          "trigger": "gunner1"
+        },
+        {
+          "triggerGroup": "coaxial"
+        },
+        {
+          "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk"
+        },
+        {
+          "emitter": "bone_mg_gun_twin"
+        },
+        {
+          "flash": "emtr_mg_flame_01"
+        },
+        {
+          "defaultYaw": 0.0
+        },
+        {
+          "defaultPitch": 0.0
+        },
+        {
+          "barrelDP": "gun_barrel_01_dm"
+        },
+        {
+          "useAnimFlashNode": true
+        },
+        {
+          "speedYaw": 5.5
+        },
+        {
+          "speedPitch": 4.0
+        },
+        {
+          "fireConeAngle": 1.0
+        },
+        {
+          "bullets": 2700
+        },
+        {
+          "fireConeAngle": 15.0
+        },
+        {
+          "ChainfireTime": 3.0
+        },
+        {
+          "DelayAfterShoot": 3.0
+        },
+        {
+          "accuracyAir": 0.0
+        },
+        {
+          "accuracyGnd": 0.0
+        },
+        {
+          "errMeasureVel": 0.0
+        },
+        {
+          "errMeasureVelFast": 0.0
+        },
+        {
+          "errMeasureVelFwdShift": 0.0
+        },
+        {
+          "errMeasureVelDir": 0.0
+        },
+        {
+          "errTargettingOn100kmph": 0.0
+        },
+        {
+          "errTargetting": 3.0
+        },
+        {
+          "errExplTime": 0.0
+        },
+        {
+          "turret": {
+            "head": "bone_mg_gun_twin",
+            "gun": "bone_mg_gun_twin",
+            "gunnerDm": "gunner_dm"
+          }
+        },
+        {
+          "limits": {
+            "yaw": [-0.0,0.0],
+            "pitch": [-0.0,0.0]
+          }
+        }
+      ]
+    }
+  ],
+  "weapon_presets": {
+    "preset": {
+      "name": "ussr_pzkpfw_V_default",
+      "blk": "gameData/units/tankModels/weaponPresets/ussr_pzkpfw_V_default.blk"
+    }
+  },
+  "default_skin": {
+    "set_tex": {
+      "from": "pzkpfw_V_ausf_a_panther_turret_c*",
+      "to": "pzkpfw_V_ausf_a_panther_ussr_turret_c*",
+      "param": "camo_skin_tex"
+    }
+  },
   "user_skin": [
     {
       "name": "ussr_panther"
@@ -2688,50 +2711,5 @@
         ]
       }
     }
-  },
-  "defaultDecals": {
-    "skin_condition": 0.0,
-    "camo_scale": 0.0,
-    "camo_rotation": 0.0,
-    "decal0Line0": [1.31579,-5.7515e-08,0.0,0.023444],
-    "decal0Line1": [-5.7515e-08,-1.31579,0.0,3.46621],
-    "decal0HaveCP": true,
-    "decal0CP": [1807.47,61.1267,-1099.2],
-    "decal0CPNormDepth": [0.0,0.0,-1.0,-0.920532],
-    "decal0RotScale": [1.5708,0.76],
-    "decal0Mirrored": false,
-    "decal0Wrap": false,
-    "decal0Abs": true,
-    "decal0Tex": "ussr_number_513",
-    "decal1Line0": [1.92308,-8.40604e-08,0.0,1.25449],
-    "decal1Line1": [-8.40604e-08,-1.92308,0.0,4.83227],
-    "decal1HaveCP": true,
-    "decal1CP": [1807.36,61.1252,-1099.95],
-    "decal1CPNormDepth": [0.0,0.0,-1.0,-0.991699],
-    "decal1RotScale": [1.5708,0.52],
-    "decal1Mirrored": false,
-    "decal1Wrap": false,
-    "decal1Abs": true,
-    "decal1Tex": "ussr_white_star",
-    "decal2Line0": [1.41278,0.112956,-1.29982,0.632787],
-    "decal2Line1": [-0.685236,-1.56612,-0.880882,2.65199],
-    "decal2HaveCP": true,
-    "decal2CP": [1807.04,61.1698,-1100.54],
-    "decal2CPNormDepth": [-0.57735,0.57735,-0.57735,-2.40777],
-    "decal2RotScale": [1.4988,0.52],
-    "decal2Mirrored": false,
-    "decal2Wrap": false,
-    "decal2Abs": false,
-    "decal2Tex": "ussr_tactical_marking",
-    "decal3Line0": [-1.41278,-0.112956,-1.29982,0.426805],
-    "decal3Line1": [-0.685236,-1.56612,0.880882,2.67696],
-    "decal3HaveCP": true,
-    "decal3CP": [1805.42,61.1807,-1100.11],
-    "decal3CPNormDepth": [-0.57735,0.57735,0.57735,-2.4051],
-    "decal3RotScale": [1.6428,0.52],
-    "decal3Mirrored": false,
-    "decal3Wrap": false,
-    "decal3Abs": false,
-    "decal3Tex": "ussr_tactical_marking"
   }
 }

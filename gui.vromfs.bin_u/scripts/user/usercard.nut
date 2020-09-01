@@ -1,4 +1,7 @@
-local platformModule = require("scripts/clientState/platform.nut")
+local { isXBoxPlayerName,
+        canInteractCrossConsole,
+        isPlatformSony,
+        isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 local time = require("scripts/time.nut")
 local { hasAllFeatures } = require("scripts/user/features.nut")
 local externalIDsService = require("scripts/user/externalIdsService.nut")
@@ -458,10 +461,8 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     fillAdditionalName(curPlayerExternalIds?.steamName ?? "", "steamName")
     fillAdditionalName(curPlayerExternalIds?.facebookName ?? "", "facebookName")
-//    if (::is_platform_ps4)
-//      fillAdditionalName(curPlayerExternalIds?.psnName ?? "", "psnName")
 
-    showSceneBtn("btn_xbox_profile", ::is_platform_xboxone && !isMe && (curPlayerExternalIds?.xboxId ?? "") != "")
+    showSceneBtn("btn_xbox_profile", isPlatformXboxOne && !isMe && (curPlayerExternalIds?.xboxId ?? "") != "")
   }
 
   function fillAdditionalName(name, link)
@@ -1140,9 +1141,6 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
       btn_blacklistAdd = ""
     }
 
-    local isXBoxOnePlayer = platformModule.isXBoxPlayerName(player.name)
-    local canInteractCrossConsole = platformModule.canInteractCrossConsole(player.name)
-
     local canBan = false
     local isMe = true
 
@@ -1164,14 +1162,17 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
         textTable.btn_blacklistAdd = isBlock? ::loc("contacts/blacklist/remove") : ::loc("contacts/blacklist/add")
     }
 
+    local isXBoxOnePlayer = isXBoxPlayerName(player.name)
+    local canInteractCC = canInteractCrossConsole(player.name)
+
     local sheet = getCurSheet()
     local showStatBar = infoReady && sheet=="Statistics"
     local showProfBar = infoReady && !showStatBar
     local buttonsList = {
       paginator_place = showStatBar && (airStatsList != null) && (airStatsList.len() > statsPerPage)
-      btn_friendAdd = showProfBar && !::isPlayerPS4Friend(player.name) && canInteractCrossConsole && textTable.btn_friendAdd != ""
-      btn_blacklistAdd = showProfBar && textTable.btn_blacklistAdd != "" && (!::is_platform_xboxone || !isXBoxOnePlayer)
-      btn_moderatorBan = showProfBar && canBan && !::is_ps4_or_xbox
+      btn_friendAdd = showProfBar && !::isPlayerPS4Friend(player.name) && canInteractCC && textTable.btn_friendAdd != ""
+      btn_blacklistAdd = showProfBar && textTable.btn_blacklistAdd != "" && (!isPlatformXboxOne || !isXBoxOnePlayer)
+      btn_moderatorBan = showProfBar && canBan && !isPlatformXboxOne && !isPlatformSony
       btn_complain = showProfBar && !isMe
       btn_achievements_url = showProfBar && ::has_feature("AchievementsUrl")
         && ::has_feature("AllowExternalLink") && !::is_vendor_tencent()

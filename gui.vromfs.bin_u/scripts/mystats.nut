@@ -246,7 +246,7 @@ local summaryNameArray = [
   function onEventCrewTakeUnit(params)
   {
     local unitType = ::get_es_unit_type(params.unit)
-    local unitRank = ::getUnitRank(params.unit)
+    local unitRank = params.unit?.rank ?? -1
     local lastMaxRank = ::getTblValue(unitType.tostring(), _maxUnitsUsedRank, 0)
     if (lastMaxRank >= unitRank)
       return
@@ -427,7 +427,7 @@ local summaryNameArray = [
           continue
 
         local curUnitType = ::get_es_unit_type(unit)
-        saveBlk[curUnitType.tostring()] = ::max(::getTblValue(curUnitType.tostring(), saveBlk, 0), ::getUnitRank(unit))
+        saveBlk[curUnitType.tostring()] = ::max(::getTblValue(curUnitType.tostring(), saveBlk, 0), unit?.rank ?? -1)
       }
 
     if (!::u.isEqual(saveBlk, loadedBlk))

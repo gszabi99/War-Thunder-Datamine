@@ -1,4 +1,5 @@
 local xboxContactsManager = require("scripts/contacts/xboxContactsManager.nut")
+local { getPlayerName } = require("scripts/clientState/platform.nut")
 
 ::contacts_handler <- null
 ::ps4_console_friends <- {}
@@ -185,7 +186,7 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
     }
 
     func(null)
-    ::showInfoMsgBox(::loc("chat/error/item-not-found", { nick = playerName }), "incorrect_user")
+    ::showInfoMsgBox(::loc("chat/error/item-not-found", { nick = getPlayerName(playerName) }), "incorrect_user")
   }
 
   local taskId = ::find_nicks_by_prefix(playerName, 1, false)

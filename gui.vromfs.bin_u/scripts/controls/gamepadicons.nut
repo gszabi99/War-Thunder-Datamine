@@ -1,3 +1,4 @@
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
 local ICO_PRESET_DEFAULT = "#ui/gameuiskin#xone_"
 local ICO_PRESET_PS4 = "#ui/gameuiskin#ps_"
 local SVG_EXT = ".svg"
@@ -142,7 +143,7 @@ local mouseAxesImages = {
   [MOUSE_AXIS.VERTICAL_AXIS | AXIS_MODIFIERS.MAX] = "mouse_move_up",
 }
 
-local curPreset = ::is_platform_ps4 ? ICO_PRESET_PS4 : ICO_PRESET_DEFAULT
+local curPreset = isPlatformSony ? ICO_PRESET_PS4 : ICO_PRESET_DEFAULT
 
 local getTexture = @(id, preset = curPreset) (id in controlsList) ? preset + id + SVG_EXT : ""
 local getTextureByButtonIdx = @(idx) getTexture(btnNameByIndex?[idx])
