@@ -1,5 +1,3 @@
-local { isObjHaveActiveChilds } = require("sqDagui/guiBhv/guiBhvUtils.nut")
-
 class gui_bhv.columnNavigator
 {
   eventMask = ::EV_JOYSTICK | ::EV_PROCESS_SHORTCUTS | ::EV_MOUSE_L_BTN | ::EV_MOUSE_EXT_BTN | ::EV_MOUSE_DBL_CLICK | ::EV_ON_FOCUS_SET | ::EV_ON_FOCUS_LOST
@@ -23,7 +21,7 @@ class gui_bhv.columnNavigator
   function selectCurItem(obj)
   {
     local found = selectCell(obj, obj.cur_row.tointeger(), obj.cur_col.tointeger())
-    if (found || !isObjHaveActiveChilds(obj))
+    if (found || !::is_obj_have_active_childs(obj))
       return
     found = selectCell(obj, 0, 0)
     if (found)

@@ -1,7 +1,6 @@
 local statsd = require("statsd")
 local { animBgLoad } = require("scripts/loading/animBg.nut")
 local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
-local exitGame = require("scripts/utils/exitGame.nut")
 
 class ::gui_handlers.LoginWndHandlerDMM extends ::BaseGuiHandler
 {
@@ -41,16 +40,16 @@ class ::gui_handlers.LoginWndHandlerDMM extends ::BaseGuiHandler
       case ::YU2_NOT_FOUND:
         msgBox("dmm_error_not_found_user", ::loc("yn1/error/DMM_NOT_FOUND", {link = ::loc("warthunder_dmm_link")}),
         [
-          ["exit", exitGame ],
+          ["exit", ::exit_game ],
           ["tryAgain", ::Callback(doLogin, this)]
-        ], "tryAgain", { cancel_fn = ::Callback(doLogin, this) })
+        ], "tryAgain")
         break
       default:
         ::error_message_box("yn1/connect_error", result,
         [
-          ["exit", exitGame],
+          ["exit", ::exit_game],
           ["tryAgain", ::Callback(doLogin, this)]
-        ], "tryAgain", { cancel_fn = ::Callback(doLogin, this) })
+        ], "tryAgain")
     }
   }
 

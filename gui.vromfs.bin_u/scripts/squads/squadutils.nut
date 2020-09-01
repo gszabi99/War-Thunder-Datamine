@@ -3,7 +3,6 @@ local playerContextMenu = ::require("scripts/user/playerContextMenu.nut")
 local platformModule = require("scripts/clientState/platform.nut")
 local antiCheat = require("scripts/penitentiary/antiCheat.nut")
 local { getXboxChatEnableStatus } = require("scripts/chat/chatStates.nut")
-local { startLogout } = require("scripts/login/logout.nut")
 
 const MEMBER_STATUS_LOC_TAG_PREFIX = "#msl"
 
@@ -378,7 +377,7 @@ g_squad_utils.checkSquadsVersion <- function checkSquadsVersion(memberSquadsVers
   ::scene_msg_box("need_update_squad_version", null, message,
                   [["relogin", function() {
                      ::save_short_token()
-                     startLogout()
+                     ::gui_start_logout()
                    } ],
                    ["cancel", function() {}]
                   ],

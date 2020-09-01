@@ -1,14 +1,11 @@
 local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 local time = require("scripts/time.nut")
 local contentStateModule = require("scripts/clientState/contentState.nut")
-local topMenuHandlerClass = require("scripts/mainmenu/topMenuHandler.nut")
 local { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
-local exitGame = require("scripts/utils/exitGame.nut")
-local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 class ::gui_handlers.MainMenu extends ::gui_handlers.InstantDomination
 {
-  rootHandlerClass = topMenuHandlerClass.getHandler()
+  rootHandlerClass = ::gui_handlers.TopMenu
 
   onlyDevicesChoice    = true
   startControlsWizard  = false
@@ -89,7 +86,7 @@ class ::gui_handlers.MainMenu extends ::gui_handlers.InstantDomination
 
     msgBox("mainmenu_question_quit_game", ::loc("mainmenu/questionQuitGame"),
       [
-        ["yes", exitGame],
+        ["yes", ::exit_game],
         ["no", function() { }]
       ], "no", { cancel_fn = function() {}})
   }
@@ -99,7 +96,7 @@ class ::gui_handlers.MainMenu extends ::gui_handlers.InstantDomination
 
   function onLoadModels()
   {
-    if (isPlatformSony || isPlatformXboxOne)
+    if (::is_ps4_or_xbox)
       showInfoMsgBox(contentStateModule.getClientDownloadProgressText())
     else
       ::check_package_and_ask_download("pkg_main", ::loc("msgbox/ask_package_download"))

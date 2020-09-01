@@ -1,6 +1,5 @@
 local stdMath = require("std/math.nut")
 local { AMMO, getAmmoWarningMinimum } = require("scripts/weaponry/ammoInfo.nut")
-local { getLinkedGunIdx } = require("scripts/weaponry/weaponryInfo.nut")
 local { getBulletsGroupCount,
         getActiveBulletsGroupInt,
         getBulletsInfoForPrimaryGuns } = require("scripts/weaponry/bulletsInfo.nut")
@@ -71,7 +70,7 @@ class UnitBulletsManager
 
   function getGroupGunInfo(groupIdx)
   {
-    local linkedIdx = getLinkedGunIdx(groupIdx, getGunTypesCount(), unit.unitType.bulletSetsQuantity)
+    local linkedIdx = ::get_linked_gun_index(groupIdx, getGunTypesCount(), unit.unitType.bulletSetsQuantity)
     return ::getTblValue(linkedIdx, gunsInfo, null)
   }
 
@@ -184,7 +183,7 @@ class UnitBulletsManager
 
   function canChangeBulletsCount()
   {
-    return gunsInfo.len() > 0
+    return gunsInfo.len()
   }
 
   function canChangeBulletsActivity()

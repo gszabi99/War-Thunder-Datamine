@@ -1,14 +1,17 @@
 local { clearBorderSymbols } = require("std/string.nut")
 local penalties = require("scripts/penitentiary/penalties.nut")
-local { getPlayerName,
-        isPlayerFromXboxOne,
-        isPlatformSony,
-        isPlatformPC } = require("scripts/clientState/platform.nut")
+local platformModule = require("scripts/clientState/platform.nut")
 local menuChatRoom = require("scripts/chat/menuChatRoom.nut")
 local { topMenuBorders } = require("scripts/mainmenu/topMenuStates.nut")
 local { isChatEnabled, isChatEnableWithPlayer,
   isCrossNetworkMessageAllowed, chatStatesCanUseVoice } = require("scripts/chat/chatStates.nut")
-local { isObjHaveActiveChilds } = require("sqDagui/guiBhv/guiBhvUtils.nut")
+
+global enum MESSAGE_TYPE {
+  MY          = "my"
+  INCOMMING   = "incomming"
+  SYSTEM      = "system"
+  CUSTOM      = "custom"
+}
 
 const CHAT_ROOMS_LIST_SAVE_ID = "chatRooms"
 const VOICE_CHAT_SHOW_COUNT_SAVE_ID = "voiceChatShowCount"
@@ -571,7 +574,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
         foreach(idx, user in users)
         {
           local fullName = ::g_contacts.getPlayerFullName(
-            getPlayerName(user.name),
+            platformModule.getPlayerName(user.name),
             ::clanUserTable?[user.name] ?? ""
           )
           listObj.findObject("user_name_"+idx).setValue(fullName)
@@ -1295,7 +1298,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
           room.canBeClosed = true
           updateRoomTabById(room.id)
         }
-        addRoomMsg(room.id, "", ::format(::loc(msgId), room.getRoomName()))
+        addRoomMsg(room.id, "", format(::loc(msgId), room.getRoomName()))
         sceneChanged = true
         onRoomChanged()
         ::broadcastEvent("ChatRoomLeave", { room = room })
@@ -1369,22 +1372,19 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
           if (roomData == curRoom || roomData.hidden)
             updateChatText()
 
-          if (roomId != ""
-              && (roomData.type.needCountAsImportant || mBlock.important)
-              && !mBlock.isMeSender
-              && (!::last_chat_scene_show || curRoom != roomData)
-             )
+          if (roomId != "" && (!::last_chat_scene_show || curRoom != roomData) &&
+              ((privateMsg && !myPrivate) || mBlock.important))
           {
             roomData.newImportantMessagesCount++
+            updateRoomsIcons()
             newMessagesGC()
-
-            if (roomData.type.needShowMessagePopup)
-              showRoomPopup(mBlock, roomData.id)
+            showRoomPopup(mBlock, roomData.id)
           }
           else if (roomId == "" && mBlock.important
             && curRoom.type == ::g_chat_room_type.SYSTEM && !::last_chat_scene_show)
           {
             roomData.newImportantMessagesCount++
+            updateRoomsIcons()
             newMessagesGC()
           }
         }
@@ -1517,13 +1517,8 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
             ::sync_handler_simulate_signal("profile_reload")
         }
       }
-      addRoomMsg(
-        roomId,
-        userContact || user,
-        message,
-        privateMsg,
-        myPrivate
-      )
+      addRoomMsg(roomId, userContact || user, message,
+                 privateMsg, myPrivate, null, ::g_chat.isRoomSquad(roomId))
     }
     else if (db?.type == "error")
     {
@@ -1546,7 +1541,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
         {
           addRoomMsg(lastActionRoom, "",
                      format(::loc("chat/error/401/userNotConnected"),
-                            ::gchat_unescape_target(getPlayerName(userName)) ))
+                            ::gchat_unescape_target(platformModule.getPlayerName(userName)) ))
           return
         }
       }
@@ -1600,7 +1595,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
         if (roomRegexp.match(value))
           value = roomType.getRoomName(value)
         else if (i == 0 && errorName == chatErrorName.CANNOT_JOIN_CHANNEL_NO_INVITATION)
-          value = getPlayerName(value)
+          value = platformModule.getPlayerName(value)
 
         locParams[key] <- value
       }
@@ -2060,7 +2055,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     addRoomMsg(::g_chat.getMySquadRoomId(),
       "",
       ::format(::loc(join? "squad/player_join" : "squad/player_leave"),
-          getPlayerName(name)
+          platformModule.getPlayerName(name)
     ))
   }
 
@@ -2307,7 +2302,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     updateUsersList()
   }
 
-  function onChatLinkClick(obj, itype, link)  { onChatLink(obj, link, isPlatformPC) }
+  function onChatLinkClick(obj, itype, link)  { onChatLink(obj, link, ::is_platform_pc) }
   function onChatLinkRClick(obj, itype, link) { onChatLink(obj, link, false) }
 
   function onChatLink(obj, link, lclick)
@@ -2353,7 +2348,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
       ::g_invites.acceptInviteByLink(link)
   }
 
-  function onUserListClick(obj)  { onUserList(obj, isPlatformPC) }
+  function onUserListClick(obj)  { onUserList(obj, ::is_platform_pc) }
   function onUserListRClick(obj) { onUserList(obj, false) }
 
   function onUserList(obj, lclick)
@@ -2409,7 +2404,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(inputObj))
       return
 
-    ::add_text_to_editbox(inputObj, getPlayerName(user) + " ")
+    ::add_text_to_editbox(inputObj, platformModule.getPlayerName(user) + " ")
     inputObj.select()
   }
 
@@ -2855,7 +2850,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
   function getButtonsObj()
   {
     local obj = scene.findObject("buttons_list")
-    return (::checkObj(obj) && isObjHaveActiveChilds(obj))? obj : null
+    return (::checkObj(obj) && ::is_obj_have_active_childs(obj))? obj : null
   }
 
   function checkListValue(obj)
@@ -2976,7 +2971,7 @@ if (::g_login.isLoggedIn())
 {
   if (::menu_chat_handler &&
       ::last_chat_scene_show &&
-      !(isPlatformSony && ::is_in_loading_screen()) //!!!HACK, till hover is not working on loading
+      !(::is_platform_ps4 && ::is_in_loading_screen()) //!!!HACK, till hover is not working on loading
      )
     ::menu_chat_handler.switchScene(obj, true)
 }
@@ -3009,7 +3004,7 @@ if (::g_login.isLoggedIn())
 
 ::openChatPrivate <- function openChatPrivate(playerName, ownerHandler = null)
 {
-  if (!isPlayerFromXboxOne(playerName))
+  if (!platformModule.isPlayerFromXboxOne(playerName))
     return ::g_chat.openPrivateRoom(playerName, ownerHandler)
 
   ::find_contact_by_name_and_do(playerName, function(contact) {

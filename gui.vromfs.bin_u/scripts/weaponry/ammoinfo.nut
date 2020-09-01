@@ -1,3 +1,4 @@
+local { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 local AMMO = {
@@ -88,7 +89,7 @@ local function getAmmoAmountData(unit, ammoName, ammoType)
   return res
 }
 
-local function getUnitNotReadyAmmoList(unit, lastWeapon, readyStatus = UNIT_WEAPONS_WARNING)
+local function getUnitNotReadyAmmoList(unit, readyStatus = UNIT_WEAPONS_WARNING)
 {
   local res = []
   local addAmmoData = function(ammoData) {
@@ -98,7 +99,8 @@ local function getUnitNotReadyAmmoList(unit, lastWeapon, readyStatus = UNIT_WEAP
       res.append(ammoData)
   }
 
-  addAmmoData(getAmmoAmountData(unit, lastWeapon, AMMO.WEAPON))
+  local weapon = getLastWeapon(unit.name)
+  addAmmoData(getAmmoAmountData(unit, weapon, AMMO.WEAPON))
 
   for (local i = 0; i < unit.unitType.bulletSetsQuantity; i++)
   {

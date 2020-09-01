@@ -187,6 +187,7 @@ class ::gui_handlers.SessionsList extends ::gui_handlers.GenericOptions
       guiScene.replaceContentFromText(optObj, container.tbl, container.tbl.len(), this)
 
     optionsContainers.append(container.descr)
+    onHintUpdate()
   }
 
   function onGamemodeChange(obj)

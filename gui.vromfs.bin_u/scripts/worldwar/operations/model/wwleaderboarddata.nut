@@ -1,5 +1,3 @@
-local { getClansInfoByClanIds } = require("scripts/clans/clansListShortInfo.nut")
-
 local modes = [
   {
     mode  = "ww_users"
@@ -18,7 +16,6 @@ local modes = [
     hasDaysData = true
     rewardsTableName = "user_leaderboards"
     needShowConsoleFilter = true
-    needAddClanInfo = true
   },
   {
     mode  = "ww_clans"
@@ -75,7 +72,6 @@ local function requestWwLeaderboardData(modeName, dataParams, cb, headersParams 
     data = {
       valueType = LEADERBOARD_VALUE_TOTAL
       resolveNick = true
-      format = "json"  // TODO: remove me after leaderboard update
     }.__update(dataParams)
   }
 
@@ -166,21 +162,6 @@ local function convertWwLeaderboardData(result, applyLocalisationToName = false)
   return { rows = list }
 }
 
-local function addClanInfoIfNeedAndConvert(modeName, result, applyLocalisationToName = false) {
-  local lbRows = convertWwLeaderboardData(result, applyLocalisationToName)
-  local mode = getModeByName(modeName)
-  if (!(mode?.needAddClanInfo ?? false))
-    return lbRows
-
-  local clanInfoList = getClansInfoByClanIds(lbRows.rows.map(@(row) row?.clanId ?? ""))
-  lbRows.rows.map(@(row) row.__update({
-    needAddClanTag = true
-    clanTag = clanInfoList?[row?.clanId ?? ""].tag ?? ""
-  }))
-
-  return lbRows
-}
-
 local function isUsersLeaderboard(lbModeData) {
   return lbModeData.appId == "1134"
 }
@@ -224,5 +205,4 @@ return {
   convertWwLeaderboardData = convertWwLeaderboardData
   isUsersLeaderboard = isUsersLeaderboard
   updateClanByWWLBAndDo = updateClanByWWLBAndDo
-  addClanInfoIfNeedAndConvert = addClanInfoIfNeedAndConvert
 }

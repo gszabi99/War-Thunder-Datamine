@@ -2,7 +2,6 @@ local crossplayModule = require("scripts/social/crossplay.nut")
 local mapPreferencesParams = require("scripts/missions/mapPreferencesParams.nut")
 local slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
-local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 local needShowRateWnd = false //need this, because debriefing data destroys after debriefing modal is closed
 
@@ -17,7 +16,7 @@ local needShowRateWnd = false //need this, because debriefing data destroys afte
     //can be on any platform in future,
     //no need to specify platform in func name
     //but now only for xbox have such ability.
-    if (!isPlatformXboxOne)
+    if (!::is_platform_xboxone)
       return
 
     //show only if player win last mp battle
@@ -149,7 +148,7 @@ local needShowRateWnd = false //need this, because debriefing data destroys afte
 
   function checkAutoShowPS4EmailRegistration()
   {
-    if (!isPlatformSony || !haveTag("psnlogin"))
+    if (!::is_platform_ps4 || !haveTag("psnlogin"))
       return
 
     if (::loadLocalByAccount("PS4EmailRegistrationShowed", false))

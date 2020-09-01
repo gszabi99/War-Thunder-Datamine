@@ -1,6 +1,5 @@
 local controlsOperations = require("scripts/controls/controlsOperations.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 return [
   {
@@ -8,7 +7,7 @@ return [
     type = CONTROL_TYPE.HEADER
     unitType = unitTypes.SHIP
     unitTag = "submarine"
-    showFunc = @() ::has_feature("SpecialShips") || ::get_player_cur_unit()?.isSubmarine()
+    showFunc = @() ::has_feature("SpecialShips") || ::is_submarine(::get_player_cur_unit())
     needShowInHelp = true
   }
 //-------------------------------------------------------
@@ -194,7 +193,7 @@ return [
   {
     id = "ID_SUBMARINE_KILLSTREAK_WHEEL_MENU"
     checkGroup = ctrlGroups.SUBMARINE
-    showFunc = @() isPlatformSony || isPlatformXboxOne || ::is_xinput_device()
+    showFunc = @() ::is_ps4_or_xbox || ::is_xinput_device()
     checkAssign = false
   }
   {

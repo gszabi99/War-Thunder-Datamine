@@ -3,8 +3,6 @@ local guidParser = require("scripts/guidParser.nut")
 local time = require("scripts/time.nut")
 local skinLocations = ::require("scripts/customization/skinLocations.nut")
 local memoizeByEvents = require("scripts/utils/memoizeByEvents.nut")
-local { updateDownloadableSkins } = require("scripts/customization/downloadableDecorators.nut")
-local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
 local function memoizeByProfile(func, hashFunc = null) {
   // When player buys any decarator, profile always updates.
@@ -81,7 +79,7 @@ local function memoizeByProfile(func, hashFunc = null) {
         return true
       if (!isAllowed(block.getBlockName()))
         return false
-      if (block?.psn && !isPlatformSony)
+      if (block?.psn && !::is_platform_ps4)
         return false
       if (block?.ps_plus && !::ps4_has_psplus())
         return false
@@ -124,7 +122,6 @@ local function memoizeByProfile(func, hashFunc = null) {
     canResize = function() { return false }
     canMirror = function() { return false }
     canToggle = function() { return false }
-    updateDownloadableDecoratorsInfo = function(decorator) {}
   }
 }
 
@@ -213,14 +210,12 @@ enums.addTypesByGlobalName("g_decorator_type", {
       return res.success
     }
 
-    buyFunc = function(unitName, id, cost, afterSuccessFunc)
+    buyFunc = function(unitName, id, afterSuccessFunc)
     {
       local blk = ::DataBlock()
       blk["name"] = id
       blk["type"] = "decal"
       blk["unitName"] = unitName
-      blk["cost"] = cost.wp
-      blk["costGold"] = cost.gold
 
       local taskId = ::char_send_blk("cln_buy_resource", blk)
       local taskOptions = { showProgressBox = true, progressBoxText = ::loc("charServer/purchase") }
@@ -293,7 +288,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
     getDecoratorGroupInSlot = function(slotIdx, ...) { return ::hangar_get_attachable_group(slotIdx) }
 
     isAvailable = @(unit, checkUnitUsable = true) !!unit && ::has_feature("AttachablesUse")
-      && unit.isTank() && (!checkUnitUsable || unit.isUsable())
+      && ::isTank(unit) && (!checkUnitUsable || unit.isUsable())
     isPlayerHaveDecorator = memoizeByProfile(::player_have_attachable)
 
     getBlk = function() { return ::get_attachable_blk() }
@@ -313,14 +308,12 @@ enums.addTypesByGlobalName("g_decorator_type", {
       return res
     }
 
-    buyFunc = function(unitName, id, cost, afterSuccessFunc)
+    buyFunc = function(unitName, id, afterSuccessFunc)
     {
       local blk = ::DataBlock()
       blk["name"] = id
       blk["type"] = "attachable"
       blk["unitName"] = unitName
-      blk["cost"] = cost.wp
-      blk["costGold"] =-cost.gold
 
       local taskId = ::char_send_blk("cln_buy_resource", blk)
       local taskOptions = { showProgressBox = true, progressBoxText = ::loc("charServer/purchase") }
@@ -439,14 +432,12 @@ enums.addTypesByGlobalName("g_decorator_type", {
 
     getBlk = function() { return ::get_skins_blk() }
 
-    buyFunc = function(unitName, id, cost, afterSuccessFunc)
+    buyFunc = function(unitName, id, afterSuccessFunc)
     {
       local blk = ::DataBlock()
       blk["name"] = id
       blk["type"] = "skin"
       blk["unitName"] = unitName
-      blk["cost"] = cost.wp
-      blk["costGold"] = cost.gold
 
       local taskId = ::char_send_blk("cln_buy_resource", blk)
       local taskOptions = { showProgressBox = true, progressBoxText = ::loc("charServer/purchase") }
@@ -475,15 +466,6 @@ enums.addTypesByGlobalName("g_decorator_type", {
     }
 
     canPreviewLiveDecorator = @() ::has_feature("EnableLiveSkins")
-
-    updateDownloadableDecoratorsInfo = function(decorator) {
-      local unitName = ::g_unlocks.getPlaneBySkinId(decorator.id)
-      local unit = ::getAircraftByName(unitName)
-      if (!unit)
-        return
-
-      updateDownloadableSkins(unit)
-    }
   }
 }, null, "name")
 

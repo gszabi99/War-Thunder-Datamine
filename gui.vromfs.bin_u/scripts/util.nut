@@ -1,11 +1,10 @@
 local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 local time = require("scripts/time.nut")
 local penalty = require_native("penalty")
-local { isPlatformSony, getPlayerName } = require("scripts/clientState/platform.nut")
+local platformModule = require("scripts/clientState/platform.nut")
 local stdMath = require("std/math.nut")
 local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 local { isCrossPlayEnabled } = require("scripts/social/crossplay.nut")
-local { startLogout } = require("scripts/login/logout.nut")
 
 ::usageRating_amount <- [0.0003, 0.0005, 0.001, 0.002]
 ::allowingMultCountry <- [1.5, 2, 2.5, 3, 4, 5]
@@ -241,7 +240,7 @@ foreach (i, v in ::cssColorsMapDark)
         {
           ::in_on_lost_psn = false
           ::destroy_session_scripted()
-          startLogout()
+          ::gui_start_logout()
         }
         ]], "ok")
   }
@@ -1477,7 +1476,7 @@ foreach (i, v in ::cssColorsMapDark)
 {
   return ::has_feature("WorldWar")
     && ("g_world_war" in ::getroottable())
-    && (!isPlatformSony || isCrossPlayEnabled())
+    && (!::is_platform_ps4 || isCrossPlayEnabled())
 }
 
 ::init_use_touchscreen <- function init_use_touchscreen()
@@ -1628,13 +1627,11 @@ foreach (i, v in ::cssColorsMapDark)
   return ::is_myself_moderator() || ::is_myself_grand_moderator() || ::is_myself_chat_moderator()
 }
 
-::unlockCrew <- function unlockCrew(crewId, byGold, cost)
+::unlockCrew <- function unlockCrew(crewId, byGold)
 {
   local blk = ::DataBlock()
-  blk["crew"] = crewId
-  blk["gold"] = byGold
-  blk["cost"] = cost?.wp ?? 0
-  blk["costGold"] = cost?.gold ?? 0
+  blk.setInt("crew", crewId)
+  blk.setBool("gold", byGold)
 
   return ::char_send_blk("cln_unlock_crew", blk)
 }
@@ -1825,7 +1822,7 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
   }
 
   local clanTag = withClanTag ? player.clanTag : ""
-  local name = ::g_contacts.getPlayerFullName(player?.isBot? player.name : getPlayerName(player.name),
+  local name = ::g_contacts.getPlayerFullName(player?.isBot? player.name : platformModule.getPlayerName(player.name),
                                               clanTag,
                                               unitName)
 

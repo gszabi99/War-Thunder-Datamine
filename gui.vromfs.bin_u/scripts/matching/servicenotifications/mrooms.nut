@@ -1,5 +1,4 @@
 local crossplayModule = require("scripts/social/crossplay.nut")
-local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 local string = require("string")
 
 local MRoomsHandlers = class {
@@ -404,7 +403,7 @@ local MRoomsHandlers = class {
 
 ::create_room <- function create_room(params, cb)
 {
-  if ((isPlatformXboxOne || isPlatformSony) &&
+  if ((::is_platform_xboxone || ::is_platform_ps4) &&
       !crossplayModule.isCrossPlayEnabled()) {
     params["crossplayRestricted"] <- true
   }

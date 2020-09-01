@@ -2,10 +2,7 @@ local time = require("scripts/time.nut")
 local systemMsg = require("scripts/utils/systemMsg.nut")
 local seenEvents = require("scripts/seen/seenList.nut").get(SEEN.EVENTS)
 local crossplayModule = require("scripts/social/crossplay.nut")
-local { getPlayerName,
-        isPlatformSony,
-        isPlatformXboxOne,
-        isPlatformPC } = require("scripts/clientState/platform.nut")
+local platformModule = require("scripts/clientState/platform.nut")
 local stdMath = require("std/math.nut")
 local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
 local { getFeaturePack } = require("scripts/user/features.nut")
@@ -505,9 +502,9 @@ class Events
       return false
     if (::isInArray("tankAccess", eventData.event_access) && !::has_feature("Tanks")) //temporary here while not everywhere used new types
       return false
-    if (::isInArray("ps4", eventData.event_access) && !isPlatformSony)
+    if (::isInArray("ps4", eventData.event_access) && !::is_platform_ps4)
       return false
-    if (::isInArray("pc", eventData.event_access) && !isPlatformPC)
+    if (::isInArray("pc", eventData.event_access) && !::is_platform_pc)
       return false
     return true
   }
@@ -699,12 +696,12 @@ class Events
 
   function isEventXboxOnlyAllowed(event)
   {
-    return (event?.xboxOnlyAllowed ?? false) && isPlatformXboxOne
+    return (event?.xboxOnlyAllowed ?? false) && ::is_platform_xboxone
   }
 
   function isEventPS4OnlyAllowed(event)
   {
-    return (event?.ps4OnlyAllowed ?? false) && isPlatformSony
+    return (event?.ps4OnlyAllowed ?? false) && ::is_platform_ps4
   }
 
   function isEventPlatformOnlyAllowed(event)
@@ -1286,10 +1283,10 @@ class Events
     {
       local stack = ::u.search(res, @(s) s.status == member.status)
       if (stack)
-        stack.names.append(getPlayerName(member.name))
+        stack.names.append(platformModule.getPlayerName(member.name))
       else
         res.append({
-          names = [getPlayerName(member.name)]
+          names = [platformModule.getPlayerName(member.name)]
           status = member.status
         })
     }
@@ -2747,10 +2744,6 @@ class Events
   function onEventEntitlementsPriceUpdated(p)
   {
     recalcAllEventsDisplayType()
-  }
-
-  function onEventPS4OnlyLeaderboardsValueChanged(p) {
-    _leaderboards.resetLbCache()
   }
 
   // game mode allows to join either from queue or from rooms list

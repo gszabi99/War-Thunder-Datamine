@@ -2,11 +2,7 @@ local { _clone } = require("std/deep.nut")
 local { BULLET_TYPE } = require("scripts/weaponry/bulletsInfo.nut")
 local { TRIGGER_TYPE,
         getPresetsList,
-        getUnitWeaponry,
-        isWeaponEnabled,
-        isWeaponUnlocked } = require("scripts/weaponry/weaponryInfo.nut")
-
-const WEAPON_PRESET_FAVORITE = "weaponPreset/favorite/"
+        getUnitWeaponry } = require("scripts/weaponry/weaponryInfo.nut")
 
 local TIERS_NUMBER = 13
 local SIZE = {
@@ -16,8 +12,7 @@ local SIZE = {
   special = "special"
 }
 
-local CHAPTER_ORDER = ["NONE", "FAVORITE", "UNIVERSAL", "AIR_TO_AIR", "AIR_TO_GROUND", "AIR_TO_SEA", "ARMORED"]
-local CHAPTER_FAVORITE_IDX = CHAPTER_ORDER.findindex(@(p) p == "FAVORITE")
+local PURPOSE_TYPE_ORDER = ["NONE", "UNIVERSAL", "AIR_TO_AIR", "AIR_TO_GROUND", "AIR_TO_SEA", "ARMORED"]
 local PURPOSE_TYPE = {
   AIR_TO_AIR = [BULLET_TYPE.AAM, BULLET_TYPE.ROCKET_AIR]
   AIR_TO_SEA = [BULLET_TYPE.TORPEDO]
@@ -131,15 +126,14 @@ local function getTierIcon(weaponry, size, itemsNum)
 
 local function createTier(weaponry, sizes, presetName, itemsNum = 0)
 {
-  local tierId  = weaponry?.tierId ?? -1
   local tierWeaponry = weaponry.__merge({ itemsNum = itemsNum })
   local size = getWeaponrySize(sizes[weaponry.tType], weaponry.massKg)
   itemsNum = itemsNum > 0 ? itemsNum : weaponry.num
   local res = {
-    tierId  = tierId
+    tierId  = weaponry?.tierId ?? -1
     weaponry = tierWeaponry
     img = getTierIcon(weaponry, size, itemsNum)
-    tierTooltipId = ::g_tooltip_type.TIER.getTooltipId(unit.name, tierWeaponry, presetName, tierId)
+    tierTooltipId = ::g_tooltip_type.TIER.getTooltipId(unit.name, tierWeaponry, presetName)
   }
 
   return res
@@ -249,29 +243,28 @@ local function getPredefinedTiers(preset, sizes)
           local iconType = weaponry.iconType
           foreach (idx, tier in weaponry.tiers)
           {
-            local tierId = ::min(idx, TIERS_NUMBER-1) // To avoid possible mistakes from config with incorrect tier idx
             local params = {
-              tierId = tierId
+              tierId = idx
               tType = triggerType
               isBlock = (tier?.amountPerTier ?? amountPerTier) > 1
               iconType  = tier?.iconType ?? iconType
             }
-            if (filledTiers?[tierId])
+            if (filledTiers?[idx])
             {
               // Create additional tiers info and add it on already existing tier if two weapons placed per one tier
-              local currTier = ::u.search(res, @(p) p.tierId == tierId)
+              local currTier = ::u.search(res, @(p) p.tierId == idx)
               if (currTier)
               {
                 currTier.weaponry.addWeaponry <- weaponry.__merge(params.__merge({
                   itemsNum = weaponry.num / (tier?.amountPerTier ?? amountPerTier)}))
                 currTier.tierTooltipId = ::g_tooltip_type.TIER.getTooltipId(unit.name,
-                  currTier.weaponry, preset.id, idx)
+                  currTier.weaponry, preset.id)
               }
 
               continue
             }
             else
-              filledTiers[tierId] <- weaponry
+              filledTiers[idx] <- weaponry
 
             res.append(createTier(weaponry.__merge(params),
               sizes, preset.id, weaponry.num / (tier?.amountPerTier ?? amountPerTier)))
@@ -334,34 +327,11 @@ local function getTiers(unit, preset, sizes)
   return res
 }
 
-local function getFavoritePresets(unitName) {
-  local savePath = $"{WEAPON_PRESET_FAVORITE}{unitName}"
-  return ::load_local_account_settings(savePath, ::DataBlock()) % "presetId"
-}
-
-local function setFavoritePresets(unitName, favoriteArr=[]) {
-  local savePath = $"{WEAPON_PRESET_FAVORITE}{unitName}"
-  local data = ::DataBlock()
-  foreach (inst in favoriteArr)
-    data.addStr("presetId", inst)
-  ::save_local_account_settings(savePath, data)
-}
-
-local function sortPresetLists(listArr) {
-  foreach (list in listArr)
-    list.sort(@(a, b)
-      a.chapterOrd <=> b.chapterOrd
-      || b.isEnabled <=> a.isEnabled
-      || b.isDefault <=> a.isDefault
-      || b.totalMass <=> a.totalMass)
-}
-
 local function getWeaponryByPresetInfo(unit, chooseMenuList = null)
 {
   // Get list clone to avoid adding properties such as isEnabled, isDefault, chapterOrd in presets
   local res = {weaponrySizes = {}, presets = [],
-    presetsList = _clone(getPresetsList(unit, chooseMenuList)),
-    favoriteArr = getFavoritePresets(unit.name)}
+    presetsList = _clone(getPresetsList(unit, chooseMenuList))}
   local presets = res.presets
   local presetsList = res.presetsList
   local sizes = res.weaponrySizes
@@ -371,25 +341,22 @@ local function getWeaponryByPresetInfo(unit, chooseMenuList = null)
   {
     local weaponry = getUnitWeaponry(unit, {isPrimary = false, weaponPreset = preset.name})
     local pType = preset?.presetType ?? getTypeByPurpose(weaponry)
-    local isFavorite = ::isInArray(preset.name, res.favoriteArr)
-    if(preset?.presetType && !::isInArray(preset.presetType, CHAPTER_ORDER))
-      CHAPTER_ORDER.append(preset.presetType) // Needs add custom preset type in order array to get right chapter order
+    if(preset?.presetType && !::isInArray(preset.presetType, PURPOSE_TYPE_ORDER))
+      PURPOSE_TYPE_ORDER.append(preset.presetType) // Needs add custom preset type in order array to get right chapter order
     if (preset?.isEnabled == null)
-      preset.isEnabled <- isWeaponEnabled(unit, preset) ||
-        (isOwn && isWeaponUnlocked(unit, preset))
+      preset.isEnabled <- ::is_weapon_enabled(unit, preset) ||
+        (isOwn && ::is_weapon_unlocked(unit, preset))
     preset.isDefault <- preset.name.indexof("default") != null
-    preset.chapterOrd <- isFavorite
-      ? CHAPTER_FAVORITE_IDX : CHAPTER_ORDER.findindex(@(p) p == pType)
+    preset.chapterOrd <- PURPOSE_TYPE_ORDER.findindex(@(p) p == pType)
     presets.append({
-        id               = preset.name
-        cost             = preset.cost
-        image            = preset.image
+        id = preset.name
+        cost = preset.cost
+        image = preset.image
         totalItemsAmount = 0
-        totalMass        = 0
-        purposeType      = pType
-        chapterOrd       = preset.chapterOrd
-        isDefault        = preset.isDefault
-        isEnabled        = preset.isEnabled
+        purposeType = pType
+        chapterOrd = preset.chapterOrd
+        isDefault = preset.isDefault
+        isEnabled = preset.isEnabled
       })
     local p = presets[idx]
     foreach (weaponType, triggers in weaponry)
@@ -409,7 +376,6 @@ local function getWeaponryByPresetInfo(unit, chooseMenuList = null)
               }))
 
             p.totalItemsAmount += weapon.num / (weapon.amountPerTier ?? 1)
-            p.totalMass += weapon.num * weapon.massKg
 
             if (!sizes?[tType])
               sizes[tType] <- []
@@ -419,13 +385,21 @@ local function getWeaponryByPresetInfo(unit, chooseMenuList = null)
           }
         w.sort(@(a, b) b.massKg <=> a.massKg)
       }
-
-    preset.totalMass <- p.totalMass
   }
 
   foreach (inst in sizes)
     inst.sort(@(a, b) a <=> b)
-  sortPresetLists([presets, presetsList])
+
+  presets.sort(@(a, b)
+    a.chapterOrd <=> b.chapterOrd
+    || b.isEnabled <=> a.isEnabled
+    || b.isDefault <=> a.isDefault)
+
+  presetsList.sort(@(a, b)
+    a.chapterOrd <=> b.chapterOrd
+    || b.isEnabled <=> a.isEnabled
+    || b.isDefault <=> a.isDefault)
+
   foreach (idx, preset in presets)
     presetsList[idx].tiers <- getTiers(unit, preset, sizes)
 
@@ -434,9 +408,5 @@ local function getWeaponryByPresetInfo(unit, chooseMenuList = null)
 
 return {
   TIERS_NUMBER            = TIERS_NUMBER
-  CHAPTER_ORDER           = CHAPTER_ORDER
-  CHAPTER_FAVORITE_IDX    = CHAPTER_FAVORITE_IDX
   getWeaponryByPresetInfo = getWeaponryByPresetInfo
-  setFavoritePresets      = setFavoritePresets
-  sortPresetLists         = sortPresetLists
 }

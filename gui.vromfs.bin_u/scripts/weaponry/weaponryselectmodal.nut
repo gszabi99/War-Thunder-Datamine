@@ -23,10 +23,7 @@
 */
 local weaponryPresetsModal = require("scripts/weaponry/weaponryPresetsModal.nut")
 local { updateModItem, createModItemLayout } = require("scripts/weaponry/weaponryVisual.nut")
-local { getLastWeapon,
-        setLastWeapon,
-        isWeaponVisible,
-        isWeaponEnabled } = require("scripts/weaponry/weaponryInfo.nut")
+local { getLastWeapon, setLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 
 ::gui_start_weaponry_select_modal <- function gui_start_weaponry_select_modal(config)
 {
@@ -61,13 +58,13 @@ local CHOOSE_WEAPON_PARAMS = {
   local list = []
   foreach(weapon in unit.weapons)
   {
-    if (!isForcedAvailable && !isWeaponVisible(unit, weapon, hasOnlyBought))
+    if (!isForcedAvailable && !::is_weapon_visible(unit, weapon, hasOnlyBought))
       continue
 
     list.append({
       weaponryItem = weapon
       selected = curWeaponName == weapon.name
-      enabled = isForcedAvailable || isWeaponEnabled(unit, weapon)
+      enabled = isForcedAvailable || ::is_weapon_enabled(unit, weapon)
     })
   }
 

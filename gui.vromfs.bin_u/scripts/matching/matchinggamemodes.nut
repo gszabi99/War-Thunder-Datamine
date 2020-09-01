@@ -1,5 +1,3 @@
-local { startLogout } = require("scripts/login/logout.nut")
-
 // -------------------------------------------------------
 // Matching game modes managment
 // -------------------------------------------------------
@@ -51,7 +49,7 @@ local requestedGameModes = []
         if (!canRetry)
         {
           if (!::is_dev_version)
-            startLogout()
+            ::gui_start_logout()
         }
         else
         {

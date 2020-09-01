@@ -1,6 +1,5 @@
 local avatars = ::require("scripts/user/avatars.nut")
-local { isPs4XboxOneInteractionAvailable,
-        isPlatformSony } = require("scripts/clientState/platform.nut")
+local platformModule = require("scripts/clientState/platform.nut")
 local editContactsList = require("scripts/contacts/editContacts.nut")
 
 ::on_presences_update <- function on_presences_update(params)
@@ -87,7 +86,7 @@ local editContactsList = require("scripts/contacts/editContacts.nut")
 
   if ("groups" in params)
   {
-    if (isPlatformSony)
+    if (::is_platform_ps4)
       ::addContactGroup(::EPLX_PS4_FRIENDS)
 
     if( (::EPL_FACEBOOK in params.groups) &&
@@ -101,7 +100,7 @@ local editContactsList = require("scripts/contacts/editContacts.nut")
       if (list == null)
         continue
 
-      if (listName == ::EPL_FRIENDLIST && isPlatformSony)
+      if (listName == ::EPL_FRIENDLIST && ::is_platform_ps4)
         ::contacts[::EPLX_PS4_FRIENDS] <- []
       ::contacts[listName] <- []
 
@@ -118,7 +117,7 @@ local editContactsList = require("scripts/contacts/editContacts.nut")
           continue
         }
 
-        if (listName == ::EPL_FRIENDLIST && !isPs4XboxOneInteractionAvailable(player.name))
+        if (listName == ::EPL_FRIENDLIST && !platformModule.isPs4XboxOneInteractionAvailable(player.name))
         {
           friendsToRemove.append(player)
           continue

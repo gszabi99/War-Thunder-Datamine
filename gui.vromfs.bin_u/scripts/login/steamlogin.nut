@@ -1,7 +1,6 @@
 local { animBgLoad } = require("scripts/loading/animBg.nut")
 local showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
 local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
-local exitGame = require("scripts/utils/exitGame.nut")
 
 class ::gui_handlers.LoginWndHandlerSteam extends ::gui_handlers.LoginWndHandler
 {
@@ -57,7 +56,7 @@ class ::gui_handlers.LoginWndHandlerSteam extends ::gui_handlers.LoginWndHandler
       ::loc("steam/login/linkQuestion" + (::has_feature("AllowSteamAccountLinking")? "" : "/noLink")),
       [["#mainmenu/loginWithGaijin", ::Callback(goToLoginWnd, this) ],
        ["#mainmenu/loginWithSteam", ::Callback(authorizeSteam, this)],
-       ["exit", exitGame]
+       ["exit", ::exit_game]
       ],
       "#mainmenu/loginWithGaijin"
     )
@@ -102,7 +101,7 @@ class ::gui_handlers.LoginWndHandlerSteam extends ::gui_handlers.LoginWndHandler
       guiScene,
       ::loc("mainmenu/questionQuitGame"),
       [
-        ["yes", exitGame],
+        ["yes", ::exit_game],
         ["no", @() null]
       ],
       "no",

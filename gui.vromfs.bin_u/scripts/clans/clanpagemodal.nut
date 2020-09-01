@@ -1,9 +1,5 @@
 local time = require("scripts/time.nut")
-local { getPlayerName,
-        isPlayerFromPS4,
-        isPlayerFromXboxOne,
-        isPlatformSony,
-        isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+local platformModule = require("scripts/clientState/platform.nut")
 local playerContextMenu = ::require("scripts/user/playerContextMenu.nut")
 local vehiclesModal = require("scripts/unit/vehiclesModal.nut")
 local wwLeaderboardData = require("scripts/worldWar/operations/model/wwLeaderboardData.nut")
@@ -288,7 +284,7 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
       local color = ::my_user_id_str == clanData.changedByUid? "mainPlayerColor" : "activeTextColor"
       text += ::g_string.implode(
         [
-          ::colorize(color, getPlayerName(clanData.changedByNick))
+          ::colorize(color, platformModule.getPlayerName(clanData.changedByNick))
           clanData.getInfoChangeDateText()
         ]
         ::loc("ui/comma")
@@ -702,7 +698,7 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
 
     local rowIdx = 0
     local isConsoleOnlyPlayers = getSeparateLeaderboardPlatformValue()
-    local consoleConst = isPlatformSony? ::TP_PS4 : isPlatformXboxOne? ::TP_XBOXONE : ::TP_UNKNOWN
+    local consoleConst = ::is_platform_ps4? ::TP_PS4 : ::is_platform_xboxone? ::TP_XBOXONE : ::TP_UNKNOWN
 
     foreach(member in membersData) {
       if (isConsoleOnlyPlayers) {
@@ -711,8 +707,8 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
             continue
         }
         else {
-          if ((isPlatformSony && !isPlayerFromPS4(member.nick))
-            || (isPlatformXboxOne && !isPlayerFromXboxOne(member.nick)))
+          if ((::is_platform_ps4 && !platformModule.isPlayerFromPS4(member.nick))
+            || (::is_platform_xboxone && !platformModule.isPlayerFromXboxOne(member.nick)))
             continue
         }
       }

@@ -1,5 +1,4 @@
 local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
-local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 local PS4_CROSSPLAY_OPT_ID = "ps4CrossPlay"
 local PS4_CROSSNETWORK_CHAT_OPT_ID = "ps4CrossNetworkChat"
@@ -21,9 +20,9 @@ local updateCrossNetworkPlayStatus = function()
     return
 
   persistentData.crossNetworkPlayStatus = true
-  if (isPlatformXboxOne)
+  if (::is_platform_xboxone)
     persistentData.crossNetworkPlayStatus = ::check_crossnetwork_play_privilege()
-  else if (isPlatformSony && ::has_feature("PS4CrossNetwork") && ::g_login.isProfileReceived())
+  else if (::is_platform_ps4 && ::has_feature("PS4CrossNetwork") && ::g_login.isProfileReceived())
     persistentData.crossNetworkPlayStatus = ::load_local_account_settings(PS4_CROSSPLAY_OPT_ID, true)
 
   ::broadcastEvent("CrossPlayOptionChanged")
@@ -37,7 +36,7 @@ local isCrossNetworkPlayEnabled = function()
 
 local setCrossNetworkPlayStatus = function(val)
 {
-  if (!isPlatformSony || !::has_feature("PS4CrossNetwork"))
+  if (!::is_platform_ps4 || !::has_feature("PS4CrossNetwork"))
     return
 
   resetCrossPlayStatus()
@@ -51,9 +50,9 @@ local updateCrossNetworkChatStatus = function()
     return
 
   persistentData.crossNetworkChatStatus = XBOX_COMMUNICATIONS_ALLOWED
-  if (isPlatformXboxOne)
+  if (::is_platform_xboxone)
     persistentData.crossNetworkChatStatus = ::check_crossnetwork_communications_permission()
-  else if (isPlatformSony && ::has_feature("PS4CrossNetwork"))
+  else if (::is_platform_ps4 && ::has_feature("PS4CrossNetwork"))
     persistentData.crossNetworkChatStatus = ::load_local_account_settings(PS4_CROSSNETWORK_CHAT_OPT_ID, XBOX_COMMUNICATIONS_ALLOWED)
 }
 
@@ -67,7 +66,7 @@ local isCrossNetworkChatEnabled = @() getCrossNetworkChatStatus() == XBOX_COMMUN
 
 local setCrossNetworkChatStatus = function(boolVal)
 {
-  if (!isPlatformSony || !::has_feature("PS4CrossNetwork"))
+  if (!::is_platform_ps4 || !::has_feature("PS4CrossNetwork"))
     return
 
   local val = boolVal? XBOX_COMMUNICATIONS_ALLOWED : XBOX_COMMUNICATIONS_BLOCKED
@@ -81,10 +80,10 @@ local getTextWithCrossplayIcon = @(addIcon, text) (addIcon? (::loc("icon/cross_p
 local getSeparateLeaderboardPlatformValue = function() {
   if (::has_feature("ConsoleSeparateLeaderboards"))
   {
-    if (isPlatformSony)
+    if (::is_platform_ps4)
       return ::get_gui_option_in_mode(::USEROPT_PS4_ONLY_LEADERBOARD, ::OPTIONS_MODE_GAMEPLAY) == true
 
-    if (isPlatformXboxOne)
+    if (::is_platform_xboxone)
       return !isCrossNetworkPlayEnabled()
   }
 
@@ -94,9 +93,9 @@ local getSeparateLeaderboardPlatformValue = function() {
 local getSeparateLeaderboardPlatformName = function() {
   if (getSeparateLeaderboardPlatformValue())
   {
-    if (isPlatformSony)
+    if (::is_platform_ps4)
       return "ps4"
-    if (isPlatformXboxOne)
+    if (::is_platform_xboxone)
       return "xboxone"
   }
 
@@ -124,7 +123,7 @@ subscriptions.addListenersWithoutEnv({
 return {
   isCrossPlayEnabled = isCrossNetworkPlayEnabled
   setCrossPlayStatus = setCrossNetworkPlayStatus
-  needShowCrossPlayInfo = @() isPlatformXboxOne
+  needShowCrossPlayInfo = @() ::is_platform_xboxone
 
   getCrossNetworkChatStatus = getCrossNetworkChatStatus
   setCrossNetworkChatStatus = setCrossNetworkChatStatus

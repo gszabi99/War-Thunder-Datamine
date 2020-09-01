@@ -3,8 +3,6 @@ local { animBgLoad } = require("scripts/loading/animBg.nut")
 local showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
 local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
-local twoStepModal = require("scripts/login/twoStepModal.nut")
-local exitGame = require("scripts/utils/exitGame.nut")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 
@@ -32,12 +30,14 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
 
   tabFocusArray = [
     "loginbox_username",
-    "loginbox_password"
+    "loginbox_password",
+    "loginbox_code"
   ]
 
   focusArray = [
     "loginbox_username",
     "loginbox_password",
+    "loginbox_code",
     "loginbox_code_remember_this_device",
     "login_boxes_block",
     "sharding_dropright_block",
@@ -317,6 +317,7 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
   {
     local no_dump_login = scene.findObject("loginbox_username").getValue() || ""
     local no_dump_pass = scene.findObject("loginbox_password").getValue() || ""
+    local no_dump_code = scene.findObject("loginbox_code").getValue() || ""
     local isRemoteComp = scene.findObject("loginbox_remote_comp").getValue()
     local code_remember_this_device = scene.findObject("loginbox_code_remember_this_device").getValue()
     local isAutosaveLogin = scene.findObject("loginbox_autosave_login").getValue()
@@ -334,6 +335,7 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
 
     scene.findObject("loginbox_username").setValue(no_dump_login)
     scene.findObject("loginbox_password").setValue(no_dump_pass)
+    scene.findObject("loginbox_code").setValue(no_dump_code)
     scene.findObject("loginbox_remote_comp").setValue(isRemoteComp)
     scene.findObject("loginbox_code_remember_this_device").setValue(code_remember_this_device)
     scene.findObject("loginbox_autosave_login").setValue(isAutosaveLogin)
@@ -348,7 +350,7 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
 
   function requestLogin(no_dump_login)
   {
-    return requestLoginWithCode(no_dump_login, "");
+    return requestLoginWithCode(no_dump_login, check2StepAuthCode? ::get_object_value(scene, "loginbox_code", "") : "");
   }
 
   function requestLoginWithCode(no_dump_login, code)
@@ -357,7 +359,7 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
     ::dagor.debug("Login: check_login_pass")
     return ::check_login_pass(no_dump_login,
                               ::get_object_value(scene, "loginbox_password", ""),
-                              check2StepAuthCode ? "" : stoken, //after trying use stoken it's set to "", but to be sure - use "" for 2stepAuth
+                              check2StepAuthCode? "" : stoken, //after trying use stoken it's set to "", but to be sure - use "" for 2stepAuth
                               code,
                               check2StepAuthCode
                                 ? ::get_object_value(scene, "loginbox_code_remember_this_device", false)
@@ -461,9 +463,10 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
 
     local result = data.status
     local code = data.code
+    local codeInBox = ::get_object_value(scene, "loginbox_code", "");
     local no_dump_login = ::get_object_value(scene, "loginbox_username", "")
 
-    if (result == ::YU2_TIMEOUT && requestGet2stepCodeAtempt-- > 0)
+    if (result == YU2_TIMEOUT && codeInBox == "" && requestGet2stepCodeAtempt-- > 0)
     {
       doLoginDelayed()
       return
@@ -492,6 +495,7 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
 
     was_using_stoken = (stoken != "")
     stoken = ""
+
     switch (result)
     {
       case ::YU2_OK:
@@ -530,17 +534,16 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
       case ::YU2_2STEP_AUTH: //error, received if user not logged, because he have 2step authorization activated
         {
           check2StepAuthCode = true
+          showSceneBtn("authorization_code_block", true)
           showSceneBtn("loginbox_code_remember_this_device", true)
           showSceneBtn("loginbox_remote_comp", false)
-          twoStepModal.open({
-            loginScene           = scene,
-            continueLogin        = continueLogin.bindenv(this)
-          })
           onChangeAutosave()
           guiScene.performDelayed(this, (@(scene) function() {
             if (!::checkObj(scene))
               return
 
+            scene.findObject("loginbox_code").select();
+            currentFocusItem = 2
             if ("get_two_step_code_async2" in getroottable())
               ::get_two_step_code_async2("ProceedGetTwoStepCode")
             else
@@ -552,7 +555,7 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
       case ::YU2_PSN_RESTRICTED:
         {
           msgBox("psn_restricted", ::loc("yn1/login/PSN_RESTRICTED"),
-             [["exit", exitGame ]], "exit")
+             [["exit", ::exit_game ]], "exit")
         }
         break;
 
@@ -563,9 +566,9 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
         ::error_message_box("yn1/connect_error", result, // auth error
         [
           ["recovery", function() {openUrl(::loc("url/recovery"), false, false, "login_wnd")}],
-          ["exit", exitGame],
+          ["exit", ::exit_game],
           ["tryAgain", ::Callback(onLoginErrorTryAgain, this)]
-        ], "tryAgain", { cancel_fn = ::Callback(onLoginErrorTryAgain, this) })
+        ], "tryAgain")
         break
 
       case ::YU2_SSL_CACERT:
@@ -574,9 +577,9 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
         ::error_message_box("yn1/connect_error", result,
         [
           ["disableSSLCheck", ::Callback(function() { setDisableSslCertBox(true) }, this)],
-          ["exit", exitGame],
+          ["exit", ::exit_game],
           ["tryAgain", ::Callback(onLoginErrorTryAgain, this)]
-        ], "tryAgain", { cancel_fn = ::Callback(onLoginErrorTryAgain, this) })
+        ], "tryAgain")
         break
 
       case ::YU2_DOI_INCOMPLETE:
@@ -588,9 +591,9 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
           return;
         ::error_message_box("yn1/connect_error", result,
         [
-          ["exit", exitGame],
+          ["exit", ::exit_game],
           ["tryAgain", ::Callback(onLoginErrorTryAgain, this)]
-        ], "tryAgain", { cancel_fn = ::Callback(onLoginErrorTryAgain, this) })
+        ], "tryAgain")
     }
   }
 
@@ -693,8 +696,14 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
 
   function onDoneEnter()
   {
-    if (!check2StepAuthCode)
-      doLoginWaitJob()
+    if (check2StepAuthCode)
+    {
+      local cObj = scene.findObject("loginbox_code")
+      if (::checkObj(cObj))
+        cObj.select()
+      return
+    }
+    doLoginWaitJob()
   }
 
   function onDoneCode()
@@ -706,9 +715,9 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
   {
     msgBox("login_question_quit_game", ::loc("mainmenu/questionQuitGame"),
       [
-        ["yes", exitGame],
-        ["no", @() null]
-      ], "no", { cancel_fn = @() null})
+        ["yes", ::exit_game],
+        ["no"]
+      ], "no", { cancel_fn = function() {}})
   }
 
   function goBack()

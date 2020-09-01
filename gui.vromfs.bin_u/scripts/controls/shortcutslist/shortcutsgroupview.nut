@@ -1,5 +1,3 @@
-local { isPlatformSony } = require("scripts/clientState/platform.nut")
-
 return [
 //-------------------------------------------------------
   {
@@ -34,7 +32,7 @@ return [
       if (objValue != old)
         ::set_controls_preset("")
     }
-    showFunc = @() ::has_feature("EnableMouse") && isPlatformSony
+    showFunc = @() ::has_feature("EnableMouse") && ::is_platform_ps4
   }
   {
     id = "mouse_smooth"

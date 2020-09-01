@@ -1,7 +1,6 @@
 local controlsOperations = require("scripts/controls/controlsOperations.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { isWheelmenuAxisConfigurable } = require("scripts/wheelmenu/multifuncmenuShared.nut")
-local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 return [
   {
@@ -94,14 +93,14 @@ return [
     type = CONTROL_TYPE.SWITCH_BOX
     optionType = ::USEROPT_WHEEL_CONTROL_SHIP
     onChangeValue = "doControlsGroupChangeDelayed"
-    showFunc = @() (::is_xinput_device() || isPlatformSony || isPlatformXboxOne)
+    showFunc = @() (::is_xinput_device() || ::is_ps4_or_xbox)
   }
   {
     id = "ID_SHIP_SELECTWEAPON_WHEEL_MENU"
     checkGroup = ctrlGroups.SHIP
     checkAssign = false
     showFunc = @() ::g_controls_utils.checkOptionValue(::USEROPT_WHEEL_CONTROL_SHIP, true)
-      && (::is_xinput_device() || isPlatformSony || isPlatformXboxOne)
+      && (::is_xinput_device() || ::is_ps4_or_xbox)
   }
   {
     id = "ID_SHIP_WEAPON_PRIMARY"
@@ -368,7 +367,7 @@ return [
     id = "ID_SHIP_KILLSTREAK_WHEEL_MENU"
     checkGroup = ctrlGroups.SHIP
     checkAssign = false
-    showFunc = @() isPlatformSony || isPlatformXboxOne || ::is_xinput_device()
+    showFunc = @() ::is_ps4_or_xbox || ::is_xinput_device()
   }
   {
     id = "ID_SHIP_ACTION_BAR_ITEM_6"
@@ -421,7 +420,7 @@ return [
     axisDirection = AxisDirection.X
     checkGroup = ctrlGroups.SHIP
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = @() (isPlatformSony || isPlatformXboxOne || ::is_xinput_device()) && isWheelmenuAxisConfigurable()
+    showFunc = @() (::is_ps4_or_xbox || ::is_xinput_device()) && isWheelmenuAxisConfigurable()
     checkAssign = @() ::is_xinput_device() && isWheelmenuAxisConfigurable()
   }
   {
@@ -430,7 +429,7 @@ return [
     axisDirection = AxisDirection.Y
     checkGroup = ctrlGroups.SHIP
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = @() (isPlatformSony || isPlatformXboxOne || ::is_xinput_device()) && isWheelmenuAxisConfigurable()
+    showFunc = @() (::is_ps4_or_xbox || ::is_xinput_device()) && isWheelmenuAxisConfigurable()
     checkAssign = @() ::is_xinput_device() && isWheelmenuAxisConfigurable()
   }
   {

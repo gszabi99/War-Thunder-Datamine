@@ -1,7 +1,4 @@
 local contentStateModule = ::require("scripts/clientState/contentState.nut")
-local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
-local { startLogout } = require("scripts/login/logout.nut")
-local exitGame = require("scripts/utils/exitGame.nut")
 
 ::check_package_full <- function check_package_full(pack, silent = false)
 {
@@ -67,7 +64,7 @@ local exitGame = require("scripts/utils/exitGame.nut")
 
 ::updateContentPacks <- function updateContentPacks()
 {
-  if (isPlatformSony || isPlatformXboxOne)
+  if (::is_ps4_or_xbox)
     return //no launcher there!
 
   if (!::g_login.isLoggedIn())
@@ -195,7 +192,7 @@ local exitGame = require("scripts/utils/exitGame.nut")
 
   local _msg = msg
   local isFullClient = contentStateModule.getConsoleClientDownloadStatusOnStart()
-  if (isPlatformSony || isPlatformXboxOne)
+  if (::is_ps4_or_xbox)
   {
     if (!isFullClient)
       _msg = contentStateModule.getClientDownloadProgressText()
@@ -221,7 +218,7 @@ local exitGame = require("scripts/utils/exitGame.nut")
                    })(cancelFunc, owner)]
                   ]
 
-  if (isPlatformSony)
+  if (::is_platform_ps4)
   {
     if (!isFullClient && contentStateModule.isConsoleClientFullyDownloaded())
     {
@@ -335,10 +332,10 @@ local exitGame = require("scripts/utils/exitGame.nut")
 
 ::restart_to_launcher <- function restart_to_launcher()
 {
-  if (isPlatformSony)
-    return startLogout()
+  if (::is_platform_ps4)
+    return ::gui_start_logout()
   else if (::is_platform_xboxone)
-    return exitGame()
+    return ::exit_game()
   else if (::target_platform == "linux64")
     return ::quit_and_run_cmd("./launcher -silentupdate")
   else if (::target_platform == "macosx")

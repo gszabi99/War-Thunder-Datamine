@@ -2,10 +2,7 @@ local callback = ::require("sqStdLibs/helpers/callback.nut")
 local Callback = callback.Callback
 local battleRating = ::require("scripts/battleRating.nut")
 local selectUnitHandler = require("scripts/slotbar/selectUnitHandler.nut")
-local { getWeaponsStatusName, checkUnitWeapons } = require("scripts/weaponry/weaponryInfo.nut")
-local { getNearestSelectableChildIndex } = require("sqDagui/guiBhv/guiBhvUtils.nut")
-local { getUnitItemStatusText } = require("scripts/unit/unitInfoTexts.nut")
-local { startLogout } = require("scripts/login/logout.nut")
+local { getWeaponsStatusName } = require("scripts/weaponry/weaponryInfo.nut")
 
 ::slotbar_oninit <- false //!!FIX ME: Why this variable is global?
 
@@ -399,7 +396,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
     if (!::g_crews_list.get().len())
     {
       if (::g_login.isLoggedIn() && (::isProductionCircuit() || ::get_cur_circuit_name() == "nightly"))
-        ::scene_msg_box("no_connection", null, ::loc("char/no_connection"), [["ok", startLogout ]], "ok")
+        ::scene_msg_box("no_connection", null, ::loc("char/no_connection"), [["ok", function () {::gui_start_logout()}]], "ok")
       return
     }
 
@@ -1062,7 +1059,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     local curValue = hObj.getValue()
-    local value = getNearestSelectableChildIndex(hObj, curValue, way)
+    local value = ::getNearestSelectableChildIndex(hObj, curValue, way)
     if(value != curValue)
       hObj.setValue(value)
   }
@@ -1356,7 +1353,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
       local airParams = {
         emptyText      = isVisualDisabled ? "" : emptyText,
         crewImage      = "#ui/gameuiskin#slotbar_crew_free_" + ::g_string.slice(countryData.country, 8)
-        status         = getUnitItemStatusText(crewData.status),
+        status         = ::getUnitItemStatusText(crewData.status),
         inactive       = ::show_console_buttons && crewData.status == bit_unit_status.locked && ::is_in_flight(),
         hasActions     = hasActions
         toBattle       = toBattle
@@ -1426,7 +1423,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
         continue
 
       local weaponsStatus = getWeaponsStatusName((slot.crew?.isLocalState ?? true) && ::isUnitUsable(unit)
-        ? checkUnitWeapons(unit)
+        ? ::checkUnitWeapons(unit)
         : UNIT_WEAPONS_READY
       )
       obj.weaponsStatus = weaponsStatus

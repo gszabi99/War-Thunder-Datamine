@@ -811,21 +811,6 @@
             "name": "ammo_body_50_dm"
           },
           {
-            "name": "ammo_body_51_dm"
-          },
-          {
-            "name": "ammo_body_52_dm"
-          },
-          {
-            "name": "ammo_body_53_dm"
-          },
-          {
-            "name": "ammo_body_54_dm"
-          },
-          {
-            "name": "ammo_body_55_dm"
-          },
-          {
             "name": "ammo_body_l_01_dm"
           },
           {
@@ -1615,26 +1600,19 @@
     "tank_crew": {
       "changeTimeMult": 1.0,
       "gunner": {
-        "dmPart": "gunner_dm",
+        "dmPart": "commander_dm",
         "role": "tank_gunner",
-        "substitute": "commander"
+        "substitute": "loader"
       },
       "driver": {
         "dmPart": "driver_dm",
         "role": "driver",
-        "substitute": "commander"
+        "substitute": "loader"
       },
-      "commander": [
-        {
-          "dmPart": "commander_dm"
-        },
-        {
-          "role": "commander"
-        },
-        {
-          "role": "loader"
-        }
-      ]
+      "loader": {
+        "dmPart": "loader_dm",
+        "role": "loader"
+      }
     }
   },
   {

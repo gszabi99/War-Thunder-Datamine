@@ -2,23 +2,40 @@ local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 local time = require("scripts/time.nut")
 local stdMath = require("std/math.nut")
 local { getUnitRoleIcon, getUnitTooltipImage, getFullUnitRoleText,
-  getChanceToMeetText, getShipMaterialTexts, getUnitItemStatusText,
-  getUnitRarity } = require("scripts/unit/unitInfoTexts.nut")
+  getChanceToMeetText, getShipMaterialTexts } = require("scripts/unit/unitInfoTexts.nut")
 local unitStatus = require("scripts/unit/unitStatus.nut")
 local countMeasure = require("scripts/options/optionsMeasureUnits.nut").countMeasure
 local { getCrewPoints } = require("scripts/crew/crewSkills.nut")
 local { getWeaponInfoText } = require("scripts/weaponry/weaponryVisual.nut")
-local { isWeaponAux,
-        getLastWeapon,
-        getLastPrimaryWeapon } = require("scripts/weaponry/weaponryInfo.nut")
+local { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 local { getModificationBulletsGroup } = require("scripts/weaponry/bulletsInfo.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-local { isModResearched,
-        getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
-local { isPlatformSony } = require("scripts/clientState/platform.nut")
+local { isModResearched } = require("scripts/weaponry/modificationInfo.nut")
 
 const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000
+
+global enum bit_unit_status
+{
+  locked      = 1
+  canResearch = 2
+  inResearch  = 4
+  researched  = 8
+  canBuy      = 16
+  owned       = 32
+  mounted     = 64
+  disabled    = 128
+  broken      = 256
+  inRent      = 512
+}
+
+enum unit_rarity
+{
+  reserve,
+  common,
+  premium,
+  gift
+}
 
 global enum CheckFeatureLockAction
 {
@@ -26,41 +43,59 @@ global enum CheckFeatureLockAction
   RESEARCH
 }
 
-local function afterUpdateAirModificators(unit, callback)
+::chances_text <- [
+  { text = "chance_to_met/high",    color = "@chanceHighColor",    brDiff = 0.0 }
+  { text = "chance_to_met/average", color = "@chanceAverageColor", brDiff = 0.34 }
+  { text = "chance_to_met/low",     color = "@chanceLowColor",     brDiff = 0.71 }
+  { text = "chance_to_met/never",   color = "@chanceNeverColor",   brDiff = 1.01 }
+]
+
+::getUnitItemStatusText <- function getUnitItemStatusText(bitStatus, isGroup = false)
 {
-  if (unit.secondaryWeaponMods)
-    unit.secondaryWeaponMods = null //invalidate secondary weapons cache
-  ::broadcastEvent("UnitModsRecount", { unit = unit })
-  if(callback != null)
-    callback()
+  local statusText = ""
+  if (bit_unit_status.locked & bitStatus)
+    statusText = "locked"
+  else if (bit_unit_status.broken & bitStatus)
+    statusText = "broken"
+  else if (bit_unit_status.disabled & bitStatus)
+    statusText = "disabled"
+
+  if (!isGroup && statusText != "")
+    return statusText
+
+  if (bit_unit_status.inResearch & bitStatus)
+    statusText = "research"
+  else if (bit_unit_status.mounted & bitStatus)
+    statusText = "mounted"
+  else if ((bit_unit_status.owned & bitStatus) || (bit_unit_status.inRent & bitStatus))
+    statusText = "owned"
+  else if (bit_unit_status.canBuy & bitStatus)
+    statusText = "canBuy"
+  else if (bit_unit_status.researched & bitStatus)
+    statusText = "researched"
+  else if (bit_unit_status.canResearch & bitStatus)
+    statusText = "canResearch"
+  return statusText
 }
 
-local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
+::isAircraft <- function isAircraft(unit)
 {
-  if (!::checkObj(obj) || !maxExp)
-    return
+  return get_es_unit_type(unit) == ::ES_UNIT_TYPE_AIRCRAFT
+}
 
-  local guiScene = obj.getScene()
-  if (!guiScene)
-    return
+::isShip <- function isShip(unit)
+{
+  return get_es_unit_type(unit) == ::ES_UNIT_TYPE_SHIP
+}
 
-  guiScene.replaceContent(obj, "gui/countryExpItem.blk", this)
+::isTank <- function isTank(unit)
+{
+  return get_es_unit_type(unit) == ::ES_UNIT_TYPE_TANK
+}
 
-  local barObj = obj.findObject("expProgressOld")
-  if (::checkObj(barObj))
-  {
-    barObj.show(true)
-    barObj.setValue(1000.0 * curExp / maxExp)
-    barObj.paused = isPaused ? "yes" : "no"
-  }
-
-  barObj = obj.findObject("expProgress")
-  if (::checkObj(barObj))
-  {
-    barObj.show(true)
-    barObj.setValue(1000.0 * newExp / maxExp)
-    barObj.paused = isPaused ? "yes" : "no"
-  }
+::is_submarine <- function is_submarine(unit)
+{
+  return get_es_unit_type(unit) == ::ES_UNIT_TYPE_SHIP && ::isInArray("submarine", ::getTblValue("tags", unit, []))
 }
 
 ::get_es_unit_type <- function get_es_unit_type(unit)
@@ -81,9 +116,22 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   return false
 }
 
+::getUnitRarity <- function getUnitRarity(unit)
+{
+  if (::isUnitDefault(unit))
+    return "reserve"
+  if (::isUnitSpecial(unit))
+    return "premium"
+  if (::isUnitGift(unit))
+    return "gift"
+  if (unit.isSquadronVehicle())
+    return "squadron"
+  return "common"
+}
+
 ::isUnitsEraUnlocked <- function isUnitsEraUnlocked(unit)
 {
-  return ::is_era_available(::getUnitCountry(unit), unit?.rank ?? -1, ::get_es_unit_type(unit))
+  return ::is_era_available(::getUnitCountry(unit), ::getUnitRank(unit), ::get_es_unit_type(unit))
 }
 
 ::getUnitsNeedBuyToOpenNextInEra <- function getUnitsNeedBuyToOpenNextInEra(countryId, unitType, rank, ranksBlk = null)
@@ -100,6 +148,13 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
     return needToOpen
 
   return -1
+}
+
+::getUnitRank <- function getUnitRank(unit)
+{
+  if (!unit)
+    return -1
+  return unit.rank
 }
 
 ::getUnitCountry <- function getUnitCountry(unit)
@@ -122,6 +177,11 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
 ::get_unit_country_icon <- function get_unit_country_icon(unit, needOriginCountry = false)
 {
   return ::get_country_icon(needOriginCountry ? unit.getOriginCountry() : unit.shopCountry)
+}
+
+::checkAirShopReq <- function checkAirShopReq(air)
+{
+  return ::getTblValue("shopReq", air, true)
 }
 
 ::isUnitGroup <- function isUnitGroup(unit)
@@ -200,6 +260,12 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
     if (name.tolower() == unitName)
       return unit
   return null
+}
+
+::getCountryResearchUnit <- function getCountryResearchUnit(countryName, unitType)
+{
+  local unitName = ::shop_get_researchable_unit_name(countryName, unitType)
+  return ::getAircraftByName(unitName)
 }
 
 ::getUnitName <- function getUnitName(unit, shopName = true)
@@ -339,9 +405,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   if (canBuyNotResearchedUnit)
   {
     local blk = ::DataBlock()
-    blk["unit"] = unit.name
-    blk["cost"] = unitCost.wp
-    blk["costGold"] = unitCost.gold
+    blk.addStr("unit", unit.name)
 
     taskId = ::char_send_blk("cln_buy_not_researched_clans_unit", blk)
   }
@@ -361,13 +425,13 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
         requireLocalization = ["unitName", "country"]
         unitNameId = unit.name
         unitName = unit.name + "_shop"
-        rank = ::get_roman_numeral(unit?.rank ?? -1)
+        rank = ::get_roman_numeral(::getUnitRank(unit))
         country = ::getUnitCountry(unit)
         link = ::format(::loc("url/wiki_objects"), unit.name)
       }
 
       local postFeeds = ::FACEBOOK_POST_WALL_MESSAGE? bit_activity.FACEBOOK : bit_activity.NONE
-      if (isPlatformSony)
+      if (::is_platform_ps4)
         postFeeds = postFeeds == bit_activity.NONE? bit_activity.PS4_ACTIVITY_FEED : bit_activity.ALL
 
       ::prepareMessageForWallPostAndSend(config, custConfig, postFeeds)
@@ -466,6 +530,19 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   return ::show_cant_buy_or_research_unit_msgbox(unit)
 }
 
+/**
+ * Used in shop tooltip display logic.
+ */
+::need_buy_prev_unit <- function need_buy_prev_unit(unit)
+{
+  if (::isUnitBought(unit) || ::isUnitGift(unit) || unit?.isSquadronVehicle?())
+    return false
+  if (!::isUnitSpecial(unit) && !::isUnitsEraUnlocked(unit))
+    return false
+  if (!::isPrevUnitBought(unit))
+    return true
+  return false
+}
 
 ::getCantBuyUnitReason <- function getCantBuyUnitReason(unit, isShopTooltip = false)
 {
@@ -481,13 +558,13 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   {
     local countryId = ::getUnitCountry(unit)
     local unitType = ::get_es_unit_type(unit)
-    local rank = unit?.rank ?? -1
+    local rank = ::getUnitRank(unit)
 
     for (local prevRank = rank - 1; prevRank > 0; prevRank--)
     {
       local unitsCount = 0
       foreach (u in ::all_units)
-        if (::isUnitBought(u) && (u?.rank ?? -1) == prevRank && ::getUnitCountry(u) == countryId && ::get_es_unit_type(u) == unitType)
+        if (::isUnitBought(u) && ::getUnitRank(u) == prevRank && ::getUnitCountry(u) == countryId && ::get_es_unit_type(u) == unitType)
           unitsCount++
       local unitsNeed = ::getUnitsNeedBuyToOpenNextInEra(countryId, unitType, prevRank)
       local unitsLeft = max(0, unitsNeed - unitsCount)
@@ -573,6 +650,39 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   return false
 }
 
+::getMaxRankUnboughtUnitByCountry <- function getMaxRankUnboughtUnitByCountry(country, unitType)
+{
+  local unit = null
+  foreach (newUnit in ::all_units)
+    if (!country || country == ::getUnitCountry(newUnit))
+      if (::getTblValue("rank", newUnit, 0) > ::getTblValue("rank", unit, 0))
+        if (unitType == ::get_es_unit_type(newUnit)
+            && !::isUnitSpecial(newUnit)
+            && ::canBuyUnit(newUnit)
+            && ::isPrevUnitBought(newUnit))
+          unit = newUnit
+  return unit
+}
+
+::getMaxRankResearchingUnitByCountry <- function getMaxRankResearchingUnitByCountry(country, unitType)
+{
+  local unit = null
+  foreach (newUnit in ::all_units)
+    if (country == ::getUnitCountry(newUnit))
+      if (unitType == ::get_es_unit_type(newUnit) && ::canResearchUnit(newUnit))
+        unit = (::getTblValue("rank", newUnit, 0) > ::getTblValue("rank", unit, 0))? newUnit : unit
+  return unit
+}
+
+::_afterUpdateAirModificators <- function _afterUpdateAirModificators(unit, callback)
+{
+  if (unit.secondaryWeaponMods)
+    unit.secondaryWeaponMods = null //invalidate secondary weapons cache
+  ::broadcastEvent("UnitModsRecount", { unit = unit })
+  if(callback != null)
+    callback()
+}
+
 //return true when modificators already valid.
 ::check_unit_mods_update <- function check_unit_mods_update(air, callBack = null, forceUpdate = false)
 {
@@ -593,7 +703,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   else if (!forceUpdate && air.modificators)
     return true
 
-  if (air.isShip())
+  if (::isShip(air))
   {
     air.modificatorsRequestTime = ::dagor.getCurTime()
     calculate_ship_parameters_async(air.name, this, (@(air, callBack) function(effect, ...) {
@@ -609,12 +719,12 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
           air.modificatorsBase = air.modificators
       }
 
-      afterUpdateAirModificators(air, callBack)
+      ::_afterUpdateAirModificators(air, callBack)
     })(air, callBack))
     return false
   }
 
-  if (air.isTank())
+  if (isTank(air))
   {
     air.modificatorsRequestTime = ::dagor.getCurTime()
     calculate_tank_parameters_async(air.name, this, (@(air, callBack) function(effect, ...) {
@@ -629,7 +739,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
         if (!air.modificatorsBase) // TODO: Needs tank params _without_ user progress here.
           air.modificatorsBase = air.modificators
       }
-      afterUpdateAirModificators(air, callBack)
+      ::_afterUpdateAirModificators(air, callBack)
     })(air, callBack))
     return false
   }
@@ -650,7 +760,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
       if (::isUnitSpecial(air) && !::isUnitUsable(air))
         air.modificators = effect.max
     }
-    afterUpdateAirModificators(air, callBack)
+    ::_afterUpdateAirModificators(air, callBack)
   })(air, callBack))
   return false
 }
@@ -663,7 +773,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
 
   if (air.name == ::hangar_get_current_unit_name() && modName)
   {
-    local modsList = modName == "" ? air.modifications : [ getModificationByName(air, modName) ]
+    local modsList = modName == "" ? air.modifications : [ ::getModificationByName(air, modName) ]
     foreach (mod in modsList)
     {
       if (!::getTblValue("requiresModelReload", mod, false))
@@ -720,7 +830,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
     case ::ES_UNIT_TYPE_SHIP:
 
       local torpedoMod = "torpedoes_movement_mode"
-      local mod = getModificationByName(unit, torpedoMod)
+      local mod = ::getModificationByName(unit, torpedoMod)
       if (!mod || mod?.effects)
         return true
       ::calculate_mod_or_weapon_effect(unit.name, torpedoMod, true, this, function(effect, ...) {
@@ -833,6 +943,14 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   }
 }
 
+::has_platform_from_blk_str <- function has_platform_from_blk_str(blk, fieldName, defValue = false, separator = "; ")
+{
+  local listStr = blk?[fieldName]
+  if (!::u.isString(listStr))
+    return defValue
+  return ::isInArray(::target_platform, ::split(listStr, separator))
+}
+
 ::getPrevUnit <- function getPrevUnit(unit)
 {
   return "reqAir" in unit ? ::getAircraftByName(unit.reqAir) : null
@@ -869,12 +987,30 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   return false
 }
 
+::getNextUnits <- function getNextUnits(unit)
+{
+  local res = []
+  foreach (item in ::all_units)
+    if ("reqAir" in item && unit.name == item.reqAir)
+      res.append(item)
+  return res
+}
+
+::setOrClearNextUnitToResearch <- function setOrClearNextUnitToResearch(unit, country, uType) //return -1 when clear prev
+{
+  if (unit)
+    return ::shop_set_researchable_unit(unit.name, uType)
+
+  ::shop_reset_researchable_unit(country, uType)
+  return -1
+}
+
 ::getMinBestLevelingRank <- function getMinBestLevelingRank(unit)
 {
   if (!unit)
     return -1
 
-  local unitRank = unit?.rank ?? -1
+  local unitRank = ::getUnitRank(unit)
   if (::isUnitSpecial(unit) || unitRank == 1)
     return 1
   local result = unitRank - ::getHighestRankDiffNoPenalty(true)
@@ -886,7 +1022,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   if (!unit)
     return -1
 
-  local unitRank = unit?.rank ?? -1
+  local unitRank = ::getUnitRank(unit)
   if (unitRank == ::max_country_rank)
     return ::max_country_rank
   local result = unitRank + ::getHighestRankDiffNoPenalty()
@@ -1078,8 +1214,8 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   }
 
   local bitStatus = unitStatus.getBitStatus(air, params)
-  holderObj.shopStat = getUnitItemStatusText(bitStatus, false)
-  holderObj.unitRarity = getUnitRarity(air)
+  holderObj.shopStat = ::getUnitItemStatusText(bitStatus, false)
+  holderObj.unitRarity = ::getUnitRarity(air)
 
   local isInFlight = ::is_in_flight()
 
@@ -1145,7 +1281,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
         : ::getTblValue("researchExpInvest", params, 0)
       local isResearching = ::isUnitInResearch(air) && (!isSquadronVehicle || isInClan || expInvest > 0)
 
-      fillProgressBar(obj,
+      ::fill_progress_bar(obj,
         isSquadronVehicle && isResearching ? expCur : expCur - expInvest,
         isSquadronVehicle && isResearching ? expCur + expInvest : expCur,
         expTotal, !isResearching)
@@ -1378,7 +1514,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
     thrustToWeightRatioObject.show(false)
 
   local modificators = showLocalState ? "modificators" : "modificatorsBase"
-  if (air.isTank() && air[modificators])
+  if (isTank(air) && air[modificators])
   {
     local currentParams = air[modificators][difficulty.crewSkillName]
     local horsePowers = currentParams.horsePowers;
@@ -1696,6 +1832,8 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
 
   if (isInFlight)
   {
+    local disabledUnitByBRText = crew && !::is_crew_available_in_session(crew.idInCountry, false)
+      && ::SessionLobby.getNotAvailableUnitByBRText(air)
     local missionRules = ::g_mis_custom_state.getCurMissionRules()
     if (missionRules.isWorldWarUnit(air.name))
     {
@@ -1704,9 +1842,6 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
     }
     if (missionRules.hasCustomUnitRespawns())
     {
-      local disabledUnitByBRText = crew && !::is_crew_available_in_session(crew.idInCountry, false)
-        && ::SessionLobby.getNotAvailableUnitByBRText(air)
-
       local respawnsleft = missionRules.getUnitLeftRespawns(air)
       if (respawnsleft == 0 || (respawnsleft>0 && !disabledUnitByBRText))
       {
@@ -1721,13 +1856,9 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
           local color = respawnsleft ? "@userlogColoredText" : "@warningTextColor"
           addInfoTextsList.append(::colorize(color, respText))
         }
-      }
-      else if (disabledUnitByBRText)
-        addInfoTextsList.append(::colorize("badTextColor", disabledUnitByBRText))
+      } else if (disabledUnitByBRText)
+          addInfoTextsList.append(::colorize("badTextColor", disabledUnitByBRText))
     }
-
-    if (!isOwn)
-      addInfoTextsList.append(::colorize("warningTextColor", ::loc("mainmenu/noLeaderboardProgress")))
   }
 
   local warbondId = ::getTblValue("wbId", params)
@@ -1831,7 +1962,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
 
       local unitNest = holderObj.findObject("prev_unit_nest")
       if (::checkObj(unitNest) && (!::isPrevUnitResearched(air) || !::isPrevUnitBought(air)) &&
-        ::is_era_available(air.shopCountry, air?.rank ?? -1, unitType))
+        ::is_era_available(air.shopCountry, ::getUnitRank(air), unitType))
       {
         local prevUnit = ::getPrevUnit(air)
         local unitBlk = ::build_aircraft_item(prevUnit.name, prevUnit)
@@ -1887,8 +2018,8 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   obj = holderObj.findObject("weaponsInfo")
   if (obj) obj.setValue(weaponsInfoText)
 
-  local lastPrimaryWeaponName = showLocalState ? getLastPrimaryWeapon(air) : ""
-  local lastPrimaryWeapon = getModificationByName(air, lastPrimaryWeaponName)
+  local lastPrimaryWeaponName = showLocalState ? ::get_last_primary_weapon(air) : ""
+  local lastPrimaryWeapon = ::getModificationByName(air, lastPrimaryWeaponName)
   local massPerSecValue = ::getTblValue("mass_per_sec_diff", lastPrimaryWeapon, 0)
 
   local weaponIndex = -1
@@ -1899,7 +2030,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
     weaponIndex = 0
     foreach(idx, weapon in air.weapons)
     {
-      if (isWeaponAux(weapon))
+      if (::isWeaponAux(weapon))
         continue
       wPresets++
       if (lastWeapon == weapon.name && "mass_per_sec" in weapon)
@@ -1965,6 +2096,42 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   }
 }
 
+::get_max_era_available_by_country <- function get_max_era_available_by_country(country, unitType = ::ES_UNIT_TYPE_INVALID)
+{
+  for(local era = 1; era <= ::max_country_rank; era++)
+    if (!::is_era_available(country, era, unitType))
+      return (era - 1)
+  return ::max_country_rank
+}
+
+::fill_progress_bar <- function fill_progress_bar(obj, curExp, newExp, maxExp, isPaused = false)
+{
+  if (!::checkObj(obj) || !maxExp)
+    return
+
+  local guiScene = obj.getScene()
+  if (!guiScene)
+    return
+
+  guiScene.replaceContent(obj, "gui/countryExpItem.blk", this)
+
+  local barObj = obj.findObject("expProgressOld")
+  if (::checkObj(barObj))
+  {
+    barObj.show(true)
+    barObj.setValue(1000.0 * curExp / maxExp)
+    barObj.paused = isPaused ? "yes" : "no"
+  }
+
+  barObj = obj.findObject("expProgress")
+  if (::checkObj(barObj))
+  {
+    barObj.show(true)
+    barObj.setValue(1000.0 * newExp / maxExp)
+    barObj.paused = isPaused ? "yes" : "no"
+  }
+}
+
 ::__types_for_coutries <- null //for avoid recalculations
 ::get_unit_types_in_countries <- function get_unit_types_in_countries()
 {
@@ -1993,6 +2160,25 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   return ::__types_for_coutries
 }
 
+::get_countries_by_unit_type <- function get_countries_by_unit_type(unitType)
+{
+  local res = []
+  foreach (countryName, countryData in ::get_unit_types_in_countries())
+    if (::getTblValue(unitType, countryData))
+      res.append(countryName)
+
+  return res
+}
+
+::is_country_has_any_es_unit_type <- function is_country_has_any_es_unit_type(country, esUnitTypeMask)
+{
+  local typesList = ::getTblValue(country, ::get_unit_types_in_countries(), {})
+  foreach(esUnitType, isInCountry in typesList)
+    if (isInCountry && (esUnitTypeMask & (1 << esUnitType)))
+      return true
+  return false
+}
+
 ::get_player_cur_unit <- function get_player_cur_unit()
 {
   local unit = null
@@ -2008,6 +2194,17 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   if (::hangar_get_loaded_unit_name() == "")
     return def
   return ::hangar_is_high_quality()
+}
+
+::getNotResearchedUnitByFeature <- function getNotResearchedUnitByFeature(country = null, unitType = null)
+{
+  foreach(unit in ::all_units)
+    if (    (!country || ::getUnitCountry(unit) == country)
+         && (unitType == null || ::get_es_unit_type(unit) == unitType)
+         && ::isUnitFeatureLocked(unit)
+       )
+      return unit
+  return null
 }
 
 ::get_units_list <- function get_units_list(filterFunc)

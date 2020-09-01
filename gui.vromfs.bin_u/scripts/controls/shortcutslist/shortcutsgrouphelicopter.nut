@@ -2,7 +2,6 @@ local globalEnv = require_native("globalEnv")
 local controlsOperations = require("scripts/controls/controlsOperations.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { isWheelmenuAxisConfigurable } = require("scripts/wheelmenu/multifuncmenuShared.nut")
-local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 return [
   {
@@ -199,18 +198,6 @@ return [
     type = CONTROL_TYPE.AXIS
   }
   {
-    id = "ID_FIRE_PRIMARY_HELICOPTER"
-    showFunc = @() ::has_feature("WeaponCycleTrigger")
-    checkGroup = ctrlGroups.HELICOPTER
-    checkAssign = false
-  }
-  {
-    id = "ID_FIRE_SECONDARY_HELICOPTER"
-    showFunc = @() ::has_feature("WeaponCycleTrigger")
-    checkGroup = ctrlGroups.HELICOPTER
-    checkAssign = false
-  }
-  {
     id = "ID_BOMBS_HELICOPTER"
     checkGroup = ctrlGroups.HELICOPTER
     needShowInHelp = true
@@ -238,21 +225,6 @@ return [
   {
     id = "ID_AGM_LOCK_HELICOPTER"
     checkGroup = ctrlGroups.HELICOPTER
-    checkAssign = false
-  }
-  {
-    id = "ID_EXIT_SHOOTING_CYCLE_MODE_HELICOPTER"
-    showFunc = @() ::has_feature("WeaponCycleTrigger")
-    checkAssign = false
-  }
-  {
-    id = "ID_SWITCH_SHOOTING_CYCLE_PRIMARY_HELICOPTER"
-    showFunc = @() ::has_feature("WeaponCycleTrigger")
-    checkAssign = false
-  }
-  {
-    id = "ID_SWITCH_SHOOTING_CYCLE_SECONDARY_HELICOPTER"
-    showFunc = @() ::has_feature("WeaponCycleTrigger")
     checkAssign = false
   }
   {
@@ -353,16 +325,6 @@ return [
     checkGroup = ctrlGroups.HELICOPTER
     checkAssign = false
   }
-  {
-    id = "ID_TOGGLE_CANNONS_AND_ROCKETS_BALLISTIC_COMPUTER_HELICOPTER"
-    checkAssign = false
-    showFunc = @() ::has_feature("ConstantlyComputedWeaponSight")
-  }
-  {
-    id = "ID_SWITCH_COCKPIT_SIGHT_MODE_HELICOPTER"
-    checkAssign = false
-    showFunc = @() ::has_feature("ConstantlyComputedWeaponSight")
-  }
 //-------------------------------------------------------
   {
     id = "ID_HELICOPTER_VIEW_HEADER"
@@ -425,14 +387,14 @@ return [
     id = "ID_AIM_CAMERA_HELICOPTER"
     checkGroup = ctrlGroups.HELICOPTER
     checkAssign = false
-    condition = @() isPlatformSony || isPlatformXboxOne
+    condition = @() ::is_ps4_or_xbox
   }
   {
     id = "target_camera_helicopter"
     type = CONTROL_TYPE.AXIS
     checkGroup = ctrlGroups.HELICOPTER
     checkAssign = false
-    condition = @() isPlatformSony || isPlatformXboxOne
+    condition = @() ::is_ps4_or_xbox
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
   }
   {
@@ -619,6 +581,16 @@ return [
     checkAssign = false
   }
   {
+    id = "ID_TOGGLE_CANNONS_AND_ROCKETS_BALLISTIC_COMPUTER_HELICOPTER"
+    checkAssign = false
+    showFunc = @() ::has_feature("ConstantlyComputedWeaponSight")
+  }
+  {
+    id = "ID_SWITCH_COCKPIT_SIGHT_MODE_HELICOPTER"
+    checkAssign = false
+    showFunc = @() ::has_feature("ConstantlyComputedWeaponSight")
+  }
+  {
     id = "ID_REQUEST_DETECT_ALLY_HELI"
     checkGroup = ctrlGroups.HELICOPTER
     checkAssign = false
@@ -629,7 +601,7 @@ return [
     axisDirection = AxisDirection.X
     checkGroup = ctrlGroups.HELICOPTER
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = @() (isPlatformSony || isPlatformXboxOne || ::is_xinput_device()) && isWheelmenuAxisConfigurable()
+    showFunc = @() (::is_ps4_or_xbox || ::is_xinput_device()) && isWheelmenuAxisConfigurable()
     checkAssign = @() ::is_xinput_device() && isWheelmenuAxisConfigurable()
   }
   {
@@ -638,7 +610,7 @@ return [
     axisDirection = AxisDirection.Y
     checkGroup = ctrlGroups.HELICOPTER
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = @() (isPlatformSony || isPlatformXboxOne || ::is_xinput_device()) && isWheelmenuAxisConfigurable()
+    showFunc = @() (::is_ps4_or_xbox || ::is_xinput_device()) && isWheelmenuAxisConfigurable()
     checkAssign = @() ::is_xinput_device() && isWheelmenuAxisConfigurable()
   }
 //-------------------------------------------------------

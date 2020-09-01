@@ -1,5 +1,3 @@
-local { isPlatformSony } = require("scripts/clientState/platform.nut")
-
 class ::gui_handlers.BenchmarkResultModal extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
@@ -29,7 +27,7 @@ class ::gui_handlers.BenchmarkResultModal extends ::gui_handlers.BaseGuiHandlerW
       guiScene.replaceContentFromText("results_list", resultTableData, resultTableData.len(), this)
     }
 
-    if (isPlatformSony)
+    if (::is_platform_ps4)
       ::d3d_enable_vsync(::ps4_vsync_enabled)
   }
 

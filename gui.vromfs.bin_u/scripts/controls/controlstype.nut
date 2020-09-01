@@ -1,6 +1,5 @@
 local globalEnv = require_native("globalEnv")
 local avatars = ::require("scripts/user/avatars.nut")
-local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 ::gui_start_controls_type_choice <- function gui_start_controls_type_choice(onlyDevicesChoice = true)
 {
@@ -132,7 +131,7 @@ class ::gui_handlers.ControlType extends ::gui_handlers.BaseGuiHandlerWT
     preset = ::g_controls_presets.parsePresetName(ct_preset)
   else if (ct_id == "ct_mouse")
   {
-    if (isPlatformSony)
+    if (::is_platform_ps4)
       preset = ::g_controls_presets.parsePresetName("dualshock4")
     else if (::is_platform_xboxone)
       preset = ::g_controls_presets.parsePresetName("xboxone_ma")
@@ -142,7 +141,7 @@ class ::gui_handlers.ControlType extends ::gui_handlers.BaseGuiHandlerWT
   preset = ::g_controls_presets.getHighestVersionPreset(preset)
   ::apply_joy_preset_xchange(preset.fileName)
 
-  if (isPlatformSony || isPlatformXboxOne)
+  if (::is_ps4_or_xbox)
   {
     local presetMode = ::get_option(::USEROPT_CONTROLS_PRESET)
     ct_preset = ::g_controls_presets.parsePresetName(presetMode.values[presetMode.value])
