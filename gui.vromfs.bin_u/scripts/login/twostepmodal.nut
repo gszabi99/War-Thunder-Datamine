@@ -1,7 +1,13 @@
 local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
 local time = require("scripts/time.nut")
 local statsd = require("statsd")
-local exitGame = require("scripts/utils/exitGame.nut")
+
+local authDataByTypes = {
+  mail = {text = "#mainmenu/2step/confirmMail", img = "#ui/images/two_step_email.tga"}
+  ga = {text = "#mainmenu/2step/confirmGA", img = "#ui/images/two_step_phone_ga.tga"}
+  gp = {text = "#mainmenu/2step/confirmGP", img = "#ui/images/two_step_phone_gp.tga"}
+  unknown = {text = "#mainmenu/2step/confirmUnknown", img = ""}
+}
 
 class ::gui_handlers.twoStepModal extends ::BaseGuiHandler
 {
@@ -15,21 +21,16 @@ class ::gui_handlers.twoStepModal extends ::BaseGuiHandler
 
   function getSceneTplView()
   {
-    local isMailAuth = ::is_has_email_two_step_type_sync()
-    local isGAAuth = ::is_has_wtassistant_two_step_type_sync()
-    local isGPAuth = ::is_has_gaijin_pass_two_step_type_sync()
-
-    local verStatusText = isGPAuth ?
-      "#mainmenu/2step/confirmGP" : isGAAuth ?
-        "#mainmenu/2step/confirmGA" : isMailAuth ?
-          "#mainmenu/2step/confirmMail" : "#mainmenu/2step/confirmUnknown"
-    local authTypeImg = isGPAuth ? "#ui/gameuiskin/two_step_phone_gp" : isMailAuth ?
-      "#ui/gameuiskin/two_step_email" : "#ui/gameuiskin/two_step_phone_ga"
+    local isExt2StepAllowed = ::is_external_app_2step_allowed()
+    local data = !isExt2StepAllowed && ::is_has_email_two_step_type_sync() ? authDataByTypes.mail
+      : isExt2StepAllowed && ::is_has_wtassistant_two_step_type_sync() ? authDataByTypes.ga
+      : isExt2StepAllowed && ::is_has_gaijin_pass_two_step_type_sync() ? authDataByTypes.gp
+      : authDataByTypes.unknown
 
     return {
-      verStatusText = verStatusText
-      authTypeImg = authTypeImg
-      isMailAuth = isMailAuth
+      verStatusText = data.text
+      authTypeImg = data.img
+      isShowRestoreLink = isExt2StepAllowed
       isRememberDevice = ::get_object_value(loginScene,"loginbox_code_remember_this_device", false)
       timerWidth = daguiFonts.getStringWidthPx("99:99:99", "fontNormal", guiScene)
     }
@@ -48,7 +49,7 @@ class ::gui_handlers.twoStepModal extends ::BaseGuiHandler
       return
 
     currTime = ::Timer(timerObj, 1, function(){
-      timerObj.setValue(time.buildTimeStr(utcTime++))
+      timerObj.setValue(time.buildTimeStr(utcTime++, true))
     }, this, true)
   }
 
@@ -75,9 +76,11 @@ class ::gui_handlers.twoStepModal extends ::BaseGuiHandler
     local errorText = "".concat(::loc("mainmenu/2step/wrongCode"), ::loc("ui/colon"))
     local utcTime = ::get_charserver_time_sec()
     ::Timer(txtObj, 1, function(){
-      txtObj.setValue(::colorize("badTextColor", "".concat(errorText, time.buildTimeStr(utcTime++))))
+      txtObj.setValue(::colorize("badTextColor", "".concat(errorText,
+        time.buildTimeStr(utcTime++, true))))
     }, this, true)
 
+    currTime = null
     setCurrTime(utcTime)
     restoreFocus()
   }
@@ -98,7 +101,7 @@ class ::gui_handlers.twoStepModal extends ::BaseGuiHandler
       default:
         ::error_message_box("yn1/connect_error", result,
         [
-          ["exit", exitGame],
+          ["exit", ::exit_game],
           ["tryAgain", null]
         ], "tryAgain", { cancel_fn = function() {}})
     }

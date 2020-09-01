@@ -5,7 +5,7 @@ root {
     pos:t='0.5pw-0.5w, 1@minYposWindow + 0.1*(sh - 1@minYposWindow - h)'
     position:t='absolute'
     class:t='wndNav'
-    background-image:t='#ui/gameuiskin/two_step_form_bg'
+    background-image:t='#ui/images/two_step_form_bg'
     background-color:t='@white'
     css-hier-invalidate:t='yes'
     total-input-transparent:t='yes'

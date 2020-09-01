@@ -2111,7 +2111,7 @@
         "mast_02_dm": {
           "hp": 303.0
         },
-        "antenna_target_location_01_dm": {
+        "radar_01_dm": {
           "armorThickness": 5.0,
           "dmgState": 0.0,
           "hp": 226.0
@@ -2760,11 +2760,6 @@
   {
     "commonWeapons": [
       {
-        "animatedBones": {
-          "node": "antenna_target_location_01"
-        }
-      },
-      {
         "Weapon": {
           "trigger": "gunner0",
           "triggerGroup": "primary",
@@ -2920,24 +2915,6 @@
         }
       }
     ]
-  },
-  {
-    "sensors": {
-      "sensor": {
-        "blk": "gameData/sensors/naval/naval_nav_radar.blk",
-        "designationFromBody": true,
-        "designationTurretIndex": 1,
-        "dmPart": "antenna_target_location_01_dm"
-      }
-    }
-  },
-  {
-    "radarAnimations": {
-      "anim": {
-        "radarAnimVar": "radar_target_yaw_rotate",
-        "animatedRadarIdx": 0
-      }
-    }
   },
   {
     "modifications": {

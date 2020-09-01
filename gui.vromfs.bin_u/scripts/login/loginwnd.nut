@@ -452,7 +452,7 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
     }
   }
 
-  function proceedGetTwoStepCode(data)
+  function onEventProceedGetTwoStepCode(data)
   {
     if (!isValid() || isLoginRequestInprogress)
     {
@@ -541,7 +541,10 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
             if (!::checkObj(scene))
               return
 
-            ::get_two_step_code_async(this, proceedGetTwoStepCode)
+            if ("get_two_step_code_async2" in getroottable())
+              ::get_two_step_code_async2("ProceedGetTwoStepCode")
+            else
+              ::get_two_step_code_async(this, onEventProceedGetTwoStepCode)
           })(scene))
         }
         break
