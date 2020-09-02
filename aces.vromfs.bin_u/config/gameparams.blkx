@@ -69,6 +69,9 @@
   "squadTargetIndicatorRandomRange": [15.0,500.0],
   "rocketIndicatorColdRocketTimeOut": 2.0,
   "rocketIndicatorShowFriendly": false,
+  "rocketIndicatorShowUnguided": false,
+  "rocketIndicatorLosCheck": true,
+  "deltaTimeMultCCIP": 1.0,
   "preciseForestall": false,
   "bombDropDownOnRendInstCollision": false,
   "criticalHillAngle": 25.0,
@@ -77,6 +80,7 @@
   "decalScaleRange": [0.1,3.0],
   "decalScaleRangeShip": [0.1,5.0],
   "timeBeforeEngineNoticeFire": 2.0,
+  "enableImpostorTextureManager": false,
   "teleScale": 0.03,
   "minSkyAmbientLighting": [0.00954,0.012756,0.026677],
   "propeller_side_angle": 0.1,
@@ -162,6 +166,7 @@
   "bailoutHoldTime": 3.0,
   "bailoutHoldTimeAtExitZone": 1.5,
   "enableHeicopterTargetLock3dPerson": true,
+  "aimCorrectionAngleMax": 5.0,
   "rocketShakeCamera": 1.0,
   "gunShakeCamera": 0.02,
   "cannonShakeCamera": 0.4,
@@ -199,9 +204,6 @@
   "shipAiTargetMaxDist": 25000.0,
   "timeStayOnInGameForDisconnected": 300.0,
   "useFullSectionsOnShips": false,
-  "impulseBasedAircraftToSceneCollision": false,
-  "impulseBasedAircraftToSceneCollisionWithCollisionObjects": true,
-  "impulseBasedAircraftToUnitCollision": false,
   "tankEngineHeatingSpd": [5.0,-1.0],
   "batteryDischargeInactivityTime": 60.0,
   "batteryDischargeActivityTime": 30.0,
@@ -2001,7 +2003,7 @@
         "tankInvisibleForAirplaneDistance": 5000.0,
         "shipInvisibleForAirplaneDistance": 5000.0,
         "hudTankDetectedByAircraft": true,
-        "hudTankHideForestallForNonAa": false,
+        "hudTankHideForestall": false,
         "lastOffenderTimer": 12.0,
         "seriousOffenderTimer": 30.0,
         "tankGunnerCameraFromSight": false,
@@ -2065,7 +2067,7 @@
         "shipInvisibleForAirplaneDistance": 6000.0,
         "maxDetectionDistByTeam": 8000.0,
         "hudTankDetectedByAircraft": true,
-        "hudTankHideForestallForNonAa": true,
+        "hudTankHideForestall": true,
         "lastOffenderTimer": 15.0,
         "seriousOffenderTimer": 60.0,
         "hudShowUpEnemyByHit": true,
@@ -2128,7 +2130,7 @@
         "tankInvisibleForAirplaneDistance": 6000.0,
         "shipInvisibleForAirplaneDistance": 6000.0,
         "maxDetectionDistByTeam": 6000.0,
-        "hudTankHideForestallForNonAa": true,
+        "hudTankHideForestall": true,
         "lastOffenderTimer": 15.0,
         "seriousOffenderTimer": 80.0,
         "hudShowUpEnemyByHit": false,
@@ -2628,7 +2630,7 @@
         "victimUnmaskingTime": 0.0,
         "shotSpawnTime": 0.0,
         "hitSpawnTime": 0.0,
-        "allowForestallWithoutMarkers": true
+        "allowTargetingWithoutMarkers": true
       },
       "team": {
         "hudMarkers": 1,
@@ -2641,7 +2643,7 @@
         "victimUnmaskingTime": 0.0,
         "shotSpawnTime": 0.0,
         "hitSpawnTime": 5.0,
-        "allowForestallWithoutMarkers": true
+        "allowTargetingWithoutMarkers": true
       },
       "all": {
         "hudMarkers": 2,
@@ -2655,7 +2657,7 @@
         "victimUnmaskingTime": 10.0,
         "shotSpawnTime": 0.0,
         "hitSpawnTime": 0.0,
-        "allowForestallWithoutMarkers": true
+        "allowTargetingWithoutMarkers": true
       },
       "team_air_sb": {
         "hudMarkers": 3,
@@ -2668,7 +2670,7 @@
         "victimUnmaskingTime": 10.0,
         "shotSpawnTime": 0.0,
         "hitSpawnTime": 0.0,
-        "allowForestallWithoutMarkers": true
+        "allowTargetingWithoutMarkers": true
       },
       "team_worldwar": {
         "hudMarkers": 4,
@@ -2683,7 +2685,7 @@
         "hitSpawnTime": 0.0,
         "detectSpawnTime": 3.0,
         "showNotTraceableDetectIndicators": false,
-        "allowForestallWithoutMarkers": true
+        "allowTargetingWithoutMarkers": true
       }
     },
     "hudAircraftMarkersMaxDist": {
@@ -2765,7 +2767,8 @@
     },
     "hudMapGroundMarkers": {
       "off": {
-        "hudMapGroundMarkers": 0
+        "hudMapGroundMarkers": 0,
+        "hudMapMarkersVisibleAfterSpawnTime": 7.0
       },
       "team": {
         "hudMapGroundMarkers": 1
@@ -3194,10 +3197,12 @@
     },
     "keepDeadTankOnMap": {
       "off": {
-        "keepDeadTankOnMap": false
+        "keepDeadTankOnMap": false,
+        "winchableDeadTank": false
       },
       "on": {
-        "keepDeadTankOnMap": true
+        "keepDeadTankOnMap": true,
+        "winchableDeadTank": true
       }
     },
     "keepDeadShipOnMap": {
@@ -3949,7 +3954,7 @@
     "shotDirDetectDist": 300.0,
     "shotDirDetectAngle": 4.0,
     "depthChargeDetectDistance": 50.0,
-    "navalMineDetectDistance": 100.0
+    "navalMineDetectDistance": 160.0
   },
   "antialiasing": {
     "fxaaQuality": 29,
@@ -7739,6 +7744,306 @@
       }
     },
     {
+      "mine_01": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_02": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_03": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_04": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_05": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_06": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_07": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_08": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_09": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_10": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_11": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_12": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_13": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_14": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_15": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_16": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_17": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_18": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_19": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_20": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_21": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_22": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_23": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_24": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_25": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_26": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_17": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_28": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_29": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_30": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_31": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_32": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_33": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_34": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_35": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_36": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_37": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_38": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_39": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_40": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_51": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_52": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_53": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_54": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_55": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_56": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_57": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_58": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_59": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
+      "mine_60": {
+        "my": "ship_mine",
+        "enemy": "ship_mine"
+      }
+    },
+    {
       "antenna_target_location_01": {
         "my": "location_radar",
         "enemy": "location_radar"
@@ -8387,6 +8692,48 @@
       {
         "p": {
           "name": "depth_charge_r",
+          "unit": "ship"
+        }
+      },
+      {
+        "p": {
+          "name": "mine_0",
+          "unit": "ship"
+        }
+      },
+      {
+        "p": {
+          "name": "mine_1",
+          "unit": "ship"
+        }
+      },
+      {
+        "p": {
+          "name": "mine_2",
+          "unit": "ship"
+        }
+      },
+      {
+        "p": {
+          "name": "mine_3",
+          "unit": "ship"
+        }
+      },
+      {
+        "p": {
+          "name": "mine_4",
+          "unit": "ship"
+        }
+      },
+      {
+        "p": {
+          "name": "mine_5",
+          "unit": "ship"
+        }
+      },
+      {
+        "p": {
+          "name": "mine_6",
           "unit": "ship"
         }
       },
@@ -10261,6 +10608,48 @@
       {
         "p": {
           "name": "mizzenmast_sail_dm"
+        }
+      },
+      {
+        "p": {
+          "name": "mine_0",
+          "unit": "ship"
+        }
+      },
+      {
+        "p": {
+          "name": "mine_1",
+          "unit": "ship"
+        }
+      },
+      {
+        "p": {
+          "name": "mine_2",
+          "unit": "ship"
+        }
+      },
+      {
+        "p": {
+          "name": "mine_3",
+          "unit": "ship"
+        }
+      },
+      {
+        "p": {
+          "name": "mine_4",
+          "unit": "ship"
+        }
+      },
+      {
+        "p": {
+          "name": "mine_5",
+          "unit": "ship"
+        }
+      },
+      {
+        "p": {
+          "name": "mine_6",
+          "unit": "ship"
         }
       },
       {

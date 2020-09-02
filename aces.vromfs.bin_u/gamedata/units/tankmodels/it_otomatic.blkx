@@ -844,6 +844,21 @@
             "name": "ammo_body_50_dm"
           },
           {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
+          },
+          {
             "name": "ammo_body_l_01_dm"
           },
           {
@@ -1672,6 +1687,86 @@
     }
   },
   {
+    "MetaParts": {
+      "mount": [
+        {
+          "hp": 8000.0
+        },
+        {
+          "part": "turret_front_dm"
+        },
+        {
+          "part": "turret_01_front_dm"
+        },
+        {
+          "part": "turret_02_front_dm"
+        },
+        {
+          "part": "turret_bottom_dm"
+        },
+        {
+          "part": "turret_01_bottom_dm"
+        },
+        {
+          "part": "gun_mask_dm"
+        },
+        {
+          "part": "turret_side_dm"
+        },
+        {
+          "part": "turret_01_side_dm"
+        },
+        {
+          "part": "turret_01_back_dm"
+        },
+        {
+          "part": "turret_back_dm"
+        },
+        {
+          "part": "turret_top_dm"
+        },
+        {
+          "part": "turret_01_top_dm"
+        },
+        {
+          "effect": {
+            "conditionDamageType": "explosion",
+            "expl": 1.0,
+            "conditionDamage": 350.0,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "cumulative",
+            "expl": 1.0,
+            "conditionDamage": 250.0,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "generic",
+            "expl": 1.0,
+            "conditionDamage": 750.0,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "expl": 1.0,
+            "conditionDead": true,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
+        }
+      ]
+    }
+  },
+  {
     "trackEffects": {
       "top": false
     }
@@ -1752,10 +1847,10 @@
           "autoLoader": true
         },
         {
-          "speedYaw": 40.0
+          "speedYaw": 70.0
         },
         {
-          "speedPitch": 20.0
+          "speedPitch": 45.0
         },
         {
           "fireConeAngle": 1.0
@@ -1828,8 +1923,6 @@
             "verticalOmegaMult": 1.0,
             "verticalSpeedLimitKPH": 75.0,
             "speedFromVehicleVerticalMult": -1.0,
-            "speedYaw": 70.0,
-            "speedPitch": 45.0,
             "errorKPHToDegrees": [
               {
                 "row": [5.0,0.0]
@@ -2548,7 +2641,43 @@
       "tank_medical_kit_expendable": {
         "image": "#ui/gameuiskin#tank_reinforcement_it"
       },
-      "modern_tank_laser_rangefinder": [],
+      "modern_tank_laser_rangefinder": {
+        "effects": {
+          "rangefinderMounted": true,
+          "isLaser": true,
+          "distanceError": [25.0,25.0,25.0,25.0],
+          "distanceThresholdMin": [1000.0,3000.0,5000.0,9999.0],
+          "distanceThresholdMax": [1000.0,3000.0,5000.0,9999.0],
+          "distanceErrorRealistic": [25.0,25.0,25.0,25.0],
+          "distanceThresholdMinRealistic": [1000.0,3000.0,5000.0,9999.0],
+          "distanceThresholdMaxRealistic": [1000.0,3000.0,5000.0,9999.0],
+          "timeMeasurementRange": [0.5,0.5],
+          "rcostAddParam": 0.98,
+          "sensors": [
+            {
+              "sensor": {
+                "blk": "gameData/sensors/it_sma_vps-a05.blk",
+                "turretIndex": 0,
+                "designationFromBody": true,
+                "designationTurretIndex": 0,
+                "dmPart": "antenna_target_location_dm"
+              }
+            },
+            {
+              "sensor": {
+                "blk": "gameData/sensors/it_sma_vps-a06.blk",
+                "turretIndex": 0,
+                "dmPart": "antenna_target_tagging_dm"
+              }
+            },
+            {
+              "sensor": {
+                "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+              }
+            }
+          ]
+        }
+      },
       "76mm_oto_SAP": [],
       "76mm_oto_APDSFS": {
         "maxToRespawn": 12
@@ -2619,10 +2748,10 @@
                   "autoLoader": true
                 },
                 {
-                  "speedYaw": 40.0
+                  "speedYaw": 70.0
                 },
                 {
-                  "speedPitch": 20.0
+                  "speedPitch": 45.0
                 },
                 {
                   "fireConeAngle": 1.0
@@ -2695,8 +2824,6 @@
                     "verticalOmegaMult": 1.0,
                     "verticalSpeedLimitKPH": 75.0,
                     "speedFromVehicleVerticalMult": -1.0,
-                    "speedYaw": 70.0,
-                    "speedPitch": 45.0,
                     "errorKPHToDegrees": [
                       {
                         "row": [5.0,0.0]

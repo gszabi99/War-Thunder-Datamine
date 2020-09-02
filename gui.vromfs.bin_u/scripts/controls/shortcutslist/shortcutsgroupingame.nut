@@ -1,5 +1,6 @@
 local { chatStatesCanUseVoice } = require("scripts/chat/chatStates.nut")
 local { isMultifuncMenuAvailable } = require("scripts/wheelmenu/multifuncmenuShared.nut")
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
 return [
 //-------------------------------------------------------
@@ -90,7 +91,7 @@ return [
   }
   {
     id = "ID_GAMEPAD_RESET_GYRO_TILT"
-    showFunc = @() ::is_platform_ps4
+    showFunc = @() isPlatformSony
     checkGroup = ctrlGroups.COMMON
     checkAssign = false
   }

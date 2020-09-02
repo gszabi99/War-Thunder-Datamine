@@ -1,10 +1,14 @@
 local time = require("scripts/time.nut")
 local externalIDsService = require("scripts/user/externalIdsService.nut")
 local avatars = require("scripts/user/avatars.nut")
-local platformModule = require("scripts/clientState/platform.nut")
+local { isMeXBOXPlayer,
+        isMePS4Player,
+        isPlatformPC,
+        isPlatformSony,
+        isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
-
+local { startLogout } = require("scripts/login/logout.nut")
 
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
@@ -299,15 +303,15 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     local sheet = getCurSheet()
     local isProfileOpened = sheet == "Profile"
     local buttonsList = {
-      btn_changeAccount = ::isInMenu() && isProfileOpened && !::is_platform_ps4 && !::is_vendor_tencent()
-      btn_changeName = ::isInMenu() && isProfileOpened && !platformModule.isMeXBOXPlayer() && !platformModule.isMePS4Player() && !::is_vendor_tencent()
+      btn_changeAccount = ::isInMenu() && isProfileOpened && !isPlatformSony && !::is_vendor_tencent()
+      btn_changeName = ::isInMenu() && isProfileOpened && !isMeXBOXPlayer() && !isMePS4Player() && !::is_vendor_tencent()
       btn_getLink = !::is_in_loading_screen() && isProfileOpened && ::has_feature("Invites")
-      btn_codeApp = platformModule.isPlatformPC && ::has_feature("AllowExternalLink") &&
+      btn_codeApp = isPlatformPC && ::has_feature("AllowExternalLink") &&
         !::g_user_utils.haveTag("gjpass") && ::isInMenu() && isProfileOpened &&
           !::is_vendor_tencent()
-      btn_ps4Registration = isProfileOpened && ::is_platform_ps4 && ::g_user_utils.haveTag("psnlogin")
+      btn_ps4Registration = isProfileOpened && isPlatformSony && ::g_user_utils.haveTag("psnlogin")
       btn_SteamRegistration = isProfileOpened && ::steam_is_running() && ::has_feature("AllowSteamAccountLinking") && ::g_user_utils.haveTag("steamlogin")
-      btn_xboxRegistration = isProfileOpened && ::is_platform_xboxone && ::has_feature("AllowXboxAccountLinking")
+      btn_xboxRegistration = isProfileOpened && isPlatformXboxOne && ::has_feature("AllowXboxAccountLinking")
       paginator_place = (sheet == "Statistics") && airStatsList && (airStatsList.len() > statsPerPage)
       btn_achievements_url = (sheet == "UnlockAchievement") && ::has_feature("AchievementsUrl")
         && ::has_feature("AllowExternalLink") && !::is_vendor_tencent()
@@ -804,6 +808,9 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
           image = decoratorType.getImage(decorator)
           imgRatio = decoratorType.getRatio(decorator)
           backlight = true
+          bottomLeftText = decorator.getCouponItemdefId() != null
+            ? ::loc("currency/gc/sign/colored")
+            : null
         })
       }
     }
@@ -816,7 +823,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     local unit = ::getAircraftByName(unitName)
     if (unit == null)
       return false
-    if (!::has_feature("Tanks") && ::isTank(unit))
+    if (!::has_feature("Tanks") && unit?.isTank())
       return false
     return unit.isVisibleInShop()
   }
@@ -1410,7 +1417,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     {
       pending_logout = false
       guiScene.performDelayed(this, function() {
-        ::gui_start_logout()
+        startLogout()
       })
     }
   }
@@ -1442,7 +1449,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
       [
         ["yes", function() {
           ::save_local_shared_settings(USE_STEAM_LOGIN_AUTO_SETTING_ID, null)
-          ::gui_start_logout()
+          startLogout()
         }],
         ["no", @() null ]
       ], "no", { cancel_fn = @() null })

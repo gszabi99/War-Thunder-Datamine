@@ -4,6 +4,8 @@ local aamAimState = require("rocketAamAimState.nut")
 local agmAimState = require("agmAimState.nut")
 local compass = require("compass.nut")
 
+local warningSystemState = require("twsState.nut")
+
 local backgroundColor = Color(0, 0, 0, 150)
 
 const NUM_ENGINES_MAX = 3
@@ -209,34 +211,34 @@ local getThrottleCaption = function() {
 local getAGCaption = function() {
   local text = ""
   if (agmAimState.GuidanceLockState.value == GuidanceLockResult.RESULT_INVALID)
-    text = ::loc("HUD/TXT_AGM_SHORT")
+    text += ::loc("HUD/TXT_AGM_SHORT")
   else if (agmAimState.GuidanceLockState.value == GuidanceLockResult.RESULT_STANDBY)
-    text = ::loc("HUD/TXT_AGM_STANDBY")
+    text += ::loc("HUD/TXT_AGM_STANDBY")
   else if (agmAimState.GuidanceLockState.value == GuidanceLockResult.RESULT_WARMING_UP)
-    text = ::loc("HUD/TXT_AGM_WARM_UP")
+    text += ::loc("HUD/TXT_AGM_WARM_UP")
   else if (agmAimState.GuidanceLockState.value == GuidanceLockResult.RESULT_LOCKING)
-    text = ::loc("HUD/TXT_AGM_LOCK")
+    text += ::loc("HUD/TXT_AGM_LOCK")
   else if (agmAimState.GuidanceLockState.value == GuidanceLockResult.RESULT_TRACKING)
-    text = ::loc("HUD/TXT_AGM_TRACK")
+    text += ::loc("HUD/TXT_AGM_TRACK")
   else if (agmAimState.GuidanceLockState.value == GuidanceLockResult.RESULT_LOCK_AFTER_LAUNCH)
-    text = ::loc("HUD/TXT_AGM_LOCK_AFTER_LAUNCH")
+    text += ::loc("HUD/TXT_AGM_LOCK_AFTER_LAUNCH")
   return text
 }
 
 local getAACaption = function() {
   local text = ""
   if (aamAimState.GuidanceLockState.value == GuidanceLockResult.RESULT_INVALID)
-    text = ::loc("HUD/TXT_AAM_SHORT")
+    text += ::loc("HUD/TXT_AAM_SHORT")
   else if (aamAimState.GuidanceLockState.value == GuidanceLockResult.RESULT_STANDBY)
-    text = ::loc("HUD/TXT_AAM_STANDBY")
+    text += ::loc("HUD/TXT_AAM_STANDBY")
   else if (aamAimState.GuidanceLockState.value == GuidanceLockResult.RESULT_WARMING_UP)
-    text = ::loc("HUD/TXT_AAM_WARM_UP")
+    text += ::loc("HUD/TXT_AAM_WARM_UP")
   else if (aamAimState.GuidanceLockState.value == GuidanceLockResult.RESULT_LOCKING)
-    text = ::loc("HUD/TXT_AAM_LOCK")
+    text += ::loc("HUD/TXT_AAM_LOCK")
   else if (aamAimState.GuidanceLockState.value == GuidanceLockResult.RESULT_TRACKING)
-    text = ::loc("HUD/TXT_AAM_TRACK")
+    text += ::loc("HUD/TXT_AAM_TRACK")
   else if (aamAimState.GuidanceLockState.value == GuidanceLockResult.RESULT_LOCK_AFTER_LAUNCH)
-    text = ::loc("HUD/TXT_AAM_LOCK_AFTER_LAUNCH")
+    text += ::loc("HUD/TXT_AAM_LOCK_AFTER_LAUNCH")
   return text
 }
 
@@ -342,7 +344,7 @@ local getAGBullets = generateAgmBulletsTextFunction(helicopterState.Agm.count, h
 
 local getAABullets = generateBulletsTextFunction(helicopterState.Aam.count, helicopterState.Aam.seconds)
 
-local createHelicopterParam = function(param, width, line_style, isBackground, needCaption = true, for_ils = false)
+local function createHelicopterParam(param, width, line_style, isBackground, needCaption = true, for_ils = false)
 {
   local rowHeight = for_ils ? 50 : hdpx(28)
 
@@ -360,6 +362,14 @@ local createHelicopterParam = function(param, width, line_style, isBackground, n
     color = selectColor()
   })
 
+  local selectedComponent = @() line_style.__merge({
+    color = selectColor()
+    rendObj = ROBJ_DTEXT
+    size = [0.05*width, rowHeight]
+    text = param.selected()
+    watch = param?.selectedWatched ? param.selectedWatched : []
+    })
+
   return function() {
     return {
       size = SIZE_TO_CONTENT
@@ -371,7 +381,8 @@ local createHelicopterParam = function(param, width, line_style, isBackground, n
         }
       }
       children = [
-        (needCaption ? captionComponent : null)
+        selectedComponent,
+        (needCaption ? captionComponent : null),
         @() line_style.__merge({
           color = selectColor()
           rendObj = ROBJ_DTEXT
@@ -394,48 +405,59 @@ local textParamsMap = {
   [HelicopterParams.RPM] = {
     title = @() ::loc("HUD/PROP_RPM_SHORT")
     value = @() helicopterState.Rpm.value + "%"
+    selected = @() ""
     valuesWatched = [helicopterState.Rpm, helicopterState.IsRpmCritical]
     alertWatched = [helicopterState.IsRpmCritical]
   },
   [HelicopterParams.THROTTLE] = {
     title = @() getThrottleCaption()
     value = @() getThrottleText()
+    selected = @() ""
     titleWatched = [helicopterState.TrtMode]
     valuesWatched = [helicopterState.Trt, helicopterState.TrtMode]
   },
   [HelicopterParams.SPEED] = {
     title = @() ::loc("HUD/REAL_SPEED_SHORT")
     value = @() helicopterState.Spd.value + " " + ::cross_call.measureTypes.SPEED.getMeasureUnitsName()
+    selected = @() ""
     valuesWatched = helicopterState.Spd
   },
   [HelicopterParams.MACHINE_GUN] = {
     title = @() getMachineGunCaption()
     value = generateBulletsTextFunction(helicopterState.MachineGuns.count, helicopterState.MachineGuns.seconds)
+    selected = @() helicopterState.MachineGuns.selected.value ? ">" : ""
     titleWatched = [helicopterState.MachineGuns.mode]
     valuesWatched = [helicopterState.MachineGuns.count, helicopterState.MachineGuns.seconds, helicopterState.IsMachineGunEmpty]
+    selectedWatched = [helicopterState.MachineGuns.selected]
     alertWatched = [helicopterState.IsMachineGunEmpty]
   },
   [HelicopterParams.CANNON_ADDITIONAL] = {
     title = @() getAdditionalCannonCaption()
     value = generateBulletsTextFunction(helicopterState.CannonsAdditional.count, helicopterState.CannonsAdditional.seconds)
+    selected = @() helicopterState.CannonsAdditional.selected.value ? ">" : ""
     titleWatched = [helicopterState.CannonsAdditional.mode]
     valuesWatched = [
       helicopterState.CannonsAdditional.count,
       helicopterState.CannonsAdditional.seconds,
       helicopterState.IsCanAdditionalEmpty
     ]
+    selectedWatched = [helicopterState.CannonsAdditional.selected]
     alertWatched = [helicopterState.IsCanAdditionalEmpty]
   },
   [HelicopterParams.ROCKET] = {
     title = @() getRocketCaption()
     value = generateBulletsTextFunction(helicopterState.Rockets.count, helicopterState.Rockets.seconds)
+    selected = @() helicopterState?.Rockets?.selected.value ? ">" : ""
     titleWatched = [helicopterState.Rockets.mode]
     valuesWatched = [helicopterState.Rockets.count, helicopterState.Rockets.seconds, helicopterState.IsRktEmpty]
+    selectedWatched = [helicopterState.Rockets.selected]
     alertWatched = [helicopterState.IsRktEmpty]
   },
   [HelicopterParams.AGM] = {
-    title = @() helicopterState.Agm.count.value <= 0 ? ::loc("HUD/TXT_AGM_SHORT") : getAGCaption()
+    title = @() helicopterState.Agm.count.value <= 0 ? ::loc("HUD/TXT_AGM_SHORT") :
+      getAGCaption()
     value = @() getAGBullets()
+    selected = @() helicopterState.Agm.selected.value ? ">" : ""
     blink = @() getAGBlink()
     titleWatched = [
       agmAimState.GuidanceLockState,
@@ -448,31 +470,39 @@ local textParamsMap = {
       helicopterState.Agm.count, helicopterState.Agm.seconds, helicopterState.Agm.timeToHit, helicopterState.Agm.timeToWarning,
       helicopterState.IsAgmEmpty, agmAimState.GuidanceLockState
     ]
+    selectedWatched = [helicopterState.Agm.selected]
     alertWatched = [helicopterState.IsAgmEmpty]
   },
   [HelicopterParams.BOMBS] = {
     title = @() getBombCaption()
     value = generateBulletsTextFunction(helicopterState.Bombs.count, helicopterState.Bombs.seconds)
+    selected = @() helicopterState.Bombs.selected.value ? ">" : ""
     titleWatched = [helicopterState.Bombs.mode]
-    valuesWatched = [helicopterState.Bombs.count, helicopterState.Bombs.seconds, helicopterState.IsBmbEmpty]
+    valuesWatched = [helicopterState.Bombs.count, helicopterState.Bombs.seconds,
+      helicopterState.IsBmbEmpty]
+    selectedWatched = [helicopterState.Bombs.selected]
     alertWatched = [helicopterState.IsBmbEmpty]
   },
   [HelicopterParams.RATE_OF_FIRE] = {
     title = @() ::loc("HUD/RATE_OF_FIRE_SHORT")
     value = @() helicopterState.IsHighRateOfFire.value ? ::loc("HUD/HIGHFREQ_SHORT") : ::loc("HUD/LOWFREQ_SHORT")
+    selected = @() ""
     valuesWatched = helicopterState.IsHighRateOfFire
   },
   [HelicopterParams.AAM] = {
     title = @() helicopterState.Aam.count.value <= 0 ? ::loc("HUD/TXT_AAM_SHORT") : getAACaption()
     value = @() getAABullets()
+    selected = @() helicopterState.Aam.selected.value ? ">" : ""
     titleWatched = [helicopterState.Aam.count, aamAimState.GuidanceLockState]
     valuesWatched = [helicopterState.Aam.count, helicopterState.Aam.seconds, helicopterState.IsAamEmpty,
       aamAimState.GuidanceLockState]
+    selectedWatched = [helicopterState.Aam.selected]
     alertWatched = [helicopterState.IsAamEmpty]
   },
   [HelicopterParams.FLARES] = {
     title = @() helicopterState.Flares.count.value <= 0 ? ::loc("HUD/FLARES_SHORT") : getFlaresCaption()
     value = generateBulletsTextFunction(helicopterState.Flares.count, helicopterState.Flares.seconds)
+    selected = @() ""
     titleWatched = [helicopterState.Flares.count, helicopterState.Flares.mode]
     valuesWatched = [helicopterState.Flares.count, helicopterState.Flares.seconds, helicopterState.IsFlrEmpty]
     alertWatched = [helicopterState.IsFlrEmpty]
@@ -483,6 +513,7 @@ foreach (i, value in helicopterState.IsCannonEmpty) {
   textParamsMap[HelicopterParams.CANNON_1 + i] <- {
     title = @() getCannonsCaption(helicopterState.CannonMode)
     value = generateBulletsTextFunction(helicopterState.CannonCount[i], helicopterState.CannonReloadTime[i])
+    selected = @() helicopterState.CannonSelected.value ? ">" : ""
     titleWatched = [helicopterState.CannonMode]
     blink = @() getTurretBlink()
     valuesWatched = [
@@ -491,6 +522,7 @@ foreach (i, value in helicopterState.IsCannonEmpty) {
       helicopterState.IsCannonEmpty[i],
       helicopterState.CannonMode
     ]
+    selectedWatched = [helicopterState.CannonSelected]
     alertWatched = [helicopterState.IsCannonEmpty[i]]
   }
 }
@@ -502,6 +534,7 @@ for (local i = 0; i < NUM_ENGINES_MAX; ++i)
   textParamsMap[HelicopterParams.OIL_1 + i] <- {
     title = @() ::loc("HUD/OIL_TEMPERATURE_SHORT" + indexStr)
     value = generateTemperatureTextFunction(helicopterState.OilTemperature[i], helicopterState.OilState[i])
+    selected = @() ""
     valuesWatched = [
       helicopterState.OilTemperature[i],
       helicopterState.OilState[i],
@@ -513,6 +546,7 @@ for (local i = 0; i < NUM_ENGINES_MAX; ++i)
   textParamsMap[HelicopterParams.WATER_1 + i] <- {
     title = @() ::loc("HUD/WATER_TEMPERATURE_SHORT" + indexStr)
     value = generateTemperatureTextFunction(helicopterState.WaterTemperature[i], helicopterState.WaterState[i])
+    selected = @() ""
     valuesWatched = [
       helicopterState.WaterTemperature[i],
       helicopterState.WaterState[i],
@@ -524,6 +558,7 @@ for (local i = 0; i < NUM_ENGINES_MAX; ++i)
   textParamsMap[HelicopterParams.ENGINE_1 + i] <- {
     title = @() ::loc("HUD/ENGINE_TEMPERATURE_SHORT" + indexStr)
     value = generateTemperatureTextFunction(helicopterState.EngineTemperature[i], helicopterState.EngineState[i])
+    selected = @() ""
     valuesWatched = [
       helicopterState.EngineTemperature[i],
       helicopterState.EngineState[i],
@@ -541,6 +576,7 @@ for (local i = 0; i < NUM_TRANSMISSIONS_MAX; ++i)
   textParamsMap[HelicopterParams.TRANSMISSION_1 + i] <- {
     title = @() ::loc("HUD/TRANSMISSION_OIL_SHORT" + indexStr)
     value = generateTransmissionStateTextFunction(helicopterState.TransmissionOilState[i])
+    selected = @() ""
     valuesWatched = [
       helicopterState.TransmissionOilState[i],
       helicopterState.IsTransmissionOilAlert[i]
@@ -552,6 +588,7 @@ for (local i = 0; i < NUM_TRANSMISSIONS_MAX; ++i)
 textParamsMap[HelicopterParams.FUEL] <- {
   title = @() ::loc("HUD/FUEL_SHORT")
   value = @() ::string.format("%d:%02d", ::math.floor(helicopterState.Fuel.value / 60), helicopterState.Fuel.value % 60)
+  selected = @() ""
   valuesWatched = [helicopterState.Fuel, helicopterState.IsFuelCritical]
   alertWatched = [helicopterState.IsFuelCritical]
 }
@@ -1128,6 +1165,83 @@ local detectAllyComponent = function(elemStyle, posX, posY, isBackground) {
   }
 }
 
+local centeredAircraftIcon = ::kwarg(function(colorStyle, pos = [0, 0], size = flex())
+{
+  local indicatorRadius = 70.0
+  local tailW = 25
+  local tailH = 10
+  local tailOffset1 = 10
+  local tailOffset2 = 5
+  local tailOffset3 = 25
+  local fuselageWHalf = 10
+  local wingOffset1 = 45
+  local wingOffset2 = 30
+  local wingW = 32
+  local wingH = 18
+  local wingOffset3 = 30
+  local noseOffset = 5
+
+
+  local aircraftIcon = colorStyle.__merge({
+    rendObj = ROBJ_VECTOR_CANVAS
+    lineWidth = hdpx(1) * 2.0
+    fillColor = Color(0, 0, 0, 0)
+    vplace = ALIGN_CENTER
+    hplace = ALIGN_CENTER
+    size = [pw(33), ph(33)]
+    pos = [0, 0]
+    opacity = 0.42
+    commands = [
+      [VECTOR_POLY,
+        // tail left
+        50, 100 - tailOffset1,
+        50 - tailW, 100 - tailOffset2,
+        50 - tailW, 100 - tailOffset2 - tailH,
+        50 - fuselageWHalf, 100 - tailOffset3,
+        // wing left
+        50 - fuselageWHalf, 100 - wingOffset1,
+        50 - fuselageWHalf - wingW, 100 - wingOffset2,
+        50 - fuselageWHalf - wingW, 100 - wingOffset2 - wingH,
+        50 - fuselageWHalf, wingOffset3,
+        // nose
+        50, noseOffset,
+        // wing rigth
+        50 + fuselageWHalf, wingOffset3,
+        50 + fuselageWHalf + wingW, 100 - wingOffset2 - wingH,
+        50 + fuselageWHalf + wingW, 100 - wingOffset2,
+        50 + fuselageWHalf, 100 - wingOffset1,
+        // tail right
+        50 + fuselageWHalf, 100 - tailOffset3,
+        50 + tailW, 100 - tailOffset2 - tailH,
+        50 + tailW, 100 - tailOffset2
+      ]
+    ]
+  })
+
+  local function getChildren() {
+    return [
+      colorStyle.__merge({
+        rendObj = ROBJ_VECTOR_CANVAS
+        size = flex()
+        fillColor = warningSystemState.EnableBackGroundColor.value ? backgroundColor : Color(0, 0, 0, 0)
+        lineWidth = hdpx(1) * LINE_WIDTH
+        commands = [
+          [VECTOR_ELLIPSE, 50, 50, indicatorRadius * 0.33, indicatorRadius * 0.33]
+        ]
+      }),
+      aircraftIcon
+    ]
+  }
+
+  return @()
+  {
+    size = flex()
+    children = getChildren()
+    watch = warningSystemState.EnableBackGroundColor
+  }
+})
+
+
 return {
   vertSpeed = HelicopterVertSpeed
   paramsTable = generateParamsTable
@@ -1142,4 +1256,5 @@ return {
   lockSight = lockSightComponent
   rocketAim = helicopterRocketAim
   detectAlly = detectAllyComponent
+  aircraftIcon = centeredAircraftIcon
 }

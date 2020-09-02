@@ -1,3 +1,5 @@
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+
 ::error_message_box <- function error_message_box(header, error_code, buttons, def_btn, options = {}, message=null)
 {
   local guiScene = ::get_gui_scene()
@@ -6,13 +8,13 @@
 
   local errData = ::get_error_data(header, error_code)
 
-  if (!::is_platform_xboxone)
+  if (!isPlatformXboxOne)
   {
-    errData.text += "\n\n" + (::is_platform_ps4? "" : (::loc("msgbox/error_link_format_game") + ::loc("ui/colon")))
+    errData.text += "\n\n" + (isPlatformSony? "" : (::loc("msgbox/error_link_format_game") + ::loc("ui/colon")))
     local knoledgebaseSuffix = ::is_vendor_tencent()? "/Tencent" : ""
-    local link = ::loc("url/knowledgebase" + knoledgebaseSuffix) + errData.errCode
-    local linkText = ::is_platform_ps4? ::loc("msgbox/error_link_format_game") : link
-    errData.text += ::format("<url=%s>%s</url>", link, linkText)
+    local link = ::loc($"url/knowledgebase{knoledgebaseSuffix}") + errData.errCode
+    local linkText = isPlatformSony? ::loc("msgbox/error_link_format_game") : link
+    errData.text += $"<url={link}>{linkText}</url>"
   }
 
   if (message != null)
@@ -91,7 +93,7 @@
   }
 
   local errText = ""
-  if (::is_platform_ps4)
+  if (isPlatformSony)
     errText = ::loc("yn1/error/" + errCode, loc("msgbox/appearError"))
   else
     errText = ::loc("yn1/error/fmt", {text=::loc(text == "" ? "msgbox/error_header" : text, ""), err_msg=errMsg, err_code=errCode})

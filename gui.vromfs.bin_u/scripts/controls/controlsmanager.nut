@@ -3,6 +3,7 @@
 ::g_script_reloader.loadOnce("scripts/controls/controlsCompatibility.nut")
 
 local shortcutsAxisListModule = require("scripts/controls/shortcutsList/shortcutsAxis.nut")
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
 ::g_controls_manager <- {
   [PERSISTENT_DATA_PARAMS] = ["curPreset"]
@@ -148,7 +149,7 @@ local shortcutsAxisListModule = require("scripts/controls/shortcutsList/shortcut
       return
     isControlsCommitPerformed = true
 
-    if (fixMappingIfRequired && ::is_platform_ps4)
+    if (fixMappingIfRequired && isPlatformSony)
       fixDeviceMapping()
     fixControls()
 
@@ -238,7 +239,7 @@ local shortcutsAxisListModule = require("scripts/controls/shortcutsList/shortcut
   // it is required to commit controls when mission start.
   function onEventMissionStarted(params)
   {
-    if (::is_platform_ps4)
+    if (isPlatformSony)
       commitControls()
   }
 }

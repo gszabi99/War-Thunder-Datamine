@@ -99,6 +99,12 @@
     "destroysTrees": true
   },
   {
+    "waterBreakerAnimVar": "9p157_break_water_action"
+  },
+  {
+    "waterBreakerToggleTime": 4.0
+  },
+  {
     "type": "typeTankDestroyer"
   },
   {
@@ -1416,6 +1422,7 @@
           "maxSpeedForFire": 5.0,
           "lagStopForFireTime": 2.0,
           "changeBulletTypeForSet": true,
+          "recoilMultiplier": 0.01,
           "parkForReload": true,
           "circleAim": true,
           "createGunEffects": true,
@@ -1472,11 +1479,11 @@
           "bullets": 1,
           "turret": {
             "head": "bone_turret_02",
-            "gun": "antenna_target_tagging"
+            "gun": "bone_gun_02"
           },
           "limits": {
             "yaw": [-90.0,90.0],
-            "pitch": [-10.0,20.0]
+            "pitch": [0.0,0.0]
           }
         }
       }
@@ -2179,7 +2186,35 @@
         "image": "#ui/gameuiskin#tank_reinforcement_ussr"
       },
       "modern_tank_laser_rangefinder": {
-        "tier": 2
+        "tier": 2,
+        "effects": {
+          "rangefinderMounted": true,
+          "isLaser": true,
+          "distanceError": [25.0,25.0,25.0,25.0],
+          "distanceThresholdMin": [1000.0,3000.0,5000.0,9999.0],
+          "distanceThresholdMax": [1000.0,3000.0,5000.0,9999.0],
+          "distanceErrorRealistic": [25.0,25.0,25.0,25.0],
+          "distanceThresholdMinRealistic": [1000.0,3000.0,5000.0,9999.0],
+          "distanceThresholdMaxRealistic": [1000.0,3000.0,5000.0,9999.0],
+          "timeMeasurementRange": [0.5,0.5],
+          "rcostAddParam": 0.98,
+          "sensors": [
+            {
+              "sensor": {
+                "blk": "gameData/sensors/su_khrizantema.blk",
+                "dmPart": "antenna_target_tagging_dm",
+                "turretIndex": 0,
+                "designationFromBody": false,
+                "designationTurretIndex": 0
+              }
+            },
+            {
+              "sensor": {
+                "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+              }
+            }
+          ]
+        }
       },
       "152mm_9M123_ATGM": [],
       "152mm_9M123F_ATGM": [],
@@ -2300,6 +2335,28 @@
       "replace_tex": {
         "from": "ussr_camo_green*",
         "to": "ussr_camo_deform*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "ussr_modern_green",
+      "nameLocId": "skin/ussr_modern_green",
+      "descLocId": "skin/ussr_modern_green/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_modern_green*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "ussr_camo_modern_desert_deform",
+      "nameLocId": "skin/ussr_camo_modern_desert_deform",
+      "descLocId": "skin/ussr_camo_modern_desert_deform/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_camo_modern_desert_deform*"
       }
     }
   },

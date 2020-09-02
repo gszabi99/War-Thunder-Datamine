@@ -5,13 +5,14 @@ local contentStateModule = require("scripts/clientState/contentState.nut")
 local checkUnlocksByAbTest = require("scripts/unlocks/checkUnlocksByAbTest.nut")
 local fxOptions = require("scripts/options/fxOptions.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
-
 local onMainMenuReturnActions = require("scripts/mainmenu/onMainMenuReturnActions.nut")
+local { checkBadWeapons } = require("scripts/weaponry/weaponryInfo.nut")
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
+local { startLogout } = require("scripts/login/logout.nut")
 
 ::my_user_id_str <- ""
 ::my_user_id_int64 <- -1
 ::my_user_name <- ""
-::need_logout_after_session <- false
 
 ::g_script_reloader.registerPersistentData("LoginWTGlobals", ::getroottable(),
   [
@@ -55,64 +56,16 @@ local onMainMenuReturnActions = require("scripts/mainmenu/onMainMenuReturnAction
   ::check_tutorial_reward_data = null
 }
 
-::can_logout <- function can_logout()
-{
-  return !::disable_network() && !::is_vendor_tencent()
-}
-
-::gui_start_logout <- function gui_start_logout()
-{
-  if (!::can_logout())
-    return ::exit_game()
-
-  if (::is_multiplayer()) //we cant logout from session instantly, so need to return "to debriefing"
-  {
-    if (::is_in_flight())
-    {
-      ::need_logout_after_session = true
-      ::quit_mission()
-      return
-    }
-    else
-      ::destroy_session_scripted()
-  }
-
-  if (::should_disable_menu() || ::g_login.isProfileReceived())
-    ::broadcastEvent("BeforeProfileInvalidation") // Here save any data into profile.
-
-  dagor.debug("gui_start_logout")
-  ::disable_autorelogin_once <- true
-  ::need_logout_after_session = false
-  ::g_login.reset()
-  ::on_sign_out()
-  sign_out()
-  ::handlersManager.startSceneFullReload(::gui_start_startscreen)
-}
-
 ::go_to_account_web_page <- function go_to_account_web_page(bqKey = "")
 {
   local urlBase = ::format("/user.php?skin_lang=%s", ::g_language.getShortName())
   openUrl(::get_authenticated_url_table(urlBase).url, false, false, bqKey)
 }
 
-g_login.getStateDebugStr <- function getStateDebugStr(state = null)
-{
-  state = state ?? curState
-  return state == 0 ? "0" : ::bit_mask_to_string("LOGIN_STATE", state)
-}
-
-g_login.debugState <- function debugState(shouldShowNotSetBits = false)
-{
-  local debugLog = ::dlog // warning disable: -forbidden-function
-  if (shouldShowNotSetBits)
-    return debugLog($"not set loginState = {getStateDebugStr(LOGIN_STATE.LOGGED_IN & ~curState)}")
-  return debugLog($"loginState = {getStateDebugStr()}")
-}
-
 g_login.loadLoginHandler <- function loadLoginHandler()
 {
   local hClass = ::gui_handlers.LoginWndHandler
-  if (::is_platform_ps4)
+  if (isPlatformSony)
     hClass = ::gui_handlers.LoginWndHandlerPs4
   else if (::is_platform_xboxone)
     hClass = ::gui_handlers.LoginWndHandlerXboxOne
@@ -181,7 +134,7 @@ g_login.initConfigs <- function initConfigs(cb)
 
       ::shown_userlog_notifications.clear()
       ::collectOldNotifications()
-      ::check_bad_weapons()
+      checkBadWeapons()
       return null
     }
     function() {
@@ -284,7 +237,7 @@ g_login.initConfigs <- function initConfigs(cb)
     }
   )
 
-  ::start_pseudo_thread(initOptionsPseudoThread, ::gui_start_logout)
+  ::start_pseudo_thread(initOptionsPseudoThread, startLogout)
 }
 
 g_login.onEventGuiSceneCleared <- function onEventGuiSceneCleared(p)
@@ -300,7 +253,7 @@ g_login.onEventGuiSceneCleared <- function onEventGuiSceneCleared(p)
     function()
     {
       ::handlersManager.loadHandler(::gui_handlers.WaitForLoginWnd)
-      ::start_pseudo_thread(::g_login.initOptionsPseudoThread, ::gui_start_logout)
+      ::start_pseudo_thread(::g_login.initOptionsPseudoThread, startLogout)
     })
 }
 
@@ -428,7 +381,7 @@ g_login.statsdOnLogin <- function statsdOnLogin()
     statsd.send_counter("sq.customcontrols", 1)
   }
 
-  if (::is_platform_ps4)
+  if (isPlatformSony)
   {
     if (!::ps4_is_chat_enabled())
       ::add_big_query_record("ps4.restrictions.chat", "")

@@ -1,5 +1,8 @@
 local enums = ::require("sqStdlibs/helpers/enums.nut")
 local screenInfo = ::require("scripts/options/screenInfo.nut")
+local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+
 const FONTS_SAVE_PATH = "fonts_css"
 const FONTS_SAVE_PATH_CONFIG = "video/fonts"
 
@@ -51,7 +54,7 @@ local getFontsSh = screenInfo.getScreenHeightForFonts
   sizeOrder = 0 //FONT_SIZE_ORDER
 
   isAvailable = @(sWidth, sHeight) true
-  getFontSizePx = @(sWidth, sHeight) getFontsSh(sWidth, sHeight) * sizeMultiplier
+  getFontSizePx = @(sWidth, sHeight) ::round(sizeMultiplier * getFontsSh(sWidth, sHeight)).tointeger()
   getPixelToPixelFontSizeOutdatedPx = @(sWidth, sHeight) 800 //!!TODO: remove this together with old fonts
   isLowWidthScreen = function()
   {
@@ -72,12 +75,14 @@ local getFontsSh = screenInfo.getScreenHeightForFonts
       isWide = isLowWidthScreen() ? 0 : 1
       pxFontTgtOutdated = getPixelToPixelFontSizeOutdatedPx(sWidth, sHeight)
     }
+    foreach(prefixId in daguiFonts.getRealFontNamePrefixesMap())
+      config[$"fontHeight_{prefixId}"] <- daguiFonts.getFontLineHeightPx(null, $"{prefixId}{fontGenId}")
     return ::handyman.renderCached("gui/const/const_fonts_css", config)
   }
 
   //text visible in options
   getOptionText = @() ::loc("fontSize/" + id.tolower())
-    + ::loc("ui/parentheses/space", { text = (100 * sizeMultiplier).tointeger() + "%" })
+    + ::loc("ui/parentheses/space", { text = "{0}%".subst(::round(100 * sizeMultiplier).tointeger()) })
   getFontExample = @() "small_text" + fontGenId
 }
 
@@ -95,7 +100,7 @@ enums.addTypesByGlobalName("g_font",
   SMALL = {
     fontGenId = "_set_small"
     saveId = FONT_SAVE_ID.SMALL
-    sizeMultiplier = 0.667
+    sizeMultiplier = 0.66667
     sizeOrder = FONT_SIZE_ORDER.SMALL
 
     isAvailable = @(sWidth, sHeight) getFontsSh(sWidth, sHeight) >= (hasNewFontsSizes ? 768 : 900)
@@ -113,7 +118,7 @@ enums.addTypesByGlobalName("g_font",
   MEDIUM = {
     fontGenId = "_set_medium"
     saveId = FONT_SAVE_ID.MEDIUM
-    sizeMultiplier = 0.834
+    sizeMultiplier = 0.83334
     saveIdCompatibility = [FONT_SAVE_ID.PX]
     sizeOrder = FONT_SIZE_ORDER.MEDIUM
 
@@ -190,7 +195,7 @@ g_font.getDefault <- function getDefault()
   if (fixedFont)
     return fixedFont
 
-  if (::is_platform_shield_tv() || ::is_ps4_or_xbox || ::is_steam_big_picture())
+  if (::is_platform_shield_tv() || isPlatformSony || isPlatformXboxOne || ::is_steam_big_picture())
     return LARGE
   if (::is_small_screen)
     return HUGE

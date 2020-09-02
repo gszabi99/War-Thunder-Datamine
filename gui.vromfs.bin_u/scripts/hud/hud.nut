@@ -11,9 +11,6 @@ local UNMAPPED_CONTROLS_WARNING_TIME_WINK = 3.0
 local getUnmappedControlsWarningTime = @() ::get_game_mode() == ::GM_TRAINING ? 180000.0 : 30.0
 local defaultFontSize = "small"
 
-::should_show_controls_help_on_loading <- ::is_platform_ps4 || ::is_platform_xboxone
-::should_offer_controls_help <- !::should_show_controls_help_on_loading
-
 ::air_hud_actions <- {
   flaps = {
     id     = "flaps"

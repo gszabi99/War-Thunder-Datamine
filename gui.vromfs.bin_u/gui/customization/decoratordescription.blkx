@@ -1,0 +1,89 @@
+[
+  {
+    "flow": "vertical"
+  },
+  {
+    "tdiv": {
+      "height": "@decalIconHeight",
+      "pos": "50%pw-50%w, 0",
+      "position": "relative",
+      "display": "hide",
+      "img": {
+        "id": "image",
+        "size": "pw, ph"
+      }
+    }
+  },
+  {
+    "textAreaSmall": {
+      "id": "header",
+      "text": "",
+      "max-width": "6@decalIconHeight",
+      "margin": "0, 1@blockInterval",
+      "hideEmptyText": "yes",
+      "overlayTextColor": "unlockHeader"
+    }
+  },
+  {
+    "textareaNoTab": {
+      "id": "description",
+      "text": "",
+      "margin": "0, 1@blockInterval",
+      "hideEmptyText": "yes",
+      "max-width": "6@decalIconHeight",
+      "smallFont": "yes"
+    }
+  },
+  {
+    "textAreaSmall": {
+      "id": "price",
+      "display": "hide",
+      "max-width": "6@decalIconHeight",
+      "text": "",
+      "hideEmptyText": "yes"
+    }
+  },
+  {
+    "div": {
+      "id": "conditions",
+      "margin": "0, 2@blockInterval",
+      "flow": "horizontal",
+      "max-width": "6@decalIconHeight",
+      "display": "hide",
+      "cardImg": {
+        "id": "state",
+        "size": "@unlockIconSize, @unlockIconSize",
+        "re-type": "9rect",
+        "background-repeat": "expand",
+        "background-image": "#ui/gameuiskin#favorite",
+        "margin": "0, 0, 1@blockInterval, 0"
+      },
+      "tdiv": {
+        "pos": "0, ph/2-h/2",
+        "position": "relative",
+        "flow": "vertical",
+        "textareaNoTab": {
+          "id": "unlock_description",
+          "text": "",
+          "hideEmptyText": "yes",
+          "max-width": "6@decalIconHeight - @unlockIconSize - 1@blockInterval",
+          "smallFont": "yes"
+        },
+        "challengeDescriptionProgress": {
+          "id": "progress",
+          "display": "hide",
+          "value": ""
+        }
+      }
+    }
+  },
+  {
+    "div": {
+      "id": "additional_description",
+      "margin": "0, 1@blockInterval",
+      "flow": "horizontal",
+      "max-width": "1@decorationInfoMaxWidth",
+      "display": "hide"
+    }
+  }
+]

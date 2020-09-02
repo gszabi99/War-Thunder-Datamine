@@ -1,4 +1,6 @@
 local screenInfo = ::require("scripts/options/screenInfo.nut")
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
+local sony = require("sony")
 
 local defValue  = 1.0
 local values    = [ 1.0, 0.95, 0.9 ]
@@ -6,8 +8,8 @@ local items     = ["100%", "95%", "90%"]
 
 local getFixedValue = function() //return -1 when not fixed
 {
-  if (::is_platform_ps4)
-    return ::ps4_get_safe_area()
+  if (isPlatformSony)
+    return sony.getDisplaySafeArea()
   if (::is_low_width_screen())
     return 1.0
   return -1

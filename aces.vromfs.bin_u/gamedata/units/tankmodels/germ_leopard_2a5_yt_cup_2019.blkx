@@ -342,8 +342,8 @@
           "createSecondaryShatters": false
         },
         "turret_09_top_dm": {
-          "armorThickness": 150.0,
-          "armorClass": "CHA_tank_modern"
+          "armorThickness": 35.0,
+          "armorClass": "RHA_tank_modern"
         },
         "turret_04_back_dm": {
           "armorThickness": 35.0,
@@ -367,6 +367,10 @@
         "turret_02_back_dm": {
           "armorThickness": 20.0,
           "hidableInViewer": true
+        },
+        "turret_09_back_dm": {
+          "armorThickness": 35.0,
+          "armorClass": "RHA_tank_modern"
         }
       },
       "inner_armor": {
@@ -386,7 +390,8 @@
           "armorThickness": 50.0
         },
         "composite_armor_turret_05_dm": {
-          "armorThickness": 35.0
+          "armorThickness": 35.0,
+          "armorClass": "spaced_armor_air"
         },
         "composite_armor_turret_06_dm": {
           "armorThickness": 14.0
@@ -408,7 +413,8 @@
           "armorEffectiveThicknessMax": 50.0
         },
         "composite_armor_turret_08_dm": {
-          "armorThickness": 35.0
+          "armorThickness": 35.0,
+          "armorClass": "spaced_armor_air"
         },
         "composite_armor_hull_02_dm": {
           "armorThickness": 35.0
@@ -1246,6 +1252,21 @@
             "name": "ammo_body_50_dm"
           },
           {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
+          },
+          {
             "name": "ammo_body_l_01_dm"
           },
           {
@@ -2074,6 +2095,18 @@
     }
   },
   {
+    "fuelTanks": {
+      "r1": {
+        "part": "fuel_tank_exterior_r_02_dm",
+        "external": true
+      },
+      "l1": {
+        "part": "fuel_tank_exterior_l_02_dm",
+        "external": true
+      }
+    }
+  },
+  {
     "xray_viewer_data": [
       {
         "armorArrayHullTop": {
@@ -2237,6 +2270,11 @@
               "layer": {
                 "dmPart": "composite_armor_turret_05_dm"
               }
+            },
+            {
+              "layer": {
+                "dmPart": "turret_09_top_dm"
+              }
             }
           ]
         }
@@ -2276,6 +2314,11 @@
             {
               "layer": {
                 "dmPart": "composite_armor_turret_08_dm"
+              }
+            },
+            {
+              "layer": {
+                "dmPart": "turret_09_back_dm"
               }
             }
           ]
@@ -2365,7 +2408,7 @@
           "barrelDP": "gun_barrel_dm",
           "breechDP": "cannon_breech_dm",
           "speedYaw": 40.0,
-          "speedPitch": 40.0,
+          "speedPitch": 20.0,
           "fireConeAngle": 1.0,
           "bullets": 42,
           "salvoAmount": 100.0,
@@ -2411,7 +2454,6 @@
             "verticalOmegaMult": 1.0,
             "verticalSpeedLimitKPH": 75.0,
             "speedFromVehicleVerticalMult": -1.0,
-            "speedPitch": 20.0,
             "errorKPHToDegrees": [
               {
                 "row": [5.0,0.0]
@@ -3267,7 +3309,7 @@
                 "barrelDP": "gun_barrel_dm",
                 "breechDP": "cannon_breech_dm",
                 "speedYaw": 40.0,
-                "speedPitch": 40.0,
+                "speedPitch": 20.0,
                 "fireConeAngle": 1.0,
                 "bullets": 42,
                 "salvoAmount": 100.0,
@@ -3313,7 +3355,6 @@
                   "verticalOmegaMult": 1.0,
                   "verticalSpeedLimitKPH": 75.0,
                   "speedFromVehicleVerticalMult": -1.0,
-                  "speedPitch": 20.0,
                   "errorKPHToDegrees": [
                     {
                       "row": [5.0,0.0]
@@ -3556,94 +3597,6 @@
     }
   },
   {
-    "skin": {
-      "name": "lederbraun",
-      "nameLocId": "skin/ger_camo_lederbraun",
-      "descLocId": "skin/ger_camo_lederbraun/desc",
-      "replace_tex": {
-        "from": "ger_camo_bronzegruen*",
-        "to": "ger_camo_lederbraun*"
-      }
-    }
-  },
-  {
-    "skin": {
-      "name": "winter",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
-      "replace_tex": {
-        "from": "ger_camo_bronzegruen*",
-        "to": "ussr_camo_winter*"
-      }
-    }
-  },
-  {
-    "skin": {
-      "name": "ger_camo_carc",
-      "nameLocId": "skin/ger_camo_carc",
-      "descLocId": "skin/ger_camo_carc/desc",
-      "replace_tex": {
-        "from": "ger_camo_bronzegruen*",
-        "to": "ger_camo_carc*"
-      }
-    }
-  },
-  {
-    "skin": {
-      "name": "ger_camo_modern_threecolor",
-      "nameLocId": "skin/ger_camo_modern_threecolor",
-      "descLocId": "skin/ger_camo_modern_threecolor/desc",
-      "replace_tex": {
-        "from": "ger_camo_bronzegruen*",
-        "to": "ger_camo_modern_threecolor*"
-      }
-    }
-  },
-  {
-    "skin": {
-      "name": "tank_biathlon_red",
-      "nameLocId": "skin/tank_biathlon_red",
-      "descLocId": "skin/tank_biathlon_red/desc",
-      "replace_tex": {
-        "from": "ger_camo_bronzegruen*",
-        "to": "ussr_camo_biathlon_red*"
-      }
-    }
-  },
-  {
-    "skin": {
-      "name": "tank_biathlon_green",
-      "nameLocId": "skin/tank_biathlon_green",
-      "descLocId": "skin/tank_biathlon_green/desc",
-      "replace_tex": {
-        "from": "ger_camo_bronzegruen*",
-        "to": "ussr_camo_biathlon_green*"
-      }
-    }
-  },
-  {
-    "skin": {
-      "name": "tank_biathlon_blue",
-      "nameLocId": "skin/tank_biathlon_blue",
-      "descLocId": "skin/tank_biathlon_blue/desc",
-      "replace_tex": {
-        "from": "ger_camo_bronzegruen*",
-        "to": "ussr_camo_biathlon_blue*"
-      }
-    }
-  },
-  {
-    "skin": {
-      "name": "tank_biathlon_yellow",
-      "nameLocId": "skin/tank_biathlon_yellow",
-      "descLocId": "skin/tank_biathlon_yellow/desc",
-      "replace_tex": {
-        "from": "ger_camo_bronzegruen*",
-        "to": "ussr_camo_biathlon_yellow*"
-      }
-    }
-  },
-  {
     "ammoStowages": {
       "ammo1": [
         {
@@ -3803,6 +3756,50 @@
           }
         }
       ]
+    }
+  },
+  {
+    "skin": {
+      "name": "lederbraun",
+      "nameLocId": "skin/ger_camo_lederbraun",
+      "descLocId": "skin/ger_camo_lederbraun/desc",
+      "replace_tex": {
+        "from": "ger_camo_bronzegruen*",
+        "to": "ger_camo_lederbraun*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "winter",
+      "nameLocId": "skin/winter",
+      "descLocId": "skin/winter/desc",
+      "replace_tex": {
+        "from": "ger_camo_bronzegruen*",
+        "to": "ussr_camo_winter*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "ger_camo_carc",
+      "nameLocId": "skin/ger_camo_carc",
+      "descLocId": "skin/ger_camo_carc/desc",
+      "replace_tex": {
+        "from": "ger_camo_bronzegruen*",
+        "to": "ger_camo_carc*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "ger_camo_modern_threecolor",
+      "nameLocId": "skin/ger_camo_modern_threecolor",
+      "descLocId": "skin/ger_camo_modern_threecolor/desc",
+      "replace_tex": {
+        "from": "ger_camo_bronzegruen*",
+        "to": "ger_camo_modern_threecolor*"
+      }
     }
   }
 ]

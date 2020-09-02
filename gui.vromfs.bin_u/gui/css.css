@@ -1591,10 +1591,12 @@ textareaNoTab.highlightButton:pushed {
 @import "cssElems\frame.css"
 @import "cssElems\navBar.css"
 @import "cssElems\focusFrameAnim.css"
+@import "cssElems\imgButton.css"
 
 
 @import "help/help.css"
 @import "weaponry/weaponry.css"
+@import "weaponry/engineering.css"
 @import "profile/unlockItem.css"
 @import "actionsList/actionsList.css"
 @import "gameModeSelect/gameModeSelect.css"
@@ -1615,6 +1617,7 @@ textareaNoTab.highlightButton:pushed {
 
 @import "cssElems\buttons_console.css" 
 @import "paginator\paginator.css" 
+@import "cssElems\collapsableBlock.css"
 @import "chat/chat.css"
 @import "fileDialog/fileDialog.css"
 @import "animated.css"
@@ -1754,32 +1757,6 @@ tooltipObj[type=dark] {
   background-color: @frameBackgroundColor;
 }
 
-@const imgFrameSize: 1.45*@profileMedalSize;
-@const imgFramePad: 3*@sf/@pf_outdated;
-@const hoverFrameMargin: 4*@sf/@pf_outdated;
-imgFrame {
-  re-type:9rect;
-  background-repeat:expand;
-  background-color:@white;
-  background-position:6,6;
-  background-image:#ui/gameuiskin#window_body;
-  padding:@imgFramePad;
-}
-imgFrame {
-  margin:0, 0, @imgFramePad, @imgFramePad;
-  input-transparent: yes;
-}
-imgFrame[noMargin=yes] {
-  margin:0;
-}
-.hoverFrame > imgFrame {
-  size:@imgFrameSize, @imgFrameSize;
-  background-color:@transparent;
-  background-position:6;
-  background-repeat:expand;
-  padding:5*@sf/@pf_outdated;
-}
-
 awardDiv > layeredIconContainer {
   height:ph;
   width:h;
@@ -1800,76 +1777,17 @@ awardDiv.unlockFrame > layeredIconContainer {
   height:ph - 4;
 }
 
-imgButton {
-  behaviour:button;
-  background-image:#ui/gameuiskin#header_button_;
-  background-color:@white;
-  background-position:6;
-  background-repeat:expand;
-  padding:1@framePadding;
-  css-hier-invalidate:yes;
-  total-input-transparent:yes;
-}
-.hoverFrame > imgButton {
-  size:110*@sf/@pf_outdated, 110*@sf/@pf_outdated;
-}
-.hoverFrame > imgButton > img , .hoverFrame > imgFrame > img{
-  pos:50%pw-50%w, 50%ph-50%h;
-  position:absolute;
-}
-backlight {
-  size:pw, ph;
-  pos:50%pw-50%w, 50%ph-50%h;
-  position:absolute;
-  background-repeat:expand;
-  background-color:@white;
-  input-transparent:yes;
-}
-imgFrame > backlight[UnlockedObject=yes] {
-  background-image:#ui/gameuiskin#acheivement_bg_active;
-}
-imgFrame > backlight[unlockedObject=no] {
-  background-image:#ui/gameuiskin#acheivement_bg_;
-}
-imgFrame > backlight:hover, imgFrame > backlight:pushed {
-  background-image:#ui/gameuiskin#acheivement_bg_hover;
-}
-
-
-imgButton.decal_image:disabled, imgButton.decal_image[unlocked=no] {
-  background-image:#ui/gameuiskin#header_button_disabled;
-}
-imgButton.decal_image:disabled > img {
-  background-color:@lockedDecal;
-}
-imgButton.decal_image:pushed,
-.hoverFrame > imgButton:pushed {
-  background-image:#ui/gameuiskin#header_button_active;
-}
-
-[show_console_buttons=no] :focus > imgButton.decal_image[selected=yes] {
-  re-type:9rect;
-  foreground-color: #55555555;
-  foreground-image: #ui/gameuiskin#item_selection;
-  foreground-position: 6;
-  foreground-repeat: expand;
-}
-
-imgButton[highlighted=yes], imgButton.decal_image[highlighted=yes] {
-  background-image:#ui/gameuiskin#header_button_active;
-}
-imgButton.decal_image:hover, .hoverFrame > imgButton:hover {
-  background-image:#ui/gameuiskin#header_button_hover;
-}
-imgButton.decal_image[unlocked=no]:hover {
-  background-image:#ui/gameuiskin#header_button_active;
-}
-
 imgSelectable {
   size:1.5@profileMedalSize, 1.5@profileMedalSize;
 }
 imgSelectable > img {
   size:@profileMedalSize, @profileMedalSize;
+}
+imgSelectable.mediumSize {
+  size:1.8@profileMedalSize, 1.8@profileMedalSize;
+}
+imgSelectable.mediumSize > img {
+  size:1.2@profileMedalSize, 1.2@profileMedalSize;
 }
 imgSelectable.smallMedals {
   size:1.5@profileMedalSizeList, 1.5@profileMedalSizeList;
@@ -1891,50 +1809,6 @@ imgUsercardMedal > img {
   size:@usercardMedalSize, @usercardMedalSize;
 }
 
-LockedImg{
-  size:pw, ph;
-  pos:50%pw-50%w, 50%ph-50%h;
-  position:absolute;
-  background-repeat:expand;
-  input-transparent:yes;
-}
-LockedImg[statusLock=achievement],
-LockedImg[statusLock=noDLC],
-LockedImg[statusLock=limit] {
-  pos:pw-w, ph-h;
-  size:@mIco,@mIco;
-  background-color:@white;
-}
-LockedImg[statusLock=achievement] {
-  background-image:#ui/gameuiskin#locked_white;
-}
-LockedImg[statusLock=noDLC] {
-  background-image:#ui/gameuiskin#dlc_locked;
-}
-LockedImg[statusLock=limit] {
-  background-image:#ui/gameuiskin#locked;
-}
-
-LockedImg[statusLock=noPremium_1] {
-  size:pw-6*@sf/@pf_outdated, ph-6*@sf/@pf_outdated;
-  background-color:@white;
-  background-image:#ui/images/decalslot_nopremium_vertical;
-}
-LockedImg[statusLock=noPremium_2] {
-  size:pw-6*@sf/@pf_outdated, ph-6*@sf/@pf_outdated;
-  background-color:@white;
-  background-image:#ui/images/decalslot_nopremium_horizontal;
-}
-LockedImg[statusLock=country] {
-  size:@lIco,@lIco;
-  background-color:@white;
-}
-imgButton.decal_image > contentCorner {
-  background-color:@white;
-  background-image:#ui/gameuiskin#price_bg;
-  background-position:6;
-  background-repeat:expand;
-}
 img[click_to_resize] {
   tooltip:#click_to_view_image;
   behaviour:button;
@@ -1989,22 +1863,6 @@ rootScene {
   position:absolute;
   size:sw,sh;
   input-transparent:yes;
-}
-
-collapsableBlock[type=decoratorsList] > content {
-  behaviour:posNavigator;
-  navigatorShortcuts:full;
-  moveX:linear;
-  moveY:closest;
-
-  flow:h-flow;
-  disableFocusParent:yes;
-
-  background-image:#ui/gameuiskin#block_bg;
-  background-color:@white;
-  background-position:4;
-  background-repeat:expand;
-  max-width: pw;
 }
 
 fieldReq{
@@ -2529,46 +2387,6 @@ airInfoHeader {
   position:relative;
   width:@airInfoPanelWidth;
   height:@airInfoToggleButtonSize;
-}
-
-collapsableBlock {
-  width:pw;
-  flow:vertical;
-  css-hier-invalidate:yes;
-}
-collapsableBlock > header {
-  size:pw, @baseTrHeight;
-  css-hier-invalidate:yes;
-}
-collapsableBlock > header > fullSizeCollapseBtn {
-  tooltip:"";
-  css-hier-invalidate:yes;
-}
-collapsableBlock > header > fullSizeCollapseBtn > text {
-  behaviour:OverflowScroller;
-  position:absolute;
-  size:pw,ph;
-  padding-left:@sIco;
-  text-align:left;
-  color: @commonMenuButtonColor;
-  input-transparent:yes;
-}
-collapsableBlock > header > fullSizeCollapseBtn > activeText {
-  input-transparent:yes;
-}
-collapsableBlock > header > fullSizeCollapseBtn:hover,
-collapsableBlock:focus > header > fullSizeCollapseBtn,
-collapsableBlock[selected=yes] > header > fullSizeCollapseBtn {
-  background-color:@white;
-  background-image:#ui/gameuiskin#option_select_even;
-  background-position:4,4;
-  background-repeat:expand;
-}
-
-collapsableBlock > header > fullSizeCollapseBtn:hover > text,
-collapsableBlock:focus > header > fullSizeCollapseBtn > text,
-collapsableBlock[selected=yes] > header > fullSizeCollapseBtn:[selected=yes] > text {
-  color:@activeTextColor;
 }
 
 fadedImageFrame {

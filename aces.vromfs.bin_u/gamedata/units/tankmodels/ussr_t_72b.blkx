@@ -168,10 +168,10 @@
       },
       "ufp_inner_35mm_composite_armor": {
         "createSecondaryShatters": false,
+        "cumulativeArmorQuality": 5.5,
         "turret_01_bottom_dm": {
           "armorThickness": 5.0,
           "armorClass": "rubber_tank",
-          "cumulativeArmorQuality": 0.4,
           "genericArmorQuality": 0.45
         },
         "turret_03_front_dm": {
@@ -185,7 +185,6 @@
         "turret_04_bottom_dm": {
           "armorThickness": 5.0,
           "armorClass": "rubber_tank",
-          "cumulativeArmorQuality": 0.4,
           "genericArmorQuality": 0.45
         }
       },
@@ -273,7 +272,7 @@
         "composite_armor_turret_01_dm": {
           "armorClass": "t_72b_turrert_composite_armor",
           "hidableInXrayViewer": true,
-          "cumulativeArmorQuality": 0.6,
+          "cumulativeArmorQuality": 0.83,
           "genericArmorQuality": 0.7
         },
         "composite_armor_turret_02_dm": {
@@ -628,8 +627,10 @@
           "armorClass": "tank_traks",
           "armorThickness": 30.0,
           "hp": 400.0,
+          "ex_armor_02_dm": [],
           "ex_armor_03_dm": [],
           "ex_armor_04_dm": [],
+          "ex_armor_05_dm": [],
           "ex_armor_body_01_dm": {
             "hp": 300.0
           },
@@ -1310,6 +1311,21 @@
           },
           {
             "name": "ammo_body_50_dm"
+          },
+          {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
           },
           {
             "name": "ammo_body_l_01_dm"
@@ -2343,14 +2359,48 @@
           "errTargettingOn100kmph": 0.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
-          "turret": {
-            "head": "bone_mg_aa_h_01",
-            "gun": "bone_mg_aa_v_01",
-            "gunnerDm": "commander_dm"
-          },
+          "turret": [
+            {
+              "head": "bone_mg_aa_h_01"
+            },
+            {
+              "gun": "bone_mg_aa_v_01"
+            },
+            {
+              "gunnerDm": "commander_dm"
+            },
+            {
+              "linkedAnimPart": {
+                "verNode": "bone_mount_mg_01",
+                "verLimits": [-4.0,70.0],
+                "verOriginLimits": [-4.0,75.0]
+              }
+            },
+            {
+              "linkedAnimPart": {
+                "verNode": "bone_mount_mg_02",
+                "verLimits": [0.0,5.0],
+                "verOriginLimits": [-4.0,75.0]
+              }
+            },
+            {
+              "linkedAnimPart": {
+                "verNode": "bone_mount_mg_03",
+                "verLimits": [-6.0,75.0],
+                "verOriginLimits": [-4.0,75.0]
+              }
+            },
+            {
+              "linkedAnimPart": {
+                "verNode": "bone_mount_mg_04",
+                "verLimits": [0.0,2.0],
+                "verOriginLimits": [-4.0,75.0]
+              }
+            }
+          ],
           "limits": {
             "yaw": [-180.0,180.0],
-            "pitch": [-5.0,60.0]
+            "pitch": [-4.0,75.0]
           }
         }
       },
@@ -3246,14 +3296,48 @@
                 "errTargettingOn100kmph": 0.0,
                 "errTargetting": 3.0,
                 "errExplTime": 0.0,
-                "turret": {
-                  "head": "bone_mg_aa_h_01",
-                  "gun": "bone_mg_aa_v_01",
-                  "gunnerDm": "commander_dm"
-                },
+                "turret": [
+                  {
+                    "head": "bone_mg_aa_h_01"
+                  },
+                  {
+                    "gun": "bone_mg_aa_v_01"
+                  },
+                  {
+                    "gunnerDm": "commander_dm"
+                  },
+                  {
+                    "linkedAnimPart": {
+                      "verNode": "bone_mount_mg_01",
+                      "verLimits": [-4.0,70.0],
+                      "verOriginLimits": [-4.0,75.0]
+                    }
+                  },
+                  {
+                    "linkedAnimPart": {
+                      "verNode": "bone_mount_mg_02",
+                      "verLimits": [0.0,5.0],
+                      "verOriginLimits": [-4.0,75.0]
+                    }
+                  },
+                  {
+                    "linkedAnimPart": {
+                      "verNode": "bone_mount_mg_03",
+                      "verLimits": [-6.0,75.0],
+                      "verOriginLimits": [-4.0,75.0]
+                    }
+                  },
+                  {
+                    "linkedAnimPart": {
+                      "verNode": "bone_mount_mg_04",
+                      "verLimits": [0.0,2.0],
+                      "verOriginLimits": [-4.0,75.0]
+                    }
+                  }
+                ],
                 "limits": {
                   "yaw": [-180.0,180.0],
-                  "pitch": [-5.0,60.0]
+                  "pitch": [-4.0,75.0]
                 }
               }
             },
@@ -3432,6 +3516,28 @@
       "replace_tex": {
         "from": "ussr_camo_green*",
         "to": "ussr_camo_deform*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "ussr_modern_green",
+      "nameLocId": "skin/ussr_modern_green",
+      "descLocId": "skin/ussr_modern_green/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_modern_green*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "ussr_camo_modern_desert_deform",
+      "nameLocId": "skin/ussr_camo_modern_desert_deform",
+      "descLocId": "skin/ussr_camo_modern_desert_deform/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_camo_modern_desert_deform*"
       }
     }
   },

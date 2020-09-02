@@ -1303,6 +1303,21 @@
             "name": "ammo_body_50_dm"
           },
           {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
+          },
+          {
             "name": "ammo_body_l_01_dm"
           },
           {
@@ -2124,7 +2139,7 @@
       {
         "Weapon": {
           "trigger": "gunner0",
-          "blk": "gameData/Weapons/groundModels_weapons/125mm_2A46_M1_user_cannon.blk",
+          "blk": "gameData/Weapons/groundModels_weapons/125mm_2A46_M1_T_80U_user_cannon.blk",
           "emitter": "bone_gun_barrel",
           "flash": "emtr_gun_flame",
           "defaultYaw": 0.0,
@@ -2359,6 +2374,13 @@
       "preset": {
         "name": "ussr_t_80u_default",
         "blk": "gameData/units/tankModels/weaponPresets/ussr_t_80u_default.blk"
+      }
+    }
+  },
+  {
+    "sensors": {
+      "sensor": {
+        "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
       }
     }
   },
@@ -3017,7 +3039,31 @@
         "image": "#ui/gameuiskin#tank_reinforcement_ussr"
       },
       "modern_tank_laser_rangefinder": {
-        "tier": 2
+        "tier": 2,
+        "effects": {
+          "rangefinderMounted": true,
+          "isLaser": true,
+          "distanceError": [25.0,25.0,25.0,25.0],
+          "distanceThresholdMin": [1000.0,3000.0,5000.0,9999.0],
+          "distanceThresholdMax": [1000.0,3000.0,5000.0,9999.0],
+          "distanceErrorRealistic": [25.0,25.0,25.0,25.0],
+          "distanceThresholdMinRealistic": [1000.0,3000.0,5000.0,9999.0],
+          "distanceThresholdMaxRealistic": [1000.0,3000.0,5000.0,9999.0],
+          "timeMeasurementRange": [0.5,0.5],
+          "rcostAddParam": 0.98,
+          "sensors": [
+            {
+              "sensor": {
+                "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
+              }
+            },
+            {
+              "sensor": {
+                "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+              }
+            }
+          ]
+        }
       },
       "125mm_ussr_HE": [],
       "125mm_ussr_APDS_FS": [],
@@ -3038,7 +3084,7 @@
             {
               "Weapon": {
                 "trigger": "gunner0",
-                "blk": "gameData/Weapons/groundModels_weapons/125mm_2A46_M1_user_cannon.blk",
+                "blk": "gameData/Weapons/groundModels_weapons/125mm_2A46_M1_T_80U_user_cannon.blk",
                 "emitter": "bone_gun_barrel",
                 "flash": "emtr_gun_flame",
                 "defaultYaw": 0.0,
@@ -3466,6 +3512,9 @@
             },
             {
               "node": "gun_mask_01"
+            },
+            {
+              "node": "skin_01"
             }
           ]
         },
@@ -3593,6 +3642,28 @@
       "replace_tex": {
         "from": "ussr_camo_green*",
         "to": "ussr_camo_deform*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "ussr_modern_green",
+      "nameLocId": "skin/ussr_modern_green",
+      "descLocId": "skin/ussr_modern_green/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_modern_green*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "ussr_camo_modern_desert_deform",
+      "nameLocId": "skin/ussr_camo_modern_desert_deform",
+      "descLocId": "skin/ussr_camo_modern_desert_deform/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_camo_modern_desert_deform*"
       }
     }
   },

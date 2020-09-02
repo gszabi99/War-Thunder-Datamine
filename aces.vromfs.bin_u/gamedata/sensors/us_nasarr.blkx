@@ -14,11 +14,11 @@
       "antenna": {
         "azimuth": {
           "angleHalfSens": 3.6,
-          "sideLobesSensitivity": -30.0
+          "sideLobesSensitivity": -27.0
         },
         "elevation": {
           "angleHalfSens": 6.2,
-          "sideLobesSensitivity": -30.0
+          "sideLobesSensitivity": -27.0
         }
       }
     },
@@ -91,6 +91,7 @@
   },
   "signals": {
     "search": {
+      "dynamicRange": [40.0,10.0],
       "groundClutter": true,
       "aircraftAsTarget": true,
       "friendFoeId": true,
@@ -214,6 +215,11 @@
             "setScopeRangeSet": {
               "scopeRangeSet": "common"
             }
+          },
+          {
+            "setIllumination": {
+              "illumination": false
+            }
           }
         ],
         "setSearchMode": [
@@ -281,6 +287,11 @@
           {
             "setScopeRangeSet": {
               "scopeRangeSet": "common"
+            }
+          },
+          {
+            "setIllumination": {
+              "illumination": false
             }
           }
         ],
@@ -366,6 +377,11 @@
               "source": "constant",
               "value": 0.0
             }
+          },
+          {
+            "setIllumination": {
+              "illumination": false
+            }
           }
         ],
         "setBoresightLockMode": {
@@ -406,6 +422,9 @@
             "source": "constRange",
             "pos": 2250.0,
             "width": 3500.0
+          },
+          "setIllumination": {
+            "illumination": false
           }
         },
         "setTrackMode": [
@@ -475,6 +494,11 @@
             "setSignal": {
               "signal": "track"
             }
+          },
+          {
+            "setIllumination": {
+              "illumination": true
+            }
           }
         ]
       },
@@ -513,6 +537,7 @@
           "actions": {
             "designateActiveDetectedTarget": {
               "type": 0,
+              "self": true,
               "sensorIndex": 0
             }
           }
@@ -734,7 +759,8 @@
           "actions": {
             "designateActiveDetectedTarget": {
               "type": 0,
-              "sensorIndex": 0
+              "sensorIndex": 0,
+              "self": true
             }
           }
         }

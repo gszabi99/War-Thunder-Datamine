@@ -1,6 +1,6 @@
 local time = require("scripts/time.nut")
 local penalty = require_native("penalty")
-
+local { startLogout } = require("scripts/login/logout.nut")
 
 //  local penalist = penalty.getPenaltyList()
 //  [
@@ -71,7 +71,7 @@ local showBannedStatusMsgBox = function(showBanOnly = false) {
 
   if (st.status == penalty.BAN) {
     banType  = "ban"
-    fn = function() { ::gui_start_logout() }
+    fn = startLogout
     ::queues.leaveAllQueuesSilent()
     ::SessionLobby.leaveRoom()
   } else if (st.status == penalty.DEVOICE) {

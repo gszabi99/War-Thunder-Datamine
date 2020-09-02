@@ -40,11 +40,8 @@ if (::disable_network())
 ::target_platform <- ::get_platform()
 ::is_platform_pc <- ["win32", "win64", "macosx", "linux64"].indexof(::target_platform) != null
 ::is_platform_windows <- ["win32", "win64"].indexof(::target_platform) != null
-::is_platform_ps4 <- ::target_platform == "ps4"
 ::is_platform_android <- ::target_platform == "android"
 ::is_platform_xboxone <- ::target_platform == "xboxOne"
-
-::is_ps4_or_xbox <- ::is_platform_ps4 || ::is_platform_xboxone
 
 ::is_dev_version <- false // WARNING : this is unsecure
 
@@ -59,8 +56,6 @@ if (::disable_network())
 ::ps4_vsync_enabled <- true
 
 ::cross_call_api <- {}
-
-if (::is_platform_ps4 && !::is_dev_version) ::exit_game <- function() {::gui_start_logout()}
 
 ::FORCE_UPDATE <- true
 global const LOST_DELAYED_ACTION_MSEC = 500
@@ -483,7 +478,6 @@ local isFullScriptsLoaded = false
 
   // Independed Modules with mainHandler. Need load this befor rest handlers
   require("scripts/baseGuiHandlerWT.nut")
-  require("scripts/mainmenu/topMenuHandler.nut")
   // end of Independed Modules with mainHandler
 
   ::dagor.debug($"LOAD GAME SCRIPTS AFTER LOGIN: {game}")
@@ -502,7 +496,6 @@ local isFullScriptsLoaded = false
     "gamercard.nut"
     "popups/popups.nut"
     "popups/popup.nut"
-    "weaponsInfo.nut"
 
     "wheelmenu/wheelmenu.nut"
     "guiLines.nut"
@@ -530,7 +523,6 @@ local isFullScriptsLoaded = false
     "countryChoiceWnd.nut"
 
     "measureType.nut"
-    "options/optionsWnd.nut"
     "genericOptions.nut"
     "options/framedOptionsWnd.nut"
     "options/optionsCustomDifficulty.nut"

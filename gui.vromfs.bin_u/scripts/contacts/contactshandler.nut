@@ -280,7 +280,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     return listObj.childrenCount() != count
   }
 
-  needShowContactHoverButtons = @() !::is_ps4_or_xbox
+  needShowContactHoverButtons = @() !platformModule.isPlatformSony && !platformModule.isPlatformXboxOne
 
   function buildPlayersList(gName, showOffline=true)
   {
@@ -439,7 +439,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
       updateButtonInviteText(btnObj, contact.uidInt64)
 
     showBtn("btn_usercard", ::has_feature("UserCards"), contact_buttons_holder)
-    showBtn("btn_facebookFriends", ::has_feature("Facebook") && !::is_platform_ps4, contact_buttons_holder)
+    showBtn("btn_facebookFriends", ::has_feature("Facebook") && !platformModule.isPlatformSony, contact_buttons_holder)
     showBtn("btn_squadInvite_bottom", false, contact_buttons_holder)
   }
 
@@ -997,7 +997,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
       scene.findObject("btn_contactsSelect").setValue(::loc(btnTextLocId))
     }
 
-    showSceneBtn("btn_psnFriends", ::is_platform_ps4)
+    showSceneBtn("btn_psnFriends", platformModule.isPlatformSony)
     showSceneBtn("btn_contactsSelect", showSelectButton)
   }
 

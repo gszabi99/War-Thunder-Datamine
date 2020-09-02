@@ -114,6 +114,21 @@
     "canReloadNonGuns": true
   },
   {
+    "smokeScreenActivateTime": 5.0
+  },
+  {
+    "smokeScreenEffectTime": 7.0
+  },
+  {
+    "smokeScreenRad": 12.0
+  },
+  {
+    "smokeScreenOffset": [-3.0,0.0,2.0]
+  },
+  {
+    "smokeScreenFxType": "tank_smokescreen"
+  },
+  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "RHA_tank",
@@ -302,6 +317,9 @@
         "ex_era_turret_10_dm": [],
         "ex_era_turret_11_dm": [],
         "ex_era_turret_12_dm": [],
+        "ex_era_turret_13_dm": [],
+        "ex_era_turret_14_dm": [],
+        "ex_era_turret_15_dm": [],
         "ex_era_hull_01_dm": [],
         "ex_era_hull_02_dm": [],
         "ex_era_hull_03_dm": [],
@@ -320,6 +338,12 @@
         "ex_era_hull_16_dm": [],
         "ex_era_hull_17_dm": [],
         "ex_era_hull_18_dm": [],
+        "ex_era_hull_19_dm": [],
+        "ex_era_hull_20_dm": [],
+        "ex_era_hull_21_dm": [],
+        "ex_era_hull_22_dm": [],
+        "ex_era_hull_23_dm": [],
+        "ex_era_hull_24_dm": [],
         "ex_era_hull_r_01_dm": [],
         "ex_era_hull_r_02_dm": [],
         "ex_era_hull_r_03_dm": [],
@@ -1000,6 +1024,21 @@
           },
           {
             "name": "ammo_body_50_dm"
+          },
+          {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
           },
           {
             "name": "ammo_body_l_01_dm"
@@ -2092,7 +2131,7 @@
         "Weapon": {
           "trigger": "gunner5",
           "triggerGroup": "smoke",
-          "blk": "gameData/Weapons/groundModels_weapons/66mm_germ_smoke_mortar_launcher.blk",
+          "blk": "gameData/Weapons/groundModels_weapons/60mm_smoke_mortar_launcher.blk",
           "weaponType": "rockets",
           "startFx": "",
           "useEmitter": true,
@@ -2785,6 +2824,7 @@
         "image": "#ui/gameuiskin#tank_reinforcement_uk"
       },
       "modern_tank_laser_rangefinder": [],
+      "tank_engine_smoke_screen_system": [],
       "105mm_usa_HESH": [],
       "105mm_usa_HESH_ammo_pack": {
         "tier": 1
@@ -2794,8 +2834,7 @@
       "105mm_us_M416_Smoke": [],
       "105mm_us_M416_Smoke_ammo_pack": [],
       "tank_smoke_screen_system_mod": {
-        "tier": 4,
-        "modClass": "protection",
+        "tier": 2,
         "effects": {
           "commonWeapons": [
             {
@@ -3038,7 +3077,7 @@
               "Weapon": {
                 "trigger": "gunner5",
                 "triggerGroup": "smoke",
-                "blk": "gameData/Weapons/groundModels_weapons/66mm_germ_smoke_mortar_launcher.blk",
+                "blk": "gameData/Weapons/groundModels_weapons/60mm_smoke_mortar_launcher.blk",
                 "weaponType": "rockets",
                 "startFx": "",
                 "useEmitter": true,
@@ -3431,6 +3470,11 @@
           }
         }
       ]
+    }
+  },
+  {
+    "smokeScreenExhaustEmitters": {
+      "emitter": "emtr_exhaust_01"
     }
   }
 ]

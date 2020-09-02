@@ -3,10 +3,13 @@ local { hasAllFeatures } = require("scripts/user/features.nut")
 local bhvUnseen = ::require("scripts/seen/bhvUnseen.nut")
 local promoConditions = require("scripts/promo/promoConditions.nut")
 local { getPollIdByFullUrl, invalidateTokensCache } = require("scripts/web/webpoll.nut")
+local { isPlatformSony,
+        isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+
 local { canUseIngameShop = @() false,
         openIngameStore = @() null
-} = ::is_platform_ps4? require("scripts/onlineShop/ps4Shop.nut")
-  : ::is_platform_xboxone? require("scripts/onlineShop/xboxShop.nut")
+} = isPlatformSony? require("scripts/onlineShop/ps4Shop.nut")
+  : isPlatformXboxOne? require("scripts/onlineShop/xboxShop.nut")
   : null
 
 local { getBundleId } = require("scripts/onlineShop/onlineBundles.nut")
@@ -194,7 +197,7 @@ local openProfileSheetParams = {
         local bundleId = getBundleId(params?[1])
         if (bundleId != "")
         {
-          if (::is_ps4_or_xbox)
+          if (isPlatformSony || isPlatformXboxOne)
             openIngameStore({ curItemId = bundleId, openedFrom = "promo" })
           else
             ::OnlineShopModel.doBrowserPurchaseByGuid(bundleId, params?[1])

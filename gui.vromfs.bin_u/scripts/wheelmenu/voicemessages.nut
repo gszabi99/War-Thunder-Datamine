@@ -1,4 +1,5 @@
 local localDevoice = require("scripts/penitentiary/localDevoice.nut")
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
 const HIDDEN_CATEGORY_NAME = "hidden"
 const LIMIT_SHOW_VOICE_MESSAGE_PETALS = 8
@@ -71,7 +72,7 @@ local function getFavoriteVoiceMessagesVariants() {
 
 local function getVoiceMessageListLine(index, is_category, name, squad, targetName, messageIndex = -1) {
   local scText = ""
-  if (!::is_platform_ps4)
+  if (!isPlatformSony)
   {
     local shortcutNames = [];
     local key = "ID_VOICE_MESSAGE_" + (index + 1); //1based
@@ -118,10 +119,9 @@ local function showVoiceMessageList(show, category, squad, targetName) {
     return false
   }
 
-  local categories = [];
+  local categories = []
   local menu = []
-  local air = ::getAircraftByName(::last_ca_aircraft)
-  local heroIsTank = air ? isTank(air) : false;
+  local heroIsTank = ::getAircraftByName(::last_ca_aircraft)?.isTank() ?? false
   local shortcutTable = {}
 
   foreach(idx, record in voiceMessageNames)

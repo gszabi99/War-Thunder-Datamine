@@ -110,7 +110,7 @@ class ::gui_handlers.ChooseSlotbarPreset extends ::gui_handlers.BaseGuiHandlerWT
           local unit = unitId == "" ? null : ::getAircraftByName(unitId)
           local params = {
             hasActions = false
-            status = (hasFeatureTanks || !::isTank(::getAircraftByName(unitId))) ? "owned" : "locked"
+            status = (hasFeatureTanks || !::getAircraftByName(unitId)?.isTank()) ? "owned" : "locked"
             showBR = ::has_feature("SlotbarShowBattleRating")
             getEdiffFunc = getCurrentEdiff.bindenv(this)
           }

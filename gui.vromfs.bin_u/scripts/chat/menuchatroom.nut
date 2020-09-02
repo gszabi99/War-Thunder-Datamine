@@ -1,6 +1,13 @@
 local platformModule = require("scripts/clientState/platform.nut")
 local { isChatEnableWithPlayer } = require("scripts/chat/chatStates.nut")
 
+enum MESSAGE_TYPE {
+  MY          = "my"
+  INCOMMING   = "incomming"
+  SYSTEM      = "system"
+  CUSTOM      = "custom"
+}
+
 local persist = {
   lastCreatedMessageIndex = 0
 }
@@ -149,6 +156,7 @@ local function newMessage(from, msg, privateMsg=false, myPrivate=false, overlayS
     uid = uid
     clanTag = clanTag
     userColor = userColor
+    isMeSender = messageType == MESSAGE_TYPE.MY
 
     msgs = [msg]
     msgsSrc = [msgSrc]

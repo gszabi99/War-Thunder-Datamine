@@ -856,6 +856,21 @@
             "name": "ammo_body_50_dm"
           },
           {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
+          },
+          {
             "name": "ammo_body_l_01_dm"
           },
           {
@@ -1870,7 +1885,7 @@
       },
       "tracks": {
         "animationMultiplier": 0.35,
-        "height": 0.02,
+        "height": 0.04,
         "width": 0.26
       },
       "collisionProps": {
@@ -1914,7 +1929,7 @@
       "suspension": {
         "maxDisplacementOffsets": [-0.05,0.0],
         "suspensionOffsets": [-0.08,-0.06,0.05],
-        "defaultGearRadius": 0.15,
+        "defaultGearRadius": 0.16,
         "topGearRadius": 0.1252,
         "frontBackGearRadius": 0.31,
         "defaultDampeningForce": [60000.0,60000.0],
@@ -2641,10 +2656,14 @@
   },
   {
     "default_skin": {
-      "name": "default",
       "replace_tex": {
         "from": "ussr_camo_green*",
         "to": "ussr_camo_winter_net*"
+      },
+      "set_tex": {
+        "from": "t_26_1940_turret_c*",
+        "to": "t_26_1940_skin_turret_c*",
+        "param": "camo_skin_tex"
       }
     }
   },
@@ -2665,20 +2684,6 @@
         "from": "ussr_camo_winter_net*",
         "to": "ussr_camo_green*"
       }
-    }
-  },
-  {
-    "defaultDecals": {
-      "decal0Line0": [3.57143,-1.56112e-07,0.0,1.52027],
-      "decal0Line1": [-1.56112e-07,-3.57143,0.0,7.19757],
-      "decal0HaveCP": true,
-      "decal0CP": [0.382624,2.08888,-0.320242],
-      "decal0CPNormDepth": [0.0,0.0,-1.0,-0.409079],
-      "decal0RotScale": [1.5708,0.28],
-      "decal0Mirrored": false,
-      "decal0Wrap": false,
-      "decal0Abs": true,
-      "decal0Tex": "ussr_1gv_tank_brigade_emblem_light"
     }
   }
 ]

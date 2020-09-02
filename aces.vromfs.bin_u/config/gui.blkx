@@ -430,6 +430,15 @@
       "login_layer_mirage_3c": 4.0
     },
     {
+      "login_layer_t72b": 4.0
+    },
+    {
+      "login_layer_g5_e": 0.0
+    },
+    {
+      "login_layer_northampton": 0.0
+    },
+    {
       "beforeLogin": {
         "default_chance": 0.0,
         "login_layer_t1": 1.0
@@ -854,12 +863,12 @@
       "default_locked_stage_8": "default_locked;default_stage_unlock_8",
       "default_locked_stage_9": "default_locked;default_stage_unlock_9",
       "default_locked_stage_10": "default_locked;default_stage_unlock_10",
-      "battle_trophy1k": "battle_trophy1k",
-      "battle_trophy5k": "battle_trophy5k",
-      "battle_trophy10k": "battle_trophy10k",
-      "battle_trophy50k": "battle_trophy50k",
-      "battle_trophy100k": "battle_trophy100k",
-      "battle_trophy1kk": "battle_trophy1kk",
+      "battle_trophy1k": "wp_coin; wp_1k",
+      "battle_trophy5k": "wp_coin; wp_5k",
+      "battle_trophy10k": "wp_coin; wp_10k",
+      "battle_trophy50k": "wp_coin; wp_50k",
+      "battle_trophy100k": "wp_bar_100k; wp_100k",
+      "battle_trophy1kk": "wp_bar_1kk; wp_1kk",
       "streak_first_blood": "streaks_event_bg;streaks_first_blood",
       "streak_final_blow": "streaks_event_bg;streaks_final_blow",
       "streak_last_man_standing": "streaks_event_bg;streaks_last_man_standing",
@@ -1205,35 +1214,68 @@
         "y": 0.62,
         "img": "#ui/gameuiskin#streaks_multi_kill_rank_x"
       },
-      "battle_trophy1k": {
-        "w": 1.0,
-        "h": 1.0,
-        "img": "#ui/gameuiskin#battle_trophy1k"
+      "wp_coin": {
+        "w": 0.66,
+        "h": 0.73,
+        "x": "0.05pw",
+        "y": "0.1ph",
+        "img": "#ui/gameuiskin#wp_coin"
       },
-      "battle_trophy5k": {
-        "w": 1.0,
-        "h": 1.0,
-        "img": "#ui/gameuiskin#battle_trophy5k"
+      "wp_1k": {
+        "w": 0.59,
+        "h": 0.33,
+        "x": "0.25pw",
+        "y": "0.47ph",
+        "img": "#ui/gameuiskin#wp_1k"
       },
-      "battle_trophy10k": {
-        "w": 1.0,
-        "h": 1.0,
-        "img": "#ui/gameuiskin#battle_trophy10k"
+      "wp_5k": {
+        "w": 0.8,
+        "h": 0.52,
+        "x": "0.95pw-w",
+        "y": "0.8ph-h",
+        "img": "#ui/gameuiskin#wp_5k"
       },
-      "battle_trophy50k": {
-        "w": 1.0,
-        "h": 1.0,
-        "img": "#ui/gameuiskin#battle_trophy50k"
+      "wp_10k": {
+        "w": 0.79,
+        "h": 0.64,
+        "x": "0.95pw-w",
+        "y": "0.85ph-h",
+        "img": "#ui/gameuiskin#wp_10k"
       },
-      "battle_trophy100k": {
-        "w": 1.0,
-        "h": 1.0,
-        "img": "#ui/gameuiskin#battle_trophy100k"
+      "wp_50k": {
+        "w": 0.75,
+        "h": 0.49,
+        "x": "0.95pw-w",
+        "y": "0.8ph-h",
+        "img": "#ui/gameuiskin#wp_50k"
       },
-      "battle_trophy1kk": {
-        "w": 1.0,
-        "h": 1.0,
-        "img": "#ui/gameuiskin#battle_trophy1kk"
+      "wp_bar_100k": {
+        "w": 0.5,
+        "h": 0.68,
+        "x": "0.05pw",
+        "y": "0.1ph",
+        "img": "#ui/gameuiskin#wp_bar_100k"
+      },
+      "wp_100k": {
+        "w": 0.75,
+        "h": 0.525,
+        "x": "0.95pw-w",
+        "y": "0.8ph-h",
+        "img": "#ui/gameuiskin#wp_100k"
+      },
+      "wp_bar_1kk": {
+        "w": 0.355,
+        "h": 0.635,
+        "x": "0.05pw",
+        "y": "0.1ph",
+        "img": "#ui/gameuiskin#wp_bar_1kk"
+      },
+      "wp_1kk": {
+        "w": 0.77,
+        "h": 0.55,
+        "x": "0.95pw-w",
+        "y": "0.8ph-h",
+        "img": "#ui/gameuiskin#wp_1kk"
       },
       "streaks_first_blood": {
         "w": 0.58,
@@ -2188,6 +2230,12 @@
         "h": "0.34@chestRewardHeight",
         "position": "relative",
         "img": "#ui/gameuiskin#items_warpoints"
+      },
+      "item_warbonds": {
+        "w": "0.334@chestRewardWidth",
+        "h": "0.34@chestRewardHeight",
+        "position": "relative",
+        "img": "#ui/gameuiskin#item_warbonds"
       },
       "item_eagles": {
         "w": "0.313@chestRewardWidth",
@@ -3985,6 +4033,7 @@
       "country_vietnam": "#ui/gameuiskin#country_vietnam.svg",
       "country_egypt": "#ui/gameuiskin#country_egypt.svg",
       "country_turkey": "#ui/gameuiskin#country_turkey.svg",
+      "country_bangladesh": "#ui/gameuiskin#country_bangladesh.svg",
       "first_choice_country_usa_aviation": "#ui/first_choice/usa_aviation.png",
       "first_choice_country_germany_aviation": "#ui/first_choice/germany_aviation.png",
       "first_choice_country_ussr_aviation": "#ui/first_choice/ussr_aviation.png",
@@ -5256,6 +5305,12 @@
       },
       {
         "355a4e39-4739-304c-c030-50584e474f00": []
+      },
+      {
+        "48474e39-4c30-3047-c037-50353334fc00": []
+      },
+      {
+        "56434e39-575a-3038-c034-4d4a56507a00": []
       }
     ],
     "itemsHide": {
@@ -5537,56 +5592,6 @@
         "jp_type_5_ho_ri_prototype": 50,
         "germ_destroyer_class1936_z20_karlgalster": 50,
         "mi_24d": 50
-      }
-    },
-    {
-      "i": {
-        "beginDate": "2020-06-20 11:10:00",
-        "endDate": "2020-06-25 10:30:00",
-        "platform": "pc",
-        "ussr_t_55_am": 30,
-        "ka_50": 30,
-        "mig-17_cuba": 30,
-        "germ_leopard_a1a1_120": 30,
-        "bo_105cb2": 30,
-        "sea_hawk_mk100": 30,
-        "us_xm1_gm": 30,
-        "ah_64a_peten": 30,
-        "f-86f-35": 30,
-        "uk_rooikat_105_td": 30,
-        "g_lynx": 30,
-        "uk_centurion_shot_kal_d": 30,
-        "hunter_f9_rhodesia": 30,
-        "jp_type_74_mod_g_kai": 30,
-        "ah_1s": 30,
-        "f-86f-40_japan_blue_impulse": 30,
-        "it_of_40_mtca": 30,
-        "a_129_a": 30,
-        "fiat_g91_r4": 30,
-        "fr_amx_30_super": 30,
-        "tiger_hap_france": 30,
-        "so_4050_vautour_2a_iaf": 30,
-        "cn_t_62": 30,
-        "mig-17_f5": 30,
-        "sw_strv_103_0": 30,
-        "saab_j29d": 30
-      }
-    },
-    {
-      "i": {
-        "beginDate": "2020-06-20 11:10:00",
-        "endDate": "2020-07-02 16:30:00",
-        "platform": "pc",
-        "us_m3a1_stuart_usmc": 50,
-        "p-36a_rasmussen": 50,
-        "ussr_t_126sp": 50,
-        "i-153_m62_zhukovskiy": 50,
-        "germ_pzkpfw_38t_Aufklarungspanzer": 50,
-        "he_112b_1": 50,
-        "jp_type_97_chi_ha_12cm": 50,
-        "a7he1": 50,
-        "uk_a27m_cromwell_5_rp3": 50,
-        "avenger_mk1": 50
       }
     }
   ],
@@ -5899,7 +5904,9 @@
       "type_t_14_mod_01_psn": "3710FA30-DFB8-4668-B910-B02443822B00",
       "type_4_model_4_psn": "6949E929-FF14-457D-BB69-CD6E7761DC30",
       "ijn_mikuma_psn": "31F85017-7FC2-4C69-B84E-0CD104B97656",
-      "mi_24p_hfs_80_psn": "1F81E6B9-AA7D-48CC-B711-58F1117FDC44"
+      "mi_24p_hfs_80_psn": "1F81E6B9-AA7D-48CC-B711-58F1117FDC44",
+      "fr_somua_sm_pack": "5443810A-3AF1-46D5-8698-E712A09BFBC8",
+      "usa_pacific_campaign_yp38": "F599C716-66BE-440F-9809-EE0A5AA9FA58"
     },
     "xbox": {
       "centurion_pack": "1bfe87f0-54f1-47c1-84ec-ddd59a05ba3f",
@@ -5968,7 +5975,8 @@
       "cn_type_69_2g_pack": "39304e39-3151-304e-c030-5737484b1100",
       "wt_italian_starter_pack": "31355039-5732-3046-c044-4e5643392200",
       "wt_japanese_starter_pack": "30534e39-354d-3034-c030-574e53382000",
-      "wt_british_starter_pack": "355a4e39-4739-304c-c030-50584e474f00"
+      "wt_british_starter_pack": "355a4e39-4739-304c-c030-50584e474f00",
+      "fr_somua_sm_pack": "48474e39-4c30-3047-c037-50353334fc00"
     },
     "scee": {
       "eagles150": "EE01500000000000",
@@ -6099,7 +6107,9 @@
       "usa_beginners_pack_ps_prem": "EE00560000000000",
       "geniere_ps_prem": "ER00610000000000",
       "p_420_sparviero_ps_prem": "ER00620000000000",
-      "type_69_2g_ps_prem": "ER00630000000000"
+      "type_69_2g_ps_prem": "ER00630000000000",
+      "fr_somua_sm_ps_prem": "EE00710000000000",
+      "usa_pacific_campaign_yp38_ps_prem": "EE00720000000000"
     },
     "scea": {
       "eagles150": "UE01500000000000",
@@ -6230,7 +6240,9 @@
       "usa_beginners_pack_ps_prem": "UU00560000000000",
       "geniere_ps_prem": "UR00610000000000",
       "p_420_sparviero_ps_prem": "UR00610000000000",
-      "type_69_2g_ps_prem": "UR00630000000000"
+      "type_69_2g_ps_prem": "UR00630000000000",
+      "fr_somua_sm_ps_prem": "UU00710000000000",
+      "usa_pacific_campaign_yp38_ps_prem": "UU00720000000000"
     },
     "scej": {
       "eagles150": "JE00010000000000",
@@ -6361,7 +6373,9 @@
       "usa_beginners_pack_ps_prem": "JJ00560000000000",
       "geniere_ps_prem": "JR00190000000000",
       "p_420_sparviero_ps_prem": "JR00200000000000",
-      "type_69_2g_ps_prem": "JR00210000000000"
+      "type_69_2g_ps_prem": "JR00210000000000",
+      "fr_somua_sm_ps_prem": "JJ00710000000000",
+      "usa_pacific_campaign_yp38_ps_prem": "JJ00720000000000"
     }
   }
 }

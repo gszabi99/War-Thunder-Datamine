@@ -1,4 +1,6 @@
 local enums = ::require("sqStdlibs/helpers/enums.nut")
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+
 enum mpChatModeSort {
   TEAM
   SQUAD
@@ -125,7 +127,7 @@ g_mp_chat_mode.getTextAvailableMode <- function getTextAvailableMode()
 
 g_mp_chat_mode.getChatHint <- function getChatHint()
 {
-  local hasIME = ::is_ps4_or_xbox || ::is_platform_android || ::is_steam_big_picture()
+  local hasIME = isPlatformSony || isPlatformXboxOne || ::is_platform_android || ::is_steam_big_picture()
   return ::loc("chat/help/modeSwitch",
     { modeSwitchShortcuts = "{{ID_TOGGLE_CHAT_MODE}}"
       modeList = getTextAvailableMode()

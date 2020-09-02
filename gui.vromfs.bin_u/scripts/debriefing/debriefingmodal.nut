@@ -9,7 +9,10 @@ local { openUrl } = require("scripts/onlineShop/url.nut")
 local { setDoubleTextToButton, setColoredDoubleTextToButton,
   placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 local { isModResearched,
+        getModificationByName,
         findAnyNotResearchedMod } = require("scripts/weaponry/modificationInfo.nut")
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
+local { needLogoutAfterSession, startLogout } = require("scripts/login/logout.nut")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -63,11 +66,11 @@ enum DEBR_THEME {
 
 ::gui_start_debriefing <- function gui_start_debriefing()
 {
-  if (::need_logout_after_session)
+  if (needLogoutAfterSession)
   {
     ::destroy_session_scripted()
     //need delay after destroy session before is_multiplayer become false
-    ::get_gui_scene().performDelayed(::getroottable(), ::gui_start_logout)
+    ::get_gui_scene().performDelayed(::getroottable(), startLogout)
     return
   }
 
@@ -929,7 +932,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
   function playCountSound(play)
   {
-    if (::is_platform_ps4)
+    if (isPlatformSony)
       return
 
     play = play && !isInProgress
@@ -1117,7 +1120,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
   function ps4SendActivityFeed()
   {
-    if (!::is_platform_ps4
+    if (!isPlatformSony
       || !isMp
       || !::debriefing_result
       || ::debriefing_result.exp.result != ::STATS_RESULT_SUCCESS)
@@ -1439,7 +1442,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       if (modName == "")
         continue
       local unit = ::getAircraftByName(unitId)
-      local mod = unit && ::getModificationByName(unit, modName)
+      local mod = unit && getModificationByName(unit, modName)
       if (unit && mod && isModResearched(unit, mod))
         return true
     }
@@ -1501,7 +1504,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
   {
     local curResearch = airData.investModuleName
     if (curResearch != "")
-      return ::getModificationByName(air, curResearch)
+      return getModificationByName(air, curResearch)
     return null
   }
 
@@ -3051,7 +3054,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
   function onEventMatchingDisconnect(p)
   {
-    ::go_debriefing_next_func = ::gui_start_logout
+    ::go_debriefing_next_func = startLogout
   }
 
   function onEventSessionDestroyed(p)
@@ -3063,7 +3066,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
   function isDelayedLogoutOnDisconnect()
   {
-    ::go_debriefing_next_func = ::gui_start_logout
+    ::go_debriefing_next_func = startLogout
     return true
   }
 

@@ -197,7 +197,7 @@
   "100mm_ussr_HE": {
     "bullet": {
       "bulletCount": 40,
-      "mass": 15.2,
+      "mass": 15.6,
       "explosiveType": "tnt",
       "explosiveMass": 1.462,
       "caliber": 0.1,
@@ -1089,7 +1089,9 @@
       "onHitChanceMultExplFuel": 0.3,
       "relativeVelHitShift": [300.0,1000.0],
       "relativeVelArmorShift": [200.0,1000.0],
-      "explodeTreshold": 0.1,
+      "hitPower": 260.0,
+      "fuseDelayDist": 0.05,
+      "explodeTreshold": 1.0,
       "ricochetEffect": "cannon_ricochet",
       "waterCollisionEffect": "120-203_he_water_splash",
       "waterFxScale": [1.1,1.2],
@@ -1110,6 +1112,10 @@
         "distance": 5.5,
         "damage": 300.0,
         "onHitChanceMultFire": 35.0
+      },
+      "armorpower": {
+        "ArmorPower0m": [5.0,10.0],
+        "ArmorPower10000m": [4.0,10000.0]
       },
       "visual": {
         "range_percent_of_ammo": [100.0,0.0],

@@ -150,7 +150,7 @@
         },
         "superstructure_top_dm": {
           "armorThickness": 25.0,
-          "explosionArmorQuality": 2.2
+          "explosionArmorQuality": 1.5
         },
         "superstructure_bottom_dm": {
           "armorThickness": 35.0
@@ -1100,6 +1100,21 @@
           },
           {
             "name": "ammo_body_50_dm"
+          },
+          {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
           },
           {
             "name": "ammo_body_l_01_dm"
@@ -2222,7 +2237,7 @@
         ]
       },
       "suspension": {
-        "suspensionOffsets": [-0.2,-0.16,0.14],
+        "suspensionOffsets": [-0.2,-0.15,0.37],
         "defaultGearRadius": 0.38,
         "topGearRadius": 0.11,
         "frontBackGearRadius": 0.315,
@@ -2837,7 +2852,7 @@
       "120mm_NATO_APDS_FS_ammo_pack": {
         "tier": 3
       },
-      "modern_tank_laser_rangefinder": [],
+      "laser_rangefinder_lws": [],
       "tank_smoke_screen_system_mod": {
         "tier": 4,
         "modClass": "protection",
@@ -3072,13 +3087,13 @@
                   "useEmitter": true
                 },
                 {
-                  "emitter": "emtr_mortar_l_flame_01"
+                  "emitter": "emtr_mortar_flame_01"
                 },
                 {
-                  "emitterGenRange": [1,4]
+                  "emitterGenRange": [1,8]
                 },
                 {
-                  "emitterGenFmt": "emtr_mortar_l_flame_%02d"
+                  "emitterGenFmt": "emtr_mortar_flame_%02d"
                 },
                 {
                   "ignoreLoaderPenalty": true
@@ -3096,7 +3111,7 @@
                   "allowableDelta": 360.0
                 },
                 {
-                  "salvo": 1
+                  "salvo": 4
                 },
                 {
                   "speedYaw": 24.0
@@ -3108,113 +3123,7 @@
                   "fireConeAngle": 1.0
                 },
                 {
-                  "bullets": 4
-                },
-                {
-                  "fireConeAngle": 15.0
-                },
-                {
-                  "ChainfireTime": 0.5
-                },
-                {
-                  "DelayAfterShoot": 2.0
-                },
-                {
-                  "accuracyAir": 1.5
-                },
-                {
-                  "accuracyGnd": 0.0
-                },
-                {
-                  "errMeasureVel": 0.0
-                },
-                {
-                  "errMeasureVelFast": 0.0
-                },
-                {
-                  "errMeasureVelFwdShift": 0.0
-                },
-                {
-                  "errMeasureVelDir": 0.0
-                },
-                {
-                  "errTargettingOn100kmph": 0.0
-                },
-                {
-                  "errTargetting": 3.0
-                },
-                {
-                  "errExplTime": 0.0
-                },
-                {
-                  "turret": {
-                    "head": "bone_grenade",
-                    "gun": "bone_grenade"
-                  }
-                },
-                {
-                  "limits": {
-                    "yaw": [0.0,0.0],
-                    "pitch": [0.0,0.0]
-                  }
-                }
-              ]
-            },
-            {
-              "Weapon": [
-                {
-                  "trigger": "gunner4"
-                },
-                {
-                  "triggerGroup": "smoke"
-                },
-                {
-                  "blk": "gameData/Weapons/groundModels_weapons/66mm_type_90_modern_smoke_grenade_launcher.blk"
-                },
-                {
-                  "weaponType": "rockets"
-                },
-                {
-                  "startFx": ""
-                },
-                {
-                  "useEmitter": true
-                },
-                {
-                  "emitter": "emtr_mortar_r_flame_01"
-                },
-                {
-                  "emitterGenRange": [1,4]
-                },
-                {
-                  "emitterGenFmt": "emtr_mortar_r_flame_%02d"
-                },
-                {
-                  "createGunEffects": true
-                },
-                {
-                  "defaultYaw": 0.0
-                },
-                {
-                  "defaultPitch": 0.0
-                },
-                {
-                  "allowableDelta": 360.0
-                },
-                {
-                  "salvo": 1
-                },
-                {
-                  "speedYaw": 24.0
-                },
-                {
-                  "speedPitch": 15.0
-                },
-                {
-                  "fireConeAngle": 1.0
-                },
-                {
-                  "bullets": 4
+                  "bullets": 8
                 },
                 {
                   "fireConeAngle": 15.0

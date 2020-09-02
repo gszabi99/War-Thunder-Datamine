@@ -14,6 +14,8 @@ local { setUnitLastBullets,
         getOptionsBulletsList } = require("scripts/weaponry/bulletsInfo.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { reloadDargUiScript } = require_native("reactiveGuiCommand")
+local {bombNbr} = require("scripts/unit/unitStatus.nut")
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 global const TANK_ALT_CROSSHAIR_ADD_NEW = -2
 global const TANK_CAMO_SCALE_SLIDER_FACTOR = 0.1
@@ -556,8 +558,13 @@ local isWaitMeasureEvent = false
     case ::USEROPT_BOMB_ACTIVATION_TIME:
       local isBombActivationAssault = ::get_option_bomb_activation_type() == 1
       local assaultFuseTime = ::get_bomb_activation_auto_time()
-      local bombActivationTime = ::max(::get_option_bomb_activation_time(), assaultFuseTime)
+      local diffOptions = ::get_option(::USEROPT_DIFFICULTY)
+      local diffCode = context?.diffCode ?? diffOptions.diffCode[diffOptions.value]
+      local bombActivationTime = ::max(::load_local_account_settings(
+        $"useropt/bomb_activation_time/{diffCode}",
+          ::get_option_bomb_activation_time()), assaultFuseTime)
 
+      descr.diffCode = diffCode
       descr.id = "bomb_activation_type"
       descr.values = [::BOMB_ASSAULT_FUSE_TIME_OPT_VALUE]
       local activationTimeArray = [0.0, 0.5, 1.0, 1.5, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]
@@ -583,6 +590,48 @@ local isWaitMeasureEvent = false
       if (::get_option_bomb_activation_time() != curValue)
         ::set_option_bomb_activation_time(curValue)
       break
+
+    case ::USEROPT_BOMB_SERIES:
+       descr.id = "bomb_series"
+       descr.values = []
+       descr.items = []
+       local nbrBomb = 0
+       local unit = ::getAircraftByName(::aircraft_for_weapons)
+       local bombSeries = [0, 4, 6, 12, 24, 48]
+       if (unit)
+         nbrBomb = bombNbr(unit)
+       else
+         nbrBomb = 48
+
+       descr.values.append(0)
+       descr.items.append("options/bomb_series_null")
+
+       for (local i = 1; i < bombSeries.len(); ++i)
+       {
+        if (bombSeries[i].tointeger() >= nbrBomb) // max = -1
+          break
+
+        descr.values.append(bombSeries[i].tointeger())
+        local text = descr.values[i].tostring()
+        local tooltipLoc = "guiHints/bomb_series"
+        descr.items.append({
+         text = text
+         tooltip = ::loc(tooltipLoc, { num = descr.values[i] })
+         })
+       }
+
+       descr.values.append(nbrBomb)
+       local text = descr.values[descr.values.len() - 1].tostring()
+       local tooltipLoc = "guiHints/bomb_series_all"
+       descr.items.append({
+        text = text
+        tooltip = ::loc(tooltipLoc, { num = -1 })
+        })
+
+       descr.value = find_in_array(descr.values, ::get_option_bombs_series())
+       defaultValue = bombSeries[0].tointeger()
+       break
+
 
    case ::USEROPT_FLARES_PERIODS:
        descr.id = "flares_periods"
@@ -645,18 +694,6 @@ local isWaitMeasureEvent = false
         descr.values.append(i)
       }
       descr.value = ::find_in_array(descr.values, ::get_option_depthcharge_activation_time())
-      break
-
-   case ::USEROPT_MINE_DEPTH:
-      descr.id = "mine_depth"
-      descr.items = []
-      descr.values = []
-      for(local i = 1; i <= 10; i++)
-      {
-        descr.items.append("" + i)
-        descr.values.append(i)
-      }
-      descr.value = ::find_in_array(descr.values, ::get_option_mine_depth())
       break
 
    case ::USEROPT_USE_PERFECT_RANGEFINDER:
@@ -1072,33 +1109,12 @@ local isWaitMeasureEvent = false
       descr.value = 0;
       descr.cb = "onInstantOptionApply";
       descr.trParams <- "optionWidthInc:t='double';"
-      local deviceCount = ::gchat_voice_get_device_in_count();
-      for (local i=0; i<deviceCount; i++)
-      {
-        local device = ::gchat_voice_get_device_in_name(i)
-        descr.items.append(device)
-        descr.values.append(device)
-
-        if (descr.values[i] == ::get_last_device_in())
-          descr.value = i
-      }
-      break
-
-    case ::USEROPT_VOICE_DEVICE_OUT:
-      descr.id = "voice_device_out";
-      descr.items = [];
-      descr.values = [];
-      descr.value = 0;
-      descr.cb = "onInstantOptionApply";
-      descr.trParams <- "optionWidthInc:t='double';"
-      local deviceCount = ::gchat_voice_get_device_out_count();
-      for (local i=0; i<deviceCount; i++)
-      {
-        local device = ::gchat_voice_get_device_out_name(i)
-        descr.items.append(device)
-        descr.values.append(device)
-        if (descr.values[i] == ::get_last_device_out())
-          descr.value = i
+      local lastSoundDevice = soundDevice.get_last_voice_device_in()
+      foreach (device in soundDevice.get_record_devices()) {
+        descr.items.append(device.name)
+        descr.values.append(device.name)
+        if (device.name == lastSoundDevice)
+          descr.value = descr.values.len() - 1
       }
       break
 
@@ -1109,18 +1125,14 @@ local isWaitMeasureEvent = false
       descr.value = 0;
       descr.cb = "onInstantOptionApply";
       descr.trParams <- "optionWidthInc:t='double';"
-      local deviceCount = soundDevice.sound_get_device_out_count();
       local lastSoundDevice = soundDevice.get_last_sound_device_out()
-      for (local i=0; i<deviceCount; i++)
-      {
-        local device = soundDevice.sound_get_device_out_name(i)
-        if (device == null)
-          continue
-        descr.items.append(device)
-        descr.values.append(device)
-        if (device == lastSoundDevice)
+      foreach (device in soundDevice.get_out_devices()) {
+        descr.items.append(device.name)
+        descr.values.append(device.name)
+        if (device.name == lastSoundDevice)
           descr.value = descr.values.len() - 1
       }
+
       break
 
     case ::USEROPT_SOUND_ENABLE:
@@ -1380,14 +1392,14 @@ local isWaitMeasureEvent = false
       descr.values = ::g_controls_presets.getControlsPresetsList()
       descr.trParams <- "optionWidthInc:t='triple';"
 
-      if (!::is_ps4_or_xbox)
+      if (!isPlatformSony && !isPlatformXboxOne)
         descr.values.insert(0, "") //custom preset
 
       local p = ::g_controls_presets.getCurrentPreset()
       for(local k = 0; k < descr.values.len(); k++)
       {
         local name = descr.values[k]
-        local suffix = ::is_platform_ps4? "ps4/" : ""
+        local suffix = isPlatformSony ? "ps4/" : ""
         local vPresetData = ::g_controls_presets.parsePresetName(name)
         if (p.name == vPresetData.name && p.version == vPresetData.version)
           descr.value = k
@@ -1991,6 +2003,13 @@ local isWaitMeasureEvent = false
       descr.value = ::get_option_use_rectangular_radar_indicator()
       break
 
+    case ::USEROPT_USE_RADAR_HUD_IN_COCKPIT:
+      descr.id = "use_radar_hud_in_cockpit"
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      descr.value = ::get_option_use_radar_hud_in_cockpit()
+      break
+
     case ::USEROPT_SAVE_AI_TARGET_TYPE:
       descr.id = "save_ai_target_type"
       descr.controlType = optionControlType.CHECKBOX
@@ -2147,6 +2166,11 @@ local isWaitMeasureEvent = false
             }
         }
         descr.cb = "onMyWeaponOptionUpdate"
+      }
+      else {
+        ::dagor.logerr($"Options: USEROPT_BULLET{groupIndex}: get: Wrong 'aircraft_for_weapons' type")
+        ::debugTableData(::aircraft_for_weapons)
+        ::callstack()
       }
       break
 
@@ -3804,7 +3828,9 @@ local isWaitMeasureEvent = false
       break
 
     default:
-      print("[ERROR] Unsupported type " + optionId)
+      ::dagor.logerr($"[ERROR] Options: Get: Unsupported type {optionId}")
+      ::debugTableData(::aircraft_for_weapons)
+      ::callstack()
   }
 
   if (!descr.hint)
@@ -3912,6 +3938,10 @@ local isWaitMeasureEvent = false
         ::get_bomb_activation_auto_time() : descr.values[value]
       ::set_option_bomb_activation_type(isBombActivationAssault ? 1 : 0)
       ::set_option_bomb_activation_time(bombActivationDelay)
+      ::save_local_account_settings($"useropt/bomb_activation_time/{descr.diffCode}", bombActivationDelay)
+      break
+    case ::USEROPT_BOMB_SERIES:
+      ::set_option_bombs_series(descr.values[value])
       break
     case ::USEROPT_LOAD_FUEL_AMOUNT:
       ::set_gui_option(optionId, descr.values[value])
@@ -3920,9 +3950,6 @@ local isWaitMeasureEvent = false
       break
     case ::USEROPT_DEPTHCHARGE_ACTIVATION_TIME:
       ::set_option_depthcharge_activation_time(descr.values[value])
-      break
-    case ::USEROPT_MINE_DEPTH:
-      ::set_option_mine_depth(descr.values[value])
       break
     case ::USEROPT_FLARES_PERIODS:
       ::set_option_flares_periods(descr.values[value])
@@ -4340,6 +4367,9 @@ local isWaitMeasureEvent = false
     case ::USEROPT_USE_RECTANGULAR_RADAR_INDICATOR:
       ::set_option_use_rectangular_radar_indicator(value)
       break;
+    case ::USEROPT_USE_RADAR_HUD_IN_COCKPIT:
+      ::set_option_use_radar_hud_in_cockpit(value)
+      break;
     case ::USEROPT_SAVE_AI_TARGET_TYPE:
       ::set_option_ai_target_type(value ? 1 : 0)
       break;
@@ -4661,14 +4691,14 @@ local isWaitMeasureEvent = false
     case ::USEROPT_BULLETS3:
     case ::USEROPT_BULLETS4:
     case ::USEROPT_BULLETS5:
-      local bulletsValue = ::getTblValue(value, descr.values)
-      if (bulletsValue == null)
-        break
-
-      ::set_gui_option(optionId, bulletsValue)
+      ::set_gui_option(optionId, value)
       local air = ::getAircraftByName(::aircraft_for_weapons)
       if (air)
-        setUnitLastBullets(air, optionId - ::USEROPT_BULLETS0, bulletsValue)
+        setUnitLastBullets(air, optionId - ::USEROPT_BULLETS0, value)
+      else {
+        ::dagor.logerr($"Options: USEROPT_BULLET{groupIndex}: set: Wrong 'aircraft_for_weapons' type")
+        ::debugTableData(::aircraft_for_weapons)
+      }
       break
 
     case ::USEROPT_HELPERS_MODE_GM:
@@ -4834,11 +4864,7 @@ local isWaitMeasureEvent = false
       break
 
     case ::USEROPT_VOICE_DEVICE_IN:
-      ::set_last_device_in(descr.values[value]);
-      break
-
-    case ::USEROPT_VOICE_DEVICE_OUT:
-      ::set_last_device_out(descr.values[value]);
+      soundDevice.set_last_voice_device_in(descr.values?[value] ?? "")
       break
 
     case ::USEROPT_SOUND_DEVICE_OUT:
@@ -4938,11 +4964,12 @@ local isWaitMeasureEvent = false
       break
 
     case ::USEROPT_PS4_ONLY_LEADERBOARD:
+      ::broadcastEvent("PS4OnlyLeaderboardsValueChanged")
       ::set_gui_option(optionId, value)
       break
 
     default:
-      print("[ERROR] Unsupported type " + optionId)
+      ::dagor.logerr($"[ERROR] Options: Set: Unsupported type {optionId} - {value}")
   }
   return true
 }

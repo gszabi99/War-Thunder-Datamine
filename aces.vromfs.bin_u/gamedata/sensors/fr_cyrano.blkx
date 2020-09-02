@@ -2,7 +2,7 @@
   "type": "radar",
   "transivers": {
     "common": {
-      "sideLobesAttenuation": -23.0,
+      "sideLobesAttenuation": -20.0,
       "power": 260.0,
       "band": 8,
       "rcs": 3.0,
@@ -12,7 +12,7 @@
       "timeGainControl": false,
       "antenna": {
         "angleHalfSens": 5.0,
-        "sideLobesSensitivity": -30.0
+        "sideLobesSensitivity": -27.0
       }
     }
   },
@@ -173,6 +173,9 @@
           },
           "setScopeRangeSet": {
             "scopeRangeSet": "common"
+          },
+          "setIllumination": {
+            "illumination": false
           }
         },
         "setSearchMode": {
@@ -207,6 +210,9 @@
           },
           "setScopeRangeSet": {
             "scopeRangeSet": "common"
+          },
+          "setIllumination": {
+            "illumination": false
           }
         },
         "resetSearchMode": {
@@ -245,7 +251,10 @@
           "setCenterStabElevation": {
             "elevation": 0.0
           },
-          "clearTargets": []
+          "clearTargets": [],
+          "setIllumination": {
+            "illumination": false
+          }
         },
         "setTrackMode": {
           "setModeName": {
@@ -278,6 +287,9 @@
           },
           "setSignal": {
             "signal": "track"
+          },
+          "setIllumination": {
+            "illumination": true
           }
         }
       },
@@ -316,6 +328,7 @@
           "actions": {
             "designateActiveDetectedTarget": {
               "type": 0,
+              "self": true,
               "sensorIndex": 0
             }
           }
@@ -448,7 +461,8 @@
           "actions": {
             "designateActiveDetectedTarget": {
               "type": 0,
-              "sensorIndex": 0
+              "sensorIndex": 0,
+              "self": true
             }
           }
         }

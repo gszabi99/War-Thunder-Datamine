@@ -1,5 +1,6 @@
-local psn = require("ps4Lib/webApi.nut")
+local psn = require("sonyLib/webApi.nut")
 local statsd = require("statsd")
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
 ::FACEBOOK_POST_WALL_MESSAGE <- false
 
@@ -133,7 +134,7 @@ local statsd = require("statsd")
 //----------------- <PlayStation> -------------------------------
 ::ps4PostActivityFeed <- function ps4PostActivityFeed(config, customFeedParams)
 {
-  if (!::is_platform_ps4 || !::has_feature("ActivityFeedPs4"))
+  if (!isPlatformSony || !::has_feature("ActivityFeedPs4"))
     return
 
   local sendStat = function(tags) {

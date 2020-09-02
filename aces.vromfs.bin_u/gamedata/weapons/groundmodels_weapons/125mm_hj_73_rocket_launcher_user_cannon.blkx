@@ -1,0 +1,466 @@
+{
+  "cannon": true,
+  "weaponType": -1,
+  "bUseHookAsRel": true,
+  "emitColor": [1.0,1.0,0.0],
+  "emitI": 10.0,
+  "emitR": 3.0,
+  "emitTime": 0.03,
+  "aimMinDist": 0.1,
+  "aimMaxDist": 2000.0,
+  "maxDeltaAngle": 0.06,
+  "maxDeltaAngleVertical": 0.08,
+  "shotFreq": 0.15,
+  "reloadTime": 10.0,
+  "traceFreq": 4,
+  "bEnablePause": false,
+  "bullets": -1,
+  "bulletsCluster": 1,
+  "useSingleIconForBullet": true,
+  "shouldCollideWithRendinsts": true,
+  "sound_path": "tanks/weapon_tanks/atgm",
+  "sound_pathStudio": "ground/weapon/atgm",
+  "sound": "atgm_LPC",
+  "sound_inside": "atgm_LPC_interior",
+  "reload_sound_path": "tanks/effects_tanks",
+  "reload_sound_pathStudio": "ground/effects",
+  "reload_sound": "reload_rocket",
+  "fxMultipleSpawn": true,
+  "isBulletBelt": false,
+  "bulletsCartridge": 1,
+  "notUseDefaultBulletInGui": true,
+  "drawRocketInBullet": true,
+  "allowRearmOnField": true,
+  "mesh": "9m14m_rocket_deployed",
+  "animChar": "9m14m_rocket_char",
+  "reloadAnimParam": "rocket_action",
+  "bullet": {
+    "normalizationPreset": "heat",
+    "ricochetPreset": "atgm",
+    "secondaryShattersPreset": "ap",
+    "stabilityThreshold": 0.1,
+    "stabilityCaliberToArmorThreshold": 100.0,
+    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterPenetration": 0.01,
+    "bulletType": "atgm_tank",
+    "cumulativeSecondaryShattersPreset": "atgm",
+    "explodeOnRendinst": true,
+    "modelName": "tank_bullet_heat_fs",
+    "fresnel": [0.23,0.1,2.0],
+    "bulletName": "125mm_hj_73",
+    "mass": 10.9,
+    "caliber": 0.125,
+    "sound_path": "tanks/weapon_tanks/atgm",
+    "sound_pathStudio": "ground/weapon/atgm",
+    "sound": "atgm_LPC",
+    "sound_inside": "atgm_LPC_interior",
+    "recoilMultiplier": 0.05,
+    "stabilityRicochetModifier": [
+      {
+        "mod1": [0.0,0.0]
+      },
+      {
+        "mod2": [20.0,0.1]
+      },
+      {
+        "mod2": [30.0,0.2]
+      }
+    ],
+    "rocket": {
+      "caliber": 0.125,
+      "mass": 10.9,
+      "explosiveMass": 2.6,
+      "massEnd": 10.0,
+      "normalizationPreset": "heat",
+      "ricochetPreset": "atgm",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.1,
+      "stabilityCaliberToArmorThreshold": 100.0,
+      "stabilityReductionAfterRicochet": 0.3,
+      "stabilityReductionAfterPenetration": 0.01,
+      "bulletType": "atgm_tank",
+      "cumulativeSecondaryShattersPreset": "atgm",
+      "explodeOnRendinst": true,
+      "modelName": "tank_bullet_heat_fs",
+      "fresnel": [0.23,0.1,2.0],
+      "maxDeltaAngle": 0.03,
+      "dragCx": 0.027,
+      "length": 1.15,
+      "distFromCmToStab": 0.005,
+      "CxK": 1.5,
+      "WdK": [0.1,0.1,0.1],
+      "force": 1800.0,
+      "timeFire": 20.0,
+      "thrustDeviation": 0.0,
+      "rotationRocket": 8.5,
+      "operated": true,
+      "operatedDist": 3000.0,
+      "autoLeveling": true,
+      "autoAiming": true,
+      "explosionEffect": "atgm_hit",
+      "defFxScale": [2.2,2.5],
+      "groundCollisionEffect": "art_ground_splash",
+      "groundFxScale": [1.5,1.7],
+      "ricochetEffect": "cannon_hit_apds",
+      "waterCollisionEffect": "120-203_he_water_splash",
+      "waterFxScale": [1.2,1.4],
+      "explosionPatchRadius": 5.0,
+      "smokeEffect": "trail_smoke",
+      "maxDistance": 3500.0,
+      "minDistance": 30.0,
+      "spawnExplosionWreckage": false,
+      "spawnExplosionFx": false,
+      "explosionOffset": 0.05,
+      "hitPowerMult": 100.0,
+      "nearHitPower": [1.0,50.0],
+      "midHitPower": [0.9,400.0],
+      "farHitPower": [0.1,1000.0],
+      "endHitPower": [0.01,1500.0],
+      "relativeVelHitShift": [300.0,1000.0],
+      "nearArmorPower": [3.0,50.0],
+      "midArmorPower": [2.0,400.0],
+      "farArmorPower": [0.2,700.0],
+      "relativeVelArmorShift": [200.0,1000.0],
+      "distanceFuse": false,
+      "explodeTreshold": 0.01,
+      "explodeHitPower": 400.0,
+      "explodeArmorPower": 19.0,
+      "explodeRadius": [0.4,1.07],
+      "rendinstDamageRadius": 5.0,
+      "statType": "",
+      "advancedMissiles": false,
+      "useStartSpeed": true,
+      "startSpeed": 25.0,
+      "endSpeed": 120.0,
+      "speedViscosity": 0.1,
+      "timeToLive": 30.0,
+      "price": 3000.0,
+      "mesh": "9m14m_rocket_deployed",
+      "animChar": "9m14m_rocket_char",
+      "reloadAnimParam": "rocket_action",
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.0]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod2": [30.0,0.2]
+        }
+      ],
+      "collisions": {
+        "steel": {
+          "fx": "cannon_hit_armor_cumulative",
+          "fxScale": [4.0,5.0]
+        },
+        "buildings": {
+          "fx": "atgm_hit",
+          "fxScale": [2.2,2.5]
+        },
+        "wood": {
+          "fx": "atgm_hit",
+          "fxScale": [2.2,2.5]
+        }
+      },
+      "armorpower": {
+        "ArmorPower0m": [2.0,10.0],
+        "ArmorPower7000m": [1.0,7000.0]
+      },
+      "cumulativeDamage": {
+        "armorPower": 400.0,
+        "distance": 5.5,
+        "damage": 600.0,
+        "onHitChanceMultFire": 25.0
+      }
+    }
+  },
+  "125mm_cn_HJ_ATGM": {
+    "bullet": {
+      "normalizationPreset": "heat",
+      "ricochetPreset": "atgm",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.1,
+      "stabilityCaliberToArmorThreshold": 100.0,
+      "stabilityReductionAfterRicochet": 0.3,
+      "stabilityReductionAfterPenetration": 0.01,
+      "bulletType": "atgm_tank",
+      "cumulativeSecondaryShattersPreset": "atgm",
+      "explodeOnRendinst": true,
+      "modelName": "tank_bullet_heat_fs",
+      "fresnel": [0.23,0.1,2.0],
+      "bulletName": "125mm_hj_73",
+      "mass": 10.9,
+      "caliber": 0.125,
+      "sound_path": "tanks/weapon_tanks/atgm",
+      "sound_pathStudio": "ground/weapon/atgm",
+      "sound": "atgm_LPC",
+      "sound_inside": "atgm_LPC_interior",
+      "recoilMultiplier": 0.05,
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.0]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod2": [30.0,0.2]
+        }
+      ],
+      "rocket": {
+        "caliber": 0.125,
+        "mass": 10.9,
+        "explosiveMass": 2.6,
+        "massEnd": 10.0,
+        "normalizationPreset": "heat",
+        "ricochetPreset": "atgm",
+        "secondaryShattersPreset": "ap",
+        "stabilityThreshold": 0.1,
+        "stabilityCaliberToArmorThreshold": 100.0,
+        "stabilityReductionAfterRicochet": 0.3,
+        "stabilityReductionAfterPenetration": 0.01,
+        "bulletType": "atgm_tank",
+        "cumulativeSecondaryShattersPreset": "atgm",
+        "explodeOnRendinst": true,
+        "modelName": "tank_bullet_heat_fs",
+        "fresnel": [0.23,0.1,2.0],
+        "maxDeltaAngle": 0.03,
+        "dragCx": 0.027,
+        "length": 1.15,
+        "distFromCmToStab": 0.005,
+        "CxK": 1.5,
+        "WdK": [0.1,0.1,0.1],
+        "force": 1800.0,
+        "timeFire": 20.0,
+        "thrustDeviation": 0.0,
+        "rotationRocket": 8.5,
+        "operated": true,
+        "operatedDist": 3000.0,
+        "autoLeveling": true,
+        "autoAiming": true,
+        "explosionEffect": "atgm_hit",
+        "defFxScale": [2.2,2.5],
+        "groundCollisionEffect": "art_ground_splash",
+        "groundFxScale": [1.5,1.7],
+        "ricochetEffect": "cannon_hit_apds",
+        "waterCollisionEffect": "120-203_he_water_splash",
+        "waterFxScale": [1.2,1.4],
+        "explosionPatchRadius": 5.0,
+        "smokeEffect": "trail_smoke",
+        "maxDistance": 3500.0,
+        "minDistance": 30.0,
+        "spawnExplosionWreckage": false,
+        "spawnExplosionFx": false,
+        "explosionOffset": 0.05,
+        "hitPowerMult": 100.0,
+        "nearHitPower": [1.0,50.0],
+        "midHitPower": [0.9,400.0],
+        "farHitPower": [0.1,1000.0],
+        "endHitPower": [0.01,1500.0],
+        "relativeVelHitShift": [300.0,1000.0],
+        "nearArmorPower": [3.0,50.0],
+        "midArmorPower": [2.0,400.0],
+        "farArmorPower": [0.2,700.0],
+        "relativeVelArmorShift": [200.0,1000.0],
+        "distanceFuse": false,
+        "explodeTreshold": 0.01,
+        "explodeHitPower": 400.0,
+        "explodeArmorPower": 19.0,
+        "explodeRadius": [0.4,1.07],
+        "rendinstDamageRadius": 5.0,
+        "statType": "",
+        "advancedMissiles": false,
+        "useStartSpeed": true,
+        "startSpeed": 25.0,
+        "endSpeed": 120.0,
+        "speedViscosity": 0.1,
+        "timeToLive": 30.0,
+        "price": 3000.0,
+        "mesh": "9m14m_rocket_deployed",
+        "animChar": "9m14m_rocket_char",
+        "reloadAnimParam": "rocket_action",
+        "stabilityRicochetModifier": [
+          {
+            "mod1": [0.0,0.0]
+          },
+          {
+            "mod2": [20.0,0.1]
+          },
+          {
+            "mod2": [30.0,0.2]
+          }
+        ],
+        "collisions": {
+          "steel": {
+            "fx": "cannon_hit_armor_cumulative",
+            "fxScale": [4.0,5.0]
+          },
+          "buildings": {
+            "fx": "atgm_hit",
+            "fxScale": [2.2,2.5]
+          },
+          "wood": {
+            "fx": "atgm_hit",
+            "fxScale": [2.2,2.5]
+          }
+        },
+        "armorpower": {
+          "ArmorPower0m": [2.0,10.0],
+          "ArmorPower7000m": [1.0,7000.0]
+        },
+        "cumulativeDamage": {
+          "armorPower": 400.0,
+          "distance": 5.5,
+          "damage": 600.0,
+          "onHitChanceMultFire": 25.0
+        }
+      }
+    }
+  },
+  "125mm_cn_HJ73E_ATGM": {
+    "bullet": {
+      "normalizationPreset": "heat",
+      "ricochetPreset": "atgm",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.1,
+      "stabilityCaliberToArmorThreshold": 100.0,
+      "stabilityReductionAfterRicochet": 0.3,
+      "stabilityReductionAfterPenetration": 0.01,
+      "bulletType": "atgm_tandem_tank",
+      "cumulativeSecondaryShattersPreset": "atgm",
+      "explodeOnRendinst": true,
+      "modelName": "tank_bullet_heat_fs",
+      "fresnel": [0.23,0.1,2.0],
+      "bulletName": "125mm_hj_73e",
+      "mass": 12.3,
+      "caliber": 0.125,
+      "sound_path": "tanks/weapon_tanks/atgm",
+      "sound_pathStudio": "ground/weapon/atgm",
+      "sound": "atgm_LPC",
+      "sound_inside": "atgm_LPC_interior",
+      "recoilMultiplier": 0.05,
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.0]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod2": [30.0,0.2]
+        }
+      ],
+      "rocket": {
+        "caliber": 0.125,
+        "mass": 12.3,
+        "explosiveMass": 1.4,
+        "massEnd": 12.3,
+        "normalizationPreset": "heat",
+        "ricochetPreset": "atgm",
+        "secondaryShattersPreset": "ap",
+        "stabilityThreshold": 0.1,
+        "stabilityCaliberToArmorThreshold": 100.0,
+        "stabilityReductionAfterRicochet": 0.3,
+        "stabilityReductionAfterPenetration": 0.01,
+        "bulletType": "atgm_tank",
+        "cumulativeSecondaryShattersPreset": "atgm",
+        "explodeOnRendinst": true,
+        "modelName": "tank_bullet_heat_fs",
+        "fresnel": [0.23,0.1,2.0],
+        "maxDeltaAngle": 0.03,
+        "dragCx": 0.027,
+        "length": 1.15,
+        "distFromCmToStab": 0.005,
+        "CxK": 1.5,
+        "WdK": [0.1,0.1,0.1],
+        "force": 1900.0,
+        "timeFire": 20.0,
+        "thrustDeviation": 0.0,
+        "rotationRocket": 8.5,
+        "operated": true,
+        "operatedDist": 2800.0,
+        "autoLeveling": true,
+        "autoAiming": true,
+        "explosionEffect": "atgm_hit",
+        "defFxScale": [2.2,2.5],
+        "groundCollisionEffect": "art_ground_splash",
+        "groundFxScale": [1.5,1.7],
+        "ricochetEffect": "cannon_hit_apds",
+        "waterCollisionEffect": "120-203_he_water_splash",
+        "waterFxScale": [1.2,1.4],
+        "explosionPatchRadius": 5.0,
+        "smokeEffect": "trail_smoke",
+        "maxDistance": 3500.0,
+        "minDistance": 30.0,
+        "spawnExplosionWreckage": false,
+        "spawnExplosionFx": false,
+        "explosionOffset": 0.05,
+        "hitPowerMult": 100.0,
+        "hitPower": 260.0,
+        "fuseDelayDist": 0.2,
+        "nearHitPower": [1.0,50.0],
+        "midHitPower": [0.9,400.0],
+        "farHitPower": [0.1,1000.0],
+        "endHitPower": [0.01,1500.0],
+        "relativeVelHitShift": [300.0,1000.0],
+        "nearArmorPower": [3.0,50.0],
+        "midArmorPower": [2.0,400.0],
+        "farArmorPower": [0.2,700.0],
+        "relativeVelArmorShift": [200.0,1000.0],
+        "distanceFuse": false,
+        "explodeTreshold": 0.01,
+        "explodeHitPower": 400.0,
+        "explodeArmorPower": 19.0,
+        "explodeRadius": [0.4,1.07],
+        "rendinstDamageRadius": 5.0,
+        "statType": "",
+        "advancedMissiles": false,
+        "useStartSpeed": true,
+        "startSpeed": 25.0,
+        "endSpeed": 120.0,
+        "speedViscosity": 0.1,
+        "timeToLive": 30.0,
+        "price": 3000.0,
+        "mesh": "aft07c_rocket",
+        "animChar": "9m14m_rocket_char",
+        "reloadAnimParam": "rocket_action",
+        "stabilityRicochetModifier": [
+          {
+            "mod1": [0.0,0.0]
+          },
+          {
+            "mod2": [20.0,0.1]
+          },
+          {
+            "mod2": [30.0,0.2]
+          }
+        ],
+        "collisions": {
+          "steel": {
+            "fx": "cannon_hit_armor_cumulative",
+            "fxScale": [4.0,5.0]
+          },
+          "buildings": {
+            "fx": "atgm_hit",
+            "fxScale": [2.2,2.5]
+          },
+          "wood": {
+            "fx": "atgm_hit",
+            "fxScale": [2.2,2.5]
+          }
+        },
+        "armorpower": {
+          "ArmorPower0m": [50.0,10.0],
+          "ArmorPower10000m": [50.0,10000.0]
+        },
+        "cumulativeDamage": {
+          "armorPower": 900.0,
+          "distance": 5.5,
+          "damage": 600.0,
+          "onHitChanceMultFire": 25.0
+        }
+      }
+    }
+  }
+}

@@ -125,6 +125,9 @@
         },
         "superstructure_bottom_dm": {
           "armorThickness": 25.0
+        },
+        "turret_02_side_dm": {
+          "armorThickness": 5.0
         }
       },
       "hull_CHA": {
@@ -2444,20 +2447,12 @@
     }
   },
   {
-    "defaultDecals": {
-      "skin_condition": 100.0,
-      "camo_scale": 25.0,
-      "camo_rotation": -20.0,
-      "decal0Line0": [1.31541,-0.031576,0.0,-0.945689],
-      "decal0Line1": [-0.031576,-1.31541,0.0,3.26991],
-      "decal0HaveCP": true,
-      "decal0CP": [1807.65,60.9203,-1098.44],
-      "decal0CPNormDepth": [0.0,0.0,-1.0,-0.90564],
-      "decal0RotScale": [1.5948,0.76],
-      "decal0Mirrored": false,
-      "decal0Wrap": false,
-      "decal0Abs": true,
-      "decal0Tex": "decal_402"
+    "default_skin": {
+      "set_tex": {
+        "from": "is_2_turret_c*",
+        "to": "is_2_skin_turret_c*",
+        "param": "camo_skin_tex"
+      }
     }
   }
 ]

@@ -5,6 +5,7 @@ local { isChatEnabled } = require("scripts/chat/chatStates.nut")
 local fillSessionInfo = require("scripts/matchingRooms/fillSessionInfo.nut")
 local { mpLobbyBlkPath } = require("scripts/matchingRooms/getMPLobbyBlkPath.nut")
 local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { getUnitItemStatusText } = require("scripts/unit/unitInfoTexts.nut")
 
 ::session_player_rmenu <- function session_player_rmenu(handler, player, chatLog = null, position = null, orientation = null)
 {
@@ -322,7 +323,7 @@ class ::gui_handlers.MPLobby extends ::gui_handlers.BaseGuiHandlerWT
 
       local params = {
         getEdiffFunc = ::Callback(getCurrentEdiff, this)
-        status = ::getUnitItemStatusText(bit_unit_status.owned)
+        status = getUnitItemStatusText(bit_unit_status.owned)
       }
       local data = ::build_aircraft_item(airName, air, params)
       data = "tdiv { id:t='curAircraft_place'; class:t='rankUpList';" + data + "}"

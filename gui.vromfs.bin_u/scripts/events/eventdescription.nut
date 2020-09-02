@@ -1,6 +1,8 @@
 local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 local time = require("scripts/time.nut")
-local platformModule = require("scripts/clientState/platform.nut")
+local { getPlayerName,
+        isPlatformXboxOne,
+        isPlatformSony } = require("scripts/clientState/platform.nut")
 local { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.nut")
 
 ::create_event_description <- function create_event_description(parent_scene, event = null, needEventHeader = true)
@@ -420,7 +422,7 @@ class ::gui_handlers.EventDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function checkLbTableVisible(lb_rows, lbCategory)
   {
-    if (::is_ps4_or_xbox)
+    if (isPlatformSony || isPlatformXboxOne)
       return false
 
     if (lbCategory == null)
@@ -442,9 +444,7 @@ class ::gui_handlers.EventDescription extends ::gui_handlers.BaseGuiHandlerWT
     local rowName = "row_" + rowIdx
     local forClan = ::events.isClanLbRequest(newSelfRowRequest)
 
-    local name = row?.name ?? ""
-    name = platformModule.getPlayerName(name)
-
+    local name = getPlayerName(row?.name ?? "")
     local text = name
     if (forClan)
       text = row?.tag ?? ""

@@ -118,7 +118,8 @@ local ItemGenerator = class {
   {
     _contentUnpacked = []
     local parsedBundles = inventoryClient.parseRecipesString(bundle)
-
+    local trophyWeightsBlk = ::get_game_settings_blk()?.visualizationTrophyWeights
+    local trophyWeightsBlockCount = trophyWeightsBlk?.blockCount() ?? 0
     foreach (set in parsedBundles)
       foreach (cfg in set.components)
       {
@@ -129,8 +130,13 @@ local ItemGenerator = class {
         {
           local b = ::DataBlock()
           b.item =  item.id
-          if (cfg.quantity > 1)
-            b.count = cfg.quantity
+          b.rank = cfg.quantity
+          if (trophyWeightsBlk != null && trophyWeightsBlockCount > 0
+            && cfg.quantity <= trophyWeightsBlockCount)
+          {
+            local weightBlock = trophyWeightsBlk.getBlock(cfg.quantity - 1)
+            b.weight = weightBlock.getBlockName()
+          }
           _contentUnpacked.append(b)
         }
         else if (generator)

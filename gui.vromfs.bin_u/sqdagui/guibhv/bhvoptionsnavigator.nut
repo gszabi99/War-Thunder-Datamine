@@ -226,13 +226,6 @@ class gui_bhv.OptionsNavigator
       obj.getChild(row).scrollToView()
     if (isChanged)
       obj.sendNotify("click");
-
-    // updating hint  - strange code, better to fix it by "on_click" function
-    if (::generic_options != null)
-    {
-      local guiScene = ::get_gui_scene();
-      guiScene.performDelayed(this, function(){ ::generic_options.onHintUpdate(); });
-    }
   }
 
   function clearSelect(obj)

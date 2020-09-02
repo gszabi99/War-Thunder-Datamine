@@ -26,7 +26,7 @@ tdiv {
         width:t='<<columnsCount>> * 0.28@sf'
       <</forceHoverWidth>>
       height:t='0'
-      pos:t='<<tmHoverMenuPos>> - 1@topMenuHoverMenuIndent, ph+1@dp'; position:t='absolute'
+      pos:t='<<tmHoverMenuPos>> - 1@topMenuHoverMenuIndent, ph'; position:t='absolute'
       overflow:t='hidden'
       tooltip:t='' // Overrides underlying widgets tooltips.
 

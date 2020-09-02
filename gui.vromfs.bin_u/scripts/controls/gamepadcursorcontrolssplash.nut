@@ -1,3 +1,5 @@
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
+
 ::gui_start_gamepad_cursor_controls_splash <- function gui_start_gamepad_cursor_controls_splash(onEnable)
 {
   ::gui_start_modal_wnd(::gui_handlers.GampadCursorControlsSplash, {onEnable = onEnable})
@@ -77,7 +79,7 @@ class ::gui_handlers.GampadCursorControlsSplash extends ::gui_handlers.BaseGuiHa
       goBack()
 
     local view = controller360View
-    if (::is_platform_ps4)
+    if (isPlatformSony)
       view = controllerDualshock4View
     else if (::is_platform_xboxone)
       view = controllerXboxOneView

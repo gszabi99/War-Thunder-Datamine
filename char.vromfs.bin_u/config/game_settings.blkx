@@ -5,7 +5,7 @@
   "resetViralAcquisitionDaysCounter": 1,
   "moderatorPresenceCheckMaxCode": 65536,
   "moderatorPresenceCheckPeriodSec": 1200,
-  "mapTypes": "AfDto;AfD;BC;BfDn;BfD;ADto;AD;GS;GSA;GSB;DF;BfD_norespawn;GS_norespawn;BfDn_arcade;GSn;BfD_noresp;Dom;Dom_no_respawn;dblDom;Conq;Conq_no_respawn;Bttl;Bttl_no_respawn;bfd_norespawn;day_norespawn;bfd_norespawn;duel;AfDn;tm;race;race_straight;race_inverted;Bto;Conq1;Conq2;Conq3;Conq4;Conq5;Conq6;DBttlA;DBttlB;ArtDA;ArtDB;PvE;PvE_1;PvE_2;PvE_3;PvE_4;PvE_5;PvE_6;I2M;H2M;Tdm;Capt;NTDM;NDom;NTdm;NBttl;NConq;nctf;NCnv;NCnvA;NCnvB;NS;NA;NAleft;NAright;N2M;4x4_norespawn;2x2_norespawn;1x1_norespawn;mission;FFA;BDB;BDA;MDB;GSA;GSB;CnvA;CnvB;ACsD;BR;ctf;HS;HfD;HA;UDom;tft;tfs;stdm",
+  "mapTypes": "AfDto;AfD;BC;BfDn;BfD;ADto;AD;GS;GSA;GSB;DF;BfD_norespawn;GS_norespawn;BfDn_arcade;GSn;BfD_noresp;Dom;Dom_no_respawn;dblDom;Conq;Conq_no_respawn;Bttl;Bttl_no_respawn;bfd_norespawn;day_norespawn;bfd_norespawn;duel;AfDn;tm;race;race_straight;race_inverted;Bto;Conq1;Conq2;Conq3;Conq4;Conq5;Conq6;DBttlA;DBttlB;PvE;PvE_1;PvE_2;PvE_3;PvE_4;PvE_5;PvE_6;I2M;H2M;Tdm;Capt;NTDM;NDom;NTdm;NBttl;NConq;nctf;NCnv;NCnvA;NCnvB;NS;NA;NAleft;NAright;N2M;4x4_norespawn;2x2_norespawn;1x1_norespawn;mission;FFA;BDB;BDA;MDB;GSA;GSB;CnvA;CnvB;ACsD;BR;ctf;HS;HfD;HA;UDom;tft;tfs;stdm",
   "ordersPerSession": 3,
   "randomBattle": {
     "classiness": {
@@ -94,6 +94,10 @@
       "superiorityBattlesThreshold": 20
     }
   },
+  "eventLeaderboardPlatforms": {
+    "ps4": 7,
+    "xboxone": 11
+  },
   "tribunal": {
     "minComplaintCount": 10,
     "maxComplaintCount": 10,
@@ -177,8 +181,6 @@
       "_Tdm": 3,
       "_tm": 3,
       "_Capt": 3,
-      "_ArtDA": 3,
-      "_ArtDB": 3,
       "_UDom": 0,
       "_tft": 3,
       "_tfs": 6,
@@ -334,6 +336,20 @@
       "testFlight_peleliu_hydrobase": "testFlight_honolulu_hydrobase",
       "testFlight_peleliu": "testFlight_ruhr",
       "testFlight_norway_hydrobase": "testFlight_britain_hydroplane"
+    }
+  },
+  "visualizationTrophyWeights": {
+    "low": {
+      "weight": 0.0,
+      "icon": "#ui/gameuiskin#dice1.svg"
+    },
+    "average": {
+      "weight": 0.05,
+      "icon": "#ui/gameuiskin#dice3.svg"
+    },
+    "high": {
+      "weight": 0.3,
+      "icon": "#ui/gameuiskin#dice5.svg"
     }
   },
   "ww_settings": {
@@ -2860,6 +2876,12 @@
         "condition": "role_TESTER"
       }
     ],
+    "LwsLdsEnabled": {
+      "condition": ""
+    },
+    "WeaponCycleTrigger": {
+      "condition": ""
+    },
     "ConstantlyComputedWeaponSight": {
       "condition": ""
     },
@@ -3363,13 +3385,13 @@
       "condition": "",
       "platform_lock": "android;xboxOne"
     },
+    "pc_xboxOne_only_events": {
+      "condition": "",
+      "platform_lock": "ps4;android"
+    },
     "ps4_xboxOne_only_events": {
       "condition": "",
       "platform_lock": "pc;android"
-    },
-    "ps_xboxOne_only_events": {
-      "condition": "",
-      "platform_lock": "ps4;android"
     },
     "ConsolesLiveTrophy": [],
     "ConsolesWorkshopExchange": [
@@ -3870,17 +3892,9 @@
     "DmViewerProtectionAnalysisShip": {
       "condition": ""
     },
-    "DmViewerProtectionAnalysisAircraft": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
+    "DmViewerProtectionAnalysisAircraft": {
+      "condition": ""
+    },
     "DmViewerProtectionAnalysisVisualEffect": [
       {
         "condition": "role_GAIJIN"
@@ -4004,11 +4018,36 @@
       "condition": "",
       "platform_unlock": "ps4;xboxOne"
     },
+    "ConsoleSeparateEventsLeaderboards": [
+      {
+        "condition": "role_GAIJIN"
+      },
+      {
+        "condition": "role_DEVELOPER"
+      },
+      {
+        "condition": "role_TESTER"
+      }
+    ],
     "nonPayingUser": {
       "condition": "!customerAccount"
     },
     "Changelog": {
       "condition": ""
-    }
+    },
+    "Collection": {
+      "condition": ""
+    },
+    "ShowDropChanceInTrophy": [
+      {
+        "condition": "role_GAIJIN"
+      },
+      {
+        "condition": "role_DEVELOPER"
+      },
+      {
+        "condition": "role_TESTER"
+      }
+    ]
   }
 }

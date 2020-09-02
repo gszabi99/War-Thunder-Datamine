@@ -3,6 +3,7 @@ local wwRewards = ::require("scripts/worldWar/handler/wwRewards.nut")
 local time = require("scripts/time.nut")
 local { getSeparateLeaderboardPlatformName,
         getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.nut")
+local { addClanTagToNameInLeaderbord } = require("scripts/leaderboard/leaderboardView.nut")
 
 ::ww_leaderboards_list <- [
   ::g_lb_category.UNIT_RANK
@@ -254,7 +255,7 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
         function(lbPageData) {
           if (!hasSelfRow)
             selfRowData = []
-          pageData = wwLeaderboardData.convertWwLeaderboardData(lbPageData, isCountriesLeaderboard())
+          pageData = wwLeaderboardData.addClanInfoIfNeedAndConvert(requestData.modeName, lbPageData, isCountriesLeaderboard())
           fillLeaderboard(pageData)
         }, this)
       wwLeaderboardData.requestWwLeaderboardData(
@@ -270,7 +271,7 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
     {
       local callback = ::Callback(
         function(lbSelfData) {
-          selfRowData = wwLeaderboardData.convertWwLeaderboardData(lbSelfData, isCountriesLeaderboard()).rows
+          selfRowData = wwLeaderboardData.addClanInfoIfNeedAndConvert(requestData.modeName, lbSelfData, isCountriesLeaderboard()).rows
           if(isRequestDifferent)
             requestSelfPage(getSelfPos())
           cb(true)
@@ -511,5 +512,28 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
       }
 
     return countries
+  }
+
+  function updateClanTagRowsData(clansInfoList) {
+    if (clansInfoList.len() == 0)
+      return
+
+    local clansInfo = clansInfoList
+    local function updateClanTag(row) {
+      row.__update({
+        clanTag = clansInfo?[row?.clanId.tostring() ?? ""].tag ?? row?.clanTag ?? ""
+      })
+    }
+    (selfRowData ?? []).map(updateClanTag)
+    pageData?.rows.map(updateClanTag)
+  }
+
+  function onEventUpdateClansInfoList(p) {
+    if (lbMode != "ww_users_manager")
+      return
+
+    local clansInfoList = p?.clansInfoList ?? {}
+    updateClanTagRowsData(clansInfoList)
+    addClanTagToNameInLeaderbord(scene.findObject("lb_table_nest"), clansInfoList)
   }
 }

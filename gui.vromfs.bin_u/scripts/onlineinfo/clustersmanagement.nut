@@ -1,3 +1,5 @@
+local { startLogout } = require("scripts/login/logout.nut")
+
 // -------------------------------------------------------
 // Clusters managment
 // -------------------------------------------------------
@@ -108,7 +110,7 @@
         {
           ::checkMatchingError(params, true)
           if (!::is_dev_version)
-            ::gui_start_logout()
+            startLogout()
         }
       }.bindenv(::g_clusters))
   }

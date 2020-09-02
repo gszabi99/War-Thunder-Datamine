@@ -815,6 +815,21 @@
             "name": "ammo_body_50_dm"
           },
           {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
+          },
+          {
             "name": "ammo_body_l_01_dm"
           },
           {
@@ -1743,7 +1758,7 @@
             "hasVerticalGunFreeMode": false,
             "hasHorizontal": false,
             "horizontalOmegaMult": 1.0,
-            "horizontalSpeedLimitKPH": 50.0,
+            "horizontalSpeedLimitKPH": 16.0,
             "hasVertical": true,
             "verticalOmegaMult": 0.7,
             "verticalSpeedLimitKPH": 16.0,
@@ -1808,7 +1823,7 @@
             "hasVerticalGunFreeMode": false,
             "hasHorizontal": false,
             "horizontalOmegaMult": 1.0,
-            "horizontalSpeedLimitKPH": 50.0,
+            "horizontalSpeedLimitKPH": 16.0,
             "hasVertical": true,
             "verticalOmegaMult": 0.7,
             "verticalSpeedLimitKPH": 16.0,
@@ -2026,31 +2041,7 @@
         "defaultDampeningForce": [120000.0,120000.0],
         "dampeningRelaxationRatio": 0.4,
         "dampeningCompressionRatio": 0.15
-      },
-      "physNode": [
-        {
-          "type": "verlet_string"
-        },
-        {
-          "stiffness": 1.0
-        },
-        {
-          "straightening": 0.5
-        },
-        {
-          "point": {
-            "name": "antenna",
-            "mass": 1.0,
-            "fixed": true
-          }
-        },
-        {
-          "point": {
-            "name": "bone_phx_antenna",
-            "mass": 3.0
-          }
-        }
-      ]
+      }
     }
   },
   {
@@ -2807,6 +2798,30 @@
     }
   },
   {
+    "default_skin": [
+      {
+        "replace_tex": {
+          "from": "us_camo_olive*",
+          "to": "ussr_camo_green*"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "m3_lee_body_c*",
+          "to": "m3_lee_ussr_body_c*",
+          "param": "camo_skin_tex"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "m3_lee_turret_c*",
+          "to": "m3_lee_ussr_turret_c*",
+          "param": "camo_skin_tex"
+        }
+      }
+    ]
+  },
+  {
     "skin": {
       "name": "winter",
       "nameLocId": "skin/winter",
@@ -2873,24 +2888,6 @@
     }
   },
   {
-    "default_skin": {
-      "name": "default",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "ussr_camo_green*"
-      }
-    }
-  },
-  {
-    "user_skin": {
-      "name": "user",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_green*"
-      }
-    }
-  },
-  {
     "modifications": {
       "new_tank_tracks": [],
       "new_tank_suspension": [],
@@ -2921,53 +2918,6 @@
       "75mm_usa_APCBC_ammo_pack": [],
       "75mm_us_M89_Smoke": [],
       "75mm_us_M89_Smoke_ammo_pack": []
-    }
-  },
-  {
-    "defaultDecals": {
-      "skin_condition": 0.0,
-      "camo_scale": 0.0,
-      "camo_rotation": 0.0,
-      "decal0Line0": [2.5,-1.09278e-07,0.0,0.971912],
-      "decal0Line1": [-1.09278e-07,-2.5,0.0,6.65745],
-      "decal0HaveCP": true,
-      "decal0CP": [0.444592,2.69392,-0.228382],
-      "decal0CPNormDepth": [0.0,0.0,-1.0,-0.462805],
-      "decal0RotScale": [1.5708,0.4],
-      "decal0Mirrored": false,
-      "decal0Wrap": false,
-      "decal0Abs": true,
-      "decal0Tex": "back_19",
-      "decal1Line0": [7.14286,-3.12224e-07,0.0,5.76163],
-      "decal1Line1": [-1.56112e-07,-3.57143,0.0,5.75497],
-      "decal1HaveCP": true,
-      "decal1CP": [1.23938,1.70233,-0.847873],
-      "decal1CPNormDepth": [0.0,0.0,-1.0,-1.30856],
-      "decal1RotScale": [1.5708,0.28],
-      "decal1Mirrored": false,
-      "decal1Wrap": false,
-      "decal1Abs": false,
-      "decal1Tex": "ussr_numbers_1",
-      "decal2Line0": [3.57143,-1.56112e-07,0.0,2.54977],
-      "decal2Line1": [-1.56112e-07,-3.57143,0.0,5.75898],
-      "decal2HaveCP": true,
-      "decal2CP": [1.25356,1.70345,-0.685801],
-      "decal2CPNormDepth": [0.0,0.0,-1.0,-1.30856],
-      "decal2RotScale": [1.5708,0.28],
-      "decal2Mirrored": false,
-      "decal2Wrap": false,
-      "decal2Abs": false,
-      "decal2Tex": "ussr_numbers_6",
-      "decal3Line0": [-0.2551,0.2551,0.692964,0.442929],
-      "decal3Line1": [0.98,-0.98,0.721531,-0.0995931],
-      "decal3HaveCP": true,
-      "decal3CP": [-0.0751404,1.70121,1.91777],
-      "decal3CPNormDepth": [0.707107,0.707107,0.0,-2.38591],
-      "decal3RotScale": [1.0908,0.64],
-      "decal3Mirrored": false,
-      "decal3Wrap": false,
-      "decal3Abs": false,
-      "decal3Tex": "ussr_text_za_rodinu"
     }
   }
 ]

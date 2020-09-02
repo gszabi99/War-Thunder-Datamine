@@ -1,3 +1,5 @@
+local exitGame = require("scripts/utils/exitGame.nut")
+
 ::on_online_unavailable <- function on_online_unavailable()
 {
   dagor.debug("on_online_unavailable")
@@ -42,7 +44,7 @@
       "info_msg_box",
       null,
       message,
-      [["ok", ::exit_game ]], "exit")
+      [["exit", exitGame ]], "exit")
 }
 
 /**

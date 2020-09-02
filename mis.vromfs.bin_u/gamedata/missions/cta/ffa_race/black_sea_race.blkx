@@ -111,13 +111,13 @@
       "level": "levels/avn_alps_fjord.bin",
       "environment": "Day",
       "weather": "cloudy",
+      "useCustomOnlineUnlocksOnly": true,
       "gt_race": true,
       "timeLimit": 20,
       "raceLaps": 1,
       "raceWinners": 1,
       "raceForceCannotShoot": false,
       "windSpeed": [13.0,14.0],
-      "useCustomOnlineUnlocksOnly": true,
       "editSlotbar": {
         "keepOwnUnits": false,
         "country_ussr": {
@@ -600,13 +600,30 @@
             },
             {
               "target": "players_count"
+            },
+            {
+              "target": "bailout_restriction_off"
             }
           ]
         },
         {
-          "triggerDisable": {
-            "target": "race_start_timer"
-          }
+          "triggerDisable": [
+            {
+              "target": "race_start_timer"
+            },
+            {
+              "target": "bailout_restriction_on_p01"
+            },
+            {
+              "target": "bailout_restriction_on_p02"
+            },
+            {
+              "target": "bailout_restriction_on_p03"
+            },
+            {
+              "target": "bailout_restriction_on_p04"
+            }
+          ]
         }
       ]
     },
@@ -733,6 +750,176 @@
         },
         "triggerEnable": {
           "target": "assign_targets"
+        }
+      },
+      "else_actions": []
+    },
+    "bailout_restriction_on_p01": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "2D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "check_objects": "any",
+          "object": "players_squad",
+          "target": "spawnpoint01"
+        }
+      },
+      "actions": {
+        "playerOptions": {
+          "object": "players_squad",
+          "allowBailout": false,
+          "useForTriggerFiltered": true
+        }
+      },
+      "else_actions": []
+    },
+    "bailout_restriction_on_p02": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "2D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "check_objects": "any",
+          "object": "players_squad",
+          "target": "spawnpoint02"
+        }
+      },
+      "actions": {
+        "playerOptions": {
+          "object": "players_squad",
+          "allowBailout": false,
+          "useForTriggerFiltered": true
+        }
+      },
+      "else_actions": []
+    },
+    "bailout_restriction_on_p03": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "2D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "check_objects": "any",
+          "object": "players_squad",
+          "target": "spawnpoint03"
+        }
+      },
+      "actions": {
+        "playerOptions": {
+          "object": "players_squad",
+          "allowBailout": false,
+          "useForTriggerFiltered": true
+        }
+      },
+      "else_actions": []
+    },
+    "bailout_restriction_on_p04": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "2D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "check_objects": "any",
+          "object": "players_squad",
+          "target": "spawnpoint04"
+        }
+      },
+      "actions": {
+        "playerOptions": {
+          "object": "players_squad",
+          "allowBailout": false,
+          "useForTriggerFiltered": true
+        }
+      },
+      "else_actions": []
+    },
+    "bailout_restriction_off": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "2D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "check_objects": "any",
+          "object": "players_squad",
+          "target": "waypoint02"
+        }
+      },
+      "actions": {
+        "playerOptions": {
+          "object": "players_squad",
+          "allowBailout": true,
+          "useForTriggerFiltered": true
         }
       },
       "else_actions": []

@@ -1,4 +1,7 @@
 local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+local { isPlatformSony,
+        isPlatformXboxOne,
+        targetPlatform } = require("scripts/clientState/platform.nut")
 
 global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
@@ -483,10 +486,10 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
       rootObj["swap_ab"] = "yes";
 
     //Check for special hints, because IME is called with special action, and need to show text about it
-    local hasIME = ::is_ps4_or_xbox || ::is_platform_android || ::is_steam_big_picture()
+    local hasIME = isPlatformSony || isPlatformXboxOne || ::is_platform_android || ::is_steam_big_picture()
     rootObj["has_ime"] = hasIME? "yes" : "no"
 
-    rootObj["target_platform"] = ::target_platform
+    rootObj["target_platform"] = targetPlatform
 
     if (!forceUpdate)
       return

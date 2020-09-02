@@ -1,0 +1,86 @@
+[
+  {
+    "Weapon": {
+      "trigger": "gunner6",
+      "triggerGroup": "rockets",
+      "blk": "gameData/Weapons/navalModels_weapons/rocket_m14_launcher.blk",
+      "weaponType": "rockets",
+      "flash": "emtr_gun_flame_01",
+      "useEmitter": true,
+      "emitter": "bone_rocket_01",
+      "emitterGenRange": [1,17],
+      "emitterGenFmt": "bone_rocket_%02d",
+      "ammoDpGenFmt": "ammo_turret_%02d_dm",
+      "barrelDP": "auxiliary_caliber_gun_05_dm",
+      "breechDP": "auxiliary_caliber_gun_05_dm",
+      "brokenBarrelAllowShoot": false,
+      "defaultYaw": 0.0,
+      "defaultPitch": 0.0,
+      "speedYaw": 20.0,
+      "speedPitch": 4.0,
+      "bullets": 17,
+      "allowableDelta": 2.0,
+      "ChainfireTime": 60.0,
+      "DelayAfterShoot": 0.0,
+      "aimMinDist": 20.0,
+      "aimMaxDist": 4500.0,
+      "randomAngle": 0.0,
+      "accuracyBotMultAir": 0.55,
+      "accuracyAir": 1.0,
+      "accuracyGnd": 0.5,
+      "errMeasureVel": 0.0,
+      "errTargettingOn100kmph": 0.0,
+      "errMeasureVelFast": 100.0,
+      "errMeasureVelFwdShift": 1.0,
+      "errMeasureVelDir": 3.0,
+      "errTargetting": 1.0,
+      "errExplTime": 0.0,
+      "turret": {
+        "head": "auxiliary_caliber_turret_05",
+        "gun": "auxiliary_caliber_gun_05",
+        "gunnerDm": "auxiliary_caliber_turret_05_dm"
+      },
+      "limits": {
+        "yaw": [-120.0,120.0],
+        "pitch": [-5.0,55.0]
+      }
+    }
+  },
+  {
+    "hideNodes": {
+      "node": "ex_decor_30"
+    }
+  },
+  {
+    "Weapon": {
+      "trigger": "mines",
+      "triggerGroup": "mine",
+      "blk": "gameData/weapons/mines/ussr_mine_yam43.blk",
+      "emitter": "bone_mine_01",
+      "bullets": 5,
+      "external": true,
+      "dropSpeed": 5.0,
+      "emitterGenRange": [1,5],
+      "emitterGenFmt": "bone_mine_%02d",
+      "ammoDpGenFmt": "mine_%02d_dm",
+      "feedSystem": true,
+      "sequentalFeed": true
+    }
+  },
+  {
+    "Weapon": {
+      "trigger": "mines",
+      "triggerGroup": "mine",
+      "blk": "gameData/weapons/mines/ussr_mine_yam43.blk",
+      "emitter": "bone_mine_06",
+      "bullets": 5,
+      "external": true,
+      "dropSpeed": 5.0,
+      "emitterGenRange": [6,10],
+      "emitterGenFmt": "bone_mine_%02d",
+      "ammoDpGenFmt": "mine_%02d_dm",
+      "feedSystem": true,
+      "sequentalFeed": true
+    }
+  }
+]

@@ -1,3 +1,6 @@
+local { canLogout, startLogout } = require("scripts/login/logout.nut")
+local exitGame = require("scripts/utils/exitGame.nut")
+
 const MATCHING_CONNECT_TIMEOUT = 30
 
 enum REASON_DOMAIN {
@@ -129,7 +132,7 @@ g_matching_connect.logoutWithMsgBox <- function logoutWithMsgBox(reason, message
   }
 
   local btnName = needExit ? "exit" : "ok"
-  local msgCb = needExit ? ::exit_game : function() {}
+  local msgCb = needExit ? exitGame : function() {}
 
   ::error_message_box("yn1/connect_error", reason,
     [[ btnName, msgCb]], btnName,
@@ -143,9 +146,9 @@ g_matching_connect.exitWithMsgBox <- function exitWithMsgBox(reason, message, re
 
 g_matching_connect.doLogout <- function doLogout()
 {
-  if (!::can_logout())
+  if (!canLogout())
     return false
 
-  ::gui_start_logout()
+  startLogout()
   return true
 }

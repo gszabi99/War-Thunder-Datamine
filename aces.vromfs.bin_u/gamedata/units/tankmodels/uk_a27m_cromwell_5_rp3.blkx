@@ -183,6 +183,11 @@
         "turret_01_top_dm": {
           "armorThickness": 10.0,
           "armorClass": "CHA_tank"
+        },
+        "composite_armor_hull_01_dm": {
+          "armorThickness": 4.9,
+          "armorClass": "tank_structural_steel",
+          "hidableInXrayViewer": true
         }
       },
       "turret": {
@@ -672,46 +677,66 @@
     }
   },
   {
-    "ammoLoadDistribution": {
-      "removeLoadedAmmo": false,
-      "primaryShells": {
-        "ammo_body_r_02_dm": {
-          "count": 18
-        },
-        "ammo_body_r_03_dm": {
-          "count": 5
-        },
-        "ammo_body_r_04_dm": {
-          "count": 16
-        },
-        "ammo_body_l_04_dm": {
-          "count": 16
-        },
-        "ammo_body_l_03_dm": {
-          "count": 4
-        },
-        "ammo_body_l_02_dm": {
-          "count": 14
-        },
-        "ammo_body_l_01_dm": {
-          "count": 1
-        },
-        "ammo_body_r_01_dm": {
-          "count": 1
+    "ammoStowages": {
+      "ammo1": {
+        "removeLoadedAmmo": false,
+        "weaponTrigger": "gunner0",
+        "fatalFire": true,
+        "fatalExplosion": true,
+        "shells": {
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "ammo_body_r_02_dm": {
+            "count": 14
+          },
+          "ammo_body_r_03_dm": {
+            "count": 5
+          },
+          "ammo_body_r_04_dm": {
+            "count": 14
+          },
+          "ammo_body_l_04_dm": {
+            "count": 14
+          },
+          "ammo_body_l_03_dm": {
+            "count": 5
+          },
+          "ammo_body_l_02_dm": {
+            "count": 12
+          }
         }
       },
-      "special": {
-        "ammo_turret_04_dm": {
-          "count": 1
-        },
-        "ammo_turret_03_dm": {
-          "count": 1
-        },
-        "ammo_turret_02_dm": {
-          "count": 1
-        },
-        "ammo_turret_01_dm": {
-          "count": 1
+      "ammo2": {
+        "removeLoadedAmmo": false,
+        "weaponTrigger": "gunner2",
+        "shells": {
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "ammo_turret_04_dm": {
+            "count": 1
+          },
+          "ammo_turret_03_dm": {
+            "count": 1
+          },
+          "ammo_turret_02_dm": {
+            "count": 1
+          },
+          "ammo_turret_01_dm": {
+            "count": 1
+          }
+        }
+      }
+    }
+  },
+  {
+    "xray_viewer_data": {
+      "armorArrayHull": {
+        "xrayDmPart": "composite_armor_hull_01_dm",
+        "titleLoc": "tank_structural_steel",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_01_dm"
+          }
         }
       }
     }
@@ -872,6 +897,21 @@
           },
           {
             "name": "ammo_body_50_dm"
+          },
+          {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
           },
           {
             "name": "ammo_body_l_01_dm"
@@ -1757,7 +1797,7 @@
           "speedYaw": 25.0,
           "speedPitch": 4.0,
           "fireConeAngle": 1.0,
-          "bullets": 75,
+          "bullets": 64,
           "salvoAmount": 100.0,
           "ChainfireTime": 0.0,
           "DelayAfterShoot": 5.0,
@@ -2615,7 +2655,7 @@
                 "speedYaw": 25.0,
                 "speedPitch": 4.0,
                 "fireConeAngle": 1.0,
-                "bullets": 75,
+                "bullets": 64,
                 "salvoAmount": 100.0,
                 "ChainfireTime": 0.0,
                 "DelayAfterShoot": 5.0,

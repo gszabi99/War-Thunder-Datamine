@@ -164,6 +164,9 @@
         },
         "turret_01_side_dm": {
           "armorThickness": 50.0
+        },
+        "turret_01_top_dm": {
+          "armorThickness": 150.0
         }
       },
       "mask": {
@@ -1994,6 +1997,68 @@
         }
       }
     ]
+  },
+  {
+    "MetaParts": {
+      "mount": [
+        {
+          "hp": 8000.0
+        },
+        {
+          "part": "turret_bottom_dm"
+        },
+        {
+          "part": "body_top_dm"
+        },
+        {
+          "part": "turret_back_dm"
+        },
+        {
+          "part": "turret_side_dm"
+        },
+        {
+          "part": "turret_top_dm"
+        },
+        {
+          "part": "turret_front_dm"
+        },
+        {
+          "effect": {
+            "conditionDamageType": "explosion",
+            "expl": 1.0,
+            "conditionDamage": 350.0,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "cumulative",
+            "expl": 1.0,
+            "conditionDamage": 250.0,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "generic",
+            "expl": 1.0,
+            "conditionDamage": 750.0,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "expl": 1.0,
+            "conditionDead": true,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
+        }
+      ]
+    }
   },
   {
     "wreckedParts": {

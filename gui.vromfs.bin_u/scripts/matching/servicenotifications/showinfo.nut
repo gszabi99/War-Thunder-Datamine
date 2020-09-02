@@ -1,5 +1,6 @@
 local callbackWhenAppWillActive = require("scripts/clientState/callbackWhenAppWillActive.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
+local exitGame = require("scripts/utils/exitGame.nut")
 
 local function showMessageBox(params)
 {
@@ -12,7 +13,7 @@ local function showMessageBox(params)
     return { error = { message = "Title and message is empty" }}
 
   local closeFunction = (params?.logout_on_close ?? false)
-    ? ::exit_game
+    ? exitGame
     : @() null
 
   ::scene_msg_box("show_message_from_matching", null,
@@ -32,7 +33,7 @@ local function showUrl(params)
     return { error = { message = "url is empty" }}
 
   if (params?.logout_on_close ?? false)
-    callbackWhenAppWillActive(@() ::exit_game())
+    callbackWhenAppWillActive(exitGame)
 
   openUrl(url)
 

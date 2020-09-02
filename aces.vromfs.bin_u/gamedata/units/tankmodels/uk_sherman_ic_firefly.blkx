@@ -859,6 +859,21 @@
             "name": "ammo_body_50_dm"
           },
           {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
+          },
+          {
             "name": "ammo_body_l_01_dm"
           },
           {
@@ -2057,31 +2072,7 @@
         "defaultDampeningForce": [120000.0,120000.0],
         "dampeningRelaxationRatio": 0.4,
         "dampeningCompressionRatio": 0.15
-      },
-      "physNode": [
-        {
-          "type": "verlet_string"
-        },
-        {
-          "stiffness": 1.0
-        },
-        {
-          "straightening": 0.5
-        },
-        {
-          "point": {
-            "name": "antenna",
-            "mass": 1.0,
-            "fixed": true
-          }
-        },
-        {
-          "point": {
-            "name": "bone_phx_antenna",
-            "mass": 3.0
-          }
-        }
-      ]
+      }
     }
   },
   {
@@ -3021,41 +3012,22 @@
     }
   },
   {
-    "defaultDecals": {
-      "skin_condition": 0.0,
-      "camo_scale": 0.0,
-      "camo_rotation": 0.0,
-      "decal0Line0": [1.25,-5.46392e-08,0.0,-0.819546],
-      "decal0Line1": [-1.09278e-07,-2.5,0.0,4.10243],
-      "decal0HaveCP": true,
-      "decal0CP": [1.40614,1.67127,0.936647],
-      "decal0CPNormDepth": [0.0,0.0,-1.0,-1.31916],
-      "decal0RotScale": [1.5708,0.4],
-      "decal0Mirrored": false,
-      "decal0Wrap": false,
-      "decal0Abs": false,
-      "decal0Tex": "pl_number_text_trzyniec",
-      "decal1Line0": [1.92308,-8.40604e-08,0.0,0.626824],
-      "decal1Line1": [-8.40604e-08,-1.92308,0.0,4.71515],
-      "decal1HaveCP": true,
-      "decal1CP": [0.985459,2.42218,-0.152417],
-      "decal1CPNormDepth": [0.0,0.0,-1.0,-0.994993],
-      "decal1RotScale": [1.5708,0.52],
-      "decal1Mirrored": false,
-      "decal1Wrap": false,
-      "decal1Abs": true,
-      "decal1Tex": "pl_1st_sqn_4th_armoured_reg_scorpion",
-      "decal2Line0": [-1.25,-5.46392e-08,0.0,1.45952],
-      "decal2Line1": [1.09278e-07,-2.5,0.0,4.09626],
-      "decal2HaveCP": true,
-      "decal2CP": [-1.24839,1.6688,0.879768],
-      "decal2CPNormDepth": [0.0,0.0,1.0,-1.32032],
-      "decal2RotScale": [1.5708,0.4],
-      "decal2Mirrored": false,
-      "decal2Wrap": false,
-      "decal2Abs": false,
-      "decal2Tex": "pl_number_text_trzyniec"
-    }
+    "default_skin": [
+      {
+        "set_tex": {
+          "from": "sherman_1c_firefly_body_c*",
+          "to": "sherman_1c_firefly_skin_body_c*",
+          "param": "camo_skin_tex"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "sherman_1c_firefly_turret_c*",
+          "to": "sherman_1c_firefly_skin_turret_c*",
+          "param": "camo_skin_tex"
+        }
+      }
+    ]
   },
   {
     "user_skin": {

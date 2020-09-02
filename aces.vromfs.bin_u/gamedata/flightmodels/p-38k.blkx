@@ -2,6 +2,8 @@
   "model": "p_38k",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_fighter_metaparts.blk",
   "fmFile": "fm/p-38k.blk",
+  "gearSinkRangeLR": 0.22,
+  "gearSinkRangeC": 0.168,
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "advancedInstructor": true,
@@ -135,14 +137,6 @@
       "wing2_r_dm": {
         "genericDamageMult": 0.3,
         "hp": 69.8
-      },
-      "wing_l_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 80.5
-      },
-      "wing_r_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 80.5
       }
     },
     "dural": {
@@ -222,10 +216,10 @@
       "oil4_dm": {
         "hp": 17.2
       },
-      "water2_dm": {
+      "water1_dm": {
         "hp": 17.5
       },
-      "water4_dm": {
+      "water2_dm": {
         "hp": 17.5
       }
     },
@@ -253,6 +247,14 @@
       },
       "tank6_dm": {
         "hp": 70.5
+      }
+    },
+    "wood": {
+      "wing_l_dm": {
+        "hp": 95.0
+      },
+      "wing_r_dm": {
+        "hp": 95.0
       }
     }
   },
@@ -566,26 +568,12 @@
     },
     {
       "part": {
-        "name": "fin1_dm",
-        "onHit": {
-          "tailcontrol_dm": 0.001
-        },
-        "onKill": {
-          "tailcontrol_dm": 1.0,
-          "nothing": 9.0
-        }
+        "name": "fin1_dm"
       }
     },
     {
       "part": {
-        "name": "fin2_dm",
-        "onHit": {
-          "tailcontrol_dm": 0.001
-        },
-        "onKill": {
-          "tailcontrol_dm": 1.0,
-          "nothing": 9.0
-        }
+        "name": "fin2_dm"
       }
     },
     {
@@ -1609,14 +1597,7 @@
     },
     {
       "part": {
-        "name": "stab_dm",
-        "onHit": {
-          "tailcontrol_dm": 0.001
-        },
-        "onKill": {
-          "tailcontrol_dm": 1.0,
-          "nothing": 9.0
-        }
+        "name": "stab_dm"
       }
     },
     {
@@ -1979,7 +1960,7 @@
     },
     {
       "part": {
-        "name": "water2_dm",
+        "name": "water1_dm",
         "onHit": {
           "leak_water": 0.5
         },
@@ -1990,7 +1971,7 @@
     },
     {
       "part": {
-        "name": "water4_dm",
+        "name": "water2_dm",
         "onHit": {
           "leak_water": 0.5
         },
@@ -2558,6 +2539,13 @@
       "stick_ailerons": [-1.8,1.8],
       "stick_elevator": [-1.8,1.8],
       "throttle": [-1.0,1.8],
+      "throttle1": [-1.0,1.8],
+      "mixture": [0.0,1.0],
+      "mixture1": [0.0,1.0],
+      "prop_pitch": [0.0,1.0],
+      "prop_pitch1": [0.0,1.0],
+      "supercharger": [0.0,1.0],
+      "supercharger1": [0.0,1.0],
       "weapon2": [0.0,1.0],
       "trimmer": [-1.0,1.0],
       "flaps": [0.0,1.0],

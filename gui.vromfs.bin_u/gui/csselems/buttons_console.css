@@ -1009,8 +1009,10 @@ Button_text[btnName=A], DummyButton[btnName=A], mapStateBox[btnName=A], weaponry
 Button_text[btnName=SpaceA]            { accessKey:'J:A | Space'; }
 [swap_ab=yes] Button_text[btnName=SpaceA] { accessKey:'J:B | Space'; }
 
-Button_text[btnName=A][onlyA]          { accessKey:'J:A'; }
-[swap_ab=yes] Button_text[btnName=A][onlyA] { accessKey:'J:B'; }
+Button_text[btnName=A][onlyA], CheckBox[btnName=A][onlyA]
+                                       { accessKey:'J:A'; }
+[swap_ab=yes] Button_text[btnName=A][onlyA], [swap_ab=yes] CheckBox[btnName=A][onlyA]
+                                       { accessKey:'J:B'; }
 
 Button_text[focusBtnName=A]            { shortcutActivate:'J:A | Space'; }
 [swap_ab=yes] Button_text[focusBtnName=A] { shortcutActivate:'J:B | Space'; }
@@ -2424,6 +2426,10 @@ Button_text[visualStyle=noBgr]:hover {
 
 Button_text[visualStyle=noBgr]:pushed {
   color:@white;
+}
+
+Button_text[visualStyle=twoStepLogin] {
+  background-color: @buttonGPColor;
 }
 
 buttonPlayer {

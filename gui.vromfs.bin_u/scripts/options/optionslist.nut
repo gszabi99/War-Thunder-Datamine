@@ -4,6 +4,7 @@ local contentPreset = require("scripts/customization/contentPreset.nut")
 local soundDevice = require_native("soundDevice")
 local { chatStatesCanUseVoice } = require("scripts/chat/chatStates.nut")
 local { onSystemOptionsApply, canUseGraphicsOptions } = require("scripts/options/systemOptions.nut")
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 local getSystemOptions = @() {
   name = "graphicsParameters"
@@ -27,15 +28,15 @@ local getMainOptions = function()
     isSearchAvaliable = true
     options = [
       ["options/mainParameters"],
-      [::USEROPT_PS4_CROSSPLAY, "spinner", ::is_platform_ps4 && ::has_feature("PS4CrossNetwork") && !::is_in_flight()],
-      [::USEROPT_PS4_ONLY_LEADERBOARD, "spinner", ::is_platform_ps4 && ::has_feature("ConsoleSeparateLeaderboards")],
+      [::USEROPT_PS4_CROSSPLAY, "spinner", isPlatformSony && ::has_feature("PS4CrossNetwork") && !::is_in_flight()],
+      [::USEROPT_PS4_ONLY_LEADERBOARD, "spinner", isPlatformSony && ::has_feature("ConsoleSeparateLeaderboards")],
       [::USEROPT_LANGUAGE, "spinner", ! ::is_in_flight() && ::canSwitchGameLocalization()],
-      [::USEROPT_AUTOLOGIN, "spinner", ! ::is_in_flight() && !::is_ps4_or_xbox],
+      [::USEROPT_AUTOLOGIN, "spinner", ! ::is_in_flight() && !(isPlatformSony || isPlatformXboxOne)],
       [::USEROPT_FONTS_CSS, "spinner"],
       [::USEROPT_GAMMA, "slider", !::is_hdr_enabled() && ::target_platform != "macosx"
                                   && (!::is_platform_windows
                                       || ::getSystemConfigOption("video/mode") == "fullscreen") ],
-      [::USEROPT_CLUSTER, "spinner", ! ::is_in_flight() && ::is_platform_ps4],
+      [::USEROPT_CLUSTER, "spinner", ! ::is_in_flight() && isPlatformSony],
 
       ["options/header/commonBattleParameters"],
       [::USEROPT_HUD_SHOW_BONUSES, "spinner"],
@@ -56,6 +57,7 @@ local getMainOptions = function()
       [::USEROPT_GUN_TARGET_DISTANCE, "spinner", ! ::is_in_flight()],
       [::USEROPT_GUN_VERTICAL_TARGETING, "spinner", ! ::is_in_flight()],
       [::USEROPT_BOMB_ACTIVATION_TIME, "spinner", ! ::is_in_flight()],
+      [::USEROPT_BOMB_SERIES, "spinner", ! ::is_in_flight()],
       [::USEROPT_FLARES_SERIES, "spinner", ! ::is_in_flight()],
       [::USEROPT_FLARES_SERIES_PERIODS, "spinner", ! ::is_in_flight()],
       [::USEROPT_FLARES_PERIODS, "spinner", ! ::is_in_flight()],
@@ -68,6 +70,7 @@ local getMainOptions = function()
       [::USEROPT_AUTOREARM_ON_AIRFIELD, "spinner"],
       [::USEROPT_ACTIVATE_AIRBORNE_RADAR_ON_SPAWN, "spinner"],
       [::USEROPT_USE_RECTANGULAR_RADAR_INDICATOR, "spinner"],
+      [::USEROPT_USE_RADAR_HUD_IN_COCKPIT, "spinner"],
       [::USEROPT_AIR_RADAR_SIZE, "slider"],
       [::USEROPT_CROSSHAIR_TYPE, "combobox"],
       [::USEROPT_CROSSHAIR_COLOR, "combobox"],
@@ -81,7 +84,7 @@ local getMainOptions = function()
       [::USEROPT_HUE_HELICOPTER_HUD_ALERT, "spinner"],
       [::USEROPT_HUE_HELICOPTER_MFD, "spinner"],
       [::USEROPT_HORIZONTAL_SPEED, "spinner"],
-      [::USEROPT_HELICOPTER_HELMET_AIM, "spinner", !::is_ps4_or_xbox],
+      [::USEROPT_HELICOPTER_HELMET_AIM, "spinner", !(isPlatformSony || isPlatformXboxOne)],
       [::USEROPT_HELICOPTER_AUTOPILOT_ON_GUNNERVIEW, "spinner"],
 
       ["options/header/tank"],
@@ -93,7 +96,7 @@ local getMainOptions = function()
       [::USEROPT_SHOW_DESTROYED_PARTS, "spinner", ::has_feature("Tanks")],
       [::USEROPT_ACTIVATE_GROUND_RADAR_ON_SPAWN, "spinner", ::has_feature("Tanks")],
       [::USEROPT_TACTICAL_MAP_SIZE, "slider"],
-      [::USEROPT_MAP_ZOOM_BY_LEVEL, "spinner", !::is_ps4_or_xbox && !::is_platform_android],
+      [::USEROPT_MAP_ZOOM_BY_LEVEL, "spinner", !(isPlatformSony || isPlatformXboxOne) && !::is_platform_android],
       // show option by code != -1 need for compatibility with 1_93_0_X
       // TODO: remove after 1_93_0_X
       [::USEROPT_SHOW_COMPASS_IN_TANK_HUD, "spinner", OPTION_SHOW_COMPASS_IN_TANK_HUD != -1],
@@ -102,7 +105,6 @@ local getMainOptions = function()
 
       ["options/header/ship"],
       [::USEROPT_DEPTHCHARGE_ACTIVATION_TIME, "spinner", ! ::is_in_flight()],
-      [::USEROPT_MINE_DEPTH, "spinner", ! ::is_in_flight()],
       [::USEROPT_USE_PERFECT_RANGEFINDER, "spinner", ::has_feature("Ships")],
       [::USEROPT_SAVE_AI_TARGET_TYPE, "spinner", ::has_feature("Ships")],
       [::USEROPT_DEFAULT_AI_TARGET_TYPE, "spinner", ::has_feature("Ships")],
@@ -149,7 +151,7 @@ local getMainOptions = function()
       [::USEROPT_SHOW_INDICATORS_DIST, "spinner"],
 
       ["options/header/chatAndVoiceChat"],
-      [::USEROPT_PS4_CROSSNETWORK_CHAT, "spinner", ::is_platform_ps4 && ::has_feature("PS4CrossNetwork")],
+      [::USEROPT_PS4_CROSSNETWORK_CHAT, "spinner", isPlatformSony && ::has_feature("PS4CrossNetwork")],
       [::USEROPT_ONLY_FRIENDLIST_CONTACT, "spinner", ! ::is_in_flight()],
       [::USEROPT_AUTO_SHOW_CHAT, "spinner"],
       [::USEROPT_CHAT_MESSAGES_FILTER, "spinner"],
@@ -161,19 +163,17 @@ local getMainOptions = function()
       //[::USEROPT_VOLUME_VOICE_IN, "slider"],
       //[::USEROPT_VOLUME_VOICE_OUT, "slider"],
       //[::USEROPT_PTT, "spinner"],
-      //[::USEROPT_VOICE_DEVICE_OUT, "combobox", ! ::is_platform_ps4 && ::gchat_voice_get_device_out_count() > 0]
-      //[::USEROPT_VOICE_DEVICE_IN, "combobox", ! ::is_platform_ps4 && ::gchat_voice_get_device_in_count() > 0]
 
       ["options/header/gamepad"],
       [::USEROPT_ENABLE_CONSOLE_MODE, "spinner", !::get_is_console_mode_force_enabled()],
       [::USEROPT_GAMEPAD_CURSOR_CONTROLLER, "spinner", ::g_gamepad_cursor_controls.canChangeValue()],
       [::USEROPT_XCHG_STICKS, "spinner"],
       [::USEROPT_VIBRATION, "spinner"],
-      [::USEROPT_GAMEPAD_VIBRATION_ENGINE, "spinner", !::is_platform_ps4],
+      [::USEROPT_GAMEPAD_VIBRATION_ENGINE, "spinner", !isPlatformSony],
       [::USEROPT_JOY_MIN_VIBRATION, "slider"],
       [::USEROPT_GAMEPAD_ENGINE_DEADZONE, "spinner"],
-      [::USEROPT_GAMEPAD_GYRO_TILT_CORRECTION, "spinner", ::is_platform_ps4],
-      [::USEROPT_USE_CONTROLLER_LIGHT, "spinner", ::is_platform_ps4 && ::has_feature("ControllerLight")],
+      [::USEROPT_GAMEPAD_GYRO_TILT_CORRECTION, "spinner", isPlatformSony],
+      [::USEROPT_USE_CONTROLLER_LIGHT, "spinner", isPlatformSony && ::has_feature("ControllerLight")],
 
       ["options/header/replaysAndSpectatorMode", null, ::has_feature("ClientReplay") || ::has_feature("ServerReplay") || ::has_feature("Spectator")],
       [::USEROPT_AUTOSAVE_REPLAYS, "spinner", !::is_in_flight() && ::has_feature("ClientReplay")],
@@ -209,7 +209,7 @@ local getSoundOptions = @() {
   name = "sound"
   options = [
     [::USEROPT_SOUND_ENABLE, "switchbox", ::is_platform_pc],
-    [::USEROPT_SOUND_DEVICE_OUT, "combobox", ::is_platform_pc && soundDevice.sound_get_device_out_count()],
+    [::USEROPT_SOUND_DEVICE_OUT, "combobox", ::is_platform_pc && soundDevice.get_out_devices().len() > 0],
     [::USEROPT_SOUND_SPEAKERS_MODE, "combobox", ::is_platform_pc],
     [::USEROPT_VOICE_MESSAGE_VOICE, "spinner"],
     [::USEROPT_SPEECH_TYPE, "spinner", ! ::is_in_flight()],
@@ -242,11 +242,9 @@ local getVoicechatOptions = function()
     ]
   }
 
-  if (!::is_ps4_or_xbox)
+  if (!isPlatformSony && !isPlatformXboxOne)
   {
-    if (::gchat_voice_get_device_out_count() > 0)
-      voiceOptions.options.insert(1, [::USEROPT_VOICE_DEVICE_OUT, "combobox"])
-    if (::gchat_voice_get_device_in_count() > 0)
+    if (soundDevice.get_record_devices().len() > 0)
       voiceOptions.options.insert(1, [::USEROPT_VOICE_DEVICE_IN, "combobox"])
   }
 

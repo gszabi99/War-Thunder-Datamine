@@ -1,6 +1,9 @@
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+
 ::get_is_console_mode_force_enabled <- function get_is_console_mode_force_enabled()
 {
-  return ::is_ps4_or_xbox
+  return isPlatformSony
+         || isPlatformXboxOne
          || ::is_platform_android
          || ::is_platform_shield_tv()
          || ::is_steam_big_picture()

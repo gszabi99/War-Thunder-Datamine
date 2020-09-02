@@ -986,6 +986,21 @@
             "name": "ammo_body_50_dm"
           },
           {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
+          },
+          {
             "name": "ammo_body_l_01_dm"
           },
           {
@@ -1815,15 +1830,88 @@
   },
   {
     "MetaParts": {
-      "body": [
+      "inner": [
         {
           "hp": 10000.0
         },
         {
-          "part": "superstructure_side_dm"
+          "part": "engine_dm"
         },
         {
-          "part": "superstructure_bottom_dm"
+          "part": "transmission_dm"
+        },
+        {
+          "part": "cannon_breech_dm"
+        },
+        {
+          "part": "cannon_breech_01_dm"
+        },
+        {
+          "part": "cannon_breech_02_dm"
+        },
+        {
+          "part": "cannon_breech_03_dm"
+        },
+        {
+          "part": "cannon_breech_04_dm"
+        },
+        {
+          "part": "cannon_breech_05_dm"
+        },
+        {
+          "effect": {
+            "conditionDamageType": "explosion",
+            "expl": 1.0,
+            "conditionDamage": 250.0,
+            "kill": true,
+            "killEffect": "fire"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "cumulative",
+            "expl": 1.0,
+            "conditionDamage": 100.0,
+            "kill": true,
+            "killEffect": "fire"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "generic",
+            "expl": 1.0,
+            "conditionDamage": 180.0,
+            "kill": true,
+            "killEffect": "fire"
+          }
+        },
+        {
+          "effect": {
+            "expl": 1.0,
+            "conditionDead": true,
+            "kill": true,
+            "killEffect": "fire"
+          }
+        }
+      ],
+      "body": [
+        {
+          "hp": 2000.0
+        },
+        {
+          "part": "body_front_dm"
+        },
+        {
+          "part": "body_top_dm"
+        },
+        {
+          "part": "body_bottom_dm"
+        },
+        {
+          "part": "body_side_dm"
+        },
+        {
+          "part": "body_back_dm"
         },
         {
           "part": "superstructure_front_dm"
@@ -1832,82 +1920,117 @@
           "part": "superstructure_top_dm"
         },
         {
+          "part": "superstructure_front_dm"
+        },
+        {
           "part": "superstructure_back_dm"
         },
         {
-          "part": "body_front_dm"
+          "part": "superstructure_bottom_dm"
         },
         {
-          "part": "body_side_dm"
+          "part": "body_front_hatch_dm"
         },
         {
-          "part": "body_top_dm"
+          "part": "turret_01_top_dm"
         },
         {
-          "part": "body_back_dm"
+          "part": "turret_01_front_dm"
         },
         {
-          "part": "body_bottom_dm"
+          "part": "turret_01_back_dm"
         },
         {
-          "fireParamsPreset": "default_metapart"
+          "part": "turret_02_top_dm"
         },
         {
-          "fireParams": {
-            "fireDamagePower": 1.0,
-            "maxTankFireTime": [20.0,30.0],
-            "firePart": "transmission_dm"
-          }
-        }
-      ],
-      "turret": [
-        {
-          "hp": 10000.0
+          "part": "turret_02_front_dm"
         },
         {
-          "part": "turret_top_dm"
-        },
-        {
-          "part": "turret_side_dm"
+          "part": "body_shield_dm"
         },
         {
           "part": "turret_back_dm"
         },
         {
-          "part": "turret_commander_dm"
+          "part": "turret_side_dm"
         },
         {
-          "part": "turret_front_dm"
+          "effect": {
+            "conditionDamageType": "explosion",
+            "expl": 1.0,
+            "conditionDamage": 250.0,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
         },
         {
-          "part": "turret_front_02_dm"
+          "effect": {
+            "conditionDamageType": "cumulative",
+            "expl": 1.0,
+            "conditionDamage": 100.0,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "generic",
+            "expl": 1.0,
+            "conditionDamage": 700.0,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "expl": 1.0,
+            "conditionDead": true,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
+        }
+      ],
+      "mount": [
+        {
+          "hp": 2000.0
         },
         {
           "part": "gun_mask_dm"
         },
         {
-          "part": "gun_mask_02_dm"
+          "effect": {
+            "conditionDamageType": "explosion",
+            "expl": 1.0,
+            "conditionDamage": 250.0,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
         },
         {
-          "part": "gun_mask_03_dm"
+          "effect": {
+            "conditionDamageType": "cumulative",
+            "expl": 1.0,
+            "conditionDamage": 100.0,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
         },
         {
-          "part": "gun_mask_04_dm"
+          "effect": {
+            "conditionDamageType": "generic",
+            "expl": 1.0,
+            "conditionDamage": 700.0,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
         },
         {
-          "part": "gun_mask_05_dm"
-        },
-        {
-          "part": "turret_bottom_dm"
-        },
-        {
-          "fireParamsPreset": "default_metapart"
-        },
-        {
-          "fireParams": {
-            "fireDamagePower": 1.0,
-            "maxTankFireTime": [20.0,30.0],
-            "firePart": "transmission_dm"
+          "effect": {
+            "expl": 1.0,
+            "conditionDead": true,
+            "kill": true,
+            "killEffect": "hullBreak"
           }
         }
       ]
@@ -1986,7 +2109,7 @@
         "Weapon": {
           "trigger": "gunner1",
           "triggerGroup": "machinegun",
-          "blk": "gameData/Weapons/groundModels_weapons/8mm_Ksp_m36_user_machinegun.blk",
+          "blk": "gameData/Weapons/groundModels_weapons/8mm_Ksp_m39_B_user_machinegun.blk",
           "emitter": "bone_mg_aa_v_01",
           "flash": "emtr_mg_flame_03",
           "defaultYaw": 0.0,
@@ -2024,7 +2147,7 @@
         "Weapon": {
           "trigger": "gunner2",
           "triggerGroup": "coaxial",
-          "blk": "gameData/Weapons/groundModels_weapons/8mm_Ksp_m36_user_machinegun.blk",
+          "blk": "gameData/Weapons/groundModels_weapons/8mm_Ksp_m39_B_user_machinegun.blk",
           "emitter": "bone_mg_gun_twin_01",
           "flash": "emtr_mg_flame_01",
           "barrelDP": "gun_barrel_01_dm",
@@ -2820,7 +2943,7 @@
               "Weapon": {
                 "trigger": "gunner1",
                 "triggerGroup": "machinegun",
-                "blk": "gameData/Weapons/groundModels_weapons/8mm_Ksp_m36_user_machinegun.blk",
+                "blk": "gameData/Weapons/groundModels_weapons/8mm_Ksp_m39_B_user_machinegun.blk",
                 "emitter": "bone_mg_aa_v_01",
                 "flash": "emtr_mg_flame_03",
                 "defaultYaw": 0.0,
@@ -2858,7 +2981,7 @@
               "Weapon": {
                 "trigger": "gunner2",
                 "triggerGroup": "coaxial",
-                "blk": "gameData/Weapons/groundModels_weapons/8mm_Ksp_m36_user_machinegun.blk",
+                "blk": "gameData/Weapons/groundModels_weapons/8mm_Ksp_m39_B_user_machinegun.blk",
                 "emitter": "bone_mg_gun_twin_01",
                 "flash": "emtr_mg_flame_01",
                 "barrelDP": "gun_barrel_01_dm",

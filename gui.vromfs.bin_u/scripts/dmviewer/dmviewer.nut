@@ -1,6 +1,12 @@
 local { getParametersByCrewId } = require("scripts/crew/crewSkillParameters.nut")
 local { getWeaponXrayDescText } = require("scripts/weaponry/weaponryVisual.nut")
-local { getLastWeapon, KGF_TO_NEWTON } = require("scripts/weaponry/weaponryInfo.nut")
+local { KGF_TO_NEWTON,
+        getLastWeapon,
+        isCaliberCannon,
+        getCommonWeaponsBlk,
+        getLastPrimaryWeapon,
+        getPrimaryWeaponsList,
+        getWeaponNameByBlkPath } = require("scripts/weaponry/weaponryInfo.nut")
 local { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
 
 
@@ -183,13 +189,13 @@ const AFTERBURNER_CHAMBER = 3
     if( ! unitBlk)
       return
 
-    local primaryList = [ ::get_last_primary_weapon(unit) ]
-    foreach (modName in ::getPrimaryWeaponsList(unit))
+    local primaryList = [ getLastPrimaryWeapon(unit) ]
+    foreach (modName in getPrimaryWeaponsList(unit))
       ::u.appendOnce(modName, primaryList)
 
     foreach(modName in primaryList)
     {
-      local commonWeapons = ::getCommonWeaponsBlk(unitBlk, modName)
+      local commonWeapons = getCommonWeaponsBlk(unitBlk, modName)
       local compareWeaponFunc = function(w1, w2)
       {
         return ::u.isEqual(w1?.trigger ?? "", w2?.trigger ?? "")
@@ -598,6 +604,17 @@ const AFTERBURNER_CHAMBER = 3
         {
           case ::ES_UNIT_TYPE_TANK:
             local infoBlk = unitBlk?.VehiclePhys?.engine
+            if (unitBlk?.modifications != null)
+            {
+              foreach(modName, modification in unitBlk.modifications) {
+                local engine = modification?.effects?.engine
+                if (engine != null && ::shop_is_modification_enabled(unit.name, modName))
+                {
+                  infoBlk = engine
+                  break
+                }
+              }
+            }
             if(infoBlk)
             {
               local engineInfo = []
@@ -925,6 +942,7 @@ const AFTERBURNER_CHAMBER = 3
       case "main_caliber_gun":
       case "auxiliary_caliber_gun":
       case "depth_charge":
+      case "mine":
       case "aa_gun":
 
         local weaponInfoBlk = null
@@ -952,11 +970,11 @@ const AFTERBURNER_CHAMBER = 3
         if( ! weaponInfoBlk)
           break
 
-        local isSpecialBullet = ::isInArray(partId, [ "torpedo", "depth_charge" ])
+        local isSpecialBullet = ::isInArray(partId, [ "torpedo", "depth_charge", "mine" ])
         local isSpecialBulletEmitter = ::isInArray(partId, [ "tt" ])
 
         local weaponBlkLink = weaponInfoBlk?.blk ?? ""
-        local weaponName = ::get_weapon_name_by_blk_path(weaponBlkLink)
+        local weaponName = getWeaponNameByBlkPath(weaponBlkLink)
 
         local ammo = isSpecialBullet ? 1 : getWeaponTotalBulletCount(partId, weaponInfoBlk)
         local shouldShowAmmoInTitle = isSpecialBulletEmitter
@@ -1200,11 +1218,11 @@ const AFTERBURNER_CHAMBER = 3
     {
       case ::ES_UNIT_TYPE_TANK:
         local isRocketGun = blk?.rocketGun
-        local isMachinegun = !!blk?.bullet?.caliber && !::isCaliberCannon(1000 * blk.bullet.caliber)
+        local isMachinegun = !!blk?.bullet?.caliber && !isCaliberCannon(1000 * blk.bullet.caliber)
         local isPrimary = !isRocketGun && !isMachinegun
         if (!isPrimary)
         {
-          local commonBlk = ::getCommonWeaponsBlk(dmViewer.unitBlk, "")
+          local commonBlk = getCommonWeaponsBlk(dmViewer.unitBlk, "")
           foreach (weapon in (commonBlk % "Weapon"))
           {
             if (!weapon?.blk || weapon?.dummy)
@@ -1237,7 +1255,7 @@ const AFTERBURNER_CHAMBER = 3
     local desc = []
     local needSingleAxis = !needAxisX || !needAxisY
     local status = getWeaponStatus(weaponPartName, weaponInfoBlk)
-    if (!needSingleAxis && ::isTank(unit) && !status.isPrimary && !status.isSecondary)
+    if (!needSingleAxis && unit?.isTank() && !status.isPrimary && !status.isSecondary)
       return desc
 
     local deg = ::loc("measureUnits/deg")
@@ -1252,7 +1270,7 @@ const AFTERBURNER_CHAMBER = 3
       desc.append(::loc(g.label) + " " + anglesText)
     }
 
-    if (needSingleAxis || status.isPrimary || (::isShip(unit) && status.isSecondary))
+    if (needSingleAxis || status.isPrimary || (unit?.isShip() && status.isSecondary))
     {
       local unitModificators = unit?.modificators?[difficulty.crewSkillName]
       foreach (a in [
@@ -1299,7 +1317,7 @@ const AFTERBURNER_CHAMBER = 3
       }
     }
 
-    if (::isTank(unit))
+    if (unit?.isTank())
     {
       local gunStabilizer = weaponInfoBlk?.gunStabilizer
       local isStabilizerX = needAxisX && gunStabilizer?.hasHorizontal
@@ -1375,7 +1393,7 @@ const AFTERBURNER_CHAMBER = 3
           }
         }
 
-        cyclicShotFreqS = ::u.search(::getCommonWeaponsBlk(dmViewer.unitBlk, "") % "Weapon",
+        cyclicShotFreqS = ::u.search(getCommonWeaponsBlk(dmViewer.unitBlk, "") % "Weapon",
           @(inst) inst.trigger  == weaponInfoBlk.trigger)?.shotFreq ?? cyclicShotFreqS
         shotFreqRPM = cyclicShotFreqS * 60
 

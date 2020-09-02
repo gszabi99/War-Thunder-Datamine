@@ -71,6 +71,9 @@ enum chatRoomTabOrder {
   updateChatHeader = function(obj, roomData) {}
   isAllowed = @() true
   isConcealed = @(roomId) false
+
+  needCountAsImportant = false
+  needShowMessagePopup = true
 }
 
 enums.addTypesByGlobalName("g_chat_room_type", {
@@ -88,6 +91,8 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     checkOrder = chatRoomCheckOrder.REGULAR
     tabOrder = chatRoomTabOrder.PRIVATE
     havePlayersList = false
+    needCountAsImportant = true
+
     checkRoomId  = function(roomId) { return !::g_string.startsWith(roomId, roomPrefix) }
     getRoomId    = function(playerName, ...) { return playerName }
     getRoomName  = function(roomId, isColored = false) //roomId == playerName
@@ -119,6 +124,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     inviteLocIdFull = "squad/receiveInvite"
     inviteIcon = "#ui/gameuiskin#squad_leader"
     canVoiceChat = true
+    needCountAsImportant = true
 
     getRoomName = function(roomId, isColored = false, isFull = false)
     {
@@ -141,6 +147,9 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     roomNameLocId = "clan/name"
     canVoiceChat = true
     isErrorPopupAllowed = false
+    needShowMessagePopup = false
+    needCountAsImportant = true
+
     canBeClosed = function(roomId) { return roomId != getRoomId(::clan_get_my_clan_id()) }
   }
 

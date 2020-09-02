@@ -1,0 +1,55 @@
+collapsableBlock[type=decoratorsList] > content {
+  behaviour:posNavigator;
+  navigatorShortcuts:full;
+  moveX:linear;
+  moveY:closest;
+
+  flow:h-flow;
+  disableFocusParent:yes;
+
+  background-image:#ui/gameuiskin#block_bg;
+  background-color:@white;
+  background-position:4;
+  background-repeat:expand;
+  max-width: pw;
+}
+
+collapsableBlock {
+  width:pw;
+  flow:vertical;
+  css-hier-invalidate:yes;
+}
+collapsableBlock > header {
+  size:pw, @baseTrHeight;
+  css-hier-invalidate:yes;
+}
+collapsableBlock > header > fullSizeCollapseBtn {
+  tooltip:"";
+  css-hier-invalidate:yes;
+}
+collapsableBlock > header > fullSizeCollapseBtn > text {
+  behaviour:OverflowScroller;
+  position:absolute;
+  size:pw,ph;
+  padding-left:@sIco;
+  text-align:left;
+  color: @commonMenuButtonColor;
+  input-transparent:yes;
+}
+collapsableBlock > header > fullSizeCollapseBtn > activeText {
+  input-transparent:yes;
+}
+collapsableBlock > header > fullSizeCollapseBtn:hover,
+collapsableBlock:focus > header > fullSizeCollapseBtn,
+collapsableBlock[selected=yes] > header > fullSizeCollapseBtn {
+  background-color:@white;
+  background-image:#ui/gameuiskin#option_select_even;
+  background-position:4,4;
+  background-repeat:expand;
+}
+
+collapsableBlock > header > fullSizeCollapseBtn:hover > text,
+collapsableBlock:focus > header > fullSizeCollapseBtn > text,
+collapsableBlock[selected=yes] > header > fullSizeCollapseBtn:[selected=yes] > text {
+  color:@activeTextColor;
+}

@@ -4,6 +4,9 @@ local time = require("scripts/time.nut")
 local penalties = require("scripts/penitentiary/penalties.nut")
 local itemNotifications = ::require("scripts/items/itemNotifications.nut")
 local { systemOptionsMaintain } = require("scripts/options/systemOptions.nut")
+local { checkJoystickThustmasterHotas } = require("scripts/controls/hotas.nut")
+local { checkGaijinPassReminder } = require("scripts/mainmenu/reminderGaijinPass.nut")
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
 //called after all first mainmenu actions
 onMainMenuReturnActions.onMainMenuReturn <- function(handler, isAfterLogin) {
@@ -22,7 +25,7 @@ onMainMenuReturnActions.onMainMenuReturn <- function(handler, isAfterLogin) {
     if (isAllowPopups && !::disable_network())
     {
       handler.doWhenActive(::g_user_utils.checkShowRateWnd)
-      handler.doWhenActive(::check_joystick_thustmaster_hotas)
+      handler.doWhenActive(checkJoystickThustmasterHotas)
     }
   }
 
@@ -85,7 +88,7 @@ onMainMenuReturnActions.onMainMenuReturn <- function(handler, isAfterLogin) {
     handler.doWhenActive(@() ::g_user_utils.checkAutoShowSteamEmailRegistration())
   }
 
-  if (isAllowPopups && !guiScene.hasModalObject() && !::is_platform_ps4 && ::has_feature("Facebook"))
+  if (isAllowPopups && !guiScene.hasModalObject() && !isPlatformSony && ::has_feature("Facebook"))
     handler.doWhenActive(show_facebook_login_reminder)
   if (isAllowPopups)
     handler.doWhenActive(function () { ::checkRemnantPremiumAccount() })
@@ -103,6 +106,7 @@ onMainMenuReturnActions.onMainMenuReturn <- function(handler, isAfterLogin) {
     local hasModalObjectVal = guiScene.hasModalObject()
     handler.doWhenActive(@() ::g_popup_msg.showPopupWndIfNeed(hasModalObjectVal) )
     handler.doWhenActive(@() itemNotifications.checkOfferToBuyAtExpiration() )
+    handler.doWhenActive(@() checkGaijinPassReminder())
 
     handler.doWhenActive(::check_tutorial_on_start)
     handler.doWhenActiveOnce("checkNoviceTutor")

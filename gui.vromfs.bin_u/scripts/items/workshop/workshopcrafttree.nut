@@ -259,6 +259,7 @@ local function generateTreeConfig(blk)
     craftTreeItemsList[craftResult.id] <- true
 
   local bodyItemsTitles = blk % "bodyItemsTitle"
+  local bodyTiledBackImage = blk % "bodyTiledBackImage"
   local allowableResources = blk % "allowableResources"
   local resourcesInColumn = {}
   local availableBranchByColumns = {}
@@ -279,6 +280,7 @@ local function generateTreeConfig(blk)
          itemsCountX = 0
          columnWithResourcesCount = 0
          title = bodyTitle
+         bodyTiledBackImage = bodyTiledBackImage?[bodyIdx] ?? ""
          allowableResources = getAllowableResources(allowableResources?[bodyIdx])
          hasBranchesTitles = false
          bodyTitlesCount = bodyTitle != "" ? 1 : 0

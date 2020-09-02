@@ -165,6 +165,19 @@
           "armorThickness": 12.7
         }
       },
+      "body_screens": {
+        "armorClass": "tank_structural_steel",
+        "hp": 100.0,
+        "armorThickness": 4.0,
+        "stopChanceOnDeadPart": 0.0,
+        "createSecondaryShatters": false,
+        "ex_decor_l_01_dm": [],
+        "ex_decor_r_01_dm": [],
+        "ex_decor_l_03_dm": [],
+        "ex_decor_r_03_dm": [],
+        "ex_decor_l_04_dm": [],
+        "ex_decor_r_04_dm": []
+      },
       "mask": {
         "armorClass": "CHA_tank",
         "gun_mask_dm": {
@@ -209,12 +222,6 @@
         "armorClass": "tank_steel_wheels",
         "hp": 250.0,
         "armorThickness": 15.0,
-        "ex_decor_l_01_dm": [],
-        "ex_decor_r_01_dm": [],
-        "ex_decor_l_03_dm": [],
-        "ex_decor_r_03_dm": [],
-        "ex_decor_l_04_dm": [],
-        "ex_decor_r_04_dm": [],
         "wheel_r_01_dm": [],
         "wheel_r_02_dm": [],
         "wheel_r_03_dm": [],
@@ -789,6 +796,21 @@
           },
           {
             "name": "ammo_body_50_dm"
+          },
+          {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
           },
           {
             "name": "ammo_body_l_01_dm"
@@ -1622,37 +1644,6 @@
     }
   },
   {
-    "MetaParts": {
-      "crew": [
-        {
-          "killAllPartsForDeath": true
-        },
-        {
-          "killNumPartsForDeath": 3
-        },
-        {
-          "part": "gunner_dm"
-        },
-        {
-          "part": "driver_dm"
-        },
-        {
-          "part": "loader_dm"
-        },
-        {
-          "part": "machine_gunner_dm"
-        },
-        {
-          "effects": {
-            "killUnit": {
-              "nothing": 1.0
-            }
-          }
-        }
-      ]
-    }
-  },
-  {
     "gunConvergence": {
       "distance": 400.0,
       "vertical": true,
@@ -1715,7 +1706,7 @@
             "hasVerticalGunFreeMode": false,
             "hasHorizontal": false,
             "horizontalOmegaMult": 1.0,
-            "horizontalSpeedLimitKPH": 50.0,
+            "horizontalSpeedLimitKPH": 16.0,
             "hasVertical": true,
             "verticalOmegaMult": 0.7,
             "verticalSpeedLimitKPH": 16.0,
@@ -2689,25 +2680,15 @@
   },
   {
     "default_skin": {
-      "name": "default",
       "replace_tex": {
         "from": "us_camo_olive*",
         "to": "us_camo_desert_pink_olive_drab_dark_earth_black*"
+      },
+      "set_tex": {
+        "from": "m3a1_stuart_body_c*",
+        "to": "m3a1_stuart_skin_body_c*",
+        "param": "camo_skin_tex"
       }
-    }
-  },
-  {
-    "defaultDecals": {
-      "decal0Line0": [2.5,-1.09278e-07,0.0,2.07544],
-      "decal0Line1": [-2.18557e-07,-5.0,0.0,7.86929],
-      "decal0HaveCP": true,
-      "decal0CP": [1.05257,1.6644,-0.724671],
-      "decal0CPNormDepth": [0.0,0.0,-1.0,-1.11172],
-      "decal0RotScale": [1.5708,0.2],
-      "decal0Mirrored": false,
-      "decal0Wrap": false,
-      "decal0Abs": true,
-      "decal0Tex": "usmc_tank_emblem"
     }
   }
 ]

@@ -52,8 +52,9 @@ local function getMainScreenSizePx(sw = null, sh = null)
 
 local function getScreenHeightForFonts(sw, sh)
 {
-  local mainScreenSize = getMainScreenSizePx(sw, sh)
-  return ::min(0.75 * mainScreenSize[0], mainScreenSize[1])
+  local scr = getMainScreenSizePx(sw, sh)
+  local height = ::min(0.75 * ::max(scr[0], scr[1]), ::min(scr[1], scr[0]))
+  return ::round(height).tointeger()
 }
 
 return {

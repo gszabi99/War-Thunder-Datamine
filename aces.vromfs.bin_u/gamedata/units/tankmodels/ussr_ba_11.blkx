@@ -679,6 +679,21 @@
             "name": "ammo_body_50_dm"
           },
           {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
+          },
+          {
             "name": "ammo_body_l_01_dm"
           },
           {
@@ -1609,7 +1624,7 @@
             "expl": 1.0,
             "conditionDamage": 250.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -1618,7 +1633,16 @@
             "expl": 1.0,
             "conditionDamage": 100.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "generic",
+            "expl": 1.0,
+            "conditionDamage": 700.0,
+            "kill": true,
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -1626,7 +1650,7 @@
             "expl": 1.0,
             "conditionDead": true,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         }
       ],
@@ -1699,7 +1723,7 @@
             "expl": 1.0,
             "conditionDamage": 250.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -1708,7 +1732,16 @@
             "expl": 1.0,
             "conditionDamage": 100.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "generic",
+            "expl": 1.0,
+            "conditionDamage": 700.0,
+            "kill": true,
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -1716,7 +1749,7 @@
             "expl": 1.0,
             "conditionDead": true,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         }
       ]
@@ -2504,13 +2537,35 @@
     ]
   },
   {
-    "cockpit": {
-      "headPos": [0.0,3.5,-7.0],
-      "headPosOnShooting": [-1.7,3.0,0.15],
-      "zoomOutFov": 35.0,
-      "zoomInFov": 20.0,
-      "detectionHeight": 2.42
-    }
+    "cockpit": [
+      {
+        "zoomOutFov": 40.0
+      },
+      {
+        "zoomInFov": 21.0
+      },
+      {
+        "sightFov": 25.0
+      },
+      {
+        "sightName": "default_tank_spg"
+      },
+      {
+        "headPos": [0.0,3.5,-7.0]
+      },
+      {
+        "headPosOnShooting": [-1.7,3.0,0.15]
+      },
+      {
+        "zoomOutFov": 35.0
+      },
+      {
+        "zoomInFov": 20.0
+      },
+      {
+        "detectionHeight": 2.42
+      }
+    ]
   },
   {
     "modifications": {

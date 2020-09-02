@@ -84,6 +84,15 @@ class Decorator
 
     rarity  = itemRarity.get(blk?.item_quality, blk?.name_color)
 
+    if (blk?.marketplaceItemdefId != null && ::ItemsManager.isMarketplaceEnabled())
+    {
+      couponItemdefId = blk.marketplaceItemdefId
+
+      local couponItem = ::ItemsManager.findItemById(couponItemdefId)
+      if (couponItem)
+        updateFromItemdef(couponItem.itemDef)
+    }
+
     if (!isUnlocked() && !isVisible() && ("showByEntitlement" in unlockBlk))
       lockedByDLC = ::has_entitlement(unlockBlk.showByEntitlement) ? null : unlockBlk.showByEntitlement
   }
@@ -121,7 +130,7 @@ class Decorator
 
   function canRecieve()
   {
-    return unlockBlk != null || ! getCost().isZero()
+    return unlockBlk != null || ! getCost().isZero() || getCouponItemdefId() != null
   }
 
   function isLockedByCountry(unit)
@@ -269,6 +278,11 @@ class Decorator
   function canBuyUnlock(unit)
   {
     return !isLockedByCountry(unit) && !isLockedByUnit(unit) && !isUnlocked() && !getCost().isZero() && ::has_feature("SpendGold")
+  }
+
+  function canBuyCouponOnMarketplace(unit)
+  {
+    return !isLockedByCountry(unit) && !isLockedByUnit(unit) && !isUnlocked() && getCouponItemdefId() != null
   }
 
   function canUse(unit)

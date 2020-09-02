@@ -58,7 +58,9 @@ enums.addTypesByGlobalName("g_url_type", {
     urlRegexpList = [
       regexp(@"^https?:\/\/store\.gaijin\.net" + URL_ANY_ENDING),
       regexp(@"^https?:\/\/online\.gaijin\.ru" + URL_ANY_ENDING),
-      regexp(@"^https?:\/\/online\.gaijinent\.com" + URL_ANY_ENDING)
+      regexp(@"^https?:\/\/online\.gaijinent\.com" + URL_ANY_ENDING),
+      regexp(@"^https?:\/\/trade\.gaijin\.net" + URL_ANY_ENDING),
+      regexp(@"^https?:\/\/inventory-test-01\.gaijin\.lan" + URL_ANY_ENDING),
     ]
     applyLangKey = function(url, langKey)
     {
@@ -120,8 +122,6 @@ enums.addTypesByGlobalName("g_url_type", {
       regexp(@"^https?:\/\/tss-dev\.warthunder\.com" + URL_ANY_ENDING),
       regexp(@"^https?:\/\/tss-dev\.warthunder\.ru" + URL_ANY_ENDING),
       regexp(@"^https?:\/\/live\.warthunder\.com" + URL_ANY_ENDING),
-      regexp(@"^https?:\/\/trade\.gaijin\.net" + URL_ANY_ENDING),
-      regexp(@"^https?:\/\/inventory-test-01\.gaijin\.lan" + URL_ANY_ENDING),
       regexp(@"^https?:\/\/achievements\.gaijin\.net" + URL_ANY_ENDING),
       regexp(@"^https?:\/\/support\.gaijin\.net" + URL_ANY_ENDING),
     ]

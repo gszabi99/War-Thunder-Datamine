@@ -54,7 +54,7 @@ local getCrafts = function (data, country = null)
        name = name
        type = craft.expClass.expClassName
        mrank = craft.getEconomicRank(::get_current_ediff())
-       rank = getUnitRank(craft)
+       rank = craft?.rank ?? -1
      })
   }
 

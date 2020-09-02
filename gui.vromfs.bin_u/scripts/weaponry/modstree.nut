@@ -1,5 +1,6 @@
 local { getModificationBulletsGroup } = require("scripts/weaponry/bulletsInfo.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
 
 local modsTree = {
   tree = null
@@ -391,7 +392,7 @@ local modsTree = {
         prevName = mod.reqModification[0]
       else if ("prevModification" in mod)
         prevName = mod.prevModification
-      local prevMod = ::getModificationByName(air, prevName)
+      local prevMod = getModificationByName(air, prevName)
       local res = ""
       if (!prevMod)
         res = "does not exist"

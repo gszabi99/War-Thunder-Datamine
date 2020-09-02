@@ -1,4 +1,5 @@
 local stdMath = require("std/math.nut")
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 ::g_language <- {
   currentLanguage = null
@@ -203,7 +204,7 @@ g_language.onEventNewSceneLoaded <- function onEventNewSceneLoaded(p)
 
 ::canSwitchGameLocalization <- function canSwitchGameLocalization()
 {
-  return !::is_ps4_or_xbox && !::is_vendor_tencent() && !::is_vietnamese_version()
+  return !isPlatformSony && !isPlatformXboxOne && !::is_vendor_tencent() && !::is_vietnamese_version()
 }
 
 g_language.getEmptyLangInfo <- function getEmptyLangInfo()

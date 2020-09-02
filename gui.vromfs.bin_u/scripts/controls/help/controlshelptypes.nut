@@ -1,6 +1,8 @@
 local enums = ::require("sqStdlibs/helpers/enums.nut")
 local helpMarkup = require("scripts/controls/help/controlsHelpMarkup.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { checkJoystickThustmasterHotas } = require("scripts/controls/hotas.nut")
+local { isPlatformSony, isPlatformPC } = require("scripts/clientState/platform.nut")
 
 local result = {
   types = []
@@ -56,7 +58,7 @@ enums.addTypes(result, {
     showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
     helpPattern = CONTROL_HELP_PATTERN.HOTAS4
 
-    specificCheck = @() ::check_joystick_thustmaster_hotas(false)
+    specificCheck = @() checkJoystickThustmasterHotas(false)
     checkFeature = unitTypes.AIRCRAFT.isAvailable
     pageUnitTypeBit = unitTypes.AIRCRAFT.bit
 
@@ -473,12 +475,12 @@ enums.addTypes(result, {
     helpPattern = CONTROL_HELP_PATTERN.KEYBOARD_MOUSE
 
     specificCheck = function() {
-      if (::is_platform_pc)
+      if (isPlatformPC)
         return true
 
       //!!!FIXME need to rewrite with controllerState module usage
       local basePresets = ::g_controls_manager.getCurPreset().getBasePresetNames()
-      return ::is_platform_ps4 && ::u.search(basePresets, @(val) val == "default"|| val == "dualshock4") != null
+      return isPlatformSony && ::u.search(basePresets, @(val) val == "default"|| val == "dualshock4") != null
     }
     pageUnitTypeBit = unitTypes.AIRCRAFT.bit
 
@@ -492,12 +494,12 @@ enums.addTypes(result, {
     helpPattern = CONTROL_HELP_PATTERN.KEYBOARD_MOUSE
 
     specificCheck = function() {
-      if (::is_platform_pc)
+      if (isPlatformPC)
         return true
 
       //!!!FIXME need to rewrite with controllerState module usage
       local basePresets = ::g_controls_manager.getCurPreset().getBasePresetNames()
-      return ::is_platform_ps4 && ::u.search(basePresets, @(val) val == "default"|| val == "dualshock4") != null
+      return isPlatformSony && ::u.search(basePresets, @(val) val == "default"|| val == "dualshock4") != null
     }
     checkFeature = unitTypes.TANK.isAvailable
     pageUnitTypeBit = unitTypes.TANK.bit
@@ -512,12 +514,12 @@ enums.addTypes(result, {
     helpPattern = CONTROL_HELP_PATTERN.KEYBOARD_MOUSE
 
     specificCheck = function() {
-      if (::is_platform_pc)
+      if (isPlatformPC)
         return true
 
       //!!!FIXME need to rewrite with controllerState module usage
       local basePresets = ::g_controls_manager.getCurPreset().getBasePresetNames()
-      return ::is_platform_ps4 && ::u.search(basePresets, @(val) val == "default"|| val == "dualshock4") != null
+      return isPlatformSony && ::u.search(basePresets, @(val) val == "default"|| val == "dualshock4") != null
     }
     checkFeature = unitTypes.SHIP.isAvailable
     pageUnitTypeBit = unitTypes.SHIP.bit
@@ -532,12 +534,12 @@ enums.addTypes(result, {
     helpPattern = CONTROL_HELP_PATTERN.KEYBOARD_MOUSE
 
     specificCheck = function() {
-      if (::is_platform_pc)
+      if (isPlatformPC)
         return true
 
       //!!!FIXME need to rewrite with controllerState module usage
       local basePresets = ::g_controls_manager.getCurPreset().getBasePresetNames()
-      return ::is_platform_ps4 && ::u.search(basePresets, @(val) val == "default"|| val == "dualshock4") != null
+      return isPlatformSony && ::u.search(basePresets, @(val) val == "default"|| val == "dualshock4") != null
     }
     checkFeature = unitTypes.HELICOPTER.isAvailable
     pageUnitTypeBit = unitTypes.HELICOPTER.bit
@@ -552,12 +554,12 @@ enums.addTypes(result, {
     helpPattern = CONTROL_HELP_PATTERN.KEYBOARD_MOUSE
 
     specificCheck = function() {
-      if (::is_platform_pc)
+      if (isPlatformPC)
         return true
 
       //!!!FIXME need to rewrite with controllerState module usage
       local basePresets = ::g_controls_manager.getCurPreset().getBasePresetNames()
-      return ::is_platform_ps4 && ::u.search(basePresets, @(val) val == "default"|| val == "dualshock4") != null
+      return isPlatformSony && ::u.search(basePresets, @(val) val == "default"|| val == "dualshock4") != null
     }
     checkFeature = @() unitTypes.SHIP.isAvailable() && ::has_feature("SpecialShips")
     pageUnitTypeBit = unitTypes.SHIP.bit
