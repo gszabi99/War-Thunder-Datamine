@@ -23,7 +23,7 @@ root {
         position:t='relative'
         size:t='1@twoStepLoginLogoSIze, 1@twoStepLoginLogoSIze'
         background-svg-size:t='1@twoStepLoginLogoSIze, 1@twoStepLoginLogoSIze'
-        background-image:t='!ui/gameuiskin/gaijin_logo_snail.svg'
+        background-image:t='!ui/gaijin_logo_snail.svg'
         background-color:t='#80FFFFFF'
       }
 
