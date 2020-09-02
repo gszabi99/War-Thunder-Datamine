@@ -38,12 +38,13 @@
   "WingAngle": 3.0,
   "StabAngle": 0.8,
   "KeelAngle": 0.0,
-  "clockWiseStabAOA0": false,
   "AileronAngles": [21.0,19.25],
   "ElevatorAngles": [30.0,20.0],
   "InvertElevator": false,
   "FlapsRadiator": 0.0,
   "RudderAngles": [22.0,22.0],
+  "InterceptorType": 0,
+  "Elevon": false,
   "ElevonPitchAngleSens": 0.0,
   "VSlats": [130.0,140.0],
   "FlapsToSlats": [0.0,0.0,0.0,0.0],
@@ -87,7 +88,8 @@
     "hasWheelBrakeControl": true,
     "hasLockGearControl": false,
     "bHasBoosterSwitcher": false,
-    "hasChutes": false
+    "hasChutes": false,
+    "hasParkingBrake": true
   },
   "FlyByWire": [],
   "MouseAim": {
@@ -191,8 +193,8 @@
     "CombinedCl": false,
     "DownwashType": 2,
     "DownwashCoeff": 1.0,
-    "StabFlowInertia": 0.0504,
-    "VertStabFlowInertia": 0.1008,
+    "StabFlowInertia": 0.0502,
+    "VertStabFlowInertia": 0.1004,
     "FlapsAxis": {
       "Retracted": {
         "Presents": true,
@@ -1167,7 +1169,7 @@
   "Propeller0": {
     "Type": 0,
     "AxisDirection": [-0.0,2.9767],
-    "CyclicPitchAxisDirectionPitch": [180.0,87.0233],
+    "CyclicPitchAxisDirectionPitch": [-180.0,87.0233],
     "Pos": [3.33,2.1,3.6],
     "Geometry": {
       "RotationDirection": 1
@@ -1176,7 +1178,7 @@
   "Propeller1": {
     "Type": 1,
     "AxisDirection": [-0.0,2.9767],
-    "CyclicPitchAxisDirectionPitch": [180.0,87.0233],
+    "CyclicPitchAxisDirectionPitch": [-180.0,87.0233],
     "Pos": [3.33,2.1,-3.6],
     "Geometry": {
       "RotationDirection": 1
@@ -1322,7 +1324,7 @@
   },
   "Gear": [
     {
-      "SinkFactor": 9000.0
+      "SinkFactor": 100.0
     },
     {
       "SinkRateMult": 0.001
@@ -1373,7 +1375,7 @@
       "CenterWheelRadius": 0.078
     },
     {
-      "Height": 2.3389
+      "Height": 0.0
     },
     {
       "Pitch": 5.0
@@ -1442,7 +1444,7 @@
         "Number": 0,
         "Name": "_ClipLGear",
         "SinkFactor": 10000.0,
-        "VerticalOffset": -0.3,
+        "VerticalOffset": -0.4,
         "RudderFactor": 0.0
       }
     },
@@ -1451,7 +1453,7 @@
         "Number": 1,
         "Name": "_ClipRGear",
         "SinkFactor": 10000.0,
-        "VerticalOffset": -0.3,
+        "VerticalOffset": -0.4,
         "RudderFactor": 0.0
       }
     },
@@ -1459,8 +1461,8 @@
       "WaterPart3": {
         "Number": 2,
         "Name": "_ClipCGear",
-        "SinkFactor": 10000.0,
-        "VerticalOffset": -0.3,
+        "SinkFactor": 3000.0,
+        "VerticalOffset": -0.4,
         "RudderFactor": 0.0
       }
     },
@@ -1468,8 +1470,8 @@
       "WaterPart4": {
         "Number": 3,
         "Name": "_ClipCGear_00",
-        "SinkFactor": 10000.0,
-        "VerticalOffset": -0.2,
+        "SinkFactor": 3000.0,
+        "VerticalOffset": -0.4,
         "RudderFactor": 0.0
       }
     },
@@ -1477,7 +1479,7 @@
       "WaterPart5": {
         "Number": 13,
         "Name": "_Clip01",
-        "SinkFactor": 1000.0,
+        "SinkFactor": 3000.0,
         "VerticalOffset": 0.0,
         "RudderFactor": 0.0
       }
@@ -1486,7 +1488,7 @@
       "WaterPart6": {
         "Number": 14,
         "Name": "_Clip02",
-        "SinkFactor": 1000.0,
+        "SinkFactor": 3000.0,
         "VerticalOffset": 0.2,
         "RudderFactor": 0.0
       }
@@ -1495,8 +1497,8 @@
       "WaterPart7": {
         "Number": 29,
         "Name": "_Clip17",
-        "SinkFactor": 10000.0,
-        "VerticalOffset": -0.4,
+        "SinkFactor": 3000.0,
+        "VerticalOffset": -0.6,
         "RudderFactor": 0.0
       }
     },
@@ -1504,8 +1506,8 @@
       "WaterPart8": {
         "Number": 30,
         "Name": "_Clip18",
-        "SinkFactor": 10000.0,
-        "VerticalOffset": -0.4,
+        "SinkFactor": 3000.0,
+        "VerticalOffset": -0.6,
         "RudderFactor": 0.0
       }
     },
@@ -1513,8 +1515,8 @@
       "WaterPart9": {
         "Number": 27,
         "Name": "_Clip15",
-        "SinkFactor": 10000.0,
-        "VerticalOffset": -0.4,
+        "SinkFactor": 3000.0,
+        "VerticalOffset": -0.6,
         "RudderFactor": 0.0
       }
     },
@@ -1523,7 +1525,7 @@
         "Number": 26,
         "Name": "_Clip14",
         "SinkFactor": 1000.0,
-        "VerticalOffset": 1.0,
+        "VerticalOffset": -0.6,
         "RudderFactor": 0.0
       }
     },
@@ -1531,8 +1533,8 @@
       "WaterPart11": {
         "Number": 28,
         "Name": "_Clip16",
-        "SinkFactor": 10000.0,
-        "VerticalOffset": -0.4,
+        "SinkFactor": 3000.0,
+        "VerticalOffset": -0.6,
         "RudderFactor": 0.0
       }
     },
@@ -1540,8 +1542,8 @@
       "WaterPart12": {
         "Number": 33,
         "Name": "_Clip21",
-        "SinkFactor": 10000.0,
-        "VerticalOffset": -0.4,
+        "SinkFactor": 3000.0,
+        "VerticalOffset": -0.6,
         "RudderFactor": 0.0
       }
     },
@@ -1549,8 +1551,8 @@
       "WaterPart13": {
         "Number": 32,
         "Name": "_Clip20",
-        "SinkFactor": 10000.0,
-        "VerticalOffset": -0.4,
+        "SinkFactor": 3000.0,
+        "VerticalOffset": -0.6,
         "RudderFactor": 0.0
       }
     },
