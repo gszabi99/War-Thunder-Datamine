@@ -42,7 +42,6 @@ onMainMenuReturnActions.onMainMenuReturn <- function(handler, isAfterLogin) {
     handler.doWhenActive(::gui_handlers.FontChoiceWnd.openIfRequired)
 
     handler.doWhenActive(@() ::g_psn_sessions.checkAfterFlight() )
-    handler.doWhenActive(@() ::g_play_together.checkAfterFlight() )
     handler.doWhenActive(@() ::g_xbox_squad_manager.checkAfterFlight() )
     handler.doWhenActive(@() ::g_battle_tasks.checkNewSpecialTasks() )
     handler.doWhenActiveOnce("checkNonApprovedSquadronResearches")

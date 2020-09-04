@@ -167,6 +167,10 @@ local profile = {
     local params = { friendStatus = "friend", presenceType = "incontext" }
     return createRequest(profileApi, webApiMethodGet, "friendList", params)
   }
+
+  function listBlockedUsers() {
+    return createRequest(profileApi, webApiMethodGet, "blockingUsers", {})
+  }
 }
 
 local userProfileApi = { group = "userProfile", path = "/v1/users/me" }

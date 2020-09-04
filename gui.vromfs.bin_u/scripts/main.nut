@@ -581,10 +581,8 @@ local isFullScriptsLoaded = false
     "squads/squadUtils.nut"
     "squads/squadInviteListWnd.nut"
     "squads/squadWidgetCustomHandler.nut"
-    "squads/psnSquadInvite.nut"
 
     "social/psnSessions.nut"
-    "social/psnPlayTogether.nut"
 
     "chat/chatRoomType.nut"
     "chat/chat.nut"

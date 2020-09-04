@@ -58,50 +58,7 @@ local isFirstPs4FriendsUpdate = true
         }
       }
       else
-      {
-        local selectedPlayerName = ""
-        local selectedPlayerAccountId = 0
-        local selected = ::ps4_selected_friend()
-        if (::u.isString(selected))
-        {
-          selectedPlayerName = selected
-        }
-        else if (::u.isDataBlock(selected))
-        {
-          selectedPlayerName = selected.onlineId
-          selectedPlayerAccountId = selected.accountId
-        }
-        else
-          return
-
-        local msgText = ::loc("msgbox/no_psn_friends_added")
-        local buttonsArray = [["ok", function() {}]]
-        local defaultButton = "ok"
-        local inviteConfig = {}
-
-        local path = "PS4_Specific/invitationsRecievers/" + selectedPlayerName
-        local isSecondTry = ::load_local_account_settings(path, false)
-        if (!isSecondTry)
-        {
-            inviteConfig = {
-                             targetOnlineId = selectedPlayerName,
-                             targetAccountId = selectedPlayerAccountId,
-                             inviteType = "gameStart",
-                             expireMinutes = 1440
-                           }
-          msgText += "\n" + ::loc("msgbox/send_game_invitation", {friendName = selectedPlayerName})
-          buttonsArray = [
-                           ["yes", (@(path, inviteConfig) function() {
-                                if (::sendInvitationPsn(inviteConfig) == 0)
-                                  ::save_local_account_settings(path, true)
-                              })(path, inviteConfig)],
-                           ["no", function() {}]
-                         ]
-          defaultButton = "yes"
-        }
-
-        ::scene_msg_box("friends_added", null, msgText, buttonsArray, defaultButton)
-      }
+        ::scene_msg_box("psn_friends_add", null, ::loc("msgbox/no_psn_friends_added"), [["ok", function() {}]], "ok")
     })(progressBox))
   }
 }

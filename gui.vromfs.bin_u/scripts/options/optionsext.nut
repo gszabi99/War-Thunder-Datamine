@@ -4571,6 +4571,7 @@ local isWaitMeasureEvent = false
     case ::USEROPT_CD_ALLOW_CONTROL_HELPERS:
     case ::USEROPT_CD_FORCE_INSTRUCTOR:
     case ::USEROPT_CD_DISTANCE_DETECTION:
+    case ::USEROPT_CD_COLLECTIVE_DETECTION:
     case ::USEROPT_RANK:
     case ::USEROPT_REPLAY_LOAD_COCKPIT:
       local optionValue = null
