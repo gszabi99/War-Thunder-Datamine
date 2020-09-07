@@ -41,6 +41,8 @@ local { getPlayerName } = require("scripts/clientState/platform.nut")
       return ::EPL_FRIENDLIST
     return name
   }
+
+  findContactByPSNId = @(psnId) ::contacts_players.findvalue(@(player) player.psnId == psnId)
 }
 
 local editContactsList = require("scripts/contacts/editContacts.nut")
@@ -91,7 +93,7 @@ g_contacts.removeContact <- function removeContact(player, group)
   if (::g_contacts.isFriendsGroupName(group))
     ::clearContactPresence(player.uid)
 
-  if (group == ::EPLX_PS4_FRIENDS)
+  if (group == ::EPLX_PS4_FRIENDS && player.name in ::ps4_console_friends)
     delete ::ps4_console_friends[player.name]
 }
 
@@ -223,6 +225,12 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
   if (contact.canOpenXBoxFriendsWindow(groupName))
   {
     contact.openXBoxFriendsEdit()
+    return null
+  }
+
+  if (contact.canOpenPSNContactGroupWindow())
+  {
+    contact.openPSNContactEdit(groupName)
     return null
   }
 
@@ -573,7 +581,7 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
 ::get_contacts_array_by_filter_func <- function get_contacts_array_by_filter_func(groupName, filterFunc)
 {
   if (!(groupName in ::contacts))
-    return null
+    return []
 
   return ::u.filter(::contacts[groupName], @(contact) filterFunc(contact.name))
 }

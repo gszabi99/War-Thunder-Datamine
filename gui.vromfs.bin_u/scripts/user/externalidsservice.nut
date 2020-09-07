@@ -22,7 +22,7 @@ local updateExternalIDsTable = function(request)
 
 //PLAYSTATION NETWORK
   if (eIDtable?[::EPL_PSN]?.id)
-    table.psnName <- eIDtable[::EPL_PSN].id
+    table.psnId <- eIDtable[::EPL_PSN].id
 
 //XBOX ONE
   if (eIDtable?[::EPL_XBOXONE]?.id)
@@ -68,7 +68,7 @@ local function getSelfExternalIds()
 //PLAYSTATION NETWORK
   local psnId = ::get_my_external_id(::EPL_PSN)
   if (psnId != null)
-    table.psnName <- psnId
+    table.psnId <- psnId
 
 //XBOX ONE
   local xboxId = ::get_my_external_id(::EPL_XBOXONE)

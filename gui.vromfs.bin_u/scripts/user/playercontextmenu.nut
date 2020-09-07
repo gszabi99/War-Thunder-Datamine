@@ -317,7 +317,8 @@ local getActions = function(contact, params)
 //---- <Contacts> ------------------
   if (::has_feature("Friends"))
   {
-    local canBlock = !::is_platform_xboxone || !isXBoxOnePlayer
+    local canBlock = !platformModule.isPlatformXboxOne || !isXBoxOnePlayer
+    local canRemoveFromList = !platformModule.isPlatformSony || !isPS4Player
 
     actions.append(
       {
@@ -333,7 +334,7 @@ local getActions = function(contact, params)
       }
       {
         text = ::loc("contacts/friendlist/remove")
-        show = isFriend && !::isPlayerPS4Friend(name)
+        show = isFriend && canRemoveFromList
         action = @() ::editContactMsgBox(contact, ::EPL_FRIENDLIST, false)
       }
       {
@@ -348,7 +349,7 @@ local getActions = function(contact, params)
       }
       {
         text = ::loc("contacts/blacklist/remove")
-        show = isBlock && canBlock
+        show = isBlock && canBlock && canRemoveFromList
         action = @() ::editContactMsgBox(contact, ::EPL_BLOCKLIST, false)
       }
     )

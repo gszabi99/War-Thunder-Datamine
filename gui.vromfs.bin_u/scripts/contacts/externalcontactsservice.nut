@@ -1,4 +1,5 @@
-local MAX_UNKNOWN_XBOX_IDS_PEER_REQUEST = 100
+local MAX_UNKNOWN_IDS_PEER_REQUEST = 100
+
 local requestUnknownXboxIds = function(playersList, knownUsers, cb) {} //forward declaration
 requestUnknownXboxIds = function(playersList, knownUsers, cb)
 {
@@ -14,7 +15,7 @@ requestUnknownXboxIds = function(playersList, knownUsers, cb)
     return
   }
 
-  local cutIndex = ::min(playersList.len(), MAX_UNKNOWN_XBOX_IDS_PEER_REQUEST)
+  local cutIndex = ::min(playersList.len(), MAX_UNKNOWN_IDS_PEER_REQUEST)
   local requestList = playersList.slice(0, cutIndex)
   local leftList = playersList.slice(cutIndex)
 
@@ -31,6 +32,30 @@ requestUnknownXboxIds = function(playersList, knownUsers, cb)
   )
 }
 
+local function requestUnknownPSNIds(playersList, knownUsers, cb) {}
+requestUnknownPSNIds = function(playersList, knownUsers, cb) {
+  if (!playersList.len()) {
+    cb(knownUsers)
+    return
+  }
+
+  local cutIndex = ::min(playersList.len(), MAX_UNKNOWN_IDS_PEER_REQUEST)
+  local requestList = playersList.slice(0, cutIndex)
+  local leftList = playersList.slice(cutIndex)
+
+  local taskId = ::ps4_find_friends(requestList)
+  ::g_tasker.addTask(taskId, null, function() {
+    local blk = ::DataBlock()
+    blk = ::ps4_find_friends_result()
+
+    local table = ::buildTableFromBlk(blk)
+    table.__update(knownUsers)
+
+    requestUnknownPSNIds(leftList, table, cb)
+  }.bindenv(this))
+}
+
 return {
   requestUnknownXboxIds = requestUnknownXboxIds
+  requestUnknownPSNIds = requestUnknownPSNIds
 }

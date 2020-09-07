@@ -294,4 +294,13 @@ return {
   entitlements = entitlements
 
   noOpCb = noOpCb
+
+  subscribe = {
+    friendslist = nativeApi.subscribeToFriendsUpdates
+    blocklist = nativeApi.subscribeToBlocklistUpdates
+  }
+  unsubscribe = {
+    friendslist = nativeApi.unsubscribeFromFriendsUpdates
+    blocklist = nativeApi.unsubscribeFromBlocklistUpdates
+  }
 }

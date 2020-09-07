@@ -2,7 +2,7 @@ local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 local penalties = require("scripts/penitentiary/penalties.nut")
 local callback = require("sqStdLibs/helpers/callback.nut")
 local unitActions = require("scripts/unit/unitActions.nut")
-local xboxContactsManager = require("scripts/contacts/xboxContactsManager.nut")
+local { updateContacts } = require("scripts/contacts/contactsManager.nut")
 local unitContextMenuState = require("scripts/unit/unitContextMenuState.nut")
 local { isChatEnabled } = require("scripts/chat/chatStates.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
@@ -435,10 +435,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
       return notAvailableYetMsgBox()
 
     if (!::isContactsWindowActive())
-    {
-      ::update_ps4_friends()
-      xboxContactsManager.updateXboxOneFriends()
-    }
+      updateContacts()
 
     onSwitchContacts()
   }

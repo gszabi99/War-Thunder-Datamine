@@ -1,7 +1,13 @@
-local platformModule = require("scripts/clientState/platform.nut")
-local externalIDsService = require("scripts/user/externalIdsService.nut")
-local { getXboxChatEnableStatus, isChatEnabled,
-  isCrossNetworkMessageAllowed } = require("scripts/chat/chatStates.nut")
+local { isPlayerFromXboxOne,
+        isPlayerFromPS4,
+        getPlayerName } = require("scripts/clientState/platform.nut")
+local { reqPlayerExternalIDsByUserId } = require("scripts/user/externalIdsService.nut")
+local { getXboxChatEnableStatus,
+        isChatEnabled,
+        isCrossNetworkMessageAllowed } = require("scripts/chat/chatStates.nut")
+local { updateContacts } = require("scripts/contacts/contactsManager.nut")
+
+local psnSocial = require("sony.social")
 
 local contactsByName = {}
 
@@ -24,7 +30,7 @@ class Contact
   gameConfig = null
   inGameEx = null
 
-  psnName = ""
+  psnId = ""
   xboxId = ""
   steamName = ""
   facebookName = ""
@@ -115,7 +121,7 @@ class Contact
 
   function canOpenXBoxFriendsWindow(groupName)
   {
-    return platformModule.isPlayerFromXboxOne(name) && groupName != ::EPL_BLOCKLIST
+    return isPlayerFromXboxOne(name) && groupName != ::EPL_BLOCKLIST
   }
 
   function openXBoxFriendsEdit()
@@ -131,13 +137,49 @@ class Contact
     if (xboxId != "")
       return xboxId
 
-    externalIDsService.reqPlayerExternalIDsByUserId(uid, {showProgressBox = true}, afterSuccessCb)
+    reqPlayerExternalIDsByUserId(uid, {showProgressBox = true}, afterSuccessCb)
     return null
   }
 
+  function canOpenPSNContactGroupWindow() {
+    return isPlayerFromPS4(name)
+  }
+
+  function openPSNContactEdit(groupName) {
+    if (groupName == ::EPL_BLOCKLIST)
+      openPSNBlockUser()
+    else
+      openPSNReqFriend()
+  }
+
+  function openPSNRequest(action) {
+    psnSocial.open_player_profile(
+      psnId.tointeger(),
+      action,
+      function(r) {
+        if (r?.wasCanceled)
+          return
+
+        updateContacts(true)
+      }
+    )
+  }
+
+  function updatePSNIdAndDo(cb = null) {
+    cb = cb ?? @() null
+
+    if (psnId != "")
+      return cb()
+
+    reqPlayerExternalIDsByUserId(uid, {showProgressBox = true}, cb)
+  }
+
+  openPSNReqFriend = @() updatePSNIdAndDo(@() openPSNRequest(psnSocial.PlayerAction.REQUEST_FRIENDSHIP))
+  openPSNBlockUser = @() updatePSNIdAndDo(@() openPSNRequest(psnSocial.PlayerAction.BLOCK_PLAYER))
+
   function needCheckXboxId()
   {
-    return platformModule.isPlayerFromXboxOne(name) && xboxId == ""
+    return isPlayerFromXboxOne(name) && xboxId == ""
   }
 
   function getWinsText()
@@ -155,10 +197,7 @@ class Contact
     return expTotal >= 0? getRank().tostring() : ::loc("leaderboards/notAvailable")
   }
 
-  function getName()
-  {
-    return platformModule.getPlayerName(name)
-  }
+  getName = @() getPlayerName(name)
 
   function needCheckForceOffline()
   {
@@ -167,7 +206,7 @@ class Contact
         || presence == ::g_contact_presence.UNKNOWN)
       return false
 
-    return platformModule.isPlayerFromXboxOne(name)
+    return isPlayerFromXboxOne(name)
   }
 
   function isMe()

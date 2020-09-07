@@ -2,7 +2,7 @@ local { canInteractCrossConsole,
         isXBoxPlayerName,
         isPlatformSony } = require("scripts/clientState/platform.nut")
 local crossplayModule = require("scripts/social/crossplay.nut")
-local xboxContactsManager = require("scripts/contacts/xboxContactsManager.nut")
+local { updateContacts } = require("scripts/contacts/contactsManager.nut")
 
 ::gui_start_search_squadPlayer <- function gui_start_search_squadPlayer()
 {
@@ -12,8 +12,7 @@ local xboxContactsManager = require("scripts/contacts/xboxContactsManager.nut")
     return
   }
 
-  ::update_ps4_friends()
-  xboxContactsManager.updateXboxOneFriends()
+  updateContacts()
   ::handlersManager.loadHandler(::gui_handlers.SearchForSquadHandler)
 }
 

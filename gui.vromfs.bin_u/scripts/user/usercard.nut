@@ -8,6 +8,7 @@ local externalIDsService = require("scripts/user/externalIdsService.nut")
 local avatars = require("scripts/user/avatars.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
+local psnSocial = require("sony.social")
 
 local getAirsStatsFromBlk = function (blk)
 {
@@ -463,6 +464,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     fillAdditionalName(curPlayerExternalIds?.facebookName ?? "", "facebookName")
 
     showSceneBtn("btn_xbox_profile", isPlatformXboxOne && !isMe && (curPlayerExternalIds?.xboxId ?? "") != "")
+    showSceneBtn("btn_psn_profile", isPlatformSony && !isMe && (curPlayerExternalIds?.psnId ?? "") != "")
   }
 
   function fillAdditionalName(name, link)
@@ -1221,6 +1223,18 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
   function onOpenXboxProfile()
   {
     ::xbox_show_profile_card(curPlayerExternalIds?.xboxId ?? "")
+  }
+
+  function onOpenPSNProfile() {
+    local psnId = curPlayerExternalIds?.psnId ?? ""
+    if (psnId == "")
+      return
+
+    psnSocial.open_player_profile(
+      psnId.tointeger(),
+      psnSocial.PlayerAction.DISPLAY,
+      @(r) null
+    )
   }
 
   function onStatsCountryChange(obj)

@@ -32,7 +32,7 @@ local fetchContactsList = function()
   ::xbox_get_avoid_list_async()
 }
 
-local updateXboxOneFriends = function(needIgnoreInitedFlag = false)
+local updateContacts = function(needIgnoreInitedFlag = false)
 {
   if (!::is_platform_xboxone || !::isInMenu())
   {
@@ -201,7 +201,7 @@ local xboxOverlayContactClosedCallback = function(playerStatus)
   if (!::g_login.isLoggedIn())
     return
 
-  updateXboxOneFriends(true)
+  updateContacts(true)
 }, this)
 
 ::add_event_listener("ContactsUpdated", function(p) {
@@ -216,7 +216,7 @@ local xboxOverlayContactClosedCallback = function(playerStatus)
       contact.getXboxId(@() ::can_view_target_presence(contact.xboxId))
   })
 
-  updateXboxOneFriends()
+  updateContacts()
 }, this)
 
 return {
@@ -226,5 +226,5 @@ return {
   xboxOverlayContactClosedCallback = xboxOverlayContactClosedCallback
 
   updateContactXBoxPresence = updateContactXBoxPresence
-  updateXboxOneFriends = updateXboxOneFriends
+  updateContacts = updateContacts
 }
