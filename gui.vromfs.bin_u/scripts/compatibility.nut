@@ -143,3 +143,9 @@
     return player?.id ?? -1
   }
 })
+
+//----------------------------wop_1_101_0_X---------------------------------//
+::apply_compatibilities({
+  gchat_voice_mute_peer_by_name = @(...) null
+  gchat_voice_mute_peer_by_uid = @(...) null
+})

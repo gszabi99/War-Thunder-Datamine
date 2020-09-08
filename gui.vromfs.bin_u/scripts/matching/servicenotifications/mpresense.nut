@@ -2,6 +2,7 @@ local avatars = ::require("scripts/user/avatars.nut")
 local { isPs4XboxOneInteractionAvailable,
         isPlatformSony } = require("scripts/clientState/platform.nut")
 local editContactsList = require("scripts/contacts/editContacts.nut")
+local { updateMuteStatus } = require("scripts/contacts/contactsManager.nut")
 
 ::on_presences_update <- function on_presences_update(params)
 {
@@ -126,6 +127,8 @@ local editContactsList = require("scripts/contacts/editContacts.nut")
           ::contacts[::getFriendGroupName(p.nick)].append(player)
         else
           ::contacts[listName].append(player)
+
+        updateMuteStatus(player)
       }
     }
 
