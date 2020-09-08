@@ -684,6 +684,8 @@ local ItemExternal = class extends ::BaseItem
     foreach (genItemdefId in inventoryClient.getChestGeneratorItemdefIds(id))
     {
       local gen = ItemGenerators.get(genItemdefId)
+      if (::ItemsManager.findItemById(gen.id)?.iType == itemType.WARBONDS)
+        continue
       if (gen)
         res.extend(gen.getRecipesWithComponent(id))
     }

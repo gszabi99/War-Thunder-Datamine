@@ -434,15 +434,11 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
     }
     else
       favoriteArr.append(preset.id)
+    setFavoritePresets(unit.name, favoriteArr)
     preset.chapterOrd = chapterOrd
     presetsList[curPresetIdx].chapterOrd = chapterOrd
     sortPresetLists([weaponryByPresetInfo.presets, presetsList])
     updateAllItems()
-  }
-
-  function onDestroy()
-  {
-    setFavoritePresets(unit.name, favoriteArr)
   }
 }
 

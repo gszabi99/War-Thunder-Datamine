@@ -113,6 +113,13 @@ local function psnUpdateContactsList(usersTable) {
           contactsBlk[::EPL_FRIENDLIST][contact.uid] = false
       }
 
+      if (friendGroupName == ::EPLX_PS4_FRIENDS) {
+        if (contact.isInGroup(::EPL_FRIENDLIST) && !contact.isInGroup(friendGroupName)) {
+          contactsBlk[::EPL_FRIENDLIST][contact.uid] = false
+          contactsBlk[friendGroupName][contact.uid] = true
+        }
+      }
+
       //Validate in-game contacts list
       //in case if in psn contacts list some players
       //are gone. So we need to clear then in game.

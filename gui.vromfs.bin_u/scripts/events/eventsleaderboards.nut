@@ -110,7 +110,6 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
             canRequestEventLb = true
         }, this),
         ::Callback(function(errorId) {
-          ::script_net_assert_once("event leaderboards error", errorId)
           canRequestEventLb = true
         }, this)
       )}, this)

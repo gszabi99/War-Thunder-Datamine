@@ -33,7 +33,8 @@ purchaseModifications = function(unitsArray)
   )
 }
 
-local function checkUnboughtMods(silent = false)
+local checkUnboughtMods = @(silent = false) null
+checkUnboughtMods = function(silent = false)
 {
   if (!haveUnits())
     return

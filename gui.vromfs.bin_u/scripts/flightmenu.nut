@@ -111,12 +111,7 @@ class ::gui_handlers.FlightMenu extends ::gui_handlers.BaseGuiHandlerWT
     local btnBailout = scene.findObject("btn_Bailout")
     if (::checkObj(btnBailout))
     {
-      if ((::get_mission_restore_type() != ::ERT_MANUAL || gm == ::GM_TEST_FLIGHT)
-          && gm != ::GM_BENCHMARK
-          && !::is_camera_not_flight()
-          && ::is_player_can_bailout()
-          && (status != ::MISSION_STATUS_SUCCESS || !::isInArray(gm, [::GM_CAMPAIGN, ::GM_SINGLE_MISSION, ::GM_DYNAMIC, ::GM_TRAINING, ::GM_BUILDER]))
-         )
+      if (isCanBailout())
       {
         local unit = ::get_player_cur_unit()
         local locId = (unit?.isHelicopter?()) ? "flightmenu/btnBailoutHelicopter"
@@ -366,16 +361,28 @@ class ::gui_handlers.FlightMenu extends ::gui_handlers.BaseGuiHandlerWT
       obj.select()
   }
 
+  function isCanBailout()
+  {
+    local status = ::get_mission_status()
+    local gm = ::get_game_mode()
+    return (::get_mission_restore_type() != ::ERT_MANUAL || gm == ::GM_TEST_FLIGHT)
+        && gm != ::GM_BENCHMARK
+        && !::is_camera_not_flight()
+        && ::is_player_can_bailout()
+        && (status != ::MISSION_STATUS_SUCCESS || !::isInArray(gm, [::GM_CAMPAIGN, ::GM_SINGLE_MISSION, ::GM_DYNAMIC, ::GM_TRAINING, ::GM_BUILDER]))
+  }
+
   function doBailout()
   {
-    ::do_player_bailout()
+    if (isCanBailout())
+      ::do_player_bailout()
 
     onResume(null)
   }
 
   function onBailout(obj)
   {
-    if (::is_player_can_bailout())
+    if (isCanBailout())
     {
       local unit = ::get_player_cur_unit()
       local locId = (unit?.isHelicopter?()) ? "flightmenu/questionBailoutHelicopter"
@@ -387,6 +394,8 @@ class ::gui_handlers.FlightMenu extends ::gui_handlers.BaseGuiHandlerWT
           ["no", selectBailoutBtn]
         ], "no", { cancel_fn = function() {}})
     }
+    else
+      onResume(null)
   }
 
   function onControlsHelp()

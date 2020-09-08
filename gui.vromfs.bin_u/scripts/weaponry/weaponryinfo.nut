@@ -109,7 +109,7 @@ local function isWeaponVisible(unit, weapon, onlyBought = true, weaponTags = nul
   {
     local hasTag = false
     foreach(t in weaponTags)
-      if (weapon?.t)
+      if (weapon?[t])
       {
         hasTag = true
         break

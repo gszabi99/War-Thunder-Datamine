@@ -2376,7 +2376,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (lclick)
       addNickToEdit(name, sceneData.scene)
     else
-      ::find_contact_by_name_and_do(name, @(contact) ::g_chat.showPlayerRClickMenu(name, sceneData.room, contact))
+      ::g_chat.showPlayerRClickMenu(name, sceneData.room)
   }
 
   function changePrivateTo(user)

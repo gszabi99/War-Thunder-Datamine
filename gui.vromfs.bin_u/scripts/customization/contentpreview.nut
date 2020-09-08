@@ -176,10 +176,8 @@ local function showResource(resource, resourceType, onSkinReadyToShowCb = null)
   }
 }
 
-local function liveSkinPreview(params)
+local function getCantStartUnitPreviewReason()
 {
-  if (!::has_feature("EnableLiveSkins"))
-    return "not_allowed"
   if (!::g_login.isLoggedIn())
     return "not_logged_in"
   if (!::is_in_hangar())
@@ -188,6 +186,16 @@ local function liveSkinPreview(params)
     return "hangar_not_ready"
   if (!::ItemsManager.canPreviewItems())
     return "temporarily_forbidden"
+  return  ""
+}
+
+local function liveSkinPreview(params)
+{
+  if (!::has_feature("EnableLiveSkins"))
+    return "not_allowed"
+  local reason = getCantStartUnitPreviewReason()
+  if (reason != "")
+    return reason
 
   local blkHashName = params.hash
   local name = params?.name ?? "testName"
@@ -230,6 +238,20 @@ local function marketViewItem(params)
   waitingItemDefId = null
   if (item.canPreview() && ::ItemsManager.canPreviewItems())
     item.doPreview()
+}
+
+local function requestUnitPreview(params)
+{
+  local reason = getCantStartUnitPreviewReason()
+  if (reason != "")
+    return reason
+  local unit = ::getAircraftByName(params?.unitId)
+  if (unit == null)
+    return "unit not found"
+  if (!unit.canPreview())
+    return "unit not viewable"
+  unit.doPreview()
+  return "success"
 }
 
 local function onEventItemsShopUpdate(params)
@@ -285,6 +307,7 @@ rootTable["on_live_skin_data_loaded"] <- @(unitId, skinGuid, result) onSkinDownl
 rootTable["live_start_unit_preview"]  <- @(unitId, skinId, isForApprove) showUnitSkin(unitId, skinId, isForApprove)
 web_rpc.register_handler("ugc_skin_preview", @(params) liveSkinPreview(params))
 web_rpc.register_handler("market_view_item", @(params) marketViewItem(params))
+web_rpc.register_handler("request_view_unit", @(params) requestUnitPreview(params))
 
 subscriptions.addListenersWithoutEnv({
   ItemsShopUpdate = @(p) onEventItemsShopUpdate(p)

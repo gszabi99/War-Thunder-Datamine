@@ -1,6 +1,7 @@
 local statsd = require("statsd")
 local { getPollIdByFullUrl, generatePollUrl } = require("scripts/web/webpoll.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
+local { getStringWidthPx } = require("scripts/viewUtils/daguiFonts.nut")
 
 ::embedded_browser_event <- function embedded_browser_event(event_type, url, error_desc, error_code,
   is_main_frame)
@@ -130,10 +131,10 @@ class ::gui_handlers.BrowserModalHandler extends ::BaseGuiHandler
         if (params.isMainFrame)
         {
           toggleWaitAnimation(false)
-
-          showInfoMsgBox(::loc("browser/error_load_url")
-            + " (error code: " + params.errorCode + "): " + params.errorDesc
-          );
+          local message = "".concat(::loc("browser/error_load_url"), ::loc("ui/dot"),
+            "\n", ::loc("browser/error_code"), ::loc("ui/colon"), params.errorCode, ::loc("ui/comma"), params.errorDesc)
+          local urlCommentMarkup = getUrlCommentMarkupForMsgbox(params.url)
+          msgBox("error_load_url", message, [["ok", @() null ]], "ok", { data_below_text = urlCommentMarkup })
         }
         break;
       case ::BROWSER_EVENT_NEED_RESEND_FRAME:
@@ -201,5 +202,40 @@ class ::gui_handlers.BrowserModalHandler extends ::BaseGuiHandler
   function onDestroy()
   {
     ::broadcastEvent("DestroyEmbeddedBrowser")
+  }
+
+  function wordWrapText(str, width)
+  {
+    if (::type(str) != "string" || str == "" || width <= 0)
+      return str
+    local wrapped = []
+    local lines = str.split("\n")
+    foreach (line in lines)
+    {
+      local unicodeLine = ::utf8(line)
+      local strLen = unicodeLine.charCount()
+      for (local pos = 0; pos < strLen; pos += width)
+        wrapped.append(unicodeLine.slice(pos, pos + width))
+    }
+    return "\n".join(wrapped)
+  }
+
+  function getUrlCommentMarkupForMsgbox(urlStr)
+  {
+    if (urlStr == "")
+      return ""
+
+    // Splitting too long URL because daGUI textarea don't break words on word-wrap.
+    local fontSizePropName = "smallFont"
+    local fontSizeCssId = "fontSmall"
+    local maxWidthPx = ::to_pixels("0.8@rw")
+    local textWidthPx = getStringWidthPx(urlStr, fontSizeCssId, guiScene)
+    if (textWidthPx != 0 && textWidthPx > maxWidthPx)
+    {
+      local splitByChars = (1.0 * maxWidthPx / textWidthPx * ::utf8(urlStr).charCount()).tointeger()
+      urlStr = wordWrapText(urlStr, splitByChars)
+    }
+    return ::format("textareaNoTab { %s:t='yes'; overlayTextColor:t='faded'; text:t='%s'; }",
+      fontSizePropName, ::g_string.stripTags(urlStr))
   }
 }

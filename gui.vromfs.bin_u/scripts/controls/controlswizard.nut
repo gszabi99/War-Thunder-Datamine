@@ -834,7 +834,7 @@ class ::gui_handlers.controlsWizardModalHandler extends ::gui_handlers.BaseGuiHa
   function updateButtons()
   {
     local hideConsoleImage = curDivName == "shortcut-wnd" && (isListenAxis || isListenButton)
-    foreach(name in ["keep_assign_btn", "btn_prevItem", "btn_controlsWizard", "btn_selectPreset", "btn-reset-axis-input"])
+    foreach(name in ["keep_assign_btn", "btn_prevItem", "btn_controlsWizard", "btn_selectPreset"])
     {
       local btnObj = scene.findObject(name)
       if (::checkObj(btnObj))
