@@ -592,45 +592,34 @@ local isWaitMeasureEvent = false
       break
 
     case ::USEROPT_BOMB_SERIES:
-       descr.id = "bomb_series"
-       descr.values = []
-       descr.items = []
-       local nbrBomb = 0
-       local unit = ::getAircraftByName(::aircraft_for_weapons)
-       local bombSeries = [0, 4, 6, 12, 24, 48]
-       if (unit)
-         nbrBomb = bombNbr(unit)
-       else
-         nbrBomb = 48
-
-       descr.values.append(0)
-       descr.items.append("options/bomb_series_null")
-
-       for (local i = 1; i < bombSeries.len(); ++i)
-       {
-        if (bombSeries[i].tointeger() >= nbrBomb) // max = -1
+      descr.id = "bomb_series"
+      descr.values = [0]
+      descr.items = ["#options/disabled"]
+      local unit = ::getAircraftByName(::aircraft_for_weapons)
+      local bombSeries = [0, 4, 6, 12, 24, 48]
+      local nbrBomb = unit != null ? bombNbr(unit) : bombSeries.top()
+      for (local i = 1; i < bombSeries.len(); ++i)
+      {
+        if (bombSeries[i] >= nbrBomb) // max = -1
           break
 
-        descr.values.append(bombSeries[i].tointeger())
+        descr.values.append(bombSeries[i])
         local text = descr.values[i].tostring()
-        local tooltipLoc = "guiHints/bomb_series"
         descr.items.append({
-         text = text
-         tooltip = ::loc(tooltipLoc, { num = descr.values[i] })
-         })
-       }
-
-       descr.values.append(nbrBomb)
-       local text = descr.values[descr.values.len() - 1].tostring()
-       local tooltipLoc = "guiHints/bomb_series_all"
-       descr.items.append({
-        text = text
-        tooltip = ::loc(tooltipLoc, { num = -1 })
+          text = text
+          tooltip = ::loc("guiHints/bomb_series_num", { num = descr.values[i] })
         })
+      }
 
-       descr.value = find_in_array(descr.values, ::get_option_bombs_series())
-       defaultValue = bombSeries[0].tointeger()
-       break
+      descr.values.append(nbrBomb)
+      descr.items.append({
+        text = ::loc("options/bomb_series_all", { num = nbrBomb })
+        tooltip = ::loc("guiHints/bomb_series_all")
+      })
+
+      descr.value = find_in_array(descr.values, ::get_option_bombs_series())
+      defaultValue = bombSeries[0]
+      break
 
 
    case ::USEROPT_FLARES_PERIODS:
