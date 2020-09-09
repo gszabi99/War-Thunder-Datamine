@@ -246,22 +246,6 @@ local function updateContacts(needIgnoreInitedFlag = false) {
   updateContacts()
 }, this)
 
-::add_event_listener("SignOut", function(p) {
-  pendingContactsChanges.clear()
-  isContactsUpdated(false)
-
-  psn.unsubscribe.friendslist()
-  psn.unsubscribe.blocklist()
-})
-
-psn.subscribe.friendslist(function() {
-  updateContacts(true)
-})
-
-psn.subscribe.blocklist(function() {
-  updateContacts(true)
-})
-
 return {
   updateContacts = updateContacts
   updateMuteStatus = updateMuteStatus
