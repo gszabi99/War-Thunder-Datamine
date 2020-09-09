@@ -142,7 +142,7 @@ class Contact
   }
 
   function canOpenPSNContactGroupWindow() {
-    return isPlayerFromPS4(name)
+    return psnSocial?.open_player_profile != null && isPlayerFromPS4(name)
   }
 
   function openPSNContactEdit(groupName) {

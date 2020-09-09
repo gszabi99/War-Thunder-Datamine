@@ -464,7 +464,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     fillAdditionalName(curPlayerExternalIds?.facebookName ?? "", "facebookName")
 
     showSceneBtn("btn_xbox_profile", isPlatformXboxOne && !isMe && (curPlayerExternalIds?.xboxId ?? "") != "")
-    showSceneBtn("btn_psn_profile", isPlatformSony && !isMe && (curPlayerExternalIds?.psnId ?? "") != "")
+    showSceneBtn("btn_psn_profile", isPlatformSony && !isMe && psnSocial?.open_player_profile != null && (curPlayerExternalIds?.psnId ?? "") != "")
   }
 
   function fillAdditionalName(name, link)
@@ -1230,7 +1230,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (psnId == "")
       return
 
-    psnSocial.open_player_profile(
+    psnSocial?.open_player_profile(
       psnId.tointeger(),
       psnSocial.PlayerAction.DISPLAY,
       @(r) null
