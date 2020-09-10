@@ -327,6 +327,7 @@ local list = {
   COLLECTIONS = {
     text = @() "#mainmenu/btnCollections"
     onClickFunc = @(...) openCollectionsWnd()
+    image = @() "#ui/gameuiskin#collection.svg"
     isHidden = @(...) !hasAvailableCollections() || !::isInMenu()
   }
   WINDOW_HELP = {

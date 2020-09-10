@@ -246,6 +246,10 @@ local function updateContacts(needIgnoreInitedFlag = false) {
   updateContacts()
 }, this)
 
+// HACK: force-stop push notifications on reload for GFQA. To be removed.
+psn.unsubscribe.friendslist()
+psn.unsubscribe.blocklist()
+
 return {
   updateContacts = updateContacts
   updateMuteStatus = updateMuteStatus

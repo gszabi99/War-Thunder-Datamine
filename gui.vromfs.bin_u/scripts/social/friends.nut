@@ -66,13 +66,7 @@ local { isPlatformSony } = require("scripts/clientState/platform.nut")
   if (!isPlatformSony)
     return null
 
-  return ::ps4_console_friends?[playerName]?.accountId
-}
-
-::add_psn_account_id <- function add_psn_account_id(onlineId, accountId)
-{
-  if (isPlatformSony)
-    ::ps4_console_friends["*"+onlineId] <- {accountId=accountId}
+  return ::ps4_console_friends?[playerName]?.psnId
 }
 
 //--------------- </PlayStation> ----------------------

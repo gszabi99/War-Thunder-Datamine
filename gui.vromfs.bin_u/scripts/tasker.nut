@@ -124,7 +124,7 @@ global enum TASK_CB_TYPE
 
     if (taskData.onError != null)
     {
-      info = onError.getfuncinfos()
+      local info = taskData.onError.getfuncinfos()
       if (info.native || info.parameters.len() > 1)
         taskData.onError(taskResult)
       else

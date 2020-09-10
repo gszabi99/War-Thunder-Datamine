@@ -44,6 +44,9 @@ local cutPlayerNamePostfix = @(name) string.cutPostfix(name, PS4_PLAYER_POSTFIX,
 
 local addPlatformIcon = function(name)
 {
+  if (name == "")
+    return ""
+
   local isXboxPrefix = xboxPrefixNameRegexp.match(name)
   local isPs4Prefix = ps4PrefixNameRegexp.match(name)
 
