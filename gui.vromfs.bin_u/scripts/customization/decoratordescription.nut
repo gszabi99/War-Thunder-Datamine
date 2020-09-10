@@ -86,7 +86,15 @@ local function updateDecoratorDescription(obj, handler, decoratorType, decorator
   } else
     ::showBtn("price", false, obj)
 
-  local canFindOnMarketplace = !isAllowed && decorator.getCouponItemdefId() != null
+  local canConsumeCoupon = false
+  local canFindOnMarketplace = false
+  if (!isAllowed && decorator.getCouponItemdefId() != null)
+  {
+    local inventoryItem = ::ItemsManager.getInventoryItemById(decorator.getCouponItemdefId())
+    if (inventoryItem?.canConsume() ?? false)
+      canConsumeCoupon = true
+    canFindOnMarketplace = !canConsumeCoupon
+  }
 
   //fill unlock info
   local cObj = obj.findObject("conditions")
@@ -113,6 +121,9 @@ local function updateDecoratorDescription(obj, handler, decoratorType, decorator
       conditionsText = ::loc("mainmenu/itemCanBeReceived")
     else if (canBuy)
       conditionsText = ::loc("shop/object/can_be_purchased")
+    else if (canConsumeCoupon)
+      conditionsText = " ".concat(::loc("currency/gc/sign/colored"),
+        ::colorize("currencyGCColor", ::loc("shop/object/can_get_from_coupon")))
     else if (canFindOnMarketplace)
       conditionsText = " ".concat(::loc("currency/gc/sign/colored"),
         ::colorize("currencyGCColor", ::loc("shop/object/can_be_found_on_marketplace")))

@@ -23,8 +23,9 @@ class ::items_classes.Chest extends ItemExternal {
     if (!_isInitialized)
     {
       _isInitialized = true
-      local genId = inventoryClient.getChestGeneratorItemdefIds(id)?[0]
-      generator = genId && ItemGenerators.get(genId)
+      local genIds = inventoryClient.getChestGeneratorItemdefIds(id)
+      local genId = genIds.findvalue(@(genId) (ItemGenerators.get(genId)?.bundle ?? "") != "")
+      generator = ItemGenerators.get(genId)
     }
     return generator
   }

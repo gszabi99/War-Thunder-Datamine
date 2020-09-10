@@ -162,6 +162,11 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
   }
 
+  function canRestartSceneNow()
+  {
+    return ::isInArray(currentState, [ decoratorEditState.NONE, decoratorEditState.SELECT ])
+  }
+
   function getHandlerRestoreData()
   {
     local data = {
@@ -724,6 +729,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       unlocked = slot.unlocked && (!decorator || decorator.isUnlocked())
       emptySlot = slot.isEmpty || !decorator
       image = decoratorType.getImage(decorator)
+      rarityColor = decorator?.isRare() ? decorator.getRarityColor() : null
       tooltipText = buttonTooltip
       tooltipId = slot.isEmpty? null : ::g_tooltip_type.DECORATION.getTooltipId(decalId, decoratorType.unlockedItemType)
     }
@@ -1307,14 +1313,14 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     local isTrophyContent = params?.showAsTrophyContent ?? false
     local isUnlocked = decorator.canUse(unit)
-    local statusLock = !isTrophyContent ? getStatusLockText(decorator) : isUnlocked ? null : "achievement"
     local lockCountryImg = ::get_country_flag_img("decal_locked_" + ::getUnitCountry(unit))
     local unitLocked = decorator.getUnitTypeLockIcon()
-    local cost = null
-    if (!isTrophyContent)
-      cost = decorator.canBuyUnlock(unit) ? decorator.getCost().getTextAccordingToBalance()
-        : decorator.canBuyCouponOnMarketplace(unit) ? ::colorize("warningTextColor", ::loc("currency/gc/sign"))
-        : null
+    local cost = decorator.canBuyUnlock(unit) ? decorator.getCost().getTextAccordingToBalance()
+      : decorator.canBuyCouponOnMarketplace(unit) ? ::colorize("warningTextColor", ::loc("currency/gc/sign"))
+      : null
+    local statusLock = !isTrophyContent ? getStatusLockText(decorator)
+      : isUnlocked || cost != null ? null
+      : "achievement"
     local leftAmount = decorator.limit - decorator.getCountOfUsingDecorator(unit)
 
     return {
@@ -1325,7 +1331,8 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       ratio = ::clamp(decoratorType.getRatio(decorator), 1, 2)
       unlocked = isUnlocked
       image = decoratorType.getImage(decorator)
-      tooltipId = ::g_tooltip_type.DECORATION.getTooltipId(decorator.id, decoratorType.unlockedItemType, params)
+      tooltipId = ::g_tooltip_type.DECORATION.getTooltipId(decorator.id, decoratorType.unlockedItemType)
+      rarityColor = decorator.isRare() ? decorator.getRarityColor() : null
       cost = cost
       statusLock = statusLock
       unitLocked = unitLocked
@@ -1774,14 +1781,24 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function askMarketplaceCouponAction(decorator)
   {
+    local inventoryItem = ::ItemsManager.getInventoryItemById(decorator.getCouponItemdefId())
+    if (inventoryItem?.canConsume() ?? false)
+    {
+      inventoryItem.consume(::Callback(function(result) {
+        if ((result?.success ?? false) == true)
+          updateSelectedCategory(decorator)
+      }, this), null)
+      return
+    }
+
     local couponItem = ::ItemsManager.findItemById(decorator.getCouponItemdefId())
-    if (couponItem == null)
+    if (!(couponItem?.hasLink() ?? false))
       return
     local couponName = ::colorize("activeTextColor", couponItem.getName())
     msgBox("go_to_marketplace", ::loc("msgbox/find_on_marketplace", { itemName = couponName }), [
-        [ "ok", function() { couponItem.openLink(); onBtnBack() } ],
+        [ "find_on_marketplace", function() { couponItem.openLink(); onBtnBack() } ],
         [ "cancel", onBtnBack ]
-      ], "ok", { cancel_fn = onBtnBack })
+      ], "find_on_marketplace", { cancel_fn = onBtnBack })
   }
 
   function forceResetInstalledDecorators()
@@ -1901,7 +1918,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onSkinReadyToShow(unitId, skinId, result)
   {
-    if (!result || !::ItemsManager.canPreviewItems() ||
+    if (!result || !contentPreview.canStartPreviewScene(true, true) ||
       unitId != unit.name || (skinList?.values ?? []).indexof(skinId) == null)
         return
 
@@ -2421,6 +2438,8 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventItemsShopUpdate(params)
   {
+    updateDecalSlots()
+    updateAttachablesSlots()
     updateSkinList()
   }
 

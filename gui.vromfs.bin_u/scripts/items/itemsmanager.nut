@@ -1249,16 +1249,6 @@ ItemsManager.isEnabled <- function isEnabled()
   return ::has_feature("Items") && checkNewbie && ::isInMenu()
 }
 
-ItemsManager.canPreviewItems <- function canPreviewItems()
-{
-  local can = ::isInMenu() && !::checkIsInQueue()
-      && !(::g_squad_manager.isSquadMember() && ::g_squad_manager.isMeReady())
-      && !::SessionLobby.hasSessionInLobby()
-  if (!can)
-    ::g_popups.add("", ::loc("mainmenu/itemPreviewForbidden"))
-  return can
-}
-
 ItemsManager.getItemsSortComparator <- function getItemsSortComparator(itemsSeenList = null)
 {
   return function(item1, item2)

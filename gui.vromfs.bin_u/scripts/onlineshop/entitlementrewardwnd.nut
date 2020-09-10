@@ -1,5 +1,6 @@
 local { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/entitlements.nut")
 local { getEntitlementView, getEntitlementLayerIcons } = require("scripts/onlineShop/entitlementView.nut")
+local { canStartPreviewScene } = require("scripts/customization/contentPreview.nut")
 
 class ::gui_handlers.EntitlementRewardWnd extends ::gui_handlers.trophyRewardWnd
 {
@@ -50,7 +51,8 @@ class ::gui_handlers.EntitlementRewardWnd extends ::gui_handlers.trophyRewardWnd
       ::getAircraftByName(::g_unlocks.getPlaneBySkinId(decorator.id)) :
       ::get_player_cur_unit()
 
-    if (decorUnit && decoratorType.isAvailable(decorUnit) && decorator.canUse(decorUnit))
+    if (decorUnit && decoratorType.isAvailable(decorUnit) && decorator.canUse(decorUnit)
+      && canStartPreviewScene(false))
     {
       local freeSlotIdx = decoratorType.getFreeSlotIdx(decorUnit)
       local slotIdx = freeSlotIdx != -1 ? freeSlotIdx

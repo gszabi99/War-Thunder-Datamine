@@ -1,6 +1,5 @@
 @const imgFrameSize: 1.45*@profileMedalSize;
-@const imgFramePad: 3*@sf/@pf_outdated;
-@const hoverFrameMargin: 4*@sf/@pf_outdated;
+@const imgFramePad: 4@sf/@pf;
 imgFrame {
   re-type:9rect;
   background-repeat:expand;
@@ -21,23 +20,10 @@ imgFrame[noMargin=yes] {
   background-color:@transparent;
   background-position:6;
   background-repeat:expand;
-  padding:5*@sf/@pf_outdated;
+  padding:7@sf/@pf;
 }
 
-imgButton {
-  behaviour:button;
-  background-image:#ui/gameuiskin#header_button_;
-  background-color:@white;
-  background-position:6;
-  background-repeat:expand;
-  padding:1@framePadding;
-  css-hier-invalidate:yes;
-  total-input-transparent:yes;
-}
-.hoverFrame > imgButton {
-  size:110*@sf/@pf_outdated, 110*@sf/@pf_outdated;
-}
-.hoverFrame > imgButton > img , .hoverFrame > imgFrame > img{
+.hoverFrame > imgFrame > img{
   pos:50%pw-50%w, 50%ph-50%h;
   position:absolute;
 }
@@ -59,40 +45,73 @@ imgFrame > backlight:hover, imgFrame > backlight:pushed {
   background-image:#ui/gameuiskin#acheivement_bg_hover;
 }
 
-imgButton.decal_image:disabled, imgButton.decal_image[unlocked=no] {
-  background-image:#ui/gameuiskin#header_button_disabled;
+
+
+imgButton {
+  behaviour:button;
+  background-image:#ui/gameuiskin#lr_frame_bg;
+  background-color:@white;
+  background-position:3, 4, 3, 3;
+  background-repeat:expand;
+  padding:1@framePadding;
+  css-hier-invalidate:yes;
+  total-input-transparent:yes;
 }
-imgButton.decal_image:disabled > img {
+
+imgButton:disabled,
+imgButton[unlocked=no] {
+  background-image:"";
+  background-color:@frameBackgroundColor;
+  border-color:@frameBorderColor;
+  border:yes;
+}
+imgButton:disabled > img {
   background-color:@lockedDecal;
 }
-imgButton.decal_image:pushed,
-.hoverFrame > imgButton:pushed {
-  background-image:#ui/gameuiskin#header_button_active;
+
+imgButton > pushedBg {
+  size:pw-2@dp, ph-2@dp;
+  pos:pw/2-w/2, ph/2-h/2;
+  position:absolute;
+  background-color:@menuButtonColorPushed;
+  border:yes;
+  border-color:#40404040;
+  input-transparent:yes;
+  display:hide;
+}
+imgButton:pushed > pushedBg,
+imgButton[highlighted=yes] > pushedBg {
+  display:show;
 }
 
-[show_console_buttons=no] :focus > imgButton.decal_image[selected=yes] {
+imgButton > hoverBg {
+  size:pw-4@dp, ph-5@dp;
+  pos:pw/2-w/2, 3@dp;
+  position:absolute;
+  background-color:@menuButtonColorHover;
+  input-transparent:yes;
+  display:hide;
+}
+imgButton:hover > hoverBg {
+  display:show;
+}
+imgButton:pushed > hoverBg,
+imgButton[unlocked=no] > hoverBg,
+imgButton[highlighted=yes] > hoverBg {
+  display:hide;
+}
+
+
+
+imgButton > contentCorner {
   re-type:9rect;
-  foreground-color: #55555555;
-  foreground-image: #ui/gameuiskin#item_selection;
-  foreground-position: 6;
-  foreground-repeat: expand;
-}
-
-imgButton[highlighted=yes], imgButton.decal_image[highlighted=yes] {
-  background-image:#ui/gameuiskin#header_button_active;
-}
-imgButton.decal_image:hover, .hoverFrame > imgButton:hover {
-  background-image:#ui/gameuiskin#header_button_hover;
-}
-imgButton.decal_image[unlocked=no]:hover {
-  background-image:#ui/gameuiskin#header_button_active;
-}
-
-imgButton.decal_image > contentCorner {
+  pos:pw-w, ph-h;
+  position:absolute;
   background-color:@white;
-  background-image:#ui/gameuiskin#price_bg;
-  background-position:6;
-  background-repeat:expand;
+  background-image:#ui/gameuiskin#item_type_bg_flip.svg;
+  background-svg-size:10@dp, 10@dp;
+  background-position:5@dp;
+  background-repeat:expand-svg;
 }
 
 LockedImg{
@@ -109,6 +128,12 @@ LockedImg[statusLock=limit] {
   size:@mIco,@mIco;
   background-color:@white;
 }
+
+imgFrame > LockedImg{
+  pos:pw/2-w/2, ph-h;
+  size:@cIco, @cIco;
+}
+
 LockedImg[statusLock=achievement] {
   background-image:#ui/gameuiskin#locked_white;
 }
@@ -120,12 +145,12 @@ LockedImg[statusLock=limit] {
 }
 
 LockedImg[statusLock=noPremium_1] {
-  size:pw-6*@sf/@pf_outdated, ph-6*@sf/@pf_outdated;
+  size:pw-2@dp, ph-2@dp;
   background-color:@white;
   background-image:#ui/images/decalslot_nopremium_vertical;
 }
 LockedImg[statusLock=noPremium_2] {
-  size:pw-6*@sf/@pf_outdated, ph-6*@sf/@pf_outdated;
+  size:pw-2@dp, ph-2@dp;
   background-color:@white;
   background-image:#ui/images/decalslot_nopremium_horizontal;
 }

@@ -133,6 +133,11 @@ class Decorator
     return unlockBlk != null || ! getCost().isZero() || getCouponItemdefId() != null
   }
 
+  function isSuitableForUnit(unit)
+  {
+    return unit == null || (!isLockedByCountry(unit) && !isLockedByUnit(unit))
+  }
+
   function isLockedByCountry(unit)
   {
     if (countries == null)
@@ -277,12 +282,19 @@ class Decorator
 
   function canBuyUnlock(unit)
   {
-    return !isLockedByCountry(unit) && !isLockedByUnit(unit) && !isUnlocked() && !getCost().isZero() && ::has_feature("SpendGold")
+    return isSuitableForUnit(unit) && !isUnlocked() && !getCost().isZero() && ::has_feature("SpendGold")
+  }
+
+  function canGetFromCoupon(unit)
+  {
+    return isSuitableForUnit(unit) && !isUnlocked()
+      && (::ItemsManager.getInventoryItemById(getCouponItemdefId())?.canConsume() ?? false)
   }
 
   function canBuyCouponOnMarketplace(unit)
   {
-    return !isLockedByCountry(unit) && !isLockedByUnit(unit) && !isUnlocked() && getCouponItemdefId() != null
+    return isSuitableForUnit(unit) && !isUnlocked()
+      && (::ItemsManager.findItemById(getCouponItemdefId())?.hasLink() ?? false)
   }
 
   function canUse(unit)
@@ -292,7 +304,7 @@ class Decorator
 
   function isAvailable(unit)
   {
-    return !isLockedByCountry(unit) && !isLockedByUnit(unit) && isUnlocked()
+    return isSuitableForUnit(unit) && isUnlocked()
   }
 
   function getCountOfUsingDecorator(unit)

@@ -9,6 +9,7 @@ local { isMeXBOXPlayer,
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
 local { startLogout } = require("scripts/login/logout.nut")
+local { canAcquireDecorator, askAcquireDecorator } = require("scripts/customization/decoratorAcquire.nut")
 
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
@@ -791,30 +792,35 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
 
   function getDecoratorsMarkup(decoratorType)
   {
-    local view = { items = [] }
-
     local decoratorsList = ::g_decorator.getCachedDecoratorsDataByType(decoratorType)
-    foreach (category, decorators in decoratorsList)
-    {
-      if (curFilter != category)
-        continue
+    local decorators = decoratorsList?[curFilter] ?? []
+    local view = {
+      items = decorators.map(function(decorator) {
+        local text = null
+        local status = null
+        if (decorator.isUnlocked())
+          text = null
+        else if (decorator.canBuyUnlock(null))
+          text = decorator.getCost()
+        else if (decorator.getCouponItemdefId() != null)
+          text = ::colorize("currencyGoldColor", ::loc("currency/gc/sign"))
+        else if (decorator.lockedByDLC != null)
+          status = "noDLC"
+        else
+          status = "achievement"
 
-      foreach (decorator in decorators)
-      {
-        view.items.append({
+        return {
           id = decorator.id
-          tooltipId = ::g_tooltip.getIdDecorator(decorator.id, decoratorType.unlockedItemType)
+          tooltipId = ::g_tooltip.getIdDecorator(decorator.id, decorator.decoratorType.unlockedItemType)
           unlocked = decorator.isUnlocked()
-          image = decoratorType.getImage(decorator)
-          imgRatio = decoratorType.getRatio(decorator)
+          image = decorator.decoratorType.getImage(decorator)
+          imgRatio = decorator.decoratorType.getRatio(decorator)
           backlight = true
-          bottomLeftText = decorator.getCouponItemdefId() != null
-            ? ::loc("currency/gc/sign/colored")
-            : null
-        })
-      }
+          bottomCenterText = text
+          statusLock = status
+        }
+      })
     }
-
     return ::handyman.renderCached("gui/commonParts/imgFrame", view)
   }
 
@@ -1245,6 +1251,20 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     guiScene.setUpdatesEnabled(true, true)
   }
 
+  function onDecalClick(obj)
+  {
+    if (!::check_obj(obj) || getCurSheet() != "UnlockDecal")
+      return
+
+    local idx = obj.getValue()
+    local itemObj = idx >= 0 && idx < obj.childrenCount() ? obj.getChild(idx) : null
+    local decoratorId = ::check_obj(itemObj) ? (itemObj?.id ?? "") : ""
+    local decorator = ::g_decorator.getDecoratorById(decoratorId)
+
+    if (canAcquireDecorator(decorator))
+      askAcquireDecorator(decorator, null)
+  }
+
   function onUnlockSelect(obj)
   {
     local list = scene.findObject("unlocks_group_list")
@@ -1653,7 +1673,13 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
 
   function onEventUnlocksCacheInvalidate(p)
   {
-    if (getCurSheet() == "UnlockAchievement")
+    if (::isInArray(getCurSheet(), [ "UnlockAchievement", "UnlockDecal" ]))
+      fillUnlocksList()
+  }
+
+  function onEventInventoryUpdate(p)
+  {
+    if (::isInArray(getCurSheet(), [ "UnlockAchievement", "UnlockDecal" ]))
       fillUnlocksList()
   }
 

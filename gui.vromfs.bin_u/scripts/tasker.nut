@@ -123,7 +123,13 @@ global enum TASK_CB_TYPE
     }
 
     if (taskData.onError != null)
-      taskData.onError(taskResult)
+    {
+      info = onError.getfuncinfos()
+      if (info.native || info.parameters.len() > 1)
+        taskData.onError(taskResult)
+      else
+        taskData.onError()
+    }
 
     if (taskData.showErrorMessageBox && isMsgBoxesAvailable())
       ::showInfoMsgBox(getErrorText(taskResult), "char_connecting_error")

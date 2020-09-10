@@ -63,6 +63,10 @@ local Callback = class {
     return getDbgName(refToContext)
   }
 
+  function getfuncinfos() {
+    return callbackFn.getfuncinfos()
+  }
+
   function tostring() {
     return ::format("Callback( context = %s)", getContextDbgName())
   }
