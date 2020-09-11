@@ -1,3 +1,5 @@
+local { canStartPreviewScene } = require("scripts/customization/contentPreview.nut")
+
 class ::gui_handlers.UnlockRewardWnd extends ::gui_handlers.trophyRewardWnd
 {
   wndType = handlerType.MODAL
@@ -42,7 +44,8 @@ class ::gui_handlers.UnlockRewardWnd extends ::gui_handlers.trophyRewardWnd
           ::getAircraftByName(::g_unlocks.getPlaneBySkinId(decorator.id)) :
           ::get_player_cur_unit()
 
-        if (decorUnit && decoratorType.isAvailable(decorUnit) && decorator.canUse(decorUnit))
+        if (decorUnit && decoratorType.isAvailable(decorUnit) && decorator.canUse(decorUnit)
+          && canStartPreviewScene(false))
         {
           local freeSlotIdx = decoratorType.getFreeSlotIdx(decorUnit)
           local slotIdx = freeSlotIdx != -1 ? freeSlotIdx

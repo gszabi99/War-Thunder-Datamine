@@ -2132,6 +2132,7 @@
         "pedals5": [-1.0,1.0],
         "pedals6": [-1.0,1.0],
         "throttle": [0.0,1.0],
+        "throttle_1": [0.0,1.0],
         "mixture": [0.0,1.0],
         "prop_pitch": [0.0,1.0],
         "trimmer": [-1.0,1.0],
@@ -2293,6 +2294,20 @@
           "blk": "gameData/FlightModels/weaponPresets/sb2u_1000lbs.blk",
           "reqModification": "flbc_mk1"
         }
+      },
+      {
+        "preset": {
+          "name": "sb2u_mine_mk13_mod0",
+          "blk": "gameData/FlightModels/weaponPresets/sb2u_mine_mk13_mod0.blk",
+          "reqModification": "us_mine_mk13_mod0",
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/mines/us_mine_mk13_mod0.blk",
+              "amountPerTier": 1.0,
+              "iconType": "air_mines"
+            }
+          }
+        }
       }
     ]
   },
@@ -2439,9 +2454,14 @@
         "modClass": "weapon"
       },
       "flbc_mk1": {
-        "tier": 3,
+        "tier": 2,
         "modClass": "weapon",
         "reqModification": "fsbc_mk5"
+      },
+      "us_mine_mk13_mod0": {
+        "tier": 3,
+        "modClass": "weapon",
+        "reqModification": "flbc_mk1"
       }
     }
   },

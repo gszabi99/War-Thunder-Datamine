@@ -122,7 +122,6 @@ local ItemExternal = class extends ::BaseItem
     addResources()
 
     updateShopFilterMask()
-    updateItemDefParams()
   }
 
   function getTradebleTimestamp(itemDesc)
@@ -684,8 +683,9 @@ local ItemExternal = class extends ::BaseItem
     foreach (genItemdefId in inventoryClient.getChestGeneratorItemdefIds(id))
     {
       local gen = ItemGenerators.get(genItemdefId)
-      if (gen)
-        res.extend(gen.getRecipesWithComponent(id))
+      if (gen == null || ::ItemsManager.findItemById(gen.id)?.iType == itemType.WARBONDS)
+        continue
+      res.extend(gen.getRecipesWithComponent(id))
     }
     return res
   }
@@ -1061,12 +1061,6 @@ local ItemExternal = class extends ::BaseItem
 
   needOfferBuyAtExpiration = @() !isHiddenItem() && itemDef?.tags?.offerToBuyAtExpiration
   isVisibleInWorkshopOnly = @() itemDef?.tags?.showInWorkshopOnly ?? false
-  updateItemDefParams = function() {
-    if (!u.isEmpty(itemDef.icon_url))
-      itemDef.icon_url = "!" + itemDef.icon_url
-    if (!::u.isEmpty(itemDef.icon_url_large))
-      itemDef.icon_url_large = "!" + itemDef.icon_url_large
-  }
   getDescRecipesMarkup = @(params) ExchangeRecipes.getRequirementsMarkup(getMyRecipes(), this, params)
   getIconName = @() isDisguised ? getSmallIconName() : itemDef.icon_url
   hasUsableRecipeOrNotRecipes = function ()

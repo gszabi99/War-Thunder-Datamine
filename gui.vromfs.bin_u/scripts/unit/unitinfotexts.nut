@@ -1,3 +1,17 @@
+global enum bit_unit_status
+{
+  locked      = 1
+  canResearch = 2
+  inResearch  = 4
+  researched  = 8
+  canBuy      = 16
+  owned       = 32
+  mounted     = 64
+  disabled    = 128
+  broken      = 256
+  inRent      = 512
+}
+
 local basicUnitRoles = {
   [::ES_UNIT_TYPE_AIRCRAFT] = ["type_fighter", "type_assault", "type_bomber"],
   [::ES_UNIT_TYPE_TANK] = ["type_tank", "type_light_tank", "type_medium_tank", "type_heavy_tank",
@@ -84,6 +98,13 @@ local unitRoleByTag = {
   type_bomber           = "medium_bomber"
 }
 
+local chancesText = [
+  { text = "chance_to_met/high",    color = "@chanceHighColor",    brDiff = 0.0 }
+  { text = "chance_to_met/average", color = "@chanceAverageColor", brDiff = 0.34 }
+  { text = "chance_to_met/low",     color = "@chanceLowColor",     brDiff = 0.71 }
+  { text = "chance_to_met/never",   color = "@chanceNeverColor",   brDiff = 1.01 }
+]
+
 local unitRoleByName = {}
 
 local function getUnitRole(unitData) { //  "fighter", "bomber", "assault", "transport", "diveBomber", "none"
@@ -157,7 +178,7 @@ local function getFullUnitRoleText(unit)
   if (tags == null)
     return ""
 
-  if (::is_submarine(unit))
+  if (unit?.isSubmarine())
     return getRoleText("submarine")
 
   local needShowBaseTag = tags.indexof("visibleBaseTag") != null
@@ -186,11 +207,11 @@ local function getChanceToMeetText(battleRating1, battleRating2)
 {
   local brDiff = fabs(battleRating1.tofloat() - battleRating2.tofloat())
   local brData = null
-  foreach(data in ::chances_text)
+  foreach(data in chancesText)
     if (!brData
         || (data.brDiff <= brDiff && data.brDiff > brData.brDiff))
       brData = data
-  return brData? format("<color=%s>%s</color>", brData.color, ::loc(brData.text)) : ""
+  return brData? ::colorize(brData.color, ::loc(brData.text)) : ""
 }
 
 local function getShipMaterialTexts(unitId)
@@ -219,6 +240,47 @@ local function getShipMaterialTexts(unitId)
   return res
 }
 
+local function getUnitItemStatusText(bitStatus, isGroup = false)
+{
+  local statusText = ""
+  if (bit_unit_status.locked & bitStatus)
+    statusText = "locked"
+  else if (bit_unit_status.broken & bitStatus)
+    statusText = "broken"
+  else if (bit_unit_status.disabled & bitStatus)
+    statusText = "disabled"
+
+  if (!isGroup && statusText != "")
+    return statusText
+
+  if (bit_unit_status.inResearch & bitStatus)
+    statusText = "research"
+  else if (bit_unit_status.mounted & bitStatus)
+    statusText = "mounted"
+  else if ((bit_unit_status.owned & bitStatus) || (bit_unit_status.inRent & bitStatus))
+    statusText = "owned"
+  else if (bit_unit_status.canBuy & bitStatus)
+    statusText = "canBuy"
+  else if (bit_unit_status.researched & bitStatus)
+    statusText = "researched"
+  else if (bit_unit_status.canResearch & bitStatus)
+    statusText = "canResearch"
+  return statusText
+}
+
+local function getUnitRarity(unit)
+{
+  if (::isUnitDefault(unit))
+    return "reserve"
+  if (::isUnitSpecial(unit))
+    return "premium"
+  if (::isUnitGift(unit))
+    return "gift"
+  if (unit.isSquadronVehicle())
+    return "squadron"
+  return "common"
+}
+
 return {
   getUnitRole = getUnitRole
   getUnitBasicRole = getUnitBasicRole
@@ -228,4 +290,6 @@ return {
   getFullUnitRoleText = getFullUnitRoleText
   getChanceToMeetText = getChanceToMeetText
   getShipMaterialTexts = getShipMaterialTexts
+  getUnitItemStatusText = getUnitItemStatusText
+  getUnitRarity = getUnitRarity
 }

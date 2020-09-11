@@ -49,7 +49,9 @@
     "onHitChanceMultExplFuel": 0.3,
     "relativeVelHitShift": [300.0,1000.0],
     "relativeVelArmorShift": [200.0,1000.0],
-    "explodeTreshold": 0.1,
+    "hitPower": 260.0,
+    "fuseDelayDist": 0.05,
+    "explodeTreshold": 1.0,
     "ricochetEffect": "cannon_ricochet",
     "waterCollisionEffect": "120-203_he_water_splash",
     "waterFxScale": [1.1,1.2],
@@ -70,6 +72,10 @@
       "distance": 4.5,
       "damage": 250.0,
       "onHitChanceMultFire": 35.0
+    },
+    "armorpower": {
+      "ArmorPower0m": [5.0,10.0],
+      "ArmorPower10000m": [4.0,10000.0]
     },
     "visual": {
       "range_percent_of_ammo": [100.0,0.0],
@@ -571,7 +577,7 @@
       "fresnel": [0.23,0.1,2.0],
       "explodeOnRendinst": true,
       "useSingleIconForBullet": true,
-      "guiCustomIcon": "he_frag_i_t",
+      "guiCustomIcon": "he_frag_proxi_fuze_ship",
       "bulletName": "105mm_dtb_1_he",
       "selfDestructionInAir": true,
       "selfDestructionFx": "bullet_self_expl",

@@ -73,23 +73,27 @@ local helicopterState = {
   CannonReloadTime = []
   IsCannonEmpty = []
   CannonMode = Watched(0)
+  CannonSelected = Watched(false)
 
   MachineGuns = {
     count = Watched(0)
     seconds = Watched(-1)
     mode = Watched(0)
+    selected = Watched(false)
   }
 
   CannonsAdditional = {
     count = Watched(0)
     seconds = Watched(-1)
     mode = Watched(0)
+    selected = Watched(false)
   }
 
   Rockets = {
     count = Watched(0)
     seconds = Watched(-1)
     mode = Watched(0)
+    selected = Watched(false)
   }
 
   Agm = {
@@ -97,17 +101,20 @@ local helicopterState = {
     seconds = Watched(-1)
     timeToHit = Watched(-1)
     timeToWarning = Watched(-1)
+    selected = Watched(false)
   }
 
   Aam = {
     count = Watched(0)
     seconds = Watched(-1)
+    selected = Watched(false)
   }
 
   Bombs = {
     count = Watched(0)
     seconds = Watched(-1)
     mode = Watched(0)
+    selected = Watched(false)
   }
 
   Flares = {
@@ -203,40 +210,46 @@ local helicopterState = {
   helicopterState.IlsPosSize[3] = h
 }
 
-::interop.updateMachineGuns <- function(count, sec = -1, mode = 0) {
+::interop.updateMachineGuns <- function(count, sec = -1, mode = 0, selected = false) {
   helicopterState.MachineGuns.count.update(count)
   helicopterState.MachineGuns.mode.update(mode)
   helicopterState.MachineGuns.seconds.update(sec)
+  helicopterState.MachineGuns.selected.update(selected)
 }
 
-::interop.updateAdditionalCannons <- function(count, sec = -1, mode = 0) {
+::interop.updateAdditionalCannons <- function(count, sec = -1, mode = 0, selected = false) {
   helicopterState.CannonsAdditional.count.update(count)
   helicopterState.CannonsAdditional.seconds.update(sec)
   helicopterState.CannonsAdditional.mode.update(mode)
+  helicopterState.CannonsAdditional.selected.update(selected)
 }
 
-::interop.updateRockets <- function(count, sec = -1, mode = 0) {
+::interop.updateRockets <- function(count, sec = -1, mode = 0, selected = false) {
   helicopterState.Rockets.count.update(count)
   helicopterState.Rockets.mode.update(mode)
   helicopterState.Rockets.seconds.update(sec)
+  helicopterState.Rockets.selected.update(selected)
 }
 
-::interop.updateAgm <- function(count, sec, timeToHit, timeToWarning) {
+::interop.updateAgm <- function(count, sec, timeToHit, timeToWarning, selected = false) {
   helicopterState.Agm.count.update(count)
   helicopterState.Agm.seconds.update(sec)
   helicopterState.Agm.timeToHit.update(timeToHit)
   helicopterState.Agm.timeToWarning.update(timeToWarning)
+  helicopterState.Agm.selected.update(selected)
 }
 
-::interop.updateAam <- function(count, sec = -1) {
+::interop.updateAam <- function(count, sec = -1, selected = false) {
   helicopterState.Aam.count.update(count)
   helicopterState.Aam.seconds.update(sec)
+  helicopterState.Aam.selected.update(selected)
 }
 
-::interop.updateBombs <- function(count, sec = -1,  mode = 0) {
+::interop.updateBombs <- function(count, sec = -1,  mode = 0, selected = false) {
   helicopterState.Bombs.count.update(count)
   helicopterState.Bombs.mode.update(mode)
   helicopterState.Bombs.seconds.update(sec)
+  helicopterState.Bombs.selected.update(selected)
 }
 
 ::interop.updateFlares <- function(count, mode = 0, sec = -1) {

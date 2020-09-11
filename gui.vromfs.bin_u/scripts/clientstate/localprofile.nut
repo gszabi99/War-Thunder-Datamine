@@ -1,4 +1,5 @@
 local penalties = require("scripts/penitentiary/penalties.nut")
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
 const PS4_SAVE_PROFILE_DELAY_MSEC = 60000
 
@@ -6,7 +7,7 @@ const PS4_SAVE_PROFILE_DELAY_MSEC = 60000
   local lastSaveTime = -PS4_SAVE_PROFILE_DELAY_MSEC
   ::save_profile_offline_limited <- function save_profile_offline_limited(isForced = false)
   {
-    if (!isForced && ::is_platform_ps4
+    if (!isForced && isPlatformSony
       && ::dagor.getCurTime() - lastSaveTime < PS4_SAVE_PROFILE_DELAY_MSEC)
       return
 

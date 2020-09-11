@@ -17,6 +17,15 @@ local fontsList = {
   ]
 }
 
+local realFontNamePrefixesMap = {
+  fontTiny        = "very_tiny_text"
+  fontSmall       = "tiny_text"
+  fontNormal      = "small_text"
+  fontNormalBold  = "small_accented_text"
+  fontMedium      = "medium_text"
+  fontBigBold     = "big_text"
+}
+
 local daguiFonts = {
 
   /**
@@ -24,9 +33,9 @@ local daguiFonts = {
    * @param {string} fontName - font CSS const name.
    * @return {int} - line height in pixels, or 0 in case of error.
    */
-  getFontLineHeightPx = function(fontName)
+  getFontLineHeightPx = function(fontName, realFontName = null)
   {
-    local realFontName = ::get_main_gui_scene().getConstantValue(fontName)
+    realFontName = realFontName ?? ::get_main_gui_scene().getConstantValue(fontName)
     local bbox = fonts.getStringBBox(".", realFontName)
     return bbox ? ::max(0, bbox[3] - bbox[1]).tointeger() : 0
   }
@@ -69,6 +78,7 @@ local daguiFonts = {
     return list?[list.len() - 1] ?? ""
   }
 
+  getRealFontNamePrefixesMap = @() realFontNamePrefixesMap
 }
 
 return daguiFonts

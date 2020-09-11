@@ -1,4 +1,6 @@
 local screenInfo = ::require("scripts/options/screenInfo.nut")
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
+local sony = require("sony")
 
 local defValue  = 1.0
 local values    = [1.0, 0.95, 0.9, 0.85]
@@ -20,9 +22,7 @@ if (::is_platform_xboxone)
 
 local getFixedValue = function() //return -1 when not fixed
 {
-  if (::is_platform_ps4)
-    return ::ps4_get_safe_area()
-  return -1
+  return isPlatformSony ? sony.getDisplaySafeArea() : -1
 }
 
 local getValue = function()

@@ -4,6 +4,7 @@ local globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
 local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
 local { getModificationName } = require("scripts/weaponry/bulletsInfo.nut")
 local { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/entitlements.nut")
+local { getPrizeChanceConfig } = require("scripts/items/prizeChance.nut")
 
 //prize - blk or table in format of trophy prizes from trophies.blk
 //content - array of prizes (better to rename it)
@@ -678,7 +679,7 @@ PrizesView.getViewDataMod <- function getViewDataMod(unitName, modName, params)
   if (modName == "premExpMul") //talisman
     icon = "#ui/gameuiskin#item_type_talisman"
   else
-    icon = ::isTank(unit) ? "#ui/gameuiskin#item_type_modification_tank" : "#ui/gameuiskin#item_type_modification_aircraft"
+    icon = unit?.isTank() ? "#ui/gameuiskin#item_type_modification_tank" : "#ui/gameuiskin#item_type_modification_aircraft"
 
   return {
     icon = icon
@@ -861,8 +862,7 @@ PrizesView.getPrizesListView <- function getPrizesListView(content, params = nul
 
 PrizesView.getPrizesStacksView <- function getPrizesStacksView(content, fixedAmountHeaderFunc = null, params = null)
 {
-  local shopDesc = ::getTblValue("shopDesc", params, false)
-  local stackLevel = ::getTblValue("stackLevel", params, prizesStack.DETAILED)
+  local { shopDesc = false, stackLevel = prizesStack.DETAILED, needShowDropChance = false } = params
   if (stackLevel == prizesStack.NOT_STACKED && !fixedAmountHeaderFunc)
     return getPrizesListView(content, params)
 
@@ -874,15 +874,15 @@ PrizesView.getPrizesStacksView <- function getPrizesStacksView(content, fixedAmo
   if (fixedAmountHeaderFunc)
     view.header <- fixedAmountHeaderFunc(fixedAmount)
 
+  local hasChanceIcon = false
+  local maxButtonsCount = 0
   local list = []
-  foreach (st in stacksList)
+  foreach (idx, st in stacksList)
   {
+    local data = null
     if (st.level == prizesStack.NOT_STACKED)
-    {
-      local data = getPrizesViewData(st.prize, showCount, params)
-      if (data)
-        list.append(data)
-    } else if (st.stackType == STACK_TYPE.ITEM) //onl stack by items atm, so this only to do last check.
+      data = getPrizesViewData(st.prize, showCount, params)
+    else if (st.stackType == STACK_TYPE.ITEM) //onl stack by items atm, so this only to do last check.
     {
       local detailed = st.level == prizesStack.DETAILED
       local name = ""
@@ -896,23 +896,43 @@ PrizesView.getPrizesStacksView <- function getPrizesStacksView(content, fixedAmo
         countText = (st.countMin < st.countMax) ? (" x" + st.countMin + "-x" + st.countMax) : (" x" + st.countMax)
 
       local kinds = detailed ? "" : ::colorize("fadedTextColor", ::loc("ui/parentheses/space", { text = ::loc("trophy/item_type_different_kinds") }))
-      list.append({
+      data = {
         title = name + countText + kinds
         icon = getPrizeTypeIcon(st.prize)
-      })
+      }
     } else if (st.stackType == STACK_TYPE.VEHICLE)
     {
-      list.append({
+      data = {
         icon = getPrizeTypeIcon(st.prize)
         title = _getStackUnitsText(st)
-      })
+      }
     } else if (st.stackType == STACK_TYPE.CURRENCY)
     {
-      list.append({
+      data = {
         icon = getPrizeTypeIcon(st.prize)
         title = getStackCurrencyText(st)
-      })
+      }
     }
+    if (data != null) {
+      maxButtonsCount = ::max(data?.buttonsCount ?? 0, maxButtonsCount)
+      if (needShowDropChance) {
+        local chanceConfig = getPrizeChanceConfig(st.prize)
+        hasChanceIcon = hasChanceIcon || chanceConfig.chanceIcon != null
+        data.__update(chanceConfig)
+      }
+      list.append(data.__update({
+        isHighlightedLine = idx % 2 != 0
+      }))
+    }
+  }
+
+  if (hasChanceIcon) {
+    list.each(function(d) {
+      d.buttonsCount <- maxButtonsCount + 1
+      local buttons = d?.buttons ?? []
+      if (buttons.len() < maxButtonsCount)
+        d.buttons <- buttons.resize(maxButtonsCount, { emptyButton = true })
+    })
   }
 
   view.list <- list

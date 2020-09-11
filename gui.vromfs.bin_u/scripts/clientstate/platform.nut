@@ -19,6 +19,11 @@ local PS4_REGION_NAMES = {
 local targetPlatform = ::get_platform()
 local isPlatformXboxOne = targetPlatform == "xboxOne"
 local isPlatformPS4 = targetPlatform == "ps4"
+local isPlatformSony = isPlatformPS4
+//
+
+
+
 local isPlatformPC = ["win32", "win64", "macosx", "linux64"].indexof(targetPlatform) != null
 
 local xboxPrefixNameRegexp = ::regexp2($"^['{XBOX_ONE_PLAYER_PREFIX}']")
@@ -39,6 +44,9 @@ local cutPlayerNamePostfix = @(name) string.cutPostfix(name, PS4_PLAYER_POSTFIX,
 
 local addPlatformIcon = function(name)
 {
+  if (name == "")
+    return ""
+
   local isXboxPrefix = xboxPrefixNameRegexp.match(name)
   local isPs4Prefix = ps4PrefixNameRegexp.match(name)
 
@@ -119,6 +127,7 @@ return {
   targetPlatform = targetPlatform
   isPlatformXboxOne = isPlatformXboxOne
   isPlatformPS4 = isPlatformPS4
+  isPlatformSony = isPlatformSony
   isPlatformPC = isPlatformPC
 
   isXBoxPlayerName = isXBoxPlayerName

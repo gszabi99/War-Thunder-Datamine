@@ -3,6 +3,7 @@ local unitActions = require("scripts/unit/unitActions.nut")
 local { setPollBaseUrl, generatePollUrl } = require("scripts/web/webpoll.nut")
 local { disableSeenUserlogs } = require("scripts/userLog/userlogUtils.nut")
 local { setColoredDoubleTextToButton, placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
 ::delayed_unlock_wnd <- []
 ::showUnlockWnd <- function showUnlockWnd(config)
@@ -28,7 +29,7 @@ local { setColoredDoubleTextToButton, placePriceTextToButton } = require("script
     return ::gui_handlers.TournamentRewardReceivedWnd.open(config)
   else if (unlockType == ::UNLOCKABLE_AIRCRAFT)
   {
-    if (!::has_feature("Tanks") && ::isTank(::getAircraftByName(::getTblValue("id", config))))
+    if (!::has_feature("Tanks") && ::getAircraftByName(config?.id)?.isTank())
       return false
   }
 
@@ -184,7 +185,7 @@ class ::gui_handlers.ShowUnlockHandler extends ::gui_handlers.BaseGuiHandlerWT
       if (::checkObj(imageObj))
         imageObj.link = linkText
     }
-    local showPs4ActivityFeed = ::is_platform_ps4 && ("ps4ActivityFeedData" in config)
+    local showPs4ActivityFeed = isPlatformSony && ("ps4ActivityFeedData" in config)
     showSceneBtn("btn_post_ps4_activity_feed", showPs4ActivityFeed)
 
 

@@ -1,4 +1,5 @@
 local DataBlock = require("DataBlock")
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 class ::gui_handlers.ControlsBackupManager extends ::gui_handlers.SaveDataDialog
 {
@@ -80,7 +81,7 @@ class ::gui_handlers.ControlsBackupManager extends ::gui_handlers.SaveDataDialog
 
   static function isAvailable()
   {
-    return (::is_platform_ps4 || ::is_platform_xboxone) && "request_list_controls_backup" in ::getroottable()
+    return (isPlatformSony || isPlatformXboxOne) && "request_list_controls_backup" in ::getroottable()
   }
 
 

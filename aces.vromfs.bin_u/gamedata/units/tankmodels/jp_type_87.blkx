@@ -286,6 +286,21 @@
             "name": "ammo_body_50_dm"
           },
           {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
+          },
+          {
             "name": "ammo_body_l_01_dm"
           },
           {
@@ -1808,7 +1823,7 @@
       },
       "optics": {
         "armorClass": "optics_tank",
-        "optic_turret_01_dm": {
+        "optic_gun_dm": {
           "armorThickness": 3.0,
           "hp": 20.0
         },
@@ -1835,6 +1850,13 @@
         "wheel_l_drive_dm": [],
         "wheel_l_front_dm": [],
         "wheel_r_front_dm": [],
+        "submodule": {
+          "armorClass": "tank_traks",
+          "armorThickness": 20.0,
+          "createSecondaryShatters": false,
+          "hp": 200.0,
+          "ex_armor_body_01_dm": []
+        },
         "body_shields": {
           "armorClass": "tank_structural_steel",
           "armorThickness": 5.0,
@@ -2356,7 +2378,7 @@
             "expl": 1.0,
             "conditionDamage": 250.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -2365,7 +2387,16 @@
             "expl": 1.0,
             "conditionDamage": 100.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "generic",
+            "expl": 1.0,
+            "conditionDamage": 700.0,
+            "kill": true,
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -2373,7 +2404,7 @@
             "expl": 1.0,
             "conditionDead": true,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         }
       ]
@@ -2756,8 +2787,47 @@
       "tank_medical_kit_expendable": {
         "image": "#ui/gameuiskin#tank_reinforcement_jp"
       },
-      "modern_tank_laser_rangefinder": {
-        "tier": 2
+      "laser_rangefinder_lws": {
+        "effects": {
+          "rangefinderMounted": true,
+          "isLaser": true,
+          "distanceError": [25.0,25.0,25.0,25.0],
+          "distanceThresholdMin": [1000.0,3000.0,5000.0,9999.0],
+          "distanceThresholdMax": [1000.0,3000.0,5000.0,9999.0],
+          "distanceErrorRealistic": [25.0,25.0,25.0,25.0],
+          "distanceThresholdMinRealistic": [1000.0,3000.0,5000.0,9999.0],
+          "distanceThresholdMaxRealistic": [1000.0,3000.0,5000.0,9999.0],
+          "timeMeasurementRange": [0.5,0.5],
+          "rcostAddParam": 0.98,
+          "sensors": [
+            {
+              "sensor": {
+                "blk": "gameData/sensors/us_an_apg_66_m_247.blk",
+                "turretIndex": 0,
+                "designationFromBody": true,
+                "designationTurretIndex": 0,
+                "dmPart": "antenna_target_location_dm"
+              }
+            },
+            {
+              "sensor": {
+                "blk": "gameData/sensors/de_gepard_fr.blk",
+                "turretIndex": 0,
+                "dmPart": "antenna_target_tagging_dm"
+              }
+            },
+            {
+              "sensor": {
+                "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+              }
+            },
+            {
+              "sensor": {
+                "blk": "gameData/sensors/it_ralm-101.blk"
+              }
+            }
+          ]
+        }
       },
       "35mm_kda_HE": {
         "maxToRespawn": 1
@@ -2772,7 +2842,8 @@
       "35mm_kda_APHEI_ammo_pack": [],
       "35mm_kda_APDS_ammo_pack": [],
       "tank_smoke_screen_system_mod": {
-        "tier": 3,
+        "modClass": "protection",
+        "tier": 4,
         "effects": {
           "commonWeapons": [
             {

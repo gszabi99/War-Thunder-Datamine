@@ -595,6 +595,9 @@
         },
         "superstructure_bottom_dm": {
           "armorThickness": 8.0
+        },
+        "body_top_dm": {
+          "armorThickness": 12.7
         }
       },
       "turret": {
@@ -1252,6 +1255,21 @@
           },
           {
             "name": "ammo_body_50_dm"
+          },
+          {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
           },
           {
             "name": "ammo_body_l_01_dm"
@@ -2203,7 +2221,7 @@
             "expl": 1.0,
             "conditionDamage": 250.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -2212,7 +2230,16 @@
             "expl": 1.0,
             "conditionDamage": 100.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "generic",
+            "expl": 1.0,
+            "conditionDamage": 700.0,
+            "kill": true,
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -2220,7 +2247,7 @@
             "expl": 1.0,
             "conditionDead": true,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         }
       ],
@@ -2255,7 +2282,7 @@
             "expl": 1.0,
             "conditionDamage": 250.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -2264,7 +2291,16 @@
             "expl": 1.0,
             "conditionDamage": 100.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "generic",
+            "expl": 1.0,
+            "conditionDamage": 700.0,
+            "kill": true,
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -2272,7 +2308,7 @@
             "expl": 1.0,
             "conditionDead": true,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         }
       ]
@@ -2312,7 +2348,7 @@
         "cls_body": "convex_hull"
       },
       "engine": {
-        "horsePowers": 460.0,
+        "horsePowers": 400.0,
         "maxRPM": 2400.0,
         "minRPM": 600.0
       },
@@ -3223,47 +3259,21 @@
     }
   },
   {
-    "defaultDecals": {
-      "decal0Line0": [-1.25,-3.72529e-08,1.93179e-08,1.87642],
-      "decal0Line1": [1.09278e-07,-1.76777,1.76777,0.363593],
-      "decal0HaveCP": true,
-      "decal0CP": [-1.26403,1.4951,1.21593],
-      "decal0CPNormDepth": [0.0,0.707107,0.707107,-1.87612],
-      "decal0RotScale": [1.5708,0.4],
-      "decal0Mirrored": false,
-      "decal0Wrap": false,
-      "decal0Abs": false,
-      "decal0Tex": "usa_m18_black_cat_insignia",
-      "decal1Line0": [-1.5625,-4.65661e-08,2.41474e-08,-3.05628],
-      "decal1Line1": [6.8299e-08,-1.10485,1.10485,0.428664],
-      "decal1HaveCP": true,
-      "decal1CP": [-1.55856,1.50789,-2.14835],
-      "decal1CPNormDepth": [0.0,0.707107,0.707107,-1.8853],
-      "decal1RotScale": [1.5708,0.64],
-      "decal1Mirrored": false,
-      "decal1Wrap": false,
-      "decal1Abs": true,
-      "decal1Tex": "usa_tactical_insignia_1_1",
-      "decal2Line0": [-3.57143,-1.56112e-07,0.0,0.152607],
-      "decal2Line1": [1.56112e-07,-3.57143,0.0,6.42689],
-      "decal2HaveCP": true,
-      "decal2CP": [-0.969581,1.86659,-0.0128141],
-      "decal2CPNormDepth": [0.0,0.0,1.0,-0.964774],
-      "decal2RotScale": [1.5708,0.28],
-      "decal2Mirrored": false,
-      "decal2Wrap": false,
-      "decal2Abs": true,
-      "decal2Tex": "usa_tank_emblem_09",
-      "decal3Line0": [-2.5,-1.09278e-07,0.0,1.27171],
-      "decal3Line1": [1.09278e-07,-2.5,0.0,5.48051],
-      "decal3HaveCP": true,
-      "decal3CP": [-0.75044,2.19927,0.375516],
-      "decal3CPNormDepth": [0.0,0.0,1.0,-0.780313],
-      "decal3RotScale": [1.5708,0.4],
-      "decal3Mirrored": false,
-      "decal3Wrap": false,
-      "decal3Abs": true,
-      "decal3Tex": "usa_tactical_insignia_1_1"
-    }
+    "default_skin": [
+      {
+        "set_tex": {
+          "from": "m18_hellcat_body_c*",
+          "to": "m18_hellcat_black_cat_body_c*",
+          "param": "camo_skin_tex"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "m18_hellcat_turret_c*",
+          "to": "m18_hellcat_black_cat_turret_c*",
+          "param": "camo_skin_tex"
+        }
+      }
+    ]
   }
 ]

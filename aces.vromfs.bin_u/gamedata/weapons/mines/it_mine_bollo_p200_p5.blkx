@@ -1,0 +1,41 @@
+{
+  "bombGun": true,
+  "preset_cost": 10,
+  "reloadTime": 90.0,
+  "shotFreq": 0.2,
+  "sound": "weapon.bombgun",
+  "createGunEffects": true,
+  "mesh": "mine_bollo_p200_p5",
+  "bomb": {
+    "mass": 1100.0,
+    "explosiveType": "tnt",
+    "explosiveMass": 200.0,
+    "bombType": "he_bomb",
+    "bombName": "it_bollo_p200",
+    "sound": "weapon.bomb_std",
+    "explosionFx": "mine_explosion_unit",
+    "drownFx": "mine_drown",
+    "dynamicKv": true,
+    "isMine": true,
+    "lifeTime": 180.0,
+    "armTime": 4.0,
+    "explDist": 2.0,
+    "damage": {
+      "explosive": {
+        "radius": 0.0,
+        "offset": 0.0
+      },
+      "shatter": {
+        "useRealShatters": true,
+        "countPortion": 0.0
+      }
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 5.0,
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 1.0
+      }
+    }
+  }
+}

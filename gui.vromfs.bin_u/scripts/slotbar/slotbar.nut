@@ -1,8 +1,13 @@
 local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 local time = require("scripts/time.nut")
 local unitStatus = require("scripts/unit/unitStatus.nut")
-local { getUnitRole, getUnitRoleIcon } = require("scripts/unit/unitInfoTexts.nut")
-local { getLastWeapon, getWeaponsStatusName } = require("scripts/weaponry/weaponryInfo.nut")
+local { getUnitRole,
+        getUnitRoleIcon,
+        getUnitItemStatusText,
+        getUnitRarity } = require("scripts/unit/unitInfoTexts.nut")
+local { getLastWeapon,
+        checkUnitWeapons,
+        getWeaponsStatusName } = require("scripts/weaponry/weaponryInfo.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 /*
@@ -74,7 +79,7 @@ if need - put commented in array above
       unitExpGranted += diffExp
 
     local isBroken            = ::isUnitBroken(air)
-    local unitRarity          = ::getUnitRarity(air)
+    local unitRarity          = getUnitRarity(air)
     local isLockedSquadronVehicle = isSquadronVehicle && !::is_in_clan() && diffExp <= 0
 
     local status = params?.status ?? defaultStatus
@@ -86,7 +91,7 @@ if need - put commented in array above
       else if (bit_unit_status.disabled & bitStatus)
         inactive = true
 
-      status = ::getUnitItemStatusText(bitStatus, false)
+      status = getUnitItemStatusText(bitStatus, false)
     }
 
     //
@@ -143,7 +148,7 @@ if need - put commented in array above
         specIconBlock           = showWarningIcon || specType != null
         showWarningIcon         = showWarningIcon
         hasRepairIcon           = isLocalState && isBroken
-        weaponsStatus           = getWeaponsStatusName(isLocalState && isUsable ? ::checkUnitWeapons(air) : UNIT_WEAPONS_READY)
+        weaponsStatus           = getWeaponsStatusName(isLocalState && isUsable ? checkUnitWeapons(air) : UNIT_WEAPONS_READY)
         hasRentIcon             = rentInfo.hasIcon
         hasRentProgress         = rentInfo.hasProgress
         rentProgress            = rentInfo.progress
@@ -270,7 +275,7 @@ if need - put commented in array above
     local esUnitType = ::get_es_unit_type(nextAir)
     local forceUnitNameOnPlate = false
 
-    local era = getUnitRank(nextAir)
+    local era = nextAir?.rank ?? -1
 
     local isGroupUsable     = false
     local isGroupInResearch = false
@@ -421,7 +426,7 @@ if need - put commented in array above
       slotId              = id
       unitRole            = unitRole
       unitClassIcon       = getUnitRoleIcon(nextAir)
-      groupStatus         = groupStatus == defaultStatus ? ::getUnitItemStatusText(bitStatus, true) : groupStatus
+      groupStatus         = groupStatus == defaultStatus ? getUnitItemStatusText(bitStatus, true) : groupStatus
       isBroken            = bitStatus & bit_unit_status.broken
       shopAirImg          = shopAirImage
       isPkgDev            = isPkgDev
@@ -468,7 +473,7 @@ if need - put commented in array above
       shopItemId          = id
       unitName            = air.name
       shopAirImg          = air.image
-      shopStatus          = params?.status ?? ::getUnitItemStatusText(bitStatus, true)
+      shopStatus          = params?.status ?? getUnitItemStatusText(bitStatus, true)
       unitRankText        = ::get_unit_rank_text(air, null, showBR, curEdiff)
       shopItemTextId      = id + "_txt"
       shopItemText        = ::loc(air?.nameLoc ?? $"mainmenu/type_{nameForLoc}")
@@ -1266,7 +1271,9 @@ if need - put commented in array above
   foreach(country in ::g_crews_list.get())
     if (::isCountryAvailable(country.country) && (!checkCountryId || checkCountryId == country.country))
       foreach(crew in country.crews)
-        if (("aircraft" in crew) && crew.aircraft != "" && (!checkUnitId || checkUnitId == crew.aircraft) && ::isTank(::getAircraftByName(crew.aircraft)))
+        if ((crew?.aircraft ?? "") != ""
+            && (!checkUnitId || checkUnitId == crew.aircraft)
+            && ::getAircraftByName(crew.aircraft)?.isTank())
           return true
   return false
 }

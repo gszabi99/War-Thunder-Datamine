@@ -19,7 +19,7 @@ focus_border_in_scroll {
 }
 
 itemDiv > focus_border, recipe > focus_border,
-mapNest > focus_border {
+mapNest > focus_border, imgButton > focus_border {
   alwaysVisible:yes;
 }
 
@@ -66,7 +66,7 @@ table[alwaysShowBorder="yes"]:focus > tr > td[selected=yes] > shopItem > focus_b
 [show_console_buttons=yes] VerticalListBox:focus > shopFilter[selected=yes],
 [show_console_buttons=yes] :focus > RadioButton:current,
 [show_console_buttons=yes] :focus > collapsableBlock[selected=yes],
-[show_console_buttons=yes] :focus > imgButton[selected=yes],
+[show_console_buttons=yes] :focus > imgButton[selected=yes] > focus_border,
 [show_console_buttons=yes] buttonPlayer[selected=yes],
 [show_console_buttons=yes] [childsActivate=yes] > gameModeItem:focus,
 [show_console_buttons=yes] [childsActivate=yes] > div.dropDown:focus,
@@ -115,7 +115,7 @@ shopItem[group=yes] > focus_border {
 }
 
 itemDiv > focus_border, recipe > focus_border,
-mapNest > focus_border {
+mapNest > focus_border, imgButton > focus_border {
   pos: -3@dp, -3@dp;
   size: pw +6@dp, ph +6@dp;
 }

@@ -880,6 +880,21 @@
             "name": "ammo_body_50_dm"
           },
           {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
+          },
+          {
             "name": "ammo_body_l_01_dm"
           },
           {
@@ -1836,7 +1851,7 @@
             "expl": 1.0,
             "conditionDamage": 250.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -1845,7 +1860,16 @@
             "expl": 1.0,
             "conditionDamage": 100.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "generic",
+            "expl": 1.0,
+            "conditionDamage": 700.0,
+            "kill": true,
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -1853,7 +1877,7 @@
             "expl": 1.0,
             "conditionDead": true,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         }
       ],
@@ -1906,7 +1930,7 @@
             "expl": 1.0,
             "conditionDamage": 250.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -1915,7 +1939,16 @@
             "expl": 1.0,
             "conditionDamage": 100.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "generic",
+            "expl": 1.0,
+            "conditionDamage": 700.0,
+            "kill": true,
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -1923,7 +1956,7 @@
             "expl": 1.0,
             "conditionDead": true,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         }
       ]
@@ -1964,43 +1997,20 @@
           "errTargettingOn100kmph": 0.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
-          "turret": [
-            {
-              "head": "bone_turret"
-            },
-            {
-              "gun": "bone_gun"
-            },
-            {
-              "barrel": "bone_gun_barrel_01"
-            },
-            {
-              "gunnerDm": "gunner_dm"
-            },
-            {
-              "loaderDm": "loader_01_dm"
-            },
-            {
-              "verDriveDm": "drive_turret_v_dm"
-            },
-            {
-              "horDriveDm": "drive_turret_h_dm"
-            },
-            {
-              "linkedAnimPart": {
-                "verNode": "bone_camera_gunner",
-                "verLimits": [-180.0,180.0],
-                "verOriginLimits": [-180.0,180.0]
-              }
-            },
-            {
-              "linkedAnimPart": {
-                "verNode": "antenna_target_tagging",
-                "verLimits": [0.0,65.0],
-                "verOriginLimits": [-5.0,85.0]
-              }
+          "turret": {
+            "head": "bone_turret",
+            "gun": "bone_gun",
+            "barrel": "bone_gun_barrel_01",
+            "gunnerDm": "gunner_dm",
+            "loaderDm": "loader_01_dm",
+            "verDriveDm": "drive_turret_v_dm",
+            "horDriveDm": "drive_turret_h_dm",
+            "linkedAnimPart": {
+              "verNode": "bone_camera_gunner",
+              "verLimits": [-180.0,180.0],
+              "verOriginLimits": [-180.0,180.0]
             }
-          ],
+          },
           "limits": {
             "yaw": [-180.0,180.0],
             "pitch": [-5.0,85.0]
@@ -2212,11 +2222,11 @@
         "minRPM": 800.0
       },
       "mechanics": {
-        "maxBrakeForce": 100000.0,
+        "maxBrakeForce": 190000.0,
         "driveGearRadius": 0.33,
         "mainGearRatio": 1.0,
         "sideGearRatio": 4.2,
-        "neutralGearRatio": 10.0,
+        "neutralGearRatio": 15.0,
         "gearRatios": [
           {
             "ratio": -6.0
@@ -2228,7 +2238,7 @@
             "ratio": 0.0
           },
           {
-            "ratio": 8.0
+            "ratio": 15.0
           },
           {
             "ratio": 6.0

@@ -1,0 +1,234 @@
+[
+  {
+    "hideNodes": [
+      {
+        "node": "depth_charge_mount_01"
+      },
+      {
+        "node": "depth_charge_mount_02"
+      },
+      {
+        "node": "depth_charge_01"
+      },
+      {
+        "node": "depth_charge_02"
+      },
+      {
+        "node": "depth_charge_03"
+      },
+      {
+        "node": "depth_charge_04"
+      },
+      {
+        "node": "depth_charge_05"
+      },
+      {
+        "node": "depth_charge_06"
+      },
+      {
+        "node": "depth_charge_07"
+      },
+      {
+        "node": "depth_charge_08"
+      }
+    ]
+  },
+  {
+    "Weapon": [
+      {
+        "trigger": "gunner6"
+      },
+      {
+        "triggerGroup": "torpedoes"
+      },
+      {
+        "external": true
+      },
+      {
+        "blk": "gameData/Weapons/torpedoes/jp_610mm_type90_torpedo.blk"
+      },
+      {
+        "emitter": "bone_torpedo_01"
+      },
+      {
+        "bullets": 6
+      },
+      {
+        "useEmitter": true
+      },
+      {
+        "emitterGenRange": [1,3]
+      },
+      {
+        "emitterGenFmt": "bone_torpedo_%02d"
+      },
+      {
+        "ammoDpGenFmt": "torpedo_%02d_dm"
+      },
+      {
+        "barrelDP": "tt_01_dm"
+      },
+      {
+        "brokenBarrelAllowShoot": false
+      },
+      {
+        "enableCourseCorrection": false
+      },
+      {
+        "startFx": "start_torpedo"
+      },
+      {
+        "startFxOffset": [4.0,0.0,0.0]
+      },
+      {
+        "startSpeed": 18.0
+      },
+      {
+        "useStartSpeed": true
+      },
+      {
+        "allowableDelta": 40.0
+      },
+      {
+        "barrelDP": "tt_01_dm"
+      },
+      {
+        "brokenBarrelAllowShoot": false
+      },
+      {
+        "turret": {
+          "head": "tt_head_01",
+          "gun": "tt_01",
+          "gunnerDm": "tt_01_dm"
+        }
+      },
+      {
+        "limits": {
+          "yaw": [-125.0,125.0],
+          "pitch": [0.0,0.0]
+        }
+      },
+      {
+        "limitsDeadzone": {
+          "yaw": [-75.0,75.0],
+          "pitch": [0.0,0.0]
+        }
+      }
+    ]
+  },
+  {
+    "Weapon": [
+      {
+        "trigger": "gunner7"
+      },
+      {
+        "triggerGroup": "torpedoes"
+      },
+      {
+        "external": true
+      },
+      {
+        "blk": "gameData/Weapons/torpedoes/jp_610mm_type90_torpedo.blk"
+      },
+      {
+        "emitter": "bone_torpedo_04"
+      },
+      {
+        "bullets": 6
+      },
+      {
+        "useEmitter": true
+      },
+      {
+        "emitterGenRange": [4,6]
+      },
+      {
+        "emitterGenFmt": "bone_torpedo_%02d"
+      },
+      {
+        "ammoDpGenFmt": "torpedo_%02d_dm"
+      },
+      {
+        "barrelDP": "tt_02_dm"
+      },
+      {
+        "brokenBarrelAllowShoot": false
+      },
+      {
+        "enableCourseCorrection": false
+      },
+      {
+        "startFx": "start_torpedo"
+      },
+      {
+        "startFxOffset": [4.0,0.0,0.0]
+      },
+      {
+        "startSpeed": 18.0
+      },
+      {
+        "useStartSpeed": true
+      },
+      {
+        "allowableDelta": 40.0
+      },
+      {
+        "barrelDP": "tt_02_dm"
+      },
+      {
+        "brokenBarrelAllowShoot": false
+      },
+      {
+        "turret": {
+          "head": "tt_head_02",
+          "gun": "tt_02",
+          "gunnerDm": "tt_02_dm"
+        }
+      },
+      {
+        "limits": {
+          "yaw": [-112.0,112.0],
+          "pitch": [0.0,0.0]
+        }
+      },
+      {
+        "limitsDeadzone": {
+          "yaw": [-55.0,55.0],
+          "pitch": [0.0,0.0]
+        }
+      }
+    ]
+  },
+  {
+    "Weapon": {
+      "trigger": "mines",
+      "triggerGroup": "mine",
+      "blk": "gameData/weapons/mines/jp_mine_type93_mod1.blk",
+      "emitter": "bone_mine_01",
+      "bullets": 8,
+      "external": true,
+      "dropSpeed": 5.0,
+      "emitterGenRange": [1,8],
+      "emitterGenFmt": "bone_mine_%02d",
+      "ammoDpGenFmt": "mine_%02d_dm",
+      "feedSystem": true,
+      "sequentalFeed": true
+    }
+  },
+  {
+    "Weapon": {
+      "trigger": "mines",
+      "triggerGroup": "mine",
+      "blk": "gameData/weapons/mines/jp_mine_type93_mod1.blk",
+      "emitter": "bone_mine_09",
+      "bullets": 8,
+      "external": true,
+      "dropSpeed": 5.0,
+      "emitterGenRange": [9,16],
+      "emitterGenFmt": "bone_mine_%02d",
+      "ammoDpGenFmt": "mine_%02d_dm",
+      "feedSystem": true,
+      "sequentalFeed": true
+    }
+  }
+]

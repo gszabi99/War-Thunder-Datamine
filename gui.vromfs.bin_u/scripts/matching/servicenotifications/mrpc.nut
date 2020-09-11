@@ -16,7 +16,11 @@ foreach (notificationName, callback in
                 local from = ::getTblValue("from", params)
                 if (from == "web-service")
                 {
-                  cb(::handle_web_rpc(params))
+                  local res = ::handle_web_rpc(params)
+                  if (typeof(res) == "table")
+                    cb(res)
+                  else
+                    cb({result = res})
                   return
                 }
                 else if (from == "inventory")

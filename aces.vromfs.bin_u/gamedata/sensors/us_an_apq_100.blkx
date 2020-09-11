@@ -3,7 +3,7 @@
   "showMissileLaunchZone": true,
   "transivers": {
     "common": {
-      "sideLobesAttenuation": -26.0,
+      "sideLobesAttenuation": -20.0,
       "power": 300.0,
       "band": 8,
       "rcs": 5.0,
@@ -13,7 +13,7 @@
       "timeGainControl": false,
       "antenna": {
         "angleHalfSens": 4.7,
-        "sideLobesSensitivity": -32.0
+        "sideLobesSensitivity": -27.0
       }
     }
   },
@@ -93,7 +93,7 @@
       }
     },
     "track": {
-      "dynamicRange": [40.0,10.0],
+      "dynamicRange": [40.0,20.0],
       "groundClutter": true,
       "aircraftAsTarget": true,
       "angularAccuracy": 0.06,
@@ -173,6 +173,9 @@
           },
           "setScopeRangeSet": {
             "scopeRangeSet": "common"
+          },
+          "setIllumination": {
+            "illumination": false
           }
         },
         "setSearchMode": {
@@ -204,6 +207,9 @@
           },
           "setScopeRangeSet": {
             "scopeRangeSet": "common"
+          },
+          "setIllumination": {
+            "illumination": false
           }
         },
         "resetSearchMode": {
@@ -242,7 +248,10 @@
           "setSignal": {
             "signal": "track"
           },
-          "clearTargets": []
+          "clearTargets": [],
+          "setIllumination": {
+            "illumination": false
+          }
         },
         "setBoresightLockMode": {
           "setModeName": {
@@ -282,6 +291,9 @@
           },
           "setScopeRangeSet": {
             "scopeRangeSet": "boresightLock"
+          },
+          "setIllumination": {
+            "illumination": false
           }
         },
         "setTrackMode": {
@@ -315,6 +327,9 @@
           },
           "setSignal": {
             "signal": "track"
+          },
+          "setIllumination": {
+            "illumination": true
           }
         }
       },
@@ -353,6 +368,7 @@
           "actions": {
             "designateActiveDetectedTarget": {
               "type": 0,
+              "self": true,
               "sensorIndex": 0
             }
           }
@@ -574,7 +590,8 @@
           "actions": {
             "designateActiveDetectedTarget": {
               "type": 0,
-              "sensorIndex": 0
+              "sensorIndex": 0,
+              "self": true
             }
           }
         }

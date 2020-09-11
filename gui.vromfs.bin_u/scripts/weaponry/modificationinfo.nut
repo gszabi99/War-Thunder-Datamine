@@ -71,6 +71,18 @@ local isModUpgradeable = @(modName) getModBlock(modName, "upgradeEffect", "modUp
 local hasActiveOverdrive = @(unitName, modName) ::get_modifications_overdrive(unitName).len() > 0
   && getModBlock(modName, "overdriveEffect", "modOverdriveType")
 
+local function getModificationByName(unit, modName)
+{
+  if (!("modifications" in unit))
+    return null
+
+  foreach(i, modif in unit.modifications)
+    if (modif.name == modName)
+      return modif
+
+  return null
+}
+
 return {
   canBuyMod               = canBuyMod
   isModResearched         = isModResearched
@@ -81,4 +93,5 @@ return {
   isModAvailableOrFree    = isModAvailableOrFree
   isModUpgradeable        = isModUpgradeable
   hasActiveOverdrive      = hasActiveOverdrive
+  getModificationByName   = getModificationByName
 }

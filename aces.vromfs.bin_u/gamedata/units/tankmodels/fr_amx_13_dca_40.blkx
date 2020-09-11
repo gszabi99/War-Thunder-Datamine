@@ -1303,6 +1303,21 @@
             "name": "ammo_body_50_dm"
           },
           {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
+          },
+          {
             "name": "ammo_body_l_01_dm"
           },
           {
@@ -2131,7 +2146,169 @@
     }
   },
   {
-    "MetaParts": []
+    "MetaParts": {
+      "body": [
+        {
+          "hp": 8000.0
+        },
+        {
+          "part": "turret_04_top_dm"
+        },
+        {
+          "part": "turret_bottom_dm"
+        },
+        {
+          "part": "superstructure_side_dm"
+        },
+        {
+          "part": "superstructure_bottom_dm"
+        },
+        {
+          "part": "body_front_dm"
+        },
+        {
+          "part": "turret_back_dm"
+        },
+        {
+          "part": "body_top_dm"
+        },
+        {
+          "part": "turret_04_bottom_dm"
+        },
+        {
+          "part": "body_side_dm"
+        },
+        {
+          "part": "body_back_dm"
+        },
+        {
+          "part": "superstructure_back_dm"
+        },
+        {
+          "part": "turret_05_side_dm"
+        },
+        {
+          "part": "turret_02_back_dm"
+        },
+        {
+          "part": "superstructure_top_dm"
+        },
+        {
+          "part": "turret_01_front_dm"
+        },
+        {
+          "part": "ex_armor_body_01_dm"
+        },
+        {
+          "part": "body_bottom_dm"
+        },
+        {
+          "effect": {
+            "conditionDamageType": "explosion",
+            "expl": 1.0,
+            "conditionDamage": 350.0,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "cumulative",
+            "expl": 1.0,
+            "conditionDamage": 250.0,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "generic",
+            "expl": 1.0,
+            "conditionDamage": 750.0,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "expl": 1.0,
+            "conditionDead": true,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
+        }
+      ],
+      "mount": [
+        {
+          "hp": 8000.0
+        },
+        {
+          "part": "turret_front_dm"
+        },
+        {
+          "part": "turret_side_dm"
+        },
+        {
+          "part": "turret_top_dm"
+        },
+        {
+          "part": "turret_01_top_dm"
+        },
+        {
+          "part": "turret_02_top_dm"
+        },
+        {
+          "part": "turret_01_back_dm"
+        },
+        {
+          "part": "turret_01_bottom_dm"
+        },
+        {
+          "part": "turret_01_side_dm"
+        },
+        {
+          "part": "turret_02_side_dm"
+        },
+        {
+          "part": "turret_commander_dm"
+        },
+        {
+          "effect": {
+            "conditionDamageType": "explosion",
+            "expl": 1.0,
+            "conditionDamage": 350.0,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "cumulative",
+            "expl": 1.0,
+            "conditionDamage": 250.0,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "generic",
+            "expl": 1.0,
+            "conditionDamage": 750.0,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "expl": 1.0,
+            "conditionDead": true,
+            "kill": true,
+            "killEffect": "hullBreak"
+          }
+        }
+      ]
+    }
   },
   {
     "class_tags": []
@@ -2143,6 +2320,12 @@
         "blk": "gameData/Weapons/groundModels_weapons/40mm_Mle51_t1_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
+        "sleeveEmitter": "emtr_shell",
+        "sleeveMesh": "auto_cannon_cartridge_case",
+        "sleevesLifeTime": 7.0,
+        "sleeveImpulse": [12.0,0.0,-5.0],
+        "linkSleeveToGun": false,
+        "sleevesImpulseOffset": 0.05,
         "maxAdditionalPitch": 0.0,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,

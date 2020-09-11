@@ -1,4 +1,5 @@
 local crossplayModule = require("scripts/social/crossplay.nut")
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 const ROOM_LIST_REFRESH_MIN_TIME = 3000 //ms
 const ROOM_LIST_REQUEST_TIME_OUT = 45000 //ms
@@ -114,7 +115,7 @@ class MRoomsList
   }
 
   function setPlatformFilter(filter) {
-    if (::is_platform_xboxone) {
+    if (isPlatformXboxOne) {
       if (!crossplayModule.isCrossPlayEnabled()) {
         filter["public/platformRestriction"] <- {
           test = "eq"
@@ -128,7 +129,7 @@ class MRoomsList
         }
       }
     }
-    else if (::is_platform_ps4) {
+    else if (isPlatformSony) {
       if (!crossplayModule.isCrossPlayEnabled()) {
         filter["public/platformRestriction"] <- {
           test = "eq"

@@ -2,11 +2,12 @@ local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 local penalties = require("scripts/penitentiary/penalties.nut")
 local callback = require("sqStdLibs/helpers/callback.nut")
 local unitActions = require("scripts/unit/unitActions.nut")
-local xboxContactsManager = require("scripts/contacts/xboxContactsManager.nut")
+local { updateContacts } = require("scripts/contacts/contactsManager.nut")
 local unitContextMenuState = require("scripts/unit/unitContextMenuState.nut")
 local { isChatEnabled } = require("scripts/chat/chatStates.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
 local { updateWeaponTooltip } = require("scripts/weaponry/weaponryVisual.nut")
+local { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
 
 local stickedDropDown = null
 local defaultSlotbarActions = [ "autorefill", "aircraft", "sec_weapons", "weapons", "showroom", "testflight", "crew", "info", "repair" ]
@@ -434,10 +435,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
       return notAvailableYetMsgBox()
 
     if (!::isContactsWindowActive())
-    {
-      ::update_ps4_friends()
-      xboxContactsManager.updateXboxOneFriends()
-    }
+      updateContacts()
 
     onSwitchContacts()
   }
@@ -658,7 +656,8 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
     if (!unit)
       return
 
-    local mod = ::getModificationByName(unit, modName) || { name = modName, isDefaultForGroup = (obj?.groupIdx ?? 0).tointeger() }
+    local mod = getModificationByName(unit, modName)
+      || { name = modName, isDefaultForGroup = (obj?.groupIdx ?? 0).tointeger() }
     mod.type <- weaponsItem.modification
     updateWeaponTooltip(obj, unit, mod, this)
   }
@@ -705,7 +704,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
     local title = obj?.title ?? ""
     local desc = obj?.desc ?? ""
 
-    guiScene.replaceContent(obj, "gui/decalTooltip.blk", this)
+    guiScene.replaceContent(obj, "gui/customization/decalTooltip.blk", this)
     obj.findObject("header").setValue(title)
     obj.findObject("description").setValue(desc)
     local imgObj = obj.findObject("image")

@@ -1,7 +1,6 @@
 <<#buttons>>
 imgButton {
   id:t='<<id>>';
-  class:t='decal_image';
   width:t='<<ratio>>@decalIconHeight + ((<<ratio>> - 1)@decalItemMargin)';
   min-height:t='1@decalIconHeight';
   min-width:t='1@decalIconHeight';
@@ -19,7 +18,8 @@ imgButton {
   <<#onClick>> on_click:t='<<onClick>>' <</onClick>>
   <<#onDblClick>> on_dbl_click:t='<<onDblClick>>' <</onDblClick>>
 
-  selImg{}
+  pushedBg {}
+  hoverBg {}
 
   <<^emptySlot>>
     <<#image>>
@@ -78,8 +78,6 @@ imgButton {
 
   <<#cost>>
     contentCorner {
-      pos:t='pw-w-2, ph-h-2';
-      position:t='absolute';
       textareaNoTab {
         text:t='<<cost>>'
         smallFont:t='yes';
@@ -91,7 +89,7 @@ imgButton {
   <<#showLimit>>
     textareaNoTab {
       textShade:t='yes'
-      pos:t='pw-w-2, ph-h-2';
+      pos:t='pw-w-2@dp, ph-h-2@dp'
       position:t='absolute';
       text:t='<<leftAmount>>/<<limit>>'
       smallFont:t='yes';
@@ -101,6 +99,18 @@ imgButton {
       <</isMax>>
     }
   <</showLimit>>
+
+  <<#rarityColor>>
+  rarityBorder {
+    size:t='pw-4@dp, ph-4@dp'
+    pos:t='pw/2-w/2, ph/2-h/2'; position:t='absolute'
+    border:t='yes'
+    border-color:t='<<rarityColor>>'
+    input-transparent:t='yes'
+  }
+  <</rarityColor>>
+
+  focus_border{}
 
   <<#tooltipId>>
     tooltipObj {

@@ -105,15 +105,6 @@
     "type": "typeMediumTank"
   },
   {
-    "customClassIco": "!#ui/gameuiskin#ussr_t_34_85_zis_53_ico.svg"
-  },
-  {
-    "customImage": "!#ui/unitskin#ussr_t_34_85_zis_53"
-  },
-  {
-    "customTooltipImage": "ui/tanks/ussr_t_34_85_zis_53"
-  },
-  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "RHA_tank",
@@ -145,6 +136,9 @@
         },
         "turret_01_back_dm": {
           "armorThickness": 10.0
+        },
+        "turret_02_back_dm": {
+          "armorThickness": 5.0
         },
         "turret_01_side_dm": {
           "armorThickness": 10.0
@@ -837,6 +831,21 @@
           },
           {
             "name": "ammo_body_50_dm"
+          },
+          {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
           },
           {
             "name": "ammo_body_l_01_dm"
@@ -2805,30 +2814,12 @@
     }
   },
   {
-    "defaultDecals": {
-      "skin_condition": 0.0,
-      "camo_scale": 0.0,
-      "camo_rotation": 0.0,
-      "decal0Line0": [1.25,-5.46392e-08,0.0,-0.560333],
-      "decal0Line1": [-1.09278e-07,-2.5,0.0,5.64016],
-      "decal0HaveCP": true,
-      "decal0CP": [1807.5,60.9596,-1098.73],
-      "decal0CPNormDepth": [0.0,0.0,-1.0,-0.83374],
-      "decal0RotScale": [1.5708,0.4],
-      "decal0Mirrored": false,
-      "decal0Wrap": false,
-      "decal0Abs": false,
-      "decal0Tex": "decal_215",
-      "decal1Line0": [-1.24424,-0.0847228,0.0847228,1.65523],
-      "decal1Line1": [0.239632,-1.75963,1.75963,2.46768],
-      "decal1HaveCP": true,
-      "decal1CP": [1805.88,60.9783,-1098.32],
-      "decal1CPNormDepth": [0.0,0.707107,0.707107,-2.06165],
-      "decal1RotScale": [1.6668,0.4],
-      "decal1Mirrored": false,
-      "decal1Wrap": false,
-      "decal1Abs": false,
-      "decal1Tex": "decal_215"
+    "default_skin": {
+      "set_tex": {
+        "from": "t_34_85_zis_53_turret_c*",
+        "to": "t_34_85_zis_53_skin_turret_c*",
+        "param": "camo_skin_tex"
+      }
     }
   }
 ]

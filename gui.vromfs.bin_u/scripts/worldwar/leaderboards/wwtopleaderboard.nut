@@ -1,9 +1,9 @@
-local wwLeaderboardData = require("scripts/worldWar/operations/model/wwLeaderboardData.nut")
-
+local { requestWwLeaderboardData, addClanInfoIfNeedAndConvert } = require("scripts/worldWar/operations/model/wwLeaderboardData.nut")
+local { getPlayerName } = require("scripts/clientState/platform.nut")
 
 local function initTop(handler, obj, modeName, day = null, amount = 3, field = "rating")
 {
-  wwLeaderboardData.requestWwLeaderboardData(modeName,
+  requestWwLeaderboardData(modeName,
     {
       gameMode = modeName
       table    = day && day > 0 ? "day" + day : "season"
@@ -19,6 +19,9 @@ local function initTop(handler, obj, modeName, day = null, amount = 3, field = "
 local function generateTableRow(row, rowIdx, lbCategory)
 {
   local rowName = "row_" + rowIdx
+  local needAddClanTag = row?.needAddClanTag ?? false
+  local clanTag = row?.clanTag ?? ""
+  local playerName = getPlayerName(row.name)
   local rowData = [
     {
       text = (row.pos + 1).tostring()
@@ -27,9 +30,11 @@ local function generateTableRow(row, rowIdx, lbCategory)
     },
     {
       id = "name"
-      width = "0.5pw"
+      width = "0.7pw"
       tdAlign = "left"
-      text = row.name
+      text = needAddClanTag
+        ? ::g_contacts.getPlayerFullName(playerName, clanTag)
+        : playerName
       active = false
     }
   ]
@@ -41,7 +46,8 @@ local function generateTableRow(row, rowIdx, lbCategory)
     rowData.append(td)
   }
 
-  return ::buildTableRow(rowName, rowData, 0, "inactive:t='yes'; commonTextColor:t='yes';", "0")
+  local clanId = needAddClanTag && clanTag == "" ? (row?.clanId ?? "") : ""
+  return ::buildTableRow(rowName, rowData, 0, $"inactive:t='yes'; commonTextColor:t='yes';clanId:t='{clanId}'", "0")
 }
 
 local function displayTop(handler, obj, lbData, lbInfo)
@@ -52,7 +58,7 @@ local function displayTop(handler, obj, lbData, lbInfo)
   if (!lbData || lbData?.error)
     return
 
-  local lbRows = ::u.filter(wwLeaderboardData.convertWwLeaderboardData(lbData).rows,
+  local lbRows = ::u.filter(addClanInfoIfNeedAndConvert(lbInfo.modeName, lbData).rows,
     @(lb) lb.pos >= 0)
   local hasLbRows = lbRows.len() > 0
   obj.show(hasLbRows)
@@ -61,13 +67,13 @@ local function displayTop(handler, obj, lbData, lbInfo)
     return
 
   local lbCategory = ::g_lb_category.WW_EVENTS_PERSONAL_ELO
-  local locId = "worldwar/top/" + lbInfo.modeName + "/" +
-    (lbInfo.day && lbInfo.day > 0 ? "daily" : "season")
+  local isDayLb = (lbInfo.day ?? 0) > 0
+  local locId = $"worldwar/top/{lbInfo.modeName}/{isDayLb ? "daily" : "season"}"
   local rowIdx = 0
   local topView = {
     titleText = ::loc(locId)
     lbMode = lbInfo.modeName
-    isDayLb = lbInfo.day && lbInfo.day > 0 ? "yes" : "no"
+    isDayLb = isDayLb ? "yes" : "no"
     rows = ::u.map(lbRows, @(row) { row = generateTableRow(row, rowIdx++, lbCategory) })
   }
   local topBlk = ::handyman.renderCached("gui/worldWar/wwTopLeaderboard", topView)

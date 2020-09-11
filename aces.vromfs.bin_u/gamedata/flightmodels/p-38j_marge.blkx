@@ -79,16 +79,16 @@
         "hp": 30.5
       },
       "flap1_l_dm": {
-        "hp": 14.5
+        "hp": 23.1
       },
       "flap1_r_dm": {
-        "hp": 14.5
+        "hp": 23.1
       },
       "flap_l_dm": {
-        "hp": 14.5
+        "hp": 26.0
       },
       "flap_r_dm": {
-        "hp": 14.5
+        "hp": 26.0
       },
       "rudder0_dm": {
         "genericDamageMult": 0.3,
@@ -137,14 +137,6 @@
       "wing2_r_dm": {
         "genericDamageMult": 0.3,
         "hp": 69.8
-      },
-      "wing_l_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 80.5
-      },
-      "wing_r_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 80.5
       }
     },
     "dural": {
@@ -224,10 +216,10 @@
       "oil4_dm": {
         "hp": 17.2
       },
-      "water2_dm": {
+      "water1_dm": {
         "hp": 17.5
       },
-      "water4_dm": {
+      "water2_dm": {
         "hp": 17.5
       }
     },
@@ -255,6 +247,14 @@
       },
       "tank6_dm": {
         "hp": 70.5
+      }
+    },
+    "wood": {
+      "wing_l_dm": {
+        "hp": 95.0
+      },
+      "wing_r_dm": {
+        "hp": 95.0
       }
     }
   },
@@ -567,28 +567,106 @@
       ]
     },
     {
-      "part": {
-        "name": "fin1_dm",
-        "onHit": {
-          "tailcontrol_dm": 0.001
+      "part": [
+        {
+          "name": "fin1_dm"
         },
-        "onKill": {
-          "tailcontrol_dm": 1.0,
-          "nothing": 9.0
+        {
+          "onHit": {
+            "tailcontrol_dm": 0.001
+          }
+        },
+        {
+          "onHit": {
+            "damage": 30.0,
+            "cut": 0.6
+          }
+        },
+        {
+          "onHit": {
+            "damage": 60.0,
+            "cut": 1.0
+          }
+        },
+        {
+          "onKill": {
+            "tailcontrol_dm": 1.0,
+            "nothing": 9.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 10.0,
+            "cut": 1.0,
+            "nothing": 10.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 30.0,
+            "cut": 2.0,
+            "nothing": 5.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 50.0,
+            "cut": 1.0,
+            "nothing": 0.0
+          }
         }
-      }
+      ]
     },
     {
-      "part": {
-        "name": "fin2_dm",
-        "onHit": {
-          "tailcontrol_dm": 0.001
+      "part": [
+        {
+          "name": "fin2_dm"
         },
-        "onKill": {
-          "tailcontrol_dm": 1.0,
-          "nothing": 9.0
+        {
+          "onHit": {
+            "tailcontrol_dm": 0.001
+          }
+        },
+        {
+          "onHit": {
+            "damage": 30.0,
+            "cut": 0.6
+          }
+        },
+        {
+          "onHit": {
+            "damage": 60.0,
+            "cut": 1.0
+          }
+        },
+        {
+          "onKill": {
+            "tailcontrol_dm": 1.0,
+            "nothing": 9.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 10.0,
+            "cut": 1.0,
+            "nothing": 10.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 30.0,
+            "cut": 2.0,
+            "nothing": 5.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 50.0,
+            "cut": 1.0,
+            "nothing": 0.0
+          }
         }
-      }
+      ]
     },
     {
       "part": [
@@ -1611,14 +1689,7 @@
     },
     {
       "part": {
-        "name": "stab_dm",
-        "onHit": {
-          "tailcontrol_dm": 0.001
-        },
-        "onKill": {
-          "tailcontrol_dm": 1.0,
-          "nothing": 9.0
-        }
+        "name": "stab_dm"
       }
     },
     {
@@ -1981,7 +2052,7 @@
     },
     {
       "part": {
-        "name": "water2_dm",
+        "name": "water1_dm",
         "onHit": {
           "leak_water": 0.5
         },
@@ -1992,7 +2063,7 @@
     },
     {
       "part": {
-        "name": "water4_dm",
+        "name": "water2_dm",
         "onHit": {
           "leak_water": 0.5
         },
@@ -2563,6 +2634,13 @@
       "stick_ailerons": [-1.8,1.8],
       "stick_elevator": [-1.8,1.8],
       "throttle": [-1.0,1.8],
+      "throttle1": [-1.0,1.8],
+      "mixture": [0.0,1.0],
+      "mixture1": [0.0,1.0],
+      "prop_pitch": [0.0,1.0],
+      "prop_pitch1": [0.0,1.0],
+      "supercharger": [0.0,1.0],
+      "supercharger1": [0.0,1.0],
       "weapon2": [0.0,1.0],
       "trimmer": [-1.0,1.0],
       "flaps": [0.0,1.0],

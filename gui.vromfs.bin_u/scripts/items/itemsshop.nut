@@ -5,6 +5,7 @@ local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
 local workshopCraftTreeWnd = require("scripts/items/workshop/workshopCraftTreeWnd.nut")
 local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
 local tutorAction = require("scripts/tutorials/tutorialActions.nut")
+local { canStartPreviewScene } = require("scripts/customization/contentPreview.nut")
 local { setDoubleTextToButton, setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 ::gui_start_itemsShop <- function gui_start_itemsShop(params = null)
@@ -621,7 +622,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     local item = getCurItem()
-    if (item && ::ItemsManager.canPreviewItems())
+    if (item && canStartPreviewScene(true, true))
       item.doPreview()
   }
 

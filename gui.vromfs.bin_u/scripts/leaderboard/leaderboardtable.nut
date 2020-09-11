@@ -106,6 +106,9 @@ class ::gui_handlers.LeaderboardTable extends ::gui_handlers.BaseGuiHandlerWT
   function getTableRowMarkup(row, rowIdx, selfPos)
   {
     local rowName = row?.name ?? ""
+    local needAddClanTag = row?.needAddClanTag ?? false
+    local clanTag = row?.clanTag ?? ""
+    local playerName = platformModule.getPlayerName(rowName)
     local rowData = [
       {
         text = row.pos >= 0 ? (row.pos + 1).tostring() : ::loc("leaderboards/notAvailable")
@@ -113,7 +116,9 @@ class ::gui_handlers.LeaderboardTable extends ::gui_handlers.BaseGuiHandlerWT
       {
         id = "name"
         tdAlign = "left"
-        text = platformModule.getPlayerName(rowName)
+        text = needAddClanTag
+          ? ::g_contacts.getPlayerFullName(playerName, clanTag)
+          : playerName
       }
     ]
     foreach(category in lbPresets)
@@ -123,9 +128,9 @@ class ::gui_handlers.LeaderboardTable extends ::gui_handlers.BaseGuiHandlerWT
 
       rowData.append(getItemCell(category, row))
     }
+    local clanId = needAddClanTag && clanTag == "" ? (row?.clanId ?? "") : ""
     local highlightRow = selfPos == row.pos && row.pos >= 0
-    local rowParamsText = "player_nick:t='" + rowName + "';" +
-      (highlightRow ? "mainPlayer:t='yes';" : "")
+    local rowParamsText = $"player_nick:t='{rowName}';clanId:t='{clanId}';{highlightRow ? "mainPlayer:t='yes';" : ""}"
     local data = buildTableRow("row_" + rowIdx, rowData, rowIdx % 2 == 0, rowParamsText)
 
     return data
@@ -154,6 +159,9 @@ class ::gui_handlers.LeaderboardTable extends ::gui_handlers.BaseGuiHandlerWT
   function generateRowTableData(row, rowIdx, selfRow)
   {
     local rowName = "row_" + rowIdx
+    local needAddClanTag = row?.needAddClanTag ?? false
+    local clanTag = row?.clanTag ?? ""
+    local playerName = platformModule.getPlayerName(row?.name ?? "")
     local rowData = [
       {
         text = row.pos >= 0 ? (row.pos + 1).tostring() : ::loc("leaderboards/notAvailable")
@@ -161,7 +169,9 @@ class ::gui_handlers.LeaderboardTable extends ::gui_handlers.BaseGuiHandlerWT
       {
         id = "name"
         tdAlign = "left"
-        text = platformModule.getPlayerName(row?.name ?? "")
+        text = needAddClanTag
+          ? ::g_contacts.getPlayerFullName(playerName, clanTag)
+          : playerName
       }
     ]
     foreach(category in lbPresets)
@@ -172,8 +182,10 @@ class ::gui_handlers.LeaderboardTable extends ::gui_handlers.BaseGuiHandlerWT
       rowData.append(getItemCell(category, row))
     }
 
+    local clanId = needAddClanTag && clanTag == "" ? (row?.clanId ?? "") : ""
     local highlightRow = selfRow == row.pos && row.pos >= 0
-    local data = buildTableRow(rowName, rowData, rowIdx % 2 == 0, highlightRow ? "mainPlayer:t='yes';" : "")
+    local data = buildTableRow(rowName, rowData, rowIdx % 2 == 0,
+      $"clanId:t='{clanId}';{highlightRow ? "mainPlayer:t='yes';" : ""}")
 
     return data
   }

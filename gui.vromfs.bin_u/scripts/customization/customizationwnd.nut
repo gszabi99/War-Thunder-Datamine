@@ -2,14 +2,19 @@ local time = require("scripts/time.nut")
 local penalty = require_native("penalty")
 local decorLayoutPresets = require("scripts/customization/decorLayoutPresetsWnd.nut")
 local unitActions = require("scripts/unit/unitActions.nut")
-local unitStatus = require("scripts/unit/unitStatus.nut")
 local contentPreview = require("scripts/customization/contentPreview.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
 local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 local weaponryPresetsModal = require("scripts/weaponry/weaponryPresetsModal.nut")
+local { canBuyNotResearched,
+        isUnitHaveSecondaryWeapons } = require("scripts/unit/unitStatus.nut")
 
-local { canUseIngameShop, getShopItemsTable } = ::is_platform_ps4? require("scripts/onlineShop/ps4ShopData.nut")
-  : ::is_platform_xboxone? require("scripts/onlineShop/xboxShopData.nut")
+local { isPlatformSony,
+        isPlatformXboxOne,
+        isPlatformPC } = require("scripts/clientState/platform.nut")
+
+local { canUseIngameShop, getShopItemsTable } = isPlatformSony? require("scripts/onlineShop/ps4ShopData.nut")
+  : isPlatformXboxOne? require("scripts/onlineShop/xboxShopData.nut")
     : { canUseIngameShop = @() false, getShopItemsTable = @() {} }
 
 enum decoratorEditState
@@ -116,7 +121,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     ::cur_aircraft_name = unit.name
 
     access_WikiOnline = ::has_feature("WikiUnitInfo")
-    access_UserSkins = ::is_platform_pc && ::has_feature("UserSkins")
+    access_UserSkins = isPlatformPC && ::has_feature("UserSkins")
     access_SkinsUnrestrictedPreview = ::has_feature("SkinsPreviewOnUnboughtUnits")
     access_SkinsUnrestrictedExport  = access_UserSkins && access_SkinsUnrestrictedExport
 
@@ -157,6 +162,11 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
   }
 
+  function canRestartSceneNow()
+  {
+    return ::isInArray(currentState, [ decoratorEditState.NONE, decoratorEditState.SELECT ])
+  }
+
   function getHandlerRestoreData()
   {
     local data = {
@@ -179,7 +189,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
   function initMainParams()
   {
     isUnitOwn = unit.isUsable()
-    isUnitTank = ::isTank(unit)
+    isUnitTank = unit.isTank()
 
     access_Decals      = !previewMode && isUnitOwn && ::g_decorator_type.DECALS.isAvailable(unit)
     access_Attachables = !previewMode && isUnitOwn && ::g_decorator_type.ATTACHABLES.isAvailable(unit)
@@ -294,7 +304,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     local bObj = null
     local shortcuts = []
 
-    local hasKeyboard = ::is_platform_pc
+    local hasKeyboard = isPlatformPC
     local hasGamepad = ::show_console_buttons
 
     //Flip
@@ -433,7 +443,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     {
       local access = skinList.access[i]
       local canBuy = !previewMode && decorator.canBuyUnlock(unit)
-      local canFindOnMarketplace = !previewMode && !canBuy && !access.isOwn && decorator.getCouponItemdefId() != null
+      local canFindOnMarketplace = !previewMode && decorator.canBuyCouponOnMarketplace(unit)
       local priceText = canBuy ? decorator.getCost().getTextAccordingToBalance() : ""
       local isUnlocked = decorator.isUnlocked()
       local text = skinList.items[i].text
@@ -719,6 +729,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       unlocked = slot.unlocked && (!decorator || decorator.isUnlocked())
       emptySlot = slot.isEmpty || !decorator
       image = decoratorType.getImage(decorator)
+      rarityColor = decorator?.isRare() ? decorator.getRarityColor() : null
       tooltipText = buttonTooltip
       tooltipId = slot.isEmpty? null : ::g_tooltip_type.DECORATION.getTooltipId(decalId, decoratorType.unlockedItemType)
     }
@@ -740,7 +751,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     local isGift   = ::isUnitGift(unit)
     local canBuyOnline = ::canBuyUnitOnline(unit)
-    local canBuyNotResearchedUnit = unitStatus.canBuyNotResearched(unit)
+    local canBuyNotResearchedUnit = canBuyNotResearched(unit)
     local canBuyIngame = !canBuyOnline && (::canBuyUnit(unit) || canBuyNotResearchedUnit)
 
     if (isGift && canUseIngameShop() && getShopItemsTable().len() == 0)
@@ -826,7 +837,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
           btn_info_online = !isInEditMode && !isDecoratorsListOpen && ::isUnitDescriptionValid(unit) && access_WikiOnline
           btn_sec_weapons    = !isInEditMode && !isDecoratorsListOpen &&
             (unit.isAir() || unit.isHelicopter()) && ::has_feature("ShowWeapPresetsMenu") &&
-              ::isAirHaveSecondaryWeapons(unit)
+              isUnitHaveSecondaryWeapons(unit)
           btn_weapons    = !isInEditMode && !isDecoratorsListOpen
 
           btn_decal_edit   = ::show_console_buttons && !isInEditMode && !isDecoratorsListOpen && !focusedSlot.isEmpty && focusedSlot.unlocked
@@ -1140,13 +1151,14 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     if (skinDecorator.canBuyUnlock(unit))
     {
-      local priceText = skinDecorator.getCost().getTextAccordingToBalance()
+      local cost = skinDecorator.getCost()
+      local priceText = cost.getTextAccordingToBalance()
       local msgText = ::warningIfGold(
         ::loc("decals/needToBuySkin",
           {purchase = skinDecorator.getName(), cost = priceText}),
         skinDecorator.getCost())
       msgBox("skin_locked", msgText,
-        [["ok", (@(previewSkinId) function() { buySkin(previewSkinId) })(previewSkinId) ],
+        [["ok", (@(previewSkinId) function() { buySkin(previewSkinId, cost) })(previewSkinId) ],
         ["cancel", function() {} ]], "ok")
     }
     else
@@ -1301,11 +1313,14 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     local isTrophyContent = params?.showAsTrophyContent ?? false
     local isUnlocked = decorator.canUse(unit)
-    local statusLock = !isTrophyContent ? getStatusLockText(decorator) : isUnlocked ? null : "achievement"
     local lockCountryImg = ::get_country_flag_img("decal_locked_" + ::getUnitCountry(unit))
     local unitLocked = decorator.getUnitTypeLockIcon()
-    local cost = !isTrophyContent && decorator.canBuyUnlock(unit) ?
-      decorator.getCost().getTextAccordingToBalance() : null
+    local cost = decorator.canBuyUnlock(unit) ? decorator.getCost().getTextAccordingToBalance()
+      : decorator.canBuyCouponOnMarketplace(unit) ? ::colorize("warningTextColor", ::loc("currency/gc/sign"))
+      : null
+    local statusLock = !isTrophyContent ? getStatusLockText(decorator)
+      : isUnlocked || cost != null ? null
+      : "achievement"
     local leftAmount = decorator.limit - decorator.getCountOfUsingDecorator(unit)
 
     return {
@@ -1316,7 +1331,8 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       ratio = ::clamp(decoratorType.getRatio(decorator), 1, 2)
       unlocked = isUnlocked
       image = decoratorType.getImage(decorator)
-      tooltipId = ::g_tooltip_type.DECORATION.getTooltipId(decorator.id, decoratorType.unlockedItemType, params)
+      tooltipId = ::g_tooltip_type.DECORATION.getTooltipId(decorator.id, decoratorType.unlockedItemType)
+      rarityColor = decorator.isRare() ? decorator.getRarityColor() : null
       cost = cost
       statusLock = statusLock
       unitLocked = unitLocked
@@ -1345,7 +1361,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (decorator.lockedByDLC)
       return "noDLC"
 
-    if (!decorator.isUnlocked() && !decorator.canBuyUnlock(unit))
+    if (!decorator.isUnlocked() && !decorator.canBuyUnlock(unit) && !decorator.canBuyCouponOnMarketplace(unit))
       return "achievement"
 
     return null
@@ -1373,7 +1389,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (decal.lockedByDLC != null)
       text.append(::format(::loc("mainmenu/decalNoCampaign"), ::loc("charServer/entitlement/" + decal.lockedByDLC)))
 
-    if (!text.len() && !decal.isUnlocked() && !decal.canBuyUnlock(unit))
+    if (!text.len() && !decal.isUnlocked() && !decal.canBuyUnlock(unit) && !decal.canBuyCouponOnMarketplace(unit))
       text.append(::loc("mainmenu/decalNoAchievement"))
 
     return ::g_string.implode(text, ", ")
@@ -1444,6 +1460,12 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
         return askBuyDecorator(decorator, (@(curSlotIdx, decorator) function() {
                                             enterEditDecalMode(curSlotIdx, decorator)
                                           })(curSlotIdx, decorator))
+
+      if (decorator.canBuyCouponOnMarketplace(unit))
+        return askMarketplaceCouponAction(decorator)
+
+      if (!decorator.isUnlocked())
+        return
     }
 
     isDecoratorItemUsed = true
@@ -1613,7 +1635,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     stopDecalEdition()
   }
 
-  function buyDecorator(decorator, afterPurchDo = null)
+  function buyDecorator(decorator, cost, afterPurchDo = null)
   {
     if (!::check_balance_msgBox(decorator.getCost()))
       return false
@@ -1627,7 +1649,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
         afterPurchDo()
     })(decorator, afterPurchDo), this)
 
-    decorator.decoratorType.buyFunc(unit.name, decorator.id, afterSuccessFunc)
+    decorator.decoratorType.buyFunc(unit.name, decorator.id, cost, afterSuccessFunc)
     return true
   }
 
@@ -1707,6 +1729,9 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (decorator.canBuyUnlock(unit))
       return askBuyDecoratorOnExitEditMode(decorator)
 
+    if (decorator.canBuyCouponOnMarketplace(unit))
+      return askMarketplaceCouponActionOnExitEditMode(decorator)
+
     local restrictionText = getDecalAccessData(decorator)
     if (restrictionText != "")
       return ::g_popups.add("", restrictionText)
@@ -1726,23 +1751,54 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       showFailedInstallPopup()
   }
 
+  function askMarketplaceCouponActionOnExitEditMode(decorator)
+  {
+    if (!currentType.exitEditMode(true, false,
+              ::Callback(@() askMarketplaceCouponAction(decorator), this)))
+      showFailedInstallPopup()
+  }
+
   function askBuyDecorator(decorator, afterPurchDo = null)
   {
+    local cost = decorator.getCost()
     local msgText = ::warningIfGold(
       ::loc("shop/needMoneyQuestion_purchaseDecal",
         {purchase = ::colorize("userlogColoredText", decorator.getName()),
-          cost = decorator.getCost().getTextAccordingToBalance()}),
+          cost = cost.getTextAccordingToBalance()}),
       decorator.getCost())
     msgBox("buy_decorator_on_preview", msgText,
       [["ok", (@(decorator, afterPurchDo) function() {
           currentState = decoratorEditState.PURCHASE
-          if (!buyDecorator(decorator, afterPurchDo))
+          if (!buyDecorator(decorator, cost, afterPurchDo))
             return forceResetInstalledDecorators()
 
           ::dmViewer.update()
           onFinishInstallDecoratorOnUnit(true)
         })(decorator, afterPurchDo)],
-      ["cancel", onBtnBack]], "ok")
+      ["cancel", onBtnBack]
+      ], "ok", { cancel_fn = onBtnBack })
+  }
+
+  function askMarketplaceCouponAction(decorator)
+  {
+    local inventoryItem = ::ItemsManager.getInventoryItemById(decorator.getCouponItemdefId())
+    if (inventoryItem?.canConsume() ?? false)
+    {
+      inventoryItem.consume(::Callback(function(result) {
+        if ((result?.success ?? false) == true)
+          updateSelectedCategory(decorator)
+      }, this), null)
+      return
+    }
+
+    local couponItem = ::ItemsManager.findItemById(decorator.getCouponItemdefId())
+    if (!(couponItem?.hasLink() ?? false))
+      return
+    local couponName = ::colorize("activeTextColor", couponItem.getName())
+    msgBox("go_to_marketplace", ::loc("msgbox/find_on_marketplace", { itemName = couponName }), [
+        [ "find_on_marketplace", function() { couponItem.openLink(); onBtnBack() } ],
+        [ "cancel", onBtnBack ]
+      ], "find_on_marketplace", { cancel_fn = onBtnBack })
   }
 
   function forceResetInstalledDecorators()
@@ -1862,7 +1918,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onSkinReadyToShow(unitId, skinId, result)
   {
-    if (!result || !::ItemsManager.canPreviewItems() ||
+    if (!result || !contentPreview.canStartPreviewScene(true, true) ||
       unitId != unit.name || (skinList?.values ?? []).indexof(skinId) == null)
         return
 
@@ -1965,12 +2021,12 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     msgBox("need_money", msgText,
           [["ok", (@(previewSkinId, cost) function() {
             if (::check_balance_msgBox(cost))
-              buySkin(previewSkinId)
+              buySkin(previewSkinId, cost)
           })(previewSkinId, cost)],
           ["cancel", function() {} ]], "ok")
   }
 
-  function buySkin(skinName)
+  function buySkin(skinName, cost)
   {
     local afterSuccessFunc = ::Callback((@(skinName) function() {
         ::update_gamercards()
@@ -1978,7 +2034,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
         updateMainGuiElements()
       })(skinName), this)
 
-    ::g_decorator_type.SKINS.buyFunc(unit.name, skinName, afterSuccessFunc)
+    ::g_decorator_type.SKINS.buyFunc(unit.name, skinName, cost, afterSuccessFunc)
   }
 
   function onBtnMarketplaceFindSkin(obj)
@@ -2382,6 +2438,8 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventItemsShopUpdate(params)
   {
+    updateDecalSlots()
+    updateAttachablesSlots()
     updateSkinList()
   }
 

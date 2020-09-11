@@ -1,10 +1,15 @@
 local time = require("scripts/time.nut")
 local externalIDsService = require("scripts/user/externalIdsService.nut")
 local avatars = require("scripts/user/avatars.nut")
-local platformModule = require("scripts/clientState/platform.nut")
+local { isMeXBOXPlayer,
+        isMePS4Player,
+        isPlatformPC,
+        isPlatformSony,
+        isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
-
+local { startLogout } = require("scripts/login/logout.nut")
+local { canAcquireDecorator, askAcquireDecorator } = require("scripts/customization/decoratorAcquire.nut")
 
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
@@ -299,15 +304,15 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     local sheet = getCurSheet()
     local isProfileOpened = sheet == "Profile"
     local buttonsList = {
-      btn_changeAccount = ::isInMenu() && isProfileOpened && !::is_platform_ps4 && !::is_vendor_tencent()
-      btn_changeName = ::isInMenu() && isProfileOpened && !platformModule.isMeXBOXPlayer() && !platformModule.isMePS4Player() && !::is_vendor_tencent()
+      btn_changeAccount = ::isInMenu() && isProfileOpened && !isPlatformSony && !::is_vendor_tencent()
+      btn_changeName = ::isInMenu() && isProfileOpened && !isMeXBOXPlayer() && !isMePS4Player() && !::is_vendor_tencent()
       btn_getLink = !::is_in_loading_screen() && isProfileOpened && ::has_feature("Invites")
-      btn_codeApp = platformModule.isPlatformPC && ::has_feature("AllowExternalLink") &&
+      btn_codeApp = isPlatformPC && ::has_feature("AllowExternalLink") &&
         !::g_user_utils.haveTag("gjpass") && ::isInMenu() && isProfileOpened &&
           !::is_vendor_tencent()
-      btn_ps4Registration = isProfileOpened && ::is_platform_ps4 && ::g_user_utils.haveTag("psnlogin")
+      btn_ps4Registration = isProfileOpened && isPlatformSony && ::g_user_utils.haveTag("psnlogin")
       btn_SteamRegistration = isProfileOpened && ::steam_is_running() && ::has_feature("AllowSteamAccountLinking") && ::g_user_utils.haveTag("steamlogin")
-      btn_xboxRegistration = isProfileOpened && ::is_platform_xboxone && ::has_feature("AllowXboxAccountLinking")
+      btn_xboxRegistration = isProfileOpened && isPlatformXboxOne && ::has_feature("AllowXboxAccountLinking")
       paginator_place = (sheet == "Statistics") && airStatsList && (airStatsList.len() > statsPerPage)
       btn_achievements_url = (sheet == "UnlockAchievement") && ::has_feature("AchievementsUrl")
         && ::has_feature("AllowExternalLink") && !::is_vendor_tencent()
@@ -787,27 +792,35 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
 
   function getDecoratorsMarkup(decoratorType)
   {
-    local view = { items = [] }
-
     local decoratorsList = ::g_decorator.getCachedDecoratorsDataByType(decoratorType)
-    foreach (category, decorators in decoratorsList)
-    {
-      if (curFilter != category)
-        continue
+    local decorators = decoratorsList?[curFilter] ?? []
+    local view = {
+      items = decorators.map(function(decorator) {
+        local text = null
+        local status = null
+        if (decorator.isUnlocked())
+          text = null
+        else if (decorator.canBuyUnlock(null))
+          text = decorator.getCost()
+        else if (decorator.getCouponItemdefId() != null)
+          text = ::colorize("currencyGoldColor", ::loc("currency/gc/sign"))
+        else if (decorator.lockedByDLC != null)
+          status = "noDLC"
+        else
+          status = "achievement"
 
-      foreach (decorator in decorators)
-      {
-        view.items.append({
+        return {
           id = decorator.id
-          tooltipId = ::g_tooltip.getIdDecorator(decorator.id, decoratorType.unlockedItemType)
+          tooltipId = ::g_tooltip.getIdDecorator(decorator.id, decorator.decoratorType.unlockedItemType)
           unlocked = decorator.isUnlocked()
-          image = decoratorType.getImage(decorator)
-          imgRatio = decoratorType.getRatio(decorator)
+          image = decorator.decoratorType.getImage(decorator)
+          imgRatio = decorator.decoratorType.getRatio(decorator)
           backlight = true
-        })
-      }
+          bottomCenterText = text
+          statusLock = status
+        }
+      })
     }
-
     return ::handyman.renderCached("gui/commonParts/imgFrame", view)
   }
 
@@ -816,7 +829,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     local unit = ::getAircraftByName(unitName)
     if (unit == null)
       return false
-    if (!::has_feature("Tanks") && ::isTank(unit))
+    if (!::has_feature("Tanks") && unit?.isTank())
       return false
     return unit.isVisibleInShop()
   }
@@ -1238,6 +1251,20 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     guiScene.setUpdatesEnabled(true, true)
   }
 
+  function onDecalClick(obj)
+  {
+    if (!::check_obj(obj) || getCurSheet() != "UnlockDecal")
+      return
+
+    local idx = obj.getValue()
+    local itemObj = idx >= 0 && idx < obj.childrenCount() ? obj.getChild(idx) : null
+    local decoratorId = ::check_obj(itemObj) ? (itemObj?.id ?? "") : ""
+    local decorator = ::g_decorator.getDecoratorById(decoratorId)
+
+    if (canAcquireDecorator(decorator))
+      askAcquireDecorator(decorator, null)
+  }
+
   function onUnlockSelect(obj)
   {
     local list = scene.findObject("unlocks_group_list")
@@ -1410,7 +1437,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     {
       pending_logout = false
       guiScene.performDelayed(this, function() {
-        ::gui_start_logout()
+        startLogout()
       })
     }
   }
@@ -1442,7 +1469,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
       [
         ["yes", function() {
           ::save_local_shared_settings(USE_STEAM_LOGIN_AUTO_SETTING_ID, null)
-          ::gui_start_logout()
+          startLogout()
         }],
         ["no", @() null ]
       ], "no", { cancel_fn = @() null })
@@ -1646,7 +1673,13 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
 
   function onEventUnlocksCacheInvalidate(p)
   {
-    if (getCurSheet() == "UnlockAchievement")
+    if (::isInArray(getCurSheet(), [ "UnlockAchievement", "UnlockDecal" ]))
+      fillUnlocksList()
+  }
+
+  function onEventInventoryUpdate(p)
+  {
+    if (::isInArray(getCurSheet(), [ "UnlockAchievement", "UnlockDecal" ]))
       fillUnlocksList()
   }
 

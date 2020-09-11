@@ -2,7 +2,7 @@ local { unixtime_to_utc_timetbl } = ::require_native("dagor.time")
 local time = require("scripts/time.nut")
 local clanRewardsModal = require("scripts/rewards/clanRewardsModal.nut")
 local dirtyWordsFilter = require("scripts/dirtyWords/dirtyWords.nut")
-local { getPlayerName } = require("scripts/clientState/platform.nut")
+local { getPlayerName, isPlatformSony } = require("scripts/clientState/platform.nut")
 
 const CLAN_ID_NOT_INITED = ""
 global const CLAN_SEASON_NUM_IN_YEAR_SHIFT = 1 // Because numInYear is zero-based.
@@ -1271,7 +1271,7 @@ class ClanSeasonPlaceTitle extends ClanSeasonTitle
 
 ::checkClanTagForDirtyWords <- function checkClanTagForDirtyWords(clanTag, returnString = true)
 {
-  if (::is_platform_ps4)
+  if (isPlatformSony)
   {
     if (returnString)
       return dirtyWordsFilter.checkPhrase(clanTag)

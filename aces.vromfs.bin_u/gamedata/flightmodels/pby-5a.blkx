@@ -2617,6 +2617,46 @@
       },
       {
         "preset": {
+          "name": "pby_5_4x_mine_mk13_mod0",
+          "blk": "gameData/FlightModels/weaponPresets/pby_5_4x_mine_mk13_mod0.blk",
+          "reqModification": "us_mine_mk13_mod0",
+          "weaponConfig": {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/mines/us_mine_mk13_mod0.blk"
+              },
+              {
+                "amountPerTier": 1.0
+              },
+              {
+                "iconType": "air_mines"
+              },
+              {
+                "tier": {
+                  "idx": 4
+                }
+              },
+              {
+                "tier": {
+                  "idx": 5
+                }
+              },
+              {
+                "tier": {
+                  "idx": 7
+                }
+              },
+              {
+                "tier": {
+                  "idx": 8
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "preset": {
           "name": "pby_5_default",
           "blk": "gameData/FlightModels/weaponPresets/pby_5_default.blk",
           "tags": {
@@ -2769,24 +2809,25 @@
       "30cal_turret_ap": [],
       "pby5_mbc": {
         "modClass": "weapon",
-        "tier": 1,
-        "reqModLevel": 6.0
-      },
-      "pby5_ltc": {
-        "modClass": "weapon",
-        "tier": 2,
-        "reqModLevel": 2.0,
-        "reqModification": "pby5_mbc"
-      },
-      "improved_torpedo_mod": {
-        "modClass": "weapon",
-        "tier": 3,
-        "reqModification": "pby5_ltc"
+        "tier": 2
       },
       "pby5_lbc": {
         "modClass": "weapon",
         "tier": 4,
-        "reqModLevel": 11.0,
+        "reqModification": "pby5_mbc"
+      },
+      "pby5_ltc": {
+        "modClass": "weapon",
+        "tier": 1
+      },
+      "improved_torpedo_mod": {
+        "modClass": "weapon",
+        "tier": 2,
+        "reqModification": "pby5_ltc"
+      },
+      "us_mine_mk13_mod0": {
+        "tier": 3,
+        "modClass": "weapon",
         "reqModification": "improved_torpedo_mod"
       }
     }

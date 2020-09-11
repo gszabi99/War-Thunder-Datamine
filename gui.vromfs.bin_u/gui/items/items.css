@@ -264,9 +264,10 @@ itemDiv > tdiv > contentCorner {
   position:absolute;
   size:1@dIco + 2@dp, 1@dIco + 2@dp;
   background-color:@white;
-  background-image:#ui/gameuiskin#item_type_bg;
-  background-position:4;
-  background-repeat:expand;
+  background-image:#ui/gameuiskin#item_type_bg.svg;
+  background-svg-size:10@dp, 10@dp;
+  background-position:5@dp;
+  background-repeat:expand-svg;
   foreground-color:@white;
   foreground-position:2@dp;
   foreground-repeat:aspect-ratio;
@@ -654,3 +655,44 @@ itemBlock[isDisabled = yes] > itemDiv iconLayer {
   background-color: @shopUnitLocked;
 }
 
+prizeNest > img,
+prizeNest > classIconPlace {
+  size:1@dIco, 1@dIco;
+  background-svg-size:1@dIco, 1@dIco;
+}
+
+prizeNest > classIconPlace > img {
+  size:1@tableIcoSize, 1@tableIcoSize;
+  background-svg-size:1@tableIcoSize, 1@tableIcoSize;
+}
+
+[smallFont=yes] prizeNest > img,
+[smallFont=yes] prizeNest > classIconPlace,
+[smallFont=yes] prizeNest > classIconPlace > img {
+  size:2@fontHeightSmall, 2@fontHeightSmall;
+  background-svg-size:2@fontHeightSmall, 2@fontHeightSmall;
+}
+
+prizeNest > chanceIconPlace,
+prizeNest > emptyButtonBlock {
+  size:1@spectatorToolbarBtnSize, 1@spectatorToolbarBtnSize;
+  margin:0.25@spectatorToolbarBtnSize, 0;
+}
+
+prizeNest > chanceIconPlace > chanceIcon,
+prizeChanceLegend chanceIcon {
+  size:1@sIco, 1@sIco;
+  background-svg-size:1@sIco, 1@sIco;
+}
+
+[smallFont=yes] prizeNest > chanceIconPlace,
+[smallFont=yes] prizeNest > emptyButtonBlock {
+  size:1.5@fontHeightSmall, 1.5@fontHeightSmall;
+  margin:0.5@fontHeightSmall, 0;
+}
+
+[smallFont=yes] prizeNest > chanceIconPlace > chanceIcon,
+[smallFont=yes] prizeChanceLegend chanceIcon {
+  size:1.2@fontHeightSmall, 1.2@fontHeightSmall;
+  background-svg-size:1.2@fontHeightSmall, 1.2@fontHeightSmall;
+}

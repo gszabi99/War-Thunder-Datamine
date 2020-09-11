@@ -1,8 +1,12 @@
-local { canUseIngameShop, getShopItem, getShopItemsTable } = ::is_platform_ps4? require("scripts/onlineShop/ps4ShopData.nut")
-  : ::is_platform_xboxone? require("scripts/onlineShop/xboxShopData.nut")
-    : { canUseIngameShop = @() false, getShopItem = @(...) null, getShopItemsTable = @() {} }
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
-local unitStatus = require("scripts/unit/unitStatus.nut")
+local { canUseIngameShop = @() false,
+        getShopItem = @(...) null,
+        getShopItemsTable = @() {}
+} = isPlatformSony? require("scripts/onlineShop/ps4ShopData.nut")
+  : isPlatformXboxOne? require("scripts/onlineShop/xboxShopData.nut")
+  : null
+
 local unitActions = require("scripts/unit/unitActions.nut")
 local slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 local unitContextMenuState = require("scripts/unit/unitContextMenuState.nut")
@@ -12,6 +16,8 @@ local crewModalByVehiclesGroups = require("scripts/crew/crewModalByVehiclesGroup
 local { getBundleId } = require("scripts/onlineShop/onlineBundles.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
 local weaponryPresetsModal = require("scripts/weaponry/weaponryPresetsModal.nut")
+local { checkUnitWeapons } = require("scripts/weaponry/weaponryInfo.nut")
+local { canBuyNotResearched, isUnitHaveSecondaryWeapons } = require("scripts/unit/unitStatus.nut")
 
 local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,
@@ -113,10 +119,10 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
 
       actionText = ::loc("options/secondary_weapons")
       icon       = "#ui/gameuiskin#slot_preset.svg"
-      haveWarning = ::checkUnitWeapons(unit) != UNIT_WEAPONS_READY
+      haveWarning = checkUnitWeapons(unit) != UNIT_WEAPONS_READY
       haveDiscount = ::get_max_weaponry_discount_by_unitName(unit.name) > 0
       showAction = inMenu && !::g_crews_list.isSlotbarOverrided &&
-        (unit.isAir() || unit.isHelicopter()) && ::isAirHaveSecondaryWeapons(unit) &&
+        (unit.isAir() || unit.isHelicopter()) && isUnitHaveSecondaryWeapons(unit) &&
           ::has_feature("ShowWeapPresetsMenu")
       actionFunc = @() weaponryPresetsModal.open({ unit = unit })
     }
@@ -127,7 +133,7 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
 
       actionText = ::loc("mainmenu/btnWeapons")
       icon       = "#ui/gameuiskin#btn_weapons.svg"
-      haveWarning = ::checkUnitWeapons(unit) != UNIT_WEAPONS_READY
+      haveWarning = checkUnitWeapons(unit) != UNIT_WEAPONS_READY
       haveDiscount = ::get_max_weaponry_discount_by_unitName(unit.name) > 0
       showAction = inMenu && !::g_crews_list.isSlotbarOverrided
       actionFunc = @() ::open_weapons_for_unit(unit, {
@@ -160,7 +166,7 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
       local isSpecial   = ::isUnitSpecial(unit)
       local isGift   = ::isUnitGift(unit)
       local canBuyOnline = ::canBuyUnitOnline(unit)
-      local canBuyNotResearchedUnit = unitStatus.canBuyNotResearched(unit)
+      local canBuyNotResearchedUnit = canBuyNotResearched(unit)
       local canBuyIngame = !canBuyOnline && (::canBuyUnit(unit) || canBuyNotResearchedUnit)
       local forceShowBuyButton = false
       local priceText = ""

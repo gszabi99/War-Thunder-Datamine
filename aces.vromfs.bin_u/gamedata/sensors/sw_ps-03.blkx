@@ -2,7 +2,7 @@
   "type": "radar",
   "transivers": {
     "common": {
-      "sideLobesAttenuation": -26.0,
+      "sideLobesAttenuation": -22.0,
       "pulsePower": 40000.0,
       "pulseWidth": 0.0,
       "prf": 1000.0,
@@ -14,7 +14,7 @@
       "timeGainControl": false,
       "antenna": {
         "angleHalfSens": 5.0,
-        "sideLobesSensitivity": -32.0
+        "sideLobesSensitivity": -28.0
       }
     }
   },
@@ -351,6 +351,7 @@
           "actions": {
             "designateActiveDetectedTarget": {
               "type": 0,
+              "self": true,
               "sensorIndex": 0
             }
           }
@@ -572,7 +573,8 @@
           "actions": {
             "designateActiveDetectedTarget": {
               "type": 0,
-              "sensorIndex": 0
+              "sensorIndex": 0,
+              "self": true
             }
           }
         }

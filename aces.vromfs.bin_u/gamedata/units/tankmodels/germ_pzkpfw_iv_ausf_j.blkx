@@ -178,18 +178,6 @@
     }
   },
   {
-    "sound": {
-      "EngineName": "engine_panzer4",
-      "TrackSoundPath": "tanks/engines_tanks",
-      "TrackSoundPathStudio": "ground/engines",
-      "TrackSoundName": "tracks",
-      "TrackSoundNameCockpit": "tracks_interior",
-      "turret_turn": "turret_turn_manual_y",
-      "EngineNameAi": "engine_tank_ai_middle",
-      "TrackSoundNameAi": "tracks_ai_middle"
-    }
-  },
-  {
     "class_tags": []
   },
   {
@@ -898,6 +886,21 @@
           },
           {
             "name": "ammo_body_50_dm"
+          },
+          {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
           },
           {
             "name": "ammo_body_l_01_dm"
@@ -2450,6 +2453,18 @@
     }
   },
   {
+    "sound": {
+      "EngineName": "engine_panzer4",
+      "TrackSoundPath": "tanks/engines_tanks",
+      "TrackSoundPathStudio": "ground/engines",
+      "TrackSoundName": "tracks",
+      "TrackSoundNameCockpit": "tracks_interior",
+      "turret_turn": "turret_turn_manual_y",
+      "EngineNameAi": "engine_tank_ai_middle",
+      "TrackSoundNameAi": "tracks_ai_middle"
+    }
+  },
+  {
     "attachables": {
       "ex_decor_l_01_dm": true,
       "ex_decor_r_01_dm": true,
@@ -2671,6 +2686,45 @@
             }
           }
         ]
+      },
+      {
+        "Weapon": {
+          "trigger": "gunner2",
+          "triggerGroup": "machinegun",
+          "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
+          "emitter": "bone_mg_aa_h_01",
+          "flash": "emtr_mg_flame_03",
+          "rollOrientationDeg": 90.0,
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "barrelDP": "gun_barrel_02_dm",
+          "parkInDeadzone": false,
+          "speedYaw": 30.0,
+          "speedPitch": 20.0,
+          "bullets": 2000,
+          "isBulletBelt": true,
+          "fireConeAngle": 15.0,
+          "ChainfireTime": 0.5,
+          "DelayAfterShoot": 2.0,
+          "accuracyAir": 1.5,
+          "accuracyGnd": 0.0,
+          "errMeasureVel": 0.0,
+          "errMeasureVelFast": 0.0,
+          "errMeasureVelFwdShift": 0.0,
+          "errMeasureVelDir": 0.0,
+          "errTargettingOn100kmph": 0.0,
+          "errTargetting": 3.0,
+          "errExplTime": 0.0,
+          "turret": {
+            "head": "bone_mg_aa_h_01",
+            "gun": "bone_mg_aa_v_01",
+            "gunnerDm": "commander_dm"
+          },
+          "limits": {
+            "yaw": [-10.0,23.0],
+            "pitch": [-60.0,60.0]
+          }
+        }
       }
     ]
   },
@@ -2886,6 +2940,45 @@
                   }
                 }
               ]
+            },
+            {
+              "Weapon": {
+                "trigger": "gunner2",
+                "triggerGroup": "machinegun",
+                "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
+                "emitter": "bone_mg_aa_h_01",
+                "flash": "emtr_mg_flame_03",
+                "rollOrientationDeg": 90.0,
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "barrelDP": "gun_barrel_02_dm",
+                "parkInDeadzone": false,
+                "speedYaw": 30.0,
+                "speedPitch": 20.0,
+                "bullets": 2000,
+                "isBulletBelt": true,
+                "fireConeAngle": 15.0,
+                "ChainfireTime": 0.5,
+                "DelayAfterShoot": 2.0,
+                "accuracyAir": 1.5,
+                "accuracyGnd": 0.0,
+                "errMeasureVel": 0.0,
+                "errMeasureVelFast": 0.0,
+                "errMeasureVelFwdShift": 0.0,
+                "errMeasureVelDir": 0.0,
+                "errTargettingOn100kmph": 0.0,
+                "errTargetting": 3.0,
+                "errExplTime": 0.0,
+                "turret": {
+                  "head": "bone_mg_aa_h_01",
+                  "gun": "bone_mg_aa_v_01",
+                  "gunnerDm": "commander_dm"
+                },
+                "limits": {
+                  "yaw": [-10.0,23.0],
+                  "pitch": [-60.0,60.0]
+                }
+              }
             },
             {
               "Weapon": {

@@ -344,18 +344,15 @@
       "size": [300.0,300.0],
       "line": "thin_line",
       "arrow": "map_arrow",
-      "outOfMapArrow": "arrow",
-      "outOfMapArrowScale": 0.6,
+      "outOfMapArrow": "arrow_mark.svg:15:18:K",
       "outOfMapArrowBorder": 5.0,
       "pattern": "ui/map_pattern_a",
-      "tankTurret": "map_player_tank_turret",
+      "playerIconTexUpscale": 2.0,
       "tankHull": "map_player_tank_hull",
       "mapCamera": "map_camera",
       "deadUnitIcon": "objective_kill",
       "deadUnitIconScale": 0.5,
       "captureZoneAlpha": 1.0,
-      "captureZoneIconMinScale": 0.3,
-      "captureZoneIconMaxScale": 0.3,
       "textOffset": [3.0,3.0],
       "gridColor": "#00000050",
       "fontColor": "#000000ff",
@@ -389,26 +386,26 @@
       "building": "objective_building",
       "bridge": "objective_bridge",
       "balloon": "objective_balloon",
-      "airfield": "objective_airfield",
+      "airfield": "objective_airfield.svg:45:25:K",
       "fighter": "objective_fighter",
       "bomber": "objective_bomber",
       "truck": "objective_truck",
-      "mark": "objective_mark",
+      "mark": "objective_mark.svg:21:21:K",
       "sunk_carrier": "objective_sunk_carrier",
-      "bomb_zone": "objective_bomb_zone",
-      "protect_zone": "objective_protect_zone",
-      "base": "objective_base",
-      "base_back": "objective_base_back",
-      "basezone": "objective_captureZone",
-      "basezone_A": "basezone_small_a",
-      "basezone_B": "basezone_small_b",
-      "basezone_C": "basezone_small_c",
-      "basezone_D": "basezone_small_d",
-      "capturezone": "waypoint_small_sec",
-      "capturezone_A": "capturezone_small_a",
-      "capturezone_B": "capturezone_small_b",
-      "capturezone_C": "capturezone_small_c",
-      "capturezone_D": "capturezone_small_d",
+      "bomb_zone": "bombingzone_small_side_axis.svg:21:27:K",
+      "protect_zone": "bombingzone_small_side_allies.svg:21:27:K",
+      "base": "objective_base.svg:28:28:K",
+      "base_back": "objective_base_back.svg:28:28:K",
+      "basezone": "objective_captureZone.svg:21:21:K",
+      "basezone_A": "basezone_small_mark_a.svg:21:21:K",
+      "basezone_B": "basezone_small_mark_b.svg:21:21:K",
+      "basezone_C": "basezone_small_mark_c.svg:21:21:K",
+      "basezone_D": "basezone_small_mark_d.svg:21:21:K",
+      "capturezone": "capturezone_small.svg:21:27:K",
+      "capturezone_A": "capturezone_small_mark_a.svg:21:27:K",
+      "capturezone_B": "capturezone_small_mark_b.svg:21:27:K",
+      "capturezone_C": "capturezone_small_mark_c.svg:21:27:K",
+      "capturezone_D": "capturezone_small_mark_d.svg:21:27:K",
       "icon_sos": "chat_icon_sos",
       "icon_attack": "chat_icon_attack",
       "icon_attacking": "chat_icon_attacking",
@@ -456,6 +453,7 @@
       "pixelRadius": 70,
       "expKoef": 0.9,
       "targetBlinkFreq": 1.0,
+      "unitIconTexUpscale": 2.0,
       "line": "thin_line",
       "bgd": "radar_bgd",
       "bgdMiles": "radar_bgd",
@@ -464,43 +462,47 @@
       "colorCamera": "#00ff3294",
       "compass": "compass",
       "colorCompass": "#00ff32ff",
-      "iconFighter": "fighter_radar",
-      "iconFighterTarget": "fighter_radar_target",
-      "iconBomber": "bomber_radar",
-      "iconBomberTarget": "bomber_radar_target",
-      "iconAssault": "assault_radar",
-      "iconAssaultTarget": "assault_radar_target",
-      "iconGround": "radar_object_land",
-      "iconGroundTarget": "radar_object_land_contour",
-      "iconLightTank": "light_tank_radar",
-      "iconLightTankTarget": "light_tank_radar_target",
-      "iconMediumTank": "medium_tank_radar",
-      "iconMediumTankTarget": "medium_tank_radar_target",
-      "iconHeavyTank": "heavy_tank_radar",
-      "iconHeavyTankTarget": "heavy_tank_radar_target",
-      "iconTankDestroyer": "tank_destroyer_radar",
-      "iconTankDestroyerTarget": "tank_destroyer_radar_target",
-      "iconSPAA": "spaa_radar",
-      "iconSPAATarget": "spaa_radar_target",
-      "iconAirport": "radar_object_airport",
-      "iconAirportTarget": "radar_object_airport_contour",
-      "iconAirdefence": "airdefence_radar",
-      "iconAirdefenceTarget": "airdefence_radar_target",
-      "iconShip": "ship_radar",
-      "iconShipTarget": "ship_radar_target",
-      "iconStructure": "structure_radar",
-      "iconStructureTarget": "structure_radar_target",
-      "iconTracked": "tracked_radar",
-      "iconTrackedTarget": "tracked_radar_target",
-      "iconWheeled": "wheeled_radar",
-      "iconWheeledTarget": "wheeled_radar_target",
-      "iconTorpedoBoat": "ship_radar",
-      "iconTorpedoBoatTarget": "ship_radar_target",
-      "iconBoat": "ship_radar",
-      "iconBoatTarget": "ship_radar_target",
+      "battleAreaPattern": "map_pattern_a",
+      "groundCZPattern": "map_pattern_b",
+      "airCZPattern": "map_pattern_c",
       "rearmZPattern": "map_pattern_c",
-      "iconPhysObj": "soccer_ball_radar",
-      "iconPhysObjTarget": "soccer_ball_radar",
+      "exitZPattern": "map_pattern_c",
+      "iconFighter": "def_fighter_radar.svg:11:11:K",
+      "iconFighterTarget": "def_fighter_radar_target.svg:13:13:K",
+      "iconBomber": "def_bomber_radar.svg:9:9:K",
+      "iconBomberTarget": "def_bomber_radar_target.svg:11:11:K",
+      "iconAssault": "def_assault_radar.svg:13:9:K",
+      "iconAssaultTarget": "def_assault_radar_target.svg:15:11:K",
+      "iconGround": "def_tracked_radar.svg:9:6:K",
+      "iconGroundTarget": "def_tracked_radar_target.svg:11:8:K",
+      "iconLightTank": "def_light_tank_radar.svg:11:6:K",
+      "iconLightTankTarget": "def_light_tank_radar_target.svg:13:8:K",
+      "iconMediumTank": "def_medium_tank_radar.svg:11:7:K",
+      "iconMediumTankTarget": "def_medium_tank_radar_target.svg:13:9:K",
+      "iconHeavyTank": "def_heavy_tank_radar.svg:11:9:K",
+      "iconHeavyTankTarget": "def_heavy_tank_radar_target.svg:13:11:K",
+      "iconTankDestroyer": "def_tank_destroyer_radar.svg:10:9:K",
+      "iconTankDestroyerTarget": "def_tank_destroyer_radar_target.svg:12:11:K",
+      "iconSPAA": "def_spaa_radar.svg:10:9:K",
+      "iconSPAATarget": "def_spaa_radar_target.svg:12:11:K",
+      "iconAirport": "def_airport_radar.svg:10:11:K",
+      "iconAirportTarget": "def_airport_radar_target.svg:12:13:K",
+      "iconAirdefence": "def_airdefence_radar.svg:10:9:K",
+      "iconAirdefenceTarget": "def_airdefence_radar_target.svg:12:11:K",
+      "iconShip": "def_ship_radar.svg:9:9:K",
+      "iconShipTarget": "def_ship_radar_target.svg:11:11:K",
+      "iconStructure": "def_structure_radar.svg:9:9:K",
+      "iconStructureTarget": "def_structure_radar_target.svg:11:11:K",
+      "iconTracked": "def_tracked_radar.svg:9:6:K",
+      "iconTrackedTarget": "def_tracked_radar_target.svg:11:8:K",
+      "iconWheeled": "def_wheeled_radar.svg:8:8:K",
+      "iconWheeledTarget": "def_wheeled_radar_target.svg:10:10:K",
+      "iconTorpedoBoat": "def_ship_radar.svg:9:9:K",
+      "iconTorpedoBoatTarget": "def_ship_radar_target.svg:11:11:K",
+      "iconBoat": "def_ship_radar.svg:9:9:K",
+      "iconBoatTarget": "def_ship_radar_target.svg:11:11:K",
+      "iconPhysObj": "soccer_ball_radar.svg:16:16:K",
+      "iconPhysObjTarget": "soccer_ball_radar.svg:16:16:K",
       "iconGradient": "circle_gradient",
       "iconGradientScale": 1.3,
       "iconGradientOpacity": 0.0,
@@ -521,9 +523,11 @@
       "colorBlink": "#fafa0094",
       "colorEnemyObjective": "#f01e00aa",
       "colorFriendObjective": "#052eff96",
-      "waypoint": "radar_object_waypoint",
-      "waypointAlly": "radar_object_waypoint_ally",
-      "waypointEnemy": "radar_object_waypoint_enemy",
+      "bombingZoneAlly": "bombingzone_small_side_allies.svg:14:18:K",
+      "bombingZoneEnemy": "bombingzone_small_side_axis.svg:14:18:K",
+      "waypoint": "radar_object_waypoint.svg:11:11:K",
+      "waypointAlly": "radar_object_waypoint_ally.svg:11:11:K",
+      "waypointEnemy": "radar_object_waypoint_enemy.svg:11:11:K",
       "radarCircle": "radar_circle",
       "radarMask": "radar_mask",
       "colorRadar": "#ffff00ff",
@@ -536,87 +540,89 @@
       "fontFxOffset": 1,
       "fontFxColor": "#00000064",
       "fontFxScale": 42,
-      "bombingZoneIconScale": 0.7,
-      "iconPlayer": "map_player",
+      "iconPlayer": "map_player.svg:19:32:K",
       "iconPlayerColor": "#ffffffff",
       "iconPlayerColorBlink": "#646464ff",
       "airfieldLineWidth": 2.0,
       "airfieldLineBorderWidth": 1.0,
       "airfieldLineMinLength": 12.0,
       "tankHudIcons": {
-        "iconLightTank": "big_light_tank_radar",
-        "iconLightTankTarget": "big_light_tank_radar_target",
-        "iconMediumTank": "big_medium_tank_radar",
-        "iconMediumTankTarget": "big_medium_tank_radar_target",
-        "iconHeavyTank": "big_heavy_tank_radar",
-        "iconHeavyTankTarget": "big_heavy_tank_radar_target",
-        "iconTankDestroyer": "big_tank_destroyer_radar",
-        "iconTankDestroyerTarget": "big_tank_destroyer_radar_target",
-        "iconSPAA": "big_spaa_radar",
-        "iconSPAATarget": "big_spaa_radar_target",
-        "iconAirdefence": "big_airdefence_radar",
-        "iconAirdefenceTarget": "big_airdefence_radar_target",
-        "iconShip": "big_ship_radar",
-        "iconShipTarget": "big_ship_radar_target",
-        "iconStructure": "big_structure_radar",
-        "iconStructureTarget": "big_structure_radar_target",
-        "iconTracked": "big_tracked_radar",
-        "iconTrackedTarget": "big_tracked_radar_target",
-        "iconWheeled": "big_wheeled_radar",
-        "iconWheeledTarget": "big_wheeled_radar_target",
-        "iconTorpedoBoat": "big_ship_radar",
-        "iconTorpedoBoatTarget": "big_ship_radar_target",
-        "iconBoat": "big_ship_radar",
-        "iconBoatTarget": "big_ship_radar_target"
+        "iconLightTank": "gnd_light_tank_radar.svg:13:7:K",
+        "iconLightTankTarget": "gnd_light_tank_radar_target.svg:15:9:K",
+        "iconMediumTank": "gnd_medium_tank_radar.svg:13:9:K",
+        "iconMediumTankTarget": "gnd_medium_tank_radar_target.svg:15:11:K",
+        "iconHeavyTank": "gnd_heavy_tank_radar.svg:13:11:K",
+        "iconHeavyTankTarget": "gnd_heavy_tank_radar_target.svg:15:13:K",
+        "iconTankDestroyer": "gnd_tank_destroyer_radar.svg:13:11:K",
+        "iconTankDestroyerTarget": "gnd_tank_destroyer_radar_target.svg:15:13:K",
+        "iconSPAA": "gnd_spaa_radar.svg:13:11:K",
+        "iconSPAATarget": "gnd_spaa_radar_target.svg:15:13:K",
+        "iconAirdefence": "gnd_airdefence_radar.svg:12:11:K",
+        "iconAirdefenceTarget": "gnd_airdefence_radar_target.svg:14:13:K",
+        "iconShip": "gnd_ship_radar.svg:11:11:K",
+        "iconShipTarget": "gnd_ship_radar_target.svg:13:13:K",
+        "iconStructure": "gnd_structure_radar.svg:11:11:K",
+        "iconStructureTarget": "gnd_structure_radar_target.svg:13:13:K",
+        "iconTracked": "gnd_tracked_radar.svg:11:7:K",
+        "iconTrackedTarget": "gnd_tracked_radar_target.svg:13:9:K",
+        "iconWheeled": "gnd_wheeled_radar.svg:10:10:K",
+        "iconWheeledTarget": "gnd_wheeled_radar_target.svg:12:12:K",
+        "iconTorpedoBoat": "gnd_ship_radar.svg:11:11:K",
+        "iconTorpedoBoatTarget": "gnd_ship_radar_target.svg:13:13:K",
+        "iconBoat": "gnd_ship_radar.svg:11:11:K",
+        "iconBoatTarget": "gnd_ship_radar_target.svg:13:13:K"
       },
       "mapIcons": {
-        "iconFighter": "pix_fighter_radar",
-        "iconFighterTarget": "pix_fighter_radar_target",
-        "iconBomber": "pix_bomber_radar",
-        "iconBomberTarget": "pix_bomber_radar_target",
-        "iconAssault": "pix_assault_radar",
-        "iconAssaultTarget": "pix_assault_radar_target",
-        "iconGround": "pix_light_tank_radar",
-        "iconGroundTarget": "pix_light_tank_radar_target",
-        "iconLightTank": "pix_light_tank_radar",
-        "iconLightTankTarget": "pix_light_tank_radar_target",
-        "iconMediumTank": "pix_medium_tank_radar",
-        "iconMediumTankTarget": "pix_medium_tank_radar_target",
-        "iconHeavyTank": "pix_heavy_tank_radar",
-        "iconHeavyTankTarget": "pix_heavy_tank_radar_target",
-        "iconTankDestroyer": "pix_tank_destroyer_radar",
-        "iconTankDestroyerTarget": "pix_tank_destroyer_radar_target",
-        "iconSPAA": "pix_spaa_radar",
-        "iconSPAATarget": "pix_spaa_radar_target",
-        "iconAirdefence": "pix_airdefence_radar",
-        "iconAirdefenceTarget": "pix_airdefence_radar_target",
-        "iconShip": "pix_ship_radar",
-        "iconShipTarget": "pix_ship_radar_target",
-        "iconStructure": "pix_structure_radar",
-        "iconStructureTarget": "pix_structure_radar_target",
-        "iconTracked": "pix_tracked_radar",
-        "iconTrackedTarget": "pix_tracked_radar_target",
-        "iconWheeled": "pix_wheeled_radar",
-        "iconWheeledTarget": "pix_wheeled_radar_target",
-        "iconTorpedoBoat": "pix_ship_radar",
-        "iconTorpedoBoatTarget": "pix_ship_radar_target",
-        "iconBoat": "pix_ship_radar",
-        "iconBoatTarget": "pix_ship_radar_target"
+        "iconFighter": "pix_fighter_radar.svg:11:11:K",
+        "iconFighterTarget": "pix_fighter_radar_target.svg:13:13:K",
+        "iconBomber": "pix_bomber_radar.svg:9:9:K",
+        "iconBomberTarget": "pix_bomber_radar_target.svg:11:11:K",
+        "iconAssault": "pix_assault_radar.svg:13:9:K",
+        "iconAssaultTarget": "pix_assault_radar_target.svg:15:11:K",
+        "iconGround": "pix_tracked_radar.svg:9:6:K",
+        "iconGroundTarget": "pix_tracked_radar_target.svg:11:8:K",
+        "iconLightTank": "pix_light_tank_radar.svg:13:7:K",
+        "iconLightTankTarget": "pix_light_tank_radar_target.svg:15:9:K",
+        "iconMediumTank": "pix_medium_tank_radar.svg:13:9:K",
+        "iconMediumTankTarget": "pix_medium_tank_radar_target.svg:15:11:K",
+        "iconHeavyTank": "pix_heavy_tank_radar.svg:13:11:K",
+        "iconHeavyTankTarget": "pix_heavy_tank_radar_target.svg:15:13:K",
+        "iconTankDestroyer": "pix_tank_destroyer_radar.svg:13:11:K",
+        "iconTankDestroyerTarget": "pix_tank_destroyer_radar_target.svg:15:13:K",
+        "iconSPAA": "pix_spaa_radar.svg:13:11:K",
+        "iconSPAATarget": "pix_spaa_radar_target.svg:15:13:K",
+        "iconAirdefence": "pix_airdefence_radar.svg:10:9:K",
+        "iconAirdefenceTarget": "pix_airdefence_radar_target.svg:12:11:K",
+        "iconShip": "pix_ship_radar.svg:11:11:K",
+        "iconShipTarget": "pix_ship_radar_target.svg:13:13:K",
+        "iconStructure": "pix_structure_radar.svg:9:9:K",
+        "iconStructureTarget": "pix_structure_radar_target.svg:11:11:K",
+        "iconTracked": "pix_tracked_radar.svg:9:6:K",
+        "iconTrackedTarget": "pix_tracked_radar_target.svg:11:8:K",
+        "iconWheeled": "pix_wheeled_radar.svg:8:8:K",
+        "iconWheeledTarget": "pix_wheeled_radar_target.svg:10:10:K",
+        "iconTorpedoBoat": "pix_ship_radar.svg:11:11:K",
+        "iconTorpedoBoatTarget": "pix_ship_radar_target.svg:13:13:K",
+        "iconBoat": "pix_ship_radar.svg:11:11:K",
+        "iconBoatTarget": "pix_ship_radar_target.svg:13:13:K"
       },
       "mapIconShadows": {
-        "iconFighter": "shadow_fighter_radar",
-        "iconBomber": "shadow_bomber_radar",
-        "iconAssault": "shadow_assault_radar",
-        "iconLightTank": "shadow_light_tank_radar",
-        "iconMediumTank": "shadow_medium_tank_radar",
-        "iconHeavyTank": "shadow_heavy_tank_radar",
-        "iconTankDestroyer": "shadow_tank_destroyer_radar",
-        "iconSPAA": "shadow_spaa_radar",
-        "iconAirdefence": "shadow_airdefence_radar",
-        "iconShip": "shadow_ship_radar",
-        "iconStructure": "shadow_structure_radar",
-        "iconTracked": "shadow_tracked_radar",
-        "iconWheeled": "shadow_wheeled_radar"
+        "iconFighter": "shadow_fighter_radar.svg:11:11:K",
+        "iconBomber": "shadow_bomber_radar.svg:9:9:K",
+        "iconAssault": "shadow_assault_radar.svg:13:9:K",
+        "iconGround": "shadow_tracked_radar.svg:9:6:K",
+        "iconLightTank": "shadow_light_tank_radar.svg:13:7:K",
+        "iconMediumTank": "shadow_medium_tank_radar.svg:13:9:K",
+        "iconHeavyTank": "shadow_heavy_tank_radar.svg:13:11:K",
+        "iconTankDestroyer": "shadow_tank_destroyer_radar.svg:13:11:K",
+        "iconSPAA": "shadow_spaa_radar.svg:13:11:K",
+        "iconAirdefence": "shadow_airdefence_radar.svg:10:9:K",
+        "iconShip": "shadow_ship_radar.svg:11:11:K",
+        "iconStructure": "shadow_structure_radar.svg:9:9:K",
+        "iconTracked": "shadow_tracked_radar.svg:9:6:K",
+        "iconWheeled": "shadow_wheeled_radar.svg:8:8:K",
+        "iconTorpedoBoat": "shadow_ship_radar.svg:11:11:K",
+        "iconBoat": "shadow_ship_radar.svg:11:11:K"
       }
     }
   },
@@ -1547,13 +1553,7 @@
         "hpProgressTextColor": "#e1ffffff"
       },
       {
-        "distanceIndicators": 1100.0
-      },
-      {
         "distanceSmallIndicators": 4500.0
-      },
-      {
-        "distanceFarAway": 9000.0
       },
       {
         "distancePreSpecifiedTarget": 1500.0
@@ -1563,6 +1563,9 @@
       },
       {
         "distanceFullySpecifiedTarget": 500.0
+      },
+      {
+        "distanceShowTitle": 1000.0
       },
       {
         "alphaNotLockedTarget": 0.75
@@ -1724,6 +1727,36 @@
         "colorSquadTargetIndicator": "#fafa08e6"
       },
       {
+        "iconOuterCaptureZone": "capturezone_big_ring.svg:132:168:K"
+      },
+      {
+        "iconRepairInProgressOuter": "capturezone_big_ring.svg:132:168:K"
+      },
+      {
+        "formatBasezoneBig": "basezone_big_mark_%c.svg:60:60:K"
+      },
+      {
+        "formatBasezoneSmall": "basezone_small_mark_%c.svg:21:21:K"
+      },
+      {
+        "formatCapturezoneBig": "capturezone_big_mark_%c.svg:75:75:K"
+      },
+      {
+        "formatCapturezoneSmall": "capturezone_small_mark_%c.svg:21:27:K"
+      },
+      {
+        "formatBasezoneSideBig": "basezone_big_%s_%d.svg:75:75:K"
+      },
+      {
+        "formatBasezoneSideSmall": "basezone_small_side_%s.svg:21:27:K"
+      },
+      {
+        "formatBombingzoneSideBig": "bombingzone_inner_%s.svg:75:75:K"
+      },
+      {
+        "formatBombingzoneSideSmall": "bombingzone_small_side_%s.svg:21:27:K"
+      },
+      {
         "iconMoving": "moving"
       },
       {
@@ -1763,9 +1796,6 @@
         "iconGroundSmallTarget": "target_land_small"
       },
       {
-        "iconWaypoint": "waypoint"
-      },
-      {
         "iconFarAway": "far_away_object"
       },
       {
@@ -1775,10 +1805,10 @@
         "iconTarget": "target_selected"
       },
       {
-        "iconWinch": "winch_icon"
+        "iconWinch": "winch_icon.svg:50:50:K"
       },
       {
-        "iconHitUnitIndicator": "hit_unit_icon"
+        "iconHitUnitIndicator": "hit_unit_icon.svg:17:24:K"
       },
       {
         "iconWwUnitIndicator": "big_bomber_radar"
@@ -1787,13 +1817,7 @@
         "iconWwMissionTargetUnitIndicator": "target_unit_icon"
       },
       {
-        "iconRearmZone": "icon_weapons_in_progress"
-      },
-      {
         "iconRearmZoneSmall": "icon_weapons_in_progress"
-      },
-      {
-        "iconExitZone": "objective_base_exit"
       },
       {
         "iconScoutBinocular": "binocular"
@@ -1802,10 +1826,7 @@
         "iconExitZoneSmall": "objective_base_exit"
       },
       {
-        "iconBreach": "icon_repair_in_progress"
-      },
-      {
-        "iconBreachLeft": "waypoint_big"
+        "iconRepairInProgress": "icon_repair_in_progress.svg:50:50:K"
       },
       {
         "iconLeakage": "leaking_icon"
@@ -1889,10 +1910,10 @@
         "maxRocketDistanceIndicator": 3500.0
       },
       {
-        "iconMissile": "objective_captureZone_next_default"
+        "iconMissile": "objective_captureZone_next_default.svg:21:21:K"
       },
       {
-        "iconRocket": "objective_captureZone_next_default"
+        "iconRocket": "objective_captureZone_next_default.svg:21:21:K"
       },
       {
         "maxRocketDistanceIndicator": 300.0
@@ -1904,19 +1925,19 @@
         "scaleRocket": 1.0
       },
       {
-        "iconCounterMeasure": "anti_acoustic_mark"
+        "iconCounterMeasure": "anti_acoustic_mark.svg:50:50:K"
       },
       {
         "colorCounterMeasure": "#ffffffff"
       },
       {
-        "iconDiveBomb": "depth_charge_mark"
+        "iconDiveBomb": "depth_charge_mark.svg:38:38:K"
       },
       {
         "colorDiveBomb": "#ff4646ff"
       },
       {
-        "iconMine": "naval_mine_mark"
+        "iconMine": "naval_mine_mark.svg:38:38:K"
       },
       {
         "colorMine": "#ff4646ff"
@@ -1946,28 +1967,13 @@
         "markerVerticalShiftScreenMax": 8.0
       },
       {
-        "iconWpPrimBig": "waypoint_big_prim"
+        "iconWpPrimInner": "waypoint_big.svg:75:75:K"
       },
       {
-        "iconWpPrimSmall": "waypoint_small_prim"
+        "iconWpPrimSmall": "waypoint_small_prim.svg:21:27:K"
       },
       {
-        "iconWpPrimBigLos": "waypoint_big_prim_los"
-      },
-      {
-        "iconWpPrimSmallLos": "waypoint_small_prim_los"
-      },
-      {
-        "iconWpSecBig": "waypoint_big_sec"
-      },
-      {
-        "iconWpSecSmall": "waypoint_small_sec"
-      },
-      {
-        "iconWpSecBigLos": "waypoint_big_sec_los"
-      },
-      {
-        "iconWpSecSmallLos": "waypoint_small_sec_los"
+        "iconWpSecSmall": "waypoint_small_sec.svg:21:27:K"
       },
       {
         "wpSmallIconsDist": 5000.0
@@ -2087,18 +2093,6 @@
         "tankHudIndicatorAlpha": 140
       },
       {
-        "tankHudIconScaleNear": 0.7
-      },
-      {
-        "tankHudIconScaleFar": 0.7
-      },
-      {
-        "tankHudIconDistNear": 200.0
-      },
-      {
-        "tankHudIconDistFar": 1000.0
-      },
-      {
         "squadTargetGroundIndicatorScale": 1.0
       },
       {
@@ -2111,8 +2105,30 @@
         "airfieldIndicatorHeight": 50.0
       },
       {
+        "indicatorsCommon": {
+          "distanceSmallIndicators": 4500.0,
+          "distancePreSpecifiedTarget": 1500.0,
+          "distanceSpecifiedTarget": 1200.0,
+          "distanceFullySpecifiedTarget": 500.0,
+          "distanceShowTitle": 1000.0
+        }
+      },
+      {
         "indicatorsForTanks": {
-          "distanceFullySpecifiedTarget": 50.0
+          "distanceSmallIndicators": 4500.0,
+          "distancePreSpecifiedTarget": 1500.0,
+          "distanceSpecifiedTarget": 1200.0,
+          "distanceFullySpecifiedTarget": 50.0,
+          "distanceShowTitle": 75.0
+        }
+      },
+      {
+        "indicatorsForShips": {
+          "distanceSmallIndicators": 7500.0,
+          "distancePreSpecifiedTarget": 7500.0,
+          "distanceSpecifiedTarget": 5000.0,
+          "distanceFullySpecifiedTarget": 1000.0,
+          "distanceShowTitle": 500.0
         }
       },
       {
@@ -2551,13 +2567,16 @@
       "respawnBasesOffset": 1.0,
       "respawnBasesOffsetY": 6.0,
       "distanceToCurAirfield": [2000.0,2100.0],
-      "iconAirfield": "mp_airfield_color",
-      "iconAirfieldCur": "mp_airfield_current",
-      "iconAirfieldBgd": "mp_airfield_stroke",
-      "iconAllies": "mp_capturezone_allies",
-      "iconAxis": "mp_capturezone_axis",
-      "progressBar": "mp_gauge",
-      "progressBarArrow": "mp_gauge_background",
+      "iconAirfield": "mp_airfield_color.svg:18:18:K",
+      "iconAirfieldCur": "mp_airfield_current.svg:18:18:K",
+      "iconAirfieldBgd": "mp_airfield_stroke.svg:18:18:K",
+      "iconBasezoneBgd": "mp_basezone_stroke.svg:18:18:K",
+      "iconAllies": "mp_capturezone_side_allies.svg:18:18:K",
+      "iconAxis": "mp_capturezone_side_axis.svg:18:18:K",
+      "iconCapturezoneFmt": "mp_capturezone_mark_%c.svg:18:18:K",
+      "iconBasezoneFmt": "mp_basezone_mark_%c.svg:18:18:K",
+      "progressBar": "mp_gauge.svg:200:8:K",
+      "progressBarArrow": "mp_gauge_background.svg:205:12:K",
       "captureZoneIconBlinkingAlpha": 170,
       "captureZoneIconBlinkingScale": 1.5
     }
@@ -2966,6 +2985,11 @@
           }
         },
         {
+          "mine_activate": {
+            "shortcutIdx": -1
+          }
+        },
+        {
           "mortar_activate": {
             "shortcutIdx": -1
           }
@@ -3076,6 +3100,11 @@
           }
         }
       ]
+    }
+  },
+  {
+    "artilleryRequests": {
+      "requestIcon": "artillery_request.svg:54:98:K"
     }
   },
   {

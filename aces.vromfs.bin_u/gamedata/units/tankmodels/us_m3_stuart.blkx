@@ -165,6 +165,19 @@
           "armorThickness": 44.4
         }
       },
+      "body_screens": {
+        "armorClass": "tank_structural_steel",
+        "hp": 100.0,
+        "armorThickness": 4.0,
+        "stopChanceOnDeadPart": 0.0,
+        "createSecondaryShatters": false,
+        "ex_decor_l_01_dm": [],
+        "ex_decor_r_01_dm": [],
+        "ex_decor_l_04_dm": [],
+        "ex_decor_r_04_dm": [],
+        "ex_decor_l_09_dm": [],
+        "ex_decor_r_09_dm": []
+      },
       "optics": {
         "armorClass": "optics_tank",
         "optic_gun_dm": {
@@ -208,12 +221,6 @@
         "armorClass": "tank_steel_wheels",
         "hp": 250.0,
         "armorThickness": 15.0,
-        "ex_decor_l_01_dm": [],
-        "ex_decor_r_01_dm": [],
-        "ex_decor_l_04_dm": [],
-        "ex_decor_r_04_dm": [],
-        "ex_decor_l_09_dm": [],
-        "ex_decor_r_09_dm": [],
         "wheel_r_01_dm": [],
         "wheel_r_02_dm": [],
         "wheel_r_03_dm": [],
@@ -620,6 +627,12 @@
     }
   },
   {
+    "attachables": {
+      "ex_decor_l_09_dm": true,
+      "ex_decor_r_09_dm": true
+    }
+  },
+  {
     "sound": {
       "EngineName": "engine_stuart_m5a",
       "TrackSoundPath": "tanks/engines_tanks",
@@ -788,6 +801,21 @@
           },
           {
             "name": "ammo_body_50_dm"
+          },
+          {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
           },
           {
             "name": "ammo_body_l_01_dm"
@@ -1621,37 +1649,6 @@
     }
   },
   {
-    "MetaParts": {
-      "crew": [
-        {
-          "killAllPartsForDeath": true
-        },
-        {
-          "killNumPartsForDeath": 3
-        },
-        {
-          "part": "gunner_dm"
-        },
-        {
-          "part": "driver_dm"
-        },
-        {
-          "part": "loader_dm"
-        },
-        {
-          "part": "machine_gunner_dm"
-        },
-        {
-          "effects": {
-            "killUnit": {
-              "nothing": 1.0
-            }
-          }
-        }
-      ]
-    }
-  },
-  {
     "gunConvergence": {
       "distance": 400.0,
       "vertical": true,
@@ -1717,7 +1714,7 @@
             "horizontalSpeedLimitKPH": 50.0,
             "hasVertical": true,
             "verticalOmegaMult": 0.7,
-            "verticalSpeedLimitKPH": 16.0,
+            "verticalSpeedLimitKPH": 24.0,
             "speedFromVehicleVerticalMult": -1.0,
             "errorKPHToDegrees": [
               {

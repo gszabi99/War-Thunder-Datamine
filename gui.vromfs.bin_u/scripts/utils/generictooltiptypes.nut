@@ -1,14 +1,16 @@
 local enums = require("sqStdlibs/helpers/enums.nut")
 local workshop = require("scripts/items/workshop/workshop.nut")
-local skinLocations = require("scripts/customization/skinLocations.nut")
 local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
 local { getSkillCategoryByName } = require("scripts/crew/crewSkills.nut")
 local { getSkillCategoryTooltipContent } = require("scripts/crew/crewSkillsView.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
+local { getFakeBulletsModByName } = require("scripts/weaponry/bulletsInfo.nut")
 local { updateModType,
         getTierDescTbl,
         updateSpareType,
         updateWeaponTooltip } = require("scripts/weaponry/weaponryVisual.nut")
+local { updateDecoratorDescription } = require("scripts/customization/decoratorDescription.nut")
 
 ::g_tooltip_type <- {
   types = []
@@ -138,153 +140,9 @@ enums.addTypesByGlobalName("g_tooltip_type", {
       if (!decorator)
         return false
 
-      local unlockId = ::getTblValue("unlockId", decorator)
+      obj.getScene().replaceContent(obj, "gui/customization/decalTooltip.blk", handler)
 
-      local config = null
-      local unlockBlk = g_unlocks.getUnlockById(unlockId)
-      if (unlockBlk)
-      {
-        config = ::build_conditions_config(unlockBlk)
-        ::build_unlock_desc(config)
-      }
-
-      obj.getScene().replaceContent(obj, "gui/decalTooltip.blk", handler)
-
-      local iObj = obj.findObject("image")
-      local img = decoratorType.getImage(decorator)
-      iObj["background-image"] = img
-
-      if (img != "")
-      {
-        local imgRatio = decoratorType.getRatio(decorator)
-        local iDivObj = iObj.getParent()
-        iDivObj.height = ::format("%d*@decalIconHeight", ((imgRatio < 3) ? 2 : 1))
-        iDivObj.width  = imgRatio + "h"
-        iDivObj.show(true)
-      }
-
-      local header = decorator.getName()
-      obj.findObject("header").setValue(header)
-
-      local desc = decorator.getDesc()
-      if (::getTblValue("isRevenueShare", config))
-        desc += (desc.len() ? "\n" : "") + ::colorize("advertTextColor", ::loc("content/revenue_share"))
-
-      desc += (desc.len() ? "\n\n" : "") + decorator.getTypeDesc()
-      local paramsDesc = decorator.getLocParamsDesc()
-      if (paramsDesc != "")
-        desc += (desc.len() ? "\n" : "") + paramsDesc
-
-      local restricionsDesc = decorator.getRestrictionsDesc()
-      if (restricionsDesc.len())
-        desc += (desc.len() ? "\n" : "") + restricionsDesc
-
-      if (decoratorType == ::g_decorator_type.SKINS && ::isTank(::getAircraftByName(::g_unlocks.getPlaneBySkinId(id))))
-      {
-        local mask = skinLocations.getSkinLocationsMaskBySkinId(id, false)
-        local locations = mask ? skinLocations.getLocationsLoc(mask) : []
-        if (locations.len())
-          desc += (desc.len() ? "\n" : "") + ::loc("camouflage/for_environment_conditions") +
-            ::loc("ui/colon") + ::g_string.implode(locations, ", ")
-      }
-
-      local tags = decorator.getTagsLoc()
-      if (tags.len())
-      {
-        tags = ::u.map(tags, @(txt) ::colorize("activeTextColor", txt))
-        desc += (desc.len() ? "\n\n" : "") + ::loc("ugm/tags") + ::loc("ui/colon") + ::g_string.implode(tags, ::loc("ui/comma"))
-      }
-
-      local warbondId = ::getTblValue("wbId", params)
-      if (warbondId)
-      {
-        local warbond = ::g_warbonds.findWarbond(warbondId, ::getTblValue("wbListId", params))
-        local award = warbond? warbond.getAwardById(id) : null
-        if (award)
-          desc = award.addAmountTextToDesc(desc)
-      }
-      obj.findObject("description").setValue(desc)
-
-      local isDefaultSkin = ::g_unlocks.isDefaultSkin(id)
-      local isTrophyContent  = params?.showAsTrophyContent ?? false
-      local isReceivedPrizes = params?.receivedPrizes      ?? false
-
-      local canBuy = false
-      local isAllowed = decoratorType.isPlayerHaveDecorator(id)
-      if (!isAllowed)
-      {
-        local cost = decorator.getCost()
-        if (!isTrophyContent && !isReceivedPrizes && !cost.isZero())
-        {
-          canBuy = true
-          local aObj = ::showBtn("price", true, obj)
-          if (::checkObj(aObj))
-            aObj.setValue(::loc("ugm/price") + ::loc("ui/colon") + ::colorize("white", cost.getTextAccordingToBalance()))
-        }
-      }
-
-      local canFindOnMarketplace = !isAllowed && decorator.getCouponItemdefId() != null
-
-      /*
-      //is decal acces text really need here? it very custom by chosen unit.
-      //and why we dont have same texts for skins?
-      local decalAccess = (type == ::UNLOCKABLE_DECAL) ? getDecalAccessData(id) : ""
-      if (decalAccess != "")
-      {
-        local aObj = obj.findObject("rectriction")
-        aObj.setValue("<color=@badTextColor>" + decalAccess + "</color>")
-        aObj.show(true)
-      }
-      */
-
-      //fill unlock info
-      local cObj = obj.findObject("conditions")
-      cObj.show(true)
-
-      local iconName = isDefaultSkin ? ""
-        : isAllowed ? "favorite"
-        : "locked"
-
-      local canShowProgress = !isTrophyContent && !isReceivedPrizes
-      local conditionsText = canShowProgress && config ?
-        ::UnlockConditions.getConditionsText(config.conditions, config.curVal, config.maxVal) : ""
-
-      if (!isDefaultSkin && conditionsText == "")
-      {
-        if (isAllowed)
-        {
-          conditionsText = ::loc("mainmenu/itemReceived")
-          if (isTrophyContent && !isReceivedPrizes)
-            conditionsText += "\n" + ::colorize("badTextColor",
-              ::loc(params?.relatedItem ? "mainmenu/activateOnlyOnce" : "mainmenu/receiveOnlyOnce"))
-        }
-        else if (isTrophyContent)
-          conditionsText = ::loc("mainmenu/itemCanBeReceived")
-        else if (canBuy)
-          conditionsText = ::loc("shop/object/can_be_purchased")
-        else if (canFindOnMarketplace)
-          conditionsText = ::loc("shop/object/can_be_found_on_marketplace")
-        else
-          conditionsText = ::loc("multiplayer/notAvailable")
-      }
-
-      local dObj = cObj.findObject("unlock_description")
-      dObj.setValue(conditionsText)
-
-      if (!isAllowed && canShowProgress && config)
-      {
-        local progressData = config.getProgressBarData()
-        if (progressData.show)
-        {
-          local pObj = cObj.findObject("progress")
-          pObj.setValue(progressData.value)
-          pObj.show(true)
-        }
-      }
-
-      if (iconName != "")
-        iconName = ::format("#ui/gameuiskin#%s", iconName)
-      cObj.findObject("state")["background-image"] = iconName
+      updateDecoratorDescription(obj, handler, decoratorType, decorator, params)
       return true
     }
   }
@@ -514,7 +372,7 @@ enums.addTypesByGlobalName("g_tooltip_type", {
         return false
 
       local modName = ::getTblValue("modName", params, "")
-      local mod = ::getModificationByName(unit, modName, true)
+      local mod = getModificationByName(unit, modName) ?? getFakeBulletsModByName(unit, modName)
       if (!mod)
         return false
 
@@ -726,8 +584,8 @@ enums.addTypesByGlobalName("g_tooltip_type", {
   }
 
   TIER = {
-    getTooltipId = @(unitName, weaponry, presetName)
-      _buildId(unitName, {weaponry = weaponry, presetName = presetName })
+    getTooltipId = @(unitName, weaponry, presetName, tierId)
+      _buildId(unitName, {weaponry = weaponry, presetName = presetName , tierId = tierId})
 
     isCustomTooltipFill = true
     fillTooltip = function(obj, handler, unitName, params)
@@ -739,7 +597,7 @@ enums.addTypesByGlobalName("g_tooltip_type", {
       if (!unit)
         return false
       local data = ::handyman.renderCached(("gui/weaponry/weaponTooltip"),
-        getTierDescTbl(unit, params.weaponry, params.presetName))
+        getTierDescTbl(unit, params.weaponry, params.presetName, params.tierId))
       obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
 
       return true

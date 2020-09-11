@@ -228,8 +228,7 @@
         "turret_04_front_dm": {
           "armorThickness": 80.0,
           "cumulativeArmorQuality": 0.15,
-          "genericArmorQuality": 4.0,
-          "armorEffectiveThicknessMax": 350.0
+          "genericArmorQuality": 3.5
         },
         "turret_04_side_dm": {
           "armorThickness": 45.0,
@@ -338,8 +337,8 @@
           "createSecondaryShatters": false
         },
         "turret_09_top_dm": {
-          "armorThickness": 150.0,
-          "armorClass": "CHA_tank_modern"
+          "armorThickness": 35.0,
+          "armorClass": "RHA_tank_modern"
         },
         "turret_04_back_dm": {
           "armorThickness": 35.0,
@@ -352,9 +351,8 @@
           "armorClass": "CHA_tank_modern"
         },
         "turret_09_back_dm": {
-          "armorThickness": 90.0,
-          "armorEffectiveThicknessMax": 90.0,
-          "armorClass": "CHA_tank_modern"
+          "armorThickness": 35.0,
+          "armorClass": "RHA_tank_modern"
         },
         "turret_09_bottom_dm": {
           "armorThickness": 20.0,
@@ -386,10 +384,12 @@
           "armorEffectiveThicknessMax": 50.0
         },
         "composite_armor_turret_04_dm": {
-          "armorThickness": 35.0
+          "armorThickness": 35.0,
+          "armorClass": "spaced_armor_air"
         },
         "composite_armor_turret_07_dm": {
-          "armorThickness": 35.0
+          "armorThickness": 35.0,
+          "armorClass": "spaced_armor_air"
         }
       },
       "hull_turret_spaced_armor": {
@@ -1144,6 +1144,21 @@
           },
           {
             "name": "ammo_body_50_dm"
+          },
+          {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
           },
           {
             "name": "ammo_body_l_01_dm"
@@ -1974,6 +1989,18 @@
     }
   },
   {
+    "fuelTanks": {
+      "r1": {
+        "part": "fuel_tank_exterior_r_02_dm",
+        "external": true
+      },
+      "l1": {
+        "part": "fuel_tank_exterior_l_02_dm",
+        "external": true
+      }
+    }
+  },
+  {
     "xray_viewer_data": [
       {
         "armorArrayHullTop": {
@@ -2069,7 +2096,8 @@
           "armorArrayText": [
             {
               "layer": {
-                "dmPart": "turret_03_bottom_dm"
+                "dmPart": "turret_03_bottom_dm",
+                "xrayTextThickness": 35.0
               }
             },
             {
@@ -2091,7 +2119,8 @@
           "armorArrayText": [
             {
               "layer": {
-                "dmPart": "turret_03_bottom_dm"
+                "dmPart": "turret_03_bottom_dm",
+                "xrayTextThickness": 35.0
               }
             },
             {
@@ -2113,7 +2142,8 @@
           "armorArrayText": [
             {
               "layer": {
-                "dmPart": "turret_03_bottom_dm"
+                "dmPart": "turret_03_bottom_dm",
+                "xrayTextThickness": 35.0
               }
             },
             {
@@ -2142,6 +2172,11 @@
             {
               "layer": {
                 "dmPart": "composite_armor_turret_04_dm"
+              }
+            },
+            {
+              "layer": {
+                "dmPart": "turret_09_back_dm"
               }
             }
           ]
@@ -2182,6 +2217,11 @@
             {
               "layer": {
                 "dmPart": "composite_armor_turret_04_dm"
+              }
+            },
+            {
+              "layer": {
+                "dmPart": "turret_09_top_dm"
               }
             }
           ]
@@ -3096,7 +3136,7 @@
           "barrelDP": "gun_barrel_dm",
           "breechDP": "cannon_breech_dm",
           "speedYaw": 40.0,
-          "speedPitch": 40.0,
+          "speedPitch": 20.0,
           "fireConeAngle": 1.0,
           "bullets": 42,
           "salvoAmount": 100.0,
@@ -3137,7 +3177,6 @@
             "verticalOmegaMult": 1.0,
             "verticalSpeedLimitKPH": 75.0,
             "speedFromVehicleVerticalMult": -1.0,
-            "speedPitch": 20.0,
             "errorKPHToDegrees": [
               {
                 "row": [5.0,0.0]
@@ -3353,7 +3392,7 @@
                 "barrelDP": "gun_barrel_dm",
                 "breechDP": "cannon_breech_dm",
                 "speedYaw": 40.0,
-                "speedPitch": 40.0,
+                "speedPitch": 20.0,
                 "fireConeAngle": 1.0,
                 "bullets": 42,
                 "salvoAmount": 100.0,
@@ -3394,7 +3433,6 @@
                   "verticalOmegaMult": 1.0,
                   "verticalSpeedLimitKPH": 75.0,
                   "speedFromVehicleVerticalMult": -1.0,
-                  "speedPitch": 20.0,
                   "errorKPHToDegrees": [
                     {
                       "row": [5.0,0.0]

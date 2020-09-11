@@ -1,3 +1,5 @@
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+
 return [
 //-------------------------------------------------------
   {
@@ -36,7 +38,7 @@ return [
     checkGroup = ctrlGroups.NO_GROUP
     checkAssign = false
     showFunc = @() ::has_feature("EnableMouse")
-    condition = @() ::is_platform_pc || ::is_ps4_or_xbox
+    condition = @() ::is_platform_pc || isPlatformSony || isPlatformXboxOne
   }
   {
     id = "ID_SCREENSHOT"

@@ -2,13 +2,14 @@ local interopGen = require("daRg/helpers/interopGen.nut")
 
 local warningSystemState = {
   IsTwsHudVisible = Watched(false),
-  LastTargetAge = Watched(0.0),
+  LastTargetAge = Watched(1.0),
   CurrentTime = Watched(0.0),
   mlwsTargets = [],
   mlwsTargetsTriggers = Watched(0),
   SignalHoldTimeInv = Watched(0.0),
   lwsTargets = [],
   lwsTargetsTriggers = Watched(0)
+  EnableBackGroundColor = Watched(false)
 }
 
 ::interop.clearMlwsTargets <- function() {

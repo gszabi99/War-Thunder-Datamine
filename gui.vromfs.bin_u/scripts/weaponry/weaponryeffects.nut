@@ -194,7 +194,7 @@ enums.addTypes(effectsType, [
   { id = "elevThrSpd",             preset = "SPEED" }
 
   { id = "horsePowers",             measureType = "hp", presize = 0.1
-    canShowForUnit = @(unit) !isTank(unit) || ::has_feature("TankModEffect")
+    canShowForUnit = @(unit) !unit?.isTank() || ::has_feature("TankModEffect")
     getLocId = function(unit, effects) {
       local key = effects?.modifName == "new_tank_transmission" ? "horsePowersTransmission" : "horsePowers"
       return "modification/" + key + "_change"
@@ -298,8 +298,9 @@ enums.addTypes(effectsType, [
   { id = "aaSpeedPitchK",          preset = "PERCENT_FLOAT"
     canShowForUnit = @(unit) ::has_feature("Ships")
   }
-  { id = "shipDistancePrecision",  preset = "PERCENT_FLOAT"
+  { id = "shipDistancePrecision",  measureType = "percent"
     canShowForUnit = @(unit) ::has_feature("Ships")
+    validateValue = @(value) -100.0 * value
   }
   { id = "turnRadius",             preset = "PERCENT_FLOAT", isInverted = true
     canShowForUnit = @(unit) ::has_feature("Ships")

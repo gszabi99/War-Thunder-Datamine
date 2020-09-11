@@ -1,6 +1,8 @@
 local enums = ::require("sqStdlibs/helpers/enums.nut")
 local stdMath = require("std/math.nut")
-local { WEAPON_TYPE } = require("scripts/weaponry/weaponryInfo.nut")
+local { WEAPON_TYPE,
+        getLinkedGunIdx,
+        getWeaponNameByBlkPath } = require("scripts/weaponry/weaponryInfo.nut")
 local { getBulletsList,
         getBulletsSetData,
         getBulletsSearchName,
@@ -246,7 +248,7 @@ options.addTypes({
 
       for (local groupIndex = 0; groupIndex < getLastFakeBulletsIndex(unit); groupIndex++)
       {
-        local gunIdx = ::get_linked_gun_index(groupIndex, groupsCount, unit.unitType.bulletSetsQuantity, false)
+        local gunIdx = getLinkedGunIdx(groupIndex, groupsCount, unit.unitType.bulletSetsQuantity, false)
         if (gunIdx == curGunIdx)
           continue
 
@@ -347,7 +349,7 @@ options.addTypes({
             })
 
             items.append({
-              text = ::g_string.utf8ToUpper(::loc("weapons/{0}".subst(::get_weapon_name_by_blk_path(weaponBlkPath))), 1)
+              text = ::g_string.utf8ToUpper(::loc("weapons/{0}".subst(getWeaponNameByBlkPath(weaponBlkPath))), 1)
               addDiv = ::g_tooltip_type.WEAPON.getMarkup(unit.name, presetName, {
                 hasPlayerInfo = false,
                 weaponBlkPath = weaponBlkPath,

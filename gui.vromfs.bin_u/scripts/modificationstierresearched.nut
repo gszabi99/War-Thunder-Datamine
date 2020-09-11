@@ -1,3 +1,5 @@
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
+
 ::gui_start_mod_tier_researched <- function gui_start_mod_tier_researched(config)
 {
   foreach(param, value in config)
@@ -60,7 +62,7 @@ class ::gui_handlers.ModificationsTierResearched extends ::gui_handlers.BaseGuiH
 
       local imagePath = ::get_country_flag_img(imageId)
       if (imagePath == "")
-        imagePath = "#ui/images/elite_" + (::isTank(unit)? "tank" : "vehicle") + "_revard.jpg?P1"
+        imagePath = "#ui/images/elite_" + (unit?.isTank()? "tank" : "vehicle") + "_revard.jpg?P1"
 
       imgObj["background-image"] = imagePath
     }
@@ -115,7 +117,7 @@ class ::gui_handlers.ModificationsTierResearched extends ::gui_handlers.BaseGuiH
       postCustomConfig = {
         requireLocalization = ["unitName", "country"]
         unitName = unit.name + "_shop"
-        rank = ::get_roman_numeral(::getUnitRank(unit))
+        rank = ::get_roman_numeral(unit?.rank ?? -1)
         country = ::getUnitCountry(unit)
         link = ::format(::loc("url/wiki_objects"), unit.name)
       }
@@ -137,7 +139,7 @@ class ::gui_handlers.ModificationsTierResearched extends ::gui_handlers.BaseGuiH
   {
     ::broadcastEvent("UpdateResearchingUnit", { unitName = unitInResearch })
     ::checkNonApprovedResearches(true)
-    if (::is_platform_ps4 && postConfig && postCustomConfig)
+    if (isPlatformSony && postConfig && postCustomConfig)
       ::prepareMessageForWallPostAndSend(postConfig, postCustomConfig, bit_activity.PS4_ACTIVITY_FEED)
   }
 }

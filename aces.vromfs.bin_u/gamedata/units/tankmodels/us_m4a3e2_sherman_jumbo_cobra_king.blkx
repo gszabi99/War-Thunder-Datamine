@@ -869,6 +869,21 @@
             "name": "ammo_body_50_dm"
           },
           {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
+          },
+          {
             "name": "ammo_body_l_01_dm"
           },
           {
@@ -2856,7 +2871,7 @@
             "horizontalSpeedLimitKPH": 50.0,
             "hasVertical": true,
             "verticalOmegaMult": 0.7,
-            "verticalSpeedLimitKPH": 16.0,
+            "verticalSpeedLimitKPH": 24.0,
             "speedFromVehicleVerticalMult": -1.0,
             "errorKPHToDegrees": [
               {
@@ -3010,36 +3025,27 @@
     }
   },
   {
-    "default_skin": {
-      "name": "default",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_olive_late*"
+    "default_skin": [
+      {
+        "replace_tex": {
+          "from": "us_camo_olive*",
+          "to": "us_camo_olive_late*"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "m4a3e2_sherman_jumbo_body_c*",
+          "to": "m4a3e2_sherman_jumbo_king_body_c*",
+          "param": "camo_skin_tex"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "m4a3e2_sherman_jumbo_turret_c*",
+          "to": "m4a3e2_sherman_jumbo_king_turret_c*",
+          "param": "camo_skin_tex"
+        }
       }
-    }
-  },
-  {
-    "defaultDecals": {
-      "decal0Line0": [2.5,-1.09278e-07,0.0,0.550597],
-      "decal0Line1": [-4.37114e-07,-10.0,0.0,13.1627],
-      "decal0HaveCP": true,
-      "decal0CP": [1.31571,1.43639,-0.135426],
-      "decal0CPNormDepth": [0.0,0.0,-1.0,-1.32251],
-      "decal0RotScale": [1.5708,0.1],
-      "decal0Mirrored": false,
-      "decal0Wrap": false,
-      "decal0Abs": true,
-      "decal0Tex": "usa_text_cobra_king",
-      "decal1Line0": [-0.480769,-2.10151e-08,0.0,0.79854],
-      "decal1Line1": [8.40604e-08,-1.92308,0.0,3.46942],
-      "decal1HaveCP": true,
-      "decal1CP": [-1.26335,1.71422,0.733865],
-      "decal1CPNormDepth": [0.0,0.0,1.0,-1.32251],
-      "decal1RotScale": [1.5708,0.52],
-      "decal1Mirrored": false,
-      "decal1Wrap": false,
-      "decal1Abs": false,
-      "decal1Tex": "usa_text_first_in_bastogne"
-    }
+    ]
   }
 ]

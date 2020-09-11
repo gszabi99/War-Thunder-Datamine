@@ -420,6 +420,7 @@
     "eventWind": "plane_passby",
     "eventWindJet": "jet_plane_passby",
     "eventWreck": "wreck_explosion",
+    "eventWreckCockpit": "wreck_explosion_cockpit",
     "eventPartsExplosion": "parts_explosion",
     "eventPlayerWind": "wind",
     "eventStuntPerformed": "bonus",
@@ -461,7 +462,7 @@
     "eventTireScreech": "tire_screech",
     "eventVibrationOverload": "vibration_overload",
     "eventWreckScrape": "wreck_scrape",
-    "bulletPassByRadius": 80.0,
+    "bulletPassByRadius": 18.0,
     "eventBulletHitShipMgun": "hit_mgun",
     "eventBulletHitShipSmall": "hit_small",
     "eventBulletHitShipMid": "hit_mid",
@@ -515,7 +516,9 @@
     "torpedo_explosion_unit": "torpedo_explosion_unit",
     "torpedo_explosion_ship": "torpedo_explosion_unit",
     "plane_explosion_air": "parts_explosion",
+    "plane_explosion_air_cockpit": "parts_explosion_cockpit",
     "plane_explosion_water": "plane_explosion_water",
+    "plane_explosion_water_cockpit": "plane_explosion_water_cockpit",
     "explosion_big_ship": "explosion_naval",
     "explosion_suit_destroyed": "suit_destroyed"
   },
@@ -7611,6 +7614,34 @@
           "delayTime": 0.7,
           "minSpeechInterval": 5.0
         },
+        "mineInView": {
+          "event": "voice_message_mine",
+          "playerRole": "sailor",
+          "player": 1,
+          "delayTime": 0.7,
+          "minSpeechInterval": 5.0
+        },
+        "mineInViewLeft": {
+          "event": "voice_message_mine_left",
+          "playerRole": "sailor",
+          "player": 1,
+          "delayTime": 0.7,
+          "minSpeechInterval": 5.0
+        },
+        "mineInViewRight": {
+          "event": "voice_message_mine_right",
+          "playerRole": "sailor",
+          "player": 1,
+          "delayTime": 0.7,
+          "minSpeechInterval": 5.0
+        },
+        "mineInViewRear": {
+          "event": "voice_message_mine_rear",
+          "playerRole": "sailor",
+          "player": 1,
+          "delayTime": 0.7,
+          "minSpeechInterval": 5.0
+        },
         "aircraftInView": {
           "event": "voice_message_air_alert",
           "playerRole": "sailor",
@@ -7674,6 +7705,12 @@
     "attack": 10.0,
     "release": 100.0,
     "gainmakeup": 0.0
+  },
+  "turret_fall_sfx": {
+    "pathStudio": "ground/effects",
+    "nameHitGround": "turret_fall",
+    "nameHitBuilding": "turret_fall",
+    "nameHitUnit": "turret_fall"
   },
   "cachedMusic": {
     "enabled": true

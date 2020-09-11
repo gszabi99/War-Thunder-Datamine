@@ -1,4 +1,5 @@
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
 const COOP_MAX_PLAYERS = 4
 
@@ -365,7 +366,7 @@ global enum MIS_PROGRESS //value received from get_mission_progress
 
 ::gui_start_benchmark <- function gui_start_benchmark()
 {
-  if (::is_platform_ps4)
+  if (isPlatformSony)
   {
     ::ps4_vsync_enabled = ::d3d_get_vsync_enabled()
     ::d3d_enable_vsync(false)
@@ -382,10 +383,10 @@ global enum MIS_PROGRESS //value received from get_mission_progress
 
 ::init_coop_flags <- function init_coop_flags()
 {
-  ::enable_coop_in_QMB            = ::has_feature(::is_platform_ps4 ? "QmbCoopPs4"            : "QmbCoopPc")
-  ::enable_coop_in_DynCampaign    = ::has_feature(::is_platform_ps4 ? "DynCampaignCoopPs4"    : "DynCampaignCoopPc")
-  ::enable_coop_in_SingleMissions = ::has_feature(::is_platform_ps4 ? "SingleMissionsCoopPs4" : "SingleMissionsCoopPc")
-  ::enable_custom_battles         = ::has_feature(::is_platform_ps4 ? "CustomBattlesPs4"      : "CustomBattlesPc")
+  ::enable_coop_in_QMB            = ::has_feature(isPlatformSony ? "QmbCoopPs4"            : "QmbCoopPc")
+  ::enable_coop_in_DynCampaign    = ::has_feature(isPlatformSony ? "DynCampaignCoopPs4"    : "DynCampaignCoopPc")
+  ::enable_coop_in_SingleMissions = ::has_feature(isPlatformSony ? "SingleMissionsCoopPs4" : "SingleMissionsCoopPc")
+  ::enable_custom_battles         = ::has_feature(isPlatformSony ? "CustomBattlesPs4"      : "CustomBattlesPc")
   ::broadcastEvent("GameModesAvailability")
 }
 

@@ -1039,6 +1039,21 @@
             "name": "ammo_body_50_dm"
           },
           {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
+          },
+          {
             "name": "ammo_body_l_01_dm"
           },
           {
@@ -1993,7 +2008,7 @@
             "expl": 1.0,
             "conditionDamage": 250.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -2002,7 +2017,16 @@
             "expl": 1.0,
             "conditionDamage": 100.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "generic",
+            "expl": 1.0,
+            "conditionDamage": 700.0,
+            "kill": true,
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -2010,7 +2034,7 @@
             "expl": 1.0,
             "conditionDead": true,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         }
       ],
@@ -2030,7 +2054,7 @@
             "expl": 1.0,
             "conditionDamage": 250.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -2039,7 +2063,16 @@
             "expl": 1.0,
             "conditionDamage": 100.0,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "generic",
+            "expl": 1.0,
+            "conditionDamage": 700.0,
+            "kill": true,
+            "killEffect": "hullBreak"
           }
         },
         {
@@ -2047,7 +2080,7 @@
             "expl": 1.0,
             "conditionDead": true,
             "kill": true,
-            "killEffect": "fire"
+            "killEffect": "hullBreak"
           }
         }
       ]
@@ -2117,7 +2150,12 @@
             "loaderDm": "loader_dm",
             "verDriveDm": "drive_turret_v_dm",
             "horDriveDm": "drive_turret_h_dm",
-            "rotatedTurret": "bone_turret"
+            "rotatedTurret": "bone_turret",
+            "linkedAnimPart": {
+              "verNode": "bone_camera_gunner",
+              "verLimits": [-180.0,180.0],
+              "verOriginLimits": [-180.0,180.0]
+            }
           },
           "limits": {
             "yaw": [-360.0,360.0],
@@ -3039,7 +3077,12 @@
                   "loaderDm": "loader_dm",
                   "verDriveDm": "drive_turret_v_dm",
                   "horDriveDm": "drive_turret_h_dm",
-                  "rotatedTurret": "bone_turret"
+                  "rotatedTurret": "bone_turret",
+                  "linkedAnimPart": {
+                    "verNode": "bone_camera_gunner",
+                    "verLimits": [-180.0,180.0],
+                    "verOriginLimits": [-180.0,180.0]
+                  }
                 },
                 "limits": {
                   "yaw": [-360.0,360.0],

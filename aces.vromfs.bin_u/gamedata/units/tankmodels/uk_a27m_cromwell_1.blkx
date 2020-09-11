@@ -153,9 +153,6 @@
           "armorThickness": 10.0,
           "armorClass": "CHA_tank"
         },
-        "body_shield_dm": {
-          "armorThickness": 5.0
-        },
         "turret_01_top_dm": {
           "armorThickness": 10.0,
           "armorClass": "CHA_tank"
@@ -195,6 +192,11 @@
         "ex_armor_body_04_dm": {
           "armorThickness": 63.5,
           "armorClass": "CHA_tank"
+        },
+        "composite_armor_hull_01_dm": {
+          "armorThickness": 4.9,
+          "armorClass": "tank_structural_steel",
+          "hidableInXrayViewer": true
         }
       },
       "turret": {
@@ -663,6 +665,19 @@
     }
   },
   {
+    "xray_viewer_data": {
+      "armorArrayHull": {
+        "xrayDmPart": "composite_armor_hull_01_dm",
+        "titleLoc": "tank_structural_steel",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_01_dm"
+          }
+        }
+      }
+    }
+  },
+  {
     "DamageEffects": [
       {
         "part": [
@@ -818,6 +833,21 @@
           },
           {
             "name": "ammo_body_50_dm"
+          },
+          {
+            "name": "ammo_body_51_dm"
+          },
+          {
+            "name": "ammo_body_52_dm"
+          },
+          {
+            "name": "ammo_body_53_dm"
+          },
+          {
+            "name": "ammo_body_54_dm"
+          },
+          {
+            "name": "ammo_body_55_dm"
           },
           {
             "name": "ammo_body_l_01_dm"

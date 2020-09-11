@@ -16,12 +16,6 @@
         "type": "domination"
       },
       {
-        "restoreType": "attempts"
-      },
-      {
-        "optionalTakeOff": false
-      },
-      {
         "environment": "Day"
       },
       {
@@ -47,6 +41,12 @@
       },
       {
         "country_allies": "ussr"
+      },
+      {
+        "restoreType": "attempts"
+      },
+      {
+        "optionalTakeOff": false
       },
       {
         "mission": {
@@ -288,139 +288,7 @@
           "remapAiTankModels": true
         }
       }
-    ],
-    "spectator_points": [
-      {
-        "spectatorPoint": "spectator_point_island1"
-      },
-      {
-        "spectatorPoint": "spectator_point_island2"
-      }
-    ],
-    "briefing": {
-      "place_loc": "",
-      "date_loc": "",
-      "objective_loc": "",
-      "music": "action_01",
-      "part": [
-        {
-          "event": ""
-        },
-        {
-          "minTime": 0
-        },
-        {
-          "slide": [
-            {
-              "map": true
-            },
-            {
-              "minTime": 4
-            },
-            {
-              "picture": ""
-            },
-            {
-              "showAirMap": false
-            },
-            {
-              "icon": {
-                "icontype": "tank",
-                "side": "ally",
-                "target": "t1_tankSpawn_Rb_02"
-              }
-            },
-            {
-              "icon": {
-                "icontype": "tank",
-                "side": "enemy",
-                "target": "t2_tankSpawn_Rb_02"
-              }
-            }
-          ]
-        },
-        {
-          "slide": [
-            {
-              "postfix": "_DBttlA"
-            },
-            {
-              "map": true
-            },
-            {
-              "minTime": 4
-            },
-            {
-              "picture": ""
-            },
-            {
-              "showAirMap": false
-            },
-            {
-              "icon": {
-                "icontype": "basezone_A",
-                "side": "ally",
-                "target": "dbttl_t1_capture_area"
-              }
-            },
-            {
-              "icon": {
-                "icontype": "tank",
-                "side": "ally",
-                "target": "dbttl_t1_spawn_01"
-              }
-            },
-            {
-              "icon": {
-                "icontype": "tank",
-                "side": "enemy",
-                "target": "dbttl_t2_spawn_01"
-              }
-            }
-          ]
-        },
-        {
-          "slide": [
-            {
-              "postfix": "_DBttlB"
-            },
-            {
-              "map": true
-            },
-            {
-              "minTime": 4
-            },
-            {
-              "picture": ""
-            },
-            {
-              "showAirMap": false
-            },
-            {
-              "icon": {
-                "icontype": "basezone_A",
-                "side": "enemy",
-                "target": "dbttl_t2_capture_area"
-              }
-            },
-            {
-              "icon": {
-                "icontype": "tank",
-                "side": "enemy",
-                "target": "dbttl_t1_spawn_01"
-              }
-            },
-            {
-              "icon": {
-                "icontype": "tank",
-                "side": "ally",
-                "target": "dbttl_t2_spawn_01"
-              }
-            }
-          ]
-        }
-      ]
-    }
+    ]
   },
   "imports": [],
   "triggers": {
@@ -440,9 +308,9 @@
       "objectGroups": {
         "name": "t2_helipad",
         "tm": [
-          [0.0871558,0.0,-0.996195],
+          [0.475716,0.0,0.879599],
           [0.0,1.0,0.0],
-          [0.996195,0.0,0.0871558],
+          [-0.879599,0.0,0.475716],
           [3972.0,90.2019,5469.38]
         ],
         "unit_class": "dynHelipad_beton_a_usa",
@@ -457,9 +325,9 @@
       "objectGroups": {
         "name": "t1_helipad",
         "tm": [
-          [0.052336,0.0,0.998629],
+          [-0.0950287,0.0,-0.995474],
           [0.0,1.0,0.0],
-          [-0.998629,0.0,0.052336],
+          [0.995474,0.0,-0.0950287],
           [2111.92,163.987,-1216.3]
         ],
         "unit_class": "dynHelipad_beton_a_usa",
@@ -475,9 +343,9 @@
       "objectGroups": {
         "name": "t1_helipad_farspawn",
         "tm": [
-          [-0.857168,0.0,0.515038],
+          [0.706389,0.0,-0.707825],
           [0.0,1.0,0.0],
-          [-0.515038,0.0,-0.857168],
+          [0.707825,0.0,0.706389],
           [7559.35,168.65,-4441.4]
         ],
         "unit_class": "dynHelipad_beton_b_ussr",
@@ -493,10 +361,10 @@
       "objectGroups": {
         "name": "t2_helipad_farspawn",
         "tm": [
-          [-0.390731,0.0,-0.920505],
+          [0.550683,0.0,0.834714],
           [0.0,1.0,0.0],
-          [0.920505,0.0,-0.390731],
-          [7491.15,115.466,9721.12]
+          [-0.834714,0.0,0.550683],
+          [7491.15,150.157,9721.12]
         ],
         "unit_class": "dynHelipad_beton_b_usa",
         "objLayer": 2,
@@ -530,6 +398,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -566,6 +435,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -602,6 +472,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -638,6 +509,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -702,6 +574,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -738,6 +611,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -774,6 +648,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -810,6 +685,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,

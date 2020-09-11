@@ -143,7 +143,9 @@
     return player?.id ?? -1
   }
 })
-//----------------------------wop_1_99_1_X---------------------------------//
+
+//----------------------------wop_1_101_0_X---------------------------------//
 ::apply_compatibilities({
-  EII_SPEED_BOOSTER = 28
+  gchat_voice_mute_peer_by_name = @(...) null
+  gchat_voice_mute_peer_by_uid = @(...) null
 })

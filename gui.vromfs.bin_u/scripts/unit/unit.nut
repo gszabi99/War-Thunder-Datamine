@@ -1,11 +1,12 @@
 local u = ::require("sqStdLibs/helpers/u.nut")
 local time = require("scripts/time.nut")
-local guidParser = require("scripts/guidParser.nut")
 local contentPreview = require("scripts/customization/contentPreview.nut")
 local shopSearchCore = require("scripts/shop/shopSearchCore.nut")
 local stdMath = require("std/math.nut")
 local platform = require("scripts/clientState/platform.nut")
-local { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
+local { getLastWeapon,
+        isWeaponEnabled,
+        isWeaponVisible } = require("scripts/weaponry/weaponryInfo.nut")
 local { unitClassType, getUnitClassTypeByExpClass } = require("scripts/unit/unitClassType.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { isModClassExpendable } = require("scripts/weaponry/modificationInfo.nut")
@@ -24,6 +25,7 @@ local upgradeNames = ["weaponUpgrade1", "weaponUpgrade2", "weaponUpgrade3", "wea
 local defaultAvailableWeapons = {
   hasRocketDistanceFuse = false
   hasBombs = false
+  bombsNbr = -1
   hasDepthCharges = false
   hasMines = false
   hasFlares = false
@@ -83,7 +85,6 @@ local Unit = class
    skins = null //[]
    skinsBlocks = null //{}
    previewSkinId = null //""
-   downloadableSkins = null //[]
    weaponUpgrades = null //[]
    spare = null //{} or null
    needBuyToOpenNextInTier = null //[]
@@ -244,6 +245,14 @@ local Unit = class
     return errorsTextArray
   }
 
+  function hasPlatformFromBlkStr(blk, fieldName, defValue = false, separator = "; ")
+  {
+    local listStr = blk?[fieldName]
+    if (!::u.isString(listStr))
+      return defValue
+    return ::isInArray(::target_platform, ::split(listStr, separator))
+  }
+
   function applyShopBlk(shopUnitBlk, prevShopUnitName, unitGroupName = null)
   {
     isInShop = true
@@ -253,8 +262,8 @@ local Unit = class
       fakeReqUnits = shopUnitBlk % "fakeReqUnitType"
 
     local isVisibleUnbought = !shopUnitBlk?.showOnlyWhenBought
-      && ::has_platform_from_blk_str(shopUnitBlk, "showByPlatform", true)
-      && !::has_platform_from_blk_str(shopUnitBlk, "hideByPlatform", false)
+      && hasPlatformFromBlkStr(shopUnitBlk, "showByPlatform", true)
+      && !hasPlatformFromBlkStr(shopUnitBlk, "hideByPlatform", false)
 
     showOnlyWhenBought = !isVisibleUnbought
     showOnlyWhenResearch = shopUnitBlk?.showOnlyWhenResearch ?? false
@@ -275,6 +284,7 @@ local Unit = class
   isAir                 = @() esUnitType == ::ES_UNIT_TYPE_AIRCRAFT
   isTank                = @() esUnitType == ::ES_UNIT_TYPE_TANK
   isShip                = @() esUnitType == ::ES_UNIT_TYPE_SHIP
+  isSubmarine           = @() esUnitType == ::ES_UNIT_TYPE_SHIP && tags.indexof("submarine") != null
   isHelicopter          = @() esUnitType == ::ES_UNIT_TYPE_HELICOPTER
   //
 
@@ -422,9 +432,12 @@ local Unit = class
         weaponry[p] <- val
     }
 
-    local prevModification = blk?["prevModification"] || weaponBlk?["prevModification"]
-    if (u.isString(prevModification) && prevModification.len())
-      weaponry["prevModification"] <- prevModification
+    foreach (param in ["prevModification", "reqInstalledModification"])
+    {
+      local val = blk?[param] || weaponBlk?[param]
+      if (u.isString(val) && val.len())
+        weaponry[param] <- val
+    }
 
     if (u.isDataBlock(blk))
       foreach(rp in reqNames)
@@ -485,62 +498,13 @@ local Unit = class
     return previewSkinId
   }
 
-  function getDownloadableSkins()
-  {
-    if (downloadableSkins != null)
-      return downloadableSkins
-
-    local res = []
-    local shouldCache = true
-
-    if (::has_feature("MarketplaceSkinsInCustomization") && ::has_feature("Marketplace")
-      && ::has_feature("EnableLiveSkins"))
-    {
-      local marketSkinsBlk = ::DataBlock("config/skins_market.blk")
-      local blkList = marketSkinsBlk % this.name
-      local itemdefIdsList = blkList.filter(function(blk) {
-        if (type(blk?.marketplaceItemdefId) != "integer")
-          return false
-        if (blk?.reqFeature != null && !::has_feature(blk.reqFeature))
-          return false
-        if (blk?.hideFeature != null && ::has_feature(blk.hideFeature))
-          return false
-        return true
-      }).map(@(blk) blk?.marketplaceItemdefId)
-
-      foreach (itemdefId in itemdefIdsList)
-      {
-        local item = ::ItemsManager.findItemById(itemdefId)
-        shouldCache = shouldCache && item != null
-        if (item == null)
-          continue
-
-        local resource = item.getMetaResource()
-        if (!resource || !item.hasLink())
-          continue
-
-        local isLive = guidParser.isGuid(resource)
-        if (isLive)
-          item.addResourcesByUnitId(this.name)
-        local skinId = isLive ? ::g_unlocks.getSkinId(this.name, resource) : resource
-        ::g_decorator.getDecorator(skinId, ::g_decorator_type.SKINS)?.setCouponItemdefId(itemdefId)
-
-        res.append(itemdefId)
-      }
-    }
-
-    if (shouldCache)
-      downloadableSkins = res
-    return res
-  }
-
   getSpawnScore = @(weaponName = null) ::shop_get_spawn_score(name, weaponName || getLastWeapon(name))
 
   function getMinimumSpawnScore()
   {
     local res = -1
     foreach (weapon in weapons)
-      if (::is_weapon_visible(this, weapon) && ::is_weapon_enabled(this, weapon))
+      if (isWeaponVisible(this, weapon) && isWeaponEnabled(this, weapon))
       {
         local spawnScore = getSpawnScore(weapon.name)
         if (res < 0 || res > spawnScore)
@@ -579,7 +543,7 @@ local Unit = class
 
     local unitBlk = ::get_full_unit_blk(name)
     if (!unitBlk)
-      return ""
+      return null
 
     if (unitBlk?.weapon_presets != null)
       foreach(block in (unitBlk.weapon_presets % "preset")) {
@@ -592,7 +556,7 @@ local Unit = class
           return defaultWeaponPreset
         }
       }
-    return ""
+    return null
   }
 
   function getAvailableSecondaryWeapons()
@@ -619,6 +583,8 @@ local Unit = class
         if (block.name == secondaryWep)
         {
           weaponDataBlock = ::DataBlock(block.blk)
+          local nbrBomb = 0
+          dagor.debug("check unit weapon :")
           foreach (weap in (weaponDataBlock % "Weapon"))
           {
             if (!weap?.blk || weap?.dummy || ::isInArray(weap.blk, weaponsBlkArray))
@@ -626,7 +592,10 @@ local Unit = class
 
             local weapBlk = ::DataBlock(weap.blk)
             if (weapBlk?.bomb)
+            {
               availableWeapons.hasBombs = true
+              nbrBomb++
+            }
             if (weapBlk?.rocket && (weapBlk.rocket?.distanceFuse ?? true))
               availableWeapons.hasRocketDistanceFuse = true
             if (weapBlk?.bomb.isDepthCharge)
@@ -636,8 +605,10 @@ local Unit = class
             if (weapBlk?.rocket && weapBlk.rocket?.isFlare)
               availableWeapons.hasFlares = true
 
-            weaponsBlkArray.append(weap.blk)
+            if (!weapBlk?.bomb)
+              weaponsBlkArray.append(weap.blk)
           }
+          availableWeapons.bombsNbr = nbrBomb
           break
         }
     }

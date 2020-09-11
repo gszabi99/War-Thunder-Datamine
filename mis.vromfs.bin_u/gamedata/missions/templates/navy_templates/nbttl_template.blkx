@@ -11,29 +11,14 @@
     "mission": {
       "type": "singleMission",
       "level": "levels/water.bin",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
-      "weather": "hazy"
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
     },
     "spectator_points": []
   },
-  "imports": {
-    "import_record": {
-      "file": "gameData/missions/templates/navy_templates/buoys_template.blk",
-      "importAreas": false,
-      "importUnits": true,
-      "importTriggers": false,
-      "importMissionObjectives": false,
-      "importWayPoints": false,
-      "showAreas": false,
-      "showUnits": true,
-      "showTriggers": false,
-      "showMissionObjectives": false,
-      "showWayPoints": false,
-      "excludes": []
-    }
-  },
+  "imports": [],
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -151,12 +136,6 @@
         {
           "comment": {
             "value": ""
-          }
-        },
-        {
-          "varSetString": {
-            "value": "nbttl_buoy_circles_squad",
-            "var": "buoy_circle_squad"
           }
         },
         {
@@ -297,7 +276,6 @@
                   "tank": false,
                   "ship": true,
                   "boat": true,
-                  "type_frifate": false,
                   "type_destroyer": false,
                   "type_cruiser": false
                 }
@@ -375,7 +353,6 @@
                   "tank": false,
                   "ship": true,
                   "boat": true,
-                  "type_frifate": false,
                   "type_destroyer": false,
                   "type_cruiser": false
                 }
@@ -503,7 +480,6 @@
                   "tank": false,
                   "ship": true,
                   "boat": false,
-                  "type_frifate": true,
                   "type_destroyer": true,
                   "type_cruiser": false
                 }
@@ -581,7 +557,6 @@
                   "tank": false,
                   "ship": true,
                   "boat": false,
-                  "type_frifate": true,
                   "type_destroyer": true,
                   "type_cruiser": false
                 }
@@ -709,7 +684,6 @@
                   "tank": false,
                   "ship": true,
                   "boat": false,
-                  "type_frifate": false,
                   "type_destroyer": false,
                   "type_cruiser": true
                 }
@@ -787,7 +761,6 @@
                   "tank": false,
                   "ship": true,
                   "boat": false,
-                  "type_frifate": false,
                   "type_destroyer": false,
                   "type_cruiser": true
                 }
@@ -1027,34 +1000,6 @@
         "conditions": [],
         "actions": [
           {
-            "comment": {
-              "value": "temporary disable old buoys"
-            }
-          },
-          {
-            "unitSetProperties": {
-              "object_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0,
-              "object": "@buoy_circle_squad",
-              "army": 0,
-              "targetableByAi": false,
-              "isImmortal": true,
-              "stealthRadius": 0.0
-            }
-          },
-          {
-            "unitPutToSleep": {
-              "target": "@buoy_circle_squad"
-            }
-          },
-          {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
             "missionMarkAsRespawnPoint": {
               "loc_name": "missions/spawn_01",
               "spawnEffect": false,
@@ -1131,7 +1076,6 @@
               "canCaptureByGM": true,
               "auto_smoke": true,
               "markUnitPreset": "ship_buoys",
-              "markUnits": "squad_buoy_01",
               "zoneDefenders": []
             }
           },
@@ -1149,7 +1093,6 @@
               "canCaptureByGM": true,
               "auto_smoke": true,
               "markUnitPreset": "ship_buoys",
-              "markUnits": "squad_buoy_02",
               "zoneDefenders": []
             }
           },
@@ -1855,7 +1798,6 @@
               "tags": {
                 "air": false,
                 "tank": false,
-                "type_frifate": true,
                 "type_destroyer": true,
                 "type_cruiser": true
               }
@@ -2700,7 +2642,6 @@
             "canCaptureByGM": true,
             "auto_smoke": true,
             "markUnitPreset": "ship_buoys",
-            "markUnits": "squad_buoy_03",
             "zoneDefenders": []
           },
           "missionShowMapIcon": {
@@ -2708,9 +2649,6 @@
             "iconName": "ui/gameuiskin#objective_captureZone_captured",
             "areaName": "@zone_t1_name",
             "colorCode": "Team A"
-          },
-          "__unitWakeUp": {
-            "target": "@buoy_circle_squad_t1"
           },
           "triggerEnable": {
             "target": "nbttl_zone_t1_cant_be_captured"
@@ -2761,7 +2699,6 @@
             "canCaptureByGM": true,
             "auto_smoke": true,
             "markUnitPreset": "ship_buoys",
-            "markUnits": "squad_buoy_04",
             "zoneDefenders": []
           },
           "missionShowMapIcon": {
@@ -2769,9 +2706,6 @@
             "iconName": "ui/gameuiskin#objective_captureZone_captured",
             "areaName": "@zone_t2_name",
             "colorCode": "Team B"
-          },
-          "__unitWakeUp": {
-            "target": "@buoy_circle_squad_t2"
           },
           "triggerEnable": {
             "target": "nbttl_zone_t2_cant_be_captured"
@@ -2821,7 +2755,6 @@
             "canCaptureByGM": true,
             "auto_smoke": true,
             "markUnitPreset": "ship_buoys",
-            "markUnits": "squad_buoy_03",
             "zoneDefenders": []
           },
           "missionShowMapIcon": {
@@ -2829,9 +2762,6 @@
             "iconName": "ui/gameuiskin#objective_captureZone_captured",
             "areaName": "@zone_t1_name",
             "colorCode": "Team A"
-          },
-          "__unitPutToSleep": {
-            "target": "@buoy_circle_squad_t1"
           },
           "triggerEnable": {
             "target": "nbttl_zone_t1_can_be_captured"
@@ -2881,7 +2811,6 @@
             "canCaptureByGM": true,
             "auto_smoke": true,
             "markUnitPreset": "ship_buoys",
-            "markUnits": "squad_buoy_04",
             "zoneDefenders": []
           },
           "missionShowMapIcon": {
@@ -2889,9 +2818,6 @@
             "iconName": "ui/gameuiskin#objective_captureZone_captured",
             "areaName": "@zone_t2_name",
             "colorCode": "Team B"
-          },
-          "__unitPutToSleep": {
-            "target": "@buoy_circle_squad_t2"
           },
           "triggerEnable": {
             "target": "nbttl_zone_t2_can_be_captured"
@@ -3146,9 +3072,6 @@
     "zone_t2_name": "nbttl_capture_area_t2",
     "zone_01_name": "nbttl_capture_area_01",
     "zone_02_name": "nbttl_capture_area_02",
-    "buoy_circle_squad": "",
-    "buoy_circle_squad_t1": "nbttl_buoy_circle_t1",
-    "buoy_circle_squad_t2": "nbttl_buoy_circle_t2",
     "t1_boat_spawn_01_name": "",
     "t1_boat_spawn_02_name": "",
     "t2_boat_spawn_01_name": "",
