@@ -808,13 +808,24 @@ g_squad_manager.inviteToSquad <- function inviteToSquad(uid, name = null, cb = n
   if (!canInviteMemberByPlatform(name))
     return ::g_popups.add(null, ::loc("msg/squad/noPlayersForDiffConsoles"))
 
-  local isInvitingPsnPlayer = name && ::isPlayerPS4Friend(name)
-  if (isInvitingPsnPlayer && u.isEmpty(getPsnSessionId()))
-    delayedInvites.append(::get_psn_account_id(name))
+  local isInvitingPsnPlayer = false
+  if (platformModule.isPS4PlayerName(name))
+  {
+    local contact = ::getContact(uid, name)
+    isInvitingPsnPlayer = true
+    if (u.isEmpty(getPsnSessionId()))
+      contact.updatePSNIdAndDo(function() {
+        ::g_squad_manager.delayedInvites.append(contact.psnId)
+      })
+  }
 
   local callback = function(response) {
-    if (isInvitingPsnPlayer && u.isEmpty(::g_squad_manager.delayedInvites))
-      ::g_psn_sessions.invite(::g_squad_manager.getPsnSessionId(), ::get_psn_account_id(name))
+    if (isInvitingPsnPlayer && u.isEmpty(::g_squad_manager.delayedInvites)) {
+      local contact = ::getContact(uid, name)
+      contact.updatePSNIdAndDo(function() {
+        ::g_psn_sessions.invite(::g_squad_manager.getPsnSessionId(), contact.psnId)
+      })
+    }
 
     ::g_xbox_squad_manager.sendSystemInvite(uid, name)
 
