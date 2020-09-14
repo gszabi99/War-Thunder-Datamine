@@ -265,7 +265,7 @@ local InventoryClient = class {
     if (!url)
       return null
 
-    return "auto_login auto_local " + url + "?a=" + ::WT_APPID +
+    return "auto_login auto_local sso_service=any " + url + "?a=" + ::WT_APPID +
       (::steam_is_running()
         ? ::format("&app_id=%d&steam_id=%s", steam_get_app_id(), steam_get_my_id())
         : "")
