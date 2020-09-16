@@ -147,7 +147,7 @@
         },
         "turret_01_front_dm": {
           "armorClass": "tank_textolite",
-          "cumulativeArmorQuality": 0.83,
+          "cumulativeArmorQuality": 0.2,
           "genericArmorQuality": 0.45,
           "createSecondaryShatters": false
         },
@@ -157,7 +157,7 @@
         },
         "turret_03_front_dm": {
           "armorClass": "tank_textolite",
-          "cumulativeArmorQuality": 0.83,
+          "cumulativeArmorQuality": 0.2,
           "genericArmorQuality": 0.45,
           "createSecondaryShatters": false
         },
@@ -187,6 +187,11 @@
         }
       },
       "turret_front_composite_armor": {
+        "turret_01_side_dm": {
+          "armorThickness": 100.0,
+          "armorClass": "CHA_tank_modern",
+          "createSecondaryShatters": false
+        },
         "turret_02_back_dm": {
           "armorThickness": 250.0,
           "armorClass": "CHA_tank_modern",
@@ -391,11 +396,11 @@
       "era_hull": {
         "armorClass": "ERA_K_V",
         "kineticProtectionEquivalent": 120.0,
-        "cumulativeProtectionEquivalent": 400.0,
+        "cumulativeProtectionEquivalent": 450.0,
         "hp": 250.0,
         "armorThickness": 20.0,
         "genericDamageMult": 3.0,
-        "cumulativeArmorQuality": 6.4,
+        "cumulativeArmorQuality": 8.75,
         "stopChanceOnDeadPart": 0.0,
         "hidableInViewer": true,
         "hidableInXrayViewer": true,
@@ -409,20 +414,33 @@
         "ex_era_hull_08_dm": [],
         "ex_era_hull_09_dm": [],
         "ex_era_hull_10_dm": [],
-        "ex_era_hull_11_dm": [],
-        "ex_era_hull_12_dm": [],
-        "ex_era_hull_13_dm": [],
-        "ex_era_hull_14_dm": [],
-        "ex_era_hull_15_dm": [],
-        "ex_era_hull_16_dm": []
+        "ex_era_hull_11_dm": {
+          "armorThickness": 30.0
+        },
+        "ex_era_hull_12_dm": {
+          "armorThickness": 30.0
+        },
+        "ex_era_hull_13_dm": {
+          "armorThickness": 30.0
+        },
+        "ex_era_hull_14_dm": {
+          "armorThickness": 30.0
+        },
+        "ex_era_hull_15_dm": {
+          "armorThickness": 30.0
+        },
+        "ex_era_hull_16_dm": {
+          "armorThickness": 30.0
+        }
       },
       "era_turret": {
         "armorClass": "ERA_K_V",
         "kineticProtectionEquivalent": 120.0,
-        "cumulativeProtectionEquivalent": 400.0,
+        "cumulativeProtectionEquivalent": 450.0,
         "hp": 250.0,
-        "armorThickness": 20.0,
+        "armorThickness": 30.0,
         "genericDamageMult": 3.0,
+        "cumulativeArmorQuality": 7.2,
         "stopChanceOnDeadPart": 0.0,
         "hidableInViewer": true,
         "hidableInXrayViewer": true,
