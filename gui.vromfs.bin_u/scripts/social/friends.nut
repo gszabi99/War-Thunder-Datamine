@@ -1,5 +1,4 @@
 local editContactsList = require("scripts/contacts/editContacts.nut")
-local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
 ::no_dump_facebook_friends <- {}
 
@@ -24,52 +23,6 @@ local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
   ::on_facebook_destroy_waitbox()
 }
-
-//--------------- <PlayStation> ----------------------
-::addPsnFriends <- function addPsnFriends()
-{
-  if (::ps4_show_friend_list_ex(true, true, false) == 1)
-  {
-    local taskId = ::ps4_find_friend()
-    if (taskId < 0)
-      return
-
-    local progressBox = ::scene_msg_box("char_connecting", null, ::loc("charServer/checking"), null, null)
-    ::add_bg_task_cb(taskId, (@(progressBox) function () {
-      ::destroyMsgBox(progressBox)
-      local blk = ::DataBlock()
-      blk = ::ps4_find_friends_result()
-      if (blk.paramCount() || blk.blockCount())
-      {
-        ::addSocialFriends(blk, ::EPLX_PS4_FRIENDS)
-        foreach(userId, info in blk)
-        {
-          local friend = {}
-          friend["accountId"] <- info.id
-          friend["onlineId"] <- info.nick.slice(1)
-          ::ps4_console_friends[info.nick] <- friend
-        }
-      }
-      else
-        ::scene_msg_box("psn_friends_add", null, ::loc("msgbox/no_psn_friends_added"), [["ok", function() {}]], "ok")
-    })(progressBox))
-  }
-}
-
-::isPlayerPS4Friend <- function isPlayerPS4Friend(playerName)
-{
-  return isPlatformSony && playerName in ::ps4_console_friends
-}
-
-::get_psn_account_id <- function get_psn_account_id(playerName)
-{
-  if (!isPlatformSony)
-    return null
-
-  return ::ps4_console_friends?[playerName]?.psnId
-}
-
-//--------------- </PlayStation> ----------------------
 
 //-----------------<Facebook> --------------------------
 ::on_facebook_friends_loaded <- function on_facebook_friends_loaded(blk)

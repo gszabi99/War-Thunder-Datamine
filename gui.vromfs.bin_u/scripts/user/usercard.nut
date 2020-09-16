@@ -1,7 +1,8 @@
 local { isXBoxPlayerName,
         canInteractCrossConsole,
         isPlatformSony,
-        isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+        isPlatformXboxOne,
+        isPlayerFromPS4 } = require("scripts/clientState/platform.nut")
 local time = require("scripts/time.nut")
 local { hasAllFeatures } = require("scripts/user/features.nut")
 local externalIDsService = require("scripts/user/externalIdsService.nut")
@@ -1138,56 +1139,34 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(scene))
       return
 
-    local textTable = {
-      btn_friendAdd = ""
-      btn_blacklistAdd = ""
-    }
+    local hasFeatureFriends = ::has_feature("Friends")
 
-    local canBan = false
-    local isMe = true
+    local contact = ::getContact(player?.uid, player.name)
+    local isMe = contact?.isMe() ?? false
+    local canBan = isMe? false : (::myself_can_devoice() || ::myself_can_ban())
+    local isFriend = contact?.isInFriendGroup() ?? false
+    local isBlock = contact?.isInBlockGroup() ?? false
 
-    if (infoReady
-        && ::has_feature("Friends")
-        && ("uid" in player)
-        && ::checkObj(scene)
-        && ::my_user_id_str != player.uid )
-    {
-      local isFriend = ::isPlayerInFriendsGroup(player.uid)
-      local isBlock = ::isPlayerInContacts(player.uid, ::EPL_BLOCKLIST)
-      canBan = ::myself_can_devoice() || ::myself_can_ban()
-      isMe = false
-      if (!isBlock)
-        textTable.btn_friendAdd = isFriend? ::loc("contacts/friendlist/remove")
-              : ::loc("contacts/friendlist/add")
-
-      if (!isFriend)
-        textTable.btn_blacklistAdd = isBlock? ::loc("contacts/blacklist/remove") : ::loc("contacts/blacklist/add")
-    }
-
+    local isPS4Player = isPlayerFromPS4(player.name)
     local isXBoxOnePlayer = isXBoxPlayerName(player.name)
+    local canBlock = !isPlatformXboxOne || !isXBoxOnePlayer
     local canInteractCC = canInteractCrossConsole(player.name)
 
     local sheet = getCurSheet()
     local showStatBar = infoReady && sheet=="Statistics"
     local showProfBar = infoReady && !showStatBar
-    local buttonsList = {
+
+    ::showBtnTable(scene, {
       paginator_place = showStatBar && (airStatsList != null) && (airStatsList.len() > statsPerPage)
-      btn_friendAdd = showProfBar && !::isPlayerPS4Friend(player.name) && canInteractCC && textTable.btn_friendAdd != ""
-      btn_blacklistAdd = showProfBar && textTable.btn_blacklistAdd != "" && (!isPlatformXboxOne || !isXBoxOnePlayer)
-      btn_moderatorBan = showProfBar && canBan && !isPlatformXboxOne && !isPlatformSony
+      btn_friendAdd = showProfBar && hasFeatureFriends && canInteractCC && !isMe && !isFriend && !isBlock
+      btn_friendRemove = showProfBar && hasFeatureFriends && isFriend && (contact?.isInFriendlist() ?? false)
+      btn_blacklistAdd = showProfBar && hasFeatureFriends && !isMe && !isFriend && !isBlock && canBlock
+      btn_blacklistRemove = showProfBar && hasFeatureFriends && isBlock && canBlock && !isPS4Player
+      btn_moderatorBan = showProfBar && ::is_myself_anyof_moderators() && canBan
       btn_complain = showProfBar && !isMe
       btn_achievements_url = showProfBar && ::has_feature("AchievementsUrl")
         && ::has_feature("AllowExternalLink") && !::is_vendor_tencent()
-    }
-
-    ::showBtnTable(scene, buttonsList)
-
-    foreach (id, text in textTable)
-    {
-      local obj = scene.findObject(id)
-      if (::check_obj(obj))
-        obj.setValue(text)
-    }
+    })
   }
 
   function onBlacklistBan()
@@ -1199,19 +1178,24 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     ::gui_modal_ban({ name = playerName, uid = userId, clanTag = clanTag })
   }
 
-  function modifyPlayerInList(listName)
-  {
-    ::editContactMsgBox(player, listName, !::isPlayerInContacts(player.uid, listName))
-  }
-
   function onFriendAdd()
   {
-    modifyPlayerInList(::EPL_FRIENDLIST)
+    ::editContactMsgBox(player, ::EPL_FRIENDLIST, true)
+  }
+
+  function onFriendRemove()
+  {
+    ::editContactMsgBox(player, ::EPL_FRIENDLIST, false)
   }
 
   function onBlacklistAdd()
   {
-    modifyPlayerInList(::EPL_BLOCKLIST)
+    ::editContactMsgBox(player, ::EPL_BLOCKLIST, true)
+  }
+
+  function onBlacklistRemove()
+  {
+    ::editContactMsgBox(player, ::EPL_BLOCKLIST, false)
   }
 
   function onComplain()

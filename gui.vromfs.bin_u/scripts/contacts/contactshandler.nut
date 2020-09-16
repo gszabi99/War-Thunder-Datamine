@@ -21,7 +21,6 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
   focusArray = [
     "search_edit_box"
     function() { return getListFocusObj() }
-    "btn_psnFriends"
   ]
   currentFocusItem = 0
 
@@ -595,7 +594,9 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function applyContactFilter()
   {
-    if (curGroup == "" || curGroup == searchGroup)
+    if (curGroup == ""
+        || curGroup == searchGroup
+        || !(curGroup in ::contacts))
       return
 
     foreach (idx, contact_data in ::contacts[curGroup])
@@ -997,7 +998,6 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
       scene.findObject("btn_contactsSelect").setValue(::loc(btnTextLocId))
     }
 
-    showSceneBtn("btn_psnFriends", platformModule.isPlatformSony)
     showSceneBtn("btn_contactsSelect", showSelectButton)
   }
 
@@ -1231,11 +1231,6 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     ::show_viral_acquisition_wnd()
   }
 
-  function onPsnFriends()
-  {
-    ::addPsnFriends()
-  }
-
   function onEventContactsUpdated(params)
   {
     updateContactsGroup(null)
@@ -1272,5 +1267,13 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
       ::contacts_prev_scenes.append({ scene = scene, show = ::last_contacts_scene_show, owner = owner })
     scene = null
     return
+  }
+
+  function resetCurGroupToDefault() {
+    curGroup = ::EPL_FRIENDLIST
+  }
+
+  function onEventContactsCleared() {
+    resetCurGroupToDefault()
   }
 }

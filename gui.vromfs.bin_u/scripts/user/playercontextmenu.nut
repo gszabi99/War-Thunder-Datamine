@@ -21,16 +21,6 @@ local { isChatEnabled, attemptShowOverlayMessage,
 //  - canComplain
 // ----------------------------
 
-local verifyContact = function(params)
-{
-  local name = params?.playerName
-  local newContact = ::getContact(params?.uid, name, params?.clanTag)
-  if (!newContact && name)
-    newContact = ::Contact.getByName(name)
-
-  return newContact
-}
-
 local getPlayerCardInfoTable = function(uid, name)
 {
   local info = {}
@@ -114,8 +104,12 @@ local getActions = function(contact, params)
       if (!canInteractCrossPlatform)
         return showCrossNetworkPlayRestrictionMsgBox()
 
-      if (::isPlayerPS4Friend(name))
-        ::g_psn_sessions.invite(::SessionLobby.getExternalId(), ::get_psn_account_id(name))
+      if (isPS4Player && !u.isEmpty(::SessionLobby.getExternalId()))
+        contact.updatePSNIdAndDo(@() ::g_psn_sessions.invite(
+          ::SessionLobby.getExternalId(),
+          contact.psnId
+        ))
+
       ::SessionLobby.invitePlayer(uid)
     }
   })
@@ -318,7 +312,6 @@ local getActions = function(contact, params)
   if (::has_feature("Friends"))
   {
     local canBlock = !platformModule.isPlatformXboxOne || !isXBoxOnePlayer
-    local canRemoveFromList = !platformModule.isPlatformSony || !isPS4Player
 
     actions.append(
       {
@@ -334,8 +327,13 @@ local getActions = function(contact, params)
       }
       {
         text = ::loc("contacts/friendlist/remove")
-        show = isFriend && canRemoveFromList
+        show = isFriend && contact.isInFriendGroup()
         action = @() ::editContactMsgBox(contact, ::EPL_FRIENDLIST, false)
+      }
+      {
+        text = ::loc("contacts/psn/friends/request")
+        show = !isMe && isPS4Player && !isBlock && !contact.isInPSNFriends()
+        action = @() contact.sendPsnFriendRequest(::EPL_FRIENDLIST)
       }
       {
         text = ::loc("contacts/facebooklist/remove")
@@ -344,13 +342,18 @@ local getActions = function(contact, params)
       }
       {
         text = ::loc("contacts/blacklist/add")
-        show = !isMe && !isFriend && !isBlock && canBlock
+        show = !isMe && !isFriend && !isBlock && canBlock && !isPS4Player
         action = @() ::editContactMsgBox(contact, ::EPL_BLOCKLIST, true)
       }
       {
         text = ::loc("contacts/blacklist/remove")
-        show = isBlock && canBlock && canRemoveFromList
+        show = isBlock && canBlock && (!isPS4Player || (isPS4Player && contact.isInPSNFriends()))
         action = @() ::editContactMsgBox(contact, ::EPL_BLOCKLIST, false)
+      }
+      {
+        text = ::loc("contacts/psn/blacklist/request")
+        show = !isMe && isPS4Player && !isBlock
+        action = @() contact.sendPsnFriendRequest(::EPL_BLOCKLIST)
       }
     )
   }
@@ -491,7 +494,7 @@ local getActions = function(contact, params)
 
 local showMenu = function(_contact, handler, params = {})
 {
-  local contact = _contact || verifyContact(params)
+  local contact = _contact || ::g_contacts.verifyContact(params)
   local showMenu = ::callee()
   if (contact && contact.needCheckXboxId())
     return contact.getXboxId(@() showMenu(contact, handler, params))

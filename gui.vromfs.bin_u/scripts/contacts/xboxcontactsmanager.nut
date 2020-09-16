@@ -72,7 +72,7 @@ local tryUpdateContacts = function(contactsBlk)
           continue
 
         if (isAdding)
-          ::contacts[group].append(contact)
+          ::g_contacts.addContact(contact, group)
         else
           ::g_contacts.removeContact(contact, group)
       }
@@ -105,7 +105,7 @@ local xboxUpdateContactsList = function(usersTable)
       if (!contact)
         continue
 
-      if (!contact.isInFriendGroup() && group == ::getFriendGroupName(contact.name))
+      if (!contact.isInFriendGroup() && group == ::EPL_FRIENDLIST)
       {
         contactsBlk[::EPL_FRIENDLIST][contact.uid] = true
         if (contact.isInBlockGroup())
@@ -121,7 +121,7 @@ local xboxUpdateContactsList = function(usersTable)
       //Check both lists, as there can be mistakes
       if (contact.isInFriendGroup() && contact.isInBlockGroup())
       {
-        if (group == ::getFriendGroupName(contact.name))
+        if (group == ::EPL_FRIENDLIST)
           contactsBlk[::EPL_BLOCKLIST][contact.uid] = false
         else
           contactsBlk[::EPL_FRIENDLIST][contact.uid] = false

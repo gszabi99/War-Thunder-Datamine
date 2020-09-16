@@ -1,8 +1,8 @@
 local xboxContactsManager = require("scripts/contacts/xboxContactsManager.nut")
 local { getPlayerName } = require("scripts/clientState/platform.nut")
+local { updateMuteStatus } = require("scripts/contacts/contactsManager.nut")
 
 ::contacts_handler <- null
-::ps4_console_friends <- {}
 ::contacts_sizes <- null
 ::EPLX_SEARCH <- "search"
 ::EPLX_CLAN <- "clan"
@@ -35,14 +35,32 @@ local { getPlayerName } = require("scripts/clientState/platform.nut")
 */
 
 ::g_contacts <- {
-  function getRealGroupName(name)
+  findContactByPSNId = @(psnId) ::contacts_players.findvalue(@(player) player.psnId == psnId)
+
+  verifyContact = function(params)
   {
-    if (name == ::EPLX_PS4_FRIENDS)
-      return ::EPL_FRIENDLIST
-    return name
+    local name = params?.playerName
+    local newContact = ::getContact(params?.uid, name, params?.clanTag)
+    if (!newContact && name)
+      newContact = ::Contact.getByName(name)
+
+    return newContact
   }
 
-  findContactByPSNId = @(psnId) ::contacts_players.findvalue(@(player) player.psnId == psnId)
+  addContact = function(_contact, groupName, params = {}) {
+    local contact = _contact || verifyContact(params)
+    if (!contact)
+      return null
+
+    ::addContactGroup(groupName) //Group can be not exist in list
+
+    local existContactIdx = ::contacts[groupName].findindex(@(c) c.isSameContact(contact.uid))
+    if (existContactIdx == null)
+      ::contacts[groupName].append(contact)
+
+    updateMuteStatus(contact)
+    return contact
+  }
 }
 
 local editContactsList = require("scripts/contacts/editContacts.nut")
@@ -92,9 +110,6 @@ g_contacts.removeContact <- function removeContact(player, group)
 
   if (::g_contacts.isFriendsGroupName(group))
     ::clearContactPresence(player.uid)
-
-  if (group == ::EPLX_PS4_FRIENDS && player.name in ::ps4_console_friends)
-    delete ::ps4_console_friends[player.name]
 }
 
 g_contacts.getPlayerFullName <- function getPlayerFullName(name, clanTag = "", addInfo = "")
@@ -110,7 +125,7 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
 ::missed_contacts_data <- {}
 
 ::g_script_reloader.registerPersistentData("ContactsGlobals", ::getroottable(),
-  ["ps4_console_friends", "contacts_groups", "contacts_players", "contacts"])
+  ["contacts_groups", "contacts_players", "contacts"])
 
 ::sortContacts <- function sortContacts(a, b)
 {
@@ -225,12 +240,6 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
   if (contact.canOpenXBoxFriendsWindow(groupName))
   {
     contact.openXBoxFriendsEdit()
-    return null
-  }
-
-  if (contact.canOpenPSNContactGroupWindow())
-  {
-    contact.openPSNContactEdit(groupName)
     return null
   }
 
@@ -544,13 +553,6 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
   }
 }
 
-::getFriendGroupName <- function getFriendGroupName(playerName)
-{
-  if (::isPlayerPS4Friend(playerName))
-    return ::EPLX_PS4_FRIENDS
-  return ::EPL_FRIENDLIST
-}
-
 ::isPlayerInFriendsGroup <- function isPlayerInFriendsGroup(uid, searchByUid = true, playerNick = "")
 {
   if (::u.isEmpty(uid))
@@ -565,7 +567,7 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
   return isFriend
 }
 
-::clear_contacts <- function clear_contacts()
+::clear_contacts <- function clear_contacts(needEvent = true)
 {
   ::contacts_groups = []
   foreach(num, group in ::contacts_groups_default)
@@ -574,8 +576,8 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
   foreach(list in ::contacts_groups)
     ::contacts[list] <- []
 
-  if (::contacts_handler)
-    ::contacts_handler.curGroup = ::EPL_FRIENDLIST
+  if (needEvent)
+    ::broadcastEvent("ContactsCleared")
 }
 
 ::get_contacts_array_by_filter_func <- function get_contacts_array_by_filter_func(groupName, filterFunc)

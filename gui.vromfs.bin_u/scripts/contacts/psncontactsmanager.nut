@@ -44,12 +44,8 @@ local tryUpdateContacts = function(contactsBlk)
         if (!contact)
           continue
 
-        if (isAdding) {
-          if (::g_contacts.isFriendsGroupName(group))
-            ::ps4_console_friends[contact.name] <- contact
-          ::addContactGroup(group)
-          ::contacts[group].append(contact)
-        }
+        if (isAdding)
+          ::g_contacts.addContact(contact, group)
         else
           ::g_contacts.removeContact(contact, group)
 
@@ -99,7 +95,7 @@ local function psnUpdateContactsList(usersTable) {
 
       //Check both lists, as there can be mistakes
       if (contact.isInFriendGroup() && contact.isInBlockGroup()) {
-        if (groupName == ::getFriendGroupName(contact.name))
+        if (groupName == friendGroupName)
           contactsBlk[::EPL_BLOCKLIST][contact.uid] = false
         else
           contactsBlk[friendGroupName][contact.uid] = false
@@ -193,6 +189,7 @@ local function onReceviedUsersList(groupName, responseInfoName, response, err) {
 
 local function fetchFriendlist() {
   checkGroups.append(::EPLX_PS4_FRIENDS)
+  ::addContactGroup(::EPLX_PS4_FRIENDS)
   psn.fetch(
     psn.profile.listFriends(),
     @(response, err) onReceviedUsersList(::EPLX_PS4_FRIENDS, "friendList", response, err),

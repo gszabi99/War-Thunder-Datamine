@@ -177,6 +177,11 @@ class Contact
   openPSNReqFriend = @() updatePSNIdAndDo(@() openPSNRequest(psnSocial.PlayerAction.REQUEST_FRIENDSHIP))
   openPSNBlockUser = @() updatePSNIdAndDo(@() openPSNRequest(psnSocial.PlayerAction.BLOCK_PLAYER))
 
+  function sendPsnFriendRequest(groupName) {
+    if (canOpenPSNContactGroupWindow())
+      openPSNContactEdit(groupName)
+  }
+
   function needCheckXboxId()
   {
     return isPlayerFromXboxOne(name) && xboxId == ""
@@ -208,6 +213,8 @@ class Contact
 
     return isPlayerFromXboxOne(name)
   }
+
+  isSameContact = @(_uid) _uid == uid
 
   function isMe()
   {
@@ -267,20 +274,11 @@ class Contact
 
   function isInGroup(groupName)
   {
-    if (groupName in ::contacts)
-      foreach (p in ::contacts[groupName])
-        if (p.uid == uid)
-          return true
-    return false
+    local userId = uid
+    return (::contacts?[groupName] ?? []).findvalue(@(p) p.uid == userId ) != null
   }
 
-  function isInFriendGroup()
-  {
-    return isInGroup(::EPL_FRIENDLIST) || isInGroup(::EPLX_PS4_FRIENDS)
-  }
-
-  function isInBlockGroup()
-  {
-    return isInGroup(::EPL_BLOCKLIST)
-  }
+  isInFriendGroup = @() isInGroup(::EPL_FRIENDLIST)
+  isInPSNFriends = @() isInGroup(::EPLX_PS4_FRIENDS)
+  isInBlockGroup = @() isInGroup(::EPL_BLOCKLIST)
 }
