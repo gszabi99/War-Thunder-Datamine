@@ -1273,7 +1273,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     curGroup = ::EPL_FRIENDLIST
   }
 
-  function onEventContactsCleared() {
+  function onEventContactsCleared(p) {
     resetCurGroupToDefault()
   }
 }
