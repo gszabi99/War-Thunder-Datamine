@@ -237,15 +237,27 @@ local function updateContacts(needIgnoreInitedFlag = false) {
 
 ::add_event_listener("LoginComplete", function(p) {
   isContactsUpdated(false)
+
+  psn.subscribe.friendslist(function() {
+    updateContacts(true)
+  })
+
+  psn.subscribe.blocklist(function() {
+    updateContacts(true)
+  })
 }, this)
 
 ::add_event_listener("ContactsUpdated", function(p) {
   updateContacts()
 }, this)
 
-// HACK: force-stop push notifications on reload for GFQA. To be removed.
-psn.unsubscribe.friendslist()
-psn.unsubscribe.blocklist()
+::add_event_listener("SignOut", function(p) {
+  pendingContactsChanges.clear()
+  isContactsUpdated(false)
+
+  psn.unsubscribe.friendslist()
+  psn.unsubscribe.blocklist()
+})
 
 return {
   updateContacts = updateContacts
