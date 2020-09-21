@@ -823,7 +823,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(listObj))
       return
 
-    if (::contacts[curGroup].len() == 0)
+    if ((::contacts?[curGroup].len() ?? 0) == 0)
       return
 
     if (listObj.getValue()<0 && ::contacts[curGroup].len() > 0)
