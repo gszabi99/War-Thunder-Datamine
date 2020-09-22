@@ -42,9 +42,9 @@ local XboxShopPurchasableItem = class
 
     releaseDate = blk?.ReleaseDate ?? 0
 
-    price = blk?.Price ?? 0.0
+    price = blk?.Price
     priceText = blk?.DisplayPrice ?? ""
-    listPrice = blk?.ListPrice ?? 0.0
+    listPrice = blk?.ListPrice
     listPriceText = blk?.DisplayListPrice ?? ""
     currencyCode = blk?.CurrencyCode ?? ""
 
@@ -65,13 +65,29 @@ local XboxShopPurchasableItem = class
       imagePath = "!" + xboxShopBlk.mainPart + id + xboxShopBlk.fileExtension
   }
 
-  getPriceText = @() ::colorize(haveDiscount()? "goodTextColor" : "" , price == 0? ::loc("shop/free") : (price + " " + currencyCode))
+  getPriceText = function() {
+    if (price == null)
+      return ""
+
+    local color = haveDiscount()? "goodTextColor" : ""
+    local text = price == 0? ::loc("shop/free") : (price + " " + currencyCode)
+    return ::colorize(color, text)
+  }
+
   updateIsBoughtStatus = @() isBought = isMultiConsumable? false : ::xbox_is_item_bought(id)
-  haveDiscount = @() !isBought && listPrice > 0 && price != listPrice
-  getDiscountPercent = @() calcPercent(1 - (price.tofloat() / listPrice))
+  haveDiscount = @() price != null && listPrice != null && !isBought && listPrice > 0 && price != listPrice
+  getDiscountPercent = function() {
+    if (price == null || listPrice == null)
+      return 0
+
+    return calcPercent(1 - (price.tofloat() / listPrice))
+  }
 
   getDescription = function() {
     local strPrice = getPriceText()
+    if (strPrice == "")
+      return description
+
     if (haveDiscount())
       strPrice = ::loc("ugm/price") + " "
         + ::loc("ugm/withDiscount") + ::loc("ui/colon")

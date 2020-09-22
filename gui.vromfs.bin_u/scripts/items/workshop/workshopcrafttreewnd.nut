@@ -163,20 +163,6 @@ local sizeAndPosViewConfig = {
   })
 }
 
-local sucessItemCraftIconParam = {
-  amountIcon = "#ui/gameuiskin#check.svg"
-  amountIconColor = "@goodTextColor"
-}
-
-local function getSucessItemCraftIcon(item) {
-  return item.maxAmount != 0
-    ? sucessItemCraftIconParam
-    : {
-      amountIcon = ""
-      amountIconColor = ""
-    }
-}
-
 local function needReqItems(itemBlock, itemsList) {
   foreach(reqItemId in (itemBlock?.reqItems ?? []))
     if (reqItemId != null && (itemsList?[reqItemId].getAmount() ?? 0) == 0)
@@ -231,11 +217,12 @@ local function getConfigByItemBlock(itemBlock, itemsList, workshopSet)
     isDisabledAction = isDisabledAction
     isDisabled = item != null && !hasItemInInventory
       && (!item.hasUsableRecipeOrNotRecipes() || isDisabledAction)
-    iconInsteadAmount = hasReachedMaxAmount ? getSucessItemCraftIcon(item) : null
+    iconInsteadAmount = hasReachedMaxAmount ? ::loc(item?.getLocIdsList().maxAmountIcon ?? "") : null
     conectionInRowText = itemBlock?.conectionInRowText
     isDisguised = !hasItemInInventory && isDisguised
     isHidden = !hasItemInInventory
       && isRequireCondition(itemBlock?.reqItemForDisplaying ?? [], itemsList, isItemIdKnown)
+    hasItemBackground = itemBlock?.hasItemBackground ?? true
   }
 }
 
@@ -278,15 +265,18 @@ local getItemBlockView = ::kwarg(
     }
 
     local overridePos = itemBlock?.overridePos
+    local count = itemConfig.iconInsteadAmount
+      ?? (item.maxAmount == 1 ? item.getAdditionalTextInAmmount(true, true) : null)
     return {
       isDisabled = itemConfig.isDisabled
       itemId = itemConfig.itemId
       items = [item.getViewData(viewItemsParams.__merge({
         itemIndex = itemConfig.itemId,
         showAction = !itemConfig.isDisabledAction
-        iconInsteadAmount = itemConfig.iconInsteadAmount
-        count = item.maxAmount == 1 ? item.getAdditionalTextInAmmount(true, true) : null
+        count = count
+        hasIncrasedAmountTextSize = count != null
         showTooltip = !itemConfig.isDisguised
+        enableBackground = itemConfig.hasItemBackground
       }))]
       blockPos = overridePos ?? sizeAndPosViewConfig.itemPos({
         itemSizes = itemSizes
@@ -405,9 +395,13 @@ local function getHeaderView (headerItems, localItemsList, baseEff)
     if(!item)
       continue
     local eff = getItemEff(item)
+    local hasMaxAmountIcon = item.hasReachedMaxAmount()
     items.append(item.getViewData(viewItemsParams.__merge({
       hasBoostEfficiency = true
-      iconInsteadAmount = item.hasReachedMaxAmount() ? sucessItemCraftIconParam : null
+      count = hasMaxAmountIcon
+        ? ::loc(item.getLocIdsList().maxAmountIcon)
+        : null
+      hasIncrasedAmountTextSize = hasMaxAmountIcon
     })))
     totalEff += eff
     itemsEff.append(eff)
@@ -917,7 +911,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   }
 }
 
-::gui_handlers.vehiclesModal <- handlerClass
+::gui_handlers.craftTreeWnd <- handlerClass
 
 return {
   open = @(craftTreeParams) ::handlersManager.loadHandler(handlerClass, craftTreeParams)

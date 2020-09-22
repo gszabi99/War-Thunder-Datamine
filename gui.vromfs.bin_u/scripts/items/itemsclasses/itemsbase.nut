@@ -408,7 +408,7 @@ class ::BaseItem
       : getAdditionalTextInAmmount()
     if (!::u.isInteger(amountVal) || shouldShowAmount(amountVal))
     {
-      res.amount <- hasReachedMaxAmount()
+      res.amount <- isSelfAmount && hasReachedMaxAmount()
         ? ::colorize("goodTextColor",
           ::loc("ui/parentheses/space", {text = amountVal + ::loc("ui/slash") + maxAmount}))
         : amountVal.tostring() + additionalTextInAmmount
@@ -521,13 +521,13 @@ class ::BaseItem
     return true
   }
 
-  function getBuyText(colored, short)
+  function getBuyText(colored, short, locIdBuyText = "mainmenu/btnBuy", cost = null)
   {
-    local res = ::loc("mainmenu/btnBuy")
+    local res = ::loc(locIdBuyText)
     if (short)
       return res
 
-    local cost = getCost()
+    cost = cost ?? getCost()
     local costText = colored? cost.getTextAccordingToBalance() : cost.getUncoloredText()
     return res + ((costText == "")? "" : " (" + costText + ")")
   }
@@ -788,4 +788,7 @@ class ::BaseItem
   canCraftOnlyInCraftTree = @() false
   getLocIdsList = @() { reachedMaxAmount = "item/reached_max_amount" }
   consume = @(cb, params) false
+  showAllowableRecipesOnly = @() false
+  canRecraftFromRewardWnd = @() false
+  canOpenForGold = @() false
 }

@@ -42,7 +42,7 @@ class ::items_classes.Chest extends ItemExternal {
     if (base.consume(cb, params))
       return true
 
-    if (!uids || !uids.len() || !canConsume())
+    if (!uids || !uids.len() || !canConsume() || !hasUsableRecipe())
       return false
 
     if (shouldAutoConsume)
@@ -58,6 +58,14 @@ class ::items_classes.Chest extends ItemExternal {
 
   function getMainActionData(isShort = false, params = {})
   {
+    if (canOpenForGold() && isInventoryItem && amount > 0) {
+      local openCost = getOpenForGoldRecipe()?.getOpenCost(this)
+      if (openCost != null)
+        return {
+          btnName = getBuyText(false, isShort, "item/open", openCost)
+          btnColoredName = getBuyText(true, isShort, "item/open", openCost)
+      }
+    }
     local res = base.getMainActionData(isShort, params)
     if (res)
       return res
@@ -170,6 +178,9 @@ class ::items_classes.Chest extends ItemExternal {
     if (!uids || !uids.len())
       return false
 
+    if (openForGold(cb, params))
+      return true
+
     return ExchangeRecipes.tryUse(getRelatedRecipes(), this, params)
   }
 
@@ -193,5 +204,49 @@ class ::items_classes.Chest extends ItemExternal {
       return null
 
     return markup
+  }
+
+  canOpenForGold = @() itemDef?.tags.openForGoldByFeature != null
+    && ::has_feature(itemDef.tags.openForGoldByFeature)
+  hasUsableRecipe = @() getRelatedRecipes().findvalue(@(recipe) recipe.isUsable) != null
+  getOpenForGoldRecipe = @() getRelatedRecipes().findvalue(
+    (@(recipe) recipe.getOpenCost(this) != null).bindenv(this))
+
+  function openForGold(cb, params = null) {
+    if (!canOpenForGold() || !isInventoryItem || amount == 0)
+      return false
+
+    local openForGoldRecipe = getOpenForGoldRecipe()
+    if (openForGoldRecipe == null)
+      return true
+
+    local cost = openForGoldRecipe.getOpenCost(this)
+    if (!::check_balance_msgBox(cost))
+      return true
+
+    local item = this
+    local text = ::warningIfGold(
+      ::loc("item/openForGold/needMoneyQuestion", { itemName = getName(), cost = cost.getTextAccordingToBalance() }),
+      cost)
+    ::scene_msg_box("open_ches_for_gold", null, text, [
+      [ "yes", @() openForGoldRecipe.buyAllRequiredComponets(item) ],
+      [ "no" ]
+    ], "yes")
+
+    return true
+  }
+
+  function getCost(ignoreCanBuy = false) {
+    if (canOpenForGold() && isInventoryItem && amount > 0)
+      return getOpenForGoldRecipe()?.getOpenCost(this) ?? ::Cost()
+
+    return base.getCost(ignoreCanBuy)
+  }
+
+  function getDescRecipeListHeader(showAmount, totalAmount, isMultipleExtraItems, hasFakeRecipes = false, timeText = "") {
+    if (canOpenForGold())
+      return ::loc($"{getLocIdsList().descReceipesListHeaderPrefix}item")
+
+    return base.getDescRecipeListHeader(showAmount, totalAmount, isMultipleExtraItems, hasFakeRecipes, timeText)
   }
 }

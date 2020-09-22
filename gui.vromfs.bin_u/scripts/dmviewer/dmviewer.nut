@@ -1340,6 +1340,7 @@ const AFTERBURNER_CHAMBER = 3
     local firstStageShotFreq = 0.0
 
     local weaponBlk = ::DataBlock(weaponInfoBlk?.blk ?? "")
+    local isCartridge = weaponBlk?.reloadTime != null
     local cyclicShotFreqS  = weaponBlk?.shotFreq ?? 0.0 // rounds/sec
 
     switch (unit.esUnitType)
@@ -1371,28 +1372,31 @@ const AFTERBURNER_CHAMBER = 3
         break
 
       case ::ES_UNIT_TYPE_SHIP:
-        if (crew)
-        {
-          local crewSkillParams = getParametersByCrewId(crew.id, unit.name)
-          local crewSkill = crewSkillParams?[difficulty.crewSkillName]?.ship_artillery
-          foreach (c in [ "main_caliber_loading_time", "aux_caliber_loading_time", "antiair_caliber_loading_time" ])
+        if (isCartridge)
+          if (crew)
           {
-            reloadTimeS = (crewSkill?[c]?[$"weapons/{weaponName}"]) ?? 0.0
-            if (reloadTimeS)
-              break
+            local crewSkillParams = getParametersByCrewId(crew.id, unit.name)
+            local crewSkill = crewSkillParams?[difficulty.crewSkillName]?.ship_artillery
+            foreach (c in [ "main_caliber_loading_time", "aux_caliber_loading_time", "antiair_caliber_loading_time" ])
+            {
+              reloadTimeS = (crewSkill?[c]?[$"weapons/{weaponName}"]) ?? 0.0
+              if (reloadTimeS)
+                break
+            }
           }
-        }
-        else
-        {
-          local wpcostUnit = ::get_wpcost_blk()?[unit.name]
-          foreach (c in [ "shipMainCaliberReloadTime", "shipAuxCaliberReloadTime", "shipAntiAirCaliberReloadTime" ])
+          else
           {
-            reloadTimeS = wpcostUnit?[$"{c}_{weaponName}"] ?? 0.0
-            if (reloadTimeS)
-              break
+            local wpcostUnit = ::get_wpcost_blk()?[unit.name]
+            foreach (c in [ "shipMainCaliberReloadTime", "shipAuxCaliberReloadTime", "shipAntiAirCaliberReloadTime" ])
+            {
+              reloadTimeS = wpcostUnit?[$"{c}_{weaponName}"] ?? 0.0
+              if (reloadTimeS)
+                break
+            }
           }
-        }
 
+        if (reloadTimeS)
+          break
         cyclicShotFreqS = ::u.search(getCommonWeaponsBlk(dmViewer.unitBlk, "") % "Weapon",
           @(inst) inst.trigger  == weaponInfoBlk.trigger)?.shotFreq ?? cyclicShotFreqS
         shotFreqRPM = cyclicShotFreqS * 60

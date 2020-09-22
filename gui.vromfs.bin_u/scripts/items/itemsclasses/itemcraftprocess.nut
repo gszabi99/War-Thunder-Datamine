@@ -55,10 +55,7 @@ class ::items_classes.CraftProcess extends ItemExternal {
   {
     ::ItemsManager.markInventoryUpdate()
 
-    local isShowOpening  = @(extItem) extItem?.itemdef.type == "item"
-      && !extItem.itemdef?.tags.devItem
-      && (extItem.itemdef?.tags.showWithFeature == null || ::has_feature(extItem.itemdef.tags.showWithFeature))
-    local resultItemsShowOpening  = ::u.filter(resultItems, isShowOpening)
+    local resultItemsShowOpening  = ::u.filter(resultItems, ::trophyReward.isShowItemInTrophyReward)
     local trophyId = id
     if (resultItemsShowOpening.len())
     {

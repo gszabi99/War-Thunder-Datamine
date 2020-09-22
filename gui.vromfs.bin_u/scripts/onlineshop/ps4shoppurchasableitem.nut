@@ -74,7 +74,7 @@ local Ps4ShopPurchasableItem = class
   amount = ""
 
   isMultiConsumable = false
-  needHeader = true //used in .tpl for discount
+  needHeader = true
 
   skuInfo = null
 
@@ -99,17 +99,19 @@ local Ps4ShopPurchasableItem = class
     skuInfo = blk.skus.blockCount() > 0? blk.skus.getBlock(0) : ::DataBlock()
     local isPlusPrice = skuInfo?.is_plus_price ?? false
     local displayPrice = skuInfo?.display_price ?? ""
-    local skuPrice = skuInfo?.price ?? 0
+    local skuPrice = skuInfo?.price
 
     priceText = (!::ps4_has_psplus() && isPlusPrice) ? (skuInfo?.display_original_price ?? "")
       : (::ps4_has_psplus() && !isPlusPrice) ? (skuInfo?.display_plus_upsell_price ?? displayPrice)
       : displayPrice
     listPriceText = skuInfo?.display_original_price ?? skuInfo?.display_price ?? priceText
 
-    price = (!::ps4_has_psplus() && isPlusPrice) ? (skuInfo?.original_price ?? 0)
+    price = (!::ps4_has_psplus() && isPlusPrice) ? skuInfo?.original_price
       : (::ps4_has_psplus() && !isPlusPrice) ? (skuInfo?.plus_upsell_price ?? skuPrice)
       : skuPrice
     listPrice = skuInfo?.original_price ?? skuInfo?.price ?? price
+
+    needHeader = price != null && listPrice != null
 
     productId = skuInfo?.product_id
     local purchStatus = skuInfo?.annotation_name ?? PURCHASE_STATUS.NOT_PURCHASED
@@ -120,14 +122,20 @@ local Ps4ShopPurchasableItem = class
       defaultIconStyle = "reward_gold"
   }
 
-  haveDiscount = @() !isBought && price != listPrice
+  haveDiscount = @() !isBought && price != null && listPrice != null && price != listPrice
   havePsPlusDiscount = @() ::ps4_has_psplus() && ("display_plus_upsell_price" in skuInfo || skuInfo?.is_plus_price) //use in markup
-  getDiscountPercent = @() calcPercent(1 - (price.tofloat() / listPrice))
+  getDiscountPercent = @() (price == null && listPrice == null)? 0 : calcPercent(1 - (price.tofloat() / listPrice))
 
-  getPriceText = @() ::colorize(!haveDiscount() ? ""
+  getPriceText = function() {
+    if (priceText == "")
+      return ""
+
+    local color = !haveDiscount() ? ""
       : havePsPlusDiscount() ? "psplusTextColor"
-      : "goodTextColor",
-    priceText)
+      : "goodTextColor"
+
+    return ::colorize(color, priceText)
+  }
 
   getDescription = function() {
     //TEMP HACK!!! for PS4 TRC R4052A, to show all symbols of a single 2000-letter word

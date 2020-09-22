@@ -1,5 +1,5 @@
 prizeChanceLegend {
-  width:t='p.p.w'
+  width:t='pw'
   left:t='0.5pw-0.5w'
   position:t='relative'
   flow:t='vertical'

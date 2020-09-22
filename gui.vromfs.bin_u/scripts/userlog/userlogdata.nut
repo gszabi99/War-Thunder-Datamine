@@ -400,7 +400,7 @@ local logNameByType = {
       local item = ::ItemsManager.findItemById(blk.body?.itemDefId)
       if (item)
       {
-        if (!item?.shouldAutoConsume)
+        if (!item?.shouldAutoConsume && !(item?.isHiddenItem() ?? false))
         {
           local locId = "userlog/" + ::getLogNameByType(blk.type)
           local numItems = blk.body?.quantity ?? 1

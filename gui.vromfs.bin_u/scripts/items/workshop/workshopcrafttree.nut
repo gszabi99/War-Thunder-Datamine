@@ -64,7 +64,7 @@ local function getReqItemsArray(reqItems) {
   }
 }
 
-local function generateRows(branchBlk, treeRows)
+local function generateRows(branchBlk, treeRows, treeBlk)
 {
   local branchItems = {}
   local textBlocks = []
@@ -74,6 +74,7 @@ local function generateRows(branchBlk, treeRows)
   local resourcesInColumn = {}
   local reqItemsWithDownOutArrows = {}
   local bodyIdx = branchBlk?.bodyItemIdx ?? 0
+  local hasItemBackground = ((treeBlk % "bodyTiledBackImage")?[bodyIdx] ?? "") == ""
   local itemsIdList = {}
   if (treeRows.len() < bodyIdx + 1)
     treeRows.resize(bodyIdx + 1, array(0, null))
@@ -117,6 +118,7 @@ local function generateRows(branchBlk, treeRows)
       reqItemForIdentification = []
       reqItemForCrafting = []
       arrows = []
+      hasItemBackground = hasItemBackground
     }
 
     foreach (reqListId in ["reqItemForCrafting", "reqItemForDisplaying", "reqItemForIdentification"]) {
@@ -245,7 +247,7 @@ local function generateTreeConfig(blk)
   local treeRowsByBodies = []
   foreach(branchBlk in blk % "treeBlock")
   {
-    local configByBranch = generateRows(branchBlk, treeRowsByBodies)
+    local configByBranch = generateRows(branchBlk, treeRowsByBodies, blk)
     treeRowsByBodies = configByBranch.treeRows
     branches.append(DEFAULT_BRANCH_CONFIG.__merge(configByBranch.branch))
   }

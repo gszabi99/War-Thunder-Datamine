@@ -25,6 +25,11 @@
     { value = 100000, icon = "battle_trophy100k" },
     { value = 1000000, icon = "battle_trophy1kk" },
   ]
+
+  isShowItemInTrophyReward = @(extItem) extItem?.itemdef.type == "item"
+    && !extItem.itemdef?.tags.devItem
+    && (extItem.itemdef?.tags.showWithFeature == null || ::has_feature(extItem.itemdef.tags.showWithFeature))
+    && !(extItem.itemdef?.tags.hiddenInRewardWnd ?? false)
 }
 
 trophyReward.processUserlogData <- function processUserlogData(configsArray = [])

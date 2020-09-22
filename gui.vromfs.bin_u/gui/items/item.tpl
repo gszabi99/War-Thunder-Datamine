@@ -8,9 +8,8 @@ itemDiv {
     active:t='yes'
   <</active>>
 
-  <<#enableBackground>>
-    enableBackground:t='yes'
-  <</enableBackground>>
+  enableBackground:t='<<#enableBackground>>yes<</enableBackground>><<^enableBackground>>no<</enableBackground>>'
+
   <<#today>>
     today:t='yes'
   <</today>>
@@ -177,29 +176,24 @@ itemDiv {
       }
       <</expireTime>>
     }
-    <<^iconInsteadAmount>>
-      <<#amount>>
-      itemAmountText {
-        text:t='<<amount>>'
-        <<#overlayAmountTextColor>>
-        overlayTextColor:t='<<overlayAmountTextColor>>'
-        <</overlayAmountTextColor>>
-        <<#isInTransfer>>
-        animated_wait_icon {
-          pos:t='-w, 38%ph-50%h'
-          class:t='inTextRowAbsolute'
-          background-rotation:t = '0'
-        }
-        <</isInTransfer>>
+    <<#amount>>
+    itemAmountText {
+      text:t='<<amount>>'
+      <<#overlayAmountTextColor>>
+      overlayTextColor:t='<<overlayAmountTextColor>>'
+      <</overlayAmountTextColor>>
+      <<#hasIncrasedAmountTextSize>>
+      hasIncrasedAmountTextSize:t='yes'
+      <</hasIncrasedAmountTextSize>>
+      <<#isInTransfer>>
+      animated_wait_icon {
+        pos:t='-w, 38%ph-50%h'
+        class:t='inTextRowAbsolute'
+        background-rotation:t = '0'
       }
-      <</amount>>
-    <</iconInsteadAmount>>
-    <<#iconInsteadAmount>>
-      amountIcon {
-        background-image:t='<<amountIcon>>'
-        background-color:t='<<amountIconColor>>'
-      }
-    <</iconInsteadAmount>>
+      <</isInTransfer>>
+    }
+    <</amount>>
 
     <<^isAllBought>>
     <<#price>>

@@ -495,21 +495,17 @@ itemAmountText {
   shadeStyle:textOnIcon;
 }
 
+itemAmountText[hasIncrasedAmountTextSize=yes] {
+  pos:pw-w-0.5@itemPadding, 0;
+  font:@fontMedium;
+}
+
 [smallItems=yes] itemAmountText {
   pos:pw-w, 0;
 }
 
-amountIcon {
-  pos:pw-w, 0;
-  position:absolute;
-  size: 1@cIco, 1@cIco;
-  background-svg-size: 1@cIco, 1@cIco;
-}
-
-[smallItems=yes] amountIcon {
-  pos:pw-w, -0.5@itemPadding;
-  size: 1@sIco, 1@sIco;
-  background-svg-size: 1@sIco, 1@sIco;
+[smallItems=yes] itemAmountText[hasIncrasedAmountTextSize=yes] {
+  font:@fontSmall;
 }
 
 itemsSeparator {
@@ -653,6 +649,12 @@ itemBlock[isDisabled = yes] > itemDiv {
 
 itemBlock[isDisabled = yes] > itemDiv iconLayer {
   background-color: @shopUnitLocked;
+}
+
+itemBlock > itemDiv[enableBackground = no] {
+  background-color:@transparent;
+  border-color:@tableHeaderSeparatorColor;
+  border:yes;
 }
 
 prizeNest > img,

@@ -56,6 +56,32 @@ const UNITS_STACK_BY_TYPE_COUNT  = 6
 
 ::PrizesView <- {
   template = "gui/items/trophyDesc"
+
+  function getTrophyOpenCountTillPrize(content, trophyInfo) {
+    local res = []
+    local trophiesCountTillPrize = 0
+    foreach (prize in content) {
+      if (prize?.till == null)
+        continue
+
+      local prizeType = getPrizeType(prize)
+      local isReceived = prizeType == PRIZE_TYPE.UNIT && ::isUnitBought(::getAircraftByName(prize.unit))
+      local locId = isReceived ? "trophy/prizeAlreadyReceived" : "trophy/openCountTillPrize"
+      res.append(::loc(locId, {
+        prizeText = getPrizeText(prize, false, false, !isReceived)
+        trophiesCount = prize.till
+      }))
+      if (!isReceived)
+        trophiesCountTillPrize = ::max(trophiesCountTillPrize, prize.till)
+    }
+    if (trophiesCountTillPrize > 0)
+      res.append(::loc("trophy/openCount", {
+        openTrophiesCount = trophyInfo?.openCount ?? 0
+        trophiesCount = trophiesCountTillPrize
+      }))
+
+    return "\n".join(res)
+  }
 }
 
 PrizesView.getPrizeType <- function getPrizeType(prize)
@@ -331,15 +357,6 @@ PrizesView.isPrizeMultiAward <- function isPrizeMultiAward(prize)
 {
   return prize?.multiAwardsOnWorthGold != null
          || prize?.modsForBoughtUnit != null
-}
-
-PrizesView.miltiplyPrizeCount <- function miltiplyPrizeCount(prize, countMul)
-{
-  local b = ::DataBlock()
-  b.setFrom(prize)
-  if (countMul > 1)
-    b.count = (prize?.count ?? 1) * countMul
-  return b
 }
 
 PrizesView._getContentFixedAmount <- function _getContentFixedAmount(content)

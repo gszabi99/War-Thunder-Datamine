@@ -33,7 +33,7 @@ class ::gui_handlers.RecipesListWnd extends ::gui_handlers.BaseGuiHandlerWT
 
     local maxRecipeLen = 1
     foreach(r in recipesList)
-      maxRecipeLen = ::max(maxRecipeLen, r.components.len())
+      maxRecipeLen = ::max(maxRecipeLen, r.visibleComponents.len())
 
     local recipeWidthPx = maxRecipeLen * ::to_pixels("0.5@itemWidth")
     local recipeHeightPx = ::to_pixels("0.5@itemHeight")
@@ -46,7 +46,7 @@ class ::gui_handlers.RecipesListWnd extends ::gui_handlers.BaseGuiHandlerWT
     local columnWidth = 0
     foreach(i, recipe in recipesList)
     {
-      columnWidth = ::max(columnWidth, recipe.components.len())
+      columnWidth = ::max(columnWidth, recipe.visibleComponents.len())
       if ((i + 1) % (rows + 1))
         continue
       itemsInRow += columnWidth

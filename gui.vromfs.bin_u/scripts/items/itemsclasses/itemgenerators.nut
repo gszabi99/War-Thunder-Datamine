@@ -62,6 +62,7 @@ local ItemGenerator = class {
       local isDisassemble = tags?.isDisassemble ?? false
       local localizationPresetName = tags?.customLocalizationPreset
       local effectOnStartCraftPresetName = tags?.effectOnStartCraft
+      local allowableComponents = getAllowableRecipeComponents()
       _exchangeRecipes = ::u.map(parsedRecipes, @(parsedRecipe) ExchangeRecipes({
          parsedRecipe = parsedRecipe,
          generatorId = generatorId
@@ -69,6 +70,7 @@ local ItemGenerator = class {
          isDisassemble = isDisassemble
          localizationPresetName = localizationPresetName
          effectOnStartCraftPresetName = effectOnStartCraftPresetName
+         allowableComponents = allowableComponents
       }))
 
       // Adding additional recipes
@@ -89,6 +91,7 @@ local ItemGenerator = class {
               isDisassemble = isDisassemble
               localizationPresetName = gen?.tags?.customLocalizationPreset ?? localizationPresetName
               effectOnStartCraftPresetName = gen?.tags?.effectOnStartCraft
+              allowableComponents = gen?.getAllowableRecipeComponents() ?? allowableComponents
             })))
             hasAdditionalRecipes = hasAdditionalRecipes || additionalParsedRecipes.len() > 0
           }
@@ -109,12 +112,17 @@ local ItemGenerator = class {
     return ::u.filter(_exchangeRecipes, @(ec) ec.isEnabled())
   }
 
+  function getUsableRecipes() {
+    local showAllowableRecipesOnly = tags?.showAllowableRecipesOnly ?? false
+    return getRecipes().filter(@(r) !showAllowableRecipesOnly || r.isUsable)
+  }
+
   function getRecipesWithComponent(componentItemdefId)
   {
     return ::u.filter(getRecipes(), @(ec) ec.hasComponent(componentItemdefId))
   }
 
-  function _unpackContent()
+  function _unpackContent(contentRank = null)
   {
     _contentUnpacked = []
     local parsedBundles = inventoryClient.parseRecipesString(bundle)
@@ -125,23 +133,23 @@ local ItemGenerator = class {
       {
         local item = ::ItemsManager.findItemById(cfg.itemdefid)
         local generator = !item ? collection?[cfg.itemdefid] : null
-
+        local rank = contentRank != null ? ::min(cfg.quantity, contentRank) : cfg.quantity
         if (item)
         {
           local b = ::DataBlock()
           b.item =  item.id
-          b.rank = cfg.quantity
+          b.rank = rank
           if (trophyWeightsBlk != null && trophyWeightsBlockCount > 0
-            && cfg.quantity <= trophyWeightsBlockCount)
+            && rank <= trophyWeightsBlockCount)
           {
-            local weightBlock = trophyWeightsBlk.getBlock(cfg.quantity - 1)
+            local weightBlock = trophyWeightsBlk.getBlock(rank - 1)
             b.weight = weightBlock.getBlockName()
           }
           _contentUnpacked.append(b)
         }
         else if (generator)
         {
-          local content = generator.getContent(cfg.quantity)
+          local content = generator.getContent(rank)
           hasHiddenItems = hasHiddenItems || generator.hasHiddenItems
           hiddenTopPrizeParams = hiddenTopPrizeParams || generator.hiddenTopPrizeParams
           _contentUnpacked.extend(content)
@@ -153,12 +161,10 @@ local ItemGenerator = class {
     hiddenTopPrizeParams = isBundleHidden ? tags : hiddenTopPrizeParams
   }
 
-  function getContent(quantityMul = 1)
+  function getContent(contentRank = null)
   {
     if (!_contentUnpacked)
-      _unpackContent()
-    if (quantityMul > 1)
-      return ::u.map(_contentUnpacked, @(v) ::PrizesView.miltiplyPrizeCount(v, quantityMul))
+      _unpackContent(contentRank)
     return _contentUnpacked
   }
 
@@ -194,6 +200,18 @@ local ItemGenerator = class {
 
   isDelayedxchange = @() genType == "delayedexchange"
   getContentNoRecursion = @() getContent()
+
+  function getAllowableRecipeComponents() {
+    local allowableItemsForRecipes = tags?.allowableItemsForRecipes
+    if (allowableItemsForRecipes == null)
+      return null
+
+    local allowableItems = {}
+    foreach (itemId in ::split(allowableItemsForRecipes, "_"))
+      allowableItems[::to_integer_safe(itemId, itemId, false)] <- true
+
+    return allowableItems
+  }
 }
 
 local get = function(itemdefId) {

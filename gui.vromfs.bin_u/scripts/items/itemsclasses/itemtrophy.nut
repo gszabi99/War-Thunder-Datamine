@@ -29,6 +29,7 @@ class ::items_classes.Trophy extends ::BaseItem
   groupTrophyStyle = ""
   numTotal = -1
   showDropChance = false
+  showTillValue = false
 
   constructor(blk, invBlk = null, slotData = null)
   {
@@ -44,6 +45,7 @@ class ::items_classes.Trophy extends ::BaseItem
     groupTrophyStyle = blk?.groupTrophyStyle ?? iconStyle
     openingCaptionLocId = blk?.captionLocId
     showDropChance = blk?.showDropChance ?? false
+    showTillValue = blk?.showTillValue ?? false
 
     local blksArray = [blk]
     if (::u.isDataBlock(blk?.prizes))
@@ -337,4 +339,12 @@ class ::items_classes.Trophy extends ::BaseItem
 
     return markup
   }
+
+  function getDescriptionAboveTable() {
+    if (!showTillValue)
+      return ""
+
+    return ::PrizesView.getTrophyOpenCountTillPrize(getContent(), ::get_trophy_info(id))
+  }
+
 }

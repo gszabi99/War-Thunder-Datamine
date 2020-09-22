@@ -1,5 +1,4 @@
 table {
-  margin-top:t='0.005*@scrn_tgt'
   margin-right:t='0.01*@scrn_tgt'
   width:t='pw'
   <<#rows>>

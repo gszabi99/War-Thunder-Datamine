@@ -30,6 +30,8 @@ local defaultLocIdsList = {
   cancelTitle                           = ""
   reachedMaxAmount                      = "item/reached_max_amount"
   inventoryErrorPrefix                  = "inventoryError/"
+  maxAmountIcon                         = "check_mark/green"
+  reUseItemLocId                        = "item/consume/again"
 }
 
 local ItemExternal = class extends ::BaseItem
@@ -87,7 +89,7 @@ local ItemExternal = class extends ::BaseItem
          aditionalConfirmationMsg[action] <- confirmationMsg?[idx] ?? ""
     }
     rarity = itemRarity.get(itemDef?.item_quality, itemDef?.name_color)
-    shouldAutoConsume = !!itemDefDesc?.tags?.autoConsume
+    shouldAutoConsume = !!itemDefDesc?.tags?.autoConsume || canOpenForGold()
 
     link = inventoryClient.getMarketplaceItemUrl(id, itemDesc?.itemid) || ""
     forceExternalBrowser = true
@@ -388,7 +390,7 @@ local ItemExternal = class extends ::BaseItem
   getTagsLoc          = @() rarity.tag && !isDisguised ? [ rarity.tag ] : []
 
   canConsume          = @() false
-  canAssemble         = @() !isExpired() && getMyRecipes().len() > 0
+  canAssemble         = @() !isExpired() && getVisibleRecipes().len() > 0
   canConvertToWarbonds = @() isInventoryItem && !isExpired() && ::has_feature("ItemConvertToWarbond") && amount > 0 && getWarbondRecipe() != null
   canDisassemble       = @() isInventoryItem && itemDef?.tags?.canBeDisassembled
     && !isExpired() && getDisassembleRecipe() != null
@@ -516,7 +518,7 @@ local ItemExternal = class extends ::BaseItem
 
   getAssembleHeader       = @() ::loc(getLocIdsList().headerRecipesList, { itemName = getName() })
   getAssembleText         = @() ::loc(getLocIdsList().assemble)
-  getAssembleButtonText   = @() getMyRecipes().len() > 1 ? ::loc(getLocIdsList().recipes) : getAssembleText()
+  getAssembleButtonText   = @() getVisibleRecipes().len() > 1 ? ::loc(getLocIdsList().recipes) : getAssembleText()
   getCantUseLocId         = @() getLocIdsList().msgBoxCantUse
   getConfirmMessageData   = @(recipe) getEmptyConfirmMessageData().__update({
     text = ::loc(recipe.getConfirmMessageLocId(getLocIdsList()),
@@ -531,7 +533,7 @@ local ItemExternal = class extends ::BaseItem
     if (!canAssemble())
       return false
 
-    local recipesList = params?.recipes ?? getMyRecipes()
+    local recipesList = params?.recipes ?? getVisibleRecipes()
     if (recipesList.len() == 1)
     {
       ExchangeRecipes.tryUse(recipesList, this, params)
@@ -721,10 +723,13 @@ local ItemExternal = class extends ::BaseItem
     return null
   }
 
-  function getMyRecipes()
-  {
+  getMyRecipes = @() ItemGenerators.get(id)?.getRecipes() ?? []
+
+  function getVisibleRecipes() {
     local gen = ItemGenerators.get(id)
-    return gen ? gen.getRecipes() : []
+    if (showAllowableRecipesOnly())
+      return gen?.getUsableRecipes() ?? []
+    return gen?.getRecipes() ?? []
   }
 
   getExpireTimeTextShort = @() ::colorize(expireCountdownColor, base.getExpireTimeTextShort())
@@ -753,7 +758,7 @@ local ItemExternal = class extends ::BaseItem
     if (!canAssemble())
       return false
 
-    foreach (recipes in getMyRecipes())
+    foreach (recipes in getVisibleRecipes())
       if (recipes.isUsable)
         return true
 
@@ -1053,10 +1058,14 @@ local ItemExternal = class extends ::BaseItem
       : "msgBox/assembleItem/cant"
     craftCountdown               = "items/craft_process/countdown"
       + (needShowAsDisassemble() ? "/disassemble" : "")
-    headerRecipesList            = ExchangeRecipes.hasFakeRecipes(getMyRecipes())
+    headerRecipesList            = ExchangeRecipes.hasFakeRecipes(getVisibleRecipes())
       ? "item/create_header/findTrue"
       : "item/create_header"
     craftingIconInAmmount        = needShowAsDisassemble() ? "hud/iconRepair" : "icon/gear"
+    reUseItemLocId               = canConsume() ? "item/consume/again"
+      : hasMainActionDisassemble() && canDisassemble() ? "item/disassemble/again"
+      : canAssemble() ? "item/assemble/again"
+      : defaultLocIdsList.reUseItemLocId
   })
 
   needOfferBuyAtExpiration = @() !isHiddenItem() && itemDef?.tags?.offerToBuyAtExpiration
@@ -1065,11 +1074,11 @@ local ItemExternal = class extends ::BaseItem
   getIconName = @() isDisguised ? getSmallIconName() : itemDef.icon_url
   hasUsableRecipeOrNotRecipes = function ()
   {
-    local recipes = getMyRecipes()
+    local recipes = getVisibleRecipes()
     if (recipes.len() == 0)
       return true
 
-    return ::u.search(getMyRecipes(), @(r) r.isUsable) != null
+    return ::u.search(recipes, @(r) r.isUsable) != null
   }
 
   function getBoostEfficiency()
@@ -1082,6 +1091,8 @@ local ItemExternal = class extends ::BaseItem
 
   getEffectOnOpenChest = @() getEffectOnOpenChestPresetById(itemDef?.tags?.effectOnOpenChest ?? "")
   canCraftOnlyInCraftTree = @() itemDef?.tags?.canCraftOnlyInCraftTree ?? false
+  showAllowableRecipesOnly = @() itemDef?.tags?.showAllowableRecipesOnly ?? false
+  canRecraftFromRewardWnd = @() itemDef?.tags?.allowRecraftFromRewardWnd ?? false
 }
 
 return ItemExternal
