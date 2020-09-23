@@ -220,8 +220,9 @@ local function getConfigByItemBlock(itemBlock, itemsList, workshopSet)
     iconInsteadAmount = hasReachedMaxAmount ? ::loc(item?.getLocIdsList().maxAmountIcon ?? "") : null
     conectionInRowText = itemBlock?.conectionInRowText
     isDisguised = !hasItemInInventory && isDisguised
-    isHidden = !hasItemInInventory
-      && isRequireCondition(itemBlock?.reqItemForDisplaying ?? [], itemsList, isItemIdKnown)
+    isHidden = item.isHiddenItem()
+      || (!hasItemInInventory
+        && isRequireCondition(itemBlock?.reqItemForDisplaying ?? [], itemsList, isItemIdKnown))
     hasItemBackground = itemBlock?.hasItemBackground ?? true
   }
 }
@@ -433,7 +434,7 @@ local function getBranchSeparator(branch, itemSizes, branchHeight) {
 local function getBodyItemsTitles(titlesConfig, itemSizes) {
   local titlesView = []
   foreach (body in titlesConfig)
-    if (body.title != "")
+    if (body.title != "" && itemSizes.visibleItemsCountYByBodies[body.bodyIdx] > 0)
       titlesView.append({
         bodyTitleText = ::loc(body.title)
         titlePos = posFormatString.subst(0, itemSizes.bodiesOffset[body.bodyIdx])
@@ -585,8 +586,9 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
             local item = items?[itemBlock?.id]
             local hasItemInInventory = item != null
               && (item.getAmount() != 0 || item.isCrafting() || item.hasCraftResult())
-            return hasItemInInventory
-              || !isRequireCondition(itemBlock?.reqItemForDisplaying ?? [], items, isItemIdKnown)
+            return !item.isHiddenItem()
+              && (hasItemInInventory
+                || !isRequireCondition(itemBlock?.reqItemForDisplaying ?? [], items, isItemIdKnown))
           }) != null)
         {
           visibleItemsCountY = i
@@ -596,15 +598,17 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
       textBlocks.sort(@(a, b) a.endPosY <=> b.endPosY)
       visibleItemsCountY = ::max(visibleItemsCountY,
         textBlocks.len() > 0 ? (textBlocks.top().endPosY + 1) : 0)
-      curBodiesOffset += isShowHeaderPlace || idx == 0 ? 0
+      curBodiesOffset += isShowHeaderPlace || idx == 0 || visibleItemsCountYByBodies[idx-1] == 0 ? 0
         : (bodiesConfig[idx-1].bodyTitlesCount * titleHeight
             + visibleItemsCountYByBodies[idx-1] * itemBlockHeight + headerBlockInterval
             + (bodiesConfig[idx-1].button != null ? buttonHeight : 0)
           )
       local curBodyTitlesCount = bodiesConfig[idx].bodyTitlesCount
       itemsOffsetByBodies.append(curBodiesOffset
-        + (isShowHeaderPlace ? 0 : (curBodyTitlesCount * titleHeight
-          + (curBodyTitlesCount -1) * titleMargin)))
+        + ((isShowHeaderPlace || visibleItemsCountY == 0)
+          ? 0
+          : (curBodyTitlesCount * titleHeight + (curBodyTitlesCount -1) * titleMargin)
+      ))
       bodiesOffset.append(curBodiesOffset)
       visibleItemsCountYByBodies.append(visibleItemsCountY)
     }
@@ -698,6 +702,8 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     foreach (idx, branch in branches) {
       local bodyConfig = bodiesConfig[branch.bodyIdx]
       local itemsCountY = itemSizes.visibleItemsCountYByBodies[branch.bodyIdx]
+      if (itemsCountY == 0)
+        continue
       local posX = branch.minPosX -1
       separators.append(getBranchSeparator(branch, itemSizes,
         itemsCountY * itemSizes.itemBlockHeight + itemSizes.headerBlockInterval))
