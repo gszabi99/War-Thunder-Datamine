@@ -68145,5 +68145,96 @@
         }
       ]
     }
+  },
+  {
+    "unlockable": {
+      "id": "craft_2020_autumn_1st_place_award",
+      "type": "inventory",
+      "userLogId": "2901013",
+      "isMultiUnlock": true,
+      "loggingEnabled": true,
+      "hidden": true,
+      "mode": [
+        {
+          "type": "missionsPlayedScore"
+        },
+        {
+          "num": 1
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2020-09-24 11:00:00",
+            "endDate": "2020-10-05 12:00:00"
+          }
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "minStat",
+            "value": [1,1,1],
+            "stat": "place"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 2,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        },
+        {
+          "condition": {
+            "type": "unlocked",
+            "positive": false,
+            "unlock": "craft_2020_autumn_1st_place_check"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerHasFeature",
+            "feature": "autumn2020Craft"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "craft_2020_autumn_1st_place_check",
+      "type": "achievement",
+      "chapter": "craft_2020_autumn",
+      "isAfterFlight": true,
+      "hidden": false,
+      "mode": [
+        {
+          "type": "unlockOpenCount"
+        },
+        {
+          "num": 200
+        },
+        {
+          "unlock": "craft_2020_autumn_1st_place_award"
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2020-09-24 11:00:00",
+            "endDate": "2020-10-05 12:00:00"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerHasFeature",
+            "feature": "autumn2020Craft"
+          }
+        }
+      ]
+    }
   }
 ]
