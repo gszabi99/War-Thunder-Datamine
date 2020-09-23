@@ -114,6 +114,21 @@
     "canReloadNonGuns": true
   },
   {
+    "smokeScreenActivateTime": 5.0
+  },
+  {
+    "smokeScreenEffectTime": 7.0
+  },
+  {
+    "smokeScreenRad": 12.0
+  },
+  {
+    "smokeScreenOffset": [-3.0,0.0,2.0]
+  },
+  {
+    "smokeScreenFxType": "tank_smokescreen"
+  },
+  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "RHA_tank_modern",
@@ -124,12 +139,10 @@
           "armorThickness": 50.0
         },
         "superstructure_front_dm": {
-          "armorThickness": 10.0
+          "armorThickness": 10.0,
+          "hidableInViewer": true
         },
         "turret_02_top_dm": {
-          "armorThickness": 30.0
-        },
-        "turret_02_front_dm": {
           "armorThickness": 30.0
         },
         "superstructure_side_dm": {
@@ -180,13 +193,16 @@
           "hidableInViewer": true
         },
         "turret_04_back_dm": {
-          "armorThickness": 5.0
+          "armorThickness": 5.0,
+          "hidableInViewer": true
         },
         "turret_04_front_dm": {
-          "armorThickness": 5.0
+          "armorThickness": 5.0,
+          "hidableInViewer": true
         },
         "turret_06_bottom_dm": {
-          "armorThickness": 10.0
+          "armorThickness": 10.0,
+          "hidableInViewer": true
         },
         "turret_06_back_dm": {
           "armorThickness": 30.0,
@@ -224,10 +240,14 @@
       "turret": {
         "armorClass": "CHA_tank_modern",
         "turret_01_front_dm": {
-          "armorThickness": 60.0
+          "armorThickness": 60.0,
+          "createSecondaryShatters": false
         },
         "superstructure_bottom_dm": {
           "armorThickness": 90.0
+        },
+        "turret_02_front_dm": {
+          "armorThickness": 60.0
         },
         "turret_01_bottom_dm": {
           "armorThickness": 60.0
@@ -296,7 +316,7 @@
           "hidableInXrayViewer": true
         },
         "composite_armor_hull_02_dm": {
-          "armorThickness": 10.0,
+          "armorThickness": 35.0,
           "hidableInXrayViewer": true
         },
         "composite_armor_hull_03_dm": {
@@ -329,24 +349,27 @@
           "armorClass": "leopard_2a5_turret_nera"
         },
         "composite_armor_turret_04_dm": {
-          "armorThickness": 0.0,
+          "armorThickness": 40.0,
           "hidableInXrayViewer": true,
           "armorClass": "leopard_2a5_turret_nera"
         },
         "composite_armor_turret_01_dm": {
-          "armorThickness": 10.0,
+          "armorThickness": 30.0,
+          "armorClass": "hull_side_special_armor",
           "hidableInXrayViewer": true
         },
         "composite_armor_turret_02_dm": {
           "armorThickness": 300.0,
           "hidableInXrayViewer": true,
-          "cumulativeArmorQuality": 2.0,
-          "genericArmorQuality": 0.5,
+          "cumulativeArmorQuality": 1.0,
+          "genericArmorQuality": 0.25,
           "armorClass": "leopard_2a5_turret_nera"
         },
         "ex_armor_body_01_dm": {
           "armorThickness": 60.0,
-          "armorClass": "leopard_2a5_turret_nera"
+          "armorClass": "leopard_2a5_turret_nera",
+          "createSecondaryShatters": true,
+          "cumulativeArmorQuality": 2.0
         },
         "turret_04_bottom_dm": {
           "armorThickness": 30.0,
@@ -422,6 +445,7 @@
         "hidableInViewer": true,
         "solidArmorTestDepth": 40.0,
         "genericArmorQuality": 0.5,
+        "variableThickness": true,
         "ex_armor_body_r_01_dm": [],
         "ex_armor_body_r_02_dm": [],
         "ex_armor_body_r_03_dm": [],
@@ -3125,8 +3149,7 @@
           "titleLoc": "leopard_2a5_turret_nera",
           "armorArrayText": {
             "layer": {
-              "dmPart": "composite_armor_turret_01_dm",
-              "xrayTextThickness": 20.0
+              "dmPart": "composite_armor_turret_01_dm"
             }
           }
         }
@@ -3981,6 +4004,11 @@
         "from": "us_camo_olive*",
         "to": "isr_camo_threecolor*"
       }
+    }
+  },
+  {
+    "smokeScreenExhaustEmitters": {
+      "emitter": "emtr_exhaust_01"
     }
   }
 ]
