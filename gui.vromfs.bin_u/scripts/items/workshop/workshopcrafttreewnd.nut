@@ -220,7 +220,7 @@ local function getConfigByItemBlock(itemBlock, itemsList, workshopSet)
     iconInsteadAmount = hasReachedMaxAmount ? ::loc(item?.getLocIdsList().maxAmountIcon ?? "") : null
     conectionInRowText = itemBlock?.conectionInRowText
     isDisguised = !hasItemInInventory && isDisguised
-    isHidden = item.isHiddenItem()
+    isHidden = item?.isHiddenItem()
       || (!hasItemInInventory
         && isRequireCondition(itemBlock?.reqItemForDisplaying ?? [], itemsList, isItemIdKnown))
     hasItemBackground = itemBlock?.hasItemBackground ?? true
@@ -586,7 +586,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
             local item = items?[itemBlock?.id]
             local hasItemInInventory = item != null
               && (item.getAmount() != 0 || item.isCrafting() || item.hasCraftResult())
-            return !item.isHiddenItem()
+            return !item?.isHiddenItem()
               && (hasItemInInventory
                 || !isRequireCondition(itemBlock?.reqItemForDisplaying ?? [], items, isItemIdKnown))
           }) != null)
