@@ -147,7 +147,8 @@
         },
         "superstructure_side_dm": {
           "armorThickness": 10.0,
-          "hidableInViewer": true
+          "hidableInViewer": true,
+          "explosionArmorQuality": 3.0
         },
         "superstructure_top_dm": {
           "armorThickness": 20.0
@@ -174,7 +175,8 @@
           "armorThickness": 30.0
         },
         "turret_03_bottom_dm": {
-          "armorThickness": 30.0
+          "armorThickness": 30.0,
+          "hidableInViewer": true
         },
         "turret_03_back_dm": {
           "armorThickness": 30.0
@@ -288,12 +290,6 @@
         "turret_06_side_dm": {
           "armorThickness": 65.0
         },
-        "turret_08_side_dm": {
-          "armorThickness": 35.0
-        },
-        "turret_08_front_dm": {
-          "armorThickness": 25.0
-        },
         "turret_08_back_dm": {
           "armorThickness": 5.0,
           "armorClass": "RHA_tank",
@@ -333,14 +329,18 @@
         },
         "composite_armor_hull_07_dm": {
           "armorThickness": 150.0,
+          "armorEffectiveThicknessMax": 600.0,
           "hidableInXrayViewer": true,
-          "cumulativeArmorQuality": 1.0,
+          "cumulativeArmorQuality": 2.2,
+          "genericArmorQuality": 0.2,
           "armorClass": "leopard_2a5_turret_nera"
         },
         "composite_armor_hull_08_dm": {
           "armorThickness": 150.0,
+          "armorEffectiveThicknessMax": 600.0,
           "hidableInXrayViewer": true,
-          "cumulativeArmorQuality": 1.0,
+          "cumulativeArmorQuality": 2.2,
+          "genericArmorQuality": 0.2,
           "armorClass": "leopard_2a5_turret_nera"
         },
         "composite_armor_turret_05_dm": {
@@ -359,17 +359,17 @@
           "hidableInXrayViewer": true
         },
         "composite_armor_turret_02_dm": {
-          "armorThickness": 300.0,
+          "ignoreSolidDimension": true,
+          "armorThickness": 0.0,
           "hidableInXrayViewer": true,
-          "cumulativeArmorQuality": 1.0,
-          "genericArmorQuality": 0.25,
           "armorClass": "leopard_2a5_turret_nera"
         },
         "ex_armor_body_01_dm": {
           "armorThickness": 60.0,
           "armorClass": "leopard_2a5_turret_nera",
           "createSecondaryShatters": true,
-          "cumulativeArmorQuality": 2.0
+          "cumulativeArmorQuality": 2.0,
+          "allowRicochet": true
         },
         "turret_04_bottom_dm": {
           "armorThickness": 30.0,
@@ -404,6 +404,13 @@
           "armorThickness": 40.0,
           "armorClass": "hull_side_special_armor",
           "hidableInViewer": true
+        },
+        "turret_08_side_dm": {
+          "armorThickness": 300.0,
+          "hidableInViewer": false,
+          "cumulativeArmorQuality": 2.2,
+          "genericArmorQuality": 0.5,
+          "armorClass": "leopard_2a5_turret_nera"
         }
       },
       "body_armor": {
@@ -516,6 +523,9 @@
         "turret_03_side_dm": [],
         "turret_08_top_dm": {
           "armorThickness": 5.0
+        },
+        "turret_08_front_dm": {
+          "armorThickness": 15.0
         }
       },
       "optics": {
@@ -3109,8 +3119,8 @@
   },
   {
     "cockpit": {
-      "zoomOutFov": 10.21,
-      "zoomInFov": 9.21,
+      "zoomOutFov": 12.29,
+      "zoomInFov": 6.14,
       "sightFov": 5.0,
       "sightName": "merkava_sight",
       "headPos": [0.0,3.7,-8.8],
