@@ -87,7 +87,7 @@ local editContactsList = require("scripts/contacts/editContacts.nut")
 
   if ("groups" in params)
   {
-    ::clear_contacts(false)
+    ::clear_contacts()
 
     local friendsToRemove = []
     foreach(listName, list in params.groups)

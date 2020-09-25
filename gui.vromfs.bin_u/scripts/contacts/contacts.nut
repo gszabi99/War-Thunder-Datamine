@@ -567,7 +567,7 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
   return isFriend
 }
 
-::clear_contacts <- function clear_contacts(needEvent = true)
+::clear_contacts <- function clear_contacts()
 {
   ::contacts_groups = []
   foreach(num, group in ::contacts_groups_default)
@@ -576,8 +576,7 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
   foreach(list in ::contacts_groups)
     ::contacts[list] <- []
 
-  if (needEvent)
-    ::broadcastEvent("ContactsCleared")
+  ::broadcastEvent("ContactsCleared")
 }
 
 ::get_contacts_array_by_filter_func <- function get_contacts_array_by_filter_func(groupName, filterFunc)

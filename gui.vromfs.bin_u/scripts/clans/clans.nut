@@ -25,6 +25,21 @@ const MY_CLAN_UPDATE_DELAY_MSEC = -60000
   lastClanId = CLAN_ID_NOT_INITED //only for compare about clan id changed
   seenCandidatesBlk = null
   squadronExp = 0
+
+  function updateClanContacts() {
+    ::contacts[::EPLX_CLAN] <- []
+    if (!::is_in_clan())
+      return
+
+    foreach(block in (::my_clan_info?.members ?? []))
+    {
+      if(!(block.uid in ::contacts_players))
+        ::getContact(block.uid, block.nick)
+      ::contacts_players[block.uid].presence = ::getMyClanMemberPresence(block.nick)
+      if(::my_user_id_str != block.uid)
+        ::contacts[::EPLX_CLAN].append(::contacts_players[block.uid])
+    }
+  }
 }
 
 g_clans.getMyClanType <- function getMyClanType()

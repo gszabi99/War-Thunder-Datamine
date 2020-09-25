@@ -614,19 +614,17 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
   }
 
-  function fillContactsList(groups_array = null)
+  function fillContactsList()
   {
     if (!checkScene())
       return
-
-    if (!groups_array)
-      groups_array = ::contacts_groups
 
     local gObj = scene.findObject("contacts_groups")
     if (!gObj) return
     guiScene.setUpdatesEnabled(false, false)
 
     local data = ""
+    local groups_array = getContactsGroups()
     foreach(gIdx, gName in groups_array)
     {
       ::contacts[gName].sort(::sortContacts)
@@ -698,7 +696,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
       sel = fillPlayersList(groupName)
     }
     else
-      foreach(group in ::contacts_groups)
+      foreach(group in getContactsGroups())
         if (group in ::contacts)
         {
           ::contacts[group].sort(::sortContacts)
@@ -733,13 +731,13 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
   function onGroupSelect(obj)
   {
     if (!obj) return
-    selectItemInGroup(obj, ::contacts_groups, false)
+    selectItemInGroup(obj, false)
     applyContactFilter()
   }
 
   function onGroupActivate(obj)
   {
-    selectItemInGroup(obj, ::contacts_groups, true)
+    selectItemInGroup(obj, true)
     applyContactFilter()
   }
 
@@ -811,8 +809,9 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
   }
 
-  function selectItemInGroup(obj, groups, switchFocus = false)
+  function selectItemInGroup(obj, switchFocus = false)
   {
+    local groups = getContactsGroups()
     local value = obj.getValue()
     if (!(value in groups))
       return
@@ -823,7 +822,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(listObj))
       return
 
-    if ((::contacts?[curGroup].len() ?? 0) == 0)
+    if (::contacts[curGroup].len() == 0)
       return
 
     if (listObj.getValue()<0 && ::contacts[curGroup].len() > 0)
@@ -947,7 +946,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function setSearchAdviceVisibility(value)
   {
-    foreach (idx, groupName in ::contacts_groups)
+    foreach (idx, groupName in getContactsGroups())
     {
       local searchAdviceID = "group_" + groupName + "_search_advice"
       local searchAdviceObject = scene.findObject(searchAdviceID)
@@ -1269,11 +1268,9 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     return
   }
 
-  function resetCurGroupToDefault() {
-    curGroup = ::EPL_FRIENDLIST
+  function onEventContactsCleared(p) {
+    validateCurGroup()
   }
 
-  function onEventContactsCleared(p) {
-    resetCurGroupToDefault()
-  }
+  getContactsGroups = @() ::contacts_groups
 }

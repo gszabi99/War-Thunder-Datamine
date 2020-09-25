@@ -113,9 +113,6 @@ expandable {
             }
             animated_wait_icon {
               background-rotation:t = '0'
-              behavior:t='increment'
-              inc-target:t='background-rotation'
-              inc-factor:t='120'
             }
             playbackImg{}
           }

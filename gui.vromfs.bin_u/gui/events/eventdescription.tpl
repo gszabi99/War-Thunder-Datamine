@@ -202,9 +202,6 @@ tdiv {
             height:t='ph'
             pos:t='50%pw-50%w,50%ph-50%h'
             background-rotation:t = '0'
-            behavior:t='increment'
-            inc-target:t='background-rotation'
-            inc-factor:t='120'
           }
           table {
             id:t = 'lb_table'
