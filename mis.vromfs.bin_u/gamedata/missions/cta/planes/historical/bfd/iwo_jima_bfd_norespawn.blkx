@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 24.0
-    },
     "player": [
       {
         "army": 1
@@ -214,22 +210,27 @@
     "mission": {
       "level": "levels/iwo_jima.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
       "locName": "missions/iwo_jima_BfD_norespawn",
       "locDesc": "missions/_BfD_norespawn/desc",
       "scoreLimit": 3000,
-      "timeLimit": 60,
+      "timeLimit": 25,
       "deathPenaltyMul": 0.0,
       "country_axis": "japan",
       "country_allies": "usa",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": false,
-        "isShipsAllowed": false
+        "isShipsAllowed": false,
+        "isHelicoptersAllowed": false
       }
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 24.0
     },
     "spectator_points": [],
     "briefing": {
@@ -417,7 +418,6 @@
             "spawnEffect": false,
             "isAirfield": false,
             "isUnit": false,
-            "offset": [0.0,0.0,0.0],
             "radius": -1.0,
             "destructionAwardMultiplier": 1.0,
             "isStrictSpawn": false,
@@ -427,9 +427,13 @@
             "canSpawnOnNeutral": false,
             "showOnMap": true,
             "onlyOnePlayerPerSpawnPoint": false,
+            "resetStrictSpawnIndex": false,
+            "forceCreate": false,
+            "replaceAreas": false,
             "target": "t1_common_fighters_spawn",
             "team": "A",
             "awardByBodyHp": false,
+            "offset": [0.0,0.0,0.0],
             "tags": {
               "type_assault": false,
               "type_interceptor": false,
@@ -446,7 +450,6 @@
             "spawnEffect": false,
             "isAirfield": false,
             "isUnit": false,
-            "offset": [0.0,0.0,0.0],
             "radius": -1.0,
             "destructionAwardMultiplier": 1.0,
             "isStrictSpawn": false,
@@ -456,9 +459,13 @@
             "canSpawnOnNeutral": false,
             "showOnMap": true,
             "onlyOnePlayerPerSpawnPoint": false,
+            "resetStrictSpawnIndex": false,
+            "forceCreate": false,
+            "replaceAreas": false,
             "target": "t2_common_fighters_spawn",
             "team": "B",
             "awardByBodyHp": false,
+            "offset": [0.0,0.0,0.0],
             "tags": {
               "type_assault": false,
               "type_interceptor": false,
@@ -520,7 +527,7 @@
               "spawnPoint": "t2_ai_airfield_01_spawn12"
             },
             {
-              "visibleOnHud": false
+              "visibleOnHud": true
             }
           ]
         },
@@ -575,7 +582,7 @@
               "spawnPoint": "t2_ai_airfield_02_spawn12"
             },
             {
-              "visibleOnHud": false
+              "visibleOnHud": true
             }
           ]
         },
@@ -708,6 +715,46 @@
           ]
         },
         {
+          "addAirfield": [
+            {
+              "runwayStart": "t2_small_airfield_01_start"
+            },
+            {
+              "runwayEnd": "t2_small_airfield_01_end"
+            },
+            {
+              "runwayWidth": 100.0
+            },
+            {
+              "army": 2
+            },
+            {
+              "spawnPoint": "t2_small_airfield_01_spawn_01"
+            },
+            {
+              "spawnPoint": "t2_small_airfield_01_spawn_02"
+            },
+            {
+              "spawnPoint": "t2_small_airfield_01_spawn_03"
+            },
+            {
+              "spawnPoint": "t2_small_airfield_01_spawn_04"
+            },
+            {
+              "spawnPoint": "t2_small_airfield_01_spawn_05"
+            },
+            {
+              "spawnPoint": "t2_small_airfield_01_spawn_06"
+            },
+            {
+              "spawnPoint": "t2_small_airfield_01_spawn_07"
+            },
+            {
+              "visibleOnHud": true
+            }
+          ]
+        },
+        {
           "missionMarkAsRespawnPoint": [
             {
               "loc_name": "missions/carriers_spawn"
@@ -720,9 +767,6 @@
             },
             {
               "isUnit": false
-            },
-            {
-              "offset": [0.0,0.0,0.0]
             },
             {
               "radius": -1.0
@@ -750,6 +794,15 @@
             },
             {
               "onlyOnePlayerPerSpawnPoint": false
+            },
+            {
+              "resetStrictSpawnIndex": false
+            },
+            {
+              "forceCreate": false
+            },
+            {
+              "replaceAreas": false
             },
             {
               "target": "t1_carrier_01"
@@ -782,6 +835,9 @@
               "awardByBodyHp": false
             },
             {
+              "offset": [0.0,0.0,0.0]
+            },
+            {
               "tags": {
                 "type_assault": false,
                 "type_interceptor": false,
@@ -800,7 +856,6 @@
             "spawnEffect": false,
             "isAirfield": true,
             "isUnit": false,
-            "offset": [0.0,0.0,0.0],
             "radius": -1.0,
             "destructionAwardMultiplier": 1.0,
             "isStrictSpawn": false,
@@ -810,10 +865,14 @@
             "canSpawnOnNeutral": false,
             "showOnMap": true,
             "onlyOnePlayerPerSpawnPoint": false,
+            "resetStrictSpawnIndex": false,
+            "forceCreate": false,
+            "replaceAreas": false,
             "target": "t2_airfield",
             "team": "B",
             "object": "t2_airfield_target",
             "awardByBodyHp": true,
+            "offset": [0.0,0.0,0.0],
             "tags": {
               "type_bomber": false,
               "type_assault": false,
@@ -829,7 +888,6 @@
             "spawnEffect": false,
             "isAirfield": false,
             "isUnit": false,
-            "offset": [0.0,0.0,0.0],
             "radius": -1.0,
             "destructionAwardMultiplier": 1.0,
             "isStrictSpawn": false,
@@ -839,9 +897,13 @@
             "canSpawnOnNeutral": false,
             "showOnMap": true,
             "onlyOnePlayerPerSpawnPoint": false,
+            "resetStrictSpawnIndex": false,
+            "forceCreate": false,
+            "replaceAreas": false,
             "target": "t1_common_fighters_spawn",
             "team": "A",
             "awardByBodyHp": false,
+            "offset": [0.0,0.0,0.0],
             "tags": {
               "type_assault": false,
               "type_interceptor": false,
@@ -990,6 +1052,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "t2_ai_kamikadzies_squad"
           }
         },
@@ -1055,12 +1119,16 @@
             "name_for_respawn_base": "",
             "timeMultiplier": 8.0,
             "disableZone": false,
+            "showBorderOnMap": false,
+            "borderWidthCoef": 1.0,
+            "borderTransparencyCoef": 1.0,
             "target": "capture_zone",
             "canCaptureOnGround": false,
             "canCaptureInAir": false,
             "canCaptureByGM": true,
             "zoneType": "capture",
-            "captureNoPenalty": true
+            "captureNoPenalty": true,
+            "zoneDefenders": []
           }
         },
         {
@@ -1070,12 +1138,16 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "t1_iwo_jima_BfD_norespawn_main"
+            "target": "t1_iwo_jima_BfD_norespawn_main",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
           "moAddMissionObjective": {
-            "target": "t2_iwo_jima_BfD_norespawn_main"
+            "target": "t2_iwo_jima_BfD_norespawn_main",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -1085,12 +1157,16 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "t1_iwo_jima_BfD_norespawn_landing"
+            "target": "t1_iwo_jima_BfD_norespawn_landing",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
           "moAddMissionObjective": {
-            "target": "t2_iwo_jima_BfD_norespawn_landing"
+            "target": "t2_iwo_jima_BfD_norespawn_landing",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -1100,13 +1176,57 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "t1_iwo_jima_BfD_norespawn_kamikaze"
+            "target": "t1_iwo_jima_BfD_norespawn_kamikaze",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
           "moAddMissionObjective": {
-            "target": "t2_iwo_jima_BfD_norespawn_kamikaze"
+            "target": "t2_iwo_jima_BfD_norespawn_kamikaze",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
+        },
+        {
+          "addAirfield": [
+            {
+              "runwayStart": "t2_small_airfield_02_start"
+            },
+            {
+              "runwayEnd": "t2_small_airfield_02_end"
+            },
+            {
+              "runwayWidth": 100.0
+            },
+            {
+              "army": 2
+            },
+            {
+              "spawnPoint": "t2_small_airfield_02_spawn_01"
+            },
+            {
+              "spawnPoint": "t2_small_airfield_02_spawn_02"
+            },
+            {
+              "spawnPoint": "t2_small_airfield_02_spawn_03"
+            },
+            {
+              "spawnPoint": "t2_small_airfield_02_spawn_04"
+            },
+            {
+              "spawnPoint": "t2_small_airfield_02_spawn_05"
+            },
+            {
+              "spawnPoint": "t2_small_airfield_02_spawn_06"
+            },
+            {
+              "spawnPoint": "t2_small_airfield_02_spawn_07"
+            },
+            {
+              "visibleOnHud": true
+            }
+          ]
         }
       ],
       "else_actions": []
@@ -1136,9 +1256,9 @@
           "check_targets": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "t2_ai_kamikadzies_squad",
-          "target": "kamikadze_start_point"
+          "target": "kamikadze_start_point",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -1157,6 +1277,8 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "t2_ai_kamikadzies_squad"
         },
         "triggerEnable": {
@@ -1250,9 +1372,9 @@
           "check_targets": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "t2_ai_kamikadzies_squad",
-          "target": "kamikadze_bombing_point"
+          "target": "kamikadze_bombing_point",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -1329,6 +1451,8 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "t2_ai_kamikadzies_squad",
           "useForTriggerFiltered": true
         }
@@ -1381,9 +1505,6 @@
             "object_var_comp_op": "equal"
           },
           {
-            "object_var_value": 0
-          },
-          {
             "object": "t2_ai_kamikadzies_squad"
           },
           {
@@ -1391,6 +1512,9 @@
           },
           {
             "target": "t1_cargo_ships_squad"
+          },
+          {
+            "object_var_value": 0
           }
         ]
       },
@@ -1428,14 +1552,14 @@
             "effect_type": "specify",
             "effect": "huge_explosion_fx",
             "offset": [0.0,10.0,0.0],
-            "radiusOffset": [0.0,0.0],
             "show": true,
             "attach": false,
             "scale": 2.0,
             "loopSpawn": true,
             "delay": [1.0,1.0],
             "target": "t1_navy_ships_squad",
-            "useForTriggerFiltered": true
+            "useForTriggerFiltered": true,
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -1478,6 +1602,8 @@
           "moSetObjectiveStatus": {
             "target": "t1_iwo_jima_BfD_norespawn_kamikaze",
             "status": 3,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "team": "A"
           }
         },
@@ -1485,6 +1611,8 @@
           "moSetObjectiveStatus": {
             "target": "t2_iwo_jima_BfD_norespawn_kamikaze",
             "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "team": "B"
           }
         },
@@ -1519,8 +1647,8 @@
           "value": 1,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "t2_ai_kamikadzies_squad"
+          "object": "t2_ai_kamikadzies_squad",
+          "object_var_value": 0
         }
       },
       "actions": [
@@ -1533,6 +1661,8 @@
           "moSetObjectiveStatus": {
             "target": "t1_iwo_jima_BfD_norespawn_kamikaze",
             "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "team": "A"
           }
         },
@@ -1540,6 +1670,8 @@
           "moSetObjectiveStatus": {
             "target": "t2_iwo_jima_BfD_norespawn_kamikaze",
             "status": 3,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "team": "B"
           }
         },
@@ -1574,9 +1706,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "t1_tanks_squad",
-          "target": "descent_final_area"
+          "target": "descent_final_area",
+          "object_var_value": 0
         }
       },
       "actions": [
@@ -1589,6 +1721,8 @@
           "moSetObjectiveStatus": {
             "target": "t1_iwo_jima_BfD_norespawn_landing",
             "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "team": "A"
           }
         },
@@ -1596,6 +1730,8 @@
           "moSetObjectiveStatus": {
             "target": "t2_iwo_jima_BfD_norespawn_landing",
             "status": 3,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "team": "B"
           }
         },
@@ -1630,8 +1766,8 @@
           "value": 1,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "t1_motherships_squad"
+          "object": "t1_motherships_squad",
+          "object_var_value": 0
         }
       },
       "actions": [
@@ -1649,6 +1785,8 @@
           "moSetObjectiveStatus": {
             "target": "t1_iwo_jima_BfD_norespawn_landing",
             "status": 3,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "team": "A"
           }
         },
@@ -1656,6 +1794,8 @@
           "moSetObjectiveStatus": {
             "target": "t2_iwo_jima_BfD_norespawn_landing",
             "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "team": "B"
           }
         },
@@ -1690,9 +1830,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "t1_motherships_squad",
-          "target": "landing_area"
+          "target": "landing_area",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -1791,8 +1931,8 @@
           "value": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "t1_lcvp_squad"
+          "object": "t1_lcvp_squad",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -1811,6 +1951,8 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "t1_lcvp_squad",
           "speed": 60.0,
           "useForTriggerFiltered": true
@@ -1839,8 +1981,8 @@
           "value": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "t1_lcvp_squad"
+          "object": "t1_lcvp_squad",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -1882,9 +2024,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "t1_lcvp_squad",
-          "target": "descent_slow_area"
+          "target": "descent_slow_area",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -1921,9 +2063,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "t1_lcvp_squad",
-          "target": "descent_final_area"
+          "target": "descent_final_area",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -1965,8 +2107,8 @@
           "value": 1,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "t1_carriers_squad"
+          "object": "t1_carriers_squad",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -1999,8 +2141,8 @@
           "value": 1,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "t2_airfield_target"
+          "object": "t2_airfield_target",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -2033,8 +2175,8 @@
           "value": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "t2_ai_kamikadzies_squad",
+          "object_var_value": 0,
           "var": "kamikaze_death_counter"
         }
       },
@@ -2074,8 +2216,8 @@
             "value": 1,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "t1_navy_ships_squad"
+            "object": "t1_navy_ships_squad",
+            "object_var_value": 0
           }
         },
         {
@@ -2086,8 +2228,8 @@
             "value": 1,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "t1_cargo_ships_squad"
+            "object": "t1_cargo_ships_squad",
+            "object_var_value": 0
           }
         },
         {
@@ -2098,8 +2240,8 @@
             "value": 1,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "t1_lcvp_squad"
+            "object": "t1_lcvp_squad",
+            "object_var_value": 0
           }
         },
         {
@@ -2110,8 +2252,8 @@
             "value": 1,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "t1_tanks_squad"
+            "object": "t1_tanks_squad",
+            "object_var_value": 0
           }
         }
       ],
@@ -2135,6 +2277,8 @@
           "moSetObjectiveStatus": {
             "target": "t1_iwo_jima_BfD_norespawn_main",
             "status": 3,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "team": "A"
           }
         },
@@ -2142,6 +2286,8 @@
           "moSetObjectiveStatus": {
             "target": "t2_iwo_jima_BfD_norespawn_main",
             "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "team": "B"
           }
         }
@@ -2180,6 +2326,8 @@
           "moSetObjectiveStatus": {
             "target": "t1_iwo_jima_BfD_norespawn_landing",
             "status": 3,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "team": "A"
           }
         },
@@ -2187,6 +2335,8 @@
           "moSetObjectiveStatus": {
             "target": "t2_iwo_jima_BfD_norespawn_landing",
             "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "team": "B"
           }
         }
@@ -2222,6 +2372,8 @@
           "moSetObjectiveStatus": {
             "target": "t1_iwo_jima_BfD_norespawn_main",
             "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "team": "A"
           }
         },
@@ -2229,6 +2381,8 @@
           "moSetObjectiveStatus": {
             "target": "t2_iwo_jima_BfD_norespawn_main",
             "status": 3,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "team": "B"
           }
         },
@@ -2261,8 +2415,8 @@
           "value": 1,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "t2_airfield_target"
+          "object": "t2_airfield_target",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -2317,8 +2471,8 @@
             "value": 1,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "t1_motherships_squad"
+            "object": "t1_motherships_squad",
+            "object_var_value": 0
           }
         },
         {
@@ -2329,8 +2483,8 @@
             "value": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "t1_motherships_squad"
+            "object": "t1_motherships_squad",
+            "object_var_value": 0
           }
         }
       ],
@@ -2363,8 +2517,8 @@
           "value": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "t1_motherships_squad"
+          "object": "t1_motherships_squad",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -2495,6 +2649,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -2540,6 +2695,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -2656,6 +2812,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -2772,6 +2929,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -2824,6 +2982,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -2929,6 +3088,9 @@
         ],
         "props": [
           {
+            "object_marking": 0
+          },
+          {
             "squad_members": "t1_carrier_01"
           },
           {
@@ -2965,6 +3127,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -3129,6 +3292,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -3293,6 +3457,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -3457,6 +3622,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -3621,6 +3787,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -3785,6 +3952,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -3949,6 +4117,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4102,6 +4271,9 @@
         ],
         "props": [
           {
+            "object_marking": 0
+          },
+          {
             "squad_members": "t1_navy_ship_01"
           },
           {
@@ -4147,6 +4319,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4263,6 +4436,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4379,6 +4553,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4420,6 +4595,9 @@
         ],
         "props": [
           {
+            "object_marking": 0
+          },
+          {
             "squad_members": "t1_def_ship_01"
           },
           {
@@ -4453,6 +4631,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 6,
@@ -4499,6 +4678,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 6,
@@ -4534,6 +4714,9 @@
         ],
         "props": [
           {
+            "object_marking": 0
+          },
+          {
             "squad_members": "t2_ai_kamikadze_01"
           },
           {
@@ -4552,6 +4735,7 @@
           [24270.7,0.0,-14215.5]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": "t1_def_ships_squad"
         }
       }
@@ -4578,6 +4762,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4630,6 +4815,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4682,6 +4868,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4734,6 +4921,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4786,6 +4974,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4838,6 +5027,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4890,6 +5080,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4942,6 +5133,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4982,6 +5174,9 @@
           [26992.1,0.0,-25253.6]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "t1_cargo_ship_01"
           },
@@ -5040,6 +5235,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5075,6 +5271,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5098,6 +5295,9 @@
           [22792.9,0.0,-7881.85]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "t1_lcvp_01"
           },
@@ -5171,6 +5371,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 7,
@@ -5255,6 +5456,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 7,
@@ -5328,6 +5530,9 @@
         ],
         "props": [
           {
+            "object_marking": 0
+          },
+          {
             "squad_members": "t1_tank_01"
           },
           {
@@ -5346,6 +5551,9 @@
           [-3406.25,259.65,-179.65]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "t2_artillery_squad"
           },
@@ -5377,6 +5585,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5412,6 +5621,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5447,6 +5657,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5482,6 +5693,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5517,6 +5729,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5552,6 +5765,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5587,6 +5801,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5622,6 +5837,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5657,6 +5873,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5692,6 +5909,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5715,6 +5933,9 @@
           [3795.55,364.85,2013.2]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "t2_bunker_01"
           },
@@ -5770,6 +5991,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5805,6 +6027,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5840,6 +6063,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5875,6 +6099,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5910,6 +6135,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5945,6 +6171,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5980,6 +6207,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6015,6 +6243,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6050,6 +6279,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6085,6 +6315,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6120,6 +6351,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6155,6 +6387,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6190,6 +6423,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6225,6 +6459,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6248,6 +6483,9 @@
           [2804.7,343.65,3342.95]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "t2_light_bunker_04"
           },
@@ -6297,6 +6535,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6332,6 +6571,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6367,6 +6607,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6402,6 +6643,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6437,6 +6679,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6472,6 +6715,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6495,6 +6739,9 @@
           [-1885.7,291.35,1198.25]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "t2_art_01"
           },
@@ -6538,6 +6785,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6575,6 +6823,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6610,6 +6859,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6645,6 +6895,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6680,6 +6931,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6715,6 +6967,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6750,6 +7003,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6785,6 +7039,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6820,6 +7075,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6855,6 +7111,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6890,6 +7147,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6913,6 +7171,9 @@
           [1647.4,357.2,6572.15]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "t2_def_small_aaa_01"
           },
@@ -6956,6 +7217,7 @@
           [-4393.7,-45.15,-13737.7]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": "t1_tanks_squad"
         }
       }
@@ -6970,6 +7232,7 @@
           [-8946.45,-45.15,-872.4]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": "t2_bunkers_squad"
         }
       }
@@ -6984,6 +7247,7 @@
           [-5761.8,-45.15,-13751.2]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": "structures_01"
         }
       }
@@ -6998,6 +7262,7 @@
           [-9671.9,-45.15,-2150.5]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": "structures_01"
         }
       }
@@ -7024,6 +7289,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7059,6 +7325,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7094,6 +7361,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7129,6 +7397,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7164,6 +7433,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7199,6 +7469,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7222,6 +7493,9 @@
           [-1046.7,368.1,2294.5]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "t2_aaa_01"
           },
@@ -7283,6 +7557,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7318,6 +7593,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7353,6 +7629,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7388,6 +7665,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7423,6 +7701,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7458,6 +7737,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7493,6 +7773,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7528,6 +7809,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7563,6 +7845,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7598,6 +7881,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7633,6 +7917,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7668,6 +7953,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7703,6 +7989,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7738,6 +8025,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7773,6 +8061,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 0,
           "count": 1,
@@ -7800,6 +8089,9 @@
         ],
         "props": [
           {
+            "object_marking": 0
+          },
+          {
             "squad_members": "t1_lcvp_squad"
           },
           {
@@ -7825,6 +8117,9 @@
         ],
         "props": [
           {
+            "object_marking": 0
+          },
+          {
             "squad_members": "t2_light_bunkers_squad"
           },
           {
@@ -7843,6 +8138,9 @@
           [-22639.0,11.25,3801.05]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "t1_light_units_squad"
           },
@@ -7863,6 +8161,9 @@
         ],
         "props": [
           {
+            "object_marking": 0
+          },
+          {
             "squad_members": "t2_light_units_squad"
           },
           {
@@ -7881,6 +8182,9 @@
           [9271.85,0.0,-18805.5]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "t1_cargo_ships_squad"
           },
@@ -8072,6 +8376,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -8124,6 +8429,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -8176,6 +8482,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -8217,6 +8524,9 @@
         ],
         "props": [
           {
+            "object_marking": 0
+          },
+          {
             "squad_members": "t1_subquest_units_01"
           },
           {
@@ -8238,6 +8548,9 @@
           [-703.7,72.4,-32525.7]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "t2_subquest_units_01"
           },
@@ -8273,6 +8586,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 10,
@@ -8391,6 +8705,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 10,
@@ -8556,6 +8871,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 10,
@@ -8674,6 +8990,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 10,
@@ -8792,6 +9109,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 10,
@@ -8957,6 +9275,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 10,
@@ -9209,6 +9528,7 @@
         [-2770.49,0.0,5322.06],
         [1673.85,2000.0,7934.25]
       ],
+      "objLayer": 3,
       "props": []
     },
     "t2_assault_spawn": {
@@ -9239,6 +9559,7 @@
         [-4617.49,0.0,8870.11],
         [1673.85,1000.0,7934.25]
       ],
+      "objLayer": 3,
       "props": []
     },
     "t2_interceptor_spawn": {
@@ -9319,26 +9640,26 @@
         [-28284.3,0.0,28284.3],
         [12766.0,5.0,-12467.5]
       ],
-      "objLayer": 0,
+      "objLayer": 3,
       "props": []
     },
     "t2_ai_airfield_01_start": {
       "type": "Sphere",
       "tm": [
-        [-165.671,0.0,-95.65],
-        [0.0,191.3,0.0],
-        [95.65,0.0,-165.671],
-        [1529.85,287.3,2172.0]
+        [-173.205,0.0,-99.9998],
+        [0.0,200.0,0.0],
+        [99.9998,0.0,-173.205],
+        [1566.09,106.624,2178.79]
       ],
       "props": []
     },
     "t2_ai_airfield_01_end": {
       "type": "Sphere",
       "tm": [
-        [88.7011,0.0,46.1749],
-        [0.0,100.0,0.0],
-        [-46.1749,0.0,88.7011],
-        [216.45,287.3,1440.65]
+        [177.402,0.0,92.3498],
+        [0.0,200.0,0.0],
+        [-92.3498,0.0,177.402],
+        [-1313.6,106.599,576.368]
       ],
       "props": []
     },
@@ -9348,7 +9669,7 @@
         [-15.5885,0.0,-9.0],
         [0.0,18.0,0.0],
         [9.0,0.0,-15.5885],
-        [1484.25,266.55,2104.4]
+        [1520.49,106.6,2111.19]
       ],
       "props": []
     },
@@ -9358,7 +9679,7 @@
         [-15.5885,0.0,-9.0],
         [0.0,18.0,0.0],
         [9.0,0.0,-15.5885],
-        [1474.1,266.55,2121.7]
+        [1510.34,106.6,2128.49]
       ],
       "props": []
     },
@@ -9368,7 +9689,7 @@
         [-15.5885,0.0,-9.0],
         [0.0,18.0,0.0],
         [9.0,0.0,-15.5885],
-        [1463.5,266.55,2139.75]
+        [1499.74,106.6,2146.54]
       ],
       "props": []
     },
@@ -9378,7 +9699,7 @@
         [-15.5885,0.0,-9.0],
         [0.0,18.0,0.0],
         [9.0,0.0,-15.5885],
-        [1453.5,266.55,2157.1]
+        [1489.74,106.6,2163.89]
       ],
       "props": []
     },
@@ -9388,7 +9709,7 @@
         [-15.5885,0.0,-9.0],
         [0.0,18.0,0.0],
         [9.0,0.0,-15.5885],
-        [1501.65,266.55,2114.45]
+        [1537.89,106.6,2121.24]
       ],
       "props": []
     },
@@ -9398,7 +9719,7 @@
         [-15.5885,0.0,-9.0],
         [0.0,18.0,0.0],
         [9.0,0.0,-15.5885],
-        [1491.95,266.55,2132.05]
+        [1528.19,106.6,2138.84]
       ],
       "props": []
     },
@@ -9408,7 +9729,7 @@
         [-15.5885,0.0,-9.0],
         [0.0,18.0,0.0],
         [9.0,0.0,-15.5885],
-        [1481.05,266.55,2150.2]
+        [1517.29,106.6,2156.99]
       ],
       "props": []
     },
@@ -9418,7 +9739,7 @@
         [-15.5885,0.0,-9.0],
         [0.0,18.0,0.0],
         [9.0,0.0,-15.5885],
-        [1471.0,266.55,2167.65]
+        [1507.24,106.6,2174.44]
       ],
       "props": []
     },
@@ -9428,7 +9749,7 @@
         [-15.5885,0.0,-9.0],
         [0.0,18.0,0.0],
         [9.0,0.0,-15.5885],
-        [1519.8,266.55,2124.85]
+        [1556.04,106.6,2131.64]
       ],
       "props": []
     },
@@ -9438,7 +9759,7 @@
         [-15.5885,0.0,-9.0],
         [0.0,18.0,0.0],
         [9.0,0.0,-15.5885],
-        [1508.95,266.55,2141.85]
+        [1545.19,106.6,2148.64]
       ],
       "props": []
     },
@@ -9448,7 +9769,7 @@
         [-15.5885,0.0,-9.0],
         [0.0,18.0,0.0],
         [9.0,0.0,-15.5885],
-        [1498.1,266.55,2160.0]
+        [1534.34,106.6,2166.79]
       ],
       "props": []
     },
@@ -9458,7 +9779,7 @@
         [-15.5885,0.0,-9.0],
         [0.0,18.0,0.0],
         [9.0,0.0,-15.5885],
-        [1488.3,266.55,2177.65]
+        [1524.54,106.6,2184.44]
       ],
       "props": []
     },
@@ -9495,20 +9816,20 @@
     "t2_ai_airfield_02_start": {
       "type": "Sphere",
       "tm": [
-        [-191.118,0.0,-8.34424],
-        [0.0,191.3,0.0],
-        [8.34424,0.0,-191.118],
-        [1730.75,287.3,1294.9]
+        [-199.81,0.0,-8.72372],
+        [0.0,200.0,0.0],
+        [8.72372,0.0,-199.81],
+        [1730.75,106.599,1294.9]
       ],
       "props": []
     },
     "t2_ai_airfield_02_end": {
       "type": "Sphere",
       "tm": [
-        [100.0,0.0,0.0],
-        [0.0,100.0,0.0],
-        [0.0,0.0,100.0],
-        [281.0,287.3,1259.3]
+        [200.0,0.0,0.0],
+        [0.0,200.0,0.0],
+        [0.0,0.0,200.0],
+        [-1184.87,106.599,1264.79]
       ],
       "props": []
     },
@@ -9518,7 +9839,7 @@
         [-18.0,0.0,2.14577e-05],
         [0.0,18.0,0.0],
         [-2.14577e-05,0.0,-18.0],
-        [1615.45,267.5,1262.3]
+        [1615.45,106.599,1262.3]
       ],
       "props": []
     },
@@ -9528,7 +9849,7 @@
         [-18.0,0.0,2.14577e-05],
         [0.0,18.0,0.0],
         [-2.14577e-05,0.0,-18.0],
-        [1615.45,267.5,1283.45]
+        [1615.45,106.599,1283.45]
       ],
       "props": []
     },
@@ -9538,7 +9859,7 @@
         [-18.0,0.0,2.14577e-05],
         [0.0,18.0,0.0],
         [-2.14577e-05,0.0,-18.0],
-        [1615.45,267.5,1303.35]
+        [1615.45,106.599,1303.35]
       ],
       "props": []
     },
@@ -9548,7 +9869,7 @@
         [-18.0,0.0,2.14577e-05],
         [0.0,18.0,0.0],
         [-2.14577e-05,0.0,-18.0],
-        [1615.45,267.5,1323.95]
+        [1615.45,106.599,1323.95]
       ],
       "props": []
     },
@@ -9558,7 +9879,7 @@
         [-18.0,0.0,2.14577e-05],
         [0.0,18.0,0.0],
         [-2.14577e-05,0.0,-18.0],
-        [1635.3,267.5,1323.95]
+        [1635.3,106.599,1323.95]
       ],
       "props": []
     },
@@ -9568,7 +9889,7 @@
         [-18.0,0.0,2.14577e-05],
         [0.0,18.0,0.0],
         [-2.14577e-05,0.0,-18.0],
-        [1635.3,267.5,1304.15]
+        [1635.3,106.599,1304.15]
       ],
       "props": []
     },
@@ -9578,7 +9899,7 @@
         [-18.0,0.0,2.14577e-05],
         [0.0,18.0,0.0],
         [-2.14577e-05,0.0,-18.0],
-        [1635.3,267.5,1283.6]
+        [1635.3,106.599,1283.6]
       ],
       "props": []
     },
@@ -9588,7 +9909,7 @@
         [-18.0,0.0,2.14577e-05],
         [0.0,18.0,0.0],
         [-2.14577e-05,0.0,-18.0],
-        [1635.3,267.5,1265.3]
+        [1635.3,106.599,1265.3]
       ],
       "props": []
     },
@@ -9598,7 +9919,7 @@
         [-18.0,0.0,2.14577e-05],
         [0.0,18.0,0.0],
         [-2.14577e-05,0.0,-18.0],
-        [1654.7,267.5,1265.3]
+        [1654.7,106.599,1265.3]
       ],
       "props": []
     },
@@ -9608,7 +9929,7 @@
         [-18.0,0.0,2.14577e-05],
         [0.0,18.0,0.0],
         [-2.14577e-05,0.0,-18.0],
-        [1654.7,267.5,1285.4]
+        [1654.7,106.599,1285.4]
       ],
       "props": []
     },
@@ -9618,7 +9939,7 @@
         [-18.0,0.0,2.14577e-05],
         [0.0,18.0,0.0],
         [-2.14577e-05,0.0,-18.0],
-        [1654.7,267.5,1306.4]
+        [1654.7,106.599,1306.4]
       ],
       "props": []
     },
@@ -9628,7 +9949,7 @@
         [-18.0,0.0,2.14577e-05],
         [0.0,18.0,0.0],
         [-2.14577e-05,0.0,-18.0],
-        [1654.7,267.5,1327.35]
+        [1654.7,106.599,1327.35]
       ],
       "props": []
     },
@@ -9675,20 +9996,20 @@
     "t2_frontline_airfield_start": {
       "type": "Sphere",
       "tm": [
-        [136.06,0.0,104.403],
-        [0.0,171.5,0.0],
-        [-104.403,0.0,136.06],
-        [-3660.4,259.35,-1862.25]
+        [158.67,0.0,121.753],
+        [0.0,200.0,0.0],
+        [-121.753,0.0,158.67],
+        [-3660.4,103.9,-1862.25]
       ],
       "props": []
     },
     "t2_frontline_airfield_end": {
       "type": "Sphere",
       "tm": [
-        [140.485,0.0,98.3683],
-        [0.0,171.5,0.0],
-        [-98.3683,0.0,140.485],
-        [-1043.1,259.35,71.35]
+        [163.831,0.0,114.715],
+        [0.0,200.0,0.0],
+        [-114.715,0.0,163.831],
+        [-933.077,103.9,151.738]
       ],
       "props": []
     },
@@ -9698,7 +10019,7 @@
         [18.0,0.0,0.0],
         [0.0,18.0,0.0],
         [0.0,0.0,18.0],
-        [-3576.75,259.2,-1728.25]
+        [-3576.75,103.9,-1728.25]
       ],
       "props": []
     },
@@ -9708,7 +10029,7 @@
         [18.0,0.0,0.0],
         [0.0,18.0,0.0],
         [0.0,0.0,18.0],
-        [-3560.0,259.2,-1749.25]
+        [-3560.0,103.9,-1749.25]
       ],
       "props": []
     },
@@ -9718,7 +10039,7 @@
         [18.0,0.0,0.0],
         [0.0,18.0,0.0],
         [0.0,0.0,18.0],
-        [-3541.8,259.2,-1770.4]
+        [-3541.8,103.9,-1770.4]
       ],
       "props": []
     },
@@ -9728,7 +10049,7 @@
         [18.0,0.0,0.0],
         [0.0,18.0,0.0],
         [0.0,0.0,18.0],
-        [-3525.7,259.2,-1790.65]
+        [-3525.7,103.9,-1790.65]
       ],
       "props": []
     },
@@ -9738,7 +10059,7 @@
         [18.0,0.0,0.0],
         [0.0,18.0,0.0],
         [0.0,0.0,18.0],
-        [-3510.2,259.2,-1810.1]
+        [-3510.2,103.9,-1810.1]
       ],
       "props": []
     },
@@ -9748,7 +10069,7 @@
         [18.0,0.0,0.0],
         [0.0,18.0,0.0],
         [0.0,0.0,18.0],
-        [-3493.45,259.2,-1831.1]
+        [-3493.45,103.9,-1831.1]
       ],
       "props": []
     },
@@ -9758,7 +10079,7 @@
         [18.0,0.0,0.0],
         [0.0,18.0,0.0],
         [0.0,0.0,18.0],
-        [-3522.95,259.2,-1851.8]
+        [-3522.95,103.9,-1851.8]
       ],
       "props": []
     },
@@ -9768,7 +10089,7 @@
         [18.0,0.0,0.0],
         [0.0,18.0,0.0],
         [0.0,0.0,18.0],
-        [-3540.4,259.2,-1833.15]
+        [-3540.4,103.9,-1833.15]
       ],
       "props": []
     },
@@ -9788,7 +10109,7 @@
         [18.0,0.0,0.0],
         [0.0,18.0,0.0],
         [0.0,0.0,18.0],
-        [-3577.4,259.2,-1786.7]
+        [-3577.4,103.9,-1786.7]
       ],
       "props": []
     },
@@ -9798,7 +10119,7 @@
         [18.0,0.0,0.0],
         [0.0,18.0,0.0],
         [0.0,0.0,18.0],
-        [-3594.15,259.2,-1768.9]
+        [-3594.15,103.9,-1768.9]
       ],
       "props": []
     },
@@ -9808,7 +10129,7 @@
         [18.0,0.0,0.0],
         [0.0,18.0,0.0],
         [0.0,0.0,18.0],
-        [-3611.9,259.2,-1748.25]
+        [-3611.9,103.9,-1748.25]
       ],
       "props": []
     },
@@ -9818,7 +10139,7 @@
         [18.0,0.0,0.0],
         [0.0,18.0,0.0],
         [0.0,0.0,18.0],
-        [-3619.4,259.2,-1787.8]
+        [-3619.4,103.9,-1787.8]
       ],
       "props": []
     },
@@ -9828,7 +10149,7 @@
         [18.0,0.0,0.0],
         [0.0,18.0,0.0],
         [0.0,0.0,18.0],
-        [-3605.45,259.2,-1808.4]
+        [-3605.45,103.9,-1808.4]
       ],
       "props": []
     },
@@ -9838,7 +10159,7 @@
         [18.0,0.0,0.0],
         [0.0,18.0,0.0],
         [0.0,0.0,18.0],
-        [-3588.8,259.2,-1829.3]
+        [-3588.8,103.9,-1829.3]
       ],
       "props": []
     },
@@ -9848,7 +10169,7 @@
         [18.0,0.0,0.0],
         [0.0,18.0,0.0],
         [0.0,0.0,18.0],
-        [-3573.1,259.2,-1852.1]
+        [-3573.1,103.9,-1852.1]
       ],
       "props": []
     },
@@ -9858,7 +10179,7 @@
         [-73.7,0.0,1.09673e-05],
         [0.0,73.7,0.0],
         [-1.09673e-05,0.0,-73.7],
-        [3135.25,343.55,5788.2]
+        [3135.25,137.448,5788.2]
       ],
       "props": []
     },
@@ -9868,7 +10189,7 @@
         [73.7,0.0,0.0],
         [0.0,73.7,0.0],
         [0.0,0.0,73.7],
-        [1735.2,343.55,5782.6]
+        [1583.1,137.452,5782.6]
       ],
       "props": []
     },
@@ -9878,7 +10199,7 @@
         [-18.0,0.0,2.6226e-06],
         [0.0,18.0,0.0],
         [-2.6226e-06,0.0,-18.0],
-        [3051.4,343.4,5750.15]
+        [3051.4,137.485,5750.15]
       ],
       "props": []
     },
@@ -9888,7 +10209,7 @@
         [-18.0,0.0,2.6226e-06],
         [0.0,18.0,0.0],
         [-2.6226e-06,0.0,-18.0],
-        [3051.4,343.4,5775.9]
+        [3051.4,137.474,5775.9]
       ],
       "props": []
     },
@@ -9898,7 +10219,7 @@
         [-18.0,0.0,2.6226e-06],
         [0.0,18.0,0.0],
         [-2.6226e-06,0.0,-18.0],
-        [3051.4,343.4,5798.95]
+        [3051.4,137.464,5798.95]
       ],
       "props": []
     },
@@ -9908,7 +10229,7 @@
         [-18.0,0.0,2.6226e-06],
         [0.0,18.0,0.0],
         [-2.6226e-06,0.0,-18.0],
-        [3051.4,343.4,5820.95]
+        [3051.4,137.455,5820.95]
       ],
       "props": []
     },
@@ -9918,7 +10239,7 @@
         [-18.0,0.0,2.6226e-06],
         [0.0,18.0,0.0],
         [-2.6226e-06,0.0,-18.0],
-        [3072.55,343.4,5750.15]
+        [3072.55,137.477,5750.15]
       ],
       "props": []
     },
@@ -9928,7 +10249,7 @@
         [-18.0,0.0,2.6226e-06],
         [0.0,18.0,0.0],
         [-2.6226e-06,0.0,-18.0],
-        [3072.55,343.4,5776.15]
+        [3072.55,137.466,5776.15]
       ],
       "props": []
     },
@@ -9938,7 +10259,7 @@
         [-18.0,0.0,2.6226e-06],
         [0.0,18.0,0.0],
         [-2.6226e-06,0.0,-18.0],
-        [3072.55,343.4,5798.7]
+        [3072.55,137.456,5798.7]
       ],
       "props": []
     },
@@ -9948,7 +10269,7 @@
         [-18.0,0.0,2.6226e-06],
         [0.0,18.0,0.0],
         [-2.6226e-06,0.0,-18.0],
-        [3072.55,343.4,5820.4]
+        [3072.55,137.447,5820.4]
       ],
       "props": []
     },
@@ -9958,7 +10279,7 @@
         [-18.0,0.0,2.6226e-06],
         [0.0,18.0,0.0],
         [-2.6226e-06,0.0,-18.0],
-        [3096.9,343.4,5820.4]
+        [3096.9,137.438,5820.4]
       ],
       "props": []
     },
@@ -9968,7 +10289,7 @@
         [-18.0,0.0,2.6226e-06],
         [0.0,18.0,0.0],
         [-2.6226e-06,0.0,-18.0],
-        [3096.9,343.4,5797.8]
+        [3096.9,137.448,5797.8]
       ],
       "props": []
     },
@@ -9978,7 +10299,7 @@
         [-18.0,0.0,2.6226e-06],
         [0.0,18.0,0.0],
         [-2.6226e-06,0.0,-18.0],
-        [3096.9,343.4,5775.85]
+        [3096.9,137.457,5775.85]
       ],
       "props": []
     },
@@ -9988,7 +10309,7 @@
         [-18.0,0.0,2.6226e-06],
         [0.0,18.0,0.0],
         [-2.6226e-06,0.0,-18.0],
-        [3096.9,343.4,5751.25]
+        [3096.9,137.467,5751.25]
       ],
       "props": []
     },
@@ -9998,7 +10319,7 @@
         [-18.0,0.0,2.6226e-06],
         [0.0,18.0,0.0],
         [-2.6226e-06,0.0,-18.0],
-        [3117.3,343.4,5751.25]
+        [3117.3,137.46,5751.25]
       ],
       "props": []
     },
@@ -10008,7 +10329,7 @@
         [-18.0,0.0,2.6226e-06],
         [0.0,18.0,0.0],
         [-2.6226e-06,0.0,-18.0],
-        [3117.3,343.4,5774.95]
+        [3117.3,137.449,5774.95]
       ],
       "props": []
     },
@@ -10018,7 +10339,7 @@
         [-18.0,0.0,2.6226e-06],
         [0.0,18.0,0.0],
         [-2.6226e-06,0.0,-18.0],
-        [3117.3,343.4,5798.2]
+        [3117.3,137.44,5798.2]
       ],
       "props": []
     },
@@ -10028,7 +10349,7 @@
         [-18.0,0.0,2.6226e-06],
         [0.0,18.0,0.0],
         [-2.6226e-06,0.0,-18.0],
-        [3117.3,343.4,5820.65]
+        [3117.3,137.435,5820.65]
       ],
       "props": []
     },
@@ -10167,6 +10488,186 @@
         [157.236,500.0,10878.3]
       ],
       "props": []
+    },
+    "t2_small_airfield_01_start": {
+      "type": "Sphere",
+      "tm": [
+        [-36.4577,0.0,-196.649],
+        [0.0,200.0,0.0],
+        [196.649,0.0,-36.4577],
+        [-2605.33,103.901,795.601]
+      ],
+      "props": []
+    },
+    "t2_small_airfield_01_end": {
+      "type": "Sphere",
+      "tm": [
+        [-36.4577,0.0,-196.649],
+        [0.0,200.0,0.0],
+        [196.649,0.0,-36.4577],
+        [-3077.39,103.901,-1874.55]
+      ],
+      "props": []
+    },
+    "t2_small_airfield_01_spawn_01": {
+      "type": "Sphere",
+      "tm": [
+        [-3.28119,0.0,-17.6984],
+        [0.0,18.0,0.0],
+        [17.6984,0.0,-3.28119],
+        [-2571.71,103.901,736.957]
+      ],
+      "props": []
+    },
+    "t2_small_airfield_01_spawn_02": {
+      "type": "Sphere",
+      "tm": [
+        [-3.28119,0.0,-17.6984],
+        [0.0,18.0,0.0],
+        [17.6984,0.0,-3.28119],
+        [-2597.09,103.901,742.138]
+      ],
+      "props": []
+    },
+    "t2_small_airfield_01_spawn_03": {
+      "type": "Sphere",
+      "tm": [
+        [-3.28119,0.0,-17.6984],
+        [0.0,18.0,0.0],
+        [17.6984,0.0,-3.28119],
+        [-2623.54,103.901,748.371]
+      ],
+      "props": []
+    },
+    "t2_small_airfield_01_spawn_04": {
+      "type": "Sphere",
+      "tm": [
+        [-3.28119,0.0,-17.6984],
+        [0.0,18.0,0.0],
+        [17.6984,0.0,-3.28119],
+        [-2647.43,103.901,753.931]
+      ],
+      "props": []
+    },
+    "t2_small_airfield_01_spawn_05": {
+      "type": "Sphere",
+      "tm": [
+        [-3.28119,0.0,-17.6984],
+        [0.0,18.0,0.0],
+        [17.6984,0.0,-3.28119],
+        [-2632.85,103.901,773.802]
+      ],
+      "props": []
+    },
+    "t2_small_airfield_01_spawn_06": {
+      "type": "Sphere",
+      "tm": [
+        [-3.28119,0.0,-17.6984],
+        [0.0,18.0,0.0],
+        [17.6984,0.0,-3.28119],
+        [-2605.85,103.901,768.353]
+      ],
+      "props": []
+    },
+    "t2_small_airfield_01_spawn_07": {
+      "type": "Sphere",
+      "tm": [
+        [-3.28119,0.0,-17.6984],
+        [0.0,18.0,0.0],
+        [17.6984,0.0,-3.28119],
+        [-2579.47,103.901,762.877]
+      ],
+      "props": []
+    },
+    "t2_small_airfield_02_start": {
+      "type": "Sphere",
+      "tm": [
+        [139.733,0.0,-143.089],
+        [0.0,200.0,0.0],
+        [143.089,0.0,139.733],
+        [-3164.97,103.901,361.778]
+      ],
+      "props": []
+    },
+    "t2_small_airfield_02_end": {
+      "type": "Sphere",
+      "tm": [
+        [139.733,0.0,-143.089],
+        [0.0,200.0,0.0],
+        [143.089,0.0,139.733],
+        [-1887.86,103.9,-1039.57]
+      ],
+      "props": []
+    },
+    "t2_small_airfield_02_spawn_01": {
+      "type": "Sphere",
+      "tm": [
+        [12.576,0.0,-12.878],
+        [0.0,18.0,0.0],
+        [12.878,0.0,12.576],
+        [-3123.5,103.901,371.554]
+      ],
+      "props": []
+    },
+    "t2_small_airfield_02_spawn_02": {
+      "type": "Sphere",
+      "tm": [
+        [12.576,0.0,-12.878],
+        [0.0,18.0,0.0],
+        [12.878,0.0,12.576],
+        [-3146.26,103.901,348.002]
+      ],
+      "props": []
+    },
+    "t2_small_airfield_02_spawn_03": {
+      "type": "Sphere",
+      "tm": [
+        [12.576,0.0,-12.878],
+        [0.0,18.0,0.0],
+        [12.878,0.0,12.576],
+        [-3164.67,103.901,329.31]
+      ],
+      "props": []
+    },
+    "t2_small_airfield_02_spawn_04": {
+      "type": "Sphere",
+      "tm": [
+        [12.576,0.0,-12.878],
+        [0.0,18.0,0.0],
+        [12.878,0.0,12.576],
+        [-3185.17,103.901,309.249]
+      ],
+      "props": []
+    },
+    "t2_small_airfield_02_spawn_05": {
+      "type": "Sphere",
+      "tm": [
+        [12.576,0.0,-12.878],
+        [0.0,18.0,0.0],
+        [12.878,0.0,12.576],
+        [-3159.31,103.901,300.709]
+      ],
+      "props": []
+    },
+    "t2_small_airfield_02_spawn_06": {
+      "type": "Sphere",
+      "tm": [
+        [12.576,0.0,-12.878],
+        [0.0,18.0,0.0],
+        [12.878,0.0,12.576],
+        [-3136.82,103.901,320.636]
+      ],
+      "props": []
+    },
+    "t2_small_airfield_02_spawn_07": {
+      "type": "Sphere",
+      "tm": [
+        [12.576,0.0,-12.878],
+        [0.0,18.0,0.0],
+        [12.878,0.0,12.576],
+        [-3116.66,103.901,341.108]
+      ],
+      "props": []
     }
   },
   "objLayers": [
@@ -10183,6 +10684,11 @@
     {
       "layer": {
         "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": false
       }
     }
   ],
