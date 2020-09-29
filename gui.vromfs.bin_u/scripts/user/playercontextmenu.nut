@@ -162,6 +162,16 @@ local getActions = function(contact, params)
       action = @() ::gui_modal_userCard(getPlayerCardInfoTable(uid, name))
     }
     {
+      text = ::loc("mainmenu/btnPsnProfile")
+      show = !isMe && contact.canOpenPSNActionWindow()
+      action = @() contact.openPSNProfile()
+    }
+    {
+      text = ::loc("mainmenu/btnXboxProfile")
+      show = isXBoxOnePlayer && !isMe
+      action = @() contact.openXboxProfile()
+    }
+    {
       text = ::loc("mainmenu/btnClanCard")
       show = ::has_feature("Clans") && !u.isEmpty(clanTag) && clanTag != ::clan_get_my_clan_tag()
       action = @() ::showClanPage("", "", clanTag)

@@ -126,10 +126,11 @@ class Contact
 
   function openXBoxFriendsEdit()
   {
-    if (xboxId != "")
-      ::xbox_show_add_remove_friend(xboxId)
-    else
-      getXboxId(@() ::xbox_show_add_remove_friend(xboxId))
+    updateXboxIdAndDo(@() ::xbox_show_add_remove_friend(xboxId))
+  }
+
+  function openXboxProfile() {
+    updateXboxIdAndDo(@() ::xbox_show_profile_card(xboxId))
   }
 
   function getXboxId(afterSuccessCb = null)
@@ -141,7 +142,16 @@ class Contact
     return null
   }
 
-  function canOpenPSNContactGroupWindow() {
+  function updateXboxIdAndDo(cb = null) {
+    cb = cb ?? @() null
+
+    if (xboxId != "")
+      return cb()
+
+    reqPlayerExternalIDsByUserId(uid, {showProgressBox = true}, cb)
+  }
+
+  function canOpenPSNActionWindow() {
     return psnSocial?.open_player_profile != null && isPlayerFromPS4(name)
   }
 
@@ -153,7 +163,10 @@ class Contact
   }
 
   function openPSNRequest(action) {
-    psnSocial.open_player_profile(
+    if (!canOpenPSNActionWindow())
+      return
+
+    updatePSNIdAndDo(@() psnSocial?.open_player_profile(
       psnId.tointeger(),
       action,
       function(r) {
@@ -162,23 +175,42 @@ class Contact
 
         updateContacts(true)
       }
-    )
+    ))
   }
 
   function updatePSNIdAndDo(cb = null) {
     cb = cb ?? @() null
 
-    if (psnId != "")
-      return cb()
+    local finCb = function() {
+      verifyPsnId()
+      cb()
+    }
 
-    reqPlayerExternalIDsByUserId(uid, {showProgressBox = true}, cb)
+    if (psnId != "")
+      return finCb()
+
+    reqPlayerExternalIDsByUserId(uid, {showProgressBox = true}, finCb)
   }
 
-  openPSNReqFriend = @() updatePSNIdAndDo(@() openPSNRequest(psnSocial.PlayerAction.REQUEST_FRIENDSHIP))
-  openPSNBlockUser = @() updatePSNIdAndDo(@() openPSNRequest(psnSocial.PlayerAction.BLOCK_PLAYER))
+  function verifyPsnId() {
+    //To prevent crash, if psn player wasn't been in game
+    // for a long time, instead of int was returning
+    // his name
+
+    //No need to do anything
+    if (psnId == "")
+      return
+
+    if (::to_integer_safe(psnId, -1, false) == -1)
+      psnId = "-1"
+  }
+
+  openPSNReqFriend = @() openPSNRequest(psnSocial.PlayerAction.REQUEST_FRIENDSHIP)
+  openPSNBlockUser = @() openPSNRequest(psnSocial.PlayerAction.BLOCK_PLAYER)
+  openPSNProfile   = @() openPSNRequest(psnSocial.PlayerAction.DISPLAY)
 
   function sendPsnFriendRequest(groupName) {
-    if (canOpenPSNContactGroupWindow())
+    if (canOpenPSNActionWindow())
       openPSNContactEdit(groupName)
   }
 

@@ -101,29 +101,22 @@ local function psnUpdateContactsList(usersTable) {
           contactsBlk[friendGroupName][contact.uid] = false
       }
 
-      //Check both friend lists, as there can be duplicates
-      if (contact.isInGroup(::EPL_FRIENDLIST) && contact.isInGroup(::EPLX_PS4_FRIENDS)) {
-        if (friendGroupName == ::EPL_FRIENDLIST)
-          contactsBlk[::EPLX_PS4_FRIENDS][contact.uid] = false
-        else if (friendGroupName == ::EPLX_PS4_FRIENDS)
-          contactsBlk[::EPL_FRIENDLIST][contact.uid] = false
-      }
-
-      if (friendGroupName == ::EPLX_PS4_FRIENDS) {
-        if (contact.isInGroup(::EPL_FRIENDLIST) && !contact.isInGroup(friendGroupName)) {
-          contactsBlk[::EPL_FRIENDLIST][contact.uid] = false
-          contactsBlk[friendGroupName][contact.uid] = true
-        }
-      }
-
       //Validate in-game contacts list
       //in case if in psn contacts list some players
       //are gone. So we need to clear then in game.
+      //But, if player was added to blocklist on PC, left it there.
       for (local i = existedPSNContacts.len() - 1; i >= 0; i--)
-        if (contact == existedPSNContacts[i]) {
-          existedPSNContacts.remove(i)
-          break
-        }
+      {
+        if (contact.isSameContact(existedPSNContacts[i].uid)
+          || (groupName == ::EPL_BLOCKLIST
+              && existedPSNContacts[i].isInBlockGroup()
+              && !existedPSNContacts[i].isInFriendGroup()
+              && !existedPSNContacts[i].isInPSNFriends())
+          ) {
+            existedPSNContacts.remove(i)
+            break
+          }
+      }
     }
 
     foreach (oldContact in existedPSNContacts)
