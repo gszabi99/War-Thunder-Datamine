@@ -59,7 +59,7 @@ local { startLogout } = require("scripts/login/logout.nut")
 ::go_to_account_web_page <- function go_to_account_web_page(bqKey = "")
 {
   local urlBase = ::format("/user.php?skin_lang=%s", ::g_language.getShortName())
-  openUrl(::get_authenticated_url_table(urlBase).url, false, false, bqKey)
+  openUrl(::get_authenticated_url_sso(urlBase).url, false, false, bqKey)
 }
 
 g_login.loadLoginHandler <- function loadLoginHandler()

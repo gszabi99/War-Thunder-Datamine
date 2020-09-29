@@ -46,8 +46,8 @@ local function getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated = false
       url = ::encode_base64(url)
 
     local ssoServiceTag = urlTags.filter(@(v) v.indexof(URL_TAG_SSO_SERVICE) == 0);
-    local ssoService = ssoServiceTag.len() != 0 ? ssoServiceTag.pop().slice(URL_TAG_SSO_SERVICE.len()) : null
-    local authData = (ssoService != null) ? ::get_authenticated_url_sso(url, ssoService) : ::get_authenticated_url_table(url)
+    local ssoService = ssoServiceTag.len() != 0 ? ssoServiceTag.pop().slice(URL_TAG_SSO_SERVICE.len()) : ""
+    local authData = ::get_authenticated_url_sso(url, ssoService)
 
     if (authData.yuplayResult == ::YU2_OK)
       url = authData.url + (shouldEncode ? "&ret_enc=1" : "") //This parameter is needed for coded complex links.
