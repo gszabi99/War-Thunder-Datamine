@@ -114,7 +114,27 @@ local ItemGenerator = class {
 
   function getUsableRecipes() {
     local showAllowableRecipesOnly = tags?.showAllowableRecipesOnly ?? false
-    return getRecipes().filter(@(r) !showAllowableRecipesOnly || r.isUsable)
+    local recipes = getRecipes() ?? []
+    if (!showAllowableRecipesOnly)
+      return recipes
+
+    local filteredRecipes = []
+    local maxMultiComponentCount = 0
+    foreach (recipe in recipes) {
+      if (!recipe.isUsable)
+        continue
+      local multiComponentCount = recipe.components.filter(@(c) c.curQuantity > c.reqQuantity).len()
+      if (multiComponentCount < maxMultiComponentCount)
+        continue
+      if (multiComponentCount == maxMultiComponentCount) {
+        filteredRecipes.append(recipe)
+        continue
+      }
+
+      maxMultiComponentCount = multiComponentCount
+      filteredRecipes = [recipe]
+    }
+    return filteredRecipes
   }
 
   function getRecipesWithComponent(componentItemdefId)
