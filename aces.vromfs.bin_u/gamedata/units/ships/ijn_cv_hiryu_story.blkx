@@ -1,0 +1,529 @@
+{
+  "expClass": "exp_cv_ship",
+  "timeToFire": 60.0,
+  "timeToSmoke": 600.0,
+  "hasExpl": false,
+  "collisionMaterialName": "ships",
+  "killAllParts": false,
+  "damageableByGun": false,
+  "explodeSpeed": [100.0,190.0],
+  "useOldExplosion": false,
+  "model": "hq_hiryu_a",
+  "subclass": "warShip",
+  "dustFx": "water_units_dust",
+  "dynCollisionGeom": true,
+  "createAirfield": true,
+  "moveType": "ship",
+  "maxFwdSpeed": 55.0,
+  "maxRevSpeed": 5.0,
+  "maxAngSpeed": 1.0,
+  "maxAccel": 0.5,
+  "maxDecel": 0.5,
+  "maxAngAccel": 0.7,
+  "maxAngAccel0": 0.0,
+  "maxAngAccelV": 0.01,
+  "groundNormSmoothViscosity": 4.5,
+  "customUpdateDiv": 5,
+  "drownGFactor": 0.0,
+  "drownRollSpeed": 0.01,
+  "SoundMove": "models.Ship",
+  "tailStartOffset": 0.0,
+  "DamageParts": {
+    "steel": {
+      "gun0_dm": {
+        "hp": 8.0
+      },
+      "gun1_dm": {
+        "hp": 8.0
+      },
+      "gun2_dm": {
+        "hp": 8.0
+      },
+      "gun3_dm": {
+        "hp": 8.0
+      }
+    },
+    "armor250": {
+      "gun4_dm": {
+        "hp": 8.0
+      },
+      "gun5_dm": {
+        "hp": 8.0
+      },
+      "gun6_dm": {
+        "hp": 8.0
+      },
+      "gun7_dm": {
+        "hp": 8.0
+      },
+      "gun9_dm": {
+        "hp": 8.0
+      }
+    },
+    "armor40": {
+      "bodypart1_dm": {
+        "hp": 7500.0
+      },
+      "bodypart2_dm": {
+        "hp": 7500.0
+      },
+      "bodypart3_dm": {
+        "hp": 7500.0
+      },
+      "bodypart4_dm": {
+        "hp": 7500.0
+      },
+      "bodypart5_dm": {
+        "hp": 7500.0
+      },
+      "body_dm": {
+        "hp": 7500.0
+      },
+      "engine_dm": {
+        "hp": 7500.0
+      }
+    }
+  },
+  "class_tags": {
+    "mediterran": true,
+    "westernfront": true,
+    "easternfront": true,
+    "country_germany": true,
+    "country_italy": true,
+    "carrier": true,
+    "year1940": true,
+    "year1941": true,
+    "year1942": true,
+    "year1943": true,
+    "year1944": true,
+    "year1945": true
+  },
+  "explosion": [
+    {
+      "expl": {
+        "node": "explosion1",
+        "partNo": 2,
+        "timeToExplode": 15.0,
+        "preEffectName": "ship_model_fire",
+        "postEffectName": "ship_model_fire",
+        "explosionEffectName": "ship_model_expl",
+        "timeForPostEffect": 45.0,
+        "preScale": 4.0,
+        "postScale": 4.0
+      }
+    },
+    {
+      "expl": {
+        "node": "explosion2",
+        "partNo": 3,
+        "timeToExplode": 15.0,
+        "preEffectName": "ship_model_fire",
+        "postEffectName": "ship_model_fire",
+        "explosionEffectName": "ship_model_expl",
+        "timeForPostEffect": 65.0,
+        "preScale": 7.0,
+        "postScale": 7.0
+      }
+    },
+    {
+      "expl": {
+        "node": "explosion3",
+        "partNo": 4,
+        "timeToExplode": 20.0,
+        "preEffectName": "ship_model_fire",
+        "postEffectName": "ship_model_fire",
+        "explosionEffectName": "ship_model_expl",
+        "timeForPostEffect": 45.0,
+        "preScale": 4.0,
+        "postScale": 4.0
+      }
+    },
+    {
+      "expl": {
+        "node": "explosion4",
+        "partNo": 5,
+        "timeToExplode": 10.0,
+        "preEffectName": "ship_model_fire",
+        "postEffectName": "ship_model_fire",
+        "explosionEffectName": "ship_model_expl",
+        "timeForPostEffect": 105.0,
+        "preScale": 4.0,
+        "postScale": 4.0
+      }
+    }
+  ],
+  "DamageEffects": [
+    {
+      "part": {
+        "name": "body_dm",
+        "onHit": {
+          "smoke": 0.01,
+          "fire": 0.01
+        },
+        "onKill": {
+          "bodypart1_dm": 1.0,
+          "bodypart2_dm": 1.0,
+          "bodypart3_dm": 1.0,
+          "bodypart4_dm": 7.0
+        }
+      }
+    },
+    {
+      "part": {
+        "name": "engine_dm",
+        "onHit": {
+          "smoke": 0.1,
+          "fire": 0.01
+        },
+        "onKill": {
+          "body_dm": 1.0
+        }
+      }
+    },
+    {
+      "part": [
+        {
+          "name": "bodypart1_dm"
+        },
+        {
+          "name": "bodypart2_dm"
+        },
+        {
+          "name": "bodypart3_dm"
+        },
+        {
+          "name": "bodypart4_dm"
+        },
+        {
+          "onHit": {
+            "smoke": 0.1,
+            "fire": 0.01
+          }
+        },
+        {
+          "onKill": {
+            "expl": 1.0
+          }
+        }
+      ]
+    }
+  ],
+  "airfield": {
+    "catapultAccel": 5.0,
+    "catapultLength": 1.0,
+    "runwayWidth": 20.0
+  },
+  "sound": {
+    "path": "sounds/engines",
+    "pathStudio": "aircraft/engines",
+    "engine": "boat"
+  },
+  "attachInc": {
+    "usa_seaman": [
+      {
+        "model": {
+          "name": "inc_us_hand_on_deck1_t03b",
+          "weight": 1.0
+        }
+      },
+      {
+        "model": {
+          "name": "inc_us_hand_on_deck1_t03b",
+          "weight": 1.0
+        }
+      },
+      {
+        "model": {
+          "name": "inc_us_hand_on_deck1_t03b",
+          "weight": 1.0
+        }
+      },
+      {
+        "model": {
+          "name": "inc_us_hand_on_deck1_t03b",
+          "weight": 1.0
+        }
+      },
+      {
+        "model": {
+          "name": "inc_us_hand_on_deck1_t03b",
+          "weight": 1.0
+        }
+      }
+    ],
+    "usa_aagunner_seat": {
+      "model": {
+        "name": "inc_us_AAgunner_seat_01a",
+        "weight": 1.0
+      }
+    },
+    "usa_aagunner_stand": {
+      "model": {
+        "name": "inc_us_AAgunner_stand_01a",
+        "weight": 1.0
+      }
+    },
+    "usa_aagunner_ir": {
+      "model": {
+        "name": "inc_us_AAgunner_IR_01a",
+        "weight": 1.0
+      }
+    },
+    "usa_flag_on_start": {
+      "model": {
+        "name": "usa_technic_03b_char",
+        "weight": 1.0,
+        "velocity": 3.0,
+        "prestartIdleAnimation": "carrier_flag_loading_idle",
+        "stateAdvanceEventStart": "ready_to_takeoff",
+        "startSingleAnimation": "carrier_flag_lefthand_up",
+        "startIdleAnimation": "carrier_flag_lefthand_idle",
+        "startSingleRepeatAfter": 12.0,
+        "stateAdvanceEventMove": "start_engine",
+        "start2SingleAnimation": "carrier_flag_up_single",
+        "start2IdleAnimation": "carrier_flag_rotate_idle",
+        "start2SingleRepeatAfter": 12.0,
+        "stateAdvanceEventMove2": "move_little",
+        "start3SingleAnimation": "carrier_flag_on_start_single",
+        "start3IdleAnimation": "carrier_flag_on_start_idle",
+        "start3SingleRepeatAfter": 12.0,
+        "stateAdvanceEventMove3": "takeoff",
+        "movingAnimation": "carrier_walk",
+        "endSingleAnimation": "carrier_sitdown_single",
+        "endIdleAnimation": "carrier_sitdown_idle",
+        "crewType": "takeoff"
+      }
+    },
+    "usa_flag_landing": {
+      "model": {
+        "weight": 1.0,
+        "name": "usa_technic_03a_char",
+        "animation": "carrier_flag_landing_idle",
+        "velocity": 3.0,
+        "endpointAnimation": "carrier_flag_landing_idle",
+        "leftBankHigh": "carrier_flag_landing_left",
+        "leftBankLow": "carrier_flag_landing_left",
+        "noBank": "carrier_flag_landing_idle",
+        "rightBankLow": "carrier_flag_landing_right",
+        "rightBankHigh": "carrier_flag_landing_right",
+        "crewType": "landing"
+      }
+    },
+    "usa_seaman_stand_right": [
+      {
+        "model": {
+          "name": "usa_technic_02a_char",
+          "weight": 1.0,
+          "velocity": 0.0,
+          "prestartIdleAnimation": "carrier_flag_loading_idle",
+          "stateAdvanceEventStart": "ready_to_takeoff",
+          "startSingleAnimation": "carrier_flag_loading_idle",
+          "startSingleLoopDuration": 3.0,
+          "startIdleAnimation": "carrier_seaman_stand_right",
+          "startSingleRepeatAfter": 3.0,
+          "stateAdvanceEventMove": "start_engine",
+          "start2SingleAnimation": "carrier_seaman_stand_right",
+          "start2IdleAnimation": "carrier_seaman_stand_right_wave",
+          "stateAdvanceEventMove3": "takeoff",
+          "movingAnimation": "carrier_seaman_stand_right_wave",
+          "endIdleAnimation": "carrier_seaman_stand_right_wave",
+          "crewType": "takeoff"
+        }
+      },
+      {
+        "model": {
+          "name": "usa_technic_03b_char",
+          "weight": 1.0,
+          "velocity": 0.0,
+          "prestartIdleAnimation": "carrier_flag_loading_idle",
+          "stateAdvanceEventStart": "ready_to_takeoff",
+          "startSingleAnimation": "carrier_flag_loading_idle",
+          "startSingleLoopDuration": 3.0,
+          "startIdleAnimation": "carrier_seaman_stand_right",
+          "startSingleRepeatAfter": 3.0,
+          "stateAdvanceEventMove": "start_engine",
+          "start2SingleAnimation": "carrier_seaman_stand_right",
+          "start2IdleAnimation": "carrier_seaman_stand_right_wave",
+          "stateAdvanceEventMove3": "takeoff",
+          "movingAnimation": "carrier_seaman_stand_right_wave",
+          "endIdleAnimation": "carrier_seaman_stand_right_wave",
+          "crewType": "takeoff"
+        }
+      },
+      {
+        "model": {
+          "name": "usa_technic_03b_char",
+          "weight": 1.0,
+          "velocity": 0.0,
+          "prestartIdleAnimation": "carrier_flag_loading_idle",
+          "stateAdvanceEventStart": "ready_to_takeoff",
+          "startSingleAnimation": "carrier_flag_loading_idle",
+          "startSingleLoopDuration": 3.0,
+          "startIdleAnimation": "carrier_seaman_stand_right",
+          "startSingleRepeatAfter": 3.0,
+          "stateAdvanceEventMove": "start_engine",
+          "start2SingleAnimation": "carrier_seaman_stand_right",
+          "start2IdleAnimation": "carrier_seaman_stand_right_wave",
+          "stateAdvanceEventMove3": "takeoff",
+          "movingAnimation": "carrier_seaman_stand_right_wave",
+          "endIdleAnimation": "carrier_seaman_stand_right_wave",
+          "crewType": "takeoff"
+        }
+      },
+      {
+        "model": {
+          "name": "usa_technic_03b_char",
+          "weight": 5.0,
+          "velocity": 0.0,
+          "animation": "carrier_seaman_stand_right",
+          "endpointAnimation": "carrier_seaman_stand_right",
+          "prestartIdleAnimation": "carrier_flag_loading_idle",
+          "stateAdvanceEventStart": "ready_to_takeoff",
+          "startSingleAnimation": "carrier_flag_loading_idle",
+          "startSingleLoopDuration": 3.0,
+          "startIdleAnimation": "carrier_seaman_stand_right",
+          "startSingleRepeatAfter": 3.0,
+          "stateAdvanceEventMove": "start_engine",
+          "start2SingleAnimation": "carrier_seaman_stand_right",
+          "start2IdleAnimation": "carrier_seaman_stand_right_wave",
+          "stateAdvanceEventMove3": "takeoff",
+          "movingAnimation": "carrier_seaman_stand_right_wave",
+          "endIdleAnimation": "carrier_seaman_stand_right_wave",
+          "crewType": "takeoff"
+        }
+      }
+    ],
+    "usa_seaman_stand_left": [
+      {
+        "model": {
+          "name": "usa_technic_02b_char",
+          "weight": 1.0,
+          "velocity": 0.0,
+          "prestartIdleAnimation": "carrier_flag_loading_idle",
+          "stateAdvanceEventStart": "ready_to_takeoff",
+          "startSingleAnimation": "carrier_flag_loading_idle",
+          "startSingleLoopDuration": 3.0,
+          "startIdleAnimation": "carrier_seaman_stand_left",
+          "startSingleRepeatAfter": 3.0,
+          "stateAdvanceEventMove": "start_engine",
+          "start2SingleAnimation": "carrier_seaman_stand_left",
+          "start2IdleAnimation": "carrier_seaman_stand_left_wave",
+          "stateAdvanceEventMove3": "takeoff",
+          "movingAnimation": "carrier_seaman_stand_left_wave",
+          "endIdleAnimation": "carrier_seaman_stand_left_wave",
+          "crewType": "takeoff"
+        }
+      },
+      {
+        "model": {
+          "name": "usa_technic_03b_char",
+          "weight": 1.0,
+          "velocity": 0.0,
+          "prestartIdleAnimation": "carrier_flag_loading_idle",
+          "stateAdvanceEventStart": "ready_to_takeoff",
+          "startSingleAnimation": "carrier_flag_loading_idle",
+          "startSingleLoopDuration": 3.0,
+          "startIdleAnimation": "carrier_seaman_stand_left",
+          "startSingleRepeatAfter": 3.0,
+          "stateAdvanceEventMove": "start_engine",
+          "start2SingleAnimation": "carrier_seaman_stand_left",
+          "start2IdleAnimation": "carrier_seaman_stand_left_wave",
+          "stateAdvanceEventMove3": "takeoff",
+          "movingAnimation": "carrier_seaman_stand_left_wave",
+          "endIdleAnimation": "carrier_seaman_stand_left_wave",
+          "crewType": "takeoff"
+        }
+      },
+      {
+        "model": {
+          "name": "usa_technic_03b_char",
+          "weight": 1.0,
+          "velocity": 0.0,
+          "prestartIdleAnimation": "carrier_flag_loading_idle",
+          "stateAdvanceEventStart": "ready_to_takeoff",
+          "startSingleAnimation": "carrier_flag_loading_idle",
+          "startSingleLoopDuration": 3.0,
+          "startIdleAnimation": "carrier_seaman_stand_left",
+          "startSingleRepeatAfter": 3.0,
+          "stateAdvanceEventMove": "start_engine",
+          "start2SingleAnimation": "carrier_seaman_stand_left",
+          "start2IdleAnimation": "carrier_seaman_stand_left_wave",
+          "stateAdvanceEventMove3": "takeoff",
+          "movingAnimation": "carrier_seaman_stand_left_wave",
+          "endIdleAnimation": "carrier_seaman_stand_left_wave",
+          "crewType": "takeoff"
+        }
+      },
+      {
+        "model": {
+          "name": "usa_technic_03a_char",
+          "weight": 5.0,
+          "velocity": 0.0,
+          "prestartIdleAnimation": "carrier_flag_loading_idle",
+          "stateAdvanceEventStart": "ready_to_takeoff",
+          "startSingleAnimation": "carrier_flag_loading_idle",
+          "startSingleLoopDuration": 3.0,
+          "startIdleAnimation": "carrier_seaman_stand_left",
+          "startSingleRepeatAfter": 3.0,
+          "stateAdvanceEventMove": "start_engine",
+          "start2SingleAnimation": "carrier_seaman_stand_left",
+          "start2IdleAnimation": "carrier_seaman_stand_left_wave",
+          "stateAdvanceEventMove3": "takeoff",
+          "movingAnimation": "carrier_seaman_stand_left_wave",
+          "endIdleAnimation": "carrier_seaman_stand_left_wave",
+          "crewType": "takeoff"
+        }
+      }
+    ],
+    "usa_stoper_sit": [
+      {
+        "model": {
+          "weight": 1.0,
+          "name": "usa_technic_02b_char",
+          "animation": "carrier_sitdown_idle",
+          "velocity": 0.0,
+          "endpointAnimation": "carrier_sitdown_idle",
+          "crewType": "takeoff"
+        }
+      },
+      {
+        "model": {
+          "weight": 1.0,
+          "name": "usa_technic_02b_char",
+          "animation": "carrier_sitdown_idle",
+          "velocity": 0.0,
+          "endpointAnimation": "carrier_sitdown_idle",
+          "crewType": "takeoff"
+        }
+      }
+    ],
+    "usa_tech_runner": [
+      {
+        "model": {
+          "prestartIdleAnimation": "carrier_sitdown_idle",
+          "stateAdvanceEventStart": "ready_to_takeoff",
+          "weight": 1.0,
+          "name": "usa_technic_02a_char",
+          "animation": "carrier_tech_run",
+          "velocity": 4.0,
+          "endSingleAnimation": "carrier_sitdown_single",
+          "endIdleAnimation": "carrier_sitdown_idle",
+          "crewType": "takeoff"
+        }
+      },
+      {
+        "model": {
+          "prestartIdleAnimation": "carrier_sitdown_idle",
+          "stateAdvanceEventStart": "ready_to_takeoff",
+          "weight": 1.0,
+          "name": "usa_technic_02b_char",
+          "animation": "carrier_tech_run",
+          "velocity": 4.0,
+          "endSingleAnimation": "carrier_sitdown_single",
+          "endIdleAnimation": "carrier_sitdown_idle",
+          "crewType": "takeoff"
+        }
+      }
+    ]
+  }
+}

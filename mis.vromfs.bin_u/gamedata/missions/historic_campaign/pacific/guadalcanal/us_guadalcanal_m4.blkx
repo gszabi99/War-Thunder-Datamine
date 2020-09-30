@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 25.0
-    },
     "player": {
       "army": 1,
       "wing": "armada_01"
@@ -16,11 +12,11 @@
     "mission": {
       "level": "levels/water.bin",
       "type": "campaign",
-      "restoreType": "tactical control",
-      "optionalTakeOff": false,
       "environment": "Morning",
       "weather": "hazy",
       "windDirection": [1.0,0.0,0.0],
+      "restoreType": "tactical control",
+      "optionalTakeOff": false,
       "locationName": "water_guadalcanal",
       "forceSkiesInitialRandomSeed": true,
       "skiesInitialRandomSeed": 5,
@@ -72,6 +68,10 @@
           "probability": 0.0
         }
       }
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 25.0
     },
     "spectator_points": [],
     "briefing": [
@@ -506,6 +506,16 @@
       },
       "actions": [
         {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "tbd_cut",
+            "aiEnabled": false
+          }
+        },
+        {
           "showSmartCutscene": {
             "sceneType": "on_the_march",
             "startSubTypeOnTheMarch": "right2left",
@@ -767,6 +777,16 @@
           }
         },
         {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "tbd_cut",
+            "aiEnabled": true
+          }
+        },
+        {
           "missionPlayDialogue": {
             "dialog": "us_gc_m4_dialog1_part2",
             "subtitles": false
@@ -774,7 +794,9 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "guadal_us4_mo1_takeoff"
+            "target": "guadal_us4_mo1_takeoff",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -815,7 +837,9 @@
         {
           "moSetObjectiveStatus": {
             "target": "guadal_us4_mo1_takeoff",
-            "status": 2
+            "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -891,6 +915,8 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "armada_01",
             "move_type": "teleport",
             "lookat": "armada1_lookAt",
@@ -1148,6 +1174,8 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "armada_01",
             "move_type": "teleport",
             "lookat": "armada1_lookAt",
@@ -1170,6 +1198,8 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "us_f4f01",
             "move_type": "teleport",
             "lookat": "armada1_lookAt",
@@ -1211,6 +1241,8 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "1a_d3a",
             "speed": 215.0
           }
@@ -1231,6 +1263,8 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "1a_zero",
             "speed": 215.0
           }
@@ -1251,6 +1285,8 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "1a_b5n",
             "speed": 215.0
           }
@@ -1322,7 +1358,9 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "guadal_us4_mo2_1attack"
+            "target": "guadal_us4_mo2_1attack",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -1403,9 +1441,6 @@
             "object_var_comp_op": "equal"
           },
           {
-            "object_var_value": 0
-          },
-          {
             "object": "armada_01"
           },
           {
@@ -1413,6 +1448,9 @@
           },
           {
             "target": "1a_d3a"
+          },
+          {
+            "object_var_value": 0
           }
         ]
       },
@@ -1474,9 +1512,6 @@
             "object_var_comp_op": "equal"
           },
           {
-            "object_var_value": 0
-          },
-          {
             "object": "1a_d3a"
           },
           {
@@ -1484,6 +1519,9 @@
           },
           {
             "target": "tf17_cv8"
+          },
+          {
+            "object_var_value": 0
           }
         ]
       },
@@ -1504,6 +1542,8 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "1a_d3a"
           }
         },
@@ -1523,6 +1563,8 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "1a_b5n"
           }
         },
@@ -1546,6 +1588,7 @@
           "unitRestore": {
             "ressurectIfDead": false,
             "fullRestore": true,
+            "target_marking": 0,
             "target": "tf17_cv8"
           }
         },
@@ -1611,13 +1654,13 @@
             "object_var_comp_op": "equal"
           },
           {
-            "object_var_value": 0
-          },
-          {
             "object": "1a_b5n"
           },
           {
             "object": "1a_d3a"
+          },
+          {
+            "object_var_value": 0
           }
         ]
       },
@@ -1667,13 +1710,13 @@
             "object_var_comp_op": "equal"
           },
           {
-            "object_var_value": 0
-          },
-          {
             "object": "1a_d3a"
           },
           {
             "object": "1a_b5n"
+          },
+          {
+            "object_var_value": 0
           }
         ],
         "unitWhenPartHp": {
@@ -1720,8 +1763,8 @@
           "value": 1,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "tf17_cv8"
+          "object": "tf17_cv8",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -1774,13 +1817,13 @@
             "object_var_comp_op": "equal"
           },
           {
-            "object_var_value": 0
-          },
-          {
             "object": "1a_d3a"
           },
           {
             "object": "1a_b5n"
+          },
+          {
+            "object_var_value": 0
           }
         ]
       },
@@ -1837,9 +1880,6 @@
             "object_var_comp_op": "equal"
           },
           {
-            "object_var_value": 0
-          },
-          {
             "object": "1a_d3a"
           },
           {
@@ -1847,6 +1887,9 @@
           },
           {
             "target": "tf17_cv8"
+          },
+          {
+            "object_var_value": 0
           }
         ],
         "unitWhenCountMatches": [
@@ -1869,13 +1912,13 @@
             "object_var_comp_op": "equal"
           },
           {
-            "object_var_value": 0
-          },
-          {
             "object": "1a_d3a"
           },
           {
             "object": "1a_b5n"
+          },
+          {
+            "object_var_value": 0
           }
         ]
       },
@@ -1924,7 +1967,9 @@
         {
           "moSetObjectiveStatus": {
             "target": "guadal_us4_mo2_1attack",
-            "status": 2
+            "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -2000,6 +2045,8 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "armada_01",
             "move_type": "teleport",
             "lookat": "tf16_2000",
@@ -2280,7 +2327,9 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "guadal_us4_mo3_flight"
+            "target": "guadal_us4_mo3_flight",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -2299,6 +2348,8 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "us_f4f01"
           }
         },
@@ -2353,7 +2404,9 @@
         {
           "moSetObjectiveStatus": {
             "target": "guadal_us4_mo3_flight",
-            "status": 2
+            "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -2372,6 +2425,8 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "2a_d3a01"
           }
         },
@@ -2391,6 +2446,8 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "2a_zero01"
           }
         },
@@ -2410,6 +2467,8 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "2a_d3a02"
           }
         },
@@ -2429,6 +2488,8 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "2a_zero02"
           }
         },
@@ -2448,6 +2509,8 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "2a_d3a03"
           }
         },
@@ -2467,6 +2530,8 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "2a_zero03"
           }
         },
@@ -2493,7 +2558,9 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "guadal_us4_mo4_2attack"
+            "target": "guadal_us4_mo4_2attack",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -2655,9 +2722,9 @@
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "2a_d3a01",
-          "target": "tf16_cv6"
+          "target": "tf16_cv6",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -2676,6 +2743,8 @@
           "target_marking": 0,
           "waypointReachedDist": 10.0,
           "recalculatePathDist": -1.0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "2a_d3a01"
         },
         "unitAttackTarget": {
@@ -2711,9 +2780,9 @@
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "2a_d3a02",
-          "target": "tf16_cv6"
+          "target": "tf16_cv6",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -2732,6 +2801,8 @@
           "target_marking": 0,
           "waypointReachedDist": 10.0,
           "recalculatePathDist": -1.0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "2a_d3a02"
         },
         "unitAttackTarget": {
@@ -2767,9 +2838,9 @@
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "2a_d3a03",
-          "target": "tf16_cv6"
+          "target": "tf16_cv6",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -2788,6 +2859,8 @@
           "target_marking": 0,
           "waypointReachedDist": 10.0,
           "recalculatePathDist": -1.0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "2a_d3a03"
         },
         "unitAttackTarget": {
@@ -2822,8 +2895,8 @@
           "value": 1,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "tf16_cv6"
+          "object": "tf16_cv6",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -2876,9 +2949,6 @@
             "object_var_comp_op": "equal"
           },
           {
-            "object_var_value": 0
-          },
-          {
             "object": "2a_d3a01"
           },
           {
@@ -2886,6 +2956,9 @@
           },
           {
             "object": "2a_d3a03"
+          },
+          {
+            "object_var_value": 0
           }
         ]
       },
@@ -2942,9 +3015,6 @@
             "object_var_comp_op": "equal"
           },
           {
-            "object_var_value": 0
-          },
-          {
             "object": "2a_d3a01"
           },
           {
@@ -2955,6 +3025,9 @@
           },
           {
             "target": "tf16_cv6"
+          },
+          {
+            "object_var_value": 0
           }
         ]
       },
@@ -2988,7 +3061,9 @@
         {
           "moSetObjectiveStatus": {
             "target": "guadal_us4_mo4_2attack",
-            "status": 2
+            "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -3030,7 +3105,9 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "guadal_us4_mo5_landing"
+            "target": "guadal_us4_mo5_landing",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -3100,7 +3177,9 @@
         },
         "moSetObjectiveStatus": {
           "target": "guadal_us4_mo5_landing",
-          "status": 2
+          "status": 2,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "wait": {
           "time": 2.0
@@ -3145,9 +3224,6 @@
             "object_var_comp_op": "equal"
           },
           {
-            "object_var_value": 0
-          },
-          {
             "object": "2a_d3a01"
           },
           {
@@ -3155,6 +3231,9 @@
           },
           {
             "object": "2a_d3a03"
+          },
+          {
+            "object_var_value": 0
           }
         ]
       },
@@ -3249,6 +3328,7 @@
           "unitRestore": {
             "ressurectIfDead": true,
             "fullRestore": true,
+            "target_marking": 0,
             "target": "player_sq"
           }
         },
@@ -3285,6 +3365,9 @@
             },
             {
               "fullRestore": true
+            },
+            {
+              "target_marking": 0
             },
             {
               "target": "TF16_fleet_sq"
@@ -3347,6 +3430,8 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "2a_d3a01",
             "move_type": "teleport",
             "lookat": "tf16_1500",
@@ -3369,6 +3454,8 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "us_f4f02",
             "move_type": "teleport",
             "lookat": "deb_cut_d3a_spawn",
@@ -3391,6 +3478,8 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "2a_d3a01",
             "speed": 250.0
           }
@@ -3542,6 +3631,8 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "us_f4f02",
             "move_type": "teleport",
             "lookat": "deb_cut_d3a_spawn",
@@ -3564,6 +3655,8 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "us_f4f02"
           }
         },
@@ -4016,6 +4109,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4051,6 +4145,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4086,6 +4181,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4121,6 +4217,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4156,6 +4253,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4191,6 +4289,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4226,6 +4325,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4261,6 +4361,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4296,6 +4397,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4331,6 +4433,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4366,6 +4469,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4401,6 +4505,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4436,6 +4541,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4471,6 +4577,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4506,6 +4613,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4541,6 +4649,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4576,6 +4685,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4611,6 +4721,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4646,6 +4757,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4681,6 +4793,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4704,6 +4817,9 @@
           [-35480.2,0.0,8246.4]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "tf17_cv8"
           },
@@ -4751,6 +4867,9 @@
         ],
         "props": [
           {
+            "object_marking": 0
+          },
+          {
             "squad_members": "tf16_dd01"
           },
           {
@@ -4787,6 +4906,9 @@
           [-39773.8,91.7,-4755.15]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "tf16_cv6"
           },
@@ -4830,6 +4952,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -4909,6 +5032,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -4955,6 +5079,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -4990,6 +5115,9 @@
         ],
         "props": [
           {
+            "object_marking": 0
+          },
+          {
             "squad_members": "TF17_fleet_sq"
           },
           {
@@ -5020,6 +5148,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -5099,6 +5228,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -5178,6 +5308,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -5224,6 +5355,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5259,6 +5391,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5294,6 +5427,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5329,6 +5463,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5364,6 +5499,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -5410,6 +5546,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -5456,6 +5593,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -5502,6 +5640,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -5548,6 +5687,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -5583,6 +5723,9 @@
         ],
         "props": [
           {
+            "object_marking": 0
+          },
+          {
             "squad_members": "2a_d3a01"
           },
           {
@@ -5614,6 +5757,9 @@
         ],
         "props": [
           {
+            "object_marking": 0
+          },
+          {
             "squad_members": "1a_d3a"
           },
           {
@@ -5636,6 +5782,9 @@
         ],
         "props": [
           {
+            "object_marking": 0
+          },
+          {
             "squad_members": "1a_sq"
           },
           {
@@ -5654,6 +5803,7 @@
           [-37626.6,0.0,8741.85]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": "armada_01",
           "object_type": "isPlayer"
         }
@@ -5681,6 +5831,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -5745,6 +5896,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -5809,6 +5961,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -5873,6 +6026,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -5919,6 +6073,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -5965,6 +6120,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -5999,6 +6155,7 @@
           [-33218.7,0.0,-8571.8]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": "us_f4f02",
           "object_type": "isFormationLeader"
         }
@@ -6014,6 +6171,9 @@
           [-22533.6,-17.2,-11868.7]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "1a_d3a"
           },
