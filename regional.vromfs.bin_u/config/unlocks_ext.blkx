@@ -11826,6 +11826,69 @@
   },
   {
     "unlockable": {
+      "id": "02_10_20_german_unity_day_decal",
+      "type": "achievement",
+      "chapter": "germany_day",
+      "hidden": true,
+      "mode": [
+        {
+          "type": "missionsPlayedScore"
+        },
+        {
+          "num": 3
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "activity",
+            "percent": 60
+          }
+        },
+        {
+          "condition": {
+            "type": "playerTag",
+            "tag": "country_germany"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 2,
+            "maxRank": 7,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2020-10-02 10:00:00",
+            "endDate": "2020-10-05 07:30:00"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "02_10_20_german_unity_day_decal_gift",
+      "userLogId": "02_10_20_german_unity_day_decal_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "02_10_20_german_unity_day_decal"
+      }
+    }
+  },
+  {
+    "unlockable": {
       "id": "11_09_20_tankers_day_decal",
       "type": "achievement",
       "chapter": "tankers_day_2017",
