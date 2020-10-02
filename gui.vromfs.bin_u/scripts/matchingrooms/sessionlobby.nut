@@ -1181,7 +1181,8 @@ SessionLobby.initMyParamsByMemberInfo <- function initMyParamsByMemberInfo(me = 
 SessionLobby.syncMyInfo <- function syncMyInfo(newInfo, reqUpdateMatchingSlots = false)
 {
   if (::isInArray(status, [lobbyStates.NOT_IN_ROOM, lobbyStates.WAIT_FOR_QUEUE_ROOM, lobbyStates.CREATING_ROOM, lobbyStates.JOINING_ROOM])
-      || !haveLobby())
+      || !haveLobby()
+      || isLeavingLobbySession)
     return
 
   local syncData = newInfo

@@ -1,5 +1,6 @@
 local crossplayModule = require("scripts/social/crossplay.nut")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+local u = require("std/underscore.nut")
 
 const ROOM_LIST_REFRESH_MIN_TIME = 3000 //ms
 const ROOM_LIST_REQUEST_TIME_OUT = 45000 //ms
@@ -16,6 +17,8 @@ class MRoomsList
   lastUpdateTimeMsec = - ROOM_LIST_TIME_OUT
   lastRequestTimeMsec = - ROOM_LIST_REQUEST_TIME_OUT
   isInUpdate = false
+  curRoomsFilter = null
+  queuedRoomsFilter = null
 
   static mRoomsListById = {}
 
@@ -42,20 +45,18 @@ class MRoomsList
     requestParams = request || {}
   }
 
-  function isNewest()
-  {
+
+  function isNewest() {
     return !isInUpdate && ::dagor.getCurTime() - lastUpdateTimeMsec < ROOM_LIST_REFRESH_MIN_TIME
   }
 
-  function canRequestByTime()
-  {
-    local checkTime = isInUpdate ? ROOM_LIST_REQUEST_TIME_OUT : ROOM_LIST_REFRESH_MIN_TIME
-    return  ::dagor.getCurTime() - lastRequestTimeMsec >= checkTime
+  function isThrottled(curTime) {
+    return ((curTime - lastUpdateTimeMsec < ROOM_LIST_REFRESH_MIN_TIME) ||
+            (curTime - lastRequestTimeMsec < ROOM_LIST_REFRESH_MIN_TIME))
   }
 
-  function canRequest()
-  {
-    return !isNewest() && canRequestByTime()
+  function isUpdateTimedout(curTime) {
+    return curTime - lastRequestTimeMsec >= ROOM_LIST_REQUEST_TIME_OUT
   }
 
   function validateList()
@@ -64,18 +65,10 @@ class MRoomsList
       roomsList.clear()
   }
 
-  function getList(filter = null)
+  function getList()
   {
     validateList()
-    requestList()
-    if (!roomsList.len() || !filter || !filter.len())
-      return roomsList
-
-    local res = []
-    foreach(room in roomsList)
-      if (checkRoomByFilter(room, filter))
-        res.append(room)
-    return res
+    return roomsList
   }
 
   function getRoom(roomId)
@@ -83,16 +76,31 @@ class MRoomsList
     return ::u.search(getList(), (@(roomId) function(r) { return r.roomId == roomId })(roomId))
   }
 
-  function requestList()
+  function requestList(filter)
   {
-    if (!canRequest())
-      return false
+    local roomsFilter = getFetchRoomsParams(filter)
+    local curTime = ::dagor.getCurTime()
+    if (isUpdateTimedout(curTime))
+      isInUpdate = false
+
+    if (isThrottled(curTime) || isInUpdate) {
+      if (!u.isEqual(roomsFilter, curRoomsFilter)) {
+        if (isInUpdate) {
+          queuedRoomsFilter = roomsFilter
+          return false
+        }
+      }
+      else
+        return false
+    }
 
     isInUpdate = true
-    lastRequestTimeMsec = ::dagor.getCurTime()
+    lastRequestTimeMsec = curTime
 
+    curRoomsFilter = roomsFilter
+    local hideFullRooms = filter?.hideFullRooms ?? true
     local roomsData = this
-    ::fetch_rooms_list(getFetchRoomsParams(), (@(roomsData) function(p) {  roomsData.requestListCb(p) })(roomsData))
+    ::fetch_rooms_list(roomsFilter, @(p) roomsData.requestListCb(p, hideFullRooms))
     ::broadcastEvent("RoomsSearchStarted", { roomsList = this })
     return true
   }
@@ -101,7 +109,7 @@ class MRoomsList
 /************************************PRIVATE FUNCTIONS *******************************************/
 /*************************************************************************************************/
 
-  function requestListCb(p)
+  function requestListCb(p, hideFullRooms)
   {
     isInUpdate = false
 
@@ -110,8 +118,13 @@ class MRoomsList
       return
 
     lastUpdateTimeMsec = ::dagor.getCurTime()
-    updateRoomsList(digest)
+    updateRoomsList(digest, hideFullRooms)
     ::broadcastEvent("SearchedRoomsChanged", { roomsList = this })
+
+    if (queuedRoomsFilter != null) {
+      requestList(queuedRoomsFilter)
+      queuedRoomsFilter = null
+    }
   }
 
   function setPlatformFilter(filter) {
@@ -151,7 +164,7 @@ class MRoomsList
     }
   }
 
-  function getFetchRoomsParams()
+  function getFetchRoomsParams(ui_filter)
   {
     local filter = {}
     local res = {
@@ -162,6 +175,22 @@ class MRoomsList
       cursor = 0
       count = 100
     }
+
+    local diff = ui_filter?.diff
+    if (diff != null && diff != -1) {
+      filter["public/mission/difficulty"] <- {
+        test = "eq"
+        value = ::g_difficulty.getDifficultyByDiffCode(diff).name
+      }
+    }
+    local clusters = ui_filter?.clusters
+    if (typeof(clusters) == "array" && clusters.len() > 0) {
+      filter["public/cluster"] <- {
+        test = "in"
+        value = clusters
+      }
+    }
+
     if ("eventEconomicName" in requestParams) {
       local economicName = requestParams.eventEconomicName
       local modesList = ::g_matching_game_modes.getGameModeIdsByEconomicName(economicName)
@@ -187,7 +216,7 @@ class MRoomsList
     return res
   }
 
-  function updateRoomsList(rooms) //can be called each update
+  function updateRoomsList(rooms, hideFullRooms) //can be called each update
   {
     if (rooms.len() > MAX_SESSIONS_LIST_LEN)
     {
@@ -199,36 +228,21 @@ class MRoomsList
 
     roomsList.clear()
     foreach(room in rooms)
-      if (isRoomVisible(room))
+      if (isRoomVisible(room, hideFullRooms))
         roomsList.append(room)
   }
 
-  function isRoomVisible(room)
+  function isRoomVisible(room, hideFullRooms)
   {
     local userUid = ::SessionLobby.getRoomCreatorUid(room)
     if (userUid && ::isPlayerInContacts(userUid, ::EPL_BLOCKLIST))
       return false
-    return ::SessionLobby.getMisListType(room.public).canJoin(::GM_SKIRMISH)
-  }
 
-  function checkRoomByFilter(room, filter)
-  {
-    local public = ::getTblValue("public", room)
-    local mission = ::getTblValue("mission", public)
-
-    local diff = ::getTblValue("diff", filter, -1)
-    if (diff != -1
-        && ::g_difficulty.getDifficultyByDiffCode(filter.diff).name != ::getTblValue("difficulty", mission))
-      return false
-
-    local clusters = ::getTblValue("clusters", filter)
-    if (clusters && !::isInArray(::getTblValue("cluster", room), clusters))
-      return false
-
-    if (!::getTblValue("hasFullRooms", filter, true)
-        && ::SessionLobby.getRoomMembersCnt(room) >= ::getTblValue("maxPlayers", mission, 0))
+    if (hideFullRooms) {
+      local mission = room?.public.mission ?? {}
+      if (::SessionLobby.getRoomMembersCnt(room) >= (mission?.maxPlayers ?? 0))
         return false
-
-    return true
+    }
+    return ::SessionLobby.getMisListType(room.public).canJoin(::GM_SKIRMISH)
   }
 }

@@ -1792,6 +1792,42 @@
       "distSmooth": 0.9
     }
   },
+  "engine_j7w1_ai": {
+    "effects": {
+      "path": "aircraft/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_ai_start",
+      "eventStop": "engine_ai_stop"
+    },
+    "outside": {
+      "path": "aircraft/engines",
+      "eventFront": "",
+      "eventBack": "engine_j7w1_ai",
+      "eventSurround": "",
+      "eventLod1": "engine_j7w1_ai",
+      "rpmSmooth": 0.014,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    },
+    "cockpit": {
+      "path": "aircraft/engines",
+      "event_cockpit_l": "engine_j7w1_cockpit_l",
+      "event_cockpit_r": "engine_j7w1_cockpit_r",
+      "leftPos": [0.5,1.0,5.0],
+      "rightPos": [0.5,1.0,-5.0],
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9
+    }
+  },
   "engine_bomber_ai": {
     "effects": {
       "path": "aircraft/engines",

@@ -227,7 +227,7 @@ class ::gui_handlers.SessionsList extends ::gui_handlers.GenericOptions
         || ::SessionLobby.status != lobbyStates.NOT_IN_ROOM)
       return
 
-    roomsListData.requestList()
+    roomsListData.requestList(getCurFilter())
   }
 
   function onEventSearchedRoomsChanged(p)
@@ -339,7 +339,8 @@ class ::gui_handlers.SessionsList extends ::gui_handlers.GenericOptions
 
   function updateRoomsList()
   {
-    roomsList = roomsListData.getList(getCurFilter())
+    roomsListData.requestList(getCurFilter())
+    roomsList = roomsListData.getList()
     sortRoomsList()
     updateSearchMsg()
 
