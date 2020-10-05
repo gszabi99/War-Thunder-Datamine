@@ -208,7 +208,7 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function refreshList()
   {
-    roomsListData.requestList()
+    roomsListData.requestList(getCurFilter())
   }
 
   function onUpdate(obj, dt)
@@ -307,7 +307,7 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getCurFilter()
   {
-    return { clusters = clustersModule.getCurrentClusters(), hasFullRooms = true }
+    return { clusters = clustersModule.getCurrentClusters(), hideFullRooms = false }
   }
 
   function checkRoomsOrder()
@@ -317,7 +317,7 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillRoomsList(isUpdateOnlyWhenFlagsChanged = false)
   {
-    local roomsList = roomsListData.getList(getCurFilter())
+    local roomsList = roomsListData.getList()
     local isFlagsUpdated = updateRoomsFlags(roomsList)
     if (isUpdateOnlyWhenFlagsChanged && !isFlagsUpdated)
       return
