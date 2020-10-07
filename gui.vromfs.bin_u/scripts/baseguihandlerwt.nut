@@ -966,7 +966,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function onFacebookPostPurchaseChange(obj)
   {
-    ::broadcastEvent("FacebookFeedPostValueChange", {value = obj.getValue()})
+    ::FACEBOOK_POST_WALL_MESSAGE = obj.getValue()
   }
 
   function onOpenGameModeSelect(obj)

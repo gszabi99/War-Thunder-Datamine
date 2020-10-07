@@ -412,7 +412,7 @@ class ::gui_handlers.IngameConsoleStore extends ::gui_handlers.BaseGuiHandlerWT
       return null
 
     local obj = getItemsListObj()
-    if (!::check_obj(obj))
+    if (!::check_obj(obj) || !obj.isFocused())
       return null
 
     return itemsList?[obj.getValue() + curPage * itemsPerPage]

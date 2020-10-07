@@ -7,13 +7,6 @@ local isContactsUpdated = persist("isContactsUpdated", @() ::Watched(false))
 local LIMIT_FOR_ONE_TASK_GET_USERS = 200
 local UPDATE_TIMER_LIMIT = 300000
 local LAST_UPDATE_FRIENDS = -UPDATE_TIMER_LIMIT
-local PSN_RESPONSE_FIELDS = psn.getPreferredVersion() == 2
-  ? { friends = "friends", blocklist = "blocks" }
-  : { friends = "friendList", blocklist = "blockingUsers" }
-
-local convertPsnContact = (psn.getPreferredVersion() == 2)
-  ? @(psnEntry) { accountId = psnEntry }
-  : @(psnEntry) { accountId = psnEntry.user.accountId }
 
 local pendingContactsChanges = {}
 local checkGroups = []
@@ -175,7 +168,7 @@ local function onReceviedUsersList(groupName, responseInfoName, response, err) {
 
   if (!err) {
     foreach (idx, playerData in (response?[responseInfoName] || []))
-        pendingContactsChanges[groupName].users.append(convertPsnContact(playerData))
+      pendingContactsChanges[groupName].users.append(playerData.user)
   }
   else {
     ::dagor.debug($"PSN: Contacts: Update {groupName}: received error: {::toString(err)}")
@@ -192,7 +185,7 @@ local function fetchFriendlist() {
   ::addContactGroup(::EPLX_PS4_FRIENDS)
   psn.fetch(
     psn.profile.listFriends(),
-    @(response, err) onReceviedUsersList(::EPLX_PS4_FRIENDS, PSN_RESPONSE_FIELDS.friends, response, err),
+    @(response, err) onReceviedUsersList(::EPLX_PS4_FRIENDS, "friendList", response, err),
     LIMIT_FOR_ONE_TASK_GET_USERS
   )
 }
@@ -201,7 +194,7 @@ local function fetchBlocklist() {
   checkGroups.append(::EPL_BLOCKLIST)
   psn.fetch(
     psn.profile.listBlockedUsers(),
-    @(response, err) onReceviedUsersList(::EPL_BLOCKLIST, PSN_RESPONSE_FIELDS.blocklist, response, err),
+    @(response, err) onReceviedUsersList(::EPL_BLOCKLIST, "blockingUsers", response, err),
     LIMIT_FOR_ONE_TASK_GET_USERS
   )
 }
@@ -257,7 +250,6 @@ local function updateContacts(needIgnoreInitedFlag = false) {
 
   psn.unsubscribe.friendslist()
   psn.unsubscribe.blocklist()
-  psn.abortAllPendingRequests()
 })
 
 return {
