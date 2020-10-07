@@ -1,3 +1,5 @@
+local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
+
 local psn = require("sonyLib/webApi.nut")
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
@@ -6,13 +8,14 @@ enum PSN_SESSION_TYPE {
   SQUAD = "squad"
 }
 
-::g_psn_sessions <- {
-  [PERSISTENT_DATA_PARAMS] = ["sessions", "invitations", "pendingSessions"]
+//{ id = { type, info }}, joined sessions, only id is mandatory
+local sessions = persist("sessions", @() Watched({}) )
 
-  sessions = {} // { id = { type, info }}, joined sessions, only id is mandatory
-  invitations = [] // in-flight cache for invitations accepted via PSN
-  pendingSessions = {} // { PSN_SESSION_TYPE = { type, info }} - waitng sessionId from PSN or joining
-}
+// in-flight cache for invitations accepted via PSN
+local invitations = persist("invitations", @() Watched([]) )
+
+// { PSN_SESSION_TYPE = { type, info }} - waitng sessionId from PSN or joining
+local pendingSessions = persist("pendingSessions", @() Watched({}) )
 
 local function formatSessionInfo(data, isCreateRequest=true)
 {
@@ -74,14 +77,13 @@ local sessionParams = {
 }
 
 
-g_psn_sessions.create <- function create(sType, cb = psn.noOpCb)
-{
+local function create(sType, cb = psn.noOpCb) {
   local params = sessionParams[sType] // Cache info for use in callback
-  pendingSessions[sType] <- { type = sType, info = params.info }
+  pendingSessions.update(@(v) v[sType] <- { type = sType, info = params.info })
   local saveSession = function(response, err) {
     if (!err && response?.sessionId)
-      sessions[response.sessionId] <- pendingSessions[sType]
-    delete pendingSessions[sType]
+      sessions.update(@(v) v[response.sessionId] <- pendingSessions.value[sType])
+    pendingSessions.update(@(v) delete v[sType])
 
     cb(response, err)
   }
@@ -89,25 +91,23 @@ g_psn_sessions.create <- function create(sType, cb = psn.noOpCb)
            ::Callback(saveSession, this))
 }
 
-g_psn_sessions.invite <- function invite(session, invitee, cb=psn.noOpCb)
-{
-  if (session in sessions)
+local function invite(session, invitee, cb=psn.noOpCb) {
+  if (session in sessions.value)
     psn.send(psn.session.invite(session, invitee), cb)
 }
 
-g_psn_sessions.join <- function join(session, invitation=null, cb=psn.noOpCb)
-{
+local function join(session, invitation=null, cb=psn.noOpCb) {
   // If we're in this session, just mark invitation used, favor rate limits
-  if (session in sessions && invitation?.invitationId)
+  if (session in sessions.value && invitation?.invitationId)
     psn.send(psn.invitation.use(invitation.invitattionId), cb)
   else
   {
-    sessions[session] <- { type = invitation.key } // consider ourselves in session early
-    pendingSessions[invitation.key] <- { type = invitation.key }
+    sessions.update(@(v) v[session] <- { type = invitation.key }) // consider ourselves in session early
+    pendingSessions.update(@(v) v[invitation.key] <- { type = invitation.key })
     local afterJoin = function(response, err) {
-      delete pendingSessions[invitation.key]
+      pendingSessions.update(@(v) delete v[invitation.key])
       if (err)
-        delete sessions[session]
+        sessions.update(@(v) delete v[session])
       else // Mark all invitations to this particular session as used
         psn.send(psn.invitation.list(), function(r, e) {
               local all = r?.invitations ?? []
@@ -121,9 +121,8 @@ g_psn_sessions.join <- function join(session, invitation=null, cb=psn.noOpCb)
   }
 }
 
-g_psn_sessions.update <- function update(session, info)
-{
-  local psnSession = sessions?[session]
+local function update(session, info) {
+  local psnSession = sessions.value?[session]
   local shouldUpdate = !u.isEqual((psnSession && psnSession?.info) || {}, info)
   ::dagor.debug("[PSSI] update "+ session+" ("+psnSession+"): "+ shouldUpdate)
 
@@ -134,13 +133,12 @@ g_psn_sessions.update <- function update(session, info)
         })
 }
 
-g_psn_sessions.leave <- function leave(session, cb=psn.noOpCb)
-{
-  if (session in sessions)
+local function leave(session, cb=psn.noOpCb) {
+  if (session in sessions.value)
   {
     local afterLeave = function(response, err) {
-      if (session in sessions)
-        delete sessions[session]
+      if (session in sessions.value)
+        sessions.update(@(v) delete v[session])
       cb(response, err)
     }
     psn.send(psn.session.leave(session), ::Callback(afterLeave, this))
@@ -150,106 +148,100 @@ g_psn_sessions.leave <- function leave(session, cb=psn.noOpCb)
 }
 
 
-g_psn_sessions.checkAfterFlight <- function checkAfterFlight()
-{
+local function checkAfterFlight() {
   if (!isPlatformSony)
     return
 
-  invitations.apply(@(i) i.processDelayed(i))
-  invitations.clear()
+  invitations.value.apply(@(i) i.processDelayed(i))
+  invitations.update([])
 }
 
+subscriptions.addListenersWithoutEnv({
+  RoomJoined = function(p) {
+    if (!isPlatformSony || ::get_game_mode() != ::GM_SKIRMISH)
+      return
 
-g_psn_sessions.onEventRoomJoined <- function onEventRoomJoined(params)
-{
-  if (!isPlatformSony || ::get_game_mode() != ::GM_SKIRMISH)
-    return
+    local session = ::SessionLobby.getExternalId()
+    ::dagor.debug("[PSSI] onEventRoomJoined: "+session)
+    if (u.isEmpty(session) && ::SessionLobby.isRoomOwner)
+      create(PSN_SESSION_TYPE.SKIRMISH, @(r,e) ::SessionLobby.setExternalId(r?.sessionId))
+    else if (session && !(session in sessions.value))
+      join(session, {key=PSN_SESSION_TYPE.SKIRMISH})
+  }
+  LobbyStatusChange = function(p)
+  {
+    ::dagor.debug("[PSSI] onEventLobbyStatusChange in room "+::SessionLobby.isInRoom())
+    // Leave psn session, join has its own event. Actually leave all skirmishes,
+    // we can have only one in game but we no longer know it's psn Id in Lobby
+    if (isPlatformSony && !::SessionLobby.isInRoom())
+      foreach(id,s in sessions.value.filter(@(s) s.type == PSN_SESSION_TYPE.SKIRMISH))
+        leave(id)
+  }
+  LobbySettingsChange = function(p)
+  {
+    local session = ::SessionLobby.getExternalId()
+    if (!isPlatformSony || u.isEmpty(session))
+      return
 
-  local session = ::SessionLobby.getExternalId()
-  ::dagor.debug("[PSSI] onEventRoomJoined: "+session)
-  if (u.isEmpty(session) && ::SessionLobby.isRoomOwner)
-    create(PSN_SESSION_TYPE.SKIRMISH, @(r,e) ::SessionLobby.setExternalId(r?.sessionId))
-  else if (session && !(session in sessions))
-    join(session, {key=PSN_SESSION_TYPE.SKIRMISH})
-}
+    ::dagor.debug("[PSSI] onEventLobbySettingsChange for " + session)
+    if (::SessionLobby.isRoomOwner)
+      update(session, sessionParams[PSN_SESSION_TYPE.SKIRMISH].info())
+    else if (!(session in sessions.value))
+      join(session, {key=PSN_SESSION_TYPE.SKIRMISH})
+  }
+  SquadStatusChanged = function(p)
+  {
+    if (!isPlatformSony)
+      return
 
-g_psn_sessions.onEventLobbyStatusChange <- function onEventLobbyStatusChange(params)
-{
-  ::dagor.debug("[PSSI] onEventLobbyStatusChange in room "+::SessionLobby.isInRoom())
-  // Leave psn session, join has its own event. Actually leave all skirmishes,
-  // we can have only one in game but we no longer know it's psn Id in Lobby
-  if (isPlatformSony && !::SessionLobby.isInRoom())
-    foreach(id,s in sessions.filter(@(s) s.type == PSN_SESSION_TYPE.SKIRMISH))
-      leave(id)
-}
+    local session = ::g_squad_manager.getPsnSessionId()
+    local isLeader = ::g_squad_manager.isSquadLeader()
+    local isInPsnSession = session in sessions.value
+    ::dagor.debug("[PSSI] onEventSquadStatusChanged " + ::g_squad_manager.state + " for " + session)
+    ::dagor.debug("[PSSI] onEventSquadStatusChanged leader: " + isLeader + ", psnSessions: " + sessions.value.len())
+    ::dagor.debug("[PSSI] onEventSquadStatusChanged session bound to PSN: " + isInPsnSession)
 
-g_psn_sessions.onEventLobbySettingsChange <- function onEventLobbySettingsChange(params)
-{
-  local session = ::SessionLobby.getExternalId()
-  if (!isPlatformSony || u.isEmpty(session))
-    return
-
-  ::dagor.debug("[PSSI] onEventLobbySettingsChange for " + session)
-  if (::SessionLobby.isRoomOwner)
-    update(session, sessionParams[PSN_SESSION_TYPE.SKIRMISH].info())
-  else if (!(session in sessions))
-    join(session, {key=PSN_SESSION_TYPE.SKIRMISH})
-}
-
-
-g_psn_sessions.onEventSquadStatusChanged <- function onEventSquadStatusChanged(params)
-{
-  if (!isPlatformSony)
-    return
-
-  local session = ::g_squad_manager.getPsnSessionId()
-  local isLeader = ::g_squad_manager.isSquadLeader()
-  local isInPsnSession = session in sessions
-  ::dagor.debug("[PSSI] onEventSquadStatusChanged " + ::g_squad_manager.state + " for " + session)
-  ::dagor.debug("[PSSI] onEventSquadStatusChanged leader: " + isLeader + ", psnSessions: " + sessions.len())
-  ::dagor.debug("[PSSI] onEventSquadStatusChanged session bound to PSN: " + isInPsnSession)
-
-  local bindSquadSession = function(r,e) {
+    local bindSquadSession = function(r,e) {
       if (!e && r?.sessionId)
         ::g_squad_manager.setPsnSessionId(r.sessionId)
       ::g_squad_manager.processDelayedInvitations()
     }
-  switch (::g_squad_manager.state)
-  {
-    case squadState.IN_SQUAD:
-      if (PSN_SESSION_TYPE.SQUAD in pendingSessions)
+
+    switch (::g_squad_manager.state)
+    {
+      case squadState.IN_SQUAD:
+        if (PSN_SESSION_TYPE.SQUAD in pendingSessions.value)
+          break
+        if (!isLeader && !isInPsnSession) // Invite accepted or normal relogin
+          join(session, {key = PSN_SESSION_TYPE.SQUAD})
+        if (!isLeader && sessions.value[session]?.info) // Leadership transfer
+          sessions.update(@(v) delete v[session].info)
+        else if (isLeader && u.isEmpty(session)) // Squad implicitly created
+          create(PSN_SESSION_TYPE.SQUAD, bindSquadSession)
+        else if (isLeader && u.isEmpty(sessions.value)) // Autotransfer on login
+          create(PSN_SESSION_TYPE.SQUAD, bindSquadSession)
+        else if (isLeader && sessions.value?[session] && !sessions.value[session]?.info) // Leadership transfer
+        {
+          update(session, sessionParams[PSN_SESSION_TYPE.SQUAD].info())
+          psn.send(psn.session.change(session, sessionParams[PSN_SESSION_TYPE.SQUAD].data()))
+        }
         break
-      if (!isLeader && !isInPsnSession) // Invite accepted or normal relogin
-        join(session, {key = PSN_SESSION_TYPE.SQUAD})
-      if (!isLeader && sessions[session]?.info) // Leadership transfer
-        delete sessions[session].info
-      else if (isLeader && u.isEmpty(session)) // Squad implicitly created
-        create(PSN_SESSION_TYPE.SQUAD, bindSquadSession)
-      else if (isLeader && u.isEmpty(sessions)) // Autotransfer on login
-        create(PSN_SESSION_TYPE.SQUAD, bindSquadSession)
-      else if (isLeader && sessions?[session] && !sessions[session]?.info) // Leadership transfer
-      {
-        update(session, sessionParams[PSN_SESSION_TYPE.SQUAD].info())
-        psn.send(psn.session.change(session, sessionParams[PSN_SESSION_TYPE.SQUAD].data()))
-      }
-      break
 
-    case squadState.LEAVING:
-      if (isInPsnSession)
-        leave(session)
-      break
+      case squadState.LEAVING:
+        if (isInPsnSession)
+          leave(session)
+        break
+    }
   }
-}
+})
 
-
-g_psn_sessions.onPsnInvitation <- function onPsnInvitation(invitation)
-{
+local function onPsnInvitation(invitation) {
   ::dagor.debug("[PSSI] PSN invite "+invitation.invitationId+" to "+invitation.sessionId)
   local delayInvitation = function(i, cb) {
     i.processDelayed <- cb
-    invitations.append(i)
+    invitations.update(@(v) v.append(i))
   }
-  local isInPsnSession = invitation.sessionId in sessions
+  local isInPsnSession = invitation.sessionId in sessions.value
 
   if (u.isEmpty(invitation.sessionId) || isInPsnSession)
     return // Most-likely we are joining from PS4 Blue Screen
@@ -297,9 +289,8 @@ g_psn_sessions.onPsnInvitation <- function onPsnInvitation(invitation)
   psn.send(psn.session.data(invitation.sessionId), acceptInvitation)
 }
 
-
-::g_script_reloader.registerPersistentDataFromRoot("g_psn_sessions")
-::subscribe_handler(::g_psn_sessions, ::g_listener_priority.DEFAULT_HANDLER)
-
-//Called from C++
-::on_ps4_session_invitation <- ::g_psn_sessions.onPsnInvitation.bindenv(::g_psn_sessions)
+return {
+  onPsnInvitation
+  invite
+  checkInvitesAfterFlight = checkAfterFlight
+}

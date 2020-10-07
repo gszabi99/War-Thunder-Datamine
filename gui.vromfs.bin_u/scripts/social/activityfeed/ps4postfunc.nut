@@ -1,10 +1,7 @@
 local psn = require("sonyLib/webApi.nut")
 local statsd = require("statsd")
-local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
-::FACEBOOK_POST_WALL_MESSAGE <- false
-
-::ps4_activityFeed_requestsTable <- {
+local requestsTable = {
   player = "$USER_NAME_OR_ID",
   count = "$STORY_COUNT",
   onlineUserId = "$ONLINE_ID",
@@ -14,18 +11,8 @@ local { isPlatformSony } = require("scripts/clientState/platform.nut")
   sourceCount = "$SOURCE_COUNT"
 }
 
-::prepareMessageForWallPostAndSend <- function prepareMessageForWallPostAndSend(config, customFeedParams = {}, reciever = bit_activity.NONE)
-{
-  local copy_config = clone config
-  local copy_customFeedParams = clone customFeedParams
-  if (reciever & bit_activity.PS4_ACTIVITY_FEED)
-    ::ps4PostActivityFeed(copy_config, copy_customFeedParams)
-  if (reciever & bit_activity.FACEBOOK)
-    ::facebookPostActivityFeed(copy_config, copy_customFeedParams)
-}
-
 // specialization getters below expect valid data, validated by the caller
-::getActivityFeedImageByParam <- function getActivityFeedImageByParam(feed, imagesConfig)
+local function getActivityFeedImageByParam(feed, imagesConfig)
 {
   local config = imagesConfig.other?[feed.blkParamName]
 
@@ -45,8 +32,7 @@ local { isPlatformSony } = require("scripts/clientState/platform.nut")
   return ""
 }
 
-::getActivityFeedImageByCountry <- function getActivityFeedImageByCountry(feed, imagesConfig)
-{
+local function getActivityFeedImageByCountry(feed, imagesConfig) {
   local aircraft = ::getAircraftByName(feed.unitNameId)
   local esUnitType = ::get_es_unit_type(aircraft)
   local unit = ::getUnitTypeText(esUnitType)
@@ -61,8 +47,7 @@ local { isPlatformSony } = require("scripts/clientState/platform.nut")
   return ""
 }
 
-::getActivityFeedImages <- function getActivityFeedImages(feed)
-{
+local function getActivityFeedImages(feed) {
   local guiBlk = ::configs.GUI.get()
   local imagesConfig = guiBlk?.activity_feed_image_url
   if (u.isEmpty(imagesConfig))
@@ -100,43 +85,7 @@ local { isPlatformSony } = require("scripts/clientState/platform.nut")
   return null
 }
 
-//---------------- <Facebook> --------------------------
-::facebookPostActivityFeed <- function facebookPostActivityFeed(config, customFeedParams)
-{
-  if (!::has_feature("FacebookWallPost"))
-    return
-
-  if ("requireLocalization" in customFeedParams)
-    foreach(name in customFeedParams.requireLocalization)
-      customFeedParams[name] <- ::loc(customFeedParams[name])
-
-  ::FACEBOOK_POST_WALL_MESSAGE = false
-  local locId = ::getTblValue("locId", config, "")
-  if (locId == "")
-  {
-    ::dagor.debug("facebookPostActivityFeed, Not found locId in config")
-    ::debugTableData(config)
-    return
-  }
-
-  customFeedParams.player <- ::my_user_name
-  local message = ::loc("activityFeed/" + locId, customFeedParams)
-  local link = ::getTblValue("link", customFeedParams, "")
-  local backgroundPost = ::getTblValue("backgroundPost", config, false)
-  ::make_facebook_login_and_do((@(link, message, backgroundPost) function() {
-                 if (!backgroundPost)
-                  ::scene_msg_box("facebook_login", null, ::loc("facebook/uploading"), null, null)
-                 ::facebook_post_link(link, message)
-               })(link, message, backgroundPost), this)
-}
-//------------------ </Facebook> --------------------------------
-
-//----------------- <PlayStation> -------------------------------
-::ps4PostActivityFeed <- function ps4PostActivityFeed(config, customFeedParams)
-{
-  if (!isPlatformSony || !::has_feature("ActivityFeedPs4"))
-    return
-
+return function(config, customFeedParams) {
   local sendStat = function(tags) {
     local qualifiedNameParts = split(::getEnumValName("ps4_activity_feed", config.subType, true), ".")
     tags["type"] <- qualifiedNameParts[1]
@@ -157,7 +106,7 @@ local { isPlatformSony } = require("scripts/clientState/platform.nut")
     foreach(name in customFeedParams.requireLocalization)
       localizedKeyWords[name] <- ::get_localized_text_with_abbreviation(customFeedParams[name])
 
-  local activityFeed_config = ::combine_tables(::ps4_activityFeed_requestsTable, customFeedParams)
+  local activityFeed_config = ::combine_tables(requestsTable, customFeedParams)
 
   local getFilledFeedTextByLang = function(key) {
     local captions = {}
@@ -175,7 +124,7 @@ local { isPlatformSony } = require("scripts/clientState/platform.nut")
     return captions
   }
 
-  local images = ::getActivityFeedImages(customFeedParams)
+  local images = getActivityFeedImages(customFeedParams)
   local largeImage = customFeedParams?.images?.large || images?.large
   local smallImage = customFeedParams?.images?.small || images?.small
 
@@ -198,4 +147,3 @@ local { isPlatformSony } = require("scripts/clientState/platform.nut")
       sendStat(tags)
   })
 }
-//----------------------- </PlayStation> --------------------------

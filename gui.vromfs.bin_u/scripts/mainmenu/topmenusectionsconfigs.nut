@@ -112,8 +112,6 @@ enums.addTypesByGlobalName("g_top_menu_right_side_sections", [
         buttonsList.WORKSHOP
         buttonsList.WARBONDS_SHOP
         buttonsList.ONLINE_SHOP
-        buttonsList.XBOX_ONLINE_SHOP
-        buttonsList.PS4_ONLINE_SHOP
         buttonsList.DEBUG_PS4_SHOP_DATA
         buttonsList.MARKETPLACE
         buttonsList.COLLECTIONS

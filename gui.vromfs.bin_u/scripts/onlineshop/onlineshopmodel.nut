@@ -1,10 +1,5 @@
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
-
-local { getShopItem = @(id) null,
-        openIngameStore = @(...) false
-} = isPlatformSony? require("scripts/onlineShop/ps4Shop.nut")
-  : isPlatformXboxOne? require("scripts/onlineShop/xboxShop.nut")
-  : null
+local { getShopItem, openIngameStore } = require("scripts/onlineShop/entitlementsStore.nut")
 
 local callbackWhenAppWillActive = require("scripts/clientState/callbackWhenAppWillActive.nut")
 local { getBundleId } = require("scripts/onlineShop/onlineBundles.nut")
