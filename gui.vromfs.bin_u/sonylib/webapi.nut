@@ -221,7 +221,7 @@ local commerce = {
 
 local inGameCatalogApi = { group = "inGameCatalog" path = "/v5/container" }
 local inGameCatalog = {
-  // Service label is now mandatory due to the way PS5 can be setup (with two stores)
+  // Service label is now mandatory
   function get(ids, serviceLabel, params={}) {
     params["serviceLabel"] <- serviceLabel
     params["containerIds"] <- ":".join(ids)
@@ -262,8 +262,11 @@ local function fetch(action, onChunkReceived, chunkSize = 20) {
   local function onResponse(response, err) {
     // PSN responses are somewhat inconsistent, but we need proper iterators
     local entry = ((::type(response) == "array") ? response?[0] : response) || {}
-    local received = (entry?.start||0) + (entry?.size||0)
-    local total = entry?.total_results || entry?.totalResults || received
+    local received = (nativeApi.getPreferredVersion() == 2)
+                   ? (entry?.nextOffset || entry?.totalItemCount)
+                   : (entry?.start||0) + (entry?.size||0)
+    local total = entry?.total_results || entry?.totalResults || entry?.totalItemCount || received
+
     if (err == null && received < total)
       send(makeIterable(action, received, chunkSize), callee())
 
@@ -277,14 +280,15 @@ local function fetch(action, onChunkReceived, chunkSize = 20) {
 return {
   send = send
   fetch = fetch
+  abortAllPendingRequests = nativeApi?.abortAllPendingRequests ?? @() null
+  getPreferredVersion = nativeApi.getPreferredVersion
 
   session = session
   sessionManager = sessionManager
   invitation = invitation
   playerSessionInvitations = playerSessionInvitations
 
-  profile = profile
-  userProfile = userProfile
+  profile = (nativeApi.getPreferredVersion() == 2) ? userProfile : profile
   communicationRestrictionStatus = communicationRestrictionStatus
 
   feed = feed

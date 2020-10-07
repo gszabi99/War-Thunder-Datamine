@@ -105,42 +105,51 @@ class ::gui_handlers.XboxShop extends ::gui_handlers.IngameConsoleStore
   }
 }
 
-return shopData.__merge({
-  openIngameStore = ::kwarg(
-    function(chapter = null, curItemId = "", afterCloseFunc = null, statsdMetric = "unknown") {
-      if (!::isInArray(chapter, [null, "", "eagles"]))
-        return false
+local openIngameStore = ::kwarg(
+  function(chapter = null, curItemId = "", afterCloseFunc = null, statsdMetric = "unknown") {
+    if (!::isInArray(chapter, [null, "", "eagles"]))
+      return false
 
-      if (shopData.canUseIngameShop())
-      {
-        shopData.requestData(
-          false,
-          @() ::handlersManager.loadHandler(::gui_handlers.XboxShop, {
-            itemsCatalog = shopData.xboxProceedItems
-            chapter = chapter
-            curItem = curItemId != "" ? shopData.getShopItem(curItemId) : null
-            afterCloseFunc = afterCloseFunc
-            titleLocId = "topmenu/xboxIngameShop"
-            storeLocId = "items/openIn/XboxStore"
-            seenEnumId = SEEN.EXT_XBOX_SHOP
-            seenList = seenList
-            sheetsArray = sheetsArray
-          }),
-          true,
-          statsdMetric
-        )
-        return true
-      }
-
-      ::queues.checkAndStart(::Callback(function() {
-        xboxSetPurchCb(afterCloseFunc)
-        ::get_gui_scene().performDelayed(::getroottable(),
-          @() ::xbox_show_marketplace(chapter == "eagles")
-        )
-      }, this),
-      null,
-      "isCanUseOnlineShop")
-
+    if (shopData.canUseIngameShop())
+    {
+      shopData.requestData(
+        false,
+        @() ::handlersManager.loadHandler(::gui_handlers.XboxShop, {
+          itemsCatalog = shopData.xboxProceedItems
+          chapter = chapter
+          curItem = curItemId != "" ? shopData.getShopItem(curItemId) : null
+          afterCloseFunc = afterCloseFunc
+          titleLocId = "topmenu/xboxIngameShop"
+          storeLocId = "items/openIn/XboxStore"
+          seenEnumId = SEEN.EXT_XBOX_SHOP
+          seenList = seenList
+          sheetsArray = sheetsArray
+        }),
+        true,
+        statsdMetric
+      )
       return true
-    })
+    }
+
+    ::queues.checkAndStart(::Callback(function() {
+      xboxSetPurchCb(afterCloseFunc)
+      ::get_gui_scene().performDelayed(::getroottable(),
+        @() ::xbox_show_marketplace(chapter == "eagles")
+      )
+    }, this),
+    null,
+    "isCanUseOnlineShop")
+
+    return true
+  }
+)
+
+return shopData.__merge({
+  openIngameStore = openIngameStore
+  getEntStoreLocId = @() shopData.canUseIngameShop()? "#topmenu/xboxIngameShop" : "#msgbox/btn_onlineShop"
+  getEntStoreIcon = @() shopData.canUseIngameShop()? "#ui/gameuiskin#xbox_store_icon.svg" : "#ui/gameuiskin#store_icon.svg"
+  isEntStoreTopMenuItemHidden = @(...) !shopData.canUseIngameShop() || !::isInMenu()
+  getEntStoreUnseenIcon = @() SEEN.EXT_XBOX_SHOP
+  needEntStoreDiscountIcon = true
+  openEntStoreTopMenuFunc = @(obj, handler) openIngameStore({statsdMetric = "topmenu"})
 })

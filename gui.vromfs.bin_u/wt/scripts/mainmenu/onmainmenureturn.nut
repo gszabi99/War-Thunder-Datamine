@@ -8,6 +8,11 @@ local { checkJoystickThustmasterHotas } = require("scripts/controls/hotas.nut")
 local { checkGaijinPassReminder } = require("scripts/mainmenu/reminderGaijinPass.nut")
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
+local { checkInvitesAfterFlight = @() null } = isPlatformSony
+  ? require("scripts/social/psnSessions.nut")
+  : null
+
+
 //called after all first mainmenu actions
 onMainMenuReturnActions.onMainMenuReturn <- function(handler, isAfterLogin) {
   if (!handler)
@@ -41,7 +46,7 @@ onMainMenuReturnActions.onMainMenuReturn <- function(handler, isAfterLogin) {
   {
     handler.doWhenActive(::gui_handlers.FontChoiceWnd.openIfRequired)
 
-    handler.doWhenActive(@() ::g_psn_sessions.checkAfterFlight() )
+    handler.doWhenActive(@() checkInvitesAfterFlight() )
     handler.doWhenActive(@() ::g_xbox_squad_manager.checkAfterFlight() )
     handler.doWhenActive(@() ::g_battle_tasks.checkNewSpecialTasks() )
     handler.doWhenActiveOnce("checkNonApprovedSquadronResearches")
