@@ -5,7 +5,6 @@ local { getEntitlementConfig, getEntitlementName, getEntitlementPrice } = requir
 local { isCrossPlayEnabled,
         getTextWithCrossplayIcon,
         needShowCrossPlayInfo } = require("scripts/social/crossplay.nut")
-local activityFeedPostFunc = require("scripts/social/activityFeed/activityFeedPostFunc.nut")
 
 local imgFormat = "img {size:t='%s'; background-image:t='%s'; margin-right:t='0.01@scrn_tgt;'} "
 local textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t='%s'} "
@@ -911,7 +910,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
         blkParamName = "CLAN_DUEL_REWARD"
       }
 
-      activityFeedPostFunc(config, customConfig, bit_activity.PS4_ACTIVITY_FEED)
+      ::prepareMessageForWallPostAndSend(config, customConfig, bit_activity.PS4_ACTIVITY_FEED)
 
       local resourcesConfig = getResourcesConfig(rewardBlk?.resource)
       if (resourcesConfig != null) {

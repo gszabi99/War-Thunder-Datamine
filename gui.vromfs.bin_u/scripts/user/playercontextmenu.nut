@@ -5,10 +5,6 @@ local crossplayModule = require("scripts/social/crossplay.nut")
 local { isChatEnabled, attemptShowOverlayMessage,
   isCrossNetworkMessageAllowed } = require("scripts/chat/chatStates.nut")
 
-local { invite = @(...) null } = platformModule.isPlatformSony
-  ? require("scripts/social/psnSessions.nut")
-  : null
-
 //-----------------------------
 // params keys:
 //  - uid
@@ -109,7 +105,7 @@ local getActions = function(contact, params)
         return showCrossNetworkPlayRestrictionMsgBox()
 
       if (isPS4Player && !u.isEmpty(::SessionLobby.getExternalId()))
-        contact.updatePSNIdAndDo(@() invite(
+        contact.updatePSNIdAndDo(@() ::g_psn_sessions.invite(
           ::SessionLobby.getExternalId(),
           contact.psnId
         ))

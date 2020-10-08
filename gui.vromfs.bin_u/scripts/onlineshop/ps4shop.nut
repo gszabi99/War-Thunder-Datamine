@@ -9,10 +9,10 @@ local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
 local seenList = require("scripts/seen/seenList.nut").get(seenEnumId)
 local shopData = require("scripts/onlineShop/ps4ShopData.nut")
 
-local persistent = {
+local persist = {
   sheetsArray = []
 }
-::g_script_reloader.registerPersistentData("PS4Shop", persistent, ["sheetsArray"])
+::g_script_reloader.registerPersistentData("PS4Shop", persist, ["sheetsArray"])
 
 
 local defaultsSheetData = {
@@ -46,17 +46,17 @@ local fillSheetsArray = function(bcEventParams = {}) {
     return
   }
 
-  if (!persistent.sheetsArray.len())
+  if (!persist.sheetsArray.len())
   {
     for (local i = 0; i < shopData.getData().blockCount(); i++)
     {
       local block = shopData.getData().getBlock(i)
       local categoryId = block.getBlockName()
 
-      persistent.sheetsArray.append({
-        id = $"sheet_{categoryId}"
-        locText = block?.name ?? block.displayName ?? ""
-        getSeenId = @() $"##ps4_item_sheet_{categoryId}"
+      persist.sheetsArray.append({
+        id = "sheet_" + categoryId
+        locText = block.name
+        getSeenId = @() "##ps4_item_sheet_" + categoryId
         categoryId = categoryId
         sortParams = defaultsSheetData?[categoryId].sortParams ?? defaultsSheetData.def.sortParams
         sortSubParam = "name"
@@ -65,7 +65,7 @@ local fillSheetsArray = function(bcEventParams = {}) {
     }
   }
 
-  foreach (sh in persistent.sheetsArray)
+  foreach (sh in persist.sheetsArray)
   {
     local sheet = sh
     seenList.setSubListGetter(sheet.getSeenId(), function()
@@ -177,59 +177,51 @@ class ::gui_handlers.Ps4Shop extends ::gui_handlers.IngameConsoleStore
   }
 }
 
-local openIngameStore = ::kwarg(
-  function (chapter = null, curItemId = "", afterCloseFunc = null, openedFrom = "unknown") {
-    if (!::isInArray(chapter, [null, "", "eagles"]))
-      return false
+return shopData.__merge({
+  openIngameStore = ::kwarg(
+    function (chapter = null, curItemId = "", afterCloseFunc = null, openedFrom = "unknown") {
+      if (!::isInArray(chapter, [null, "", "eagles"]))
+        return false
 
-    if (shopData.canUseIngameShop())
-    {
-      statsd.send_counter("sq.ingame_store.open", 1, {origin = openedFrom})
-      local item = shopData.getShopItem(curItemId)
-      ::handlersManager.loadHandler(::gui_handlers.Ps4Shop, {
-        itemsCatalog = shopData.getShopItemsTable()
-        isLoadingInProgress = !shopData.isItemsUpdated()
-        chapter = chapter
-        curSheetId = item?.category
-        curItem = item
-        afterCloseFunc = afterCloseFunc
-        titleLocId = "topmenu/ps4IngameShop"
-        storeLocId = "items/purchaseIn/Ps4Store"
-        openStoreLocId = "items/openIn/Ps4Store"
-        seenEnumId = seenEnumId
-        seenList = seenList
-        sheetsArray = persistent.sheetsArray
-      })
+      if (shopData.canUseIngameShop())
+      {
+        statsd.send_counter("sq.ingame_store.open", 1, {origin = openedFrom})
+        local item = shopData.getShopItem(curItemId)
+        ::handlersManager.loadHandler(::gui_handlers.Ps4Shop, {
+          itemsCatalog = shopData.getShopItemsTable()
+          isLoadingInProgress = !shopData.isItemsUpdated()
+          chapter = chapter
+          curSheetId = item?.category
+          curItem = item
+          afterCloseFunc = afterCloseFunc
+          titleLocId = "topmenu/ps4IngameShop"
+          storeLocId = "items/purchaseIn/Ps4Store"
+          openStoreLocId = "items/openIn/Ps4Store"
+          seenEnumId = seenEnumId
+          seenList = seenList
+          sheetsArray = persist.sheetsArray
+        })
+        return true
+      }
+
+      ::queues.checkAndStart(function() {
+        ::get_gui_scene().performDelayed(::getroottable(),
+          function() {
+            if (chapter == null || chapter == "")
+            {
+              local res = ::ps4_open_store("WARTHUNDERAPACKS", false)
+              ::update_purchases_return_mainmenu(afterCloseFunc, res)
+            }
+            else if (chapter == "eagles")
+            {
+              local res = ::ps4_open_store("WARTHUNDEREAGLES", false)
+              ::update_purchases_return_mainmenu(afterCloseFunc, res)
+            }
+          }
+        )
+      }, null, "isCanUseOnlineShop")
+
       return true
     }
-
-    ::queues.checkAndStart(function() {
-      ::get_gui_scene().performDelayed(::getroottable(),
-        function() {
-          if (chapter == null || chapter == "")
-          {
-            local res = ::ps4_open_store("WARTHUNDERAPACKS", false)
-            ::update_purchases_return_mainmenu(afterCloseFunc, res)
-          }
-          else if (chapter == "eagles")
-          {
-            local res = ::ps4_open_store("WARTHUNDEREAGLES", false)
-            ::update_purchases_return_mainmenu(afterCloseFunc, res)
-          }
-        }
-      )
-    }, null, "isCanUseOnlineShop")
-
-    return true
-  }
-)
-
-return shopData.__merge({
-  openIngameStore = openIngameStore
-  getEntStoreLocId = @() shopData.canUseIngameShop()? "#topmenu/ps4IngameShop" : "#msgbox/btn_onlineShop"
-  getEntStoreIcon = @() shopData.canUseIngameShop()? "#ui/gameuiskin#xbox_store_icon.svg" : "#ui/gameuiskin#store_icon.svg"
-  isEntStoreTopMenuItemHidden = @(...) !shopData.canUseIngameShop() || !::isInMenu()
-  getEntStoreUnseenIcon = @() SEEN.EXT_PS4_SHOP
-  needEntStoreDiscountIcon = true
-  openEntStoreTopMenuFunc = @(obj, handler) openIngameStore({statsdMetric = "topmenu"})
+  )
 })

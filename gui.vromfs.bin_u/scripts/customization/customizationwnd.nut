@@ -9,8 +9,13 @@ local weaponryPresetsModal = require("scripts/weaponry/weaponryPresetsModal.nut"
 local { canBuyNotResearched,
         isUnitHaveSecondaryWeapons } = require("scripts/unit/unitStatus.nut")
 
-local { isPlatformPC } = require("scripts/clientState/platform.nut")
-local { canUseIngameShop, getShopItemsTable } = require("scripts/onlineShop/entitlementsStore.nut")
+local { isPlatformSony,
+        isPlatformXboxOne,
+        isPlatformPC } = require("scripts/clientState/platform.nut")
+
+local { canUseIngameShop, getShopItemsTable } = isPlatformSony? require("scripts/onlineShop/ps4ShopData.nut")
+  : isPlatformXboxOne? require("scripts/onlineShop/xboxShopData.nut")
+    : { canUseIngameShop = @() false, getShopItemsTable = @() {} }
 
 enum decoratorEditState
 {

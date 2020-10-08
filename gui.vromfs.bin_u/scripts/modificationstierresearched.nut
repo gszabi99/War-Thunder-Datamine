@@ -1,4 +1,4 @@
-local activityFeedPostFunc = require("scripts/social/activityFeed/activityFeedPostFunc.nut")
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
 ::gui_start_mod_tier_researched <- function gui_start_mod_tier_researched(config)
 {
@@ -126,7 +126,7 @@ class ::gui_handlers.ModificationsTierResearched extends ::gui_handlers.BaseGuiH
 
   function onFacebookLoginAndPostMessage(obj)
   {
-    activityFeedPostFunc(postConfig, postCustomConfig, bit_activity.FACEBOOK)
+    ::prepareMessageForWallPostAndSend(postConfig, postCustomConfig, bit_activity.FACEBOOK)
     obj.enable(false)
   }
 
@@ -139,6 +139,7 @@ class ::gui_handlers.ModificationsTierResearched extends ::gui_handlers.BaseGuiH
   {
     ::broadcastEvent("UpdateResearchingUnit", { unitName = unitInResearch })
     ::checkNonApprovedResearches(true)
-    activityFeedPostFunc(postConfig, postCustomConfig, bit_activity.PS4_ACTIVITY_FEED)
+    if (isPlatformSony && postConfig && postCustomConfig)
+      ::prepareMessageForWallPostAndSend(postConfig, postCustomConfig, bit_activity.PS4_ACTIVITY_FEED)
   }
 }

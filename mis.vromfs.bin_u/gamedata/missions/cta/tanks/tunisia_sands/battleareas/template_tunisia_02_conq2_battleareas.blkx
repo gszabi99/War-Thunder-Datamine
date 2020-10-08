@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": -10.0
-    },
     "player": {
       "army": 1
     },
@@ -18,12 +14,6 @@
       },
       {
         "type": "domination"
-      },
-      {
-        "restoreType": "attempts"
-      },
-      {
-        "optionalTakeOff": false
       },
       {
         "environment": "Day"
@@ -54,6 +44,12 @@
       },
       {
         "country_allies": "ussr"
+      },
+      {
+        "restoreType": "attempts"
+      },
+      {
+        "optionalTakeOff": false
       },
       {
         "mission": {
@@ -296,6 +292,10 @@
         }
       }
     ],
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": -10.0
+    },
     "spectator_points": []
   },
   "imports": {
@@ -408,10 +408,10 @@
     "conq_battle_area_arcade": {
       "type": "Box",
       "tm": [
-        [-1800.0,0.0,0.0],
+        [-2200.0,0.0,0.0],
         [0.0,557.9,0.0],
-        [0.0,0.0,-1800.0],
-        [992.276,-10.1,2052.94]
+        [0.0,0.0,-2200.0],
+        [1092.0,-10.1,2052.0]
       ],
       "objLayer": 3,
       "props": []
@@ -419,10 +419,10 @@
     "conq_battle_area_hardcore": {
       "type": "Box",
       "tm": [
-        [-1800.0,0.0,0.0],
+        [-2200.0,0.0,0.0],
         [0.0,557.9,0.0],
-        [0.0,0.0,-1800.0],
-        [992.276,-10.0999,2052.94]
+        [0.0,0.0,-2200.0],
+        [1092.0,-10.0999,2052.0]
       ],
       "objLayer": 3,
       "props": []
@@ -490,7 +490,7 @@
     },
     {
       "layer": {
-        "enabled": false
+        "enabled": true
       }
     }
   ],
