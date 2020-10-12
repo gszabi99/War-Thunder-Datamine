@@ -171,7 +171,11 @@ local shellChildren = [
               @() shellState.isOperated.value ? ::loc("hud/shell_operated") :
               ::string.format("%s: %s", ::loc("hud/shell_homing"), shellState.isTrackingTarget.value ? ::loc("hud/shell_tracking") : ::loc("hud/shell_searching")))
   mkShellComp(shellState.isActiveSensor, @() shellState.isActiveSensor.value ? ::loc("activeSonar") : ::loc("passiveSonar"))
-  mkShellComp(shellState.isWireConnected, @() shellState.isWireConnected.value ? "" : ::loc("hud/wireIsLost"))
+  mkShellComp([shellState.wireLoseTime, shellState.isWireConnected],
+              @() shellState.isWireConnected.value ?
+               (shellState.wireLoseTime.value > 0.0 ?
+                  ::string.format("%s: %d", ::loc("hud/wireMayBeLost"), math.floor(shellState.wireLoseTime.value + 0.5)) : "") :
+              ::loc("hud/wireIsLost"))
 ]
 
 local function ShipShellState() {

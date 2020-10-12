@@ -19,6 +19,7 @@ local shellState = {
   IsTrackerVisible = Watched(false)
 
   isActiveSensor = Watched(false)
+  wireLoseTime = Watched(-1)
   isWireConnected = Watched(false)
 }
 

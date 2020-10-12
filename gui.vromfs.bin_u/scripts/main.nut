@@ -903,6 +903,11 @@ local isFullScriptsLoaded = false
 
   if (platform.isPlatformSony)
     require("scripts/global/psnCallbacks.nut")
+
+//
+
+
+
   // end of Independed Modules
 
   ::require("scripts/utils/systemMsg.nut").registerColors(colorTagToColors)
