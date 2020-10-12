@@ -69,7 +69,7 @@ local addPlatformIcon = function(name)
   }
   else if (isPs4Prefix || isPs4Postfix)
   {
-    if (!isPlatformPS4)
+    if (!isPlatformSony)
       platformIcon = TV_ICON
   }
   else if (!isPlatformPC)

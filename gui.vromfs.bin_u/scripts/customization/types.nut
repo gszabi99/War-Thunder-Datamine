@@ -83,7 +83,7 @@ local function memoizeByProfile(func, hashFunc = null) {
         return false
       if (block?.psn && !isPlatformSony)
         return false
-      if (block?.ps_plus && !::ps4_has_psplus())
+      if (block?.ps_plus && !require("sony.user").hasPremium())
         return false
       if (block?.showByEntitlement && !::has_entitlement(block.showByEntitlement))
         return false

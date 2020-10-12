@@ -1,9 +1,10 @@
 local { calcPercent } = require("std/math.nut")
 
 local psnStore = require("sony.store")
+local psnUser = require("sony.user")
 local statsd = require("statsd")
 
-local IMAGE_TYPE_INDEX = 1 //240x240
+local IMAGE_TYPE = "TAM_JACKET"
 local BQ_DEFAULT_ACTION_ERROR = -1
 
 enum PURCHASE_STATUS {
@@ -27,14 +28,12 @@ local getActionText = @(action) action == psnStore.Action.PURCHASED ? "purchased
 local function sendBqRecord(metric, itemId, result = null) {
   local sendStat = {}
 
-  if (result != null)
-  {
+  if (result != null) {
     sendStat["isPlusAuthorized"] <- result?.isPlusAuthorized ?? null
     sendStat["action"] <- result?.action ?? BQ_DEFAULT_ACTION_ERROR
   }
 
-  if ("action" in sendStat)
-  {
+  if ("action" in sendStat) {
     sendStat.__update({action = getActionText(sendStat.action)})
     metric.append(sendStat.action)
   }
@@ -48,8 +47,7 @@ local function sendBqRecord(metric, itemId, result = null) {
   )
 }
 
-local Ps4ShopPurchasableItem = class
-{
+local psnV2ShopPurchasableItem = class {
   defaultIconStyle = "default_chest_debug"
   imagePath = null
 
@@ -78,52 +76,51 @@ local Ps4ShopPurchasableItem = class
 
   skuInfo = null
 
-  constructor(blk, _releaseDate)
-  {
+  constructor(blk, _releaseDate) {
     id = blk.label
-    name = blk.name
-    category = blk.category
-    description = blk?.long_desc ?? ""
+    name = blk.displayName
+    category = blk?.category ?? ""
+    description = blk?.description ?? ""
     releaseDate = _releaseDate //PSN not give releaseDate param. but it return data in sorted order by release date
 
-    local imagesArray = (blk.images % "array")
-    local imageIndex = imagesArray.findindex(@(t) t.type == IMAGE_TYPE_INDEX)
+    local imagesArray = blk?.media.images != null ? (blk.media.images % "array") : []
+    local imageIndex = imagesArray.findindex(@(t) t.type == IMAGE_TYPE)
     if (imageIndex != null && imagesArray[imageIndex]?.url)
-      imagePath = "{0}?P1".subst(imagesArray[imageIndex].url)
+      imagePath = $"{imagesArray[imageIndex].url}?P1"
 
     updateSkuInfo(blk)
   }
 
-  function updateSkuInfo(blk)
-  {
-    skuInfo = blk.skus.blockCount() > 0? blk.skus.getBlock(0) : ::DataBlock()
-    local isPlusPrice = skuInfo?.is_plus_price ?? false
-    local displayPrice = skuInfo?.display_price ?? ""
+  function updateSkuInfo(blk) {
+    skuInfo = (blk?.skus.blockCount() ?? 0) > 0? blk.skus.getBlock(0) : ::DataBlock()
+    local userHasPlus = psnUser.hasPremium()
+    local isPlusPrice = skuInfo?.isPlusPrice ?? false
+    local displayPrice = skuInfo?.displayPrice ?? ""
     local skuPrice = skuInfo?.price
 
-    priceText = (!::ps4_has_psplus() && isPlusPrice) ? (skuInfo?.display_original_price ?? "")
-      : (::ps4_has_psplus() && !isPlusPrice) ? (skuInfo?.display_plus_upsell_price ?? displayPrice)
+    priceText = (!userHasPlus && isPlusPrice) ? (skuInfo?.displayOriginalPrice ?? "")
+      : (userHasPlus && !isPlusPrice) ? (skuInfo?.displayPlusUpsellPrice ?? displayPrice)
       : displayPrice
-    listPriceText = skuInfo?.display_original_price ?? skuInfo?.display_price ?? priceText
+    listPriceText = skuInfo?.displayOriginalPrice ?? skuInfo?.displayPrice ?? priceText
 
-    price = (!::ps4_has_psplus() && isPlusPrice) ? skuInfo?.original_price
-      : (::ps4_has_psplus() && !isPlusPrice) ? (skuInfo?.plus_upsell_price ?? skuPrice)
+    price = (!userHasPlus && isPlusPrice) ? skuInfo?.originalPrice
+      : (userHasPlus && !isPlusPrice) ? (skuInfo?.plusUpsellPrice ?? skuPrice)
       : skuPrice
-    listPrice = skuInfo?.original_price ?? skuInfo?.price ?? price
+    listPrice = skuInfo?.originalPrice ?? skuInfo?.price ?? price
 
     needHeader = price != null && listPrice != null
 
-    productId = skuInfo?.product_id
-    local purchStatus = skuInfo?.annotation_name ?? PURCHASE_STATUS.NOT_PURCHASED
+    productId = skuInfo?.id
+    local purchStatus = skuInfo?.annotationName ?? PURCHASE_STATUS.NOT_PURCHASED
     isBought = purchStatus == PURCHASE_STATUS.PURCHASED
-    isPurchasable = purchStatus != PURCHASE_STATUS.PURCHASED && (skuInfo?.is_purchaseable ?? false)
-    isMultiConsumable = (skuInfo?.use_count ?? 0) > 0
+    isPurchasable = purchStatus != PURCHASE_STATUS.PURCHASED
+    isMultiConsumable = (skuInfo?.useLimit ?? 0) > 0
     if (isMultiConsumable)
       defaultIconStyle = "reward_gold"
   }
 
   haveDiscount = @() !isBought && price != null && listPrice != null && price != listPrice
-  havePsPlusDiscount = @() ::ps4_has_psplus() && ("display_plus_upsell_price" in skuInfo || skuInfo?.is_plus_price) //use in markup
+  havePsPlusDiscount = @() psnUser.hasPremium() && ("displayPlusUpsellPrice" in skuInfo || skuInfo?.isPlusPrice) //use in markup
   getDiscountPercent = @() (price == null && listPrice == null)? 0 : calcPercent(1 - (price.tofloat() / listPrice))
 
   getPriceText = function() {
@@ -141,14 +138,14 @@ local Ps4ShopPurchasableItem = class
     //TEMP HACK!!! for PS4 TRC R4052A, to show all symbols of a single 2000-letter word
     local maxSymbolsInLine = 50 // Empirically fits with the biggest font we have
     if (description.len() > maxSymbolsInLine && description.indexof(" ") == null) {
-      local splitDesc = description.slice(0, maxSymbolsInLine)
+      local splitDesc = [description.slice(0, maxSymbolsInLine)]
       local len = description.len()
       local totalLines = (len / maxSymbolsInLine).tointeger() + 1
       for (local i = 1; i < totalLines; i++) {
-        splitDesc += "\n"
-        splitDesc += description.slice(i * maxSymbolsInLine, (i+1) * maxSymbolsInLine)
+        splitDesc.append("\n")
+        splitDesc.append(description.slice(i * maxSymbolsInLine, (i+1) * maxSymbolsInLine))
       }
-      return splitDesc
+      return "".join(splitDesc)
     }
 
     return description
@@ -174,18 +171,9 @@ local Ps4ShopPurchasableItem = class
   getIcon = @(...) imagePath ? ::LayersIcon.getCustomSizeIconData(imagePath, "pw, ph")
                              : ::LayersIcon.getIconData(null, null, 1.0, defaultIconStyle)
 
-  getBigIcon = function() {
-    local ps4ShopBlk = ::configs.GUI.get()?.ps4_ingame_shop
-    local ingameShopImages = ps4ShopBlk?.items
-    if (ingameShopImages?[id] && ps4ShopBlk?.mainPart && ps4ShopBlk?.fileExtension)
-      return ::LayersIcon.getCustomSizeIconData("!" + ps4ShopBlk.mainPart + id + ps4ShopBlk.fileExtension, "pw, ph")
-
-    return null
-  }
-
   getSeenId = @() id.tostring()
   canBeUnseen = @() isBought
-  showDetails = function(metricPlaceCall = "ingame_store") {
+  showDetails = function(metricPlaceCall = "ingame_store.v2") {
     local itemId = id
     sendBqRecord([metricPlaceCall, "checkout.open"], itemId)
     psnStore.open_checkout(
@@ -198,7 +186,7 @@ local Ps4ShopPurchasableItem = class
     )
   }
 
-  showDescription = function(metricPlaceCall = "ingame_store") {
+  showDescription = function(metricPlaceCall = "ingame_store.v2") {
     local itemId = id
     sendBqRecord([metricPlaceCall, "description.open"], itemId)
     psnStore.open_product(
@@ -212,4 +200,4 @@ local Ps4ShopPurchasableItem = class
   }
 }
 
-return Ps4ShopPurchasableItem
+return psnV2ShopPurchasableItem

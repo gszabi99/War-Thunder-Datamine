@@ -5,6 +5,10 @@ local battleRating = ::require("scripts/battleRating.nut")
 local antiCheat = require("scripts/penitentiary/antiCheat.nut")
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
 
+local { invite = @(...) null } = platformModule.isPlatformSony
+  ? require("scripts/social/psnSessions.nut")
+  : null
+
 enum squadEvent
 {
   DATA_UPDATED = "SquadDataUpdated"
@@ -22,14 +26,6 @@ enum squadStatusUpdateState {
   NONE
   MENU
   BATTLE
-}
-
-global enum squadState
-{
-  NOT_IN_SQUAD
-  JOINING
-  IN_SQUAD
-  LEAVING
 }
 
 const DEFAULT_SQUADS_VERSION = 1
@@ -823,7 +819,7 @@ g_squad_manager.inviteToSquad <- function inviteToSquad(uid, name = null, cb = n
     if (isInvitingPsnPlayer && u.isEmpty(::g_squad_manager.delayedInvites)) {
       local contact = ::getContact(uid, name)
       contact.updatePSNIdAndDo(function() {
-        ::g_psn_sessions.invite(::g_squad_manager.getPsnSessionId(), contact.psnId)
+        invite(::g_squad_manager.getPsnSessionId(), contact.psnId)
       })
     }
 
@@ -840,7 +836,8 @@ g_squad_manager.processDelayedInvitations <- function processDelayedInvitations(
   if (u.isEmpty(getPsnSessionId()) || u.isEmpty(delayedInvites))
     return
 
-  ::g_psn_sessions.invite(getPsnSessionId(), delayedInvites)
+  foreach (invitee in delayedInvites)
+    invite(getPsnSessionId(), invitee)
   delayedInvites.clear()
 }
 

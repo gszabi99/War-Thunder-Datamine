@@ -2,6 +2,10 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": -10.0
+    },
     "player": {
       "army": 1
     },
@@ -14,6 +18,12 @@
       },
       {
         "type": "domination"
+      },
+      {
+        "restoreType": "attempts"
+      },
+      {
+        "optionalTakeOff": false
       },
       {
         "environment": "Day"
@@ -44,12 +54,6 @@
       },
       {
         "country_allies": "ussr"
-      },
-      {
-        "restoreType": "attempts"
-      },
-      {
-        "optionalTakeOff": false
       },
       {
         "mission": {
@@ -292,10 +296,6 @@
         }
       }
     ],
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": -10.0
-    },
     "spectator_points": []
   },
   "imports": [],
@@ -805,10 +805,10 @@
     "fakearea": {
       "type": "Box",
       "tm": [
-        [-2200.0,0.0,0.0],
+        [-1800.0,0.0,0.0],
         [0.0,557.9,0.0],
-        [0.0,0.0,-2200.0],
-        [1092.0,-10.1,2052.0]
+        [0.0,0.0,-1800.0],
+        [992.276,-10.1,2052.94]
       ],
       "objLayer": 3,
       "props": []
@@ -1558,7 +1558,7 @@
     },
     {
       "layer": {
-        "enabled": true
+        "enabled": false
       }
     }
   ],

@@ -16,7 +16,6 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 local { isModResearched,
         getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
-local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
 const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000
 
@@ -347,34 +346,12 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   }
   else
     taskId = ::shop_purchase_aircraft(unitName)
+
   local progressBox = ::scene_msg_box("char_connecting", null, ::loc("charServer/purchase"), null, null)
-  ::add_bg_task_cb(taskId, (@(unit, progressBox) function() {
-      ::destroyMsgBox(progressBox)
-
-      local config = {
-        locId = "purchase_unit"
-        subType = ps4_activity_feed.PURCHASE_UNIT
-        backgroundPost = true
-      }
-
-      local custConfig = {
-        requireLocalization = ["unitName", "country"]
-        unitNameId = unit.name
-        unitName = unit.name + "_shop"
-        rank = ::get_roman_numeral(unit?.rank ?? -1)
-        country = ::getUnitCountry(unit)
-        link = ::format(::loc("url/wiki_objects"), unit.name)
-      }
-
-      local postFeeds = ::FACEBOOK_POST_WALL_MESSAGE? bit_activity.FACEBOOK : bit_activity.NONE
-      if (isPlatformSony)
-        postFeeds = postFeeds == bit_activity.NONE? bit_activity.PS4_ACTIVITY_FEED : bit_activity.ALL
-
-      ::prepareMessageForWallPostAndSend(config, custConfig, postFeeds)
-
-      ::broadcastEvent("UnitBought", {unitName = unit.name})
-    })(unit, progressBox)
-  )
+  ::add_bg_task_cb(taskId, function() {
+    ::destroyMsgBox(progressBox)
+    ::broadcastEvent("UnitBought", {unitName = unit.name})
+  })
   return true
 }
 

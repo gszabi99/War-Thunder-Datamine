@@ -4,6 +4,7 @@ local { setPollBaseUrl, generatePollUrl } = require("scripts/web/webpoll.nut")
 local { disableSeenUserlogs } = require("scripts/userLog/userlogUtils.nut")
 local { setColoredDoubleTextToButton, placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
+local activityFeedPostFunc = require("scripts/social/activityFeed/activityFeedPostFunc.nut")
 
 ::delayed_unlock_wnd <- []
 ::showUnlockWnd <- function showUnlockWnd(config)
@@ -148,9 +149,11 @@ class ::gui_handlers.ShowUnlockHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onPostPs4ActivityFeed()
   {
-    ::prepareMessageForWallPostAndSend(config.ps4ActivityFeedData.config,
-                                       config.ps4ActivityFeedData.params,
-                                       bit_activity.PS4_ACTIVITY_FEED)
+    activityFeedPostFunc(
+      config.ps4ActivityFeedData.config,
+      config.ps4ActivityFeedData.params,
+      bit_activity.PS4_ACTIVITY_FEED
+    )
     showSceneBtn("btn_post_ps4_activity_feed", false)
   }
 
