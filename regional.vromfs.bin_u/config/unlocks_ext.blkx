@@ -9421,6 +9421,39 @@
   },
   {
     "unlockable": {
+      "id": "us_destroyer_fletcher_cowell_check_popup",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2020-10-13 11:00:00",
+        "endDate": "2020-10-19 09:30:00",
+        "condition": {
+          "type": "char_unlocked",
+          "positive": false,
+          "unlock": "us_destroyer_fletcher_cowell_check"
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "us_destroyer_fletcher_cowell_check",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "char_unit_exist",
+        "unit": "us_destroyer_fletcher_cowell",
+        "condition": {
+          "type": "char_time_range",
+          "beginDate": "2020-10-13 11:00:00",
+          "endDate": "2020-10-19 09:30:00"
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
       "id": "mi_24v_check_popup",
       "type": "achievement",
       "hidden": true,
