@@ -6,12 +6,7 @@ local { getPollIdByFullUrl, invalidateTokensCache } = require("scripts/web/webpo
 local { isPlatformSony,
         isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
-local { canUseIngameShop = @() false,
-        openIngameStore = @() null
-} = isPlatformSony? require("scripts/onlineShop/ps4Shop.nut")
-  : isPlatformXboxOne? require("scripts/onlineShop/xboxShop.nut")
-  : null
-
+local { canUseIngameShop, openIngameStore } = require("scripts/onlineShop/entitlementsStore.nut")
 local { getBundleId } = require("scripts/onlineShop/onlineBundles.nut")
 local { validateLink, openUrl } = require("scripts/onlineShop/url.nut")
 

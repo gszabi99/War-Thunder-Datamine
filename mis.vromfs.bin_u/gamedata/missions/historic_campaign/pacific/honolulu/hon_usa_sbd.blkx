@@ -289,12 +289,12 @@
             "air": true,
             "ground": false,
             "mapArea": false,
-            "airMapArea": true,
+            "airMapArea": false,
             "killArea": false,
             "detectionArea": false,
             "killOutOfBattleArea": true,
-            "area": "battle_area",
-            "newGridHorizontalCellCount": 0
+            "newGridHorizontalCellCount": 0,
+            "area": "battle_area"
           }
         },
         {
@@ -827,6 +827,40 @@
           }
         },
         {
+          "unitDamage": [
+            {
+              "part": 0
+            },
+            {
+              "power": 1.0
+            },
+            {
+              "useEffect": false
+            },
+            {
+              "countEffects": 1
+            },
+            {
+              "delay": [1.0,1.0]
+            },
+            {
+              "offset": [0.0,0.0,0.0]
+            },
+            {
+              "radiusOffset": [10.0,15.0]
+            },
+            {
+              "target": "uss_bb_oklahoma"
+            },
+            {
+              "target": "uss_bb_tennessee"
+            },
+            {
+              "doExplosion": true
+            }
+          ]
+        },
+        {
           "unitAttackTarget": [
             {
               "playerAttracted": false
@@ -841,10 +875,7 @@
               "object": "ph_d3a1"
             },
             {
-              "target": "uss_ships_to_kill_second_squad"
-            },
-            {
-              "target": "uss_ships_to_kill_first_squad"
+              "target": "uss_bb_squad"
             },
             {
               "fireRandom": true
@@ -855,7 +886,8 @@
           "unitAttackTarget": {
             "playerAttracted": false,
             "object": "b5n_leader",
-            "target": "uss_ships_to_kill_first_squad"
+            "target": "uss_bb_west_verginia",
+            "fireRandom": true
           }
         },
         {
@@ -920,34 +952,6 @@
         }
       },
       "actions": [
-        {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "object": "uss_ships_to_kill_first_squad"
-            },
-            {
-              "object": "uss_ships_to_kill_second_squad"
-            },
-            {
-              "object": "uss_ships_to_kill_third_squad"
-            },
-            {
-              "isImmortal": true
-            }
-          ]
-        },
         {
           "missionForceMusic": {
             "evName": "3_us_pearl_harbor"
@@ -1043,11 +1047,6 @@
           ]
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
           "showSmartCutscene": {
             "sceneType": "area",
             "startSubTypeOnTheMarch": "",
@@ -1068,8 +1067,7 @@
             "fadeIn": false,
             "fadeOut": false,
             "allowDeadUnits": false,
-            "object": "ph_cut_area01",
-            "finalZoom": 0.2
+            "object": "ph_cut_area01"
           }
         },
         {
@@ -1098,8 +1096,8 @@
             "fadeOut": true,
             "allowDeadUnits": false,
             "wait": false,
-            "object": "ph_b5n",
-            "flybyVertOffset": 15.0,
+            "object": "b5n_leader",
+            "flybyVertOffset": 0.0,
             "timeBeforeFlyBy": 5.0,
             "flybyReverseDirection": true,
             "zoom": 0.8
@@ -1312,7 +1310,7 @@
         },
         {
           "triggerEnable": {
-            "target": "bomb_fall_first"
+            "target": "bomb_cut_eff"
           }
         },
         {
@@ -1566,17 +1564,10 @@
           }
         },
         {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "uss_ships_to_kill_second_squad",
-            "isImmortal": false
-          }
-        },
-        {
           "unitDamage": [
+            {
+              "part": 21
+            },
             {
               "power": 1.0
             },
@@ -1602,7 +1593,7 @@
               "target": "not_player"
             },
             {
-              "target": "uss_ships_to_kill_second_squad"
+              "target": "uss_bb_squad"
             },
             {
               "doExplosion": true
@@ -1998,6 +1989,7 @@
         },
         {
           "unitDamage": {
+            "part": 21,
             "power": 1.0,
             "useEffect": false,
             "countEffects": 1,
@@ -2088,6 +2080,7 @@
         },
         {
           "unitDamage": {
+            "part": 21,
             "power": 1.0,
             "useEffect": false,
             "countEffects": 1,
@@ -2851,6 +2844,7 @@
         },
         {
           "unitDamage": {
+            "part": 3,
             "power": 1.0,
             "useEffect": false,
             "countEffects": 1,
@@ -2942,6 +2936,7 @@
         },
         {
           "unitDamage": {
+            "part": 0,
             "power": 1.0,
             "useEffect": false,
             "countEffects": 1,
@@ -3449,16 +3444,6 @@
       },
       "actions": [
         {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "uss_ships_to_kill_third_squad",
-            "isImmortal": false
-          }
-        },
-        {
           "missionForceMusic": {
             "evName": "3_us_pearl_harbor"
           }
@@ -3489,12 +3474,11 @@
           ]
         },
         {
-          "__unitRestore": {
+          "unitRestore": {
             "ressurectIfDead": true,
             "fullRestore": true,
             "target_marking": 0,
-            "target": "squad_ph_ships",
-            "partRestore": true
+            "target": "squad_ph_ships"
           }
         },
         {
@@ -3611,7 +3595,7 @@
           "unitAttackTarget": {
             "playerAttracted": false,
             "object": "jpn_armada_sq",
-            "target": "uss_ships_to_kill_third_squad",
+            "target": "squad_ph_ships",
             "fireRandom": true
           }
         },
@@ -3619,8 +3603,7 @@
           "unitAttackTarget": {
             "playerAttracted": false,
             "object": "d3a_deb_cut01",
-            "target": "uss_bb_oklahoma",
-            "fireRandom": true
+            "target": "uss_bb_squad"
           }
         },
         {
@@ -3688,7 +3671,7 @@
             "allowDeadUnits": false,
             "wait": false,
             "object": "d3a_deb_cut03",
-            "target": "uss_bb_oklahoma"
+            "target": "uss_bb_west_verginia"
           }
         },
         {
@@ -3727,7 +3710,7 @@
         },
         {
           "triggerEnable": {
-            "target": "bomb_fall_last"
+            "target": "bomb_cut_eff"
           }
         },
         {
@@ -3746,7 +3729,7 @@
             "startSubTypeTwoUnits": "",
             "startSubTypeTakeoff": "",
             "startSubTypeFlyBy": "",
-            "duration": 8.0,
+            "duration": 6.0,
             "changeCameras": true,
             "teleportAllAttackers": false,
             "allowTeleportAttackers": true,
@@ -3761,6 +3744,9 @@
         },
         {
           "unitDamage": [
+            {
+              "part": 0
+            },
             {
               "power": 1.0
             },
@@ -3815,67 +3801,6 @@
           ]
         },
         {
-          "unitPlayEffect": [
-            {
-              "effect_type": "specify"
-            },
-            {
-              "effect": "ship_model_expl"
-            },
-            {
-              "offset": [0.0,0.0,0.0]
-            },
-            {
-              "show": true
-            },
-            {
-              "attach": false
-            },
-            {
-              "scale": 1.2
-            },
-            {
-              "loopSpawn": true
-            },
-            {
-              "delay": [1.0,1.0]
-            },
-            {
-              "target": "uss_ca_new_orleans"
-            },
-            {
-              "target": "uss_dd_dewey"
-            },
-            {
-              "target": "uss_dd_ralph"
-            },
-            {
-              "target": "uss_ss_tautog"
-            },
-            {
-              "target": "uss_ss_pelias"
-            },
-            {
-              "target": "uss_dd_blue"
-            },
-            {
-              "target": "uss_av_tangier"
-            },
-            {
-              "target": "uss_cl_raleigh"
-            },
-            {
-              "target": "uss_ar_medusa"
-            },
-            {
-              "radiusOffset": [10.0,15.0]
-            },
-            {
-              "delayForObjects": [0.3,1.0]
-            }
-          ]
-        },
-        {
           "unitMoveTo": {
             "target": "deb_landing_point",
             "follow_target": false,
@@ -3920,7 +3845,7 @@
         },
         {
           "wait": {
-            "time": 8.0
+            "time": 6.0
           }
         },
         {
@@ -3949,7 +3874,7 @@
             "startSubTypeTwoUnits": "",
             "startSubTypeTakeoff": "",
             "startSubTypeFlyBy": "",
-            "duration": 6.0,
+            "duration": 4.0,
             "changeCameras": true,
             "teleportAllAttackers": false,
             "allowTeleportAttackers": true,
@@ -3964,7 +3889,7 @@
         },
         {
           "wait": {
-            "time": 6.0
+            "time": 4.0
           }
         },
         {
@@ -3978,7 +3903,7 @@
             "startSubTypeTwoUnits": "",
             "startSubTypeTakeoff": "",
             "startSubTypeFlyBy": "",
-            "duration": 7.0,
+            "duration": 6.0,
             "changeCameras": true,
             "teleportAllAttackers": false,
             "allowTeleportAttackers": true,
@@ -3988,17 +3913,16 @@
             "fadeOut": true,
             "allowDeadUnits": false,
             "wait": false,
-            "object": "area_02",
-            "zoom": 0.7
+            "object": "area_02"
           }
         },
         {
           "wait": {
-            "time": 7.0
+            "time": 6.0
           }
         },
         {
-          "__unitPutToSleep": {
+          "unitPutToSleep": {
             "target": "sbd_cut01"
           }
         },
@@ -4352,6 +4276,507 @@
       ],
       "else_actions": []
     },
+    "bomb_cut_eff": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "timeExpires": {
+          "time": 0.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "unitDamage": {
+            "part": 0,
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [1.0,1.0],
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [10.0,15.0],
+            "target": "uss_bb_nevada",
+            "doExplosion": true
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect": "land_crash_fire",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "loop": false,
+            "scale": 2.0,
+            "effect_type": "specify",
+            "attach": false,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "expl_eff09",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "wait": {
+            "time": 0.2
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect": "bomb_water_explosion_big",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "loop": false,
+            "scale": 1.0,
+            "effect_type": "specify",
+            "attach": false,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "wbomb_eff06",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "wait": {
+            "time": 0.1
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect": "ship_model_expl",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "loop": false,
+            "scale": 2.0,
+            "effect_type": "specify",
+            "attach": false,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "expl_eff08",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "unitDamage": {
+            "part": 0,
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [1.0,1.0],
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [10.0,15.0],
+            "target": "uss_bb_california",
+            "doExplosion": true
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect": "land_crash_fire",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "loop": false,
+            "scale": 2.0,
+            "effect_type": "specify",
+            "attach": false,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "expl_eff08",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "wait": {
+            "time": 0.1
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect": "bomb_water_explosion_big",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "loop": false,
+            "scale": 1.0,
+            "effect_type": "specify",
+            "attach": false,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "wbomb_eff08",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "wait": {
+            "time": 0.1
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect": "bomb_water_explosion_big",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "loop": false,
+            "scale": 1.5,
+            "effect_type": "specify",
+            "attach": false,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "wbomb_eff09",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "wait": {
+            "time": 0.2
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect": "bomb_water_explosion_big",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "loop": false,
+            "scale": 1.5,
+            "effect_type": "specify",
+            "attach": false,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "wbomb_eff05",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "wait": {
+            "time": 0.1
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect": "ship_model_expl",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "loop": false,
+            "scale": 1.2,
+            "effect_type": "specify",
+            "attach": false,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "expl_eff07",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "unitDamage": {
+            "part": 0,
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [1.0,1.0],
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [10.0,15.0],
+            "target": "uss_bb_maryland",
+            "doExplosion": true
+          }
+        },
+        {
+          "wait": {
+            "time": 0.2
+          }
+        },
+        {
+          "wait": {
+            "time": 0.3
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect": "bomb_water_explosion_big",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "loop": false,
+            "scale": 0.85,
+            "effect_type": "specify",
+            "attach": false,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "wbomb_eff01",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "wait": {
+            "time": 0.21
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect": "ship_model_expl",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "loop": false,
+            "scale": 1.0,
+            "effect_type": "specify",
+            "attach": false,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "expl_eff01",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "unitDamage": {
+            "part": 0,
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [1.0,1.0],
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [10.0,15.0],
+            "target": "uss_ar_vestal",
+            "doExplosion": true
+          }
+        },
+        {
+          "wait": {
+            "time": 0.325
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect": "bomb_water_explosion_big",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "loop": false,
+            "scale": 0.75,
+            "effect_type": "specify",
+            "attach": false,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "wbomb_eff02",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "wait": {
+            "time": 0.225
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect": "ship_model_expl",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "loop": false,
+            "scale": 1.0,
+            "effect_type": "specify",
+            "attach": false,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "expl_eff02",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "wait": {
+            "time": 0.21
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect": "ship_model_expl",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "loop": false,
+            "scale": 2.0,
+            "effect_type": "specify",
+            "attach": false,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "expl_eff03",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "unitDamage": {
+            "part": 0,
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [1.0,1.0],
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [10.0,15.0],
+            "target": "uss_bb_arizona",
+            "doExplosion": true
+          }
+        },
+        {
+          "wait": {
+            "time": 0.325
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect": "land_crash_fire",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "loop": false,
+            "scale": 1.5,
+            "effect_type": "specify",
+            "attach": false,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "expl_eff03",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect": "bomb_water_explosion_big",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "loop": false,
+            "scale": 1.3,
+            "effect_type": "specify",
+            "attach": false,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "wbomb_eff03",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "wait": {
+            "time": 0.22
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect": "bomb_water_explosion_big",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "loop": false,
+            "scale": 0.75,
+            "effect_type": "specify",
+            "attach": false,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "wbomb_eff04",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "wait": {
+            "time": 0.325
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect": "ship_model_expl",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "loop": false,
+            "scale": 1.0,
+            "effect_type": "specify",
+            "attach": false,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "expl_eff04",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "wait": {
+            "time": 0.12
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect": "ship_model_expl",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "loop": false,
+            "scale": 1.8,
+            "effect_type": "specify",
+            "attach": false,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "expl_eff05",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "unitDamage": {
+            "part": 0,
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [1.0,1.0],
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [10.0,15.0],
+            "target": "uss_bb_west_verginia",
+            "doExplosion": true
+          }
+        },
+        {
+          "wait": {
+            "time": 0.12
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect": "land_crash_fire",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "loop": false,
+            "scale": 1.5,
+            "effect_type": "specify",
+            "attach": false,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "expl_eff05",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect": "ship_model_expl",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "loop": false,
+            "scale": 1.2,
+            "effect_type": "specify",
+            "attach": false,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "expl_eff06",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "wait": {
+            "time": 0.2
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect": "bomb_water_explosion_big",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "loop": false,
+            "scale": 1.5,
+            "effect_type": "specify",
+            "attach": false,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "wbomb_eff07",
+            "radiusOffset": [0.0,0.0]
+          }
+        }
+      ],
+      "else_actions": []
+    },
     "zero_notkill_2min": {
       "is_enabled": false,
       "comments": "",
@@ -4494,797 +4919,6 @@
             "object_var_value": 0,
             "item": "ID_TOGGLE_VIEW",
             "shouldBlink": false
-          }
-        }
-      ],
-      "else_actions": []
-    },
-    "bomb_fall_first": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "timeExpires": {
-          "time": 0.0
-        }
-      },
-      "conditions": {
-        "unitWhenProperties": {
-          "object": "uss_bb_squad",
-          "func": "less",
-          "value": 0.0,
-          "property": "less",
-          "check_filter": "all",
-          "object_type": "isAlive",
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0
-        }
-      },
-      "actions": [
-        {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "object": "uss_ships_to_kill_first_squad"
-            },
-            {
-              "object": "uss_ships_to_kill_second_squad"
-            },
-            {
-              "isImmortal": false
-            }
-          ]
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "bomb_water_explosion_big",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 1.0,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "wbomb_eff06",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "wait": {
-            "time": 0.1
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "ship_model_expl",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 2.0,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "expl_eff08",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "unitDamage": {
-            "power": 1.0,
-            "useEffect": false,
-            "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
-            "target": "uss_bb_california",
-            "doExplosion": true
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "land_crash_fire",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 2.0,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "expl_eff08",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "wait": {
-            "time": 0.1
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "bomb_water_explosion_big",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 1.0,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "wbomb_eff07",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "wait": {
-            "time": 0.1
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "bomb_water_explosion_big",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 1.5,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "wbomb_eff04",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "wait": {
-            "time": 0.1
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "bomb_water_explosion_big",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 1.5,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "wbomb_eff01",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "wait": {
-            "time": 0.1
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "ship_model_expl",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 1.2,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "expl_eff02",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "unitDamage": {
-            "power": 1.0,
-            "useEffect": false,
-            "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
-            "target": "uss_bb_tennessee",
-            "doExplosion": true
-          }
-        },
-        {
-          "wait": {
-            "time": 0.1
-          }
-        },
-        {
-          "wait": {
-            "time": 0.2
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "bomb_water_explosion_big",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 0.85,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "wbomb_eff02",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "wait": {
-            "time": 0.11
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "ship_model_expl",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 1.0,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "expl_eff01",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "unitDamage": {
-            "power": 1.0,
-            "useEffect": false,
-            "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
-            "target": "uss_ar_vestal",
-            "doExplosion": true
-          }
-        },
-        {
-          "wait": {
-            "time": 0.325
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "bomb_water_explosion_big",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 0.75,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "wbomb_eff02",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "wait": {
-            "time": 0.125
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "bomb_water_explosion_big",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 1.3,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "wbomb_eff03",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "wait": {
-            "time": 0.12
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "bomb_water_explosion_big",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 0.75,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "wbomb_eff04",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "wait": {
-            "time": 0.225
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "bomb_water_explosion_big",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 1.5,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "wbomb_eff07",
-            "radiusOffset": [0.0,0.0]
-          }
-        }
-      ],
-      "else_actions": []
-    },
-    "bomb_fall_last": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "timeExpires": {
-          "time": 0.0
-        }
-      },
-      "conditions": {
-        "unitWhenProperties": {
-          "object": "uss_bb_squad",
-          "func": "less",
-          "value": 0.0,
-          "property": "less",
-          "check_filter": "all",
-          "object_type": "isAlive",
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0
-        }
-      },
-      "actions": [
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "uss_ships_to_kill_third_squad",
-            "isImmortal": false
-          }
-        },
-        {
-          "unitDamage": {
-            "power": 1.0,
-            "useEffect": false,
-            "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
-            "target": "uss_bb_nevada",
-            "doExplosion": true
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "land_crash_fire",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 2.0,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "expl_eff09",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "wait": {
-            "time": 0.1
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "bomb_water_explosion_big",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 1.0,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "wbomb_eff06",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "wait": {
-            "time": 0.1
-          }
-        },
-        {
-          "wait": {
-            "time": 0.1
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "bomb_water_explosion_big",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 1.0,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "wbomb_eff08",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "wait": {
-            "time": 0.1
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "bomb_water_explosion_big",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 1.5,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "wbomb_eff09",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "wait": {
-            "time": 0.1
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "bomb_water_explosion_big",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 1.5,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "wbomb_eff05",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "wait": {
-            "time": 0.1
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "ship_model_expl",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 1.2,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "expl_eff07",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "unitDamage": {
-            "power": 1.0,
-            "useEffect": false,
-            "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
-            "target": "uss_bb_maryland",
-            "doExplosion": true
-          }
-        },
-        {
-          "wait": {
-            "time": 0.1
-          }
-        },
-        {
-          "wait": {
-            "time": 0.2
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "bomb_water_explosion_big",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 0.85,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "wbomb_eff01",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "wait": {
-            "time": 0.11
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "bomb_water_explosion_big",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 0.75,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "wbomb_eff02",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "wait": {
-            "time": 0.125
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "ship_model_expl",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 1.0,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "expl_eff02",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "wait": {
-            "time": 0.21
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "ship_model_expl",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 2.0,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "expl_eff03",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "unitDamage": {
-            "power": 1.0,
-            "useEffect": false,
-            "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
-            "target": "uss_bb_arizona",
-            "doExplosion": true
-          }
-        },
-        {
-          "wait": {
-            "time": 0.325
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "land_crash_fire",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 1.5,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "expl_eff03",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "bomb_water_explosion_big",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 1.3,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "wbomb_eff03",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "wait": {
-            "time": 0.12
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "bomb_water_explosion_big",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 0.75,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "wbomb_eff04",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "wait": {
-            "time": 0.225
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "ship_model_expl",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 1.0,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "expl_eff04",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "wait": {
-            "time": 0.12
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "ship_model_expl",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 1.8,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "expl_eff05",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "unitDamage": {
-            "power": 1.0,
-            "useEffect": false,
-            "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
-            "target": "uss_bb_west_verginia",
-            "doExplosion": true
-          }
-        },
-        {
-          "wait": {
-            "time": 0.12
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "land_crash_fire",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 1.5,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "expl_eff05",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "ship_model_expl",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 1.2,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "expl_eff06",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "wait": {
-            "time": 0.1
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "bomb_water_explosion_big",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 1.5,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "wbomb_eff07",
-            "radiusOffset": [0.0,0.0]
           }
         }
       ],
@@ -5761,7 +5395,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [-793.404,610.55,-11816.8]
+          [-33.9,610.55,-12186.3]
         ],
         "props": [
           {
@@ -7514,7 +7148,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [990.065,518.652,-12246.5]
+          [1129.24,518.652,-12431.8]
         ],
         "props": [
           {
@@ -7592,7 +7226,7 @@
           [-0.819151,0.0,0.573576],
           [0.0,1.0,0.0],
           [-0.573576,0.0,-0.819151],
-          [2005.45,340.0,-11689.8]
+          [2005.45,325.0,-11689.8]
         ],
         "unit_class": "a6m2_zero",
         "closed_waypoints": false,
@@ -7657,7 +7291,7 @@
           [-0.819151,0.0,0.573576],
           [0.0,1.0,0.0],
           [-0.573576,0.0,-0.819151],
-          [2006.87,400.0,-11689.0]
+          [2006.87,375.0,-11689.0]
         ],
         "unit_class": "b5n2",
         "closed_waypoints": false,
@@ -8306,7 +7940,7 @@
           [-0.819151,0.0,0.573577],
           [0.0,1.0,0.0],
           [-0.573577,0.0,-0.819151],
-          [2006.87,370.0,-11689.0]
+          [2006.87,350.0,-11689.0]
         ],
         "unit_class": "b5n2",
         "closed_waypoints": false,
@@ -8744,74 +8378,6 @@
         },
         "way": []
       }
-    },
-    {
-      "squad": {
-        "name": "uss_ships_to_kill_second_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1162.05,610.552,-10298.0]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "uss_bb_california"
-          },
-          {
-            "squad_members": "uss_ar_vestal"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "uss_ships_to_kill_first_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1809.35,40.2939,-10611.4]
-        ],
-        "props": {
-          "object_marking": 0,
-          "squad_members": "uss_bb_tennessee"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "uss_ships_to_kill_third_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1281.59,610.552,-10515.8]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "uss_bb_oklahoma"
-          },
-          {
-            "squad_members": "uss_bb_maryland"
-          },
-          {
-            "squad_members": "uss_bb_west_verginia"
-          },
-          {
-            "squad_members": "uss_bb_arizona"
-          },
-          {
-            "squad_members": "uss_bb_nevada"
-          }
-        ]
-      }
     }
   ],
   "areas": {
@@ -9070,7 +8636,7 @@
         [1.0,0.0,0.0],
         [0.0,1.0,0.0],
         [0.0,0.0,1.0],
-        [-78728.1,70.0,-30413.5]
+        [-78109.5,70.0,-30413.5]
       ],
       "props": {
         "forceReplication": true
@@ -9644,9 +9210,9 @@
     "battle_area": {
       "type": "Box",
       "tm": [
-        [58000.0,0.0,0.000401072],
+        [70342.9,0.0,6154.21],
         [0.0,2061.9,0.0],
-        [0.00291011,0.0,58000.0],
+        [-5089.04,0.0,58168.0],
         [-15518.9,-14.3,-23307.9]
       ],
       "props": {

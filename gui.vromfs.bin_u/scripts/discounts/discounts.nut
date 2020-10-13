@@ -1,20 +1,16 @@
 local { getTimestampFromStringUtc } = require("scripts/time.nut")
-local { targetPlatform, isPlatformPC, isPlatformPS4, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+local { targetPlatform, isPlatformPC, isPlatformPS4 } = require("scripts/clientState/platform.nut")
 
-local { haveDiscount = @() false,
-        canUseIngameShop = @() false,
-        getShopItemsTable = @() {}
-} = isPlatformPS4 ? require("scripts/onlineShop/ps4ShopData.nut")
-  : isPlatformXboxOne ? require("scripts/onlineShop/xboxShopData.nut")
-  : null
+local { canUseIngameShop,
+        haveDiscount,
+        getShopItemsTable,
+        needEntStoreDiscountIcon } = require("scripts/onlineShop/entitlementsStore.nut")
 
 local { getEntitlementId } = require("scripts/onlineShop/onlineBundles.nut")
 local { getEntitlementConfig } = require("scripts/onlineShop/entitlements.nut")
 
 local buttonsList = require("scripts/mainmenu/topMenuButtons.nut").buttonsListWatch.value
-local topMenuOnlineShopId = isPlatformPS4 ? buttonsList.PS4_ONLINE_SHOP.id
-  : isPlatformXboxOne ? buttonsList.XBOX_ONLINE_SHOP.id
-  : ""
+local topMenuOnlineShopId = buttonsList.ONLINE_SHOP.id
 
 local platformMapForDiscountFromGuiBlk = {
   pc = isPlatformPC
@@ -36,7 +32,7 @@ local updateGiftUnitsDiscountTask = -1
   {
     consoleEntitlementUnits.clear()
 
-    if (topMenuOnlineShopId == "")
+    if (!needEntStoreDiscountIcon)
       return
 
     local isDiscountAvailable = haveDiscount()
@@ -198,7 +194,7 @@ g_discount.updateDiscountData <- function updateDiscountData(isSilentUpdate = fa
 
   updateGiftUnitsDiscountFromGuiBlk(giftUnits)  // !!!FIX ME Remove this function when gift units discount will received from char
 
-  if (canUseIngameShop() && topMenuOnlineShopId != "")
+  if (canUseIngameShop() && needEntStoreDiscountIcon)
     discountsList[topMenuOnlineShopId] = haveDiscount()
 
   discountsList.entitlementUnits.__update(consoleEntitlementUnits)

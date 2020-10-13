@@ -24,6 +24,7 @@ local isPlatformSony = isPlatformPS4
 
 
 
+
 local isPlatformPC = ["win32", "win64", "macosx", "linux64"].indexof(targetPlatform) != null
 
 local xboxPrefixNameRegexp = ::regexp2($"^['{XBOX_ONE_PLAYER_PREFIX}']")
@@ -69,7 +70,7 @@ local addPlatformIcon = function(name)
   }
   else if (isPs4Prefix || isPs4Postfix)
   {
-    if (!isPlatformPS4)
+    if (!isPlatformSony)
       platformIcon = TV_ICON
   }
   else if (!isPlatformPC)
@@ -127,6 +128,9 @@ return {
   targetPlatform = targetPlatform
   isPlatformXboxOne = isPlatformXboxOne
   isPlatformPS4 = isPlatformPS4
+//
+
+
   isPlatformSony = isPlatformSony
   isPlatformPC = isPlatformPC
 

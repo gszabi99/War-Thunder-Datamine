@@ -299,6 +299,14 @@ global enum USERLOG_POPUP {
 
 global const MAIN_FOCUS_ITEM_IDX = 4
 
+global enum squadState
+{
+  NOT_IN_SQUAD
+  JOINING
+  IN_SQUAD
+  LEAVING
+}
+
 global const LEADERBOARD_VALUE_TOTAL = "value_total"
 global const LEADERBOARD_VALUE_INHISTORY = "value_inhistory"
 
@@ -582,8 +590,6 @@ local isFullScriptsLoaded = false
     "squads/squadInviteListWnd.nut"
     "squads/squadWidgetCustomHandler.nut"
 
-    "social/psnSessions.nut"
-
     "chat/chatRoomType.nut"
     "chat/chat.nut"
     "chat/chatLatestThreads.nut"
@@ -762,7 +768,6 @@ local isFullScriptsLoaded = false
     "penitentiary/tribunal.nut"
 
     "social/friends.nut"
-    "social/activityFeed.nut"
     "social/facebook.nut"
 
     "gamercardDrawer.nut"
@@ -891,6 +896,18 @@ local isFullScriptsLoaded = false
   ::require("scripts/matching/serviceNotifications/showInfo.nut")
   require("scripts/unit/unitContextMenu.nut")
   require("sqDagui/guiBhv/bhvUpdateByWatched.nut")
+  require("scripts/social/activityFeed/activityFeedModule.nut")
+
+  if (platform.isPlatformXboxOne)
+    require("scripts/global/xboxCallbacks.nut")
+
+  if (platform.isPlatformSony)
+    require("scripts/global/psnCallbacks.nut")
+
+//
+
+
+
   // end of Independed Modules
 
   ::require("scripts/utils/systemMsg.nut").registerColors(colorTagToColors)

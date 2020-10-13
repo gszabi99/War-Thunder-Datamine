@@ -13,6 +13,8 @@ local { isModResearched,
         findAnyNotResearchedMod } = require("scripts/weaponry/modificationInfo.nut")
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
 local { needLogoutAfterSession, startLogout } = require("scripts/login/logout.nut")
+local activityFeedPostFunc = require("scripts/social/activityFeed/activityFeedPostFunc.nut")
+
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -1145,7 +1147,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       customConfig.shouldForceLogo <- true
     }
 
-    ::prepareMessageForWallPostAndSend(config, customConfig, bit_activity.PS4_ACTIVITY_FEED)
+    activityFeedPostFunc(config, customConfig, bit_activity.PS4_ACTIVITY_FEED)
   }
 
   function updateMyStats(dt)

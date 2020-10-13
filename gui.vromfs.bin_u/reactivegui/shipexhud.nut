@@ -102,6 +102,51 @@ local function ShipVertSpeed() {
   }
 }
 
+local shellAimGimbal = function(line_style, color_func) {
+  local circle = @() line_style.__merge({
+    rendObj = ROBJ_VECTOR_CANVAS
+    size = [sh(14.0), sh(14.0)]
+    color = color_func()
+    fillColor = Color(0, 0, 0, 0)
+    commands = [
+      [VECTOR_ELLIPSE, 0, 0, shellState.GimbalSize.value, shellState.GimbalSize.value]
+    ]
+  })
+
+  return @(){
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    size = SIZE_TO_CONTENT
+    watch = [shellState.GimbalX, shellState.GimbalY, shellState.GimbalSize, shellState.IsGimbalVisible]
+    transform = {
+      translate = [shellState.GimbalX.value, shellState.GimbalY.value]
+    }
+    children = shellState.IsGimbalVisible.value ? [circle] : null
+  }
+}
+
+local shellAimTracker = function(line_style, color_func) {
+  local circle = @() line_style.__merge({
+    rendObj = ROBJ_VECTOR_CANVAS
+    size = [sh(14.0), sh(14.0)]
+    color = color_func()
+    fillColor = Color(0, 0, 0, 0)
+    commands = [
+      [VECTOR_ELLIPSE, 0, 0, shellState.TrackerSize.value * 0.33, shellState.TrackerSize.value * 0.33]
+    ]
+  })
+
+  return @(){
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    size = SIZE_TO_CONTENT
+    watch = [shellState.TrackerX, shellState.TrackerY, shellState.TrackerSize, shellState.IsTrackerVisible]
+    transform = {
+      translate = [shellState.TrackerX.value, shellState.TrackerY.value]
+    }
+    children = shellState.IsTrackerVisible.value ? [circle] : null
+  }
+}
 local function mkShellComp(watches, textCtor){
   return @() styleShipHudText.__merge({
     watch = watches
@@ -118,17 +163,46 @@ local shellAltitude = {
   ]
 }
 
-local shellAimChildren = [
+local shellChildren = [
   shellAltitude
   mkShellComp(shellState.remainingDist, @() shellState.remainingDist.value <= 0.0 ? "" :
           ::cross_call.measureTypes.DISTANCE_SHORT.getMeasureUnitsText(shellState.remainingDist.value))
-  mkShellComp(shellState.isOperated, @() shellState.isOperated.value ? ::loc("hud/shell_operated") : ::loc("hud/shell_homing"))
+  mkShellComp([shellState.isOperated, shellState.isTrackingTarget],
+              @() shellState.isOperated.value ? ::loc("hud/shell_operated") :
+              ::string.format("%s: %s", ::loc("hud/shell_homing"), shellState.isTrackingTarget.value ? ::loc("hud/shell_tracking") : ::loc("hud/shell_searching")))
   mkShellComp(shellState.isActiveSensor, @() shellState.isActiveSensor.value ? ::loc("activeSonar") : ::loc("passiveSonar"))
+  mkShellComp([shellState.wireLoseTime, shellState.isWireConnected],
+              @() shellState.isWireConnected.value ?
+               (shellState.wireLoseTime.value > 0.0 ?
+                  ::string.format("%s: %d", ::loc("hud/wireMayBeLost"), math.floor(shellState.wireLoseTime.value + 0.5)) : "") :
+              ::loc("hud/wireIsLost"))
 ]
+
 local function ShipShellState() {
   return {
     watch = shellState.isAimCamera
     flow = FLOW_VERTICAL
+    children = shellState.isAimCamera.value ? shellChildren : null
+  }
+}
+
+local shellAimColor = Color(255, 255, 255, 250)
+local getColor = @() shellAimColor
+
+local styleShellAim = {
+  color = shellAimColor
+  fillColor = Color(0, 0, 0, 0)
+  lineWidth = hdpx(1) * 2.0
+}
+
+local shellAimChildren = [
+  shellAimGimbal(styleShellAim, getColor)
+  shellAimTracker(styleShellAim, getColor)
+]
+
+local function ShipShellAimState() {
+  return {
+    watch = shellState.isAimCamera
     children = shellState.isAimCamera.value ? shellAimChildren : null
   }
 }
@@ -160,10 +234,20 @@ local sensorsHud = {
   ]
 }
 
+local aimHud = {
+  halign = ALIGN_LEFT
+  valign = ALIGN_TOP
+  size = [sw(100), sh(100)]
+  children = [
+    ShipShellAimState
+  ]
+}
+
 return {
   size = flex()
   children = [
     shipHud
     sensorsHud
+    aimHud
   ]
 }
