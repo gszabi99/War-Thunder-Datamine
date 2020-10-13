@@ -1,6 +1,11 @@
-local { getShopItem,
-        canUseIngameShop,
-        getShopItemsTable } = require("scripts/onlineShop/entitlementsStore.nut")
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+
+local { canUseIngameShop = @() false,
+        getShopItem = @(...) null,
+        getShopItemsTable = @() {}
+} = isPlatformSony? require("scripts/onlineShop/ps4ShopData.nut")
+  : isPlatformXboxOne? require("scripts/onlineShop/xboxShopData.nut")
+  : null
 
 local unitActions = require("scripts/unit/unitActions.nut")
 local slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")

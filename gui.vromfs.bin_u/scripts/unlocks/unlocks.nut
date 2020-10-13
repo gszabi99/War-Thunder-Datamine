@@ -5,7 +5,6 @@ local { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop
 local { isPlatformSony,
         isPlatformXboxOne,
         isPlatformPC } = require("scripts/clientState/platform.nut")
-local psnUser = require("sony.user");
 
 ::unlocks_punctuation_without_space <- ","
 ::map_mission_type_to_localization <- null
@@ -509,7 +508,7 @@ local unlockConditionUnitclasses = {
 {
   if (!!unlockBlk?.psn && !isPlatformSony)
     return false
-  if (!!unlockBlk?.ps_plus && !psnUser.hasPremium())
+  if (!!unlockBlk?.ps_plus && !::ps4_has_psplus())
     return false
   if (unlockBlk?.hide_for_platform == ::target_platform)
     return false
@@ -530,7 +529,7 @@ local unlockConditionUnitclasses = {
     return false
   if (decalBlk?.psn && !isPlatformSony)
     return false
-  if (decalBlk?.ps_plus && !psnUser.hasPremium())
+  if (decalBlk?.ps_plus && !::ps4_has_psplus())
     return false
   if (decalBlk?.hideUntilUnlocked && !::player_have_decal(decalBlk.getBlockName()))
     return false
