@@ -236,7 +236,7 @@ local function updateContacts(needIgnoreInitedFlag = false) {
 }
 
 ::add_event_listener("LoginComplete", function(p) {
-  isContactsUpdated(false)
+  updateContacts(true)
 
   psn.subscribe.friendslist(function() {
     updateContacts(true)
@@ -245,10 +245,6 @@ local function updateContacts(needIgnoreInitedFlag = false) {
   psn.subscribe.blocklist(function() {
     updateContacts(true)
   })
-}, this)
-
-::add_event_listener("ContactsUpdated", function(p) {
-  updateContacts()
 }, this)
 
 ::add_event_listener("SignOut", function(p) {

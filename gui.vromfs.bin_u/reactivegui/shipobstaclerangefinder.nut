@@ -1,5 +1,6 @@
 local state = require("shipState.nut")
 local colors = require("style/colors.nut")
+local {abs} = require("std/math.nut")
 
 return @(){
   watch = state.obstacleIsNear
@@ -13,7 +14,8 @@ return @(){
       fontFxColor = Color(0, 0, 0, 50)
       fontFxFactor = 64
       fontFx = FFT_GLOW
-      text = ::loc("hud_ship_depth_on_course_warning") + ::loc("ui/colon")
+      text = ::str(state.distanceToObstacle.value < 0 ? ::loc("hud_ship_collide_warning") :
+       ::loc("hud_ship_depth_on_course_warning"), ::loc("ui/colon"))
       color = colors.hud.damageModule.alert
     }
     @() {
@@ -23,7 +25,7 @@ return @(){
       fontFxColor = Color(0, 0, 0, 50)
       fontFxFactor = 64
       fontFx = FFT_GLOW
-      text = state.distanceToObstacle.value
+      text = abs(state.distanceToObstacle.value)
       color = colors.hud.damageModule.alert
     }
     {
