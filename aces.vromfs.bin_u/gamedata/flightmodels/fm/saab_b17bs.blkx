@@ -1,5 +1,4 @@
 {
-  "IgnoreErrors": true,
   "AileronEffectiveSpeed": 300.0,
   "RudderEffectiveSpeed": 310.0,
   "ElevatorsEffectiveSpeed": 320.0,
@@ -13,6 +12,10 @@
   "RudderSens": 0.35,
   "ElevatorSens": 0.4,
   "AileronSens": 0.12,
+  "RudderSensMultipler": 1.0,
+  "ElevatorSensMultipler": 1.0,
+  "AileronSensMultipler": 1.0,
+  "ElevatorSensCl": 0.0,
   "GearActuatorSpeed": 0.2,
   "CockpitDoorSpeedOpen": [150.0,300.0,0.5,2.0],
   "CockpitDoorSpeedClose": [150.0,300.0,0.5,0.06],
@@ -35,18 +38,19 @@
   "WingAngle": 0.0,
   "StabAngle": 0.0,
   "KeelAngle": 0.0,
+  "clockWiseStabAOA0": false,
   "AileronAngles": [25.0,25.0],
   "ElevatorAngles": [32.0,18.0],
   "InvertElevator": false,
   "FlapsRadiator": 0.0,
   "RudderAngles": [25.0,25.0],
-  "InterceptorType": 0,
-  "Elevon": false,
+  "ElevonPitchAngleSens": 0.0,
   "VSlats": [130.0,160.0],
+  "FlapsToSlats": [0.0,0.0,0.0,0.0],
   "Vne": 500.0,
   "VneControl": 480.0,
   "VneMach": 0.65,
-  "MaxSpeedNearGround": 312.213,
+  "MaxSpeedNearGround": 395.0,
   "MaxSpeedAtAltitude": 411.0,
   "CriticalSpeed": 36.0,
   "ArcadeHelpersSensitivity": 1.0,
@@ -55,11 +59,12 @@
   "RollLeveling": true,
   "ArcadeMaxRollCoeff": 1.0,
   "ArcadeYawMutilpliers": [2.0,4.0,1.0],
+  "ArcadePitchModificators": [0.0,1.0,1.0],
   "AileronMaxDv": 10.0,
   "ElevatorMaxDv": 35.0,
   "RudderMaxDv": 35.0,
   "CockpitOpenedDoorBreakSpeed": -1.0,
-  "MomentOfInertia": [9319.0,24740.0,15421.0],
+  "MomentOfInertia": [9629.04,25563.1,15934.1],
   "AvailableControls": {
     "hasAileronControl": true,
     "hasAileronTrimControl": true,
@@ -75,8 +80,6 @@
     "dvRudderTrim": 0.125,
     "hasFlapsControl": true,
     "canTakeoffWithoutFlaps": true,
-    "hasTakeoffFlapsPosition": true,
-    "hasCombatFlapsPosition": true,
     "hasAirbrake": false,
     "hasGearControl": false,
     "hasArrestorControl": false,
@@ -111,6 +114,7 @@
     "FlapsShift": [0.07,0.0],
     "AirbrakesShift": [0.0,0.0],
     "GearFocusShift": [0.0,0.0],
+    "ElevonFocusShift": [0.0,0.0],
     "GearShift": 0.0,
     "WingInFocus": 0.53,
     "WingMidFocus": 2.7,
@@ -136,14 +140,12 @@
     "FuseCd": 0.0,
     "AirbrakeCd": 0.0,
     "CockpitDoorCd": 0.105,
-    "FlapsPolarBlending1": [0.0,0.0],
-    "FlapsPolarBlending2": [1.0,1.0],
     "ClToCmCoeff": 0.0,
     "UseSpinLoss": true,
     "SpinClLoss": 0.05,
     "SpinCdLoss": 0.03,
     "chuteCx": 0.0,
-    "OswaldsEfficiencyNumber": 0.75,
+    "OswaldsEfficiencyNumber": 0.705,
     "lineClCoeff": 0.08,
     "AfterCritParabAngle": 3.0,
     "AfterCritDeclineCoeff": 0.03,
@@ -191,13 +193,45 @@
     "DownwashCoeff": 1.0,
     "StabFlowInertia": 0.07,
     "VertStabFlowInertia": 0.1,
+    "FlapsAxis": {
+      "Retracted": {
+        "Presents": true,
+        "Flaps": 0.0
+      },
+      "Combat": {
+        "Presents": true,
+        "Flaps": 0.2
+      },
+      "Takeoff": {
+        "Presents": true,
+        "Flaps": 0.33
+      },
+      "Landing": {
+        "Presents": true,
+        "Flaps": 1.0
+      }
+    },
+    "Flaps0": {
+      "Flaps": 0.0,
+      "FlapsPolarBlending": 0.0,
+      "FlapsAnimation": 0.0,
+      "Stab": 0.0,
+      "Slats": 0.0
+    },
+    "Flaps1": {
+      "Flaps": 1.0,
+      "FlapsPolarBlending": 1.0,
+      "FlapsAnimation": 1.0,
+      "Stab": 0.0,
+      "Slats": 0.0
+    },
     "NoFlaps": {
       "Cl0": 0.21,
       "alphaCritHigh": 18.5,
       "alphaCritLow": -17.0,
       "ClCritHigh": 1.33,
       "ClCritLow": -0.9,
-      "CdMin": 0.0109
+      "CdMin": 0.0125
     },
     "FullFlaps": {
       "Cl0": 0.8,
@@ -205,7 +239,7 @@
       "alphaCritLow": -16.0,
       "ClCritHigh": 1.874,
       "ClCritLow": -0.07,
-      "CdMin": 0.08
+      "CdMin": 0.0816
     },
     "Fuselage": {
       "OswaldsEfficiencyNumber": 0.8,
@@ -257,7 +291,7 @@
       "alphaCritLow": -17.0,
       "ClCritHigh": 0.12,
       "ClCritLow": -0.12,
-      "CdMin": 0.01
+      "CdMin": 0.0118
     },
     "Stab": {
       "OswaldsEfficiencyNumber": 1.0,
@@ -309,7 +343,7 @@
       "alphaCritLow": -17.0,
       "ClCritHigh": 0.7,
       "ClCritLow": -0.7,
-      "CdMin": 0.01
+      "CdMin": 0.0107
     },
     "Fin": {
       "OswaldsEfficiencyNumber": 1.0,
@@ -400,12 +434,12 @@
       "ShaftRPMMin": 1100.0,
       "ShaftRPMMax": 2700.0,
       "ShaftRpmController": true,
-      "Power": 900.0,
+      "Power": 849.413,
       "ConsumptionOmegaMax": 1.05,
       "TorqueZeroOmegaMult": 3.0,
       "TurbineTimeConstant": 3.4,
       "ThrustMax": {
-        "Altitude_0": 0.0,
+        "Altitude_0": -0.001,
         "Altitude_1": 5000.0,
         "Altitude_2": 10000.0,
         "Altitude_3": 15000.0,
@@ -526,8 +560,8 @@
       "hasCommonRadiator": false
     },
     "Temperature": {
-      "RadiatorAuto": false,
       "OilRadiatorAuto": false,
+      "RadiatorAuto": false,
       "NoIgnitionWaterHeatProducingFactor": 0.15,
       "WaterRadiatorEffectPower": 4.0,
       "WaterMinRadiatorThermalConductionCoeff": 0.79,
@@ -556,38 +590,38 @@
       "OilFlowEffectPower": 4.0,
       "WaterPropFlowSpeedCoeff": 0.8,
       "OilPropFlowSpeedCoeff": 0.6,
-      "CoolingEffectiveAirSpeed": 320.0,
-      "WaterTemperatureNoFlow": 270.0,
-      "OilTemperatureNoFlow": 115.0,
+      "CoolingEffectiveAirSpeed": 319.987,
+      "WaterTemperatureNoFlow": 269.485,
+      "OilTemperatureNoFlow": 114.728,
       "WaterTemperatureInertia": 0.8,
       "OilTemperatureInertia": 3.5,
       "Mode0": {
         "Altitude": 1000.0,
         "RPM": 500.0,
         "ManifoldPressure": 0.5,
-        "WaterTemperature": 118.0,
-        "OilTemperature": 53.0
+        "WaterTemperature": 117.722,
+        "OilTemperature": 52.8875
       },
       "Mode1": {
         "Altitude": 1000.0,
         "RPM": 2000.0,
         "ManifoldPressure": 1.15,
-        "WaterTemperature": 184.0,
-        "OilTemperature": 64.0
+        "WaterTemperature": 183.594,
+        "OilTemperature": 63.8568
       },
       "Mode2": {
         "Altitude": 1000.0,
         "RPM": 2550.0,
         "ManifoldPressure": 1.32,
-        "WaterTemperature": 206.0,
-        "OilTemperature": 76.0
+        "WaterTemperature": 205.56,
+        "OilTemperature": 75.8247
       },
       "Mode3": {
         "Altitude": 1000.0,
         "RPM": 2700.0,
         "ManifoldPressure": 1.39,
-        "WaterTemperature": 238.0,
-        "OilTemperature": 88.0
+        "WaterTemperature": 237.518,
+        "OilTemperature": 87.7938
       },
       "Load0": {
         "WaterTemperature": 205.0,
@@ -640,19 +674,19 @@
       "RPM0": 450.0,
       "ATA0": 0.46,
       "RPM1": 2550.0,
-      "ATA1": 1.32,
+      "ATA1": 1.2276,
       "ExactAltitudes": true,
       "CompressorOmegaFactorSq": 1.0,
       "CompressorPressureAtRPM0": 1.0,
       "Altitude0": 3505.0,
       "AfterburnerBoostMul0": 1.0,
-      "Power0": 900.0,
+      "Power0": 849.413,
       "AltitudeConstRPM0": 3505.0,
-      "PowerConstRPM0": 900.0,
+      "PowerConstRPM0": 849.413,
       "PowerConstRPMCurvature0": 1.0,
       "Ceiling0": 6000.0,
-      "PowerAtCeiling0": 600.0,
-      "AfterburnerManifoldPressure": 1.39,
+      "PowerAtCeiling0": 566.275,
+      "AfterburnerManifoldPressure": 1.2927,
       "SpeedManifoldMultiplier": 1.0,
       "AllowAutoTurboCharger": false,
       "TurboChargerRPMMin": 0.0,
@@ -839,7 +873,7 @@
   "Propeller0": {
     "Type": 0,
     "AxisDirection": [-0.0,0.0],
-    "CyclicPitchAxisDirectionPitch": [-90.0,90.0],
+    "CyclicPitchAxisDirectionPitch": [90.0,90.0],
     "Pos": [2.6,0.0,0.0],
     "Geometry": {
       "RotationDirection": 1
@@ -857,7 +891,7 @@
     "CorrectPropellerToTransmissionLink": false
   },
   "Mass": {
-    "EmptyMass": 2927.0,
+    "EmptyMass": 3024.3799,
     "MaxFuelMass0": 424.0,
     "FuelAccumulatorCapacity0": 0.9,
     "MinimalLoadFactor0": 0.0,
@@ -867,7 +901,7 @@
     "OilMass": 31.0,
     "AdvancedMass": false,
     "SeparateFuelTanks": false,
-    "Takeoff": 3825.0,
+    "Takeoff": 3922.3799,
     "CenterOfGravity": [0.0,0.0,0.0],
     "WingCritOverload": [-111426.0,157853.0],
     "GearDestructionIndSpeed": 320.0,
@@ -875,34 +909,15 @@
     "FlapsDestructionIndSpeedP1": [0.1,400.0],
     "FlapsDestructionIndSpeedP2": [1.0,280.0],
     "Parts": {
-      "tank1_capacity": 146.25,
-      "tank1_system": 0,
-      "tank1_external": false,
-      "tank1_priority": 0,
-      "tank2_capacity": 146.25,
-      "tank2_system": 0,
-      "tank2_external": false,
-      "tank2_priority": 0,
-      "tank3_capacity": 108.75,
-      "tank3_system": 0,
-      "tank3_external": false,
-      "tank3_priority": 0,
-      "tank4_capacity": 79.0,
-      "tank4_system": 0,
-      "tank4_external": false,
-      "tank4_priority": 0,
       "cover2_dm": 37.9063,
       "spar2_r_dm": 5.9873,
       "fin_dm": 26.1538,
       "rudder_dm": 20.5406,
-      "spar1_l_dm": 9.2847,
-      "spar2_l_dm": 5.9798,
       "stab_dm": 77.1552,
       "mgun1_dm": 5.4584,
       "tailcontrol_dm": 3.9415,
       "wingcontrol_l_dm": 3.1702,
       "spar_r_dm": 16.3861,
-      "spar_l_dm": 16.3861,
       "mgun2_dm": 5.4777,
       "wingcontrol_r_dm": 3.1702,
       "aileron_r_dm": 26.6489,
@@ -910,32 +925,34 @@
       "wing2_r_dm": 60.2903,
       "wing_r_dm": 108.748,
       "wing2_l_dm": 60.1545,
-      "spar1_r_dm": 9.2847,
+      "aileron_l_dm": 27.6924,
       "flap_r_dm": 16.3991,
+      "spar1_r_dm": 9.2847,
       "flap_l_dm": 16.4032,
       "wing1_l_dm": 62.1157,
       "wing_l_dm": 108.748,
       "tail_dm": 68.1994,
-      "gear_r_dm": 8.3871,
       "pilot_dm": 20.1094,
+      "spar_l_dm": 16.3861,
       "fuse_dm": 101.516,
       "cover1_dm": 38.3188,
       "oil1_dm": 2.8516,
       "engine1_dm": 630.0,
       "oil2_dm": 14.3343,
       "gear_l_dm": 8.3871,
-      "aileron_l_dm": 27.6924
+      "gear_r_dm": 8.3871,
+      "spar1_l_dm": 9.2847,
+      "spar2_l_dm": 5.9798
     },
     "PartsWithSurface": {
-      "gunner1_dm": 0.0,
-      "elevator1_dm": 0.0,
-      "elevator0_dm": 0.0,
-      "armor1_dm": 0.0,
-      "wingcontrol_dm": 0.0,
-      "flap1_r_dm": 0.0,
-      "flap1_l_dm": 0.0,
-      "gear_c_dm": 4.8197,
-      "gun1_dm": 0.0
+      "elevator1_dm": 147.036,
+      "elevator0_dm": 148.662,
+      "armor1_dm": 83.9215,
+      "wingcontrol_dm": 17.7858,
+      "flap1_r_dm": 77.5057,
+      "gunner1_dm": 124.807,
+      "gun1_dm": 45.7815,
+      "flap1_l_dm": 77.5057
     }
   },
   "SelfSealingTanks": {
@@ -958,7 +975,7 @@
   },
   "Gear": [
     {
-      "SinkFactor": 7000.0
+      "SinkFactor": 1200.0
     },
     {
       "SinkRateMult": 0.001
@@ -1042,71 +1059,71 @@
       "WaterPart1": {
         "Number": 1,
         "Name": "_ClipLGear_00",
-        "SinkFactor": 500.0,
+        "SinkFactor": 3000.0,
         "VerticalOffset": 0.0,
         "RudderFactor": 0.0
       }
     },
     {
       "WaterPart2": {
-        "Number": 2,
+        "Number": 3,
         "Name": "_ClipLGear_02",
-        "SinkFactor": 500.0,
-        "VerticalOffset": -0.5,
+        "SinkFactor": 3000.0,
+        "VerticalOffset": 0.0,
         "RudderFactor": 0.0
       }
     },
     {
       "WaterPart3": {
-        "Number": 3,
+        "Number": 5,
         "Name": "_ClipRGear_00",
-        "SinkFactor": 500.0,
+        "SinkFactor": 3000.0,
         "VerticalOffset": 0.0,
         "RudderFactor": 0.0
       }
     },
     {
       "WaterPart4": {
-        "Number": 4,
+        "Number": 7,
         "Name": "_ClipRGear_02",
-        "SinkFactor": 500.0,
-        "VerticalOffset": -0.5,
+        "SinkFactor": 3000.0,
+        "VerticalOffset": 0.0,
         "RudderFactor": 0.0
       }
     },
     {
       "WaterPart5": {
-        "Number": 5,
+        "Number": 4,
         "Name": "_ClipRGear",
-        "SinkFactor": 500.0,
+        "SinkFactor": 3000.0,
         "VerticalOffset": 0.0,
         "RudderFactor": 0.0
       }
     },
     {
       "WaterPart6": {
-        "Number": 6,
+        "Number": 0,
         "Name": "_ClipLGear",
-        "SinkFactor": 500.0,
+        "SinkFactor": 3000.0,
         "VerticalOffset": 0.0,
         "RudderFactor": 0.0
       }
     },
     {
       "WaterPart7": {
-        "Number": 7,
+        "Number": 2,
         "Name": "_ClipLGear_01",
-        "SinkFactor": 500.0,
-        "VerticalOffset": -0.7,
+        "SinkFactor": 3000.0,
+        "VerticalOffset": 0.0,
         "RudderFactor": 0.0
       }
     },
     {
       "WaterPart8": {
-        "Number": 8,
+        "Number": 6,
         "Name": "_ClipRGear_01",
-        "SinkFactor": 500.0,
-        "VerticalOffset": -0.7,
+        "SinkFactor": 3000.0,
+        "VerticalOffset": 0.0,
         "RudderFactor": 0.0
       }
     }

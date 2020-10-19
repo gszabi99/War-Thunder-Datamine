@@ -1259,9 +1259,13 @@ const AFTERBURNER_CHAMBER = 3
       return desc
 
     local deg = ::loc("measureUnits/deg")
+    local isInverted = weaponInfoBlk?.invertedLimitsInViewer ?? false
+    local verticalLabel = "shop/angleVerticalGuidance"
+    local horizontalLabel = "shop/angleHorizontalGuidance"
+
     foreach (g in [
-      { need = needAxisX, angles = weaponInfoBlk?.limits?.yaw,   label = "shop/angleHorizontalGuidance" }
-      { need = needAxisY, angles = weaponInfoBlk?.limits?.pitch, label = "shop/angleVerticalGuidance"   }
+      { need = needAxisX, angles = weaponInfoBlk?.limits?.yaw,   label = isInverted ? verticalLabel : horizontalLabel }
+      { need = needAxisY, angles = weaponInfoBlk?.limits?.pitch, label = isInverted ? horizontalLabel : verticalLabel }
     ]) {
       if (!g.need || (!g.angles?.x && !g.angles?.y))
         continue

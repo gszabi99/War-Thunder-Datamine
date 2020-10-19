@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": -10.0
-    },
     "player": [
       {
         "army": 1
@@ -214,23 +210,27 @@
     "mission": {
       "level": "levels/air_ladoga.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "clear",
       "locName": "missions/air_ladoga_BfDn",
       "locDesc": "missions/_BfD_norespawn/desc",
       "scoreLimit": 2900,
-      "timeLimit": 60,
+      "timeLimit": 25,
       "deathPenaltyMul": 0.0,
       "country_axis": "germany",
       "country_allies": "britain",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": false,
         "isShipsAllowed": false,
         "isHelicoptersAllowed": false
       }
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": -10.0
     },
     "spectator_points": [],
     "briefing": {
@@ -570,9 +570,13 @@
             "name_for_respawn_base": "",
             "timeMultiplier": 1.0,
             "disableZone": false,
+            "showBorderOnMap": false,
+            "borderWidthCoef": 1.0,
+            "borderTransparencyCoef": 1.0,
             "target": "capture_zone",
             "canCaptureByGM": true,
-            "captureNoPenalty": true
+            "captureNoPenalty": true,
+            "zoneDefenders": []
           }
         },
         {
@@ -1319,6 +1323,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -1365,6 +1370,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -1401,6 +1407,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -1437,6 +1444,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -1473,6 +1481,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -1509,6 +1518,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -1545,6 +1555,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -1581,6 +1592,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -1617,6 +1629,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -1653,6 +1666,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -1689,6 +1703,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -1771,6 +1786,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -1807,6 +1823,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -1843,6 +1860,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -1879,6 +1897,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -1915,6 +1934,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -1951,6 +1971,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -1987,6 +2008,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -2023,6 +2045,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -2059,6 +2082,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -2095,6 +2119,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -2176,6 +2201,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -2533,10 +2559,15 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
           "count": 30,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "accuracy": 0.1,
           "effShootingRate": 0.0,
           "skin": "usa"
@@ -2567,10 +2598,15 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
           "count": 30,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "accuracy": 0.1,
           "effShootingRate": 0.0,
           "skin": "germany"
@@ -2601,10 +2637,15 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
           "count": 30,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "accuracy": 0.1,
           "effShootingRate": 0.0,
           "skin": "usa"
@@ -2635,10 +2676,15 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
           "count": 3,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "accuracy": 0.1,
           "effShootingRate": 0.0,
           "skin": "usa"
@@ -2669,10 +2715,15 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
           "count": 30,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "accuracy": 0.1,
           "effShootingRate": 0.0,
           "skin": "usa"
@@ -2703,10 +2754,15 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
           "count": 30,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "accuracy": 0.1,
           "effShootingRate": 0.0,
           "skin": "usa"
@@ -2737,10 +2793,15 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
           "count": 30,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "accuracy": 0.1,
           "effShootingRate": 0.0,
           "skin": "usa"
@@ -2771,10 +2832,15 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
           "count": 30,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "accuracy": 0.1,
           "effShootingRate": 0.0,
           "skin": "usa"
@@ -2805,10 +2871,15 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
           "count": 30,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "accuracy": 0.1,
           "effShootingRate": 0.0,
           "skin": "germany"
@@ -2839,10 +2910,15 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
           "count": 30,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "accuracy": 0.1,
           "effShootingRate": 0.0,
           "skin": "germany"
@@ -2873,10 +2949,15 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
           "count": 30,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "accuracy": 0.1,
           "effShootingRate": 0.0,
           "skin": "germany"
@@ -2907,10 +2988,15 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
           "count": 30,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "accuracy": 0.1,
           "effShootingRate": 0.0,
           "skin": "germany"
@@ -2941,10 +3027,15 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
           "count": 30,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "accuracy": 0.1,
           "effShootingRate": 0.0,
           "skin": "germany"
@@ -2975,10 +3066,15 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
           "count": 30,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "accuracy": 0.1,
           "effShootingRate": 0.0,
           "skin": "germany"
@@ -3009,10 +3105,15 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
           "count": 30,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "accuracy": 0.1,
           "effShootingRate": 0.0,
           "skin": "usa"
@@ -3043,10 +3144,15 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
           "count": 30,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "accuracy": 0.1,
           "effShootingRate": 0.0,
           "skin": "germany"
@@ -3077,6 +3183,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 2,
@@ -3162,6 +3269,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 2,
@@ -3327,6 +3435,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3365,6 +3474,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3403,6 +3513,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3441,6 +3552,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3479,6 +3591,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3554,6 +3667,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3590,6 +3704,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3626,6 +3741,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3744,6 +3860,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 11,
@@ -3909,6 +4026,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 3,
@@ -4074,6 +4192,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 2,
@@ -4315,6 +4434,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 5,
@@ -4400,6 +4520,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 5,
@@ -4485,6 +4606,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4521,6 +4643,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4557,6 +4680,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4593,6 +4717,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4629,6 +4754,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4665,6 +4791,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4701,6 +4828,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4737,6 +4865,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4773,6 +4902,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4809,6 +4939,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4845,6 +4976,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4881,6 +5013,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4917,6 +5050,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4953,6 +5087,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5099,6 +5234,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5135,6 +5271,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5171,6 +5308,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5207,6 +5345,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5243,6 +5382,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5279,6 +5419,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5315,6 +5456,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5351,6 +5493,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5387,6 +5530,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5423,6 +5567,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5511,6 +5656,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5547,6 +5693,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5583,6 +5730,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5619,6 +5767,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5655,6 +5804,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5693,6 +5843,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5731,6 +5882,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 5,
@@ -5816,6 +5968,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 5,
@@ -5901,6 +6054,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 4,
@@ -5986,6 +6140,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 4,
@@ -6349,10 +6504,10 @@
     "t2_airfield_bombing_zone": {
       "type": "Box",
       "tm": [
-        [1201.0,0.0,-437.128],
+        [1879.39,0.0,-684.04],
         [0.0,300.0,0.0],
-        [133.26,3.8147e-06,366.129],
-        [2645.25,109.888,-4496.17]
+        [256.515,7.343e-06,704.77],
+        [2664.14,50.0,-4447.93]
       ],
       "objLayer": 0,
       "props": []
@@ -6360,10 +6515,10 @@
     "t1_airfield_bombing_zone": {
       "type": "Box",
       "tm": [
-        [-1400.79,0.0,129.313],
+        [-1991.53,0.0,183.847],
         [0.0,300.0,0.0],
-        [-28.6527,3.05176e-06,-310.38],
-        [-17909.7,184.96,-527.005]
+        [-68.943,7.34303e-06,-746.825],
+        [-19679.7,60.3,-655.656]
       ],
       "objLayer": 0,
       "props": []
