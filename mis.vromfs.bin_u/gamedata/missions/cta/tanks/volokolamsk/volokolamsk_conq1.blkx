@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": -10.0
-    },
     "player": [
       {
         "army": 1
@@ -219,12 +215,6 @@
         "type": "domination"
       },
       {
-        "restoreType": "attempts"
-      },
-      {
-        "optionalTakeOff": false
-      },
-      {
         "environment": "Day"
       },
       {
@@ -270,11 +260,17 @@
         "country_allies": "ussr"
       },
       {
+        "restoreType": "attempts"
+      },
+      {
+        "optionalTakeOff": false
+      },
+      {
         "allowedUnitTypes": {
           "isAirplanesAllowed": true,
           "isTanksAllowed": true,
-          "isHelicoptersAllowed": true,
-          "isShipsAllowed": false
+          "isShipsAllowed": false,
+          "isHelicoptersAllowed": true
         }
       },
       {
@@ -296,6 +292,10 @@
         }
       }
     ],
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": -10.0
+    },
     "spectator_points": [],
     "briefing": {
       "place_loc": "",
@@ -394,7 +394,7 @@
             },
             {
               "battleArea": {
-                "target": "briefing_battlearea"
+                "target": "briefing_battlearea_hardcore"
               }
             }
           ]
@@ -548,6 +548,7 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
       "props": {
         "army": 2,
         "count": 1,
@@ -601,7 +602,7 @@
         [1.0,0.0,0.0],
         [0.0,1.0,0.0],
         [0.0,0.0,1.0],
-        [810.569,64.6752,21.395]
+        [621.358,64.6764,-176.723]
       ],
       "objLayer": 0,
       "props": []

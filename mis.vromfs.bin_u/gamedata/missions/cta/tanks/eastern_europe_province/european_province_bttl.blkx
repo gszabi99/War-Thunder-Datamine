@@ -215,12 +215,6 @@
         "type": "domination"
       },
       {
-        "restoreType": "attempts"
-      },
-      {
-        "optionalTakeOff": false
-      },
-      {
         "environment": "Day"
       },
       {
@@ -242,10 +236,10 @@
         "deathPenaltyMul": 1.0
       },
       {
-        "ctaCaptureZoneEqualPenaltyMul": 0.5
+        "postfix": "_Bttl"
       },
       {
-        "postfix": "_Bttl"
+        "ctaCaptureZoneEqualPenaltyMul": 0.5
       },
       {
         "useAlternativeMapCoord": false
@@ -269,11 +263,17 @@
         "country_allies": "ussr"
       },
       {
+        "restoreType": "attempts"
+      },
+      {
+        "optionalTakeOff": false
+      },
+      {
         "allowedUnitTypes": {
           "isAirplanesAllowed": true,
           "isTanksAllowed": true,
-          "isHelicoptersAllowed": true,
-          "isShipsAllowed": false
+          "isShipsAllowed": false,
+          "isHelicoptersAllowed": true
         }
       },
       {
@@ -606,6 +606,7 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
       "props": {
         "army": 2,
         "count": 1,
@@ -630,7 +631,7 @@
     }
   },
   "areas": {
-    "briefing_bttl_t1_spawn_01_arcade": {
+    "briefing_bttl_t2_spawn_01_arcade": {
       "type": "Point",
       "tm": [
         [0.835777,0.0,-0.549069],
@@ -641,7 +642,7 @@
       "objLayer": 0,
       "props": []
     },
-    "briefing_bttl_t2_spawn_01_arcade": {
+    "briefing_bttl_t1_spawn_01_arcade": {
       "type": "Point",
       "tm": [
         [0.835777,0.0,-0.549069],
@@ -652,7 +653,7 @@
       "objLayer": 0,
       "props": []
     },
-    "briefing_bttl_t1_capture_area_arcade": {
+    "briefing_bttl_t2_capture_area_arcade": {
       "type": "Point",
       "tm": [
         [-0.685859,0.0,-0.727735],
@@ -663,7 +664,7 @@
       "objLayer": 0,
       "props": []
     },
-    "briefing_bttl_t2_capture_area_arcade": {
+    "briefing_bttl_t1_capture_area_arcade": {
       "type": "Point",
       "tm": [
         [0.716949,0.0,0.697125],
@@ -674,7 +675,7 @@
       "objLayer": 0,
       "props": []
     },
-    "briefing_bttl_t1_spawn_01_hardcore": {
+    "briefing_bttl_t2_spawn_01_hardcore": {
       "type": "Point",
       "tm": [
         [0.835777,0.0,-0.549069],
@@ -685,7 +686,7 @@
       "objLayer": 0,
       "props": []
     },
-    "briefing_bttl_t1_spawn_02_hardcore": {
+    "briefing_bttl_t2_spawn_02_hardcore": {
       "type": "Point",
       "tm": [
         [0.835777,0.0,-0.549069],
@@ -696,7 +697,7 @@
       "objLayer": 0,
       "props": []
     },
-    "briefing_bttl_t2_spawn_01_hardcore": {
+    "briefing_bttl_t1_spawn_01_hardcore": {
       "type": "Point",
       "tm": [
         [0.835777,0.0,-0.549069],
@@ -707,7 +708,7 @@
       "objLayer": 0,
       "props": []
     },
-    "briefing_bttl_t2_spawn_02_hardcore": {
+    "briefing_bttl_t1_spawn_02_hardcore": {
       "type": "Point",
       "tm": [
         [0.835777,0.0,-0.549069],
@@ -718,7 +719,7 @@
       "objLayer": 0,
       "props": []
     },
-    "briefing_bttl_t2_capture_area_hardcore": {
+    "briefing_bttl_t1_capture_area_hardcore": {
       "type": "Point",
       "tm": [
         [0.716949,0.0,0.697125],
@@ -729,7 +730,7 @@
       "objLayer": 0,
       "props": []
     },
-    "briefing_bttl_t1_capture_area_hardcore": {
+    "briefing_bttl_t2_capture_area_hardcore": {
       "type": "Point",
       "tm": [
         [0.835777,0.0,-0.549069],
@@ -740,7 +741,7 @@
       "objLayer": 0,
       "props": []
     },
-    "briefing_bttl_t1_spawn_02_arcade": {
+    "briefing_bttl_t2_spawn_02_arcade": {
       "type": "Point",
       "tm": [
         [0.835777,0.0,-0.549069],
@@ -751,7 +752,7 @@
       "objLayer": 0,
       "props": []
     },
-    "briefing_bttl_t2_spawn_02_arcade": {
+    "briefing_bttl_t1_spawn_02_arcade": {
       "type": "Point",
       "tm": [
         [0.835777,0.0,-0.549069],
@@ -781,12 +782,12 @@
     },
     {
       "layer": {
-        "enabled": false
+        "enabled": true
       }
     },
     {
       "layer": {
-        "enabled": false
+        "enabled": true
       }
     }
   ],
