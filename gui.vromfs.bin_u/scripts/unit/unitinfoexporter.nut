@@ -207,7 +207,7 @@ class UnitInfoExporter
 
   function exportCurUnit(fBlk, curUnit)
   {
-    if (!curUnit.isInShop || curUnit.isHelicopter())
+    if (!curUnit.isInShop)
       return true
 
     if (!curUnit.modificators)

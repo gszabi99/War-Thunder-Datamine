@@ -157,7 +157,7 @@ local function mkShellComp(watches, textCtor){
 local shellAltitude = {
   flow = FLOW_HORIZONTAL
   children = [
-    styleShipHudText.__merge({text = ::loc("hud/depth" + " ")})
+    styleShipHudText.__merge({text = $"{::loc("hud/depth")} "})
     mkShellComp(shellState.altitude,
         @() ::cross_call.measureTypes.DISTANCE_SHORT.getMeasureUnitsText(max(0, -shellState.altitude.value), false))
   ]

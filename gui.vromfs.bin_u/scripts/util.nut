@@ -1887,7 +1887,7 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
   ::destroy_session()
   if (needEvent)
     //need delay after destroy session before is_multiplayer become false
-    ::get_gui_scene().performDelayed({}, @() ::broadcastEvent("SessionDestroyed"))
+    ::handlersManager.doDelayed(@() ::broadcastEvent("SessionDestroyed"))
 }
 
 ::show_not_available_msg_box <- function show_not_available_msg_box()

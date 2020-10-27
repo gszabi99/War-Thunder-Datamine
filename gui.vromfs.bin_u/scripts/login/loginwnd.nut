@@ -112,7 +112,7 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
 
     local saveLoginAndPassMask = ::AUTO_SAVE_FLG_LOGIN | ::AUTO_SAVE_FLG_PASS
     local autoLoginEnable = (lp.autoSave & saveLoginAndPassMask) == saveLoginAndPassMask
-    local autoLogin = initial_autologin && autoLoginEnable
+    local autoLogin = (initial_autologin && autoLoginEnable) || ::need_force_autologin()
     local autoLoginObj = scene.findObject("loginbox_autologin")
     if (::checkObj(autoLoginObj))
     {

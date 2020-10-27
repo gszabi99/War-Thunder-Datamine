@@ -18,6 +18,7 @@ local UNIT_INFO_ARMY_TYPE  = {
   HELICOPTER = unitTypes.HELICOPTER.bit
 
   AIR_TANK   = unitTypes.AIRCRAFT.bit | unitTypes.TANK.bit
+  AIR_HELICOPTER   = unitTypes.AIRCRAFT.bit | unitTypes.HELICOPTER.bit
   ALL        = unitTypes.AIRCRAFT.bit | unitTypes.TANK.bit
                | unitTypes.SHIP.bit | unitTypes.HELICOPTER.bit
 }
@@ -34,6 +35,11 @@ enum UNIT_INFO_ORDER{
   AIRFIELD_LEN,
   WEAPON_PRESETS,
   MASS_PER_SEC,
+  CLIMB_ALT,
+  CLIMB_TIME,
+  WING_LOADING,
+  THRUST_TO_WEIGHT_RATIO,
+  POWER_TO_WEIGHT_RATIO,
   MASS,
   HORSE_POWERS,
   HORSE_POWERS_RPM,
@@ -412,7 +418,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     order = UNIT_INFO_ORDER.MAX_SPEED
     compare = COMPARE_MORE_BETTER
     headerLocId = "shop/max_speed"
-    infoArmyType = UNIT_INFO_ARMY_TYPE.AIR
+    infoArmyType = UNIT_INFO_ARMY_TYPE.AIR_HELICOPTER
     addToExportDataBlock = function(blk, unit)
     {
       local item = {id = "maxSpeed", id2 = "speed", prepareTextFunc = @(value) countMeasure(0, value)}
@@ -423,14 +429,12 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     id = "max_speed_alt"
     order = UNIT_INFO_ORDER.MAX_SPEED_ALT
     headerLocId = "shop/max_speed_alt"
-    infoArmyType = UNIT_INFO_ARMY_TYPE.AIR
-    getValueText = function(value, unit)
+    infoArmyType = UNIT_INFO_ARMY_TYPE.AIR_HELICOPTER
+    addToExportDataBlock = function(blk, unit)
     {
-      local valueText = ::DataBlock()
-      foreach(diff in ::g_difficulty.types)
-        if (diff.egdCode != ::EGD_NONE)
-          valueText[diff.getEgdName()] = countMeasure(1, unit.shop.maxSpeedAlt)
-      return valueText
+      local value = unit.shop.maxSpeedAlt
+      local valueText = countMeasure(1, unit.shop.maxSpeedAlt)
+      addSingleValue(blk, unit, value, valueText)
     }
   }
   {
@@ -438,7 +442,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     order = UNIT_INFO_ORDER.TURN_TIME
     compare = COMPARE_LESS_BETTER
     headerLocId = "shop/turn_time"
-    infoArmyType = UNIT_INFO_ARMY_TYPE.AIR
+    infoArmyType = UNIT_INFO_ARMY_TYPE.AIR_HELICOPTER
     addToExportDataBlock = function(blk, unit)
     {
       local item = {id = "turnTime", id2 = "virage", prepareTextFunc = function(value){return format("%.1f %s", value, ::loc("measureUnits/seconds"))}}
@@ -450,7 +454,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     order = UNIT_INFO_ORDER.CLIMB_SPEED
     compare = COMPARE_MORE_BETTER
     headerLocId = "shop/max_climbSpeed"
-    infoArmyType = UNIT_INFO_ARMY_TYPE.AIR
+    infoArmyType = UNIT_INFO_ARMY_TYPE.AIR_HELICOPTER
 
     addToExportDataBlock = function(blk, unit)
     {
@@ -463,7 +467,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     order = UNIT_INFO_ORDER.MAX_ALTITUDE
     compare = COMPARE_MORE_BETTER
     headerLocId = "shop/max_altitude"
-    infoArmyType = UNIT_INFO_ARMY_TYPE.AIR
+    infoArmyType = UNIT_INFO_ARMY_TYPE.AIR_HELICOPTER
 
     addToExportDataBlock = function(blk, unit)
     {
@@ -477,12 +481,88 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     order = UNIT_INFO_ORDER.AIRFIELD_LEN
     compare = COMPARE_LESS_BETTER
     headerLocId = "shop/airfieldLen"
-    infoArmyType = UNIT_INFO_ARMY_TYPE.AIR
+    infoArmyType = UNIT_INFO_ARMY_TYPE.AIR_HELICOPTER
 
     addToExportDataBlock = function(blk, unit)
     {
       local value = unit.shop.airfieldLen
       local valueText = countMeasure(1, value)
+      addSingleValue(blk, unit, value, valueText)
+    }
+  }
+  {
+    id = "wing_loading"
+    order = UNIT_INFO_ORDER.WING_LOADING
+    compare = COMPARE_MORE_BETTER
+    headerLocId = "shop/wing_loading"
+    infoArmyType = UNIT_INFO_ARMY_TYPE.AIR_HELICOPTER
+
+    addToExportDataBlock = function(blk, unit)
+    {
+      local value = unit.shop.wingLoading
+      local valueText = value.tostring()
+      addSingleValue(blk, unit, value, valueText)
+    }
+  }
+  {
+    id = "thrust_to_weight_ratio"
+    order = UNIT_INFO_ORDER.THRUST_TO_WEIGHT_RATIO
+    compare = COMPARE_MORE_BETTER
+    headerLocId = "shop/thrust_to_weight_ratio"
+    infoArmyType = UNIT_INFO_ARMY_TYPE.AIR_HELICOPTER
+
+    addToExportDataBlock = function(blk, unit)
+    {
+      if ("thrustToWeightRatio" in unit.shop)
+      {
+        local value = unit.shop.thrustToWeightRatio
+        local valueText = value.tostring()
+        addSingleValue(blk, unit, value, valueText)
+      }
+    }
+  }
+  {
+    id = "power_to_weight_ratio"
+    order = UNIT_INFO_ORDER.POWER_TO_WEIGHT_RATIO
+    compare = COMPARE_MORE_BETTER
+    headerLocId = "shop/power_to_weight_ratio"
+    infoArmyType = UNIT_INFO_ARMY_TYPE.AIR
+
+    addToExportDataBlock = function(blk, unit)
+    {
+      if ("powerToWeightRatio" in unit.shop)
+      {
+        local value = unit.shop.powerToWeightRatio
+        local valueText = value.tostring()
+        addSingleValue(blk, unit, value, valueText)
+      }
+    }
+  }
+  {
+    id = "climb_alt"
+    order = UNIT_INFO_ORDER.CLIMB_ALT
+    compare = COMPARE_MORE_BETTER
+    headerLocId = "shop/climb_alt"
+    infoArmyType = UNIT_INFO_ARMY_TYPE.AIR_HELICOPTER
+
+    addToExportDataBlock = function(blk, unit)
+    {
+      local value = unit.shop.climbAlt
+      local valueText = countMeasure(1, value)
+      addSingleValue(blk, unit, value, valueText)
+    }
+  }
+  {
+    id = "climb_time"
+    order = UNIT_INFO_ORDER.CLIMB_ALT
+    compare = COMPARE_LESS_BETTER
+    headerLocId = "shop/climb_time"
+    infoArmyType = UNIT_INFO_ARMY_TYPE.AIR_HELICOPTER
+
+    addToExportDataBlock = function(blk, unit)
+    {
+      local value = unit.shop.climbTime
+      local valueText = ::format("%.1f %s", value, ::loc("measureUnits/seconds"))
       addSingleValue(blk, unit, value, valueText)
     }
   }

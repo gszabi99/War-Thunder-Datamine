@@ -555,7 +555,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
   }
 
   ATGM_AIM_HINT_TORPEDO = {
-    hintType = ::g_hud_hint_types.COMMON
+    hintType = ::g_hud_hint_types.REPAIR
     locId = "hints/atgm_aim_torpedo"
     showEvent = "hint:atgm_aim_torpedo:show"
     lifeTime = 10.0
