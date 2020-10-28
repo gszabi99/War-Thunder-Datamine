@@ -1,0 +1,126 @@
+{
+  "torpedoGun": true,
+  "preset_cost": 500,
+  "bullets": 1,
+  "shotFreq": 0.5,
+  "external": true,
+  "reloadTime": 60.0,
+  "allowHumanReload": true,
+  "mesh": "torpedo_533mm_spearfish",
+  "shellAnimChar": "torpedo_533mm_spearfish_char",
+  "tags": {
+    "antiShipBomb": true
+  },
+  "torpedo": {
+    "operated": true,
+    "operatedDist": 6000.0,
+    "wired": true,
+    "autoAiming": true,
+    "autoAimingFirstPerson": true,
+    "autoLeveling": false,
+    "controlSensitivity": 0.7,
+    "aimSensitivity": 2.0,
+    "maxAxisValues": 1.0,
+    "operationTimer": 3.0,
+    "forceAutoAimingTimer": 0.0,
+    "propellerEffect": "trp_propeller_water_splashes",
+    "explosionEffect": "torpedo_explosion_unit_bubble",
+    "guidanceType": "sonar",
+    "needLos": false,
+    "finsControlProp": 5.0,
+    "armDistance": 35.0,
+    "dropSpeedRange": [-70.0,70.0],
+    "dropHeightRange": [-400.0,10.0],
+    "dropAngleRange": [-90.0,90.0],
+    "distToLive": 8000.0,
+    "maxSpeedInWater": 31.0,
+    "diveDepth": 3.0,
+    "diveDepthRange": [3.0,550.0],
+    "detonationRadius": 1.5,
+    "caliber": 0.533,
+    "mass": 1850.0,
+    "explosiveType": "tnt",
+    "explosiveMass": 300.0,
+    "dragCx": 0.24,
+    "startSpeed": 0.1,
+    "startPropulsionDelay": 0.1,
+    "useStartSpeed": true,
+    "autoaimEnabled": false,
+    "aaMaxAimAngle": 0.0,
+    "aaSpeedPrediction": 0.0,
+    "aaAccelPrediction": 0.0,
+    "aaAngleCorrection": 0.0,
+    "passiveSonarDetectionRange": 4500.0,
+    "activeSonarDetectionRange": 210.0,
+    "hitPowerMult": 100.0,
+    "nearHitPower": [1.0,50.0],
+    "midHitPower": [0.9,400.0],
+    "farHitPower": [0.1,1000.0],
+    "endHitPower": [0.01,1500.0],
+    "relativeVelHitShift": [300.0,1000.0],
+    "nearArmorPower": [10.0,50.0],
+    "midArmorPower": [7.0,400.0],
+    "farArmorPower": [0.2,700.0],
+    "relativeVelArmorShift": [200.0,1000.0],
+    "explodeTreshold": 0.0,
+    "explodeHitPower": 11500.0,
+    "explodeArmorPower": 300.0,
+    "explodeRadius": [15.0,30.0],
+    "hasProximityFuse": true,
+    "sonarSeeker": {
+      "designationAngle": 10.0,
+      "lockTime": 1.0,
+      "prolongationTimeMax": 5.0,
+      "passive": {
+        "type": "passive",
+        "sensitivityMult": 0.3,
+        "horFov": 150.0,
+        "verFov": 90.0,
+        "resolutionAngle": 5.0,
+        "signal": {
+          "period": 0.2
+        }
+      },
+      "active": {
+        "sensitivityMult": 0.2,
+        "horFov": 120.0,
+        "verFov": 90.0,
+        "resolutionAngle": 5.0,
+        "interceptionRangeInsideSector": 5000.0,
+        "interceptionRangeOutsideOfSector": 2000.0,
+        "shortDistance": 300.0,
+        "largeDistance": 3000.0,
+        "shortDistSignal": {
+          "period": 0.2,
+          "pulsePeriod": 0.5,
+          "resolutionDistance": 300.0
+        },
+        "largeDistSignal": {
+          "period": 0.2,
+          "pulsePeriod": 7.0,
+          "resolutionDistance": 300.0
+        }
+      }
+    },
+    "arcadeProp": {
+      "dropSpeedRange": [-70.0,70.0],
+      "dropHeightRange": [-400.0,10.0],
+      "dropAngleRange": [-90.0,90.0]
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 100.0,
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 1.0
+      }
+    },
+    "proximityFuse": {
+      "timeOut": 0.5,
+      "radius": 3.0,
+      "detectAirUnits": false,
+      "detectGroundUnits": true,
+      "detectGround": false,
+      "detectShells": true
+    }
+  }
+}
