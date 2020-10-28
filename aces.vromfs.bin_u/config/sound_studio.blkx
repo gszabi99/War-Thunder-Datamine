@@ -10,6 +10,8 @@
   "memoryPCHighMode": 210,
   "cockpitVolumeMultMinValue": 0.1,
   "soundSpeed": 400.0,
+  "acquireSndThresholdPercent": 95.0,
+  "preloadSndThresholdPercent": 70.0,
   "language": "Russian",
   "banksFolder": "sound",
   "banksExtension": ".bank",
@@ -442,6 +444,7 @@
     "eventWheelDrift": "wheel_drift",
     "eventShotThunder": "main_caliber_distant",
     "eventShotThunderDist": 10000.0,
+    "eventUnderwaterExpl": "underwater_explosion",
     "eventAirBrake": "airbrake",
     "eventBombHatch": "bomb_hatch",
     "eventBombWhistle": "bomb_whistle",
@@ -6705,14 +6708,7 @@
       {
         "offsetPos": [-1.0,1.0,0.0]
       }
-    ],
-    "cockpit": {
-      "path": "naval/engines/submarine",
-      "event_cockpit_l": "engine_interior",
-      "event_start_cockpit_l": "engine_start_interior",
-      "event_stop_cockpit_l": "engine_stop_interior",
-      "leftPos": [-1.0,1.0,0.0]
-    }
+    ]
   },
   "engine_shipbig01": {
     "effects": {
