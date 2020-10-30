@@ -2392,9 +2392,17 @@
     "Friends": {
       "condition": ""
     },
-    "Squad": {
-      "condition": ""
-    },
+    "Squad": [
+      {
+        "condition": "role_GAIJIN"
+      },
+      {
+        "condition": "role_DEVELOPER"
+      },
+      {
+        "condition": "role_TESTER"
+      }
+    ],
     "Battalions": {
       "condition": ""
     },
@@ -2569,17 +2577,9 @@
       "condition": "",
       "platform_lock": "android"
     },
-    "SpecialShips": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
+    "SpecialShips": {
+      "condition": ""
+    },
     "ShipsVisibleInShop": {
       "condition": ""
     },
@@ -3413,6 +3413,10 @@
       "condition": "",
       "platform_lock": "android;xboxOne;linux64"
     },
+    "pc_win_ps4_xbox_only_events": {
+      "condition": "",
+      "platform_lock": "android;linux64"
+    },
     "pc_xboxOne_only_events": {
       "condition": "",
       "platform_lock": "ps4;ps5;android"
@@ -3744,18 +3748,50 @@
       "condition": "",
       "platform_lock": "ps4;android;xboxOne;xboxScarlett;ps5"
     },
-    "SquadWidget": {
-      "condition": ""
-    },
-    "SquadTransferLeadership": {
-      "condition": ""
-    },
-    "SquadSizeChange": {
-      "condition": ""
-    },
-    "SquadInviteIngame": {
-      "condition": ""
-    },
+    "SquadWidget": [
+      {
+        "condition": "role_GAIJIN"
+      },
+      {
+        "condition": "role_DEVELOPER"
+      },
+      {
+        "condition": "role_TESTER"
+      }
+    ],
+    "SquadTransferLeadership": [
+      {
+        "condition": "role_GAIJIN"
+      },
+      {
+        "condition": "role_DEVELOPER"
+      },
+      {
+        "condition": "role_TESTER"
+      }
+    ],
+    "SquadSizeChange": [
+      {
+        "condition": "role_GAIJIN"
+      },
+      {
+        "condition": "role_DEVELOPER"
+      },
+      {
+        "condition": "role_TESTER"
+      }
+    ],
+    "SquadInviteIngame": [
+      {
+        "condition": "role_GAIJIN"
+      },
+      {
+        "condition": "role_DEVELOPER"
+      },
+      {
+        "condition": "role_TESTER"
+      }
+    ],
     "ClanSeasonRewardsLog": {
       "condition": ""
     },
