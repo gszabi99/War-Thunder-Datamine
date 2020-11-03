@@ -1,6 +1,6 @@
 local { clearBorderSymbols } = require("std/string.nut")
 local time = require("scripts/time.nut")
-local clanContextMenu = ::require("scripts/clans/clanContextMenu.nut")
+local clanContextMenu = require("scripts/clans/clanContextMenu.nut")
 local clanInfoView = require("scripts/clans/clanInfoView.nut")
 
 // how many top places rewards are displayed in clans list window
@@ -150,31 +150,42 @@ class ::gui_handlers.ClansModalHandler extends ::gui_handlers.clanPageModal
   clansPerPage   = -1
   requestingClansCount = -1
   isLastPage     = false
-  clanByRow      = {}
   clansLbSortByPage    = null
   curClanLbPage  = 0
   curPageData    = null
-  currentFocusItem = 5
 
-  rowsTexts      = {}
-  tooltips       = {}
+  clanByRow      = null
+  curClanId      = -1
+  lastHoveredDataIdx = -1
+
+  rowsTexts      = null
+  tooltips       = null
 
   filterMask = null
 
   function initScreen()
   {
+    clanByRow = []
+    rowsTexts = {}
+    tooltips  = {}
+
     if (startPage == "")
       startPage = (::clan_get_my_clan_id() == "-1")? "clans_search" : "my_clan"
 
     curWwCategory = ::g_lb_category.EVENTS_PERSONAL_ELO
+    initSearchBox()
     initLbTable()
     initLeaderboardFilter()
     initTabs()
 
-    if (::g_clans.isNonLatinCharsAllowedInClanName())
-      scene.findObject("search_edit")["char-mask"] = null
-
     curMode = getCurDMode()
+  }
+
+  function initSearchBox() {
+    local searchObj = scene.findObject("filter_edit_box")
+    searchObj["max-len"] ="32"
+    searchObj["char-mask"] = ::g_clans.isNonLatinCharsAllowedInClanName()
+      ? null : "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 _-"
   }
 
   function initTabs()
@@ -213,42 +224,6 @@ class ::gui_handlers.ClansModalHandler extends ::gui_handlers.clanPageModal
     updateAdminModeSwitch()
   }
 
-  function getMainFocusObj()
-  {
-    return (curPage == "clans_leaderboards")
-      ? null : curPage == "clans_search"
-      ? scene.findObject("leaderboard_filter") : scene.findObject("btn_lock_clan_req")
-  }
-
-  function getMainFocusObj2()
-  {
-    if(curPage == "clans_leaderboards" || curPage == "clans_search")
-      return scene.findObject("clans_list_content").findObject("search_edit")
-    else
-      return scene.findObject("clan_container").findObject("modes_list")
-  }
-
-  function getMainFocusObj3()
-  {
-    if (curPage == "clans_search")
-      return null
-
-    local focusId = curPage == "clans_leaderboards"
-      ? "modes_list"
-      : "clan_members_list"
-    return scene.findObject(focusId)
-  }
-
-  function getMainFocusObj4()
-  {
-    local focusId = (curPage == "clans_leaderboards" || curPage == "clans_search")
-      ? "clan_lboard_table"
-      : isWorldWarMode
-        ? "lb_table"
-        : "clan_actions"
-    return scene.findObject(focusId)
-  }
-
   function onSheetChange()
   {
     clearPage()
@@ -271,7 +246,8 @@ class ::gui_handlers.ClansModalHandler extends ::gui_handlers.clanPageModal
     clanLbInited = true
     curPageData = null
     curClanLbPage = 0
-    clanByRow = {}
+    clanByRow = []
+    curClanId = null
     isLastPage = false
     clansLbSortByPage = getCurrentSortField()
   }
@@ -357,8 +333,6 @@ class ::gui_handlers.ClansModalHandler extends ::gui_handlers.clanPageModal
       calculateRowNumber()
       requestClansLbData()
     }
-
-    initFocusArray()
   }
 
   function onStatsModeChange(obj)
@@ -405,7 +379,6 @@ class ::gui_handlers.ClansModalHandler extends ::gui_handlers.clanPageModal
       fillModeListBox(curPageObj, getCurDMode(),
         ::get_show_in_squadron_statistics, getAdditionalTabsArray())
     }
-    initFocusArray()
   }
 
   function getClansLbFieldName(lbCategory = null, mode = null)
@@ -509,10 +482,10 @@ class ::gui_handlers.ClansModalHandler extends ::gui_handlers.clanPageModal
       getClanLBPage(seasonOrdinalNumber, cbSuccess)
   }
 
-  function onSearchStart()
+  function onFilterEditBoxActivate()
   {
     curClanLbPage = 0
-    searchRequest = scene.findObject("search_edit").getValue()
+    searchRequest = scene.findObject("filter_edit_box").getValue()
     searchRequest = searchRequest.len() > 0 ? clearBorderSymbols(searchRequest, [" "]) : ""
     isSearchMode = searchRequest.len() > 0
     showEmptySearchResult(false)
@@ -545,6 +518,7 @@ class ::gui_handlers.ClansModalHandler extends ::gui_handlers.clanPageModal
     {
       showEmptySearchResult(true)
       clanByRow.clear()
+      curClanId = null
       updateButtons()
       return
     }
@@ -569,46 +543,42 @@ class ::gui_handlers.ClansModalHandler extends ::gui_handlers.clanPageModal
     if (!::checkObj(lbPageObj))
       return
 
-    local lbTableObj = lbPageObj.findObject("clan_lboard_table")
-    local data = ""
+    local data = []
     rowsTexts = {}
     tooltips = {}
     clanByRow.clear()
-    local rowIdx = 0
+    curClanId = null
     isLastPage = true
     foreach(name, rowBlk in clanLbBlk % "clan")
     {
       if (typeof(rowBlk) != "instance")
         continue
 
-      if (rowIdx >= clansPerPage)
+      if (clanByRow.len() >= clansPerPage)
       {
         isLastPage = false
-        continue
+        break
       }
 
-      data += generateRowTableData(rowBlk, rowIdx++)
-      clanByRow[rowIdx.tostring()] <- rowBlk._id.tostring()
+      rowBlk = ::getFilteredClanData(rowBlk)
+      data.append(generateRowTableData(rowBlk, clanByRow.len()))
+      clanByRow.append(rowBlk._id.tostring())
     }
 
-    local lastRowIdx = lbTableObj.getValue()
-    if (rowIdx < clansPerPage)
+    for (local i = clanByRow.len(); i < clansPerPage; i++)
     {
-      lastRowIdx = ::min(rowIdx,lastRowIdx)
-      for(local i = rowIdx; i < clansPerPage; i++)
-      {
-        data += buildTableRow("row_" + rowIdx++, [], rowIdx % 2 == 0, "inactive:t='yes';")
-        clanByRow[rowIdx.tostring()] <- null
-      }
+      data.append(::buildTableRow($"row_{i}", [], i % 2 == 1, "inactive:t='yes';"))
+      clanByRow.append(null)
     }
 
     if(myClanLbData != null)
     {
-      data += buildTableRow("row_" + clansPerPage, ["..."], null, "inactive:t='yes'; commonTextColor:t='yes'; style:t='height:0.7@leaderboardTrHeight;'; ")
-      rowIdx++
-      data += generateRowTableData(myClanLbData, clansPerPage + 1)
-      rowIdx++
-      clanByRow[rowIdx.tostring()] <- myClanLbData._id.tostring()
+      data.append(::buildTableRow($"row_{clanByRow.len()}", ["..."], null,
+        "inactive:t='yes'; commonTextColor:t='yes'; style:t='height:0.7@leaderboardTrHeight;';"))
+      clanByRow.append(null)
+      myClanLbData = ::getFilteredClanData(myClanLbData)
+      data.append(generateRowTableData(myClanLbData, clanByRow.len()))
+      clanByRow.append(myClanLbData._id.tostring())
     }
     local headerRow = [{text = "#multiplayer/place", width = "0.1@sf"}, {text = ""}, { text = "#clan/clan_name", tdAlign = "left",  width = "@clanNameTableWidth"}]
 
@@ -634,10 +604,11 @@ class ::gui_handlers.ClansModalHandler extends ::gui_handlers.clanPageModal
         block.width <- item.width
       headerRow.append(block)
     }
-    data = buildTableRow("row_header", headerRow, true,
-      "inactive:t='yes'; commonTextColor:t='yes'; bigIcons:t='yes';" +
-      "style:t='height:0.05sh'; insetHeader = 'yes'") + data
+    data.insert(0, ::buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'"))
+    data = "".join(data)
+
     guiScene.setUpdatesEnabled(false, false)
+    local lbTableObj = lbPageObj.findObject("clan_lboard_table")
     guiScene.replaceContentFromText(lbTableObj, data, data.len(), this)
     foreach(rowName, row in rowsTexts)
       foreach(name, value in row)
@@ -649,9 +620,8 @@ class ::gui_handlers.ClansModalHandler extends ::gui_handlers.clanPageModal
 
     if (curPage == "clans_leaderboards" || curPage == "clans_search")
     {
-      restoreFocus()
-      lbTableObj.setValue(lastRowIdx)
-      onSelectLb()
+      lbTableObj.setValue(clanByRow.len() ? 1 : -1)
+      onSelectClan(lbTableObj)
     }
   }
 
@@ -660,16 +630,14 @@ class ::gui_handlers.ClansModalHandler extends ::gui_handlers.clanPageModal
     local slogan = rowBlk.slogan == "" ? "" : rowBlk.slogan == " " ? "" : rowBlk.slogan
     local desc = rowBlk.desc == "" ? "" : rowBlk.desc == " " ? "" : rowBlk.desc
     local rowName = "row_" + rowIdx
-    desc = ::g_chat.filterMessageText(desc, false)
-    slogan = ::g_chat.filterMessageText(slogan, false)
-    local tooltipText = ::ps4CheckAndReplaceContentDisabledText(slogan + (slogan != "" && desc != ""? "\n" : "") + desc)
+
     local clanType = ::g_clan_type.getTypeByName(::getTblValue("type", rowBlk, ""))
     local highlightRow = myClanLbData != null && myClanLbData._id == rowBlk._id ? true : false
     rowsTexts[rowName] <- {
-      txt_name = colorizeClanText(clanType, ::ps4CheckAndReplaceContentDisabledText(rowBlk.name), highlightRow)
-      txt_tag = colorizeClanText(clanType, ::checkClanTagForDirtyWords(rowBlk.tag), highlightRow)
+      txt_name = colorizeClanText(clanType, rowBlk.name, highlightRow)
+      txt_tag = colorizeClanText(clanType, rowBlk.tag, highlightRow)
     }
-    tooltips[rowName] <- { name = tooltipText}
+    tooltips[rowName] <- { name = "\n".concat(slogan, desc) }
     local rowData = [
       rowBlk.pos + 1
       {
@@ -775,7 +743,7 @@ class ::gui_handlers.ClansModalHandler extends ::gui_handlers.clanPageModal
     requestClansLbData(curPage != "clans_search")
   }
 
-  function onCancelSearchEdit(obj)
+  function onFilterEditBoxCancel(obj)
   {
     if(obj.getValue().len() > 0)
       obj.setValue("")
@@ -783,27 +751,49 @@ class ::gui_handlers.ClansModalHandler extends ::gui_handlers.clanPageModal
       goBack();
   }
 
-  function onSelectLb()
+  function onFilterEditBoxChangeValue() {}
+
+  function onSelectClan(obj)
   {
-    guiScene.performDelayed(this, (function () {
-      if (isValid())
-        updateButtons()
-    }))
+    if (::show_console_buttons)
+      return
+    if (!::check_obj(obj))
+      return
+
+    local dataIdx = obj.getValue() - 1 // skiping header row
+    onSelectedClanIdx(dataIdx)
+  }
+
+  function onRowHoverClan(obj)
+  {
+    if (!::show_console_buttons)
+      return
+    if (!::check_obj(obj))
+      return
+
+    local isHover = obj.isHovered()
+    local dataIdx = ::to_integer_safe(::g_string.cutPrefix(obj.id, "row_", ""), -1, false)
+    if (isHover == (dataIdx == lastHoveredDataIdx))
+     return
+
+    lastHoveredDataIdx = isHover ? dataIdx : -1
+    onSelectedClanIdx(lastHoveredDataIdx)
+  }
+
+  function onSelectedClanIdx(dataIdx)
+  {
+    curClanId = clanByRow?[dataIdx]
+    updateButtons()
   }
 
   function updateButtons()
   {
-    local clansTableObj = scene.findObject("clan_lboard_table")
-    local clan = getCurClan()
-
-    local buttons = {
-      btn_clan_info = clan != null && clansTableObj && clansTableObj.isFocused()
-      btn_membership_req = !::is_in_clan() && clan != null && ::clan_get_requested_clan_id() != clan
-        && clansTableObj && clansTableObj.isFocused()
-      mid_nav_bar = clanByRow.len() > 0
-    }
-
-    ::showBtnTable(curPageObj, buttons)
+    ::showBtnTable(curPageObj, {
+      btn_clan_info       = curClanId != null
+      btn_clan_actions    = curClanId != null && ::show_console_buttons
+      btn_membership_req  = curClanId != null && !::is_in_clan() && ::clan_get_requested_clan_id() != curClanId
+      mid_nav_bar         = clanByRow.len() > 0
+    })
 
     local reqButton = curPageObj.findObject("btn_membership_req")
     if(::checkObj(reqButton))
@@ -821,15 +811,6 @@ class ::gui_handlers.ClansModalHandler extends ::gui_handlers.clanPageModal
     }
   }
 
-  function getCurClan()
-  {
-    local objTbl = curPageObj.findObject("clan_lboard_table")
-    if (!::check_obj(objTbl))
-      return null
-
-    return clanByRow?[objTbl.getValue().tostring()]
-  }
-
   function onEventClanMembershipRequested(p)
   {
     updateButtons()
@@ -842,16 +823,16 @@ class ::gui_handlers.ClansModalHandler extends ::gui_handlers.clanPageModal
 
   function onClanInfo()
   {
-    local clan = getCurClan()
-    if (clan == null)
-      return
-
-    showClanPage(clan, "", "")
+    if (curClanId != null)
+      showClanPage(curClanId, "", "")
   }
 
-  function onSelectClansList()
+  function onSelectClansList(obj)
   {
-    onSelectLb()
+    guiScene.performDelayed(this, function() {
+      if (::check_obj(scene))
+        onSelectClan(scene.findObject("clan_lboard_table"))
+    })
   }
 
   function goToPage(obj)
@@ -880,11 +861,10 @@ class ::gui_handlers.ClansModalHandler extends ::gui_handlers.clanPageModal
 
   function onClanRclick(position = null)
   {
-    local clanId = getCurClan()
-    if (!clanId)
+    if (!curClanId)
       return
 
-    local menu = clanContextMenu.getClanActions(clanId)
+    local menu = clanContextMenu.getClanActions(curClanId)
     ::gui_right_click_menu(menu, this, position)
   }
 
@@ -1082,7 +1062,6 @@ class ::gui_handlers.ClansModalHandler extends ::gui_handlers.clanPageModal
       multiSelectId = "leaderboard_filter"
       flow = "horizontal"
       isSimpleNavigationShortcuts = true
-      needWrapNavigation = true
       onSelect = "onChangeLeaderboardFilter"
       value = filterMask
       list = leaderboardFilterArray.map(@(filter) {

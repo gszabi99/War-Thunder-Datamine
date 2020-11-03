@@ -262,8 +262,8 @@ local function makeHorizScroll(content, options={}) {
 return {
   styling = defStyling
   scrollbar = scrollbar
-  makeHorizScroll = makeHorizScroll
-  makeVertScroll = makeVertScroll
-  makeHVScrolls = makeHVScrolls
-  makeSideScroll = makeSideScroll
+  makeHorizScroll
+  makeVertScroll
+  makeHVScrolls
+  makeSideScroll
 }

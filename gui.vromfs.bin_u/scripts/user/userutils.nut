@@ -2,7 +2,8 @@ local crossplayModule = require("scripts/social/crossplay.nut")
 local mapPreferencesParams = require("scripts/missions/mapPreferencesParams.nut")
 local slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
-local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+local { isPlatformSony, isPlatformXboxOne, targetPlatform } = require("scripts/clientState/platform.nut")
+local { getMyCrewUnitsState } = require("scripts/slotbar/crewsListInfo.nut")
 
 local needShowRateWnd = false //need this, because debriefing data destroys after debriefing modal is closed
 
@@ -59,9 +60,10 @@ local needShowRateWnd = false //need this, because debriefing data destroys afte
       bannedMissions = prefParams.bannedMissions
       dislikedMissions = prefParams.dislikedMissions
       craftsInfoByUnitsGroups = slotbarPresets.getCurCraftsInfo()
+      platform = targetPlatform
     }
 
-    local airs = getMyCrewAirsState(profileInfo)
+    local airs = getMyCrewUnitsState(profileInfo.country)
     myData.crewAirs = airs.crewAirs
     myData.brokenAirs = airs.brokenAirs
     if (airs.rank > myData.rank)
@@ -76,41 +78,6 @@ local needShowRateWnd = false //need this, because debriefing data destroys afte
       myData.missedPkg <- missed
 
     return myData
-  }
-
-  function getMyCrewAirsState(profileInfo = null)
-  {
-    if (profileInfo == null)
-      profileInfo = ::get_profile_info()
-
-    local res = {
-      crewAirs = {}
-      brokenAirs = []
-      rank = 0
-    }
-
-    foreach(c in ::g_crews_list.get())
-    {
-      if (!("crews" in c))
-        continue
-
-      res.crewAirs[c.country] <- []
-      foreach(crew in c.crews)
-        if (("aircraft" in crew) && crew.aircraft!="")
-        {
-          local air = getAircraftByName(crew.aircraft)
-          if (air)
-          {
-            res.crewAirs[c.country].append(crew.aircraft)
-            if (c.country == profileInfo.country && res.rank < air.rank)
-              res.rank = air.rank
-            if (::wp_get_repair_cost(crew.aircraft))
-              res.brokenAirs.append(crew.aircraft)
-          }
-        }
-    }
-
-    return res
   }
 
   function checkAutoShowSteamEmailRegistration()

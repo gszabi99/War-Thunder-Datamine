@@ -11,8 +11,9 @@ local webApiMethodGet = 0
 local webApiMethodPost = 1
 local webApiMethodPut = 2
 local webApiMethodDelete = 3
+local webApiMethodPatch = 4
 
-local function createRequest(api, method, path=null, params={}, data=null, forceBinary=false) {
+local function createRequest(api, method, path=null, params={}, data=null, forceBinary=false, headers = {}) {
   local request = DataBlock()
   request.apiGroup = api.group
   request.method = method
@@ -36,6 +37,12 @@ local function createRequest(api, method, path=null, params={}, data=null, force
   else if (::type(data) == "array")
     foreach(part in data)
       request.part <- part
+
+  if (headers.len()) {
+    request.reqHeaders = DataBlock()
+    foreach(k, v in headers)
+      request.reqHeaders[k] <- v
+  }
   return request
 }
 
@@ -111,29 +118,55 @@ local session = {
 
 local sessionManagerApi = { group = "sessionManager", path = "/v1/playerSessions" }
 local sessionManager = {
-  function createSession(params) {
-    return createRequest(sessionManagerApi, webApiMethodPost, null, params)
+  function create(params) {
+    return createRequest(sessionManagerApi, webApiMethodPost, null, {}, params)
   }
-  function leaveSession(sessionId) {
+  function update(sessionId, param) {
+    //Allow to update only one parameter at a time
+    return createRequest(sessionManagerApi, webApiMethodPatch, $"{sessionId}", {}, param)
+  }
+  function leave(sessionId) {
     return createRequest(sessionManagerApi, webApiMethodDelete, $"{sessionId}/members/me")
   }
-  function joinSessionAsPlayer(sessionId, params) {
-    return createRequest(sessionManagerApi, webApiMethodPost, $"{sessionId}/members/players", params)
+  function joinAsPlayer(sessionId, params) {
+    return createRequest(sessionManagerApi, webApiMethodPost, $"{sessionId}/member/players", {}, params)
   }
-  function joinSessionAsSpectator(sessionId, params) {
-    return createRequest(sessionManagerApi, webApiMethodPost, $"{sessionId}/members/spectators", params)
+  function joinAsSpectator(sessionId, params) {
+    return createRequest(sessionManagerApi, webApiMethodPost, $"{sessionId}/member/spectators", {}, params)
+  }
+  function list(sessionIds = []) {
+    return createRequest(sessionManagerApi, webApiMethodGet, null, {fields="customData1,sessionId"},
+      null, false, {["X-PSN-SESSION-MANAGER-SESSION-IDS"] = ",".join(sessionIds)})
   }
 
-
-  function changeLeader(sessionId, leaderAccountId, leaderPlatformString) {
+  function changeLeader(sessionId, accountId, platform) {
     return createRequest(sessionManagerApi, webApiMethodPut, $"{sessionId}/leader",
-                         { accountId = leaderAccountId, platform = leaderPlatformString })
+      {}, { accountId = accountId, platform = platform })
   }
   function invite(sessionId, accountIds) {
-    local params = { invitations = [] }
-    foreach(account in accountIds)
-      params.invitations.append({ to = { accountId = account }})
-    return createRequest(sessionManagerApi, webApiMethodPost, $"{sessionId}/invitations", params)
+    local params = { invitations = accountIds.map(@(id) { to = { accountId = id }})}
+    return createRequest(sessionManagerApi, webApiMethodPost, $"{sessionId}/invitations", {}, params)
+  }
+}
+
+// ------------ Game Sessions actions
+local gameSessionManagerApi = { group = "sessionManager", path = "/v1/gameSessions" }
+local gameSessionManager = {
+  function create(params) {
+    return createRequest(gameSessionManagerApi, webApiMethodPost, null, {}, params)
+  }
+  function update(sessionId, param) {
+    //Allow to update only one parameter at a time
+    return createRequest(gameSessionManagerApi, webApiMethodPatch, $"{sessionId}", {}, param)
+  }
+  function leave(sessionId) {
+    return createRequest(gameSessionManagerApi, webApiMethodDelete, $"{sessionId}/members/me")
+  }
+  function joinAsPlayer(sessionId, params) {
+    return createRequest(gameSessionManagerApi, webApiMethodPost, $"{sessionId}/member/players", {}, params)
+  }
+  function joinAsSpectator(sessionId, params) {
+    return createRequest(gameSessionManagerApi, webApiMethodPost, $"{sessionId}/member/spectators", {}, params)
   }
 }
 
@@ -158,7 +191,6 @@ local playerSessionInvitations = {
     return createRequest(playerSessionInvitationsApi, webApiMethodGet)
   }
 }
-
 
 // ------------ Profile actions
 local profileApi = { group = "sdk:userProfile", path = "/v1/users/me" }
@@ -221,7 +253,7 @@ local commerce = {
 
 local inGameCatalogApi = { group = "inGameCatalog" path = "/v5/container" }
 local inGameCatalog = {
-  // Service label is now mandatory
+  // Service label is now mandatory due to the way PS5 can be setup (with two stores)
   function get(ids, serviceLabel, params={}) {
     params["serviceLabel"] <- serviceLabel
     params["containerIds"] <- ":".join(ids)
@@ -236,6 +268,36 @@ local entitlements = {
   function granted() {
     local params = { entitlement_type = ["service", "unified"] }
     return createRequest(entitlementsApi, webApiMethodGet, null, params)
+  }
+}
+
+
+// ---------- Matches actions
+local matchesApi = { group = "matches", path = "/v1/matches" }
+local matches = {
+  function create(data) {
+    return createRequest(matchesApi, webApiMethodPost, null, {}, data)
+  }
+
+  function updateStatus(id, status) {
+    local data = { status = status }
+    return createRequest(matchesApi, webApiMethodPut, $"{id}/status", {}, data)
+  }
+
+  function join(id, player) {
+    local data = { players = [ player ] }
+    return createRequest(matchesApi, webApiMethodPost, $"{id}/players/actions/add", {}, data)
+  }
+
+  function leave(id, player) {
+    local data = { players = [ player ] }
+    return createRequest(matchesApi, webApiMethodPost, $"{id}/players/actions/remove", {}, data)
+  }
+
+  LeaveReason = {
+    QUIT = "QUIT"
+    FINISHED = "FINISHED"
+    DISCONNECTED = "DISCONNECTED"
   }
 }
 
@@ -285,8 +347,11 @@ return {
 
   session = session
   sessionManager = sessionManager
+  gameSessionManager = gameSessionManager
+
   invitation = invitation
   playerSessionInvitations = playerSessionInvitations
+  matches = matches
 
   profile = (nativeApi.getPreferredVersion() == 2) ? userProfile : profile
   communicationRestrictionStatus = communicationRestrictionStatus

@@ -22,11 +22,8 @@ VerticalListBox {
   id:t='squad_list'
   size:t='pw, fh'
   flow:t = 'vertical'
-  mouse-focusable:t='yes'
   navigator:t='posNavigator'
   navigatorShortcuts:t='yes'
-  on_wrap_up:t='onWrapUp'
-  on_wrap_down:t='onWrapDown'
   on_r_click:t='onMemberRClick'
 
   <<#members>>

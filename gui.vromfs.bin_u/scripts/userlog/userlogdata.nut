@@ -131,9 +131,10 @@ local logNameByType = {
     showSellAmount = ::getTblValue("type", params, -1) == ::EULT_BUY_ITEM,
     bigPicture = false
     contentIcon = false
+    interactive = true
   }
 
-  params = ::combine_tables(params, defaultParams)
+  params = defaultParams.__merge(params)
   return item ? ::handyman.renderCached(("gui/items/item"), { items = item.getViewData(params)}) : ""
 }
 

@@ -136,6 +136,7 @@ tr {
         value:t='<<skillProgressValue>>'
       }
 
+      focus_border{}
       sliderButton{}
     }
 

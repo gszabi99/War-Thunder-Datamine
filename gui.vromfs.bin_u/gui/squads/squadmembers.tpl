@@ -10,7 +10,7 @@
     title:t='$tooltipObj'
 
     ButtonImg {
-      showOnSelect:t='focus'
+      showOnSelect:t='hover'
     }
 
     img {

@@ -14,7 +14,7 @@ j+eTYc35NQIDAQAB
 
 local function initPublicKeys()
 {
-  if (::is_platform_xboxone)
+  if (::is_platform_xbox)
   {
     ::dagor.debug("Content signature verification temporary disabled for xboxone")
     return false

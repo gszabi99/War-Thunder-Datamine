@@ -1,8 +1,11 @@
 {
   "root": {
-    "background-color": "@modalShadeColor",
+    "type": "big",
+    "blur": [],
+    "blur_foreground": [],
     "frame": {
-      "size": "1.5@scrn_tgt $min 1@rw, 1@maxWindowHeight",
+      "width": "1@srw",
+      "height": "1@maxWindowHeight",
       "pos": "50%pw-50%w, 1@minYposWindow + 0.1*(sh - 1@minYposWindow - h)",
       "position": "absolute",
       "class": "wndNav",
@@ -34,14 +37,11 @@
           "id": "chapters_list",
           "size": "0.5@sf, ph",
           "flow": "vertical",
-          "mouse-focusable": "yes",
-          "navigatorShortcuts": "yes",
+          "total-input-transparent": "yes",
+          "navigatorShortcuts": "noSelect",
           "on_select": "onChapterSelect",
-          "on_wrap_up": "onWrapUp",
-          "on_wrap_down": "onWrapDown",
-          "on_wrap_left": "switchFocusObj",
-          "on_wrap_right": "switchFocusObj",
-          "_on_set_focus": "onChaptersListFocusChange"
+          "on_hover": "onChaptersListHover",
+          "on_unhover": "onChaptersListHover"
         },
         "textAreaCentered": {
           "id": "no_unlocks_msg",
@@ -94,9 +94,7 @@
             "display": "hide",
             "navigatorShortcuts": "yes",
             "scrollbarShortcuts": "yes",
-            "on_select": "onUnlockSelect",
-            "on_wrap_left": "switchFocusObj",
-            "on_wrap_right": "switchFocusObj"
+            "on_select": "onUnlockSelect"
           }
         }
       },
@@ -393,27 +391,6 @@
                             "gcButtonsInterval": "yes"
                           },
                           {
-                            "behaviour": "wrapNavigator"
-                          },
-                          {
-                            "navigatorShortcuts": "yes"
-                          },
-                          {
-                            "childsActivate": "yes"
-                          },
-                          {
-                            "on_wrap_up": "onWrapUp"
-                          },
-                          {
-                            "on_wrap_down": "onWrapDown"
-                          },
-                          {
-                            "on_wrap_left": "onTopGCPanelLeft"
-                          },
-                          {
-                            "on_wrap_right": "onTopGCPanelRight"
-                          },
-                          {
                             "Button_text": {
                               "id": "gc_clanTag",
                               "tooltip": "#mainmenu/btnClanCard",
@@ -504,27 +481,6 @@
                         },
                         {
                           "gcButtonsInterval": "yes"
-                        },
-                        {
-                          "behaviour": "wrapNavigator"
-                        },
-                        {
-                          "navigatorShortcuts": "yes"
-                        },
-                        {
-                          "childsActivate": "yes"
-                        },
-                        {
-                          "on_wrap_up": "onWrapUp"
-                        },
-                        {
-                          "on_wrap_down": "onWrapDown"
-                        },
-                        {
-                          "on_wrap_left": "onTopGCPanelLeft"
-                        },
-                        {
-                          "on_wrap_right": "onTopGCPanelRight"
                         },
                         {
                           "Button_text": [
@@ -740,9 +696,6 @@
               "shadowSafeArea": []
             },
             {
-              "line": []
-            },
-            {
               "tdiv": {
                 "size": "pw, 0.02@sf",
                 "pos": "0, ph",
@@ -783,7 +736,7 @@
                       "id": "slotbar-presetsPlace",
                       "size": "pw, ph",
                       "position": "absolute",
-                      "pos": "1@dp, 0"
+                      "display": "hide"
                     }
                   }
                 },
@@ -840,14 +793,7 @@
                     "position": "relative",
                     "top": "0.5(ph-h)",
                     "margin-right": "2@buttonTextPadding",
-                    "class": "header",
-                    "behaviour": "wrapNavigator",
-                    "navigatorShortcuts": "yes",
-                    "childsActivate": "yes",
-                    "on_wrap_up": "onWrapUp",
-                    "on_wrap_down": "onWrapDown",
-                    "on_wrap_left": "onWrapLeft",
-                    "on_wrap_right": "onWrapRight"
+                    "class": "header"
                   }
                 },
                 {
@@ -863,27 +809,6 @@
                     },
                     {
                       "class": "header"
-                    },
-                    {
-                      "behaviour": "wrapNavigator"
-                    },
-                    {
-                      "navigatorShortcuts": "yes"
-                    },
-                    {
-                      "childsActivate": "yes"
-                    },
-                    {
-                      "on_wrap_up": "onWrapUp"
-                    },
-                    {
-                      "on_wrap_down": "onWrapDown"
-                    },
-                    {
-                      "on_wrap_left": "onBottomGCPanelLeft"
-                    },
-                    {
-                      "on_wrap_right": "onBottomGCPanelRight"
                     },
                     {
                       "Button_text": [

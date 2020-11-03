@@ -1,41 +1,46 @@
-local state = require("shipState.nut")
-local colors = require("style/colors.nut")
+local {obstacleIsNear, distanceToObstacle} = require("shipState.nut")
+local {alert} = require("style/colors.nut").hud.damageModule
 local {abs} = require("std/math.nut")
 
+local showCollideWarning = Computed(@() distanceToObstacle.value < 0)
+
+local textToShow = Computed(@() ::str(showCollideWarning.value ? ::loc("hud_ship_collide_warning") :
+       ::loc("hud_ship_depth_on_course_warning"), ::loc("ui/colon"))
+)
 return @(){
-  watch = state.obstacleIsNear
-  isHidden = !state.obstacleIsNear.value
+  watch = obstacleIsNear
+  isHidden = !obstacleIsNear.value
   size = SIZE_TO_CONTENT
   flow = FLOW_HORIZONTAL
   children = [
-    {
-      rendObj = ROBJ_STEXT
-      font = Fonts.medium_text_hud
-      fontFxColor = Color(0, 0, 0, 50)
-      fontFxFactor = 64
-      fontFx = FFT_GLOW
-      text = (state.distanceToObstacle.value < 0 ? ::loc("hud_ship_collide_warning") :
-       ::loc("hud_ship_depth_on_course_warning")) + ::loc("ui/colon")
-      color = colors.hud.damageModule.alert
-    }
     @() {
-      watch = state.distanceToObstacle
       rendObj = ROBJ_DTEXT
       font = Fonts.medium_text_hud
       fontFxColor = Color(0, 0, 0, 50)
-      fontFxFactor = 64
+      fontFxFactor = min(64, hdpx(64))
       fontFx = FFT_GLOW
-      text = abs(state.distanceToObstacle.value)
-      color = colors.hud.damageModule.alert
+      watch = textToShow
+      text = textToShow.value
+      color = alert
     }
-    {
-      rendObj = ROBJ_STEXT
+    @() {
+      watch = distanceToObstacle
+      rendObj = ROBJ_DTEXT
       font = Fonts.medium_text_hud
       fontFxColor = Color(0, 0, 0, 50)
-      fontFxFactor = 64
+      fontFxFactor = min(64, hdpx(64))
+      fontFx = FFT_GLOW
+      text = abs(distanceToObstacle.value)
+      color = alert
+    }
+    {
+      rendObj = ROBJ_DTEXT
+      font = Fonts.medium_text_hud
+      fontFxColor = Color(0, 0, 0, 50)
+      fontFxFactor = min(64, hdpx(64))
       fontFx = FFT_GLOW
       text = ::cross_call.measureTypes.DEPTH.getMeasureUnitsName()
-      color = colors.hud.damageModule.alert
+      color = alert
     }
   ]
 }

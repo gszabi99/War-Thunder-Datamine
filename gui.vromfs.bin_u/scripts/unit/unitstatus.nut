@@ -120,7 +120,7 @@ local function isAvailablePrimaryWeapon(unit, weaponName) {
         if (!weap?.blk || weap?.dummy)
           continue
 
-        local weapBlk = ::DataBlock(weap.blk)
+        local weapBlk = ::blkFromPath(weap.blk)
         if (availableWeapons!=null && (weapBlk?.rocket.isFlare ?? false))
           availableWeapons.flares = modName
       }

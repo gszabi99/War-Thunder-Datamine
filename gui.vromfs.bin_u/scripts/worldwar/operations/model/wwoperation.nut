@@ -18,7 +18,7 @@ enum WW_OPERATION_PRIORITY //bit enum
   MAX                        = 0xFFFF
 }
 
-class WwOperation
+::WwOperation <- class
 {
   id = -1
   data = null

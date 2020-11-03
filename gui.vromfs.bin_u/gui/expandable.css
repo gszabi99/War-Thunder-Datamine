@@ -32,9 +32,8 @@ promoButton expandable > selImg {
 expandable.simple {
   padding: 0;
   margin-top: 1@blockInterval;
-  margin:1@blockInterval;
-  width:pw-2@framePadding;
-  pos:1@dp, 1@dp;
+  width:pw;
+  border:no;
 }
 
 expandable.unlock {
@@ -63,11 +62,11 @@ expandable[selected=yes] > selImg {
   background-color:@transparent;
 }
 
-[show_console_buttons=yes] [selImgType=gamepadFocused]:focus > expandable[selected=yes] > selImg {
+[show_console_buttons=yes] [selImgType=gamepadFocused] > expandable:hover > selImg {
   background-color:@white;
 }
 
-[show_console_buttons=yes] [selImgType=gamepadFocused]:focus > expandable.simple > selImg {
+[show_console_buttons=yes] [selImgType=gamepadFocused] > expandable.simple:hover > selImg {
   background-color:@transparent;
 }
 
@@ -101,6 +100,7 @@ expandable:focus,
 expandable.simple[active=yes],
 expandable[selected=yes] {
   background-color:@frameDarkActiveBgColor;
+  border:yes;
   border-color:@frameDarkSelectedBorderColor;
 }
 
@@ -242,10 +242,10 @@ expandable > selImg > activeText[caption=yes] {
 expandable hiddenDiv {
   input-transparent:yes;
   display:hide;
+  padding-top:1@blockInterval;
 }
 
 expandable[selected=yes] hiddenDiv,
-promoButton expandable hiddenDiv,
 hiddenDiv[showHidden=yes] {
   display:show;
 }

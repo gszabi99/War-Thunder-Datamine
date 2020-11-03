@@ -641,8 +641,10 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -664,8 +666,9 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
         "fireParamsPreset": "fuel_exterior",
         "fuel_tank_exterior_r_01_dm": [],
         "fuel_tank_exterior_r_02_dm": [],
@@ -2422,6 +2425,15 @@
       },
       {
         "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -2443,7 +2455,7 @@
     "cockpit": {
       "zoomOutFov": 40.0,
       "zoomInFov": 21.0,
-      "sightFov": 25.0,
+      "sightFov": 20.0,
       "sightName": "default_tank_spg",
       "headPos": [0.0,3.3,-6.0],
       "headPosOnShooting": [0.15,2.8,-0.35],

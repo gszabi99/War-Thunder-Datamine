@@ -26,8 +26,11 @@ class ::gui_handlers.ItemsListWndBase extends ::gui_handlers.BaseGuiHandlerWT
   function initScreen()
   {
     setCurItem(itemsList[0])
-    delayedRestoreFocus()
     updateWndAlign()
+    guiScene.performDelayed(this, function() {
+      if (scene.isValid())
+        ::move_mouse_on_child(scene.findObject("items_list"), 0)
+    })
   }
 
   function updateWndAlign()
@@ -51,4 +54,8 @@ class ::gui_handlers.ItemsListWndBase extends ::gui_handlers.BaseGuiHandlerWT
 
   function onActivate() {}
   function onButtonMax() {}
+
+  function afterModalDestroy() {
+    ::move_mouse_on_obj(alignObj)
+  }
 }

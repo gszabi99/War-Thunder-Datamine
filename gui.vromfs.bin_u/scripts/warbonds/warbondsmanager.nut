@@ -1,4 +1,4 @@
-local seenWarbondsShop = ::require("scripts/seen/seenList.nut").get(SEEN.WARBONDS_SHOP)
+local seenWarbondsShop = require("scripts/seen/seenList.nut").get(SEEN.WARBONDS_SHOP)
 
 const MAX_ALLOWED_WARBONDS_BALANCE = 0x7fffffff
 local OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28

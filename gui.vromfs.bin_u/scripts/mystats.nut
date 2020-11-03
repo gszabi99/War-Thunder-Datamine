@@ -139,6 +139,7 @@ local summaryNameArray = [
       local data = {
         minKills = 0
         battles = []
+        additionalUnitTypes = []
       }
       local list = blk % unitType.lowerName
       foreach(ev in list)
@@ -156,6 +157,9 @@ local summaryNameArray = [
         })
         data.minKills = ::max(data.minKills, kills)
       }
+      local additionalUnitTypesBlk = blk?.additionalUnitTypes[unitType.lowerName]
+      if (additionalUnitTypesBlk)
+        data.additionalUnitTypes = additionalUnitTypesBlk % "type"
       if (data.minKills)
         _newPlayersBattles[unitType.esUnitType] <- data
     }
@@ -180,12 +184,15 @@ local summaryNameArray = [
     newbieByUnitType.clear()
     foreach (unitType in unitTypes.types)
     {
-      if (!unitType.isAvailable())
+      if (!unitType.isAvailable() || !unitType.isPresentOnMatching)
         continue
       local killsReq = _newPlayersBattles?[unitType.esUnitType]?.minKills ?? 0
       if (killsReq <= 0)
         continue
       local kills = getKillsOnUnitType(unitType.esUnitType)
+      local additionalUnitTypes = _newPlayersBattles?[unitType.esUnitType].additionalUnitTypes ?? []
+      foreach (addEsUnitType in additionalUnitTypes)
+        kills += getKillsOnUnitType(::getUnitTypeByText(addEsUnitType))
       newbieByUnitType[unitType.esUnitType] <- kills < killsReq
     }
     newbie = __isNewbie()
@@ -196,6 +203,11 @@ local summaryNameArray = [
       local event = null
       local kills = getKillsOnUnitType(unitType)
       local timePlayed = getTimePlayedOnUnitType(unitType)
+      local additionalUnitTypes = config?.additionalUnitTypes ?? []
+      foreach (addEsUnitType in additionalUnitTypes) {
+        kills += getKillsOnUnitType(::getUnitTypeByText(addEsUnitType))
+        timePlayed += getTimePlayedOnUnitType(::getUnitTypeByText(addEsUnitType))
+      }
       foreach(evData in config.battles)
       {
         if (kills >= evData.kills)
@@ -332,6 +344,8 @@ local summaryNameArray = [
       return ::CLASS_FLAGS_SHIP
     if (unitType == ::ES_UNIT_TYPE_HELICOPTER)
       return ::CLASS_FLAGS_HELICOPTER
+    if (unitType == ::ES_UNIT_TYPE_BOAT)
+      return ::CLASS_FLAGS_BOAT
     return (1 << ::EUCT_TOTAL) - 1
   }
 

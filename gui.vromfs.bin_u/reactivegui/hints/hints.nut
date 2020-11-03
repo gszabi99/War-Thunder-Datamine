@@ -2,8 +2,7 @@ local hintTags = require("hintTags.nut")
 
 local hintsCache = {}
 
-local createHintContent = function(text, override)
-{
+local createHintContent = function(text, override) {
   local config = ::cross_call.getHintConfig(text)
 
   return {

@@ -1,7 +1,7 @@
 
 
-@const buttonColor: #ff2d3841;
-@const buttonBorderColor: #ff2d3841;
+@const buttonColor: #ff3a474f;
+@const buttonBorderColor: #ff3a474f;
 @const buttonFontColor: #e0e0e0;
 
 @const buttonColorDisabled: #7f0b0e10;
@@ -190,7 +190,6 @@ Button_text, btnCollapse
   if_target_pc:@target_pc;
   pc_style:yes;
   cursor:onButton;
-  input-sensitive:yes;
 }
 
 Button_text[type=wwArmyFlyOut]
@@ -203,6 +202,7 @@ Button_text[type=wwArmyFlyOut]
   pos:0, 50%ph-50%h;
   position:relative;
   noMargin:yes;
+  mouse-pointer-centering:10, 50;
 }
 
 top_right_holder > Button_text {
@@ -264,8 +264,7 @@ hoverSize modSlotButtonsNest {
 
 Button_text:focus,
 Button_text[active=yes],
-[show_console_buttons=yes] Button_text[inactiveColor=yes][selected=yes],
-[show_console_buttons=yes] Button_text[selected=yes] {
+Button_text[selected=yes] {
   background-color: @buttonColorFocus;
   border-color:@buttonBorderColorFocus;
   color: @buttonFontColorFocus;
@@ -419,14 +418,7 @@ shopItem Button_text.battle {
   size:1@slot_button_fullWidth, 3*@scrn_tgt/100.0;
   padding:1*@sf/@pf_outdated, 0;
   margin-bottom:1*@buttonMargin;
-  not-input-transparent:yes;   display:hide;
-  enable:no;
-}
-
-shopItem[showButtons=yes] Button_text {
-  display:show;
-  enable:yes;
-}
+  not-input-transparent:yes; }
 
 Button_text.battle > pattern {
   position: absolute;
@@ -501,6 +493,25 @@ Button_text[visualStyle=common] {
   background-color: @white;
   background-repeat:expand;
   color: @commonTextColor;
+}
+
+bottomButtonsDiv > Button_text[visualStyle=common] {
+  background-color:#54656e;
+  background-position:0;
+  background-image:'';
+  foreground-color:#95b1b1;
+  foreground-position:0, 0, 0, h - 2@dp;
+}
+
+bottomButtonsDiv > Button_text[visualStyle=common]:hover,
+bottomButtonsDiv > Button_text[visualStyle=common]:pushed,
+bottomButtonsDiv > Button_text[visualStyle=common][active=yes],
+bottomButtonsDiv > Button_text[visualStyle=common][selected=yes],
+bottomButtonsDiv > Button_text[visualStyle=common]:disabled,
+bottomButtonsDiv > Button_text[visualStyle=common][inactiveColor=yes] {
+  background-color:@white;
+  background-position:3, 4, 3, 4;
+  foreground-color:@transparent;
 }
 
 Button_text[visualStyle=common][active=yes],
@@ -812,7 +823,6 @@ Button_close {
 
   cursor:onButton;
   snd_click:click;
-  input-sensitive:yes;
 
   btnName:B;
 }
@@ -870,6 +880,15 @@ Button_close:hover {
   background-color: @buttonCloseColorHover;
 }
 
+[show_console_buttons=yes] Button_close:hover {
+  background-color: @gamepadFocusFrameColor;
+  background-image: #ui/gameuiskin#item_selection;
+  background-position: 8, 10, 8, 8;
+  background-repeat: expand;
+  behavior:focusFrameTarget;
+  focusImageSource:background;
+}
+
 Button_close:pushed {
   background-color: @buttonCloseColorPushed;
 }
@@ -908,6 +927,7 @@ activateSelect > shopFilter[canClose=no] > Button_close {
 
 DummyButton {
   behaviour:button;
+  skip-navigation:yes;
 }
 
 top_right_holder {
@@ -959,19 +979,18 @@ Button_text.additional[btnName=X]      { accessKey:'J:X | Space';}
 
 Button_text[btnName=Y], button[btnName=Y],
 gameModeChangeButton[btnName=Y], CheckBox[btnName=Y],
-textareaNoTab.highlightButton[btnName=Y],
 DummyButton[btnName=Y], mapStateBox[btnName=Y],
 ComboBox[btnName=Y]                    { accessKey:'J:Y'; }
 
-Button_text.switch[btnName=Y], weaponryPreset[btnName=Y]
-                                       { accessKey:'J:Y | Space'; }
+Button_text.switch[btnName=Y]          { accessKey:'J:Y | Space'; }
 Button_text[btnName=RB], CheckBox[btnName=RB],
 DummyButton[btnName=RB], emptyButton[btnName=RB], ComboBox[btnName=RB]
                                        { accessKey:'J:RB'; }
 Button_text[btnName=LB], CheckBox[btnName=LB], playbackCheckbox[btnName=LB],
 DummyButton[btnName=LB], emptyButton[btnName=LB]
                                        { accessKey:'J:LB'; }
-Button_text[btnName=RT]                { accessKey:'J:RT'; }
+Button_text[btnName=RT], DummyButton[btnName=RT]
+                                       { accessKey:'J:RT'; }
 Button_text[btnName=LT], CheckBox[btnName=LT], ComboBox[btnName=LT]
                                        { accessKey:'J:LT'; }
 Button_text[btnName=RLB]               { accessKey:'J:RB | J:LB'; }
@@ -1000,22 +1019,20 @@ Button_text[btnName=DpadRight]         { accessKey:'J:Dpad.Right | Right'; }
 
 Button_text[btnName=AB]                { accessKey:'J:A | Space | Enter | NumEnter | J:B | Esc | Backspace'; }
 
-Button_text[btnName=A], DummyButton[btnName=A], mapStateBox[btnName=A], weaponryPreset[btnName=A]:focus
+Button_text[btnName=A], DummyButton[btnName=A], mapStateBox[btnName=A]
                                         { accessKey:'J:A | Space | Enter | NumEnter'; }
-[swap_ab=yes] Button_text[btnName=A], [swap_ab=yes] DummyButton[btnName=A], [swap_ab=yes] mapStateBox[btnName=A],
-[swap_ab=yes] weaponryPreset[btnName=A]:focus
+[swap_ab=yes] Button_text[btnName=A], [swap_ab=yes] DummyButton[btnName=A], [swap_ab=yes] mapStateBox[btnName=A]
                                         { accessKey:'J:B | Space | Enter | NumEnter'; }
 
 Button_text[btnName=SpaceA]            { accessKey:'J:A | Space'; }
 [swap_ab=yes] Button_text[btnName=SpaceA] { accessKey:'J:B | Space'; }
 
-Button_text[btnName=A][onlyA], CheckBox[btnName=A][onlyA]
-                                       { accessKey:'J:A'; }
-[swap_ab=yes] Button_text[btnName=A][onlyA], [swap_ab=yes] CheckBox[btnName=A][onlyA]
-                                       { accessKey:'J:B'; }
+Button_text, button, emptyButton, baseToggleButton, hoverButton, paymentItem {
+  focusBtnName:A;
+}
 
-Button_text[focusBtnName=A]            { shortcutActivate:'J:A | Space'; }
-[swap_ab=yes] Button_text[focusBtnName=A] { shortcutActivate:'J:B | Space'; }
+[focusBtnName=A]            { shortcutActivate:'J:A | Space'; }
+[swap_ab=yes] [focusBtnName=A] { shortcutActivate:'J:B | Space'; }
 
 Button_text[btnName=B],
 Button_close[btnName=B],
@@ -1104,11 +1121,22 @@ ButtonImg[btnName=Dpad] { background-image:@control_dirpad; bigButton:yes; }
 [btnName=DpadDown] > ButtonImg { background-image:@control_dirpad_down; bigButton:yes; }
 
 
-[focusBtnName=A]:focus > ButtonImg { background-image:@control_button_a; }
-[swap_ab=yes] [focusBtnName=A]:focus > ButtonImg { background-image:@control_button_b; }
+[focusBtnName=A]:hover > ButtonImg { background-image:@control_button_a; }
+[swap_ab=yes] [focusBtnName=A]:hover > ButtonImg { background-image:@control_button_b; }
 
-[focusBtnName=A]:focus:pushed > ButtonImg { background-image:@control_button_a_pressed; }
-[swap_ab=yes] [focusBtnName=A]:focus:pushed > ButtonImg { background-image:@control_button_b_pressed; }
+[focusBtnName=A]:hover:pushed > ButtonImg { background-image:@control_button_a_pressed; }
+[swap_ab=yes] [focusBtnName=A]:hover:pushed > ButtonImg { background-image:@control_button_b_pressed; }
+
+
+[target_platform=ps5] [btnName=start] > ButtonImg,
+[target_platform=ps5] [btnName=ww_menu] > ButtonImg
+  { background-image:#ui/gameuiskin#slot_menu.svg; }
+
+[target_platform=ps5] [btnName=start]:pushed > ButtonImg,
+[target_platform=ps5] [btnName=ww_menu]:pushed > ButtonImg
+  { background-color: @gray; }
+
+
 
 
 Button_text[redDisabled=yes]:disabled {
@@ -1156,6 +1184,10 @@ Button_text[visualStyle=noFrameGold] {
   background-color: @transparent;
   border-color:@transparent;
   text-align:center;
+}
+
+Button_text[visualStyle=noFrame],
+Button_text[visualStyle=noFrameGold] {
   reduceMinimalWidth:yes;
 }
 
@@ -1199,8 +1231,6 @@ Button_text[visualStyle=noFrame]:hover,
   border-color:@menuButtonBorderColorHover;
 }
 
-[show_console_buttons=yes] Button_text[visualStyle=noFrame][selected=yes],
-Button_text[visualStyle=noFrame]:hover,
 [show_console_buttons=yes] Button_text[visualStyle=noFrame][selected=yes] > btnText,
 Button_text[visualStyle=noFrame]:hover > btnText,
 Button_text[visualStyle=noFrameGold]:hover > btnText,
@@ -1440,7 +1470,8 @@ rightClickMenu > Button_text:focus > ButtonImg[pc_style=no],
 [show_console_buttons=yes] button[selected=yes] > ButtonImg,
 [show_console_buttons=yes] button[showConsoleImg=yes][btnName] > ButtonImg,
 [show_console_buttons=yes] [selected=yes] ButtonImg[showOnSelect=yes],
-[show_console_buttons=yes] :focus > [selected=yes] ButtonImg[showOnSelect=focus] {
+[show_console_buttons=yes] battlePassStage:hover ButtonImg[showOnSelect=hover],
+[show_console_buttons=yes] :hover > [selected=yes] ButtonImg[showOnSelect=hover] {
   display:show;
 }
 
@@ -1770,7 +1801,7 @@ Button_text.double[showOnSelect] {
 }
 
 [selected=yes] Button_text.double[pc_style=no][showOnSelect=yes],
-:focus > [selected=yes] Button_text.double[pc_style=no][showOnSelect=focus] {
+:hover > [selected=yes] Button_text.double[pc_style=no][showOnSelect=hover] {
   haveGamepadImage:yes;
 }
 
@@ -1808,10 +1839,19 @@ btnCollapse {
 }
 
 fullSizeCollapseBtn{
-  behaviour: button;
   width: pw;
   height: ph;
-  on_click:onCollapse;
+}
+
+fullSizeCollapseBtn[on_click] {
+  behaviour: button;
+}
+
+collapsableBlock > header > fullSizeCollapseBtn {
+  collapsed:yes;
+}
+collapsableBlock[selected=yes] > header > fullSizeCollapseBtn {
+  collapsed:no;
 }
 
 fullSizeCollapseBtn[square=yes] {
@@ -1830,16 +1870,9 @@ campaign_item > fullSizeCollapseBtn > activeText {
   pos:@missionItemTextPaddingLeft, ph/2-h/2;
 }
 
-[collapsed=yes] fullSizeCollapseBtn > activeText{
+[collapsed=yes] fullSizeCollapseBtn > activeText,
+fullSizeCollapseBtn[collapsed=yes] > activeText {
   text:"+";
-}
-
-weaponryPreset[showOrNoneOn=selectedOnConsole] > ButtonImg {
-  display:hide;
-}
-
-[show_console_buttons=yes] weaponryPreset[showOrNoneOn=selectedOnConsole]:focus > ButtonImg {
-  display:show;
 }
 
 [collapsed=yes] btnCollapse {
@@ -1865,22 +1898,29 @@ textarea[voiceShortcut=yes]:disabled {
   color-factor:128;
 }
 
-Button_text[showOn=hoverOrSelect] {
-  display:hide;
+Button_text[showOn=hoverOrPcSelect] {
+  display:none;
+  enable:no;
+}
+tr:hover Button_text[showOn=hoverOrPcSelect],
+[show_console_buttons=no] tr[selected=yes] Button_text[showOn=hoverOrPcSelect] {
+  display:show;
+  enable:yes;
+}
+[show_console_buttons=yes] tr Button_text[showOn=hoverOrPcSelect] ButtonImg {
+  display:show;
 }
 
-tr[selected=yes] Button_text[showOn=hoverOrSelect], tr:hover Button_text[showOn=hoverOrSelect],
+gameModeBlock Button_text[showOn=hoverOrSelect] {
+  display:hide;
+}
 gameModeBlock[current_mode=yes] Button_text[showOn=hoverOrSelect],
 gameModeBlock:hover Button_text[showOn=hoverOrSelect] {
   display:show;
 }
-
-[show_console_buttons=yes] tr Button_text[showOn=hoverOrSelect] ButtonImg,
 [show_console_buttons=yes] gameModeBlock Button_text[showOn=hoverOrSelect] {
   display:hide;
 }
-
-[show_console_buttons=yes] tr[selected=yes] Button_text[showOn=hoverOrSelect] ButtonImg,
 [show_console_buttons=yes] gameModeBlock[selected=yes] Button_text[showOn=hoverOrSelect],
 [show_console_buttons=yes] gameModeBlock:hover Button_text[showOn=hoverOrSelect] {
   display:show;
@@ -1930,6 +1970,7 @@ Button_text.profileImg {
   height:1@avatarButtonSize;
   width:h;
   background-image:#ui/gameuiskin#header_button_;
+  border:no;
   margin:0;
   padding:1@blockInterval;
   padding-left:1@blockInterval;
@@ -1948,10 +1989,12 @@ Button_text.profileImg > ButtonImg {
 
 Button_text.profileImg:hover {
   background-image:#ui/gameuiskin#header_button_hover;
+  border:yes;
 }
 
 Button_text.profileImg:pushed {
   background-image:#ui/gameuiskin#header_button_active;
+  border:yes;
 }
 
 Button_text.profileImg[enabled=no] > img {
@@ -1976,10 +2019,7 @@ Button_text.additional[hasIncreasedTopMargin] {
 weaponry_item:hover > modSlotButtonsNest > Button_text.additional[canShow=yes],
 weaponry_item > modSlotButtonsNest:hover > Button_text.additional[canShow=yes],
 weapon_item_unit:hover > Button_text.additional[canShow=yes],
-Button_text.additional:hover[canShow=yes],
-[show_console_buttons=yes] :focus > weaponry_item[selected=yes] > modSlotButtonsNest > Button_text.additional[canShow=yes],
-[show_console_buttons=yes] :focus > weaponry_item[selected=yes] > modSlotButtonsNest > Button_text.additional[canShow=selected],
-[show_console_buttons=yes] :focus > weaponry_item[selected=yes] > modSlotButtonsNest > Button_text.additional[canShow=console] {
+Button_text.additional:hover[canShow=yes] {
   display:show;
 }
 
@@ -1997,12 +2037,12 @@ Button_text > textarea.buttonText {
 
 [clan_locked=yes] > img,
 [clan_locked=yes] > Button_text > img{
-  background-image: #ui/gameuiskin#locked;
+  background-image: #ui/gameuiskin#locked.svg;
 }
 
 [clan_locked=no] > img,
 [clan_locked=no] > Button_text > img{
-  background-image: #ui/gameuiskin#unlocked;
+  background-image: #ui/gameuiskin#unlocked.svg;
 }
 
 Button_text.bottomAirItem,
@@ -2022,10 +2062,9 @@ Button_text.bottomAirItem {
   position:relative;
   min-width: 0.33@slot_width;
   padding:1@smallButtonImgPadding;
-  padding-top:1@smallButtonImgPadding + 1@dp + 3@sf/@pf;   display: hide;
-  enable:no;
-  non-input-transparent:yes;
+  padding-top:1@smallButtonImgPadding + 1@dp + 3@sf/@pf;   non-input-transparent:yes;
   order-popup:no;
+  skip-navigation:yes;
 }
 
 Button_text.bottomAirItem > img {
@@ -2046,13 +2085,6 @@ Button_text.bottomAirItem > textareaNoTab {
 Button_text.bottomAirItem[inactiveColor=yes]
 {
   background-color: @weaponWarning;
-}
-
-:focus td[selected=yes] Button_text.bottomAirItem,
-[show_console_buttons=yes] :focus unitItemContainer[selected=yes] > shopItem Button_text.bottomAirItem,
-weapon_item_unit[selected=yes] Button_text.bottomAirItem {
-  display:show;
-  enable:yes;
 }
 
 Button_text[type=weaponryAmount] {
@@ -2098,7 +2130,8 @@ Button_text[type=weaponryAmount] {
   display:hide;
 }
 
-[show_console_buttons=no] td[selected=yes] :hover Button_text.bottomAirItem,
+[show_console_buttons=no] unitCell[selected=yes] :hover Button_text.bottomAirItem,
+[show_console_buttons=no] unitItemContainer[selected=yes] :hover Button_text.bottomAirItem,
 Button_text.bottomAirItem:hover {
   order-popup:yes;
 }
@@ -2162,26 +2195,8 @@ Button_text[iconPos=middleBottom][pc_style=no] > textarea {
   text-align:center;
 }
 
-textareaNoTab.highlightButton > ButtonImg {
-  height:1@buttonIconHeight;
-  background-svg-size: 1@buttonIconHeight, 1@buttonIconHeight;
-  top:-3*@sf/@pf_outdated;
-  position:absolute;
-}
-
-[show_console_buttons=yes] textareaNoTab.highlightButton[btnName] {
-  padding-left:@buttonIconHeight;
-}
-
 msgBoxButtonsHolder > Button_text {
-  behaviour:navigator;
-  navBack:"#parent";
-  navLeft:"#prev:wrap";
-  navRight:"#next:wrap";
-  navLobbyRight:"#next:wrap";
-
   showConsoleImage:no;
-  navigatorShortcuts:active;
 }
 
 Button_text[isLink=yes][isFeatured=yes] > btnText {
@@ -2399,7 +2414,6 @@ Button_text > newIconWidget[widgetClass=text] {
 }
 
 Button_text[visualStyle=noBgr] {
-  padding-left:1@buttonHeight+1@buttonTextPadding;
   behavior:textarea;
   re-type:textarea;
   min-height:@buttonHeight;
@@ -2415,9 +2429,9 @@ Button_text[visualStyle=noBgr] {
 }
 
 Button_text[visualStyle=noBgr] > ButtonImg{
-  pos:1@buttonImgMargin, 50%ph-50%h;
-  height:1@buttonHeight;
-  background-svg-size: 1@buttonHeight, 1@buttonHeight;
+  pos:0, 50%ph-50%h;
+  height:1@buttonIconHeight;
+  background-svg-size: 1@buttonIconHeight, 1@buttonIconHeight;
 }
 
 Button_text[visualStyle=noBgr]:hover {
@@ -2426,6 +2440,37 @@ Button_text[visualStyle=noBgr]:hover {
 
 Button_text[visualStyle=noBgr]:pushed {
   color:@white;
+}
+
+Button_text[visualStyle=noBgr][inactive=yes]:hover,
+Button_text[visualStyle=noBgr][inactive=yes]:pushed {
+  color: @buttonFontColor;
+}
+
+[show_console_buttons=yes] Button_text[visualStyle=noBgr][btnName] {
+  padding-left:1@buttonIconHeight;
+}
+
+Button_text[visualStyle=noBgr] > textareaNoTab {
+  color: @activeTextColor;
+}
+
+Button_text[visualStyle=bigImg] {
+  flow: vertical;
+  padding: 0;
+  margin: 0;
+  border: no;
+  background-color: @black;
+}
+
+Button_text[visualStyle=bigImg] > text {
+  font: @fontBigBold;
+  color: @activeTextColor;
+}
+
+Button_text[visualStyle=bigImg][selected=yes],
+Button_text[visualStyle=bigImg]:hover {
+  background-color: @menuButtonColorHover;
 }
 
 Button_text[visualStyle=twoStepLogin] {
@@ -2472,5 +2517,15 @@ buttonPlayer:active > btnText {
 }
 
 wwConflictSideBlock > Button_text {
+  min-width:pw;
+}
+
+[show_console_buttons=yes] Button_text:hover {
+  needFocusBorder:yes;
+}
+[show_console_buttons=yes] Button_text[visualStyle=noBgr] {   needFocusBorder:no;
+}
+
+Button_text[parentWidth=yes] {
   min-width:pw;
 }

@@ -22,6 +22,13 @@ frame[type=blue] {
 
 frame.wndNav {
   padding:1@framePadding, 1@frameTopPadding, 1@framePadding, 1@frameFooterHeight;
+  border:no;
+  background-color: @frameDarkTransparentBgColor;
+}
+
+frame.wndNav[fullScreenSize=yes] {
+  border:no;
+  background-color: @transparent;
 }
 frame.wndNav[largeNavBarHeight=yes] {
   padding:1@framePadding, 1@frameTopPadding, 1@framePadding, 1@frameFooterHeightLarge;
@@ -39,14 +46,13 @@ frame.wndNav[isHeaderHidden=yes] {
   padding:1@framePadding, 1@framePadding, 1@framePadding, 1@frameFooterHeight;
 }
 
-frame.leaderboard {
-  padding:0.025@scrn_tgt, 1@frameTopPadding, 0.025@scrn_tgt, 1@frameFooterHeight;
-}
 frame.small {
   padding:1@framePadding, 1@framePadding, 1@framePadding, 1@frameFooterHeight;
 }
 frame.wnd {
   padding:1@framePadding, 1@frameTopPadding, 1@framePadding, 1@framePadding;
+  border:no;
+  background-color: @frameDarkTransparentBgColor;
 }
 frame.wnd[padByLine=yes] {
   padding:1@frameHeaderPad, 1@frameHeaderHeight +1@dp, 1@frameHeaderPad, 1@frameHeaderPad;
@@ -58,14 +64,15 @@ frame_header {
   width:pw;
   height:1@frameHeaderHeight;
   position:absolute;
-  padding:1@frameHeaderPad, 1@frameHeaderPad, 1@frameHeaderPad + 1@buttonCloseHeight, 0;
-
-  background-position:@frameHeaderPad, @frameHeaderPad, @frameHeaderPad, 0;
-  background-color:@frameHeaderColor;
+  background-color:@frameHeaderBackgroundColor;
 }
 
 frame.wndNav[isHeaderHidden=yes] > frame_header {
   display: hide;
+}
+
+frame.wndNav[fullScreenSize=yes] > frame_header {
+  background-color:@transparent;
 }
 
 frame_header[smallIcon=yes] {
@@ -76,7 +83,6 @@ frame_header[scaleable=yes] {
   height:0;
   min-height:1@buttonHeight;
   position:relative;
-  pading:0;
   margin:-1@framePadding;
 }
 
@@ -87,10 +93,11 @@ frame_header > textareaNoTab {
   position:relative;
 }
 
-frame.scaleable, div.scaleable {
+frame.scaleable {
   application-window:yes;
   input-transparent:no;
-  border-color: @frameScaleableBorderColor;
+    border: no;
+  background-color: @frameDarkTransparentBgColor;
 }
 
 moveElem {
@@ -114,4 +121,34 @@ frame[side=left] {
 }
 frame[side=right] {
   pos:2*@sf/@pf_outdated, -h-1*@scrn_tgt/100.0;
+}
+
+frameBlock {
+  background-color:@frameBackgroundColor;
+  border-color:@frameBorderColor;
+  border:yes;
+  border-offset:@dp;
+}
+
+frameBlock[ticketsWindow=yes] {
+  background-color:@transparent;
+}
+
+frameBlock_dark {
+  background-color:@frameDarkBackgroundColor;
+  border-color:@frameDarkBorderColor;
+  border:yes;
+  border-offset:@dp;
+}
+
+frameBlock_dark[bgTeamColor=red] {
+  background-color:@frameTeamRedBackgroundColor;
+}
+
+frameBlock_dark[bgTeamColor=blue] {
+  background-color:@frameTeamBlueBackgroundColor;
+}
+
+frameBlock_dark[hasBorder=no] {
+  border:no;
 }

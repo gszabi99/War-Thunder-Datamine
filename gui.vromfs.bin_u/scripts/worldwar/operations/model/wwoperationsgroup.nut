@@ -1,6 +1,6 @@
 local { getMapByName } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
-class WwOperationsGroup
+::WwOperationsGroup <- class
 {
   mapId = ""
 

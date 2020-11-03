@@ -1,5 +1,3 @@
-local countItemsInRow = 5
-
 local CollectionsSet = class {
   id = "" //name of config blk. not unique
   uid = -1
@@ -34,26 +32,25 @@ local CollectionsSet = class {
   getLocName = @() ::loc(locId)
   _tostring  = @() $"CollectionSet {id} (collectionItemsAmount = {collectionItems.len()})"
 
-  function getView(idxOnPage) {
+  function getView(countItemsInRow, collectionTopPos, collectionHeight) {
     local collectionNum = uid
-    local collectionTopPos = $"{idxOnPage} * (1@collectionHeight + 1@blockInterval)"
     local collectionItemsTopPos = $"{collectionTopPos} + 1@buttonHeight + 1@blockInterval"
-    local collectionItemCenterPos = $"{collectionItemsTopPos} + 1@collectionItemSizeWithIndent - 0.5@blockInterval - 0.5h"
-    local needPlaceItemsInCenter = collectionItems.len() <= countItemsInRow
+    local rowCount = ::ceil(collectionItems.len() / (countItemsInRow*1.0))
+    local deltaTopPos = "".concat("0.5*(", collectionHeight, "-1@buttonHeight+1@blockInterval-",
+      rowCount, "@collectionItemSizeWithIndent)")
     local unlockedItemsCount = 0
     local itemsView = collectionItems.map(function(decorator, idx) {
       local decoratorType = decorator.decoratorType
       decoratorType.updateDownloadableDecoratorsInfo(decorator)
-      local column = idx >= countItemsInRow ? idx - countItemsInRow : idx
-      local row = idx >= countItemsInRow ? 1 : 0
+      local column = idx - countItemsInRow * (idx / countItemsInRow)
+      local row = idx / countItemsInRow
       local isUnlocked = decorator.isUnlocked()
       if (isUnlocked)
         unlockedItemsCount++
       return {
         id = $"{collectionNum};{decorator.id}"
         pos = "{0}, {1}".subst($"1@blockInterval + {column}@collectionItemSizeWithIndent",
-          needPlaceItemsInCenter ? collectionItemCenterPos
-            : $"{collectionItemsTopPos} + {row}@collectionItemSizeWithIndent")
+          $"{collectionItemsTopPos} + {deltaTopPos} + {row}@collectionItemSizeWithIndent")
         tag = "imgSelectable"
         unlocked = isUnlocked
         image = decoratorType.getImage(decorator)
@@ -68,12 +65,13 @@ local CollectionsSet = class {
     local isUnlocked = prize.isUnlocked()
     itemsView.append({
       id = $"{collectionNum};{prize.id}"
-      pos = $"1@blockInterval + {countItemsInRow}@collectionItemSizeWithIndent, {collectionItemCenterPos}"
+      pos = "{0}, {1}".subst("1@collectionWidth-1@collectionPrizeWidth",
+        $"{collectionItemsTopPos}+0.5*({collectionHeight}-1@buttonHeight+1@blockInterval-h)")
       tag = "imgSelectable"
       unlocked = isUnlocked
       image = decoratorType.getImage(prize)
       imgRatio = decoratorType.getRatio(prize)
-      imgClass = "mediumSize"
+      imgClass = "collectionPrize"
       focusBorder = true
       tooltipId = ::g_tooltip_type.DECORATION.getTooltipId(prize.id, decoratorType.unlockedItemType, {
         additionalDescriptionMarkup = getCollectionViewForPrize()

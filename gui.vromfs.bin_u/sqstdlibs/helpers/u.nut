@@ -388,6 +388,14 @@ local function chooseRandomNoRepeat(arr, prevIdx) {
   return arr[nextIdx]
 }
 
+/**
+*  Wraps the @index (any integer number) in the @length of the array.
+*  Returns the adjusted index in array range, keeping its offset.
+*  In case of zero @length returns -1
+*/
+local function wrapIdxInArrayLen(index, length) {
+  return length > 0 ? (((index % length) + length) % length) : -1
+}
 
 local uIsEqual = underscore.isEqual
 local function isEqual(val1, val2){
@@ -425,6 +433,7 @@ local export = underscore.__merge({
   appendOnce = appendOnce
   chooseRandom = chooseRandom
   chooseRandomNoRepeat = chooseRandomNoRepeat
+  wrapIdxInArrayLen = wrapIdxInArrayLen
   shuffle = shuffle
   min = getMin
   max = getMax

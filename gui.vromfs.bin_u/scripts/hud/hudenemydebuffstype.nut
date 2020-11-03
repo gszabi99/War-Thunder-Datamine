@@ -1,4 +1,4 @@
-local enums = ::require("sqStdlibs/helpers/enums.nut")
+local enums = require("sqStdlibs/helpers/enums.nut")
 local stdMath = require("std/math.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 

@@ -31,12 +31,12 @@
           "id": "items_list",
           "size": "pw, fh",
           "flow": "vertical",
-          "focus": "yes",
+          "move-only-hover": "yes",
+          "navigatorShortcuts": "yes",
           "on_select": "onItemSelect",
           "_on_dbl_click": "onStart",
-          "on_wrap_up": "onWrapUp",
-          "on_wrap_down": "onWrapDown",
-          "on_set_focus": "onListItemsFocusChange"
+          "on_hover": "onListItemsFocusChange",
+          "on_unhover": "onListItemsFocusChange"
         },
         "textAreaCentered": {
           "id": "items_list_msg",
@@ -57,7 +57,7 @@
     }
   ],
   "chapterSeparator": {
-    "margin": "0.01*@scrn_tgt, 0"
+    "margin": "1@blockInterval, 0"
   },
   "tdiv": [
     {

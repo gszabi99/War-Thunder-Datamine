@@ -2,7 +2,7 @@
 
 local dagor_fs = require("dagor.fs")
 local stdpath = require("std/path.nut")
-local skinLocations = ::require("scripts/customization/skinLocations.nut")
+local skinLocations = require("scripts/customization/skinLocations.nut")
 local unitInfoTexts = require("scripts/unit/unitInfoTexts.nut")
 
 local skyquakePath = ::debug_get_skyquake_path()
@@ -359,6 +359,7 @@ local function unitImagesSearchEverywhere(fn, files, unit, cfg)
   local errors    = 0
   local warnings  = 0
   local info      = 0
+  local printFunc = ::dagor.console_print
 
   foreach (cfg in unitImagesCheckCfgs)
   {
@@ -393,7 +394,7 @@ local function unitImagesSearchEverywhere(fn, files, unit, cfg)
         {
           // Image exists, no need to use a placeholder.
           errors++
-          ::clog($"ERROR: {cfg.imgType} for {unitSrc} unit \"{unit.name}\" is {valueTxt} (but image exists: \"{located.path}\")")
+          printFunc($"ERROR: {cfg.imgType} for {unitSrc} unit \"{unit.name}\" is {valueTxt} (but image exists: \"{located.path}\")")
         }
         else
         {
@@ -405,7 +406,7 @@ local function unitImagesSearchEverywhere(fn, files, unit, cfg)
             info++
           local accidentType = isError ? "ERROR" : "INFO"
           if (isError || verbose)
-            ::clog($"{accidentType}: {cfg.imgType} for {unitSrc} unit \"{unit.name}\" is {valueTxt}")
+            printFunc($"{accidentType}: {cfg.imgType} for {unitSrc} unit \"{unit.name}\" is {valueTxt}")
         }
         continue
       }
@@ -435,7 +436,7 @@ local function unitImagesSearchEverywhere(fn, files, unit, cfg)
         local comment = located != null ? $" (wrong location: \"{located.path}\")" : ""
         local expectedPath = "/".concat(cfg[pathKey], cfg.subDirs[unitTag], fn)
         expectedPath = ::g_string.replace(expectedPath, "/", "\\")
-        ::clog($"{accidentType}: {cfg.imgType} for {unitSrc} unit \"{unit.name}\" {accidentText}: \"{expectedPath}\"{comment}")
+        printFunc($"{accidentType}: {cfg.imgType} for {unitSrc} unit \"{unit.name}\" {accidentText}: \"{expectedPath}\"{comment}")
       }
       else
       {
@@ -448,7 +449,7 @@ local function unitImagesSearchEverywhere(fn, files, unit, cfg)
             if (located.path != expectedPath)
             {
               warnings++
-              ::clog($"WARNING: {cfg.imgType} for {unitSrc} unit \"{unit.name}\" exists: \"{expectedPath}\" (but has a DUPLICATE: \"{located.path}\")")
+              printFunc($"WARNING: {cfg.imgType} for {unitSrc} unit \"{unit.name}\" exists: \"{expectedPath}\" (but has a DUPLICATE: \"{located.path}\")")
             }
         }
       }
@@ -457,7 +458,7 @@ local function unitImagesSearchEverywhere(fn, files, unit, cfg)
   }
 
   local infos = verbose ? $"{info} info, " : ""
-  clog($"Done ({errors} errors, {warnings} warnings, {infos}{unitsList.len()} total)")
+  printFunc($"Done ({errors} errors, {warnings} warnings, {infos}{unitsList.len()} total)")
   return errors
 }
 

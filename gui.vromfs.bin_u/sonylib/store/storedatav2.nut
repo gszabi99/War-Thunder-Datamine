@@ -5,11 +5,7 @@ local u = require("sqStdLibs/helpers/u.nut")
 
 local { fillBlock } = require("sqStdlibs/helpers/datablockUtils.nut")
 
-local SERVICE_LABEL = 0
-//
-
-
-
+local SERVICE_LABEL = ::get_platform() == "ps5"? 1 : 0
 local STORE_REQUEST_ADDITIONAL_FLAGS = {
   useCurrencySymbol = "false"
   useFree = "true"
@@ -84,7 +80,7 @@ requestLinksFullInfo = function(category) {
 }
 
 local requestCategoryFullLinksList = @(category) null
-requestCategoryFullLinksList = @(category) psn.fetch(psn.inGameCatalog.get([category], SERVICE_LABEL, STORE_REQUEST_ADDITIONAL_FLAGS),
+requestCategoryFullLinksList = @(category) psn.send(psn.inGameCatalog.get([category], SERVICE_LABEL, STORE_REQUEST_ADDITIONAL_FLAGS),
   function(response, err) {
     if (err) {
       statsd.send_counter("sq.ingame_store.v2.request", 1,
@@ -107,10 +103,7 @@ requestCategoryFullLinksList = @(category) psn.fetch(psn.inGameCatalog.get([cate
     for (local i = 0; i < categoriesData[category].links.blockCount(); i++)
       categoriesData[category].links.getBlock(i).category = category
 
-    local size = categoriesData[category].links.blockCount() || 0
-    local total = response[0]?.totalItemCount || size
-    if (size != 0 && total == size)
-      gatherAllItemsForCategory(requestCategoryFullLinksList, fillLinkFullInfo, category)
+    gatherAllItemsForCategory(requestCategoryFullLinksList, fillLinkFullInfo, category)
   }
 )
 

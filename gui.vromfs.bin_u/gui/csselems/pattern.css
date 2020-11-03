@@ -1,0 +1,22 @@
+pattern {
+  size:pw, ph;
+  background-color:@white;
+  background-repeat:repeat;
+  background-position:1,2;
+  input-transparent:yes;
+}
+
+shopItem > slotPlate > middleBg > pattern {
+  position:absolute;
+  background-position:1@slotBorderSize;
+}
+shopItem[group=yes] > slotPlate > middleBg > pattern {
+  background-position:1@slotBorderSize, 1@slotBorderSize +1@slotGroupTagHeight, 1@slotBorderSize, 1@slotBorderSize;
+}
+
+pattern[type=bright_texture] {
+  background-image:#ui/gameuiskin#pattern_bright_texture;
+}
+pattern[type=dark_diag_lines] {
+  background-image:#ui/gameuiskin#pattern_dark_diag_lines;
+}

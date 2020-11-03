@@ -1,8 +1,9 @@
 local stdMath = require("std/math.nut")
 local antiCheat = require("scripts/penitentiary/antiCheat.nut")
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
+local { checkDiffTutorial } = require("scripts/tutorials/tutorialsData.nut")
 
-class EventJoinProcess
+::EventJoinProcess <- class
 {
   event = null // Event to join.
   room = null
@@ -193,45 +194,6 @@ class EventJoinProcess
         [["ok", function() {}]], "ok")
       return false
     }
-    return true
-  }
-
-  function checkDiffTutorial(diff, unitType, needMsgBox = true, cancelCb = null)
-  {
-    if (!::check_diff_pkg(diff, !needMsgBox))
-      return true
-    if (!::g_difficulty.getDifficultyByDiffCode(diff).needCheckTutorial)
-      return false
-    if (::g_squad_manager.isNotAloneOnline())
-      return false
-
-    if (::isDiffUnlocked(diff, unitType))
-      return false
-
-    local reqName = ::get_req_tutorial(unitType)
-    local mData = ::get_uncompleted_tutorial_data(reqName, diff)
-    if (!mData)
-      return false
-
-    local msgText = ::loc((diff==2)? "msgbox/req_tutorial_for_real" : "msgbox/req_tutorial_for_hist")
-    msgText += "\n\n" + format(::loc("msgbox/req_tutorial_for_mode"), ::loc("difficulty" + diff))
-
-    msgText += "\n<color=@userlogColoredText>" + ::loc("missions/" + mData.mission.name) + "</color>"
-
-    if(needMsgBox)
-      ::scene_msg_box("req_tutorial_msgbox", null, msgText,
-        [
-          ["startTutorial", (@(mData, diff) function() {
-            mData.mission.setStr("difficulty", ::get_option(::USEROPT_DIFFICULTY).values[diff])
-            ::select_mission(mData.mission, true)
-            ::current_campaign_mission = mData.mission.name
-            ::save_tutorial_to_check_reward(mData.mission)
-            ::handlersManager.animatedSwitchScene(::gui_start_flight)
-          })(mData, diff)],
-          ["cancel", cancelCb]
-        ], "cancel")
-    else if(cancelCb)
-      cancelCb()
     return true
   }
 

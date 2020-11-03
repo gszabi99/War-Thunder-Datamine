@@ -91,7 +91,7 @@ local function requestWwLeaderboardModes(modeName, cb)
   local requestData = {
     add_token = true
     headers = { appid = mode.appId }
-    action = "cmn_get_global_leaderboard_modes"
+    action = "cmn_get_global_leaderboard_modes_json"
   }
 
   ::ww_leaderboard.request(requestData, cb)

@@ -3,7 +3,7 @@ return [
   {
     id = "ID_COMMON_TRACKER_HEADER"
     type = CONTROL_TYPE.SECTION
-    showFunc = @() !::is_platform_xboxone || ::ps4_headtrack_is_attached() || ::is_tracker_joystick()
+    showFunc = @() !::is_platform_xbox || ::ps4_headtrack_is_attached() || ::is_tracker_joystick()
   }
   {
     id = "headtrack_enable"
@@ -14,7 +14,7 @@ return [
   }
   {
     id = "ID_TRACKER_RESET_POSITION"
-    showFunc = @() !::is_platform_xboxone || ::g_controls_utils.checkOptionValue(::USEROPT_HEADTRACK_ENABLE, true)
+    showFunc = @() !::is_platform_xbox || ::g_controls_utils.checkOptionValue(::USEROPT_HEADTRACK_ENABLE, true)
     checkGroup = ctrlGroups.COMMON
     checkAssign = false
   }
@@ -35,7 +35,7 @@ return [
   {
     id = "trackIrZoom"
     type = CONTROL_TYPE.SWITCH_BOX
-    showFunc = @() !::is_platform_xboxone || ::g_controls_utils.checkOptionValue(::USEROPT_HEADTRACK_ENABLE, true)
+    showFunc = @() !::is_platform_xbox || ::g_controls_utils.checkOptionValue(::USEROPT_HEADTRACK_ENABLE, true)
     value = @(joyParams) joyParams.trackIrZoom
     setValue = function(joyParams, objValue) {
       local prev = joyParams.trackIrZoom
@@ -47,7 +47,7 @@ return [
   {
     id = "trackIrForLateralMovement"
     type = CONTROL_TYPE.SWITCH_BOX
-    showFunc = @() !::is_platform_xboxone
+    showFunc = @() !::is_platform_xbox
     value = @(joyParams) joyParams.trackIrForLateralMovement
     setValue = function(joyParams, objValue) {
       local prev = joyParams.trackIrForLateralMovement
@@ -59,7 +59,7 @@ return [
   {
     id = "trackIrAsHeadInTPS"
     type = CONTROL_TYPE.SWITCH_BOX
-    showFunc = @() !::is_platform_xboxone || ::g_controls_utils.checkOptionValue(::USEROPT_HEADTRACK_ENABLE, true)
+    showFunc = @() !::is_platform_xbox || ::g_controls_utils.checkOptionValue(::USEROPT_HEADTRACK_ENABLE, true)
     value = @(joyParams) joyParams.trackIrAsHeadInTPS
     setValue = function(joyParams, objValue) {
       local prev = joyParams.trackIrAsHeadInTPS

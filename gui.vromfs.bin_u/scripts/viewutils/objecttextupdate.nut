@@ -62,7 +62,7 @@ local function setHelpTextOnLoading(nestObj = null) {
   if (!::checkObj(nestObj))
     return
 
-  local text = ::show_console_buttons? ::loc("loading/help_consoleTip") : ::loc("loading/help_tip01")
+  local text = ::show_console_buttons? "" : ::loc("loading/help_tip01")
   nestObj.setValue(text)
 }
 

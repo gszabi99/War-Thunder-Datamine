@@ -64,9 +64,6 @@ class ::gui_handlers.MRoomMembersWnd extends ::gui_handlers.BaseGuiHandlerWT
       playersListWidgetWeak = playersListWidgetWeak.weakref()
     registerSubHandler(playersListWidgetWeak)
 
-    local focusObj = playersListWidgetWeak.getFocusObj()
-    focusObj.select()
-
     scene.findObject("update_timer").setUserData(this)
     updateTeamsHeader()
     initRoomTimer()

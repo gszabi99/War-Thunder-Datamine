@@ -771,8 +771,10 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -794,8 +796,9 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
         "fireParamsPreset": "fuel_exterior",
         "fuel_tank_exterior_r_01_dm": [],
         "fuel_tank_exterior_r_02_dm": [],
@@ -1975,8 +1978,8 @@
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "autoLoader": true,
-        "speedYaw": 45.0,
-        "speedPitch": 25.0,
+        "speedYaw": 85.0,
+        "speedPitch": 40.0,
         "fireConeAngle": 1.0,
         "bullets": 10,
         "salvoAmount": 100.0,
@@ -2609,6 +2612,15 @@
       },
       {
         "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -2630,7 +2642,7 @@
     "cockpit": {
       "zoomOutFov": 12.3,
       "zoomInFov": 6.14,
-      "sightFov": 9.0,
+      "sightFov": 6.0,
       "sightName": "roland_sight",
       "headPos": [0.0,4.0,-8.0],
       "headPosOnShooting": [1.1,3.6,-0.15],
@@ -2740,8 +2752,8 @@
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
                 "autoLoader": true,
-                "speedYaw": 45.0,
-                "speedPitch": 25.0,
+                "speedYaw": 85.0,
+                "speedPitch": 40.0,
                 "fireConeAngle": 1.0,
                 "bullets": 10,
                 "salvoAmount": 100.0,

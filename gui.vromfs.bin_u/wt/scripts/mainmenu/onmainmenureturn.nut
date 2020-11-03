@@ -2,16 +2,13 @@ local onMainMenuReturnActions = require("scripts/mainmenu/onMainMenuReturnAction
 
 local time = require("scripts/time.nut")
 local penalties = require("scripts/penitentiary/penalties.nut")
-local itemNotifications = ::require("scripts/items/itemNotifications.nut")
+local itemNotifications = require("scripts/items/itemNotifications.nut")
+local { checkGaijinPassReminder } = require("scripts/mainmenu/reminderGaijinPass.nut")
 local { systemOptionsMaintain } = require("scripts/options/systemOptions.nut")
 local { checkJoystickThustmasterHotas } = require("scripts/controls/hotas.nut")
-local { checkGaijinPassReminder } = require("scripts/mainmenu/reminderGaijinPass.nut")
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
-local { checkInvitesAfterFlight = @() null } = isPlatformSony
-  ? require("scripts/social/psnSessions.nut")
-  : null
-
+local { checkInvitesAfterFlight } = require("scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
 
 //called after all first mainmenu actions
 onMainMenuReturnActions.onMainMenuReturn <- function(handler, isAfterLogin) {
@@ -121,4 +118,6 @@ onMainMenuReturnActions.onMainMenuReturn <- function(handler, isAfterLogin) {
   handler.doWhenActive(::pop_gblk_error_popups)
 
   guiScene.initCursor("gui/cursor.blk", "normal")
+
+  ::broadcastEvent("MainMenuReturn")
 }

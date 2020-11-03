@@ -104,13 +104,13 @@ return function(config, customFeedParams) {
   local localizedKeyWords = {}
   if ("requireLocalization" in customFeedParams)
     foreach(name in customFeedParams.requireLocalization)
-      localizedKeyWords[name] <- ::get_localized_text_with_abbreviation(customFeedParams[name])
+      localizedKeyWords[name] <- ::g_localization.getLocalizedTextWithAbbreviation(customFeedParams[name])
 
-  local activityFeed_config = ::combine_tables(requestsTable, customFeedParams)
+  local activityFeed_config = customFeedParams.__merge(requestsTable)
 
   local getFilledFeedTextByLang = function(key) {
     local captions = {}
-    local localizedTable = ::get_localized_text_with_abbreviation(key)
+    local localizedTable = ::g_localization.getLocalizedTextWithAbbreviation(key)
 
     foreach(lang, string in localizedTable)
     {

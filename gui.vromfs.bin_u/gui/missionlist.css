@@ -47,6 +47,16 @@ mission_item_completed:hover, mission_item_unlocked:hover, mission_item_locked:h
 chapter_item_unlocked:hover, chapter_item_locked:hover, campaign_item:hover {
   background-color:@listboxHoverOptionColor;
 }
+
+[show_console_buttons=yes] mission_item_completed:hover,
+[show_console_buttons=yes] mission_item_unlocked:hover,
+[show_console_buttons=yes] mission_item_locked:hover,
+[show_console_buttons=yes] chapter_item_unlocked:hover,
+[show_console_buttons=yes] chapter_item_locked:hover,
+[show_console_buttons=yes] campaign_item:hover {
+  needFocusBorder:yes;
+}
+
 mission_item_completed:current, mission_item_unlocked:current, mission_item_locked:current,
 chapter_item_unlocked:current, chapter_item_locked:current, campaign_item:current {
   background-color:@listboxSelOptionColor;
@@ -190,7 +200,7 @@ img[medalIcon][isLastPlayedIcon]
   height:ph-12*@sf/@pf_outdated;
 }
 
-frame img[medalIcon], frame animated_wait_icon.missionBox, frame wwBattleIcon[medalIcon] {
+frame img[medalIcon], frame wwBattleIcon[medalIcon] {
   pos:@missionBoxImageOffsetX - 50%w, 50%ph-50%h;
   position:absolute;
 }
@@ -315,4 +325,23 @@ optiontext[shopStat=broken] {
 }
 optiontext[shopStat=locked] {
   color:@textItemLocked;
+}
+
+optionlist_container[mislist=yes] {
+  background-color:@containerMisSelectColor;
+}
+
+chapterListPlace {
+  width:1@chapterBlockWidth;
+}
+
+chapterListPlace[increaseWidthForWide=yes] {
+  width:1@chapterWideBlockWidth;
+}
+
+[mislist=yes] chapterListPlace {
+  width:0.5@sf;
+}
+[mislist=events] chapterListPlace {
+  width:(0.03@sf + 0.02@sf * 1@isWide) * (1.3 + 1@slotbarCountries);
 }

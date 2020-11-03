@@ -108,7 +108,7 @@
     "textarea": {
       "id": "weaponsInfo",
       "margin-bottom": "0.01@sf",
-      "max-width": "@airInfoPanelWidth"
+      "width": "@airInfoPanelWidth + 0.5@referenceMarkerWidth"
     }
   },
   {
@@ -126,7 +126,7 @@
         "showStatsProgress": "no"
       },
       {
-        "width": "@airInfoPanelWidth"
+        "width": "@airInfoPanelWidth + 0.5@referenceMarkerWidth"
       },
       {
         "tr": [
@@ -1054,6 +1054,71 @@
             "td": {
               "textarea": {
                 "id": "aircraft-condition"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "tr": [
+          {
+            "id": "aircraft-research-efficiency-tr"
+          },
+          {
+            "td": {
+              "textarea": {
+                "text": "#shop/most_effective_research_tr"
+              }
+            }
+          },
+          {
+            "td": {
+              "textarea": {
+                "id": "aircraft-research-efficiency"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "tr": [
+          {
+            "id": "aircraft-reward_rp-tr"
+          },
+          {
+            "td": {
+              "textarea": {
+                "id": "aircraft-reward_rp-label",
+                "text": ""
+              }
+            }
+          },
+          {
+            "td": {
+              "tdiv": {
+                "id": "aircraft-reward_rp"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "tr": [
+          {
+            "id": "aircraft-reward_wp-tr"
+          },
+          {
+            "td": {
+              "textarea": {
+                "id": "aircraft-reward_wp-label",
+                "text": ""
+              }
+            }
+          },
+          {
+            "td": {
+              "tdiv": {
+                "id": "aircraft-reward_wp"
               }
             }
           }

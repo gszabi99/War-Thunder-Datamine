@@ -116,7 +116,7 @@ g_chat.makeXBoxRestrictedMsg <- function makeXBoxRestrictedMsg(msg)
 
 g_chat.checkBlockedLink <- function checkBlockedLink(link)
 {
-  return !::is_platform_xboxone && (link.len() > 6 && link.slice(0, 3) == "BL_")
+  return !::is_platform_xbox && (link.len() > 6 && link.slice(0, 3) == "BL_")
 }
 
 

@@ -29,7 +29,7 @@ class ::gui_handlers.ControlsConsole extends ::gui_handlers.GenericOptionsModal
     ]
 
     local guiScene = ::get_gui_scene()
-    local container = create_options_container("controls", options, true, true)
+    local container = create_options_container("controls", options, true)
     guiScene.replaceContentFromText("optionslist", container.tbl, container.tbl.len(), this)
     optionsContainers = [container.descr]
 
@@ -81,7 +81,7 @@ class ::gui_handlers.ControlsConsole extends ::gui_handlers.GenericOptionsModal
   function updateButtons()
   {
     showSceneBtn("btn_switchMode", true)
-    showSceneBtn("btn_controlsWizard", ::get_game_mode() != ::GM_TRAINING && !::is_platform_xboxone)
+    showSceneBtn("btn_controlsWizard", ::get_game_mode() != ::GM_TRAINING && !::is_platform_xbox)
     showSceneBtn("btn_controlsHelp", ::has_feature("ControlsHelp"))
     local btnObj = scene.findObject("btn_calibrate")
     if (::checkObj(btnObj))

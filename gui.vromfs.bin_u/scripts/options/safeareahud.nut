@@ -1,11 +1,11 @@
-local screenInfo = ::require("scripts/options/screenInfo.nut")
+local screenInfo = require("scripts/options/screenInfo.nut")
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
 local sony = require("sony")
 
 local defValue  = 1.0
 local values    = [1.0, 0.95, 0.9, 0.85]
 local items     = ["100%", "95%", "90%", "85%"]
-if (::is_platform_xboxone)
+if (::is_platform_xbox)
 {
   //::xbox_get_safe_area() returns max of it's size is 0.89
   // so remove all below of it to fit in.

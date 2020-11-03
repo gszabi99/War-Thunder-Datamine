@@ -11,7 +11,7 @@ local psnSocial = require("sony.social")
 
 local contactsByName = {}
 
-class Contact
+::Contact <- class
 {
   name = ""
   uid = ""
@@ -20,7 +20,7 @@ class Contact
 
   presence = ::g_contact_presence.UNKNOWN
   forceOffline = false
-  isForceOfflineChecked = !::is_platform_xboxone
+  isForceOfflineChecked = !::is_platform_xbox
 
   voiceStatus = null
 
@@ -257,7 +257,7 @@ class Contact
 
   function getInteractionStatus(needShowSystemMessage = false)
   {
-    if (!::is_platform_xboxone || isMe())
+    if (!::is_platform_xbox || isMe())
       return XBOX_COMMUNICATIONS_ALLOWED
 
     if (xboxId == "")

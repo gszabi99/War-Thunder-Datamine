@@ -49,7 +49,7 @@ tdiv {
       <<#lifetime>>
       td {
         id:t='lifetime'
-        tooltip:t='#options/time'
+        tooltip:t='#debriefing/sessionTime'
         fontIcon32 {
           style:t='pos:0, 50%ph-50%h;'
           margin:t='0.5@sIco, 0'

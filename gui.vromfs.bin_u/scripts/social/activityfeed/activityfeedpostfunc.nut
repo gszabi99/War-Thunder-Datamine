@@ -1,8 +1,8 @@
 local u = require("sqStdLibs/helpers/u.nut")
-local { isPlatformSony } = require("scripts/clientState/platform.nut")
+local { isPlatformPS4 } = require("scripts/clientState/platform.nut")
 
 local psnPostFunc = function(config, feed) {
-  if (isPlatformSony && ::has_feature("ActivityFeedPs4"))
+  if (isPlatformPS4 && ::has_feature("ActivityFeedPs4"))
     require("scripts/social/activityFeed/ps4PostFunc.nut")(config, feed)
 }
 

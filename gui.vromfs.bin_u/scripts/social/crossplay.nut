@@ -1,5 +1,5 @@
 local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
-local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+local { isPlatformSony, isPlatformXboxOne, isPlatformXboxScarlett, isPlatformPS4, isPlatformPS5 } = require("scripts/clientState/platform.nut")
 
 local PS4_CROSSPLAY_OPT_ID = "ps4CrossPlay"
 local PS4_CROSSNETWORK_CHAT_OPT_ID = "ps4CrossNetworkChat"
@@ -92,14 +92,14 @@ local getSeparateLeaderboardPlatformValue = function() {
 }
 
 local getSeparateLeaderboardPlatformName = function() {
+  // These names are set in config on leaderboard server.
   if (getSeparateLeaderboardPlatformValue())
   {
-    if (isPlatformSony)
-      return "ps4"
-    if (isPlatformXboxOne)
-      return "xboxone"
+    if (isPlatformPS4 || isPlatformPS5)
+      return "ps4"      // TODO: Change later to 'psn' or 'sony'
+    if (isPlatformXboxOne || isPlatformXboxScarlett)
+      return "xboxone"  // TODO: Change later to 'xbox' or 'ms'
   }
-
   return ""
 }
 

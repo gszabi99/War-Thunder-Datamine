@@ -41,7 +41,7 @@ td {
     pos:t='0, 50%ph-50%h';
     position:t='relative';
     noMargin:t='yes'
-    showOn:t='hoverOrSelect';
+    showOn:t='hoverOrPcSelect'
     btnName:t='A';
     on_click:t='onRowBuy';
 

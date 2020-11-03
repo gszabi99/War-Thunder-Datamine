@@ -117,7 +117,10 @@ global enum HelicopterThrottleMode
   DEFAULT_MODE = 0,
   BRAKE = 1,
   CLIMB = 2,
-  WEP = 3
+  WEP = 3,
+  AIRCRAFT_DEFAULT_MODE = 4,
+  AIRCRAFT_BRAKE = 5,
+  AIRCRAFT_WEP = 6
 };
 
 global enum RadarViewMode

@@ -21,7 +21,7 @@ local function canBuyMod(unit, mod)
 local function isModResearched(unit, mod)
 {
   local status = ::shop_get_module_research_status(unit.name, mod.name)
-  if (status & (::ES_ITEM_STATUS_CAN_BUY | ES_ITEM_STATUS_OWNED | ES_ITEM_STATUS_MOUNTED | ES_ITEM_STATUS_RESEARCHED))
+  if (status & (::ES_ITEM_STATUS_CAN_BUY | ::ES_ITEM_STATUS_OWNED | ::ES_ITEM_STATUS_MOUNTED | ::ES_ITEM_STATUS_RESEARCHED))
     return true
 
   return false

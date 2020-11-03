@@ -120,12 +120,10 @@ local inputField = @() {
 }
 
 
-local getMessageColor = function(message)
-{
+local getMessageColor = function(message) {
   if (message.isBlocked)
     return colors.menu.chatTextBlockedColor
-  if (message.isAutomatic)
-  {
+  if (message.isAutomatic) {
     if (::cross_call.squad_manger.isInMySquad(message.sender))
       return teamColors.value.squadColor
     else if (message.team != hudState.playerArmyForHud.value)
@@ -137,8 +135,7 @@ local getMessageColor = function(message)
 }
 
 
-local getSenderColor = function (message)
-{
+local getSenderColor = function (message) {
   if (message.isMyself)
     return colors.hud.mainPlayerColor
   else if (::cross_call.isPlayerDedicatedSpectator(message.sender))

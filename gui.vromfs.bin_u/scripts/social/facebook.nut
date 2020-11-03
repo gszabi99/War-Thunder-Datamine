@@ -173,7 +173,7 @@ class ::gui_handlers.facebookReminderModal extends ::gui_handlers.BaseGuiHandler
   }
 
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/showUnlock.blk";
+  sceneBlkName = "gui/showUnlock.blk"
 }
 
 ::add_event_listener("DestroyEmbeddedBrowser", on_facebook_destroy_waitbox)

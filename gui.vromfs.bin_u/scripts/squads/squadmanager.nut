@@ -1,13 +1,11 @@
 local { hasAnyFeature } = require("scripts/user/features.nut")
 local squadApplications = require("scripts/squads/squadApplications.nut")
 local platformModule = require("scripts/clientState/platform.nut")
-local battleRating = ::require("scripts/battleRating.nut")
+local battleRating = require("scripts/battleRating.nut")
 local antiCheat = require("scripts/penitentiary/antiCheat.nut")
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
 
-local { invite = @(...) null } = platformModule.isPlatformSony
-  ? require("scripts/social/psnSessions.nut")
-  : null
+local { invite } = require("scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
 
 enum squadEvent
 {
@@ -20,6 +18,7 @@ enum squadEvent
   SIZE_CHANGED = "SquadSizeChanged"
   NEW_APPLICATIONS = "SquadHasNewApplications"
   PROPERTIES_CHANGED = "SquadPropertiesChanged"
+  LEADERSHIP_TRANSFER = "SquadLeadershipTransfer"
 }
 
 enum squadStatusUpdateState {
@@ -147,6 +146,7 @@ g_squad_manager.updateMyMemberData <- function updateMyMemberData(data = null)
   data.isWorldWarAvailable <- ::is_worldwar_enabled()
   data.isEacInited <- ::is_eac_inited()
   data.squadsVersion <- SQUADS_VERSION
+  data.platform <- platformModule.targetPlatform
 
   local wwOperations = []
   if (::is_worldwar_enabled())
@@ -805,11 +805,10 @@ g_squad_manager.inviteToSquad <- function inviteToSquad(uid, name = null, cb = n
     return ::g_popups.add(null, ::loc("msg/squad/noPlayersForDiffConsoles"))
 
   local isInvitingPsnPlayer = false
-  if (platformModule.isPS4PlayerName(name))
-  {
+  if (platformModule.isPS4PlayerName(name)) {
     local contact = ::getContact(uid, name)
     isInvitingPsnPlayer = true
-    if (u.isEmpty(getPsnSessionId()))
+    if (u.isEmpty(::g_squad_manager.getPsnSessionId()))
       contact.updatePSNIdAndDo(function() {
         ::g_squad_manager.delayedInvites.append(contact.psnId)
       })
@@ -990,6 +989,7 @@ g_squad_manager.transferLeadership <- function transferLeadership(uid)
     return
 
   ::msquad.transferLeadership(uid)
+  ::broadcastEvent(squadEvent.LEADERSHIP_TRANSFER, {uid = uid})
 }
 
 g_squad_manager.onLeadershipTransfered <- function onLeadershipTransfered()
@@ -1561,11 +1561,6 @@ g_squad_manager.onEventSessionDestroyed <- function onEventSessionDestroyed(p)
 }
 
 g_squad_manager.onEventChatConnected <- function onEventChatConnected(params)
-{
-  joinSquadChatRoom()
-}
-
-g_squad_manager.onEventApproveLastPs4SquadInvite <- function onEventApproveLastPs4SquadInvite(params)
 {
   joinSquadChatRoom()
 }

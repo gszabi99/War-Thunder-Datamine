@@ -9,6 +9,9 @@ local { getLastWeapon,
         checkUnitWeapons,
         getWeaponsStatusName } = require("scripts/weaponry/weaponryInfo.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { getUnitShopPriceText } = require("scripts/shop/unitCardPkg.nut")
+local { batchTrainCrew } = require("scripts/crew/crewActions.nut")
+local { isDiffUnlocked } = require("scripts/tutorials/tutorialsData.nut")
 
 /*
 if need - put commented in array above
@@ -104,8 +107,8 @@ if need - put commented in array above
     local checkTexts = mainButtonAction.len() > 0 && (mainButtonText.len() > 0 || mainButtonIcon.len() > 0)
     local checkButton = !isVehicleInResearch || ::has_feature("SpendGold")
     local bottomButtonView = {
+      holderId            = id
       hasButton           = hasActions && checkTexts && checkButton
-      spaceButton         = true
       mainButtonText      = mainButtonText
       mainButtonAction    = mainButtonAction
       hasMainButtonIcon   = mainButtonIcon.len()
@@ -136,15 +139,7 @@ if need - put commented in array above
       itemButtons = {
         hasToBattleButton       = params?.toBattle ?? false
         toBattleButtonAction    = params?.toBattleButtonAction ?? "onSlotBattle"
-        hasExtraInfoBlock       = params?.hasExtraInfoBlock ?? false
 
-        hasCrewInfo             = hasCrewInfo
-        crewLevel               = hasCrewInfo ? crewLevelText : ""
-        crewSpecIcon            = hasCrewInfo ? crewSpecIcon : ""
-        crewStatus              = hasCrewInfo ? ::get_crew_status(crew, unitForCrewInfo) : ""
-
-        hasSpareCount           = spareCount > 0
-        spareCount              = spareCount ? spareCount + ::loc("icon/spare") : ""
         specIconBlock           = showWarningIcon || specType != null
         showWarningIcon         = showWarningIcon
         hasRepairIcon           = isLocalState && isBroken
@@ -152,8 +147,17 @@ if need - put commented in array above
         hasRentIcon             = rentInfo.hasIcon
         hasRentProgress         = rentInfo.hasProgress
         rentProgress            = rentInfo.progress
-        bonusId                 = id
       }
+    }
+
+    local extraInfoView = {
+      hasExtraInfoBlock         = params?.hasExtraInfoBlock ?? false
+      hasCrewInfo               = hasCrewInfo
+      crewLevel                 = hasCrewInfo ? crewLevelText : ""
+      crewSpecIcon              = hasCrewInfo ? crewSpecIcon : ""
+      crewStatus                = hasCrewInfo ? ::get_crew_status(crew, unitForCrewInfo) : ""
+      hasSpareCount             = spareCount > 0
+      spareCount                = spareCount ? spareCount + ::loc("icon/spare") : ""
     }
 
     if (specType)
@@ -202,15 +206,15 @@ if need - put commented in array above
     local progressText = showProgress ? ::get_unit_item_research_progress_text(air, params, priceText) : ""
     local checkNotification = ::g_discount.getEntitlementUnitDiscount(air.name)
 
-    local resView = {
+    local resView = params.__merge({
       slotId              = "td_" + id
+      bonusId             = id
       slotInactive        = inactive
       isSlotbarItem       = params?.isSlotbarItem ?? false
       isInTable           = params?.isInTable ?? true
       shopItemId          = id
       unitName            = air.name
       crewId              = crew?.id.tostring()
-      premiumPatternType  = special
       shopItemType        = getUnitRole(air)
       unitClassIcon       = getUnitRoleIcon(air)
       shopStatus          = status
@@ -238,8 +242,9 @@ if need - put commented in array above
       itemButtons         = ::handyman.renderCached("gui/slotbar/slotbarItemButtons", itemButtonsView)
       tooltipId           = ::g_tooltip.getIdUnit(air.name, params?.tooltipParams)
       bottomButton        = ::handyman.renderCached("gui/slotbar/slotbarItemBottomButton", bottomButtonView)
+      extraInfoBlock      = ::handyman.renderCached("gui/slotbar/slotExtraInfoBlock", extraInfoView)
       hasHoverMenu        = hasActions
-    }
+    })
     local missionRules = params?.missionRules
     local groupName = missionRules ? missionRules.getRandomUnitsGroupName(air.name) : null
     local isShowAsRandomUnit = groupName
@@ -252,7 +257,6 @@ if need - put commented in array above
       resView.shopItemType = ""
       resView.unitClassIcon = ""
       resView.isElite = false
-      resView.premiumPatternType = false
       resView.unitRarity = ""
       resView.unitRankText = ""
       resView.tooltipId = ::g_tooltip_type.RANDOM_UNIT.getTooltipId(air.name, {groupName = groupName})
@@ -363,8 +367,8 @@ if need - put commented in array above
     //
 
     local bottomButtonView = {
+      holderId            = id
       hasButton           = ::show_console_buttons
-      spaceButton         = false
       mainButtonAction    = "onAircraftClick"
       mainButtonText      = ""
       mainButtonIcon      = "#ui/gameuiskin#slot_unfold.svg"
@@ -422,11 +426,12 @@ if need - put commented in array above
       else
         shopAirImage = "!" + (::getTblValue("image", air) || ("#ui/unitskin#planes_group"))
 
-    local groupSlotView = {
+    local groupSlotView = params.__merge({
       slotId              = id
       unitRole            = unitRole
       unitClassIcon       = getUnitRoleIcon(nextAir)
       groupStatus         = groupStatus == defaultStatus ? getUnitItemStatusText(bitStatus, true) : groupStatus
+      unitRarity          = getUnitRarity(nextAir)
       isBroken            = bitStatus & bit_unit_status.broken
       shopAirImg          = shopAirImage
       isPkgDev            = isPkgDev
@@ -453,7 +458,7 @@ if need - put commented in array above
       hasFullGroupBlock   = params?.fullGroupBlock ?? true
       fullGroupBlockId    = "td_" + id
       isGroupInactive     = inactive
-    }
+    })
     res = ::handyman.renderCached("gui/slotbar/slotbarSlotGroup", groupSlotView)
   }
   else if (air?.isFakeUnit)  //fake unit slot
@@ -466,7 +471,7 @@ if need - put commented in array above
       : (isFakeAirRankOpen || !isLocalState ? bit_unit_status.owned
         : bit_unit_status.locked)
     local nameForLoc = isReqForFakeUnit ? ::split(air.name, "_")?[0] : air.name
-    local fakeSlotView = {
+    local fakeSlotView = params.__merge({
       slotId              = "td_" + id
       slotInactive        = true
       isSlotbarItem       = false
@@ -481,7 +486,7 @@ if need - put commented in array above
       needMultiLineName   = params?.needMultiLineName
       tooltipId           = params?.tooltipId ?? ""
       bottomLineText      = params?.bottomLineText
-    }
+    })
     res = ::handyman.renderCached("gui/slotbar/slotbarSlotFake", fakeSlotView)
   }
   else //empty air slot
@@ -509,19 +514,19 @@ if need - put commented in array above
           unitForCrewInfo.getCrewUnitType()).tointeger().tostring()
         local crewSpecIcon = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, unitForCrewInfo).trainedIcon
 
-        local crewLevelInfoView = { itemButtons = {
+        local crewLevelInfoView = {
           hasExtraInfoBlock = true
           hasCrewInfo       = ::has_feature("CrewInfo")
           crewLevel         = crewLevelText
           crewSpecIcon      = crewSpecIcon
-        }}
-        crewLevelInfoData = ::handyman.renderCached("gui/slotbar/slotbarItemButtons", crewLevelInfoView)
+        }
+        crewLevelInfoData = ::handyman.renderCached("gui/slotbar/slotExtraInfoBlock", crewLevelInfoView)
       }
     }
 
     local emptyCost = params?.emptyCost
     local priceText = emptyCost ? emptyCost.getTextAccordingToBalance() : ""
-    local emptySlotView = {
+    local emptySlotView = params.__merge({
       slotId = "td_" + id,
       shopItemId = id,
       shopItemTextId = id + "_txt",
@@ -532,13 +537,13 @@ if need - put commented in array above
       isCrewRecruit = params?.isCrewRecruit ?? false
       itemButtons = ::handyman.renderCached("gui/slotbar/slotbarItemButtons", itemButtonsView)
       isSlotbarItem = params?.isSlotbarItem ?? false
-      crewLevelInfo = crewLevelInfoData
-    }
+      extraInfoBlock = crewLevelInfoData
+    })
     res = ::handyman.renderCached("gui/slotbar/slotbarSlotEmpty", emptySlotView)
   }
 
   if (params?.fullBlock ?? true)
-    res = ::format("td{%s}", res)
+    res = ::format("unitCell{%s}", res)
 
   return res
 }
@@ -736,29 +741,12 @@ if need - put commented in array above
       local leftSpawns = maxSpawns - ::get_num_used_unit_spawns(curSlotIdInCountry)
       priceText += ::format("(%s/%s)", leftSpawns.tostring(), maxSpawns.tostring())
     }
-  } else if (isLocalState && priceText == "")
-  {
-    local gift                = ::isUnitGift(unit)
-    local marketable          = ::canBuyUnitOnMarketplace(unit)
-    local canBuy              = ::canBuyUnit(unit)
-    local isUsable            = ::isUnitUsable(unit)
-    local isBought            = ::isUnitBought(unit)
-    local special             = ::isUnitSpecial(unit)
-    local researched          = ::isUnitResearched(unit)
-    local showAsTrophyContent = ::getTblValue("showAsTrophyContent", params, false)
-    local isReceivedPrizes    = ::getTblValue("isReceivedPrizes", params, false)
-    local overlayPrice        = ::getTblValue("overlayPrice", params, -1)
+  } else if (isLocalState && priceText == "") {
+    local { overlayPrice = -1, showAsTrophyContent = false, isReceivedPrizes = false } = params
+    priceText = overlayPrice >= 0 ? ::getPriceAccordingToPlayersCurrency(overlayPrice, 0, true)
+      : getUnitShopPriceText(unit)
 
-    if (overlayPrice >= 0)
-      priceText = ::getPriceAccordingToPlayersCurrency(overlayPrice, 0, true)
-    else if (!isUsable && gift && !marketable)
-      priceText = ::g_string.stripTags(::loc("shop/giftAir/" + unit.gift, "shop/giftAir/alpha"))
-    else if (!isUsable && !marketable && (canBuy || special || (!special && researched)))
-      priceText = ::getPriceAccordingToPlayersCurrency(::wp_get_cost(unit.name), ::wp_get_cost_gold(unit.name), true)
-    else if (marketable)
-      priceText = ::loc("currency/gc/sign/colored", "")
-
-    if (priceText == "" && isBought && showAsTrophyContent && !isReceivedPrizes)
+    if (priceText == "" && ::isUnitBought(unit) && showAsTrophyContent && !isReceivedPrizes)
       priceText = ::colorize("goodTextColor", ::loc("mainmenu/itemReceived"))
   }
 
@@ -814,6 +802,7 @@ if need - put commented in array above
   if (isInFlight && ::g_mis_custom_state.getCurMissionRules().isWorldWar)
     return ""
 
+  local reserveText = ::g_string.stripTags(::loc("shop/reserve"))
   if (::isUnitGroup(unit))
   {
     local isReserve = false
@@ -828,7 +817,7 @@ if need - put commented in array above
       minBR = !minBR ? br : ::min(minBR, br)
       maxBR = !maxBR ? br : ::max(maxBR, br)
     }
-    return isReserve ? ::g_string.stripTags(::loc("shop/reserve")) :
+    return isReserve ? reserveText :
       showBR  ? (minBR != maxBR ? ::format("%.1f-%.1f", minBR, maxBR) : ::format("%.1f", minBR)) :
       ::get_roman_numeral(rank)
   }
@@ -840,13 +829,13 @@ if need - put commented in array above
 
   local isReserve = ::isUnitDefault(unit)
   local isSpare = crew && isInFlight ? ::is_spare_aircraft_in_slot(crew.idInCountry) : false
+  local battleRatingStr = ::format("%.1f", unit.getBattleRating(ediff))
+  local reserveToShowStr = (battleRatingStr == "1.0") ? reserveText :
+    "".join([reserveText, ::loc("ui/parentheses/space", { text = battleRatingStr })])
+
   return isReserve ?
-           isSpare ?
-             ""
-             : ::g_string.stripTags(::loc("shop/reserve"))
-         : showBR ?
-             ::format("%.1f", unit.getBattleRating(ediff))
-             : ::get_roman_numeral(unit.rank)
+           isSpare ? "" : reserveToShowStr :
+           showBR ? battleRatingStr : ::get_roman_numeral(unit.rank)
 }
 
 ::is_crew_locked_by_prev_battle <- function is_crew_locked_by_prev_battle(crew)
@@ -1031,7 +1020,7 @@ if need - put commented in array above
           crewId = country.crews[0].id
           airName = ::getReserveAircraftName({country = country.country})
         }]
-        ::batch_train_crew(requestData)
+        batchTrainCrew(requestData)
       }
       needSave = true
     }
@@ -1229,7 +1218,7 @@ if need - put commented in array above
   if (::is_need_first_country_choice())
     return curUnlocked
 
-  local unlockAll = ::isDiffUnlocked(1, ::ES_UNIT_TYPE_AIRCRAFT) || ::disable_network() || ::has_feature("UnlockAllCountries")
+  local unlockAll = isDiffUnlocked(1, ::ES_UNIT_TYPE_AIRCRAFT) || ::disable_network() || ::has_feature("UnlockAllCountries")
   local wasInList = ::unlocked_countries.len()
   foreach(i, country in ::shopCountriesList)
     if (::is_country_available(country))

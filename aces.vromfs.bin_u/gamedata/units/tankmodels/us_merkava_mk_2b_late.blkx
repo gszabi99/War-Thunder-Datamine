@@ -904,6 +904,7 @@
         "armorThrough": 12.0,
         "fireProtectionHp": 15.0,
         "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -2384,7 +2385,7 @@
       {
         "Weapon": [
           {
-            "trigger": "gunner1"
+            "trigger": "gunner2"
           },
           {
             "triggerGroup": "coaxial"
@@ -2480,7 +2481,7 @@
       },
       {
         "Weapon": {
-          "trigger": "gunner2",
+          "trigger": "gunner3",
           "triggerGroup": "machinegun",
           "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
           "emitter": "bone_mg_aa_v",
@@ -2518,7 +2519,7 @@
       },
       {
         "Weapon": {
-          "trigger": "gunner3",
+          "trigger": "gunner5",
           "triggerGroup": "machinegun",
           "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
           "emitter": "bone_mg_v_01",
@@ -2556,7 +2557,7 @@
       },
       {
         "Weapon": {
-          "trigger": "gunner5",
+          "trigger": "gunner6",
           "triggerGroup": "smoke",
           "blk": "gameData/Weapons/groundModels_weapons/60mm_smoke_mortar_launcher.blk",
           "weaponType": "rockets",
@@ -3205,6 +3206,15 @@
       },
       {
         "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -3596,7 +3606,7 @@
             {
               "Weapon": [
                 {
-                  "trigger": "gunner1"
+                  "trigger": "gunner2"
                 },
                 {
                   "triggerGroup": "coaxial"
@@ -3692,7 +3702,7 @@
             },
             {
               "Weapon": {
-                "trigger": "gunner2",
+                "trigger": "gunner3",
                 "triggerGroup": "machinegun",
                 "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
                 "emitter": "bone_mg_aa_v",
@@ -3730,7 +3740,7 @@
             },
             {
               "Weapon": {
-                "trigger": "gunner3",
+                "trigger": "gunner5",
                 "triggerGroup": "machinegun",
                 "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
                 "emitter": "bone_mg_v_01",
@@ -3768,7 +3778,7 @@
             },
             {
               "Weapon": {
-                "trigger": "gunner5",
+                "trigger": "gunner6",
                 "triggerGroup": "smoke",
                 "blk": "gameData/Weapons/groundModels_weapons/60mm_smoke_mortar_launcher.blk",
                 "weaponType": "rockets",

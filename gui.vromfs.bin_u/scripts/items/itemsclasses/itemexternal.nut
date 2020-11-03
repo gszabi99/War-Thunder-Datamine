@@ -4,8 +4,8 @@ local ExchangeRecipes = require("scripts/items/exchangeRecipes.nut")
 local guidParser = require("scripts/guidParser.nut")
 local itemRarity = require("scripts/items/itemRarity.nut")
 local time = require("scripts/time.nut")
-local chooseAmountWnd = ::require("scripts/wndLib/chooseAmountWnd.nut")
-local recipesListWnd = ::require("scripts/items/listPopupWnd/recipesListWnd.nut")
+local chooseAmountWnd = require("scripts/wndLib/chooseAmountWnd.nut")
+local recipesListWnd = require("scripts/items/listPopupWnd/recipesListWnd.nut")
 local itemTransfer = require("scripts/items/itemsTransfer.nut")
 local { getMarkingPresetsById, getCustomLocalizationPresets,
   getEffectOnOpenChestPresetById } = require("scripts/items/workshop/workshop.nut")
@@ -177,7 +177,9 @@ local ItemExternal = class extends ::BaseItem
     return (tShop != -1 && (tInv == -1 || tShop < tInv)) ? tShop : tInv
   }
 
-  updateNameLoc = @(locName) combinedNameLocId ? ::loc(combinedNameLocId, { name = locName }) : locName
+  updateNameLoc = @(locName) !shouldAutoConsume && combinedNameLocId
+    ? ::loc(combinedNameLocId, { name = locName })
+    : locName
 
   function getName(colored = true)
   {
@@ -275,6 +277,8 @@ local ItemExternal = class extends ::BaseItem
     })
   ]
 
+  getDescHeaderLocId = @() !shouldAutoConsume ? descHeaderLocId : ""
+
   function getLongDescriptionMarkup(params = null)
   {
     params = params || {}
@@ -297,7 +301,7 @@ local ItemExternal = class extends ::BaseItem
 
     if (metaBlk)
     {
-      headers.append({ header = ::colorize("grayOptionColor", ::loc(descHeaderLocId)) })
+      headers.append({ header = ::colorize("grayOptionColor", ::loc(getDescHeaderLocId())) })
       content = [ metaBlk ]
       params.showAsTrophyContent <- true
       params.receivedPrizes <- false
@@ -1093,6 +1097,7 @@ local ItemExternal = class extends ::BaseItem
   canCraftOnlyInCraftTree = @() itemDef?.tags?.canCraftOnlyInCraftTree ?? false
   showAllowableRecipesOnly = @() itemDef?.tags?.showAllowableRecipesOnly ?? false
   canRecraftFromRewardWnd = @() itemDef?.tags?.allowRecraftFromRewardWnd ?? false
+  getQuality = @() itemDef?.tags?.quality ?? "common"
 }
 
 return ItemExternal

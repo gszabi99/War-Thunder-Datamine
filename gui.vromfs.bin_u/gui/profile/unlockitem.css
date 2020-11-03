@@ -57,3 +57,23 @@ layeredIconContainer[decal_locked = yes] > iconLayer{
 layeredIconContainer[achievement_locked = yes] > iconLayer {
   background-color: @gray;
 }
+
+awardDiv > layeredIconContainer {
+  height:ph;
+  width:h;
+  pos:(pw-w)/2, (ph-h)/2;
+  position:absolute;
+}
+
+awardDiv.unlockFrame {
+  re-type:9rect;
+  background-image:#ui/gameuiskin#button_;
+  background-color:@white;
+  background-position:6;
+  background-repeat:expand;
+  padding:2;
+}
+
+awardDiv.unlockFrame > layeredIconContainer {
+  height:ph - 4;
+}

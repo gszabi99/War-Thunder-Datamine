@@ -10,6 +10,7 @@ local avatars = require("scripts/user/avatars.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
 local psnSocial = require("sony.social")
+local { getStringWidthPx } = require("scripts/viewUtils/daguiFonts.nut")
 
 local getAirsStatsFromBlk = function (blk)
 {
@@ -182,7 +183,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
   sceneBlkName = "gui/profile/userCard.blk"
-  sceneCheckBoxListTpl = "gui/profile/checkBoxList"
+  sceneCheckBoxListTpl = "gui/commonParts/checkbox"
 
   isOwnStats = false
 
@@ -201,8 +202,9 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
   airStatsList = null
   statsType = ::ETTI_VALUE_INHISORY
   statsMode = ""
-  statsCountries = null
-  statsUnits = []
+  countriesStats = null
+  availableUTypesList = null
+  unitsStats = []
   statsSortBy = ""
   statsSortReverse = false
   curStatsPage = 0
@@ -216,6 +218,9 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
   lbModesList = null
 
   curPlayerExternalIds = null
+  isFilterVisible = false
+  maxUtypeNameWidth = 0
+  maxCountryNameWidth = 0
 
   function initScreen()
   {
@@ -362,7 +367,6 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     scene.findObject("profile-container").show(true)
     scene.findObject("profile_sheet_list").show(true)
     onSheetChange(null)
-    initFocusArray()
     fillLeaderboard()
   }
 
@@ -397,7 +401,6 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
       fillProfile()
     }
     updateButtons()
-    focusCurSheetObj()
   }
 
   function fillProfile()
@@ -425,7 +428,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
       name = "empty_title"
     }
     fillAdditionalName(::get_unlock_name_text(::UNLOCKABLE_TITLE, name), "title")
-    scene.findObject("profile-currentUser-title")["showAsButton"] = isOwnStats ? "yes" : "no"
+    scene.findObject("profile-currentUser-title")["inactive"] = isOwnStats ? "no" : "yes"
   }
 
   function onProfileStatsModeChange(obj)
@@ -477,8 +480,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::check_obj(nameObj))
       return
 
-    local data = name == "" ? "" : ::format(::loc("profile/" + link), name)
-    nameObj.setValue(data)
+    nameObj.setValue(name == "" ? "" : $"{link == "title" ? "" : ::loc("profile/" + link)}{name}")
   }
 
   function fillClanInfo(playerData)
@@ -508,7 +510,10 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
       eliteUnitsCount = profile.countryStats[c].eliteUnitsCount
     })
 
-    local blk = ::handyman.renderCached(("gui/profile/country_stats_table"), { columns = columns })
+    local blk = ::handyman.renderCached(("gui/profile/country_stats_table"), {
+      columns = columns,
+      tableName = ::loc("lobby/vehicles")
+    })
     guiScene.replaceContentFromText(countryStatsNest, blk, blk.len(), this)
   }
 
@@ -545,26 +550,6 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     curMode = value
     ::set_current_wnd_difficulty(curMode)
     updateCurrentStatsMode(value)
-    fillAirStats()
-  }
-
-  function onStatsUnitChange(obj)
-  {
-    if (!obj)
-      return
-    local armyId = obj.id
-    local value = obj.getValue()
-    if (value && !isInArray(armyId, statsUnits))
-    {
-      statsUnits.append(armyId)
-    }
-    else
-      if (!value)
-      {
-        for(local i=statsUnits.len()-1; i>=0; i--)
-          if (armyId == statsUnits[i])
-            statsUnits.remove(i)
-      }
     fillAirStats()
   }
 
@@ -737,9 +722,9 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function initAirStats()
   {
-    statsCountries = []
+    countriesStats = []
     foreach(country in ::shopCountriesList)
-      statsCountries.append(country)
+      countriesStats.append(country)
     initAirStatsScene(player.userstat)
   }
 
@@ -779,59 +764,146 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillUnitListCheckBoxes(sObj)
   {
+    availableUTypesList = []
     local fillStatsUnits = false
-    if (statsUnits.len() == 0)
+    if (unitsStats.len() == 0)
       fillStatsUnits = true
 
-    local unitsObj = sObj.findObject("units_boxes")
-    local unitsView = { checkBoxes = [] }
+    maxUtypeNameWidth = getStringWidthPx(::loc("all_units"), "fontNormal")
     foreach(unitType in unitTypes.types)
     {
       if (!unitType.isAvailable())
         continue
 
       local armyId = unitType.armyId
+      maxUtypeNameWidth = ::max(maxUtypeNameWidth,
+        getStringWidthPx(unitType.getArmyLocName(), "fontNormal"))
+      availableUTypesList.append(unitType)
       if (fillStatsUnits)
-        statsUnits.append(armyId)
+        unitsStats.append(armyId)
 
-      unitsView.checkBoxes.append(
-        {
-          id = armyId
-          image = unitType.testFlightIcon
-          tooltip = unitType.getArmyLocName()
-          value = ::isInArray(armyId, statsUnits)? "yes" : "no"
-          onChangeFunction = "onStatsUnitChange"
-        }
-      )
     }
 
-    if (unitsView.checkBoxes.len() > 0)
-      unitsView.checkBoxes[unitsView.checkBoxes.len()-1].isLastCheckBox <- true
-
-    local unitsMarkUpData = ::handyman.renderCached(sceneCheckBoxListTpl, unitsView)
-    guiScene.replaceContentFromText(unitsObj, unitsMarkUpData, unitsMarkUpData.len(), this)
+    updateFilterCbByType("units")
   }
 
   function fillCountriesCheckBoxes(sObj)
   {
-    if (!statsCountries)
-      statsCountries = [::get_profile_country_sq()]
+    if (!countriesStats)
+      countriesStats = [::get_profile_country_sq()]
 
-    local countriesObj = sObj.findObject("countries_boxes")
-    local countriesView = { checkBoxes = [] }
-    foreach(country in ::shopCountriesList)
-      countriesView.checkBoxes.append(
-        {
-          id = country
-          image = ::get_country_icon(country)
-          tooltip = "#" + country
-          value = ::isInArray(country, statsCountries)? "yes" : "no"
-          onChangeFunction = "onStatsCountryChange"
-        }
-      )
+    maxCountryNameWidth = getStringWidthPx(::loc("all_countries"), "fontNormal")
+    foreach(cName in countriesStats)
+      maxCountryNameWidth = ::max(maxCountryNameWidth,
+        getStringWidthPx(::loc($"#{cName}"), "fontNormal"))
+    updateFilterCbByType("countries")
+  }
 
-    local countiesMarkUpData = ::handyman.renderCached(sceneCheckBoxListTpl, countriesView)
-    guiScene.replaceContentFromText(countriesObj, countiesMarkUpData, countiesMarkUpData.len(), this)
+  function updateFilterCbByType(filterType)
+  {
+    local isTypeUnins = filterType == "units"
+    local nestObj = scene.findObject($"{filterType}_boxes")
+    local selectedArr = this[$"{filterType}Stats"]
+    local referenceArr = isTypeUnins ? availableUTypesList : ::shopCountriesList
+
+    local cbView = {
+      useImage = isTypeUnins
+        ? "#ui/gameuiskin#all_unit_types.svg" : "#ui/gameuiskin#flag_all_nations.svg"
+      text = $"#all_{filterType}"
+      value = referenceArr.len() == selectedArr.len()
+      textWidth = isTypeUnins ? maxUtypeNameWidth : maxCountryNameWidth
+      funcName = "onAllCbChange"
+      specialParams = $"filterType:t='{filterType}'; type:t='rightSideCb';"
+    }
+    local view = { checkbox = [cbView]}
+    foreach(inst in referenceArr)
+      view.checkbox.append(cbView.__merge({
+        id = isTypeUnins ? inst.armyId : inst
+        useImage = isTypeUnins ? inst.testFlightIcon : ::get_country_icon(inst)
+        text = isTypeUnins ? inst.getArmyLocName() : $"#{inst}"
+        value = ::isInArray((isTypeUnins ? inst.armyId : inst), selectedArr)
+        funcName = "onStatsCbChange"
+      }))
+
+    local data = ::handyman.renderCached(sceneCheckBoxListTpl, view)
+    guiScene.replaceContentFromText(nestObj, data, data.len(), this)
+
+    updateFilterStateIcons()
+  }
+
+  function updateFilterStateIcons()
+  {
+    local nestObj = scene.findObject("icon_nest")
+
+    local view = { items = [] }
+    foreach(filterType in ["countries", "units"])
+    {
+      local selectedArr = this[$"{filterType}Stats"]
+      if (! selectedArr)
+        return
+
+      foreach(inst in selectedArr)
+        view.items.append({
+          image = filterType == "units"
+            ? ::u.search(availableUTypesList, @(t) t.armyId == inst).testFlightIcon
+            : ::get_country_icon(inst)
+        })
+    }
+    local data = ::handyman.renderCached("gui/commonParts/imgList", view)
+    guiScene.replaceContentFromText(nestObj, data, data.len(), this)
+  }
+
+  function onShowFilterBtnClick(obj)
+  {
+    isFilterVisible = !isFilterVisible
+    ::showBtn("stats_filter", isFilterVisible)
+  }
+
+  function onAllCbChange(obj)
+  {
+    local filterType = obj.filterType
+    local isTypeUnins = filterType == "units"
+    local value = obj.getValue()
+    local nestObjId = $"{filterType}_boxes"
+    local selectedArr = this[$"{filterType}Stats"]
+    local referenceArr = isTypeUnins ? availableUTypesList : ::shopCountriesList
+
+    local nestObj = scene.findObject(nestObjId)
+    foreach(inst in referenceArr)
+    {
+      local cbObj = nestObj.findObject(isTypeUnins ? inst.armyId : inst)
+      if(!::check_obj(cbObj))
+        continue
+
+      local id = cbObj.id
+      if (value)
+        ::u.appendOnce(id, selectedArr)
+      else
+        removeItemFromList(id, selectedArr)
+    }
+
+    fillAirStats()
+    guiScene.performDelayed(this, (@(filterType) function (){
+      updateFilterCbByType(filterType)})(filterType))
+  }
+
+  function onStatsCbChange(obj)
+  {
+    if (!::check_obj(obj))
+      return
+
+    local id = obj.id
+    local filterType = obj.filterType
+    local selectedArr = this[$"{filterType}Stats"]
+    local value = obj.getValue()
+    if (value)
+      ::u.appendOnce(id, selectedArr)
+    else
+      removeItemFromList(id, selectedArr)
+
+    fillAirStats()
+    guiScene.performDelayed(this, (@(filterType) function () {
+        updateFilterCbByType(filterType)})(filterType))
   }
 
   function fillAirStatsScene(airStats)
@@ -849,7 +921,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     {
       local air = ::getAircraftByName(item.name)
       local unitTypeShopId = ::get_army_id_by_es_unit_type(::get_es_unit_type(air))
-      if (!::isInArray(unitTypeShopId, statsUnits))
+      if (!::isInArray(unitTypeShopId, unitsStats))
           continue
       if (!("country" in item))
       {
@@ -858,7 +930,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
       }
       if ( ! ("locName" in item))
         item.locName <- air ? ::getUnitName(air, true) : ""
-      if (::isInArray(item.country, statsCountries))
+      if (::isInArray(item.country, countriesStats))
         airStatsList.append(item)
     }
 
@@ -922,7 +994,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
           needText = false
         })
     }
-    data += buildTableRow("row_header", headerRow, null, "inactive:t='yes'; commonTextColor:t='yes'; bigIcons:t='yes'; ")
+    data += buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'")
 
     local tooltips = {}
     local fromIdx = curStatsPage*statsPerPage
@@ -1025,7 +1097,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
           needText = false
         })
 
-    data = buildTableRow("row_header", headerRow, null, "commonTextColor:t='yes'; bigIcons:t='yes';style:t='height:@leaderboardHeaderHeight;';")
+    data = buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'")
 
     local rows = [
       {
@@ -1221,21 +1293,11 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     )
   }
 
-  function onStatsCountryChange(obj)
+  function removeItemFromList(value, list)
   {
-    if (!obj) return
-    local country = obj.id
-    local value = obj.getValue()
-    if (value && !isInArray(country, statsCountries))
-      statsCountries.append(country)
-    else
-      if (!value)
-      {
-        for(local i=statsCountries.len()-1; i>=0; i--)
-          if (country == statsCountries[i])
-            statsCountries.remove(i)
-      }
-    fillAirStats()
+    local idx = list.findindex(@(v) v == value)
+    if (idx != null)
+      list.remove(idx)
   }
 
   function onStatsCategory(obj)
@@ -1250,49 +1312,6 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
       statsSortReverse = false
     }
     guiScene.performDelayed(this, function() { fillAirStats() })
-  }
-
-  function getMainFocusObj()
-  {
-    local curSheet = getCurSheet()
-    if (curSheet == "Profile")
-    {
-      local obj = scene.findObject("profile-container")
-      return obj.findObject("modes_list")
-    }
-    if (curSheet == "Statistics")
-    {
-      local obj = scene.findObject("stats-container")
-      return obj.findObject("modes_list")
-    }
-    return null
-  }
-
-  function getMainFocusObj2()
-  {
-    local curSheet = getCurSheet()
-    if (curSheet == "Statistics")
-      return getObj("countries_boxes")
-    if (curSheet == "Profile")
-      return getObj("medals_country_tabs")
-    return null
-  }
-
-  function getMainFocusObj3()
-  {
-    local curSheet = getCurSheet()
-    if (curSheet == "Statistics")
-      return getObj("units_boxes")
-    if (curSheet == "Profile")
-      return getObj("leaderboard_modes_list")
-    return null
-  }
-
-  function focusCurSheetObj()
-  {
-    local focusObj = getMainFocusObj()
-    if (focusObj)
-      focusObj.select()
   }
 
   function onOpenAchievementsUrl()

@@ -1,4 +1,4 @@
-local needLogoutAfterSession = false
+local needLogoutAfterSession = persist("needLogoutAfterSession", @() ::Watched(false))
 
 local function canLogout() {
   return !::disable_network() && !::is_vendor_tencent()
@@ -12,7 +12,7 @@ local function startLogout() {
   {
     if (::is_in_flight())
     {
-      needLogoutAfterSession = true
+      needLogoutAfterSession(true)
       ::quit_mission()
       return
     }
@@ -25,7 +25,7 @@ local function startLogout() {
 
   ::dagor.debug("Start Logout")
   ::disable_autorelogin_once <- true
-  needLogoutAfterSession = false
+  needLogoutAfterSession(false)
   ::g_login.reset()
   ::on_sign_out()
   ::sign_out()

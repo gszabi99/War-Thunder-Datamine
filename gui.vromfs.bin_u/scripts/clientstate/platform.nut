@@ -17,13 +17,13 @@ local PS4_REGION_NAMES = {
 }
 
 local targetPlatform = ::get_platform()
-local isPlatformXboxOne = targetPlatform == "xboxOne"
+
+local isPlatformXboxOne = targetPlatform == "xboxOne" || targetPlatform == "xboxScarlett"
+local isPlatformXboxScarlett = targetPlatform == "xboxScarlett"
+
 local isPlatformPS4 = targetPlatform == "ps4"
-local isPlatformSony = isPlatformPS4
-//
-
-
-
+local isPlatformPS5 = targetPlatform == "ps5"
+local isPlatformSony = isPlatformPS4 || isPlatformPS5
 
 local isPlatformPC = ["win32", "win64", "macosx", "linux64"].indexof(targetPlatform) != null
 
@@ -92,7 +92,7 @@ local getPlayerName = function(name)
 }
 
 local isPlayerFromXboxOne = @(name) isPlatformXboxOne && isXBoxPlayerName(name)
-local isPlayerFromPS4 = @(name) isPlatformPS4 && isPS4PlayerName(name)
+local isPlayerFromPS4 = @(name) isPlatformSony && isPS4PlayerName(name)
 
 local isMePS4Player = @() ::g_user_utils.haveTag("ps4")
 local isMeXBOXPlayer = @() ::g_user_utils.haveTag("xbone")
@@ -112,10 +112,10 @@ local canInteractCrossConsole = function(name) {
   local isPS4Player = isPS4PlayerName(name)
   local isXBOXPlayer = isXBoxPlayerName(name)
 
-  if (!isXBOXPlayer && (isPlatformPC || isPlatformPS4))
+  if (!isXBOXPlayer && (isPlatformPC || isPlatformSony))
     return true
 
-  if ((isPS4Player && isPlatformPS4) || (isXBOXPlayer && isPlatformXboxOne))
+  if ((isPS4Player && isPlatformSony) || (isXBOXPlayer && isPlatformXboxOne))
     return true
 
   if (!isPs4XboxOneInteractionAvailable(name))
@@ -127,10 +127,9 @@ local canInteractCrossConsole = function(name) {
 return {
   targetPlatform = targetPlatform
   isPlatformXboxOne = isPlatformXboxOne
+  isPlatformXboxScarlett = isPlatformXboxScarlett
   isPlatformPS4 = isPlatformPS4
-//
-
-
+  isPlatformPS5 = isPlatformPS5
   isPlatformSony = isPlatformSony
   isPlatformPC = isPlatformPC
 

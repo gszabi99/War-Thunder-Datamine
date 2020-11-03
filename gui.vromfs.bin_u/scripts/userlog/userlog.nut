@@ -76,7 +76,7 @@ local { isCrossPlayEnabled } = require("scripts/social/crossplay.nut")
     id="battletasks"
     reqFeature = "BattleTasks"
     show = [::EULT_PUNLOCK_ACCEPT, ::EULT_PUNLOCK_CANCELED, ::EULT_PUNLOCK_REROLL_PROPOSAL,
-            ::EULT_PUNLOCK_EXPIRED, ::EULT_PUNLOCK_NEW_PROPOSAL, ::EULT_NEW_UNLOCK, EULT_PUNLOCK_ACCEPT_MULTI]
+            ::EULT_PUNLOCK_EXPIRED, ::EULT_PUNLOCK_NEW_PROPOSAL, ::EULT_NEW_UNLOCK, ::EULT_PUNLOCK_ACCEPT_MULTI]
     unlocks = [::UNLOCKABLE_ACHIEVEMENT, ::UNLOCKABLE_TROPHY, ::UNLOCKABLE_WARBOND]
     checkFunc = function(userlog) { return ::g_battle_tasks.isUserlogForBattleTasksGroup(userlog.body) }
   }
@@ -141,8 +141,6 @@ class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
     listObj = scene.findObject("items_list")
 
     fillTabs()
-
-    initFocusArray()
   }
 
   function fillTabs()
@@ -212,7 +210,7 @@ class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
       selectedIndex = clamp(selectedIndex, 0, childrenCount - 1)
       listObj.setValue(selectedIndex);
     }
-    listObj.select()
+    ::move_mouse_on_child_by_value(listObj)
 
     local msgObj = scene.findObject("middle_message")
     msgObj.show(logs.len()==0)
@@ -394,6 +392,7 @@ class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     childObj.scrollToView()
+    ::move_mouse_on_obj(childObj)
   }
 
   function onChangePage(obj)
@@ -430,17 +429,8 @@ class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onUnitHover(obj)
   {
-    openUnitActionsList(obj, true, true)
-  }
-
-  function getMainFocusObj()
-  {
-    return "header_buttons"
-  }
-
-  function getMainFocusObj2()
-  {
-    return listObj
+    if (!::show_console_buttons)
+      openUnitActionsList(obj, true)
   }
 
   function onUpdateItemsDef()

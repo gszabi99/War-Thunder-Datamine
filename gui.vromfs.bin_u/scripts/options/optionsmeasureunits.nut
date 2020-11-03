@@ -1,7 +1,7 @@
-local persist = {
+local persistent = {
   unitsCfg = null
 }
-::g_script_reloader.registerPersistentData("OptionsMeasureUnits", persist, persist.keys())
+::g_script_reloader.registerPersistentData("OptionsMeasureUnits", persistent, persistent.keys())
 
 // Preserve the same order as in measureUnits.blk
 local optionsByIndex = [
@@ -16,8 +16,9 @@ local optionsByIndex = [
 
 local function init()
 {
-  persist.unitsCfg = []
-  local blk = ::DataBlock("config/measureUnits.blk")
+  persistent.unitsCfg = []
+  local blk = ::DataBlock()
+  blk.load("config/measureUnits.blk")
   for (local i = 0; i < blk.blockCount(); i++)
   {
     local blkUnits = blk.getBlock(i)
@@ -35,20 +36,20 @@ local function init()
       }
       units.append(unit)
     }
-    persist.unitsCfg.append(units)
+    persistent.unitsCfg.append(units)
   }
 }
 
 local function isInitialized()
 {
-  return (persist.unitsCfg?.len() ?? 0) != 0
+  return (persistent.unitsCfg?.len() ?? 0) != 0
 }
 
 local function getOption(useroptId)
 {
   local unitNo = optionsByIndex.findindex(@(option) option.useroptId == useroptId)
   local option = optionsByIndex[unitNo]
-  local units = persist.unitsCfg[unitNo]
+  local units = persistent.unitsCfg[unitNo]
   local unitName = ::get_option_unit_type(unitNo)
 
   return {
@@ -62,7 +63,7 @@ local function getOption(useroptId)
 local function getMeasureCfg(unitNo)
 {
   local unitName = ::get_option_unit_type(unitNo)
-  return persist.unitsCfg[unitNo].findvalue(@(u) u.name == unitName)
+  return persistent.unitsCfg[unitNo].findvalue(@(u) u.name == unitName)
 }
 
 local function countMeasure(unitNo, value, separator = " - ", addMeasureUnits = true, forceMaxPrecise = false)
@@ -95,7 +96,7 @@ local function countMeasure(unitNo, value, separator = " - ", addMeasureUnits = 
 local function isMetricSystem(unitNo)
 {
   local unitName = ::get_option_unit_type(unitNo)
-  return persist.unitsCfg[unitNo].findindex(@(u) u.name == unitName) == 0
+  return persistent.unitsCfg[unitNo].findindex(@(u) u.name == unitName) == 0
 }
 
 return {

@@ -13,6 +13,7 @@ class ::gui_handlers.ShopSearchWnd extends ::gui_handlers.BaseGuiHandlerWT
   getEdiffFunc = null
 
   isUseUnitPlates = false
+  unitToShowOnClose = null
 
   function getSceneTplView()
   {
@@ -130,9 +131,13 @@ class ::gui_handlers.ShopSearchWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function onUnitClick(obj)
   {
-    local unitId = ::g_string.cutPrefix(obj.id, "btn_") ?? ""
-    cbOwnerShowUnit(unitId)
+    unitToShowOnClose = ::g_string.cutPrefix(obj.id, "btn_") ?? ""
     goBack()
+  }
+
+  function afterModalDestroy() {
+    if (unitToShowOnClose != null)
+      cbOwnerShowUnit(unitToShowOnClose)
   }
 
   function getIsUseUnitPlates(unitsData)

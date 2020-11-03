@@ -1,0 +1,70 @@
+movingRoot {
+  position:absolute;
+  behaviour:basicPos;
+  left-base:300;
+  left-end:0;
+  pos-time:500;
+  pos-scale:parent;
+  pos-func:square;
+  pos-backfunc:square;
+  input-transparent:yes;
+}
+
+movingRoot[animShow = hide] {
+  pos-time:-1000;
+}
+
+movingScreen {
+  position:absolute;
+  size:96%sw,sh;
+  behaviour:basicPos;
+  top-base:0;
+  top-end:-100;
+  left-base:2;
+  left-end:2;
+  pos-time:-500;
+  pos-scale:screen;
+  input-transparent:yes;
+}
+
+movingScreen[animShow = show] {
+  pos-time:2000;
+}
+
+darkScreen {
+  behaviour:basicTransparency;
+  transp-base:255;
+  transp-end:0;
+  transp-time:-500;
+  transp-func:square;
+}
+
+darkScreen[animShow = show] {
+  transp-time:1000;
+}
+
+briefingglow {
+  background-repeat:expand;
+  background-image:ui/briefingglow;
+  background-color:@white;
+
+  transp-base:0;
+  transp-end:40;
+  transp-time:4000;
+  transp-func:"projector";
+  input-transparent:yes;
+  needAnim:yes;
+}
+briefingglow[_transp-timer=1][color-factor=0] {
+  needAnim:no;
+}
+briefingglow[needAnim=yes] {
+  behaviour:basicTransparency;
+}
+
+autosize[display=none] {
+  min-width:0;
+  width:1;
+  min-height:0;
+  height:1;
+}

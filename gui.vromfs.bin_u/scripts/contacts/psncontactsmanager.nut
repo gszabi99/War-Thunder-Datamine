@@ -5,7 +5,7 @@ local { requestUnknownPSNIds } = require("scripts/contacts/externalContactsServi
 local isContactsUpdated = persist("isContactsUpdated", @() ::Watched(false))
 
 local LIMIT_FOR_ONE_TASK_GET_USERS = 200
-local UPDATE_TIMER_LIMIT = 300000
+local UPDATE_TIMER_LIMIT = 10000
 local LAST_UPDATE_FRIENDS = -UPDATE_TIMER_LIMIT
 local PSN_RESPONSE_FIELDS = psn.getPreferredVersion() == 2
   ? { friends = "friends", blocklist = "blocks" }

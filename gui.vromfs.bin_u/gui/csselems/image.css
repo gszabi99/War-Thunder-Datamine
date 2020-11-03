@@ -1,0 +1,213 @@
+tdiv, img, img2, pcHide, pcOnly, shopAirImg, voiceIcon {
+  input-transparent: yes;
+  if_target_pc:@target_pc;
+}
+
+cardImg {
+  background-repeat:aspect-ratio;
+}
+
+img[background-image], img2[background-image], cardImg[background-image], voiceIcon[background-image] {
+  background-color:@white;
+}
+
+img[isLocked=yes], img2[isLocked=yes], cardImg[isLocked=yes] {
+  background-color:@itemLockedColor;
+}
+
+img[background-image=""], img2[background-image=""], cardImg[background-image=""], voiceIcon[background-image=""] {
+  background-color:@transparent;
+  display:hide;
+}
+
+cardImg, cardAvatar {
+  size:@cIco, @cIco;
+  top:50%ph-50%h;
+  position:relative;
+  background-svg-size:@cIco, @cIco;
+}
+cardImg[type=small] {
+  size:@sIco, @sIco;
+  background-svg-size:@sIco, @sIco;
+}
+
+cardImg[type=medium]
+{
+  size: @mIco, @mIco;
+  background-svg-size:@mIco, @mIco;
+}
+
+cardImg[type=large]
+{
+  size: @lIco, @lIco;
+  background-svg-size:@lIco, @lIco;
+}
+
+cardAvatar {
+  behavior:bhvAvatar;
+}
+
+.lbTable > tr.commonIconsStyle {
+  inactive:yes;
+  commonTextColor:yes;
+  bigIcons:yes;
+}
+
+.smallIconsStyle > td > cardImg{
+  pos:50%pw-50%w, 50%ph-50%h;
+  position:absolute;
+}
+
+.lbTable > [bigIcons] cardImg {
+  size:@leaderboardHeaderIcoSize, @leaderboardHeaderIcoSize;
+  top:ph/2-h/2;
+  left:50%pw-50%w;
+  background-color:@imageNotSelectedColor;
+  background-svg-size:@leaderboardHeaderIcoSize, @leaderboardHeaderIcoSize;
+}
+
+cardImg[type=tiny] {
+  size:@sIco, @sIco;
+  background-svg-size:@sIco, @sIco;
+}
+
+cardImg[type=veryTiny] {
+  size:0.6@sIco, 0.6@sIco;
+  background-svg-size:0.6@sIco, 0.6@sIco;
+}
+
+.lbTable td:hover cardImg {
+  background-color:@imageHoverColor;
+}
+
+.lbTable td[no-hover = yes] cardImg {
+  background-color:@imageNotSelectedColor;
+}
+
+.lbTable td[active=yes] cardImg {
+  background-color:@white;
+}
+
+cardImg > activeText {
+  pos:50%pw-50%w, 50%ph-50%h;
+  position:relative;
+}
+.mpTable cardImg {
+  input-transparent:yes;
+}
+
+img[hide_when_tooltip_empty=yes][tooltip=""] {
+  display: hide;
+}
+
+animated_wait_icon
+{
+  re-type:rotation;
+  background-color:@white;
+  background-image:#ui/gameuiskin#throbber.svg;
+  background-svg-size:44@sf/@pf, 44@sf/@pf;
+  size:44@sf/@pf, 44@sf/@pf;
+  behavior:increment;
+  inc-target:background-rotation;
+  inc-factor:120;
+  background-repeat:stretch;
+  input-transparent:yes;
+}
+
+animated_wait_icon.inTextRow {
+  size:16@sf/@pf, 16@sf/@pf;
+  pos:3@sf/@pf, 50%ph-50%h;
+  position:relative;
+  background-svg-size:16@sf/@pf, 16@sf/@pf;
+}
+
+animated_wait_icon.inTextRowAbsolute {
+  size:16@sf/@pf, 16@sf/@pf;
+  position:absolute;
+  background-svg-size:16@sf/@pf, 16@sf/@pf;
+}
+
+animated_wait_icon.missionBox {
+  size:22@sf/@pf, 22@sf/@pf;
+  position:absolute;
+  pos:16@sf/@pf-50%w, 50%ph-50%h;
+  background-svg-size:22@sf/@pf, 22@sf/@pf;
+}
+
+Button_text > animated_wait_icon, animated_wait_icon.byParent {
+  size:ph -6@sf/@pf, ph -6@sf/@pf;
+  background-svg-size:ph -6@sf/@pf, ph -6@sf/@pf;
+}
+
+Button_text.squadWidgetMember > animated_wait_icon {
+  size:@dIco, @dIco;
+  pos:50%pw-50%w,50%ph-50%h;
+  position:absolute;
+  background-svg-size:@dIco, @dIco;
+}
+
+animated_wait_icon[circle] {
+  position:absolute;
+  size:pw, ph;
+  background-color:#40FFFFFF;
+  css-hier-invalidate:yes;
+}
+
+animated_wait_icon[circle=air] {
+  background-image:#ui/gameuiskin#wait_circle;
+  inc-factor:113;
+}
+
+animated_wait_icon[circle=helicopter] {
+  background-image:#ui/gameuiskin#wait_circle_heli;
+  inc-factor:101;
+}
+
+animated_wait_icon[circle=tank] {
+  background-image:#ui/gameuiskin#wait_circle_tank;
+  inc-factor:59;
+}
+
+animated_wait_icon[circle=ship] {
+  background-image:#ui/gameuiskin#wait_circle_ship;
+  inc-factor:79;
+}
+
+imgSelectable {
+  size:1.5@profileMedalSize, 1.5@profileMedalSize;
+}
+imgSelectable > img {
+  size:@profileMedalSize, @profileMedalSize;
+}
+imgSelectable.mediumSize {
+  size:1.8@profileMedalSize, 1.8@profileMedalSize;
+}
+imgSelectable.mediumSize > img {
+  size:1.2@profileMedalSize, 1.2@profileMedalSize;
+}
+imgSelectable.smallMedals {
+  size:1.5@profileMedalSizeList, 1.5@profileMedalSizeList;
+}
+imgSelectable.smallMedals > img {
+  size:@profileMedalSizeList, @profileMedalSizeList;
+}
+imgSelectable.collectionPrize {
+  size:1@collectionPrizeWidth, 1@collectionPrizeWidth;
+}
+imgSelectable.collectionPrize > img {
+  size:1.9@profileMedalSize, 1.9@profileMedalSize;
+}
+
+imgSelectable:hover {
+  background-color:@listboxHoverOptionColor;
+}
+imgSelectable[selected=yes] {
+  background-color:@listboxSelOptionColor;
+}
+
+imgUsercardMedal {
+  size:@usercardMedalRibbonW, @usercardMedalRibbonW;
+}
+imgUsercardMedal > img {
+  size:@usercardMedalSize, @usercardMedalSize;
+}

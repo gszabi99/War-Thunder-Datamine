@@ -246,10 +246,15 @@ g_clans.getRegionUpdateCooldownTime <- function getRegionUpdateCooldownTime()
 g_clans.requestClanLog <- function requestClanLog(clanId, rowsCount, requestMarker, callbackFnSuccess, callbackFnError, handler)
 {
   local params = ::DataBlock()
-  params["_id"] = clanId.tointeger()
-  params["count"] = rowsCount
+  params._id = clanId.tointeger()
+  params.count = rowsCount
+
+  //Allow to display only clan info changes
+  if ((::clan_get_my_clan_id() != clanId) && !::clan_get_admin_editor_mode())
+    params.events = "create;info"
+
   if (requestMarker != null)
-    params["last"] = requestMarker
+    params.last = requestMarker
   local taskId = ::clan_request_log(clanId, params)
   local successCb = ::Callback(callbackFnSuccess, handler)
   local errorCb = ::Callback(callbackFnError, handler)
@@ -1089,7 +1094,7 @@ local function getSeasonName(blk)
   return name
 }
 
-class ClanSeasonTitle
+::ClanSeasonTitle <- class
 {
   clanTag = ""
   clanName = ""
@@ -1125,7 +1130,7 @@ class ClanSeasonTitle
 }
 
 
-class ClanSeasonPlaceTitle extends ClanSeasonTitle
+::ClanSeasonPlaceTitle <- class extends ClanSeasonTitle
 {
   place = ""
   seasonType = ""
@@ -1264,7 +1269,7 @@ class ClanSeasonPlaceTitle extends ClanSeasonTitle
   }
 }
 
-::getFilteredClanData <- function getFilteredClanData(clanData)
+::getFilteredClanData <- function getFilteredClanData(clanData, author = "")
 {
   if ("tag" in clanData)
     clanData.tag = ::checkClanTagForDirtyWords(clanData.tag)
@@ -1277,9 +1282,26 @@ class ClanSeasonPlaceTitle extends ClanSeasonTitle
     "region"
   ]
 
+  local isPlayerBlocked = false
+  if (isPlatformSony) {
+    //Try get author of changes from incomming clanData
+    if (author == "") {
+      author = clanData?.changedByNick ?? ""
+      if (author == "") {
+        local uid = clanData?.creator_uid ?? clanData?.changed_by_uid ?? clanData?.changedByUid ?? ""
+        if (uid != "")
+          author = ::getContact(uid)?.name ?? ""
+      }
+    }
+
+    isPlayerBlocked = ::isPlayerNickInContacts(author, ::EPL_BLOCKLIST)
+    if (isPlayerBlocked)
+      textFields.append("tag")
+  }
+
   foreach (key in textFields)
     if (key in clanData)
-      clanData[key] = ::ps4CheckAndReplaceContentDisabledText(clanData[key])
+      clanData[key] = ::ps4CheckAndReplaceContentDisabledText(clanData[key], isPlayerBlocked)
 
   return clanData
 }
@@ -1297,13 +1319,14 @@ class ClanSeasonPlaceTitle extends ClanSeasonTitle
   return returnString? clanTag : true
 }
 
-::ps4CheckAndReplaceContentDisabledText <- function ps4CheckAndReplaceContentDisabledText(processingString)
+::ps4CheckAndReplaceContentDisabledText <- function ps4CheckAndReplaceContentDisabledText(processingString, forceReplace = false)
 {
-  local pattern = "[^ ]"
-  local replacement = "*"
+  if (!::ps4_is_ugc_enabled() || forceReplace) {
+    local pattern = "[^ ]"
+    local replacement = "*"
 
-  if (!::ps4_is_ugc_enabled())
     processingString = ::regexp2(pattern).replace(replacement, processingString)
+  }
   return processingString
 }
 

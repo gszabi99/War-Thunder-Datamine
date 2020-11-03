@@ -51,7 +51,7 @@ local { isCrossPlayEnabled,
     startFunction = function() {
       if (!needShowCrossPlayInfo() || isCrossPlayEnabled())
         openUrl(::loc("url/tss_all_tournaments"), false, false)
-      else
+      else if (!::xbox_try_show_crossnetwork_message())
         ::showInfoMsgBox(::loc("xbox/actionNotAvailableCrossNetworkPlay"))
     }
     isWide = false
@@ -230,7 +230,7 @@ local { isCrossPlayEnabled,
  * Manager updates game modes array when (game) events
  * and player stats data is updated.
  */
-class GameModeManager
+::GameModeManager <- class
 {
   queueMask = QUEUE_TYPE_BIT.DOMINATION | QUEUE_TYPE_BIT.NEWBIE
   SEEN_MODES_SAVE_PATH = "seen/gameModes"
@@ -662,7 +662,7 @@ class GameModeManager
       displayWide = gm.displayWide
       enableOnDebug = false
       inactiveColor = ::getTblValue("inactiveColor", gm, function() { return false })()
-      unitTypes = [::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_TANK, ::ES_UNIT_TYPE_SHIP, ::ES_UNIT_TYPE_HELICOPTER]
+      unitTypes = [::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_TANK, ::ES_UNIT_TYPE_BOAT, ::ES_UNIT_TYPE_SHIP, ::ES_UNIT_TYPE_HELICOPTER]
       startFunction = @() gm?.startFunction()
       onBattleButtonClick = @() gm?.onBattleButtonClick()
 

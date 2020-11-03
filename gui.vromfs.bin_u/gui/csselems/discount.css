@@ -1,0 +1,232 @@
+discountIcon,
+discount {
+  re-type:text;
+  height:ph;
+  min-width:1.5h+2@discountBoxPadding;
+  padding:1@discountBoxPadding;
+  color:@discountTextColor;
+  font:@fontNormal;
+  textShade:yes;
+  background-image:#ui/gameuiskin#discount;
+  background-color:@white;
+  input-transparent:yes;
+}
+
+discountIcon {
+  behavior:bhvUpdater;
+}
+
+discountIcon[type=slotbarCountry] {
+  min-width:0;
+  pos:1@slotsHeaderBoxPadding + 0.5(1@cIco-w), -h + 1@blockInterval;
+  position:absolute;
+}
+
+discount[type=new] {
+  behaviour:textArea;
+  re-type:textarea;
+  color:@white;
+  background-image:#ui/gameuiskin#discount_box_bg;
+  background-color:@discountBGColor;
+  pos:pw-w, ph-2*@sf/@pf_outdated;
+  position:absolute;
+  font:@fontSmall;
+  padding:10*@sf/@pf_outdated, 1*@sf/@pf_outdated, 3*@sf/@pf_outdated, 1*@sf/@pf_outdated;
+  background-repeat:expand;
+  background-position:6,2,2,2;
+}
+
+discount[type=inTab] {
+  pos:0, 50%ph-50%h;
+  margin-left: 1@blockInterval;
+  position:relative;
+  rotation:0;
+}
+
+discount_notification {
+  background-color:@discountBGColor;
+  background-repeat:expand;
+  input-transparent:yes;
+  font:@fontSmall;
+  color:@discountTextColor;
+  textShade:yes;
+}
+
+squadronExpIcon {
+  behavior:bhvUpdater;
+  size:1@newWidgetIconHeight, 1@newWidgetIconHeight;
+  background-image:#ui/gameuiskin#new_icon_not_colored;
+  background-color:@squadronExpIconColor;
+  background-repeat:expand;
+  input-transparent:yes;
+}
+
+squadronExpIcon[type=inTab] {
+  position:relative;
+  pos:0, 50%ph-50%h;
+  margin-left: 1@blockInterval;
+}
+
+squadronExpIcon[type=slotbarCountry] {
+  position:absolute;
+  pos:pw - w - 1@blockInterval + 3@sf/@pf, -h + 1@blockInterval + 3@sf/@pf;
+}
+
+squadronExpIcon[type=down] {
+  background-image:#ui/gameuiskin#discount_icon_down;
+  size:1@discountBigBoxWidth, 1@discountBigBoxHeight;
+}
+
+:hover > squadronExpIcon[type=down],
+:hover > additionalIconsDiv > squadronExpIcon[type=down],
+[show_console_buttons=yes] [selected=yes] > squadronExpIcon[type=down],
+[show_console_buttons=yes] [selected=yes] > additionalIconsDiv > squadronExpIcon[type=down] {
+  background-color:@hoverSquadronExpIconColor;
+}
+
+:pushed > squadronExpIcon[type=down],
+:pushed > additionalIconsDiv > squadronExpIcon[type=down] {
+  background-color:@pushedSquadronExpIconColor;
+}
+
+:hover > discount_notification,
+:hover > additionalIconsDiv > discount_notification,
+[show_console_buttons=yes] [selected=yes] > discount_notification,
+[show_console_buttons=yes] [selected=yes] > additionalIconsDiv > discount_notification {
+  background-color:@hoverDiscountBGColor;
+}
+
+:pushed > discount_notification,
+:pushed > additionalIconsDiv > discount_notification {
+  background-color:@pushedDiscountBGColor;
+}
+
+discount_notification[text=""],
+HorizontalListBox > shopFilter[selected=yes] > discount_notification {
+  display:hide;
+}
+
+discount_notification[type=down] {
+  background-image:#ui/gameuiskin#discount_icon_down;
+  size:1@discountBigBoxWidth, 1@discountBigBoxHeight;
+  tooltip:"#discount/notification";
+  margin-right: 1@blockInterval;
+}
+
+discount_notification[type=up] {
+  background-image:#ui/gameuiskin#discount_icon_up;
+  size:1@discountBigBoxWidth, 1@discountBigBoxHeight;
+  pos:10%ph, ph;
+  position:absolute;
+  tooltip:"#discount/notification";
+}
+
+discountIcon[type=slotbarCountry],
+discount[type=weaponryItem] {
+  re-type:text;
+  background-image:#ui/gameuiskin#discount_box_down_bg;
+  background-color:@discountBGColor;
+  background-repeat:expand;
+  background-position:21,2,2,6;
+  padding:1@discountBoxPadding, 1@discountBoxPadding, 1@discountBoxPadding, 1@discountBoxDownArrowHeight;
+  height:1@discountBoxDownHeight;
+  font:@fontSmall;
+  color:@discountTextColor;
+}
+
+discount_notification[type=line] {
+  re-type:text;
+  background-image:#ui/gameuiskin#discount_box_bg;
+  background-position:7,7,3,3;
+  padding:2@dp,2@dp,0,0;
+  height:1@discountBoxHeight+2@dp;
+  min-width:h;
+  text:"%";
+  tooltip:"#discount/notification";
+}
+
+discount_notification[type=lineText] {
+  re-type:text;
+  background-image:#ui/gameuiskin#discount_box_bg;
+  background-position:7,7,3,3;
+  padding:2@dp,2@dp,0,0;
+  height:1@discountBoxHeight;
+  min-width:2h;
+}
+
+Button_text > discount_notification[type=lineText] {
+  pos:pw-w-1@blockInterval, 1@blockInterval;
+  position:absolute;
+  height:ph-2@blockInterval;
+}
+
+discount_notification[type=box_down] {
+  re-type:text;
+  background-image:#ui/gameuiskin#discount_box_down_bg;
+  background-position:21,2,2,6;
+  padding:1@discountBoxPadding,1@discountBoxPadding,1@discountBoxPadding,1@discountBoxDownArrowHeight;
+  height:1@discountBoxDownHeight;
+  left:pw-w-8*@sf/@pf;
+  top:-1@discountBoxUnitTop;
+  position:absolute;
+}
+
+discount_notification[type=box_left] {
+  re-type:text;
+  background-image:#ui/gameuiskin#discount_box_bg;
+  background-position:7,7,3,3;
+  padding:2@dp,2@dp,0,0;
+  height:1@discountBoxHeight+2@dp;
+  min-width:2h;
+  left:pw-1@blockInterval;
+  top:50%ph-50%h;
+  position:absolute;
+}
+
+discount_notification[type=box_down][noShift] {
+  left:pw-w;
+}
+
+shopItem > discount_notification {
+  pos:pw-w, -1@discountBoxUnitTop;
+}
+
+discount_notification[type=box_up] {
+  re-type:text;
+  background-image:#ui/gameuiskin#discount_box_up_bg;
+  background-position:21,6,2,2;
+  padding:1@discountBoxPadding, 1@discountBoxDownArrowHeight, 1@discountBoxPadding, 0;
+  height:1@discountBoxDownHeight;
+  pos:50%pw-50%w, ph -h + 8*@sf/@pf;
+  position:absolute;
+}
+
+bonus {
+  pos:0,0;
+  position:absolute;
+  size:28*@sf/@pf_outdated, 28*@sf/@pf_outdated;
+  re-type:9rect;
+  padding:0,0;
+  background-color:@transparent;
+  background-repeat:expand;
+}
+
+bonusNoFrame {
+  size:1@slot_hdr_width, 1.577@slot_hdr_width;
+  pos:50%pw-50%w, 0.5ph - 0.5(h - 1@cIco); 
+  position:relative;
+}
+
+shopFilter.slotsHeader > bonusNoFrame {
+  size: ph, ph;
+  pos: 0, 0;
+  position: absolute;
+}
+
+bonus[bonusType=wp], bonusNoFrame[bonusType=wp]     { background-color:@WPMultiplierColor; }
+bonus[bonusType=exp], bonusNoFrame[bonusType=exp]    { background-color:@ExpMultiplierColor; }
+bonus[bonusType=wp_exp], bonusNoFrame[bonusType=wp_exp] { background-color:@BothMultiplierColor; }
+
+discount[text=""], discount_notification[showDiscount=no], bonus[background-image=""], bonusNoFrame[background-image=""] {
+  display:hide;
+}

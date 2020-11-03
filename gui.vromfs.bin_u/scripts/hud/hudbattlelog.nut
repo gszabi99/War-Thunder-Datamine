@@ -30,6 +30,7 @@ enum BATTLE_LOG_FILTER
   unitTypeSuffix = {
     [::ES_UNIT_TYPE_AIRCRAFT] = "_a",
     [::ES_UNIT_TYPE_TANK]     = "_t",
+    [::ES_UNIT_TYPE_BOAT]     = "_s",
     [::ES_UNIT_TYPE_SHIP]     = "_s",
     [::ES_UNIT_TYPE_HELICOPTER] = "_a",
   }
@@ -38,60 +39,70 @@ enum BATTLE_LOG_FILTER
     kill = {
       [::ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_KILLED_FM",
       [::ES_UNIT_TYPE_TANK]       = "NET_UNIT_KILLED_GM",
+      [::ES_UNIT_TYPE_BOAT]       = "NET_UNIT_KILLED_GM",
       [::ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
       [::ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
     }
     crash = {
       [::ES_UNIT_TYPE_AIRCRAFT]   = "NET_PLAYER_HAS_CRASHED",
       [::ES_UNIT_TYPE_TANK]       = "NET_PLAYER_GM_HAS_DESTROYED",
+      [::ES_UNIT_TYPE_BOAT]       = "NET_PLAYER_GM_HAS_DESTROYED",
       [::ES_UNIT_TYPE_SHIP]       = "NET_PLAYER_GM_HAS_DESTROYED",
       [::ES_UNIT_TYPE_HELICOPTER] = "NET_PLAYER_HAS_CRASHED",
     }
     crit = {
       [::ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_CRITICAL_HIT",
       [::ES_UNIT_TYPE_TANK]       = "NET_UNIT_CRITICAL_HIT",
+      [::ES_UNIT_TYPE_BOAT]       = "NET_UNIT_CRITICAL_HIT",
       [::ES_UNIT_TYPE_SHIP]       = "NET_UNIT_CRITICAL_HIT",
       [::ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_CRITICAL_HIT",
     }
     burn = {
       [::ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_CRITICAL_HIT_BURN",
       [::ES_UNIT_TYPE_TANK]       = "NET_UNIT_CRITICAL_HIT_BURN",
+      [::ES_UNIT_TYPE_BOAT]       = "NET_UNIT_CRITICAL_HIT_BURN",
       [::ES_UNIT_TYPE_SHIP]       = "NET_UNIT_CRITICAL_HIT_BURN",
       [::ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_CRITICAL_HIT_BURN",
     }
     rocket = {
       [::ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_KILLED_FM",
       [::ES_UNIT_TYPE_TANK]       = "NET_UNIT_KILLED_GM",
+      [::ES_UNIT_TYPE_BOAT]       = "NET_UNIT_KILLED_GM",
       [::ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
       [::ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
     }
     torpedo = {
       [::ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_KILLED_FM",
       [::ES_UNIT_TYPE_TANK]       = "NET_UNIT_KILLED_GM",
+      [::ES_UNIT_TYPE_BOAT]       = "NET_UNIT_KILLED_GM",
       [::ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
       [::ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
     }
     artillery = {
       [::ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_KILLED_FM",
       [::ES_UNIT_TYPE_TANK]       = "NET_UNIT_KILLED_GM",
+      [::ES_UNIT_TYPE_BOAT]       = "NET_UNIT_KILLED_GM",
       [::ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
       [::ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
     }
     depth_bomb = {
       [::ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_KILLED_FM",
       [::ES_UNIT_TYPE_TANK]       = "NET_UNIT_KILLED_GM",
+      [::ES_UNIT_TYPE_BOAT]       = "NET_UNIT_KILLED_GM",
       [::ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
       [::ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
     }
     mine = {
       [::ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_KILLED_FM",
       [::ES_UNIT_TYPE_TANK]       = "NET_UNIT_KILLED_GM",
+      [::ES_UNIT_TYPE_BOAT]       = "NET_UNIT_KILLED_GM",
       [::ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
       [::ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
     }
     exit = {
       [::ES_UNIT_TYPE_AIRCRAFT]   = "NET_PLAYER_EXITED",
       [::ES_UNIT_TYPE_TANK]       = "NET_PLAYER_EXITED",
+      [::ES_UNIT_TYPE_BOAT]       = "NET_PLAYER_EXITED",
       [::ES_UNIT_TYPE_SHIP]       = "NET_PLAYER_EXITED",
       [::ES_UNIT_TYPE_HELICOPTER] = "NET_PLAYER_EXITED",
     }

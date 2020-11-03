@@ -669,8 +669,10 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -692,8 +694,9 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
         "fireParamsPreset": "fuel_exterior",
         "fuel_tank_exterior_r_01_dm": [],
         "fuel_tank_exterior_r_02_dm": [],
@@ -1797,6 +1800,7 @@
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": false,
+            "forceEnabled": true,
             "hasHorizontal": true,
             "horizontalOmegaMult": 1.0,
             "horizontalSpeedLimitKPH": 75.0,
@@ -1873,6 +1877,7 @@
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": false,
+            "forceEnabled": true,
             "hasHorizontal": true,
             "horizontalOmegaMult": 1.0,
             "horizontalSpeedLimitKPH": 75.0,
@@ -2535,6 +2540,15 @@
       },
       {
         "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -2556,7 +2570,7 @@
     "cockpit": {
       "zoomOutFov": 9.2,
       "zoomInFov": 4.6,
-      "sightFov": 6.5,
+      "sightFov": 4.5,
       "sightName": "tzf_1a",
       "headPos": [0.0,3.5,-9.5],
       "headPosOnShooting": [0.0,3.1,0.35],

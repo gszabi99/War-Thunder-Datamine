@@ -200,6 +200,8 @@ local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
   local canHaveFriends = ::has_feature("Friends")
   local canChat = ::has_feature("Chat")
   local is_in_menu = ::isInMenu()
+  local skipNavigation = getObj("gamercard_div")?["gamercardSkipNavigation"] == "yes"
+
   local hasPremiumAccount = ::entitlement_expires_in(premAccName) > 0
 
   local buttonsShowTable = {
@@ -217,7 +219,8 @@ local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
                              gc_items_shop_button = ::ItemsManager.isEnabled() && ::has_feature("ItemsShop")
                              gc_online_shop_button = ::has_feature("OnlineShopPacks")
                              gc_clanAlert = ::g_clans.getUnseenCandidatesCount() > 0
-                             gc_invites_btn = !::is_platform_xboxone || ::has_feature("XboxCrossConsoleInteraction")
+                             gc_invites_btn = !::is_platform_xbox || ::has_feature("XboxCrossConsoleInteraction")
+                             gc_userlog_btn = true
                            }
 
   foreach(id, status in buttonsShowTable)
@@ -228,6 +231,8 @@ local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
       bObj.show(status)
       bObj.enable(status)
       bObj.inactive = status? "no" : "yes"
+      if (status && skipNavigation)
+        bObj["skip-navigation"] = "yes"
     }
   }
 

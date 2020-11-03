@@ -1,11 +1,17 @@
+//ATTENTION! this file is coupling things to much! Split it!
+//shouldDecreaseSize, allowedSizeIncrease = 100
+
 local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 local time = require("scripts/time.nut")
-local penalty = require_native("penalty")
+local penalty = ::require_native("penalty")
 local { isPlatformSony, getPlayerName } = require("scripts/clientState/platform.nut")
 local stdMath = require("std/math.nut")
 local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 local { isCrossPlayEnabled } = require("scripts/social/crossplay.nut")
 local { startLogout } = require("scripts/login/logout.nut")
+local datablockUtils = require("utils/datablock.nut")
+local {get_blk_value_by_path, blkOptFromPath} = datablockUtils
+::getroottable().__update(datablockUtils)
 
 ::usageRating_amount <- [0.0003, 0.0005, 0.001, 0.002]
 ::allowingMultCountry <- [1.5, 2, 2.5, 3, 4, 5]
@@ -62,48 +68,15 @@ foreach (i, v in ::cssColorsMapDark)
 ::global_max_players_versus <- 64
 ::global_max_players_coop <- 4
 
-::get_blk_by_path_array <- function get_blk_by_path_array(path, blk, defaultValue = null)
-{
-  local currentBlk = blk
-  foreach (p in path)
-  {
-    if (!(currentBlk instanceof ::DataBlock))
-      return defaultValue
-    currentBlk = currentBlk?[p]
-  }
-  return currentBlk ?? defaultValue
-}
-
-::get_blk_value_by_path <- function get_blk_value_by_path(blk, path, defVal=null)
-{
-  if (!blk || !path)
-    return defVal
-
-  local nodes = ::split(path, "/")
-  local key = nodes.len() ? nodes.pop() : null
-  if (!key || !key.len())
-    return defVal
-
-  blk = ::get_blk_by_path_array(nodes, blk, defVal)
-  if (blk == defVal || !::u.isDataBlock(blk))
-    return defVal
-  local val = blk?[key]
-  val = (val!=null && (defVal == null || type(val) == type(defVal))) ? val : defVal
-  return val
-}
-
 ::getFromSettingsBlk <- function getFromSettingsBlk(path, defVal=null)
 {
   // Important: On production, settings blk does NOT contain all variables from config.blk, use getSystemConfigOption() instead.
   local blk = ::get_settings_blk()
-  local val = ::get_blk_value_by_path(blk, path)
+  local val = get_blk_value_by_path(blk, path)
   return (val != null) ? val : defVal
 }
 
-::isInArray <- function isInArray(v, arr)
-{
-  return arr.indexof(v) != null
-}
+::isInArray <- @(v, arr) arr.contains(v)
 
 ::locOrStrip <- function locOrStrip(text)
 {
@@ -260,17 +233,17 @@ foreach (i, v in ::cssColorsMapDark)
 {
   switch (game_mode)
   {
-    case GM_CAMPAIGN: return OPTIONS_MODE_CAMPAIGN;
-    case GM_TRAINING: return OPTIONS_MODE_TRAINING;
-    case GM_TEST_FLIGHT: return OPTIONS_MODE_TRAINING;
-    case GM_SINGLE_MISSION: return OPTIONS_MODE_SINGLE_MISSION;
-    case GM_USER_MISSION: return OPTIONS_MODE_SINGLE_MISSION;
-    case GM_DYNAMIC: return OPTIONS_MODE_DYNAMIC;
-    case GM_BUILDER: return OPTIONS_MODE_DYNAMIC;
-    case GM_DOMINATION: return OPTIONS_MODE_MP_DOMINATION;
-    case GM_SKIRMISH: return OPTIONS_MODE_MP_SKIRMISH;
+    case ::GM_CAMPAIGN: return ::OPTIONS_MODE_CAMPAIGN;
+    case ::GM_TRAINING: return ::OPTIONS_MODE_TRAINING;
+    case ::GM_TEST_FLIGHT: return ::OPTIONS_MODE_TRAINING;
+    case ::GM_SINGLE_MISSION: return ::OPTIONS_MODE_SINGLE_MISSION;
+    case ::GM_USER_MISSION: return ::OPTIONS_MODE_SINGLE_MISSION;
+    case ::GM_DYNAMIC: return ::OPTIONS_MODE_DYNAMIC;
+    case ::GM_BUILDER: return ::OPTIONS_MODE_DYNAMIC;
+    case ::GM_DOMINATION: return ::OPTIONS_MODE_MP_DOMINATION;
+    case ::GM_SKIRMISH: return ::OPTIONS_MODE_MP_SKIRMISH;
   }
-  return OPTIONS_MODE_GAMEPLAY
+  return ::OPTIONS_MODE_GAMEPLAY
 }
 
 ::restart_current_mission <- function restart_current_mission()
@@ -298,12 +271,12 @@ foreach (i, v in ::cssColorsMapDark)
 
     if (::u.isTable(item))
     {
-      itemView = ::combine_tables(item, itemView)
+      itemView.__update(item)
       if (itemView.isInactive)
         itemView.onClick = "onInactiveItem"
     }
 
-    result += ::handyman.renderCached("gui/menuButton", itemView)
+    result += ::handyman.renderCached("gui/flightMenu/menuButton", itemView)
   }
   return result
 }
@@ -823,29 +796,18 @@ foreach (i, v in ::cssColorsMapDark)
   foreach(idx, cell in rowData)
   {
     local haveParams = typeof cell == "table"
-    local config = {
+    local config = (haveParams ? cell : {}).__merge({
       params = haveParams
       display = (cell?.show ?? true) ? "show" : "hide"
       id = ::getTblValue("id", cell, "td_" + idx)
-      width = ::getTblValue("width", cell)
-      tdalign = ::getTblValue("tdAlign", cell)
-      tooltip = ::getTblValue("tooltip", cell)
-      tooltipId = cell?.tooltipId
-      callback = ::getTblValue("callback", cell)
-      active = ::getTblValue("active", cell, false)
-      cellType = ::getTblValue("cellType", cell)
       rawParam = ::getTblValue("rawParam", cell, "")
       needText = ::getTblValue("needText", cell, true)
       textType = ::getTblValue("textType", cell, "activeText")
       text = haveParams? ::getTblValue("text", cell, "") : cell.tostring()
-      autoScrollText = cell?.autoScrollText ?? false
       textRawParam = ::getTblValue("textRawParam", cell, "")
       imageType = ::getTblValue("imageType", cell, "cardImg")
-      image = ::getTblValue("image", cell)
-      imageRawParams = ::getTblValue("imageRawParams", cell)
       fontIconType = ::getTblValue("fontIconType", cell, "fontIcon20")
-      fontIcon = ::getTblValue("fontIcon", cell)
-    }
+    })
 
     view.cell.append(config)
   }
@@ -1403,8 +1365,8 @@ foreach (i, v in ::cssColorsMapDark)
 {
   local filename = ::get_config_blk_paths().read
   if (!filename) return defVal
-  local blk = ::DataBlock(filename)
-  local val = ::get_blk_value_by_path(blk, path)
+  local blk = blkOptFromPath(filename)
+  local val = get_blk_value_by_path(blk, path)
   return (val != null) ? val : defVal
 }
 
@@ -1412,7 +1374,7 @@ foreach (i, v in ::cssColorsMapDark)
 {
   local filename = ::get_config_blk_paths().write
   if (!filename) return
-  local blk = ::DataBlock(filename)
+  local blk = blkOptFromPath(filename)
   if (::set_blk_value_by_path(blk, path, val))
     blk.saveToTextFile(filename)
 }
@@ -1518,18 +1480,6 @@ foreach (i, v in ::cssColorsMapDark)
   return bestIdx;
 }
 
-::combine_tables <- function combine_tables(primaryTable, secondaryTable)
-{
-  local primTable = clone primaryTable
-
-  if (secondaryTable.len() > 0)
-    foreach(name, value in secondaryTable)
-      if (!(name in primTable))
-        primTable[name] <- value
-
-  return primTable
-}
-
 ::checkRemnantPremiumAccount <- function checkRemnantPremiumAccount()
 {
   if (!::has_feature("EnablePremiumPurchase") ||
@@ -1585,42 +1535,6 @@ foreach (i, v in ::cssColorsMapDark)
   })
   ::showInfoMsgBox(message, "sysopt_tex_quality_restricted")
   ::informTexQualityRestrictedDone = true
-}
-
-::get_localized_text_with_abbreviation <- function get_localized_text_with_abbreviation(locId)
-{
-  if (!locId || (!("getLocTextForLang" in ::dagor)))
-    return {}
-
-  local locBlk = ::DataBlock()
-  ::get_localization_blk_copy(locBlk)
-
-  if (!locBlk || (!("abbreviation_languages_table" in locBlk)))
-    return {}
-
-  local abbreviationsList = locBlk.abbreviation_languages_table
-  if (::target_platform in abbreviationsList)
-    abbreviationsList = abbreviationsList[::target_platform]
-
-  local output = {}
-  for (local i = 0; i < abbreviationsList.paramCount(); i++)
-  {
-    local param = abbreviationsList.getParamValue(i)
-    if (typeof(param) != "string")
-      continue
-
-    local abbrevName = abbreviationsList.getParamName(i)
-    local text = ::dagor.getLocTextForLang(locId, param)
-    if (text == null)
-    {
-      ::dagor.debug("Error: not found localized text for locId = '" + locId + "', lang = '" + param + "'")
-      continue
-    }
-
-    output[abbrevName] <- text
-  }
-
-  return output
 }
 
 ::is_myself_anyof_moderators <- function is_myself_anyof_moderators()
@@ -1906,12 +1820,12 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
     return
   if (enable)
   {
-    ::enable_dof(::getTblValue("nearFrom",   params, 1000000), // meters
+    ::enable_dof(::getTblValue("nearFrom",   params, 0), // meters
                  ::getTblValue("nearTo",     params, 0), // meters
-                 ::getTblValue("nearEffect", params, 1), // 0..1
-                 ::getTblValue("farFrom",    params, 0), // meters
+                 ::getTblValue("nearEffect", params, 0), // 0..1
+                 ::getTblValue("farFrom",    params, 1000000), // meters
                  ::getTblValue("farTo",      params, 0), // meters
-                 ::getTblValue("farEffect",  params, 0)) // 0..1
+                 ::getTblValue("farEffect",  params, 1)) // 0..1
   }
   else
     ::disable_dof()

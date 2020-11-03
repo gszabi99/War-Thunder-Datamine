@@ -1,5 +1,5 @@
-local ExchangeRecipes = ::require("scripts/items/exchangeRecipes.nut")
-local u = ::require("sqStdLibs/helpers/u.nut")
+local ExchangeRecipes = require("scripts/items/exchangeRecipes.nut")
+local u = require("sqStdLibs/helpers/u.nut")
 local stdMath = require("std/math.nut")
 
 local MIN_ITEMS_IN_ROW = 7
@@ -74,7 +74,7 @@ class ::gui_handlers.RecipesListWnd extends ::gui_handlers.BaseGuiHandlerWT
     align = ::g_dagui_utils.setPopupMenuPosAndAlign(alignObj, align, scene.findObject("main_frame"))
     needMarkRecipes = ExchangeRecipes.hasFakeRecipes(recipesList)
 
-    scene.findObject("recipes_list").select()
+    ::move_mouse_on_child_by_value(scene.findObject("recipes_list"))
     updateCurRecipeInfo()
   }
 

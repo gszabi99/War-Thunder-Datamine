@@ -1,12 +1,10 @@
 local time = require("scripts/time.nut")
-local { isObjHaveActiveChilds } = require("sqDagui/guiBhv/guiBhvUtils.nut")
 
 
 class ::gui_handlers.ChatThreadsListView extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
   sceneBlkName = "gui/chat/chatThreadsList.blk"
-  isPrimaryFocus = false
   backFunc = null
   updateInactiveList = false
 
@@ -77,7 +75,6 @@ class ::gui_handlers.ChatThreadsListView extends ::gui_handlers.BaseGuiHandlerWT
   function updateRefreshButton()
   {
     local btnObj = scene.findObject("btn_refresh")
-    local isFocused = btnObj.isFocused()
     local isWaiting = ::g_chat_latest_threads.getUpdateState() == chatUpdateState.IN_PROGRESS
 
     btnObj.findObject("btn_refresh_img").show(!isWaiting)
@@ -92,9 +89,6 @@ class ::gui_handlers.ChatThreadsListView extends ::gui_handlers.BaseGuiHandlerWT
       tooltip += " (" + time.secondsToString(0.001 * timeLeft, true, true) + ")"
     btnObj.tooltip = tooltip
     guiScene.updateTooltip(btnObj)
-
-    if (!canRefresh && isFocused)
-      listObj.select()
   }
 
   function updateLangsButton()
@@ -248,22 +242,6 @@ class ::gui_handlers.ChatThreadsListView extends ::gui_handlers.BaseGuiHandlerWT
   function onCategoriesBtn(obj)
   {
     ::g_chat_categories.openChooseCategoriesMenu("top", scene.findObject("btn_categories_filter"))
-  }
-
-  function wrapNextSelect(obj = null, dir = 0)
-  {
-    if (::menu_chat_handler)
-      ::menu_chat_handler.wrapNextSelect(obj, dir)
-  }
-
-  function getMainFocusObj()
-  {
-    return isObjHaveActiveChilds(listObj) ? listObj : null
-  }
-
-  function getMainFocusObj2()
-  {
-    return scene.findObject("threads_buttons_panel")
   }
 
   function updateRoomInList(room)

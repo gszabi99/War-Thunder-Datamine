@@ -20,8 +20,7 @@ currentTab.subscribe(function (new_val) {
 currentTab.update(tabsList[0])
 
 local selectChatTab = function (enable) {
-  if (enable)
-  {
+  if (enable) {
     currentTab.update(tabsList[0])
   }
 }

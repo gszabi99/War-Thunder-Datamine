@@ -1,16 +1,18 @@
 [
   {
     "root": {
-      "background-color": "@modalShadeColor",
-      "behaviour": "button",
-      "on_click": "goBack",
+      "type": "big",
+      "blur": [],
+      "blur_foreground": [],
       "frame": {
         "id": "wnd_frame",
         "size": "0.7@sf, 0.7@sf",
         "pos": "50%pw-50%w, 1@minYposWindow + 0.1*(sh - 1@minYposWindow - h)",
         "position": "absolute",
         "class": "wndNav",
-        "behaviour": "button",
+        "rootUnderPopupMenu": {
+          "on_click": "goBack"
+        },
         "frame_header": {
           "activeText": {
             "caption": "yes",
@@ -31,7 +33,7 @@
         "textareaNoTab": {
           "id": "now_new_invites",
           "width": "pw",
-          "pos": "50%pw-50%w, 40%ph-50%h",
+          "pos": "0.5pw-0.5w, 0.5ph-0.5h",
           "position": "absolute",
           "text-align": "center",
           "text": "#invite/noNewInvites"
@@ -40,12 +42,12 @@
           "navLeft": {
             "CheckBox": {
               "id": "auto_close",
+              "left": "1@blockInterval",
+              "position": "relative",
               "text": "#invite/closeWndOnAccept",
               "value": "no",
-              "btnName": "RB",
               "on_change_value": "onAutoCloseChange",
-              "CheckBoxImg": [],
-              "ButtonImg": []
+              "CheckBoxImg": []
             }
           }
         }
@@ -54,13 +56,13 @@
   },
   {
     "DummyButton": {
-      "btnName": "X",
+      "btnName": "Y",
       "on_click": "onInviterInfoAccessKey"
     }
   },
   {
     "DummyButton": {
-      "btnName": "Y",
+      "btnName": "LB",
       "on_click": "onReject"
     }
   }

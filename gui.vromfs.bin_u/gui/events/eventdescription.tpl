@@ -3,31 +3,38 @@ tdiv {
   pos:t='0,0'
   position:t='relative'
   size:t='fw, ph'
+  padding-right:t='1@blockInterval'
   flow:t='vertical'
   css-hier-invalidate:t='yes'
 
   tdiv {
-    position:t='relative'
-    pos:t='50%pw-50%w, 0'
+    width:t='pw'
+    background-color:t='@separatorBlockColor'
 
-    img {
-      id:t='difficulty_img'
-      size:t='1@unlockStageIconSize,1@unlockStageIconSize'
-      pos:t='0,50%ph-50%h'
+    tdiv {
       position:t='relative'
-      tooltip:t=''
-      background-image:t=''
-      tooltip:t=''
-    }
+      pos:t='0.5pw-0.5w, 0'
 
-    activeText {
-      id:t='event_name'
-      position:t='relative'
-      pos:t='0, 0'
-      text:t=''
-      caption:t='yes'
+      img {
+        id:t='difficulty_img'
+        size:t='1@unlockStageIconSize,1@unlockStageIconSize'
+        pos:t='0,50%ph-50%h'
+        position:t='relative'
+        tooltip:t=''
+        background-image:t=''
+        tooltip:t=''
+      }
+
+      activeText {
+        id:t='event_name'
+        position:t='relative'
+        pos:t='0, 0'
+        text:t=''
+        caption:t='yes'
+      }
     }
   }
+
   div {
     size:t='pw, fh'
     overflow-y:t='auto'
@@ -36,6 +43,8 @@ tdiv {
 
     tdiv { //info texts
       width:t='pw'
+      padding:t='1@blockInterval, 0'
+      background-color:t='@separatorBlockColor'
 
       tdiv { //left info
         width:t='fw'
@@ -116,7 +125,8 @@ tdiv {
 
         textareaNoTab {
           id:t='cost_desc'
-          pos:t='pw-w, 0'; position:t='relative'
+          position:t='relative'
+          pos:t='pw-w, 0'
           padding-left:t='@unlockIconSize'
           text-align:t='right'
           text:t=''
@@ -124,7 +134,8 @@ tdiv {
           img {
             id:t='bought_ticket_img'
             size:t='@unlockIconSize, @unlockIconSize'
-            pos:t='0, -0.2h'; position:t='absolute'
+            position:t='absolute'
+            pos:t='0, -0.2h'
             background-image:t='#ui/gameuiskin#favorite'
             display:t='hide'
           }
@@ -155,25 +166,21 @@ tdiv {
     }
     tdiv {
       width:t='pw'
-      height:t='fh'
       min-height:t='1@eventTacticalMapSize + 3@leaderboardTrHeight + 0.02@sf + 1@buttonHeight'
-      padding-top:t='0.01@scrn_tgt';
+      padding-top:t='0.01@scrn_tgt'
 
-      frameBlock {
+      tdiv {
         id:t='tactical-map'
         position:t='relative'
         width:t='@eventTacticalMapSize'
         height:t='ph'
-        padding:t='3*@sf/@pf_outdated'
-        margin-right:t='0.01@scrn_tgt'
         flow:t='vertical'
 
         img{
           id:t='multiple_mission'
-          size:t='95%pw,95%pw'
+          size:t='pw,fh'
           max-height:t='w'
           max-width:t='h'
-          pos:t='50%pw-50%w, 2*@sf/@pf_outdated'
           position:t='relative'
           display:t='hide'
         }
@@ -182,25 +189,21 @@ tdiv {
           size:t='pw,fh'
           max-width:t='h'
           max-height:t='w'
-          pos:t='50%pw-50%w, 2*@sf/@pf_outdated'
           position:t='relative'
           display:t='hide'
         }
         tdiv {
           id:t='lb_wrap'
-          width:t='pw+4*@sf/@pf_outdated'
+          width:t='pw'
           height:t='3@leaderboardTrHeight + 0.02@sf + 1@buttonHeight'
-          pos:t='-2*@sf/@pf_outdated, 0.005@sf'
           position:t='relative'
-          padding:t='2'
           padding-top:t='0.005@sf'
           flow:t='vertical'
 
           animated_wait_icon {
             id:t = 'msgWaitAnimation'
-            position:t='absolute'
-            height:t='ph'
-            pos:t='50%pw-50%w,50%ph-50%h'
+            position:t='relative'
+            pos:t='0.5pw-0.5w, 0.005@sf'
             background-rotation:t = '0'
           }
           table {
@@ -217,7 +220,7 @@ tdiv {
             _on_click:t='onOpenEventLeaderboards'
             text:t='#mainmenu/titleLeaderboards'
             position:t='relative'
-            pos:t='0.5*pw - 0.5*w, 0.005@sf'
+            pos:t='0.5pw-0.5w, 0.005@sf'
             display:t='hide'
             btnName:t='Y'
 
@@ -227,8 +230,8 @@ tdiv {
       }
 
       //teams and chat block
-      frameBlock {
-        size:t='fw, ph'
+      tdiv {
+        width:t='fw'
         flow:t='vertical'
 
         chapterSeparator {
@@ -239,16 +242,13 @@ tdiv {
 
         //teams info
         tdiv {
-          size:t='pw, fh'
-          padding:t='3*@sf/@pf_outdated'
-          overflow-y:t='auto'
-          scrollbarShortcuts:t='yes'
+          width:t='pw'
+          padding-left:t='0.01@scrn_tgt'
 
           tdiv {
             id:t='teamA'
             width:t='0.5fw'
             flow:t='vertical'
-            padding:t='1@blockInterval'
 
             activeText {
               id:t='team_title'
@@ -303,7 +303,7 @@ tdiv {
             }
           }
 
-          tdiv { width:t='@chapterSeparatorSize' }
+          chapterSeparator {}
 
           tdiv {
             id:t='teamB'

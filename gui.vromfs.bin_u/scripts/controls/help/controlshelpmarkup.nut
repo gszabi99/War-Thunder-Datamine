@@ -6,6 +6,12 @@ if (platform.isPlatformPS4)
     blk = "gui/help/controllerDualshock.blk"
     btnBackLocId = "controls/help/dualshock4_btn_share"
   }
+else if (platform.isPlatformPS5)
+  return {
+    title = "#controls/help/dualsense"
+    blk = "gui/help/controllerDualsense.blk"
+    btnBackLocId = "controls/help/dualshock4_btn_share"
+  }
 
 return {
   title = "#controls/help/xboxone"

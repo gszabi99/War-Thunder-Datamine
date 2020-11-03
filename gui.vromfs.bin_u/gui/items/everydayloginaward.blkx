@@ -1,6 +1,7 @@
 {
   "root": {
-    "background-color": "@modalShadeColor",
+    "blur": [],
+    "blur_foreground": [],
     "gamercardShade": [],
     "frame": {
       "id": "main_frame_login_rewards",
@@ -57,7 +58,8 @@
                 "pos": "pw/2-w/2, ph/2-h/2",
                 "position": "relative",
                 "behavior": "button",
-                "_on_click": "onViewRewards"
+                "_on_click": "onViewRewards",
+                "skip-navigation": "yes"
               }
             },
             {
@@ -456,9 +458,8 @@
                       "position": "relative"
                     },
                     {
-                      "tdiv": {
-                        "id": "reward_aircrafts",
-                        "class": "rankUpList"
+                      "rankUpList": {
+                        "id": "reward_aircrafts"
                       }
                     },
                     {
@@ -492,9 +493,8 @@
                       }
                     },
                     {
-                      "tdiv": {
-                        "id": "periodic_reward_aircrafts",
-                        "class": "rankUpList"
+                      "rankUpList": {
+                        "id": "periodic_reward_aircrafts"
                       }
                     }
                   ]
@@ -510,7 +510,7 @@
                     "style": "size:1@bigButtonWidth, 1@buttonHeight;",
                     "on_click": "onOpenChest",
                     "css-hier-invalidate": "yes",
-                    "btnName": "A",
+                    "btnName": "X",
                     "pattern": [],
                     "buttonWink": {
                       "_transp-timer": "0"
@@ -596,10 +596,10 @@
               "pressAction": "share",
               "on_click": "onFacebookLoginAndPostScrnshot",
               "tooltip": "",
-              "btnName": "X",
+              "btnName": "LB",
               "ButtonImg": [],
               "cardImg": {
-                "background-image": "#ui/gameuiskin#facebook_logo",
+                "background-image": "#ui/gameuiskin#facebook_logo.svg",
                 "input-transparent": "yes"
               },
               "text": {
@@ -626,7 +626,7 @@
             "Button_text": {
               "id": "btn_nav_open",
               "text": "#items/getReward",
-              "btnName": "A",
+              "btnName": "X",
               "on_click": "onOpenChest",
               "ButtonImg": []
             }
@@ -636,7 +636,7 @@
               "id": "btn_close",
               "display": "hide",
               "text": "#mainmenu/btnClose",
-              "btnName": "A",
+              "btnName": "X",
               "_on_click": "goBack",
               "ButtonImg": []
             }

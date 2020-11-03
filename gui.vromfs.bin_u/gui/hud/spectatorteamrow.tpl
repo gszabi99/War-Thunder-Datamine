@@ -9,9 +9,9 @@ tr {
       ButtonContainer { ButtonImg {} }
       battleStateIco { id:t='battle-state-ico' class:t='' }
       unitContainer {
-        img { id:t='torpedo-ico' class:t='weapon' reloading:t='no' background-image:t='#ui/gameuiskin#weap_torpedo' }
-        img { id:t='rocket-ico'  class:t='weapon' reloading:t='no' background-image:t='#ui/gameuiskin#weap_missile' }
-        img { id:t='bomb-ico'    class:t='weapon' reloading:t='no' background-image:t='#ui/gameuiskin#weap_bomb'  }
+        img { id:t='torpedo-ico' class:t='weapon' reloading:t='no' background-image:t='#ui/gameuiskin#weap_torpedo.svg' }
+        img { id:t='rocket-ico'  class:t='weapon' reloading:t='no' background-image:t='#ui/gameuiskin#weap_missile.svg' }
+        img { id:t='bomb-ico'    class:t='weapon' reloading:t='no' background-image:t='#ui/gameuiskin#weap_bomb.svg'  }
         img { id:t='unit-ico'    class:t='unit'   background-image:t=''  shopItemType:t='' }
       }
     }
@@ -20,9 +20,9 @@ tr {
     icon {
       unitContainer {
         img { id:t='unit-ico'    class:t='unit'   background-image:t=''  shopItemType:t='' }
-        img { id:t='bomb-ico'    class:t='weapon' reloading:t='no' background-image:t='#ui/gameuiskin#weap_bomb'  }
-        img { id:t='rocket-ico'  class:t='weapon' reloading:t='no' background-image:t='#ui/gameuiskin#weap_missile' }
-        img { id:t='torpedo-ico' class:t='weapon' reloading:t='no' background-image:t='#ui/gameuiskin#weap_torpedo' }
+        img { id:t='bomb-ico'    class:t='weapon' reloading:t='no' background-image:t='#ui/gameuiskin#weap_bomb.svg'  }
+        img { id:t='rocket-ico'  class:t='weapon' reloading:t='no' background-image:t='#ui/gameuiskin#weap_missile.svg' }
+        img { id:t='torpedo-ico' class:t='weapon' reloading:t='no' background-image:t='#ui/gameuiskin#weap_torpedo.svg' }
       }
       battleStateIco { id:t='battle-state-ico' class:t='' }
       ButtonContainer { ButtonImg {} }

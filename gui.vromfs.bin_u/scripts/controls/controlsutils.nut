@@ -1,5 +1,5 @@
 local time = require("scripts/time.nut")
-local controllerState = require_native("controllerState")
+local controllerState = ::require_native("controllerState")
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
 ::classic_control_preset <- "classic"
@@ -11,7 +11,7 @@ local { isPlatformSony } = require("scripts/clientState/platform.nut")
   ::shooter_control_preset
 ]
 
-if (::is_platform_xboxone)
+if (::is_platform_xbox)
   ::recomended_control_presets.append(::thrustmaster_hotas_one_preset_type)
 
 ::g_controls_utils <- {
@@ -34,7 +34,7 @@ if (::is_platform_xboxone)
 
       if (sc.type == CONTROL_TYPE.HEADER) //unitType and other params below exist only in header
       {
-        isHeaderPassed = sc?.unitType == null || unitType == sc.unitType
+        isHeaderPassed = sc?.unitTypes.contains(unitType) ?? true
         isSectionPassed = true // reset previous sectino setting
 
         if (isHeaderPassed && classType != null)
@@ -108,7 +108,7 @@ if (::is_platform_xboxone)
 
     ::set_controls_preset("")
     ::set_shortcuts(changeList, changeNames)
-    ::broadcastEvent("PresetChanged")
+    ::broadcastEvent("ControlsPresetChanged")
   }
 
   function isShortcutMapped(shortcut) {
@@ -196,7 +196,7 @@ if (controllerState?.add_event_handler)
   local presets = isPlatformSony ? {
     [::classic_control_preset] = "default",
     [::shooter_control_preset] = "dualshock4"
-  } : ::is_platform_xboxone ? {
+  } : ::is_platform_xbox ? {
     [::classic_control_preset] = "xboxone_simulator",
     [::shooter_control_preset] = "xboxone_ma",
     [::thrustmaster_hotas_one_preset_type] = "xboxone_thrustmaster_hotas_one"

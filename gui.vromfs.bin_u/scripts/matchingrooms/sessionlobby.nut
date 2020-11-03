@@ -1,6 +1,9 @@
 local antiCheat = require("scripts/penitentiary/antiCheat.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { getPlayerName } = require("scripts/clientState/platform.nut")
+local { getMissionLocIdsArray } = require("scripts/missions/missionsUtilsModule.nut")
+local base64 = ::require_native("base64")
+local DataBlock = require("DataBlock")
 
 /*
 SessionLobby API
@@ -313,6 +316,13 @@ local allowed_mission_settings = { //only this settings are allowed in room
       })
     }
   }
+
+  function getMissionNameLocIdsArray(room = null) {
+    local misData = getMissionData(room)
+    if ("name" in misData)
+      return getMissionLocIdsArray(::get_mission_meta_info(misData.name))
+    return []
+  }
 }
 
 SessionLobby.setIngamePresence <- function setIngamePresence(roomPublic, roomId)
@@ -456,7 +466,7 @@ SessionLobby.prepareSettings <- function prepareSettings(missionSettings)
   local userAllowedUnitTypesMask = missionSettings?.userAllowedUnitTypesMask ?? 0
   if (userAllowedUnitTypesMask)
     foreach (unitType in unitTypes.types)
-      if (unitType.isAvailableByMissionSettings(_settings.mission) && !(userAllowedUnitTypesMask & unitType.bit))
+      if (unitType.isAvailableByMissionSettings(_settings.mission) && !(userAllowedUnitTypesMask & unitType.bit) && unitType.isPresentOnMatching)
         _settings.mission[unitType.missionSettingsAvailabilityFlag] = false
 
   local mrankMin = missionSettings?.mrankMin ?? 0
@@ -473,6 +483,8 @@ SessionLobby.prepareSettings <- function prepareSettings(missionSettings)
   _settings.chatPassword <- isInRoom() ? getChatRoomPassword() : ::gen_rnd_password(16)
   if (!u.isEmpty(settings?.externalSessionId))
     _settings.externalSessionId <- settings.externalSessionId
+  if (!u.isEmpty(settings?.psnMatchId))
+    _settings.psnMatchId <- settings.psnMatchId
 
   fillTeamsInfo(_settings, mission)
 
@@ -493,6 +505,12 @@ SessionLobby.getExternalId <- function getExternalId()
 {
   return settings?.externalSessionId
 }
+
+SessionLobby.setPsnMatchId <- function setPsnMatchId(mId)
+{
+  syncMyInfo({psnMatchId = mId})
+}
+
 
 SessionLobby.setSettings <- function setSettings(_settings, notify = false, checkEqual = true)
 {
@@ -604,7 +622,7 @@ SessionLobby.fillTeamsInfo <- function fillTeamsInfo(_settings, misBlk)
   teamData.allowedCrafts <- []
 
   foreach (unitType in unitTypes.types)
-    if (unitType.isAvailableByMissionSettings(_settings.mission))
+    if (unitType.isAvailableByMissionSettings(_settings.mission) && unitType.isPresentOnMatching)
     {
       local rule = { ["class"] = unitType.getMissionAllowedCraftsClassName() }
       if (_settings?.mranks)
@@ -852,7 +870,7 @@ SessionLobby.getNotAvailableUnitByBRText <- function getNotAvailableUnitByBRText
           lockedUnitType = ::colorize("userlogColoredText",
             ::loc("mainmenu/type_" + unit.unitType.lowerName)),
           battleRatingDiff = ::colorize("userlogColoredText", ::format("%.1f", MAX_BR_DIFF_AVAILABLE_AND_REQ_UNITS)),
-          reqUnitType = ::colorize("userlogColoredText", ::loc("mainmenu/type_ship"))
+          reqUnitType = ::colorize("userlogColoredText", ::loc("mainmenu/type_ship_and_boat"))
         })
       : null
 }
@@ -1071,11 +1089,13 @@ SessionLobby.uploadUserMission <- function uploadUserMission(afterDoneFunc = nul
   local missionId = getMissionName()
   local missionInfo = ::DataBlock()
   missionInfo.setFrom(::get_mission_meta_info(missionId))
-  local missionBlk = missionInfo && missionInfo.mis_file && ::DataBlock(missionInfo.mis_file)
+  local missionBlk = DataBlock()
+  if (missionInfo)
+    missionBlk.load(missionInfo.mis_file)
   //dlog("GP: upload mission!")
   //debugTableData(missionBlk)
 
-  local blkData = missionBlk && ::pack_blk_to_base64(missionBlk)
+  local blkData = base64.encodeBlk(missionBlk)
   //dlog("GP: data = " + blkData)
   //debugTableData(blkData)
   if (!blkData || !("result" in blkData) || !blkData.result.len())

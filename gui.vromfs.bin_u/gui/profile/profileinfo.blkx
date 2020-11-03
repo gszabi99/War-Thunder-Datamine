@@ -12,17 +12,15 @@
           "size": "0.55@scrn_tgt, ph"
         },
         {
-          "pos": "0, 0"
+          "padding-right": "1@blockInterval"
         },
         {
-          "position": "relative"
-        },
-        {
-          "frameBlock": {
+          "tdiv": {
             "width": "pw",
             "pos": "50%pw-50%w, 0",
             "position": "relative",
             "padding": "1@blockInterval",
+            "background-color": "@separatorBlockColor",
             "Button_text": {
               "id": "btn_profile_icon",
               "_on_click": "onChangePilotIcon",
@@ -77,25 +75,27 @@
                 }
               },
               {
-                "textareaNoTab": {
-                  "id": "profile-currentUser-title",
-                  "showAsButton": "yes",
-                  "smallFont": "yes",
+                "Button_text": {
+                  "id": "profile_currentUser_btn_title",
+                  "visualStyle": "noBgr",
                   "on_click": "openChooseTitleWnd",
-                  "margin-top": "3@dp",
-                  "max-width": "pw",
+                  "width": "pw",
                   "hideEmptyText": "yes",
-                  "text": "",
                   "css-hier-invalidate": "yes",
-                  "ButtonImg": {
-                    "style": "top:50%ph-50%h;"
+                  "textareaNoTab": {
+                    "id": "profile-currentUser-title",
+                    "pos": "0, 0.5ph-0.5h",
+                    "position": "relative",
+                    "smallFont": "yes",
+                    "unseenIcon": {
+                      "id": "unseen_titles",
+                      "pos": "pw + 1@blockInterval, 50%ph-50%h",
+                      "position": "absolute",
+                      "unseenText": []
+                    }
                   },
-                  "unseenIcon": {
-                    "id": "unseen_titles",
-                    "pos": "pw + 1@blockInterval, 50%ph-50%h",
-                    "position": "absolute",
-                    "unseenText": []
-                  }
+                  "focus_border": [],
+                  "ButtonImg": []
                 }
               },
               {
@@ -172,7 +172,7 @@
           }
         },
         {
-          "frameBlock": {
+          "tdiv": {
             "id": "medals_block",
             "size": "pw, fh",
             "pos": "0, @blockInterval",
@@ -190,12 +190,9 @@
               "id": "medals_country_tabs",
               "pos": "pw/2-w/2, 0",
               "position": "relative",
-              "class": "countries_small",
+              "type": "transparent",
               "on_select": "onMedalsCountrySelect",
-              "navigatorShortcuts": "yes",
-              "on_wrap_up": "onWrapUp",
-              "on_wrap_down": "onWrapDown",
-              "focus": "yes"
+              "navigatorShortcuts": "yes"
             },
             "tdiv": {
               "id": "medals_nest",
@@ -215,7 +212,7 @@
           }
         },
         {
-          "frameBlock": {
+          "tdiv": {
             "id": "titles_block",
             "size": "pw, fh",
             "pos": "0, @blockInterval",
@@ -244,18 +241,9 @@
           }
         },
         {
-          "frameBlock": {
+          "tdiv": {
             "size": "pw, 1@usercardLeaderboardHeight",
-            "pos": "0, @blockInterval",
-            "position": "relative",
-            "padding": "@blockInterval",
             "flow": "vertical",
-            "activeText": {
-              "pos": "pw/2-w/2, 0",
-              "position": "relative",
-              "padding-bottom": "@blockInterval",
-              "text": "#lobby/vehicles"
-            },
             "tdiv": {
               "id": "country_stats_nest",
               "width": "pw"
@@ -263,6 +251,9 @@
           }
         }
       ]
+    },
+    {
+      "chapterSeparator": []
     },
     {
       "tdiv": [
@@ -283,18 +274,15 @@
             "total-input-transparent": "yes",
             "HorizontalListBox": {
               "id": "modes_list",
+              "type": "transparent",
               "position": "relative",
               "navigatorShortcuts": "yes",
-              "on_select": "onProfileStatsModeChange",
-              "on_wrap_up": "onWrapUp",
-              "on_wrap_down": "onWrapDown",
-              "focus": "yes"
+              "move-only-hover": "yes",
+              "on_select": "onProfileStatsModeChange"
             },
-            "frameBlock": {
+            "tdiv": {
               "size": "pw, fh",
-              "position": "relative",
-              "pos": "0, 1@blockInterval",
-              "padding": "1@blockInterval",
+              "padding": "0, 1@blockInterval",
               "overflow-y": "auto",
               "scrollbarShortcuts": "yes",
               "table": {
@@ -307,52 +295,61 @@
           }
         },
         {
-          "tdiv": {
-            "width": "pw",
-            "pos": "0, 0",
-            "position": "relative",
-            "padding-top": "1@blockInterval",
-            "flow": "vertical",
-            "tdiv": {
-              "width": "pw",
-              "margin-bottom": "1@blockInterval",
-              "ComboBox": {
-                "id": "leaderboard_modes_list",
-                "position": "relative",
-                "pos": "0, 50%ph-50%h",
-                "width": "0.3@sf",
-                "display": "hide",
-                "enable": "no",
-                "on_select": "onLbModeSelect",
-                "behaviour": "wrapBroadcast",
-                "focusFrame": "yes",
-                "navigatorShortcuts": "yes",
-                "on_wrap_up": "onWrapUp",
-                "on_wrap_down": "onWrapDown"
-              },
-              "CheckBox": {
-                "id": "stats_type_profile",
-                "display": "hide",
-                "pos": "pw-w-@blockInterval, 50%ph-50%h",
-                "position": "absolute",
-                "text": "#mainmenu/btnMonthLb",
-                "on_change_value": "onStatsTypeChange",
-                "value": "yes",
-                "btnName": "LT",
-                "CheckBoxImg": [],
-                "ButtonImg": []
+          "tdiv": [
+            {
+              "width": "pw"
+            },
+            {
+              "pos": "0, 0"
+            },
+            {
+              "position": "relative"
+            },
+            {
+              "padding-top": "1@blockInterval"
+            },
+            {
+              "flow": "vertical"
+            },
+            {
+              "tdiv": {
+                "width": "pw",
+                "margin-bottom": "1@blockInterval",
+                "ComboBox": {
+                  "id": "leaderboard_modes_list",
+                  "position": "relative",
+                  "pos": "0, 50%ph-50%h",
+                  "width": "0.3@sf",
+                  "display": "hide",
+                  "enable": "no",
+                  "on_select": "onLbModeSelect"
+                },
+                "CheckBox": {
+                  "id": "stats_type_profile",
+                  "display": "hide",
+                  "pos": "pw-w-@blockInterval, 50%ph-50%h",
+                  "position": "absolute",
+                  "text": "#mainmenu/btnMonthLb",
+                  "on_change_value": "onStatsTypeChange",
+                  "value": "yes",
+                  "btnName": "LT",
+                  "CheckBoxImg": [],
+                  "ButtonImg": []
+                }
               }
             },
-            "frameBlock": {
-              "size": "pw, 1@usercardLeaderboardHeight",
-              "table": {
-                "id": "profile_leaderboard",
-                "width": "pw",
-                "class": "lbTable",
-                "text-halign": "center"
+            {
+              "tdiv": {
+                "size": "pw, 1@usercardLeaderboardHeight",
+                "table": {
+                  "id": "profile_leaderboard",
+                  "width": "pw",
+                  "class": "lbTable",
+                  "text-halign": "center"
+                }
               }
             }
-          }
+          ]
         }
       ]
     }

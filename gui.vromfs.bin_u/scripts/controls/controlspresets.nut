@@ -15,10 +15,13 @@ local controlsPresetConfigPath = require("scripts/controls/controlsPresetConfigP
   highestVersionSettingsPath = "controls_presets/highest_version_displayed"
 
   nullPreset = {
+    id       = "",
     version  = -1,
     name     = "",
     fileName = ""
   }
+
+  presetsListCached = null
 
   /**
    * Function compare current controls preset version and highest available.
@@ -154,7 +157,7 @@ local controlsPresetConfigPath = require("scripts/controls/controlsPresetConfigP
       return preset
 
     preset.fileName = presetFileName
-    preset.name = presetFileName.slice(stdPresetPathPrefix.len()).slice(0, -1 * presetFileNameExtention.len())
+    preset.id = presetFileName.slice(stdPresetPathPrefix.len()).slice(0, -1 * presetFileNameExtention.len())
 
     _handleVersion(preset)
 
@@ -173,7 +176,7 @@ local controlsPresetConfigPath = require("scripts/controls/controlsPresetConfigP
       return preset
 
     preset.fileName = getControlsPresetFilename(presetName)
-    preset.name = presetName
+    preset.id = presetName
 
     _handleVersion(preset)
 
@@ -182,15 +185,25 @@ local controlsPresetConfigPath = require("scripts/controls/controlsPresetConfigP
 
   /**
    * Returns list of presets names, fetched from hotkeys/list.blk
+   * It also adds the current preset when it is not listed,
+   * because deprecated presets are removed from list.blk
+   * while being still in use by some players
    */
   function getControlsPresetsList()
   {
-    local blk = ::DataBlock()
-    blk.load($"{controlsPresetConfigPath.value}config/hotkeys/list.blk")
-
-    if (blk?[::target_platform] != null)
-      return blk[::target_platform] % "preset"
-    return blk % "preset"
+    if (presetsListCached == null)
+    {
+      local blk = ::DataBlock()
+      blk.load($"{controlsPresetConfigPath.value}config/hotkeys/list.blk")
+      presetsListCached = (blk?[::target_platform] != null)
+        ? blk[::target_platform] % "preset"
+        : blk % "preset"
+    }
+    local result = [].extend(presetsListCached)
+    local currentPreset = getCurrentPreset()
+    if (currentPreset.id != "" && presetsListCached.indexof(currentPreset.id) == null)
+      result.append(currentPreset.id)
+    return result
   }
 
   /**
@@ -206,6 +219,9 @@ local controlsPresetConfigPath = require("scripts/controls/controlsPresetConfigP
    */
   function _handleVersion(preset)
   {
+    preset.name = preset.id
+    preset.version = 0
+
     local versionMatch = versionRegExp.search(preset.name)
     if (versionMatch)
     {
@@ -213,7 +229,5 @@ local controlsPresetConfigPath = require("scripts/controls/controlsPresetConfigP
       preset.version = versionSubstring.slice(versionDigits.search(versionSubstring).begin).tointeger()
       preset.name = preset.name.slice(0, versionMatch.begin)
     }
-    else
-      preset.version = 0
   }
 }

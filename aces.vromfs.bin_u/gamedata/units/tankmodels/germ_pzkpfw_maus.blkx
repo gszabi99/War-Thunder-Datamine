@@ -601,8 +601,10 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -624,8 +626,9 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
         "fireParamsPreset": "fuel_exterior",
         "fuel_tank_exterior_r_01_dm": [],
         "fuel_tank_exterior_r_02_dm": [],
@@ -1475,115 +1478,6 @@
         "dmPart": "machine_gunner_dm",
         "role": "radio_gunner"
       }
-    }
-  },
-  {
-    "MetaParts": {
-      "body": [
-        {
-          "hp": 10000.0
-        },
-        {
-          "part": "superstructure_bottom_dm"
-        },
-        {
-          "part": "superstructure_front_dm"
-        },
-        {
-          "part": "superstructure_top_dm"
-        },
-        {
-          "part": "superstructure_back_dm"
-        },
-        {
-          "part": "body_side_dm"
-        },
-        {
-          "part": "body_back_dm"
-        },
-        {
-          "part": "body_bottom_dm"
-        },
-        {
-          "fireParamsPreset": "default_metapart"
-        },
-        {
-          "fireParams": {
-            "fireDamagePower": 1.0,
-            "maxTankFireTime": [20.0,30.0],
-            "firePart": "transmission_dm"
-          }
-        }
-      ],
-      "turret": [
-        {
-          "hp": 10000.0
-        },
-        {
-          "part": "turret_top_dm"
-        },
-        {
-          "part": "turret_side_dm"
-        },
-        {
-          "part": "turret_back_dm"
-        },
-        {
-          "part": "turret_commander_dm"
-        },
-        {
-          "part": "turret_front_dm"
-        },
-        {
-          "part": "gun_mask_dm"
-        },
-        {
-          "part": "turret_bottom_dm"
-        },
-        {
-          "fireParamsPreset": "default_metapart"
-        },
-        {
-          "fireParams": {
-            "fireDamagePower": 1.0,
-            "maxTankFireTime": [20.0,30.0],
-            "firePart": "transmission_dm"
-          }
-        }
-      ],
-      "crew": [
-        {
-          "killAllPartsForDeath": true
-        },
-        {
-          "killNumPartsForDeath": 5
-        },
-        {
-          "part": "loader_01_dm"
-        },
-        {
-          "part": "loader_02_dm"
-        },
-        {
-          "part": "driver_dm"
-        },
-        {
-          "part": "gunner_dm"
-        },
-        {
-          "part": "machine_gunner_dm"
-        },
-        {
-          "part": "commander_dm"
-        },
-        {
-          "effects": {
-            "killUnit": {
-              "nothing": 1.0
-            }
-          }
-        }
-      ]
     }
   },
   {
@@ -2684,6 +2578,15 @@
       },
       {
         "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -2733,16 +2636,22 @@
       "tank_medical_kit_expendable": {
         "image": "#ui/gameuiskin#tank_reinforcement_ger"
       },
-      "128mm_ger_APC": [],
       "128mm_ger_HE": [],
+      "128mm_ger_APC": [],
       "128mm_ger_APCBC": [],
-      "128mm_ger_APCBC_ammo_pack": [],
+      "128mm_ger_APCBC_ammo_pack": {
+        "tier": 1
+      },
+      "128mm_ger_TS": [],
+      "128mm_ger_TS_ammo_pack": [],
       "75mm_ger_kwk44_HE": [],
       "75mm_ger_kwk44_HEAT": [],
+      "75mm_ger_Smoke": [],
+      "75mm_ger_Smoke_ammo_pack": {
+        "tier": 1
+      },
       "75mm_ger_kwk44_Hl_C_HEAT": [],
       "75mm_ger_kwk44_Hl_C_HEAT_ammo_pack": [],
-      "75mm_ger_Smoke": [],
-      "75mm_ger_Smoke_ammo_pack": [],
       "tank_smoke_screen_system_mod": {
         "tier": 4,
         "effects": {
@@ -3093,6 +3002,17 @@
       "replace_tex": {
         "from": "ger_camo_dunkelgelb*",
         "to": "ger_camo_winter_waves_bicolor*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "hinterhalt_daimler",
+      "nameLocId": "skin/ger_camo_hinterhalt_daimler",
+      "descLocId": "skin/ger_camo_hinterhalt_daimler/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_hinterhalt_daimler*"
       }
     }
   }

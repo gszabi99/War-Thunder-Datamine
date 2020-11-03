@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": -10.0
-    },
     "player": [
       {
         "army": 1
@@ -118,23 +114,27 @@
     "mission": {
       "level": "levels/korsun.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
+      "locName": "missions/_AfD;location/korsun",
+      "locDesc": "missions/_AfD/main/desc;missions/_AfD/1zone",
       "scoreLimit": 13500,
       "timeLimit": 20,
       "deathPenaltyMul": 0.4,
       "country_axis": "germany",
       "country_allies": "ussr",
-      "locName": "missions/_AfD;location/korsun",
-      "locDesc": "missions/_AfD/main/desc;missions/_AfD/1zone",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": false,
         "isShipsAllowed": false,
         "isHelicoptersAllowed": false
       }
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": -10.0
     },
     "spectator_points": [
       {
@@ -379,6 +379,8 @@
             "isIndividual": false,
             "resetStrictSpawnIndex": false,
             "onlyOnePlayerPerSpawnPoint": false,
+            "forceCreate": false,
+            "replaceAreas": false,
             "target": "t1_bombers_spawn",
             "team": "A",
             "tags": {
@@ -403,6 +405,8 @@
             "isIndividual": false,
             "resetStrictSpawnIndex": false,
             "onlyOnePlayerPerSpawnPoint": false,
+            "forceCreate": false,
+            "replaceAreas": false,
             "target": "t2_bombers_spawn",
             "team": "B",
             "tags": {
@@ -413,25 +417,21 @@
           }
         },
         {
-          "addAirfield": {
-            "runwayStart": "airfield_start",
-            "runwayEnd": "airfield_end",
-            "runwayWidth": 100.0,
-            "army": 0
-          }
-        },
-        {
           "missionMarkAsCaptureZone": {
             "army": 0,
             "timeMultiplier": 0.14,
             "disableZone": false,
             "name_for_respawn_base": "",
+            "showBorderOnMap": false,
+            "borderWidthCoef": 1.0,
+            "borderTransparencyCoef": 1.0,
             "target": "capture_zone01",
             "canCaptureOnGround": true,
             "canCaptureInAir": false,
             "canCaptureByGM": true,
-            "airfield": "airfield_start",
-            "createRespawnBaseFromAirfield": false
+            "airfield": "airfield",
+            "createRespawnBaseFromAirfield": false,
+            "zoneDefenders": []
           }
         },
         {
@@ -478,7 +478,9 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "arcade_destroy_all"
+            "target": "arcade_destroy_all",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         }
       ],
@@ -588,6 +590,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -635,6 +638,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 7,
@@ -688,6 +692,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 7,
@@ -741,6 +746,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 6,
@@ -794,6 +800,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 6,
@@ -834,6 +841,7 @@
           [-15160.8,79.45,-11193.4]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": "t1_tank_01"
         }
       }
@@ -848,6 +856,7 @@
           [-15218.4,79.45,-11400.2]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": "t1_truck_01"
         }
       }
@@ -862,6 +871,7 @@
           [-12940.3,79.45,-11087.5]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": "t2_tank_01"
         }
       }
@@ -876,6 +886,7 @@
           [-13023.8,79.45,-11268.0]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": "t2_truck_01"
         }
       }
@@ -890,6 +901,9 @@
           [-15478.8,75.45,-11191.5]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "t1_tanks_squad"
           },
@@ -909,6 +923,9 @@
           [-12824.2,75.45,-11215.7]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "t2_tanks_squad"
           },
@@ -941,6 +958,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 0,
           "count": 1,
@@ -967,6 +985,7 @@
           [-15855.7,62.6,-10996.5]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": "dummy_unit"
         }
       }
@@ -981,6 +1000,7 @@
           [-12622.5,62.6,-10807.7]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": "dummy_unit"
         }
       }
@@ -995,6 +1015,7 @@
           [-15207.5,79.15,-11762.9]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": "t1_tanks_squad"
         }
       }
@@ -1009,6 +1030,7 @@
           [-13137.8,79.15,-11528.2]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": "t2_tanks_squad"
         }
       }
@@ -1023,6 +1045,7 @@
           [-15423.2,76.05,-11781.2]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": "t1_trucks_squad"
         }
       }
@@ -1037,6 +1060,7 @@
           [-13104.7,76.05,-11619.9]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": "t2_trucks_squad"
         }
       }
@@ -1051,6 +1075,9 @@
           [-15274.8,79.6,-12046.0]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "t1_heavy_units_squad"
           },
@@ -1071,6 +1098,9 @@
         ],
         "props": [
           {
+            "object_marking": 0
+          },
+          {
             "squad_members": "t2_heavy_units_squad"
           },
           {
@@ -1078,16 +1108,33 @@
           }
         ]
       }
+    },
+    {
+      "objectGroups": {
+        "name": "airfield",
+        "tm": [
+          [-0.0436193,0.0,0.999048],
+          [0.0,1.0,0.0],
+          [-0.999048,0.0,-0.0436193],
+          [-14255.9,68.1,-8309.7]
+        ],
+        "unit_class": "dynAF_kh_gol_airfield_gumrak_small",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      }
     }
   ],
   "areas": {
     "capture_zone01": {
       "type": "Box",
       "tm": [
-        [326.483,0.0,16.7592],
+        [299.606,0.0,15.3795],
         [0.0,300.04,0.0],
-        [-62.7462,0.0,1222.36],
-        [-14145.3,64.45,-8230.0]
+        [-76.8968,0.0,1498.03],
+        [-14154.7,0.0,-8129.8]
       ],
       "props": []
     },
@@ -1118,26 +1165,6 @@
         [0.0,15000.0,0.0],
         [-654.293,0.0,14985.7],
         [-14159.7,1000.0,-8200.7]
-      ],
-      "props": []
-    },
-    "airfield_end": {
-      "type": "Sphere",
-      "tm": [
-        [-4.36189,0.0,99.9048],
-        [0.0,100.0,0.0],
-        [-99.9048,0.0,-4.36189],
-        [-14237.7,71.2,-7718.8]
-      ],
-      "props": []
-    },
-    "airfield_start": {
-      "type": "Sphere",
-      "tm": [
-        [-4.36189,0.0,99.9048],
-        [0.0,100.0,0.0],
-        [-99.9048,0.0,-4.36189],
-        [-14199.9,68.75,-8708.3]
       ],
       "props": []
     },
@@ -1392,6 +1419,26 @@
         [0.0,300.0,0.0],
         [-13.0853,0.0,299.715],
         [-23650.3,1500.0,-8614.55]
+      ],
+      "props": []
+    },
+    "t2_bombers_spawn_far": {
+      "type": "Sphere",
+      "tm": [
+        [-299.715,0.0,-13.0852],
+        [0.0,300.0,0.0],
+        [13.0852,0.0,-299.715],
+        [-3689.0,3000.0,-7829.35]
+      ],
+      "props": []
+    },
+    "t1_bombers_spawn_far": {
+      "type": "Sphere",
+      "tm": [
+        [299.715,0.0,13.0853],
+        [0.0,300.0,0.0],
+        [-13.0853,0.0,299.715],
+        [-24651.1,3000.0,-8571.19]
       ],
       "props": []
     }

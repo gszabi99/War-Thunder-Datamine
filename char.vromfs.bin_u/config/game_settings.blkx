@@ -250,6 +250,13 @@
         "kills": 3,
         "timePlayed": 450
       }
+    },
+    {
+      "additionalUnitTypes": {
+        "ship": {
+          "type": "boat"
+        }
+      }
     }
   ],
   "newPlayersBattlesExp": {
@@ -2387,7 +2394,7 @@
     },
     "Voice": {
       "condition": "",
-      "platform_lock": "ps5;xboxOne;xboxScarlett"
+      "platform_lock": "xboxOne;xboxScarlett"
     },
     "Friends": {
       "condition": ""
@@ -2569,13 +2576,24 @@
       "condition": "",
       "platform_lock": "android"
     },
-    "SpecialShips": {
-      "condition": ""
-    },
+    "SpecialShips": [
+      {
+        "condition": "role_GAIJIN"
+      },
+      {
+        "condition": "role_DEVELOPER"
+      },
+      {
+        "condition": "role_TESTER"
+      }
+    ],
     "ShipsVisibleInShop": {
       "condition": ""
     },
     "ShipsFirstChoice": {
+      "condition": ""
+    },
+    "BoatsFirstChoice": {
       "condition": ""
     },
     "ShipsHeroInUserMissions": {
@@ -2613,6 +2631,9 @@
     "UsaShipsInFirstCountryChoice": {
       "condition": ""
     },
+    "UsaBoatsInFirstCountryChoice": {
+      "condition": ""
+    },
     "GermanyAircraftsInFirstCountryChoice": {
       "condition": ""
     },
@@ -2620,6 +2641,9 @@
       "condition": ""
     },
     "GermanyShipsInFirstCountryChoice": {
+      "condition": ""
+    },
+    "GermanyBoatsInFirstCountryChoice": {
       "condition": ""
     },
     "UssrAircraftsInFirstCountryChoice": {
@@ -2631,6 +2655,9 @@
     "UssrShipsInFirstCountryChoice": {
       "condition": ""
     },
+    "UssrBoatsInFirstCountryChoice": {
+      "condition": ""
+    },
     "BritainAircraftsInFirstCountryChoice": {
       "condition": ""
     },
@@ -2638,6 +2665,9 @@
       "condition": ""
     },
     "BritainShipsInFirstCountryChoice": {
+      "condition": ""
+    },
+    "BritainBoatsInFirstCountryChoice": {
       "condition": ""
     },
     "JapanAircraftsInFirstCountryChoice": {
@@ -2657,6 +2687,9 @@
     "JapanShipsInFirstCountryChoice": {
       "condition": ""
     },
+    "JapanBoatsInFirstCountryChoice": {
+      "condition": ""
+    },
     "ChinaAircraftsInFirstCountryChoice": {
       "condition": ""
     },
@@ -2670,6 +2703,9 @@
       "condition": ""
     },
     "ItalyShipsInFirstCountryChoice": {
+      "condition": ""
+    },
+    "ItalyBoatsInFirstCountryChoice": {
       "condition": ""
     },
     "FranceAircraftsInFirstCountryChoice": {
@@ -3401,14 +3437,6 @@
       "condition": "",
       "platform_lock": "android;xboxOne;xboxScarlett"
     },
-    "pc_win_ps4_only_events": {
-      "condition": "",
-      "platform_lock": "android;xboxOne;linux64"
-    },
-    "pc_win_ps4_xbox_only_events": {
-      "condition": "",
-      "platform_lock": "android;linux64"
-    },
     "pc_xboxOne_only_events": {
       "condition": "",
       "platform_lock": "ps4;ps5;android"
@@ -3416,6 +3444,14 @@
     "ps4_xboxOne_only_events": {
       "condition": "",
       "platform_lock": "pc;android"
+    },
+    "pc_win_ps4_only_events": {
+      "condition": "",
+      "platform_lock": "android;xboxOne;xboxScarlett;linux64"
+    },
+    "pc_win_ps4_xbox_only_events": {
+      "condition": "",
+      "platform_lock": "android;linux64"
     },
     "ConsolesLiveTrophy": [],
     "ConsolesWorkshopExchange": [
@@ -3605,8 +3641,7 @@
       "condition": ""
     },
     "UnitsSearchBoxInShop": {
-      "condition": "",
-      "platform_lock": "ps4;ps5;android;xboxOne;xboxScarlett"
+      "condition": ""
     },
     "ShowAllBattleTasks": {
       "condition": "role_DEVELOPER"
@@ -3765,9 +3800,6 @@
       "condition": ""
     },
     "XRayDescription": {
-      "condition": ""
-    },
-    "GamepadCursorControl": {
       "condition": ""
     },
     "ControlsHelp": {
@@ -4057,8 +4089,7 @@
       "condition": "!customerAccount"
     },
     "Changelog": {
-      "condition": "",
-      "platform_lock": "ps4;ps5"
+      "condition": ""
     },
     "Collection": {
       "condition": ""

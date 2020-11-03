@@ -156,6 +156,14 @@
       "wing2_r_dm": {
         "genericDamageMult": 0.3,
         "hp": 68.6
+      },
+      "wing_l_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 80.5
+      },
+      "wing_r_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 80.5
       }
     },
     "dural": {
@@ -257,14 +265,6 @@
       },
       "tank5_dm": {
         "hp": 57.8
-      }
-    },
-    "wood": {
-      "wing_l_dm": {
-        "hp": 134.1
-      },
-      "wing_r_dm": {
-        "hp": 134.1
       }
     }
   },
@@ -1465,8 +1465,8 @@
       "part": {
         "name": "spar1_l_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1474,8 +1474,8 @@
       "part": {
         "name": "spar1_r_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1483,8 +1483,8 @@
       "part": {
         "name": "spar2_l_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1492,8 +1492,8 @@
       "part": {
         "name": "spar2_r_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -2508,7 +2508,7 @@
         "clock_sec": [0.0,60.0]
       },
       {
-        "rpm": [0.0,3600.0]
+        "rpm": [0.0,10600.0]
       },
       {
         "oil_temperature": [0.0,140.0]
@@ -2521,6 +2521,15 @@
       },
       {
         "fuel_pressure": [0.0,20.0]
+      },
+      {
+        "water_temperature": [0.0,900.0]
+      },
+      {
+        "head_temperature": [0.0,1000.0]
+      },
+      {
+        "carb_temperature": [-30.0,50.0]
       },
       {
         "fuel": [0.0,350.0]

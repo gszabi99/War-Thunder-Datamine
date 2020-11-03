@@ -31,6 +31,8 @@
   "smokeScreenRad": 20.0,
   "smokeScreenOffset": [-3.0,0.0,2.0],
   "canReloadNonGuns": true,
+  "haveAnchor": true,
+  "anchorPos": [56.846,5.28,-1.44],
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -38,6 +40,12 @@
     {
       "replace_tex": {
         "from": "flag_ussr_01_c*",
+        "to": "flag_ussr_01_c_tomoe*"
+      }
+    },
+    {
+      "replace_tex": {
+        "from": "flag_ussr_03_c*",
         "to": "flag_ussr_01_c_tomoe*"
       }
     },
@@ -110,6 +118,12 @@
     {
       "replace_tex": {
         "from": "flag_germany_04_c*",
+        "to": "flag_germany_01_c_tomoe*"
+      }
+    },
+    {
+      "replace_tex": {
+        "from": "flag_germany_05_c*",
         "to": "flag_germany_01_c_tomoe*"
       }
     },
@@ -1232,8 +1246,8 @@
         },
         {
           "onKill": {
-            "nothing": 0.85,
-            "fire": 0.15
+            "nothing": 0.75,
+            "fire": 0.25
           }
         }
       ]
@@ -1333,7 +1347,7 @@
     "mass": {
       "Empty": 800000.0,
       "momentOfInertia": [31.0,340.0,180.0],
-      "CenterOfGravity": [-2.5,0.15,0.0],
+      "CenterOfGravity": [-2.5,-0.1,0.0],
       "AdvancedMass": false
     },
     "settings": {
@@ -1496,6 +1510,13 @@
       "emitter": "emtr_gun_flame_01",
       "flash": "emtr_gun_flame_01",
       "useEmitter": true,
+      "sleeveEmitter": "emtr_shell_01",
+      "sleeveMesh": "auto_cannon_cartridge_case",
+      "hatchAnimVar": "",
+      "openHatchTime": 0.4,
+      "sleevesLifeTime": 4.0,
+      "sleeveImpulse": [5.0,0.0,1.0],
+      "linkSleeveToGun": true,
       "barrelDP": "main_caliber_gun_01_dm",
       "breechDP": "main_caliber_gun_01_dm",
       "defaultYaw": 0.0,

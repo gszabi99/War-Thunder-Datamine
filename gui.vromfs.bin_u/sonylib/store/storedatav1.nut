@@ -130,7 +130,7 @@ requestLinksFullInfo = function(category) {
 // On receiving final items, checked by total_result and size params,
 // send another request for next category.
 local requestCategoryFullLinksList = @(category) null
-requestCategoryFullLinksList = @(category) psn.fetch(psn.commerce.listCategory(category),
+requestCategoryFullLinksList = @(category) psn.send(psn.commerce.listCategory(category),
   function(response, err) {
     if (err) {
       statsd.send_counter("sq.ingame_store.request", 1,
@@ -153,10 +153,7 @@ requestCategoryFullLinksList = @(category) psn.fetch(psn.commerce.listCategory(c
     for (local i = 0; i < categoriesData[category].links.blockCount(); i++)
       categoriesData[category].links.getBlock(i).category = category
 
-    local size = (response[0]?.size || 0) + (response[0]?.start || 0)
-    local total = response[0]?.total_results || size
-    if (size != 0 && total == size)
-      makeRequestForNextCategory(requestCategoryFullLinksList, fillLinkFullInfo, category)
+    makeRequestForNextCategory(requestCategoryFullLinksList, fillLinkFullInfo, category)
   }
 )
 

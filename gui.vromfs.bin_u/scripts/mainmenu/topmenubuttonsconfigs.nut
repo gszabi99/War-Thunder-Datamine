@@ -24,6 +24,7 @@ local topMenuHandlerClass = require("scripts/mainmenu/topMenuHandler.nut")
 local { buttonsListWatch } = require("scripts/mainmenu/topMenuButtons.nut")
 local { openCollectionsWnd, hasAvailableCollections } = require("scripts/collections/collectionsWnd.nut")
 local exitGame = require("scripts/utils/exitGame.nut")
+local { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
 
 local template = {
   id = ""
@@ -59,6 +60,9 @@ local list = {
         return ::show_not_available_msg_box()
       if (!::check_gamemode_pkg(::GM_SKIRMISH))
         return
+      if (!suggestAndAllowPsnPremiumFeatures())
+        return
+
       ::queues.checkAndStart(
         ::Callback(@() goForwardIfOnline(::gui_start_skirmish, false), handler),
         null,
@@ -210,7 +214,7 @@ local list = {
     onClickFunc = function(obj, handler) {
       if (!needShowCrossPlayInfo() || isCrossPlayEnabled())
         openUrlByObj(obj)
-      else
+      else if (!::xbox_try_show_crossnetwork_message())
         ::showInfoMsgBox(::loc("xbox/actionNotAvailableCrossNetworkPlay"))
     }
     isDelayed = false

@@ -34,11 +34,11 @@ global enum UnitRelevance
 
 ::events <- null
 
-::allUnitTypesMask <- (1 << ::ES_UNIT_TYPE_TOTAL_RELEASED) - 1
+::allUnitTypesMask <- (::ES_UNIT_TYPE_AIRCRAFT | ::ES_UNIT_TYPE_TANK | ::ES_UNIT_TYPE_SHIP | ::ES_UNIT_TYPE_BOAT)
 
 systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_for_event" })
 
-class Events
+::Events <- class
 {
   __game_events        = {}
   lastUpdate           = 0
@@ -261,6 +261,15 @@ class Events
     return ::getUnitTypeByText(rule["class"])
   }
 
+  function getMatchingUnitType(unit)
+  {
+    local matchingUnitType = ::get_es_unit_type(unit)
+    // override boats as ships because there are no boats on the matching
+    if (matchingUnitType == ::ES_UNIT_TYPE_BOAT)
+      return ::ES_UNIT_TYPE_SHIP
+    return matchingUnitType
+  }
+
   /**
    * Supports event objects and session lobby info as parameter.
    */
@@ -281,10 +290,12 @@ class Events
         {
           local unit = ::getAircraftByName(rule.name)
           if (unit)
-            unitType = ::get_es_unit_type(unit)
+            unitType = getMatchingUnitType(unit)
         }
         if (unitType >= 0)
           teamUnitTypes = teamUnitTypes | (1 << unitType)
+        if (unitType == ::ES_UNIT_TYPE_SHIP)
+          teamUnitTypes = teamUnitTypes | (1 << ::ES_UNIT_TYPE_BOAT)
       }
       if (!teamUnitTypes)
         teamUnitTypes = ::allUnitTypesMask
@@ -294,6 +305,8 @@ class Events
         local unitType = getBaseUnitTypefromRule(rule, true)
         if (unitType >= 0)
           teamUnitTypes = teamUnitTypes & ~(1 << unitType)
+        if (unitType == ::ES_UNIT_TYPE_SHIP)
+          teamUnitTypes = teamUnitTypes & ~(1 << ::ES_UNIT_TYPE_BOAT)
       }
 
       resMask = resMask | teamUnitTypes
@@ -322,10 +335,12 @@ class Events
       {
         local unit = ::getAircraftByName(rule.name)
         if (unit)
-          unitType = ::get_es_unit_type(unit)
+          unitType = getMatchingUnitType(unit)
       }
       if (unitType != ::ES_UNIT_TYPE_INVALID)
         res = res | (1 << unitType)
+      if (unitType == ::ES_UNIT_TYPE_SHIP)
+        res = res | (1 << ::ES_UNIT_TYPE_BOAT)
     }
     return res
   }
@@ -1022,7 +1037,7 @@ class Events
         continue
 
       local unitType = getBaseUnitTypefromRule(rule, false)
-      if (unitType != ::ES_UNIT_TYPE_INVALID && unitType != ::get_es_unit_type(unit))
+      if (unitType != ::ES_UNIT_TYPE_INVALID && unitType != getMatchingUnitType(unit))
         continue
       if (("type" in rule) && (::getWpcostUnitClass(unit.name) != "exp_" + rule.type))
         continue
@@ -1852,6 +1867,8 @@ class Events
     local haveRequiredRules = generateRulesText(handler, getRequiredCrafts(teamData), requiredAirsObj, true, true)
     requiredAirsObj.show(haveRequiredRules)
 
+    if ((allowedUnitTypes & (1 << ::ES_UNIT_TYPE_BOAT)) != 0)
+      allowedUnitTypes = allowedUnitTypes & ~(1 << ::ES_UNIT_TYPE_BOAT)
     local needTypeText = (!haveAllowedRules && !haveForbiddenRules && !haveRequiredRules) || allowedUnitTypes != ::allUnitTypesMask
     local allowedUnitTypesObj = teamObj.findObject("allowed_unit_types")
     allowedUnitTypesObj.show(needTypeText)
@@ -2065,6 +2082,7 @@ class Events
       actionFunc = null
       event = event // Used to backtrack event in actionFunc.
       room = room
+      checkXboxOverlayMessage = false
     }
     if (params != null)
     {
@@ -2106,6 +2124,7 @@ class Events
     {
       data.reasonText = ::loc("xbox/crossPlayRequired")
       data.msgboxReasonText = ::loc("xbox/actionNotAvailableCrossNetworkPlay")
+      data.checkXboxOverlayMessage = true
     }
     else if (!checkSpecialRequirements(event))
     {
@@ -2188,7 +2207,10 @@ class Events
     if (data.actionFunc == null && !data.checkStatus)
     {
       data.actionFunc = function(reasonData) {
-        ::showInfoMsgBox(reasonData.msgboxReasonText || reasonData.reasonText, "cant_join")
+        if (!reasonData.checkXboxOverlayMessage)
+          ::showInfoMsgBox(reasonData.msgboxReasonText || reasonData.reasonText, "cant_join")
+        else if (!::xbox_try_show_crossnetwork_message())
+          ::showInfoMsgBox(reasonData.msgboxReasonText || reasonData.reasonText, "cant_join")
       }
     }
 

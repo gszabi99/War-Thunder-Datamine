@@ -1,5 +1,6 @@
 rootUnderPopupMenu {
-  background-color:t='@modalShadeColor'
+  blur {}
+  blur_foreground {}
   on_click:t='goBack'
   on_r_click:t='goBack'
 }

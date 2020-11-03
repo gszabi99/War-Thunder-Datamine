@@ -1,4 +1,4 @@
-local hudCompassState = require_native("hudCompassState")
+local hudCompassState = ::require_native("hudCompassState")
 local { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
 
 class ::gui_handlers.BaseUnitHud extends ::gui_handlers.BaseGuiHandlerWT
@@ -24,7 +24,13 @@ class ::gui_handlers.BaseUnitHud extends ::gui_handlers.BaseGuiHandlerWT
     }
   }
 
-  function onEventPresetChanged(p) {
+  function onEventControlsPresetChanged(p) {
+    isReinitDelayed = true
+  }
+  function onEventControlsChangedShortcuts(p) {
+    isReinitDelayed = true
+  }
+  function onEventControlsChangedAxes(p) {
     isReinitDelayed = true
   }
 

@@ -33,23 +33,20 @@
       },
       "cannon4_dm": {
         "hp": 15.0
-      },
-      "radar_dm": {
-        "hp": 15.0
       }
     },
     "armor_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
-        "hp": 70.5
+        "hp": 32.8
       },
       "engine2_dm": {
         "genericDamageMult": 1.6,
-        "hp": 70.5
+        "hp": 32.7
       },
       "transmission1_dm": {
         "genericDamageMult": 1.6,
-        "hp": 70.5
+        "hp": 30.5
       }
     },
     "c_dural3": {
@@ -153,6 +150,11 @@
         "hp": 60.5
       }
     },
+    "dural5": {
+      "radar_dm": {
+        "hp": 35.0
+      }
+    },
     "protected_controls": {
       "tailcontrol_dm": {
         "hp": 60.5
@@ -177,13 +179,10 @@
     },
     "steel_cooling_sys": {
       "oil1_dm": {
-        "hp": 11.8
+        "hp": 11.9
       },
       "oil2_dm": {
-        "hp": 11.5
-      },
-      "oil3_dm": {
-        "hp": 11.5
+        "hp": 13.6
       }
     },
     "steel_pilot": {
@@ -469,28 +468,22 @@
         },
         {
           "onHit": {
-            "fire": 0.01
-          }
-        },
-        {
-          "onHit": {
-            "damage": 2.7,
-            "fire": 0.01,
-            "leak_oil": 0.5,
+            "fire": 0.001,
+            "leak_oil": 0.8,
             "cut": 0.0
           }
         },
         {
           "onHit": {
             "damage": 30.0,
-            "fire": 0.1,
-            "leak_oil": 1.0,
+            "fire": 0.005,
+            "leak_oil": 0.95,
             "cut": 0.0
           }
         },
         {
           "onKill": {
-            "fire": 30.0,
+            "fire": 25.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -498,7 +491,7 @@
         {
           "onKill": {
             "damage": 30.0,
-            "fire": 44.0,
+            "fire": 30.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -512,79 +505,30 @@
         },
         {
           "onHit": {
-            "fire": 0.01
-          }
-        },
-        {
-          "onHit": {
-            "damage": 2.7,
-            "fire": 0.01,
-            "leak_oil": 0.5,
+            "fire": 0.001,
+            "leak_oil": 0.8,
             "cut": 0.0
           }
         },
         {
           "onHit": {
             "damage": 30.0,
-            "fire": 0.1,
-            "leak_oil": 1.0,
+            "fire": 0.005,
+            "leak_oil": 0.95,
             "cut": 0.0
           }
         },
         {
           "onKill": {
+            "fire": 25.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 30.0,
             "fire": 30.0,
-            "leak_oil": 10.0,
-            "cut": 0.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 30.0,
-            "fire": 44.0,
-            "leak_oil": 10.0,
-            "cut": 0.0
-          }
-        }
-      ]
-    },
-    {
-      "part": [
-        {
-          "name": "transmission1_dm"
-        },
-        {
-          "onHit": {
-            "fire": 0.01
-          }
-        },
-        {
-          "onHit": {
-            "damage": 2.7,
-            "fire": 0.01,
-            "leak_oil": 0.5,
-            "cut": 0.0
-          }
-        },
-        {
-          "onHit": {
-            "damage": 30.0,
-            "fire": 0.1,
-            "leak_oil": 1.0,
-            "cut": 0.0
-          }
-        },
-        {
-          "onKill": {
-            "fire": 30.0,
-            "leak_oil": 10.0,
-            "cut": 0.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 30.0,
-            "fire": 44.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -1075,17 +1019,6 @@
     },
     {
       "part": {
-        "name": "oil3_dm",
-        "onHit": {
-          "leak_oil": 0.95
-        },
-        "onKill": {
-          "leak_oil": 1.0
-        }
-      }
-    },
-    {
-      "part": {
         "name": "pilot_dm"
       }
     },
@@ -1155,8 +1088,8 @@
       "part": {
         "name": "spar1_l_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1164,8 +1097,8 @@
       "part": {
         "name": "spar1_r_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1173,8 +1106,8 @@
       "part": {
         "name": "spar2_l_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1182,8 +1115,8 @@
       "part": {
         "name": "spar2_r_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1362,6 +1295,43 @@
             "damage": 50.0,
             "fire": 50.0,
             "leak": 30.0
+          }
+        }
+      ]
+    },
+    {
+      "part": [
+        {
+          "name": "transmission1_dm"
+        },
+        {
+          "onHit": {
+            "fire": 0.001,
+            "leak_oil": 0.8,
+            "cut": 0.0
+          }
+        },
+        {
+          "onHit": {
+            "damage": 30.0,
+            "fire": 0.005,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          }
+        },
+        {
+          "onKill": {
+            "fire": 25.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 30.0,
+            "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
           }
         }
       ]
@@ -1987,6 +1957,7 @@
         "compass": [0.0,360.0],
         "compass1": [0.0,360.0],
         "bank": [-8.0,8.0],
+        "bank1": [-8.0,8.0],
         "turn": [-0.23562,0.23562],
         "aviahorizon_pitch": [-45.0,45.0],
         "aviahorizon_roll": [-180.0,180.0],

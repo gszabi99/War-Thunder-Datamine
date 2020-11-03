@@ -1,5 +1,6 @@
 root {
-  background-color:t='@shadeBackgroundColor'
+  blur {}
+  blur_foreground {}
 
   frame {
     width:t='1@sf'

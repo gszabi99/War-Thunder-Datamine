@@ -204,6 +204,31 @@ dropright > fadePlane > area > SlideListBox option:current {
   font:@option_selected_font;
 }
 
+dropright > fadePlane > area > button
+{
+  behaviour:button;
+  re-type:9rect;
+  background-color:@transparent;
+
+  selected-border:none;
+  border:none;
+  font:@fontMedium;
+  color:@commonMenuButtonColor;
+  snd_click:click;
+  snd_set_focus:focus;
+  text-align:left;
+
+  position:relative;
+  padding:40@sf/@pf, @blockInterval;
+  transition:none;
+
+  css-hier-invalidate:current;
+}
+
+dropright > fadePlane > area > button:focus {
+  color:@hoverMenuButtonColor;
+}
+
 dropright > fadePlane > area > button#accept {
   display:none;
 }

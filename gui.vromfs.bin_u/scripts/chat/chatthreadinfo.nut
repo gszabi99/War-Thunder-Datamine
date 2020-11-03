@@ -1,10 +1,10 @@
 local platformModule = require("scripts/clientState/platform.nut")
-local playerContextMenu = ::require("scripts/user/playerContextMenu.nut")
+local playerContextMenu = require("scripts/user/playerContextMenu.nut")
 local { isCrossNetworkMessageAllowed } = require("scripts/chat/chatStates.nut")
 
 const MAX_THREAD_LANG_VISIBLE = 3
 
-class ChatThreadInfo
+::ChatThreadInfo <- class
 {
   roomId = "" //threadRoomId
   lastUpdateTime = -1

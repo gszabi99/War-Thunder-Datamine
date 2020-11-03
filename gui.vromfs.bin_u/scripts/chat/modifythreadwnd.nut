@@ -34,7 +34,7 @@ class ::gui_handlers.modifyThreadWnd extends ::gui_handlers.BaseGuiHandlerWT
 
     local titleEditbox = scene.findObject("thread_title_editbox")
     titleEditbox.setValue(threadInfo.title)
-    titleEditbox.select()
+    ::move_mouse_on_child(titleEditbox)
 
     local hiddenCheckObj = scene.findObject("is_hidden_checkbox")
     hiddenCheckObj.setValue(threadInfo.isHidden)
@@ -173,7 +173,7 @@ class ::gui_handlers.modifyThreadWnd extends ::gui_handlers.BaseGuiHandlerWT
     local timeText = time.buildTabularDateTimeStr(timestamp, true)
     local timeObj = scene.findObject("timestamp_editbox")
     timeObj.setValue(timeText)
-    timeObj.select()
+    ::select_editbox(timeObj)
   }
 
   function onPinChatMenu()

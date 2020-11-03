@@ -1,0 +1,20 @@
+shortcutCell {
+  behaviour:button;
+  size:pw, ph;
+  mouse-pointer-centering:5, 50;
+  shortcut-on-hover:no;
+}
+
+[show_console_buttons=yes] shortcutCell:hover {
+  needFocusBorder:yes;
+  padding:3@dp, 0;
+}
+
+[show_console_buttons=no] shortcutCell[selected=yes] {
+  re-type:9rect;
+  foreground-color: @commonTextColor;
+  foreground-image: #ui/gameuiskin#item_selection;
+  foreground-position: 8, 10, 8, 8;
+  foreground-repeat: expand;
+  padding:3@dp, 0;
+}

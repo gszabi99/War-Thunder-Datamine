@@ -1,5 +1,5 @@
-local systemMsg = ::require("scripts/utils/systemMsg.nut")
-local playerContextMenu = ::require("scripts/user/playerContextMenu.nut")
+local systemMsg = require("scripts/utils/systemMsg.nut")
+local playerContextMenu = require("scripts/user/playerContextMenu.nut")
 local platformModule = require("scripts/clientState/platform.nut")
 local antiCheat = require("scripts/penitentiary/antiCheat.nut")
 local { getXboxChatEnableStatus } = require("scripts/chat/chatStates.nut")

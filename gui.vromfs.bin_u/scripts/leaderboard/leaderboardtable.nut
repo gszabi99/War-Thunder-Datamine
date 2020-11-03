@@ -14,12 +14,13 @@ class ::gui_handlers.LeaderboardTable extends ::gui_handlers.BaseGuiHandlerWT
   isClanLb   = false
   rowsInPage = 0
 
+  lastHoveredDataIdx = -1
+
   onCategoryCb = null
   onRowSelectCb = null
+  onRowHoverCb = null
   onRowDblClickCb = null
   onRowRClickCb = null
-  onWrapUpCb = null
-  onWrapDownCb = null
 
   static function create(config)
   {
@@ -72,7 +73,7 @@ class ::gui_handlers.LeaderboardTable extends ::gui_handlers.BaseGuiHandlerWT
         }
         headerRow.append(block)
       }
-      data += buildTableRow("row_header", headerRow, null, "inactive:t='yes'; commonTextColor:t='yes'; bigIcons:t='yes'; ")
+      data += buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'")
     }
 
     isLastPage = false
@@ -96,7 +97,7 @@ class ::gui_handlers.LeaderboardTable extends ::gui_handlers.BaseGuiHandlerWT
     guiScene.replaceContentFromText(lbTable, data, data.len(), this)
 
     if (hasTable)
-      onRowSelect()
+      onRowSelect(lbTable)
 
     showSceneBtn("wait_animation", !hasHeader && !hasTable)
     showSceneBtn("no_leaderboads_text", hasHeader && !hasTable)
@@ -105,10 +106,9 @@ class ::gui_handlers.LeaderboardTable extends ::gui_handlers.BaseGuiHandlerWT
 
   function getTableRowMarkup(row, rowIdx, selfPos)
   {
-    local rowName = row?.name ?? ""
     local needAddClanTag = row?.needAddClanTag ?? false
     local clanTag = row?.clanTag ?? ""
-    local playerName = platformModule.getPlayerName(rowName)
+    local playerName = platformModule.getPlayerName(row?.name ?? "")
     local rowData = [
       {
         text = row.pos >= 0 ? (row.pos + 1).tostring() : ::loc("leaderboards/notAvailable")
@@ -130,7 +130,7 @@ class ::gui_handlers.LeaderboardTable extends ::gui_handlers.BaseGuiHandlerWT
     }
     local clanId = needAddClanTag && clanTag == "" ? (row?.clanId ?? "") : ""
     local highlightRow = selfPos == row.pos && row.pos >= 0
-    local rowParamsText = $"player_nick:t='{rowName}';clanId:t='{clanId}';{highlightRow ? "mainPlayer:t='yes';" : ""}"
+    local rowParamsText = $"clanId:t='{clanId}';{highlightRow ? "mainPlayer:t='yes';" : ""}"
     local data = buildTableRow("row_" + rowIdx, rowData, rowIdx % 2 == 0, rowParamsText)
 
     return data
@@ -190,10 +190,31 @@ class ::gui_handlers.LeaderboardTable extends ::gui_handlers.BaseGuiHandlerWT
     return data
   }
 
-  function onRowSelect()
+  function onRowSelect(obj)
   {
-    if (onRowSelectCb)
-      onRowSelectCb()
+    if (::show_console_buttons)
+      return
+    if (!::check_obj(obj))
+      return
+
+    local dataIdx = obj.getValue() - 1 // skiping header row
+    onRowSelectCb?(dataIdx)
+  }
+
+  function onRowHover(obj)
+  {
+    if (!::show_console_buttons)
+      return
+    if (!::check_obj(obj))
+      return
+
+    local isHover = obj.isHovered()
+    local dataIdx = ::to_integer_safe(::g_string.cutPrefix(obj.id, "row_", ""), -1, false)
+    if (isHover == (dataIdx == lastHoveredDataIdx))
+     return
+
+    lastHoveredDataIdx = isHover ? dataIdx : -1
+    onRowHoverCb?(lastHoveredDataIdx)
   }
 
   function onRowDblClick()
@@ -212,17 +233,5 @@ class ::gui_handlers.LeaderboardTable extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (onCategoryCb)
       onCategoryCb(obj)
-  }
-
-  function onWrapUp(obj)
-  {
-    if (onWrapUpCb)
-      onWrapUpCb(obj)
-  }
-
-  function onWrapDown(obj)
-  {
-    if (onWrapDownCb)
-      onWrapDownCb(obj)
   }
 }

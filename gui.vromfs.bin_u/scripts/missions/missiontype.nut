@@ -1,4 +1,4 @@
-local enums = ::require("sqStdlibs/helpers/enums.nut")
+local enums = require("sqStdlibs/helpers/enums.nut")
 global enum MISSION_OBJECTIVE
 {
   KILLS_AIR           = 0x0001
@@ -233,7 +233,7 @@ g_mission_type.getCurrentObjectives <- function getCurrentObjectives()
 g_mission_type.getHelpPathForCurrentMission <- function getHelpPathForCurrentMission()
 {
   local path = getCurrent().helpBlkPath
-  if (path != "" && !::u.isEmpty(::DataBlock(path)))
+  if (path != "" && !::u.isEmpty(::blkOptFromPath(path)))
     return path
   return null
 }

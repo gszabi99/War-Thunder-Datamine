@@ -43,7 +43,6 @@
       "stabilityReductionAfterPenetration": 1.0,
       "bulletType": "he_frag_tank",
       "slopeEffectPreset": "ap",
-      "modelName": "tank_bullet_he",
       "fresnel": [0.23,0.1,2.0],
       "explodeOnRendinst": true,
       "useEffectiveArmorThicknessForShatter": true,
@@ -289,7 +288,6 @@
       "stabilityReductionAfterPenetration": 1.0,
       "bulletType": "he_frag_radio_fuse",
       "slopeEffectPreset": "ap",
-      "modelName": "tank_bullet_he",
       "fresnel": [0.23,0.1,2.0],
       "explodeOnRendinst": true,
       "bulletName": "76mm_dm261",
@@ -518,9 +516,6 @@
       },
       {
         "slopeEffectPreset": "ap"
-      },
-      {
-        "modelName": "tank_bullet_he"
       },
       {
         "fresnel": [0.23,0.1,2.0]
@@ -792,7 +787,6 @@
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "sap_tank",
       "slopeEffectPreset": "ap",
-      "modelName": "tank_bullet_aphe",
       "fresnel": [0.23,0.1,2.0],
       "bulletName": "76mm_sapom_sap",
       "dynamicKv": true,
@@ -1081,9 +1075,6 @@
         "slopeEffectPreset": "ap"
       },
       {
-        "modelName": "tank_bullet_he"
-      },
-      {
         "fresnel": [0.23,0.1,2.0]
       },
       {
@@ -1329,7 +1320,6 @@
       "stabilityReductionAfterPenetration": 0.05,
       "bulletType": "apds_fs_long_tank",
       "slopeEffectPreset": "apds_fs_long",
-      "modelName": "tank_bullet_apdsfs_long",
       "fresnel": [0.23,0.1,2.0],
       "bulletName": "76mm_oto_apfsds",
       "onHitChanceMultExplFuel": 0.1,
@@ -1355,6 +1345,11 @@
           "mod4": [50.0,0.7]
         }
       ],
+      "tracePattern": {
+        "caliber": 10.0,
+        "circleCount": 2,
+        "pointCount": 6
+      },
       "hitpower": {
         "HitPower0m": [1.0,500.0],
         "HitPower4000m": [0.5,4000.0],
@@ -1535,9 +1530,6 @@
     },
     {
       "slopeEffectPreset": "ap"
-    },
-    {
-      "modelName": "tank_bullet_he"
     },
     {
       "fresnel": [0.23,0.1,2.0]

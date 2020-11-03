@@ -1,5 +1,6 @@
 local { sessionsListBlkPath } = require("scripts/matchingRooms/getSessionsListBlkPath.nut")
 local fillSessionInfo = require("scripts/matchingRooms/fillSessionInfo.nut")
+local { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
 
 ::match_search_gm <- -1
 
@@ -115,17 +116,9 @@ class ::gui_handlers.SessionsList extends ::gui_handlers.GenericOptions
     onSessionsUpdate(null, 0.0)
     updateRoomsList()
     updateButtons()
-    initFocusArray()
 
     checkNotInvitablePlayers()
   }
-
-  function getMainFocusObj()
-  {
-    return sessionsListObj
-  }
-
-  getMainFocusObj2 = @() optionsContainer
 
   function initRoomsPerPage()
   {
@@ -181,7 +174,7 @@ class ::gui_handlers.SessionsList extends ::gui_handlers.GenericOptions
 
     if (!options) return
 
-    local container = create_options_container(optionsContainer, options, true, false, 0.5, true, false)
+    local container = create_options_container(optionsContainer, options, false, 0.5, true, false)
     local optObj = scene.findObject("session-options")
     if (::check_obj(optObj))
       guiScene.replaceContentFromText(optObj, container.tbl, container.tbl.len(), this)
@@ -375,11 +368,7 @@ class ::gui_handlers.SessionsList extends ::gui_handlers.GenericOptions
     sessionsListObj.deleteChildren()
     guiScene.appendWithBlk(sessionsListObj, data, this)
 
-    if (curPageRoomsList.len() > 0)
-      sessionsListObj.setValue(selectedRow)
-    else
-      gui_bhv.TableNavigator.clearSelect(sessionsListObj)
-
+    sessionsListObj.setValue(curPageRoomsList.len() > 0 ? selectedRow : -1)
     updateCurRoomInfo()
     updatePaginator(maxPage)
   }
@@ -426,11 +415,7 @@ class ::gui_handlers.SessionsList extends ::gui_handlers.GenericOptions
     updateCurRoomInfo()
   }
 
-  function doSelectSessions()
-  {
-    if (::checkObj(sessionsListObj))
-      sessionsListObj.select()
-  }
+  doSelectSessions = @() ::move_mouse_on_child_by_value(sessionsListObj)
 
   function onGamercard(obj)
   {
@@ -438,6 +423,9 @@ class ::gui_handlers.SessionsList extends ::gui_handlers.GenericOptions
 
   function onStart(obj)
   {
+    if (!suggestAndAllowPsnPremiumFeatures())
+      return
+
     local room = getCurRoom()
     if (!room)
       return msgBox("no_room_selected", ::loc("ui/nothing_selected"), [["ok"]], "ok")

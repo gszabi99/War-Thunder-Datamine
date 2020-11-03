@@ -1,6 +1,7 @@
 {
   "root": {
-    "background-color": "@modalShadeColor",
+    "blur": [],
+    "blur_foreground": [],
     "frame": [
       {
         "id": "countryChoice-root"
@@ -9,7 +10,7 @@
         "width": "0.75@scrn_tgt+2@framePadding"
       },
       {
-        "pos": "50%pw-50%w, 45%ph-40%h"
+        "pos": "0.5pw-0.5w, 0.5ph-0.5h"
       },
       {
         "position": "absolute"
@@ -18,7 +19,7 @@
         "class": "wndNav"
       },
       {
-        "largeNavBarHeight": "battle"
+        "style": "padding:0, 1@frameTopPadding, 0, 0"
       },
       {
         "frame_header": [
@@ -38,7 +39,7 @@
                 "text": "#options/doNotAskMeAgain",
                 "tooltip": "#options/doNotAskMeAgain/tutorial/hint",
                 "on_change_value": "onSkipTutorial",
-                "btnName": "X",
+                "btnName": "Y",
                 "CheckBoxImg": [],
                 "ButtonImg": []
               }
@@ -68,56 +69,94 @@
         ]
       },
       {
-        "img": {
-          "id": "tutorial_image",
+        "tdiv": {
           "width": "pw",
-          "height": "w/2",
-          "pos": "50%pw-50%w, 0",
+          "pos": "0.5pw-0.5w, 0.5ph-0.5h",
           "position": "relative",
-          "background-image": "#ui/images/tutorial_fighter.jpg?P1",
-          "background-color": "@white"
+          "flow": "vertical",
+          "textAreaCentered": {
+            "id": "msgText",
+            "width": "pw",
+            "position": "relative"
+          },
+          "Button_text": {
+            "id": "btn_start",
+            "size": "pw, 0.5w+1@battleButtonHeight",
+            "position": "relative",
+            "visualStyle": "bigImg",
+            "iconPos": "middleBottom",
+            "btnName": "X",
+            "userInputType": "mouse",
+            "on_click": "onStart",
+            "img": {
+              "id": "tutorial_image",
+              "width": "pw",
+              "height": "0.5w",
+              "background-image": "#ui/images/tutorial_fighter.jpg?P1",
+              "background-color": "@white"
+            },
+            "text": {
+              "size": "pw, 1@battleButtonHeight",
+              "text": "#multiplayer/btnStart"
+            },
+            "ButtonImg": []
+          }
         }
       },
       {
-        "textareaNoTab": {
-          "id": "msgCaption",
-          "pos": "50%pw-50%w, 0",
-          "position": "relative",
-          "text-align": "center",
-          "max-width": "p.p.w-0.05@scrn_tgt",
-          "caption": "yes",
-          "text": ""
-        }
-      },
-      {
-        "textAreaCentered": {
-          "id": "msgText",
-          "width": "pw",
-          "margin-bottom": "1.2@battleButtonHeight"
-        }
-      },
-      {
-        "navBar": {
-          "navMiddle": {
-            "Button_text": {
-              "id": "btn_start",
-              "style": "size:1@bigButtonWidth, 1@battleButtonHeight;",
-              "class": "battle",
-              "iconPos": "middleBottom",
-              "btnName": "A",
-              "userInputType": "mouse",
-              "text": "#multiplayer/btnStart",
-              "on_click": "onStart",
-              "pattern": {
-                "type": "bright_texture"
-              },
-              "buttonWink": {
-                "_transp-timer": "0"
-              },
-              "buttonGlance": [],
-              "ButtonImg": [],
-              "btnText": {
-                "text": "#multiplayer/btnStart"
+        "gamercard_div": {
+          "gamercard": {
+            "BottomMenuPanel": {
+              "rowSeparator": [],
+              "tdiv": {
+                "height": "ph",
+                "position": "absolute",
+                "pos": "pw-w, 0.5ph-0.5h",
+                "voiceChatWidgetNest": [
+                  {
+                    "isClanOnly": "no"
+                  },
+                  {
+                    "blockSeparator": {
+                      "display": "hide"
+                    }
+                  },
+                  {
+                    "emptyVoiceChat": {
+                      "tooltip": "#clan/voice_chat/widget",
+                      "usertalk": {
+                        "id": "voice_chat_no_activity",
+                        "type": "noTalk",
+                        "fade": "in",
+                        "height-end": "1",
+                        "_size-timer": "0",
+                        "img": {
+                          "color-factor": "255",
+                          "inacive": "yes",
+                          "position": "relative"
+                        },
+                        "activeText": {
+                          "text": "...",
+                          "color-factor": "255",
+                          "position": "relative"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "voiceChatWidgetContainer": {
+                      "isSmall": "no",
+                      "voiceChatWidget": {
+                        "value": "{\"viewId\": \"VOICE_CHAT\"}"
+                      }
+                    }
+                  },
+                  {
+                    "blockSeparator": {
+                      "display": "hide"
+                    }
+                  }
+                ]
               }
             }
           }
@@ -133,7 +172,7 @@
       {
         "dummy": {
           "on_click": "onStart",
-          "btnName": "A",
+          "btnName": "X",
           "userInputType": "gamepad"
         }
       }

@@ -2,7 +2,7 @@ local time = require("scripts/time.nut")
 local ingame_chat = require("scripts/chat/mpChatModel.nut")
 local penalties = require("scripts/penitentiary/penalties.nut")
 local platformModule = require("scripts/clientState/platform.nut")
-local playerContextMenu = ::require("scripts/user/playerContextMenu.nut")
+local playerContextMenu = require("scripts/user/playerContextMenu.nut")
 local spectatorWatchedHero = require("scripts/replays/spectatorWatchedHero.nut")
 local { isChatEnabled, isChatEnableWithPlayer } = require("scripts/chat/chatStates.nut")
 
@@ -98,7 +98,7 @@ class ::ChatHandler
       curTab = mpChatView.CHAT
     })
 
-    local sceneFocusObjArray = [
+    local sceneObjIds = [
     "chat_prompt_place",
     "chat_input",
     "chat_log",
@@ -107,7 +107,7 @@ class ::ChatHandler
 
     local scene = sceneData.scene
 
-    foreach (objName in sceneFocusObjArray)
+    foreach (objName in sceneObjIds)
     {
       local obj = scene.findObject(objName)
       if (obj)
@@ -276,12 +276,21 @@ class ::ChatHandler
           if (!::check_obj(obj))
             return
 
-          if (sceneData?.isInputSelected ?? true)
-            obj.select()
           obj.setValue(chatInputText)
+
+          if (sceneData?.isInputSelected ?? true)
+            selectChatEditbox(obj)
         })
       }
     }
+  }
+
+  function selectChatEditbox(obj)
+  {
+    if (!::is_in_flight() || ::get_is_in_flight_menu())
+      ::select_editbox(obj)
+    else
+      obj.select()
   }
 
   function hideChatInput(sceneData, value)
@@ -328,20 +337,6 @@ class ::ChatHandler
     ::call_darg("hudChatInputEnableUpdate", false)
   }
 
-  function onWrapUp(obj)
-  {
-    local sceneData = findSceneDataByObj(obj)
-    if (sceneData && sceneData.handler && ("onWrapUp" in sceneData.handler))
-      sceneData.handler.onWrapUp(obj)
-  }
-
-  function onWrapDown(obj)
-  {
-    local sceneData = findSceneDataByObj(obj)
-    if (sceneData && sceneData.handler && ("onWrapDown" in sceneData.handler))
-      sceneData.handler.onWrapDown(obj)
-  }
-
   function onChatCancel(obj)
   {
     local sceneData = findSceneDataByObj(obj)
@@ -381,11 +376,15 @@ class ::ChatHandler
     ::chat_on_text_update(chatInputText)
   }
 
+  function onChatWrapAttempt()
+  {
+    // Do nothing, just to prevent hud chat editbox from losing focus.
+  }
+
   function onEventMpChatInputChanged(params)
   {
     setInputField(params.str)
   }
-
 
   function setInputField(str)
   {
@@ -702,7 +701,7 @@ class ::ChatHandler
     if (!inputObj) return
 
     ::add_text_to_editbox(inputObj, user + " ")
-    inputObj.select()
+    selectChatEditbox(inputObj)
   }
 
   function getCurView(sceneData)

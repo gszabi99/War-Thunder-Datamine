@@ -2,7 +2,7 @@ const MROOM_INFO_UPDATE_DELAY    = 5000
 const MROOM_INFO_REQUEST_TIMEOUT = 15000
 const MROOM_INFO_OUTDATE_TIME    = 600000
 
-class MRoomInfo
+::MRoomInfo <- class
 {
   roomId = -1
   lastUpdateTime = -MROOM_INFO_OUTDATE_TIME

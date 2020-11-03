@@ -26,11 +26,6 @@ frame {
 
       on_select:t='onSelectTask'
 
-      behaviour:t='wrapNavigator'
-      navigatorShortcuts:t='yes'
-      childsActivate:t='yes'
-      on_wrap_up:t='onWrapUp'
-      on_wrap_down:t='onWrapDown'
       selImgType:t='gamepadFocused'
 
       include "gui/unlocks/battleTasksItem"

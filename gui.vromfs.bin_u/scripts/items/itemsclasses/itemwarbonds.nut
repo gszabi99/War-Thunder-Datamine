@@ -1,15 +1,8 @@
-local ItemExternal = require("scripts/items/itemsClasses/itemExternal.nut")
+local ItemCouponBase = require("scripts/items/itemsClasses/itemCouponBase.nut")
 
-class ::items_classes.Warbonds extends ItemExternal {
+class ::items_classes.Warbonds extends ItemCouponBase {
   static iType = itemType.WARBONDS
-  static defaultLocId = "coupon"
-  static combinedNameLocId = "coupon/name"
   static typeIcon = "#ui/gameuiskin#item_type_warbonds"
-  static descHeaderLocId = "coupon/for"
-
-  getContentIconData   = @() { contentIcon = typeIcon }
-  getResourceDesc      = @() ""
-  getCreationCaption   = @() shouldAutoConsume ? ::loc("unlocks/entitlement") : base.getCreationCaption()
 
   getWarbond           = @() ::g_warbonds.findWarbond(metaBlk?.warbonds)
   getWarbondsAmount    = @() metaBlk?.count || 0

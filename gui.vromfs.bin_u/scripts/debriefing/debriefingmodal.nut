@@ -1,8 +1,8 @@
 local stdMath = require("std/math.nut")
 local time = require("scripts/time.nut")
-local workshop = ::require("scripts/items/workshop/workshop.nut")
+local workshop = require("scripts/items/workshop/workshop.nut")
 local { updateModItem } = require("scripts/weaponry/weaponryVisual.nut")
-local workshopPreview = ::require("scripts/items/workshop/workshopPreview.nut")
+local workshopPreview = require("scripts/items/workshop/workshopPreview.nut")
 local { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/entitlements.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
@@ -14,6 +14,7 @@ local { isModResearched,
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
 local { needLogoutAfterSession, startLogout } = require("scripts/login/logout.nut")
 local activityFeedPostFunc = require("scripts/social/activityFeed/activityFeedPostFunc.nut")
+local { canOpenPlayerReviewDialog, openPlayerReviewDialog } = require("scripts/social/psnMatches.nut")
 
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
@@ -68,7 +69,7 @@ enum DEBR_THEME {
 
 ::gui_start_debriefing <- function gui_start_debriefing()
 {
-  if (needLogoutAfterSession)
+  if (needLogoutAfterSession.value)
   {
     ::destroy_session_scripted()
     //need delay after destroy session before is_multiplayer become false
@@ -88,10 +89,7 @@ enum DEBR_THEME {
      return
   }
   else
-  {
     dagor.debug("gui_nav gui_start_debriefing back_from_replays is null");
-    ::debriefing_result = null
-  }
 
   if (gm == ::GM_BENCHMARK)
   {
@@ -128,7 +126,6 @@ enum DEBR_THEME {
 class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 {
   sceneBlkName = "gui/debriefing/debriefing.blk"
-  shouldBlurSceneBg = true
 
   static awardsListsConfig = {
     streaks = {
@@ -186,10 +183,18 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
   function initScreen()
   {
-    gm = ::get_game_mode()
-    mGameMode = ::SessionLobby.isInRoom() ? ::SessionLobby.getMGameMode() : null
-    gameType = ::get_game_type()
-    isTeamplay = ::is_mode_with_teams(gameType)
+    if (::debriefing_result == null) {
+      ::script_net_assert_once("not inited debriefing result", "try to get debriefing data")
+      ::gather_debriefing_result()
+    }
+    gm = ::debriefing_result.gm
+    mGameMode = ::debriefing_result.mGameMode
+    gameType = ::debriefing_result.gameType
+    isTeamplay = ::debriefing_result.isTeamplay
+    isSpectator = ::debriefing_result.isSpectator
+    playersInfo = ::debriefing_result.playersInfo
+    isMp = ::debriefing_result.isMp
+    isReplay = ::debriefing_result.isReplay
 
     if (::disable_network()) //for correct work in disable_menu mode
       ::update_gamercards()
@@ -197,27 +202,20 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     initNavbar()
     showTab("") //hide all tabs
 
-    isSpectator = ::SessionLobby.isInRoom() && ::SessionLobby.spectator
-    playersInfo = clone ::SessionLobby.getPlayersInfo()
     ::set_presence_to_player("menu")
     initStatsMissionParams()
     ::SessionLobby.checkLeaveRoomInDebriefing()
-    isMp = ::is_multiplayer()
     ::close_cur_voicemenu()
     ::enableHangarControls(true)
-    checkDestroySession()
 
     // Debriefing shows on on_hangar_loaded event, but looks like DoF resets in this frame too.
     // DoF changing works unstable on this frame, but works 100% good on next guiscene act.
     guiScene.performDelayed(this, function() { ::handlersManager.updateSceneBgBlur(true) })
 
     lastProgressRank = {}
-
-    if (isInited || !::debriefing_result)
-    {
-      ::gather_debriefing_result()
+    if (isInited)
       scene.findObject("debriefing_timer").setUserData(this)
-    }
+
     playerStatsObj = scene.findObject("stat_table")
     numberOfWinningPlaces = ::getTblValue("numberOfWinningPlaces", ::debriefing_result, -1)
     pveRewardInfo = ::getTblValue("pveRewardInfo", ::debriefing_result)
@@ -304,7 +302,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
     //update mp table
     needPlayersTbl = isMp && !(gameType & ::GT_COOPERATIVE) && isDebriefingResultFull()
-    setSceneTitle(getCurMpTitle())
+    setSceneTitle(getCurMpTitle(), null, "dbf_title")
 
     if (!isDebriefingResultFull())
     {
@@ -316,7 +314,6 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       }
     }
 
-    isReplay = ::is_replay_playing()
     if (!isReplay)
     {
       setGoNext()
@@ -421,17 +418,23 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     currentAwardsListConfig = awardsListsConfig.streaks
   }
 
-  function getFakeUnlockDataByWpBattleTrophy(wpBattleTrophy)
+  function getFakeUnlockData(config)
   {
-    return ::get_fake_unlock_data(
-                            {
-                              iconStyle = ::trophyReward.getWPIcon(wpBattleTrophy)
-                              title = ::loc("debriefing/BattleTrophy"),
-                              desc = ::loc("debriefing/BattleTrophy/desc"),
-                              rewardText = ::Cost(wpBattleTrophy).toStringWithParams({isWpAlwaysShown = true}),
-                            }
-                          )
+    local res = {}
+    foreach(key, value in ::default_unlock_data)
+      res[key] <- (key in config)? config[key] : value
+    foreach(key, value in config)
+      if (!(key in res))
+        res[key] <- value
+    return res
   }
+
+  getFakeUnlockDataByWpBattleTrophy = @(wpBattleTrophy) getFakeUnlockData({
+    iconStyle = ::trophyReward.getWPIcon(wpBattleTrophy)
+    title = ::loc("debriefing/BattleTrophy"),
+    desc = ::loc("debriefing/BattleTrophy/desc"),
+    rewardText = ::Cost(wpBattleTrophy).toStringWithParams({isWpAlwaysShown = true}),
+  })
 
   function getAwardsList(filter)
   {
@@ -1110,11 +1113,11 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       updateShortBattleTask()
       updateInventoryButton()
 
-      initFocusArray()
       checkPopupWindows()
       throwBattleEndEvent()
       guiScene.performDelayed(this, function() {ps4SendActivityFeed() })
-      getObj("tabs_list").select()
+      local tabsObj = getObj("tabs_list")
+      ::move_mouse_on_child(tabsObj, tabsObj.getValue())
     }
     else
       skipAnim = skipAnim && ::debriefing_skip_all_at_once
@@ -2160,9 +2163,6 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       updateStats({ playersTbl = curPlayersTbl, playersInfo = playersInfo }, ::debriefing_result.mpTblTeams,
         ::debriefing_result.friendlyTeam)
       statsTimer += playersRowTime
-
-      if (hasLocalPlayer)
-        selectLocalPlayer()
     }
     return true
   }
@@ -2213,12 +2213,13 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       return
 
     local containerObj = scene.findObject("my_stats_top_bar")
-    if (!::check_obj(containerObj))
+    local myPlaceObj = scene.findObject("my_place_move_box")
+    local topBarNestObj = scene.findObject("top_bar_nest")
+    if (!::check_obj(containerObj) || !::check_obj(myPlaceObj) || !::check_obj(topBarNestObj))
       return
     local total = containerObj.childrenCount()
     if (total < 2)
       return
-
     guiScene.applyPendingChanges(false)
 
     local visible = 0
@@ -2232,7 +2233,15 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     local gapMin = 1.0
     local gapMax = gapMin * DEBR_MYSTATS_TOP_BAR_GAP_MAX
     local gap = ::clamp(stdMath.lerp(total, 2, gapMin, gapMax, visible), gapMin, gapMax)
-    local pos = ::format("%.1f@debrPad, ph/2-h/2", gap)
+    local pos = ::format("%.1f@debrPad, 0.5ph-0.5h", gap)
+
+    if (visible < 3)                  //Single row
+      topBarNestObj.flow = "horisontal"
+    else {                            //Two rows
+      topBarNestObj.flow = "vertical"
+      myPlaceObj.pos = "0.5pw-0.5w, 0"
+      containerObj.pos = "0.5pw-0.5w-0.5@debrPad, 0.5@debrPad"
+    }
 
     for (local i = 0; i < containerObj.childrenCount(); i++)
     {
@@ -2654,6 +2663,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       btn_save_replay = isAnimDone && isReplayReady && !::is_replay_saved()
       btn_user_options = isAnimDone && (curTab == "players_stats") && player && !player.isBot && ::show_console_buttons
       btn_view_highlights = isAnimDone && ::is_highlights_inited()
+      btn_psn_match_review = isAnimDone && canOpenPlayerReviewDialog()
     }
 
     foreach(btn, show in buttonsList)
@@ -2662,6 +2672,8 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     local showFacebookBtn = isAnimDone && (curTab == "my_stats" || curTab == "players_stats")
     ::show_facebook_screenshot_button(scene, showFacebookBtn)
   }
+
+  function onBtnPsnMatchReview() { openPlayerReviewDialog() }
 
   function onChatLinkClick(obj, itype, link)
   {
@@ -2731,12 +2743,6 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       return
 
     ::show_highlights()
-  }
-
-  function checkDestroySession()
-  {
-    if (::is_mplayer_peer())
-      ::destroy_session_scripted()
   }
 
   function setGoNext()
@@ -3270,22 +3276,6 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       actionData.action()
   }
 
-  function getMainFocusObj()
-  {
-    return "tabs_list"
-  }
-
-  function getMainFocusObj2()
-  {
-    switch (curTab)
-    {
-      case "players_stats":     return getSelectedTable()
-      case "battle_log":        return "battle_log_filter"
-      case "battle_tasks_list": return "battle_tasks_list_scroll_block"
-    }
-    return null
-  }
-
   getUserlogsMask = @() state == debrState.done && isSceneActiveNoModals()
     ? USERLOG_POPUP.OPEN_TROPHY
     : USERLOG_POPUP.NONE
@@ -3337,6 +3327,18 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     ? ::debriefing_result.mplayers_list
     : ::debriefing_result.mplayers_list.filter(@(player) player.team == team)
   getOverrideCountryIconByTeam = @(team) ::debriefing_result.overrideCountryIconByTeam[team]
+
+  function initStatsMissionParams() {
+    gameMode = ::debriefing_result.gm
+    isOnline = ::g_login.isLoggedIn()
+
+    isTeamsRandom = !isTeamplay || gameMode == ::GM_DOMINATION
+    if (::debriefing_result.isInRoom || isReplay)
+      isTeamsWithCountryFlags = isTeamplay &&
+        (::debriefing_result.missionDifficultyInt > 0 || !::debriefing_result.isSymmetric)
+
+    missionObjectives = ::debriefing_result.missionObjectives
+  }
 
   isInited = true
   state = 0

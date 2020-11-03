@@ -1,4 +1,4 @@
-local interopGet = require("daRg/helpers/interopGen.nut")
+local interopGet = require("interopGen.nut")
 
 local missionState = {
   gameType = Watched(0)

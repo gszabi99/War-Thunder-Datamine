@@ -1,5 +1,5 @@
 // warning disable: -egyptian-braces
-local callback = ::require("sqStdLibs/helpers/callback.nut")
+local callback = require("sqStdLibs/helpers/callback.nut")
 
 const SUBSCRIPTIONS_AMOUNT_TO_CLEAR = 50
 
@@ -7,6 +7,11 @@ local defaultPriority = 0
 
 local currentBroadcastingEvents = []
 local currentEventIdx = 0
+
+local isDebugLoggingEnabled = false
+local debugPrintFunc = @(...) null
+local debugTimestampFunc = @(...) ""
+local debugToStringFunc = @(...) ""
 
 /**
  * Data model:
@@ -113,6 +118,9 @@ local function removeAllListenersByEnv(listener_env) {
 }
 
 local function broadcast(event_name, params = {}) {
+  if (isDebugLoggingEnabled)
+    debugPrintFunc($"{debugTimestampFunc()} event_broadcast \"{event_name}\" {debugToStringFunc(params)}")
+
   currentBroadcastingEvents.append({
     eventName = event_name
     eventId = currentEventIdx++
@@ -133,6 +141,20 @@ local function broadcast(event_name, params = {}) {
   currentBroadcastingEvents.pop()
 }
 
+local function setDebugLoggingParams(printFunc, timestampFunc, toStringFunc) {
+  debugPrintFunc      = printFunc
+  debugTimestampFunc  = timestampFunc
+  debugToStringFunc   = toStringFunc
+}
+
+/*
+ * Toggles debug logging. Requires initialization by setDebugLoggingParams func.
+ * @param {bool|null} isEnable - Use true/false, or null to toggle on/off
+*/
+local function debugLoggingEnable(isEnable  = null) {
+  isDebugLoggingEnabled = isEnable ?? !isDebugLoggingEnabled
+}
+
 return {
   broadcast = broadcast
   addEventListener = addEventListener
@@ -140,6 +162,8 @@ return {
   addListenersWithoutEnv = addListenersWithoutEnv
   removeEventListenersByEnv = removeEventListenersByEnv
   removeAllListenersByEnv = removeAllListenersByEnv
+  setDebugLoggingParams = setDebugLoggingParams
+  debugLoggingEnable = debugLoggingEnable
 
   //standard priorities
   DEFAULT = 0

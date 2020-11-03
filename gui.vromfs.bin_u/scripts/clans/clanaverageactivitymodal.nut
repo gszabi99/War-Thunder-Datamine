@@ -1,4 +1,4 @@
-local squadronUnitAction = ::require("scripts/unit/squadronUnitAction.nut")
+local squadronUnitAction = require("scripts/unit/squadronUnitAction.nut")
 local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
 local time = require("scripts/time.nut")
 

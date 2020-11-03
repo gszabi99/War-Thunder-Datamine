@@ -20,9 +20,6 @@ tdiv {
       navigatorShortcuts:t='yes'
       css-hier-invalidate:t='yes'
       total-input-transparent:t='yes'
-      on_wrap_up:t='onWrapUp'
-      on_wrap_down:t='onWrapDown'
-      on_wrap_right:t='onWrapDown'
       <<#sides>>
       wwConflictSideBlock {
         include "gui/worldWar/countriesListWithQueue"

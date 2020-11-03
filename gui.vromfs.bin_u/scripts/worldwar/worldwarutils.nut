@@ -237,7 +237,8 @@ g_world_war.checkPlayWorldwarAccess <- function checkPlayWorldwarAccess()
   }
   if (!canPlayWorldwar())
   {
-    ::showInfoMsgBox(getPlayWorldwarConditionText(true))
+    if (!::xbox_try_show_crossnetwork_message())
+      ::showInfoMsgBox(getPlayWorldwarConditionText(true))
     return false
   }
   return true

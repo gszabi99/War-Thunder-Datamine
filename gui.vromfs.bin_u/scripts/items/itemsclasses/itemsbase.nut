@@ -270,7 +270,7 @@ class ::BaseItem
   {
     return ::handyman.renderCached("gui/items/itemString", {
       title = showTitle? colorize("activeTextColor",getName()) : null
-      icon = typeIcon
+      icon = getSmallIconName()
       tooltipId = ::g_tooltip.getIdItem(id, { isDisguised = isDisguised })
       count = count > 1? (colorize("activeTextColor", " x") + colorize("userlogColoredText", count)) : null
       hasPadding = hasPadding
@@ -378,7 +378,7 @@ class ::BaseItem
 
     res.hasButton <- ::getTblValue("hasButton", params, true)
     res.onClick <- ::getTblValue("onClick", params, null)
-    res.hasHoverBorder <- ::getTblValue("hasHoverBorder", params, false)
+    res.hasFocusBorder <- params?.hasFocusBorder ?? true
 
     if (::getTblValue("contentIcon", params, true))
       res.contentIconData <- getContentIconData()

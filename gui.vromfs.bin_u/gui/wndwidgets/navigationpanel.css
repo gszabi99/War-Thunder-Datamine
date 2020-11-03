@@ -45,27 +45,3 @@ emptyButton.navigationCollapse:hover > icon {
 [show_console_buttons=yes] emptyButton.navigationCollapse > ButtonImg {
   valign:center;
 }
-
-
-listbox.navigationItemList > mission_item_unlocked > img {
-  size: ph, ph;
-  display: hide;
-  background-color: @white;
-  background-svg-size: ph, ph;
-}
-
-[show_console_buttons=yes] listbox.navigationItemList > mission_item_unlocked:current > img {
-  display:'show';
-}
-
-listbox.navigationItemList[nav_btn_group=RS] > mission_item_unlocked > img {
-  background-image:'@control_r_stick_to_up_n_down';
-}
-
-listbox.navigationItemList[nav_btn_group=LS] > mission_item_unlocked > img {
-  background-image:'@control_l_stick_to_up_n_down';
-}
-
-listbox.navigationItemList[nav_btn_group=Dpad] > mission_item_unlocked > img {
-  background-image:'@control_dirpad';
-}

@@ -188,7 +188,7 @@ class ::GuiBox
   }
 }
 
-::get_help_dot_blk_text <- function get_help_dot_blk_text(point /*Point2*/, tag = "helpLineDot")
+local function getHelpDotMarkup(point /*Point2*/, tag = "helpLineDot")
 {
   return format("%s { pos:t='%d-0.5w, %d-0.5h'; position:t='absolute' } ", tag, point.x.tointeger(), point.y.tointeger())
 }
@@ -258,13 +258,22 @@ LinesGenerator.generateLinkLinesMarkup <- function generateLinkLinesMarkup(links
   local guiScene = ::get_cur_gui_scene()
   local lines = createLinkLines(links, obstacleBoxList, guiScene.calcString(interval, null),
                                                  guiScene.calcString(width, null))
-  local data = ""
-  foreach(box in lines.lines)
-    data += box.getBlkText("helpLine")
-  foreach(dot in lines.dots0)
-    data += ::get_help_dot_blk_text(dot)
 
-  return data
+  local shadowOffset = ::to_pixels("1@helpLineShadowOffset")
+  local shadowOffsetArr = [ shadowOffset, shadowOffset ]
+  local shadowOffsetP2 = ::Point2(shadowOffset, shadowOffset)
+
+  local data = []
+  foreach(box in lines.lines)
+    data.append(box.cloneBox().incPos(shadowOffsetArr).getBlkText("helpLineShadow"))
+  foreach(dot in lines.dots0)
+    data.append(getHelpDotMarkup(dot + shadowOffsetP2, "helpLineDotShadow"))
+  foreach(box in lines.lines)
+    data.append(box.getBlkText("helpLine"))
+  foreach(dot in lines.dots0)
+    data.append(getHelpDotMarkup(dot, "helpLineDot"))
+
+  return ::g_string.implode(data)
 }
 
 LinesGenerator.createLinkLines <- function createLinkLines(links, obstacles, interval = 0, lineWidth = 1, priority = 0, initial = true)

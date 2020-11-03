@@ -669,6 +669,15 @@
       },
       {
         "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -855,10 +864,6 @@
         "body_bottom_dm": {
           "armorThickness": 20.0
         },
-        "body_back_dm": {
-          "armorThickness": 20.0,
-          "hidableInViewer": true
-        },
         "superstructure_bottom_dm": {
           "armorThickness": 25.0
         },
@@ -893,7 +898,8 @@
           "armorThickness": 90.0
         },
         "superstructure_front_dm": {
-          "armorThickness": 100.0
+          "armorThickness": 100.0,
+          "variableThickness": true
         }
       },
       "turret_RHA": {
@@ -918,7 +924,8 @@
         },
         "gun_mask_dm": {
           "armorThickness": 100.0,
-          "hp": 10000.0
+          "hp": 10000.0,
+          "variableThickness": true
         },
         "gun_barrel_armor_dm": {
           "armorThickness": 200.0
@@ -931,6 +938,7 @@
         "stopChanceOnDeadPart": 0.0,
         "createSecondaryShatters": false,
         "hidableInViewer": true,
+        "ex_decor_01_dm": [],
         "ex_decor_r_01_dm": [],
         "ex_decor_r_02_dm": [],
         "ex_decor_r_03_dm": [],
@@ -1029,6 +1037,7 @@
         "wheel_r_top_01_dm": [],
         "wheel_r_top_02_dm": [],
         "wheel_r_top_03_dm": [],
+        "body_back_dm": [],
         "submodule": {
           "armorClass": "tank_traks",
           "armorThickness": 30.0,
@@ -1147,20 +1156,15 @@
       },
       "equipment_body_turret": {
         "armorClass": "tank_structural_steel",
-        "hp": 250.0,
-        "armorThickness": 2.0,
+        "hp": 150.0,
         "armorThrough": 15.0,
         "fireProtectionHp": 5.0,
         "hidableInViewer": false,
         "drive_turret_v_dm": {
-          "hp": 150.0,
-          "armorThrough": 1.0,
-          "armorThickness": 12.0
+          "armorThrough": 15.0
         },
         "drive_turret_h_dm": {
-          "hp": 150.0,
-          "armorThrough": 1.0,
-          "armorThickness": 12.0
+          "armorThrough": 15.0
         },
         "drive_turret_v_01_dm": {
           "hp": 40.0,
@@ -1178,59 +1182,88 @@
           "hp": 40.0,
           "armorThrough": 15.0
         },
-        "cannon_breech_dm": {
-          "armorThickness": 10.0,
-          "armorThrough": 300.0,
-          "hp": 150.0
+        "drive_turret_v_03_dm": {
+          "hp": 40.0,
+          "armorThrough": 15.0
         },
-        "cannon_breech_01_dm": {
-          "armorThickness": 10.0,
-          "armorThrough": 15.0,
-          "hp": 150.0
+        "drive_turret_h_03_dm": {
+          "hp": 40.0,
+          "armorThrough": 15.0
         },
-        "cannon_breech_02_dm": {
-          "armorThickness": 10.0,
-          "armorThrough": 15.0,
-          "hp": 100.0
+        "drive_turret_v_04_dm": {
+          "hp": 40.0,
+          "armorThrough": 15.0
         },
-        "cannon_breech_03_dm": {
-          "armorThickness": 10.0,
-          "armorThrough": 15.0,
-          "hp": 100.0
+        "drive_turret_h_04_dm": {
+          "hp": 40.0,
+          "armorThrough": 15.0
         },
-        "cannon_breech_04_dm": {
-          "armorThickness": 10.0,
-          "armorThrough": 15.0,
-          "hp": 100.0
+        "drive_turret_v_05_dm": {
+          "hp": 40.0,
+          "armorThrough": 15.0
+        },
+        "drive_turret_h_05_dm": {
+          "hp": 40.0,
+          "armorThrough": 15.0
         },
         "radiator_dm": {
-          "hp": 40.0,
+          "hp": 50.0,
           "armorThrough": 5.0
         },
         "radiator_l_dm": {
-          "hp": 40.0,
+          "hp": 50.0,
           "armorThrough": 5.0
         },
         "radiator_r_dm": {
-          "hp": 40.0,
+          "hp": 50.0,
           "armorThrough": 5.0
         },
         "radio_station_dm": {
-          "hp": 20.0,
+          "hp": 50.0,
           "armorThrough": 3.0
         },
-        "engine": {
-          "armorClass": "armor_tank_engine",
-          "hp": 100.0,
-          "armorThrough": 50.0,
-          "fireProtectionHp": 3.0,
-          "engine_dm": [],
-          "transmission_dm": []
+        "radio_station_01_dm": {
+          "hp": 50.0,
+          "armorThrough": 3.0
         }
+      },
+      "cannon_breech": {
+        "armorClass": "tank_structural_steel",
+        "hp": 150.0,
+        "armorThickness": 150.0,
+        "fireProtectionHp": 5.0,
+        "hidableInViewer": false,
+        "cannon_breech_dm": {
+          "restrainDamage": 0.5
+        },
+        "cannon_breech_01_dm": {
+          "armorThickness": 10.0
+        },
+        "cannon_breech_02_dm": {
+          "armorThickness": 10.0
+        },
+        "cannon_breech_03_dm": {
+          "armorThickness": 10.0
+        },
+        "cannon_breech_04_dm": {
+          "armorThickness": 10.0
+        },
+        "cannon_breech_05_dm": {
+          "armorThickness": 10.0
+        }
+      },
+      "power_block": {
+        "armorClass": "armor_tank_engine",
+        "hp": 100.0,
+        "armorThickness": 150.0,
+        "fireProtectionHp": 5.0,
+        "restrainDamage": 0.5,
+        "engine_dm": [],
+        "transmission_dm": []
       },
       "ammo": {
         "armorClass": "tank_structural_steel",
-        "hp": 500.0,
+        "hp": 300.0,
         "armorThickness": 2.0,
         "armorThrough": 10.0,
         "fireProtectionHp": 20.0,
@@ -1387,6 +1420,24 @@
         "ammo_body_r_18_dm": [],
         "ammo_body_r_19_dm": [],
         "ammo_body_r_20_dm": []
+      },
+      "fuel_tanks_exterior": {
+        "armorClass": "tank_structural_steel",
+        "hp": 250.0,
+        "armorThickness": 2.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_exterior",
+        "fuel_tank_exterior_r_01_dm": [],
+        "fuel_tank_exterior_r_02_dm": [],
+        "fuel_tank_exterior_r_03_dm": [],
+        "fuel_tank_exterior_l_01_dm": [],
+        "fuel_tank_exterior_l_02_dm": [],
+        "fuel_tank_exterior_l_03_dm": [],
+        "fuel_tank_exterior_01_dm": [],
+        "fuel_tank_exterior_02_dm": [],
+        "fuel_tank_exterior_03_dm": []
       },
       "fuel_tanks": {
         "armorClass": "tank_structural_steel",

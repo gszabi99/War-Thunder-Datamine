@@ -1,3 +1,11 @@
+local { getStringWidthPx } = require("scripts/viewUtils/daguiFonts.nut")
+//
+
+
+
+
+
+
 ::dagui_propid.add_name_id("task_id")
 ::dagui_propid.add_name_id("difficultyGroup")
 
@@ -105,13 +113,69 @@ class ::gui_handlers.BattleTasksPromoHandler extends ::gui_handlers.BaseGuiHandl
       view.refreshTimer <- true
     }
 
+    if (!(view.needShowProgressBar ?? false) && view.needShowProgressValue)
+    {
+      local progressValueText = ::loc("ui/parentheses/space",
+        {text = "".concat(view.progressValue, "/", view.progressMaxValue)})
+      view.collapsedText = $"{view.collapsedText}{progressValueText}"
+    }
+    local maxTextWidth = ::to_pixels("".concat("1@arrowButtonWidth-1@mIco-2@blockInterval",
+      view.taskStatus != null ? "-1@modStatusHeight" : "",
+      view.newIconWidget != null ? "-1@arrowButtonHeight" : ""))
+    view.collapsedIcon <- ::g_promo.getCollapsedIcon(view, id)
+    local iconSize = getStringWidthPx(view.collapsedIcon, "fontNormal", guiScene) + ::to_pixels("1@blockInterval")
+    if (getStringWidthPx(view.collapsedText, "fontNormal", guiScene) > maxTextWidth - iconSize)
+      view.shortInfoBlockWidth <- ::to_pixels("1@arrowButtonWidth-1@blockInterval")
+    view.hasMarginCollapsedIcon <- view.collapsedText != "" && view.taskDifficultyImage != ""
+    view.hasCollapsedText <- view.collapsedText != ""
+    local taskRankValue = view?.taskRankValue ?? ""
+    if(taskRankValue != "")
+      view.title = $"{view.title} {taskRankValue}"
+    if (getStringWidthPx(view.title, "fontNormal", guiScene) > maxTextWidth)
+      view.headerWidth <- maxTextWidth
     view.performActionId <- ::g_promo.getActionParamsKey(id)
     view.taskId <- ::getTblValue("id", reqTask)
     view.action <- ::g_promo.PERFORM_ACTON_NAME
-    view.collapsedIcon <- ::g_promo.getCollapsedIcon(view, id)
+
 
     view.isShowRadioButtons <- (difficultyGroupArray.len() > 1 && ::has_feature("PromoBattleTasksRadioButtons"))
     view.radioButtons <- difficultyGroupArray
+    view.isShowNameInHeader <- true
+    view.otherTasksNumText <- view.otherTasksNum > 0 ? "#mainmenu/battleTasks/OtherTasksCount" : ""
+    //
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     local data = ::handyman.renderCached("gui/promo/promoBattleTasks",
       { items = [view], collapsedAction = ::g_promo.PERFORM_ACTON_NAME})
@@ -185,4 +249,13 @@ class ::gui_handlers.BattleTasksPromoHandler extends ::gui_handlers.BaseGuiHandl
   onEventCurrentGameModeIdChanged             = @(p) updateHandler()
   onEventWarbondShopMarkSeenLevel             = @(p) updateHandler()
   onEventWarbondViewShowProgressBarFlagUpdate = @(p) updateHandler()
+
+  //
+
+
+
+
+
+
+
 }

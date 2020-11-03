@@ -13,7 +13,7 @@
       "level": "levels/water.bin",
       "type": "campaign",
       "environment": "Day",
-      "weather": "hazy",
+      "weather": "good",
       "windDirection": [1.0,0.0,0.0],
       "restoreType": "tactical control",
       "optionalTakeOff": false,
@@ -31,41 +31,36 @@
         "localTime": 9.0
       },
       "customWeather": {
-        "scatteringEffect": 0.0,
-        "cloud_shadow_intensity": 0.7,
         "windDir": [0.6,0.8],
         "wind_scale": 1.0,
         "max_wind_strength": 6.0,
-        "sky": {
-          "mie_height": 0.5,
-          "mieG": 0.5,
-          "betaMScale": 0.5,
-          "clouds_overcast": 0.5
-        },
-        "clouds_gen": {
-          "humidity": 0.6,
-          "persistence": 0.8,
-          "asymmetry": 0.5
-        },
-        "clouds_position": {
-          "start_altitude": 1.0,
-          "thickness": 4.5,
-          "light_extinction": 1.2,
-          "amb_extinction_mul": 1.0
-        },
-        "clouds_render": {
-          "silver_lining": 0.5,
-          "sun_light": 0.7,
-          "ambient": 0.5,
-          "silver_lining_eccentricity": 0.6
-        },
+        "wind_strength": 4.0,
+        "waterWindStrength": 4.0,
         "strata_clouds": {
           "amount": 0.4,
           "altitude": 9.0
         },
-        "rain": {
-          "rainFromInvisibleClouds": false,
-          "probability": 0.0
+        "clouds_weather_gen": {
+          "layers[0].coverage": 0.25,
+          "layers[0].freq": 3.37,
+          "layers[0].seed": 7.04,
+          "layers[1].coverage": 0.38,
+          "layers[1].freq": 4.06,
+          "layers[1].seed": 32.39,
+          "cumulonimbusCoverage": 0.26,
+          "cumulonimbusSeed": 7.09
+        },
+        "clouds_form": {
+          "layers[0].startAt": 1.5,
+          "layers[0].thickness": 2.47,
+          "layers[0].density": 0.94,
+          "layers[0].clouds_type": 0.51,
+          "layers[1].startAt": 6.0,
+          "layers[1].thickness": 1.71,
+          "layers[1].density": 0.88,
+          "turbulenceStrength": 0.51,
+          "cumulonimbusShapeScale": 10,
+          "turbulenceFreq": 3
         }
       }
     },

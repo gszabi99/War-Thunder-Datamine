@@ -1,4 +1,4 @@
-local interopGet = require("daRg/helpers/interopGen.nut")
+local interopGet = require("interopGen.nut")
 
 local shellState = {
   altitude = Watched(0)

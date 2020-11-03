@@ -1711,6 +1711,15 @@
       },
       {
         "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -1738,61 +1747,6 @@
       "headPosOnShooting": [-0.1,2.9,-0.6],
       "bone_turret": "",
       "detectionHeight": 2.16
-    }
-  },
-  {
-    "skin": {
-      "name": "green",
-      "nameLocId": "skin/ger_camo_dunkelgelb_green",
-      "descLocId": "skin/ger_camo_dunkelgelb_green/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_dunkelgelb_green*"
-      }
-    }
-  },
-  {
-    "skin": {
-      "name": "blots",
-      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_blots",
-      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_blots/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_dunkelgelb_green_braun_blots*"
-      }
-    }
-  },
-  {
-    "skin": {
-      "name": "lines",
-      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_lines",
-      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_lines/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_dunkelgelb_green_braun_lines*"
-      }
-    }
-  },
-  {
-    "skin": {
-      "name": "winter",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_winter_dunkelgelb*"
-      }
-    }
-  },
-  {
-    "skin": {
-      "name": "ger_camo_winter_waves",
-      "nameLocId": "skin/ger_camo_winter_waves_bicolor",
-      "descLocId": "skin/ger_camo_winter_waves_bicolor/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_winter_waves_bicolor*"
-      }
     }
   },
   {
@@ -2450,8 +2404,10 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -2473,8 +2429,9 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
         "fireParamsPreset": "fuel_exterior",
         "fuel_tank_exterior_r_01_dm": [],
         "fuel_tank_exterior_r_02_dm": [],
@@ -2616,9 +2573,75 @@
   },
   {
     "user_skin": {
-      "name": "stuh_III_ausf_G",
+      "name": "stug_III_ausf_G",
       "replace_tex": {
         "from": "ger_camo_dunkelgelb*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "green",
+      "nameLocId": "skin/ger_camo_dunkelgelb_green",
+      "descLocId": "skin/ger_camo_dunkelgelb_green/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_dunkelgelb_green*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "blots",
+      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_blots",
+      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_blots/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_dunkelgelb_green_braun_blots*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "lines",
+      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_lines",
+      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_lines/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_dunkelgelb_green_braun_lines*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "winter",
+      "nameLocId": "skin/winter",
+      "descLocId": "skin/winter/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_winter_dunkelgelb*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "ger_camo_winter_waves",
+      "nameLocId": "skin/ger_camo_winter_waves_bicolor",
+      "descLocId": "skin/ger_camo_winter_waves_bicolor/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_winter_waves_bicolor*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "hinterhalt_daimler",
+      "nameLocId": "skin/ger_camo_hinterhalt_daimler",
+      "descLocId": "skin/ger_camo_hinterhalt_daimler/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_hinterhalt_daimler*"
       }
     }
   }

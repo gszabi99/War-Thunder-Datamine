@@ -1,5 +1,5 @@
-local Unit = ::require("scripts/unit/unit.nut")
-local optionsMeasureUnits = ::require("scripts/options/optionsMeasureUnits.nut")
+local Unit = require("scripts/unit/unit.nut")
+local optionsMeasureUnits = require("scripts/options/optionsMeasureUnits.nut")
 local { initBulletIcons } = require("scripts/weaponry/bulletsInfo.nut")
 
 ::all_units <- {}
@@ -145,7 +145,8 @@ if (::show_aircraft)
 
   function()
   {
-    local blk = ::DataBlock("config/hud.blk")
+    local blk = ::DataBlock()
+    blk.load("config/hud.blk")
     if (blk?.crosshair)
     {
       local crosshairs = blk.crosshair % "pictureTpsView"
@@ -170,7 +171,8 @@ if (::show_aircraft)
 
   function()
   {
-    local blk = ::DataBlock("config/gameplay.blk")
+    local blk = ::DataBlock()
+    blk.load("config/gameplay.blk")
     ::reload_cooldown_time = {}
     local cooldown_time = blk?.reloadCooldownTimeByCaliber
     if (!cooldown_time)
@@ -188,7 +190,8 @@ if (::show_aircraft)
 
   function()
   {
-    local blk = ::DataBlock("config/postFxOptions.blk")
+    local blk = ::DataBlock()
+    blk.load("config/postFxOptions.blk")
     if (blk?.lut_list)
     {
       ::lut_list = []

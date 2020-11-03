@@ -215,12 +215,6 @@
         "type": "domination"
       },
       {
-        "restoreType": "attempts"
-      },
-      {
-        "optionalTakeOff": false
-      },
-      {
         "environment": "Day"
       },
       {
@@ -263,17 +257,26 @@
         "battleAreaColorPreset": "battleArea"
       },
       {
+        "showTacticalMapCellSize": true
+      },
+      {
         "country_axis": "germany"
       },
       {
         "country_allies": "ussr"
       },
       {
+        "restoreType": "attempts"
+      },
+      {
+        "optionalTakeOff": false
+      },
+      {
         "allowedUnitTypes": {
           "isAirplanesAllowed": true,
           "isTanksAllowed": true,
-          "isHelicoptersAllowed": true,
-          "isShipsAllowed": false
+          "isShipsAllowed": false,
+          "isHelicoptersAllowed": true
         }
       },
       {
@@ -329,7 +332,21 @@
               "icon": {
                 "icontype": "tank",
                 "side": "ally",
+                "target": "briefing_t1_tankSpawn_01"
+              }
+            },
+            {
+              "icon": {
+                "icontype": "tank",
+                "side": "ally",
                 "target": "briefing_t1_tankSpawn_02"
+              }
+            },
+            {
+              "icon": {
+                "icontype": "tank",
+                "side": "enemy",
+                "target": "briefing_t2_tankSpawn_01"
               }
             },
             {
@@ -373,8 +390,22 @@
             {
               "icon": {
                 "icontype": "tank",
+                "side": "enemy",
+                "target": "briefing_t1_tankSpawn_01"
+              }
+            },
+            {
+              "icon": {
+                "icontype": "tank",
                 "side": "ally",
                 "target": "briefing_t1_tankSpawn_02"
+              }
+            },
+            {
+              "icon": {
+                "icontype": "tank",
+                "side": "enemy",
+                "target": "briefing_t2_tankSpawn_01"
               }
             },
             {
@@ -419,14 +450,28 @@
               "icon": {
                 "icontype": "tank",
                 "side": "ally",
-                "target": "briefing_t1_tankSpawn_Rb_03"
+                "target": "briefing_t1_tankSpawn_Rb_01"
+              }
+            },
+            {
+              "icon": {
+                "icontype": "tank",
+                "side": "ally",
+                "target": "briefing_t1_tankSpawn_Rb_02"
               }
             },
             {
               "icon": {
                 "icontype": "tank",
                 "side": "enemy",
-                "target": "briefing_t2_tankSpawn_Rb_03"
+                "target": "briefing_t2_tankSpawn_Rb_02"
+              }
+            },
+            {
+              "icon": {
+                "icontype": "tank",
+                "side": "enemy",
+                "target": "briefing_t2_tankSpawn_Rb_02"
               }
             },
             {
@@ -564,6 +609,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -1073,7 +1119,7 @@
         [1.0,0.0,0.0],
         [0.0,1.0,0.0],
         [0.0,0.0,1.0],
-        [2893.55,27.1,1482.5]
+        [2820.17,27.1001,1505.28]
       ],
       "objLayer": 0,
       "props": []
@@ -1084,12 +1130,12 @@
         [0.996195,0.0,0.0871557],
         [0.0,1.0,0.0],
         [-0.0871557,0.0,0.996195],
-        [2679.3,6.47296,2709.95]
+        [2654.67,6.4729,2736.47]
       ],
       "objLayer": 0,
       "props": []
     },
-    "briefing_t1_tankSpawn_Rb_03": {
+    "briefing_t1_tankSpawn_Rb_01": {
       "type": "Point",
       "tm": [
         [0.984808,0.0,0.173648],
@@ -1100,7 +1146,7 @@
       "objLayer": 0,
       "props": []
     },
-    "briefing_t2_tankSpawn_Rb_03": {
+    "briefing_t2_tankSpawn_Rb_01": {
       "type": "Point",
       "tm": [
         [1.0,0.0,0.0],
@@ -1153,6 +1199,50 @@
         [2381.58,78.9716,2087.42]
       ],
       "objLayer": 4,
+      "props": []
+    },
+    "briefing_t1_tankSpawn_01": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [3399.27,27.1001,1471.24]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "briefing_t2_tankSpawn_01": {
+      "type": "Point",
+      "tm": [
+        [0.996195,0.0,0.0871557],
+        [0.0,1.0,0.0],
+        [-0.0871557,0.0,0.996195],
+        [3308.53,6.4729,2756.8]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "briefing_t2_tankSpawn_Rb_02": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [3069.93,14.5,3544.96]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "briefing_t1_tankSpawn_Rb_02": {
+      "type": "Point",
+      "tm": [
+        [0.984808,0.0,0.173648],
+        [0.0,1.0,0.0],
+        [-0.173648,0.0,0.984808],
+        [3494.41,11.45,674.936]
+      ],
+      "objLayer": 0,
       "props": []
     }
   },

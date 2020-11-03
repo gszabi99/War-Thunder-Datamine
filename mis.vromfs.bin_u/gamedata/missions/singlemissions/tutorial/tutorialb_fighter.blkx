@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 0.0
-    },
     "player": {
       "army": 1,
       "wing": "player"
@@ -17,53 +13,35 @@
       "level": "levels/stalingrad.bin",
       "type": "training",
       "gt_training": false,
-      "restoreType": "manual",
-      "optionalTakeOff": false,
       "environment": "Day",
-      "weather": "hazy",
+      "weather": "cloudy",
       "forceSimulInitialRandomSeed": true,
       "simulInitialRandomSeed": 33,
       "isLimitedFuel": false,
       "isLimitedAmmo": false,
       "openDiffLevels": false,
+      "restoreType": "manual",
       "difficulty": "arcade",
+      "optionalTakeOff": false,
       "tutorialObjectsFile": "config/tutorial_hud_elements/tutorial_fighter_hud_elements.blk",
+      "forceSkiesInitialRandomSeed": true,
+      "skiesInitialRandomSeed": 2,
       "customWeather": {
         "windDir": [0.6,0.8],
         "wind_scale": 1.0,
         "max_wind_strength": 6.0,
         "sky": {
-          "mie_height": 0.99,
-          "mieG": 0.45,
-          "betaMScale": 0.75,
-          "clouds_overcast": 0.2
-        },
-        "clouds_gen": {
-          "humidity": 0.39,
-          "persistence": 0.66,
-          "asymmetry": 0.4
-        },
-        "clouds_position": {
-          "start_altitude": 1.5,
-          "thickness": 4.5,
-          "light_extinction": 0.2,
-          "amb_extinction_mul": 0.2
-        },
-        "clouds_render": {
-          "silver_lining": 1.0,
-          "sun_light": 0.5,
-          "ambient": 0.5,
-          "silver_lining_eccentricity": 0.6
+          "mie_height": 0.99
         },
         "strata_clouds": {
           "amount": 0.5,
           "altitude": 11.0
-        },
-        "rain": {
-          "rainFromInvisibleClouds": false,
-          "probability": 0.0
         }
       }
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 0.0
     },
     "spectator_points": [],
     "briefing": {
@@ -375,6 +353,7 @@
           "unitRestore": {
             "ressurectIfDead": true,
             "fullRestore": true,
+            "target_marking": 0,
             "target": "player",
             "ammoRestore": true
           }
@@ -411,6 +390,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "lookat": "player_lookAtArea02"
@@ -1951,7 +1932,9 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "tutorialB_fighter_waypoints"
+            "target": "tutorialB_fighter_waypoints",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -2193,7 +2176,9 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "tutorialB_fighter_waypoints"
+            "target": "tutorialB_fighter_waypoints",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         }
       ],
@@ -2220,9 +2205,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "player",
-          "target": "waypoint00"
+          "target": "waypoint00",
+          "object_var_value": 0
         },
         "playerWhenOptions": {
           "isThrustmasterHotas4": false
@@ -2311,9 +2296,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "player",
-          "target": "waypoint00"
+          "target": "waypoint00",
+          "object_var_value": 0
         },
         "playerWhenOptions": {
           "isThrustmasterHotas4": true
@@ -2647,9 +2632,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "player",
-          "target": "waypoint01"
+          "target": "waypoint01",
+          "object_var_value": 0
         },
         "playerWhenOptions": {
           "isThrustmasterHotas4": false
@@ -2775,9 +2760,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "player",
-          "target": "waypoint01"
+          "target": "waypoint01",
+          "object_var_value": 0
         },
         "playerWhenOptions": {
           "isThrustmasterHotas4": true
@@ -3660,7 +3645,10 @@
           "property": "throttle",
           "check_filter": "all",
           "object_type": "isAlive",
-          "object_marking": 0
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
         }
       },
       "actions": [
@@ -3905,9 +3893,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "player",
-          "target": "waypoint02"
+          "target": "waypoint02",
+          "object_var_value": 0
         }
       },
       "actions": [
@@ -4059,7 +4047,9 @@
         {
           "moSetObjectiveStatus": {
             "target": "tutorialB_fighter_waypoints",
-            "status": 2
+            "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -4158,7 +4148,9 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "tutorialB_fighter_map"
+            "target": "tutorialB_fighter_map",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -4280,7 +4272,9 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "tutorialB_fighter_map"
+            "target": "tutorialB_fighter_map",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -4375,7 +4369,9 @@
         },
         "moSetObjectiveStatus": {
           "target": "tutorialB_fighter_map",
-          "status": 2
+          "status": 2,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         }
       },
       "else_actions": []
@@ -5289,6 +5285,9 @@
               "fullRestore": true
             },
             {
+              "target_marking": 0
+            },
+            {
               "target": "target_balloon"
             },
             {
@@ -5330,6 +5329,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "speed": 400.0,
@@ -5373,7 +5374,9 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "tutorialB_fighter_balloon"
+            "target": "tutorialB_fighter_balloon",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -5718,7 +5721,9 @@
         },
         "moSetObjectiveStatus": {
           "target": "tutorialB_fighter_balloon",
-          "status": 2
+          "status": 2,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "wait": {
           "time": 2.0
@@ -6482,6 +6487,9 @@
               "fullRestore": true
             },
             {
+              "target_marking": 0
+            },
+            {
               "target": "player"
             },
             {
@@ -6528,6 +6536,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "target_plane01",
             "move_type": "teleport",
             "lookat": "way_of_plane01"
@@ -6554,6 +6564,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "lookat": "player_spawn04"
@@ -6575,6 +6587,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "target_plane01"
           }
         },
@@ -6958,7 +6972,9 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "tutorialB_fighter_planes"
+            "target": "tutorialB_fighter_planes",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -7043,7 +7059,9 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "tutorialB_fighter_planes"
+            "target": "tutorialB_fighter_planes",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -7779,7 +7797,9 @@
         {
           "moSetObjectiveStatus": {
             "target": "tutorialB_fighter_planes",
-            "status": 2
+            "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -7816,9 +7836,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "target_plane01",
-          "target": "way_of_plane01"
+          "target": "way_of_plane01",
+          "object_var_value": 0
         },
         "varCompareInt": {
           "var_value": "timer",
@@ -8616,6 +8636,9 @@
               "fullRestore": true
             },
             {
+              "target_marking": 0
+            },
+            {
               "target": "player"
             },
             {
@@ -8657,6 +8680,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "target_plane01",
             "move_type": "teleport",
             "lookat": "target_plane01_lookAtArea"
@@ -8683,6 +8708,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "lookat": "player_lookAtArea"
@@ -8704,6 +8731,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "target_plane01"
           }
         },
@@ -9731,6 +9760,9 @@
               "fullRestore": true
             },
             {
+              "target_marking": 0
+            },
+            {
               "target": "player"
             },
             {
@@ -9772,6 +9804,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "target_plane01",
             "move_type": "teleport",
             "lookat": "target_plane01_lookAtArea"
@@ -9798,6 +9832,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "lookat": "player_lookAtArea"
@@ -9819,6 +9855,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "target_plane01"
           }
         },
@@ -10528,7 +10566,9 @@
           "element": ""
         },
         "moAddMissionObjective": {
-          "target": "tutorialB_fighter_planes"
+          "target": "tutorialB_fighter_planes",
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         }
       },
       "else_actions": []
@@ -10694,7 +10734,9 @@
         },
         "moSetObjectiveStatus": {
           "target": "tutorialB_fighter_planes",
-          "status": 2
+          "status": 2,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         }
       },
       "else_actions": []
@@ -10720,9 +10762,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "target_plane01",
-          "target": "way_of_plane01"
+          "target": "way_of_plane01",
+          "object_var_value": 0
         },
         "varCompareInt": {
           "var_value": "timer",
@@ -11693,6 +11735,9 @@
               "fullRestore": true
             },
             {
+              "target_marking": 0
+            },
+            {
               "target": "player"
             },
             {
@@ -11735,6 +11780,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "target_plane02",
             "move_type": "teleport",
             "lookat": "target_plane02_final_position"
@@ -11761,6 +11808,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "lookat": "target_plane02_starting_position"
@@ -11782,6 +11831,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "target_plane02",
             "move_type": "zigzag_move",
             "zzPeriod": 5.0,
@@ -11875,7 +11926,9 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "tutorialB_fighter_training"
+            "target": "tutorialB_fighter_training",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -12319,7 +12372,9 @@
         {
           "moSetObjectiveStatus": {
             "target": "tutorialB_fighter_training",
-            "status": 2
+            "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -13184,6 +13239,9 @@
               "fullRestore": true
             },
             {
+              "target_marking": 0
+            },
+            {
               "target": "player"
             },
             {
@@ -13226,6 +13284,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "lookat": "vehicle_area"
@@ -13273,7 +13333,9 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "tutorialB_fighter_ground_target"
+            "target": "tutorialB_fighter_ground_target",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -13686,6 +13748,9 @@
               "fullRestore": true
             },
             {
+              "target_marking": 0
+            },
+            {
               "target": "player"
             },
             {
@@ -13722,6 +13787,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "lookat": "vehicle_area"
@@ -13764,7 +13831,9 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "tutorialB_fighter_ground_target"
+            "target": "tutorialB_fighter_ground_target",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -15366,7 +15435,9 @@
         {
           "moSetObjectiveStatus": {
             "target": "tutorialB_fighter_ground_target",
-            "status": 2
+            "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -16011,6 +16082,7 @@
         "unitRestore": {
           "ressurectIfDead": false,
           "fullRestore": true,
+          "target_marking": 0,
           "target": "player",
           "ammoRestore": true
         },
@@ -18208,6 +18280,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -18254,6 +18327,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -18289,6 +18363,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -18364,6 +18439,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 2,
@@ -18410,6 +18486,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,

@@ -1,0 +1,37 @@
+paymentItem {
+  size:pw, ph;
+  re-type:9rect;
+  background-position:3, 4, 3, 5;
+  background-repeat:expand;
+  background-image:#ui/gameuiskin#item;
+  background-color:@white;
+  padding:3*@sf/@pf_outdated;
+  css-hier-invalidate:yes;
+  total-input-transparent:yes;
+}
+
+paymentItem shopItemText {
+  font:@fontMedium;
+  color:@commonTextColor;
+}
+
+paymentItem:hover shopItemText {
+  color:@white;
+}
+
+paymentItem > icon {
+  position:relative;
+  pos:50%pw-50%w, 50%ph-50%h;
+  size:1*@paymentIconWidth, 1*@paymentIconHeight;
+  background-svg-size: @paymentIconWidth, @paymentIconHeight;
+  background-repeat:aspect-ratio;
+  background-color:@commonTextColor;
+}
+
+paymentItem:hover > icon {
+  background-color:@white;
+}
+
+paymentItem > icon[background-image=""] {
+  background-color:@transparent;
+}

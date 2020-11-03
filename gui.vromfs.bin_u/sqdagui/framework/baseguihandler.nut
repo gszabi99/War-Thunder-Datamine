@@ -18,16 +18,6 @@ class ::BaseGuiHandler
   delayedActions = null
   rootHandlerWeak = null
 
-  focusArray = null
-  isPrimaryFocus = true
-  defaultFocusArray = [
-    function() { return getMainFocusObj() }       //main focus obj of handler
-    function() { return getMainFocusObj2() }      //main focus obj of handler
-    function() { return getMainFocusObj3() }      //main focus obj of handler
-    function() { return getMainFocusObj4() }      //main focus obj of handler
-  ]
-  currentFocusItem = 1 //main focus obj
-
   constructor(gui_scene, params = {})
   {
     guiScene = gui_scene
@@ -198,7 +188,7 @@ class ::BaseGuiHandler
 
   function fullReloadScene()
   {
-    ::handlersManager.startSceneFullReload()
+    guiScene.performDelayed(this, @() ::handlersManager.startSceneFullReload())
   }
 
   function afterModalDestroy() {}
@@ -297,205 +287,8 @@ class ::BaseGuiHandler
 
   function onEventModalWndDestroy(params)
   {
-    if (!isSceneActive())
-      return
-
-    if (!rootHandlerWeak)
-      delayedRestoreFocus()
-    popDelayedActions()
-  }
-
-  function onEventCustomFocusObjLost(params)
-  {
-    if (!rootHandlerWeak)
-      delayedRestoreFocus()
-  }
-
-  function delayedRestoreFocus()
-  {
-    guiScene.performDelayed(this, function() {
-      restoreFocus()
-    })
-  }
-
-  canRestoreFocus = @() true
-
-  function restoreFocus(checkPrimaryFocus = true)
-  {
-    if ((checkPrimaryFocus && !isPrimaryFocus) || !isSceneActiveNoModals())
-      return
-    if (rootHandlerWeak)
-      return rootHandlerWeak.restoreFocus()
-
-    if (!focusArray || !focusArray.len())
-      return
-
-    if (!canRestoreFocus())
-      return
-    if (wndType == handlerType.ROOT)
-    {
-      local h = getCurActiveContentHandler()
-      if (h && !h.canRestoreFocus())
-        return
-    }
-
-    checkCurrentFocusItem(guiScene.getSelectedObject())
-
-    if (currentFocusItem < 0 || currentFocusItem >= focusArray.len())
-      currentFocusItem = focusArray.len() - 1
-    local focusObj = getObjByConfigItem(focusArray[currentFocusItem])
-    if (::check_obj(focusObj) && focusObj.isVisible() && focusObj.isEnabled())
-    {
-      focusObj.select()
-      onFocusItemSelected(focusObj)
-    } else
-      wrapNextSelect(::check_obj(focusObj)? focusObj : null, 1)
-  }
-
-  function getObjByConfigItem(item)
-  {
-    if (type(item)=="function")
-      item = item()
-    if (type(item)=="string")
-      return scene.findObject(item)
-    return item
-  }
-
-  function initFocusArray()
-  {
-    if (!focusArray)
-      focusArray = defaultFocusArray
-    restoreFocus()
-  }
-
-  function onEventOutsideObjWrap(p) //{ obj, dir }
-  {
-    if (rootHandlerWeak || !isPrimaryFocus || !isSceneActiveNoModals() || !("obj" in p))
-      return
-
-    local dir = ("dir" in p)? p.dir : 1
-    wrapNextSelect(p.obj, dir)
-  }
-
-  function onWrapUp(obj)
-  {
-    wrapNextSelect(obj, -1)
-  }
-
-  function onWrapDown(obj)
-  {
-    wrapNextSelect(obj, 1)
-  }
-
-  function onWrapLeft(obj)  {}
-  function onWrapRight(obj) {}
-
-  function wrapNextSelect(obj = null, dir = 0)
-  {
-    if (rootHandlerWeak)
-      return rootHandlerWeak.wrapNextSelect(obj, dir)
-
-    if (dir == 0 || !focusArray || !focusArray.len())
-      return
-
-    checkCurrentFocusItem(obj)
-
-    local newObj = null
-    local sendBroadcast = false
-
-    for(local i = 0; i < focusArray.len(); i++)
-    {
-      currentFocusItem += dir
-      if (currentFocusItem < 0 )
-        if (isPrimaryFocus)
-          currentFocusItem = focusArray.len() - 1
-        else
-          sendBroadcast = true
-      if (currentFocusItem >= focusArray.len())
-        if (isPrimaryFocus)
-          currentFocusItem = 0
-        else
-          sendBroadcast = true
-
-      if (sendBroadcast)
-        return broadcastEvent("OutsideObjWrap", { obj = obj, dir = dir })
-
-      newObj = getFocusItemObj(currentFocusItem)
-      if (newObj)
-        break
-    }
-    if (!newObj)
-      return
-
-    newObj.select()
-    onFocusItemSelected(newObj)
-  }
-
-  function onFocusItemSelected(obj)
-  {
-  }
-
-  function getFocusItemObj(idx, onlyAvailable = true)
-  {
-    local res = null
-    if (!(idx in focusArray))
-      return res
-    res = getObjByConfigItem(focusArray[idx])
-    if (::check_obj(res) && (!onlyAvailable || (res.isVisible() && res.isEnabled())))
-      return res
-    return null
-  }
-
-  function setCurrentFocusObj(obj)
-  {
-    if (rootHandlerWeak)
-      return rootHandlerWeak.setCurrentFocusObj(obj)
-
-    if(!::check_obj(obj) || !focusArray)
-      return
-    obj.select()
-    checkCurrentFocusItem(obj)
-  }
-
-  function checkCurrentFocusItem(obj)
-  {
-    if (rootHandlerWeak)
-      return rootHandlerWeak.checkCurrentFocusItem()
-
-    if(!::check_obj(obj) || !focusArray)
-      return false
-    foreach(idx, item in focusArray)
-    {
-      local itemObj = getObjByConfigItem(item)
-      if(itemObj != null && itemObj.isEqual(obj))
-      {
-        currentFocusItem = idx
-        return true
-      }
-    }
-    return false
-  }
-
-  function findObjInFocusArray(onlyFocused = true, onlyAvailable = true)
-  {
-    if (!::check_obj(scene))
-      return null
-    local res = null
-    foreach(idx, item in focusArray)
-    {
-      local itemObj = getObjByConfigItem(item)
-      if (::check_obj(itemObj))
-      {
-        if (itemObj.isFocused())
-          return itemObj
-        if (onlyFocused)
-          continue
-
-        if (!res && (!onlyAvailable || (itemObj.isVisible() && itemObj.isEnabled())))
-          res = itemObj
-      }
-    }
-    return res
+    if (isSceneActive())
+      popDelayedActions()
   }
 
   /**
@@ -529,9 +322,4 @@ class ::BaseGuiHandler
 
     subHandlers.append(handler.weakref())
   }
-
-  function getMainFocusObj()  { return null }
-  function getMainFocusObj2() { return null }
-  function getMainFocusObj3() { return null }
-  function getMainFocusObj4() { return null }
 }

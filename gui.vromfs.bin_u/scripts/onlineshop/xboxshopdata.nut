@@ -1,9 +1,9 @@
 local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
-local seenList = ::require("scripts/seen/seenList.nut").get(SEEN.EXT_XBOX_SHOP)
+local seenList = require("scripts/seen/seenList.nut").get(SEEN.EXT_XBOX_SHOP)
 local statsd = require("statsd")
-local progressMsg = ::require("sqDagui/framework/progressMsg.nut")
+local progressMsg = require("sqDagui/framework/progressMsg.nut")
 
-local XboxShopPurchasableItem = ::require("scripts/onlineShop/XboxShopPurchasableItem.nut")
+local XboxShopPurchasableItem = require("scripts/onlineShop/XboxShopPurchasableItem.nut")
 
 const XBOX_RECEIVE_CATALOG_MSG_ID = "XBOX_RECEIVE_CATALOG"
 
@@ -68,7 +68,7 @@ local haveItemDiscount = null
 
 local requestData = function(isSilent = false, cb = null, invSeenList = false, metric = "unknown")
 {
-  if (!::is_platform_xboxone)
+  if (!::is_platform_xbox)
     return
 
   onReceiveCatalogCb = cb
@@ -91,7 +91,7 @@ local requestData = function(isSilent = false, cb = null, invSeenList = false, m
   */
 }
 
-local canUseIngameShop = @() ::is_platform_xboxone && ::has_feature("XboxIngameShop")
+local canUseIngameShop = @() ::is_platform_xbox && ::has_feature("XboxIngameShop")
 
 local getVisibleSeenIds = function()
 {

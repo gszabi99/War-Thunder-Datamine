@@ -102,6 +102,9 @@ class ::Warbond
     return ::u.search(getAwardsList(), @(award) award.id == awardId )
   }
 
+  getAwardByType = @(awardType)
+    getAwardsList().findvalue(@(award) award.awardType == awardType)
+
   function getPriceText(amount, needShowZero = false, needColorByBalance = true)
   {
     if (!amount && !needShowZero)

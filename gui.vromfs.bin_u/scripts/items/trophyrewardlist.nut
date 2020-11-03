@@ -29,7 +29,8 @@ class ::gui_handlers.trophyRewardsList extends ::gui_handlers.BaseGuiHandlerWT
       listObj.width = (listObj.getSize()[0] + guiScene.calcString("1@scrollBarSize", null)).tostring()
 
     fillList(listObj)
-    listObj.select()
+    listObj.setValue(rewardsArray.len() > 0 ? 0 : -1)
+    ::move_mouse_on_child_by_value(listObj)
   }
 
   function fillList(listObj)
@@ -60,6 +61,7 @@ class ::gui_handlers.trophyRewardsList extends ::gui_handlers.BaseGuiHandlerWT
         return
 
       local item = ::ItemsManager.findItemById(reward_config.item)
+      infoObj.scrollToView(true)
       ::ItemsManager.fillItemDescr(item, infoObj, this, true, true, reward_config)
     } else
     {
@@ -79,8 +81,8 @@ class ::gui_handlers.trophyRewardsList extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     fillList(listObj)
-    listObj.select()
     if (listObj.childrenCount() > 0 && listObj.getValue() < 0)
       listObj.setValue(0)
+    ::move_mouse_on_child_by_value(listObj)
   }
 }

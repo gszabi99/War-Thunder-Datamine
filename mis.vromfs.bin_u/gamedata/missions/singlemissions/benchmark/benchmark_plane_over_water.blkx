@@ -13,12 +13,12 @@
     "mission": {
       "level": "levels/water.bin",
       "type": "benchmark",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "clear",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "forceSkiesInitialRandomSeed": true,
-      "skiesInitialRandomSeed": 9106,
+      "skiesInitialRandomSeed": 1,
       "stars": {
         "latitude": 21.0,
         "longitude": 202.0,
@@ -29,38 +29,16 @@
       },
       "customWeather": {
         "windDir": [0.6,0.8],
-        "wind_scale": 1.0,
+        "wind_scale": 6.0,
         "max_wind_strength": 6.0,
+        "wind_strength": 6.0,
+        "waterWindStrength": 6.0,
         "sky": {
-          "mie_height": 0.9,
-          "mieG": 0.55,
-          "betaMScale": 0.65,
-          "clouds_overcast": 0.0
-        },
-        "clouds_gen": {
-          "humidity": 0.0,
-          "persistence": 0.1,
-          "asymmetry": 0.01
-        },
-        "clouds_position": {
-          "start_altitude": 1.0,
-          "thickness": 1.0,
-          "light_extinction": 1.0,
-          "amb_extinction_mul": 1.0
-        },
-        "clouds_render": {
-          "silver_lining": 0.3,
-          "sun_light": 0.5,
-          "ambient": 1.5,
-          "silver_lining_eccentricity": 0.6
+          "mie_height": 0.9
         },
         "strata_clouds": {
           "amount": 0.5,
           "altitude": 11.0
-        },
-        "rain": {
-          "rainFromInvisibleClouds": false,
-          "probability": 0.0
         }
       }
     },
@@ -124,6 +102,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "cutscene_plane",
             "aiEnabled": false
           }
@@ -300,6 +282,7 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
       "props": {
         "army": 1,
         "count": 1,

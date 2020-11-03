@@ -678,6 +678,7 @@
         "armorThrough": 12.0,
         "fireProtectionHp": 15.0,
         "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -2938,6 +2939,15 @@
       },
       {
         "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -3019,6 +3029,437 @@
         "effects": {
           "rcostAddParam": 0.92,
           "irProjectorNode": "",
+          "commonWeapons": [
+            {
+              "Weapon": {
+                "trigger": "gunner0",
+                "blk": "gameData/Weapons/groundModels_weapons/30mm_2A38_user_cannon.blk",
+                "reloadTime": 4.0,
+                "emitter": "bone_gun_barrel_01",
+                "flash": "emtr_gun_flame_01",
+                "backFlash": "emtr_shell_01",
+                "useEmitter": true,
+                "sleeveEmitter": "emtr_shell_01",
+                "sleeveMesh": "auto_cannon_cartridge_case",
+                "openHatchTime": 0.0,
+                "sleevesLifeTime": 2.0,
+                "sleeveImpulse": [5.0,0.0,0.0],
+                "linkSleeveToGun": true,
+                "aimingFromBoneGun": true,
+                "recoilMultiplier": 0.3,
+                "recoilOffset": 0.02,
+                "recoilTimes": [0.01,0.15],
+                "jammedReloadTime": 12.0,
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "barrelDP": "gun_barrel_03_dm",
+                "breechDP": "cannon_breech_02_dm",
+                "speedYaw": 80.0,
+                "speedPitch": 80.0,
+                "bullets": 484,
+                "fireConeAngle": 15.0,
+                "ChainfireTime": 0.5,
+                "DelayAfterShoot": 2.0,
+                "accuracyAir": 1.5,
+                "accuracyGnd": 0.0,
+                "errMeasureVel": 0.0,
+                "errMeasureVelFast": 0.0,
+                "errMeasureVelFwdShift": 0.0,
+                "errMeasureVelDir": 0.0,
+                "errTargettingOn100kmph": 0.0,
+                "errTargetting": 3.0,
+                "errExplTime": 0.0,
+                "turret": [
+                  {
+                    "head": "bone_turret"
+                  },
+                  {
+                    "gun": "bone_gun_01"
+                  },
+                  {
+                    "barrel": "bone_gun_barrel_01"
+                  },
+                  {
+                    "gunnerDm": "gunner_dm"
+                  },
+                  {
+                    "verDriveDm": "drive_turret_v_dm"
+                  },
+                  {
+                    "horDriveDm": "drive_turret_h_dm"
+                  },
+                  {
+                    "selfDirectedPart": {
+                      "node": "antenna_target_tagging_mount",
+                      "limits": [-180.0,180.0],
+                      "turnSpeed": 80.0
+                    }
+                  },
+                  {
+                    "linkedAnimPart": {
+                      "verNode": "antenna_target_tagging",
+                      "verLimits": [0.0,90.0],
+                      "verOriginLimits": [-0.0,85.0]
+                    }
+                  },
+                  {
+                    "linkedAnimPart": {
+                      "verNode": "bone_camera_gunner",
+                      "verLimits": [-180.0,180.0],
+                      "verOriginLimits": [-180.0,180.0]
+                    }
+                  }
+                ],
+                "limits": {
+                  "yaw": [-180.0,180.0],
+                  "pitch": [-9.0,85.0]
+                },
+                "gunStabilizer": {
+                  "hasVerticalGunFreeMode": false,
+                  "hasHorizontal": true,
+                  "horizontalOmegaMult": 1.0,
+                  "horizontalSpeedLimitKPH": 75.0,
+                  "hasVertical": true,
+                  "verticalOmegaMult": 1.0,
+                  "verticalSpeedLimitKPH": 75.0,
+                  "speedFromVehicleVerticalMult": -1.0,
+                  "errorKPHToDegrees": [
+                    {
+                      "row": [5.0,0.0]
+                    },
+                    {
+                      "row": [25.0,0.015]
+                    },
+                    {
+                      "row": [35.0,0.02]
+                    },
+                    {
+                      "row": [45.0,0.1]
+                    },
+                    {
+                      "row": [50.0,0.3]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Weapon": {
+                "trigger": "gunner0",
+                "blk": "gameData/Weapons/groundModels_weapons/30mm_2A38_user_cannon.blk",
+                "reloadTime": 4.0,
+                "emitter": "bone_gun_barrel_02",
+                "flash": "emtr_gun_flame_02",
+                "useEmitter": true,
+                "sleeveEmitter": "emtr_shell_01",
+                "sleeveMesh": "auto_cannon_cartridge_case",
+                "openHatchTime": 0.0,
+                "sleevesLifeTime": 2.0,
+                "sleeveImpulse": [5.5,0.0,0.0],
+                "linkSleeveToGun": true,
+                "aimingFromBoneGun": true,
+                "recoilMultiplier": 0.3,
+                "recoilOffset": 0.02,
+                "recoilTimes": [0.01,0.15],
+                "jammedReloadTime": 12.0,
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "barrelDP": "gun_barrel_02_dm",
+                "breechDP": "cannon_breech_01_dm",
+                "speedYaw": 80.0,
+                "speedPitch": 80.0,
+                "bullets": 484,
+                "fireConeAngle": 15.0,
+                "ChainfireTime": 0.5,
+                "DelayAfterShoot": 2.0,
+                "accuracyAir": 1.5,
+                "accuracyGnd": 0.0,
+                "errMeasureVel": 0.0,
+                "errMeasureVelFast": 0.0,
+                "errMeasureVelFwdShift": 0.0,
+                "errMeasureVelDir": 0.0,
+                "errTargettingOn100kmph": 0.0,
+                "errTargetting": 3.0,
+                "errExplTime": 0.0,
+                "reuseYawTrigger": 10,
+                "reusePitchTrigger": 10,
+                "turret": {
+                  "head": "bone_turret",
+                  "gun": "bone_gun_01",
+                  "barrel": "bone_gun_barrel_02",
+                  "gunnerDm": "gunner_dm",
+                  "verDriveDm": "drive_turret_v_dm",
+                  "horDriveDm": "drive_turret_h_dm"
+                },
+                "limits": {
+                  "yaw": [-180.0,180.0],
+                  "pitch": [-9.0,85.0]
+                },
+                "gunStabilizer": {
+                  "hasVerticalGunFreeMode": false,
+                  "hasHorizontal": true,
+                  "horizontalOmegaMult": 1.0,
+                  "horizontalSpeedLimitKPH": 75.0,
+                  "hasVertical": true,
+                  "verticalOmegaMult": 1.0,
+                  "verticalSpeedLimitKPH": 75.0,
+                  "speedFromVehicleVerticalMult": -1.0,
+                  "errorKPHToDegrees": [
+                    {
+                      "row": [5.0,0.0]
+                    },
+                    {
+                      "row": [25.0,0.015]
+                    },
+                    {
+                      "row": [35.0,0.02]
+                    },
+                    {
+                      "row": [45.0,0.1]
+                    },
+                    {
+                      "row": [50.0,0.3]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Weapon": {
+                "trigger": "gunner0",
+                "blk": "gameData/Weapons/groundModels_weapons/30mm_2A38_user_cannon.blk",
+                "reloadTime": 4.0,
+                "emitter": "bone_gun_barrel_03",
+                "flash": "emtr_gun_flame_03",
+                "backFlash": "emtr_shell",
+                "useEmitter": true,
+                "sleeveEmitter": "emtr_shell",
+                "sleeveMesh": "auto_cannon_cartridge_case",
+                "openHatchTime": 0.0,
+                "sleevesLifeTime": 2.0,
+                "sleeveImpulse": [5.0,0.0,0.0],
+                "linkSleeveToGun": true,
+                "aimingFromBoneGun": true,
+                "recoilMultiplier": 0.3,
+                "recoilOffset": 0.02,
+                "recoilTimes": [0.01,0.15],
+                "jammedReloadTime": 12.0,
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "barrelDP": "gun_barrel_04_dm",
+                "breechDP": "cannon_breech_02_dm",
+                "speedYaw": 80.0,
+                "speedPitch": 80.0,
+                "bullets": 484,
+                "fireConeAngle": 15.0,
+                "ChainfireTime": 0.5,
+                "DelayAfterShoot": 2.0,
+                "accuracyAir": 1.5,
+                "accuracyGnd": 0.0,
+                "errMeasureVel": 0.0,
+                "errMeasureVelFast": 0.0,
+                "errMeasureVelFwdShift": 0.0,
+                "errMeasureVelDir": 0.0,
+                "errTargettingOn100kmph": 0.0,
+                "errTargetting": 3.0,
+                "errExplTime": 0.0,
+                "reuseYawTrigger": 10,
+                "reusePitchTrigger": 10,
+                "turret": {
+                  "head": "bone_turret",
+                  "gun": "bone_gun_01",
+                  "barrel": "bone_gun_barrel_03",
+                  "gunnerDm": "gunner_dm",
+                  "verDriveDm": "drive_turret_v_dm",
+                  "horDriveDm": "drive_turret_h_dm"
+                },
+                "limits": {
+                  "yaw": [-180.0,180.0],
+                  "pitch": [-9.0,85.0]
+                },
+                "gunStabilizer": {
+                  "hasVerticalGunFreeMode": false,
+                  "hasHorizontal": true,
+                  "horizontalOmegaMult": 1.0,
+                  "horizontalSpeedLimitKPH": 75.0,
+                  "hasVertical": true,
+                  "verticalOmegaMult": 1.0,
+                  "verticalSpeedLimitKPH": 75.0,
+                  "speedFromVehicleVerticalMult": -1.0,
+                  "errorKPHToDegrees": [
+                    {
+                      "row": [5.0,0.0]
+                    },
+                    {
+                      "row": [25.0,0.015]
+                    },
+                    {
+                      "row": [35.0,0.02]
+                    },
+                    {
+                      "row": [45.0,0.1]
+                    },
+                    {
+                      "row": [50.0,0.3]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Weapon": {
+                "trigger": "gunner0",
+                "blk": "gameData/Weapons/groundModels_weapons/30mm_2A38_user_cannon.blk",
+                "reloadTime": 4.0,
+                "emitter": "bone_gun_barrel_04",
+                "flash": "emtr_gun_flame_04",
+                "useEmitter": true,
+                "sleeveEmitter": "emtr_shell",
+                "sleeveMesh": "auto_cannon_cartridge_case",
+                "openHatchTime": 0.0,
+                "sleevesLifeTime": 2.0,
+                "sleeveImpulse": [5.5,0.0,0.0],
+                "linkSleeveToGun": true,
+                "aimingFromBoneGun": true,
+                "recoilMultiplier": 0.3,
+                "recoilOffset": 0.02,
+                "recoilTimes": [0.01,0.15],
+                "jammedReloadTime": 12.0,
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "barrelDP": "gun_barrel_01_dm",
+                "breechDP": "cannon_breech_01_dm",
+                "speedYaw": 80.0,
+                "speedPitch": 80.0,
+                "bullets": 484,
+                "fireConeAngle": 15.0,
+                "ChainfireTime": 0.5,
+                "DelayAfterShoot": 2.0,
+                "accuracyAir": 1.5,
+                "accuracyGnd": 0.0,
+                "errMeasureVel": 0.0,
+                "errMeasureVelFast": 0.0,
+                "errMeasureVelFwdShift": 0.0,
+                "errMeasureVelDir": 0.0,
+                "errTargettingOn100kmph": 0.0,
+                "errTargetting": 3.0,
+                "errExplTime": 0.0,
+                "reuseYawTrigger": 10,
+                "reusePitchTrigger": 10,
+                "turret": {
+                  "head": "bone_turret",
+                  "gun": "bone_gun_01",
+                  "barrel": "bone_gun_barrel_04",
+                  "gunnerDm": "gunner_dm",
+                  "verDriveDm": "drive_turret_v_dm",
+                  "horDriveDm": "drive_turret_h_dm"
+                },
+                "limits": {
+                  "yaw": [-180.0,180.0],
+                  "pitch": [-9.0,85.0]
+                },
+                "gunStabilizer": {
+                  "hasVerticalGunFreeMode": false,
+                  "hasHorizontal": true,
+                  "horizontalOmegaMult": 1.0,
+                  "horizontalSpeedLimitKPH": 75.0,
+                  "hasVertical": true,
+                  "verticalOmegaMult": 1.0,
+                  "verticalSpeedLimitKPH": 75.0,
+                  "speedFromVehicleVerticalMult": -1.0,
+                  "errorKPHToDegrees": [
+                    {
+                      "row": [5.0,0.0]
+                    },
+                    {
+                      "row": [25.0,0.015]
+                    },
+                    {
+                      "row": [35.0,0.02]
+                    },
+                    {
+                      "row": [45.0,0.1]
+                    },
+                    {
+                      "row": [50.0,0.3]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Weapon": {
+                "trigger": "gunner1",
+                "triggerGroup": "special",
+                "blk": "gameData/Weapons/groundModels_weapons/152mm_9M311_1M_rocket_launcher.blk",
+                "weaponType": "rockets",
+                "flash": "emtr_gun_flame_01",
+                "useEmitter": true,
+                "emitter": "bone_rocket_01",
+                "emitterGenRange": [1,8],
+                "emitterGenFmt": "bone_rocket_%02d",
+                "ammoDpGenFmt": "ammo_turret_%02d_dm",
+                "recoilMultiplier": 0.1,
+                "stopForFire": true,
+                "maxSpeedForFire": 1.0,
+                "createGunEffects": true,
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "speedYaw": 80.0,
+                "speedPitch": 80.0,
+                "isBulletBelt": true,
+                "fireConeAngle": 1.0,
+                "bullets": 8,
+                "salvoAmount": 100.0,
+                "ChainfireTime": 0.0,
+                "DelayAfterShoot": 5.0,
+                "AttackMaxDistance": 1000.0,
+                "AttackMaxRadius": 1000.0,
+                "AttackMaxHeight": 1000.0,
+                "accuracyAir": 0.0,
+                "accuracyGnd": 1.5,
+                "errMeasureVel": 0.0,
+                "errMeasureVelFast": 0.0,
+                "errMeasureVelFwdShift": 0.0,
+                "errMeasureVelDir": 0.0,
+                "errTargettingOn100kmph": 0.0,
+                "errTargetting": 3.0,
+                "errExplTime": 0.0,
+                "turret": {
+                  "head": "bone_gun",
+                  "gun": "bone_gun",
+                  "gunnerDm": "gunner_dm",
+                  "rotatedTurret": "bone_turret"
+                },
+                "limits": {
+                  "yaw": [0.0,0.0],
+                  "pitch": [-0.0,85.0]
+                }
+              }
+            },
+            {
+              "animatedBones": [
+                {
+                  "node": "antenna_target_location"
+                },
+                {
+                  "node": "antenna_target_location_mount"
+                },
+                {
+                  "node": "antenna_target_location_01"
+                },
+                {
+                  "node": "antenna_target_location_mount_01"
+                },
+                {
+                  "node": "antenna_target_tagging"
+                },
+                {
+                  "node": "antenna_target_tagging_mount"
+                }
+              ]
+            }
+          ],
           "nightVision": {
             "gunnerThermal": {
               "resolution": [1200,800],

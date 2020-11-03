@@ -13,7 +13,7 @@
       "level": "levels/water.bin",
       "type": "campaign",
       "environment": "Morning",
-      "weather": "hazy",
+      "weather": "good",
       "windDirection": [1.0,0.0,0.0],
       "restoreType": "tactical control",
       "optionalTakeOff": false,
@@ -31,41 +31,31 @@
         "localTime": 10.0
       },
       "customWeather": {
-        "scatteringEffect": 0.0,
-        "cloud_shadow_intensity": 0.7,
         "windDir": [0.6,0.8],
         "wind_scale": 1.0,
         "max_wind_strength": 6.0,
-        "sky": {
-          "mie_height": 0.5,
-          "mieG": 0.5,
-          "betaMScale": 0.7,
-          "clouds_overcast": 0.2
-        },
-        "clouds_gen": {
-          "humidity": 0.5,
-          "persistence": 0.5,
-          "asymmetry": 0.1
-        },
-        "clouds_position": {
-          "start_altitude": 1.5,
-          "thickness": 4.5,
-          "light_extinction": 0.5,
-          "amb_extinction_mul": 0.5
-        },
-        "clouds_render": {
-          "silver_lining": 0.6,
-          "sun_light": 0.7,
-          "ambient": 0.5,
-          "silver_lining_eccentricity": 0.6
-        },
+        "waterWindStrength": 4.0,
         "strata_clouds": {
           "amount": 0.3,
           "altitude": 10.0
         },
-        "rain": {
-          "rainFromInvisibleClouds": false,
-          "probability": 0.0
+        "clouds_weather_gen": {
+          "layers[0].coverage": 0.44,
+          "layers[0].freq": 2.48,
+          "layers[1].coverage": 0.61,
+          "layers[1].freq": 3.07,
+          "cumulonimbusCoverage": 0.32,
+          "cumulonimbusSeed": 45.07
+        },
+        "clouds_form": {
+          "layers[0].startAt": 1.0,
+          "layers[0].thickness": 4.0,
+          "layers[0].density": 0.8,
+          "layers[0].clouds_type": 0.1,
+          "layers[1].startAt": 5.0,
+          "layers[1].thickness": 2.0,
+          "layers[1].density": 0.71,
+          "turbulenceStrength": 1.13
         }
       }
     },

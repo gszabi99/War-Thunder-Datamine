@@ -1,4 +1,4 @@
-local u = ::require("sqStdLibs/helpers/u.nut")
+local u = require("sqStdLibs/helpers/u.nut")
 
 local ModificationBase = class extends ::BaseItem
 {

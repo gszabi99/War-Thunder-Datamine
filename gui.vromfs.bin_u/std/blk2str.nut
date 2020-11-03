@@ -38,7 +38,7 @@ local function datablockToAst(info, params = {}, result = null){
   local blockName = (info.getBlockName()!="") ? "".concat(info.getBlockName()," ") : ""
   local indent = params?.indent ?? 0
   if (blockName!="null ") {
-    printFn("".cocnat(blockName,"{"), indent)
+    printFn("".concat(blockName,"{"), indent)
     indent = indent+1
   }
   printFn(blkParamsToString(info, indent), 0)

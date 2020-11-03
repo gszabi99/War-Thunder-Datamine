@@ -40,12 +40,7 @@ class ::gui_handlers.DecorLayoutPresets extends ::gui_handlers.BaseGuiHandlerWT
     local markup = ::create_option_combobox(null, skinList.items, selIdx, null, false)
     guiScene.replaceContentFromText(objCombobox, markup, markup.len(), this)
     updateMasterPreset()
-
-    initFocusArray()
   }
-
-  getMainFocusObj  = @() scene.findObject("master_skin")
-  getMainFocusObj2 = @() scene.findObject("destination_skins")
 
   function updateMasterPreset(needResetLinkedSkins = true)
   {

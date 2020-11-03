@@ -420,7 +420,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
 
     if ("spectator" in log)
     {
-      res.logImg = "#ui/gameuiskin#player_spectator"
+      res.logImg = "#ui/gameuiskin#player_spectator.svg"
       nameLocPostfix = " " + ::loc("multiplayer/team_won") + ::loc("ui/colon")
         + (win ? ::g_team.A.getNameInPVE() : ::g_team.B.getNameInPVE())
     }
@@ -1096,7 +1096,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
 
       res.name = usedText + " " + ::loc("trophy/unlockables_names/trophy")
                           + " " + ::loc("ui/parentheses/space", {text = reward})
-      res.logImg = item.typeIcon
+      res.logImg = item.getSmallIconName()
       res.tooltip = usedText + ::loc("ui/colon") + item.getName() + "\n" + reward
 
       res.descriptionBlk <- ::format(textareaFormat, ::g_string.stripTags(usedText) + ::loc("ui/colon"))
@@ -1419,7 +1419,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
     if (unitName)
     {
       res.name = ::loc("userlog/"+logName, {unitName = ::loc(unitName + "_0")})
-      if (log.type == EULT_RENT_UNIT)
+      if (log.type == ::EULT_RENT_UNIT)
       {
         res.description <- ""
         if ("rentTimeSec" in log)

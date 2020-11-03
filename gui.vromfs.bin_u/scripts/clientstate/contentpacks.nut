@@ -1,4 +1,4 @@
-local contentStateModule = ::require("scripts/clientState/contentState.nut")
+local contentStateModule = require("scripts/clientState/contentState.nut")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 local { startLogout } = require("scripts/login/logout.nut")
 local exitGame = require("scripts/utils/exitGame.nut")
@@ -229,7 +229,7 @@ local exitGame = require("scripts/utils/exitGame.nut")
       defButton = "apply"
     }
   }
-  else if (::can_download_package() && !::is_platform_xboxone)
+  else if (::can_download_package() && !::is_platform_xbox)
   {
     buttons.insert(0, ["download", (@(pack) function() {
                        ::request_packages_and_restart([pack])
@@ -337,7 +337,7 @@ local exitGame = require("scripts/utils/exitGame.nut")
 {
   if (isPlatformSony)
     return startLogout()
-  else if (::is_platform_xboxone)
+  else if (::is_platform_xbox)
     return exitGame()
   else if (::target_platform == "linux64")
     return ::quit_and_run_cmd("./launcher -silentupdate")

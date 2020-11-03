@@ -1,5 +1,5 @@
-local string = ::require("std/string.nut")
-local u = ::require("sqStdLibs/helpers/u.nut")
+local string = require("std/string.nut")
+local u = require("sqStdLibs/helpers/u.nut")
 
 local intIconToString = @(id) ""
 local getIconPath = @(icon) icon

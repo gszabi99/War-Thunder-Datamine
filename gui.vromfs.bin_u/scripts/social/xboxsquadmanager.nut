@@ -19,7 +19,7 @@ local extContactsService = require("scripts/contacts/externalContactsService.nut
 
   function updateSquadList(xboxIdsList = [])
   {
-    if (!::is_platform_xboxone)
+    if (!::is_platform_xbox)
       return
 
     if (!::isInMenu() || !::g_login.isLoggedIn())
@@ -82,7 +82,7 @@ local extContactsService = require("scripts/contacts/externalContactsService.nut
 
   function checkAfterFlight()
   {
-    if (!::is_platform_xboxone)
+    if (!::is_platform_xbox)
       return
 
     if (isSquadStatusCheckedOnce)

@@ -10,6 +10,7 @@ class ::g_invites_classes.TournamentBattle extends ::BaseInvite
   startTime = -1
   endTime = -1
   isAccepted = false
+  needCheckSystemCrossplayRestriction = true
 
   static function getUidByParams(params)
   {

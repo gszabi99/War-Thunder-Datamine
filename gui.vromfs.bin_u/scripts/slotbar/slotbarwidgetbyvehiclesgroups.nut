@@ -55,8 +55,8 @@ local handlerClass = class extends ::gui_handlers.SlotbarWidget
       {
         local crew = crewsList?[i] ?? getDefaultCrew(listCountry, idx, i)
         local unit = unitsList?.units[i]
-        local status = isVisualDisabled || (unit != null && !(unit.name in availableUnits))
-          ? bit_unit_status.disabled
+        local status = unit == null ? bit_unit_status.empty
+          : isVisualDisabled || (unit != null && !(unit.name in availableUnits)) ? bit_unit_status.disabled
           : bit_unit_status.owned
 
         addCrewData(countryData.crews, {
@@ -97,8 +97,8 @@ local handlerClass = class extends ::gui_handlers.SlotbarWidget
 
     if (hasActions)
     {
-      local slotItem = ::get_slot_obj(obj, curSlotCountryId, ::to_integer_safe(obj?.cur_col))
-      openUnitActionsList(slotItem, true)
+      local slotItem = ::get_slot_obj(obj, curSlotCountryId, curSlotIdInCountry)
+      openUnitActionsList(slotItem)
     }
 
     if (afterSlotbarSelect)

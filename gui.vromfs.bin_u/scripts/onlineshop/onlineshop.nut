@@ -169,7 +169,7 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
       guiScene.setUpdatesEnabled(false, false)
       data = "table { id:t='items_list'; class:t='crewTable'; " +
                "pos:t='0.5(pw-w), 0'; position:t='relative'; " +
-               "behavior:t = 'OptionsNavigator'; cur_col:t='0'; cur_row:t='0'; num_rows:t='-1'; " +
+               "behavior:t = 'PosNavigator'; " +
                "on_click:t='onItemSelect'; selfFocusBorder:t='yes'; " +
                data +
              "} "
@@ -254,9 +254,10 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
         rowObj.findObject("cost").setValue(getItemPriceText(name))
       }
 
-      onItemSelect()
+      tblObj.setValue(goods.len() > 0 ? 0 : -1)
 
       guiScene.setUpdatesEnabled(true, true)
+      guiScene.performDelayed(this, @() ::move_mouse_on_child_by_value(tblObj))
     }
     else
     {// Buy Campaigns & Bonuses.
@@ -289,7 +290,7 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
     premiumBattleTimeWpMult = premiumWpMult * (wBlk?.battleTimePremMul || 1.0)
     premiumOtherModesWpMult = premiumWpMult
 
-    scene.findObject("items_list").select()
+    ::move_mouse_on_child_by_value(scene.findObject("items_list"))
     onItemSelect()
   }
 
@@ -381,7 +382,7 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
   function onItemSelect()
   {
     local listObj = scene.findObject("items_list")
-    local value = useRowVisual? listObj.cur_row.tointeger() : listObj.getValue()
+    local value = listObj.getValue()
     if (value < 0 || value >= listObj.childrenCount())
       return
 
@@ -658,7 +659,6 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
     for (local idx = 0; idx < listObj.childrenCount(); idx++)
       if (listObj.getChild(idx).id == id)
       {
-        listObj.cur_row = idx.tostring()
         listObj.setValue(idx)
         onItemSelect()
 
@@ -690,9 +690,13 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
       updateItemIcon(task)
       ::update_gamercards()
     }
+    ::broadcastEvent("OnlineShopPurchaseSuccessful", { purchData = goods?[task] ?? {} })
+  }
 
-    local purchData = goods[task] || {}
-    ::broadcastEvent("OnlineShopPurchaseSuccessful", {purchData = purchData})
+  function onEventModalWndDestroy(params)
+  {
+    if (isSceneActiveNoModals())
+      ::move_mouse_on_child_by_value(getObj("items_list"))
   }
 
   function onFav() {}

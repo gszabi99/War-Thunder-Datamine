@@ -1,4 +1,4 @@
-local BaseItemModClass = ::require("scripts/items/itemsClasses/itemModBase.nut")
+local BaseItemModClass = require("scripts/items/itemsClasses/itemModBase.nut")
 
 class ::items_classes.ModOverdrive extends BaseItemModClass
 {

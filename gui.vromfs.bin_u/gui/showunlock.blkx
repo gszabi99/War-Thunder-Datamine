@@ -1,12 +1,14 @@
 {
   "root": {
-    "background-color": "@shadeBackgroundColor",
+    "type": "big",
+    "blur": [],
+    "blur_foreground": [],
     "frame": {
-      "pos": "50%pw-50%w, 50%ph-50%h",
+      "pos": "0.5pw-0.5w, 0.5ph-0.5h",
       "position": "absolute",
       "width": "80%sh",
       "max-width": "800*@sf/@pf_outdated + 2@framePadding",
-      "max-height": "sh",
+      "max-height": "@rh",
       "class": "wndNav",
       "frame_header": {
         "activeText": {
@@ -80,13 +82,13 @@
           }
         },
         {
-          "tdiv": {
+          "rankUpList": {
             "id": "reward_aircrafts",
             "max-width": "pw",
             "pos": "0.5pw-0.5w,0",
             "position": "relative",
             "flow": "h-flow",
-            "class": "rankUpList"
+            "interactiveChildren": "yes"
           }
         },
         {
@@ -108,7 +110,7 @@
               "_on_click": "onFacebookPostLink",
               "display": "hide",
               "cardImg": {
-                "background-image": "#ui/gameuiskin#facebook_logo",
+                "background-image": "#ui/gameuiskin#facebook_logo.svg",
                 "input-transparent": "yes"
               },
               "text": {
@@ -128,7 +130,7 @@
               "on_click": "onFacebookLoginAndPostScrnshot",
               "tooltip": "",
               "cardImg": {
-                "background-image": "#ui/gameuiskin#facebook_logo",
+                "background-image": "#ui/gameuiskin#facebook_logo.svg",
                 "input-transparent": "yes"
               },
               "text": {
@@ -147,10 +149,8 @@
               "pressAction": "share",
               "on_click": "onFacebookLoginAndPostMessage",
               "tooltip": "",
-              "btnName": "X",
-              "ButtonImg": [],
               "cardImg": {
-                "background-image": "#ui/gameuiskin#facebook_logo",
+                "background-image": "#ui/gameuiskin#facebook_logo.svg",
                 "input-transparent": "yes"
               },
               "text": {
@@ -175,7 +175,7 @@
           "Button_text": {
             "id": "btn_ok",
             "text": "#mainmenu/btnOk",
-            "btnName": "A",
+            "btnName": "X",
             "_on_click": "onOk",
             "ButtonImg": []
           }

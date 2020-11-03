@@ -24,22 +24,16 @@ massTransp {
       input-transparent:t='yes'
       overflow-x:t='auto'
 
-      table {
+      slotbarTable {
         id:t='airs_table_<<countryIdx>>'
-        pos:t='0, 1@slotbarInvisPad'; position:t='relative'
-        class:t='slotbarTable'
-        total-input-transparent:t="yes"
-        navigatorShortcuts:t='yes';
-        behavior:t='columnNavigator'
-        cur_col:t='-1'
-        cur_row:t='-1'
-        fixed_row:t='0'
-        on_select:t = 'onSlotbarSelect';
-        on_click:t = 'onSlotbarClick';
+        pos:t='0, 1@slotbarInvisPad'
+        position:t='relative'
+        behaviour:t='<<#slotbarBehavior>><<slotbarBehavior>><</slotbarBehavior>><<^slotbarBehavior>>ActivateSelect<</slotbarBehavior>>'
+        navigatorShortcuts:t='yes'
+        activateChoosenItemByShortcut:t='yes'
+        on_select:t = 'onSlotbarSelect'
+        _on_activate:t='onSlotbarActivate'
         _on_dbl_click:t = 'onSlotbarDblClick'
-        on_wrap_up:t='onWrapUp';
-        on_wrap_down:t='onWrapDown';
-        clearOnFocusLost:t='no'
         alwaysShowBorder:t='<<alwaysShowBorder>>'
       }
     }

@@ -1,4 +1,4 @@
-local interopGen = require("daRg/helpers/interopGen.nut")
+local interopGen = require("interopGen.nut")
 
 local aamAimState = {
   GimbalX = Watched(0.0)

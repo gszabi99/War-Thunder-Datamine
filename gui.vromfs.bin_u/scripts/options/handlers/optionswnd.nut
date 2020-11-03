@@ -5,21 +5,27 @@ local { fillSystemGuiOptions, onSystemGuiOptionChanged, onRestartClient
 local fxOptions = require("scripts/options/fxOptions.nut")
 local { openAddRadioWnd } = require("scripts/options/handlers/addRadioWnd.nut")
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
+local backToMainScene = require("scripts/mainmenu/backToMainScene.nut")
+local { resetTutorialSkip } = require("scripts/tutorials/tutorialsData.nut")
+
+const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
 class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
 {
+  wndType = handlerType.BASE
   sceneBlkName = "gui/options/optionsWnd.blk"
   sceneNavBlkName = "gui/options/navOptions.blk"
 
   optGroups = null
   curGroup = -1
-  echoTest = false;
+  echoTest = false
+  needMoveMouseOnButtonApply = false
 
   filterText = ""
-  optionsVisibleBeforeSearch = []
 
   function initScreen()
   {
+    backSceneFunc = backToMainScene
     if (!optGroups)
       base.goBack()
 
@@ -148,51 +154,46 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
 
     filterText = ::g_string.utf8ToLower(filterEditBox.getValue())
 
-    if( ! filterText.len())
-    {
-      foreach(optionData in optionsVisibleBeforeSearch)
-        base.showOptionRow(optionData.option, true)
-      optionsVisibleBeforeSearch.clear()
+    if( ! filterText.len()) {
+      showOptionsSelectedNavigation()
+      showSceneBtn("filter_notify", false)
       return
     }
 
-    if( ! optionsVisibleBeforeSearch.len() && optGroups[curGroup].options.len())
-      refreshVisibleOptionsList()
-
     local searchResultOptions = []
-    foreach(optionData in optionsVisibleBeforeSearch)
+    local visibleHeadersArray = {}
+    local needShowSearchNotify = false
+    foreach(option in getCurrentOptionsList())
     {
-      local show = optionData.searchTitle.indexof(filterText) != null
-      base.showOptionRow(optionData.option, show)
+      local show = ::g_string.utf8ToLower(option.getTitle()).indexof(filterText) != null
+      needShowSearchNotify = needShowSearchNotify
+        || (show && searchResultOptions.len() >= MAX_NUM_VISIBLE_FILTER_OPTIONS)
+      show = show && !needShowSearchNotify
 
-      if(show)
-        searchResultOptions.append(optionData.option)
+      base.showOptionRow(option, show)
+
+      if(!show)
+        continue
+
+      searchResultOptions.append(option)
+      if (option.controlType == optionControlType.HEADER) {
+        visibleHeadersArray[option.id] <- true
+        continue
+      }
+
+      local header = getOptionHeader(option)
+      if (header == null || (visibleHeadersArray?[header.id] ?? false))
+        continue
+
+      searchResultOptions.append(header)
+      visibleHeadersArray[header.id] <- true
+      base.showOptionRow(header, true)
     }
 
-    foreach(option in searchResultOptions)
-    {
-      if(option.controlType == optionControlType.HEADER)
-      {
-        // show options under header
-        foreach(header, optionsList in headersToOptionsList)
-        {
-          if(header.id != option.id)
-            continue
-          foreach(optionUnderHeader in headersToOptionsList[header])
-            if(::u.search(optionsVisibleBeforeSearch,
-                @(o) o.option.id == optionUnderHeader.id) != null)
-              base.showOptionRow(optionUnderHeader, true)
-          break
-        }
-      }
-      else
-      {
-        // show options header
-        local header = getOptionHeader(option)
-        if(header)
-          base.showOptionRow(header, true)
-      }
-    }
+    local filterNotifyObj = showSceneBtn("filter_notify", needShowSearchNotify)
+    if (needShowSearchNotify && filterNotifyObj != null)
+      filterNotifyObj.setValue(::loc("menu/options/maxNumFilterOptions",
+        { num = MAX_NUM_VISIBLE_FILTER_OPTIONS }))
   }
 
   function resetSearch()
@@ -207,27 +208,13 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
   function doNavigateToSection(navItem)
   {
     resetSearch()
-    base.doNavigateToSection(navItem)
+    showOptionsSelectedNavigation()
   }
 
   function showOptionRow(id, show)
   {
     resetSearch()
     base.showOptionRow(id, show)
-  }
-
-  function refreshVisibleOptionsList()
-  {
-    optionsVisibleBeforeSearch.clear()
-    foreach(option in getCurrentOptionsList())
-    {
-      local optionTr = getObj(option.getTrId())
-      if(::checkObj(optionTr) && optionTr.isVisible())
-        optionsVisibleBeforeSearch.append({
-          option = option,
-          searchTitle = ::g_string.utf8ToLower(option.getTitle())
-        })
-    }
   }
 
   function onFacebookLogin()
@@ -492,7 +479,7 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
     optionsConfig.onTblClick <- "onTblSelect"
 
     currentContainerName = "options_" + config.name
-    local container = ::create_options_container(currentContainerName, config.options, true, true, columnsRatio,
+    local container = ::create_options_container(currentContainerName, config.options, true, columnsRatio,
                         true, true, optionsConfig)
     optionsContainers = [container.descr]
 
@@ -500,7 +487,26 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
     optionIdToObjCache.clear()
     guiScene.replaceContentFromText(scene.findObject(objName), container.tbl, container.tbl.len(), this)
     setNavigationItems()
+    showOptionsSelectedNavigation()
     guiScene.setUpdatesEnabled(true, true)
+  }
+
+  function showOptionsSelectedNavigation() {
+    local currentHeaderId = navigationHandlerWeak?.getCurrentItem().id
+    if (currentHeaderId == null)
+      return
+
+    local isCurrentSection = false
+    foreach(option in getCurrentOptionsList())
+    {
+      if (option.controlType == optionControlType.HEADER) {
+        isCurrentSection = currentHeaderId == option.id
+        base.showOptionRow(option, false)
+        continue
+      }
+
+      base.showOptionRow(option, isCurrentSection)
+    }
   }
 
   function onPostFxSettings(obj)
@@ -616,7 +622,7 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
       ::set_gui_option(opt, false)
 
     ::save_local_account_settings("skipped_msg", null)
-    ::reset_tutorial_skip()
+    resetTutorialSkip()
     ::broadcastEvent("ResetSkipedNotifications")
 
     //To notify player about success, it is only for player,

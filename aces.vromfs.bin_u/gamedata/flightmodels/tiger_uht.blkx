@@ -33,6 +33,14 @@
   "fightAiBehaviour": "helicopter",
   "laserDesignator": true,
   "DamageParts": {
+    "amar_air20": {
+      "armor3_dm": {
+        "hp": 35.0
+      },
+      "armor4_dm": {
+        "hp": 35.0
+      }
+    },
     "armor10": {
       "cannon1_dm": {
         "hp": 15.0
@@ -49,19 +57,6 @@
     },
     "armor8": {
       "armor1_dm": {
-        "hp": 35.0
-      }
-    },
-    "amar_air20": {
-      "armor3_dm": {
-        "hp": 40.0
-      },
-      "armor4_dm": {
-        "hp": 40.0
-      }
-    },
-    "kevlar5": {
-      "armor2_dm": {
         "hp": 40.0
       }
     },
@@ -71,10 +66,6 @@
         "hp": 30.5
       },
       "engine2_dm": {
-        "genericDamageMult": 1.6,
-        "hp": 30.5
-      },
-      "propeller_shaft2_dm": {
         "genericDamageMult": 1.6,
         "hp": 30.5
       },
@@ -124,9 +115,17 @@
         "hp": 19.5
       }
     },
+    "kevlar5": {
+      "armor2_dm": {
+        "hp": 35.0
+      }
+    },
     "protected_controls": {
+      "propeller_shaft2_dm": {
+        "hp": 60.5
+      },
       "tailcontrol_dm": {
-        "hp": 71.0
+        "hp": 80.5
       },
       "wingcontrol_dm": {
         "hp": 59.5
@@ -653,41 +652,9 @@
       }
     },
     {
-      "part": [
-        {
-          "name": "propeller_shaft2_dm"
-        },
-        {
-          "onHit": {
-            "fire": 0.001,
-            "leak_oil": 0.8,
-            "cut": 0.0
-          }
-        },
-        {
-          "onHit": {
-            "damage": 30.0,
-            "fire": 0.005,
-            "leak_oil": 0.95,
-            "cut": 0.0
-          }
-        },
-        {
-          "onKill": {
-            "fire": 25.0,
-            "leak_oil": 10.0,
-            "cut": 0.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 30.0,
-            "fire": 30.0,
-            "leak_oil": 10.0,
-            "cut": 0.0
-          }
-        }
-      ]
+      "part": {
+        "name": "propeller_shaft2_dm"
+      }
     },
     {
       "part": [
@@ -2667,6 +2634,7 @@
           {
             "Weapon": {
               "trigger": "flares",
+              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
               "emitter": "emtr_flare1",
               "bullets": 30,
@@ -2680,6 +2648,7 @@
           {
             "Weapon": {
               "trigger": "flares",
+              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
               "emitter": "emtr_flare2",
               "bullets": 30,

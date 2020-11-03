@@ -1,5 +1,6 @@
 local { clearBorderSymbols } = require("std/string.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { batchTrainCrew } = require("scripts/crew/crewActions.nut")
 
 const PRESETS_VERSION = 1
 const PRESETS_VERSION_SAVE_ID = "presetsVersion"
@@ -138,7 +139,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
     return res
   }
 
-  function getCurrent(country = null, defValue = null)
+  function getCurrent(country = null, defValue = -1)
   {
     if (!country)
       country = ::get_profile_country_sq()
@@ -526,11 +527,11 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
         tasksData.append({crewId = crew.id, airName = unitId})
     }
 
-    isLoading = true // Blocking slotbar content and game mode id from overwritting during 'batch_train_crew' call.
+    isLoading = true // Blocking slotbar content and game mode id from overwritting during 'batchTrainCrew' call.
 
     ::g_crews_list.suspendSlotbarUpdates()
     invalidateUnitsModificators(countryIdx)
-    ::batch_train_crew(tasksData, { showProgressBox = true },
+    batchTrainCrew(tasksData, { showProgressBox = true },
       (@(idx, countryIdx, countryId, selCrewIdx, selUnitId, skipGameModeSelect, preset) function () {
         onTrainCrewTasksSuccess(idx, countryIdx, countryId, selCrewIdx, selUnitId, skipGameModeSelect, preset)
       })(idx, countryIdx, countryId, selCrewIdx, selUnitId, skipGameModeSelect, preset),

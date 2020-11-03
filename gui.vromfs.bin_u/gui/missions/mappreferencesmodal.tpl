@@ -1,6 +1,6 @@
 root {
-  background-color:t = '@modalShadeColor'
-  on_click:t='goBack'
+  blur {}
+  blur_foreground {}
 
   frame {
     width:t='<<maxCountX>>@mapPreferenceIconNestWidth + 1@mapPreferencePreviewFullWidth + <<#hasScroll>>1@scrollBarSize<</hasScroll>>';
@@ -41,17 +41,6 @@ root {
           padding:t='-1@framePadding +1@mapPreferenceIconMargin, 0'
           padding-bottom:t='1@framePadding'
 
-          DummyButton {
-            btnName:t='LB'
-            on_click:t='onFilterEditBoxAccessKey'
-            pos:t='0, 0.5ph-0.5h'
-            position:t='relative'
-            ButtonImg {
-              class:t='independent'
-              fullSizeIcons:t='yes'
-            }
-          }
-
           include 'gui/chapter_include_filter.blk'
         }
 
@@ -62,11 +51,10 @@ root {
           flow:t='h-flow'
           overflow-y:t='auto'
           behaviour:t='posNavigator'
-          navigatorShortcuts:t='yes'
+          navigatorShortcuts:t='noSelect'
           scrollbarShortcuts:t='yes'
           position:t='relative'
           on_select:t='onSelect'
-          on_click:t='onMapClick'
           css-hier-invalidate:t='yes'
           total-input-transparent:t='yes'
           hasPremium:t='<<#premium>>yes<</premium>><<^premium>>no<</premium>>'
@@ -223,6 +211,7 @@ root {
             position:t='relative'
             mapStateBoxText {id:t='title'}
             on_change_value:t = 'onUpdateIcon'
+            skip-navigation:t='yes'
             btnName:t='X'
             display:t='hide'
             ButtonImg{}
@@ -240,6 +229,7 @@ root {
             tooltip:t= '#mainmenu/onlyWithPremium'
             <</premium>>
             on_change_value:t = 'onUpdateIcon'
+            skip-navigation:t='yes'
             btnName:t='Y'
             display:t='hide'
             ButtonImg{}
@@ -253,6 +243,7 @@ root {
             position:t='relative'
             mapStateBoxText {id:t='title'}
             on_change_value:t = 'onUpdateIcon'
+            skip-navigation:t='yes'
             btnName:t='A'
             display:t='hide'
             ButtonImg{}

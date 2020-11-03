@@ -1,4 +1,4 @@
-local seenInventory = ::require("scripts/seen/seenList.nut").get(SEEN.INVENTORY)
+local seenInventory = require("scripts/seen/seenList.nut").get(SEEN.INVENTORY)
 
 ::g_recent_items <- {
   MAX_RECENT_ITEMS = 4

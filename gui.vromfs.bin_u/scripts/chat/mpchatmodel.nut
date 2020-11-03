@@ -47,7 +47,7 @@ local mpChatModel = {
   }
 
   function onInternalMessage(str) {
-    onIncomingMessage("", str, false, ::CHAT_MODE_ALL, true)
+    onIncomingMessage("", str, false, CHAT_MODE_ALL, true)
   }
 
 

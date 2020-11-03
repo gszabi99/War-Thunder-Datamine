@@ -1,4 +1,4 @@
-local playerContextMenu = ::require("scripts/user/playerContextMenu.nut")
+local playerContextMenu = require("scripts/user/playerContextMenu.nut")
 
 ::CLAN_LOG_ROWS_IN_PAGE <- 10
 ::show_clan_log <- function show_clan_log(clanId)
@@ -20,7 +20,6 @@ class ::gui_handlers.clanLogModal extends ::gui_handlers.BaseGuiHandlerWT
 
   clanId        = null
   requestMarker = null
-  currentFocusItem = 5
   selectedIndex = 0
 
   function initScreen()
@@ -29,8 +28,6 @@ class ::gui_handlers.clanLogModal extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(logListObj))
       return goBack()
 
-    initFocusArray()
-    restoreFocus()
     fetchLogPage()
   }
 
@@ -62,6 +59,13 @@ class ::gui_handlers.clanLogModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function showLogs(logData)
   {
+    for (local i = 0; i < logData.logEntries.len(); i++) {
+      local author = logData.logEntries[i]?.uN ?? logData.logEntries[i]?.details.uN ?? ""
+      logData.logEntries[i] = ::getFilteredClanData(logData.logEntries[i], author)
+      if ("details" in logData.logEntries[i])
+        logData.logEntries[i].details = ::getFilteredClanData(logData.logEntries[i].details, author)
+    }
+
     local blk = ::handyman.renderCached("gui/logEntryList", logData, {
       details = ::load_template_text("gui/clans/clanLogDetails")
     })
@@ -77,8 +81,7 @@ class ::gui_handlers.clanLogModal extends ::gui_handlers.BaseGuiHandlerWT
       selectedIndex = logListObj.childrenCount() - 1
 
     logListObj.setValue(selectedIndex)
-    logListObj.select()
-    logListObj.getChild(selectedIndex).scrollToView()
+    ::move_mouse_on_child(logListObj, selectedIndex)
   }
 
   function onUserLinkRClick(obj, itype, link) {
@@ -129,10 +132,5 @@ class ::gui_handlers.clanLogModal extends ::gui_handlers.BaseGuiHandlerWT
     local selectedObj = obj.getChild(index)
     if (::check_obj(selectedObj) && selectedObj?.id == loadButtonId)
       fetchLogPage()
-  }
-
-  function getMainFocusObj()
-  {
-    return logListObj
   }
 }

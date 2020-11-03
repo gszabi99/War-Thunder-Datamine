@@ -1,6 +1,6 @@
 ::dagui_propid.add_name_id("_set_aabb_by_object")
 
-class HudTutorialObject
+::HudTutorialObject <- class
 {
   obj = null
   showUpTo = 0

@@ -649,8 +649,10 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -672,8 +674,9 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
         "fireParamsPreset": "fuel_exterior",
         "fuel_tank_exterior_r_01_dm": [],
         "fuel_tank_exterior_r_02_dm": [],
@@ -2847,6 +2850,15 @@
       },
       {
         "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -2870,7 +2882,7 @@
       "headPosOnShooting": [0.45,3.1,0.25],
       "zoomOutFov": 40.0,
       "zoomInFov": 21.0,
-      "sightFov": 25.0,
+      "sightFov": 20.0,
       "sightName": "default_tank_spg",
       "detectionHeight": 2.42
     }
@@ -3135,6 +3147,17 @@
   },
   {
     "skin": {
+      "name": "lines",
+      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_lines",
+      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_lines/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_dunkelgelb_green_braun_lines*"
+      }
+    }
+  },
+  {
+    "skin": {
       "name": "winter",
       "nameLocId": "skin/winter",
       "descLocId": "skin/winter/desc",
@@ -3152,6 +3175,17 @@
       "replace_tex": {
         "from": "ger_camo_dunkelgelb*",
         "to": "ger_camo_winter_waves_bicolor*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "hinterhalt_daimler",
+      "nameLocId": "skin/ger_camo_hinterhalt_daimler",
+      "descLocId": "skin/ger_camo_hinterhalt_daimler/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_hinterhalt_daimler*"
       }
     }
   },

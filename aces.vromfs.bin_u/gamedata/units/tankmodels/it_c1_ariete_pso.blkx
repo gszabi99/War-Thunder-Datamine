@@ -988,6 +988,7 @@
         "armorThrough": 12.0,
         "fireProtectionHp": 15.0,
         "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -2498,7 +2499,7 @@
           {
             "limits": {
               "yaw": [-0.0,0.0],
-              "pitch": [-4.0,5.0]
+              "pitch": [0.0,0.0]
             }
           }
         ]
@@ -2510,6 +2511,7 @@
           "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Beretta_MG42_59_user_machinegun.blk",
           "emitter": "emtr_mg_flame_01",
           "flash": "emtr_mg_flame_01",
+          "useEmitter": true,
           "barrelDP": "gun_barrel_03_dm",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
@@ -2548,6 +2550,7 @@
           "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Beretta_MG42_59_user_machinegun.blk",
           "emitter": "emtr_mg_flame_02",
           "flash": "emtr_mg_flame_02",
+          "useEmitter": true,
           "barrelDP": "gun_barrel_04_dm",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
@@ -3193,6 +3196,15 @@
       },
       {
         "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -3412,7 +3424,7 @@
                 {
                   "limits": {
                     "yaw": [-0.0,0.0],
-                    "pitch": [-4.0,5.0]
+                    "pitch": [0.0,0.0]
                   }
                 }
               ]
@@ -3424,6 +3436,7 @@
                 "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Beretta_MG42_59_user_machinegun.blk",
                 "emitter": "emtr_mg_flame_01",
                 "flash": "emtr_mg_flame_01",
+                "useEmitter": true,
                 "barrelDP": "gun_barrel_03_dm",
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
@@ -3462,6 +3475,7 @@
                 "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Beretta_MG42_59_user_machinegun.blk",
                 "emitter": "emtr_mg_flame_02",
                 "flash": "emtr_mg_flame_02",
+                "useEmitter": true,
                 "barrelDP": "gun_barrel_04_dm",
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,

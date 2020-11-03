@@ -36,9 +36,9 @@ class ::gui_handlers.mapPreferencesModal extends ::gui_handlers.BaseGuiHandlerWT
     local mapsRowsHeight = mapsCountY * mapItemHeight
     local title = mapPreferencesParams.getPrefTitle(curEvent)
     local textRowHeight = daguiFonts.getFontLineHeightPx("fontNormal")
-    local banListHeight = ::to_pixels("".concat("1@maxWindowHeight-1@framePadding-1@frameTopPadding",
-      "-1@frameHeaderHeight-1@mapPreferencePreviewSize-3@checkboxSize-2@buttonHeight-3@blockInterval",
-      "-2@buttonMargin")) - 2*textRowHeight
+    local banListHeight = ::to_pixels("".concat("1@maxWindowHeight-1@frameFooterHeight",
+      "-1@frameTopPadding-1@frameHeaderHeight-1@mapPreferencePreviewSize-3@checkboxSize",
+      "-2@buttonHeight-3@blockInterval-2@buttonMargin")) - 2*textRowHeight
 
     return {
       wndTitle = title
@@ -62,7 +62,7 @@ class ::gui_handlers.mapPreferencesModal extends ::gui_handlers.BaseGuiHandlerWT
     curBattleTypeName = mapPreferencesParams.getCurBattleTypeName(curEvent)
     local mlistObj = scene.findObject("maps_list")
     mlistObj.setValue(mapsList.len() ? (::math.rnd() % mapsList.len()) : -1)
-    mlistObj.select()
+    ::move_mouse_on_child_by_value(mlistObj)
     updateBanListPartsVisibility()
   }
 
@@ -307,11 +307,6 @@ class ::gui_handlers.mapPreferencesModal extends ::gui_handlers.BaseGuiHandlerWT
     updateMapPreview()
   }
 
-  function onMapClick()
-  {
-    scene.findObject("maps_list")?.select()
-  }
-
   function updateScreen()
   {
     mapsList = mapPreferencesParams.getMapsList(curEvent)
@@ -390,11 +385,6 @@ class ::gui_handlers.mapPreferencesModal extends ::gui_handlers.BaseGuiHandlerWT
       ], "ok")
   }
 
-  function onFilterEditBoxAccessKey()
-  {
-    scene.findObject("filter_edit_box")?.select()
-  }
-
   function onFilterEditBoxActivate()
   {
     selectMapById(currentMapId)
@@ -429,8 +419,8 @@ class ::gui_handlers.mapPreferencesModal extends ::gui_handlers.BaseGuiHandlerWT
   function selectMapById(mapId)
   {
     local mlistObj = scene.findObject("maps_list")
-    mlistObj?.select()
     mlistObj?.setValue(mapId)
+    ::move_mouse_on_child_by_value(mlistObj)
     guiScene.performDelayed(this, @() guiScene.performDelayed(this,
       @() mlistObj?.findObject("nest_" + mapId).scrollToView() ))
   }

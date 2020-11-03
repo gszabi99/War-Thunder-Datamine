@@ -1,5 +1,5 @@
-local elemModelType = ::require("sqDagui/elemUpdater/elemModelType.nut")
-local elemViewType = ::require("sqDagui/elemUpdater/elemViewType.nut")
+local elemModelType = require("sqDagui/elemUpdater/elemModelType.nut")
+local elemViewType = require("sqDagui/elemUpdater/elemViewType.nut")
 local { chatStatesCanUseVoice } = require("scripts/chat/chatStates.nut")
 
 const MAX_VOICE_ELEMS_IN_GC = 2

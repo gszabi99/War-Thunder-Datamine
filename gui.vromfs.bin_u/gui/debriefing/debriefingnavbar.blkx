@@ -60,7 +60,7 @@
             "btnName": "LB",
             "ButtonImg": [],
             "cardImg": {
-              "background-image": "#ui/gameuiskin#facebook_logo",
+              "background-image": "#ui/gameuiskin#facebook_logo.svg",
               "input-transparent": "yes"
             },
             "text": {
@@ -80,30 +80,22 @@
             "on_click": "onUserOptions",
             "ButtonImg": []
           }
-        }
-      ],
-      "navMiddle": {
-        "id": "nav_middle",
-        "Button_text": {
-          "id": "btn_skip",
-          "text": "#msgbox/btn_skip",
-          "_on_click": "goBack",
-          "btnName": "B",
-          "ButtonImg": []
-        }
-      },
-      "navRight": [
+        },
         {
           "Button_text": {
-            "id": "btn_back",
-            "text": "#mainmenu/btnQuit",
-            "_on_click": "goBack",
-            "btnName": "B",
+            "id": "btn_psn_match_review",
+            "text": "#mainmenu/btnPsnMatchReview",
+            "_on_click": "onBtnPsnMatchReview",
             "display": "hide",
-            "visualStyle": "secondary",
-            "buttonWink": [],
+            "enable": "no",
+            "btnName": "LB",
             "ButtonImg": []
           }
+        }
+      ],
+      "navMiddle": [
+        {
+          "id": "nav_middle"
         },
         {
           "Button_text": {
@@ -128,8 +120,29 @@
               "text": "#mainmenu/btnOk"
             }
           }
+        },
+        {
+          "Button_text": {
+            "id": "btn_skip",
+            "text": "#msgbox/btn_skip",
+            "_on_click": "goBack",
+            "btnName": "B",
+            "ButtonImg": []
+          }
         }
-      ]
+      ],
+      "navRight": {
+        "Button_text": {
+          "id": "btn_back",
+          "text": "#mainmenu/btnQuit",
+          "_on_click": "goBack",
+          "btnName": "B",
+          "display": "hide",
+          "visualStyle": "secondary",
+          "buttonWink": [],
+          "ButtonImg": []
+        }
+      }
     }
   },
   {

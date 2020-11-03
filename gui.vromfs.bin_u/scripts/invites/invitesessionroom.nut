@@ -1,4 +1,5 @@
 local antiCheat = require("scripts/penitentiary/antiCheat.nut")
+local { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
 
 class ::g_invites_classes.SessionRoom extends ::BaseInvite
 {
@@ -6,6 +7,7 @@ class ::g_invites_classes.SessionRoom extends ::BaseInvite
   roomId = ""
   password = ""
   isAccepted = false
+  needCheckSystemCrossplayRestriction = true
 
   static function getUidByParams(params)
   {
@@ -134,6 +136,9 @@ class ::g_invites_classes.SessionRoom extends ::BaseInvite
 
   function accept()
   {
+    if (!suggestAndAllowPsnPremiumFeatures())
+      return
+
     local room = ::g_mroom_info.get(roomId).getFullRoomData()
     if (!::check_gamemode_pkg(::SessionLobby.getGameMode(room)))
       return

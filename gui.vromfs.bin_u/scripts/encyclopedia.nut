@@ -1,13 +1,14 @@
-local persist = { encyclopediaData = [] }
+local persistent = { encyclopediaData = [] }
 
-::g_script_reloader.registerPersistentData("EncyclopediaGlobals", persist, ["encyclopediaData"])
+::g_script_reloader.registerPersistentData("EncyclopediaGlobals", persistent, ["encyclopediaData"])
 
 local initEncyclopediaData = function()
 {
-  if (persist.encyclopediaData.len() || !::has_feature("Encyclopedia"))
+  if (persistent.encyclopediaData.len() || !::has_feature("Encyclopedia"))
     return
 
-  local blk = ::DataBlock("config/encyclopedia.blk")
+  local blk = ::DataBlock()
+  blk.load("config/encyclopedia.blk")
 
   local defSize = [blk.getInt("image_width", 10), blk.getInt("image_height", 10)]
   for (local chapterNo = 0; chapterNo < blk.blockCount(); chapterNo++)
@@ -51,7 +52,7 @@ local initEncyclopediaData = function()
       }
       chapterDesc.articles.append(articleDesc)
     }
-    persist.encyclopediaData.append(chapterDesc)
+    persistent.encyclopediaData.append(chapterDesc)
   }
 }
 
@@ -60,7 +61,7 @@ local open = function()
 {
   initEncyclopediaData()
 
-  if (persist.encyclopediaData.len() == 0)
+  if (persistent.encyclopediaData.len() == 0)
     return
 
   ::gui_start_modal_wnd(::gui_handlers.Encyclopedia)
@@ -82,11 +83,11 @@ class ::gui_handlers.Encyclopedia extends ::gui_handlers.BaseGuiHandlerWT
       blockObj.show(true)
 
     local view = { tabs = [] }
-    foreach(idx, chapter in persist.encyclopediaData)
+    foreach(idx, chapter in persistent.encyclopediaData)
       view.tabs.append({
         id = chapter.id
         tabName = "#encyclopedia/" + chapter.id
-        navImagesText = ::get_navigation_images_text(idx, persist.encyclopediaData.len())
+        navImagesText = ::get_navigation_images_text(idx, persistent.encyclopediaData.len())
       })
 
     local data = ::handyman.renderCached("gui/frameHeaderTabs", view)
@@ -100,6 +101,7 @@ class ::gui_handlers.Encyclopedia extends ::gui_handlers.BaseGuiHandlerWT
     local canShowLinkButtons = !::is_vendor_tencent() && ::has_feature("AllowExternalLink")
     foreach(btn in ["faq", "support", "wiki"])
       showSceneBtn("button_" + btn, canShowLinkButtons)
+    ::move_mouse_on_child_by_value(scene.findObject("items_list"))
   }
 
   function onChapterSelect(obj)
@@ -108,14 +110,14 @@ class ::gui_handlers.Encyclopedia extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     local value = obj.getValue()
-    if (!(value in persist.encyclopediaData))
+    if (!(value in persistent.encyclopediaData))
       return
 
     local objArticles = scene.findObject("items_list")
     if (!::check_obj(objArticles))
       return
 
-    curChapter = persist.encyclopediaData[value]
+    curChapter = persistent.encyclopediaData[value]
 
     local view = { items = [] }
     foreach(idx, article in curChapter.articles)
@@ -128,7 +130,7 @@ class ::gui_handlers.Encyclopedia extends ::gui_handlers.BaseGuiHandlerWT
     local data = ::handyman.renderCached("gui/missions/missionBoxItemsList", view)
 
     guiScene.replaceContentFromText(objArticles, data, data.len(), this)
-    objArticles.select()
+    ::move_mouse_on_child(objArticles, 0)
     objArticles.setValue(0)
     onItemSelect(objArticles)
   }

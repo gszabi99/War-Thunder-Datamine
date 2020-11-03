@@ -252,6 +252,7 @@ weaponry_item {
             position:t='relative'
             behaviour:t='button'
             on_click:t='onModCheckboxClick'
+            skip-navigation:t='yes'
             <<^isShowStatusImg>>
             display:t='hide'
             <</isShowStatusImg>>
@@ -295,6 +296,7 @@ weaponry_item {
   }
 
   title:t='$tooltipObj'
+  tooltip-float:t='horizontal'
   tooltipObj {
     id:t='tooltip_<<id>>'
     <<^useGenericTooltip>>
@@ -320,6 +322,7 @@ weaponry_item {
       btnName:t='X'
       on_click:t='onAltModAction'
       visualStyle:t='purchase'
+      skip-navigation:t='yes'
       buttonWink {}
       buttonGlance{}
       textarea {
@@ -338,6 +341,7 @@ weaponry_item {
       class:t='additional'
       canShow:t='<<actionBtnCanShow>>'
       visualStyle:t='common'
+      skip-navigation:t='yes'
       text:t='<<actionBtnText>>'
       on_click:t='onModActionBtn'
       display:t='hide'

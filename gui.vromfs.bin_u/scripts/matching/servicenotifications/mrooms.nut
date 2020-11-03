@@ -463,6 +463,7 @@ local MRoomsHandlers = class {
 
 ::set_room_attributes <- function set_room_attributes(params, cb)
 {
+  ::dagor.debug($"[PSMT] setting room attributes: {params?.public?.psnMatchId}")
   matching_api_func("mrooms.set_attributes", cb, params)
 }
 

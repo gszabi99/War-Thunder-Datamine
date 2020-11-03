@@ -12,6 +12,9 @@
           "position": "relative"
         },
         {
+          "padding-right": "1@blockInterval"
+        },
+        {
           "height": "fh - 1@wndWithSlotbarBottomOffset"
         },
         {
@@ -28,13 +31,10 @@
             "css-hier-invalidate": "yes",
             "height": "fh",
             "width": "pw",
-            "behaviour": "wrapNavigator",
-            "navigatorShortcuts": "SpaceA",
-            "on_activate": "activateSelectedBlock",
-            "on_wrap_up": "onWrapUp",
-            "on_wrap_down": "onWrapDown",
             "flow": "vertical",
-            "overflow-y": "auto"
+            "overflow-y": "auto",
+            "behavior": "PosOptionsNavigator",
+            "navigatorShortcuts": "yes"
           }
         },
         {
@@ -42,11 +42,6 @@
             "id": "promo_mainmenu_place_bottom",
             "position": "relative",
             "pos": "pw-w, 0.01@scrn_tgt",
-            "behaviour": "wrapNavigator",
-            "navigatorShortcuts": "SpaceA",
-            "on_activate": "activateSelectedBlock",
-            "on_wrap_up": "onWrapUp",
-            "on_wrap_down": "onWrapDown",
             "flow": "vertical"
           }
         }
@@ -120,7 +115,8 @@
             "visualStyle": "noBgr",
             "max-width": "0.5sw+0.5@slotbarWidthFull-0.01@sf",
             "display": "hide",
-            "on_click": "on_show_clan_requests"
+            "on_click": "on_show_clan_requests",
+            "focus_border": []
           }
         },
         {
@@ -133,6 +129,7 @@
             "display": "hide",
             "btnName": "R3",
             "on_click": "onGMNoticeClick",
+            "focus_border": [],
             "ButtonImg": []
           }
         }
@@ -304,21 +301,6 @@
                 },
                 {
                   "pos": "50%pw-50%w, 0"
-                },
-                {
-                  "behavior": "wrapNavigator"
-                },
-                {
-                  "navigatorShortcuts": "yes"
-                },
-                {
-                  "childsActivate": "yes"
-                },
-                {
-                  "on_wrap_up": "onWrapUp"
-                },
-                {
-                  "on_wrap_down": "onWrapDown"
                 },
                 {
                   "Button_text": {

@@ -1,5 +1,30 @@
 @const hintRowCenterOffsetY:0.0185@shHud;
 
+subtitles {
+  font:@fontNormal;
+  behaviour:textarea;
+  re-type:textarea;
+  color:@white;
+  wrap-indent:0;
+  paragraph-indent:0;
+}
+
+subtitles, subtitlesHint {
+  background-color:@transparent;
+  tabStop:no;
+  margin:2*@sf/@pf_outdated, 0;
+
+  behaviour:basicTransparency;
+  transp-base:0;
+  transp-end:255;
+  transp-time:-500;
+  transp-func:square;
+}
+
+subtitles[animShow=show], subtitlesHint[animShow=show] {
+  transp-time:300;
+}
+
 hint {
   flow: vertical;
   position: relative;

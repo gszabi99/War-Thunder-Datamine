@@ -162,7 +162,9 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
       local isGift   = ::isUnitGift(unit)
       local canBuyOnline = ::canBuyUnitOnline(unit)
       local canBuyNotResearchedUnit = canBuyNotResearched(unit)
-      local canBuyIngame = !canBuyOnline && (::canBuyUnit(unit) || canBuyNotResearchedUnit)
+      local canBuyAfterPrevUnit = !::isUnitUsable(unit) && !::canBuyUnitOnMarketplace(unit)
+        && (isSpecial || ::isUnitResearched(unit))
+      local canBuyIngame = !canBuyOnline && (::canBuyUnit(unit) || canBuyNotResearchedUnit || canBuyAfterPrevUnit)
       local forceShowBuyButton = false
       local priceText = ""
 
@@ -331,6 +333,11 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
 })
 
 local showMenu = function showMenu(params) {
+  if (params == null) {
+    ::handlersManager.findHandlerClassInScene(::gui_handlers.ActionsList)?.close()
+    return
+  }
+
   local actions = getActions(params)
   if (actions.len() == 0)
     return
@@ -344,7 +351,6 @@ local showMenu = function showMenu(params) {
 }
 
 unitContextMenuState.subscribe(function (v) {
-  if (v != null)
     showMenu(v)
 })
 

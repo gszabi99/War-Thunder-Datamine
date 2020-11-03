@@ -1,74 +1,93 @@
-local { isPlatformSony } = require("scripts/clientState/platform.nut")
+local { isPlatformPS4, isPlatformPS5 } = require("scripts/clientState/platform.nut")
 
-::gui_start_gamepad_cursor_controls_splash <- function gui_start_gamepad_cursor_controls_splash(onEnable)
-{
-  ::gui_start_modal_wnd(::gui_handlers.GampadCursorControlsSplash, {onEnable = onEnable})
-}
-
+const GAMEPAD_CURSOR_CONTROLS_SPLASH_DISPLAYED_SAVE_ID = "gamepad_cursor_controls_splash_displayed"
 
 class ::gui_handlers.GampadCursorControlsSplash extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
   sceneBlkName = "gui/controls/gamepadCursorControlsSplash.blk"
-  onEnable = null
 
-  controller360View = {
-    image = "#ui/images/controller/controller_xbox360"
-    rightTrigger = {
-     contactPointX = "pw-510"
-     contactPointY = "297"
-    }
-    leftStick = {
-      contactPointX = "470"
-      contactPointY = "452"
-    }
-    rightStick = {
-      contactPointX = "pw-570"
-      contactPointY = "550"
-    }
-  }
+  // All contactPointX/contactPointY coords below are X/Y coords on the source image canvas (840 x 452 px).
+  // Just open the image in any image viewer, point mouse anywhere on it, and it will display X/Y coords of
+  // the mouse pointer on the image canvas. Those coords can be used here as contactPointX/contactPointY.
 
   controllerDualshock4View = {
     image = "#ui/images/controller/controller_dualshock4"
-    rightTrigger = {
-     contactPointX = "pw-432"
-     contactPointY = "297"
+    isSwapDirpadAndLStickBubblesPos = false
+    dirpad = {
+      contactPointX = "168"
+      contactPointY = "232"
     }
     leftStick = {
-      contactPointX = "520"
-      contactPointY = "552"
+      contactPointX = "290"
+      contactPointY = "349"
     }
     rightStick = {
-      contactPointX = "pw-542"
-      contactPointY = "560"
+      contactPointX = "549"
+      contactPointY = "349"
+    }
+    actionKey = {
+     contactPointX = "698"
+     contactPointY = "284"
+    }
+  }
+
+  controllerDualsenseView = {
+    image = "#ui/images/controller/controller_dualsense"
+    isSwapDirpadAndLStickBubblesPos = false
+    dirpad = {
+      contactPointX = "163"
+      contactPointY = "239"
+    }
+    leftStick = {
+      contactPointX = "289"
+      contactPointY = "356"
+    }
+    rightStick = {
+      contactPointX = "551"
+      contactPointY = "356"
+    }
+    actionKey = {
+     contactPointX = "702"
+     contactPointY = "287"
     }
   }
 
   controllerXboxOneView = {
     image = "#ui/images/controller/controller_xbox_one"
-    rightTrigger = {
-     contactPointX = "pw-480"
-     contactPointY = "305"
+    isSwapDirpadAndLStickBubblesPos = true
+    dirpad = {
+      contactPointX = "325"
+      contactPointY = "334"
     }
     leftStick = {
-      contactPointX = "490"
-      contactPointY = "460"
+      contactPointX = "191"
+      contactPointY = "259"
     }
     rightStick = {
-      contactPointX = "pw-570"
-      contactPointY = "570"
+      contactPointX = "517"
+      contactPointY = "387"
+    }
+    actionKey = {
+     contactPointX = "635"
+     contactPointY = "277"
     }
   }
 
-  static function isDisplayed()
-  {
-    return ::loadLocalByAccount("gamepad_cursor_controls_splash_displayed", false)
+  bubblesList = [ "dirpad", "lstick", "rstick", "actionx" ]
+
+  static function open() {
+    ::gui_start_modal_wnd(::gui_handlers.GampadCursorControlsSplash)
   }
 
+  static function shouldDisplay() {
+    // Possible values: int 2 (version 2 seen), bool true (version 1 seen), null (new account)
+    local value = ::loadLocalByAccount(GAMEPAD_CURSOR_CONTROLS_SPLASH_DISPLAYED_SAVE_ID)
+    return value == true // Show it only to old accounts.
+  }
 
-  static function markDisplayed()
-  {
-    ::saveLocalByAccount("gamepad_cursor_controls_splash_displayed", true)
+  static function markDisplayed() {
+    ::saveLocalByAccount(GAMEPAD_CURSOR_CONTROLS_SPLASH_DISPLAYED_SAVE_ID, 2)
   }
 
 
@@ -78,26 +97,24 @@ class ::gui_handlers.GampadCursorControlsSplash extends ::gui_handlers.BaseGuiHa
     if (!::check_obj(contentObj))
       goBack()
 
-    local view = controller360View
-    if (isPlatformSony)
-      view = controllerDualshock4View
-    else if (::is_platform_xboxone)
-      view = controllerXboxOneView
+    local view = isPlatformPS4 ? controllerDualshock4View
+               : isPlatformPS5 ? controllerDualsenseView
+               :                 controllerXboxOneView
+
+    view.isGamepadCursorControlsEnabled <- ::g_gamepad_cursor_controls.getValue()
 
     local markUp = ::handyman.renderCached("gui/controls/gamepadCursorcontrolsController", view)
     guiScene.replaceContentFromText(contentObj, markUp, markUp.len(), this)
-  }
 
-
-  function enableGamepadCursorcontrols()
-  {
-    if (::g_gamepad_cursor_controls.canChangeValue())
-    {
-      ::g_gamepad_cursor_controls.setValue(true)
-      if (onEnable)
-        onEnable()
+    local linkingObjsContainer = getObj("gamepad_image")
+    local linesGeneratorConfig = {
+      startObjContainer = linkingObjsContainer
+      endObjContainer   = linkingObjsContainer
+      lineInterval = "@helpLineInterval"
+      links = bubblesList.map(@(id) { start = $"bubble_{id}", end = $"dot_{id}" })
     }
-    goBack()
+    local linesMarkup = ::LinesGenerator.getLinkLinesMarkup(linesGeneratorConfig)
+    guiScene.replaceContentFromText(getObj("lines_block"), linesMarkup, linesMarkup.len(), this)
   }
 
 
@@ -111,19 +128,10 @@ class ::gui_handlers.GampadCursorControlsSplash extends ::gui_handlers.BaseGuiHa
   function getNavbarTplView()
   {
     return {
-      middle = [
+      right = [
         {
-          text = "#gamepad_cursor_control_splash/accept"
-          shortcut = "A"
-          funcName = "enableGamepadCursorcontrols"
-          isToBattle = true
-          button = true
-        }
-      ]
-      left = [
-        {
-          text = "#gamepad_cursor_control_splash/decline"
-          shortcut = "B"
+          text = "#msgbox/btn_ok"
+          shortcut = "X"
           funcName = "goBack"
           button = true
         }

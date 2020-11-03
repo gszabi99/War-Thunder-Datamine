@@ -122,6 +122,7 @@
       "timeLimit": 30,
       "deathPenaltyMul": 0.5,
       "ctaCaptureZoneEqualPenaltyMul": 0.0,
+      "showTacticalMapCellSize": true,
       "country_axis": "germany",
       "country_allies": "ussr",
       "restoreType": "attempts",
@@ -153,7 +154,7 @@
             "picture": ""
           },
           {
-            "showAirMap": true
+            "showAirMap": false
           },
           {
             "icon": {
@@ -188,6 +189,11 @@
               "icontype": "basezone_C",
               "side": "neutral",
               "target": "briefing_capture03"
+            }
+          },
+          {
+            "battleArea": {
+              "target": "briefing_battlearea"
             }
           }
         ]
@@ -329,6 +335,7 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
       "props": {
         "army": 2,
         "count": 1,
@@ -406,6 +413,17 @@
         [2083.18,0.0,-1868.87]
       ],
       "objLayer": 0,
+      "props": []
+    },
+    "briefing_battlearea": {
+      "type": "Box",
+      "tm": [
+        [16384.0,0.0,0.0],
+        [0.0,700.0,0.0],
+        [0.0,0.0,16384.0],
+        [0.0,0.0,0.0]
+      ],
+      "objLayer": 3,
       "props": []
     }
   },

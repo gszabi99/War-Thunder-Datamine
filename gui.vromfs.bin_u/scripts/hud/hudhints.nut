@@ -1,4 +1,4 @@
-local enums = ::require("sqStdlibs/helpers/enums.nut")
+local enums = require("sqStdlibs/helpers/enums.nut")
 local time = require("scripts/time.nut")
 const DEFAULT_MISSION_HINT_PRIORITY = 100
 const CATASTROPHIC_HINT_PRIORITY = 0
@@ -1262,7 +1262,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
       {
         if (unitType == ::ES_UNIT_TYPE_TANK)
           return "hints/repair_assist_tank_hold"
-        if (unitType == ::ES_UNIT_TYPE_SHIP)
+        if (unitType == ::ES_UNIT_TYPE_SHIP || unitType == ::ES_UNIT_TYPE_BOAT)
           return "hints/repair_assist_ship_hold"
         return "hints/repair_assist_plane_hold"
       }
@@ -1274,7 +1274,8 @@ enums.addTypesByGlobalName("g_hud_hints", {
       {
         return "hints/repair_cancel_request_assist_hold"
       }
-      return (unitType == ::ES_UNIT_TYPE_SHIP) ? "hints/repair_ship" : "hints/repair_tank_hold"
+      return (unitType == ::ES_UNIT_TYPE_SHIP || unitType == ::ES_UNIT_TYPE_BOAT) ?
+        "hints/repair_ship" : "hints/repair_tank_hold"
     }
 
     noKeyLocId = "hints/ready_to_bailout_nokey"
@@ -1419,6 +1420,13 @@ enums.addTypesByGlobalName("g_hud_hints", {
     isHideOnDeath = true
   }
 
+  IRCM_FAIL_GUIDANCE = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId = "hints/ircm_fail_guidance"
+    showEvent = "hint:ircm_fail_guidance:show"
+    lifeTime = 1.0
+    isHideOnDeath = true
+  }
 },
 function() {
   name = "hint_" + typeName.tolower()

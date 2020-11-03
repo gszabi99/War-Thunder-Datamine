@@ -182,7 +182,7 @@ local systemMsg = { //functons here need to be able recursive call self
 /*
 getroottable().dbgExample <- function(textObjId = "menu_chat_text")
 {
-  local systemMsg = ::require("scripts/utils/systemMsg.nut")
+  local systemMsg = require("scripts/utils/systemMsg.nut")
   local json = systemMsg.configToJsonString([
     {
       [systemMsg.LOC_ID] = "multiplayer/enemyTeamTooLowMembers",

@@ -81,8 +81,6 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
     local tabType = currentTabType? currentTabType : findTabSheetByTaskId()
     getTabsListObj().setValue(tabType)
 
-    initFocusArray()
-
     updateWarbondsBalance()
   }
 
@@ -256,7 +254,7 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
       view.doneTasksTable.rows <- ""
       view.doneTasksTable.rows += ::buildTableRow("tr_header",
                [{textType = "textareaNoTab", text = ::loc("unlocks/battletask"), tdalign = "left", width = "65%pw"},
-               {textType = "textarea", text = ::loc("options/time"), tdalign = "right", width = "30%pw"}])
+               {textType = "textarea", text = ::loc("debriefing/sessionTime"), tdalign = "right", width = "30%pw"}])
 
       foreach(idx, uLog in finishedTasksUserlogsArray)
       {
@@ -293,7 +291,6 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
       this[curTabData.fillFunc]()
 
     guiScene.applyPendingChanges(false)
-    restoreFocus()
   }
 
   function getSelectedTabData(listObj)
@@ -604,16 +601,6 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
     if (::checkObj(scene))
       return scene.findObject("tasks_list")
     return null
-  }
-
-  function getMainFocusObj()
-  {
-    return getConfigsListObj()
-  }
-
-  function getMainFocusObj2()
-  {
-    return getDifficultySwitchObj()
   }
 
   function getDifficultySwitchObj()

@@ -1,12 +1,13 @@
 root {
-  background-color:t='@shadeBackgroundColor';
+  blur {}
+  blur_foreground {}
 
   frame {
     pos:t='50%pw-50%w, 50%ph-50%h';
     position:t='absolute';
     width:t='1@slotbarWidthFull';
     max-width:t='800*@sf/@pf_outdated + 2@framePadding';
-    max-height:t='sh';
+    max-height:t='@rh'
     <<#showOkButton>>
     class:t='wndNav';
     <</showOkButton>>

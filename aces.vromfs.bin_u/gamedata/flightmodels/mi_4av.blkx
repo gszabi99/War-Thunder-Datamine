@@ -89,17 +89,9 @@
           "genericDamageMult": 1.6,
           "hp": 65.4
         },
-        "propeller_shaft1_dm": {
-          "genericDamageMult": 1.6,
-          "hp": 4.2
-        },
-        "propeller_shaft2_dm": {
-          "genericDamageMult": 1.6,
-          "hp": 12.1
-        },
         "transmission1_dm": {
           "genericDamageMult": 1.6,
-          "hp": 25.3
+          "hp": 60.5
         }
       },
       "c_dural10": {
@@ -123,6 +115,12 @@
         }
       },
       "protected_controls": {
+        "propeller_shaft1_dm": {
+          "hp": 60.5
+        },
+        "propeller_shaft2_dm": {
+          "hp": 60.5
+        },
         "tailcontrol_dm": {
           "hp": 80.5
         },
@@ -628,59 +626,59 @@
           },
           {
             "onHit": {
-              "damage": 50.0,
+              "damage": 30.0,
               "cut": 0.25
             }
           },
           {
             "onHit": {
-              "damage": 70.0,
+              "damage": 50.0,
               "cut": 0.5
             }
           },
           {
             "onHit": {
-              "damage": 100.0,
-              "cut": 0.75
+              "damage": 65.0,
+              "cut": 1.0
             }
           },
           {
-            "onHit": {
-              "damage": 140.0,
-              "cut": 1.0
+            "onKill": {
+              "tailcontrol_dm": 1.0,
+              "nothing": 19.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 10.0,
+              "tailcontrol_dm": 1.0,
+              "nothing": 9.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 20.0,
+              "cut": 1.0,
+              "nothing": 4.0
             }
           },
           {
             "onKill": {
               "damage": 30.0,
               "cut": 1.0,
-              "nothing": 7.0
+              "nothing": 3.0
             }
           },
           {
             "onKill": {
               "damage": 50.0,
               "cut": 1.0,
-              "nothing": 5.0
+              "nothing": 2.0
             }
           },
           {
             "onKill": {
-              "damage": 70.0,
-              "cut": 1.0,
-              "nothing": 3.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 100.0,
-              "cut": 1.0,
-              "nothing": 1.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 140.0,
+              "damage": 65.0,
               "cut": 1.0
             }
           }
@@ -747,9 +745,47 @@
         ]
       },
       {
-        "part": {
-          "name": "transmission1_dm"
-        }
+        "part": [
+          {
+            "name": "transmission1_dm"
+          },
+          {
+            "onHit": {
+              "fire": 0.01
+            }
+          },
+          {
+            "onHit": {
+              "damage": 2.7,
+              "fire": 0.01,
+              "leak_oil": 0.5,
+              "cut": 0.0
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "fire": 0.1,
+              "leak_oil": 1.0,
+              "cut": 0.0
+            }
+          },
+          {
+            "onKill": {
+              "fire": 30.0,
+              "leak_oil": 10.0,
+              "cut": 0.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "fire": 44.0,
+              "leak_oil": 10.0,
+              "cut": 0.0
+            }
+          }
+        ]
       },
       {
         "part": {
@@ -1396,7 +1432,11 @@
       "new_heli_cover": [],
       "heli_flak_jacket": [],
       "heli_structure": {
-        "tier": 2
+        "tier": 2,
+        "effects": {
+          "cutProbabilityMult": 1.1,
+          "mulMass": 1.022
+        }
       },
       "YaK-B_universal": [],
       "YaK-B_air_targets": [],

@@ -1,5 +1,6 @@
 root {
-  background-color:t = '@modalShadeColor'
+  blur {}
+  blur_foreground {}
   type:t="big"
 
   tdiv {
@@ -39,9 +40,6 @@ root {
           clearOnFocusLost:t='no'
           moveX:t='linear';
           moveY:t='closest';
-          childsActivate:t='yes';
-          on_wrap_up:t='onWrapUp';
-          on_wrap_down:t='onWrapDown';
           on_activate:t='onGameModeActivate';
           on_select:t='onGameModeGamepadSelect'
         }

@@ -30,7 +30,7 @@ local playerInfoUpdater = {
 
   function updateStatistics()
   {
-    if (!::is_platform_xboxone)
+    if (!::is_platform_xbox)
       return
 
     local myStats = ::my_stats.getStats()
@@ -44,7 +44,7 @@ local playerInfoUpdater = {
 
   function updatePresence(presence)
   {
-    if (!::is_platform_xboxone || !presence)
+    if (!::is_platform_xbox || !presence)
       return
 
     if (presence == ::g_contact_presence.UNKNOWN

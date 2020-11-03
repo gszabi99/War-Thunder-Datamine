@@ -19,8 +19,6 @@ class ::gui_handlers.QueueTable extends ::gui_handlers.BaseGuiHandlerWT
   isCrossPlayTipShowed = false
 
   build_IA_shop_filters = false
-  isPrimaryFocus = false
-  focusArray = ["ia_table_clusters_list"]
 
   function initScreen()
   {
@@ -480,11 +478,7 @@ class ::gui_handlers.QueueTable extends ::gui_handlers.BaseGuiHandlerWT
   {
     local target = params.target
     if (target != null && target.id == scene.id)
-    {
-      local clustersListObject = getObj("ia_table_clusters_list")
-      if (clustersListObject != null)
-        clustersListObject.select()
-    }
+      ::move_mouse_on_child_by_value(getObj("ia_table_clusters_list"))
   }
 
   function onEventShopWndSwitched(params)
@@ -535,10 +529,5 @@ class ::gui_handlers.QueueTable extends ::gui_handlers.BaseGuiHandlerWT
         icon.rotation = (rotationStart + idx * FULL_CIRCLE_GRAD / circlesCount) % FULL_CIRCLE_GRAD
     local markup = ::handyman.renderCached("gui/queue/queueWaitingIcon", view)
     guiScene.replaceContentFromText(obj, markup, markup.len(), this)
-  }
-
-  function getCurFocusObj()
-  {
-    return getObj("ia_table_clusters_list")
   }
 }

@@ -2,7 +2,8 @@ button {
   pos:t='0,0'
   position:t='root'
   size:t='pw,ph'
-  background-color:t = '@modalShadeColor'
+  blur {}
+  blur_foreground {}
   on_click:t='goBack'
 }
 
@@ -38,8 +39,6 @@ frame {
     behavior:t='posNavigator'
     navigatorShortcuts:t='yes'
     moveY:t='linear'
-    on_wrap_up:t='onWrapUp'
-    on_wrap_down:t='onWrapDown'
     on_wrap_left:t='onUnitAmountDec'
     on_wrap_right:t='onUnitAmountInc'
 
@@ -70,8 +69,7 @@ frame {
 
           include "gui/commonParts/progressBar"
         }
-        tdiv {
-          class:t='rankUpList'
+        rankUpList {
           <<@unitItem>>
         }
         weaponsSelectorNest {

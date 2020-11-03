@@ -43,7 +43,6 @@
     "bulletType": "heat_fs_tank",
     "cumulativeSecondaryShattersPreset": "heat_fs",
     "explodeOnRendinst": true,
-    "modelName": "tank_bullet_heat_fs",
     "fresnel": [0.23,0.1,2.0],
     "bulletName": "105mm_dm12",
     "onHitChanceMultExplFuel": 0.3,
@@ -51,7 +50,7 @@
     "relativeVelArmorShift": [200.0,1000.0],
     "hitPower": 260.0,
     "fuseDelayDist": 0.05,
-    "explodeTreshold": 1.0,
+    "explodeTreshold": 0.1,
     "ricochetEffect": "cannon_ricochet",
     "waterCollisionEffect": "120-203_he_water_splash",
     "waterFxScale": [1.1,1.2],
@@ -208,7 +207,6 @@
       "stabilityReductionAfterPenetration": 0.05,
       "bulletType": "apds_fs_tungsten_l10_l15_tank",
       "slopeEffectPreset": "apds_fs_tungsten_l10_l15_tank",
-      "modelName": "tank_bullet_apdsfs_long",
       "fresnel": [0.23,0.1,2.0],
       "bulletName": "105mm_m735",
       "Cx": 0.52,
@@ -234,6 +232,11 @@
           "mod4": [50.0,0.7]
         }
       ],
+      "tracePattern": {
+        "caliber": 10.0,
+        "circleCount": 2,
+        "pointCount": 6
+      },
       "hitpower": {
         "HitPower0m": [1.0,1000.0],
         "HitPower10000m": [0.8,10000.0]
@@ -384,14 +387,14 @@
       "slopeEffectPreset": "hesh",
       "cumulativeSecondaryShattersPreset": "hesh",
       "useEffectiveArmorThicknessForShatter": true,
-      "modelName": "tank_bullet_hesh",
       "fresnel": [0.23,0.1,2.0],
       "cumulativeByNormal": true,
       "bulletName": "105mm_dm502",
       "hitPowerMult": 20.0,
       "relativeVelHitShift": [300.0,1000.0],
       "relativeVelArmorShift": [200.0,1000.0],
-      "fuseDelayDist": 0.4,
+      "hitPower": 260.0,
+      "fuseDelayDist": 0.05,
       "explodeTreshold": 0.1,
       "ricochetEffect": "cannon_ricochet",
       "waterCollisionEffect": "120-203_he_water_splash",
@@ -419,27 +422,106 @@
         "HitPower1000m": [0.9,1000.0],
         "HitPower1500m": [0.65,1500.0],
         "HitPower2500m": [0.5,2500.0],
-        "HitPower10000m": [0.0,10000.0]
+        "HitPower7000m": [0.0,7000.0]
       },
       "armorpower": {
         "ArmorPower0m": [5.0,10.0],
-        "ArmorPower100m": [5.0,100.0],
-        "ArmorPower500m": [5.0,500.0],
-        "ArmorPower1000m": [5.0,1000.0],
-        "ArmorPower1500m": [5.0,1500.0],
-        "ArmorPower2500m": [2.0,2500.0],
-        "ArmorPower10000m": [1.0,10000.0]
-      },
-      "cumulativeDamage": {
-        "armorPower": 127.0,
-        "distance": 0.127,
-        "damage": 400.0
+        "ArmorPower10000m": [4.0,10000.0]
       },
       "damage": {
         "explosive": {
           "radius": 0.05,
           "offset": 0.1
-        }
+        },
+        "shatter": [
+          {
+            "useRealShatters": true
+          },
+          {
+            "countPortion": 0.22
+          },
+          {
+            "segment": {
+              "radiusScale": 0.15,
+              "penetrationScale": 2.0,
+              "damageScale": 1.0,
+              "angles": [0.0,29.0],
+              "countPortion": 0.04,
+              "onHitChanceMultFire": 10.0
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [30.0,69.0],
+              "countPortion": 0.235
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 0.25,
+              "penetrationScale": 1.7,
+              "damageScale": 1.5,
+              "angles": [70.0,110.0],
+              "countPortion": 0.075,
+              "onHitChanceMultFire": 50.0
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [111.0,180.0],
+              "countPortion": 0.15
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [181.0,249.0],
+              "countPortion": 0.15
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 0.25,
+              "penetrationScale": 1.7,
+              "damageScale": 1.5,
+              "angles": [250.0,290.0],
+              "countPortion": 0.075,
+              "onHitChanceMultFire": 50.0
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [291.0,329.0],
+              "countPortion": 0.235
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 0.15,
+              "penetrationScale": 2.0,
+              "damageScale": 1.0,
+              "angles": [330.0,359.0],
+              "countPortion": 0.04,
+              "onHitChanceMultFire": 10.0
+            }
+          }
+        ]
+      },
+      "cumulativeDamage": {
+        "armorPower": 127.0,
+        "distance": 0.127,
+        "damage": 400.0
       },
       "visual": {
         "range_percent_of_ammo": [100.0,0.0],
@@ -573,7 +655,6 @@
       "stabilityReductionAfterPenetration": 0.05,
       "bulletType": "apds_fs_long_tank",
       "slopeEffectPreset": "apds_fs_long",
-      "modelName": "tank_bullet_apdsfs_long",
       "fresnel": [0.23,0.1,2.0],
       "bulletName": "105mm_dm23",
       "Cx": 0.24,
@@ -599,6 +680,11 @@
           "mod4": [50.0,0.7]
         }
       ],
+      "tracePattern": {
+        "caliber": 10.0,
+        "circleCount": 2,
+        "pointCount": 6
+      },
       "hitpower": {
         "HitPower0m": [1.0,1000.0],
         "HitPower10000m": [0.8,10000.0]
