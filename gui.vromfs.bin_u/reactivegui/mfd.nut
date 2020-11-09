@@ -1,65 +1,97 @@
-local {IndicatorsVisible, IsMfdSightHudVisible, MfdSightMask, MfdColor, MfdSightPosSize, MlwsLwsForMfd, RwrForMfd, IsMfdEnabled, RwrPosSize} = require("helicopterState.nut")
+local rwr = require("rwr.nut")
+local helicopterState = require("helicopterState.nut")
 local hudElems = require("helicopterHudElems.nut")
 local tws = require("tws.nut")
 local radarComponent = require("radarComponent.nut")
-local {hudFontHgt, fontOutlineColor, backgroundColor, fontOutlineFxFactor} = require("style/airHudStyle.nut")
 
-const mfdFontScale = 1.5
 
-local getColor = @(isBackground) isBackground ? backgroundColor : MfdColor.value
+local backgroundColor = Color(0, 0, 0, 150)
+local fontOutlineColor = Color(0, 0, 0, 235)
+local mfdFontScale = 1.5
 
-local sightSh = @(h) h * MfdSightPosSize[3] / 100
-local sightSw = @(w) w * MfdSightPosSize[2] / 100
-local sightHdpx = @(px) px * MfdSightPosSize[3] / 1024
-local getMfdFontSize = @() hudFontHgt*mfdFontScale * min(MfdSightPosSize[2], MfdSightPosSize[3]) / 512
+local getColor = function(isBackground){
+  return isBackground ? backgroundColor : helicopterState.MfdColor.value
+}
 
-local styleLineBackground = {
+local sightSh = function(h)
+{
+  return h * helicopterState.MfdSightPosSize[3] / 100
+}
+local sightSw = function(w)
+{
+  return w * helicopterState.MfdSightPosSize[2] / 100
+}
+local sightHdpx = function(px)
+{
+  return px * helicopterState.MfdSightPosSize[3] / 1024
+}
+local getMfdFontScale = function()
+{
+  return mfdFontScale * min(helicopterState.MfdSightPosSize[2], helicopterState.MfdSightPosSize[3]) / 512
+}
+
+local style = {}
+style.lineBackground <- class {
   fillColor = Color(0, 0, 0, 0)
   lineWidth = hdpx(1) * (LINE_WIDTH + 1.5)
   font = Fonts.hud
   fontFxColor = fontOutlineColor
-  fontFxFactor = fontOutlineFxFactor
+  fontFxFactor = 40
   fontFx = FFT_GLOW
-  fontSize = hudFontHgt*1.5
+  fontScale = 1.5
 }
 
 
-local styleLineForeground = {
+style.lineForeground <- class {
   fillColor = Color(0, 0, 0, 0)
-  lineWidth = max(hdpx(LINE_WIDTH), LINE_WIDTH)
+  lineWidth = hdpx(1) * LINE_WIDTH
   font = Fonts.hud
   fontFxColor = fontOutlineColor
-  fontFxFactor = fontOutlineFxFactor
+  fontFxFactor = 40
   fontFx = FFT_GLOW
-  fontSize = hudFontHgt*1.5
+  fontScale = 1.5
+}
+
+local getRwr = function(colorStyle) {
+  local getChildren = function() {
+    return rwr(colorStyle,
+       helicopterState.RwrPosSize[0] + helicopterState.RwrPosSize[2] * 0.17,
+       helicopterState.RwrPosSize[1] + helicopterState.RwrPosSize[3] * 0.17,
+       helicopterState.RwrPosSize[2] * 0.66,
+       helicopterState.RwrPosSize[3] * 0.66, true)
+  }
+  return @(){
+    watch = helicopterState.RwrForMfd
+    children = getChildren()
+  }
 }
 
 local mkTws = @(colorStyle) @() {
-  watch = [MlwsLwsForMfd, RwrForMfd]
-  children = (!MlwsLwsForMfd.value && !RwrForMfd) ? null
+  watch = helicopterState.TwsForMfd
+  children = !helicopterState.TwsForMfd.value ? null
     : tws({
       colorStyle = colorStyle,
-      pos = [RwrPosSize[0] + RwrPosSize[2] * 0.17,
-        RwrPosSize[1] + RwrPosSize[3] * 0.17],
-      size = [RwrPosSize[2] * 0.66, RwrPosSize[3] * 0.66],
+      pos = [helicopterState.RwrPosSize[0] + helicopterState.RwrPosSize[2] * 0.17,
+        helicopterState.RwrPosSize[1] + helicopterState.RwrPosSize[3] * 0.17],
+      size = [helicopterState.RwrPosSize[2] * 0.66, helicopterState.RwrPosSize[3] * 0.66],
       relativCircleSize = 36
     })
 }
 
-local mfdSightParamsTable = hudElems.paramsTable(MfdSightMask,
+local mfdSightParamsTable = hudElems.paramsTable(helicopterState.MfdSightMask,
   250,
   [30, 175],
   hdpx(3))
 
 local function mfdSightHud(elemStyle, isBackground) {
   local mfdStyle = elemStyle.__merge({
-        fontSize = getMfdFontSize()
-        color = MfdColor.value
+        fontScale = getMfdFontScale()
+        color = helicopterState.MfdColor.value
       })
   return @(){
-    watch = IsMfdSightHudVisible
-    pos = [MfdSightPosSize[0], MfdSightPosSize[1]]
-    children = IsMfdSightHudVisible.value ?
+    watch = helicopterState.IsMfdSightHudVisible
+    pos = [helicopterState.MfdSightPosSize[0], helicopterState.MfdSightPosSize[1]]
+    children = helicopterState.IsMfdSightHudVisible.value ?
     [
       hudElems.turretAngles(mfdStyle, sightSw(15), sightHdpx(150), sightSw(50), sightSh(90), isBackground)
       hudElems.launchDistanceMax(mfdStyle, sightSw(15), sightHdpx(150), sightSw(50), sightSh(90), isBackground)
@@ -82,25 +114,27 @@ local function mfdHUD(colorStyle, isBackground) {
 
   return [
     mfdSightHud(colorStyle, isBackground)
+    getRwr(rwrStyle)
     mkTws(rwrStyle)
     radarComponent.radar(true, sw(6), sh(6), getColor(isBackground))
   ]
 }
 
 local Root = function() {
-  local children = mfdHUD(styleLineBackground, true)
-  children.extend(mfdHUD(styleLineForeground, false))
+  local children = mfdHUD(style.lineBackground, true)
+  children.extend(mfdHUD(style.lineForeground, false))
 
   return {
     watch = [
-      IndicatorsVisible
-      MfdColor
-      IsMfdEnabled
+      helicopterState.IndicatorsVisible
+      helicopterState.MfdColor
+      helicopterState.IsMfdEnabled
     ]
     halign = ALIGN_LEFT
     valign = ALIGN_TOP
     size = [sw(100), sh(100)]
-    children = (IndicatorsVisible.value || IsMfdEnabled.value) ? children : null
+    children = (helicopterState.IndicatorsVisible.value ||
+    helicopterState.IsMfdEnabled.value) ? children : null
   }
 }
 

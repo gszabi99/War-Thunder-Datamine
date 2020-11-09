@@ -10,8 +10,7 @@ local function initOnce() {
   isInited = true
   collectionsList.clear()
 
-  local cBlk = ::DataBlock()
-  cBlk.load("config/collections.blk")
+  local cBlk = ::DataBlock("config/collections.blk")
   for(local i = 0; i < cBlk.blockCount(); i++) {
     local set = CollectionSet(cBlk.getBlock(i))
     if (!set.isValid())

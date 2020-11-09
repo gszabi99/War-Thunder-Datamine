@@ -1,7 +1,6 @@
 {
   "root": {
-    "blur": [],
-    "blur_foreground": [],
+    "background-color": "@modalShadeColor",
     "frame": {
       "width": "4@slot_width+2@slot_interval + 20",
       "max-height": "ph",
@@ -75,7 +74,8 @@
             "decreased-height": "3(1@slot_height+2@slot_vert_pad)",
             "overflow-y": "auto",
             "scrollbarShortcuts": "yes",
-            "rankUpList": {
+            "class": "rankUpList",
+            "tdiv": {
               "id": "rankup_aircraft_table",
               "max-width": "pw",
               "pos": "0.5pw-0.5w",
@@ -113,7 +113,7 @@
               "display": "hide",
               "tooltip": "",
               "cardImg": {
-                "background-image": "#ui/gameuiskin#facebook_logo.svg",
+                "background-image": "#ui/gameuiskin#facebook_logo",
                 "input-transparent": "yes"
               },
               "text": {

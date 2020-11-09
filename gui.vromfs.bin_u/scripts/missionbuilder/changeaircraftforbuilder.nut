@@ -11,11 +11,8 @@ class ::gui_handlers.changeAircraftForBuilder extends ::gui_handlers.BaseGuiHand
          showNewSlot = false,
          showEmptySlot = false,
          hasActions = false,
-         afterSlotbarSelect = updateButtons,
-         slotbarBehavior = "posNavigator",
-         needFullSlotBlock = true
-         onSlotDblClick = ::Callback(@(crew) onApply(), this)
-         onSlotActivate = ::Callback(@(crew) onApply(), this)
+         afterSlotbarSelect = updateButtons
+         onSlotDblClick = @(crew) onApply()
        },
        "take-aircraft-slotbar"
      )
@@ -27,6 +24,7 @@ class ::gui_handlers.changeAircraftForBuilder extends ::gui_handlers.BaseGuiHand
      local air = getCurSlotUnit()
      ::show_aircraft = air
      updateButtons()
+     initFocusArray()
   }
 
   function onTakeCancel()

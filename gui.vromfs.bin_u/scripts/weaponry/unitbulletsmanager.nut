@@ -11,7 +11,7 @@ global enum bulletsAmountState {
   LOW_AMOUNT
 }
 
-::UnitBulletsManager <- class
+class UnitBulletsManager
 {
   unit = null  //setUnit to change
   bulGroups = null //bulletsGroups

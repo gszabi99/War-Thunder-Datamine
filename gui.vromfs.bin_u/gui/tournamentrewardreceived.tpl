@@ -1,13 +1,12 @@
 root{
-  blur {}
-  blur_foreground {}
+  background-color:t='@shadeBackgroundColor';
 
   frame{
     pos:t='50%pw-50%w, 50%ph-50%h';
     position:t='absolute';
     width:t='80%sh';
     max-width:t='800*@sf/@pf_outdated + 2@framePadding';
-    max-height:t='@rh'
+    max-height:t='sh';
     class:t='wndNav';
 
     frame_header{
@@ -156,7 +155,7 @@ root{
           on_click:t='onFacebookLoginAndPostScrnshot';
           tooltip:t='';
           cardImg{
-            background-image:t='#ui/gameuiskin#facebook_logo.svg'
+            background-image:t='#ui/gameuiskin#facebook_logo';
             input-transparent:t='yes';
           }
           text{

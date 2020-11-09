@@ -12,16 +12,13 @@ local mCfgCurrent = {}
 local mScriptValid = true
 local mValidationError = ""
 local mMaintainDone = false
-const mRowHeightScale = 1.0
-const mMaxSliderSteps = 50
+local mRowHeightScale = 1.0
 //-------------------------------------------------------------------------------
 /*
   compMode=true - option is enabled in GUI in Compatibility Mode. Otherwise from graphicsPresets it will be disabled.
   fullMode=false - option is disabled in GUI in not Compatibility Mode. Otherwise from graphicsPresets it will be enabled.
 */
-local mQualityPresets = ::DataBlock()
-mQualityPresets.load("config/graphicsPresets.blk")
-
+local mQualityPresets = ::DataBlock("config/graphicsPresets.blk")
 local compModeGraphicsOptions = {
   texQuality        = { compMode=true }
   anisotropy        = { compMode=true }
@@ -58,7 +55,6 @@ local mUiStruct = [
   {
     container = "sysopt_bottom_left"
     items = [
-      "dlss"
       "anisotropy"
       "msaa"
       "antialiasing"
@@ -314,41 +310,6 @@ local function localize(optionId, valueId) {
   }
   return ::loc(format("options/%s_%s", optionId, valueId), valueId)
 }
-
-local function parseResolution(resolution) {
-  local sides = resolution == "auto"
-    ? [ 0, 0 ] // To be sorted first.
-    : resolution.split("x").apply(@(v) ::to_integer_safe(::strip(v), 0, false))
-  return {
-    resolution = resolution
-    w = sides?[0] ?? 0
-    h = sides?[1] ?? 0
-  }
-}
-
-local function getAvailableDlssModes()
-{
-  local values = ["off"]
-  local selectedResolution = parseResolution(getGuiValue("resolution", "auto"))
-  if (::is_dlss_quality_available_at_resolution(0, selectedResolution.w, selectedResolution.h))
-    values.append("performance")
-  if (::is_dlss_quality_available_at_resolution(1, selectedResolution.w, selectedResolution.h))
-    values.append("balanced")
-  if (::is_dlss_quality_available_at_resolution(2, selectedResolution.w, selectedResolution.h))
-    values.append("quality")
-
-  return values;
-}
-
-local function getListOption(id, desc, cb, needCreateList = true) {
-  local raw = desc.values.indexof(mCfgCurrent[id]) ?? -1
-  local customItems = ("items" in desc) ? desc.items : null
-  local items = []
-  foreach (index, valueId in desc.values)
-    items.append(customItems ? customItems[index] : localize(id, valueId))
-  return ::create_option_combobox(desc.widgetId, items, raw, cb, needCreateList)
-}
-
 //------------------------------------------------------------------------------
 mShared = {
   setQualityPreset = function(preset) {
@@ -433,22 +394,6 @@ mShared = {
     setGuiValue("graphicsQuality", preset)
   }
 
-  resolutionClick = function() {
-    local id = "dlss"
-    local desc = getOptionDesc(id)
-    if (!desc)
-      return
-
-    desc.init(null, desc) //list of dlss values depends only on resolution
-    setGuiValue(id, desc.values.indexof(getGuiValue(id)) ?? desc.def, true)
-    local obj = getGuiWidget(id)
-    if (!::check_obj(obj))
-      return
-
-    local markup = getListOption(id, desc, "onSystemOptionChanged", false)
-    mContainerObj.getScene().replaceContentFromText(obj, markup, markup.len(), mHandler)
-  }
-
   cloudsQualityClick = function() {
     local cloudsQualityVal = getGuiValue("cloudsQuality", 1)
     setGuiValue("skyQuality", cloudsQualityVal == 0 ? 0 : 1)
@@ -528,6 +473,17 @@ mShared = {
     if (curResolution != null && list.indexof(curResolution) == null)
       list.append(curResolution)
 
+    local function parseResolution(resolution) {
+      local sides = resolution == "auto"
+        ? [ 0, 0 ] // To be sorted first.
+        : resolution.split("x").apply(@(v) ::to_integer_safe(::strip(v), 0, false))
+      return {
+        resolution = resolution
+        w = sides?[0] ?? 0
+        h = sides?[1] ?? 0
+      }
+    }
+
     local data = list.map(parseResolution).filter(@(r)
       (r.w >= minW && r.h >= minH) || r.resolution == curResolution || r.resolution == "auto")
 
@@ -537,7 +493,7 @@ mShared = {
     // Debug: Fixing the truncated list when working via Remote Desktop.
     if (isListTruncated && ::is_dev_version && ::is_platform_pc) {
       local debugResolutions = [ "1024 x 768", "1280 x 720", "1280 x 1024",
-        "1920 x 1080", "2520 x 1080", "3840 x 1080", "2560 x 1440", "3840 x 2160" ]
+        "1920 x 1080", "2520 x 1080", "3840 x 1080", "3840 x 2160" ]
       local maxW = data?[data.len() - 1].w ?? 0
       local maxH = data?[data.len() - 1].h ?? 0
       local bonus = debugResolutions.map(parseResolution).filter(@(r)
@@ -611,7 +567,6 @@ mSettings = {
       desc.def <- curResolution
       desc.restart <- !::is_platform_windows
     }
-    onChanged = "resolutionClick"
   }
   mode = { widgetType="list" def="fullscreen" blk="video/mode" restart=true
     init = function(blk, desc) {
@@ -645,19 +600,6 @@ mSettings = {
   graphicsQuality = { widgetType="tabs" def="high" blk="graphicsQuality" restart=false
     values = [ "ultralow", "low", "medium", "high", "max", "movie", "custom" ]
     onChanged = "graphicsQualityClick"
-  }
-  dlss = { widgetType="list" def="off" blk="video/dlssQuality" restart=false
-    init = function(blk, desc) {
-      desc.values <- getAvailableDlssModes()
-    }
-    getFromBlk = function(blk, desc) {
-      local quality = ::get_blk_value_by_path(blk, desc.blk, -1)
-      return (quality == 0) ? "performance" : (quality == 1) ? "balanced" : (quality == 2) ? "quality" : "off"
-    }
-    setToBlk = function(blk, desc, val) {
-      local quality = (val == "performance") ? 0 : (val == "balanced") ? 1 : (val == "quality") ? 2 : -1
-      ::set_blk_value_by_path(blk, desc.blk, quality)
-    }
   }
   anisotropy = { widgetType="list" def="2X" blk="graphics/anisotropy" restart=true
     values = [ "off", "2X", "4X", "8X", "16X" ]
@@ -954,8 +896,7 @@ local function configRead() {
   mCfgInitial = {}
   mCfgCurrent = {}
   mBlk = ::DataBlock()
-  if (!mBlk.tryLoad(::get_config_name()))
-    ::dagor.debug(::get_config_name()+" not read")
+  mBlk.load(::get_config_name())
 
   foreach (id, desc in mSettings) {
     if ("init" in desc)
@@ -976,8 +917,7 @@ local function configRead() {
 
 local function init() {
   local blk = ::DataBlock()
-  if (!blk.tryLoad(::get_config_name()))
-    ::dagor.debug(::get_config_name()+" not read")
+  blk.load(::get_config_name())
 
   foreach (id, desc in mSettings) {
     if ("init" in desc)
@@ -1091,7 +1031,7 @@ local function applyRestartEngine(reloadScene = false) {
   if (!reloadScene)
     return
 
-  ::handlersManager.doDelayed(::handlersManager.markfullReloadOnSwitchScene)
+  ::handlersManager.markfullReloadOnSwitchScene()
   ::call_darg("updateExtWatched", {
       resolution = mCfgCurrent.resolution
       screenMode = mCfgCurrent.mode
@@ -1275,11 +1215,15 @@ local function fillGuiOptions(containerObj, handler) {
           option = ::create_option_switchbox(config)
           break
         case "slider":
-          desc.step <- desc?.step ?? ::max(1, ::round((desc.max - desc.min) / mMaxSliderSteps).tointeger())
           option = ::create_option_slider(desc.widgetId, mCfgCurrent[id], cb, true, "slider", desc)
           break
         case "list":
-          option = getListOption(id, desc, cb)
+          local raw = desc.values.indexof(mCfgCurrent[id]) ?? -1
+          local customItems = ("items" in desc) ? desc.items : null
+          local items = []
+          foreach (index, valueId in desc.values)
+            items.append(customItems ? customItems[index] : localize(id, valueId))
+          option = ::create_option_combobox(desc.widgetId, items, raw, cb, true)
           break
         case "tabs":
           local raw = desc.values.indexof(mCfgCurrent[id]) ?? -1
@@ -1294,7 +1238,7 @@ local function fillGuiOptions(containerObj, handler) {
               tooltip = ::loc(format("guiHints/%s_%s", id, valueId)) + warn
             })
           }
-          option = ::create_option_row_listbox(desc.widgetId, items, raw, cb, isTable)
+        option = ::create_option_row_listbox(desc.widgetId, items, raw, cb, isTable)
           break
         case "editbox":
           local raw = mCfgCurrent[id].tostring()

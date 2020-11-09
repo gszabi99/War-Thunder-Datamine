@@ -18,6 +18,7 @@ local battlesFilters = [
     title = @() ::loc("worldwar/battlesFilter/byUnitType")
     flow = "horizontal"
     onCancelEdit = "goBack"
+    needWrapNavigation = true
     list = []
     visibleFilterByUnitTypeMasks = [unitTypes.AIRCRAFT.bit, unitTypes.TANK.bit,
       unitTypes.SHIP.bit, unitTypes.AIRCRAFT.bit | unitTypes.TANK.bit,
@@ -43,6 +44,7 @@ local battlesFilters = [
     multiSelectId = "by_available_battles"
     title = @() ::loc("worldwar/battlesFilter/byAvailableBattles")
     onCancelEdit = "goBack"
+    needWrapNavigation = true
     list = [
       {
         value = UNAVAILABLE_BATTLES_CATEGORIES.NO_AVAILABLE_UNITS
@@ -157,6 +159,7 @@ class ::gui_handlers.wwBattlesFilterMenu extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType      = handlerType.MODAL
   sceneTplName = "gui/worldWar/wwBattlesFilterMenu"
+  shouldBlurSceneBg = false
   needVoiceChat = false
 
   rows = null
@@ -179,11 +182,13 @@ class ::gui_handlers.wwBattlesFilterMenu extends ::gui_handlers.BaseGuiHandlerWT
   function initScreen()
   {
     align = ::g_dagui_utils.setPopupMenuPosAndAlign(alignObj, align, scene.findObject("main_frame"))
+    restoreFocus()
   }
 
   function initListValues()
   {
     rows = []
+    focusArray = []
     foreach(filterCategory in battlesFilters)
     {
       if (filterCategory.multiSelectId == "by_unit_type")
@@ -200,6 +205,7 @@ class ::gui_handlers.wwBattlesFilterMenu extends ::gui_handlers.BaseGuiHandlerWT
         continue
 
       rows.append(filterCategory)
+      focusArray.append(filterCategory.multiSelectId)
     }
   }
 

@@ -31,6 +31,10 @@ class ::gui_handlers.SelectCrew extends ::gui_handlers.BaseGuiHandlerWT
   takeCrewIdInCountry = -1
   isNewUnit = false
 
+  focusArray = [
+    function() { return slotbarWeak && slotbarWeak.getFocusObj() }   // slotbar
+  ]
+
   isSelectByGroups = false
 
   function initScreen()
@@ -84,12 +88,9 @@ class ::gui_handlers.SelectCrew extends ::gui_handlers.BaseGuiHandlerWT
         unitForSpecType = unit,
         alwaysShowBorder = true
         hasExtraInfoBlock = true
-        slotbarBehavior = "posNavigator"
-        needFullSlotBlock = true
 
         afterSlotbarSelect = onChangeUnit
-        onSlotDblClick = ::Callback(onApplyCrew, this)
-        onSlotActivate = ::Callback(onApplyCrew, this)
+        onSlotDblClick = onApplyCrew
       },
       "take-aircraft-slotbar")
 
@@ -97,7 +98,9 @@ class ::gui_handlers.SelectCrew extends ::gui_handlers.BaseGuiHandlerWT
 
     local legendObj = fillLegendData()
 
-    ::move_mouse_on_child_by_value(slotbarWeak && slotbarWeak.getCurrentAirsTable())
+    local airTblObj = slotbarWeak && slotbarWeak.getCurrentAirsTable()
+    if (::checkObj(airTblObj))
+      airTblObj.select()
 
     local textObj = scene.findObject("take-aircraft-text")
     textObj.setValue(messageText)
@@ -106,6 +109,7 @@ class ::gui_handlers.SelectCrew extends ::gui_handlers.BaseGuiHandlerWT
 
     updateObjectsPositions(tdClone, legendObj, textObj)
     checkUseTutorial()
+    delayedRestoreFocus()
   }
 
   createSlotbarHandler = @(params) isSelectByGroups

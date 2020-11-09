@@ -1,13 +1,10 @@
 <<#items>>
-blur {}
-blur_foreground {}
-
-//
+bgGradientRight {}
 
 expandable {
   id:t='<<performActionId>>'
   type:t='battleTask'
-  <<#action>> on_click:t='<<action>>' <</action>>
+  <<^isOnlyInfo>><<#action>> on_click:t='<<action>>' <</action>><</isOnlyInfo>>
   task_id:t='<<id>>'
 
   <<#taskStatus>>
@@ -19,12 +16,10 @@ expandable {
   <</showAsUsualPromoButton>>
 
   fullSize:t='yes'
-  <<#isShowNameInHeader>>headerBg {}<</isShowNameInHeader>>
   selImg {
     header {
+      left:t='pw-w'
       position:t='relative'
-      <<^headerWidth>>left:t='pw-w'<</headerWidth>>
-      padding-right:t='1@blockInterval'
       <<#taskStatus>>
         statusImg {}
       <</taskStatus>>
@@ -44,25 +39,18 @@ expandable {
         background-image:t='<<taskDifficultyImage>>'
       }
       <</taskDifficultyImage>>
-      <<#headerWidth>>width:t='<<headerWidth>>'<</headerWidth>>
-      tdiv {
-        width:t='pw'
-        position:t='relative'
-        top:t='0.5ph-0.5h'
-        autoScrollText:t='yes'
-        overflow:t='hidden'
-        css-hier-invalidate:t='yes'
-        textareaNoTab {
-          text:t='<<title>>'
-          position:t='relative'
-          auto-scroll:t='medium'
 
-          <<^showAsUsualPromoButton>>
-            <<#isLowWidthScreen>>
-              normalFont:t='yes'
-            <</isLowWidthScreen>>
-          <</showAsUsualPromoButton>>
-        }
+      textareaNoTab {
+        text:t='<<title>>'
+        top:t='50%ph-50%h'
+        position:t='relative'
+
+        <<^showAsUsualPromoButton>>
+          overlayTextColor:t='active'
+          <<#isLowWidthScreen>>
+            normalFont:t='yes'
+          <</isLowWidthScreen>>
+        <</showAsUsualPromoButton>>
       }
 
       <<#refreshTimer>>
@@ -74,13 +62,30 @@ expandable {
           text:t=''
         }
       <</refreshTimer>>
+
+      <<#taskRankValue>>
+      textareaNoTab {
+        text:t='<<taskRankValue>>'
+        overlayTextColor:t='active'
+        top:t='50%ph-50%h'
+        position:t='relative'
+
+        <<^showAsUsualPromoButton>>
+          overlayTextColor:t='active'
+          <<#isLowWidthScreen>>
+            normalFont:t='yes'
+          <</isLowWidthScreen>>
+        <</showAsUsualPromoButton>>
+      }
+      <</taskRankValue>>
     }
 
-    tdiv {
+    hiddenDiv {
       width:t='pw'
       flow:t='vertical'
-      <<#isShowNameInHeader>>padding-top:t='1@blockInterval'<</isShowNameInHeader>>
+      <<#isOnlyInfo>> showHidden:t='yes' <</isOnlyInfo>>
 
+      <<^isOnlyInfo>>
       <<#taskImage>>
       img {
         width:t='pw'
@@ -115,6 +120,7 @@ expandable {
         <</taskPlayback>>
       }
       <</taskImage>>
+      <</isOnlyInfo>>
 
       <<@description>>
 
@@ -132,6 +138,7 @@ expandable {
       }
       <</reward>>
 
+      <<^isOnlyInfo>>
       tdiv {
         width:t='pw'
 
@@ -171,6 +178,7 @@ expandable {
         }
         <</canGetReward>>
       }
+      <</isOnlyInfo>>
     }
 
     expandImg {
@@ -180,53 +188,16 @@ expandable {
       pos:t='50%pw-50%w, ph-h'; position:t='absolute'
       background-image:t='#ui/gameuiskin#expand_info'
       background-color:t='@premiumColor'
+      <<#isOnlyInfo>> hideExpandImg:t='yes' <</isOnlyInfo>>
     }
 
-    <<#easyDailyTaskProgressValue>>
-    battlePassInfoWatch {
-      id:t='easy_daily_task_progress'
-      css-hier-invalidate:t='yes'
-      value:t='<<easyDailyTaskProgressValue>>'
+    <<#otherTasksNum>>
       textareaNoTab {
-        id:t='text'
-        tinyFont:t='yes'
-      }
-      icon {}
-    }
-    <</easyDailyTaskProgressValue>>
-    <<#mediumDailyTaskProgressValue>>
-    battlePassInfoWatch {
-      id:t='medium_daily_task_progress'
-      css-hier-invalidate:t='yes'
-      value:t='<<mediumDailyTaskProgressValue>>'
-      textareaNoTab {
-        id:t='text'
-        tinyFont:t='yes'
-      }
-      icon {}
-    }
-    <</mediumDailyTaskProgressValue>>
-
-    <<#otherTasksNumText>>
-      textareaNoTab {
-        text:t='<<otherTasksNumText>>'
+        text:t='<<?mainmenu/battleTasks/OtherTasksCount>>'
         position:t='relative'
         pos:t='pw-w, 0'
-        hideEmptyText:t='yes'
       }
-    <</otherTasksNumText>>
-
-    <<#leftSpecialTasksBoughtCountValue>>
-    battlePassInfoWatch {
-      id:t='left_special_tasks_bought_count'
-      value:t='<<leftSpecialTasksBoughtCountValue>>'
-      textareaNoTab {
-        id:t='text'
-        left:t='pw-w'
-        position:t='relative'
-      }
-    }
-    <</leftSpecialTasksBoughtCountValue>>
+    <</otherTasksNum>>
 
     <<#warbondLevelPlace>>
       progressBoxPlace {
@@ -291,20 +262,13 @@ expandable {
       }
     <</newItemsAvailable>>
   }
+
+  fgLine {}
 }
 
 collapsedContainer {
-  <<#hasCollapsedText>>width:t='1@arrowButtonWidth+1@contentRightPadding'<</hasCollapsedText>>
-  <<#collapsedAction>>
-  on_click:t='<<collapsedAction>>Collapsed'
-  focusBtnName:t='A'
-  shortcut-on-hover:t='yes'
-  <</collapsedAction>>
-
-  <<^isEmptyTask>>
+  <<#collapsedAction>> on_click:t='<<collapsedAction>>Collapsed' <</collapsedAction>>
   shortInfoBlock {
-    position:t='relative'
-    left:t='pw-w'
     <<#taskStatus>>
       battleTaskStatus:t='<<taskStatus>>'
       statusImg {}
@@ -315,31 +279,22 @@ collapsedContainer {
         background-image:t='<<taskDifficultyImage>>'
       }
     <</taskDifficultyImage>>
-    <<#shortInfoBlockWidth>>width:t='<<shortInfoBlockWidth>>'<</shortInfoBlockWidth>>
-    tdiv {
-      width:t='fw'
-      position:t='relative'
-      top:t='0.5ph-0.5h'    
-      overflow:t='hidden'
-      css-hier-invalidate:t='yes'
-      shortHeaderText {
-        text:t='<<collapsedText>>'
-        auto-scroll:t='medium'
-      }
-    }
+    shortHeaderText { text:t='<<collapsedText>>' }
 
-    shortHeaderIcon {
-      <<#hasMarginCollapsedIcon>>margin-left:t='1@blockInterval'<</hasMarginCollapsedIcon>>
-      text:t='<<collapsedIcon>>'
-    }
+    <<^needShowProgressBar>>
+      <<#needShowProgressValue>>
+        shortHeaderText { text:t=' (<<progressValue>>/<<progressMaxValue>>) ' }
+      <</needShowProgressValue>>
+    <</needShowProgressBar>>
+
+    shortHeaderIcon { text:t='<<collapsedIcon>>' }
   }
-  <</isEmptyTask>>
 
   <<#needShowProgressBar>>
   progressDiv {
     left:t='pw-w'
     position:t='relative'
-    margin:t='0.005@sf'
+    margin-bottom:t='0.005@sf'
     battleTaskProgress {
       top:t='50%ph-50%h'
       position:t='relative'
@@ -367,7 +322,6 @@ collapsedContainer {
 }
 baseToggleButton {
   id:t='<<id>>_toggle'
-  pos:t='pw-w-1@blockInterval'
   on_click:t='onToggleItem'
   type:t='right'
   directionImg {}

@@ -1,8 +1,7 @@
 {
   "root": {
     "type": "big",
-    "blur": [],
-    "blur_foreground": [],
+    "background-color": "@modalShadeColor",
     "frame": [
       {
         "width": "0.99sw $min 1.7sh"
@@ -41,6 +40,8 @@
           "normalFont": "yes",
           "withImages": "no",
           "navigatorShortcuts": "yes",
+          "on_wrap_up": "onWrapUp",
+          "on_wrap_down": "onWrapDown",
           "on_select": "onHelpSubSheetChange"
         }
       },

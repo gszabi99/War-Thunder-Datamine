@@ -1,5 +1,5 @@
 tdiv {
-  width:t='pw'
+  style:t='padding-bottom:4;'
   flow:t='vertical'
 
   activeText {
@@ -67,7 +67,7 @@ tdiv {
   <</needCurPoints>>
 
   table {
-    padding:t='1@blockInterval'
+    padding:t='0, 12*@sf/@pf_outdated'
     width:t='pw'
 
     <<#categoryRows>>
@@ -103,9 +103,15 @@ tdiv {
       }
 
       td {
+
+        // This fixes strange bug with text
+        // area repositioning when mouse moves.
+        width:t='0.1@sf'
+
         textarea {
-          pos:t='pw-w, 0'
+          pos:t='0.5(pw-w), 0'
           position:t='relative'
+          padding-left:t='@tablePad'
           text:t='<<categoryValue>>/<<categoryMaxValue>>'
         }
       }
@@ -114,10 +120,13 @@ tdiv {
   }
 
   Button_text {
-    width:t='pw'
     on_click:t='onCrewButtonClicked'
     text:t='#slotInfoPanel/crewButton'
     tooltip:t='#slotInfoPanel/crewButton/tooltip'
+
+    // Parent width is not set to properly
+    // handle crew info table width.
+    style:t='width:p.p.w;'
 
     showConsoleImage:t='no'
     discount_notification {

@@ -6,6 +6,9 @@ activateTab {
   padding:1@bigButtonTextPadding, 0;
   re-type:fgPict;
   background-color:@transparent;
+  border:yes;
+  border-color:@bottomBarForegroundColor;
+  border-offset: 1@dp;
 
   css-hier-invalidate:yes;
   total-input-transparent:yes;
@@ -16,6 +19,9 @@ activateTab:hover {
 }
 activateTab:pushed, activateTab[chosen=yes] {
   background-color:@slotbarBgColor;
+  foreground-color:@slotbarBgColor;
+  background-position:0, -1@dp, 0, 0;
+  foreground-position:0, 0, 0, h-1@dp;
 }
 
 tabText {
@@ -80,10 +86,6 @@ activateSelect[isTransparentBg=yes] {
 
 activateSelect.header > shopFilter {
   margin-right:0;
-}
-
-activateSelect[itemsWithCloseButtons=yes] > shopFilter {
-  mouse-pointer-centering:25, 50;
 }
 
 activateSelect.hflow {

@@ -143,7 +143,7 @@ class ::gui_handlers.ShopSearchBox extends ::gui_handlers.BaseGuiHandlerWT
 
   function onAccesskeyActivateSearch(obj)
   {
-    ::select_editbox(scene.findObject("search_edit_box"))
+    scene.findObject("search_edit_box").select()
   }
 
   function onEventShopUnitTypeSwitched(p)

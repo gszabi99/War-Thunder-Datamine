@@ -2,11 +2,14 @@ local { clearBorderSymbols } = require("std/string.nut")
 local penalties = require("scripts/penitentiary/penalties.nut")
 local { getPlayerName,
         isPlayerFromXboxOne,
-        isPlatformSony } = require("scripts/clientState/platform.nut")
+        isPlatformSony,
+        isPlatformPC } = require("scripts/clientState/platform.nut")
 local menuChatRoom = require("scripts/chat/menuChatRoom.nut")
 local { topMenuBorders } = require("scripts/mainmenu/topMenuStates.nut")
 local { isChatEnabled, isChatEnableWithPlayer,
   isCrossNetworkMessageAllowed, chatStatesCanUseVoice } = require("scripts/chat/chatStates.nut")
+local { isObjHaveActiveChilds } = require("sqDagui/guiBhv/guiBhvUtils.nut")
+local { updateContactsStatusByContacts } = require("scripts/contacts/updateContactsStatus.nut")
 
 const CHAT_ROOMS_LIST_SAVE_ID = "chatRooms"
 const VOICE_CHAT_SHOW_COUNT_SAVE_ID = "voiceChatShowCount"
@@ -105,10 +108,6 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_FULL
 
-  isChatWindowMouseOver = false
-  curHoverObjId = null
-  static editboxObjIdList = [ "menuchat_input", "search_edit" ]
-
   constructor(gui_scene, params = {})
   {
     ::g_script_reloader.registerPersistentData("MenuChatHandler", this, ["roomsInited"]) //!!FIX ME: must be in g_chat
@@ -124,7 +123,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getControlsAllowMask()
   {
-    if (!isMenuChatActive() || !scene.isEnabled())
+    if (!::last_chat_scene_show || !checkScene() || !scene.isEnabled())
       return CtrlsInGui.CTRL_ALLOW_FULL
     return wndControlsAllowMask
   }
@@ -133,55 +132,36 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     local mask = CtrlsInGui.CTRL_ALLOW_FULL
 
-    if (::last_chat_scene_show)
-    {
-      local focusObj = guiScene.getSelectedObject()
-      local hasFocusedObj = ::check_obj(focusObj) && editboxObjIdList.contains(focusObj?.id)
-
-      if (hasFocusedObj || (::show_console_buttons && isChatWindowMouseOver))
+    if (::last_chat_scene_show) {
+      local focusObj = getCurFocusObj(true)
+      if (::check_obj(focusObj))
         if (::show_console_buttons)
           mask = CtrlsInGui.CTRL_ALLOW_VEHICLE_FULL & ~CtrlsInGui.CTRL_ALLOW_VEHICLE_XINPUT
-        else
+        else if (focusObj?.id == "menuchat_input")
           mask = CtrlsInGui.CTRL_ALLOW_VEHICLE_FULL & ~CtrlsInGui.CTRL_ALLOW_VEHICLE_KEYBOARD
     }
 
     switchControlsAllowMask(mask)
   }
 
-  function onChatEditboxFocus(obj)
+  _lastMaskUpdateDelayedCall = 0
+  function updateControlsAllowMaskDelayed()
   {
-    guiScene.performDelayed(this, function() {
-      if (checkScene())
-        updateControlsAllowMask()
-    })
-  }
-
-  function onChatWindowMouseOver(obj)
-  {
-    if (!::show_console_buttons)
+    if (_lastMaskUpdateDelayedCall
+        && ::dagor.getCurTime() - _lastMaskUpdateDelayedCall < LOST_DELAYED_ACTION_MSEC)
       return
-    local isMouseOver = checkScene() && obj.isMouseOver()
-    if (isChatWindowMouseOver == isMouseOver)
-      return
-    isChatWindowMouseOver = isMouseOver
-    updateControlsAllowMask()
+
+    _lastMaskUpdateDelayedCall = ::dagor.getCurTime()
+    ::handlersManager.doDelayed(function()
+    {
+      _lastMaskUpdateDelayedCall = 0
+      updateControlsAllowMask()
+    }.bindenv(this))
   }
 
-  function onChatListHover(obj)
+  function onChatFocus(obj)
   {
-    if (checkScene() && obj.isHovered())
-      checkListValue(obj)
-  }
-
-  function selectEditbox(obj)
-  {
-    if (checkScene() && ::check_obj(obj) && obj.isVisible() && obj.isEnabled())
-      ::select_editbox(obj)
-  }
-
-  function selectChatInputEditbox()
-  {
-    selectEditbox(scene.findObject("menuchat_input"))
+    updateControlsAllowMaskDelayed()
   }
 
   function initChat(obj, resetList = true)
@@ -385,6 +365,8 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     updateHeaderBlock(roomData)
 
     sceneChanged = false
+
+    restoreChatFocus()
     return true
   }
 
@@ -508,6 +490,10 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventCrossNetworkChatOptionChanged(p)
   {
+    updateAllRoomTabs()
+  }
+
+  function onEventContactsBlockStatusUpdated(p) {
     updateAllRoomTabs()
   }
 
@@ -776,7 +762,10 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (show==null)
       show = !scene.isVisible()
     if (!show)
+    {
       loadSizes()
+      broadcastEvent("OutsideObjWrap", { obj = getCurFocusObj(), dir = -1 })
+    }
     scene.show(show)
     scene.enable(show)
     ::last_chat_scene_show = show
@@ -787,24 +776,19 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
       checkNewMessages()
       updateRoomsList()
       updateSquadInfo()
-      guiScene.performDelayed(this, restoreFocus)
-      ::update_objects_under_windows_state(guiScene)
-    }
-    else
-      ::clear_objects_under_windows(guiScene)
 
-    onChatWindowMouseOver(scene)
+      guiScene.performDelayed(this, function()
+      {
+        restoreChatFocus()
+      })
+    }
+    updateControlsAllowMaskDelayed()
   }
 
-  function restoreFocus()
+  function restoreChatFocus()
   {
-    if (!checkScene())
-      return
-    local inputObj = scene.findObject("menuchat_input")
-    if (::check_obj(inputObj) && inputObj.isVisible())
-      selectEditbox(inputObj)
-    else
-      ::move_mouse_on_child_by_value(scene.findObject("rooms_list"))
+    local focusObj = getCurFocusObj()
+    if (focusObj) focusObj.select()
   }
 
   function loadRoomParams(roomName, joinParams)
@@ -897,7 +881,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function loadSizes()
   {
-    if (isMenuChatActive())
+    if (::last_chat_scene_show && checkScene())
     {
       ::menu_chat_sizes = {}
       local obj = scene.findObject("menuchat")
@@ -940,7 +924,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
       }
     }
 
-    if (!isMenuChatActive() || !::menu_chat_sizes)
+    if (!::last_chat_scene_show || !::menu_chat_sizes || !checkScene())
       return
 
     local obj = scene.findObject("menuchat")
@@ -1184,9 +1168,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
           {
             local utbl = createRoomUserInfo(u)
             local first = utbl.name.slice(0,1)
-
-            if (::g_chat_room_type.getRoomType(db.channel).isHaveOwner
-                && (first == "@" || first == "+"))
+            if (first == "@" || first == "+")
             {
               utbl.name = utbl.name.slice(1,utbl.name.len())
               utbl.isOwner = true
@@ -1369,6 +1351,8 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
                     privateMsg, myPrivate, overlaySystemColor, important, !::g_chat.isRoomSquad(roomId))
     if (!mBlock)
       return
+
+    updateContactsStatusByContacts([::getContact(mBlock.uid, mBlock.from, mBlock.clanTag)])
 
     if (::g_chat.rooms.len() == 0)
     {
@@ -2330,7 +2314,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     updateUsersList()
   }
 
-  function onChatLinkClick(obj, itype, link)  { onChatLink(obj, link, !::show_console_buttons) }
+  function onChatLinkClick(obj, itype, link)  { onChatLink(obj, link, isPlatformPC) }
   function onChatLinkRClick(obj, itype, link) { onChatLink(obj, link, false) }
 
   function onChatLink(obj, link, lclick)
@@ -2376,7 +2360,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
       ::g_invites.acceptInviteByLink(link)
   }
 
-  function onUserListClick(obj)  { onUserList(obj, !::show_console_buttons) }
+  function onUserListClick(obj)  { onUserList(obj, isPlatformPC) }
   function onUserListRClick(obj) { onUserList(obj, false) }
 
   function onUserList(obj, lclick)
@@ -2433,15 +2417,15 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     ::add_text_to_editbox(inputObj, getPlayerName(user) + " ")
-    selectEditbox(inputObj)
+    inputObj.select()
   }
 
   function onShowSearchList()
   {
-    showSearch(null, true)
+    showSearch()
   }
 
-  function showSearch(show=null, selectSearchEditbox = false)
+  function showSearch(show=null)
   {
     if (!checkScene())
       return
@@ -2460,9 +2444,6 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
       setSavedSizes()
       if (!searchInited)
         fillSearchList()
-      showSceneBtn("btn_join_room", !::show_console_buttons)
-      if (selectSearchEditbox)
-        selectEditbox(scene.findObject("search_edit"))
     }
   }
 
@@ -2565,7 +2546,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     else if (checkScene())
     {
       scene.findObject("searchDiv").show(false)
-      selectChatInputEditbox()
+      onWrapToEditbox()
     }
   }
 
@@ -2594,7 +2575,8 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
       return closeSearch()
 
     local searchObj = scene.findObject("search_edit")
-    selectEditbox(searchObj)
+    if (::checkObj(searchObj) && searchObj.isVisible())
+      searchObj.select()
     onMainChannels()
   }
 
@@ -2617,7 +2599,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
         return
       }
 
-      selectChatInputEditbox()
+      onWrapToEditbox()
       local rName = (searchRoomList[value].slice(0,1)!="#")? "#"+searchRoomList[value] : searchRoomList[value]
       local room = ::g_chat.getRoomById(rName)
       if (room)
@@ -2805,10 +2787,94 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
   }
 
+  function wrapNextSelect(obj = null, dir = 0)
+  {
+    if (isCustomRoomActionObj(obj))
+    {
+      local customRoom = findCustomRoomByObj(obj)
+      if (customRoom && customRoom.ownerHandler && ("wrapNextSelect" in customRoom.ownerHandler))
+        customRoom.ownerHandler.wrapNextSelect.call(customRoom.ownerHandler, obj, dir)
+      return
+    }
+
+    if (checkScene())
+    {
+      base.wrapNextSelect(obj, dir)
+      updateControlsAllowMaskDelayed()
+    }
+  }
+
+  function getCurFocusObj(onlyFocused = false)
+  {
+    if (!checkScene() || scene.getModalCounter() != 0)
+      return null
+    local obj = findObjInFocusArray(true)
+    if (!obj && !onlyFocused)
+      obj = getFocusItemObj(currentFocusItem) || findObjInFocusArray(false)
+    return obj
+  }
+
+  function getHeaderFocusObj()
+  {
+    return scene.findObject("rooms_list")
+  }
+
+  function onSwitchHeaderObj(obj)
+  {
+    if (!checkScene())
+      return
+
+    local curHeaderObjId = (obj?.id == "rooms_list") ? "header_buttons" : "rooms_list"
+    local newObj = scene.findObject(curHeaderObjId)
+    if (::checkObj(newObj))
+    {
+      local chCount = newObj.childrenCount()
+      if (chCount <= 0)
+        return
+
+      for(local i = 0; i < chCount; i++)
+      {
+        local nextChObj = newObj.getChild(i)
+        if (nextChObj.isVisible() && nextChObj.isEnabled())
+        {
+          newObj.select()
+          break
+        }
+      }
+    }
+  }
+
+  function onWrapToEditbox()
+  {
+    if (!checkScene())
+      return
+    local obj = scene.findObject("menuchat_input")
+    if (::checkObj(obj))
+      obj.select()
+  }
+
+  function getUsersListObj()
+  {
+    local obj = scene.findObject("users_list")
+    return (::checkObj(obj) && obj.childrenCount())? obj : null
+  }
+
+  function getButtonsObj()
+  {
+    local obj = scene.findObject("buttons_list")
+    return (::checkObj(obj) && isObjHaveActiveChilds(obj))? obj : null
+  }
+
   function checkListValue(obj)
   {
     if (obj.getValue() < 0 && obj.childrenCount())
       obj.setValue(0)
+  }
+
+  function onChatListFocus(obj)
+  {
+    checkListValue(obj)
+    updateControlsAllowMaskDelayed()
   }
 
   function onEventInviteReceived(params)
@@ -2826,6 +2892,29 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     onEventInviteReceived(params)
   }
+
+  function getRoomHandlerFocusObj(idx)
+  {
+    if (!roomHandlerWeak || !roomHandlerWeak.isSceneActive())
+      return null
+
+    local funcId = "getMainFocusObj" + ((idx == 1)? "" : idx)
+    return roomHandlerWeak[funcId]()
+  }
+
+  isPrimaryFocus = false
+  focusArray = [
+    function() { return getHeaderFocusObj() }
+    function() { return getUsersListObj() }
+    function() { return getButtonsObj() }
+    "search_edit"
+    function() { return (searchRoomList && searchRoomList.len())? scene.findObject("searchList") : null }
+    function() { return getRoomHandlerFocusObj(1) }
+    function() { return getRoomHandlerFocusObj(2) }
+    function() { return getRoomHandlerFocusObj(3) }
+    "menuchat_input"
+  ]
+  currentFocusItem = -1
 
   scene = null
   sceneChanged = true
@@ -2999,6 +3088,13 @@ if (::g_login.isLoggedIn())
     return null
   local inputBox = obj.findObject("menuchat_input")
   return ::checkObj(inputBox)? inputBox : null
+}
+
+::get_menuchat_focus_obj <- function get_menuchat_focus_obj()
+{
+  if (::menu_chat_handler)
+    return ::menu_chat_handler.getCurFocusObj.call(::menu_chat_handler)
+  return null
 }
 
 ::isUserBlockedByPrivateSetting <- function isUserBlockedByPrivateSetting(uid = null, userName = "")

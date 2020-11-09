@@ -55,7 +55,6 @@ expandable {
           overlayTextColor:t='minor'
           smallFont:t='yes'
           text:t='<<getOwnerText>>'
-          focusBtnName:t='A'
 
           behaviour:t='button'
           on_r_click:t='onUserInfo'
@@ -126,7 +125,7 @@ expandable {
           btnName:t=''
           ButtonImg {
             btnName:t='A'
-            showOnSelect:t='hover'
+            showOnSelect:t='focus'
           }
         }
       }

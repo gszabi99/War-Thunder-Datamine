@@ -75,7 +75,7 @@
     "armor_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
-        "hp": 32.6
+        "hp": 49.5
       }
     },
     "c_dural3": {
@@ -138,14 +138,6 @@
       "wing2_r_dm": {
         "genericDamageMult": 0.3,
         "hp": 40.5
-      },
-      "wing_l_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 80.5
-      },
-      "wing_r_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 80.5
       }
     },
     "dural": {
@@ -241,6 +233,14 @@
       },
       "tank7_dm": {
         "hp": 39.5
+      }
+    },
+    "wood": {
+      "wing_l_dm": {
+        "hp": 95.2
+      },
+      "wing_r_dm": {
+        "hp": 95.2
       }
     }
   },
@@ -570,10 +570,9 @@
         },
         {
           "onHit": {
-            "damage": 2.0,
+            "damage": 2.7,
             "fire": 0.01,
             "leak_oil": 0.5,
-            "leak_water": 0.45,
             "cut": 0.0
           }
         },
@@ -581,8 +580,7 @@
           "onHit": {
             "damage": 30.0,
             "fire": 0.1,
-            "leak_oil": 0.8,
-            "leak_water": 1.0,
+            "leak_oil": 1.0,
             "cut": 0.0
           }
         },
@@ -590,16 +588,14 @@
           "onKill": {
             "fire": 30.0,
             "leak_oil": 10.0,
-            "leak_water": 10.0,
             "cut": 0.0
           }
         },
         {
           "onKill": {
             "damage": 30.0,
-            "fire": 45.0,
+            "fire": 44.0,
             "leak_oil": 10.0,
-            "leak_water": 10.0,
             "cut": 0.0
           }
         }
@@ -1142,8 +1138,8 @@
       "part": {
         "name": "spar1_l_dm",
         "onKill": {
-          "nothing": 2.0,
-          "cut": 4.0
+          "nothing": 0.0,
+          "cut": 1.0
         }
       }
     },
@@ -1151,8 +1147,8 @@
       "part": {
         "name": "spar1_r_dm",
         "onKill": {
-          "nothing": 2.0,
-          "cut": 4.0
+          "nothing": 0.0,
+          "cut": 1.0
         }
       }
     },
@@ -1160,8 +1156,8 @@
       "part": {
         "name": "spar2_l_dm",
         "onKill": {
-          "nothing": 2.0,
-          "cut": 4.0
+          "nothing": 0.0,
+          "cut": 1.0
         }
       }
     },
@@ -1169,8 +1165,8 @@
       "part": {
         "name": "spar2_r_dm",
         "onKill": {
-          "nothing": 2.0,
-          "cut": 4.0
+          "nothing": 0.0,
+          "cut": 1.0
         }
       }
     },
@@ -2180,7 +2176,7 @@
         "midNode": "Bip01 L Calf",
         "upNode": "Bip01 L Thigh",
         "targetNode": "pedal_lfoot_1",
-        "flexionDir": [0.3,1.0,0.0]
+        "flexionDir": [0.0,1.0,0.3]
       }
     },
     {
@@ -2189,7 +2185,7 @@
         "midNode": "Bip01 R Calf",
         "upNode": "Bip01 R Thigh",
         "targetNode": "pedal_rfoot_1",
-        "flexionDir": [-0.3,1.0,0.0]
+        "flexionDir": [0.0,1.0,-0.3]
       }
     }
   ],

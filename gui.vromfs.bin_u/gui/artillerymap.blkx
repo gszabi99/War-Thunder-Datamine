@@ -26,9 +26,8 @@
         "button": {
           "size": "sw, sh",
           "position": "root",
-          "class": "fullscreenBgButton",
-          "_on_click": "onOutsideMapClick",
-          "_on_r_click": "onOutsideMapClick"
+          "_on_click": "goBack",
+          "_on_r_click": "goBack"
         }
       },
       {
@@ -522,6 +521,27 @@
                           "gcButtonsInterval": "yes"
                         },
                         {
+                          "behaviour": "wrapNavigator"
+                        },
+                        {
+                          "navigatorShortcuts": "yes"
+                        },
+                        {
+                          "childsActivate": "yes"
+                        },
+                        {
+                          "on_wrap_up": "onWrapUp"
+                        },
+                        {
+                          "on_wrap_down": "onWrapDown"
+                        },
+                        {
+                          "on_wrap_left": "onTopGCPanelLeft"
+                        },
+                        {
+                          "on_wrap_right": "onTopGCPanelRight"
+                        },
+                        {
                           "Button_text": {
                             "id": "gc_clanTag",
                             "tooltip": "#mainmenu/btnClanCard",
@@ -612,6 +632,27 @@
                       },
                       {
                         "gcButtonsInterval": "yes"
+                      },
+                      {
+                        "behaviour": "wrapNavigator"
+                      },
+                      {
+                        "navigatorShortcuts": "yes"
+                      },
+                      {
+                        "childsActivate": "yes"
+                      },
+                      {
+                        "on_wrap_up": "onWrapUp"
+                      },
+                      {
+                        "on_wrap_down": "onWrapDown"
+                      },
+                      {
+                        "on_wrap_left": "onTopGCPanelLeft"
+                      },
+                      {
+                        "on_wrap_right": "onTopGCPanelRight"
                       },
                       {
                         "Button_text": [

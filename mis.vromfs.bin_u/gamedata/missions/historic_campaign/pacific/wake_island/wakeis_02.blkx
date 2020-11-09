@@ -2,6 +2,10 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 30.0
+    },
     "player": {
       "army": 1,
       "wing": "armada_01"
@@ -17,11 +21,9 @@
       "isLocal": true,
       "isOnline": false,
       "attempts": false,
-      "windDirection": [1.0,0.0,0.0],
       "restoreType": "tactical control",
       "optionalTakeOff": false,
-      "forceSkiesInitialRandomSeed": true,
-      "skiesInitialRandomSeed": 0,
+      "windDirection": [1.0,0.0,0.0],
       "windSpeed": [5.0,5.0],
       "windDirectionDeg": [90.0,90.0],
       "stars": {
@@ -33,21 +35,43 @@
         "localTime": 10.0
       },
       "customWeather": {
+        "scatteringEffect": 0.0,
+        "cloud_shadow_intensity": 0.7,
         "windDir": [0.6,0.8],
         "wind_scale": 1.0,
         "max_wind_strength": 6.0,
         "sky": {
-          "mie_height": 0.5
+          "mie_height": 0.5,
+          "mieG": 0.5,
+          "betaMScale": 0.5,
+          "clouds_overcast": 0.5
+        },
+        "clouds_gen": {
+          "humidity": 0.05,
+          "persistence": 0.2,
+          "asymmetry": 0.11
+        },
+        "clouds_position": {
+          "start_altitude": 1.5,
+          "thickness": 4.5,
+          "light_extinction": 1.2,
+          "amb_extinction_mul": 1.0
+        },
+        "clouds_render": {
+          "silver_lining": 0.5,
+          "sun_light": 0.7,
+          "ambient": 0.5,
+          "silver_lining_eccentricity": 0.6
         },
         "strata_clouds": {
           "amount": 1.0,
           "altitude": 10.0
+        },
+        "rain": {
+          "rainFromInvisibleClouds": false,
+          "probability": 0.0
         }
       }
-    },
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 30.0
     },
     "spectator_points": [],
     "briefing": [
@@ -70,8 +94,7 @@
           "slide": {
             "map": false,
             "minTime": 6,
-            "picture": "wake_island/briefing_slide_wakeisland_m1_part1",
-            "showAirMap": false
+            "picture": "wake_island/briefing_slide_wakeisland_m1_part1"
           }
         }
       },
@@ -82,8 +105,7 @@
           "slide": {
             "map": false,
             "minTime": 6,
-            "picture": "wake_island/briefing_slide_wakeisland_m1_part2",
-            "showAirMap": false
+            "picture": "wake_island/briefing_slide_wakeisland_m1_part2"
           }
         }
       },
@@ -99,16 +121,14 @@
             "slide": {
               "map": false,
               "minTime": 3,
-              "picture": "wake_island/briefing_slide_wakeisland_m1_part3a",
-              "showAirMap": false
+              "picture": "wake_island/briefing_slide_wakeisland_m1_part3a"
             }
           },
           {
             "slide": {
               "map": false,
               "minTime": 3,
-              "picture": "wake_island/briefing_slide_wakeisland_m1_part3b",
-              "showAirMap": false
+              "picture": "wake_island/briefing_slide_wakeisland_m1_part3b"
             }
           }
         ]
@@ -120,8 +140,7 @@
           "slide": {
             "map": false,
             "minTime": 6,
-            "picture": "wake_island/briefing_slide_wakeisland_m1_part4",
-            "showAirMap": false
+            "picture": "wake_island/briefing_slide_wakeisland_m1_part4"
           }
         }
       },
@@ -132,8 +151,7 @@
           "slide": {
             "map": false,
             "minTime": 6,
-            "picture": "wake_island/briefing_slide_wakeisland_m1_part5",
-            "showAirMap": false
+            "picture": "wake_island/briefing_slide_wakeisland_m1_part5"
           }
         }
       },
@@ -150,9 +168,6 @@
             },
             {
               "picture": ""
-            },
-            {
-              "showAirMap": false
             },
             {
               "icon": {
@@ -321,11 +336,6 @@
             "shouldFadeOut": false,
             "time": -1.0,
             "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
@@ -437,11 +447,6 @@
             "shouldFadeOut": false,
             "time": -1.0,
             "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
@@ -494,11 +499,6 @@
           "shouldFadeOut": false,
           "time": -1.0,
           "priority": 0,
-          "isOverFade": false,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "item": "ID_SKIP_CUTSCENE",
           "shouldBlink": false
         },
@@ -623,18 +623,6 @@
         {
           "unitSetProperties": [
             {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
               "object": "btry_F"
             },
             {
@@ -666,18 +654,6 @@
         {
           "unitSetProperties": [
             {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
               "object": "merchant_ships"
             },
             {
@@ -708,18 +684,6 @@
         },
         {
           "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
             {
               "object": "btry_L"
             },
@@ -754,9 +718,7 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "wakeIs_mission2_fly00",
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "target": "wakeIs_mission2_fly00"
           }
         },
         {
@@ -787,9 +749,6 @@
           "check_objects": "any",
           "target_type": "isAlive",
           "check_period": 1.0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "player_sq"
         }
       },
@@ -802,9 +761,7 @@
         {
           "moSetObjectiveStatus": {
             "target": "wakeIs_mission2_fly00",
-            "status": 2,
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "status": 2
           }
         },
         {
@@ -894,13 +851,6 @@
             "horizontalDirectionForTeleport": true,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "armada_01_cut",
             "move_type": "teleport",
             "lookat": "merchant_ships",
@@ -918,13 +868,6 @@
             "horizontalDirectionForTeleport": true,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "armada_01_cut"
           }
         },
@@ -965,11 +908,6 @@
             "shouldFadeOut": false,
             "time": -1.0,
             "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
@@ -1086,11 +1024,6 @@
             "shouldFadeOut": false,
             "time": -1.0,
             "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
@@ -1165,11 +1098,6 @@
           "shouldFadeOut": false,
           "time": -1.0,
           "priority": 0,
-          "isOverFade": false,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "item": "ID_SKIP_CUTSCENE",
           "shouldBlink": false
         },
@@ -1240,13 +1168,6 @@
             "horizontalDirectionForTeleport": true,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "armada_01",
             "move_type": "teleport",
             "lookat": "merchant_ships",
@@ -1267,18 +1188,12 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "wakeIs_mission2_att00",
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "target": "wakeIs_mission2_att00"
           }
         },
         {
           "unitSetIndication": {
             "set": true,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "target": "merchant_ships"
           }
         },
@@ -1320,8 +1235,6 @@
           "object_type": "isAlive",
           "object_marking": 0,
           "check_objects": "any",
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
           "object": "merchant_ships",
           "target": "where_ships_disappearing"
         }
@@ -1332,9 +1245,7 @@
         },
         "moSetObjectiveStatus": {
           "target": "wakeIs_mission2_att00",
-          "status": 3,
-          "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "status": 3
         },
         "varSetBool": {
           "value": true,
@@ -1365,8 +1276,6 @@
           "object_marking": 0,
           "func": "less",
           "value": 1,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
           "object": "merchant_ships"
         }
       },
@@ -1376,9 +1285,7 @@
         },
         "moSetObjectiveStatus": {
           "target": "wakeIs_mission2_att00",
-          "status": 2,
-          "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "status": 2
         },
         "missionPlayDialogue": {
           "dialog": "wake_m1_dialogue_02_part1",
@@ -1413,10 +1320,6 @@
         {
           "unitSetIndication": {
             "set": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "target": "merchant_ships"
           }
         },
@@ -1434,18 +1337,12 @@
         {
           "unitSetIndication": {
             "set": true,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "target": "kisaragi"
           }
         },
         {
           "moAddMissionObjective": {
-            "target": "wakeIs_mission2_att01",
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "target": "wakeIs_mission2_att01"
           }
         },
         {
@@ -1493,8 +1390,6 @@
           "object_type": "isAlive",
           "object_marking": 0,
           "check_objects": "any",
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
           "object": "kisaragi",
           "target": "where_ships_disappearing"
         }
@@ -1505,9 +1400,7 @@
         },
         "moSetObjectiveStatus": {
           "target": "wakeIs_mission2_att01",
-          "status": 3,
-          "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "status": 3
         },
         "varSetBool": {
           "value": true,
@@ -1543,8 +1436,6 @@
           "object_marking": 0,
           "func": "less",
           "value": 1,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
           "object": "kisaragi"
         }
       },
@@ -1554,9 +1445,7 @@
         },
         "moSetObjectiveStatus": {
           "target": "wakeIs_mission2_att01",
-          "status": 2,
-          "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "status": 2
         },
         "triggerEnable": {
           "target": "land_objective"
@@ -1610,10 +1499,6 @@
         {
           "unitSetIndication": {
             "set": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "target": "kisaragi"
           }
         },
@@ -1625,9 +1510,7 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "wakeIs_mission2_land00",
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "target": "wakeIs_mission2_land00"
           }
         },
         {
@@ -1644,11 +1527,6 @@
             "shouldFadeOut": false,
             "time": -1.0,
             "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_MPSTATSCREEN",
             "shouldBlink": false
           }
@@ -1660,12 +1538,7 @@
             "action": "hide",
             "shouldFadeOut": true,
             "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
+            "priority": 0
           }
         },
         {
@@ -1706,9 +1579,6 @@
           "object_marking": 0,
           "check_objects": "any",
           "afterRepaired": false,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "player_sq",
           "target": "airfield00"
         }
@@ -1723,9 +1593,7 @@
         {
           "moSetObjectiveStatus": {
             "target": "wakeIs_mission2_land00",
-            "status": 2,
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "status": 2
           }
         },
         {
@@ -1825,15 +1693,6 @@
             "check_period": 1.0
           },
           {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object_var_value": 0
-          },
-          {
             "object": "cruisers00"
           },
           {
@@ -1872,12 +1731,6 @@
             "value": 2
           },
           {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
             "object": "cruisers00"
           },
           {
@@ -1893,18 +1746,6 @@
       },
       "actions": {
         "unitSetProperties": [
-          {
-            "object_marking": 0
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object_var_value": 0
-          },
           {
             "object": "btry_B00"
           },
@@ -1944,9 +1785,6 @@
           "check_objects": "all",
           "target_type": "isAlive",
           "check_period": 1.0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "kisaragi"
         }
       },
@@ -2012,7 +1850,6 @@
           "unitRestore": {
             "ressurectIfDead": true,
             "fullRestore": true,
-            "target_marking": 0,
             "target": "player_sq"
           }
         },
@@ -2082,10 +1919,6 @@
         },
         {
           "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "cutscene_planes",
             "isImmortal": true
           }
@@ -2214,11 +2047,6 @@
             "shouldFadeOut": false,
             "time": -1.0,
             "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
@@ -2356,13 +2184,6 @@
             "horizontalDirectionForTeleport": true,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "cutscene_planes",
             "move_type": "teleport",
             "lookat": "deb_cut_move",
@@ -2414,13 +2235,6 @@
             "horizontalDirectionForTeleport": true,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "cutscene_planes",
             "lookat": "deb_cut_move",
             "velocity": 250.0
@@ -2439,11 +2253,6 @@
             "shouldFadeOut": false,
             "time": -1.0,
             "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
@@ -2494,11 +2303,6 @@
           "shouldFadeOut": false,
           "time": -1.0,
           "priority": 0,
-          "isOverFade": false,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "item": "ID_SKIP_CUTSCENE",
           "shouldBlink": false
         },
@@ -2557,29 +2361,18 @@
           "object_marking": 0,
           "target_type": "isAlive",
           "check_period": 1.0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "target": "notShootingArea"
         }
       },
       "actions": [
         {
           "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "armada_01",
             "targetableByAi": false
           }
         },
         {
           "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "player_sq",
             "targetableByAi": true
           }
@@ -2608,18 +2401,11 @@
           "object_marking": 0,
           "target_type": "isAlive",
           "check_period": 1.0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "target": "notShootingArea"
         }
       },
       "actions": {
         "unitSetProperties": {
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "armada_01",
           "targetableByAi": false
         }
@@ -2667,11 +2453,6 @@
             "shouldFadeOut": false,
             "time": -1.0,
             "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_MPSTATSCREEN",
             "shouldBlink": false
           }
@@ -2689,11 +2470,6 @@
             "shouldFadeOut": false,
             "time": -1.0,
             "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_MPSTATSCREEN",
             "shouldBlink": false
           }
@@ -2728,9 +2504,6 @@
             "check_objects": "all",
             "target_type": "isAlive",
             "check_period": 1.0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "armada_01"
           }
         },
@@ -2741,9 +2514,6 @@
             "check_objects": "all",
             "target_type": "isAlive",
             "check_period": 1.0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "player_sq"
           }
         }
@@ -2756,12 +2526,7 @@
             "action": "show",
             "shouldFadeOut": true,
             "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
+            "priority": 0
           }
         },
         {
@@ -2788,12 +2553,7 @@
             "action": "hide",
             "shouldFadeOut": true,
             "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
+            "priority": 0
           }
         }
       ],
@@ -3102,8 +2862,6 @@
         ],
         "unit_class": "f4f-3",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "f4f-3_bombs_hidden",
         "bullets0": "",
         "bullets1": "",
@@ -3113,7 +2871,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -3150,8 +2907,6 @@
         ],
         "unit_class": "ijn_cargo_ship",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3161,7 +2916,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3251,8 +3005,6 @@
         ],
         "unit_class": "ijn_dd_shiratsuyu",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3262,7 +3014,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 3,
@@ -3336,8 +3087,6 @@
         ],
         "unit_class": "ijn_dd_shiratsuyu",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3347,7 +3096,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 2,
@@ -3453,8 +3201,6 @@
         ],
         "unit_class": "ijn_ca_myoko",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3464,7 +3210,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 2,
@@ -3554,8 +3299,6 @@
         ],
         "unit_class": "us_90mm_m1",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3565,7 +3308,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 4,
@@ -3590,8 +3332,6 @@
         ],
         "unit_class": "us_155mm_m114_ultimate",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3601,7 +3341,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 2,
@@ -3626,8 +3365,6 @@
         ],
         "unit_class": "us_155mm_m114_ultimate",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3637,7 +3374,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 2,
@@ -3662,8 +3398,6 @@
         ],
         "unit_class": "us_155mm_m114_ultimate",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3673,7 +3407,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 2,
@@ -3698,8 +3431,6 @@
         ],
         "unit_class": "us_90mm_m1",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3709,7 +3440,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 4,
@@ -3734,8 +3464,6 @@
         ],
         "unit_class": "us_90mm_m1",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3745,7 +3473,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 4,
@@ -3770,8 +3497,6 @@
         ],
         "unit_class": "us_155mm_m114_ultimate",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3781,7 +3506,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -3806,8 +3530,6 @@
         ],
         "unit_class": "us_90mm_m1",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3817,7 +3539,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 3,
@@ -3842,8 +3563,6 @@
         ],
         "unit_class": "us_40mm_bofors",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3853,7 +3572,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 5,
@@ -3878,8 +3596,6 @@
         ],
         "unit_class": "ijn_dd_shiratsuyu",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3889,7 +3605,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3995,8 +3710,6 @@
         ],
         "unit_class": "ijn_ca_myoko",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4006,7 +3719,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4096,8 +3808,6 @@
         ],
         "unit_class": "ijn_dd_shiratsuyu",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4107,7 +3817,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 2,
@@ -4182,8 +3891,6 @@
         ],
         "unit_class": "ijn_dd_shiratsuyu",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4193,7 +3900,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4268,8 +3974,6 @@
         ],
         "unit_class": "ijn_cargo_ship",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4279,7 +3983,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 2,
@@ -4370,8 +4073,6 @@
         ],
         "unit_class": "ijn_dd_shiratsuyu",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4381,7 +4082,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 2,
@@ -4488,8 +4188,6 @@
         ],
         "unit_class": "ijn_dd_shiratsuyu",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4499,7 +4197,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4606,8 +4303,6 @@
         ],
         "unit_class": "ijn_ca_myoko",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4617,7 +4312,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 2,
@@ -4708,9 +4402,6 @@
         ],
         "props": [
           {
-            "object_marking": 0
-          },
-          {
             "squad_members": "cutscene_cruisers01"
           },
           {
@@ -4750,9 +4441,6 @@
           [-3598.95,-91.0,2540.85]
         ],
         "props": [
-          {
-            "object_marking": 0
-          },
           {
             "squad_members": "btry_D"
           },
@@ -4794,8 +4482,6 @@
         ],
         "unit_class": "f4f-3",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "f4f-3_bombs_hidden",
         "bullets0": "",
         "bullets1": "",
@@ -4805,7 +4491,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -4842,8 +4527,6 @@
         ],
         "unit_class": "f4f-3",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "f4f-3_bombs_hidden",
         "bullets0": "",
         "bullets1": "",
@@ -4853,7 +4536,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -4893,8 +4575,6 @@
         ],
         "unit_class": "ijn_dd_shiratsuyu",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4904,7 +4584,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4979,8 +4658,6 @@
         ],
         "unit_class": "ijn_cargo_ship",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4990,7 +4667,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5080,9 +4756,6 @@
         ],
         "props": [
           {
-            "object_marking": 0
-          },
-          {
             "squad_members": "merchant_ships01"
           },
           {
@@ -5101,7 +4774,6 @@
           [2929.1,-91.0,-1552.75]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": "armada_01",
           "object_type": "isPlayer"
         }
@@ -5118,8 +4790,6 @@
         ],
         "unit_class": "us_155mm_m114_ultimate",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -5129,7 +4799,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5155,8 +4824,6 @@
         ],
         "unit_class": "ijn_dd_shiratsuyu_light",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -5166,7 +4833,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5209,8 +4875,6 @@
         ],
         "unit_class": "us_155mm_m114_ultimate",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -5220,7 +4884,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5246,8 +4909,6 @@
         ],
         "unit_class": "ijn_dd_shiratsuyu_light",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -5257,7 +4918,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5300,8 +4960,6 @@
         ],
         "unit_class": "ijn_dd_shiratsuyu",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -5311,7 +4969,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5386,8 +5043,6 @@
         ],
         "unit_class": "ijn_dd_shiratsuyu",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -5397,7 +5052,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5472,9 +5126,6 @@
         ],
         "props": [
           {
-            "object_marking": 0
-          },
-          {
             "squad_members": "btry_A01"
           },
           {
@@ -5494,8 +5145,6 @@
         ],
         "unit_class": "us_155mm_m114_ultimate",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -5505,7 +5154,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5530,8 +5178,6 @@
         ],
         "unit_class": "f4f-3",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "f4f-3_bombs_hidden",
         "bullets0": "",
         "bullets1": "",
@@ -5541,7 +5187,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "free_distance": 70.0,

@@ -154,6 +154,7 @@ class ::gui_handlers.Ps4Shop extends ::gui_handlers.IngameConsoleStore
       {callsite = "on_event_shop_sheets_inited", status = "ok"})
 
     fillItemsList()
+    restoreFocus()
     updateItemInfo()
   }
 

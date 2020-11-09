@@ -1,5 +1,5 @@
-local globalEnv = ::require_native("globalEnv")
-local avatars = require("scripts/user/avatars.nut")
+local globalEnv = require_native("globalEnv")
+local avatars = ::require("scripts/user/avatars.nut")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 ::gui_start_controls_type_choice <- function gui_start_controls_type_choice(onlyDevicesChoice = true)
@@ -16,6 +16,8 @@ class ::gui_handlers.ControlType extends ::gui_handlers.BaseGuiHandlerWT
   onlyDevicesChoice = true
   startControlsWizard = false
 
+  focusArray = [ "controlType" ]
+
   function initScreen()
   {
     mainOptionsMode = ::get_gui_options_mode()
@@ -30,6 +32,7 @@ class ::gui_handlers.ControlType extends ::gui_handlers.BaseGuiHandlerWT
       updateProfileIcon(true)
 
     showSceneBtn("ct_xinput", ::have_xinput_device())
+    restoreFocus()
   }
 
   function onChangePilotIcon()
@@ -69,7 +72,7 @@ class ::gui_handlers.ControlType extends ::gui_handlers.BaseGuiHandlerWT
     if (startControlsWizard)
       ::gui_modal_controlsWizard()
     ::preset_changed = true
-    ::broadcastEvent("ControlsPresetChanged")
+    ::broadcastEvent("PresetChanged")
   }
 
   function onControlTypeApply()

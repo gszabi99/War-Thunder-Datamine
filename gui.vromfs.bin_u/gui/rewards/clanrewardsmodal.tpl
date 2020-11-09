@@ -1,6 +1,5 @@
 root {
-  blur {}
-  blur_foreground {}
+  background-color:t = '@modalShadeColor'
   on_click:t='goBack'
 
   frame {
@@ -29,6 +28,7 @@ root {
         flow:t = 'h-flow'
         <<#isEditable>>
         behaviour:t='posNavigator'
+        show_console_buttons:t='yes'
         navigatorShortcuts:t='SpaceA'
         on_activate:t = 'onActivate'
         <</isEditable>>
@@ -79,7 +79,7 @@ root {
                 position:t='absolute'
                 pos:t='-@checkboxSize, 0.5ph-0.5h'
                 btnName:t='A'
-                showOnSelect:t='hover'
+                showOnSelect:t='focus'
               }
               CheckBoxImg{}
             }

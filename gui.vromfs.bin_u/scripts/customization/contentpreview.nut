@@ -1,6 +1,6 @@
 local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
 local guidParser = require("scripts/guidParser.nut")
-local globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
+local globalCallbacks = ::require("sqDagui/globalCallbacks/globalCallbacks.nut")
 
 local downloadTimeoutSec = 15
 local downloadProgressBox = null
@@ -52,14 +52,12 @@ local function showUnitSkin(unitId, skinId = null, isForApprove = false)
 
   local unitPreviewSkin = unit.getPreviewSkinId()
   skinId = skinId || unitPreviewSkin
-  local isUnitPreview = skinId == unitPreviewSkin
 
   ::broadcastEvent("BeforeStartShowroom")
   ::show_aircraft = unit
   local startFunc = function() {
     ::gui_start_decals({
-      previewMode = isUnitPreview ? PREVIEW_MODE.UNIT : PREVIEW_MODE.SKIN
-      needForceShowUnitInfoPanel = isUnitPreview && ::isUnitSpecial(unit)
+      previewMode = skinId == unitPreviewSkin ? PREVIEW_MODE.UNIT : PREVIEW_MODE.SKIN
       previewParams = {
         unitName = unitId
         skinName = skinId
@@ -67,7 +65,8 @@ local function showUnitSkin(unitId, skinId = null, isForApprove = false)
       }
     })
   }
-  ::handlersManager.animatedSwitchScene(startFunc())
+  startFunc()
+  ::handlersManager.setLastBaseHandlerStartFunc(startFunc)
 
   return true
 }

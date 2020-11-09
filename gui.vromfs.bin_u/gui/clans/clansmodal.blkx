@@ -1,17 +1,16 @@
 {
   "root": {
+    "background-color": "@modalShadeColor",
     "type": "big",
-    "blur": [],
-    "blur_foreground": [],
     "frame": [
       {
-        "size": "@srw, 1@maxWindowHeight"
+        "size": "1.41*@scrn_tgt, 1@maxWindowHeight"
       },
       {
         "max-width": "1@maxWindowWidth"
       },
       {
-        "pos": "0.5pw-0.5w, 1@minYposWindow + 0.1*(sh - 1@minYposWindow - h)"
+        "pos": "50%pw-50%w, 1@minYposWindow + 0.1*(sh - 1@minYposWindow - h)"
       },
       {
         "position": "absolute"
@@ -66,7 +65,7 @@
                 "display": "hide"
               },
               {
-                "clanBattleSeasonFrame": {
+                "tdiv": {
                   "id": "clan_battle_season_frame_block",
                   "display": "hide",
                   "padding": "0.01@sf",
@@ -120,10 +119,11 @@
                           "position": "relative",
                           "text": "#msgbox/btn_more",
                           "on_click": "onClanSeasonInfo",
-                          "skip-navigation": "yes",
                           "display": "hide",
                           "visualStyle": "noFrame",
-                          "noMargin": "yes"
+                          "noMargin": "yes",
+                          "btnName": "Y",
+                          "ButtonImg": []
                         }
                       }
                     },
@@ -215,42 +215,44 @@
               "width": "pw",
               "flow": "horizontal",
               "flow-align": "right",
+              "rowSeparator": {
+                "class": "inset"
+              },
               "HorizontalListBox": {
                 "id": "modes_list",
-                "type": "transparent",
+                "class": "inset",
                 "position": "absolute",
                 "on_select": "onStatsModeChange",
                 "navigatorShortcuts": "yes",
-                "move-only-hover": "yes",
+                "on_wrap_up": "onWrapUp",
+                "on_wrap_down": "onWrapDown",
                 "display": "hide"
               },
               "tdiv": {
-                "width": "0.3@sf",
-                "pos": "pw-w, 0",
-                "position": "relative",
                 "EditBox": {
-                  "id": "filter_edit_box",
-                  "pos": "0, ph/2-h/2",
-                  "position": "relative",
-                  "width": "fw",
-                  "on_activate": "onFilterEditBoxActivate",
-                  "on_change_value": "onFilterEditBoxChangeValue",
-                  "on_cancel_edit": "onFilterEditBoxCancel",
+                  "id": "search_edit",
+                  "on_activate": "onSearchStart",
+                  "on_cancel_edit": "onCancelSearchEdit",
+                  "max-len": "32",
+                  "char-mask": "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 _-",
+                  "edit-hint": "#clan/find_clan",
                   "text": "",
-                  "edit-hint": "#contacts/search_placeholder"
+                  "width": "0.3@sf",
+                  "noMargin": "yes",
+                  "on_wrap_up": "onWrapUp",
+                  "on_wrap_down": "onWrapDown",
+                  "mouse-focusable": "yes"
                 },
                 "Button_text": {
-                  "id": "filter_edit_cancel_btn",
-                  "pos": "0, ph/2-h/2",
+                  "pos": "@blockInterval, 0.5ph-0.5h",
                   "position": "relative",
                   "class": "image",
                   "showConsoleImage": "no",
+                  "tooltip": "#clan/find_clan",
+                  "on_click": "onSearchStart",
                   "noMargin": "yes",
-                  "tooltip": "#mainmenu/btnReset",
-                  "on_click": "onFilterEditBoxCancel",
-                  "display": "hide",
                   "img": {
-                    "background-image": "#ui/gameuiskin#btn_close.svg"
+                    "background-image": "#ui/gameuiskin#btn_search.svg"
                   }
                 }
               }
@@ -273,18 +275,20 @@
               "id": "clan_lboard_table",
               "position": "relative",
               "size": "pw, fh",
-              "useNavigatorOrInteractiveCells": "yes",
+              "behavior": "PosNavigator",
               "class": "lbTable",
-              "isClansTable": "yes",
               "text-valign": "center",
               "text-halign": "center",
               "navigatorShortcuts": "yes",
-              "on_click": "onSelectClan",
+              "on_click": "onSelectLb",
               "on_dbl_click": "onClanInfo",
               "_on_r_click": "onClanRclick",
               "on_set_focus": "onSelectClansList",
+              "on_wrap_up": "onWrapUp",
+              "on_wrap_down": "onWrapDown",
               "selfFocusBorder": "yes",
-              "clearOnFocusLost": "yes"
+              "clearOnFocusLost": "yes",
+              "mouse-focusable": "yes"
             }
           },
           {
@@ -300,7 +304,7 @@
                     "text": "#clan/btn_membership_req",
                     "on_click": "onMembershipReq",
                     "tooltip": "",
-                    "btnName": "Y",
+                    "btnName": "X",
                     "visualStyle": "secondary",
                     "buttonWink": [],
                     "ButtonImg": []
@@ -317,33 +321,16 @@
               "navMiddle": {
                 "id": "mid_nav_bar"
               },
-              "navRight": [
-                {
-                  "id": "right_nav_bar"
-                },
-                {
-                  "Button_text": {
-                    "id": "btn_clan_info",
-                    "text": "#clan/btn_clan_info",
-                    "_on_click": "onClanInfo",
-                    "skip-navigation": "yes",
-                    "display": "hide",
-                    "btnName": "A",
-                    "ButtonImg": []
-                  }
-                },
-                {
-                  "Button_text": {
-                    "id": "btn_clan_actions",
-                    "text": "#mainmenu/btnClanAction",
-                    "_on_click": "onClanRclick",
-                    "skip-navigation": "yes",
-                    "display": "hide",
-                    "btnName": "X",
-                    "ButtonImg": []
-                  }
+              "navRight": {
+                "id": "right_nav_bar",
+                "Button_text": {
+                  "id": "btn_clan_info",
+                  "text": "#clan/btn_clan_info",
+                  "_on_click": "onClanInfo",
+                  "btnName": "A",
+                  "ButtonImg": []
                 }
-              ]
+              }
             }
           }
         ]
@@ -474,9 +461,6 @@
                 {
                   "tdiv": {
                     "width": "0.55pw",
-                    "padding": "1@blockInterval",
-                    "margin-right": "1@blockInterval",
-                    "background-color": "@separatorBlockColor",
                     "img": {
                       "id": "clan-icon",
                       "width": "0.26pw",
@@ -491,7 +475,7 @@
                       "flow": "h-flow",
                       "tdiv": [
                         {
-                          "padding": "1@blockInterval, 0"
+                          "padding": "0.01*@scrn_tgt, 0"
                         },
                         {
                           "width": "pw"
@@ -504,23 +488,25 @@
                             "width": "pw",
                             "tdiv": {
                               "id": "nest_lock_clan_req",
-                              "pos": "0, ph/2-h/2",
-                              "position": "relative",
                               "clan_locked": "no",
+                              "css-hier-invalidate": "yes",
+                              "childsActivate": "yes",
                               "Button_text": {
                                 "id": "btn_lock_clan_req",
                                 "class": "image",
+                                "behaviour": "wrapBroadcast",
                                 "tooltip": "#clan/open_close_new_req",
                                 "display": "hide",
+                                "showConsoleImage": "no",
+                                "navigatorShortcuts": "SpaceA",
+                                "on_wrap_up": "onWrapUp",
+                                "on_wrap_down": "onWrapDown",
                                 "on_click": "onLockNewReqests",
-                                "btnName": "L3",
-                                "img": [],
-                                "ButtonImg": []
+                                "img": []
                               },
                               "img": {
                                 "id": "img_lock_clan_req",
                                 "size": "@unlockStageIconSize, @unlockStageIconSize",
-                                "background-svg-size": "@unlockStageIconSize, @unlockStageIconSize",
                                 "background-color": "@white",
                                 "display": "hide",
                                 "tooltip": "#clan/closed_for_new_req"
@@ -528,8 +514,6 @@
                             },
                             "textareaNoTab": {
                               "id": "clan-title",
-                              "pos": "0, ph/2-h/2",
-                              "position": "relative",
                               "overlayTextColor": "active",
                               "mediumFont": "yes",
                               "text": "",
@@ -609,7 +593,8 @@
                 "text-align": "center",
                 "overlayTextColor": "userlog",
                 "text": "",
-                "bgcolor": "@evenTrColor"
+                "bgcolor": "@evenTrColor",
+                "rowSeparator": []
               },
               "textarea": {
                 "id": "clan-about",
@@ -623,6 +608,9 @@
                 "text": ""
               }
             }
+          },
+          {
+            "rowSeparator": []
           },
           {
             "tdiv": {
@@ -674,14 +662,18 @@
                   }
                 }
               ],
+              "rowSeparator": {
+                "class": "inset"
+              },
               "HorizontalListBox": {
                 "id": "modes_list",
-                "type": "transparent",
+                "class": "inset",
                 "position": "absolute",
                 "pos": "0, ph - h",
                 "on_select": "cp_onStatsModeChange",
                 "navigatorShortcuts": "yes",
-                "move-only-hover": "yes"
+                "on_wrap_up": "onWrapUp",
+                "on_wrap_down": "onWrapDown"
               },
               "div": {
                 "id": "clan_awards_container",
@@ -693,7 +685,6 @@
                 "total-input-transparent": "yes",
                 "behaviour": "button",
                 "on_click": "onClanSeasonRewardLog",
-                "skip-navigation": "yes",
                 "display": "hide"
               }
             }
@@ -702,25 +693,30 @@
             "table": {
               "id": "clan_members_list",
               "size": "pw, fh",
-              "padding-top": "1@blockInterval",
               "class": "lbTable",
-              "useNavigatorOrInteractiveCells": "yes",
+              "behavior": "TableNavigator",
               "text-valign": "center",
               "text-halign": "center",
               "navigatorShortcuts": "yes",
+              "mouse-focusable": "yes",
               "selfFocusBorder": "yes",
-              "on_click": "onSelectUser",
+              "selectOnAttach": "no",
+              "on_click": "onSelect",
               "on_r_click": "onUserRClick",
               "on_dbl_click": "onUserCard",
               "on_set_focus": "onMembersListFocus",
-              "overflow-y": "auto"
+              "cur_row": "1",
+              "cur_col": "0",
+              "num_rows": "-1",
+              "overflow-y": "auto",
+              "on_wrap_up": "onWrapUp",
+              "on_wrap_down": "onWrapDown"
             }
           },
           {
             "tdiv": {
               "id": "lb_table_nest",
-              "size": "pw, fh",
-              "padding-top": "1@blockInterval"
+              "size": "pw, fh"
             }
           },
           {
@@ -763,10 +759,25 @@
                 "css-hier-invalidate": "yes"
               },
               {
+                "behavior": "wrapNavigator"
+              },
+              {
+                "navigatorShortcuts": "yes"
+              },
+              {
+                "childsActivate": "yes"
+              },
+              {
                 "display": "hide"
               },
               {
                 "enable": "no"
+              },
+              {
+                "on_wrap_up": "onWrapUp"
+              },
+              {
+                "on_wrap_down": "onWrapDown"
               },
               {
                 "bgcolor": "@evenTrColor"
@@ -854,7 +865,7 @@
                     "display": "hide",
                     "on_click": "onMembershipReq",
                     "visualStyle": "secondary",
-                    "btnName": "LT",
+                    "btnName": "X",
                     "ButtonImg": [],
                     "buttonWink": []
                   }
@@ -864,7 +875,9 @@
                     "id": "btn_leaveClan",
                     "text": "#clan/btnLeaveClan",
                     "display": "hide",
-                    "on_click": "onLeaveClan"
+                    "on_click": "onLeaveClan",
+                    "btnName": "LT",
+                    "ButtonImg": []
                   }
                 },
                 {
@@ -911,23 +924,10 @@
                 },
                 {
                   "Button_text": {
-                    "id": "btn_usercard",
-                    "text": "#mainmenu/btnUserCard",
-                    "btnName": "A",
-                    "on_click": "onUserCard",
-                    "skip-navigation": "yes",
-                    "display": "hide",
-                    "ButtonImg": []
-                  }
-                },
-                {
-                  "Button_text": {
                     "id": "btn_user_options",
                     "text": "#mainmenu/btnUserAction",
-                    "btnName": "X",
+                    "btnName": "A",
                     "_on_click": "onUserOption",
-                    "skip-navigation": "yes",
-                    "display": "hide",
                     "ButtonImg": []
                   }
                 }
@@ -1225,6 +1225,27 @@
                                 "gcButtonsInterval": "yes"
                               },
                               {
+                                "behaviour": "wrapNavigator"
+                              },
+                              {
+                                "navigatorShortcuts": "yes"
+                              },
+                              {
+                                "childsActivate": "yes"
+                              },
+                              {
+                                "on_wrap_up": "onWrapUp"
+                              },
+                              {
+                                "on_wrap_down": "onWrapDown"
+                              },
+                              {
+                                "on_wrap_left": "onTopGCPanelLeft"
+                              },
+                              {
+                                "on_wrap_right": "onTopGCPanelRight"
+                              },
+                              {
                                 "Button_text": {
                                   "id": "gc_clanTag",
                                   "tooltip": "#mainmenu/btnClanCard",
@@ -1315,6 +1336,27 @@
                             },
                             {
                               "gcButtonsInterval": "yes"
+                            },
+                            {
+                              "behaviour": "wrapNavigator"
+                            },
+                            {
+                              "navigatorShortcuts": "yes"
+                            },
+                            {
+                              "childsActivate": "yes"
+                            },
+                            {
+                              "on_wrap_up": "onWrapUp"
+                            },
+                            {
+                              "on_wrap_down": "onWrapDown"
+                            },
+                            {
+                              "on_wrap_left": "onTopGCPanelLeft"
+                            },
+                            {
+                              "on_wrap_right": "onTopGCPanelRight"
                             },
                             {
                               "Button_text": [
@@ -1530,6 +1572,9 @@
                   "shadowSafeArea": []
                 },
                 {
+                  "line": []
+                },
+                {
                   "tdiv": {
                     "size": "pw, 0.02@sf",
                     "pos": "0, ph",
@@ -1570,7 +1615,7 @@
                           "id": "slotbar-presetsPlace",
                           "size": "pw, ph",
                           "position": "absolute",
-                          "display": "hide"
+                          "pos": "1@dp, 0"
                         }
                       }
                     },
@@ -1627,7 +1672,14 @@
                         "position": "relative",
                         "top": "0.5(ph-h)",
                         "margin-right": "2@buttonTextPadding",
-                        "class": "header"
+                        "class": "header",
+                        "behaviour": "wrapNavigator",
+                        "navigatorShortcuts": "yes",
+                        "childsActivate": "yes",
+                        "on_wrap_up": "onWrapUp",
+                        "on_wrap_down": "onWrapDown",
+                        "on_wrap_left": "onWrapLeft",
+                        "on_wrap_right": "onWrapRight"
                       }
                     },
                     {
@@ -1643,6 +1695,27 @@
                         },
                         {
                           "class": "header"
+                        },
+                        {
+                          "behaviour": "wrapNavigator"
+                        },
+                        {
+                          "navigatorShortcuts": "yes"
+                        },
+                        {
+                          "childsActivate": "yes"
+                        },
+                        {
+                          "on_wrap_up": "onWrapUp"
+                        },
+                        {
+                          "on_wrap_down": "onWrapDown"
+                        },
+                        {
+                          "on_wrap_left": "onBottomGCPanelLeft"
+                        },
+                        {
+                          "on_wrap_right": "onBottomGCPanelRight"
                         },
                         {
                           "Button_text": [

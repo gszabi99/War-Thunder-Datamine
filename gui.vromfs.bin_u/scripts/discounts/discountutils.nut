@@ -1,4 +1,4 @@
-local personalDiscount = require("scripts/discounts/personalDiscount.nut")
+local personalDiscount = ::require("scripts/discounts/personalDiscount.nut")
 
 //you can use array in any path part - in result will be max discount from them.
 ::getDiscountByPath <- function getDiscountByPath(path, blk = null, idx = 0)

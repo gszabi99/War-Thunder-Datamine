@@ -44,6 +44,11 @@
         "hp": 15.0
       }
     },
+    "boron_carbide20": {
+      "armor1_dm": {
+        "hp": 40.0
+      }
+    },
     "armor12": {
       "armor2_dm": {
         "hp": 40.0
@@ -55,20 +60,23 @@
     "armor_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
-        "hp": 30.5
+        "hp": 49.5
       },
       "engine2_dm": {
         "genericDamageMult": 1.6,
-        "hp": 30.5
+        "hp": 49.5
       },
       "transmission1_dm": {
         "genericDamageMult": 1.6,
-        "hp": 30.5
-      }
-    },
-    "boron_carbide20": {
-      "armor1_dm": {
-        "hp": 40.0
+        "hp": 25.3
+      },
+      "propeller_shaft1_dm": {
+        "genericDamageMult": 1.6,
+        "hp": 25.3
+      },
+      "propeller_shaft2_dm": {
+        "genericDamageMult": 1.6,
+        "hp": 25.3
       }
     },
     "c_dural10": {
@@ -110,12 +118,6 @@
       }
     },
     "protected_controls": {
-      "propeller_shaft1_dm": {
-        "hp": 57.0
-      },
-      "propeller_shaft2_dm": {
-        "hp": 60.5
-      },
       "tailcontrol_dm": {
         "hp": 66.0
       },
@@ -201,22 +203,28 @@
         },
         {
           "onHit": {
-            "fire": 0.001,
-            "leak_oil": 0.8,
+            "fire": 0.01
+          }
+        },
+        {
+          "onHit": {
+            "damage": 2.7,
+            "fire": 0.01,
+            "leak_oil": 0.5,
             "cut": 0.0
           }
         },
         {
           "onHit": {
             "damage": 30.0,
-            "fire": 0.005,
-            "leak_oil": 0.95,
+            "fire": 0.1,
+            "leak_oil": 1.0,
             "cut": 0.0
           }
         },
         {
           "onKill": {
-            "fire": 25.0,
+            "fire": 30.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -224,7 +232,7 @@
         {
           "onKill": {
             "damage": 30.0,
-            "fire": 30.0,
+            "fire": 44.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -238,22 +246,28 @@
         },
         {
           "onHit": {
-            "fire": 0.001,
-            "leak_oil": 0.8,
+            "fire": 0.01
+          }
+        },
+        {
+          "onHit": {
+            "damage": 2.7,
+            "fire": 0.01,
+            "leak_oil": 0.5,
             "cut": 0.0
           }
         },
         {
           "onHit": {
             "damage": 30.0,
-            "fire": 0.005,
-            "leak_oil": 0.95,
+            "fire": 0.1,
+            "leak_oil": 1.0,
             "cut": 0.0
           }
         },
         {
           "onKill": {
-            "fire": 25.0,
+            "fire": 30.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -261,7 +275,7 @@
         {
           "onKill": {
             "damage": 30.0,
-            "fire": 30.0,
+            "fire": 44.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -926,41 +940,9 @@
       ]
     },
     {
-      "part": [
-        {
-          "name": "transmission1_dm"
-        },
-        {
-          "onHit": {
-            "fire": 0.001,
-            "leak_oil": 0.8,
-            "cut": 0.0
-          }
-        },
-        {
-          "onHit": {
-            "damage": 30.0,
-            "fire": 0.005,
-            "leak_oil": 0.95,
-            "cut": 0.0
-          }
-        },
-        {
-          "onKill": {
-            "fire": 25.0,
-            "leak_oil": 10.0,
-            "cut": 0.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 30.0,
-            "fire": 30.0,
-            "leak_oil": 10.0,
-            "cut": 0.0
-          }
-        }
-      ]
+      "part": {
+        "name": "transmission1_dm"
+      }
     },
     {
       "part": [
@@ -4768,7 +4750,6 @@
           {
             "Weapon": {
               "trigger": "flares",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
               "emitter": "emtr_flare1",
               "bullets": 30,
@@ -4779,7 +4760,6 @@
           {
             "Weapon": {
               "trigger": "flares",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
               "emitter": "emtr_flare3",
               "bullets": 30,
@@ -4790,7 +4770,6 @@
           {
             "Weapon": {
               "trigger": "flares",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
               "emitter": "emtr_flare2",
               "bullets": 30,
@@ -4801,7 +4780,6 @@
           {
             "Weapon": {
               "trigger": "flares",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
               "emitter": "emtr_flare4",
               "bullets": 30,
@@ -5003,7 +4981,6 @@
           {
             "Weapon": {
               "trigger": "flares",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
               "emitter": "emtr_flare1",
               "bullets": 30,
@@ -5014,7 +4991,6 @@
           {
             "Weapon": {
               "trigger": "flares",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
               "emitter": "emtr_flare3",
               "bullets": 30,
@@ -5025,7 +5001,6 @@
           {
             "Weapon": {
               "trigger": "flares",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
               "emitter": "emtr_flare2",
               "bullets": 30,
@@ -5036,7 +5011,6 @@
           {
             "Weapon": {
               "trigger": "flares",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
               "emitter": "emtr_flare4",
               "bullets": 30,

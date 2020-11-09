@@ -12,10 +12,6 @@ local frp = require("frp")
 
 ::Fonts <-{}
 ::calc_comp_size <- @(comp) [0,0]
-::getFontDefHt <- function(fontname) { ::assert(::type(fontname)=="string"); return 0; }
-::getFontInitialHt <- function(fontname) { ::assert(::type(fontname)=="string"); return 0; }
-::setFontDefHt <- function(fontname, height) { ::assert(::type(fontname)=="string" && ::type(height) =="integer") }
-
 ::gui_scene <-{
   setShutdownHandler = @(val) null
   circleButtonAsAction = false
@@ -26,7 +22,6 @@ local frp = require("frp")
     gamepadCursorSpeed = 1.0
     defSceneBgColor =Color(10,10,10,160)
     setClickButtons = @(list) null
-    getClickButtons = @() ["J:A"]
     gamepadCursorControl = true
     reportNestedWatchedUpdate = false
     gamepadCursorDeadZone = 0.05
@@ -62,9 +57,7 @@ local frp = require("frp")
     assert(type(func)==type(type), "function should be function")
   }
 }
-::ScrollHandler <- class{
-  subscribe = function(func){assert(::type(func)=="function")}
-}
+::ScrollHandler <- class{}
 ::ElemGroup <- @() {}
 global enum AnimProp{
   color
@@ -137,7 +130,6 @@ global enum AnimProp{
   RtPropUpdate = "RtPropUpdate"
   Pannable = "Pannable"
   Pannable2touch = "Pannable2touch"
-  TransitionSize = "TransitionSize"
 }
 
 ::Picture <- function Picture(val){return val}
@@ -163,6 +155,8 @@ global const ROBJ_BOX = "ROBJ_BOX"
 global const ROBJ_SOLID = "ROBJ_SOLID"
 global const ROBJ_FRAME = "ROBJ_FRAME"
 global const ROBJ_PROGRESS_CIRCULAR = "ROBJ_PROGRESS_CIRCULAR"
+global const ROBJ_WORLD_BLUR = "ROBJ_WORLD_BLUR"
+global const ROBJ_WORLD_BLUR_PANEL = "ROBJ_WORLD_BLUR_PANEL"
 global const ROBJ_VECTOR_CANVAS = "ROBJ_VECTOR_CANVAS"
 global const VECTOR_POLY = "VECTOR_POLY"
 global const ROBJ_MASK = "ROBJ_MASK"
@@ -307,6 +301,3 @@ global const FMT_KEEP_SPACES = 0x02
 global const FMT_IGNORE_TAGS = 0x04
 global const FMT_HIDE_ELLIPSIS = 0x08
 global const FMT_AS_IS = 0xFF
-
-global const XMB_STOP = 0
-global const XMB_CONTINUE = 1

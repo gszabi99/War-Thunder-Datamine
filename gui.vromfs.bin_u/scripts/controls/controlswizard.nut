@@ -1,4 +1,4 @@
-local globalEnv = ::require_native("globalEnv")
+local globalEnv = require_native("globalEnv")
 local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
@@ -368,7 +368,7 @@ class ::gui_handlers.controlsWizardModalHandler extends ::gui_handlers.BaseGuiHa
 
   function initScreen()
   {
-    scene.findObject("input-listener").setUserData(this)
+    scene.findObject("shortcut-wnd").setUserData(this)
     scene.findObject("update-timer").setUserData(this)
 
     skipList = []
@@ -616,19 +616,15 @@ class ::gui_handlers.controlsWizardModalHandler extends ::gui_handlers.BaseGuiHa
         continue
 
       divObj.show(divName == name)
+      if (divName == "shortcut-wnd" && name == divName)
+      {
+        divObj.enable(true)
+        divObj.select()
+      }
     }
 
     if (divName != "msg-wnd")
       curDivName = divName
-
-    enableListenerObj(curDivName == "shortcut-wnd")
-  }
-
-  function enableListenerObj(isEnable)
-  {
-    local obj = showSceneBtn("input-listener", isEnable)
-    if (isEnable)
-      obj.select()
   }
 
   function askShortcut()
@@ -818,11 +814,17 @@ class ::gui_handlers.controlsWizardModalHandler extends ::gui_handlers.BaseGuiHa
 
   function switchButtonMode()
   {
-    if (curDivName != "shortcut-wnd")
-      return
-    local enable = !(isListenAxis || isListenButton)
-    enableListenerObj(enable)
+    local enable = true
+    local curDivObj = scene.findObject(curDivName)
+    if (::checkObj(curDivObj))
+    {
+      enable = !curDivObj.isEnabled()
+      curDivObj.enable(enable)
+      if (enable)
+        curDivObj.select()
+    }
     scene.findObject("hold_axis").show(enable)
+
     if (isAxisListenInCurBox)
       switchListenAxis(enable, true)
     if (isButtonsListenInCurBox)
@@ -831,26 +833,17 @@ class ::gui_handlers.controlsWizardModalHandler extends ::gui_handlers.BaseGuiHa
 
   function updateButtons()
   {
-    local isInListenWnd = curDivName == "shortcut-wnd"
-    local isListening   = isInListenWnd && (isListenAxis || isListenButton)
-
-    if (::show_console_buttons)
+    local hideConsoleImage = curDivName == "shortcut-wnd" && (isListenAxis || isListenButton)
+    foreach(name in ["keep_assign_btn", "btn_prevItem", "btn_controlsWizard", "btn_selectPreset"])
     {
-      foreach(name in ["keep_assign_btn", "btn_prevItem", "btn_controlsWizard", "btn_selectPreset"])
-      {
-        local btnObj = scene.findObject(name)
-        if (::checkObj(btnObj))
-        {
-          btnObj.hideConsoleImage = isListening ? "yes" : "no"
-          btnObj.inactiveColor = isListening ? "yes" : "no"
-        }
-      }
+      local btnObj = scene.findObject(name)
+      if (::checkObj(btnObj))
+        btnObj.hideConsoleImage = (hideConsoleImage? "yes" : "no")
     }
-
     updateSwitchModesButton()
-    showSceneBtn("keep_assign_btn", isInListenWnd)
-    showSceneBtn("btn-reset-axis-input", isInListenWnd && (axisMaxChoosen || selectedAxisNum >= 0))
-    showSceneBtn("btn_back", !isListening)
+
+    showSceneBtn("keep_assign_btn", curDivName == "shortcut-wnd")
+    showSceneBtn("btn-reset-axis-input", curDivName == "shortcut-wnd" && (axisMaxChoosen || selectedAxisNum >= 0))
   }
 
   function onButtonDone()
@@ -1062,7 +1055,7 @@ class ::gui_handlers.controlsWizardModalHandler extends ::gui_handlers.BaseGuiHa
 
   function clearShortcutInfo()
   {
-    local obj = scene.findObject("input-listener")
+    local obj=scene.findObject("shortcut-wnd")
     for (local i = 0; i < 3; i++)
     {
       obj["device" + i] = ""
@@ -1330,7 +1323,9 @@ class ::gui_handlers.controlsWizardModalHandler extends ::gui_handlers.BaseGuiHa
           selectedAxisNum = bindAxisNum
           bindAxisFixVal = bindAxisCurVal
           setAxisType(false)
-          scene.findObject("input-listener").select()
+          local curDivObj = scene.findObject(curDivName)
+          if (::checkObj(curDivObj))
+            curDivObj.enable(true)
 
           updateAxisPressKey()
           updateAxisName()
@@ -1423,7 +1418,7 @@ class ::gui_handlers.controlsWizardModalHandler extends ::gui_handlers.BaseGuiHa
       }
       local btnsHolder = scene.findObject("msgBox_buttons")
       guiScene.replaceContentFromText(btnsHolder, data, data.len(), this)
-      ::move_mouse_on_obj(btnsHolder.findObject(defValue.tostring()))
+      btnsHolder.findObject(defValue.tostring()).select()
     }
     else
     {
@@ -1451,7 +1446,7 @@ class ::gui_handlers.controlsWizardModalHandler extends ::gui_handlers.BaseGuiHa
       guiScene.replaceContentFromText(listObj, data, data.len(), this)
       if (defValue in msgButtons)
         listObj.setValue(defValue)
-      ::move_mouse_on_child(listObj, listObj.getValue())
+      listObj.select()
       onListboxSelect(null)
     }
 
@@ -1532,10 +1527,9 @@ class ::gui_handlers.controlsWizardModalHandler extends ::gui_handlers.BaseGuiHa
     local optionItems = [
       [::USEROPT_CONTROLS_PRESET, "spinner"],
     ]
-    local container = ::create_options_container("preset_options", optionItems, false)
+    local container = ::create_options_container("preset_options", optionItems, true, false)
     guiScene.replaceContentFromText(optObj, container.tbl, container.tbl.len(), this)
     processPresetValue(getOptionPresetValue())
-    ::move_mouse_on_obj(scene.findObject("controls_preset"))
   }
 
   function getOptionPresetValue()
@@ -1625,8 +1619,7 @@ class ::gui_handlers.controlsWizardModalHandler extends ::gui_handlers.BaseGuiHa
       msgBox("ask_save", ::loc("hotkeys/msg/wizardSaveUnfinished"),
         [
           ["yes", function() { doApply() } ],
-          ["no", function() { ::gui_handlers.BaseGuiHandlerWT.goBack.bindenv(this)() }],
-          ["cancel", @() null ],
+          ["no", function() { ::gui_handlers.BaseGuiHandlerWT.goBack.bindenv(this)() }]
         ], "yes", { cancel_fn = function() {}})
     else
       ::gui_handlers.BaseGuiHandlerWT.goBack.bindenv(this)()
@@ -1637,17 +1630,12 @@ class ::gui_handlers.controlsWizardModalHandler extends ::gui_handlers.BaseGuiHa
     ::gui_handlers.BaseGuiHandlerWT.goBack.bindenv(this)()
   }
 
-  function onEventActiveHandlersChanged(p)
-  {
-    enableListenerObj(curDivName == "shortcut-wnd" && isSceneActiveNoModals())
-  }
-
   function afterModalDestroy()
   {
     guiScene.sleepKeyRepeat(false)
     ::set_bind_mode(false)
     ::preset_changed = true
-    ::broadcastEvent("ControlsPresetChanged")
+    ::broadcastEvent("PresetChanged")
   }
 
   function showMsg(msg=null, config=null, time = 1.0)

@@ -18,6 +18,8 @@ class ::gui_handlers.QiHandlerBase extends ::gui_handlers.BaseGuiHandlerWT
 
   isStatsCreated = false
 
+  onWrapUpCb = null
+  onWrapDownCb = null
   leaveQueueCb = null
 
   function initScreen()
@@ -105,6 +107,8 @@ class ::gui_handlers.QiHandlerBase extends ::gui_handlers.BaseGuiHandlerWT
     textObj.setValue(msg)
   }
 
+  function onWrapUp(obj) { if (onWrapUpCb) onWrapUpCb(obj) }
+  function onWrapDown(obj) { if (onWrapDownCb) onWrapDownCb(obj) }
   function leaveQueue(obj) { if (leaveQueueCb) leaveQueueCb() }
 
   function onEventQueueChangeState(p)     { checkCurQueue() }

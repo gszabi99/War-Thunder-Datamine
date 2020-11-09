@@ -1,11 +1,4 @@
 // Put to global namespace for compatibility
-require("daRg/library.nut")
-require("sqStdLibs/helpers/backCompatibility.nut")
-require("reactiveGui/compatibility.nut")
-require("reactiveGui/library.nut")
-require("scripts/sqModuleHelpers.nut")
-require("scripts/sharedEnums.nut")
-
 ::math <- require("math")
 ::string <- require("string")
 ::loc <- require("dagor.localize").loc

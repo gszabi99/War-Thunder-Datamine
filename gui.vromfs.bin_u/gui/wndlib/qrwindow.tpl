@@ -1,6 +1,5 @@
 root {
-  blur {}
-  blur_foreground {}
+  background-color:t='@modalShadeColor'
 
   frame {
     id:t='wnd_frame'

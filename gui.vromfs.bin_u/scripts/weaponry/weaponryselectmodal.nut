@@ -94,6 +94,7 @@ class ::gui_handlers.WeaponrySelectModal extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType      = handlerType.MODAL
   sceneTplName = "gui/weaponry/weaponrySelectModal"
+  shouldBlurSceneBg = false
   needVoiceChat = false
 
   unit = null
@@ -156,7 +157,7 @@ class ::gui_handlers.WeaponrySelectModal extends ::gui_handlers.BaseGuiHandlerWT
       return goBack()
 
     align = ::g_dagui_utils.setPopupMenuPosAndAlign(alignObj, align, scene.findObject("main_frame"))
-    ::move_mouse_on_child_by_value(scene.findObject("weapons_list"))
+    scene.findObject("weapons_list").select()
     updateItems()
     updateOpenAnimParams()
   }

@@ -48,7 +48,7 @@ class ::gui_handlers.ChooseMissionsListWnd extends ::gui_handlers.BaseGuiHandler
     initDescHandler()
     fillMissionsList()
 
-    ::move_mouse_on_child_by_value(scene.findObject("items_list"))
+    scene.findObject("items_list").select()
   }
 
   function initDescHandler()

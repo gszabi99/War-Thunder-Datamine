@@ -1,10 +1,9 @@
 {
   "root": {
+    "background-color": "@modalShadeColor",
     "type": "big",
-    "blur": [],
-    "blur_foreground": [],
     "frame": {
-      "width": "0.92*@scrn_tgt",
+      "width": "0.72*@scrn_tgt",
       "min-height": "10*@sf/100.0",
       "position": "absolute",
       "pos": "50%pw-50%w, 40%ph-40%h",
@@ -51,9 +50,10 @@
                 "position": "relative",
                 "pos": "0.5pw - 0.5w, 0.02@scrn_tgt",
                 "class": "countries_small",
+                "on_select": "onCountrySelect",
                 "navigatorShortcuts": "yes",
-                "move-only-hover": "yes",
-                "on_select": "onCountrySelect"
+                "on_wrap_up": "onWrapUp",
+                "on_wrap_down": "onWrapDown"
               }
             },
             {
@@ -62,36 +62,34 @@
                 "position": "relative",
                 "pos": "50%pw-50%w, 0.03@scrn_tgt",
                 "navigatorShortcuts": "yes",
-                "move-only-hover": "yes",
-                "on_select": "onSwitchUnitType"
+                "on_select": "onSwitchUnitType",
+                "on_wrap_up": "onWrapUp",
+                "on_wrap_down": "onWrapDown",
+                "focus": "yes"
               }
             },
             {
-              "rankUpList": {
+              "convertUnitList": {
                 "id": "choose_unit_list",
                 "overflow": "auto",
-                "scrollbarShortcuts": "yes",
                 "width": "pw",
+                "height": "0",
                 "max-height": "0.3@scrn_tgt",
+                "_size-timer": "0",
+                "moveOut": "no",
+                "on_activate": "onHoverSizeMove",
+                "class": "rankUpList",
                 "flow": "h-flow",
-                "flow-align": "center",
-                "padding": "@slot_interval, @slot_vert_pad, @slot_interval, 0",
-                "total-input-transparent": "yes",
-                "css-hier-invalidate": "yes",
-                "behavior": "PosNavigator",
-                "navigatorShortcuts": "yes",
-                "move-only-hover": "yes",
-                "interactiveChildren": "yes",
-                "on_select": "onUnitSelect"
+                "background-image": "#ui/gameuiskin#selectbox_bg",
+                "background-position": "6",
+                "background-repeat": "expand",
+                "background-color": "@white"
               }
             }
           ]
         },
         {
           "frameBlock": [
-            {
-              "pos": "0, 0.01@sf"
-            },
             {
               "position": "relative"
             },
@@ -102,13 +100,11 @@
               "size": "pw, 0.155@sf"
             },
             {
-              "padding": "0.01@sf"
-            },
-            {
-              "rankUpList": {
+              "tdiv": {
                 "id": "unit_nest",
-                "pos": "pw - w - 0.01@sf, 0.01@sf",
-                "position": "absolute"
+                "pos": "pw - w - 3*@sf/@pf_outdated, 0.01@sf - 3*@sf/@pf_outdated",
+                "position": "absolute",
+                "class": "rankUpList"
               }
             },
             {
@@ -172,10 +168,9 @@
                 "display": "hide",
                 "size": "pw - 0.02@sf, 0.08@sf",
                 "padding": "0.01@sf, 0",
-                "pos": "50%pw-50%w",
+                "pos": "50%pw-50%w, 0",
                 "position": "relative",
                 "margin-top": "0.03@sf",
-                "padding-bottom": "0.03@sf",
                 "tdiv": [
                   {
                     "size": "pw, ph"
@@ -220,6 +215,12 @@
                       },
                       {
                         "canWrap": "yes"
+                      },
+                      {
+                        "on_wrap_up": "onWrapUp"
+                      },
+                      {
+                        "on_wrap_down": "onWrapDown"
                       },
                       {
                         "focus_border": {
@@ -281,7 +282,7 @@
                       "position": "relative",
                       "noMargin": "yes",
                       "text": "#profile/maximumExp",
-                      "btnName": "Y",
+                      "btnName": "X",
                       "_on_click": "onMax",
                       "inactiveColor": "no",
                       "ButtonImg": []
@@ -305,7 +306,7 @@
                   "size": "pw, 0.08@sf"
                 },
                 {
-                  "position": "absolute"
+                  "position": "relative"
                 },
                 {
                   "pos": "50%pw-50%w, ph-h"
@@ -349,7 +350,7 @@
             "Button_text": {
               "id": "btn_apply",
               "text": "#mainmenu/btnConvert",
-              "btnName": "X",
+              "btnName": "A",
               "_on_click": "onApply",
               "inactiveColor": "no",
               "visualStyle": "purchase",
@@ -369,7 +370,7 @@
               "text": "#mainmenu/btnBuy",
               "_on_click": "onBuyUnit",
               "inactiveColor": "no",
-              "btnName": "X",
+              "btnName": "A",
               "visualStyle": "purchase",
               "buttonWink": [],
               "buttonGlance": [],
@@ -662,6 +663,27 @@
                             "gcButtonsInterval": "yes"
                           },
                           {
+                            "behaviour": "wrapNavigator"
+                          },
+                          {
+                            "navigatorShortcuts": "yes"
+                          },
+                          {
+                            "childsActivate": "yes"
+                          },
+                          {
+                            "on_wrap_up": "onWrapUp"
+                          },
+                          {
+                            "on_wrap_down": "onWrapDown"
+                          },
+                          {
+                            "on_wrap_left": "onTopGCPanelLeft"
+                          },
+                          {
+                            "on_wrap_right": "onTopGCPanelRight"
+                          },
+                          {
                             "Button_text": {
                               "id": "gc_clanTag",
                               "tooltip": "#mainmenu/btnClanCard",
@@ -752,6 +774,27 @@
                         },
                         {
                           "gcButtonsInterval": "yes"
+                        },
+                        {
+                          "behaviour": "wrapNavigator"
+                        },
+                        {
+                          "navigatorShortcuts": "yes"
+                        },
+                        {
+                          "childsActivate": "yes"
+                        },
+                        {
+                          "on_wrap_up": "onWrapUp"
+                        },
+                        {
+                          "on_wrap_down": "onWrapDown"
+                        },
+                        {
+                          "on_wrap_left": "onTopGCPanelLeft"
+                        },
+                        {
+                          "on_wrap_right": "onTopGCPanelRight"
                         },
                         {
                           "Button_text": [
@@ -967,6 +1010,9 @@
               "shadowSafeArea": []
             },
             {
+              "line": []
+            },
+            {
               "tdiv": {
                 "size": "pw, 0.02@sf",
                 "pos": "0, ph",
@@ -1007,7 +1053,7 @@
                       "id": "slotbar-presetsPlace",
                       "size": "pw, ph",
                       "position": "absolute",
-                      "display": "hide"
+                      "pos": "1@dp, 0"
                     }
                   }
                 },
@@ -1064,7 +1110,14 @@
                     "position": "relative",
                     "top": "0.5(ph-h)",
                     "margin-right": "2@buttonTextPadding",
-                    "class": "header"
+                    "class": "header",
+                    "behaviour": "wrapNavigator",
+                    "navigatorShortcuts": "yes",
+                    "childsActivate": "yes",
+                    "on_wrap_up": "onWrapUp",
+                    "on_wrap_down": "onWrapDown",
+                    "on_wrap_left": "onWrapLeft",
+                    "on_wrap_right": "onWrapRight"
                   }
                 },
                 {
@@ -1080,6 +1133,27 @@
                     },
                     {
                       "class": "header"
+                    },
+                    {
+                      "behaviour": "wrapNavigator"
+                    },
+                    {
+                      "navigatorShortcuts": "yes"
+                    },
+                    {
+                      "childsActivate": "yes"
+                    },
+                    {
+                      "on_wrap_up": "onWrapUp"
+                    },
+                    {
+                      "on_wrap_down": "onWrapDown"
+                    },
+                    {
+                      "on_wrap_left": "onBottomGCPanelLeft"
+                    },
+                    {
+                      "on_wrap_right": "onBottomGCPanelRight"
                     },
                     {
                       "Button_text": [

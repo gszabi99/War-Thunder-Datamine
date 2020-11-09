@@ -1,7 +1,7 @@
-local Callback = require("sqStdLibs/helpers/callback.nut").Callback
+local Callback = ::require("sqStdLibs/helpers/callback.nut").Callback
 ::g_script_reloader.loadOnce("sqDagui/daguiUtil.nut")
 
-::Timer <- class
+class Timer
 {
   onTimeOut   = null
   cycled      = false

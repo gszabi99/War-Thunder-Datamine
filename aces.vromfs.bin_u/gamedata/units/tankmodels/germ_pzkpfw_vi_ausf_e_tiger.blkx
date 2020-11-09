@@ -245,10 +245,7 @@
         "ex_armor_body_r_06_dm": [],
         "ex_armor_body_r_07_dm": [],
         "ex_decor_body_r_09_dm": [],
-        "ex_decor_l_04_dm": [],
-        "ex_decor_l_05_dm": [],
-        "ex_decor_r_06_dm": [],
-        "ex_decor_r_07_dm": []
+        "ex_decor_r_08_dm": []
       },
       "optics": {
         "armorClass": "optics_tank",
@@ -341,7 +338,6 @@
         "wheel_l_drive_dm": [],
         "wheel_l_back_dm": [],
         "wheel_r_back_dm": [],
-        "wheel_support_dm": [],
         "submodule": {
           "armorClass": "tank_traks",
           "armorThickness": 30.0,
@@ -698,10 +694,8 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 10.0,
-        "fireProtectionHp": 10.0,
-        "createSecondaryShatters": false,
-        "fireParamsPreset": "fuel_internal",
+        "armorThrough": 12.0,
+        "fireProtectionHp": 15.0,
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -723,9 +717,8 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 10.0,
-        "fireProtectionHp": 10.0,
-        "createSecondaryShatters": false,
+        "armorThrough": 12.0,
+        "fireProtectionHp": 15.0,
         "fireParamsPreset": "fuel_exterior",
         "fuel_tank_exterior_r_01_dm": [],
         "fuel_tank_exterior_r_02_dm": [],
@@ -2081,16 +2074,14 @@
       },
       {
         "Weapon": {
-          "trigger": "gunner3",
+          "trigger": "gunner2",
           "triggerGroup": "machinegun",
           "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
-          "emitter": "bone_mg_aa_barrel",
-          "flash": "emtr_mg_flame_03",
+          "emitter": "emtr_mg_aa_flame_01",
+          "flash": "emtr_mg_aa_flame_01",
           "useEmitter": true,
-          "rollOrientationDeg": 90.0,
           "defaultYaw": 0.0,
-          "defaultPitch": 0.0,
-          "barrelDP": "gun_barrel_02_dm",
+          "defaultPitch": 20.0,
           "parkInDeadzone": false,
           "speedYaw": 30.0,
           "speedPitch": 20.0,
@@ -2109,13 +2100,13 @@
           "errTargetting": 3.0,
           "errExplTime": 0.0,
           "turret": {
-            "head": "bone_turret_01",
-            "gun": "bone_mg_aa",
+            "head": "bone_mg_aa_h_01",
+            "gun": "bone_mg_aa_v_01",
             "gunnerDm": "commander_dm"
           },
           "limits": {
-            "yaw": [-55.0,158.0],
-            "pitch": [-10.0,25.0]
+            "yaw": [-45.0,45.0],
+            "pitch": [-20.0,50.0]
           }
         }
       }
@@ -2299,17 +2290,6 @@
       "replace_tex": {
         "from": "ger_camo_dunkelgelb*",
         "to": "ger_camo_winter_waves_bicolor*"
-      }
-    }
-  },
-  {
-    "skin": {
-      "name": "hinterhalt_daimler",
-      "nameLocId": "skin/ger_camo_hinterhalt_daimler",
-      "descLocId": "skin/ger_camo_hinterhalt_daimler/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_hinterhalt_daimler*"
       }
     }
   },
@@ -2791,15 +2771,6 @@
       },
       {
         "event": {
-          "name": "fuel_internal",
-          "fx": {
-            "name": "tank_engine_fire",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -3000,16 +2971,14 @@
             },
             {
               "Weapon": {
-                "trigger": "gunner3",
+                "trigger": "gunner2",
                 "triggerGroup": "machinegun",
                 "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
-                "emitter": "bone_mg_aa_barrel",
-                "flash": "emtr_mg_flame_03",
+                "emitter": "emtr_mg_aa_flame_01",
+                "flash": "emtr_mg_aa_flame_01",
                 "useEmitter": true,
-                "rollOrientationDeg": 90.0,
                 "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "barrelDP": "gun_barrel_02_dm",
+                "defaultPitch": 20.0,
                 "parkInDeadzone": false,
                 "speedYaw": 30.0,
                 "speedPitch": 20.0,
@@ -3028,13 +2997,13 @@
                 "errTargetting": 3.0,
                 "errExplTime": 0.0,
                 "turret": {
-                  "head": "bone_turret_01",
-                  "gun": "bone_mg_aa",
+                  "head": "bone_mg_aa_h_01",
+                  "gun": "bone_mg_aa_v_01",
                   "gunnerDm": "commander_dm"
                 },
                 "limits": {
-                  "yaw": [-55.0,158.0],
-                  "pitch": [-10.0,25.0]
+                  "yaw": [-45.0,45.0],
+                  "pitch": [-20.0,50.0]
                 }
               }
             },

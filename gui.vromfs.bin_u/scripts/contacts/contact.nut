@@ -1,6 +1,7 @@
 local { isPlayerFromXboxOne,
         isPlayerFromPS4,
-        getPlayerName } = require("scripts/clientState/platform.nut")
+        getPlayerName,
+        isPlatformSony } = require("scripts/clientState/platform.nut")
 local { reqPlayerExternalIDsByUserId } = require("scripts/user/externalIdsService.nut")
 local { getXboxChatEnableStatus,
         isChatEnabled,
@@ -11,7 +12,7 @@ local psnSocial = require("sony.social")
 
 local contactsByName = {}
 
-::Contact <- class
+class Contact
 {
   name = ""
   uid = ""
@@ -42,6 +43,8 @@ local contactsByName = {}
   afterSuccessUpdateFunc = null
 
   interactionStatus = null
+
+  isBlockedMe = false
 
   constructor(contactData)
   {
@@ -278,7 +281,8 @@ local contactsByName = {}
 
   function canChat(needShowSystemMessage = false)
   {
-    if (!needShowSystemMessage && !isCrossNetworkMessageAllowed(name))
+    if (!needShowSystemMessage
+      && (!isCrossNetworkMessageAllowed(name) || isBlockedMe))
       return false
 
     local intSt = getInteractionStatus(needShowSystemMessage)
@@ -302,6 +306,15 @@ local contactsByName = {}
   function isXboxChatMuted()
   {
     return uidInt64 != null && ::xbox_is_chat_player_muted(uidInt64)
+  }
+
+  //For now it is for PSN only. For all will be later
+  function updateMuteStatus() {
+    if (!isPlatformSony)
+      return
+
+    local ircName = ::g_string.replace(name, "@", "%40") //!!!Temp hack, *_by_uid will not be working on sony testing build
+    ::gchat_voice_mute_peer_by_name(isInBlockGroup() || isBlockedMe, ircName)
   }
 
   function isInGroup(groupName)

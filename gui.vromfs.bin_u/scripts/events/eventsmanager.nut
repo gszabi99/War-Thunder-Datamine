@@ -34,11 +34,11 @@ global enum UnitRelevance
 
 ::events <- null
 
-::allUnitTypesMask <- (::ES_UNIT_TYPE_AIRCRAFT | ::ES_UNIT_TYPE_TANK | ::ES_UNIT_TYPE_SHIP | ::ES_UNIT_TYPE_BOAT)
+::allUnitTypesMask <- (1 << ::ES_UNIT_TYPE_TOTAL_RELEASED) - 1
 
 systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_for_event" })
 
-::Events <- class
+class Events
 {
   __game_events        = {}
   lastUpdate           = 0
@@ -261,15 +261,6 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return ::getUnitTypeByText(rule["class"])
   }
 
-  function getMatchingUnitType(unit)
-  {
-    local matchingUnitType = ::get_es_unit_type(unit)
-    // override boats as ships because there are no boats on the matching
-    if (matchingUnitType == ::ES_UNIT_TYPE_BOAT)
-      return ::ES_UNIT_TYPE_SHIP
-    return matchingUnitType
-  }
-
   /**
    * Supports event objects and session lobby info as parameter.
    */
@@ -290,12 +281,10 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
         {
           local unit = ::getAircraftByName(rule.name)
           if (unit)
-            unitType = getMatchingUnitType(unit)
+            unitType = ::get_es_unit_type(unit)
         }
         if (unitType >= 0)
           teamUnitTypes = teamUnitTypes | (1 << unitType)
-        if (unitType == ::ES_UNIT_TYPE_SHIP)
-          teamUnitTypes = teamUnitTypes | (1 << ::ES_UNIT_TYPE_BOAT)
       }
       if (!teamUnitTypes)
         teamUnitTypes = ::allUnitTypesMask
@@ -305,8 +294,6 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
         local unitType = getBaseUnitTypefromRule(rule, true)
         if (unitType >= 0)
           teamUnitTypes = teamUnitTypes & ~(1 << unitType)
-        if (unitType == ::ES_UNIT_TYPE_SHIP)
-          teamUnitTypes = teamUnitTypes & ~(1 << ::ES_UNIT_TYPE_BOAT)
       }
 
       resMask = resMask | teamUnitTypes
@@ -335,12 +322,10 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       {
         local unit = ::getAircraftByName(rule.name)
         if (unit)
-          unitType = getMatchingUnitType(unit)
+          unitType = ::get_es_unit_type(unit)
       }
       if (unitType != ::ES_UNIT_TYPE_INVALID)
         res = res | (1 << unitType)
-      if (unitType == ::ES_UNIT_TYPE_SHIP)
-        res = res | (1 << ::ES_UNIT_TYPE_BOAT)
     }
     return res
   }
@@ -1037,7 +1022,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
         continue
 
       local unitType = getBaseUnitTypefromRule(rule, false)
-      if (unitType != ::ES_UNIT_TYPE_INVALID && unitType != getMatchingUnitType(unit))
+      if (unitType != ::ES_UNIT_TYPE_INVALID && unitType != ::get_es_unit_type(unit))
         continue
       if (("type" in rule) && (::getWpcostUnitClass(unit.name) != "exp_" + rule.type))
         continue
@@ -1867,8 +1852,6 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     local haveRequiredRules = generateRulesText(handler, getRequiredCrafts(teamData), requiredAirsObj, true, true)
     requiredAirsObj.show(haveRequiredRules)
 
-    if ((allowedUnitTypes & (1 << ::ES_UNIT_TYPE_BOAT)) != 0)
-      allowedUnitTypes = allowedUnitTypes & ~(1 << ::ES_UNIT_TYPE_BOAT)
     local needTypeText = (!haveAllowedRules && !haveForbiddenRules && !haveRequiredRules) || allowedUnitTypes != ::allUnitTypesMask
     local allowedUnitTypesObj = teamObj.findObject("allowed_unit_types")
     allowedUnitTypesObj.show(needTypeText)

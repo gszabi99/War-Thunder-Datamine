@@ -218,6 +218,8 @@
     "mission": {
       "level": "levels/dover_strait.bin",
       "type": "domination",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
       "locName": "missions/_NBttl;dover/name",
@@ -228,11 +230,8 @@
       "ctaCaptureZoneEqualPenaltyMul": 0.0,
       "ctaCaptureZoneDiffPenaltyExp": 0.3,
       "randomSpawnTeams": true,
-      "showTacticalMapCellSize": true,
       "country_axis": "germany",
       "country_allies": "ussr",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": false,
@@ -316,11 +315,6 @@
               "icontype": "basezone_B",
               "side": "enemy",
               "target": "briefing_t2_capture_area"
-            }
-          },
-          {
-            "battleArea": {
-              "target": "briefing_battlearea"
             }
           }
         ]
@@ -444,7 +438,6 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
-      "crewSkillK": 0.0,
       "props": {
         "army": 1,
         "count": 1,
@@ -545,17 +538,6 @@
         [-9008.09,131.0,-10057.0]
       ],
       "objLayer": 0,
-      "props": []
-    },
-    "briefing_battlearea": {
-      "type": "Box",
-      "tm": [
-        [-30000.0,0.0,0.0],
-        [0.0,600.0,0.0],
-        [0.0,0.0,-30000.0],
-        [0.0,0.0,0.0]
-      ],
-      "objLayer": 3,
       "props": []
     }
   },

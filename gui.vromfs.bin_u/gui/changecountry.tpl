@@ -1,7 +1,6 @@
 root {
-  type:t='big'
-  blur {}
-  blur_foreground {}
+  background-color:t='@modalShadeColor';
+  type:t='big';
 
   frame {
     pos:t='50%pw-50%w, 40%ph-40%h';
@@ -39,6 +38,7 @@ root {
         shortcutActivate:t='';
         on_select:t='onCountrySelect';
         on_dbl_click:t='onApply';
+        focus:t='yes';
 
         <<#shopFilterItems>>
         shopFilter {

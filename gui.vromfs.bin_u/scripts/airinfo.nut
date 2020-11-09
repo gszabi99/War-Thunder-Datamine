@@ -118,9 +118,9 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   return unit.gift != null
 }
 
-::get_unit_country_icon <- function get_unit_country_icon(unit, needOperatorCountry = false)
+::get_unit_country_icon <- function get_unit_country_icon(unit, needOriginCountry = false)
 {
-  return ::get_country_icon(needOperatorCountry ? unit.getOperatorCountry() : unit.shopCountry)
+  return ::get_country_icon(needOriginCountry ? unit.getOriginCountry() : unit.shopCountry)
 }
 
 ::isUnitGroup <- function isUnitGroup(unit)
@@ -285,7 +285,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
 
   if (!::canBuyUnit(unit) && !canBuyNotResearchedUnit)
   {
-    if ((::isUnitResearched(unit) || ::isUnitSpecial(unit)) && !silent)
+    if (::isUnitResearched(unit) && !silent)
       ::show_cant_buy_or_research_unit_msgbox(unit)
     return false
   }
@@ -302,7 +302,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   local additionalCheckBox = null
   if (::facebook_is_logged_in() && ::has_feature("FacebookWallPost"))
   {
-    additionalCheckBox = "cardImg{ background-image:t='#ui/gameuiskin#facebook_logo.svg';}" +
+    additionalCheckBox = "cardImg{ background-image:t='#ui/gameuiskin#facebook_logo';}" +
                      "CheckBox {" +
                       "id:t='chbox_post_facebook_purchase'" +
                       "text:t='#facebook/shareMsg'" +
@@ -694,7 +694,6 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
       })
       return false
 
-    case ::ES_UNIT_TYPE_BOAT:
     case ::ES_UNIT_TYPE_SHIP:
 
       local torpedoMod = "torpedoes_movement_mode"
@@ -1157,8 +1156,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   if (::checkObj(obj))
   {
     obj["background-image"] = ::get_unit_country_icon(air, true)
-    obj["tooltip"] = "".concat(::loc("shop/unitCountry/operator"), ::loc("ui/colon"), ::loc(air.getOperatorCountry()),
-      "\n", ::loc("shop/unitCountry/research"), ::loc("ui/colon"), ::loc(air.shopCountry))
+    obj["tooltip"] = ::loc("shop/unitCountry/tooltip") + ::loc("ui/colon") + ::loc(air.shopCountry)
   }
 
   if (::has_feature("UnitTooltipImage"))
@@ -1252,10 +1250,6 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
       {id = "maxSpeed", id2 = "maxSpeed", prepareTextFunc = @(value) countMeasure(0, value)},
       {id = "turnTurretTime", id2 = "turnTurretSpeed", prepareTextFunc = function(value){return format("%.1f%s", value.tofloat(), ::loc("measureUnits/deg_per_sec"))}}
     ],
-    [::ES_UNIT_TYPE_BOAT] = [
-      //TODO ship modificators
-      {id = "maxSpeed", id2 = "maxSpeed", prepareTextFunc = @(value) countMeasure(0, value)}
-    ],
     [::ES_UNIT_TYPE_SHIP] = [
       //TODO ship modificators
       {id = "maxSpeed", id2 = "maxSpeed", prepareTextFunc = @(value) countMeasure(0, value)}
@@ -1322,8 +1316,8 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
     ["aircraft-mass-tr"]                  = [ ::ES_UNIT_TYPE_TANK ],
     ["aircraft-horsePowers-tr"]           = [ ::ES_UNIT_TYPE_TANK ],
     ["aircraft-maxSpeed-tr"]              = [ ::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_TANK,
-                                              ::ES_UNIT_TYPE_BOAT, ::ES_UNIT_TYPE_SHIP, ::ES_UNIT_TYPE_HELICOPTER ],
-    ["aircraft-maxDepth-tr"]              = [ ::ES_UNIT_TYPE_BOAT, ::ES_UNIT_TYPE_SHIP ],
+                                              ::ES_UNIT_TYPE_SHIP, ::ES_UNIT_TYPE_HELICOPTER],
+    ["aircraft-maxDepth-tr"]              = [ ::ES_UNIT_TYPE_SHIP],
     ["aircraft-speedAlt-tr"]              = [ ::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_HELICOPTER ],
     ["aircraft-altitude-tr"]              = [ ::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_HELICOPTER ],
     ["aircraft-turnTime-tr"]              = [ ::ES_UNIT_TYPE_AIRCRAFT ],
@@ -1419,7 +1413,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
     }
   }
 
-  if (unitType == ::ES_UNIT_TYPE_SHIP || unitType == ::ES_UNIT_TYPE_BOAT)
+  if(unitType == ::ES_UNIT_TYPE_SHIP)
   {
     local unitTags = ::getTblValue(air.name, ::get_unittags_blk(), {})
 
@@ -1525,10 +1519,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
       holderObj.findObject("aircraft-train_cost").setValue(::getPriceAccordingToPlayersCurrency(air.trainCost, 0))
     }
 
-  local showRewardsInfo = !(params?.showRewardsInfoOnlyForPremium ?? false) || special
-  local rpRewardObj = ::showBtn("aircraft-reward_rp-tr", showRewardsInfo, holderObj)
-  local wpRewardObj = ::showBtn("aircraft-reward_wp-tr", showRewardsInfo, holderObj)
-  if (showRewardsInfo && (rpRewardObj != null || wpRewardObj!=null))
+  if (holderObj.findObject("aircraft-reward_rp-tr") || holderObj.findObject("aircraft-reward_wp-tr"))
   {
     local hasPremium  = ::havePremium()
     local hasTalisman = special || ::shop_is_modification_enabled(air.name, "premExpMul")
@@ -1544,7 +1535,6 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
 
     local rewardFormula = {
       rp = {
-        obj           = rpRewardObj
         currency      = "currency/researchPoints/sign/colored"
         multText      = air.expMul.tostring()
         multiplier    = air.expMul
@@ -1555,7 +1545,6 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
         boosterBonus  = ::getTblValue(::BoosterEffectType.RP.name, boosterEffects, 0) / 100.0
       }
       wp = {
-        obj           = wpRewardObj
         currency      = "warpoints/short/colored"
         multText      = wpMultText
         multiplier    = wpMuls.wpMul
@@ -1569,7 +1558,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
 
     foreach (id, f in rewardFormula)
     {
-      if (f.obj == null)
+      if (!holderObj.findObject("aircraft-reward_" + id + "-tr"))
         continue
 
       local result = f.multiplier * f.premUnitMul * ( f.noBonus + f.premAccBonus + f.premModBonus + f.boosterBonus )
@@ -1584,8 +1573,8 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
         booster    = f.boosterBonus  > 0 ? ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(f.boosterBonus)  : null
       })
 
-      holderObj.getScene().replaceContentFromText(f.obj.findObject($"aircraft-reward_{id}"), formula, formula.len(), handler)
-      f.obj.findObject($"aircraft-reward_{id}-label").setValue($"{::loc("reward")} {resultText}{::loc("ui/colon")}")
+      holderObj.getScene().replaceContentFromText(holderObj.findObject("aircraft-reward_" + id), formula, formula.len(), handler)
+      holderObj.findObject("aircraft-reward_" + id + "-label").setValue(::loc("reward") + " " + resultText + ::loc("ui/colon"))
     }
   }
 
@@ -1912,14 +1901,14 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   if (::checkObj(obj))
     obj.show(massPerSecValue != 0)
 
-  obj = ::showBtn("aircraft-research-efficiency-tr", showRewardsInfo, holderObj)
-  if (obj != null)
+  obj = holderObj.findObject("aircraft-research-efficiency")
+  if (::checkObj(obj))
   {
     local minAge = ::getMinBestLevelingRank(air)
     local maxAge = ::getMaxBestLevelingRank(air)
     local rangeText = (minAge == maxAge) ? (::get_roman_numeral(minAge) + ::nbsp + ::loc("shop/age")) :
         (::get_roman_numeral(minAge) + ::nbsp + ::loc("ui/mdash") + ::nbsp + ::get_roman_numeral(maxAge) + ::nbsp + ::loc("mainmenu/ranks"))
-    obj.findObject("aircraft-research-efficiency").setValue(rangeText)
+    obj.setValue(rangeText)
   }
 
   obj = holderObj.findObject("aircraft-weaponPresets")
@@ -2031,12 +2020,12 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
 {
   local unitCacheName = null
   local unitCacheBlk = null
-  ::get_full_unit_blk <- function get_full_unit_blk(unitName) //better to not use this funtion, and collect all data from wpcost and unittags
+  function get_full_unit_blk(unitName) //better to not use this funtion, and collect all data from wpcost and unittags
   {
     if (unitName != unitCacheName)
     {
       unitCacheName = unitName
-      unitCacheBlk = ::blkFromPath(::get_unit_file_name(unitName))
+      unitCacheBlk = ::DataBlock(::get_unit_file_name(unitName))
     }
     return unitCacheBlk
   }
@@ -2052,5 +2041,5 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
     nodes.pop()
   local unitDir = ::g_string.implode(nodes, "/")
   local fmPath = unitDir + "/" + (unitBlkData?.fmFile ?? ("fm/" + unitId))
-  return ::blkFromPath(fmPath)
+  return ::DataBlock(fmPath)
 }

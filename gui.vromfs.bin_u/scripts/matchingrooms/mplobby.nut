@@ -1,5 +1,5 @@
-local avatars = require("scripts/user/avatars.nut")
-local playerContextMenu = require("scripts/user/playerContextMenu.nut")
+local avatars = ::require("scripts/user/avatars.nut")
+local playerContextMenu = ::require("scripts/user/playerContextMenu.nut")
 local antiCheat = require("scripts/penitentiary/antiCheat.nut")
 local { isChatEnabled } = require("scripts/chat/chatStates.nut")
 local fillSessionInfo = require("scripts/matchingRooms/fillSessionInfo.nut")
@@ -52,6 +52,7 @@ local { getUnitItemStatusText } = require("scripts/unit/unitInfoTexts.nut")
 class ::gui_handlers.MPLobby extends ::gui_handlers.BaseGuiHandlerWT
 {
   sceneBlkName = mpLobbyBlkPath.value
+  shouldBlurSceneBg = true
 
   tblData = null
   tblMarkupData = null
@@ -66,9 +67,6 @@ class ::gui_handlers.MPLobby extends ::gui_handlers.BaseGuiHandlerWT
   tableTeams = null
   isInfoByTeams = false
   isTimerVisible = false
-
-  viewPlayer = null
-  isPlayersListHovered = true
 
   function initScreen()
   {
@@ -88,12 +86,12 @@ class ::gui_handlers.MPLobby extends ::gui_handlers.BaseGuiHandlerWT
       onPlayerSelectCb = ::Callback(refreshPlayerInfo, this)
       onPlayerDblClickCb = ::Callback(openUserCard, this)
       onPlayerRClickCb = ::Callback(onUserRClick, this)
-      onTablesHoverChange = ::Callback(onPlayersListHover, this)
+      onWrapUpCb = ::Callback(onWrapUp, this)
+      onWrapDownCb = ::Callback(onWrapDown, this)
     })
     if (playersListWidgetWeak)
       playersListWidgetWeak = playersListWidgetWeak.weakref()
     registerSubHandler(playersListWidgetWeak)
-    playersListWidgetWeak?.moveMouse()
 
     if (!::SessionLobby.getPublicParam("symmetricTeams", true))
       ::SessionLobby.setTeam(::SessionLobby.getRandomTeam(), true)
@@ -105,6 +103,7 @@ class ::gui_handlers.MPLobby extends ::gui_handlers.BaseGuiHandlerWT
     updateRoomInSession()
 
     initChat()
+    initFocusArray()
     local sessionInfo = ::SessionLobby.getSessionInfo()
     ::update_vehicle_info_button(scene, sessionInfo)
 
@@ -121,6 +120,17 @@ class ::gui_handlers.MPLobby extends ::gui_handlers.BaseGuiHandlerWT
     }
   }
 
+  function getMainFocusObj()
+  {
+    return playersListWidgetWeak && playersListWidgetWeak.getFocusObj()
+  }
+
+  function getMainFocusObj2()
+  {
+    local chatPlace = getObj("lobby_chat_place")
+    return ::checkObj(chatPlace)? ::getCustomObjEditbox(chatPlace) : null
+  }
+
   function initChat()
   {
     if (!isChatEnabled())
@@ -129,6 +139,8 @@ class ::gui_handlers.MPLobby extends ::gui_handlers.BaseGuiHandlerWT
     local chatObj = scene.findObject("lobby_chat_place")
     if (::checkObj(chatObj))
       ::joinCustomObjRoom(chatObj, ::SessionLobby.getChatRoomId(), ::SessionLobby.getChatRoomPassword(), this)
+
+    restoreFocus()
   }
 
   function updateSessionInfo()
@@ -231,14 +243,10 @@ class ::gui_handlers.MPLobby extends ::gui_handlers.BaseGuiHandlerWT
 
   function refreshPlayerInfo(player)
   {
-    viewPlayer = player
     updatePlayerInfo(player)
     showSceneBtn("btn_usercard", player != null && !::show_console_buttons && ::has_feature("UserCards"))
-    updateOptionsButton()
+    showSceneBtn("btn_user_options", player != null && ::show_console_buttons)
   }
-
-  updateOptionsButton = @() showSceneBtn("btn_user_options",
-    ::show_console_buttons && viewPlayer != null && isPlayersListHovered)
 
   function updatePlayerInfo(player)
   {
@@ -318,7 +326,7 @@ class ::gui_handlers.MPLobby extends ::gui_handlers.BaseGuiHandlerWT
         status = getUnitItemStatusText(bit_unit_status.owned)
       }
       local data = ::build_aircraft_item(airName, air, params)
-      data = "rankUpList { id:t='curAircraft_place'; {0} }".subst(data)
+      data = "tdiv { id:t='curAircraft_place'; class:t='rankUpList';" + data + "}"
       guiScene.appendWithBlk(airObj, data, this)
       ::fill_unit_item_timers(airObj.findObject(airName), air)
     }
@@ -635,11 +643,6 @@ class ::gui_handlers.MPLobby extends ::gui_handlers.BaseGuiHandlerWT
       ::g_popups.add(::loc("mainmenu/playersAreNotInvited"), ::g_string.implode(namesText, ", "))
     }
   }
-
-  function onPlayersListHover(tblId, isHovered) {
-    isPlayersListHovered = isHovered
-    updateOptionsButton()
-  }
 }
 
 ::gui_modal_joiningGame <- function gui_modal_joiningGame()
@@ -742,7 +745,7 @@ class ::gui_handlers.JoiningGame extends ::gui_handlers.BaseGuiHandlerWT
       obj.show(show)
       obj.enable(show)
       if (show)
-        ::move_mouse_on_obj(obj)
+        obj.select()
       return
     }
     if (!show)
@@ -755,7 +758,7 @@ class ::gui_handlers.JoiningGame extends ::gui_handlers.BaseGuiHandlerWT
 
     guiScene.appendWithBlk(holderObj, data, this)
     obj = scene.findObject(btnId)
-    ::move_mouse_on_obj(obj)
+    obj.select()
   }
 
   function resetTimer()

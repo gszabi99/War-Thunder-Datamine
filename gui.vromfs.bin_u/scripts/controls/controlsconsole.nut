@@ -29,7 +29,7 @@ class ::gui_handlers.ControlsConsole extends ::gui_handlers.GenericOptionsModal
     ]
 
     local guiScene = ::get_gui_scene()
-    local container = create_options_container("controls", options, true)
+    local container = create_options_container("controls", options, true, true)
     guiScene.replaceContentFromText("optionslist", container.tbl, container.tbl.len(), this)
     optionsContainers = [container.descr]
 

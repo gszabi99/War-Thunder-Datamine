@@ -55,6 +55,9 @@
       "explodeOnRendinst": true
     },
     {
+      "modelName": "tank_bullet_heat_fs"
+    },
+    {
       "fresnel": [0.23,0.1,2.0]
     },
     {
@@ -103,13 +106,19 @@
       "WdK": [0.1,0.1,0.1]
     },
     {
-      "maxAxisValues": 0.2
+      "maxAxisValues": 0.5
     },
     {
-      "explosionEffect": "explosion_midair_small"
+      "explosionEffect": "atgm_hit"
+    },
+    {
+      "defFxScale": [1.5,1.6]
     },
     {
       "groundCollisionEffect": "art_ground_splash"
+    },
+    {
+      "groundFxScale": [1.3,1.5]
     },
     {
       "ricochetEffect": "cannon_ricochet"
@@ -187,25 +196,16 @@
       "explodeTreshold": 0.0
     },
     {
+      "explosionPatchRadius": 3.5
+    },
+    {
       "rendinstDamageRadius": 2.0
     },
     {
       "statType": "hydra"
     },
     {
-      "fireEffect": "rocket_fire_short"
-    },
-    {
       "smokeEffect": ""
-    },
-    {
-      "hazeEffect": "haze_missile"
-    },
-    {
-      "startFx": "pylon_smoke"
-    },
-    {
-      "endSmokeViscosity": 0.05
     },
     {
       "hitPower": 260.0
@@ -431,16 +431,20 @@
     {
       "collisions": {
         "steel": {
-          "fx": "explosion_midair_small"
+          "fx": "atgm_hit",
+          "fxScale": [4.0,4.2]
         },
         "armor": {
-          "fx": "explosion_midair_small"
+          "fx": "atgm_hit",
+          "fxScale": [4.0,4.2]
         },
         "buildings": {
-          "fx": "explosion_midair_small"
+          "fx": "atgm_hit",
+          "fxScale": [4.0,4.2]
         },
         "wood": {
-          "fx": "explosion_midair_small"
+          "fx": "atgm_hit",
+          "fxScale": [4.0,4.2]
         }
       }
     },

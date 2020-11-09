@@ -8,7 +8,7 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
 
 
 
-::ControlsPreset <- class {
+class ControlsPreset {
   basePresetPaths = null
   hotkeys         = null
   axes            = null
@@ -281,7 +281,7 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
     }
 
     presetChain.append(presetPath)
-    local blk = ::blkFromPath(presetPath)
+    local blk = ::DataBlock(presetPath)
     loadFromBlk(blk, presetChain)
     presetChain.pop()
   }
@@ -1029,7 +1029,7 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
       "elevator"
       "throttle"
       "gm_zoom"
-      "ship_zoom"
+      "ship_sight_distance"
       "submarine_zoom"
       "helicopter_collective"
     ]

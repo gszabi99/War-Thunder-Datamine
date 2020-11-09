@@ -48,6 +48,9 @@ frame {
       on_select:t='onSelectTask'
 
       navigatorShortcuts:t='yes'
+      childsActivate:t='yes'
+      on_wrap_up:t='onWrapUp'
+      on_wrap_down:t='onWrapDown'
       selImgType:t='gamepadFocused'
     }
 
@@ -68,6 +71,8 @@ frame {
 
       navigatorShortcuts:t='yes'
       on_select:t = 'onChangeShowMode'
+      on_wrap_up:t='onWrapUp'
+      on_wrap_down:t='onWrapDown'
 
       <<#radiobuttons>>
         RadioButton {
@@ -127,10 +132,11 @@ frame {
         id:t = 'btn_requirements_list'
         text:t = '#unlocks/requirements'
         _on_click:t = 'onViewBattleTaskRequirements'
-        btnName:t='RB'
+        btnName:t='Y'
         ButtonImg {}
         display:t = 'hide'
         enable:t='no'
+
       }
 
       textareaNoTab {

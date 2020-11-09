@@ -2,7 +2,6 @@ local statsd = require("statsd")
 local { animBgLoad } = require("scripts/loading/animBg.nut")
 local showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
 local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
-local { targetPlatform } = require("scripts/clientState/platform.nut")
 
 class ::gui_handlers.LoginWndHandlerPs4 extends ::BaseGuiHandler
 {
@@ -33,7 +32,7 @@ class ::gui_handlers.LoginWndHandlerPs4 extends ::BaseGuiHandler
       ::ps4_initial_check_settings()
     })
 
-    if ((::getroottable()?.disable_autorelogin_once ?? false) != true)
+    if (::dgs_get_argv("autologin"))
       ::on_ps4_autologin()
   }
 
@@ -50,11 +49,11 @@ class ::gui_handlers.LoginWndHandlerPs4 extends ::BaseGuiHandler
       local ret = ::ps4_login();
       if (ret >= 0)
       {
-        local cfgName = ::ps4_is_production_env() ? "updater.blk" : "updater_dev.blk"
+        local isProd = ::ps4_is_production_env()
 
         ::gui_start_modal_wnd(::gui_handlers.UpdaterModal,
           {
-            configPath = $"/app0/{targetPlatform}/{cfgName}"
+            configPath = isProd ? "/app0/ps4/updater.blk" : "/app0/ps4/updater_dev.blk"
             onFinishCallback = ::ps4_load_after_login
           })
       }

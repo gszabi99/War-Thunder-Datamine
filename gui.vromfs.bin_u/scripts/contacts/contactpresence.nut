@@ -1,4 +1,4 @@
-local enums = require("sqStdlibs/helpers/enums.nut")
+local enums = ::require("sqStdlibs/helpers/enums.nut")
 enum PRESENCE_SORT
 {
   UNKNOWN
@@ -55,7 +55,7 @@ enums.addTypesByGlobalName("g_contact_presence", {
 
   IN_GAME = {
     sortOrder = PRESENCE_SORT.IN_GAME
-    iconName = "player_in_game.svg"
+    iconName = "player_in_game"
   }
 
   SQUAD_OFFLINE = {

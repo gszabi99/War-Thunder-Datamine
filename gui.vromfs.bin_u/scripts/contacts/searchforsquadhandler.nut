@@ -25,6 +25,7 @@ class ::gui_handlers.SearchForSquadHandler extends ::ContactsHandler
   searchGroup = ::EPLX_SEARCH
   clanGroup = ::EPLX_CLAN
   searchShowDefaultOnReset = true
+  isPrimaryFocus = true
 
   sg_groups = null
 
@@ -36,7 +37,7 @@ class ::gui_handlers.SearchForSquadHandler extends ::ContactsHandler
 
     local fObj = scene.findObject("contacts_wnd")
     fObj.pos = "0.5(sw-w), 0.4(sh-h)"
-    fObj["class"] = "wnd"
+    fObj["class"] = ""
     if (::contacts_sizes)
       fObj.size = ::contacts_sizes.size[0] + ", " + ::contacts_sizes.size[1]
     scene.findObject("contacts_backShade").show(true)
@@ -44,8 +45,8 @@ class ::gui_handlers.SearchForSquadHandler extends ::ContactsHandler
     updateSearchContactsGroups()
 
     guiScene.setUpdatesEnabled(true, true)
+    initFocusArray()
     closeSearchGroup()
-    selectCurContactGroup()
     updateConsoleButtons()
     updateSquadButton()
   }
@@ -67,7 +68,10 @@ class ::gui_handlers.SearchForSquadHandler extends ::ContactsHandler
 
   function onPlayerSelect(obj)
   {
-    curPlayer = ::contacts[curGroup]?[obj.getValue()]
+    if (!obj) return
+
+    local value = obj.getValue()
+    curPlayer = ::getTblValue(value, ::contacts[curGroup])
     updateSquadButton()
   }
 

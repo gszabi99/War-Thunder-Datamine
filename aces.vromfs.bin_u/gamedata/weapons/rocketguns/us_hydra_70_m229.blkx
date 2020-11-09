@@ -5,7 +5,6 @@
   "sound": "weapon.rocketgun_132",
   "helicopterGroup": 2,
   "mesh": "us_hydra_70_m229_rocket",
-  "mesh_deployed": "us_hydra_70_m229_rocket_deployed",
   "rocket": [
     {
       "normalizationPreset": "heat"
@@ -38,6 +37,9 @@
       "explodeOnRendinst": true
     },
     {
+      "modelName": "tank_bullet_heat_fs"
+    },
+    {
       "fresnel": [0.23,0.1,2.0]
     },
     {
@@ -65,10 +67,16 @@
       "spawnExplosionWreckage": false
     },
     {
-      "explosionEffect": "explosion_midair_tiny"
+      "explosionEffect": "atgm_hit"
+    },
+    {
+      "defFxScale": [1.5,1.6]
     },
     {
       "groundCollisionEffect": "art_ground_splash"
+    },
+    {
+      "groundFxScale": [1.3,1.5]
     },
     {
       "ricochetEffect": "cannon_ricochet"
@@ -83,19 +91,7 @@
       "explosionPatchRadius": 3.4
     },
     {
-      "fireEffect": "rocket_fire_light_multiple"
-    },
-    {
-      "smokeEffect": ""
-    },
-    {
-      "hazeEffect": ""
-    },
-    {
-      "startFx": ""
-    },
-    {
-      "endSmokeViscosity": 0.05
+      "smokeEffect": "rocket_smoke"
     },
     {
       "maxDeltaAngle": 2.5
@@ -150,6 +146,9 @@
     },
     {
       "explodeTreshold": 0.0
+    },
+    {
+      "explosionPatchRadius": 3.5
     },
     {
       "rendinstDamageRadius": 10.0
@@ -232,16 +231,20 @@
     {
       "collisions": {
         "steel": {
-          "fx": "explosion_midair_tiny"
+          "fx": "atgm_hit",
+          "fxScale": [4.0,4.2]
         },
         "armor": {
-          "fx": "explosion_midair_tiny"
+          "fx": "atgm_hit",
+          "fxScale": [4.0,4.2]
         },
         "buildings": {
-          "fx": "explosion_midair_tiny"
+          "fx": "atgm_hit",
+          "fxScale": [4.0,4.2]
         },
         "wood": {
-          "fx": "explosion_midair_tiny"
+          "fx": "atgm_hit",
+          "fxScale": [4.0,4.2]
         }
       }
     },

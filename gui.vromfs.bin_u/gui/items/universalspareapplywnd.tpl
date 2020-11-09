@@ -30,6 +30,7 @@ popup_menu {
     pos:t='50%pw-50%w, 0'
     position:t='relative'
     itemShopList:t='yes'
+    mouse-focusable:t='yes'
     clearOnFocusLost:t='no'
 
     flow:t='h-flow'
@@ -38,9 +39,9 @@ popup_menu {
     moveX:t='linear'
     moveY:t='closest'
     value:t='0'
-    move-only-hover:t='yes'
 
     on_select:t = 'onItemSelect'
+    on_wrap_down:t='onWrapDown'
 
     <<@items>>
   }
@@ -64,13 +65,13 @@ popup_menu {
       pos:t='0, 50%ph-50%h'
       position:t='relative'
       margin:t='0.5@sliderThumbWidth + 1@blockInterval, 0'
+      mouse-focusable:t='yes'
       value:t='1'
       min:t='1'
       max:t='1'
       canWrap:t='yes'
       on_change_value:t='onAmountChange'
-
-      focus_border {}
+      on_wrap_up:t='onWrapUp'
 
       sliderButton {
         css-hier-invalidate:t='yes'

@@ -18,7 +18,7 @@ enum SPECTATOR_CHAT_TAB {
   ORDERS   = "btn_tab_orders"
 }
 
-::Spectator <- class extends ::gui_handlers.BaseGuiHandlerWT
+class Spectator extends ::gui_handlers.BaseGuiHandlerWT
 {
   scene  = null
   sceneBlkName = "gui/spectator.blk"
@@ -132,6 +132,17 @@ enum SPECTATOR_CHAT_TAB {
     }
   ]
 
+  focusArray = [
+    "controls_div"
+    "table_team1"
+    "table_team2"
+    "tabs"
+    "chat_input"
+  ]
+
+  currentFocusItem = 0
+
+
   function initScreen()
   {
     ::g_script_reloader.registerPersistentData("Spectator", this, [ "debugMode" ])
@@ -198,19 +209,16 @@ enum SPECTATOR_CHAT_TAB {
         ID_TOGGLE_FORCE_SPECTATOR_CAM_ROT = true
         ID_REPLAY_SHOW_MARKERS      = mode == SPECTATOR_MODE.REPLAY
         ID_REPLAY_SLOWER            = canControlTimeline
+        txt_replay_time_speed       = canControlTimeline
         ID_REPLAY_FASTER            = canControlTimeline
         ID_REPLAY_PAUSE             = canControlTimeline
+        controls_timeline           = canControlTimeline
+        controls_timer              = canSeeMissionTimer
     })
     ::enableBtnTable(objReplayControls, {
         ID_PREV_PLANE = mode != SPECTATOR_MODE.REPLAY || isMultiplayer
         ID_NEXT_PLANE = mode != SPECTATOR_MODE.REPLAY || isMultiplayer
     })
-    foreach(id, show in {
-          txt_replay_time_speed       = canControlTimeline
-          controls_timeline           = canControlTimeline
-          controls_timer              = canSeeMissionTimer
-        })
-      scene.findObject(id).show(show)
 
     for (local i = 0; i < objReplayControls.childrenCount(); i++)
     {
@@ -284,6 +292,7 @@ enum SPECTATOR_CHAT_TAB {
     scene.findObject("update_timer").setUserData(this)
 
     updateClientHudOffset()
+    restoreFocus()
   }
 
   function reinitScreen()
@@ -295,6 +304,7 @@ enum SPECTATOR_CHAT_TAB {
     actionBar.reinit()
     reinitDmgIndicator()
     recalculateLayout()
+    restoreFocus()
     updateTarget(true)
   }
 
@@ -335,12 +345,14 @@ enum SPECTATOR_CHAT_TAB {
       objChatLogDiv.size = canSendChatMessages ? objChatLogDiv.sizeWithInput : objChatLogDiv.sizeWithoutInput
 
       if (mode == SPECTATOR_MODE.SKIRMISH || mode == SPECTATOR_MODE.SUPERVISOR)
-        ::chat_set_mode(CHAT_MODE_ALL, "")
+        ::chat_set_mode(::CHAT_MODE_ALL, "")
     }
   }
 
   function onShowHud(show = true, needApplyPending = false)
   {
+    if (show)
+      restoreFocus()
   }
 
   function onUpdate(obj=null, dt=0.0)
@@ -556,6 +568,30 @@ enum SPECTATOR_CHAT_TAB {
     return isFocused
   }
 
+  function onWrapUpTabs(obj)
+  {
+    if (!selectLastChoosedTeam(obj))
+      selectControlsBlock(obj)
+  }
+
+  function onWrapDownControls(obj)
+  {
+    if (!selectLastChoosedTeam(obj))
+      scene.findObject("tabs").select()
+  }
+
+  function selectLastChoosedTeam(obj)
+  {
+    local tableObj = scene.findObject(lastSelectedTableId)
+    if (::check_obj(tableObj))
+    {
+      tableObj.select()
+      return true
+    }
+
+    return selectTargetTeamBlock()
+  }
+
   function updateControls(targetSwitched = false)
   {
     if (canControlTimeline)
@@ -659,6 +695,9 @@ enum SPECTATOR_CHAT_TAB {
       return
 
     statSelPlayerId[teamIdToIndex(player.team)] = player.id
+    if (::check_obj(tableObj) && !tableObj.isFocused())
+      tableObj.select()
+
     switchTargetPlayer(player.id)
   }
 
@@ -673,6 +712,32 @@ enum SPECTATOR_CHAT_TAB {
           chatLog = ::get_game_chat_handler()?.getChatLogForBanhammer() ?? ""
         }
       )
+  }
+
+  function onPlayersTblWrapUp(obj)
+  {
+    if (::get_is_console_mode_enabled())
+      scene.findObject("controls_div").select()
+  }
+
+  function onPlayersTblWrapDown(obj)
+  {
+    if (::get_is_console_mode_enabled())
+      scene.findObject("tabs").select()
+  }
+
+  function onSwitchPlayersTbl(obj)
+  {
+    local tab1 = scene.findObject("table_team1")
+    local tab2 = scene.findObject("table_team2")
+    if (!::check_obj(tab1) || !::check_obj(tab2))
+      return
+
+    local tblObj = (tab1.isFocused() && tab2.isVisible()) ? tab2 : (tab2.isFocused() && tab1.isVisible()) ? tab1 : null
+    if (!tblObj)
+      return
+
+    tblObj.select()
   }
 
   function switchTargetPlayer(id)
@@ -697,10 +762,12 @@ enum SPECTATOR_CHAT_TAB {
     statSelPlayerId[lastTargetData.team] = player.id
 
     local tblObj = getTeamTableObj(player.team)
-    if (!tblObj)
-      return false
-    ::move_mouse_on_child_by_value(tblObj)
-    return true
+    if (tblObj) {
+      tblObj.select()
+      return true
+    }
+
+    return false
   }
 
   function selectControlsBlock(obj)
@@ -801,6 +868,7 @@ enum SPECTATOR_CHAT_TAB {
     toggleObj.show(toggle)
     obj.toggled = toggle ? "yes" : "no"
 
+    restoreFocus()
     updateHistoryLog(true)
     updateClientHudOffset()
     recalculateLayout()
@@ -1046,9 +1114,7 @@ enum SPECTATOR_CHAT_TAB {
       nameObj.setValue(playerNameShort)
 
       local unitId = player.aircraftName != "" ? player.aircraftName : null
-      local iconImg = !player.ingame ? "#ui/gameuiskin#player_not_ready.svg"
-        : unitId ? ::getUnitClassIco(unitId)
-        : "#ui/gameuiskin#dead.svg"
+      local iconImg = !player.ingame ? "#ui/gameuiskin#player_not_ready" : unitId ? ::getUnitClassIco(unitId) : "#ui/gameuiskin#dead"
       local iconType = unitId ? getUnitRole(unitId) : ""
       local stateDesc = getPlayerStateDesc(player)
       local malfunctionDesc = getUnitMalfunctionDesc(player)
@@ -1222,6 +1288,15 @@ enum SPECTATOR_CHAT_TAB {
 
     if (::getTblValue("activate", params, false))
       ::game_chat_input_toggle_request(true)
+  }
+
+  function onEventMpChatInputToggled(params)
+  {
+    if (!::checkObj(scene))
+      return
+    local active = ::getTblValue("active", params, true)
+    if (!active)
+      restoreFocus()
   }
 
   function onEventHudActionbarResized(params)

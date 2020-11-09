@@ -75,7 +75,7 @@
       "explosiveType": "tnt"
     },
     {
-      "explosiveMass": 7.0
+      "explosiveMass": 20.0
     },
     {
       "massEnd": 80.0
@@ -105,19 +105,22 @@
       "timeFire": 1.5
     },
     {
-      "fireDelay": 0.15
-    },
-    {
       "spawnExplosionFx": false
     },
     {
       "spawnExplosionWreckage": false
     },
     {
-      "explosionEffect": "explosion_midair_big"
+      "explosionEffect": "atgm_hit"
+    },
+    {
+      "defFxScale": [1.5,1.6]
     },
     {
       "groundCollisionEffect": "art_ground_splash"
+    },
+    {
+      "groundFxScale": [1.3,1.5]
     },
     {
       "ricochetEffect": "cannon_ricochet"
@@ -132,19 +135,7 @@
       "explosionPatchRadius": 3.4
     },
     {
-      "fireEffect": "rocket_fire_short_doubleside"
-    },
-    {
-      "smokeEffect": ""
-    },
-    {
-      "hazeEffect": "haze_missile"
-    },
-    {
-      "startFx": "pylon_smoke"
-    },
-    {
-      "endSmokeViscosity": 0.05
+      "smokeEffect": "hydra_smoke_modern"
     },
     {
       "maxDistance": 12000.0
@@ -178,6 +169,9 @@
     },
     {
       "explodeRadius": [1.0,3.5]
+    },
+    {
+      "explosionPatchRadius": 5.0
     },
     {
       "rendinstDamageRadius": 15.0
@@ -217,9 +211,6 @@
     },
     {
       "timeLife": 30.0
-    },
-    {
-      "rotationRocketX": 15.0
     },
     {
       "machMax": 2.0
@@ -370,16 +361,20 @@
     {
       "collisions": {
         "steel": {
-          "fx": "explosion_midair_small"
+          "fx": "atgm_hit",
+          "fxScale": [4.0,4.2]
         },
         "armor": {
-          "fx": "explosion_midair_small"
+          "fx": "atgm_hit",
+          "fxScale": [4.0,4.2]
         },
         "buildings": {
-          "fx": "explosion_midair_small"
+          "fx": "atgm_hit",
+          "fxScale": [4.0,4.2]
         },
         "wood": {
-          "fx": "explosion_midair_small"
+          "fx": "atgm_hit",
+          "fxScale": [4.0,4.2]
         }
       }
     },

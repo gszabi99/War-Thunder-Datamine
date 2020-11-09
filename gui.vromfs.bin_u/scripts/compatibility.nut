@@ -100,7 +100,7 @@
     if (blk?.start != null)
     {
       return ::request_page_of_leaderboard(
-        blk.valueType == LEADERBOARD_VALUE_INHISTORY? ::ETTI_VALUE_INHISORY : ::ETTI_VALUE_TOTAL,
+        blk.valueType == LEADERBOARD_VALUE_INHISTORY? ::ETTI_VALUE_INHISORY : ETTI_VALUE_TOTAL,
         blk.category,
         blk.count,
         blk.start,
@@ -109,7 +109,7 @@
     }
 
     return ::request_me_in_leaderboard(
-      blk.valueType == LEADERBOARD_VALUE_INHISTORY? ::ETTI_VALUE_INHISORY : ::ETTI_VALUE_TOTAL,
+      blk.valueType == LEADERBOARD_VALUE_INHISTORY? ::ETTI_VALUE_INHISORY : ETTI_VALUE_TOTAL,
       blk.category,
       0,
       blk.gameMode
@@ -132,6 +132,7 @@
 })
 //----------------------------wop_1_99_0_X---------------------------------//
 ::apply_compatibilities({
+  TT_INFANTRY = 3
   GO_WAITING_FOR_RESULT = 4
   get_spectator_target_id = function() {
     local targetName = ::get_spectator_target_name()
@@ -141,36 +142,11 @@
     })
     return player?.id ?? -1
   }
-
-  is_dlss_quality_available_at_resolution = @(request_quality, screen_width, screen_height) false
-  get_sso_short_token = @() { yuplayResult = ::YU2_FAIL, shortToken = null }
-})
-//----------------------------wop_1_99_1_X---------------------------------//
-::apply_compatibilities({
-  is_sound_inited = @() true
-  set_mute_sound = @(bool) null
-  hangar_current_preset_changed = @(...) null
 })
 
 //----------------------------wop_1_101_0_X---------------------------------//
 ::apply_compatibilities({
   gchat_voice_mute_peer_by_name = @(...) null
   gchat_voice_mute_peer_by_uid = @(...) null
-  ES_UNIT_TYPE_BOAT = ::ES_UNIT_TYPE_SHIP
-})
-
-//----------------------------wop_1_101_1_X---------------------------------//
-::apply_compatibilities({
-  EII_AI_GUNNERS = 30
-  AI_GUNNERS_DISABLED = 0
-  AI_GUNNERS_ALL_TARGETS = 1
-  AI_GUNNERS_AIR_TARGETS = 2
-  AI_GUNNERS_GROUND_TARGETS = 3
-  get_ai_gunners_state = @() 0
-  set_option_torpedo_dive_depth = @(...) null
-  get_option_torpedo_dive_depth = @(...) 1
-  get_option_torpedo_dive_depth_auto = @() false
-  get_options_torpedo_dive_depth = @() [1, 4]
   xbox_try_show_crossnetwork_message = @() false
-  get_activate_ground_active_counter_measures_on_spawn = @() false
 })

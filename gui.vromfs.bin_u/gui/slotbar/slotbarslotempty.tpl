@@ -1,10 +1,5 @@
 id:t='<<slotId>>'
 
-<<#position>>
-position:t='<<position>>'
-pos:t='<<posX>>w, <<posY>>h'
-<</position>>
-
 <<#isSlotbarItem>>
 slotbarCurAir {}
 <</isSlotbarItem>>
@@ -14,14 +9,9 @@ shopItem {
   <<#shopStatus>>
   shopStat:t='<<shopStatus>>'
   <</shopStatus>>
+  bgPlate {}
 
-  <<@extraInfoBlock>>
-
-  slotPlate {
-    middleBg {}
-    topLine {}
-    bottomShade {}
-  }
+  <<@crewLevelInfo>>
 
   focus_border {}
 
@@ -33,10 +23,10 @@ shopItem {
     background-image:t='<<crewImage>>'
     <<#isCrewRecruit>>
     style:t='background-color:#808080'
-    pos:t='0.06ph, ph-h - 1@slotBottomShadeHeight'
+    pos:t='0.06ph, ph-h-3'
     <</isCrewRecruit>>
     <<^isCrewRecruit>>
-    pos:t='0.15ph, ph-h - 1@slotBottomShadeHeight'
+    pos:t='0.15ph, ph-h-3'
     <</isCrewRecruit>>
   }
 

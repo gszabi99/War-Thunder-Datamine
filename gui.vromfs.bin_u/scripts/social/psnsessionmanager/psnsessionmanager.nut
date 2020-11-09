@@ -252,7 +252,7 @@ local afterAcceptInviteCb = function(sessionId, pushContextId, r, err) {
           break
         case PSN_SESSION_TYPE.SQUAD:
           dumpSessionData(sessionId, parsedData.sType, pushContextId, copy(sessionData))
-          ::g_invites.addInviteToSquad(parsedData.squadId, parsedData.leaderId).checkAutoAcceptInvite()
+          ::g_invites.addInviteToSquad(parsedData.squadId, parsedData.leaderId).accept()
           break
       }
     }
@@ -328,6 +328,8 @@ addListenersWithoutEnv({
             }
           )
         }
+        else if (isLeader && createdSessionData.value?[sessionId]) // Leadership transfer
+          update(sessionId, PSN_SESSION_TYPE.SQUAD)
         break
 
       case squadState.LEAVING:
@@ -342,31 +344,6 @@ addListenersWithoutEnv({
     local sessionId = ::g_squad_manager.getPsnSessionId()
     if (!isEmpty(sessionId))
       update(sessionId, PSN_SESSION_TYPE.SQUAD)
-  }
-  SquadLeadershipTransfer = function(p) {
-    if (!::g_squad_manager.isSquadLeader())
-      return
-
-    local newLeaderData = ::g_squad_manager.getMemberData(p?.uid)
-    if (!newLeaderData) {
-      ::dagor.debug($"PSN: Session Manager: Didn't found any info for new leader {p?.uid}")
-      return
-    }
-
-    local sessionId = ::g_squad_manager.getPsnSessionId()
-    local contact = ::getContact(p.uid)
-    contact.updatePSNIdAndDo(function() {
-      psnsm.changeLeadership(
-      sessionId,
-      contact.psnId,
-      newLeaderData.platform.toupper(),
-      ::Callback(function(r, err) {
-        local existSessionInfo = createdSessionData.value?[sessionId]
-        local pushContextId = existSessionInfo?.pushContextId
-        local sessionData = getSessionData(PSN_SESSION_TYPE.SQUAD, pushContextId)
-        dumpSessionData(sessionId, PSN_SESSION_TYPE.SQUAD, pushContextId, sessionData)
-      }, this)
-    )})
   }
   GameIntentJoinSession = proceedInvite
   MainMenuReturn = function(p) {

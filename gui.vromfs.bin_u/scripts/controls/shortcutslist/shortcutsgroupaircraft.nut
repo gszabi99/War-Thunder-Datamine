@@ -1,4 +1,4 @@
-local globalEnv = ::require_native("globalEnv")
+local globalEnv = require_native("globalEnv")
 local controlsOperations = require("scripts/controls/controlsOperations.nut")
 local { unitClassType } = require("scripts/unit/unitClassType.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
@@ -12,7 +12,7 @@ return [
   {
     id = "ID_PLANE_CONTROL_HEADER"
     type = CONTROL_TYPE.HEADER
-    unitTypes = [ unitTypes.AIRCRAFT ]
+    unitType = unitTypes.AIRCRAFT
     unitClassTypes = [
       unitClassType.FIGHTER
       unitClassType.BOMBER
@@ -76,12 +76,6 @@ return [
   {
     id = "ID_TOGGLE_INSTRUCTOR"
     checkAssign = false
-  }
-  {
-    id = "ID_CONTROL_MODE"
-    filterShow = [globalEnv.EM_MOUSE_AIM, globalEnv.EM_INSTRUCTOR]
-    checkAssign = false
-    needShowInHelp = true
   }
   {
     id="ID_FBW_MODE"
@@ -182,11 +176,6 @@ return [
   }
   {
     id = "ID_SWITCH_SHOOTING_CYCLE_SECONDARY"
-    showFunc = @() ::has_feature("WeaponCycleTrigger")
-    checkAssign = false
-  }
-  {
-    id = "ID_RESIZE_SECONDARY_WEAPON_SERIES"
     showFunc = @() ::has_feature("WeaponCycleTrigger")
     checkAssign = false
   }
@@ -313,16 +302,6 @@ return [
       if (objValue != old)
         ::set_controls_preset("")
     }
-  }
-  {
-    id = "vtol"
-    type = CONTROL_TYPE.AXIS
-    def_relative = true
-  }
-  {
-    id = "climb"
-    type = CONTROL_TYPE.AXIS
-    def_relative = true
   }
   {
     id = "ailerons"

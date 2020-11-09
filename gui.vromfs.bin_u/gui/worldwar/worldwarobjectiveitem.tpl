@@ -42,6 +42,10 @@ objectiveBlock {
             useParentHeight:t='yes'
             noMargin:t='yes'
             tooltip:t = '#mainmenu/tasksList'
+            behaviour:t='wrapBroadcast'
+            navigatorShortcuts:t='yes'
+            on_wrap_up:t='onWrapUp'
+            on_wrap_down:t='onWrapDown'
             _on_click:t = 'onOpenFullMissionObjects'
 
             btnText {

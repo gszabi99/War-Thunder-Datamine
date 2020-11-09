@@ -83,6 +83,14 @@
         "engine2_dm": {
           "genericDamageMult": 1.6,
           "hp": 68.2
+        },
+        "engine3_dm": {
+          "genericDamageMult": 1.6,
+          "hp": 68.2
+        },
+        "engine4_dm": {
+          "genericDamageMult": 1.6,
+          "hp": 68.2
         }
       },
       "c_dural10": {
@@ -135,13 +143,17 @@
           "genericDamageMult": 0.3,
           "hp": 29.5
         },
+        "elevator_dm": {
+          "genericDamageMult": 0.3,
+          "hp": 29.6
+        },
         "elevator0_dm": {
           "genericDamageMult": 0.3,
-          "hp": 29.5
+          "hp": 29.6
         },
         "elevator1_dm": {
           "genericDamageMult": 0.3,
-          "hp": 29.5
+          "hp": 29.6
         },
         "fin_dm": {
           "hp": 50.5
@@ -230,7 +242,13 @@
           "hp": 120.0
         },
         "tank2_dm": {
-          "hp": 119.4
+          "hp": 120.0
+        },
+        "tank3_dm": {
+          "hp": 120.0
+        },
+        "tank4_dm": {
+          "hp": 120.0
         }
       }
     }
@@ -315,6 +333,38 @@
         "part": {
           "name": "cover2_dm"
         }
+      },
+      {
+        "part": [
+          {
+            "name": "elevator_dm"
+          },
+          {
+            "onHit": {
+              "damage": 50.0,
+              "cut": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 70.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 1.0,
+              "nothing": 2.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          }
+        ]
       },
       {
         "part": [
@@ -1157,8 +1207,8 @@
         "part": {
           "name": "spar1_l_dm",
           "onKill": {
-            "nothing": 2.0,
-            "cut": 4.0
+            "nothing": 0.0,
+            "cut": 1.0
           }
         }
       },
@@ -1166,8 +1216,8 @@
         "part": {
           "name": "spar1_r_dm",
           "onKill": {
-            "nothing": 2.0,
-            "cut": 4.0
+            "nothing": 0.0,
+            "cut": 1.0
           }
         }
       },
@@ -1175,8 +1225,8 @@
         "part": {
           "name": "spar2_l_dm",
           "onKill": {
-            "nothing": 2.0,
-            "cut": 4.0
+            "nothing": 0.0,
+            "cut": 1.0
           }
         }
       },
@@ -1184,8 +1234,8 @@
         "part": {
           "name": "spar2_r_dm",
           "onKill": {
-            "nothing": 2.0,
-            "cut": 4.0
+            "nothing": 0.0,
+            "cut": 1.0
           }
         }
       },

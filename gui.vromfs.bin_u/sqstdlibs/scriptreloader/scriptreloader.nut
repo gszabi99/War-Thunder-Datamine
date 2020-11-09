@@ -34,12 +34,7 @@ g_script_reloader.loadIfExist <- function loadIfExist(scriptPath)
 g_script_reloader._runScript <- function _runScript(scriptPath)
 {
   loadedScripts[scriptPath] <- true
-  local res = false
-  try {
-    require(modifyPath(scriptPath))
-    res = true
-  } catch (e) {
-  }
+  local res = ::dagor.runScript(modifyPath(scriptPath))
   ::dagor.assertf(res, "Scripts reloader: failed to load script " + scriptPath)
   return res
 }

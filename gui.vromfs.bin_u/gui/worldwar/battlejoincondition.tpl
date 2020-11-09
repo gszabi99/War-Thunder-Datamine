@@ -1,6 +1,5 @@
 root {
-  blur {}
-  blur_foreground {}
+  background-color:t = '@modalShadeColor'
   behaviour:t='button'
   on_click:t='goBack'
 

@@ -1,10 +1,9 @@
 local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 local time = require("scripts/time.nut")
-local hudState = ::require_native("hudState")
+local hudState = require_native("hudState")
 local safeAreaHud = require("scripts/options/safeAreaHud.nut")
 local globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
 local { showHudTankMovementStates } = require("scripts/hud/hudTankStates.nut")
-local { mpTankHudBlkPath } = require("scripts/hud/hudBlkPath.nut")
 
 ::dagui_propid.add_name_id("fontSize")
 
@@ -151,21 +150,11 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
     ::g_hud_hints_manager.init(scene)
     ::g_hud_tutorial_elements.init(scene)
 
-    updateControlsAllowMask()
-  }
-
-  function updateControlsAllowMask()
-  {
-    local mask = spectatorMode
-      ? CtrlsInGui.CTRL_ALLOW_MP_STATISTICS | CtrlsInGui.CTRL_ALLOW_MP_CHAT
-        | CtrlsInGui.CTRL_ALLOW_FLIGHT_MENU | CtrlsInGui.CTRL_ALLOW_SPECTATOR
-        | CtrlsInGui.CTRL_ALLOW_TACTICAL_MAP
-      : CtrlsInGui.CTRL_ALLOW_FULL
-
-    if (::show_console_buttons && ::is_cursor_visible_in_gui())
-      mask = mask & ~CtrlsInGui.CTRL_ALLOW_VEHICLE_XINPUT
-
-    switchControlsAllowMask(mask)
+    switchControlsAllowMask(spectatorMode
+                            ? CtrlsInGui.CTRL_ALLOW_MP_STATISTICS | CtrlsInGui.CTRL_ALLOW_MP_CHAT
+                              | CtrlsInGui.CTRL_ALLOW_FLIGHT_MENU | CtrlsInGui.CTRL_ALLOW_SPECTATOR
+                              | CtrlsInGui.CTRL_ALLOW_TACTICAL_MAP
+                            : CtrlsInGui.CTRL_ALLOW_FULL)
   }
 
   /*override*/ function onSceneActivate(show)
@@ -289,12 +278,6 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
     updateMissionProgressPlace()
   }
 
-  function onEventChangedCursorVisibility(params)
-  {
-    if (::show_console_buttons)
-      updateControlsAllowMask()
-  }
-
   function onEventHudActionbarInited(params)
   {
     updateObjectsSize(params)
@@ -340,7 +323,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
         return HUD_TYPE.AIR
       else if (unitType == ::ES_UNIT_TYPE_TANK)
         return HUD_TYPE.TANK
-      else if (unitType == ::ES_UNIT_TYPE_SHIP || unitType == ::ES_UNIT_TYPE_BOAT)
+      else if (unitType == ::ES_UNIT_TYPE_SHIP)
         return HUD_TYPE.SHIP
     }
     return HUD_TYPE.NONE
@@ -581,7 +564,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
   }
 }
 
-::HudCutscene <- class extends ::gui_handlers.BaseUnitHud
+class HudCutscene extends ::gui_handlers.BaseUnitHud
 {
   sceneBlkName = "gui/hud/hudCutscene.blk"
 
@@ -595,7 +578,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
   }
 }
 
-::HudAir <- class extends ::gui_handlers.BaseUnitHud
+class HudAir extends ::gui_handlers.BaseUnitHud
 {
   sceneBlkName = "gui/hud/hudAir.blk"
 
@@ -665,7 +648,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
   }
 }
 
-::HudTouchAir <- class extends ::HudAir
+class HudTouchAir extends ::HudAir
 {
   scene        = null
   sceneBlkName = "gui/hud/hudTouchAir.blk"
@@ -707,9 +690,9 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
   }
 }
 
-::HudTank <- class extends ::gui_handlers.BaseUnitHud
+class HudTank extends ::gui_handlers.BaseUnitHud
 {
-  sceneBlkName = mpTankHudBlkPath.value
+  sceneBlkName = "gui/hud/hudTank.blk"
 
   widgetsList = [
     {
@@ -759,7 +742,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 }
 
 
-::HudHelicopter <- class extends ::gui_handlers.BaseUnitHud
+class HudHelicopter extends ::gui_handlers.BaseUnitHud
 {
   sceneBlkName = "gui/hud/hudHelicopter.blk"
 
@@ -778,7 +761,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
   }
 }
 
-::HudTouchTank <- class extends ::HudTank
+class HudTouchTank extends ::HudTank
 {
   scene        = null
   sceneBlkName = "gui/hud/hudTouchTank.blk"
@@ -840,7 +823,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
   }
 }
 
-::HudShip <- class extends ::gui_handlers.BaseUnitHud
+class HudShip extends ::gui_handlers.BaseUnitHud
 {
   sceneBlkName = "gui/hud/hudShip.blk"
   widgetsList = [

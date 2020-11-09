@@ -67,6 +67,7 @@ class ::gui_handlers.BrowserModalHandler extends ::BaseGuiHandler
   {
     local browserObj = scene.findObject("browser_area")
     browserObj.url=url
+    browserObj.select()
     lastLoadedUrl = baseUrl
     browser_go(url)
   }

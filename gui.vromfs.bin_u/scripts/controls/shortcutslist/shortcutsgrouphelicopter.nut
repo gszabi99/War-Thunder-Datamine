@@ -1,4 +1,4 @@
-local globalEnv = ::require_native("globalEnv")
+local globalEnv = require_native("globalEnv")
 local controlsOperations = require("scripts/controls/controlsOperations.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { isWheelmenuAxisConfigurable } = require("scripts/wheelmenu/multifuncmenuShared.nut")
@@ -8,7 +8,7 @@ return [
   {
     id = "ID_HELICOPTER_CONTROL_HEADER"
     type = CONTROL_TYPE.HEADER
-    unitTypes = [ unitTypes.HELICOPTER ]
+    unitType = unitTypes.HELICOPTER
     isHelpersVisible = true
     needShowInHelp = true
   }
@@ -256,11 +256,6 @@ return [
     checkAssign = false
   }
   {
-    id = "ID_RESIZE_SECONDARY_WEAPON_SERIES_HELICOPTER"
-    showFunc = @() ::has_feature("WeaponCycleTrigger")
-    checkAssign = false
-  }
-  {
     id = "ID_TOGGLE_LASER_DESIGNATOR_HELICOPTER"
     checkGroup = ctrlGroups.HELICOPTER
     checkAssign = false
@@ -294,12 +289,6 @@ return [
   }
   {
     id = "ID_SENSOR_TARGET_LOCK_HELICOPTER"
-    checkGroup = ctrlGroups.HELICOPTER
-    checkAssign = false
-    needShowInHelp = true
-  }
-  {
-    id = "ID_IRCM_SWITCH_HELICOPTER"
     checkGroup = ctrlGroups.HELICOPTER
     checkAssign = false
     needShowInHelp = true

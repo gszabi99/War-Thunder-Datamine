@@ -1,7 +1,8 @@
 {
   "root": {
-    "blur": [],
-    "blur_foreground": [],
+    "size": "sw, sh",
+    "position": "root",
+    "background-color": "@shadeBackgroundColor",
     "frame": [
       {
         "width": "0.55@scrn_tgt"
@@ -102,6 +103,7 @@
           "id": "thread_title_editbox",
           "size": "pw, 4@buttonHeight",
           "multiline": "yes",
+          "mouse-focusable": "yes",
           "_on_cancel_edit": "goBack",
           "on_change_value": "onChangeTitle"
         }
@@ -176,6 +178,7 @@
               "id": "timestamp_editbox",
               "width": "fw",
               "margin-top": "1@buttonMargin",
+              "mouse-focusable": "yes",
               "char-mask": "0123456789:- ",
               "text": "",
               "on_cancel_edit": "goCancelTimeStamp",
@@ -215,7 +218,7 @@
               "id": "btn_apply",
               "text": "#mainmenu/btnApply",
               "enable": "no",
-              "btnName": "X",
+              "btnName": "A",
               "_on_click": "onApply",
               "ButtonImg": []
             }

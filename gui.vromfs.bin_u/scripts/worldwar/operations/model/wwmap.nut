@@ -6,7 +6,7 @@ local { getQueueByMapName, getOperationGroupByMapId
 } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 local { refreshGlobalStatusData } = require("scripts/worldWar/operations/model/wwGlobalStatus.nut")
 
-::WwMap <- class
+class WwMap
 {
   name = ""
   data = null

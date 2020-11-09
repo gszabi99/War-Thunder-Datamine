@@ -24,7 +24,7 @@ class ::gui_handlers.EditClanModalhandler extends ::gui_handlers.ModifyClanModal
   function initScreen()
   {
     newClanType = clanData.type
-    lastShownHintObj = scene.findObject("req_newclan_name")
+    lastShownReq = scene.findObject("req_newclan_name")
     base.initScreen()
     updateSubmitButtonText()
     resetTagDecorationObj(clanData.tag)
@@ -50,8 +50,8 @@ class ::gui_handlers.EditClanModalhandler extends ::gui_handlers.ModifyClanModal
 
     local clanNameObj = scene.findObject("newclan_name")
     clanNameObj.setValue(clanData.name)
-
-    ::select_editbox(clanNameObj)
+    clanNameObj.select()
+    onFocus(clanNameObj)
 
     update()
   }

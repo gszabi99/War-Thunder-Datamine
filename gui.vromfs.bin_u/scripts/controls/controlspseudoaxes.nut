@@ -1,4 +1,4 @@
-local enums = require("sqStdlibs/helpers/enums.nut")
+local enums = ::require("sqStdlibs/helpers/enums.nut")
 ::g_pseudo_axes_list <- {
   types = []
 }
@@ -14,10 +14,9 @@ enums.addTypesByGlobalName("g_pseudo_axes_list", {
     id = "pseudo_toggle_view"
     translate = function ()
     {
-      local curUnitType = ::get_es_unit_type(::get_player_cur_unit())
-      if (curUnitType == ::ES_UNIT_TYPE_TANK)
+      if (::get_es_unit_type(::get_player_cur_unit()) == ::ES_UNIT_TYPE_TANK)
         return ["ID_TOGGLE_VIEW_GM"]
-      else if (curUnitType == ::ES_UNIT_TYPE_SHIP || curUnitType == ::ES_UNIT_TYPE_BOAT)
+      else if (::get_es_unit_type(::get_player_cur_unit()) == ::ES_UNIT_TYPE_SHIP)
         return ["ID_TOGGLE_VIEW_SHIP"]
       else
         return ["ID_TOGGLE_VIEW"]

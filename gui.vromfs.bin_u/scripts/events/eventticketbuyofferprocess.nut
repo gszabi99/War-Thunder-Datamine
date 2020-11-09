@@ -15,7 +15,7 @@ g_event_ticket_buy_offer.offerTicket <- function offerTicket(event)
   currentProcess = EventTicketBuyOfferProcess(event)
 }
 
-::EventTicketBuyOfferProcess <- class
+class EventTicketBuyOfferProcess
 {
   _event = null
   _tickets = null

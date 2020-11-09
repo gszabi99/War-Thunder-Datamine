@@ -29,7 +29,7 @@
                   class:t='independent'
                   fullSizeIcons:t='yes'
                   btnName:t='Y'
-                  showOnSelect:t='hover'
+                  showOnSelect:t='focus'
                 }
                 activeText {
                   id:t='leader_name'

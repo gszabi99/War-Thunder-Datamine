@@ -3,7 +3,7 @@ local { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
 local tutorAction = require("scripts/tutorials/tutorialActions.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 
-::SlotbarPresetsTutorial <- class
+class SlotbarPresetsTutorial
 {
   /** Total maximum times to show this tutorial. */
   static MAX_TUTORIALS = 3

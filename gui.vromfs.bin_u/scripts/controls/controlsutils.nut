@@ -1,5 +1,5 @@
 local time = require("scripts/time.nut")
-local controllerState = ::require_native("controllerState")
+local controllerState = require_native("controllerState")
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
 ::classic_control_preset <- "classic"
@@ -34,7 +34,7 @@ if (::is_platform_xbox)
 
       if (sc.type == CONTROL_TYPE.HEADER) //unitType and other params below exist only in header
       {
-        isHeaderPassed = sc?.unitTypes.contains(unitType) ?? true
+        isHeaderPassed = sc?.unitType == null || unitType == sc.unitType
         isSectionPassed = true // reset previous sectino setting
 
         if (isHeaderPassed && classType != null)
@@ -108,7 +108,7 @@ if (::is_platform_xbox)
 
     ::set_controls_preset("")
     ::set_shortcuts(changeList, changeNames)
-    ::broadcastEvent("ControlsPresetChanged")
+    ::broadcastEvent("PresetChanged")
   }
 
   function isShortcutMapped(shortcut) {

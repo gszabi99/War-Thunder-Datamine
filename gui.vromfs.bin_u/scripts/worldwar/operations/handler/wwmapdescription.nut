@@ -36,6 +36,8 @@ class ::gui_handlers.WwMapDescription extends ::gui_handlers.BaseGuiHandlerWT
     local timerObj = scene.findObject("ww_map_description_timer")
     if (timerObj)
       timerObj.setUserData(this)
+
+    initFocusArray()
   }
 
   function setDescItem(newDescItem)
@@ -154,6 +156,8 @@ class ::gui_handlers.WwMapDescription extends ::gui_handlers.BaseGuiHandlerWT
     updateAvailableText()
   }
 
+  onWrapUp = @(obj) descParams?.onWrapUpCb(obj)
+  onWrapDown = @(obj) descParams?.onWrapDownCb(obj)
   onJoinQueue = @(obj) descParams?.onJoinQueueCb(obj)
   onLeaveQueue = @() descParams?.onLeaveQueueCb()
   onJoinClanOperation = @(obj) descParams?.onJoinClanOperationCb(obj)

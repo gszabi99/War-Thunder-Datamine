@@ -1,10 +1,5 @@
 id:t='<<slotId>>'
 
-<<#position>>
-position:t='<<position>>'
-pos:t='<<posX>>w, <<posY>>h'
-<</position>>
-
 <<#slotInactive>>
 inactive:t='yes'
 <</slotInactive>>
@@ -15,15 +10,7 @@ shopItem {
   timer_interval_msec:t='1000'
   unit_name:t='<<unitName>>'
 
-  slotPlate {
-    middleBg {
-      pattern {
-        type:t='bright_texture'
-      }
-    }
-    topLine {}
-    bottomShade {}
-  }
+  bgPlate {}
 
   itemWinkBlock {
     buttonWink {
@@ -32,6 +19,10 @@ shopItem {
   }
 
   hoverHighlight {}
+
+  pattern {
+    type:t='bright_texture'
+  }
 
   shopStat:t='<<shopStatus>>'
 

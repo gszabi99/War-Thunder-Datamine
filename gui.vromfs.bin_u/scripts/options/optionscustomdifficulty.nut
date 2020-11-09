@@ -11,6 +11,8 @@ class ::gui_handlers.OptionsCustomDifficultyModal extends ::gui_handlers.Generic
   curBaseDifficulty = ::DIFFICULTY_ARCADE
   ignoreUiCallbacks = false
 
+  focusArray = [ "generic_options" ]
+
   function initScreen()
   {
     scene.findObject("header_name").setValue(titleText)
@@ -39,6 +41,7 @@ class ::gui_handlers.OptionsCustomDifficultyModal extends ::gui_handlers.Generic
     ignoreUiCallbacks = false
 
     updateCurBaseDifficulty()
+    restoreFocus()
   }
 
   function getNavbarTplView()

@@ -21,7 +21,14 @@ class ::gui_handlers.WwOperationsListModal extends ::gui_handlers.BaseGuiHandler
       return goBack()
 
     opListObj = scene.findObject("items_list")
+    initFocusArray()
+
     fillOperationList()
+  }
+
+  function getMainFocusObj()
+  {
+    return opListObj.isVisible() ? opListObj : null
   }
 
   function getOpGroup()
@@ -128,6 +135,7 @@ class ::gui_handlers.WwOperationsListModal extends ::gui_handlers.BaseGuiHandler
       }
     }
     onItemSelect()
+    restoreFocus()
   }
 
   function refreshSelOperation()

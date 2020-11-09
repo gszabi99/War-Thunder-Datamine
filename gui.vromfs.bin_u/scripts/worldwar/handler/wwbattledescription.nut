@@ -114,12 +114,28 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
     updateSlotbar()
     reinitBattlesList()
     initSquadList()
+    initFocusArray()
 
     local timerObj = scene.findObject("update_timer")
     if (::check_obj(timerObj))
       timerObj.setUserData(this)
 
     requestQueuesData()
+  }
+
+  function getMainFocusObj()
+  {
+    return "header_buttons"
+  }
+
+  function getMainFocusObj2()
+  {
+    return battlesListObj
+  }
+
+  function getMainFocusObj3()
+  {
+    return "squad_list"
   }
 
   function initQueueInfo()
@@ -161,7 +177,9 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     local handler = ::handlersManager.loadHandler(::gui_handlers.WwSquadList,
-      { scene = squadInfoObj })
+      { scene = squadInfoObj
+        onWrapUpCb = ::Callback(onWrapUp, this)
+        onWrapDownCb = ::Callback(onWrapDown, this) })
     registerSubHandler(handler)
     squadListHandlerWeak = handler.weakref()
     updateBattleSquadListData()
@@ -595,8 +613,10 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
     showSceneBtn("squad_info", isViewSquadInfo)
     if (squadListHandlerWeak)
       squadListHandlerWeak.updateButtons(isViewSquadInfo)
-    if (isViewBattleList)
-      ::move_mouse_on_child_by_value(battlesListObj)
+    if (isViewBattleList && battlesListObj.childrenCount() > 0)
+      battlesListObj.select()
+    else if (!isViewSquadInfo)
+      restoreFocus()
 
     updateTitle()
   }

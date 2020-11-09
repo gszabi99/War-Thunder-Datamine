@@ -1,5 +1,5 @@
 local time = require("scripts/time.nut")
-local sheets = require("scripts/items/itemsShopSheets.nut")
+local sheets = ::require("scripts/items/itemsShopSheets.nut")
 local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
 local { canStartPreviewScene } = require("scripts/customization/contentPreview.nut")
 local ExchangeRecipes = require("scripts/items/exchangeRecipes.nut")
@@ -381,8 +381,7 @@ class ::gui_handlers.trophyRewardWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function onUnitHover(obj)
   {
-    if (!::show_console_buttons)
-      openUnitActionsList(obj, true)
+    openUnitActionsList(obj, true, true)
   }
 
   function updateButtons()

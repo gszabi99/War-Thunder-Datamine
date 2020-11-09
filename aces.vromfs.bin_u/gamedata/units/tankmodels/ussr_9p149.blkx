@@ -565,10 +565,8 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 10.0,
-        "fireProtectionHp": 10.0,
-        "createSecondaryShatters": false,
-        "fireParamsPreset": "fuel_internal",
+        "armorThrough": 12.0,
+        "fireProtectionHp": 15.0,
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -590,9 +588,8 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 10.0,
-        "fireProtectionHp": 10.0,
-        "createSecondaryShatters": false,
+        "armorThrough": 12.0,
+        "fireProtectionHp": 15.0,
         "fireParamsPreset": "fuel_exterior",
         "fuel_tank_exterior_r_01_dm": [],
         "fuel_tank_exterior_r_02_dm": [],
@@ -641,11 +638,6 @@
       "turret_turn": "turret_rocket_turn",
       "EngineNameAi": "engine_tank_ai_pt76",
       "TrackSoundNameAi": "tracks_ai_pt76"
-    }
-  },
-  {
-    "attachables": {
-      "turret_back_dm": false
     }
   },
   {
@@ -2502,15 +2494,6 @@
           "name": "fuel_exterior",
           "fx": {
             "name": "tank_ex_fuel_explosion",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
-          "name": "fuel_internal",
-          "fx": {
-            "name": "tank_engine_fire",
             "centerDmgPart": true
           }
         }

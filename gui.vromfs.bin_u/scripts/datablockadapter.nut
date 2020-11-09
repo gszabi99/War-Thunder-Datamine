@@ -21,7 +21,7 @@ local SqratDataBlock = require("DataBlock")
       || blk instanceof SqratDataBlock
 }
 
-::DataBlockAdapter <- class
+class DataBlockAdapter
 {
   ___originData___ = null
 

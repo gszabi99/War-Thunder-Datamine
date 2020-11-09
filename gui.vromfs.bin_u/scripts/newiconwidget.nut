@@ -16,7 +16,7 @@
                              @text == ""   - hide widgetText
 */
 
-::NewIconWidget <- class
+class NewIconWidget
 {
   widgetContainerTag = "newIconWidget"
   defaultIcon = "#ui/gameuiskin#new_icon"

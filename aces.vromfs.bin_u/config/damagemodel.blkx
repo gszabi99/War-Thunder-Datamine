@@ -60,7 +60,7 @@
   "stopChanceOnDeadPart": 1.0,
   "explodeRestrainArmorPower": 0.33,
   "ammoExplosionProb": [1.0,0.2,0.3],
-  "minCaliberForProjectileOn": 0.1,
+  "minCaliberForProjectileOn": 0.03,
   "caliberDestroyAfterRicochet": 0.019,
   "minFreeCrewIntegrity": -1.0,
   "tankEngineSelfExtinguishChance": 0.0,
@@ -227,30 +227,20 @@
     "p3": [0.4,0.75]
   },
   "traceStrategy": {
-    "pattern0": {
-      "caliber": 10.0,
-      "circleCount": 1,
-      "pointCount": 3
-    },
     "pattern1": {
-      "caliber": 20.0,
+      "caliber": 5.0,
       "circleCount": 1,
       "pointCount": 4
     },
     "pattern2": {
-      "caliber": 35.0,
-      "circleCount": 1,
-      "pointCount": 6
+      "caliber": 16.0,
+      "circleCount": 2,
+      "pointCount": 5
     },
     "pattern3": {
       "caliber": 85.0,
       "circleCount": 2,
       "pointCount": 6
-    },
-    "pattern4": {
-      "caliber": 140.0,
-      "circleCount": 3,
-      "pointCount": 5
     }
   },
   "normalizationPresets": {
@@ -2474,16 +2464,13 @@
     "ussr_zut_37": 125,
     "germ_artilleriefahrprahm_typ_d1": 28,
     "germ_artilleriefahrprahm_typ_d3": 28,
-    "germ_battleship_helgoland": 225,
-    "germ_battleship_westfalen": 200,
     "germ_cruiser_admiral_graf_spee": 140,
     "germ_cruiser_admiral_hipper": 140,
-    "germ_cruiser_emden_1944": 112,
-    "germ_cruiser_koln": 105,
+    "germ_cruiser_emden_1944": 109,
+    "germ_cruiser_koln": 100,
     "germ_cruiser_leipzig": 120,
     "germ_cruiser_nurnberg": 120,
     "germ_cruiser_prinz_eugen": 140,
-    "germ_destroyer_class1924_iltis": 100,
     "germ_destroyer_class1924_jaguar1941": 100,
     "germ_destroyer_class1924_leopard1932": 100,
     "germ_destroyer_class1934a_1940": 100,
@@ -2523,7 +2510,6 @@
     "it_cruiser_montecuccoli": 140,
     "it_cruiser_trento": 140,
     "it_cruiser_zara_class": 140,
-    "it_destroyer_aquilone": 100,
     "it_destroyer_comandanti_medaglie_doro": 81,
     "it_destroyer_dardo": 100,
     "it_destroyer_soldati_serie1_camicianera": 100,
@@ -2545,16 +2531,14 @@
     "it_vas_baglietto_68t_1serie": 31,
     "jp_abtei_pr1": 42,
     "jp_abtei_pr4": 42,
-    "jp_armoredcruiser_ikoma": 200,
-    "jp_battleship_settsu": 279,
     "jp_cruiser_agano": 140,
     "jp_cruiser_furutaka": 140,
-    "jp_cruiser_kako": 140,
-    "jp_cruiser_kuma": 120,
+    "jp_cruiser_kako": 109,
+    "jp_cruiser_kuma": 100,
     "jp_cruiser_mogami": 140,
     "jp_cruiser_mogami_mikuma": 140,
     "jp_cruiser_mogami_suzuya": 140,
-    "jp_cruiser_sendai": 120,
+    "jp_cruiser_sendai": 100,
     "jp_cruiser_tone": 140,
     "jp_daihatsu_landing_craft": 16,
     "jp_destroyer_akizuki": 100,
@@ -2563,7 +2547,6 @@
     "jp_destroyer_isuzu": 80,
     "jp_destroyer_kiyoshimo": 100,
     "jp_destroyer_mutsuki": 80,
-    "jp_destroyer_satsuki": 80,
     "jp_destroyer_shimakaze": 100,
     "jp_destroyer_yugumo": 100,
     "jp_destroyer_yuudachi": 93,
@@ -2587,8 +2570,6 @@
     "jp_type_t1_1941": 35,
     "uk_70ft_mgb": 35,
     "uk_71ft_mgb": 35,
-    "uk_battleship_colossus": 280,
-    "uk_battleship_dreadnought": 280,
     "uk_brave_borderer": 35,
     "uk_corvette_peacock": 42,
     "uk_cruiser_arethusa": 120,
@@ -2598,22 +2579,19 @@
     "uk_cruiser_hawkins": 140,
     "uk_cruiser_kent": 126,
     "uk_cruiser_leander": 120,
-    "uk_cruiser_london": 136,
+    "uk_cruiser_london": 126,
     "uk_cruiser_southampton": 120,
     "uk_cruiser_tiger": 140,
-    "uk_cruiser_york": 135,
+    "uk_cruiser_york": 132,
     "uk_dark_class": 35,
     "uk_dark_class_mtb": 35,
     "uk_destroyer_battle_2series": 93,
     "uk_destroyer_battle_tobruk": 93,
     "uk_destroyer_clemson_churchill": 80,
-    "uk_destroyer_clemson_montgomery_g95": 95,
-    "uk_destroyer_g_garland": 100,
     "uk_destroyer_g_grafton": 100,
     "uk_destroyer_haida": 80,
     "uk_destroyer_hunt_2series": 95,
     "uk_destroyer_hunt_4series": 80,
-    "uk_destroyer_j_class": 100,
     "uk_destroyer_k_class": 100,
     "uk_destroyer_n_class": 100,
     "uk_destroyer_tribal": 80,
@@ -2635,12 +2613,10 @@
     "uk_sgb_304": 34,
     "uk_sgb_309": 35,
     "us_ashville_class": 47,
-    "us_battleship_north_dakota": 217,
-    "us_cruiser_atlanta_class_atlanta": 120,
+    "us_cruiser_atlanta_class_atlanta": 100,
     "us_cruiser_brooklyn_class_brooklyn": 140,
     "us_cruiser_brooklyn_class_helena": 140,
     "us_cruiser_cleveland_class_cleveland": 140,
-    "us_cruiser_new_orleans_class": 140,
     "us_cruiser_northampton_class": 140,
     "us_cruiser_omaha_class_raleigh": 140,
     "us_cruiser_omaha_class_trenton": 140,
@@ -2648,13 +2624,11 @@
     "us_cruiser_portland_class": 140,
     "us_destroyer_clemson_barker": 80,
     "us_destroyer_clemson_litchfield": 80,
-    "us_destroyer_clemson_welborn_c_wood": 80,
     "us_destroyer_farragut_1942": 100,
     "us_destroyer_fletcher": 100,
     "us_destroyer_fletcher_bennion": 100,
     "us_destroyer_fletcher_cowell": 100,
     "us_destroyer_porter_1941": 93,
-    "us_destroyer_porter_1942": 90,
     "us_destroyer_porter_1944": 89,
     "us_destroyer_somers": 80,
     "us_destroyer_sumner": 100,
@@ -2682,8 +2656,6 @@
     "ussr_1124_ack": 43,
     "ussr_1124_art": 42,
     "ussr_1124_rct": 56,
-    "ussr_battleship_imperatritsa_mariya": 278,
-    "ussr_battleship_poltava": 278,
     "ussr_bmo": 56,
     "ussr_cruiser_chapayev": 120,
     "ussr_cruiser_kirov": 140,
@@ -2691,12 +2663,10 @@
     "ussr_cruiser_krasnyi_krim": 100,
     "ussr_cruiser_maxim_gorky": 140,
     "ussr_cruiser_sverdlov": 120,
-    "ussr_cruiser_zheleznyakov": 120,
     "ussr_d3": 33,
     "ussr_destroyer_7y": 100,
     "ussr_destroyer_7y_stroyny": 100,
     "ussr_destroyer_frunze": 100,
-    "ussr_destroyer_kerch": 100,
     "ussr_destroyer_leningrad": 100,
     "ussr_destroyer_moskva": 100,
     "ussr_destroyer_pr20_tashkent": 100,
@@ -3234,46 +3204,6 @@
       "completely": true
     },
     "auxiliary_caliber_turret_20_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_21_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_22_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_23_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_24_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_25_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_26_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_27_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_28_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_29_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_30_dm": {
       "speed": 7.0,
       "completely": true
     },
@@ -4832,7 +4762,7 @@
   "fuelMassToSplashParams": {
     "fuelMassToInnerRadius": [
       {
-        "p0": [50.0,2.0]
+        "p0": [50.0,3.0]
       },
       {
         "p1": [100.0,4.0]
@@ -4846,7 +4776,7 @@
     ],
     "fuelMassToOuterRadius": [
       {
-        "p0": [50.0,3.5]
+        "p0": [50.0,5.5]
       },
       {
         "p1": [100.0,7.0]
@@ -4859,24 +4789,15 @@
       }
     ],
     "fuelMassToPenetration": {
-      "p0": [50.0,4.0],
-      "p1": [100.0,4.0],
-      "p2": [500.0,4.0]
+      "p0": [50.0,5.0],
+      "p1": [100.0,6.0],
+      "p2": [500.0,7.0]
     },
-    "fuelMassToDamage": [
-      {
-        "p0": [50.0,20.0]
-      },
-      {
-        "p1": [100.0,30.0]
-      },
-      {
-        "p2": [500.0,30.0]
-      },
-      {
-        "p2": [1000.0,30.0]
-      }
-    ]
+    "fuelMassToDamage": {
+      "p0": [50.0,40.0],
+      "p1": [100.0,100.0],
+      "p2": [500.0,350.0]
+    }
   },
   "gunpowderMassToSplashParams": {
     "gunpowderMassToInnerRadius": {
@@ -5032,10 +4953,10 @@
       "modelName": "tank_bullet_ball"
     },
     "sapi": {
-      "modelName": "tank_bullet_ball"
+      "modelName": "tank_bullet_heat"
     },
     "ap": {
-      "modelName": "tank_bullet_ball"
+      "modelName": "tank_bullet_ap"
     },
     "tp_tank": {
       "modelName": "tank_bullet_potato"
@@ -5047,14 +4968,12 @@
       "modelName": "tank_bullet_carrot"
     },
     "aphe": {
-      "modelName": "tank_bullet_ball"
+      "modelName": "tank_bullet_aphe"
     },
     "aphe_t": {
-      "modelName": "tank_bullet_ball"
+      "modelName": "tank_bullet_aphe"
     },
-    "ap_i_t": {
-      "modelName": "tank_bullet_ball"
-    },
+    "ap_i_t": [],
     "apcr_t": {
       "modelName": "tank_bullet_apcr"
     },
@@ -5062,7 +4981,7 @@
       "modelName": "tank_bullet_apcr"
     },
     "ap_t": {
-      "modelName": "tank_bullet_ball"
+      "modelName": "tank_bullet_ap"
     },
     "apc_t": {
       "modelName": "tank_bullet_apc"
@@ -5083,12 +5002,10 @@
       "modelName": "tank_bullet_heat"
     },
     "he_at_grenade": {
-      "modelName": "tank_bullet_heat",
-      "gbufferModelName": "tank_shell_he"
+      "modelName": "tank_bullet_heat"
     },
     "he_dp": {
-      "modelName": "tank_bullet_heat",
-      "gbufferModelName": "tank_shell_he"
+      "modelName": "tank_bullet_heat"
     },
     "he_i_t_mine": {
       "modelName": "tank_bullet_he"
@@ -5103,224 +5020,170 @@
       "modelName": "tank_bullet_he"
     },
     "he_vt": {
-      "modelName": "tank_bullet_he",
-      "gbufferModelName": "tank_shell_he"
+      "modelName": "tank_bullet_he"
     },
     "he_tf": {
-      "modelName": "tank_bullet_he",
-      "gbufferModelName": "tank_shell_he"
+      "modelName": "tank_bullet_he"
     },
     "he_frag_i": {
       "modelName": "tank_bullet_he"
     },
     "ac_shell_tank": {
-      "modelName": "tank_bullet_ap",
-      "gbufferModelName": "tank_shell_apbc"
+      "modelName": "tank_bullet_ap"
     },
     "apcr_tank": {
-      "modelName": "tank_bullet_apcr",
-      "gbufferModelName": "tank_shell_apcr"
+      "modelName": "tank_bullet_apcr"
     },
     "apds_autocannon": {
-      "modelName": "tank_bullet_apdc",
-      "gbufferModelName": "tank_shell_apds"
+      "modelName": "tank_bullet_apdc"
     },
     "apds_tank": {
-      "modelName": "tank_bullet_apdc",
-      "gbufferModelName": "tank_shell_apds"
+      "modelName": "tank_bullet_apdc"
     },
     "practice_tank": {
-      "modelName": "tank_bullet_heat_fs",
-      "gbufferModelName": "tank_shell_heat_fs"
+      "modelName": "tank_bullet_heat_fs"
     },
     "apds_early_tank": {
-      "modelName": "tank_bullet_apdc",
-      "gbufferModelName": "tank_shell_apds"
+      "modelName": "tank_bullet_apdc"
     },
     "apds_l15_tank": {
-      "modelName": "tank_bullet_apdc",
-      "gbufferModelName": "tank_shell_apds"
+      "modelName": "tank_bullet_apdc"
     },
     "apds_fs_tank": {
-      "modelName": "tank_bullet_apdsfs",
-      "gbufferModelName": "tank_shell_apdsfs"
+      "modelName": "tank_bullet_apdsfs"
     },
     "apds_fs_full_body_steel_tank": {
-      "modelName": "tank_bullet_apdsfs",
-      "gbufferModelName": "tank_shell_apdsfs"
+      "modelName": "tank_bullet_apdsfs"
     },
     "apds_fs_tungsten_small_core_tank": {
-      "modelName": "tank_bullet_apdsfs",
-      "gbufferModelName": "tank_shell_apdsfs"
+      "modelName": "tank_bullet_apdsfs"
     },
     "apds_fs_tungsten_l10_l15_tank": {
-      "modelName": "tank_bullet_apdsfs_long",
-      "gbufferModelName": "tank_shell_apdsfs_long"
+      "modelName": "tank_bullet_apdsfs_long"
     },
     "apds_fs_long_tank": {
-      "modelName": "tank_bullet_apdsfs_long",
-      "gbufferModelName": "tank_shell_apdsfs_long"
+      "modelName": "tank_bullet_apdsfs_long"
     },
     "apbc_tank": {
-      "modelName": "tank_bullet_apbc",
-      "gbufferModelName": "tank_shell_apbc"
+      "modelName": "tank_bullet_apbc"
     },
     "apc_tank": {
-      "modelName": "tank_bullet_apc",
-      "gbufferModelName": "tank_shell_apbc"
+      "modelName": "tank_bullet_apc"
     },
     "aphe_tank": {
-      "modelName": "tank_bullet_aphe",
-      "gbufferModelName": "tank_shell_apbc"
+      "modelName": "tank_bullet_aphe"
     },
     "aphebc_tank": {
-      "modelName": "tank_bullet_aphebc",
-      "gbufferModelName": "tank_shell_apbc"
+      "modelName": "tank_bullet_aphebc"
     },
     "apcbc_tank": {
-      "modelName": "tank_bullet_apcbc",
-      "gbufferModelName": "tank_shell_apbc"
+      "modelName": "tank_bullet_apcbc"
     },
     "ap_tank": {
-      "modelName": "tank_bullet_ap",
-      "gbufferModelName": "tank_shell_apbc"
+      "modelName": "tank_bullet_ap"
     },
     "apbc_usa_tank": {
-      "modelName": "tank_bullet_apbc",
-      "gbufferModelName": "tank_shell_apbc"
+      "modelName": "tank_bullet_apbc"
     },
     "ap_large_caliber_tank": {
-      "modelName": "tank_bullet_ap",
-      "gbufferModelName": "tank_shell_apbc"
+      "modelName": "tank_bullet_ap"
     },
     "apc_solid_medium_caliber_tank": {
-      "modelName": "tank_bullet_apc",
-      "gbufferModelName": "tank_shell_apbc"
+      "modelName": "tank_bullet_apc"
     },
     "apcbc_solid_medium_caliber_tank": {
-      "modelName": "tank_bullet_apcbc",
-      "gbufferModelName": "tank_shell_apbc"
+      "modelName": "tank_bullet_apcbc"
     },
     "heat_tank": {
-      "modelName": "tank_bullet_heat",
-      "gbufferModelName": "tank_shell_heat"
+      "modelName": "tank_bullet_heat"
     },
     "sap_hei_tank": {
-      "modelName": "tank_bullet_he",
-      "gbufferModelName": "tank_shell_he"
+      "modelName": "tank_bullet_he"
     },
     "sap_tank": {
-      "modelName": "tank_bullet_aphe",
-      "gbufferModelName": "tank_shell_apbc"
+      "modelName": "tank_bullet_aphe"
     },
     "sapbc_tank": {
-      "modelName": "tank_bullet_he",
-      "gbufferModelName": "tank_shell_he"
+      "modelName": "tank_bullet_he"
     },
     "sapcbc_tank": {
-      "modelName": "tank_bullet_apcbc",
-      "gbufferModelName": "tank_shell_apbc"
+      "modelName": "tank_bullet_apcbc"
     },
     "sapbc_flat_nose_tank": {
-      "modelName": "tank_bullet_aphebc",
-      "gbufferModelName": "tank_shell_apbc"
+      "modelName": "tank_bullet_aphebc"
     },
     "common_tank": {
-      "modelName": "tank_bullet_he",
-      "gbufferModelName": "tank_shell_he"
+      "modelName": "tank_bullet_he"
     },
     "special_common_tank": {
-      "modelName": "tank_bullet_he",
-      "gbufferModelName": "tank_shell_he"
+      "modelName": "tank_bullet_he"
     },
     "heat_grenade_tank": {
-      "modelName": "tank_bullet_grenade_heat_fs",
-      "gbufferModelName": "tank_shell_heat_mp_vt_fs"
+      "modelName": "tank_bullet_grenade_heat_fs"
     },
     "heat_fs_tank": {
-      "modelName": "tank_bullet_heat_fs",
-      "gbufferModelName": "tank_shell_he_fs"
+      "modelName": "tank_bullet_heat_fs"
     },
     "atgm_tank": {
-      "modelName": "tank_bullet_heat_fs",
-      "gbufferModelName": "tank_shell_he_fs"
+      "modelName": "tank_bullet_heat_fs"
     },
     "atgm_vt_fuze_tank": {
-      "modelName": "tank_bullet_he",
-      "gbufferModelName": "tank_shell_he"
+      "modelName": "tank_bullet_he"
     },
     "atgm_he_tank": {
-      "modelName": "tank_bullet_he",
-      "gbufferModelName": "tank_shell_he"
+      "modelName": "tank_bullet_he"
     },
     "sam_tank": {
-      "modelName": "tank_bullet_he",
-      "gbufferModelName": "tank_shell_he"
+      "modelName": "tank_bullet_he"
     },
     "atgm_tandem_tank": {
-      "modelName": "tank_bullet_heat_fs",
-      "gbufferModelName": "tank_shell_he_fs"
+      "modelName": "tank_bullet_heat_fs"
     },
     "he_frag_tank": {
-      "modelName": "tank_bullet_he",
-      "gbufferModelName": "tank_shell_he"
+      "modelName": "tank_bullet_he"
     },
     "he_frag_vog": {
-      "modelName": "tank_bullet_he",
-      "gbufferModelName": "tank_shell_he"
+      "modelName": "tank_bullet_he"
     },
     "he_frag_i_tank": {
-      "modelName": "tank_bullet_he",
-      "gbufferModelName": "tank_shell_he"
+      "modelName": "tank_bullet_he"
     },
     "he_frag_radio_fuse": {
-      "modelName": "tank_bullet_he",
-      "gbufferModelName": "tank_shell_he"
+      "modelName": "tank_bullet_he"
     },
     "he_frag_dist_fuse": {
-      "modelName": "tank_bullet_he",
-      "gbufferModelName": "tank_shell_he"
+      "modelName": "tank_bullet_he"
     },
     "he_frag_base_fuse_tank": {
-      "modelName": "tank_bullet_he",
-      "gbufferModelName": "tank_shell_he"
+      "modelName": "tank_bullet_he"
     },
     "he_grenade_tank": [],
     "smoke_tank": {
-      "modelName": "tank_bullet_he",
-      "gbufferModelName": "tank_shell_smoke"
+      "modelName": "tank_bullet_he"
     },
     "smoke_grenade_tank": {
-      "modelName": "tank_bullet_he",
-      "gbufferModelName": "tank_shell_smoke"
+      "modelName": "tank_bullet_he"
     },
     "he_frag_fs_tank": {
-      "modelName": "tank_bullet_he_fs",
-      "gbufferModelName": "tank_shell_he_fs"
+      "modelName": "tank_bullet_he_fs"
     },
     "rocket_tank": {
-      "modelName": "tank_bullet_he",
-      "gbufferModelName": "tank_shell_he"
+      "modelName": "tank_bullet_he"
     },
     "rocket_ap_tank": {
-      "modelName": "tank_bullet_he",
-      "gbufferModelName": "tank_shell_he"
+      "modelName": "tank_bullet_he"
     },
     "hesh_tank": {
-      "modelName": "tank_bullet_hesh",
-      "gbufferModelName": "tank_shell_hesh"
+      "modelName": "tank_bullet_hesh"
     },
     "hesh_tank_rr": {
-      "modelName": "tank_bullet_hesh",
-      "gbufferModelName": "tank_shell_hesh"
+      "modelName": "tank_bullet_hesh"
     },
     "shrapnel_tank": {
-      "modelName": "tank_bullet_shrapnel",
-      "gbufferModelName": "tank_shell_shrapnel"
+      "modelName": "tank_bullet_shrapnel"
     },
     "football_kick": {
-      "modelName": "tank_bullet_apdc",
-      "gbufferModelName": "tank_shell_apds"
+      "modelName": "tank_bullet_apdc"
     }
   }
 }

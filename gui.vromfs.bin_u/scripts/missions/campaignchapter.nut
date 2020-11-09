@@ -1,7 +1,6 @@
 local progressMsg = require("sqDagui/framework/progressMsg.nut")
 local { missionsListCampaignId } = require("scripts/missions/getMissionsListCampaignId.nut")
 local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-local { saveTutorialToCheckReward } = require("scripts/tutorials/tutorialsData.nut")
 
 ::current_campaign <- null
 ::current_campaign_name <- ""
@@ -53,7 +52,6 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
     updateFavorites()
     updateWindow()
     initDescHandler()
-    ::move_mouse_on_child_by_value(scene.findObject("items_list"))
   }
 
   function initDescHandler()
@@ -260,6 +258,12 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
     else if (selIdx < 0)
       onItemSelect(listObj)
 
+    local filterObj = scene.findObject("filter_edit_box")
+    if (::checkObj(filterObj))
+      filterObj.select()
+    else
+      listObj.select()
+
     createFilterDataArray()
     applyMissionFilter()
     updateCollapsedItems()
@@ -306,7 +310,7 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
   function getSelectedMissionIndex(needCheckFocused = true)
   {
     local list = getObj("items_list")
-    if (list != null && (!needCheckFocused || list.isHovered()))
+    if (list != null && (!needCheckFocused || list.isFocused()))
     {
       local index = list.getValue()
       if (index >=0 && index < list.childrenCount())
@@ -538,7 +542,7 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
 
     openMissionOptions(curMission)
     if (gm == ::GM_TRAINING && ("blk" in curMission))
-      saveTutorialToCheckReward(curMission.blk)
+      save_tutorial_to_check_reward(curMission.blk)
   }
 
   function onUrlMissionLoaded(success, mission)
@@ -1030,7 +1034,19 @@ class ::gui_handlers.SingleMissionsModal extends ::gui_handlers.SingleMissions
       guiScene.replaceContent(listboxFilterHolder, "gui/chapter_include_filter.blk", this)
     }
 
+    initFocusArray()
+
     base.initScreen()
+  }
+
+  function getMainFocusObj()
+  {
+    return scene.findObject("filter_edit_box")
+  }
+
+  function getMainFocusObj2()
+  {
+    return getObj("items_list")
   }
 
   function afterModalDestroy()

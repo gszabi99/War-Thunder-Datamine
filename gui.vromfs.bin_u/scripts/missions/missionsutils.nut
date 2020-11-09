@@ -116,8 +116,11 @@ global enum MIS_PROGRESS //value received from get_mission_progress
   if (url != null)
     fullMissionBlk = ::getTblValue("fullMissionBlk", ::g_url_missions.findMissionByUrl(url))
   else
-    fullMissionBlk = ::blkOptFromPath(misBlk?.mis_file)
-  return has_unittype_in_full_mission_blk(fullMissionBlk, esUnitType)
+    fullMissionBlk = ::DataBlock(misBlk?.mis_file ?? "")
+  if (fullMissionBlk)
+    return has_unittype_in_full_mission_blk(fullMissionBlk, esUnitType)
+
+  return false
 }
 
 ::has_unittype_in_full_mission_blk <- function has_unittype_in_full_mission_blk(fullMissionBlk, esUnitType)

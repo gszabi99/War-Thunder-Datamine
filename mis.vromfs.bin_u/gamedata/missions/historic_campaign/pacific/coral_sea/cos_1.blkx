@@ -2,6 +2,10 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 28.0
+    },
     "player": {
       "army": 1,
       "wing": "player"
@@ -14,20 +18,20 @@
       "environment": "Day",
       "weather": "hazy",
       "type": "campaign",
+      "restoreType": "tactical control",
+      "optionalTakeOff": false,
       "gt_use_lb": true,
       "gt_use_replay": true,
       "gt_use_stats": true,
       "level": "levels/water.bin",
       "windDirection": [1.0,0.0,0.0],
-      "gt_cooperative": false,
-      "gt_versus": false,
-      "restoreType": "tactical control",
-      "optionalTakeOff": false,
-      "locationName": "water_coral",
       "forceSkiesInitialRandomSeed": true,
       "skiesInitialRandomSeed": 3,
       "windSpeed": [5.0,5.0],
       "windDirectionDeg": [-30.0,-30.0],
+      "gt_versus": false,
+      "gt_cooperative": false,
+      "locationName": "water_coral",
       "stars": {
         "latitude": 18.0,
         "longitude": 158.0,
@@ -37,43 +41,43 @@
         "localTime": 10.0
       },
       "customWeather": {
+        "scatteringEffect": 0.0,
+        "cloud_shadow_intensity": 0.7,
         "windDir": [0.6,0.8],
         "wind_scale": 1.0,
         "max_wind_strength": 6.0,
-        "waterWindStrength": 4.0,
+        "sky": {
+          "mie_height": 0.5,
+          "mieG": 0.5,
+          "betaMScale": 0.5,
+          "clouds_overcast": 0.5
+        },
+        "clouds_gen": {
+          "humidity": 0.13,
+          "persistence": 0.2,
+          "asymmetry": 0.11
+        },
+        "clouds_position": {
+          "start_altitude": 3.5,
+          "thickness": 4.5,
+          "light_extinction": 1.2,
+          "amb_extinction_mul": 1.0
+        },
+        "clouds_render": {
+          "silver_lining": 0.5,
+          "sun_light": 0.7,
+          "ambient": 0.5,
+          "silver_lining_eccentricity": 0.6
+        },
         "strata_clouds": {
           "amount": 1.0,
           "altitude": 10.0
         },
-        "clouds_weather_gen": {
-          "layers[0].coverage": 0.21,
-          "layers[0].freq": 1.3,
-          "layers[0].seed": 26.76,
-          "layers[1].coverage": 0.55,
-          "layers[1].freq": 2.87,
-          "layers[1].seed": 4.23,
-          "cumulonimbusCoverage": 0.15,
-          "cumulonimbusSeed": 16.9
-        },
-        "clouds_form": {
-          "layers[0].startAt": 3.5,
-          "layers[0].thickness": 5.0,
-          "layers[0].density": 0.5,
-          "layers[0].clouds_type": 0.32,
-          "layers[0].clouds_type_variance": 0.21,
-          "layers[1].startAt": 6.0,
-          "layers[1].thickness": 2.6,
-          "layers[1].density": 1.22,
-          "layers[1].clouds_type": 0.25,
-          "layers[1].clouds_type_variance": 0.76,
-          "turbulenceStrength": 0.65,
-          "turbulenceFreq": 2
+        "rain": {
+          "rainFromInvisibleClouds": false,
+          "probability": 0.0
         }
       }
-    },
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 28.0
     },
     "spectator_points": [],
     "briefing": [
@@ -96,8 +100,7 @@
           "slide": {
             "map": false,
             "minTime": 6,
-            "picture": "coral_sea/briefing_slide_coralsea_m2_part1",
-            "showAirMap": false
+            "picture": "coral_sea/briefing_slide_coralsea_m2_part1"
           }
         }
       },
@@ -113,16 +116,14 @@
             "slide": {
               "map": false,
               "minTime": 3,
-              "picture": "coral_sea/briefing_slide_coralsea_m2_part2a",
-              "showAirMap": false
+              "picture": "coral_sea/briefing_slide_coralsea_m2_part2a"
             }
           },
           {
             "slide": {
               "map": false,
               "minTime": 3,
-              "picture": "coral_sea/briefing_slide_coralsea_m2_part2b",
-              "showAirMap": false
+              "picture": "coral_sea/briefing_slide_coralsea_m2_part2b"
             }
           }
         ]
@@ -134,8 +135,7 @@
           "slide": {
             "map": false,
             "minTime": 6,
-            "picture": "coral_sea/briefing_slide_coralsea_m2_part3",
-            "showAirMap": false
+            "picture": "coral_sea/briefing_slide_coralsea_m2_part3"
           }
         }
       },
@@ -151,16 +151,14 @@
             "slide": {
               "map": false,
               "minTime": 3,
-              "picture": "coral_sea/briefing_slide_coralsea_m2_part4a",
-              "showAirMap": false
+              "picture": "coral_sea/briefing_slide_coralsea_m2_part4a"
             }
           },
           {
             "slide": {
               "map": false,
               "minTime": 3,
-              "picture": "coral_sea/briefing_slide_coralsea_m2_part4b",
-              "showAirMap": false
+              "picture": "coral_sea/briefing_slide_coralsea_m2_part4b"
             }
           }
         ]
@@ -178,9 +176,6 @@
             },
             {
               "picture": ""
-            },
-            {
-              "showAirMap": false
             },
             {
               "arrow": [
@@ -286,10 +281,6 @@
       "actions": [
         {
           "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "japanese_fleet",
             "effShootingRate": 0.5,
             "speed": 0.0,
@@ -298,10 +289,6 @@
         },
         {
           "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "lexington_group",
             "effShootingRate": 0.0,
             "plane": {
@@ -315,18 +302,6 @@
         },
         {
           "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
             {
               "object": "yorktown_bombers"
             },
@@ -387,10 +362,6 @@
         },
         {
           "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "lexington_group",
             "effShootingRate": 0.01
           }
@@ -402,9 +373,7 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "corS_mission01_fly00",
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "target": "corS_mission01_fly00"
           }
         },
         {
@@ -448,8 +417,6 @@
           "check_targets": "all",
           "object_marking": 0,
           "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
           "object": "player",
           "target": "us_carrier_yorktown"
         },
@@ -459,9 +426,6 @@
           "check_objects": "any",
           "target_type": "isAlive",
           "check_period": 1.0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "player"
         }
       },
@@ -484,9 +448,7 @@
         {
           "moSetObjectiveStatus": {
             "target": "corS_mission01_fly00",
-            "status": 2,
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "status": 2
           }
         },
         {
@@ -520,15 +482,6 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 0.0,
             "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "distributionRadius": 200.0,
@@ -545,15 +498,6 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 0.0,
             "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "yorktown_fighters01",
             "move_type": "teleport",
             "lookat": "waypoit01",
@@ -569,15 +513,6 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 0.0,
             "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "yorktown_bombers",
             "move_type": "teleport",
             "lookat": "waypoit01",
@@ -603,15 +538,6 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 1000.0,
             "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "yorktown_bombers",
             "follow_offset": [-200.0,0.0,0.0]
           }
@@ -625,15 +551,6 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 1000.0,
             "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "yorktown_fighters01",
             "follow_offset": [-300.0,200.0,0.0]
           }
@@ -759,11 +676,6 @@
             "shouldFadeOut": false,
             "time": -1.0,
             "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
@@ -863,11 +775,6 @@
             "shouldFadeOut": false,
             "time": -1.0,
             "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
@@ -926,11 +833,6 @@
           "shouldFadeOut": false,
           "time": -1.0,
           "priority": 0,
-          "isOverFade": false,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "item": "ID_SKIP_CUTSCENE",
           "shouldBlink": false
         },
@@ -1027,9 +929,7 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "corS_mission01_fly01",
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "target": "corS_mission01_fly01"
           }
         },
         {
@@ -1146,15 +1046,6 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 3000.0,
             "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "shoho_fighters",
             "move_type": "teleport",
             "lookat": "player",
@@ -1233,11 +1124,6 @@
             "shouldFadeOut": false,
             "time": -1.0,
             "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_TOGGLE_VIEW",
             "shouldBlink": false
           }
@@ -1285,12 +1171,6 @@
             "target_marking": 0
           },
           {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
             "object": "player"
           },
           {
@@ -1315,9 +1195,7 @@
         {
           "moSetObjectiveStatus": {
             "target": "corS_mission01_fly01",
-            "status": 2,
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "status": 2
           }
         },
         {
@@ -1404,10 +1282,6 @@
         },
         {
           "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "japanese_fleet",
             "speed": 10.0,
             "lockSpeed": true
@@ -1415,10 +1289,6 @@
         },
         {
           "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "jap_carrier_shoho",
             "isImmortal": true
           }
@@ -1495,15 +1365,6 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 0.0,
             "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "bomb_cut_tbd",
             "move_type": "teleport",
             "lookat": "jap_carrier_shoho",
@@ -1519,15 +1380,6 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 0.0,
             "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "bomb_cut_tbd",
             "velocity": 250.0
           }
@@ -1573,11 +1425,6 @@
             "shouldFadeOut": false,
             "time": -1.0,
             "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
@@ -1650,11 +1497,11 @@
             "loop": false,
             "scale": 0.3,
             "effect_type": "specify",
+            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "jap_carrier_shoho",
-            "radiusOffset": [0.0,0.0]
+            "target": "jap_carrier_shoho"
           }
         },
         {
@@ -1670,11 +1517,11 @@
             "loop": false,
             "scale": 1.0,
             "effect_type": "specify",
+            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "jap_carrier_shoho",
-            "radiusOffset": [0.0,0.0]
+            "target": "jap_carrier_shoho"
           }
         },
         {
@@ -1690,11 +1537,11 @@
             "loop": false,
             "scale": 1.0,
             "effect_type": "specify",
+            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "jap_carrier_shoho",
-            "radiusOffset": [0.0,0.0]
+            "target": "jap_carrier_shoho"
           }
         },
         {
@@ -1710,11 +1557,11 @@
             "loop": false,
             "scale": 1.0,
             "effect_type": "specify",
+            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "jap_carrier_shoho",
-            "radiusOffset": [0.0,0.0]
+            "target": "jap_carrier_shoho"
           }
         },
         {
@@ -1730,11 +1577,11 @@
             "loop": false,
             "scale": 1.0,
             "effect_type": "specify",
+            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "jap_carrier_shoho",
-            "radiusOffset": [0.0,0.0]
+            "target": "jap_carrier_shoho"
           }
         },
         {
@@ -1750,11 +1597,6 @@
             "shouldFadeOut": false,
             "time": -1.0,
             "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
@@ -1804,11 +1646,6 @@
           "shouldFadeOut": false,
           "time": -1.0,
           "priority": 0,
-          "isOverFade": false,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "item": "ID_SKIP_CUTSCENE",
           "shouldBlink": false
         },
@@ -1855,15 +1692,6 @@
             "shouldKeepFormation": false,
             "teleportHeightValue": 1000.0,
             "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "lexington_group"
           }
         },
@@ -1876,20 +1704,12 @@
         },
         {
           "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "jap_carrier_shoho",
             "isImmortal": false
           }
         },
         {
           "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "yorktown_bombers",
             "effShootingRate": 0.0,
             "plane": [
@@ -1931,18 +1751,12 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "corS_mission01_att00",
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "target": "corS_mission01_att00"
           }
         },
         {
           "unitSetIndication": {
             "set": true,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "target": "jap_carrier_shoho"
           }
         },
@@ -1981,8 +1795,6 @@
           "object_marking": 0,
           "func": "less",
           "value": 1,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
           "object": "jap_carrier_shoho"
         }
       },
@@ -2003,9 +1815,7 @@
         {
           "moSetObjectiveStatus": {
             "target": "corS_mission01_att00",
-            "status": 2,
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "status": 2
           }
         },
         {
@@ -2015,9 +1825,7 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "corS_mission01_fly02",
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "target": "corS_mission01_fly02"
           }
         },
         {
@@ -2042,10 +1850,6 @@
         },
         {
           "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "japanese_fleet",
             "speed": 3.0,
             "lockSpeed": true
@@ -2079,9 +1883,6 @@
           "check_objects": "all",
           "target_type": "isAlive",
           "check_period": 1.0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "jap_carrier_shoho"
         }
       },
@@ -2183,15 +1984,6 @@
           "shouldKeepFormation": true,
           "teleportHeightValue": 1000.0,
           "horizontalDirectionForTeleport": true,
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target_marking": 0,
-          "waypointReachedDist": 10.0,
-          "recalculatePathDist": -1.0,
-          "fastClimb": false,
-          "destTimeMode": false,
           "object": "shoho_fighters",
           "follow_offset": [0.0,1000.0,0.0]
         },
@@ -2282,9 +2074,7 @@
         {
           "moSetObjectiveStatus": {
             "target": "corS_mission01_fly02",
-            "status": 2,
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "status": 2
           }
         },
         {
@@ -2311,10 +2101,6 @@
         },
         {
           "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "japanese_fleet",
             "speed": 0.0,
             "lockSpeed": true
@@ -2329,15 +2115,6 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 0.0,
             "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "lookat": "us_carrier_yorktown",
@@ -2420,11 +2197,6 @@
             "shouldFadeOut": false,
             "time": -1.0,
             "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
@@ -2495,11 +2267,6 @@
             "shouldFadeOut": false,
             "time": -1.0,
             "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
@@ -2555,11 +2322,6 @@
           "shouldFadeOut": false,
           "time": -1.0,
           "priority": 0,
-          "isOverFade": false,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "item": "ID_SKIP_CUTSCENE",
           "shouldBlink": false
         },
@@ -2641,9 +2403,7 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "corS_mission01_land",
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "target": "corS_mission01_land"
           }
         },
         {
@@ -2700,17 +2460,13 @@
           "object_marking": 0,
           "func": "less",
           "value": 1,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
           "object": "us_carrier_yorktown"
         }
       },
       "actions": {
         "moSetObjectiveStatus": {
           "target": "corS_mission01_land",
-          "status": 3,
-          "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "status": 3
         },
         "wait": {
           "time": 2.0
@@ -2740,9 +2496,6 @@
           "object_marking": 0,
           "check_objects": "any",
           "afterRepaired": false,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "player_squad",
           "target": "us_carrier_yorktown"
         }
@@ -2750,9 +2503,7 @@
       "actions": {
         "moSetObjectiveStatus": {
           "target": "corS_mission01_land",
-          "status": 2,
-          "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "status": 2
         },
         "airfieldSetIndication": {
           "set": false,
@@ -2786,8 +2537,6 @@
           "object_type": "isAlive",
           "object_marking": 0,
           "check_objects": "any",
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
           "object": "japanese_fleet",
           "target": "where_ships_desappearing"
         },
@@ -2799,9 +2548,7 @@
       "actions": {
         "moSetObjectiveStatus": {
           "target": "corS_mission01_att00",
-          "status": 3,
-          "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "status": 3
         },
         "missionFailed": []
       },
@@ -2863,16 +2610,11 @@
           "unitRestore": {
             "ressurectIfDead": true,
             "fullRestore": true,
-            "target_marking": 0,
             "target": "player_squad"
           }
         },
         {
           "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "jap_carrier_shoho",
             "isImmortal": false
           }
@@ -2907,16 +2649,11 @@
           "unitRestore": {
             "ressurectIfDead": true,
             "fullRestore": true,
-            "target_marking": 0,
             "target": "japanese_fleet"
           }
         },
         {
           "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "japanese_fleet",
             "speed": 10.0,
             "lockSpeed": true
@@ -2924,10 +2661,6 @@
         },
         {
           "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "zero_cut",
             "effShootingRate": 0.0,
             "plane": {
@@ -2941,10 +2674,6 @@
         },
         {
           "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "tbd_cut",
             "isImmortal": true,
             "plane": {
@@ -2965,15 +2694,6 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 500.0,
             "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "lexington_scouts",
             "move_type": "teleport",
             "distributionRadius": 200.0,
@@ -3033,11 +2753,6 @@
             "shouldFadeOut": false,
             "time": -1.0,
             "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
@@ -3154,11 +2869,6 @@
             "shouldFadeOut": false,
             "time": -1.0,
             "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
@@ -3207,11 +2917,6 @@
           "shouldFadeOut": false,
           "time": -1.0,
           "priority": 0,
-          "isOverFade": false,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "item": "ID_SKIP_CUTSCENE",
           "shouldBlink": false
         },
@@ -3261,20 +2966,12 @@
       "actions": [
         {
           "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "player",
             "targetableByAi": false
           }
         },
         {
           "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "player_squad",
             "targetableByAi": true
           }
@@ -3302,8 +2999,6 @@
             "object_marking": 0,
             "func": "more",
             "value": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
             "object": "us_fleet_sq"
           }
         },
@@ -3313,8 +3008,6 @@
             "object_marking": 0,
             "func": "more",
             "value": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
             "object": "us_fleet_sq"
           }
         }
@@ -3371,11 +3064,6 @@
             "shouldFadeOut": false,
             "time": -1.0,
             "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_MPSTATSCREEN",
             "shouldBlink": false
           }
@@ -3393,11 +3081,6 @@
             "shouldFadeOut": false,
             "time": -1.0,
             "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_MPSTATSCREEN",
             "shouldBlink": false
           }
@@ -3432,11 +3115,6 @@
             "shouldFadeOut": false,
             "time": -1.0,
             "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_TOGGLE_VIEW",
             "shouldBlink": false
           }
@@ -3454,11 +3132,6 @@
             "shouldFadeOut": false,
             "time": -1.0,
             "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_TOGGLE_VIEW",
             "shouldBlink": false
           }
@@ -3750,8 +3423,6 @@
         ],
         "unit_class": "ijn_cvl_ryujo",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3761,7 +3432,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3776,33 +3446,29 @@
           "jap_carrier_shoho_wp_01": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
+              [-1.0,0.0,1.78814e-07],
               [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
+              [-1.78814e-07,0.0,-1.0],
               [-58414.7,-523.25,54593.7]
             ],
             "props": {
               "speed": 5.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "jap_carrier_shoho_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
+              [-0.953717,0.0,0.300706],
               [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
+              [-0.300706,0.0,-0.953717],
               [-146356.0,-17741.8,108230.0]
             ],
             "props": {
               "speed": 5.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           }
         }
@@ -3819,8 +3485,6 @@
         ],
         "unit_class": "tbf-1c",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "tbf_1c_mk13_torpedo",
         "bullets0": "",
         "bullets1": "",
@@ -3830,7 +3494,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -3866,9 +3529,6 @@
         ],
         "props": [
           {
-            "object_marking": 0
-          },
-          {
             "squad_members": "yorktown_bombers"
           },
           {
@@ -3888,8 +3548,6 @@
         ],
         "unit_class": "ijn_ca_myoko",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3899,7 +3557,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3914,33 +3571,29 @@
           "jap_cruiser_furutaka_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
+              [-1.0,0.0,1.78814e-07],
               [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
+              [-1.78814e-07,0.0,-1.0],
               [-58397.8,-560.249,54593.2]
             ],
             "props": {
               "speed": 5.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "jap_cruiser_furutaka_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
+              [-0.953717,0.0,0.300706],
               [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
+              [-0.300706,0.0,-0.953717],
               [-146468.0,-17716.0,108169.0]
             ],
             "props": {
               "speed": 5.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           }
         }
@@ -3957,8 +3610,6 @@
         ],
         "unit_class": "ijn_ca_myoko",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3968,7 +3619,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3983,33 +3633,29 @@
           "jap_cruiser_kinugasa_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
+              [-1.0,0.0,1.78814e-07],
               [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
+              [-1.78814e-07,0.0,-1.0],
               [-58275.6,-499.45,54813.6]
             ],
             "props": {
               "speed": 5.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "jap_cruiser_kinugasa_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
+              [-0.953717,0.0,0.300706],
               [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
+              [-0.300706,0.0,-0.953717],
               [-146337.0,-17743.3,108241.0]
             ],
             "props": {
               "speed": 5.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           }
         }
@@ -4026,8 +3672,6 @@
         ],
         "unit_class": "ijn_ca_myoko",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4037,7 +3681,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4052,33 +3695,29 @@
           "jap_cruiser_kako_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
+              [-1.0,0.0,1.78814e-07],
               [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
+              [-1.78814e-07,0.0,-1.0],
               [-58351.3,-518.899,54690.7]
             ],
             "props": {
               "speed": 5.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "jap_cruiser_kako_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
+              [-0.953717,0.0,0.300706],
               [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
+              [-0.300706,0.0,-0.953717],
               [-146394.0,-17738.8,108208.0]
             ],
             "props": {
               "speed": 5.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           }
         }
@@ -4095,8 +3734,6 @@
         ],
         "unit_class": "ijn_ca_myoko",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4106,7 +3743,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4121,33 +3757,29 @@
           "jap_cruiser_aoba_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
+              [-1.0,0.0,1.78814e-07],
               [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
+              [-1.78814e-07,0.0,-1.0],
               [-58228.9,-557.649,54861.6]
             ],
             "props": {
               "speed": 5.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "jap_cruiser_aoba_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
+              [-0.953717,0.0,0.300706],
               [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
+              [-0.300706,0.0,-0.953717],
               [-146565.0,-17737.4,108099.0]
             ],
             "props": {
               "speed": 5.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           }
         }
@@ -4164,8 +3796,6 @@
         ],
         "unit_class": "ijn_dd_shiratsuyu",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4175,7 +3805,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4190,33 +3819,29 @@
           "jap_destroyer_sazanami_wp_02": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
+              [-1.0,0.0,1.78814e-07],
               [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
+              [-1.78814e-07,0.0,-1.0],
               [-58427.6,-520.649,54576.2]
             ],
             "props": {
               "speed": 5.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "jap_destroyer_sazanami_wp_03": {
             "type": "normal",
             "tm": [
-              [1.0,0.0,0.0],
+              [-0.953717,0.0,0.300706],
               [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
+              [-0.300706,0.0,-0.953717],
               [-146450.0,-17734.3,108173.0]
             ],
             "props": {
               "speed": 5.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           }
         }
@@ -4232,9 +3857,6 @@
           [-3418.99,0.000244141,3357.25]
         ],
         "props": [
-          {
-            "object_marking": 0
-          },
           {
             "squad_members": "jap_cruiser_furutaka"
           },
@@ -4267,8 +3889,6 @@
         ],
         "unit_class": "a6m2_zero",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "a6m2_default",
         "bullets0": "",
         "bullets1": "",
@@ -4278,7 +3898,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -4315,8 +3934,6 @@
         ],
         "unit_class": "sbd-3",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "sbd_3_default",
         "bullets0": "",
         "bullets1": "",
@@ -4326,7 +3943,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -4367,8 +3983,6 @@
         ],
         "unit_class": "tbf-1c",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "tbf_1c_mk13_torpedo",
         "bullets0": "",
         "bullets1": "",
@@ -4378,7 +3992,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -4414,9 +4027,6 @@
         ],
         "props": [
           {
-            "object_marking": 0
-          },
-          {
             "squad_members": "lexington_scouts"
           },
           {
@@ -4436,8 +4046,6 @@
         ],
         "unit_class": "f4f-4",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "f4f-4_default",
         "bullets0": "",
         "bullets1": "",
@@ -4447,7 +4055,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -4484,8 +4091,6 @@
         ],
         "unit_class": "tbf-1c",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "tbf_1c_mk13_torpedo",
         "bullets0": "",
         "bullets1": "",
@@ -4495,7 +4100,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -4530,7 +4134,6 @@
           [2122.4,0.000244141,11423.3]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": "player",
           "object_type": "isPlayer"
         }
@@ -4547,8 +4150,6 @@
         ],
         "unit_class": "uss_cv_lexington",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4558,7 +4159,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4583,8 +4183,6 @@
         ],
         "unit_class": "uss_cv_enterprise",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4594,7 +4192,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4619,8 +4216,6 @@
         ],
         "unit_class": "uss_ca_sanfrancisco",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4630,7 +4225,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4655,8 +4249,6 @@
         ],
         "unit_class": "uss_ca_sanfrancisco",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4666,7 +4258,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4691,8 +4282,6 @@
         ],
         "unit_class": "uss_ca_sanfrancisco",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4702,7 +4291,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4727,8 +4315,6 @@
         ],
         "unit_class": "uss_ca_sanfrancisco",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4738,7 +4324,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4763,8 +4348,6 @@
         ],
         "unit_class": "uss_ca_sanfrancisco",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4774,7 +4357,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4799,8 +4381,6 @@
         ],
         "unit_class": "uss_dd_sims",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4810,7 +4390,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4835,8 +4414,6 @@
         ],
         "unit_class": "uss_dd_sims",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4846,7 +4423,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4871,8 +4447,6 @@
         ],
         "unit_class": "uss_ca_sanfrancisco",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4882,7 +4456,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4907,8 +4480,6 @@
         ],
         "unit_class": "uss_ca_sanfrancisco",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4918,7 +4489,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4943,8 +4513,6 @@
         ],
         "unit_class": "uss_ca_sanfrancisco",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4954,7 +4522,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4979,8 +4546,6 @@
         ],
         "unit_class": "uss_ca_sanfrancisco",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4990,7 +4555,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5015,8 +4579,6 @@
         ],
         "unit_class": "uss_dd_sims",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -5026,7 +4588,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5050,9 +4611,6 @@
           [-13515.2,0.0,-22324.8]
         ],
         "props": [
-          {
-            "object_marking": 0
-          },
           {
             "squad_members": "us_carrier_lexington"
           },
@@ -5109,8 +4667,6 @@
         ],
         "unit_class": "sbd-3",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -5120,7 +4676,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -5157,8 +4712,6 @@
         ],
         "unit_class": "tbf-1c",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "tbf_1c_mk13_torpedo",
         "bullets0": "",
         "bullets1": "",
@@ -5168,7 +4721,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 3,
@@ -5203,9 +4755,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           }
         }
@@ -5222,8 +4772,6 @@
         ],
         "unit_class": "a6m2_zero",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -5233,7 +4781,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 6,
@@ -5268,7 +4815,6 @@
           [-5020.8,0.0,7528.45]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": "tbd_cut",
           "object_type": "isFormationLeader"
         }
@@ -5285,8 +4831,6 @@
         ],
         "unit_class": "tbf-1c",
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "tbf_1c_mk13_torpedo",
         "bullets0": "",
         "bullets1": "",
@@ -5296,7 +4840,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5332,7 +4875,6 @@
           [-1374.0,-478.5,9361.4]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": "lexington_scouts",
           "object_type": "isFormationLeader"
         }
@@ -5348,9 +4890,6 @@
           [44665.8,0.0,-49164.3]
         ],
         "props": [
-          {
-            "object_marking": 0
-          },
           {
             "squad_members": "us_carrier_lexington"
           },

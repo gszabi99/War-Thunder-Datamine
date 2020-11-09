@@ -1,4 +1,4 @@
-local u = require("sqStdLibs/helpers/u.nut")
+local u = ::require("sqStdLibs/helpers/u.nut")
 local time = require("scripts/time.nut")
 local contentPreview = require("scripts/customization/contentPreview.nut")
 local shopSearchCore = require("scripts/shop/shopSearchCore.nut")
@@ -61,6 +61,7 @@ local Unit = class
    train3Cost_exp = 0
    gunnersCount = 0
    hasDepthCharge = false
+   hasMines = false
 
    isInShop = false
    reqAir = null //name of unit required by shop tree
@@ -182,6 +183,7 @@ local Unit = class
     giftParam                 = uWpCost?.giftParam
     premPackAir               = uWpCost?.premPackAir ?? false
     hasDepthCharge            = uWpCost?.hasDepthCharge ?? false
+    hasMines                  = uWpCost?.hasMines ?? false
     commonWeaponImage         = uWpCost?.commonWeaponImage ?? commonWeaponImage
     customClassIco            = uWpCost?.customClassIco
     customTooltipImage        = uWpCost?.customTooltipImage
@@ -281,7 +283,7 @@ local Unit = class
 
   isAir                 = @() esUnitType == ::ES_UNIT_TYPE_AIRCRAFT
   isTank                = @() esUnitType == ::ES_UNIT_TYPE_TANK
-  isShip                = @() esUnitType == ::ES_UNIT_TYPE_SHIP || esUnitType == ::ES_UNIT_TYPE_BOAT
+  isShip                = @() esUnitType == ::ES_UNIT_TYPE_SHIP
   isSubmarine           = @() esUnitType == ::ES_UNIT_TYPE_SHIP && tags.indexof("submarine") != null
   isHelicopter          = @() esUnitType == ::ES_UNIT_TYPE_HELICOPTER
   //
@@ -323,14 +325,14 @@ local Unit = class
     return _isRecentlyReleased
   }
 
-  _operatorCountry = null
-  function getOperatorCountry()
+  _originCountry = null
+  function getOriginCountry()
   {
-    if (_operatorCountry)
-      return _operatorCountry
-    local res = ::get_unittags_blk()?[name].operatorCountry ?? ""
-    _operatorCountry = res != "" && ::get_country_icon(res) != "" ? res : shopCountry
-    return _operatorCountry
+    if (_originCountry)
+      return _originCountry
+    local res = ::get_unittags_blk()?[name]?.originCountry ?? ""
+    _originCountry = res != "" && ::get_country_icon(res) != "" ? res : shopCountry
+    return _originCountry
   }
 
   function getEconomicRank(ediff)
@@ -533,6 +535,7 @@ local Unit = class
   }
 
   isDepthChargeAvailable = @() hasDepthCharge || shop_is_modification_enabled(name, "ship_depth_charge")
+  isMinesAvailable       = @() hasMines || shop_is_modification_enabled(name, "ship_mines")
 
   function getDefaultWeapon() {
     if (defaultWeaponPreset)
@@ -579,7 +582,7 @@ local Unit = class
       foreach (block in (unitBlk.weapon_presets % "preset"))
         if (block.name == secondaryWep)
         {
-          weaponDataBlock = ::blkFromPath(block.blk)
+          weaponDataBlock = ::DataBlock(block.blk)
           local nbrBomb = 0
           dagor.debug("check unit weapon :")
           foreach (weap in (weaponDataBlock % "Weapon"))
@@ -587,10 +590,7 @@ local Unit = class
             if (!weap?.blk || weap?.dummy || ::isInArray(weap.blk, weaponsBlkArray))
               continue
 
-            if (weap?.trigger == "mines")
-              availableWeapons.hasMines = true
-
-            local weapBlk = ::blkFromPath(weap.blk)
+            local weapBlk = ::DataBlock(weap.blk)
             if (weapBlk?.bomb)
             {
               availableWeapons.hasBombs = true
@@ -600,6 +600,8 @@ local Unit = class
               availableWeapons.hasRocketDistanceFuse = true
             if (weapBlk?.bomb.isDepthCharge)
               availableWeapons.hasDepthCharges = true
+            if (weapBlk?.bomb.isMine)
+              availableWeapons.hasMines = true
             if (weapBlk?.rocket && weapBlk.rocket?.isFlare)
               availableWeapons.hasFlares = true
 

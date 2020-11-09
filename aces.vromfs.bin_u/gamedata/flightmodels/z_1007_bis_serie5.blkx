@@ -1770,7 +1770,7 @@
         },
         "wing_r_dm": {
           "genericDamageMult": 0.35,
-          "hp": 136.3
+          "hp": 139.4
         }
       },
       "c_dural5": {
@@ -1899,6 +1899,9 @@
           "hp": 17.5
         },
         "oil6_dm": {
+          "hp": 17.5
+        },
+        "oil7_dm": {
           "hp": 17.5
         }
       },
@@ -2342,12 +2345,26 @@
       },
       {
         "part": {
-          "name": "fin1_dm"
+          "name": "fin1_dm",
+          "onHit": {
+            "tailcontrol_dm": 0.001
+          },
+          "onKill": {
+            "tailcontrol_dm": 1.0,
+            "nothing": 9.0
+          }
         }
       },
       {
         "part": {
-          "name": "fin2_dm"
+          "name": "fin2_dm",
+          "onHit": {
+            "tailcontrol_dm": 0.001
+          },
+          "onKill": {
+            "tailcontrol_dm": 1.0,
+            "nothing": 9.0
+          }
         }
       },
       {
@@ -2961,6 +2978,17 @@
       },
       {
         "part": {
+          "name": "oil7_dm",
+          "onHit": {
+            "leak_oil": 0.95
+          },
+          "onKill": {
+            "leak_oil": 1.0
+          }
+        }
+      },
+      {
+        "part": {
           "name": "pilot1_dm"
         }
       },
@@ -3087,8 +3115,8 @@
         "part": {
           "name": "spar1_l_dm",
           "onKill": {
-            "nothing": 2.0,
-            "cut": 4.0
+            "nothing": 0.0,
+            "cut": 1.0
           }
         }
       },
@@ -3096,8 +3124,8 @@
         "part": {
           "name": "spar1_r_dm",
           "onKill": {
-            "nothing": 2.0,
-            "cut": 4.0
+            "nothing": 0.0,
+            "cut": 1.0
           }
         }
       },
@@ -3105,8 +3133,8 @@
         "part": {
           "name": "spar2_l_dm",
           "onKill": {
-            "nothing": 2.0,
-            "cut": 4.0
+            "nothing": 0.0,
+            "cut": 1.0
           }
         }
       },
@@ -3114,8 +3142,8 @@
         "part": {
           "name": "spar2_r_dm",
           "onKill": {
-            "nothing": 2.0,
-            "cut": 4.0
+            "nothing": 0.0,
+            "cut": 1.0
           }
         }
       },

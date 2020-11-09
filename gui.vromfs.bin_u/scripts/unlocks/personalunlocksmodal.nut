@@ -12,7 +12,6 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
   curChapterId = ""
   curUnlockId = ""
   showAllUnlocks = false
-  isFillingUnlocksList = false
 
   chaptersObj = null
   unlocksObj = null
@@ -24,7 +23,8 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
     chaptersObj = scene.findObject("chapters_list")
     unlocksObj = scene.findObject("unlocks_list")
     updateWindow()
-    ::move_mouse_on_child_by_value(chaptersObj)
+    initFocusArray()
+    chaptersObj.select()
   }
 
   function updateWindow() {
@@ -69,7 +69,7 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
 
   function fillChapterList() {
     local view = { items = [] }
-    local curChapterIdx = -1
+    local curChapterIdx = 0
     collapsibleChaptersIdx = {}
     local idx = 0
     foreach (chapterName, chapters in unlocksConfigByChapter) {
@@ -86,9 +86,7 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
         idx++
         local isUnlockedGroup = group.unlocks.len() > 0
         local groupId = group.id
-        curChapterIdx = ((curChapterId == -1 && isUnlockedGroup) ||  curChapterId == groupId)
-          ? view.items.len()
-          : curChapterIdx
+        curChapterIdx = curChapterId == groupId ? view.items.len() : curChapterIdx
         view.items.append({
           itemTag = isUnlockedGroup ? "mission_item_unlocked" : "mission_item_locked"
           id = groupId
@@ -107,8 +105,6 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
       fillUnlocksList()
       return
     }
-    if (curChapterIdx == -1)
-      curChapterIdx = view.items.len() > 1 ? 1 : 0
     chaptersObj.setValue(curChapterIdx)
   }
 
@@ -142,9 +138,7 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
 
     local unlockId = curUnlockId
     local curUnlockIdx = unlocks.findindex(@(unlock) unlock.id == unlockId) ?? 0
-    isFillingUnlocksList = true
     unlocksObj.setValue(curUnlockIdx)
-    isFillingUnlocksList = false
   }
 
   function getSelectedChildId(obj) {
@@ -164,10 +158,20 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
 
   function onUnlockSelect(obj) {
     curUnlockId = getSelectedChildId(obj)
-    if (::show_console_buttons && !isFillingUnlocksList) {
-      guiScene.applyPendingChanges(false)
-      ::move_mouse_on_child_by_value(obj)
+  }
+
+  function switchFocusObj(obj) {
+    local id = obj?.id
+    if (id == "unlocks_list") {
+      chaptersObj.select()
+      return
     }
+    if (unlocksObj.isVisible())
+      unlocksObj.select()
+  }
+
+  function getMainFocusObj() {
+    return chaptersObj
   }
 
   function onShowAllUnlocks(obj) {
@@ -180,9 +184,8 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateButtons() {
-    local canShow = !::show_console_buttons || chaptersObj.isHovered()
-    local isHeader = canShow && unlocksConfigByChapter?[curChapterId] != null
-    local collapsedButtonObj = showSceneBtn("btn_collapsed_chapter", canShow && isHeader)
+    local isHeader = chaptersObj.isFocused() && unlocksConfigByChapter?[curChapterId] != null
+    local collapsedButtonObj = showSceneBtn("btn_collapsed_chapter", isHeader)
     if (isHeader)
       collapsedButtonObj.setValue(
         ::loc(getCollapsedChapters()?[curChapterId] != null ? "mainmenu/btnExpand" : "mainmenu/btnCollapse"))
@@ -223,7 +226,7 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
 
     if (isHiddenGroupSelected) {
       chaptersObj.setValue(collapsibleChaptersIdx?[chapterId] ?? 0)
-      ::move_mouse_on_child_by_value(chaptersObj)
+      chaptersObj.select()
     }
 
     chapterObj.collapsed = isCollapsed ? "no" : "yes"
@@ -237,9 +240,11 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
     return collapsedChapters
   }
 
-  function onChaptersListHover(obj) {
-    if (::show_console_buttons)
-      updateButtons()
+  function onChaptersListFocusChange() {
+    if (!isValid())
+        return
+
+    updateButtons()
   }
 }
 

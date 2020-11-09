@@ -1,17 +1,18 @@
 tdiv {
   id:t = 'panel';
-  width:t = '<<panelWidth>><<^panelWidth>>@defaultNavPanelWidth<</panelWidth>>';
+  width:t = '<<panelWidth>><<^panelWidth>>0.3@sf<</panelWidth>>';
   height:t = 'ph';
   flow:t = 'horizontal';
+  overflow-y:t = 'auto';
   total-input-transparent:t='yes'
 
   tdiv {
-    size:t = 'fw, ph';
+    size:t = 'fw, fh';
     flow:t = 'vertical';
 
     tdiv {
       id:t = 'panel_header';
-      width:t = 'pw';
+      width:t = 'fw';
       height:t = '<<headerHeight>><<^headerHeight>>0.05@sf<</headerHeight>>';
       margin-left:t   = '<<headerOffsetX>>';
       margin-right:t  = '<<headerOffsetX>>';
@@ -39,7 +40,7 @@ tdiv {
           <<#collapseShortcut>>
             btnName:t = '<<collapseShortcut>>';
           <</collapseShortcut>>
-          on_click:t = 'onNavCollapse';
+          on_click:t = 'onCollapse';
           icon {
             rotation:t = '270';
           }
@@ -50,41 +51,34 @@ tdiv {
 
     listboxNoScroll {
       id:t = 'nav_list';
+      class:t = 'navigationItemList';
       size:t = 'pw, fh';
-      class:t = 'navigationItemList'
-      overflow-y:t = 'auto';
-      navigatorShortcuts:t='yes'
-      move-only-hover:t='yes'
-      on_select:t = 'onNavSelect'
-      on_click:t = 'onNavClick'
-      _on_hover:t='updateMoveToPanelButton'
-      _on_unhover:t='updateMoveToPanelButton'
+      on_wrap_up:t = 'onWrapUp';
+      on_wrap_down:t = 'onWrapDown';
+      on_click:t = 'onNavClick';
+      <<#navShortcutGroup>>
+        nav_btn_group:t = '<<navShortcutGroup>>'
+      <</navShortcutGroup>>
     }
-
-    <<#focusShortcut>>
-    tdiv {
-      size:t='pw, 30@sf/@pf'
-      Button_text{
-        id:t = 'moveToLeftPanel'
-        position:t='relative'
-        pos:t='0.5pw-0.5w, 0'
-        visualStyle:t='noBgr'
-        noMargin:t='yes'
-        text:t='#mainmenu/btnMoveToNavPanel'
-        color:t='commonTextColor'
-        display:t='hide'
-        enable:t='no'
-        btnName:t = '<<focusShortcut>>'
-        on_click:t = 'onFocusNavigationList'
-        skip-navigation:t='yes'
-        focus_border {}
-        ButtonImg {}
-      }
-    }
-    <</focusShortcut>>
   }
 
-  chapterSeparator {margin:t='1@blockInterval, 0'}
+  chapterSeparator {}
+}
+
+DummyButton {
+  behavior:t = 'accesskey';
+  on_click:t = 'onNavPrev';
+  <<#prevShortcut>>
+    btnName:t = '<<prevShortcut>>';
+  <</prevShortcut>>
+}
+
+DummyButton {
+  behavior:t = 'accesskey';
+  on_click:t = 'onNavNext';
+  <<#nextShortcut>>
+    btnName:t = '<<nextShortcut>>';
+  <</nextShortcut>>
 }
 
 emptyButton {

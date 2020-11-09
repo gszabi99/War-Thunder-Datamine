@@ -2,6 +2,7 @@ class ::gui_handlers.FavoriteUnlocksListView extends ::gui_handlers.BaseGuiHandl
 {
   wndType = handlerType.CUSTOM
   sceneBlkName = "gui/unlocks/favoriteUnlocksList.blk"
+  isPrimaryFocus = false
   curFavoriteUnlocksBlk = null
 
   listContainer = null

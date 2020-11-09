@@ -1,7 +1,6 @@
 local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
 local time = require("scripts/time.nut")
 local statsd = require("statsd")
-local exitGame = require("scripts/utils/exitGame.nut")
 
 local authDataByTypes = {
   mail = {text = "#mainmenu/2step/confirmMail", img = "#ui/images/two_step_email.tga"}
@@ -16,7 +15,9 @@ class ::gui_handlers.twoStepModal extends ::BaseGuiHandler
   sceneTplName         = "gui/login/twoStepModal"
   loginScene           = null
   continueLogin        = null
-  curTimeTimer         = null
+  currTime             = null
+
+  focusArray = [ "loginbox_code" ]
 
   function getSceneTplView()
   {
@@ -37,20 +38,19 @@ class ::gui_handlers.twoStepModal extends ::BaseGuiHandler
 
   function initScreen()
   {
-    reinitCurTimeTimer()
-    ::select_editbox(getObj("loginbox_code"))
+    setCurrTime(::get_charserver_time_sec())
+    restoreFocus()
   }
 
-  function reinitCurTimeTimer()
+  function setCurrTime(utcTime)
   {
-    curTimeTimer = null
     local timerObj = scene.findObject("currTimeText")
     if (!::check_obj(timerObj))
       return
 
-    local timerCb = @() timerObj.setValue(time.buildTimeStr(::get_charserver_time_sec(), true))
-    curTimeTimer = ::Timer(timerObj, 1, timerCb, this, true)
-    timerCb()
+    currTime = ::Timer(timerObj, 1, function(){
+      timerObj.setValue(time.buildTimeStr(utcTime++, true))
+    }, this, true)
   }
 
   function onSubmit(obj)
@@ -74,13 +74,15 @@ class ::gui_handlers.twoStepModal extends ::BaseGuiHandler
       return
 
     local errorText = "".concat(::loc("mainmenu/2step/wrongCode"), ::loc("ui/colon"))
-    local errorTimerCb = @() txtObj.setValue(::colorize("badTextColor", "".concat(errorText,
-        time.buildTimeStr(::get_charserver_time_sec(), true))))
-    ::Timer(txtObj, 1, errorTimerCb, this, true)
-    errorTimerCb()
+    local utcTime = ::get_charserver_time_sec()
+    ::Timer(txtObj, 1, function(){
+      txtObj.setValue(::colorize("badTextColor", "".concat(errorText,
+        time.buildTimeStr(utcTime++, true))))
+    }, this, true)
 
-    // Need this to make both timers tick synchronously
-    reinitCurTimeTimer()
+    currTime = null
+    setCurrTime(utcTime)
+    restoreFocus()
   }
 
   function proceedAuth(result)
@@ -99,7 +101,7 @@ class ::gui_handlers.twoStepModal extends ::BaseGuiHandler
       default:
         ::error_message_box("yn1/connect_error", result,
         [
-          ["exit", exitGame],
+          ["exit", ::exit_game],
           ["tryAgain", null]
         ], "tryAgain", { cancel_fn = function() {}})
     }

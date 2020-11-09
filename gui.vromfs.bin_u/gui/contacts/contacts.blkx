@@ -3,12 +3,11 @@
     "id": "contacts_backShade",
     "size": "sw, sh",
     "position": "root",
+    "background-color": "@modalShadeColor",
     "class": "button",
     "behaviour": "button",
     "on_click": "goBack",
-    "display": "hide",
-    "blur": [],
-    "blur_foreground": []
+    "display": "hide"
   },
   "frame": {
     "id": "contacts_wnd",
@@ -42,14 +41,15 @@
         "id": "search_edit_box",
         "width": "fw",
         "noMargin": "yes",
+        "mouse-focusable": "yes",
         "edit-hint": "#contacts/search_placeholder",
         "text": "",
         "on_activate": "onSearchEditBoxActivate",
         "on_cancel_edit": "onSearchEditBoxCancelEdit",
+        "on_wrap_up": "onWrapUp",
+        "on_wrap_down": "onWrapDown",
         "on_change_value": "onSearchEditBoxChangeValue",
-        "on_hover": "onContactsFocus",
-        "on_unhover": "onContactsFocus",
-        "on_wrap_down": "selectCurContactGroup"
+        "on_set_focus": "onContactsFocus"
       },
       "Button_text": {
         "pos": "@blockInterval, 0.5ph-0.5h",
@@ -59,9 +59,6 @@
         "noMargin": "yes",
         "tooltip": "#contacts/search",
         "on_click": "onSearchButtonClick",
-        "behaviour": "wrapBroadcast",
-        "navigatorShortcuts": "yes",
-        "on_wrap_down": "selectCurContactGroup",
         "img": {
           "background-image": "#ui/gameuiskin#btn_search.svg"
         }
@@ -87,15 +84,15 @@
           "on_select": "onGroupSelect",
           "on_dbl_click": "onGroupActivate",
           "on_cancel_edit": "onGroupCancel",
-          "on_hover": "onContactsFocus",
-          "on_unhover": "onContactsFocus"
+          "on_wrap_up": "onWrapUp",
+          "on_wrap_down": "onWrapDown",
+          "on_set_focus": "onContactsFocus"
         }
       },
       {
         "tdiv": {
           "id": "contacts_buttons_console",
           "width": "pw",
-          "height": "1@buttonHeight",
           "flow": "vertical",
           "Button_text": {
             "id": "btn_contactsSelect",
@@ -108,7 +105,6 @@
             "display": "hide",
             "enable": "no",
             "inactive": "yes",
-            "skip-navigation": "yes",
             "ButtonImg": []
           }
         }
@@ -121,7 +117,6 @@
             "width": "pw",
             "noMargin": "yes",
             "margin-top": "1@blockInterval",
-            "skip-navigation": "yes",
             "text": "#squad/invite_player",
             "tooltip": "#contacts/invite",
             "on_click": "onSquadInvite",

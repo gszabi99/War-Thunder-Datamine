@@ -2,7 +2,6 @@
 contactItem {
   id:t='<<blockID>>';
   contact_buttons_contact_uid:t='<<contactUID>>';
-  on_click:t='onPlayerRClick'
 
   contactStatusImg {
     id:t='statusImg';
@@ -43,11 +42,12 @@ contactItem {
   title:t='$tooltipObj';
 
   <<#needHoverButtons>>
-  contact_buttons_holder {
+  tdiv {
     id:t='contact_buttons_holder';
     position:t='absolute';
     pos:t='pw - w - @sIco, 0.5ph-0.5h';
     display:t='hide';
+    contact_buttons_holder:t='yes';
 
     Button_text {
       id:t='btn_friendAdd';

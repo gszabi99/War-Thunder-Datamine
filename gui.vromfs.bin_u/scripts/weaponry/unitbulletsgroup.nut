@@ -7,7 +7,7 @@ local { AMMO,
         getAmmoAmount,
         isAmmoFree } = require("scripts/weaponry/ammoInfo.nut")
 
-::BulletGroup <- class
+class BulletGroup
 {
   unit = null
   groupIndex = -1

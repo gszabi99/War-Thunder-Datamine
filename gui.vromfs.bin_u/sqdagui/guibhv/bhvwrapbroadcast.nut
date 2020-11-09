@@ -1,15 +1,32 @@
-local mkWrap = @(notifyId) function(obj, is_down) {
-  if(is_down)
-    obj.sendNotify(notifyId)
-  return ::RETCODE_HALT
-}
-
 class gui_bhv.wrapBroadcast
 {
   eventMask = ::EV_JOYSTICK | ::EV_PROCESS_SHORTCUTS
 
-  onShortcutLeft  = mkWrap("wrap_left")
-  onShortcutRight = mkWrap("wrap_right")
-  onShortcutUp    = mkWrap("wrap_up")
-  onShortcutDown  = mkWrap("wrap_down")
+  function onShortcutLeft(obj, is_down)
+  {
+    if(is_down)
+      obj.sendNotify("wrap_left")
+    return ::RETCODE_HALT
+  }
+
+  function onShortcutRight(obj, is_down)
+  {
+    if(is_down)
+      obj.sendNotify("wrap_right")
+    return ::RETCODE_HALT
+  }
+
+  function onShortcutUp(obj, is_down)
+  {
+    if (is_down)
+      obj.sendNotify("wrap_up")
+    return ::RETCODE_HALT
+  }
+
+  function onShortcutDown(obj, is_down)
+  {
+    if (is_down)
+      obj.sendNotify("wrap_down")
+    return ::RETCODE_HALT
+  }
 }

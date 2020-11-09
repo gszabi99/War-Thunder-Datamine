@@ -403,6 +403,15 @@
         "cannon1_dm": {
           "hp": 15.0
         },
+        "cannon2_dm": {
+          "hp": 15.0
+        },
+        "gun1_dm": {
+          "hp": 15.0
+        },
+        "gun2_dm": {
+          "hp": 15.0
+        },
         "gun3_dm": {
           "hp": 15.0
         },
@@ -424,11 +433,11 @@
       "armor_engine": {
         "engine1_dm": {
           "genericDamageMult": 1.6,
-          "hp": 60.5
+          "hp": 55.3
         },
         "engine2_dm": {
           "genericDamageMult": 1.6,
-          "hp": 60.5
+          "hp": 55.3
         }
       },
       "c_dural10": {
@@ -478,13 +487,17 @@
           "genericDamageMult": 0.3,
           "hp": 43.6
         },
+        "elevator_dm": {
+          "genericDamageMult": 0.3,
+          "hp": 49.4
+        },
         "elevator0_dm": {
           "genericDamageMult": 0.3,
-          "hp": 29.5
+          "hp": 49.4
         },
         "elevator1_dm": {
           "genericDamageMult": 0.3,
-          "hp": 29.5
+          "hp": 49.4
         },
         "fin_dm": {
           "hp": 31.0
@@ -714,6 +727,11 @@
       },
       {
         "part": {
+          "name": "cannon2_dm"
+        }
+      },
+      {
+        "part": {
           "name": "cover10_dm"
         }
       },
@@ -770,7 +788,7 @@
       {
         "part": [
           {
-            "name": "elevator0_dm"
+            "name": "elevator_dm"
           },
           {
             "onHit": {
@@ -802,25 +820,107 @@
       {
         "part": [
           {
-            "name": "elevator1_dm"
+            "name": "elevator0_dm"
           },
           {
             "onHit": {
-              "damage": 50.0,
+              "damage": 10.0,
+              "cut": 0.1
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "cut": 0.4
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
               "cut": 0.7
             }
           },
           {
             "onHit": {
-              "damage": 70.0,
+              "damage": 50.0,
               "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "cut": 1.0,
+              "nothing": 4.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 20.0,
+              "cut": 1.0,
+              "nothing": 2.0
             }
           },
           {
             "onKill": {
               "damage": 30.0,
               "cut": 1.0,
+              "nothing": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "elevator1_dm"
+          },
+          {
+            "onHit": {
+              "damage": 10.0,
+              "cut": 0.1
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "cut": 0.4
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "cut": 1.0,
+              "nothing": 4.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 20.0,
+              "cut": 1.0,
               "nothing": 2.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 1.0,
+              "nothing": 1.0
             }
           },
           {
@@ -1367,6 +1467,16 @@
       },
       {
         "part": {
+          "name": "gun1_dm"
+        }
+      },
+      {
+        "part": {
+          "name": "gun2_dm"
+        }
+      },
+      {
+        "part": {
           "name": "gun3_dm"
         }
       },
@@ -1492,8 +1602,8 @@
         "part": {
           "name": "spar1_l_dm",
           "onKill": {
-            "nothing": 2.0,
-            "cut": 4.0
+            "nothing": 0.0,
+            "cut": 1.0
           }
         }
       },
@@ -1501,8 +1611,8 @@
         "part": {
           "name": "spar1_r_dm",
           "onKill": {
-            "nothing": 2.0,
-            "cut": 4.0
+            "nothing": 0.0,
+            "cut": 1.0
           }
         }
       },
@@ -1510,8 +1620,8 @@
         "part": {
           "name": "spar2_l_dm",
           "onKill": {
-            "nothing": 2.0,
-            "cut": 4.0
+            "nothing": 0.0,
+            "cut": 1.0
           }
         }
       },
@@ -1519,8 +1629,8 @@
         "part": {
           "name": "spar2_r_dm",
           "onKill": {
-            "nothing": 2.0,
-            "cut": 4.0
+            "nothing": 0.0,
+            "cut": 1.0
           }
         }
       },

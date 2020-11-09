@@ -13,14 +13,12 @@ class ::gui_handlers.ChooseSlotbarPreset extends ::gui_handlers.BaseGuiHandlerWT
   activePreset = null
   chosenValue = -1
 
-  listIdxPID = ::dagui_propid.add_name_id("listIdx")
-  hoveredValue = -1
-
   function initScreen()
   {
     if (ownerWeak)
       ownerWeak = ownerWeak.weakref()
     reinit(null, true)
+    initFocusArray()
   }
 
   function reinit(showPreset = null, verbose = false)
@@ -31,7 +29,6 @@ class ::gui_handlers.ChooseSlotbarPreset extends ::gui_handlers.BaseGuiHandlerWT
     presets = ::slotbarPresets.list()
     activePreset = ::slotbarPresets.getCurrent()
     chosenValue = showPreset != null ? showPreset : activePreset != null ? activePreset : -1
-    hoveredValue = -1
 
     local objPresets = scene.findObject("items_list")
     if (!::checkObj(objPresets))
@@ -49,16 +46,17 @@ class ::gui_handlers.ChooseSlotbarPreset extends ::gui_handlers.BaseGuiHandlerWT
         id = "preset" + idx
         isSelected = idx == chosenValue
         itemText = title
-        onHoverChangeFunc = ::show_console_buttons ? "onPresetHover" : null
       })
     }
 
     local data = ::handyman.renderCached("gui/missions/missionBoxItemsList", view)
     guiScene.replaceContentFromText(objPresets, data, data.len(), this)
-    for (local i = 0; i < objPresets.childrenCount(); i++)
-      objPresets.getChild(i).setIntProp(listIdxPID, i)
     onItemSelect(objPresets)
-    guiScene.performDelayed(this, restoreFocus)
+  }
+
+  function getMainFocusObj()
+  {
+    return scene.findObject("items_list")
   }
 
   function updateDescription()
@@ -70,7 +68,9 @@ class ::gui_handlers.ChooseSlotbarPreset extends ::gui_handlers.BaseGuiHandlerWT
     if (chosenValue in presets)
     {
       local preset = presets[chosenValue]
+      local hasFeatureTanks = ::has_feature("Tanks")
       local perRow = 3
+      local cells = ::ceil(preset.units.len() / perRow.tofloat()) * perRow
       local unitItems = []
 
       local presetBattleRatingText = ""
@@ -95,41 +95,38 @@ class ::gui_handlers.ChooseSlotbarPreset extends ::gui_handlers.BaseGuiHandlerWT
       local presetGameMode = gameMode != null ? ::loc("options/mp_mode") +
                                                 ::loc("ui/colon") + gameMode.text + "\n" : ""
 
-      local header = "".concat(::g_string.stripTags(presetBattleRatingText),
-        ::g_string.stripTags(presetGameMode),
-        ::loc("shop/slotbarPresets/contents"),
-        ::loc("ui/colon"))
-      local markupList = ["textarea{ text:t='{0}' padding:t='0, 8*@sf/@pf_outdated' } ".subst(header)]
-
-      local unitsMarkupList = []
-      local filteredUnits = preset.units.filter(@(u) u != "")
-      foreach(idx, unitId in filteredUnits)
+      local data = ::format("textarea{ text:t='%s' padding:t='0, 8*@sf/@pf_outdated' } ",
+        ::g_string.stripTags(presetBattleRatingText) +
+        ::g_string.stripTags(presetGameMode) +
+        ::loc("shop/slotbarPresets/contents") + ::loc("ui/colon"))
+      data += "table{ class:t='slotbarPresetsTable' "
+      for (local r = 0; r < cells / perRow; r++)
       {
-        local unit = ::getAircraftByName(unitId)
-        if (!unit)
-          continue
-        local params = {
-          hasActions = false
-          status = unit.unitType.isAvailable() ? "owned" : "locked"
-          showBR = ::has_feature("SlotbarShowBattleRating")
-          getEdiffFunc = getCurrentEdiff.bindenv(this)
-          position = "absolute"
-          posX = idx % perRow
-          posY = idx / perRow
+        data += "tr{ "
+        for (local c = 0; c < perRow; c++)
+        {
+          local idx = r * perRow + c
+          local unitId = idx < preset.units.len() ? preset.units[idx] : ""
+          local unit = unitId == "" ? null : ::getAircraftByName(unitId)
+          local params = {
+            hasActions = false
+            status = (hasFeatureTanks || !::getAircraftByName(unitId)?.isTank()) ? "owned" : "locked"
+            showBR = ::has_feature("SlotbarShowBattleRating")
+            getEdiffFunc = getCurrentEdiff.bindenv(this)
+          }
+          data += unit ? ::build_aircraft_item(unitId, unit, params) : ""
+          if (unit)
+            unitItems.append({ id = unitId, unit = unit, params = params })
         }
-        unitsMarkupList.append(::build_aircraft_item(unitId, unit, params))
-        unitItems.append({ id = unitId, unit = unit, params = params })
+        data += "}"
       }
-      markupList.append(
-        "slotbarPresetsTable { size:t='{0}@slot_width, {1}@slot_height + {1}*2@slot_interval'; {2} }"
-          .subst(perRow, ::ceil(filteredUnits.len().tofloat() / perRow).tointeger(), " ".join(unitsMarkupList)))
+      data += "}"
 
       if (!preset.enabled)
-        markupList.append("textarea{ text:t='{0}' padding:t='0, 8*@sf/@pf_outdated' } "
-          .subst(::colorize("badTextColor", ::g_string.stripTags(::loc("shop/slotbarPresets/forbidden/unitTypes")))))
+        data += ::format("textarea{ text:t='%s' padding:t='0, 8*@sf/@pf_outdated' } ",
+          ::colorize("badTextColor", ::g_string.stripTags(::loc("shop/slotbarPresets/forbidden/unitTypes"))))
 
-      local markup = "\n".join(markupList)
-      guiScene.replaceContentFromText(objDesc, markup, markup.len(), this)
+      guiScene.replaceContentFromText(objDesc, data, data.len(), this)
       foreach (unitItem in unitItems)
         ::fill_unit_item_timers(objDesc.findObject(unitItem.id), unitItem.unit, unitItem.params)
     }
@@ -148,29 +145,8 @@ class ::gui_handlers.ChooseSlotbarPreset extends ::gui_handlers.BaseGuiHandlerWT
     return slotbar ? slotbar.getCurrentEdiff() : ::get_current_ediff()
   }
 
-  function restoreFocus()
-  {
-    ::move_mouse_on_child_by_value(scene.findObject("items_list"))
-  }
-
   function updateButtons()
   {
-    if (::show_console_buttons)
-    {
-      local isAnyPresetHovered = hoveredValue != -1
-      local isShowContextActions = ::is_mouse_last_time_used() || (isAnyPresetHovered && hoveredValue == chosenValue)
-      ::showBtnTable(scene, {
-        btn_preset_rename   = isShowContextActions
-        btn_preset_delete   = isShowContextActions
-        btn_preset_load     = isShowContextActions
-        btn_preset_move_up  = isShowContextActions
-        btn_preset_move_dn  = isShowContextActions
-        btn_preset_select   = !isShowContextActions && isAnyPresetHovered
-      })
-      if (!isShowContextActions)
-        return
-    }
-
     local isAnyPresetSelected = chosenValue != -1
     local isCurrentPresetSelected = chosenValue == activePreset
     local isNonCurrentPresetSelected = isAnyPresetSelected && !isCurrentPresetSelected
@@ -263,28 +239,8 @@ class ::gui_handlers.ChooseSlotbarPreset extends ::gui_handlers.BaseGuiHandlerWT
     ::slotbarPresets.rename(chosenValue)
   }
 
-  function onBtnPresetSelect(obj)
-  {
-    if(hoveredValue != -1)
-      scene.findObject("items_list")?.setValue(hoveredValue)
-  }
-
-  function onPresetHover(obj)
-  {
-    if (!::show_console_buttons)
-      return
-    local isHover = obj.isHovered()
-    local idx = obj.getIntProp(listIdxPID, -1)
-    if (isHover == (hoveredValue == idx))
-      return
-    hoveredValue = isHover ? idx : -1
-    updateButtons()
-  }
-
   function onStart(obj)
   {
-    if (::show_console_buttons)
-      return
     onBtnPresetLoad(obj)
   }
 
@@ -299,10 +255,4 @@ class ::gui_handlers.ChooseSlotbarPreset extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function onListItemsFocusChange(obj) {}
-
-  function onEventModalWndDestroy(params)
-  {
-    if (isSceneActiveNoModals())
-      guiScene.performDelayed(this, restoreFocus)
-  }
 }

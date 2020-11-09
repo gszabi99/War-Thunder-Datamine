@@ -1084,10 +1084,8 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 10.0,
-        "fireProtectionHp": 10.0,
-        "createSecondaryShatters": false,
-        "fireParamsPreset": "fuel_internal",
+        "armorThrough": 12.0,
+        "fireProtectionHp": 15.0,
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -1109,9 +1107,8 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 10.0,
-        "fireProtectionHp": 10.0,
-        "createSecondaryShatters": false,
+        "armorThrough": 12.0,
+        "fireProtectionHp": 15.0,
         "fireParamsPreset": "fuel_exterior",
         "fuel_tank_exterior_r_01_dm": [],
         "fuel_tank_exterior_r_02_dm": [],
@@ -2842,15 +2839,6 @@
       },
       {
         "event": {
-          "name": "fuel_internal",
-          "fx": {
-            "name": "tank_engine_fire",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -2872,7 +2860,7 @@
     "cockpit": {
       "zoomOutFov": 9.2,
       "zoomInFov": 4.6,
-      "sightFov": 4.5,
+      "sightFov": 6.5,
       "sightName": "tzf_1a",
       "openedCockpit": true,
       "headPos": [0.0,3.5,-6.5],

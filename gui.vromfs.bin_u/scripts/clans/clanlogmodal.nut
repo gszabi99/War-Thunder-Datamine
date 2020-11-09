@@ -1,4 +1,4 @@
-local playerContextMenu = require("scripts/user/playerContextMenu.nut")
+local playerContextMenu = ::require("scripts/user/playerContextMenu.nut")
 
 ::CLAN_LOG_ROWS_IN_PAGE <- 10
 ::show_clan_log <- function show_clan_log(clanId)
@@ -20,6 +20,7 @@ class ::gui_handlers.clanLogModal extends ::gui_handlers.BaseGuiHandlerWT
 
   clanId        = null
   requestMarker = null
+  currentFocusItem = 5
   selectedIndex = 0
 
   function initScreen()
@@ -28,6 +29,8 @@ class ::gui_handlers.clanLogModal extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(logListObj))
       return goBack()
 
+    initFocusArray()
+    restoreFocus()
     fetchLogPage()
   }
 
@@ -81,7 +84,8 @@ class ::gui_handlers.clanLogModal extends ::gui_handlers.BaseGuiHandlerWT
       selectedIndex = logListObj.childrenCount() - 1
 
     logListObj.setValue(selectedIndex)
-    ::move_mouse_on_child(logListObj, selectedIndex)
+    logListObj.select()
+    logListObj.getChild(selectedIndex).scrollToView()
   }
 
   function onUserLinkRClick(obj, itype, link) {
@@ -132,5 +136,10 @@ class ::gui_handlers.clanLogModal extends ::gui_handlers.BaseGuiHandlerWT
     local selectedObj = obj.getChild(index)
     if (::check_obj(selectedObj) && selectedObj?.id == loadButtonId)
       fetchLogPage()
+  }
+
+  function getMainFocusObj()
+  {
+    return logListObj
   }
 }

@@ -1,6 +1,6 @@
-local enums = require("sqStdlibs/helpers/enums.nut")
+local enums = ::require("sqStdlibs/helpers/enums.nut")
 local stdMath = require("std/math.nut")
-local optionsMeasureUnits = require("scripts/options/optionsMeasureUnits.nut")
+local optionsMeasureUnits = ::require("scripts/options/optionsMeasureUnits.nut")
 
 /**
  * Measure type is a useful abstraction above

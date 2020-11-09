@@ -45,20 +45,17 @@ class gui_bhv.ControlsInput
 
   function checkActive(obj)
   {
-    local isActive = ::is_app_active() && !::steam_is_overlay_active()
-    if (!isActive)
+    if (!::is_app_active() || ::steam_is_overlay_active())
     {
-      local hasChanges = false
       for (local i = 0; i < 3; i++)
       {
-        hasChanges = hasChanges || obj["device" + i] != "" || obj["button" + i] != ""
         obj["device" + i] = ""
         obj["button" + i] = ""
       }
-      if (hasChanges)
-        obj.sendNotify("change_value")
+      obj.sendNotify("change_value")
+      return false
     }
-    return isActive
+    return true
   }
 
   function setMouseButton(obj, button, is_up)
@@ -141,11 +138,6 @@ class gui_bhv.ControlsInput
   {
     if (!checkActive(obj))
       return ::RETCODE_HALT
-
-    // Gamepad START btn is reserved for toggling the input listening mode off/on.
-    if (btn_idx == 4 && ::is_xinput_device())
-      return ::RETCODE_NOTHING
-
     if (!is_up)
     {
       local ignore = (btn_idx >= joy.getButtonCount()) //<-- ignore PoV hats for now

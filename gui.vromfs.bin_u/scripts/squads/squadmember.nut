@@ -1,4 +1,4 @@
-::SquadMember <- class
+class SquadMember
 {
   uid = ""
   name = ""
@@ -6,7 +6,6 @@
   country = ""
   clanTag = ""
   pilotIcon = "cardicon_default"
-  platform = ""
   online = false
   selAirs = null
   selSlots = null
@@ -33,7 +32,7 @@
   isNewApplication = false
   isInvitedToSquadChat = false
 
-  updatedProperties = ["name", "rank", "country", "clanTag", "pilotIcon", "platform", "selAirs",
+  updatedProperties = ["name", "rank", "country", "clanTag", "pilotIcon", "selAirs",
                        "selSlots", "crewAirs", "brokenAirs", "missedPkg", "wwOperations",
                        "isReady", "isCrewsReady", "canPlayWorldWar", "isWorldWarAvailable", "cyberCafeId",
                        "unallowedEventsENames", "sessionRoomId", "crossplay", "bannedMissions", "dislikedMissions",

@@ -16,6 +16,8 @@ class ::gui_handlers.fxOptions extends ::BaseGuiHandler
 
   settings = null
 
+  focusArray = ["options_list"]
+
   function getSceneTplView()
   {
     local view = {
@@ -51,6 +53,8 @@ class ::gui_handlers.fxOptions extends ::BaseGuiHandler
 
     foreach (s in settings)
       onSettingChanged(scene.findObject(s.id))
+
+    restoreFocus()
   }
 
   function onSettingChanged(obj)

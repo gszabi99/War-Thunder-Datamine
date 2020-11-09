@@ -25,13 +25,15 @@ local function processMemberList(members) {
     local isMe = ::is_my_userid(m.userId)
     if (isPS4PlayerName(m.name)) {
       local pinfo = ::SessionLobby.getMemberPlayerInfo(m.userId)
-      local player = { // reflects PSN structure
-        playerId = m.memberId
-        teamId = pinfo.team
-        accountId = isMe ? ::ps4_get_account_id() : null
-        playerType = "PSN_PLAYER"
+      if (pinfo?.team != null) { // skip those, whose side is not yet known - can't send'em to PSN
+        local player = { // reflects PSN structure
+          playerId = m.memberId
+          teamId = pinfo.team
+          accountId = isMe ? ::ps4_get_account_id() : null
+          playerType = "PSN_PLAYER"
+        }
+        players[m.userId.tostring()] <- player
       }
-      players[m.userId.tostring()] <- player
       minMemberId = (minMemberId) == null ? m.memberId : ::min(m.memberId, minMemberId)
     }
     if (isMe)
@@ -41,21 +43,21 @@ local function processMemberList(members) {
   return { players, isOwner }
 }
 
+local function addPlayerToMatch(uid) {
+  local player = match.players[uid]
+  ::dagor.debug($"[PSMT] adding {uid}/{player.playerId} to {player.teamId} for {match.id}")
+  psn.send(psn.matches.join(match.id, player))
+}
+
 local function onReceivedExternalIds(data) {
   if (match.id == null)
     return
 
   local uid = data.request.uid
-  ::dagor.debug($"[PSMT] got ext id for {uid}")
-
-  if (!(uid in match.players)) {
-    ::dagor.debug($"[PSMT] no such uid in math.players")
-    return
+  if (uid in match.players) {
+    match.players[uid].accountId = data.externalIds.psnId
+    addPlayerToMatch(uid)
   }
-
-  ::dagor.debug($"[PSMT] adding {match.players[uid].accountId} to team {match.players[uid].teamId} for {match.id}")
-  match.players[uid].accountId = data.externalIds.psnId
-  psn.send(psn.matches.join(match.id, match.players[uid]))
 }
 
 local function updateMatchData() {
@@ -67,14 +69,15 @@ local function updateMatchData() {
   local lostPlayers = match.players.filter(@(v, k) !(k in updated.players))
   match.players = updated.players
 
-  foreach (uid, player in newPlayers) { // TODO: Get account ids
-    if (player.accountId != null)
-      psn.send(psn.matches.join(match.id, player))
-    else
+  foreach (uid, player in newPlayers) {
+    if (player.accountId == null)
       reqPlayerExternalIDsByUserId(uid)
+    else
+      addPlayerToMatch(uid)
   }
 
   foreach (p in lostPlayers) {
+    ::dagor.debug($"[PSMT] member {p.playerId} left {match.id}/{p.teamId}")
     psn.send(psn.matches.leave(match.id, { playerId = p.playerId, reason = psn.matches.LeaveReason.QUIT}))
   }
 }
@@ -82,9 +85,12 @@ local function updateMatchData() {
 
 local function tryCreateMatch(info) {
   match.props.activityId = getActivityByGameMode(info?.public?.game_mode_name)
+  if (match.props.activityId == null)
+    return
+
   local updated = processMemberList(info.members)
   ::dagor.debug($"[PSMT] try create match for {match.props.activityId}/{info?.public?.game_mode_name} as {updated.isOwner}")
-  if (updated.isOwner && match.props.activityId != null && match.id == null) {
+  if (updated.isOwner && match.id == null) {
     psn.send(psn.matches.create(match.props), function(r, e) {
         match.isOwner = true
         match.id = r?.matchId
@@ -106,6 +112,7 @@ local function leaveMatch(reason=psn.matches.LeaveReason.FINISHED) {
   psn.send(psn.matches.leave(match.id, player))
   match.lastId = match.id
   match.id = null
+  match.players = {}
 }
 
 local function updateMatchStatus(eventData) {
@@ -127,6 +134,7 @@ local function enableMatchesReporting() {
   ::dagor.debug("[PSMT] enabling matches reporting")
   ::add_event_listener("RoomJoined", tryCreateMatch)
   ::add_event_listener("LobbyMembersChanged", @(p) updateMatchData())
+  ::add_event_listener("LobbyMemberInfoChanged", @(p) updateMatchData())
   ::add_event_listener("LobbyStatusChange", updateMatchStatus)
   ::add_event_listener("LobbyIsInRoomChanged", onIsInRoomChanged)
   ::add_event_listener("PlayerQuitMission", @(p) leaveMatch(psn.matches.LeaveReason.QUIT))

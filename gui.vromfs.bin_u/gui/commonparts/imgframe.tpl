@@ -17,12 +17,6 @@
   }
   <</backlight>>
 
-  <<#onClick>>
-  behavior:t='button'
-  on_click:t='<<onClick>>'
-  focusBtnName:t='A'
-  <</onClick>>
-
   <<#focusBorder>>
   focus_border {}
   <</focusBorder>>

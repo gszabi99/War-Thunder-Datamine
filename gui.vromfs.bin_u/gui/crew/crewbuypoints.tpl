@@ -5,8 +5,9 @@ table {
   position:t='relative'
 
   class:t='crewTable'
-  selfFocusBorder:t='yes'
-  behavior:t = 'PosNavigator'
+  behavior:t = 'OptionsNavigator'
+  cur_row:t='0'
+  cur_col:t='0'
 
   <<#rows>>
   tr {
@@ -46,7 +47,7 @@ table {
         pos:t='0, 50%ph-50%h';
         position:t='relative';
         redDisabled:t='yes'
-        showOn:t='hoverOrPcSelect'
+        showOn = "hoverOrSelect"
         noMargin:t='yes'
 
         text:t='#mainmenu/btnBuy'

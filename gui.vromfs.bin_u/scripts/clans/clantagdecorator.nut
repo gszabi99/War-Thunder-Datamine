@@ -70,7 +70,7 @@
 }
 
 
-::ClanTagDecorator <- class
+class ClanTagDecorator
 {
   id = null
   start = null

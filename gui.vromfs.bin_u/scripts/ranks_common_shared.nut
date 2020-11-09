@@ -8,7 +8,6 @@ local format = require("string").format
 ::ds_unit_type_names <- {
   [::ES_UNIT_TYPE_AIRCRAFT] = DS_UT_AIRCRAFT,
   [::ES_UNIT_TYPE_TANK] = DS_UT_TANK,
-  [::ES_UNIT_TYPE_BOAT] = DS_UT_SHIP,
   [::ES_UNIT_TYPE_SHIP] = DS_UT_SHIP,
   [::ES_UNIT_TYPE_HELICOPTER] = DS_UT_AIRCRAFT
 }
@@ -391,15 +390,15 @@ global const EDIFF_SHIFT = 3
     {
       local path = unitClass ? (typeToPath[unitType] + "/"+unitClass+".blk") : ""
       if (!dd_file_exist(path))
-        err($"Unknown unit_class {unitClass} of unit {unit?.name}")
+        err("Unknown unit_class " + (unitClass ?? "null") + " of unit " + (unit?.name ?? "null"))
       else
       {
         local preset = unit?.weapons
         if (preset != null && preset != "")
         {
-          local unitBlk = ::blkFromPath(path)
+          local unitBlk = ::DataBlock(path)
           if (unitBlk?.weapon_presets == null)
-            err($"No weapon presets in {path}")
+            err("No weapon presets in "+path);
           else
           {
             local presets = unitBlk.weapon_presets % "preset"
@@ -413,10 +412,10 @@ global const EDIFF_SHIFT = 3
                   break;
                 }
                 else
-                  err($"Not found: {p?.blk}")
+                  err("Not found: " + (p?.blk ?? "null"))
               }
             if (!found)
-              err($"Unknown weapon preset {preset} in unit {unit?.name}")
+              err("Unknown weapon preset " + preset + " in unit " + (unit?.name ?? "null"))
           }
         }
       }

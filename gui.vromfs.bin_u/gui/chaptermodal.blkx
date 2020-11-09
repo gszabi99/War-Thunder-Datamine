@@ -1,8 +1,7 @@
 {
   "root": {
     "type": "big",
-    "blur": [],
-    "blur_foreground": [],
+    "background-color": "@modalShadeColor",
     "frame": {
       "id": "wnd_frame",
       "width": "@srw",
@@ -11,6 +10,7 @@
       "position": "absolute",
       "largeNavBarHeight": "yes",
       "class": "wndNav",
+      "type": "big",
       "frame_header": {
         "HorizontalListBox": {
           "id": "chapter_top_list",
@@ -75,12 +75,12 @@
                   "id": "items_list",
                   "size": "pw, fh",
                   "flow": "vertical",
-                  "move-only-hover": "yes",
-                  "navigatorShortcuts": "yes",
+                  "focus": "yes",
                   "on_select": "onItemSelect",
                   "_on_dbl_click": "onStart",
-                  "on_hover": "onListItemsFocusChange",
-                  "on_unhover": "onListItemsFocusChange"
+                  "on_wrap_up": "onWrapUp",
+                  "on_wrap_down": "onWrapDown",
+                  "on_set_focus": "onListItemsFocusChange"
                 },
                 "textAreaCentered": {
                   "id": "items_list_msg",
@@ -101,7 +101,7 @@
             }
           ],
           "chapterSeparator": {
-            "margin": "1@blockInterval, 0"
+            "margin": "0.01*@scrn_tgt, 0"
           },
           "tdiv": [
             {
@@ -567,6 +567,27 @@
                             "gcButtonsInterval": "yes"
                           },
                           {
+                            "behaviour": "wrapNavigator"
+                          },
+                          {
+                            "navigatorShortcuts": "yes"
+                          },
+                          {
+                            "childsActivate": "yes"
+                          },
+                          {
+                            "on_wrap_up": "onWrapUp"
+                          },
+                          {
+                            "on_wrap_down": "onWrapDown"
+                          },
+                          {
+                            "on_wrap_left": "onTopGCPanelLeft"
+                          },
+                          {
+                            "on_wrap_right": "onTopGCPanelRight"
+                          },
+                          {
                             "Button_text": {
                               "id": "gc_clanTag",
                               "tooltip": "#mainmenu/btnClanCard",
@@ -657,6 +678,27 @@
                         },
                         {
                           "gcButtonsInterval": "yes"
+                        },
+                        {
+                          "behaviour": "wrapNavigator"
+                        },
+                        {
+                          "navigatorShortcuts": "yes"
+                        },
+                        {
+                          "childsActivate": "yes"
+                        },
+                        {
+                          "on_wrap_up": "onWrapUp"
+                        },
+                        {
+                          "on_wrap_down": "onWrapDown"
+                        },
+                        {
+                          "on_wrap_left": "onTopGCPanelLeft"
+                        },
+                        {
+                          "on_wrap_right": "onTopGCPanelRight"
                         },
                         {
                           "Button_text": [
@@ -872,6 +914,9 @@
               "shadowSafeArea": []
             },
             {
+              "line": []
+            },
+            {
               "tdiv": {
                 "size": "pw, 0.02@sf",
                 "pos": "0, ph",
@@ -912,7 +957,7 @@
                       "id": "slotbar-presetsPlace",
                       "size": "pw, ph",
                       "position": "absolute",
-                      "display": "hide"
+                      "pos": "1@dp, 0"
                     }
                   }
                 },
@@ -969,7 +1014,14 @@
                     "position": "relative",
                     "top": "0.5(ph-h)",
                     "margin-right": "2@buttonTextPadding",
-                    "class": "header"
+                    "class": "header",
+                    "behaviour": "wrapNavigator",
+                    "navigatorShortcuts": "yes",
+                    "childsActivate": "yes",
+                    "on_wrap_up": "onWrapUp",
+                    "on_wrap_down": "onWrapDown",
+                    "on_wrap_left": "onWrapLeft",
+                    "on_wrap_right": "onWrapRight"
                   }
                 },
                 {
@@ -985,6 +1037,27 @@
                     },
                     {
                       "class": "header"
+                    },
+                    {
+                      "behaviour": "wrapNavigator"
+                    },
+                    {
+                      "navigatorShortcuts": "yes"
+                    },
+                    {
+                      "childsActivate": "yes"
+                    },
+                    {
+                      "on_wrap_up": "onWrapUp"
+                    },
+                    {
+                      "on_wrap_down": "onWrapDown"
+                    },
+                    {
+                      "on_wrap_left": "onBottomGCPanelLeft"
+                    },
+                    {
+                      "on_wrap_right": "onBottomGCPanelRight"
                     },
                     {
                       "Button_text": [

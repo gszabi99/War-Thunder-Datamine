@@ -1,8 +1,3 @@
-<<#position>>
-position:t='<<position>>'
-pos:t='<<posX>>w, <<posY>>h'
-<</position>>
-
 <<#isInTable>>
 id:t='<<slotId>>'
 
@@ -12,7 +7,6 @@ inactive:t='yes'
 
 <<#isSlotbarItem>>
 slotbarCurAir {}
-chosen:t='no'
 <</isSlotbarItem>>
 <</isInTable>>
 
@@ -30,23 +24,7 @@ shopItem {
   <<^hasHoverMenu>>refuseOpenHoverMenu:t='yes'<</hasHoverMenu>>
   <<#hasHoverMenu>>on_hover:t='onUnitHover'<</hasHoverMenu>>
 
-  <<@extraInfoBlock>>
-
-  <<#showInService>>
-  shopInServiceImg {
-    <<#isMounted>>
-    mounted:t='yes'
-    <</isMounted>>
-    shopInServiceImgBg {}
-    icon {}
-  }
-  <</showInService>>
-
-  slotPlate {
-    middleBg { pattern {} }
-    topLine {}
-    bottomShade {}
-  }
+  bgPlate {}
 
   itemWinkBlock {
     buttonWink {
@@ -55,6 +33,16 @@ shopItem {
   }
 
   hoverHighlight {}
+
+  pattern {
+    <<#premiumPatternType>>
+    type:t='premium'
+    <</premiumPatternType>>
+
+    <<^premiumPatternType>>
+    type:t='bright_texture'
+    <</premiumPatternType>>
+  }
 
   shopStat:t='<<shopStatus>>'
   unitRarity:t='<<unitRarity>>'
@@ -68,7 +56,7 @@ shopItem {
   <</isBroken>>
 
   <<#isPkgDev>>
-  isPkgDev:t='yes'
+  shopAirImg { foreground-image:t='#ui/gameuiskin#unit_under_construction' }
   <</isPkgDev>>
 
   shopAirImg {
@@ -90,6 +78,7 @@ shopItem {
   discount_notification {
     id:t='<<discountId>>'
     type:t='box_down'
+    place:t='unit'
     text:t=''
 
     <<#showDiscount>>
@@ -179,14 +168,16 @@ shopItem {
     }
   }
 
-  <<@itemButtons>>
-
-  <<#bonusId>>
-  bonus {
-    id:t='<<bonusId>>-bonus'
-    text:t=''
+  <<#showInService>>
+  shopInServiceImg {
+    <<#isMounted>>
+    mounted:t='yes'
+    <</isMounted>>
+    icon {}
   }
-  <</bonusId>>
+  <</showInService>>
+
+  <<@itemButtons>>
 
   tooltipObj {
     tooltipId:t='<<tooltipId>>'
@@ -195,7 +186,7 @@ shopItem {
     display:t='hide'
   }
 
-  tooltip-float:t='horizontal'
+  tooltip-float:t='horisontal'
   title:t='$tooltipObj'
 
   focus_border {}

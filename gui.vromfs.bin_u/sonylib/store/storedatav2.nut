@@ -5,7 +5,11 @@ local u = require("sqStdLibs/helpers/u.nut")
 
 local { fillBlock } = require("sqStdlibs/helpers/datablockUtils.nut")
 
-local SERVICE_LABEL = ::get_platform() == "ps5"? 1 : 0
+local SERVICE_LABEL = 0
+//
+
+
+
 local STORE_REQUEST_ADDITIONAL_FLAGS = {
   useCurrencySymbol = "false"
   useFree = "true"

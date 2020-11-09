@@ -191,7 +191,7 @@ const OVERRIDE_COUNTRY_ID = "override_country"
         //creating empty unit class/dead icon and weapons icons, to be filled in update func
         local images = [ "img { id:t='unit-ico'; size:t='@tableIcoSize,@tableIcoSize'; background-svg-size:t='@tableIcoSize, @tableIcoSize'; background-image:t=''; background-repeat:t='aspect-ratio'; shopItemType:t=''; }" ]
         foreach(id, weap in ::getWeaponTypeIcoByWeapon("", ""))
-          images.insert(0, ::format("img { id:t='%s-ico'; size:t='0.375@tableIcoSize,@tableIcoSize'; background-svg-size:t='0.375@tableIcoSize,@tableIcoSize'; background-image:t=''; margin:t='2@dp, 0' }", id))
+          images.insert(0, ::format("img { id:t='%s-ico'; size:t='0.375@tableIcoSize,@tableIcoSize'; background-image:t=''; margin:t='2@dp, 0' }", id))
         if (isRowInvert)
           images.reverse()
         local cellWidth = markup?[hdr[j]]?.width ?? "@tableIcoSize, @tableIcoSize"
@@ -529,7 +529,7 @@ const OVERRIDE_COUNTRY_ID = "override_country"
           if (isInFlight && !isInGame)
             unitIco = ::g_player_state.HAS_LEAVED_GAME.getIcon(player)
           else if (player?.isDead)
-            unitIco = (player?.spectator) ? "#ui/gameuiskin#player_spectator.svg" : "#ui/gameuiskin#dead.svg"
+            unitIco = (player?.spectator) ? "#ui/gameuiskin#player_spectator" : "#ui/gameuiskin#dead"
           else if (showAirIcons && ("aircraftName" in player))
           {
             unitId = player.aircraftName
@@ -698,6 +698,33 @@ const OVERRIDE_COUNTRY_ID = "override_country"
   return text
 }
 
+::getPlayerStateTextId <- function getPlayerStateTextId(playerInfo)
+{
+  if (::getTblValue("isBot", playerInfo, false))
+    return "bot_ready"
+
+  switch (::getTblValue("state", playerInfo, ""))
+  {
+    case ::PLAYER_NOT_EXISTS:
+    case ::PLAYER_HAS_LEAVED_GAME:
+    case ::PLAYER_IN_LOBBY_NOT_READY:
+    case ::PLAYER_IN_LOADING:
+      return "player_not_ready"
+    case ::PLAYER_IN_STATISTICS_BEFORE_LOBBY:
+      return "player_stats"
+    case ::PLAYER_IN_LOBBY_READY:
+    case ::PLAYER_READY_TO_START:
+      return "player_ready"
+    case ::PLAYER_IN_FLIGHT:
+    case ::PLAYER_IN_RESPAWN:
+      return "player_in_game"
+  }
+
+  if (::getTblValue("clipSize", playerInfo, 0) > 0)
+    return "movie_unlocked"
+  return ""
+}
+
 ::getUnitClassIco <- function getUnitClassIco(unit)
 {
   if (::u.isString(unit))
@@ -726,10 +753,10 @@ const OVERRIDE_COUNTRY_ID = "override_country"
     {
       local tankRockets = tankWeapons && (w?[WEAPON_TAG.ANTI_TANK_ROCKET] ||
         w?[WEAPON_TAG.ANTI_SHIP_ROCKET])
-      config.bomb = w.bomb? "#ui/gameuiskin#weap_bomb.svg" : ""
-      config.rocket = w.rocket || tankRockets? "#ui/gameuiskin#weap_missile.svg" : ""
-      config.torpedo = w.torpedo? "#ui/gameuiskin#weap_torpedo.svg" : ""
-      config.additionalGuns = w.additionalGuns ? "#ui/gameuiskin#weap_pod.svg" : ""
+      config.bomb = w.bomb? "#ui/gameuiskin#weap_bomb" : ""
+      config.rocket = w.rocket || tankRockets? "#ui/gameuiskin#weap_missile" : ""
+      config.torpedo = w.torpedo? "#ui/gameuiskin#weap_torpedo" : ""
+      config.additionalGuns = w.additionalGuns ? "#ui/gameuiskin#weap_pod" : ""
       break
     }
   return config
@@ -1055,8 +1082,8 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
     if (needPlayersTbl)
     {
       createStats()
-      scene.findObject("table_kills_team1").setValue(-1)
-      scene.findObject("table_kills_team2").setValue(-1)
+      ::gui_bhv.OptionsNavigator.clearSelect(scene.findObject("table_kills_team1"))
+      ::gui_bhv.OptionsNavigator.clearSelect(scene.findObject("table_kills_team2"))
     }
 
     updateCountryFlags()
@@ -1156,6 +1183,7 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
 
       local data = ::build_mp_table(tbl, markupData, tblData, num_rows)
       guiScene.replaceContentFromText(objTbl, data, data.len(), this)
+      objTbl.num_rows = tbl.len()
     }
   }
 
@@ -1256,6 +1284,7 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
                      }
       ::set_mp_table(objTbl, tbl, params)
       ::update_team_css_label(objTbl, getLocalTeam())
+      objTbl.num_rows = tbl.len()
 
       if (friendlyTeam > 0 && team > 0)
         objTbl["team"] = (isTeamplay && friendlyTeam == team)? "blue" : "red"
@@ -1515,8 +1544,8 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
     }
     else
     {
-      scene.findObject("table_kills_team1").setValue(-1)
-      scene.findObject("table_kills_team2").setValue(-1)
+      ::gui_bhv.OptionsNavigator.clearSelect(scene.findObject("table_kills_team1"))
+      ::gui_bhv.OptionsNavigator.clearSelect(scene.findObject("table_kills_team2"))
     }
   }
 
@@ -1569,7 +1598,7 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
 
   function onUserRClick(obj)
   {
-    onStatsTblSelect(obj)
+    onClick(obj)
     ::session_player_rmenu(this, getSelectedPlayer(), getChatLog())
   }
 
@@ -1579,7 +1608,7 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
     if (!::check_obj(selectedTableObj))
       return
 
-    onStatsTblSelect(selectedTableObj)
+    onClick(selectedTableObj)
     local selectedPlayer = getSelectedPlayer()
     local orientation = selectedTableObj.id == "table_kills_team1"? RCLICK_MENU_ORIENT.RIGHT : RCLICK_MENU_ORIENT.LEFT
     ::session_player_rmenu(this, selectedPlayer, getChatLog(), getSelectedRowPos(selectedTableObj, orientation), orientation)
@@ -1613,6 +1642,28 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
     return null
   }
 
+  function getSelectedInfo()
+  {
+    local res = null
+    local selectedObj = getSelectedTable()
+    if (!selectedObj)
+      return res
+
+    if (selectedObj.id == "table_kills_team1" && tblSave1 != null)
+    {
+      local index = selectedObj.cur_row.tointeger()
+      if (index >= 0 && index < tblSave1.len())
+        res = tblSave1[index]
+    }
+    else if (selectedObj.id == "table_kills_team2" && tblSave2 != null)
+    {
+      local index = selectedObj.cur_row.tointeger()
+      if (index >= 0 && index < tblSave2.len())
+        res = tblSave2[index]
+    }
+    return res
+  }
+
   function refreshPlayerInfo()
   {
     setPlayerInfo()
@@ -1624,7 +1675,7 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
 
   function setPlayerInfo()
   {
-    local playerInfo = getSelectedPlayer()
+    local playerInfo = getSelectedInfo()
     local teamObj = scene.findObject("player_team")
     if (isTeam && ::checkObj(teamObj))
     {
@@ -1650,7 +1701,7 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
 
   function onComplain(obj)
   {
-    local pInfo = getSelectedPlayer()
+    local pInfo = getSelectedInfo()
     if (!pInfo || pInfo.isBot || pInfo.isLocal)
       return
 
@@ -1662,41 +1713,77 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
     refreshPlayerInfo()
   }
 
-  function onStatTblFocus(obj)
+  function onStatTblFocus()
   {
-    if (::show_console_buttons && !obj.isHovered())
-      obj.setValue(-1)
+    guiScene.performDelayed(this, function()
+    {
+      if (::checkObj(scene) && scene.isVisible())
+        updateListsButtons()
+    })
   }
 
   function getSelectedPlayer()
   {
-    local value = scene.findObject("table_kills_team1")?.getValue() ?? -1
-    if (value >= 0)
-      return tblSave1?[value]
-    value = scene.findObject("table_kills_team2")?.getValue() ?? -1
-    return tblSave2?[value]
-  }
-
-  function getSelectedTable()
-  {
     local objTbl1 = scene.findObject("table_kills_team1")
-    if (objTbl1.getValue() >= 0)
-      return objTbl1
     local objTbl2 = scene.findObject("table_kills_team2")
-    if (objTbl2.getValue() >= 0)
-      return objTbl2
+    if (objTbl1 && objTbl1.isFocused())
+      return ::getTblValue(objTbl1.getValue(), tblSave1, null)
+    if (objTbl2 && objTbl2.isFocused())
+      return ::getTblValue(objTbl2.getValue(), tblSave2, null)
     return null
   }
 
-  function onStatsTblSelect(obj)
+  function getSelectedTable(onlyFocused = false)
+  {
+    local objTbl1 = scene.findObject("table_kills_team1")
+    local objTbl2 = scene.findObject("table_kills_team2")
+    if (objTbl1 && objTbl1.isFocused())
+      return objTbl1
+
+    if (objTbl2 && objTbl2.isFocused())
+      return objTbl2
+
+    return onlyFocused? null : objTbl1
+  }
+
+  function onSwitchPlayersTbl()
+  {
+    if (isApplyPressed)
+      return
+    if (!isModeStat || isSpectate)
+      return
+
+    local selectedObj = getSelectedTable()
+    if (selectedObj == null)
+      return
+    if (selectedObj.id != "table_kills_team1" && selectedObj.id != "table_kills_team2")
+      return
+
+    local val = selectedObj.cur_row.tointeger()
+    local table_name = (selectedObj.id == "table_kills_team2") ? "table_kills_team1" : "table_kills_team2"
+    local tblObj = scene.findObject(table_name)
+    local numRowsDst = tblObj.num_rows.tointeger()
+    if (numRowsDst <= 0)
+      return
+
+    if (val >= numRowsDst)
+      val = numRowsDst - 1
+
+    ::gui_bhv.OptionsNavigator.clearSelect(selectedObj)
+    ::gui_bhv.TableNavigator.selectCell(tblObj, val, 0)
+    tblObj.select()
+    updateListsButtons()
+    guiScene.playSound("click")
+  }
+
+  function onClick(obj)
   {
     if (!needPlayersTbl)
       return
-    if (obj.getValue() >= 0) {
-      local table_name = obj.id == "table_kills_team2" ? "table_kills_team1" : "table_kills_team2"
-      local tblObj = scene.findObject(table_name)
-      tblObj.setValue(-1)
-    }
+    local table_name = obj.id == "table_kills_team2" ? "table_kills_team1" : "table_kills_team2"
+    local tblObj = scene.findObject(table_name)
+    ::gui_bhv.OptionsNavigator.clearSelect(tblObj)
+    obj.select()
     updateListsButtons()
   }
 
@@ -1718,15 +1805,21 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
       return false
     local selectedObj = getSelectedTable()
     if (selectedObj)
-      selectedObj.setValue(-1)
+      ::gui_bhv.OptionsNavigator.clearSelect(selectedObj)
 
     local tblObj = scene.findObject("table_kills_team" + (tblIdx + 1))
-    if (!::check_obj(tblObj) || tblObj.childrenCount() <= playerIdx)
+    if (!::check_obj(tblObj) || tblObj.num_rows.tointeger() <= playerIdx)
       return false
 
     tblObj.setValue(playerIdx)
+    tblObj.select()
     updateListsButtons()
     return true
+  }
+
+  function getMainFocusObj2()
+  {
+    return getSelectedTable()
   }
 
   function includeMissionInfoBlocksToGamercard(fill = true)
@@ -1966,7 +2059,7 @@ class ::gui_handlers.MPStatScreen extends ::gui_handlers.MPStatistics
     includeMissionInfoBlocksToGamercard()
     setSceneTitle(getCurMpTitle())
     tblObj1.setValue(0)
-    scene.findObject("table_kills_team2").setValue(-1)
+    ::gui_bhv.OptionsNavigator.clearSelect(scene.findObject("table_kills_team2"))
 
     refreshPlayerInfo()
 
@@ -1978,6 +2071,7 @@ class ::gui_handlers.MPStatScreen extends ::gui_handlers.MPStatistics
     forceUpdate()
     updateListsButtons()
 
+    initFocusArray()
     updateStats()
 
     showSceneBtn("btn_activateorder", ::g_orders.showActivateOrderButton())
@@ -1995,6 +2089,7 @@ class ::gui_handlers.MPStatScreen extends ::gui_handlers.MPStatistics
     ::set_mute_sound_in_flight_menu(false)
     ::in_flight_menu(true)
     forceUpdate()
+    delayedRestoreFocus()
     if (::is_replay_playing())
       selectLocalPlayer()
   }

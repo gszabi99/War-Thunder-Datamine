@@ -20,6 +20,7 @@ class ::gui_handlers.TicketBuyWindow extends ::gui_handlers.BaseGuiHandlerWT
     }
     local data = ::handyman.renderCached("gui/items/ticketBuyWindow", view)
     guiScene.replaceContentFromText(scene, data, data.len(), this)
+    initFocusArray()
     updateTicketCaptionsPosition()
     updateBuyButtonText()
 
@@ -107,6 +108,11 @@ class ::gui_handlers.TicketBuyWindow extends ::gui_handlers.BaseGuiHandlerWT
   function onTicketSelected(obj)
   {
     updateBuyButtonText()
+  }
+
+  function getMainFocusObj()
+  {
+    return getItemsListObj()
   }
 
   function getCurItem()

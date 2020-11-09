@@ -153,10 +153,11 @@ g_crew.getButtonRow <- function getButtonRow(obj, scene, tblObj = null)
   if (tblObj == null)
     tblObj = scene.findObject("skills_table")
   local curRow = tblObj.getValue()
+  local newRow = curRow
   if (obj)
   {
     if (obj?.holderId)
-      curRow = obj.holderId.tointeger()
+      newRow = obj.holderId.tointeger()
     else
     {
       local pObj = obj.getParent()
@@ -164,12 +165,18 @@ g_crew.getButtonRow <- function getButtonRow(obj, scene, tblObj = null)
       {
         local row = pObj.id.tointeger()
         if (row >= 0)
-          curRow = row
+          newRow = row
       }
     }
   }
-  if (curRow < 0 || curRow >= tblObj.childrenCount())
-    curRow = 0
+  if (newRow < 0 || newRow >= tblObj.childrenCount())
+    newRow = 0
+  if (curRow != newRow)
+  {
+    curRow = newRow
+    tblObj.setValue(curRow)
+    ::selectTableNavigatorObj(tblObj)
+  }
   return curRow
 }
 

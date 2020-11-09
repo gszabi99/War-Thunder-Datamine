@@ -1,8 +1,8 @@
-local u = require("sqStdLibs/helpers/u.nut")
+local u = ::require("sqStdLibs/helpers/u.nut")
 local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
-local Set = require("workshopSet.nut")
+local Set = ::require("workshopSet.nut")
 local inventoryClient = require("scripts/inventory/inventoryClient.nut")
-local seenWorkshop = require("scripts/seen/seenList.nut").get(SEEN.WORKSHOP)
+local seenWorkshop = ::require("scripts/seen/seenList.nut").get(SEEN.WORKSHOP)
 
 local OUT_OF_DATE_DAYS_WORKSHOP = 28
 
@@ -26,8 +26,7 @@ local function initOnce()
   isInited = true
   setsList.clear()
 
-  local wBlk = ::DataBlock()
-  wBlk.load("config/workshop.blk")
+  local wBlk = ::DataBlock("config/workshop.blk")
   for(local i = 0; i < wBlk.blockCount(); i++)
   {
     local set = Set(wBlk.getBlock(i))

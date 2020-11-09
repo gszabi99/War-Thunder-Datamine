@@ -31,7 +31,6 @@ class ::gui_handlers.DynamicLayouts extends ::gui_handlers.CampaignChapter
 
     initDescHandler()
     initMissionsList()
-    ::move_mouse_on_child_by_value(scene.findObject("items_list"))
   }
 
   function initMissionsList(...)
@@ -43,6 +42,8 @@ class ::gui_handlers.DynamicLayouts extends ::gui_handlers.CampaignChapter
 
     guiScene.replaceContentFromText(listObj, missionsList, missionsList.len(), this)
 
+    //listObj.select()
+    //listObj.setValue(0)
     refreshMissionDesc()
   }
 

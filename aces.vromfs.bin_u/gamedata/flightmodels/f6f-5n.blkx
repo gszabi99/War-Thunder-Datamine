@@ -395,6 +395,9 @@
         },
         "mgun4_dm": {
           "hp": 15.0
+        },
+        "radar_dm": {
+          "hp": 15.0
         }
       },
       "armor3": {
@@ -422,10 +425,15 @@
           "hp": 35.0
         }
       },
+      "armor8": {
+        "armor9_dm": {
+          "hp": 40.0
+        }
+      },
       "armor_engine": {
         "engine1_dm": {
           "genericDamageMult": 1.6,
-          "hp": 71.5
+          "hp": 70.5
         }
       },
       "c_dural3": {
@@ -436,6 +444,10 @@
         "aileron_r_dm": {
           "genericDamageMult": 0.3,
           "hp": 26.9
+        },
+        "elevator_dm": {
+          "genericDamageMult": 0.3,
+          "hp": 30.5
         },
         "elevator0_dm": {
           "genericDamageMult": 0.3,
@@ -470,10 +482,10 @@
       },
       "c_dural7": {
         "fuse1_dm": {
-          "hp": 44.5
+          "hp": 82.4
         },
         "fuse_dm": {
-          "hp": 82.4
+          "hp": 44.5
         },
         "tail_dm": {
           "genericDamageMult": 0.5,
@@ -538,11 +550,6 @@
           "hp": 60.5
         }
       },
-      "dural5": {
-        "radar_dm": {
-          "hp": 35.0
-        }
-      },
       "glass38": {
         "armor1_dm": {
           "hp": 100.0
@@ -599,6 +606,11 @@
   },
   {
     "DamageEffects": [
+      {
+        "part": {
+          "name": "radar_dm"
+        }
+      },
       {
         "part": [
           {
@@ -755,6 +767,11 @@
       },
       {
         "part": {
+          "name": "armor9_dm"
+        }
+      },
+      {
+        "part": {
           "name": "cannon1_dm"
         }
       },
@@ -779,9 +796,61 @@
         }
       },
       {
-        "part": {
-          "name": "cover4_dm"
-        }
+        "part": [
+          {
+            "name": "elevator_dm"
+          },
+          {
+            "onHit": {
+              "damage": 10.0,
+              "cut": 0.1
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "cut": 0.4
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "cut": 1.0,
+              "nothing": 4.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 20.0,
+              "cut": 1.0,
+              "nothing": 2.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 1.0,
+              "nothing": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          }
+        ]
       },
       {
         "part": [
@@ -1526,11 +1595,6 @@
         }
       },
       {
-        "part": {
-          "name": "radar_dm"
-        }
-      },
-      {
         "part": [
           {
             "name": "rudder_dm"
@@ -1591,8 +1655,8 @@
         "part": {
           "name": "spar1_l_dm",
           "onKill": {
-            "nothing": 2.0,
-            "cut": 4.0
+            "nothing": 0.0,
+            "cut": 1.0
           }
         }
       },
@@ -1600,8 +1664,8 @@
         "part": {
           "name": "spar1_r_dm",
           "onKill": {
-            "nothing": 2.0,
-            "cut": 4.0
+            "nothing": 0.0,
+            "cut": 1.0
           }
         }
       },
@@ -1609,8 +1673,8 @@
         "part": {
           "name": "spar2_l_dm",
           "onKill": {
-            "nothing": 2.0,
-            "cut": 4.0
+            "nothing": 0.0,
+            "cut": 1.0
           }
         }
       },
@@ -1618,8 +1682,8 @@
         "part": {
           "name": "spar2_r_dm",
           "onKill": {
-            "nothing": 2.0,
-            "cut": 4.0
+            "nothing": 0.0,
+            "cut": 1.0
           }
         }
       },

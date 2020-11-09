@@ -19,15 +19,6 @@ local pendingContactsChanges = {}
 local checkGroups = []
 
 
-//For now it is for PSN only. For all will be later
-local updateMuteStatus = function(contact = null) {
-  if (!contact)
-    return
-
-  local ircName = ::g_string.replace(contact.name, "@", "%40") //!!!Temp hack, *_by_uid will not be working on sony testing build
-  ::gchat_voice_mute_peer_by_name(contact.isInBlockGroup(), ircName)
-}
-
 local tryUpdateContacts = function(contactsBlk)
 {
   local haveAnyUpdate = false
@@ -56,7 +47,7 @@ local tryUpdateContacts = function(contactsBlk)
         else
           ::g_contacts.removeContact(contact, group)
 
-        updateMuteStatus(contact)
+        contact.updateMuteStatus()
       }
       ::broadcastEvent(contactEvent.CONTACTS_GROUP_UPDATE { groupName = group })
     }
@@ -87,25 +78,27 @@ local function psnUpdateContactsList(usersTable) {
       if (!contact)
         continue
 
-      local friendGroupName = isPS4PlayerName(contact.name)? ::EPLX_PS4_FRIENDS : ::EPL_FRIENDLIST
-      if (!contact.isInFriendGroup() && groupName == friendGroupName) {
-        contactsBlk[friendGroupName][contact.uid] = true
+      if (!contact.isInPSNFriends() && groupName == ::EPLX_PS4_FRIENDS) {
+        contactsBlk[::EPLX_PS4_FRIENDS][contact.uid] = true
         if (contact.isInBlockGroup())
           contactsBlk[::EPL_BLOCKLIST][contact.uid] = false
       }
 
       if (!contact.isInBlockGroup() && groupName == ::EPL_BLOCKLIST) {
         contactsBlk[::EPL_BLOCKLIST][contact.uid] = true
+        if (contact.isInPSNFriends())
+          contactsBlk[::EPLX_PS4_FRIENDS][contact.uid] = false
+
         if (contact.isInFriendGroup())
-          contactsBlk[friendGroupName][contact.uid] = false
+          contactsBlk[::EPL_FRIENDLIST][contact.uid] = false
       }
 
       //Check both lists, as there can be mistakes
-      if (contact.isInFriendGroup() && contact.isInBlockGroup()) {
-        if (groupName == friendGroupName)
+      if (contact.isInPSNFriends() && contact.isInBlockGroup()) {
+        if (groupName == ::EPLX_PS4_FRIENDS)
           contactsBlk[::EPL_BLOCKLIST][contact.uid] = false
         else
-          contactsBlk[friendGroupName][contact.uid] = false
+          contactsBlk[::EPLX_PS4_FRIENDS][contact.uid] = false
       }
 
       //Validate in-game contacts list
@@ -117,7 +110,6 @@ local function psnUpdateContactsList(usersTable) {
         if (contact.isSameContact(existedPSNContacts[i].uid)
           || (groupName == ::EPL_BLOCKLIST
               && existedPSNContacts[i].isInBlockGroup()
-              && !existedPSNContacts[i].isInFriendGroup()
               && !existedPSNContacts[i].isInPSNFriends())
           ) {
             existedPSNContacts.remove(i)
@@ -257,6 +249,5 @@ local function updateContacts(needIgnoreInitedFlag = false) {
 })
 
 return {
-  updateContacts = updateContacts
-  updateMuteStatus = updateMuteStatus
+  updateContacts
 }

@@ -1,4 +1,5 @@
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { getNearestSelectableChildIndex } = require("sqDagui/guiBhv/guiBhvUtils.nut")
 
 class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -39,7 +40,7 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(optListObj))
       return ::dagor.assertf(false, "Error: cant load options when no optionslist object.")
 
-    local container = ::create_options_container(optId, opt, true, columnsRatio, true, true, optionsConfig)
+    local container = ::create_options_container(optId, opt, true, true, columnsRatio, true, true, optionsConfig)
     guiScene.setUpdatesEnabled(false, false);
     optionIdToObjCache.clear()
     guiScene.replaceContentFromText(optListObj, container.tbl, container.tbl.len(), this)
@@ -47,6 +48,11 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
     guiScene.setUpdatesEnabled(true, true)
 
     updateLinkedOptions()
+  }
+
+  function getMainFocusObj()
+  {
+    return currentContainerName
   }
 
   function updateLinkedOptions()
@@ -210,6 +216,7 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     enableOptionRow(opt, !::checkIsInQueue())
+    delayedRestoreFocus()
   }
 
   function onTripleAerobaticsSmokeSelected(obj)
@@ -255,10 +262,8 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
     if (obj == null)
       return false
 
-    local isInactive = !show || option.controlType == optionControlType.HEADER
     obj.show(show)
-    obj.inactive = isInactive ? "yes" : null
-    option.inactive <- isInactive
+    obj.inactive = show && option.controlType != optionControlType.HEADER ? null : "yes"
     return true
   }
 
@@ -369,7 +374,7 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
           return
 
         ::showInfoMsgBox(message)
-        updateOption(::USEROPT_TANK_ALT_CROSSHAIR)
+        updateOption(USEROPT_TANK_ALT_CROSSHAIR)
       })
     } else
       setOptionValueByControlObj(obj)
@@ -626,7 +631,7 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
 
     foreach (unitType in unitTypes.types)
     {
-      if (unitType == unitTypes.INVALID || !unitType.isPresentOnMatching)
+      if (unitType == unitTypes.INVALID)
         continue
       local isShow = !!(allowedUnitTypesMask & unitType.bit)
       local itemObj = optionTrObj.findObject("bit_" + unitType.tag)
@@ -688,8 +693,9 @@ class ::gui_handlers.GenericOptionsModal extends ::gui_handlers.GenericOptions
   sceneNavBlkName = "gui/options/navOptionsBack.blk"
   multipleInstances = true
 
+  currentFocusItem = MAIN_FOCUS_ITEM_IDX + 1
+
   applyAtClose = true
-  needMoveMouseOnButtonApply = true
 
   navigationHandlerWeak = null
   headersToOptionsList = {}
@@ -699,9 +705,7 @@ class ::gui_handlers.GenericOptionsModal extends ::gui_handlers.GenericOptions
     base.initScreen()
 
     initNavigation()
-
-    if (needMoveMouseOnButtonApply)
-      ::move_mouse_on_obj(scene.findObject("btn_apply"))
+    initFocusArray()
   }
 
   function initNavigation()
@@ -710,12 +714,26 @@ class ::gui_handlers.GenericOptionsModal extends ::gui_handlers.GenericOptions
       ::gui_handlers.navigationPanel,
       { scene = scene.findObject("control_navigation")
         onSelectCb = ::Callback(doNavigateToSection, this)
-        panelWidth        = "0.4@sf, ph"
+        panelWidth        = "0.35@sf, ph"
         // Align to helpers_mode and table first row
-        headerHeight      = "1@buttonHeight"
+        headerHeight      = "0.05@sf + @sf/@pf"
+        headerOffsetX     = "0.015@sf"
+        headerOffsetY     = "0.015@sf"
+        collapseShortcut  = "LB"
+        navShortcutGroup  = ::get_option(::USEROPT_GAMEPAD_CURSOR_CONTROLLER).value ? null : "RS"
       })
     registerSubHandler(navigationHandlerWeak)
     navigationHandlerWeak = handler.weakref()
+  }
+
+  function getMainFocusObj()
+  {
+    return "filter_edit_box"
+  }
+
+  function getMainFocusObj2()
+  {
+    return currentContainerName
   }
 
   function doNavigateToSection(navItem)
@@ -740,8 +758,11 @@ class ::gui_handlers.GenericOptionsModal extends ::gui_handlers.GenericOptions
       return
 
     local rowObj = objTbl.findObject(trId)
-    if (::check_obj(rowObj))
-      rowObj.scrollToView(true)
+    if ( ! ::check_obj(rowObj))
+      return
+
+    rowObj.scrollToView(true)
+    objTbl.setValue(getNearestSelectableChildIndex(objTbl, index, 1))
   }
 
   function resetNavigation()
@@ -753,13 +774,6 @@ class ::gui_handlers.GenericOptionsModal extends ::gui_handlers.GenericOptions
   function onTblSelect(obj)
   {
     checkCurrentNavigationSection()
-
-    if (::show_console_buttons)
-      return
-
-    local option = getSelectedOption()
-    if (option.controlType == optionControlType.EDITBOX)
-      ::select_editbox(getObj(option.id))
   }
 
   function checkCurrentNavigationSection()
@@ -796,9 +810,8 @@ class ::gui_handlers.GenericOptionsModal extends ::gui_handlers.GenericOptions
     if (idx < 0 || objTbl.childrenCount() <= idx)
       return null
 
-    local activeOptionsList = getCurrentOptionsList()
-      .filter(@(option) !(option?.inactive ?? false) && option.controlType != optionControlType.HEADER)
-    return activeOptionsList?[idx]
+    local trId = objTbl.getChild(idx).id
+    return ::u.search(getCurrentOptionsList(), @(option) option.getTrId() == trId)
   }
 
   function getOptionHeader(option)

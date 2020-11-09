@@ -1,4 +1,4 @@
-::EventChapter <- class
+class EventChapter
 {
   name = ""
   eventIds = []
@@ -75,7 +75,7 @@
   }
 }
 
-::EventChaptersManager <- class
+class EventChaptersManager
 {
   chapters = []
   chapterIndexByName = {}

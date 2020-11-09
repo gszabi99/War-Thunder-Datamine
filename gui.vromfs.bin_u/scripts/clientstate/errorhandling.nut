@@ -1,6 +1,6 @@
-local enums = require("sqStdlibs/helpers/enums.nut")
-local callback = require("sqStdLibs/helpers/callback.nut")
-local u = require("sqStdLibs/helpers/u.nut")
+local enums = ::require("sqStdlibs/helpers/enums.nut")
+local callback = ::require("sqStdLibs/helpers/callback.nut")
+local u = ::require("sqStdLibs/helpers/u.nut")
 local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
 
 local netAssertsList = []
