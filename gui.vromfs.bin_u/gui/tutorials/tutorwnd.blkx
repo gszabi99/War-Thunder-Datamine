@@ -62,8 +62,9 @@
             "size": "pw, pw",
             "position": "absolute",
             "re-type": "rotation",
-            "background-color": "#99ff55",
-            "background-image": "#ui/gameuiskin#arrow_simple",
+            "background-color": "#417927",
+            "background-image": "#ui/gameuiskin#arrow_tutor.svg",
+            "background-svg-size": "@tutorArrowSize, @tutorArrowSize",
             "background-repeat": "stretch",
             "behaviour": "basicPos",
             "top-base": "0",
@@ -91,6 +92,13 @@
         "on_click": "consoleNext",
         "btnName": "A",
         "onlyA": "yes"
+      }
+    },
+    {
+      "timer": {
+        "id": "allow_cancel_timer",
+        "timer_handler_func": "onAllowCancelTimer",
+        "timer_interval_msec": "1000"
       }
     }
   ]

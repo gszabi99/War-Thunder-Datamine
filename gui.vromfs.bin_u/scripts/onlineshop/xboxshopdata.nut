@@ -1,9 +1,9 @@
-local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
-local seenList = ::require("scripts/seen/seenList.nut").get(SEEN.EXT_XBOX_SHOP)
+local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+local seenList = require("scripts/seen/seenList.nut").get(SEEN.EXT_XBOX_SHOP)
 local statsd = require("statsd")
-local progressMsg = ::require("sqDagui/framework/progressMsg.nut")
+local progressMsg = require("sqDagui/framework/progressMsg.nut")
 
-local XboxShopPurchasableItem = ::require("scripts/onlineShop/XboxShopPurchasableItem.nut")
+local XboxShopPurchasableItem = require("scripts/onlineShop/XboxShopPurchasableItem.nut")
 
 const XBOX_RECEIVE_CATALOG_MSG_ID = "XBOX_RECEIVE_CATALOG"
 

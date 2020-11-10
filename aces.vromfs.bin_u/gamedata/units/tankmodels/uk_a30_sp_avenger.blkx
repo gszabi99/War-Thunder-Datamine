@@ -105,7 +105,7 @@
       "hp": 10000.0,
       "hull_turret_CHA": {
         "turret_front_dm": {
-          "armorThickness": 76.2
+          "armorThickness": 50.8
         },
         "gun_mask_dm": {
           "armorThickness": 40.0
@@ -114,7 +114,7 @@
       "hull_turret_RHA": {
         "armorClass": "RHA_tank",
         "body_bottom_dm": {
-          "armorThickness": 25.4
+          "armorThickness": 14.0
         },
         "body_front_dm": {
           "armorThickness": 57.15
@@ -132,7 +132,7 @@
           "armorThickness": 14.0
         },
         "body_side_dm": {
-          "armorThickness": 32.0
+          "armorThickness": 25.4
         },
         "superstructure_bottom_dm": {
           "armorThickness": 14.0
@@ -144,19 +144,37 @@
           "armorThickness": 38.0
         },
         "turret_bottom_dm": {
-          "armorThickness": 12.7
+          "armorThickness": 25.0
         },
         "turret_side_dm": {
-          "armorThickness": 32.0
+          "armorThickness": 40.0
         },
-        "turret_back_dm": {
-          "armorThickness": 57.1
-        },
-        "turret_top_dm": {
+        "turret_03_back_dm": {
           "armorThickness": 20.0
         },
+        "turret_02_side_dm": {
+          "armorThickness": 50.0
+        },
+        "turret_03_side_dm": {
+          "armorThickness": 20.0
+        },
+        "turret_04_side_dm": {
+          "armorThickness": 14.0
+        },
+        "turret_03_top_dm": {
+          "armorThickness": 20.0
+        },
+        "turret_back_dm": {
+          "armorThickness": 40.0
+        },
+        "turret_top_dm": {
+          "armorThickness": 16.0
+        },
         "turret_01_bottom_dm": {
-          "armorThickness": 38.0
+          "armorThickness": 28.5
+        },
+        "turret_04_bottom_dm": {
+          "armorThickness": 6.0
         },
         "turret_01_side_dm": {
           "armorThickness": 14.0
@@ -165,10 +183,13 @@
           "armorThickness": 12.7
         },
         "turret_01_back_dm": {
-          "armorThickness": 25.4
+          "armorThickness": 14.0
         },
         "turret_01_front_dm": {
-          "armorThickness": 44.0
+          "armorThickness": 50.8
+        },
+        "turret_02_front_dm": {
+          "armorThickness": 50.8
         },
         "turret_02_top_dm": {
           "armorThickness": 14.0
@@ -180,9 +201,15 @@
           "armorThickness": 20.0
         },
         "composite_armor_hull_01_dm": {
-          "armorThickness": 4.9,
+          "armorThickness": 6.0,
           "armorClass": "tank_structural_steel",
           "hidableInXrayViewer": true
+        },
+        "turret_03_front_dm": {
+          "armorThickness": 20.0
+        },
+        "turret_03_bottom_dm": {
+          "armorThickness": 38.1
         }
       },
       "optics": {
@@ -599,8 +626,10 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -622,8 +651,9 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
         "fireParamsPreset": "fuel_exterior",
         "fuel_tank_exterior_r_01_dm": [],
         "fuel_tank_exterior_r_02_dm": [],
@@ -2313,6 +2343,15 @@
           "name": "fuel_exterior",
           "fx": {
             "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
             "centerDmgPart": true
           }
         }

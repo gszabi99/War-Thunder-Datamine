@@ -1,7 +1,8 @@
 {
   "root": {
     "type": "big",
-    "background-color": "@modalShadeColor",
+    "blur": [],
+    "blur_foreground": [],
     "frame": [
       {
         "class": "wndNav"
@@ -64,38 +65,36 @@
             "text-halign": "left",
             "navigatorShortcuts": "yes",
             "selfFocusBorder": "yes",
-            "selectOnAttach": "no",
             "moveX": "closest",
             "moveY": "linear",
-            "on_wrap_up": "onWrapUp",
-            "on_wrap_down": "onWrapDown",
             "on_select": "onFileTableSelect",
-            "on_set_focus": "onFocusChange"
+            "on_hover": "onHoverChange",
+            "on_unhover": "onHoverChange"
           }
         }
       },
       {
         "tdiv": {
           "width": "pw",
+          "DummyButton": {
+            "pos": "0, ph/2-h/2",
+            "position": "relative",
+            "size": "@mIco, @mIco",
+            "margin-right": "@blockInterval",
+            "btnName": "LB",
+            "on_click": "onFileNameEditBoxAccesskey",
+            "ButtonImg": []
+          },
           "EditBox": {
             "id": "file_name",
             "class": "fileDialogEditBox",
-            "btnName": "Y",
-            "mouse-focusable": "yes",
             "width": "fw",
             "text": "",
-            "tooltip": "#save/saveNameInput",
-            "on_wrap_up": "onWrapUp",
-            "on_wrap_down": "onWrapDown",
+            "edit-hint": "#save/saveNameInput",
             "on_change_value": "onFileNameEditBoxChangeValue",
-            "on_activate": "onFileNameEditBoxActivate",
             "on_cancel_edit": "onFileNameEditBoxCancelEdit",
-            "on_set_focus": "onFocusChange",
-            "ButtonImg": []
-          },
-          "DummyButton": {
-            "btnName": "Y",
-            "on_click": "onFileNameEditBoxActivate"
+            "on_hover": "onHoverChange",
+            "on_unhover": "onHoverChange"
           }
         }
       },
@@ -104,9 +103,10 @@
           "navLeft": {
             "Button_text": {
               "id": "btn_delete",
-              "btnName": "LB",
+              "btnName": "R3",
               "text": "#save/btnDelete",
               "on_click": "onBtnDelete",
+              "display": "hide",
               "ButtonImg": []
             }
           },
@@ -114,9 +114,10 @@
             {
               "Button_text": {
                 "id": "btn_load",
-                "btnName": "A",
+                "btnName": "Y",
                 "text": "#save/btnLoad",
                 "on_click": "onBtnLoad",
+                "display": "hide",
                 "ButtonImg": []
               }
             },
@@ -126,6 +127,7 @@
                 "btnName": "X",
                 "text": "#save/btnSave",
                 "on_click": "onBtnSave",
+                "display": "hide",
                 "ButtonImg": []
               }
             },
@@ -135,6 +137,7 @@
                 "btnName": "X",
                 "text": "#save/btnRewrite",
                 "on_click": "onBtnRewrite",
+                "display": "hide",
                 "ButtonImg": []
               }
             }
@@ -420,27 +423,6 @@
                             "gcButtonsInterval": "yes"
                           },
                           {
-                            "behaviour": "wrapNavigator"
-                          },
-                          {
-                            "navigatorShortcuts": "yes"
-                          },
-                          {
-                            "childsActivate": "yes"
-                          },
-                          {
-                            "on_wrap_up": "onWrapUp"
-                          },
-                          {
-                            "on_wrap_down": "onWrapDown"
-                          },
-                          {
-                            "on_wrap_left": "onTopGCPanelLeft"
-                          },
-                          {
-                            "on_wrap_right": "onTopGCPanelRight"
-                          },
-                          {
                             "Button_text": {
                               "id": "gc_clanTag",
                               "tooltip": "#mainmenu/btnClanCard",
@@ -531,27 +513,6 @@
                         },
                         {
                           "gcButtonsInterval": "yes"
-                        },
-                        {
-                          "behaviour": "wrapNavigator"
-                        },
-                        {
-                          "navigatorShortcuts": "yes"
-                        },
-                        {
-                          "childsActivate": "yes"
-                        },
-                        {
-                          "on_wrap_up": "onWrapUp"
-                        },
-                        {
-                          "on_wrap_down": "onWrapDown"
-                        },
-                        {
-                          "on_wrap_left": "onTopGCPanelLeft"
-                        },
-                        {
-                          "on_wrap_right": "onTopGCPanelRight"
                         },
                         {
                           "Button_text": [
@@ -767,9 +728,6 @@
               "shadowSafeArea": []
             },
             {
-              "line": []
-            },
-            {
               "tdiv": {
                 "size": "pw, 0.02@sf",
                 "pos": "0, ph",
@@ -810,7 +768,7 @@
                       "id": "slotbar-presetsPlace",
                       "size": "pw, ph",
                       "position": "absolute",
-                      "pos": "1@dp, 0"
+                      "display": "hide"
                     }
                   }
                 },
@@ -867,14 +825,7 @@
                     "position": "relative",
                     "top": "0.5(ph-h)",
                     "margin-right": "2@buttonTextPadding",
-                    "class": "header",
-                    "behaviour": "wrapNavigator",
-                    "navigatorShortcuts": "yes",
-                    "childsActivate": "yes",
-                    "on_wrap_up": "onWrapUp",
-                    "on_wrap_down": "onWrapDown",
-                    "on_wrap_left": "onWrapLeft",
-                    "on_wrap_right": "onWrapRight"
+                    "class": "header"
                   }
                 },
                 {
@@ -890,27 +841,6 @@
                     },
                     {
                       "class": "header"
-                    },
-                    {
-                      "behaviour": "wrapNavigator"
-                    },
-                    {
-                      "navigatorShortcuts": "yes"
-                    },
-                    {
-                      "childsActivate": "yes"
-                    },
-                    {
-                      "on_wrap_up": "onWrapUp"
-                    },
-                    {
-                      "on_wrap_down": "onWrapDown"
-                    },
-                    {
-                      "on_wrap_left": "onBottomGCPanelLeft"
-                    },
-                    {
-                      "on_wrap_right": "onBottomGCPanelRight"
                     },
                     {
                       "Button_text": [

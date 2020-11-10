@@ -1,13 +1,19 @@
-local colorCorrector = require_native("colorCorrector")
-local fonts = require_native("fonts")
+local colorCorrector = ::require_native("colorCorrector")
+local fonts = ::require_native("fonts")
 local screenInfo = require("scripts/options/screenInfo.nut")
 local safeAreaMenu = require("scripts/options/safeAreaMenu.nut")
 local safeAreaHud = require("scripts/options/safeAreaHud.nut")
 local gamepadIcons = require("scripts/controls/gamepadIcons.nut")
 local focusFrame = require("scripts/viewUtils/focusFrameWT.nut")
-local { setSceneActive } = require_native("reactiveGuiCommand")
+local { setSceneActive } = require("reactiveGuiCommand")
+local rootScreenBlkPathWatch = require("scripts/baseGuiHandler/rootScreenBlkPathWatch.nut")
 local { startLogout } = require("scripts/login/logout.nut")
-local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+local { isPlatformSony,
+        isPlatformXboxOne,
+        targetPlatform } = require("scripts/clientState/platform.nut")
+
+::dagui_propid.add_name_id("has_ime")
+::dagui_propid.add_name_id("target_platform")
 
 handlersManager[PERSISTENT_DATA_PARAMS].append("curControlsAllowMask", "isCurSceneBgBlurred")
 
@@ -28,7 +34,7 @@ handlersManager[PERSISTENT_DATA_PARAMS].append("curControlsAllowMask", "isCurSce
 ::handlersManager.sceneBgBlurDefaults <- {
   [handlerType.ROOT]   = false,
   [handlerType.BASE]   = false,
-  [handlerType.MODAL]  = true,
+  [handlerType.MODAL]  = false,
   [handlerType.CUSTOM] = false,
 }
 
@@ -57,6 +63,7 @@ handlersManager.onClearScene <- function onClearScene(guiScene)
     guiScene.setCursorSizeMul(guiScene.calcString("@cursorSizeMul", null))
   if (guiScene.setPatternSizeMul) //compatibility with old exe
     guiScene.setPatternSizeMul(guiScene.calcString("@dp", null))
+  ::enable_dirpad_control_mouse(true)
 }
 
 handlersManager.isNeedFullReloadAfterClearScene <- function isNeedFullReloadAfterClearScene()
@@ -284,6 +291,15 @@ handlersManager.generateCssString <- function generateCssString(config)
   return res
 }
 
+handlersManager.updateCssParams <- function(guiScene) {
+  local rootObj = guiScene.getRoot()
+
+  //Check for special hints, because IME is called with special action, and need to show text about it
+  local hasIME = isPlatformSony || isPlatformXboxOne || ::is_platform_android || ::is_steam_big_picture()
+  rootObj["has_ime"] = hasIME? "yes" : "no"
+  rootObj["target_platform"] = targetPlatform
+}
+
 handlersManager.getHandlerControlsAllowMask <- function getHandlerControlsAllowMask(handler)
 {
   local res = null
@@ -430,6 +446,10 @@ handlersManager.validateHandlersAfterLoading <- function validateHandlersAfterLo
   ::broadcastEvent("FinishLoading")
 }
 
+handlersManager.getRootScreenBlkPath <- function getRootScreenBlkPath() {
+  return rootScreenBlkPathWatch.value
+}
+
 ::get_cur_base_gui_handler <- function get_cur_base_gui_handler() //!!FIX ME: better to not use it at all. really no need to create instance of base handler without scene.
 {
   local handler = ::handlersManager.getActiveBaseHandler()
@@ -460,5 +480,37 @@ handlersManager.validateHandlersAfterLoading <- function validateHandlersAfterLo
 {
   ::handlersManager.validateHandlersAfterLoading()
 }
+
+::move_mouse_on_obj <- function move_mouse_on_obj(obj) { //it used in a lot of places, so leave it global
+  if (::show_console_buttons && obj?.isValid())
+    obj.setMouseCursorOnObject()
+}
+
+::move_mouse_on_child <- function move_mouse_on_child(obj, idx = 0) { //it used in a lot of places, so leave it global
+  if (!::show_console_buttons || !obj?.isValid() || obj.childrenCount() <= idx || idx < 0)
+    return
+  local child = obj.getChild(idx)
+  if (!child.isValid())
+    return
+  child.scrollToView()
+  child.setMouseCursorOnObject()
+}
+
+::move_mouse_on_child_by_value <- function move_mouse_on_child_by_value(obj) { //it used in a lot of places, so leave it global
+  if (::show_console_buttons && obj?.isValid())
+    move_mouse_on_child(obj, obj.getValue())
+}
+
+::select_editbox <- function select_editbox(obj) {
+  if (!obj?.isValid())
+    return
+  if (::show_console_buttons)
+    obj.setMouseCursorOnObject()
+  else
+    obj.select()
+}
+
+local needDebug = ::getFromSettingsBlk("debug/debugGamepadCursor", false)
+::get_cur_gui_scene()?.setGamepadCursorDebug(needDebug)
 
 handlersManager.init()

@@ -1,6 +1,6 @@
 local u = require("sqStdLibs/helpers/u.nut")
 local time = require("scripts/time.nut")
-local progressMsg = ::require("sqDagui/framework/progressMsg.nut")
+local progressMsg = require("sqDagui/framework/progressMsg.nut")
 local DataBlock = require("DataBlock")
 const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
@@ -9,6 +9,8 @@ class ::gui_handlers.SaveDataDialog extends ::gui_handlers.BaseGuiHandlerWT
 {
   static wndType = handlerType.MODAL
   static sceneBlkName = "gui/fileDialog/saveDataDialog.blk"
+
+  curHoverObjId = null
 
   getSaveDataContents = null
 
@@ -44,8 +46,6 @@ class ::gui_handlers.SaveDataDialog extends ::gui_handlers.BaseGuiHandlerWT
     }
   ]
 
-  currentFocusItem = 4
-
   function initScreen()
   {
     if (!scene)
@@ -61,7 +61,6 @@ class ::gui_handlers.SaveDataDialog extends ::gui_handlers.BaseGuiHandlerWT
 
     updateSortingList()
     requestEntries()
-    initFocusArray()
   }
 
   function showWaitAnimation(show)
@@ -138,9 +137,14 @@ class ::gui_handlers.SaveDataDialog extends ::gui_handlers.BaseGuiHandlerWT
     entries.sort(@(a,b) (isAscending? 1 : -1)*(a[p] <=> b[p]))
   }
 
-  function onFocusChange(obj)
+  function onHoverChange(obj)
   {
-    guiScene.performDelayed(this, updateButtons)
+    local id = obj.isHovered() ? obj.id : null
+    if (curHoverObjId == id)
+      return
+
+    curHoverObjId = id
+    updateButtons()
   }
 
   isEntryLoaded = @(entry) entry && entry.path != "" && entry.comment != ""
@@ -150,11 +154,8 @@ class ::gui_handlers.SaveDataDialog extends ::gui_handlers.BaseGuiHandlerWT
     if (!isValid())
       return
 
-    local isFileTableFocused = getTableListObj().isFocused()
-
-    local newFileObj = getObj("file_name")
-    local isNewFileSelected = newFileObj.isFocused()
-
+    local isNewFileSelected  = curHoverObjId == "file_name"
+    local isFileTableFocused = curHoverObjId == "file_table"
     local curEntry = getSelectedEntry()
     local isLoadedEntry = isEntryLoaded(curEntry)
 
@@ -165,7 +166,7 @@ class ::gui_handlers.SaveDataDialog extends ::gui_handlers.BaseGuiHandlerWT
       btn_rewrite = isFileTableFocused
     })
 
-    local newFileName = newFileObj.getValue()
+    local newFileName = getObj("file_name").getValue()
     ::enableBtnTable(scene, {btn_save = newFileName != ""}, true)
   }
 
@@ -187,8 +188,10 @@ class ::gui_handlers.SaveDataDialog extends ::gui_handlers.BaseGuiHandlerWT
       })
     })
 
-    local markUp = ::buildTableRowNoPad("row_header", headerRow, true,
-      "inactive:t='yes'; commonTextColor:t='yes'; insetHeader = 'yes';")
+    local markUp = [
+      ::buildTableRowNoPad("row_header", headerRow, true,
+        "inactive:t='yes'; commonTextColor:t='yes'; skip-navigation:t='yes';")
+    ]
 
     tableEntries.clear()
 
@@ -208,9 +211,10 @@ class ::gui_handlers.SaveDataDialog extends ::gui_handlers.BaseGuiHandlerWT
         })
       })
 
-      markUp += ::buildTableRowNoPad(rowName, rowData, idx % 2 != 0)
+      markUp.append(::buildTableRowNoPad(rowName, rowData, idx % 2 != 0))
     }
 
+    markUp = ::g_string.implode(markUp)
     guiScene.replaceContentFromText(fileTableObj, markUp, markUp.len(), this)
   }
 
@@ -222,8 +226,20 @@ class ::gui_handlers.SaveDataDialog extends ::gui_handlers.BaseGuiHandlerWT
 
     if (tableEntries.len() > 0)
       fileTableObj.setValue(1)
+
+    if (tableEntries.len() > 0)
+      ::move_mouse_on_child_by_value(getTableListObj())
+    else
+      ::select_editbox(getObj("file_name"))
   }
 
+  function restoreFocus()
+  {
+    if (curHoverObjId == "file_name")
+      ::select_editbox(getObj("file_name"))
+    else
+      ::move_mouse_on_child_by_value(getTableListObj())
+  }
 
   function getSelectedEntry()
   {
@@ -255,13 +271,10 @@ class ::gui_handlers.SaveDataDialog extends ::gui_handlers.BaseGuiHandlerWT
   }
 
 
-  function onFileNameEditBoxActivate()
+  function onFileNameEditBoxAccesskey()
   {
-    local fileNameObj = getObj("file_name")
-    if (!fileNameObj.isFocused())
-      fileNameObj.select()
+    ::select_editbox(getObj("file_name"))
   }
-
 
   function onFileNameEditBoxCancelEdit(obj)
   {
@@ -285,7 +298,7 @@ class ::gui_handlers.SaveDataDialog extends ::gui_handlers.BaseGuiHandlerWT
                     ::loc("save/confirmDelete", {name=curEntry.comment}),
                     [["yes", ::Callback(@() doDelete(curEntry), this)], ["no", function(){}]],
                     "no",
-                    {})
+                    { cancel_fn = @() null })
   }
 
   function onBtnSave()
@@ -353,7 +366,7 @@ class ::gui_handlers.SaveDataDialog extends ::gui_handlers.BaseGuiHandlerWT
                     ::loc("save/confirmLoad", {name=curEntry.comment}),
                     [["yes", ::Callback(@() doLoad(curEntry), this)], ["no", function(){}]],
                     "no",
-                    {})
+                    { cancel_fn = @() null })
   }
 
   function onCancel()
@@ -363,12 +376,14 @@ class ::gui_handlers.SaveDataDialog extends ::gui_handlers.BaseGuiHandlerWT
     goBack()
   }
 
-  function getMainFocusObj()
+  function onEventModalWndDestroy(params)
   {
-    return tableEntries.len()? getTableListObj() : null
+    if (!isSceneActiveNoModals())
+      return
+    updateButtons()
+    restoreFocus()
   }
 
-  getMainFocusObj2 = @() getObj("file_name")
   getTableListObj = @() getObj("file_table")
   getSortListObj = @() getObj("sort_params_list")
 }

@@ -34,9 +34,6 @@
     "armor10": {
       "cannon1_dm": {
         "hp": 15.0
-      },
-      "radar_dm": {
-        "hp": 15.0
       }
     },
     "armor12_7": {
@@ -106,6 +103,14 @@
       "wing2_r_dm": {
         "genericDamageMult": 0.3,
         "hp": 40.5
+      },
+      "wing_l_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 60.5
+      },
+      "wing_r_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 60.5
       }
     },
     "dural": {
@@ -137,6 +142,11 @@
       },
       "spar_r_dm": {
         "hp": 33.1
+      }
+    },
+    "dural5": {
+      "radar_dm": {
+        "hp": 35.0
       }
     },
     "glass64": {
@@ -184,14 +194,6 @@
       },
       "tank3_dm": {
         "hp": 82.6
-      }
-    },
-    "wood": {
-      "wing_l_dm": {
-        "hp": 33.4
-      },
-      "wing_r_dm": {
-        "hp": 33.5
       }
     }
   },
@@ -966,8 +968,8 @@
       "part": {
         "name": "spar1_l_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -975,8 +977,8 @@
       "part": {
         "name": "spar1_r_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -984,8 +986,8 @@
       "part": {
         "name": "spar2_l_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -993,8 +995,8 @@
       "part": {
         "name": "spar2_r_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1837,6 +1839,7 @@
         "aviahorizon_roll": [-180.0,180.0],
         "aviahorizon_pitch1": [-45.0,45.0],
         "aviahorizon_roll1": [-180.0,180.0],
+        "aoa": [0.0,30.0],
         "compass": [0.0,360.0],
         "compass1": [0.0,360.0],
         "clock_hour": [0.0,12.0],

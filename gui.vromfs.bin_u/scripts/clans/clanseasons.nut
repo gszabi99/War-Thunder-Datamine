@@ -1,3 +1,4 @@
+local { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
 local { unixtime_to_utc_timetbl } = ::require_native("dagor.time")
 local time = require("scripts/time.nut")
 
@@ -49,7 +50,7 @@ global enum CLAN_SEASON_MEDAL_TYPE
   function getTopPlayersRewarded()
   {
     local blk = getRewardsBlk()
-    return ::get_blk_value_by_path(blk, "reward/topPlayersRewarded", 10)
+    return get_blk_value_by_path(blk, "reward/topPlayersRewarded", 10)
   }
 
 
@@ -69,7 +70,7 @@ global enum CLAN_SEASON_MEDAL_TYPE
 
     foreach (rewardBlockName, rewardBlock in blk.reward.subRewards)
     {
-      local rewardsData = ::get_blk_value_by_path(rewardBlock, difficulty.egdLowercaseName + "/era5")
+      local rewardsData = get_blk_value_by_path(rewardBlock, difficulty.egdLowercaseName + "/era5")
       if (!rewardsData)
         continue
       local maxPlaceForBlock = getMaxPlaceForBlock(rewardBlockName)
@@ -121,7 +122,7 @@ global enum CLAN_SEASON_MEDAL_TYPE
     if (regalia == "")
       return prizes
     local blk = getRewardsBlk()
-    local pBlk = ::get_blk_value_by_path(blk, "reward/templates/" + regalia)
+    local pBlk = get_blk_value_by_path(blk, "reward/templates/" + regalia)
     if (!pBlk)
       return prizes
     foreach (prizeType in [ "clanTag", "decal" ])
@@ -189,7 +190,7 @@ global enum CLAN_SEASON_MEDAL_TYPE
     local prevPlace = 0
     foreach (rewardBlockName, rewardBlock in blk.reward.subRewards)
     {
-      local rewardsData = ::get_blk_value_by_path(rewardBlock, difficulty.egdLowercaseName + "/era5")
+      local rewardsData = get_blk_value_by_path(rewardBlock, difficulty.egdLowercaseName + "/era5")
       if (!rewardsData)
         continue
       local maxPlaceForBlock = getMaxPlaceForBlock(rewardBlockName)
@@ -264,7 +265,7 @@ global enum CLAN_SEASON_MEDAL_TYPE
     local rewardForRating = blk.reward % "rewardForRating"
     foreach (rewardBlock in rewardForRating)
     {
-      local regalia = ::get_blk_value_by_path(rewardBlock, difficulty.egdLowercaseName + "/era5")
+      local regalia = get_blk_value_by_path(rewardBlock, difficulty.egdLowercaseName + "/era5")
       if (!regalia)
         continue
       local reward = clone rewardTemplate

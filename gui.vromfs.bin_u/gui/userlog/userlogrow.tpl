@@ -88,7 +88,7 @@ selImg {
     btnName:t=''
     ButtonImg {
       btnName:t='A'
-      showOnSelect:t='focus'
+      showOnSelect:t='hover'
     }
   }
   <</buttonName>>

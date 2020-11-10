@@ -1,5 +1,6 @@
 root {
-  background-color:t='@modalShadeColor'
+  blur {}
+  blur_foreground {}
   tdiv {
     size:t='1@twoStepLoginBgrImgWidth, 1@twoStepLoginBgrImgHeight'
     pos:t='0.5pw-0.5w, 1@minYposWindow + 0.1*(sh - 1@minYposWindow - h)'
@@ -12,7 +13,7 @@ root {
 
     Button_close {
       id:t = 'btn_back'
-      on_click:t='goBack'
+      _on_click:t='goBack'
     }
     tdiv {
       width:t='0.3pw'
@@ -78,13 +79,10 @@ root {
         size:t='290@sf/@pf, 70@sf/@pf'
         position:t='relative'
         padding:t='0, 1@blockInterval'
-        withTab:t='yes'
-        mouse-focusable:t='yes'
-        multiline:t='no'
+        twoStepType:t='yes'
         max-len:t='6'
         _on_activate:t = 'onSubmit'
         char-mask:t='1234567890'
-        twoStepType:t='yes'
         text:t=''
       }
       Button_text {
@@ -92,7 +90,7 @@ root {
         visualStyle:t='twoStepLogin'
         position:t='relative'
         pos:t='0, 1@blockInterval'
-        on_click:t = 'onSubmit'
+        _on_click:t = 'onSubmit'
 
         btnText{
           text:t = '#msgbox/btn_signIn'
@@ -101,7 +99,7 @@ root {
         btnName:t='X'
         ButtonImg{}
       }
-      <<^isMailAuth>>
+      <<#isShowRestoreLink>>
       Button_text {
         pos:t='0, 1@blockInterval'
         position:t='relative'
@@ -118,7 +116,7 @@ root {
         btnName:t='L3'
         ButtonImg {}
       }
-      <</isMailAuth>>
+      <</isShowRestoreLink>>
       Button_text {
         pos:t='0, 1@blockInterval'
         position:t='relative'
@@ -145,8 +143,7 @@ root {
       <<#isRememberDevice>>
       value:t='yes'
       <</isRememberDevice>>
-      onlyA:t='yes'
-      btnName:t='A'
+      btnName:t='Y'
       ButtonImg{}
       CheckBoxImg{}
     }

@@ -1,5 +1,6 @@
 root {
-  background-color:t='@shadeBackgroundColor'
+  blur {}
+  blur_foreground {}
 
   frame {
     class:t='wndNav'
@@ -21,11 +22,6 @@ root {
       <<#hasRefreshButton>>
       top_right_holder {
         id:t='header_buttons'
-        behaviour:t='wrapNavigator'
-        navigatorShortcuts:t='yes'
-        childsActivate:t='yes'
-        on_wrap_up:t='onWrapUp'
-        on_wrap_down:t='onWrapDown'
         Button_text {
           id:t = 'btn_refresh'
           on_click:t = 'onRefresh'
@@ -63,10 +59,7 @@ root {
           id:t='items_list'
           size:t='pw, fh'
           flow:t = 'vertical'
-          focus:t='yes'
           on_select:t='onItemSelect'
-          on_wrap_up:t='onWrapUp'
-          on_wrap_down:t='onWrapDown'
         }
 
         <<#hasGotoGlobalBattlesBtn>>

@@ -4,6 +4,9 @@ local asyncActions = require("sqStdLibs/helpers/asyncActions.nut")
 local time = require("scripts/time.nut")
 local { getCustomLocalizationPresets, getEffectOnStartCraftPresetById } = require("scripts/items/workshop/workshop.nut")
 local startCraftWnd = require("scripts/items/workshop/startCraftWnd.nut")
+local { isUserstatItemRewards, removeUserstatItemRewardToShow,
+  userstatItemsListLocId, userstatRewardTitleLocId
+} = require("scripts/userstat/userstatItemsRewards.nut")
 
 
 global enum MARK_RECIPE {
@@ -633,17 +636,22 @@ local ExchangeRecipes = class {
     if (isHasFakeRecipes && (parentRecipe?.markRecipe?() ?? false) && !parentRecipe?.isFake)
       parentGen.markAllRecipes()
 
-    local rewardTitle = parentRecipe ? parentRecipe.getRewardTitleLocId(isHasFakeRecipes) : ""
-    local rewardListLocId = params?.rewardListLocId ? params.rewardListLocId :
-      parentRecipe ? componentItem.getItemsListLocId() : ""
+    if (resultItemsShowOpening.len() > 0) {
+      local isUserstatRewards = isUserstatItemRewards(componentItem.id)
+      local rewardTitle = isUserstatRewards ? userstatRewardTitleLocId
+        : parentRecipe ? parentRecipe.getRewardTitleLocId(isHasFakeRecipes)
+        : ""
+      local rewardListLocId = isUserstatRewards ? userstatItemsListLocId
+        : params?.rewardListLocId ? params.rewardListLocId
+        : parentRecipe ? componentItem.getItemsListLocId()
+        : ""
 
-    if (resultItemsShowOpening.len())
-    {
       local openTrophyWndConfigs = u.map(resultItemsShowOpening, @(extItem) {
         id = componentItem.id
         item = extItem?.itemdef?.itemdefid
         count = extItem?.quantity ?? 0
       })
+
       local effectOnOpenChest = componentItem.getEffectOnOpenChest()
       ::gui_start_open_trophy({ [componentItem.id] = openTrophyWndConfigs,
         rewardTitle = ::loc(rewardTitle),
@@ -656,6 +664,7 @@ local ExchangeRecipes = class {
         rewardImageShowTimeSec = effectOnOpenChest?.showTimeSec ?? -1
         reUseRecipeUid = params?.reUseRecipeUid
       })
+      removeUserstatItemRewardToShow(componentItem.id)
     }
 
     ::ItemsManager.autoConsumeItems()

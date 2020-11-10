@@ -1,5 +1,5 @@
-local enums = require("sqStdlibs/helpers/enums.nut")
-local { calc_crew_parameters } = require_native("unitCalculcation")
+local enums = require("sqStdLibs/helpers/enums.nut")
+local { calc_crew_parameters } = require("unitCalculcation")
 local { getMaxSkillValue } = require("scripts/crew/crewSkills.nut")
 
 

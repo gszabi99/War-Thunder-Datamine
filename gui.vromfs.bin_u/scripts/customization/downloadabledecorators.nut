@@ -12,7 +12,8 @@ local function updateDownloadableSkins(unit) {
   if (::has_feature("MarketplaceSkinsInCustomization") && ::has_feature("Marketplace")
     && ::has_feature("EnableLiveSkins"))
   {
-    local marketSkinsBlk = ::DataBlock("config/skins_market.blk")
+    local marketSkinsBlk = ::DataBlock()
+    marketSkinsBlk.load("config/skins_market.blk")
     local blkList = marketSkinsBlk % unit.name
     local itemdefIdsList = blkList.filter(function(blk) {
       if (type(blk?.marketplaceItemdefId) != "integer")

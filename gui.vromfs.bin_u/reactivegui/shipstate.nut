@@ -1,4 +1,4 @@
-local interopGet = require("daRg/helpers/interopGen.nut")
+local interopGet = require("interopGen.nut")
 
 
 local shipState = {
@@ -38,7 +38,7 @@ local shipState = {
   transmissionsInCooldown = Watched(false)
 
   aiGunnersState = Watched(0)
-  hasAiGunners = Watched(true)
+  hasAiGunners = Watched(false)
 
   waterDist = Watched(0)
   buoyancyEx = Watched(0)

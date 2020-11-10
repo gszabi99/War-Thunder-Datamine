@@ -2,6 +2,7 @@
   "rocketGun": true,
   "preset_cost": 25,
   "mesh": "euro_hot_rocket",
+  "mesh_deployed": "euro_hot_rocket_deployed",
   "helicopterGroup": 2,
   "shotFreq": 20.0,
   "sound": "weapon.rocketgun_132",
@@ -35,9 +36,6 @@
     },
     {
       "explodeOnRendinst": true
-    },
-    {
-      "modelName": "tank_bullet_heat_fs"
     },
     {
       "fresnel": [0.23,0.1,2.0]
@@ -85,19 +83,13 @@
       "WdK": [0.1,0.1,0.1]
     },
     {
-      "maxAxisValues": 0.5
+      "maxAxisValues": 0.35
     },
     {
-      "explosionEffect": "atgm_hit"
+      "explosionEffect": "explosion_midair_medium"
     },
     {
-      "defFxScale": [1.5,1.6]
-    },
-    {
-      "groundCollisionEffect": "art_ground_splash"
-    },
-    {
-      "groundFxScale": [1.3,1.5]
+      "groundCollisionEffect": "explosion_midair_small"
     },
     {
       "ricochetEffect": "cannon_ricochet"
@@ -119,6 +111,9 @@
     },
     {
       "minDistance": 30.0
+    },
+    {
+      "maxLaunchAngle": 20.0
     },
     {
       "mass": 23.5
@@ -175,16 +170,22 @@
       "explodeTreshold": 0.0
     },
     {
-      "explosionPatchRadius": 3.5
-    },
-    {
       "rendinstDamageRadius": 2.0
     },
     {
       "statType": "hydra"
     },
     {
+      "fireEffect": "rocket_fire_short"
+    },
+    {
       "smokeEffect": ""
+    },
+    {
+      "hazeEffect": "haze_missile"
+    },
+    {
+      "endSmokeViscosity": 0.05
     },
     {
       "spawnExplosionFx": false
@@ -404,20 +405,16 @@
     {
       "collisions": {
         "steel": {
-          "fx": "atgm_hit",
-          "fxScale": [4.0,4.2]
+          "fx": "explosion_midair_small"
         },
         "armor": {
-          "fx": "atgm_hit",
-          "fxScale": [4.0,4.2]
+          "fx": "explosion_midair_small"
         },
         "buildings": {
-          "fx": "atgm_hit",
-          "fxScale": [4.0,4.2]
+          "fx": "explosion_midair_small"
         },
         "wood": {
-          "fx": "atgm_hit",
-          "fxScale": [4.0,4.2]
+          "fx": "explosion_midair_small"
         }
       }
     },

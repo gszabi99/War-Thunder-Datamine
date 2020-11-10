@@ -1,4 +1,4 @@
-local avatars = ::require("scripts/user/avatars.nut")
+local avatars = require("scripts/user/avatars.nut")
 local { isPs4XboxOneInteractionAvailable,
         isPlatformSony } = require("scripts/clientState/platform.nut")
 local editContactsList = require("scripts/contacts/editContacts.nut")

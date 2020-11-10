@@ -1,5 +1,5 @@
 local time = require("scripts/time.nut")
-local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
+local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 
 
 ::g_event_ticket_buy_offer <- {
@@ -15,7 +15,7 @@ g_event_ticket_buy_offer.offerTicket <- function offerTicket(event)
   currentProcess = EventTicketBuyOfferProcess(event)
 }
 
-class EventTicketBuyOfferProcess
+::EventTicketBuyOfferProcess <- class
 {
   _event = null
   _tickets = null

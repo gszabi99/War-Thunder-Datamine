@@ -1,7 +1,7 @@
 local inventoryClient = require("scripts/inventory/inventoryClient.nut")
 local ExchangeRecipes = require("scripts/items/exchangeRecipes.nut")
 local time = require("scripts/time.nut")
-local workshop = ::require("scripts/items/workshop/workshop.nut")
+local workshop = require("scripts/items/workshop/workshop.nut")
 local ItemLifetimeModifier = require("scripts/items/itemLifetimeModifier.nut")
 
 local collection = {}

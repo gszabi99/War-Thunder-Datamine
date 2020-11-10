@@ -1,5 +1,5 @@
 local time = require("scripts/time.nut")
-local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
+local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 local spectatorWatchedHero = require("scripts/replays/spectatorWatchedHero.nut")
 
 

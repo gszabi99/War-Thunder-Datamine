@@ -1,4 +1,4 @@
-local tutorialModule = ::require("scripts/user/newbieTutorialDisplay.nut")
+local tutorialModule = require("scripts/user/newbieTutorialDisplay.nut")
 local unitActions = require("scripts/unit/unitActions.nut")
 local tutorAction = require("scripts/tutorials/tutorialActions.nut")
 local { setColoredDoubleTextToButton, placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
@@ -8,7 +8,6 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
   wndType = handlerType.MODAL
   sceneTplName = "gui/shop/shopCheckResearch"
   sceneNavBlkName = "gui/shop/shopNav.blk"
-  shouldBlurSceneBg = true
   canQuitByGoBack = false
 
   researchedUnit = null
@@ -38,7 +37,6 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
     updateResearchVariables()
 
     base.initScreen()
-    initFocusArray()
 
     showSceneBtn("modesRadiobuttons", false)
 
@@ -440,22 +438,6 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
           executeAfterDoneFunc()
         })(executeAfterDoneFunc)
     }
-  }
-
-  function restoreFocus(checkPrimaryFocus = true)
-  {
-    if (!checkGroupObj())
-      ::gui_handlers.BaseGuiHandlerWT.restoreFocus.call(this, checkPrimaryFocus)
-  }
-
-  function onWrapUp(obj)
-  {
-    ::gui_handlers.BaseGuiHandlerWT.onWrapUp.call(this, obj)
-  }
-
-  function onWrapDown(obj)
-  {
-    ::gui_handlers.BaseGuiHandlerWT.onWrapDown.call(this, obj)
   }
 
   function onCloseShop()

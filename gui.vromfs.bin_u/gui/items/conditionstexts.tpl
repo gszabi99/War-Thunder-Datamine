@@ -16,6 +16,7 @@
       display:t='hide'
     }
     title:t='$tooltipObj'
+    tooltip-float:t='horizontal'
     <</tooltipId>>
   }
   <</text>>

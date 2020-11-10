@@ -5,6 +5,7 @@ local topMenuHandlerClass = require("scripts/mainmenu/topMenuHandler.nut")
 local { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
 local exitGame = require("scripts/utils/exitGame.nut")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+local { tryOpenTutorialRewardHandler } = require("scripts/tutorials/tutorialRewardHandler.nut")
 
 class ::gui_handlers.MainMenu extends ::gui_handlers.InstantDomination
 {
@@ -29,7 +30,7 @@ class ::gui_handlers.MainMenu extends ::gui_handlers.InstantDomination
     if (::g_login.isAuthorized())
       base.initScreen()
 
-    ::check_tutorial_reward()
+    tryOpenTutorialRewardHandler()
 
     forceUpdateSelUnitInfo()
 
@@ -46,7 +47,6 @@ class ::gui_handlers.MainMenu extends ::gui_handlers.InstantDomination
       ::SessionLobby.leaveRoom()
     }
     ::stop_gui_sound("deb_count") //!!Dirty hack: after inconsistent leave debriefing from code.
-    restoreFocus()
   }
 
   function onEventOnlineInfoUpdate(params)
@@ -95,7 +95,6 @@ class ::gui_handlers.MainMenu extends ::gui_handlers.InstantDomination
   }
 
   function onProfileChange() {}  //changed country
-  function activateSelectedBlock(obj) {}
 
   function onLoadModels()
   {

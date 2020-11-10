@@ -39,13 +39,6 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 
   static renderFlagPID = ::dagui_propid.add_name_id("_renderFlag")
 
-  gamercardTopIds = [ //OVERRIDE
-    "top_menu_panel_place"
-    "gamercard_panel_left"
-    "gamercard_panel_right"
-    function() { return rightSectionHandlerWeak && rightSectionHandlerWeak.getFocusObj() }
-  ]
-
   afkData = null
 
   canQuitByGoBack = false
@@ -84,7 +77,6 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
     initPageSwitch()
     initReinforcementPageSwitch()
     setCurrentSelectedObject(mapObjectSelect.NONE)
-    initFocusArray()
     markMainObjectiveZones()
 
     ::g_operations.forcedFullUpdate()
@@ -209,11 +201,7 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     mainBlockHandler = currentOperationInfoTabType.getMainBlockHandler(operationBlockObj,
-      ::ww_get_player_side(),
-      {
-        onWrapUpCb = onWrapUp.bindenv(this)
-        onWrapDownCb = onWrapDown.bindenv(this)
-      })
+      ::ww_get_player_side(), {})
     if (mainBlockHandler)
       registerSubHandler(mainBlockHandler)
   }
@@ -858,23 +846,6 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     showSidesStrenght()
-  }
-
-  function getMainFocusObj()
-  {
-    return scene.findObject("pages_list")
-  }
-
-  function getMainFocusObj2()
-  {
-    return !mainBlockHandler.isValid() ? null : currentOperationInfoTabType.name == "LOG"
-      ? mainBlockHandler.scene.findObject("ww_log_filters")
-      : mainBlockHandler.scene.findObject("btn_tasks_list")
-  }
-
-  function getMainFocusObj3()
-  {
-    return scene.findObject("reinforcement_pages_list")
   }
 
   function updateAFKData()

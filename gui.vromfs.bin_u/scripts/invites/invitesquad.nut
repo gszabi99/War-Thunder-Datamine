@@ -85,31 +85,34 @@ class ::g_invites_classes.Squad extends ::BaseInvite
       leaderContact.getXboxId(::Callback(@() autoacceptXboxInvite(leaderContact.xboxId), this))
   }
 
-  function autoacceptXboxInvite(leaderXboxId = "")
-  {
+  function autoacceptXboxInvite(leaderXboxId = "") {
     if (!::g_xbox_squad_manager.isPlayerFromXboxSquadList(leaderXboxId))
-      return autorejectXboxInvite()
+      return autorejectInvite()
+
+    checkAutoAcceptInvite()
+  }
+
+  function autoacceptInviteImpl() {
+    if (!_implAccept())
+      autorejectInvite()
+  }
+
+  function autorejectInvite() {
+    if (!::g_squad_utils.canSquad() || !leaderContact.canInvite())
+      reject()
+  }
+
+  function checkAutoAcceptInvite() {
     local invite = this
     ::queues.leaveAllQueues(null, function() {
       if (!invite.isValid())
         return
+
       if (!::g_squad_manager.isInSquad())
-        invite.autoacceptXboxInviteImpl()
+        invite.autoacceptInviteImpl()
       else
-        ::g_squad_manager.leaveSquad(@() invite.isValid() && invite.autoacceptXboxInviteImpl())
+        ::g_squad_manager.leaveSquad(@() invite.isValid() && invite.autoacceptInviteImpl())
     })
-  }
-
-  function autoacceptXboxInviteImpl()
-  {
-    if (!_implAccept())
-      autorejectXboxInvite()
-  }
-
-  function autorejectXboxInvite()
-  {
-    if (!::g_squad_utils.canSquad() || !leaderContact.canInvite())
-      reject()
   }
 
   function isValid()

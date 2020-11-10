@@ -57,7 +57,7 @@ loading_bg
 */
 
 local fileCheck = require("scripts/clientState/fileCheck.nut")
-local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
+local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 
 const MODIFY_UNKNOWN = -1

@@ -3,10 +3,6 @@
   "bin_dump_file": "",
   "mission_settings": {
     "proximity": "airplane",
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 0.0
-    },
     "player": {
       "army": 1,
       "wing": "player"
@@ -17,12 +13,12 @@
     "mission": {
       "level": "levels/berlin.bin",
       "type": "benchmark",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Morning",
       "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "forceSkiesInitialRandomSeed": true,
-      "skiesInitialRandomSeed": 0,
+      "skiesInitialRandomSeed": 1,
       "stars": {
         "latitude": 52.5,
         "longitude": 13.0,
@@ -35,37 +31,17 @@
         "wind_scale": 1.0,
         "max_wind_strength": 6.0,
         "sky": {
-          "mie_height": 0.5,
-          "mieG": 0.5,
-          "betaMScale": 0.7,
-          "clouds_overcast": 0.5
-        },
-        "clouds_gen": {
-          "humidity": 0.39,
-          "persistence": 0.66,
-          "asymmetry": 0.4
-        },
-        "clouds_position": {
-          "start_altitude": 1.5,
-          "thickness": 4.5,
-          "light_extinction": 0.2,
-          "amb_extinction_mul": 0.2
-        },
-        "clouds_render": {
-          "silver_lining": 0.5,
-          "sun_light": 0.5,
-          "ambient": 0.5,
-          "silver_lining_eccentricity": 0.6
+          "mie_height": 0.5
         },
         "strata_clouds": {
           "amount": 0.5,
           "altitude": 10.0
-        },
-        "rain": {
-          "rainFromInvisibleClouds": false,
-          "probability": 0.0
         }
       }
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 10.0
     },
     "spectator_points": []
   },
@@ -142,9 +118,6 @@
               "offset": [0.0,0.0,0.0]
             },
             {
-              "radiusOffset": [0.0,0.0]
-            },
-            {
               "show": true
             },
             {
@@ -160,17 +133,31 @@
               "delay": [1.0,1.0]
             },
             {
-              "target": "explosion01"
-            },
-            {
               "target": "explosion08"
             },
             {
               "target": "explosion10"
+            },
+            {
+              "radiusOffset": [0.0,0.0]
             }
           ]
         },
         {
+          "unitPlayEffect": {
+            "effect_type": "specify",
+            "effect": "ground_model_gray_smoke",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "attach": false,
+            "scale": 2.0,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "explosion01",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
           "missionForceUpdate": {
             "target_type": "isAlive",
             "dt": 0.05,
@@ -181,15 +168,15 @@
         {
           "unitPlayEffect": {
             "effect_type": "specify",
-            "effect": "land_crash_fire",
+            "effect": "land_crash_smoke",
             "offset": [0.0,0.0,0.0],
-            "radiusOffset": [0.0,0.0],
             "show": true,
             "attach": false,
             "scale": 1.0,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "explosion07"
+            "target": "explosion07",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -203,29 +190,29 @@
         {
           "unitPlayEffect": {
             "effect_type": "specify",
-            "effect": "land_crash_fire",
+            "effect": "land_crash_smoke",
             "offset": [0.0,0.0,0.0],
-            "radiusOffset": [0.0,0.0],
             "show": true,
             "attach": false,
             "scale": 1.0,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "explosion11"
+            "target": "explosion11",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
           "unitPlayEffect": {
             "effect_type": "specify",
-            "effect": "crash_smoke_burst_fx",
+            "effect": "ground_model_smoke",
             "offset": [0.0,0.0,0.0],
-            "radiusOffset": [0.0,0.0],
             "show": true,
             "attach": false,
             "scale": 1.0,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "explosion02"
+            "target": "explosion02",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -233,17 +220,29 @@
             "effect_type": "specify",
             "effect": "land_explosion_plane",
             "offset": [0.0,0.0,0.0],
-            "radiusOffset": [0.0,0.0],
             "show": true,
             "attach": true,
             "scale": 1.0,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "explosion00"
+            "target": "explosion00",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
           "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
             {
               "object": "enemy_planes_crowd00"
             },
@@ -272,6 +271,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "airfield_planes",
             "ignoresEnemy": true,
             "speed": 0.0,
@@ -317,6 +320,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "ussr_bombers01",
             "plane": {
               "weaponTriggers": {
@@ -328,6 +335,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "ussr_attackers_03",
             "plane": [
               {
@@ -392,6 +403,10 @@
       "actions": [
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "ussr_bombers01",
             "plane": {
               "weaponTriggers": {
@@ -425,6 +440,18 @@
         },
         {
           "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
             {
               "object": "ussr_bombers01"
             },
@@ -466,6 +493,18 @@
         {
           "unitSetProperties": [
             {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
               "object": "ussr_bombers01"
             },
             {
@@ -483,6 +522,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "ussr_bombers03",
             "plane": {
               "weaponTriggers": {
@@ -494,6 +537,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "ussr_attackers_02",
             "plane": {
               "weaponTriggers": {
@@ -551,6 +598,18 @@
         {
           "unitSetProperties": [
             {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
               "object": "ussr_bombers01"
             },
             {
@@ -568,6 +627,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "ussr_bombers03",
             "plane": {
               "weaponTriggers": {
@@ -602,6 +665,18 @@
         {
           "unitSetProperties": [
             {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
               "object": "ussr_bombers01"
             },
             {
@@ -619,6 +694,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "ussr_attackers_03",
             "plane": {
               "weaponTriggers": {
@@ -676,6 +755,18 @@
         {
           "unitSetProperties": [
             {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
               "object": "ussr_attackers_02"
             },
             {
@@ -694,6 +785,18 @@
         {
           "unitSetProperties": [
             {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
               "object": "ussr_bombers01"
             },
             {
@@ -711,6 +814,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "ussr_bombers03",
             "plane": {
               "weaponTriggers": {
@@ -722,6 +829,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "ussr_attackers_02",
             "plane": {
               "weaponTriggers": {
@@ -755,6 +866,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "ussr_bombers",
             "plane": {
               "weaponTriggers": {
@@ -788,6 +903,18 @@
         },
         {
           "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
             {
               "object": "ussr_bombers02"
             },
@@ -851,6 +978,10 @@
       "actions": [
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "ussr_attackers_02",
             "plane": {
               "weaponTriggers": {
@@ -862,6 +993,18 @@
         },
         {
           "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
             {
               "object": "ussr_bombers02"
             },
@@ -902,6 +1045,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "ussr_attackers_02",
             "plane": {
               "weaponTriggers": {
@@ -913,6 +1060,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "ussr_bombers03",
             "plane": {
               "weaponTriggers": {
@@ -946,6 +1097,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "ussr_bombers03",
             "plane": {
               "weaponTriggers": {
@@ -999,6 +1154,10 @@
       "actions": [
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "ussr_bombers03",
             "plane": {
               "weaponTriggers": {
@@ -1010,6 +1169,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "ussr_attackers_03",
             "plane": [
               {
@@ -1054,6 +1217,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "ussr_bombers03",
             "plane": {
               "weaponTriggers": {
@@ -1088,6 +1255,10 @@
       "actions": [
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "ussr_attackers_01",
             "plane": [
               {
@@ -1115,9 +1286,6 @@
             },
             {
               "offset": [0.0,0.0,0.0]
-            },
-            {
-              "radiusOffset": [0.0,0.0]
             },
             {
               "show": true
@@ -1151,11 +1319,18 @@
             },
             {
               "target": "shell_expl_fx_29"
+            },
+            {
+              "radiusOffset": [0.0,0.0]
             }
           ]
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "friendly_planes_crowd01",
             "engineFire": true,
             "aiEnabled": false
@@ -1167,13 +1342,10 @@
               "effect_type": "specify"
             },
             {
-              "effect": "tank_fire_big"
+              "effect": "ground_model_fire"
             },
             {
               "offset": [0.0,0.0,0.0]
-            },
-            {
-              "radiusOffset": [0.0,0.0]
             },
             {
               "show": true
@@ -1195,11 +1367,18 @@
             },
             {
               "target": "explosion06"
+            },
+            {
+              "radiusOffset": [0.0,0.0]
             }
           ]
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "ussr_attackers_01",
             "plane": {
               "weaponTriggers": {
@@ -1257,6 +1436,18 @@
         {
           "unitSetProperties": [
             {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
               "object": "ussr_attackers_01"
             },
             {
@@ -1274,6 +1465,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "ussr_attackers_02",
             "plane": [
               {
@@ -1301,9 +1496,6 @@
             },
             {
               "offset": [0.0,0.0,0.0]
-            },
-            {
-              "radiusOffset": [0.0,0.0]
             },
             {
               "show": true
@@ -1337,11 +1529,18 @@
             },
             {
               "target": "shell_expl_fx_33"
+            },
+            {
+              "radiusOffset": [0.0,0.0]
             }
           ]
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "friendly_planes_crowd05",
             "plane": {
               "weaponTriggers": {
@@ -1353,6 +1552,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "enemy_planes_crowd03",
             "plane": {
               "weaponTriggers": {
@@ -1389,6 +1592,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "ussr_attackers_01",
             "plane": {
               "weaponTriggers": {
@@ -1404,13 +1611,10 @@
               "effect_type": "specify"
             },
             {
-              "effect": "bomb_ground_explosion_big"
+              "effect": "bomb_expl_1000kg"
             },
             {
               "offset": [0.0,0.0,0.0]
-            },
-            {
-              "radiusOffset": [0.0,0.0]
             },
             {
               "show": true
@@ -1432,6 +1636,9 @@
             },
             {
               "target": "explosion12"
+            },
+            {
+              "radiusOffset": [0.0,0.0]
             }
           ]
         },
@@ -1445,9 +1652,6 @@
             },
             {
               "offset": [0.0,0.0,0.0]
-            },
-            {
-              "radiusOffset": [0.0,0.0]
             },
             {
               "show": true
@@ -1478,11 +1682,18 @@
             },
             {
               "target": "shell_expl_fx_32"
+            },
+            {
+              "radiusOffset": [0.0,0.0]
             }
           ]
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "friendly_planes_crowd05",
             "plane": {
               "weaponTriggers": {
@@ -1494,6 +1705,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "enemy_planes_crowd05",
             "plane": {
               "weaponTriggers": {
@@ -1559,6 +1774,10 @@
       "actions": [
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "ussr_attackers_01",
             "plane": {
               "weaponTriggers": {
@@ -1570,6 +1789,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "ussr_attackers_01",
             "plane": [
               {
@@ -1597,9 +1820,6 @@
             },
             {
               "offset": [0.0,0.0,0.0]
-            },
-            {
-              "radiusOffset": [0.0,0.0]
             },
             {
               "show": true
@@ -1636,11 +1856,18 @@
             },
             {
               "target": "shell_expl_fx_34"
+            },
+            {
+              "radiusOffset": [0.0,0.0]
             }
           ]
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "friendly_planes_crowd03",
             "plane": {
               "weaponTriggers": {
@@ -1652,6 +1879,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "friendly_planes_crowd05",
             "plane": {
               "weaponTriggers": {
@@ -1664,15 +1895,15 @@
         {
           "unitPlayEffect": {
             "effect_type": "specify",
-            "effect": "bomb_ground_explosion_big",
+            "effect": "bomb_expl_1000kg",
             "offset": [0.0,0.0,0.0],
-            "radiusOffset": [0.0,0.0],
             "show": true,
             "attach": false,
             "scale": 1.0,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "explosion13"
+            "target": "explosion13",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -1705,6 +1936,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "ussr_attackers_01",
             "plane": {
               "weaponTriggers": {
@@ -1724,9 +1959,6 @@
             },
             {
               "offset": [0.0,0.0,0.0]
-            },
-            {
-              "radiusOffset": [0.0,0.0]
             },
             {
               "show": true
@@ -1757,6 +1989,9 @@
             },
             {
               "target": "shell_expl_fx_39"
+            },
+            {
+              "radiusOffset": [0.0,0.0]
             }
           ]
         },
@@ -1775,6 +2010,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "enemy_planes_crowd04",
             "plane": [
               {
@@ -1794,6 +2033,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "friendly_planes_crowd02",
             "plane": {
               "weaponTriggers": {
@@ -1805,6 +2048,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "enemy_planes_crowd03",
             "plane": {
               "weaponTriggers": {
@@ -1816,6 +2063,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "friendly_planes_crowd06",
             "plane": {
               "weaponTriggers": {
@@ -1827,6 +2078,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "friendly_planes_crowd06",
             "plane": {
               "weaponTriggers": {
@@ -1839,15 +2094,15 @@
         {
           "unitPlayEffect": {
             "effect_type": "specify",
-            "effect": "bomb_ground_explosion_big",
+            "effect": "bomb_expl_1000kg",
             "offset": [0.0,0.0,0.0],
-            "radiusOffset": [0.0,0.0],
             "show": true,
             "attach": false,
             "scale": 1.0,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "explosion03"
+            "target": "explosion03",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -1909,6 +2164,10 @@
       "actions": [
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "ussr_attackers_01",
             "plane": {
               "weaponTriggers": {
@@ -1928,9 +2187,6 @@
             },
             {
               "offset": [0.0,0.0,0.0]
-            },
-            {
-              "radiusOffset": [0.0,0.0]
             },
             {
               "show": true
@@ -1982,11 +2238,18 @@
             },
             {
               "target": "shell_expl_fx_40"
+            },
+            {
+              "radiusOffset": [0.0,0.0]
             }
           ]
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "enemy_planes_crowd04",
             "plane": {
               "weaponTriggers": {
@@ -1998,6 +2261,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "friendly_planes_crowd02",
             "plane": {
               "weaponTriggers": {
@@ -2009,6 +2276,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "enemy_planes_crowd05",
             "plane": {
               "weaponTriggers": {
@@ -2799,6 +3070,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -2846,6 +3118,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 2,
@@ -2881,6 +3154,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 3,
@@ -2934,6 +3208,7 @@
         "bulletsCount1": 90,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -2981,6 +3256,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -3016,6 +3292,7 @@
           [4533.25,50.1,4655.65]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": "player",
           "object_type": "isPlayer"
         }
@@ -3043,6 +3320,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 5,
@@ -3078,6 +3356,9 @@
           [5523.1,49.1,3957.3]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "enemy_planes_crowd01"
           },
@@ -3121,6 +3402,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3168,6 +3450,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3215,6 +3498,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3262,6 +3546,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3297,6 +3582,9 @@
           [608.3,53.45,9753.65]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "friendly_planes_crowd01"
           },
@@ -3340,6 +3628,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -3387,6 +3676,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -3434,6 +3724,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -3481,6 +3772,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -3528,6 +3820,7 @@
         "bulletsCount1": 100500,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3575,6 +3868,7 @@
         "bulletsCount1": 100500,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3622,6 +3916,7 @@
         "bulletsCount1": 100500,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3669,6 +3964,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 3,
@@ -3722,6 +4018,9 @@
         ],
         "props": [
           {
+            "object_marking": 0
+          },
+          {
             "squad_members": "ussr_attackers_01"
           },
           {
@@ -3755,6 +4054,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 3,
@@ -3819,6 +4119,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 3,
@@ -3872,6 +4173,9 @@
         ],
         "props": [
           {
+            "object_marking": 0
+          },
+          {
             "squad_members": "ussr_bombers01"
           },
           {
@@ -3905,6 +4209,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -3952,6 +4257,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,

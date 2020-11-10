@@ -32,7 +32,6 @@ class ::gui_handlers.WwRewards extends ::gui_handlers.BaseGuiHandlerWT
 
     showSceneBtn("nav-help", true)
     updateRerwardsStartTime()
-    initFocusArray()
 
     rewards = []
     foreach (rewardBlk in rewardsBlk)
@@ -78,6 +77,7 @@ class ::gui_handlers.WwRewards extends ::gui_handlers.BaseGuiHandlerWT
         contentIcon = false
         hasTimer = false
         addItemName = false
+        interactive = true
       }))
 
     return ::handyman.renderCached("gui/items/item", view)
@@ -195,11 +195,6 @@ class ::gui_handlers.WwRewards extends ::gui_handlers.BaseGuiHandlerWT
   function onEventItemsShopUpdate(obj)
   {
     updateRewardsList()
-  }
-
-  function getMainFocusObj()
-  {
-    return "rewards_list"
   }
 }
 

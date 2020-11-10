@@ -1097,8 +1097,10 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -1120,8 +1122,9 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
         "fireParamsPreset": "fuel_exterior",
         "fuel_tank_exterior_r_01_dm": [],
         "fuel_tank_exterior_r_02_dm": [],
@@ -2293,6 +2296,120 @@
     }
   },
   {
+    "PhysSys": [
+      {
+        "group": {
+          "find": "^bone_suspension_(\\w)_(\\d+)$",
+          "points": {
+            "lever": {
+              "name": "bone_suspension_$1_$2",
+              "limitMin": [0.0,0.0,0.0],
+              "limitMax": [0.0,0.0,0.0]
+            },
+            "suspension_01_01": {
+              "name": "bone_suspension_$1_$2_01",
+              "limitMin": [-0.5,-0.5,0.0],
+              "limitMax": [0.5,0.5,0.0]
+            },
+            "wheel_01": {
+              "searchChildren": {
+                "parent": "suspension_01_01",
+                "find": "bone_wheel_",
+                "occurence": 1,
+                "limitMin": [-1.0,-1.0,0.0],
+                "limitMax": [1.0,1.0,0.0]
+              }
+            },
+            "wheel_02": {
+              "searchChildren": {
+                "find": "bone_wheel_",
+                "parent": "suspension_01_01",
+                "occurence": 2,
+                "limitMin": [-1.0,-1.0,0.0],
+                "limitMax": [1.0,1.0,0.0]
+              }
+            },
+            "suspension_01_02": {
+              "name": "suspension_$1_$2_02",
+              "limitMin": [-0.5,0.0,0.0],
+              "limitMax": [0.5,0.0,0.0]
+            }
+          },
+          "constraints": [
+            {
+              "projection": {
+                "point": "suspension_01_01",
+                "from": "wheel_01",
+                "to": "wheel_02",
+                "moveEdge": true
+              }
+            },
+            {
+              "edge": {
+                "from": "lever",
+                "to": "suspension_01_01",
+                "moveSecond": false
+              }
+            },
+            {
+              "edge": {
+                "moveSecond": false,
+                "from": "suspension_01_02",
+                "to": "suspension_01_01",
+                "moveOnly": true
+              }
+            },
+            {
+              "direction": {
+                "moveNodes": true,
+                "rotateSecond": false,
+                "from": "wheel_01",
+                "to": "wheel_02",
+                "point": "suspension_01_01"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "group": {
+          "find": "^bone_suspension_tb_(._\\d\\d)$",
+          "points": {
+            "suspension": {
+              "limitMin": [0.0,0.0,0.0],
+              "limitMax": [0.0,0.0,0.0],
+              "name": "bone_suspension_tb_$1"
+            },
+            "wheel": {
+              "searchChildren": {
+                "occurence": 1,
+                "limitMin": [-1000.0,-1000.0,0.0],
+                "limitMax": [1000.0,1000.0,0.0],
+                "parent": "suspension",
+                "find": "bone_wheel_"
+              }
+            },
+            "suspension_01_02": {
+              "searchChildren": {
+                "occurence": 1,
+                "limitMin": [-0.5,0.0,0.0],
+                "limitMax": [-0.5,0.0,0.0],
+                "parent": "suspension",
+                "find": "suspension_tb_"
+              }
+            }
+          },
+          "constraints": {
+            "edge": {
+              "from": "suspension",
+              "to": "wheel"
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
     "ammo": {
       "combustionTime": 10.0,
       "detonateProb": 0.15,
@@ -2801,6 +2918,15 @@
       },
       {
         "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -2822,7 +2948,7 @@
     "cockpit": {
       "zoomOutFov": 40.0,
       "zoomInFov": 21.0,
-      "sightFov": 25.0,
+      "sightFov": 20.0,
       "sightName": "default_tank_spg",
       "openedCockpit": true,
       "headPos": [0.0,3.3,-6.0],

@@ -1,127 +1,185 @@
-{
-  "model": "bunker_atlantic_wall_a",
-  "collisionSphere0": [0.0,-1.5,0.0,5.0],
-  "collisionSphere1": [5.0,2.0,0.0,1.0],
-  "timeToFire": 5.0,
-  "damageableByGun": false,
-  "maxFwdSpeed": 0.0,
-  "maxRevSpeed": 0.0,
-  "maxAngSpeed": 0.0,
-  "maxAccel": 0.0,
-  "maxDecel": 0.0,
-  "maxAngAccel0": 0.0,
-  "maxAngAccelV": 0.0,
-  "maxAngAccel": 0.0,
-  "groundNormSmoothViscosity": 0.1,
-  "subclass": "fortification",
-  "onRadarAs": "aam",
-  "bulletHitFx": "ground_model_hit",
-  "partDamageFx": "part_damage",
-  "explosionFx": "ground_model_expl",
-  "fireFx": "ground_model_fire",
-  "toGround": true,
-  "expClass": "exp_ca_ship",
-  "attach": {
-    "inc_soldier00": "uk_middle_gunner",
-    "inc_soldier01": "uk_young_soldier2",
-    "inc_soldier02": "uk_young_soldier2",
-    "inc_driver": "uk_middle_soldier"
+[
+  {
+    "model": "bunker_atlantic_wall_a"
   },
-  "DamageParts": {
-    "armor40_tanks": {
-      "body_dm": {
-        "hp": 3000.0
+  {
+    "collisionSphere0": [0.0,-1.5,0.0,5.0]
+  },
+  {
+    "collisionSphere1": [5.0,2.0,0.0,1.0]
+  },
+  {
+    "timeToFire": 5.0
+  },
+  {
+    "damageableByGun": false
+  },
+  {
+    "maxFwdSpeed": 0.0
+  },
+  {
+    "maxRevSpeed": 0.0
+  },
+  {
+    "maxAngSpeed": 0.0
+  },
+  {
+    "maxAccel": 0.0
+  },
+  {
+    "maxDecel": 0.0
+  },
+  {
+    "maxAngAccel0": 0.0
+  },
+  {
+    "maxAngAccelV": 0.0
+  },
+  {
+    "maxAngAccel": 0.0
+  },
+  {
+    "groundNormSmoothViscosity": 0.1
+  },
+  {
+    "fireFx": "fire_ground_black_fx"
+  },
+  {
+    "subclass": "fortification"
+  },
+  {
+    "onRadarAs": "aam"
+  },
+  {
+    "bulletHitFx": "ground_model_hit"
+  },
+  {
+    "partDamageFx": "part_damage"
+  },
+  {
+    "explosionFx": "ground_model_expl"
+  },
+  {
+    "fireFx": "ground_model_fire"
+  },
+  {
+    "toGround": true
+  },
+  {
+    "expClass": "exp_ca_ship"
+  },
+  {
+    "attach": {
+      "inc_soldier00": "uk_middle_gunner",
+      "inc_soldier01": "uk_young_soldier2",
+      "inc_soldier02": "uk_young_soldier2",
+      "inc_driver": "uk_middle_soldier"
+    }
+  },
+  {
+    "DamageParts": {
+      "armor40_tanks": {
+        "body_dm": {
+          "hp": 3000.0
+        }
       }
     }
   },
-  "DamageEffects": {
-    "part": {
-      "name": "body_dm",
-      "onHit": {
-        "smoke": 0.01,
-        "fire": 0.01
+  {
+    "DamageEffects": {
+      "part": {
+        "name": "body_dm",
+        "onHit": {
+          "smoke": 0.01,
+          "fire": 0.01
+        },
+        "onKill": {
+          "expl": 1.0
+        }
+      }
+    }
+  },
+  {
+    "explosion": {
+      "expl": {
+        "node": "body",
+        "partNo": 0,
+        "timeToExplode": 0.5,
+        "postEffectName": "smoke_ground_black_fx",
+        "explosionEffectName": "explosion_midair_medium",
+        "timeForPostEffect": 60.0,
+        "preScale": 1.0,
+        "postScale": 1.0
+      }
+    }
+  },
+  {
+    "class_tags": {
+      "mediterran": true,
+      "westernfront": true,
+      "easternfront": true,
+      "country_britain": true,
+      "anti_tank": true,
+      "year1940": true,
+      "year1941": true
+    }
+  },
+  {
+    "weapon": [
+      {
+        "trigger": "gunner0"
       },
-      "onKill": {
-        "expl": 1.0
+      {
+        "blk": "gameData/Weapons/navalModels_weapons/102mm_45_4in_qf_mark5_naval_user_cannon.blk"
+      },
+      {
+        "emitter": "gun1"
+      },
+      {
+        "flash": "flame1"
+      },
+      {
+        "defaultYaw": 0.0
+      },
+      {
+        "defaultPitch": 10.0
+      },
+      {
+        "useGunnerTargetingQuality": false
+      },
+      {
+        "defaultYaw": 0.0
+      },
+      {
+        "defaultPitch": 0.0
+      },
+      {
+        "shotFreq": 0.218
+      },
+      {
+        "speedYaw": 15.0
+      },
+      {
+        "speedPitch": 10.0
+      },
+      {
+        "fireConeAngle": 1.0
+      },
+      {
+        "bullets": 150
+      },
+      {
+        "turret": {
+          "head": "turret1",
+          "gun": "gun1"
+        }
+      },
+      {
+        "limits": {
+          "yaw": [-35.0,35.0],
+          "pitch": [-5.0,10.0]
+        }
       }
-    }
-  },
-  "explosion": {
-    "expl": {
-      "node": "body",
-      "partNo": 0,
-      "timeToExplode": 1.0,
-      "preEffectName": "ground_model_fire",
-      "postEffectName": "ground_model_gray_smoke",
-      "explosionEffectName": "ground_model_expl",
-      "timeForPostEffect": 450.0,
-      "preScale": 4.0,
-      "postScale": 4.0
-    }
-  },
-  "class_tags": {
-    "mediterran": true,
-    "westernfront": true,
-    "easternfront": true,
-    "country_britain": true,
-    "anti_tank": true,
-    "year1940": true,
-    "year1941": true
-  },
-  "weapon": [
-    {
-      "trigger": "gunner0"
-    },
-    {
-      "blk": "gameData/Weapons/navalModels_weapons/102mm_45_4in_qf_mark5_naval_user_cannon.blk"
-    },
-    {
-      "emitter": "gun1"
-    },
-    {
-      "flash": "flame1"
-    },
-    {
-      "defaultYaw": 0.0
-    },
-    {
-      "defaultPitch": 10.0
-    },
-    {
-      "useGunnerTargetingQuality": false
-    },
-    {
-      "defaultYaw": 0.0
-    },
-    {
-      "defaultPitch": 0.0
-    },
-    {
-      "shotFreq": 0.218
-    },
-    {
-      "speedYaw": 15.0
-    },
-    {
-      "speedPitch": 10.0
-    },
-    {
-      "fireConeAngle": 1.0
-    },
-    {
-      "bullets": 150
-    },
-    {
-      "turret": {
-        "head": "turret1",
-        "gun": "gun1"
-      }
-    },
-    {
-      "limits": {
-        "yaw": [-35.0,35.0],
-        "pitch": [-5.0,10.0]
-      }
-    }
-  ]
-}
+    ]
+  }
+]

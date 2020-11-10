@@ -1,0 +1,21 @@
+slotbarDiv {
+  width:1@slotbarWidthFull;
+}
+
+slotbarNest > slotbarDiv,
+optionlist_container > slotbarDiv  {
+  width:1@slotbarWidthFullExt;
+}
+
+navBar > slotbarDiv {
+  pos:50%sw-50%w, sh-h-1@slotbarOffset;
+  position:root;
+}
+
+slotbarTop {
+  background-color:@slotbarTopBgColor;
+}
+
+slotbarTop[offset=yes] {
+  padding-left:1@slotbarShopBtnOffset;
+}

@@ -4,8 +4,6 @@ local MAX_SLOT_COUNT_Y = 6
 local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType              = handlerType.MODAL
-  focusArray           = [ "units_list", "countries_boxes", "units_boxes" ]
-  currentFocusItem     = 0
   unitsFilter          = null
   units                = null
   filteredUnits        = null
@@ -41,7 +39,6 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   {
     local listObj = scene.findObject("units_list")
     restoreLastUnitSelection(listObj)
-    initFocusArray()
   }
 
   getWndTitle = @() ::loc(wndTitleLocId)
@@ -240,7 +237,6 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     countries[obj.id].value = obj.getValue()
-    obj.select()
     fillUnitsList()
   }
 
@@ -250,7 +246,6 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     unitsTypes[obj.id].value = obj.getValue()
-    obj.select()
     fillUnitsList()
   }
 
@@ -258,9 +253,6 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!::check_obj(obj))
       return
-
-    if (!::show_console_buttons || !needSkipFocus)
-      obj.select()
 
     lastSelectedUnit = null
 
@@ -271,7 +263,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
       if (::check_obj(slot))
       {
         if (!::show_console_buttons)
-          openUnitActionsList(slot, true, true)
+          openUnitActionsList(slot, true)
 
         lastSelectedUnit = ::getAircraftByName(slot.id)
       }
@@ -285,7 +277,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     if (!::check_obj(obj))
       return
 
-    openUnitActionsList(obj.getParent().getParent(), false, true)
+    openUnitActionsList(obj.getParent().getParent(), true)
   }
 
   function onEventUnitResearch(p)
@@ -318,13 +310,6 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   function onEventUnitRepaired(p)
   {
     checkUnitItemAndUpdate(p?.unit ?? null)
-  }
-
-  function onWrapDown(obj)
-  {
-    if(obj.isEqual(scene.findObject("units_boxes")))
-      scene.findObject("units_list").select()
-    base.onWrapDown(obj)
   }
 }
 

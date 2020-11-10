@@ -3,6 +3,7 @@
     id:t='shop_tier_<<tierNum>>'
     size:t='<<w>>, <<h>>'
     pos:t='<<x>>, <<y>>'
+    position:t='absolute'
     type:t='<<tierType>>'
     tooltip:t=''
   }

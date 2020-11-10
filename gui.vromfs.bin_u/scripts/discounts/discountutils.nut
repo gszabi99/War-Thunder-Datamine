@@ -1,4 +1,5 @@
-local personalDiscount = ::require("scripts/discounts/personalDiscount.nut")
+local { get_blk_by_path_array } = require("sqStdLibs/helpers/datablockUtils.nut")
+local personalDiscount = require("scripts/discounts/personalDiscount.nut")
 
 //you can use array in any path part - in result will be max discount from them.
 ::getDiscountByPath <- function getDiscountByPath(path, blk = null, idx = 0)
@@ -9,7 +10,7 @@ local personalDiscount = ::require("scripts/discounts/personalDiscount.nut")
     maxDiscount = 0
   }
   ::invoke_multi_array(path, function (arr) {
-    local block = ::get_blk_by_path_array(arr, blk)
+    local block = get_blk_by_path_array(arr, blk)
     local discountValue = ::getTblValue("discount", block, 0)
     result.maxDiscount = ::max(result.maxDiscount, discountValue)
     local personalDiscountValue = personalDiscount.getDiscountByPath(arr)

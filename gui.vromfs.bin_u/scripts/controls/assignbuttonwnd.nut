@@ -37,7 +37,7 @@ class ::gui_handlers.assignModalButtonWindow extends ::gui_handlers.BaseGuiHandl
         local btnId = obj["button" + i].tointeger();
 
         // Ignore zero scancode from XBox keyboard driver
-        if (devId == STD_KEYBOARD_DEVICE_ID && btnId == 0)
+        if (devId == ::STD_KEYBOARD_DEVICE_ID && btnId == 0)
           continue
 
         dagor.debug("onButtonEntered "+i+" "+devId+" "+btnId);
@@ -68,7 +68,7 @@ class ::gui_handlers.assignModalButtonWindow extends ::gui_handlers.BaseGuiHandl
         btnId = btnId.tointeger()
 
         // Ignore zero scancode from XBox keyboard driver
-        if (devId == STD_KEYBOARD_DEVICE_ID && btnId == 0)
+        if (devId == ::STD_KEYBOARD_DEVICE_ID && btnId == 0)
           continue
 
         if (numButtons != 0)

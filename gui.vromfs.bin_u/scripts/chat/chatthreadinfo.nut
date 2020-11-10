@@ -1,10 +1,10 @@
 local platformModule = require("scripts/clientState/platform.nut")
-local playerContextMenu = ::require("scripts/user/playerContextMenu.nut")
+local playerContextMenu = require("scripts/user/playerContextMenu.nut")
 local { isCrossNetworkMessageAllowed } = require("scripts/chat/chatStates.nut")
 
 const MAX_THREAD_LANG_VISIBLE = 3
 
-class ChatThreadInfo
+::ChatThreadInfo <- class
 {
   roomId = "" //threadRoomId
   lastUpdateTime = -1
@@ -277,14 +277,5 @@ class ChatThreadInfo
   }
 
   //It's like hidden, but must reveal when unhidden
-  isConcealed = function() {
-    if (!isCrossNetworkMessageAllowed(ownerNick))
-      return true
-
-    local contact = ::getContact(ownerUid, ownerNick, ownerClanTag)
-    if (contact)
-      return contact.isBlockedMe || contact.isInBlockGroup()
-
-    return false
-  }
+  isConcealed = @() !isCrossNetworkMessageAllowed(ownerNick)
 }

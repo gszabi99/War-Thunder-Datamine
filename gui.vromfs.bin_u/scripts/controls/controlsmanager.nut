@@ -113,7 +113,7 @@ local { isPlatformSony } = require("scripts/clientState/platform.nut")
       })
 
     if (getCurPreset().updateDeviceMapping(realMapping))
-      ::broadcastEvent("ControlsMappingChanged", realMapping)
+      ::broadcastEvent("ControlsPresetChanged")
   }
 
   cachedShortcutGroupMap = null

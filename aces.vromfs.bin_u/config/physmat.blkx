@@ -97,8 +97,8 @@
       "dustFactor": -30.0,
       "mudFactor": -10.0
     },
-    "beton": {
-      "bf_class": "beton",
+    "concrete": {
+      "bf_class": "concrete",
       "color": "#ffff00c8",
       "isWater": false,
       "shakeMultiplier": 3.0,
@@ -107,9 +107,9 @@
       "explosionPatchTexture": "explosion_patch_rocks_n",
       "explosionPatchTexcoord": [0.0,0.0,1.0,1.0],
       "explosionWreckage": "wall_expl",
-      "explosionFx": "beton_explosion_fx",
+      "explosionFx": "buildings_explosion_fx",
       "hitFxType": "ad_dust_stucco",
-      "hitFxScale": [0.3,0.5],
+      "hitFxScale": [1.3,2.0],
       "damage_k": 0.3,
       "trackDirtSpawnRateMult": 0.0,
       "tankTracksTexId": 3,
@@ -133,7 +133,7 @@
       "mudFactor": 0.3,
       "iak": 1.0,
       "damage_k": 0.3,
-      "explMat": "default",
+      "explMat": "bricks_red",
       "explosionWreckage": "rocks_expl",
       "explosionFx": "ad_dust_red_bricks",
       "breachMat": "stone",
@@ -159,10 +159,10 @@
       "explosionWreckage": "bricks_expl",
       "explosionFx": "buildings_explosion_fx",
       "hitFxType": "ad_dust_stucco",
-      "hitFxScale": [0.3,0.5],
+      "hitFxScale": [1.3,2.5],
       "damage_k": 0.3,
       "tankTracksTexId": 3,
-      "explMat": "default"
+      "explMat": "stone"
     },
     "fabric": {
       "bf_class": "fabric",
@@ -211,7 +211,38 @@
       "mudFactor": 0.0,
       "iak": 1.0,
       "damage_k": 0.0,
-      "explMat": "default",
+      "explMat": "glass",
+      "explosionWreckage": "rocks_expl",
+      "explosionFx": "ad_explosion_glass",
+      "breachMat": "glass",
+      "hitFxType": "ad_explosion_glass",
+      "hitFxScale": [0.15,0.3],
+      "shakeProps": {
+        "period": [0.35,0.7],
+        "power": [1.0,1.0],
+        "mult": [0.5,0.2]
+      },
+      "arcadeProps": {
+        "boost": 1.0
+      }
+    },
+    "glass_small": {
+      "bf_class": "glass",
+      "color": "#49525300",
+      "isWater": false,
+      "isUnit": false,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "resistanceK": 0.0003,
+      "fk": 0.65,
+      "rollingFrictionK": 0.09,
+      "trackDirtSpawnRateMult": 0.0,
+      "tankTracksTexId": 3,
+      "dustFactor": 0.0,
+      "mudFactor": 0.0,
+      "iak": 1.0,
+      "damage_k": 0.0,
+      "explMat": "glass_small",
       "explosionWreckage": "rocks_expl",
       "explosionFx": "ad_explosion_glass",
       "breachMat": "glass",
@@ -242,7 +273,7 @@
       "mudFactor": 0.0,
       "iak": 1.0,
       "damage_k": 0.3,
-      "explMat": "default",
+      "explMat": "steel",
       "explosionWreckage": "rocks_expl",
       "explosionFx": "ad_metal",
       "breachMat": "metal",
@@ -273,7 +304,7 @@
       "mudFactor": 0.3,
       "iak": 1.0,
       "damage_k": 0.3,
-      "explMat": "default",
+      "explMat": "stone",
       "explosionWreckage": "rocks_expl",
       "explosionFx": "ad_dust_snow",
       "breachMat": "stone",
@@ -361,8 +392,8 @@
       "shakeMultiplier": 1.0,
       "frictionMultiplier": 1.0,
       "explosionPatchShader": "explosion_patch_color",
-      "explosionPatchTexture": "explosion_patch_tank_n",
-      "explosionPatchColorTex": "explosion_patch_tank_c",
+      "explosionPatchTexture": "explosion_patch_ps_n",
+      "explosionPatchColorTex": "explosion_patch_ps_c",
       "explosionPatchTexcoord": [0.0,0.61,0.39,1.0],
       "sizeInCalibers": 2.0
     },
@@ -373,8 +404,8 @@
       "shakeMultiplier": 1.0,
       "frictionMultiplier": 1.0,
       "explosionPatchShader": "explosion_patch_color",
-      "explosionPatchTexture": "explosion_patch_tank_n",
-      "explosionPatchColorTex": "explosion_patch_tank_c",
+      "explosionPatchTexture": "explosion_patch_ps_n",
+      "explosionPatchColorTex": "explosion_patch_ps_c",
       "explosionPatchTexcoord": [0.39,0.61,0.61,0.825],
       "sizeInCalibers": 3.0
     },
@@ -385,8 +416,8 @@
       "shakeMultiplier": 1.0,
       "frictionMultiplier": 1.0,
       "explosionPatchShader": "explosion_patch_color",
-      "explosionPatchTexture": "explosion_patch_tank_n",
-      "explosionPatchColorTex": "explosion_patch_tank_c",
+      "explosionPatchTexture": "explosion_patch_ps_n",
+      "explosionPatchColorTex": "explosion_patch_ps_c",
       "explosionPatchTexcoord": [0.0,0.0,0.61,0.61],
       "sizeInCalibers": 2.5
     },
@@ -397,8 +428,8 @@
       "shakeMultiplier": 1.0,
       "frictionMultiplier": 1.0,
       "explosionPatchShader": "explosion_patch_color",
-      "explosionPatchTexture": "explosion_patch_tank_n",
-      "explosionPatchColorTex": "explosion_patch_tank_c",
+      "explosionPatchTexture": "explosion_patch_ps_n",
+      "explosionPatchColorTex": "explosion_patch_ps_c",
       "explosionPatchTexcoord": [0.61,0.43,0.735,0.555],
       "sizeInCalibers": 1.5
     },
@@ -409,8 +440,8 @@
       "shakeMultiplier": 1.0,
       "frictionMultiplier": 1.0,
       "explosionPatchShader": "explosion_patch_color",
-      "explosionPatchTexture": "explosion_patch_tank_n",
-      "explosionPatchColorTex": "explosion_patch_tank_c",
+      "explosionPatchTexture": "explosion_patch_ps_n",
+      "explosionPatchColorTex": "explosion_patch_ps_c",
       "explosionPatchTexcoord": [0.735,0.43,1.0,0.69],
       "sizeInCalibers": 1.5
     },
@@ -421,8 +452,8 @@
       "shakeMultiplier": 1.0,
       "frictionMultiplier": 1.0,
       "explosionPatchShader": "explosion_patch_color",
-      "explosionPatchTexture": "explosion_patch_tank_n",
-      "explosionPatchColorTex": "explosion_patch_tank_c",
+      "explosionPatchTexture": "explosion_patch_ps_n",
+      "explosionPatchColorTex": "explosion_patch_ps_c",
       "explosionPatchTexcoord": [0.61,0.0,1.0,0.43],
       "sizeInCalibers": 1.5
     },
@@ -737,7 +768,7 @@
       "explosionPatchTexture": "explosion_patch_rocks_n",
       "explosionPatchTexcoord": [0.0,0.0,1.0,1.0],
       "explosionWreckage": "wall_expl",
-      "explosionFx": "beton_explosion_fx",
+      "explosionFx": "concrete_explosion_fx",
       "damage_k": 0.3,
       "explMat": "default"
     },
@@ -754,7 +785,7 @@
       "explosionPatchTexture": "explosion_patch_rocks_n",
       "explosionPatchTexcoord": [0.0,0.0,1.0,1.0],
       "explosionWreckage": "wall_expl",
-      "explosionFx": "beton_explosion_fx",
+      "explosionFx": "concrete_explosion_fx",
       "damage_k": 0.3,
       "explMat": "default"
     }
@@ -802,7 +833,7 @@
         "fk": 0.8,
         "rollingFrictionK": 0.05
       },
-      "beton": {
+      "concrete": {
         "fk": 0.8,
         "rollingFrictionK": 0.05
       },
@@ -884,7 +915,7 @@
         "fk": 1.0,
         "rollingFrictionK": 0.0166
       },
-      "beton": {
+      "concrete": {
         "fk": 0.8,
         "rollingFrictionK": 0.0166
       },

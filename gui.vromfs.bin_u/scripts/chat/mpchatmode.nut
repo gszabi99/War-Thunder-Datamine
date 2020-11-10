@@ -1,4 +1,4 @@
-local enums = ::require("sqStdlibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 enum mpChatModeSort {
@@ -16,7 +16,7 @@ enum mpChatModeSort {
 }
 
 ::g_mp_chat_mode.template <- {
-  id = ::CHAT_MODE_ALL
+  id = CHAT_MODE_ALL
   name = ""
   sortOrder = mpChatModeSort.ALL
   textColor = ""
@@ -28,7 +28,7 @@ enum mpChatModeSort {
 
 enums.addTypesByGlobalName("g_mp_chat_mode", {
   ALL = {
-    id = ::CHAT_MODE_ALL
+    id = CHAT_MODE_ALL
     name = "all"
     sortOrder = mpChatModeSort.ALL
     textColor = "@chatTextAllColor"
@@ -37,7 +37,7 @@ enums.addTypesByGlobalName("g_mp_chat_mode", {
   }
 
   TEAM = {
-    id = ::CHAT_MODE_TEAM
+    id = CHAT_MODE_TEAM
     name = "team"
     sortOrder = mpChatModeSort.TEAM
     textColor = "@chatTextTeamColor"
@@ -46,7 +46,7 @@ enums.addTypesByGlobalName("g_mp_chat_mode", {
   }
 
   SQUAD = {
-    id = ::CHAT_MODE_SQUAD
+    id = CHAT_MODE_SQUAD
     name = "squad"
     sortOrder = mpChatModeSort.SQUAD
     textColor = "@chatTextSquadColor"
@@ -55,7 +55,7 @@ enums.addTypesByGlobalName("g_mp_chat_mode", {
   }
 
   PRIVATE = { //dosnt work atm, but still exist in enum
-    id = ::CHAT_MODE_PRIVATE
+    id = CHAT_MODE_PRIVATE
     name = "private"
     sortOrder = mpChatModeSort.PRIVATE
     textColor = "@chatTextPrivateColor"

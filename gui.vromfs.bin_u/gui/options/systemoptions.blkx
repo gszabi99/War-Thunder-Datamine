@@ -4,6 +4,9 @@
       "width": "pw"
     },
     {
+      "padding": "1@blockInterval"
+    },
+    {
       "flow": "vertical"
     },
     {
@@ -22,12 +25,7 @@
             "id": "sysopt_top_left",
             "class": "optionsTable",
             "disablePosition": "yes",
-            "width": "33%pw",
-            "mouse-focusable": "yes",
-            "cur_col": "1",
-            "cur_row": "0",
-            "num_rows": "-1",
-            "optionsParallellTable": "0"
+            "width": "33%pw"
           }
         },
         {
@@ -35,12 +33,7 @@
             "id": "sysopt_top_middle",
             "class": "optionsTable",
             "disablePosition": "yes",
-            "width": "33%pw",
-            "mouse-focusable": "yes",
-            "cur_col": "1",
-            "cur_row": "0",
-            "num_rows": "-1",
-            "optionsParallellTable": "1"
+            "width": "33%pw"
           }
         },
         {
@@ -48,12 +41,7 @@
             "id": "sysopt_top_right",
             "class": "optionsTable",
             "disablePosition": "yes",
-            "width": "33%pw",
-            "mouse-focusable": "yes",
-            "cur_col": "1",
-            "cur_row": "0",
-            "num_rows": "-1",
-            "optionsParallellTable": "2"
+            "width": "33%pw"
           }
         }
       ]
@@ -61,10 +49,13 @@
     {
       "HorizontalListBox": {
         "id": "sysopt_graphicsQuality",
+        "type": "transparent",
         "pos": "50%pw-50%w, 0",
         "position": "relative",
         "margin": "0, 0.015@scrn_tgt",
-        "on_select": "onSystemOptionChanged"
+        "move-only-hover": "yes",
+        "on_select": "onSystemOptionChanged",
+        "navigatorShortcuts": "yes"
       }
     },
     {
@@ -78,11 +69,8 @@
             "class": "optionsTable",
             "disablePosition": "yes",
             "width": "50%pw",
-            "mouse-focusable": "yes",
-            "cur_col": "1",
-            "cur_row": "0",
-            "num_rows": "-1",
-            "optionsParallellTable": "0"
+            "behavior": "PosOptionsNavigator",
+            "navigatorShortcuts": "yes"
           }
         },
         {
@@ -91,11 +79,8 @@
             "class": "optionsTable",
             "disablePosition": "yes",
             "width": "50%pw",
-            "mouse-focusable": "yes",
-            "cur_col": "1",
-            "cur_row": "0",
-            "num_rows": "-1",
-            "optionsParallellTable": "1"
+            "behavior": "PosOptionsNavigator",
+            "navigatorShortcuts": "yes"
           }
         }
       ]

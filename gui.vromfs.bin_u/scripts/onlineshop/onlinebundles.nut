@@ -1,4 +1,4 @@
-local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
+local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 local { ps4RegionName, isPlatformPS4, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 local cache = persist("cache", @() {})

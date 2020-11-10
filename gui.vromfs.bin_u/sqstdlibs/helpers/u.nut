@@ -2,15 +2,14 @@
  * u is a set of utility functions, trashbin
   it also provide export for underscore.nut for legacy reasons
  */
-
+local { DataBlock } = require("datablockWrapper.nut")
 local underscore = require("std/underscore.nut")
 local functools = require("std/functools.nut")
 local isTable = @(v) typeof(v)=="table"
 local isArray = @(v) typeof(v)=="array"
 local isString = @(v) typeof(v)=="string"
 local isFunction = @(v) typeof(v)=="function"
-
-local isDataBlock = @(v) v instanceof ::DataBlock
+local isDataBlock = @(v) v instanceof DataBlock
 
 local rootTable = ::getroottable()
 local rnd = rootTable?.math?.rnd
@@ -134,6 +133,11 @@ local function registerClass(className, classRef, isEqualFunc = null, isEmptyFun
     customIsEmpty[classRef] <- isEmptyFunc
 }
 
+local uIsEqual = underscore.isEqual
+local function isEqual(val1, val2){
+  return uIsEqual(val1, val2, customIsEqual)
+}
+
 /*
   try to register standard dagor classes
 */
@@ -227,7 +231,7 @@ local function copy(obj) {
 
   //!!FIX ME: Better to make clone method work with datablocks, or move it to custom methods same as isEqual
   if ("isDataBlock" in this && isDataBlock(obj)) {
-    local res = ::DataBlock()
+    local res = DataBlock()
     res.setFrom(obj)
     local name = obj.getBlockName()
     if (name)
@@ -388,10 +392,13 @@ local function chooseRandomNoRepeat(arr, prevIdx) {
   return arr[nextIdx]
 }
 
-
-local uIsEqual = underscore.isEqual
-local function isEqual(val1, val2){
-  return uIsEqual(val1, val2, customIsEqual)
+/**
+*  Wraps the @index (any integer number) in the @length of the array.
+*  Returns the adjusted index in array range, keeping its offset.
+*  In case of zero @length returns -1
+*/
+local function wrapIdxInArrayLen(index, length) {
+  return length > 0 ? (((index % length) + length) % length) : -1
 }
 
 /**
@@ -425,6 +432,7 @@ local export = underscore.__merge({
   appendOnce = appendOnce
   chooseRandom = chooseRandom
   chooseRandomNoRepeat = chooseRandomNoRepeat
+  wrapIdxInArrayLen = wrapIdxInArrayLen
   shuffle = shuffle
   min = getMin
   max = getMax

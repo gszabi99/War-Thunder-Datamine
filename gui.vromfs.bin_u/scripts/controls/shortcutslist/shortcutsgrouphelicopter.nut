@@ -1,4 +1,4 @@
-local globalEnv = require_native("globalEnv")
+local globalEnv = ::require_native("globalEnv")
 local controlsOperations = require("scripts/controls/controlsOperations.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { isWheelmenuAxisConfigurable } = require("scripts/wheelmenu/multifuncmenuShared.nut")
@@ -8,7 +8,7 @@ return [
   {
     id = "ID_HELICOPTER_CONTROL_HEADER"
     type = CONTROL_TYPE.HEADER
-    unitType = unitTypes.HELICOPTER
+    unitTypes = [ unitTypes.HELICOPTER ]
     isHelpersVisible = true
     needShowInHelp = true
   }
@@ -256,6 +256,11 @@ return [
     checkAssign = false
   }
   {
+    id = "ID_RESIZE_SECONDARY_WEAPON_SERIES_HELICOPTER"
+    showFunc = @() ::has_feature("WeaponCycleTrigger")
+    checkAssign = false
+  }
+  {
     id = "ID_TOGGLE_LASER_DESIGNATOR_HELICOPTER"
     checkGroup = ctrlGroups.HELICOPTER
     checkAssign = false
@@ -289,6 +294,12 @@ return [
   }
   {
     id = "ID_SENSOR_TARGET_LOCK_HELICOPTER"
+    checkGroup = ctrlGroups.HELICOPTER
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_IRCM_SWITCH_HELICOPTER"
     checkGroup = ctrlGroups.HELICOPTER
     checkAssign = false
     needShowInHelp = true
@@ -346,7 +357,6 @@ return [
     id = "atgm_aim_zoom_sens_helicopter"
     optionType = ::USEROPT_ATGM_AIM_ZOOM_SENS_HELICOPTER
     type = CONTROL_TYPE.SLIDER
-    showFunc = @() ::have_per_vehicle_zoom_sens
   }
   {
     id = "ID_CHANGE_SHOT_FREQ_HELICOPTER"

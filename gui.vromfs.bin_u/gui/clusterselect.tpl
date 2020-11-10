@@ -14,7 +14,6 @@ popup_menu {
 
   MultiSelect {
     id:t='cluster_multi_select';
-    childsActivate:t='yes';
     flow:t='vertical';
     on_select:t='onClusterSelect';
     navigatorShortcuts:t='cancel';
@@ -25,8 +24,6 @@ popup_menu {
         id:t='<<id>>';
         behavior:t='textarea';
         value:t='<<value>>';
-        on_wrap_up:t='onWrapUp';
-        on_wrap_down:t='onWrapDown';
         shortcutActivate:t='J:A | Space';
         text:t='<<text>>';
         cluster_option:t='yes';

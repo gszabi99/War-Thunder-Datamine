@@ -1,4 +1,4 @@
-local rouletteAnim = ::require("rouletteAnim.nut")
+local rouletteAnim = require("rouletteAnim.nut")
 
 local BhvRoulette = class
 {

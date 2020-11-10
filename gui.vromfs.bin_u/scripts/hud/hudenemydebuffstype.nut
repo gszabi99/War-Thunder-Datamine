@@ -1,4 +1,4 @@
-local enums = ::require("sqStdlibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 local stdMath = require("std/math.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 
@@ -165,7 +165,7 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
   }
 
   SHIP_BUOYANCY = {
-    unitTypesMask = unitTypes.SHIP.bit
+    unitTypesMask = unitTypes.SHIP.bit | unitTypes.BOAT.bit
     getInfo = function(camInfo, unitInfo, partName = null, dmgParams = null)
     {
       local value = ::getTblValue("buoyancy", camInfo)
@@ -181,7 +181,7 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
   }
 
   SHIP_COMPARTMENTS = {
-    unitTypesMask = unitTypes.SHIP.bit
+    unitTypesMask = unitTypes.SHIP.bit | unitTypes.BOAT.bit
     parts = [ "ship_compartment" ]
     getInfo = function(camInfo, unitInfo, partName = null, dmgParams = null)
     {
@@ -204,7 +204,7 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
   }
 
   SHIP_CREW = {
-    unitTypesMask = unitTypes.SHIP.bit
+    unitTypesMask = unitTypes.SHIP.bit | unitTypes.BOAT.bit
     isUpdateOnKnownPartKillsOnly = false
     getInfo = function(camInfo, unitInfo, partName = null, dmgParams = null)
     {

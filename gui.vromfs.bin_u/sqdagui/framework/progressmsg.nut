@@ -1,4 +1,4 @@
-local Callback = ::require("sqStdLibs/helpers/callback.nut").Callback
+local Callback = require("sqStdLibs/helpers/callback.nut").Callback
 
 local msgList = {}
 

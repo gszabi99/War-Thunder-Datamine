@@ -88,7 +88,7 @@ local text = @(total_count, broken_count) {
   rendObj = ROBJ_DTEXT
   color = broken_count > 0 ? colors.hud.damageModule.active : colors.hud.damageModule.inactive
   halign = ALIGN_CENTER
-  text = (total_count - broken_count) + "/" + total_count
+  text = ::str((total_count - broken_count),"/",total_count)
 }
 
 

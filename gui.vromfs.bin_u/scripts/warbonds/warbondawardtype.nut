@@ -1,4 +1,4 @@
-local enums = ::require("sqStdlibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 ::g_wb_award_type<- {
   types = []
 }
@@ -143,7 +143,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
       if (!unit)
         return ""
 
-      local blockFormat = "tdiv { class:t='rankUpList'; halign:t='center'; %s }"
+      local blockFormat = "rankUpList { halign:t='center'; interactiveChildren:t='yes'; %s }"
       return ::format(blockFormat, ::build_aircraft_item(unit.name, unit, {
         hasActions = true,
         status = ::isUnitBought(unit) ? "owned" : "canBuy",

@@ -5,6 +5,7 @@ local { openUrl } = require("scripts/onlineShop/url.nut")
 local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
 local twoStepModal = require("scripts/login/twoStepModal.nut")
 local exitGame = require("scripts/utils/exitGame.nut")
+local { setFocusToNextObj } = require("sqDagui/daguiUtil.nut")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 
@@ -34,18 +35,6 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
     "loginbox_username",
     "loginbox_password"
   ]
-
-  focusArray = [
-    "loginbox_username",
-    "loginbox_password",
-    "loginbox_code_remember_this_device",
-    "login_boxes_block",
-    "sharding_dropright_block",
-    "login_action",
-    "secondary_auth_block",
-    "links_block",
-  ]
-  currentFocusItem = 0
 
   function initScreen()
   {
@@ -104,10 +93,6 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
     showSceneBtn("sso_login_action_button", showWebLogin)
     showSceneBtn("btn_signUp_link", !showSteamLogin)
 
-    if (lp.login != "")
-      currentFocusItem = 1
-    initFocusArray()
-
     initial_autologin = ::is_autologin_enabled()
 
     local saveLoginAndPassMask = ::AUTO_SAVE_FLG_LOGIN | ::AUTO_SAVE_FLG_PASS
@@ -148,7 +133,12 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
     if ("disable_autorelogin_once" in ::getroottable())
       autoLogin = autoLogin && !disable_autorelogin_once
     if (autoLogin)
+    {
       doLoginDelayed()
+      return
+    }
+
+    ::select_editbox(scene.findObject(tabFocusArray[ lp.login != "" ? 1 : 0 ]))
   }
 
   function onDestroy()
@@ -244,8 +234,6 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
       savePassObj.setValue(false)
     if (isRemoteComp || !isAutosavePass || !isAutosaveLogin)
       autoLoginObj.setValue(false)
-
-    restoreFocus() //In case, if user leave focus on disabled checkBox
   }
 
   function initLanguageSwitch()
@@ -290,6 +278,7 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
     local curLangId = ::get_current_language()
     local menu = {
       handler = this
+      closeOnUnhover = true
       actions = []
     }
     for (local i = 0; i < localizationInfo.len(); i++)
@@ -342,8 +331,6 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
     handler.onChangeAutosave()
     if (shardingListObj)
       shardingListObj.setValue(shard)
-
-    restoreFocus()
   }
 
   function requestLogin(no_dump_login)
@@ -596,50 +583,9 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
 
   function onLoginErrorTryAgain() {}
 
-  function onSelectAction(obj)
+  function onKbdWrapDown()
   {
-    local value = obj.getValue()
-    if (value < 0 || value >= obj.childrenCount())
-      return
-
-    local chObj = obj.getChild(value)
-    local func = chObj?._on_click
-    if (func in this)
-      this[func]()
-  }
-
-  function switchTabFocus()
-  {
-    checkCurrentFocusItem(guiScene.getSelectedObject())
-
-    local focusIdx = tabFocusArray.len() - 1
-    foreach(idx, id in tabFocusArray)
-    {
-      if (tabFocusArray[idx] == focusArray[currentFocusItem])
-      {
-        focusIdx = idx
-        break
-      }
-    }
-
-    switchFocusOnNextObj(focusIdx)
-  }
-
-  function switchFocusOnNextObj(focusIdx = 0)
-  {
-    if (focusIdx >= tabFocusArray.len() - 1)
-      focusIdx = 0
-    else
-      focusIdx++
-
-    if (!::check_obj(scene))
-      return
-
-    local focusObj = scene.findObject(tabFocusArray[focusIdx])
-    if (!::checkObj(focusObj) || !focusObj.isVisible())
-      return switchFocusOnNextObj(focusIdx)
-
-    focusObj.select()
+    setFocusToNextObj(scene, tabFocusArray, 1)
   }
 
   function onEventKeyboardLayoutChanged(params)

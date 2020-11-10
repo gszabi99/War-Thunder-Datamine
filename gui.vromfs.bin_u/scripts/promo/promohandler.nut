@@ -1,5 +1,6 @@
+local { set_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
 local { clearOldVotedPolls, setPollBaseUrl, isPollVoted, generatePollUrl } = require("scripts/web/webpoll.nut")
-local { getTextWithCrossplayIcon, needShowCrossPlayInfo } = require("scripts/social/crossplay.nut")
+local { promoTextFunctions, getTutorialData } = require("scripts/promo/promoInfo.nut")
 
 ::create_promo_blocks <- function create_promo_blocks(handler)
 {
@@ -13,7 +14,7 @@ local { getTextWithCrossplayIcon, needShowCrossPlayInfo } = require("scripts/soc
   return ::Promo(owner, guiScene, scene)
 }
 
-class Promo
+::Promo <- class
 {
   owner = null
   guiScene = null
@@ -84,7 +85,6 @@ class Promo
     ::g_promo.initWidgets(scene, widgetsTable)
     updateData()
     setTimers()
-    owner.restoreFocus()
   }
 
   function onSceneActivate(show)
@@ -173,6 +173,13 @@ class Promo
 
       if (block?.pollId != null)
         updateWebPollButton({pollId = block.pollId})
+
+      if (!(block?.multiple ?? false))
+        continue
+
+      local btnObj = scene.findObject(id)
+      if (::check_obj(btnObj))
+        btnObj.setUserData(this)
     }
   }
 
@@ -184,20 +191,6 @@ class Promo
     if (!list)
       return []
     return list % "name"
-  }
-
-  function activateSelectedBlock(obj)
-  {
-    local promoButtonObj = obj.getChild(obj.getValue())
-    local searchObjId = ::g_promo.getActionParamsKey(promoButtonObj.id)
-    local radioButtonsObj = promoButtonObj.findObject("multiblock_radiobuttons_list")
-    if (::check_obj(radioButtonsObj))
-    {
-      local val = radioButtonsObj.getValue()
-      if (val >= 0)
-        searchObjId += "_" + val
-    }
-    ::g_promo.performAction(owner, promoButtonObj.findObject(searchObjId))
   }
 
   function performAction(obj)
@@ -308,47 +301,7 @@ class Promo
     if (!show || !::checkObj(buttonObj))
       return
 
-    local buttonText = ::loc("missions/" + (tutorialMission?.name ?? "") + "/short", "")
-    if (!tutorialMission)
-      buttonText = ::loc("mainmenu/btnTutorial")
-    ::g_promo.setButtonText(buttonObj, id, buttonText)
-  }
-
-  function getTutorialData()
-  {
-    local tutorial = null
-    local tutorialId = ""
-    local curUnit = ::get_show_aircraft()
-
-    if (curUnit?.isTank() && ::has_feature("Tanks"))
-    {
-      tutorialId = "lightTank"
-      tutorial = ::get_uncompleted_tutorial_data("tutorial_tank_basics_arcade", 0)
-    }
-    else if (curUnit?.isShip() && ::has_feature("Ships"))
-    {
-      tutorialId = "boat"
-      tutorial = ::get_uncompleted_tutorial_data("tutorial_boat_basic_arcade", 0)
-    }
-
-    if (!tutorial)
-      foreach (tut in ::tutorials_to_check)
-      {
-        if (("requiresFeature" in tut) && !::has_feature(tut.requiresFeature))
-          continue
-
-        tutorial = ::get_uncompleted_tutorial_data(tut.tutorial, 0)
-        if (tutorial)
-        {
-          tutorialId = tut.id
-          break
-        }
-      }
-
-    return {
-      tutorialMission = tutorial?.mission
-      tutorialId = tutorialId
-    }
+    ::g_promo.setButtonText(buttonObj, id, promoTextFunctions[id].bindenv(this)(tutorialMission))
   }
   //--------------- </TUTORIAL> ----------------------------
 
@@ -369,15 +322,7 @@ class Promo
     if (!show || !::checkObj(buttonObj))
       return
 
-    ::g_promo.setButtonText(buttonObj, id, getEventsButtonText())
-  }
-
-  function getEventsButtonText()
-  {
-    local activeEventsNum = ::events.getEventsVisibleInEventsWindowCount()
-    return activeEventsNum <= 0
-      ? ::loc("mainmenu/events/eventlist_btn_no_active_events")
-      : ::loc("mainmenu/btnTournamentsAndEvents")
+    ::g_promo.setButtonText(buttonObj, id, promoTextFunctions[id].bindenv(this)())
   }
 
   function isEventsAvailable()
@@ -396,26 +341,17 @@ class Promo
     local isVisible = ::g_promo.getShowAllPromoBlocks()
       || (isWwEnabled && ::g_world_war.isWWSeasonActiveShort())
 
-    local wwButton = ::showBtn(id, isVisible, scene)
-    if (!isVisible || !::checkObj(wwButton))
+    local buttonObj = ::showBtn(id, isVisible, scene)
+    if (!isVisible || !::checkObj(buttonObj))
       return
 
-    local text = ::loc("mainmenu/btnWorldwar")
-    if (isWwEnabled)
-    {
-      local operationText = ::g_world_war.getPlayedOperationText(false)
-      if (operationText !=null)
-        text = operationText
-    }
-
-    text = getTextWithCrossplayIcon(needShowCrossPlayInfo(), text)
-    wwButton.findObject("world_war_button_text").setValue("{0} {1}".subst(::loc("icon/worldWar"), text))
+    ::g_promo.setButtonText(buttonObj, id, promoTextFunctions[id].bindenv(this)(isWwEnabled))
 
     if (!::g_promo.isCollapsed(id))
       return
 
     if (::g_world_war.hasNewNearestAvailableMapToBattle())
-      ::g_promo.toggleItem(wwButton.findObject(id + "_toggle"))
+      ::g_promo.toggleItem(buttonObj.findObject(id + "_toggle"))
   }
   //----------------- </WORLD WAR> --------------------------
 
@@ -449,16 +385,6 @@ class Promo
     }
 
     return null
-  }
-
-  function onWrapUp(obj)
-  {
-    owner.onWrapUp(obj)
-  }
-
-  function onWrapDown(obj)
-  {
-    owner.onWrapDown(obj)
   }
 
   //------------------ </NAVIGATION> --------------------------
@@ -500,7 +426,7 @@ class Promo
     local link = generatePollUrl(pollId)
     if (link.len() == 0)
       return
-    ::set_blk_value_by_path(sourceDataBlock, objectId + "/link", link)
+    set_blk_value_by_path(sourceDataBlock, objectId + "/link", link)
     ::g_promo.generateBlockView(sourceDataBlock[objectId])
     ::showBtn(objectId, true, scene)
   }

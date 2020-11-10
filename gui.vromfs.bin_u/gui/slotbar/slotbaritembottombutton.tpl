@@ -4,15 +4,9 @@ bottomButtonsDiv {
   <<#hasButton>>
   Button_text {
     id:t='air_action_button'
+    holderId:t='<<holderId>>'
 
-    <<#spaceButton>>
     btnName:t='SpaceA'
-    <</spaceButton>>
-
-    <<^spaceButton>>
-    btnName:t='A'
-    <</spaceButton>>
-
     visualStyle:t='common'
     class:t='bottomAirItem'
     text:t='<<mainButtonText>>'

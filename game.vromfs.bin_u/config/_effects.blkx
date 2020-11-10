@@ -1,0 +1,345 @@
+{
+  "ri_gpu_object": {
+    "_tracked": "^ri_gpu_object\\.",
+    "_extends": "replicating",
+    "ri_gpu_object:_namespace": {
+      "name": "ammunition_box_n",
+      "grid_tiling": 4,
+      "grid_size": 16,
+      "cell_size": 8.0,
+      "seed": 0,
+      "up_vector": [0.0,1.0,0.0],
+      "scale_range": [1.0,1.0],
+      "biom_indexes": [-1.0,-1.0,-1.0,-1.0],
+      "is_using_normal": false,
+      "incline_delta": 0.0,
+      "rotate_range": [0.0,0.0],
+      "map": "",
+      "map_size": [512.0,512.0],
+      "map_offset": [0.0,0.0],
+      "color_from": "#7f7f7f7f",
+      "color_to": "#7f7f7f7f",
+      "max_placed_on_ri": 0,
+      "slope_factor": [1.0,0.0],
+      "shader_graph": "",
+      "decal": false,
+      "ri_placer_list:array": [],
+      "biome_params:array": [],
+      "multiple_objects:array": []
+    }
+  },
+  "light": {
+    "_extends": "replicating",
+    "light.max_radius": 0.0,
+    "light.offset": [0.0,0.0,0.0],
+    "light.color": "#fffac8ff",
+    "light.brightness": 1.0,
+    "transform": [
+      [1.0,0.0,0.0],
+      [0.0,1.0,0.0],
+      [0.0,0.0,1.0],
+      [0.0,0.0,0.0]
+    ],
+    "_tracked": "^(light\\..*)|transform$",
+    "_replicated": "^(light\\..*)|transform$"
+  },
+  "omni_light": [
+    {
+      "_extends": "light"
+    },
+    {
+      "light.contact_shadows": true
+    },
+    {
+      "_tracked": "^light\\.contact_shadows$"
+    },
+    {
+      "light.use_box": true
+    },
+    {
+      "_tracked": "^light\\.use_box$"
+    },
+    {
+      "light.automatic_box": false
+    },
+    {
+      "_tracked": "^light\\.automatic_box$"
+    },
+    {
+      "light.box": [
+        [0.0,0.0,0.0],
+        [0.0,0.0,0.0],
+        [0.0,0.0,0.0],
+        [0.0,0.0,0.0]
+      ]
+    },
+    {
+      "_tracked": "^light\\.box$"
+    },
+    {
+      "light.direction": [0.0,-1.0,0.0]
+    },
+    {
+      "_tracked": "^light\\.direction$"
+    },
+    {
+      "light.texture_name": ""
+    },
+    {
+      "light.nightly": true
+    },
+    {
+      "_tracked": "^light\\.texture_name$"
+    },
+    {
+      "_replicated": "^light\\.contact_shadows$"
+    },
+    {
+      "_replicated": "^light\\.use_box$"
+    },
+    {
+      "_replicated": "^light\\.box$"
+    },
+    {
+      "_replicated": "^light\\.automatic_box$"
+    },
+    {
+      "omni_light": {
+        "_tags": "render"
+      }
+    },
+    {
+      "destroyable_with_rendinst:tag": []
+    }
+  ],
+  "spot_light": [
+    {
+      "_extends": "light"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.max_radius": 75.0
+    },
+    {
+      "light.brightness": 100.0
+    },
+    {
+      "light.nightly": true
+    },
+    {
+      "_tracked": "^(spot_light\\..*)$"
+    },
+    {
+      "_replicated": "^(spot_light\\..*)$"
+    },
+    {
+      "spot_light": {
+        "_tags": "render"
+      }
+    },
+    {
+      "spot_light:_namespace": {
+        "_tags": "render",
+        "inner_attenuation": 0.9,
+        "dynamic_light": false,
+        "shadows": true,
+        "dynamic_obj_shadows": false,
+        "shadow_shrink": 0
+      }
+    },
+    {
+      "destroyable_with_rendinst:tag": []
+    }
+  ],
+  "spot_light_large": [
+    {
+      "_extends": "spot_light"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.max_radius": 75.0
+    },
+    {
+      "light.brightness": 200.0
+    },
+    {
+      "spot_light:_namespace": []
+    }
+  ],
+  "field_light_orange": [
+    {
+      "_extends": "omni_light"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.brightness": 2.0
+    },
+    {
+      "light.max_radius": 2.0
+    },
+    {
+      "light.color": "#ff640aff"
+    },
+    {
+      "light.contact_shadows": true
+    },
+    {
+      "light.nightly": true
+    },
+    {
+      "omni_light:_namespace": []
+    }
+  ],
+  "field_light_blue": [
+    {
+      "_extends": "field_light_orange"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.color": "#6464ffff"
+    },
+    {
+      "omni_light:_namespace": []
+    }
+  ],
+  "field_light_red": [
+    {
+      "_extends": "field_light_orange"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.color": "#f05032ff"
+    },
+    {
+      "omni_light:_namespace": []
+    }
+  ],
+  "spot_light_orange_extralarge": [
+    {
+      "_extends": "spot_light"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.max_radius": 300.0
+    },
+    {
+      "light.brightness": 1200.0
+    },
+    {
+      "light.color": "#ff640aff"
+    },
+    {
+      "spot_light:_namespace": []
+    }
+  ],
+  "spot_light_blue_extralarge": [
+    {
+      "_extends": "spot_light"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.max_radius": 200.0
+    },
+    {
+      "light.brightness": 55.0
+    },
+    {
+      "light.color": "#0af5ffff"
+    },
+    {
+      "spot_light:_namespace": []
+    }
+  ],
+  "lamppost_a": [
+    {
+      "_extends": "spot_light"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.max_radius": 14.0
+    },
+    {
+      "light.brightness": 60.0
+    },
+    {
+      "light.color": "#ffdca0ff"
+    },
+    {
+      "spot_light:_namespace": {
+        "_tags": "render",
+        "inner_attenuation": 0.5
+      }
+    },
+    {
+      "destroyable_with_rendinst:tag": []
+    }
+  ],
+  "lamppost_b": [
+    {
+      "_extends": "spot_light"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.max_radius": 9.0
+    },
+    {
+      "light.brightness": 15.0
+    },
+    {
+      "light.color": "#fffab4ff"
+    },
+    {
+      "spot_light:_namespace": {
+        "_tags": "render",
+        "inner_attenuation": 0.5
+      }
+    },
+    {
+      "destroyable_with_rendinst:tag": []
+    }
+  ],
+  "lamppost_c": [
+    {
+      "_extends": "spot_light"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "light.max_radius": 19.0
+    },
+    {
+      "light.brightness": 150.0
+    },
+    {
+      "light.color": "#fffab4ff"
+    },
+    {
+      "spot_light:_namespace": {
+        "_tags": "render",
+        "inner_attenuation": 0.5
+      }
+    },
+    {
+      "destroyable_with_rendinst:tag": []
+    }
+  ]
+}

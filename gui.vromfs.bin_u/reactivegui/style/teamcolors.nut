@@ -1,7 +1,7 @@
 local cc = ::require_native("colorCorrector")
-local string = require("std/string.nut")
-local missionState = require("reactiveGui/missionState.nut")
-local u = require("std/underscore.nut")
+local {hexStringToInt} = require("std/string.nut")
+local {localTeam} = require("reactiveGui/missionState.nut")
+local {isEqual} = require("std/underscore.nut")
 local colors = require("colors.nut")
 
 local teamColors = Watched({
@@ -42,11 +42,11 @@ local teamColors = Watched({
   local standardColors = !::cross_call.login.isLoggedIn() || !::cross_call.isPlayerDedicatedSpectator()
   local allyTeam, allyTeamColor, enemyTeamColor
   local isForcedColor = forcedColors && forcedColors.len() > 0
-  if (isForcedColor)
-  {
-    allyTeam = missionState.localTeam.value
-    allyTeamColor = string.hexStringToInt( "FF" + (allyTeam == 2 ? forcedColors?.colorTeamB : forcedColors?.colorTeamA) )
-    enemyTeamColor = string.hexStringToInt( "FF" + (allyTeam == 2 ? forcedColors?.colorTeamA : forcedColors?.colorTeamB) )
+  if (isForcedColor) {
+
+    allyTeam = localTeam.value
+    allyTeamColor = hexStringToInt( ::str("FF", (allyTeam == 2 ? forcedColors?.colorTeamB : forcedColors?.colorTeamA)) )
+    enemyTeamColor = hexStringToInt( ::str("FF", (allyTeam == 2 ? forcedColors?.colorTeamA : forcedColors?.colorTeamB) ))
   }
   local squadTheme = @() standardColors ? cc.TARGET_HUE_SQUAD : cc.TARGET_HUE_SPECTATOR_ALLY
   local allyTheme =  @() standardColors ? cc.TARGET_HUE_ALLY  : cc.TARGET_HUE_SPECTATOR_ALLY
@@ -80,13 +80,13 @@ local teamColors = Watched({
   newTeamColors.hudColorDeathAlly   = newTeamColors.teamRedLightColor
   newTeamColors.hudColorDeathEnemy  = newTeamColors.teamBlueLightColor
 
-  if (!u.isEqual(teamColors.value, newTeamColors))
+  if (!isEqual(teamColors.value, newTeamColors))
     teamColors.update(newTeamColors)
 }
 
 ::interop.recalculateTeamColors()
 
-missionState.localTeam.subscribe(function (new_val) {
+localTeam.subscribe(function (new_val) {
   ::interop.recalculateTeamColors(teamColors.value.forcedTeamColors)
 })
 

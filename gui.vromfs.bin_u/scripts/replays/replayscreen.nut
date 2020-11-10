@@ -529,12 +529,7 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
     onViewReplay()
   }
 
-  function doSelectList()
-  {
-    local list = scene.findObject("items_list")
-    if (list != null)
-      list.select()
-  }
+  doSelectList = @() ::move_mouse_on_child_by_value(scene.findObject("items_list"))
 
   function goBack()
   {
@@ -668,7 +663,7 @@ class ::gui_handlers.RenameReplayHandler extends ::gui_handlers.BaseGuiHandlerWT
     editBoxObj.show(true)
     editBoxObj.enable(true)
     editBoxObj.setValue(baseName)
-    editBoxObj.select()
+    ::select_editbox(editBoxObj)
   }
 
   function checkName(newName)

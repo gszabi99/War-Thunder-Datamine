@@ -121,7 +121,9 @@ local function show(params, styling=defStyling) {
                 ::move_mouse_cursor(elem)
             }
           : null
-        local behaviors = ::extend_to_array(desc?.customStyle?.behavior ?? styling.button?.behavior, [Behaviors.RecalcHandler, Behaviors.Button])
+        local behaviors = desc?.customStyle?.behavior ?? desc?.customStyle?.behavior
+        behaviors = ::type(behaviors) == "array" ? behaviors : [behaviors]
+        behaviors.append(Behaviors.RecalcHandler, Behaviors.Button)
         local customStyle = (desc?.customStyle ?? {}).__merge({
           onHover = onHover
           behavior = behaviors
@@ -168,10 +170,10 @@ local function show(params, styling=defStyling) {
 
 
 local msgbox = {
-  show = show
-  widgets = widgets
-  isInList = isInList
-  removeByUid = removeByUid
+  show
+  widgets
+  isInList
+  removeByUid
   styling = defStyling
 }
 

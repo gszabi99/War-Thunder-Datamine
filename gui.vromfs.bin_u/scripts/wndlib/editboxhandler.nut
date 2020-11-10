@@ -39,8 +39,6 @@ class ::gui_handlers.EditBoxHandler extends ::BaseGuiHandler
 
     local isEnabled = editBoxEnableFunc? editBoxEnableFunc() : true
     editBoxObj.enable(isEnabled)
-    if (isEnabled)
-      editBoxObj.select()
     if (editBoxTextOnDisable)
       editBoxObj["edit-hint"] = editBoxTextOnDisable
     if (value)
@@ -57,6 +55,12 @@ class ::gui_handlers.EditBoxHandler extends ::BaseGuiHandler
 
     if (!canCancel && !cancelFunc)
       showSceneBtn("btn_back", false)
+
+    if (isEnabled)
+    {
+      guiScene.applyPendingChanges(false)
+      ::select_editbox(editBoxObj)
+    }
   }
 
   function onChangeValue(obj)

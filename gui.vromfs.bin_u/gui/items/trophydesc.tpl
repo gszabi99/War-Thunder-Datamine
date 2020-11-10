@@ -83,6 +83,7 @@ tdiv {
       max-width:t='p.p.p.p.w -1@dIco -1@itemPadding <<#icon2>>-1@dIco<</icon2>> <<#buttonsCount>>-2@sIco*<<buttonsCount>><</buttonsCount>>'
       <</widthByParentParent>>
       pos:t='1@itemPadding, ph/2-h/2'; position:t='relative'
+      interactive:t='yes'
       font-bold:t='@fontSmall'
       text:t='<<title>>'
     }
@@ -113,7 +114,7 @@ tdiv {
       padding:t='-1@slot_interval, -1@slot_vert_pad'
       pos:t='1@itemPadding, ph/2-h/2'; position:t='relative'
       rankUpList {
-        class:t='rankUpList'
+        interactiveChildren:t='yes'
         <<@unitPlate>>
       }
     }
@@ -157,6 +158,7 @@ tdiv {
       display:t='hide'
     }
     title:t='$tooltipObj'
+    tooltip-float:t='horizontal'
     <</tooltipId>>
   }
   <<#commentText>>

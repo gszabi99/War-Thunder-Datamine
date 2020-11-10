@@ -1,0 +1,103 @@
+[
+  {
+    "hideNodes": [
+      {
+        "node": "depth_charge_01"
+      },
+      {
+        "node": "depth_charge_02"
+      },
+      {
+        "node": "depth_charge_03"
+      },
+      {
+        "node": "depth_charge_04"
+      }
+    ]
+  },
+  {
+    "Weapon": {
+      "trigger": "gunner10",
+      "triggerGroup": "torpedoes",
+      "external": true,
+      "blk": "gameData/Weapons/torpedoes/uk_533mm_21in_mk9_torpedo.blk",
+      "emitter": "bone_torpedo_01",
+      "bullets": 4,
+      "useEmitter": true,
+      "emitterGenRange": [1,4],
+      "emitterGenFmt": "bone_torpedo_%02d",
+      "ammoDpGenFmt": "torpedo_%02d_dm",
+      "barrelDP": "tt_01_dm",
+      "brokenBarrelAllowShoot": false,
+      "enableCourseCorrection": false,
+      "startFx": "start_torpedo",
+      "startFxOffset": [4.0,0.0,0.0],
+      "startSpeed": 20.0,
+      "useStartSpeed": true,
+      "allowableDelta": 40.0,
+      "turret": {
+        "head": "tt_head_01",
+        "gun": "tt_01",
+        "gunnerDm": "tt_01_dm"
+      },
+      "limits": {
+        "yaw": [-100.0,100.0],
+        "pitch": [0.0,0.0]
+      },
+      "limitsDeadzone": {
+        "yaw": [-46.0,46.0],
+        "pitch": [0.0,0.0]
+      }
+    }
+  },
+  {
+    "Weapon": {
+      "trigger": "gunner8",
+      "triggerGroup": "mortar",
+      "weaponType": "bombs",
+      "blk": "gameData/weapons/bombguns/depth_charge_mk_vii_mortar.blk",
+      "emitter": "bone_bomb_05",
+      "bullets": 11,
+      "external": true,
+      "dropSpeed": 20.0,
+      "useEmitter": true,
+      "barrelDP": "depth_charge_mount_01_dm",
+      "brokenBarrelAllowShoot": false,
+      "ammoDP": "depth_charge_05_dm",
+      "allowableDelta": 50.0,
+      "turret": {
+        "head": "turret_05",
+        "gun": "depth_charge_mount_01"
+      },
+      "limits": {
+        "yaw": [-0.0,0.0],
+        "pitch": [-0.0,0.0]
+      }
+    }
+  },
+  {
+    "Weapon": {
+      "trigger": "gunner9",
+      "triggerGroup": "mortar",
+      "weaponType": "bombs",
+      "blk": "gameData/weapons/bombguns/depth_charge_mk_vii_mortar.blk",
+      "emitter": "bone_bomb_06",
+      "bullets": 11,
+      "external": true,
+      "dropSpeed": 20.0,
+      "useEmitter": true,
+      "barrelDP": "depth_charge_mount_02_dm",
+      "brokenBarrelAllowShoot": false,
+      "ammoDP": "depth_charge_06_dm",
+      "allowableDelta": 50.0,
+      "turret": {
+        "head": "turret_06",
+        "gun": "depth_charge_mount_02"
+      },
+      "limits": {
+        "yaw": [-0.0,0.0],
+        "pitch": [-0.0,0.0]
+      }
+    }
+  }
+]

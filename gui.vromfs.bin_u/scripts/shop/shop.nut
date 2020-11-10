@@ -5,6 +5,8 @@ local unitActions = require("scripts/unit/unitActions.nut")
 local { topMenuHandler, topMenuShopActive } = require("scripts/mainmenu/topMenuStates.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { getStatusTbl, getTimedStatusTbl, updateCellStatus, updateCellTimedStatus, initCell
+} = require("shopUnitCellFill.nut")
 
 local lastUnitType = null
 
@@ -50,6 +52,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   curCountry = null
   curPage = ""
+  curUnitsList = null
   curAirName = ""
   curPageGroups = null
   groupChooseObj = null
@@ -92,6 +95,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     skipOpenGroup = true
     scene.findObject("shop_timer").setUserData(this)
     brokenList = []
+    curUnitsList = []
 
     navBarObj = scene.findObject("nav-help")
 
@@ -107,11 +111,6 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
   {
     return base.isSceneActive()
            && (wndType != handlerType.CUSTOM || topMenuShopActive.value)
-  }
-
-  function getMainFocusObj()
-  {
-    return scene.findObject("shop_items_list")
   }
 
   function loadFullAircraftsTable(selAirName = "")
@@ -327,6 +326,43 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     return res
   }
 
+  function initUnitCells(tableObj, cellsList) {
+    local count = tableObj.childrenCount()
+    local needCount = cellsList.len()
+    if (needCount > count)
+      guiScene.createMultiElementsByObject(tableObj, "gui/shop/shopUnitCell.blk", "unitCell", needCount - count, this)
+
+    count = ::max(count, needCount)
+    if (count != tableObj.childrenCount())
+      return //prevent crash on error, but anyway we will get assert in such case on update
+
+    for(local i = 0; i < count; i++) {
+      local cellObj = tableObj.getChild(i)
+      if (i not in cellsList) {
+        cellObj.show(false)
+        cellObj.enable(false)
+      }
+      else
+        initCell(cellObj, cellsList[i])
+    }
+  }
+
+  function updateUnitCell(cellObj, unit) {
+    local params = getUnitItemParams(unit)
+    updateCellStatus(cellObj, getStatusTbl(unit, params))
+    updateCellTimedStatus(cellObj, @() getTimedStatusTbl(unit, params))
+  }
+
+  function updateCurUnitsList() {
+    local tableObj = scene.findObject("shop_items_list")
+    local total = tableObj.childrenCount()
+    foreach(idx, unit in curUnitsList)
+      if (idx < total)
+        updateUnitCell(tableObj.getChild(idx), unit)
+      else
+        ::script_net_assert_once("shop early update", "Try to update shop units before init")
+  }
+
   function fillAircraftsList(curName = "")
   {
     if (!::checkObj(scene))
@@ -337,117 +373,52 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
     updateBoughtVehiclesCount()
     lastUnitType = getCurPageUnitType()
-    ::update_gamercards()
 
     if (curName=="")
       curName = getResearchingSquadronVehicle()?.name ?? curAirName
 
-    local curRow = -1
-    local curCol = -1
-
-    local data = ""
     local treeData = getCurTreeData()
-    local unitItems = []
     brokenList = []
 
     fillBGLines(treeData)
     guiScene.setUpdatesEnabled(false, false);
-    foreach(row, rowArr in treeData.tree)
-    {
-      local rowData = ""
-      for(local col = 0; col < rowArr.len(); col++)
-        if (!rowArr[col])
-          rowData += "td { inactive:t='yes' } "
-        else
-        {
-          local item = rowArr[col]
-          local config = getItemStatusData(item, curName)
-          if (config.checkAir || ((curRow < 0) && !item?.isFakeUnit))
-          {
-            curRow = row
-            curCol = col
-          }
-          if (config.broken)
-            brokenList.append(item)
-          local params = getUnitItemParams(item)
-          rowData += ::build_aircraft_item(item.name, item, params)
-          unitItems.append({ id = item.name, unit = item, params = params })
-        }
-      data += format("tr { %s }\n", rowData)
-    }
-    guiScene.replaceContentFromText(tableObj, data, data.len(), this)
-    foreach (unitItem in unitItems)
-    {
-      local obj = tableObj.findObject(unitItem.id)
-      local unit = ::isUnitGroup(unitItem.unit) ? ::getAircraftByName(obj.primaryUnitId)
-        : unitItem.unit?.isFakeUnit ? null
-        : unitItem.unit
-      ::fill_unit_item_timers(obj, unit, unitItem.params)
-    }
 
-    updateDiscountIcons()
+    local cellsList = []
+    local maxCols = -1
+    foreach(row, rowArr in treeData.tree)
+      for(local col = 0; col < rowArr.len(); col++)
+        if (rowArr[col]) {
+          maxCols = ::max(maxCols, col)
+          local unitOrGroup = rowArr[col]
+          cellsList.append({ unitOrGroup, id = unitOrGroup.name, posX = col, posY = row, position = "absolute" })
+        }
+
+    tableObj.size = $"{maxCols+1}@shop_width, {treeData.tree.len()}@shop_height"
+    initUnitCells(tableObj, cellsList)
+    curUnitsList = cellsList.map(@(c) c.unitOrGroup)
+    updateCurUnitsList()
+
+    local curIdx = -1
+    foreach(idx, unit in curUnitsList) {
+      local config = getItemStatusData(unit, curName)
+      if (config.checkAir || ((curIdx < 0) && !unit?.isFakeUnit))
+        curIdx = cellsList.len()
+      if (config.broken)
+        brokenList.append(unit) //fix me: we can update it together with update units instead of fill all
+    }
 
     guiScene.setUpdatesEnabled(true, true)
-    ::gui_bhv.columnNavigator.selectCell(tableObj, curRow, curCol, false)
+    tableObj.setValue(curIdx)
 
     updateButtons()
 
     ::broadcastEvent("ShopUnitTypeSwitched", { esUnitType = getCurPageEsUnitType() })
   }
 
-  function updateDiscountIcons()
-  {
-    if (!::checkObj(scene))
-      return
-
-    local tableObj = scene.findObject("shop_items_list")
-    if (!::checkObj(tableObj))
-      return
-
-    local treeData = getCurTreeData()
-    foreach (row, rowArr in treeData.tree)
-      for (local col = 0; col < rowArr.len(); col++)
-      {
-        local air = rowArr[col]
-        if (!air || air?.isFakeUnit)
-          continue
-
-        ::showUnitDiscount(tableObj.findObject(air.name+"-discount"), air)
-
-        local bonusData = air.name
-        if (::isUnitGroup(air))
-          bonusData = ::u.map(air.airsGroup, function(unit) { return unit.name })
-        ::showAirExpWpBonus(tableObj.findObject(air.name+"-bonus"), bonusData)
-      }
-  }
-
   function onEventDiscountsDataUpdated(params = {})
   {
     updateDiscountIconsOnTabs()
-    updateDiscountIcons()
-    updateDiscountSlotsPriceText()
-  }
-
-  function updateDiscountSlotsPriceText()
-  {
-    local tableObj = scene.findObject("shop_items_list")
-    local treeData = getCurTreeData()
-    foreach (row, rowArr in treeData.tree)
-    {
-      local units = ::u.filter(rowArr, function (item) { return item && !::isUnitGroup(item) && !item?.isFakeUnit })
-      foreach (unit in units)
-      {
-        local params = getUnitItemParams(unit)
-        local priceText = ::get_unit_item_price_text(unit, params)
-        local shopAirObj = tableObj.findObject(unit.name)
-        if (::checkObj(shopAirObj))
-        {
-          local priceObj = shopAirObj.findObject("bottom_item_price_text")
-          if (::checkObj(priceObj))
-            priceObj.setValue(priceText)
-        }
-      }
-    }
+    updateCurUnitsList()
   }
 
   function updateButtons()
@@ -1015,20 +986,16 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function getUnitCellObj(unitName)
   {
-    local cellObj = findUnitInGroupTableById("td_" + unitName)
+    local cellObj = findUnitInGroupTableById($"unitCell_{unitName}")
     if (::checkObj(cellObj))
       return cellObj
 
-    return findAirTableObjById("td_" + unitName)
+    return findAirTableObjById($"unitCell_{unitName}")
   }
 
-  function getCellObjByRowCol(row, col)
-  {
+  function getCellObjByValue(value) {
     local tableObj = scene.findObject("shop_items_list")
-    if (!::check_obj(tableObj))
-      return null
-    local rowObj = row < tableObj.childrenCount() ? tableObj.getChild(row) : null
-    return rowObj && col < rowObj.childrenCount() ? rowObj.getChild(col) : null
+    return value < tableObj.childrenCount() ? tableObj.getChild(value) : null
   }
 
   function checkUnitItemAndUpdate(unit)
@@ -1045,25 +1012,10 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
       updateGroupItem(unit.group)
   }
 
-  function updateUnitItem(unit, placeObj)
+  function updateUnitItem(unit, cellObj)
   {
-    if (!::checkObj(placeObj))
-      return
-
-    local params = getUnitItemParams(unit)
-    params.fullBlock = false
-
-    local unitBlock = ::build_aircraft_item(unit.name, unit, params)
-    guiScene.replaceContentFromText(placeObj, unitBlock, unitBlock.len(), this)
-
-    ::fill_unit_item_timers(placeObj.findObject(unit.name), unit, params)
-
-    ::showUnitDiscount(placeObj.findObject(unit.name+"-discount"), unit)
-
-    local bonusData = unit.name
-    if (::isUnitGroup(unit))
-      bonusData = ::u.map(unit.airsGroup, function(unit) { return unit.name })
-    showAirExpWpBonus(placeObj.findObject(unit.name+"-bonus"), bonusData)
+    if (cellObj?.isValid())
+      updateUnitCell(cellObj, unit)
   }
 
   function updateGroupItem(groupName)
@@ -1073,7 +1025,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
       return
 
     updateUnitItem(block, findCloneGroupObjById(groupName))
-    updateUnitItem(block, findAirTableObjById("td_" + groupName))
+    updateUnitItem(block, findAirTableObjById($"unitCell_{groupName}"))
   }
 
   function checkBrokenListStatus(unit)
@@ -1101,21 +1053,30 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
       availableFlushExp = availableFlushExp
       setResearchManually = setResearchManually
     }
+    local mainActionLocId = is_unit ? slotActions.getSlotActionFunctionName(unit, params) : ""
     return {
-             hasActions     = true,
-             showInService  = true,
-             fullGroupBlock = !is_unit
-             mainActionFunc = is_unit? "onUnitMainFunc" : "",
-             mainActionText = is_unit? slotActions.getSlotActionFunctionName(unit, params) : ""
-             fullBlock      = true
-             shopResearchMode = shopResearchMode
-             forceNotInResearch = !setResearchManually
-             flushExp = availableFlushExp
-             showBR = ::has_feature("GlobalShowBattleRating")
-             getEdiffFunc = getCurrentEdiff.bindenv(this)
-             tooltipParams = { needShopInfo = true }
-           }
+      mainActionText = mainActionLocId != "" ? ::loc(mainActionLocId) : ""
+      shopResearchMode = shopResearchMode
+      forceNotInResearch = !setResearchManually
+      flushExp = availableFlushExp
+      showBR = ::has_feature("GlobalShowBattleRating")
+      getEdiffFunc = getCurrentEdiff.bindenv(this)
+      tooltipParams = { needShopInfo = true }
+    }
   }
+
+  function findUnitInTree(isFits) {
+    local tree = getCurTreeData().tree
+    local idx = -1
+    foreach(row, rowArr in tree)
+      foreach(col, unit in rowArr)
+        if (unit != null && isFits(unit, ++idx))
+          return { unit = unit, row = row, col = col, idx = idx }
+    return { unit = null, row = -1, col = -1, idx = -1 }
+  }
+
+  getUnitByIdx = @(curIdx) findUnitInTree(@(unit, idx) idx == curIdx)
+  getUnitById  = @(id)     findUnitInTree(@(unit, idx) unit.name == id)
 
   function getCurAircraft(checkGroups = true, returnDefaultUnitForGroups = false)
   {
@@ -1123,20 +1084,17 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
       return null
 
     local tableObj = scene.findObject("shop_items_list")
-    local tree = getCurTreeData().tree
-    local curRow = tableObj.cur_row.tointeger()
-    local curCol = tableObj.cur_col.tointeger()
-    if ((tree.len() <= curRow) || (tree[curRow].len() <= curCol))
+    local curIdx = tableObj.getValue()
+    if (curIdx < 0)
       return null
-
-    local mainTblUnit = tree[curRow][curCol]
+    local mainTblUnit = getUnitByIdx(curIdx).unit
     if (!::isUnitGroup(mainTblUnit))
       return mainTblUnit
 
     if (checkGroups && ::checkObj(groupChooseObj))
     {
       tableObj = groupChooseObj.findObject("airs_table")
-      local idx = tableObj.cur_row.tointeger()
+      local idx = tableObj.getValue()
       if (idx in mainTblUnit.airsGroup)
         return mainTblUnit.airsGroup[idx]
     }
@@ -1333,13 +1291,13 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     local tableObj = scene.findObject("shop_items_list")
     if (!::check_obj(tableObj))
       return
-    foreach (coords in [ slots.coordsLast, slots.coordsFirst ])
+    foreach (value in [ slots.valueLast, slots.valueFirst ])
     {
-      local cellObj = coords ? getCellObjByRowCol(coords[0], coords[1]) : null
+      local cellObj = value != null ? getCellObjByValue(value) : null
       if (::check_obj(cellObj))
         cellObj.scrollToView()
     }
-    selCellOnSearchQuit = slots.coordsFirst
+    selCellOnSearchQuit = slots.valueFirst
   }
 
   function highlightUnitsInTree(units)
@@ -1348,14 +1306,17 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     shadingObj.show(true)
     guiScene.applyPendingChanges(true)
 
-    local res = { coordsFirst = null, coordsLast = null }
+    local res = { valueFirst = null, valueLast = null }
     local highlightList = []
     local tree = getCurTreeData().tree
     local tableObj = scene.findObject("shop_items_list")
-    for(local row = 0; row < tree.len(); row++)
-      for(local col = 0; col < tree[row].len(); col++)
+    local slotIdx = -1
+    foreach(row, rowArr in tree)
+      foreach(col, cell in rowArr)
       {
-        local cell = tree[row][col]
+        if (!cell)
+          continue
+        slotIdx++
         local isGroup = ::isUnitGroup(cell)
         local isHighlight = !cell?.isFakeUnit && !isGroup && ::isInArray(cell?.name, units)
         if (isGroup)
@@ -1363,11 +1324,11 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
             isHighlight = isHighlight || ::isInArray(unit?.name, units)
         if (!isHighlight)
           continue
-        res.coordsFirst = res.coordsFirst || [ row, col ]
-        res.coordsLast  = [ row, col ]
+        res.valueFirst = res.valueFirst ?? slotIdx
+        res.valueLast  = slotIdx
         local objData  = {
-          obj = getCellObjByRowCol(row, col)
-          id = ::format("high_%d_%d", row, col)
+          obj = getCellObjByValue(slotIdx)
+          id = $"high_{slotIdx}"
           onClick = "onHighlightedCellClick"
           isNoDelayOnClick = true
         }
@@ -1388,19 +1349,18 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
   {
     highlightUnitsClear()
 
-    if (selCellOnSearchQuit)
+    if (selCellOnSearchQuit != null)
     {
       local tableObj = scene.findObject("shop_items_list")
       if (::check_obj(tableObj))
       {
         skipOpenGroup = true
-        ::gui_bhv.OptionsNavigator.selectCell(tableObj, selCellOnSearchQuit[0], selCellOnSearchQuit[1])
+        tableObj.setValue(selCellOnSearchQuit)
+        ::move_mouse_on_child(tableObj, selCellOnSearchQuit)
         skipOpenGroup = false
       }
       selCellOnSearchQuit = null
     }
-
-    restoreFocus()
   }
 
   function highlightUnitsClear()
@@ -1412,11 +1372,13 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function onHighlightedCellClick(obj)
   {
-    local coordsStr = ::g_string.cutPrefix(obj?.id, "high_") ?? ""
-    local coords = ::g_string.split(coordsStr, "_").map(@(c) ::to_integer_safe(c, -1, false))
-    if ((coords?[0] ?? -1) >= 0 && (coords?[1] ?? -1) >= 0)
-      selCellOnSearchQuit = coords
-    guiScene.performDelayed(this, @() searchBoxWeak && searchBoxWeak.searchCancel())
+    local value = ::to_integer_safe(::g_string.cutPrefix(obj?.id, "high_") ?? "-1", -1, false)
+    if (value >= 0)
+      selCellOnSearchQuit = value
+    guiScene.performDelayed(this, function() {
+      if (isValid())
+        searchBoxWeak?.searchCancel()
+    })
   }
 
   function onShadedCellClick(obj)
@@ -1425,26 +1387,36 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
       searchBoxWeak.searchCancel()
   }
 
-  function openMenuForCurAir(obj)
+  function openMenuForUnit(unit)
   {
-    local curAir = getCurAircraft()
-    if (!("name" in curAir))
+    if ("name" not in unit)
       return
-    local curAirObj = obj.findObject(getCurAircraft().name)
-    if (::checkObj(curAirObj))
-      openUnitActionsList(curAirObj, true)
+    local curAirObj = scene.findObject(unit.name)
+    if (curAirObj == null && groupChooseObj?.isValid())
+      curAirObj = groupChooseObj.findObject(unit.name)
+    if (curAirObj?.isValid())
+      openUnitActionsList(curAirObj)
   }
 
   function onAircraftClick(obj)
   {
-    scene.findObject("shop_items_list").select()
-    checkSelectAirGroup()
-    openMenuForCurAir(obj)
+    local holderId = obj?.holderId
+    if (holderId != null) {
+      local { idx } = getUnitById(holderId)
+      if (idx < 0)
+        return
+      if (::checkObj(groupChooseObj))
+        groupChooseObj.findObject("airs_table").setValue(idx)
+      else
+        scene.findObject("shop_items_list").setValue(idx)
+    }
+    local unit = getCurAircraft()
+    checkSelectAirGroup(unit)
+    openMenuForUnit(unit)
   }
 
-  function checkSelectAirGroup(block = null, selectUnitName = "")
+  function checkSelectAirGroup(item, selectUnitName = "")
   {
-    local item = block == null? getCurAircraft() : block
     if (skipOpenGroup || groupChooseObj || !item || !::isUnitGroup(item))
       return
     local silObj = scene.findObject("shop_items_list")
@@ -1555,11 +1527,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     if (!::checkObj(gTblObj))
       return
 
-    gTblObj["class"] = "shopTable"
-    gTblObj.navigatorShortcuts = "yes"
-    gTblObj.alwaysShowBorder = "yes"
-
-    if (selectUnitName == "")
+    if (selectUnitName == "" && ::show_console_buttons) //no need to select when not gamepad control to avoid open hover menu early
     {
       local groupUnit = getDefaultUnitInGroup(item)
       if (groupUnit)
@@ -1570,46 +1538,27 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     local lines = fillGroupObjArrows(item.airsGroup)
     guiScene.appendWithBlk(groupChooseObj.findObject("arrows_nest"), lines, this)
 
-    foreach(air in item.airsGroup)
-      if (air)
-      {
-        ::showUnitDiscount(gTblObj.findObject(air.name+"-discount"), air)
-        ::showAirExpWpBonus(gTblObj.findObject(air.name+"-bonus"), air.name)
-        if (getItemStatusData(air).broken && !::isInArray(air, brokenList))
-          brokenList.append(air)
-      }
+    foreach(unit in item.airsGroup)
+      if (::isUnitBroken(unit))
+        ::u.appendOnce(unit, brokenList)
   }
 
-  function fillUnitsInGroup(tblObj, airList, selectUnitName = "")
+  function fillUnitsInGroup(tblObj, unitList, selectUnitName = "")
   {
-    local data = ""
-    local selected = tblObj.cur_row.tointeger()
-    local unitItems = []
-    for(local i = 0; i < airList.len(); i++)
-    {
-      if (selectUnitName == airList[i].name)
-        selected = i
+    local selected = unitList.findindex(@(u) selectUnitName == u.name) ?? tblObj.getValue()
+    initUnitCells(tblObj, unitList.map(@(u) { id = u.name, position = "relative" }))
+    foreach(idx, unit in unitList)
+      updateUnitCell(tblObj.getChild(idx), unit)
 
-      local params = getUnitItemParams(airList[i])
-      local unitBlk = ::build_aircraft_item(airList[i].name, airList[i], params)
-      unitItems.append({ id = airList[i].name, unit = airList[i], params = params })
-      data += ::format("tr { %s }\n", unitBlk)
-    }
-
-    guiScene.replaceContentFromText(tblObj, data, data.len(), this)
-    foreach (unitItem in unitItems)
-      ::fill_unit_item_timers(tblObj.findObject(unitItem.id), unitItem.unit, unitItem.params)
-    tblObj.select()
-    ::gui_bhv.columnNavigator.selectCell(tblObj, selected, 0, false, false, false)
+    tblObj.setValue(selected)
+    ::move_mouse_on_child(tblObj, selected)
   }
 
   function onSceneActivate(show)
   {
     base.onSceneActivate(show)
     scene.enable(show)
-    if (show)
-      restoreFocus()
-    else
+    if (!show)
       destroyGroupChoose()
   }
 
@@ -1771,8 +1720,6 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function onEventUnitBought(params)
   {
-    ::update_gamercards()
-
     local unitName = ::getTblValue("unitName", params)
     local unit = unitName ? ::getAircraftByName(unitName) : null
     if (!unit)
@@ -1836,30 +1783,34 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     if (!::checkObj(tableObj))
       return false
 
+    local idx = -1
     foreach(rowIdx, row in tree)
-      foreach(colIdx, item in row)
+      foreach(colIdx, item in row) {
+        if (item == null)
+          continue
+        idx++
         if (::isUnitGroup(item))
         {
           foreach(groupItemIdx, groupItem in item.airsGroup)
             if (groupItem.name == unitName)
             {
-              ::gui_bhv.columnNavigator.selectCell.call(::gui_bhv.columnNavigator, tableObj, rowIdx, colIdx)
+              local obj = getCellObjByValue(idx)
+              obj.scrollToView()
+              tableObj.setValue(idx)
+              obj.setMouseCursorOnObject()
               if (::checkObj(groupChooseObj))
-              {
-                local groupTableObj = groupChooseObj.findObject("airs_table")
-                ::gui_bhv.columnNavigator.selectCell.call(::gui_bhv.columnNavigator, groupTableObj, groupItemIdx, groupTableObj.cur_col.tointeger())
-              }
+                groupChooseObj.findObject("airs_table").setValue(groupItemIdx)
               return true
             }
         }
-        else
-        {
-          if (item && item.name == unitName)
-          {
-            ::gui_bhv.columnNavigator.selectCell.call(::gui_bhv.columnNavigator, tableObj, rowIdx, colIdx)
-            return true
-          }
+        else if (item.name == unitName) {
+          local obj = getCellObjByValue(idx)
+          obj.scrollToView()
+          tableObj.setValue(idx)
+          obj.setMouseCursorOnObject()
+          return true
         }
+      }
     return false
   }
 
@@ -1902,14 +1853,9 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     goBack()
   }
 
-  function onDoubleClick(obj)
-  {
-    onUnitMainFunc(obj)
-  }
-
   function onUnitMainFunc(obj)
   {
-    local unit = getCurAircraft()
+    local unit = ::getAircraftByName(obj?.holderId) ?? getCurAircraft()
     if (!unit)
       return
 
@@ -2077,47 +2023,11 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
         local unitObj = unit ? getUnitCellObj(unit.name) : null
         if (::checkObj(unitObj))
         {
-          local obj = unitObj.findObject("rank_text")
+          local obj = unitObj.findObject("rankText")
           if (::checkObj(obj))
             obj.setValue(::get_unit_rank_text(unit, null, true, curEdiff))
         }
       }
-  }
-
-  function restoreFocus(checkPrimaryFocus = true)
-  {
-    if (isSceneActive() && !checkGroupObj())
-      topMenuHandler.value?.restoreFocus.call(topMenuHandler.value, checkPrimaryFocus)
-  }
-
-  function onEventClosedUnitItemMenu(params)
-  {
-    if (!checkGroupObj())
-      restoreFocus()
-  }
-
-  function checkGroupObj()
-  {
-    if (::checkObj(groupChooseObj))
-    {
-      local tableObj = groupChooseObj.findObject("airs_table")
-      if (::checkObj(tableObj))
-      {
-        tableObj.select()
-        return true
-      }
-    }
-    return false
-  }
-
-  function onWrapUp(obj)
-  {
-    topMenuHandler.value?.onWrapUp.call(topMenuHandler.value, obj)
-  }
-
-  function onWrapDown(obj)
-  {
-    topMenuHandler.value?.onWrapDown.call(topMenuHandler.value, obj)
   }
 
   function onShopShow(show)
@@ -2144,11 +2054,6 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
       return
 
     doWhenActiveOnce("updateTreeDifficulty")
-  }
-
-  function onEventXboxSystemUIReturn(p)
-  {
-    restoreFocus()
   }
 
   function onUnitSelect() {}

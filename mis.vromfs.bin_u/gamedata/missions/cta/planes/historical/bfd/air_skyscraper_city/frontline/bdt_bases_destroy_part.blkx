@@ -1,0 +1,2532 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/air_smolensk.bin",
+      "type": "domination",
+      "environment": "Day",
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    }
+  },
+  "imports": {
+    "import_record": {
+      "file": "gameData/missions/templates/air_templates/jip/air_bdt_bases_destroy_template.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "excludes": []
+    }
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "objectGroups": {
+        "name": "bdt_t2_bomb_object_01",
+        "tm": [
+          [-0.650931,0.0,-0.759134],
+          [0.0,1.0,0.0],
+          [0.759134,0.0,-0.650931],
+          [-3764.39,459.607,8510.18]
+        ],
+        "unit_class": "dynBase_hq_camp_square",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "bdt_t2_bomb_object_02",
+        "tm": [
+          [-0.973358,0.0,-0.2293],
+          [0.0,1.0,0.0],
+          [0.2293,0.0,-0.973358],
+          [-12190.6,110.477,9298.81]
+        ],
+        "unit_class": "dynBase_fuel_storage_square",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "bdt_t2_bomb_object_03",
+        "tm": [
+          [0.473411,0.0,-0.880843],
+          [0.0,1.0,0.0],
+          [0.880843,0.0,0.473411],
+          [-14032.9,100.468,9274.82]
+        ],
+        "unit_class": "dynBase_oil_storage_small_square",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "bdt_t1_bomb_object_01",
+        "tm": [
+          [-0.261476,0.0,-0.965209],
+          [0.0,1.0,0.0],
+          [0.965209,0.0,-0.261476],
+          [-3880.44,74.6921,-7455.56]
+        ],
+        "unit_class": "dynBase_fuel_storage_square",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "bdt_t1_bomb_object_02",
+        "tm": [
+          [0.459305,0.0,-0.888277],
+          [0.0,1.0,0.0],
+          [0.888277,0.0,0.459305],
+          [-8326.7,78.4858,-7104.93]
+        ],
+        "unit_class": "dynBase_small_factory_square",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": false
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "bdt_t1_bomb_object_03",
+        "tm": [
+          [0.549622,0.0,-0.835414],
+          [0.0,1.0,0.0],
+          [0.835414,0.0,0.549622],
+          [-13037.5,52.7653,-4924.42]
+        ],
+        "unit_class": "dynBase_oil_storage_small_square",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": false
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "bdt_t2_bomb_object_04",
+        "tm": [
+          [-0.097788,0.0,-0.995207],
+          [0.0,1.0,0.0],
+          [0.995207,0.0,-0.097788],
+          [-825.456,213.714,5516.94]
+        ],
+        "unit_class": "dynBase_small_factory_square",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "bdt_t1_bomb_object_04",
+        "tm": [
+          [0.972285,0.0,0.233798],
+          [0.0,1.0,0.0],
+          [-0.233798,0.0,0.972285],
+          [-16232.8,20.9573,-597.031]
+        ],
+        "unit_class": "dynBase_field_camp_square",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": false
+        }
+      }
+    },
+    {
+      "structures": {
+        "name": "bdt_t2_bomb_zone_01_bomb_target",
+        "tm": [
+          [-0.650931,0.0,-0.759134],
+          [0.0,1.0,0.0],
+          [0.759134,0.0,-0.650931],
+          [-3764.39,459.607,8510.18]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": false,
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "bdt_t2_bomb_zone_02_bomb_target",
+        "tm": [
+          [-0.973358,0.0,-0.2293],
+          [0.0,1.0,0.0],
+          [0.2293,0.0,-0.973358],
+          [-12190.6,110.477,9298.81]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": false,
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "bdt_t2_bomb_zone_03_bomb_target",
+        "tm": [
+          [0.473411,0.0,-0.880843],
+          [0.0,1.0,0.0],
+          [0.880843,0.0,0.473411],
+          [-14032.9,100.468,9274.82]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": false,
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "bdt_t2_bomb_zone_04_bomb_target",
+        "tm": [
+          [-0.097788,0.0,-0.995207],
+          [0.0,1.0,0.0],
+          [0.995207,0.0,-0.097788],
+          [-825.456,213.714,5516.94]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": false,
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "bdt_t1_bomb_zone_01_bomb_target",
+        "tm": [
+          [-0.261476,0.0,-0.965209],
+          [0.0,1.0,0.0],
+          [0.965209,0.0,-0.261476],
+          [-3880.44,74.6921,-7455.56]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "bdt_t1_bomb_zone_02_bomb_target",
+        "tm": [
+          [0.459305,0.0,-0.888277],
+          [0.0,1.0,0.0],
+          [0.888277,0.0,0.459305],
+          [-8326.7,78.4858,-7104.93]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "bdt_t1_bomb_zone_03_bomb_target",
+        "tm": [
+          [0.549622,0.0,-0.835414],
+          [0.0,1.0,0.0],
+          [0.835414,0.0,0.549622],
+          [-13037.5,52.7653,-4924.42]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "bdt_t1_bomb_zone_04_bomb_target",
+        "tm": [
+          [0.972285,0.0,0.233798],
+          [0.0,1.0,0.0],
+          [-0.233798,0.0,0.972285],
+          [-16232.8,20.9573,-597.031]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "bdt_t1_targets_squad",
+        "tm": [
+          [0.322309,0.0,-0.946635],
+          [0.0,1.0,0.0],
+          [0.946635,0.0,0.322309],
+          [-9918.57,188.569,-7815.92]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "bdt_t2_bomb_zone_01_bomb_target"
+          },
+          {
+            "squad_members": "bdt_t2_bomb_zone_02_bomb_target"
+          },
+          {
+            "squad_members": "bdt_t2_bomb_zone_03_bomb_target"
+          },
+          {
+            "squad_members": "bdt_t2_bomb_zone_04_bomb_target"
+          },
+          {
+            "squad_members": "bdt_t2_bomb_zone_05_bomb_target"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "bdt_t2_targets_squad",
+        "tm": [
+          [-0.115831,0.0,-0.993267],
+          [0.0,1.0,0.0],
+          [0.993267,0.0,-0.115831],
+          [-6826.28,98.5938,10027.0]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "bdt_t2_bomb_zone_01_bomb_target"
+          },
+          {
+            "squad_members": "bdt_t2_bomb_zone_02_bomb_target"
+          },
+          {
+            "squad_members": "bdt_t2_bomb_zone_03_bomb_target"
+          },
+          {
+            "squad_members": "bdt_t2_bomb_zone_04_bomb_target"
+          },
+          {
+            "squad_members": "bdt_t2_bomb_zone_05_bomb_target"
+          },
+          {
+            "squad_members": "bdt_t2_bomb_zone_06_bomb_target"
+          },
+          {
+            "squad_members": "bdt_t2_bomb_zone_07_bomb_target"
+          },
+          {
+            "squad_members": "bdt_t2_bomb_zone_08_bomb_target"
+          },
+          {
+            "squad_members": "bdt_t2_bomb_zone_09_bomb_target"
+          },
+          {
+            "squad_members": "bdt_t2_bomb_zone_10_bomb_target"
+          }
+        ]
+      }
+    },
+    {
+      "air_defence": {
+        "name": "bdt_t2_aaa",
+        "tm": [
+          [0.223467,0.0,-0.974711],
+          [0.0,1.0,0.0],
+          [0.974711,0.0,0.223467],
+          [-22632.0,145.794,5514.42]
+        ],
+        "unit_class": "germ_88mm_flak36",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 16,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "calmDetection": true,
+          "targetableByAi": false
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "bdt_t1_aaa",
+        "tm": [
+          [0.223467,0.0,-0.974711],
+          [0.0,1.0,0.0],
+          [0.974711,0.0,0.223467],
+          [-22257.1,145.793,7063.93]
+        ],
+        "unit_class": "ussr_85mm_52k",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 16,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "calmDetection": true,
+          "targetableByAi": false
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "bdt_t2_aaa_squad",
+        "tm": [
+          [0.223467,0.0,-0.974711],
+          [0.0,1.0,0.0],
+          [0.974711,0.0,0.223467],
+          [-23997.6,145.794,3823.96]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "bdt_t2_aaa"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "bdt_t1_aaa_squad",
+        "tm": [
+          [-0.842286,0.0,0.539031],
+          [0.0,1.0,0.0],
+          [-0.539031,0.0,-0.842286],
+          [747.166,145.793,7887.8]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "bdt_t1_aaa"
+        }
+      }
+    },
+    {
+      "structures": {
+        "name": "bdt_t1_bomb_zone_05_bomb_target",
+        "tm": [
+          [0.22246,0.0,-0.974942],
+          [0.0,1.0,0.0],
+          [0.974942,0.0,0.22246],
+          [-17302.3,27.971,-2168.98]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": []
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "bdt_t1_bomb_object_05",
+        "tm": [
+          [0.22246,0.0,-0.974942],
+          [0.0,1.0,0.0],
+          [0.974942,0.0,0.22246],
+          [-17302.3,27.971,-2168.98]
+        ],
+        "unit_class": "dynBase_military_base_square",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": false
+        }
+      }
+    },
+    {
+      "structures": {
+        "name": "bdt_t1_bomb_zone_06_bomb_target",
+        "tm": [
+          [0.22246,0.0,-0.974942],
+          [0.0,1.0,0.0],
+          [0.974942,0.0,0.22246],
+          [-15474.9,25.7018,-3687.44]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": []
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "bdt_t1_bomb_object_06",
+        "tm": [
+          [0.22246,0.0,-0.974942],
+          [0.0,1.0,0.0],
+          [0.974942,0.0,0.22246],
+          [-15474.9,25.7018,-3687.44]
+        ],
+        "unit_class": "dynBase_oil_storage_large_square",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": false
+        }
+      }
+    },
+    {
+      "structures": {
+        "name": "bdt_t1_bomb_zone_07_bomb_target",
+        "tm": [
+          [0.22246,0.0,-0.974942],
+          [0.0,1.0,0.0],
+          [0.974942,0.0,0.22246],
+          [-14094.4,27.199,-5886.31]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": []
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "bdt_t1_bomb_object_07",
+        "tm": [
+          [0.22246,0.0,-0.974942],
+          [0.0,1.0,0.0],
+          [0.974942,0.0,0.22246],
+          [-14094.4,27.199,-5886.31]
+        ],
+        "unit_class": "dynBase_oil_storage_large_square",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": false
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "bdt_t1_bomb_object_08",
+        "tm": [
+          [-0.261476,0.0,-0.965209],
+          [0.0,1.0,0.0],
+          [0.965209,0.0,-0.261476],
+          [-3112.58,258.098,-5682.73]
+        ],
+        "unit_class": "dynBase_small_factory_square",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      }
+    },
+    {
+      "structures": {
+        "name": "bdt_t1_bomb_zone_08_bomb_target",
+        "tm": [
+          [-0.261476,0.0,-0.965209],
+          [0.0,1.0,0.0],
+          [0.965209,0.0,-0.261476],
+          [-3112.58,258.098,-5682.73]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": []
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "bdt_t1_bomb_object_09",
+        "tm": [
+          [-0.261476,0.0,-0.965209],
+          [0.0,1.0,0.0],
+          [0.965209,0.0,-0.261476],
+          [-6693.56,100.097,-5649.34]
+        ],
+        "unit_class": "dynBase_petrol_camp_square",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      }
+    },
+    {
+      "structures": {
+        "name": "bdt_t1_bomb_zone_09_bomb_target",
+        "tm": [
+          [-0.261476,0.0,-0.965209],
+          [0.0,1.0,0.0],
+          [0.965209,0.0,-0.261476],
+          [-6693.56,100.097,-5649.34]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "bdt_t1_bomb_zone_10_bomb_target",
+        "tm": [
+          [-0.261476,0.0,-0.965209],
+          [0.0,1.0,0.0],
+          [0.965209,0.0,-0.261476],
+          [-9463.97,133.719,-7745.83]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": []
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "bdt_t1_bomb_object_10",
+        "tm": [
+          [-0.261476,0.0,-0.965209],
+          [0.0,1.0,0.0],
+          [0.965209,0.0,-0.261476],
+          [-9463.97,133.719,-7745.83]
+        ],
+        "unit_class": "dynBase_petrol_camp_square",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "bdt_t2_bomb_object_05",
+        "tm": [
+          [-0.097788,0.0,-0.995207],
+          [0.0,1.0,0.0],
+          [0.995207,0.0,-0.097788],
+          [492.847,250.33,5399.58]
+        ],
+        "unit_class": "dynBase_petrol_camp_square",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "structures": {
+        "name": "bdt_t2_bomb_zone_05_bomb_target",
+        "tm": [
+          [-0.097788,0.0,-0.995207],
+          [0.0,1.0,0.0],
+          [0.995207,0.0,-0.097788],
+          [492.847,250.33,5399.58]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": false,
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": []
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "bdt_t2_bomb_object_06",
+        "tm": [
+          [0.38068,0.0,-0.924707],
+          [0.0,1.0,0.0],
+          [0.924707,0.0,0.38068],
+          [-293.445,247.612,7585.81]
+        ],
+        "unit_class": "dynBase_military_base_square",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "structures": {
+        "name": "bdt_t2_bomb_zone_06_bomb_target",
+        "tm": [
+          [0.38068,0.0,-0.924707],
+          [0.0,1.0,0.0],
+          [0.924707,0.0,0.38068],
+          [-293.445,247.615,7585.81]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": false,
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": []
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "bdt_t2_bomb_object_07",
+        "tm": [
+          [-0.097788,0.0,-0.995207],
+          [0.0,1.0,0.0],
+          [0.995207,0.0,-0.097788],
+          [-3087.23,668.953,10819.5]
+        ],
+        "unit_class": "dynBase_fuel_storage_square",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "structures": {
+        "name": "bdt_t2_bomb_zone_07_bomb_target",
+        "tm": [
+          [-0.097788,0.0,-0.995207],
+          [0.0,1.0,0.0],
+          [0.995207,0.0,-0.097788],
+          [-3087.23,668.956,10819.5]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": false,
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": []
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "bdt_t2_bomb_object_08",
+        "tm": [
+          [0.473411,0.0,-0.880843],
+          [0.0,1.0,0.0],
+          [0.880843,0.0,0.473411],
+          [-15494.7,32.6952,8403.8]
+        ],
+        "unit_class": "dynBase_ammunition_storage_square",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "structures": {
+        "name": "bdt_t2_bomb_zone_08_bomb_target",
+        "tm": [
+          [0.473411,0.0,-0.880843],
+          [0.0,1.0,0.0],
+          [0.880843,0.0,0.473411],
+          [-15494.7,32.6952,8403.8]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": false,
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": []
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "bdt_t2_bomb_object_09",
+        "tm": [
+          [0.473411,0.0,-0.880843],
+          [0.0,1.0,0.0],
+          [0.880843,0.0,0.473411],
+          [-15164.2,72.7424,10328.7]
+        ],
+        "unit_class": "dynBase_field_camp_square",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "structures": {
+        "name": "bdt_t2_bomb_zone_09_bomb_target",
+        "tm": [
+          [0.473411,0.0,-0.880843],
+          [0.0,1.0,0.0],
+          [0.880843,0.0,0.473411],
+          [-15164.2,72.7424,10328.7]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": false,
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": []
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "bdt_t2_bomb_object_10",
+        "tm": [
+          [0.473411,0.0,-0.880843],
+          [0.0,1.0,0.0],
+          [0.880843,0.0,0.473411],
+          [-12148.5,161.072,10914.9]
+        ],
+        "unit_class": "dynBase_oil_storage_small_square",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "structures": {
+        "name": "bdt_t2_bomb_zone_10_bomb_target",
+        "tm": [
+          [0.473411,0.0,-0.880843],
+          [0.0,1.0,0.0],
+          [0.880843,0.0,0.473411],
+          [-12148.5,161.072,10914.9]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": false,
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": []
+      }
+    }
+  ],
+  "areas": {
+    "bdt_t2_bomb_zone_01": {
+      "type": "Sphere",
+      "tm": [
+        [-292.92,0.0,-341.612],
+        [0.0,450.0,0.0],
+        [341.612,0.0,-292.92],
+        [-3767.87,446.954,8516.44]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_02": {
+      "type": "Sphere",
+      "tm": [
+        [-253.225,0.0,-371.992],
+        [0.0,450.0,0.0],
+        [371.992,0.0,-253.225],
+        [-12179.8,115.721,9280.02]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_03": {
+      "type": "Sphere",
+      "tm": [
+        [213.034,0.0,-396.38],
+        [0.0,450.0,0.0],
+        [396.38,0.0,213.034],
+        [-14028.1,100.768,9283.36]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_01": {
+      "type": "Sphere",
+      "tm": [
+        [-117.665,0.0,-434.344],
+        [0.0,450.0,0.0],
+        [434.344,0.0,-117.665],
+        [-3880.7,69.9961,-7468.29]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_02": {
+      "type": "Sphere",
+      "tm": [
+        [115.272,0.0,-434.986],
+        [0.0,450.0,0.0],
+        [434.986,0.0,115.272],
+        [-8323.59,77.3858,-7108.54]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_03": {
+      "type": "Sphere",
+      "tm": [
+        [85.6696,0.0,-441.77],
+        [0.0,450.0,0.0],
+        [441.77,0.0,85.6696],
+        [-13035.9,45.7953,-4929.88]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_04": {
+      "type": "Sphere",
+      "tm": [
+        [-44.0049,0.0,-447.843],
+        [0.0,450.0,0.0],
+        [447.843,0.0,-44.0049],
+        [-828.079,213.738,5509.48]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_04": {
+      "type": "Sphere",
+      "tm": [
+        [440.742,0.0,90.8081],
+        [0.0,450.0,0.0],
+        [-90.8081,0.0,440.742],
+        [-16233.7,18.9922,-591.337]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_01_aaa_point_01": {
+      "type": "Point",
+      "tm": [
+        [-0.115831,0.0,-0.993267],
+        [0.0,1.0,0.0],
+        [0.993267,0.0,-0.115831],
+        [-3993.31,431.269,8515.69]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_01_aaa_point_02": {
+      "type": "Point",
+      "tm": [
+        [-0.115831,0.0,-0.993267],
+        [0.0,1.0,0.0],
+        [0.993267,0.0,-0.115831],
+        [-3495.51,442.409,8622.41]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_01_aaa_point_03": {
+      "type": "Point",
+      "tm": [
+        [-0.115831,0.0,-0.993267],
+        [0.0,1.0,0.0],
+        [0.993267,0.0,-0.115831],
+        [-3501.27,434.852,8503.52]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_01_aaa_point_04": {
+      "type": "Point",
+      "tm": [
+        [-0.115831,0.0,-0.993267],
+        [0.0,1.0,0.0],
+        [0.993267,0.0,-0.115831],
+        [-3522.48,435.668,8118.58]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_02_aaa_point_01": {
+      "type": "Point",
+      "tm": [
+        [-0.00495335,0.0,-0.999986],
+        [0.0,1.0,0.0],
+        [0.999986,0.0,-0.00495335],
+        [-12328.2,113.324,9479.44]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_02_aaa_point_02": {
+      "type": "Point",
+      "tm": [
+        [-0.00495335,0.0,-0.999986],
+        [0.0,1.0,0.0],
+        [0.999986,0.0,-0.00495335],
+        [-11859.4,101.244,9213.27]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_02_aaa_point_03": {
+      "type": "Point",
+      "tm": [
+        [-0.00495335,0.0,-0.999986],
+        [0.0,1.0,0.0],
+        [0.999986,0.0,-0.00495335],
+        [-12069.0,113.234,9536.73]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_02_aaa_point_04": {
+      "type": "Point",
+      "tm": [
+        [-0.00495335,0.0,-0.999986],
+        [0.0,1.0,0.0],
+        [0.999986,0.0,-0.00495335],
+        [-12220.1,135.45,9054.22]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_03_aaa_point_01": {
+      "type": "Point",
+      "tm": [
+        [-0.00495335,0.0,-0.999986],
+        [0.0,1.0,0.0],
+        [0.999986,0.0,-0.00495335],
+        [-14335.7,126.278,8950.99]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_03_aaa_point_02": {
+      "type": "Point",
+      "tm": [
+        [-0.00495335,0.0,-0.999986],
+        [0.0,1.0,0.0],
+        [0.999986,0.0,-0.00495335],
+        [-13757.7,181.327,9171.74]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_03_aaa_point_03": {
+      "type": "Point",
+      "tm": [
+        [-0.00495335,0.0,-0.999986],
+        [0.0,1.0,0.0],
+        [0.999986,0.0,-0.00495335],
+        [-13774.2,215.108,9478.58]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_03_aaa_point_04": {
+      "type": "Point",
+      "tm": [
+        [-0.00495335,0.0,-0.999986],
+        [0.0,1.0,0.0],
+        [0.999986,0.0,-0.00495335],
+        [-14270.9,141.923,9459.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_04_aaa_point_01": {
+      "type": "Point",
+      "tm": [
+        [-0.115831,0.0,-0.993267],
+        [0.0,1.0,0.0],
+        [0.993267,0.0,-0.115831],
+        [-626.718,215.95,5245.11]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_04_aaa_point_02": {
+      "type": "Point",
+      "tm": [
+        [-0.115831,0.0,-0.993267],
+        [0.0,1.0,0.0],
+        [0.993267,0.0,-0.115831],
+        [-595.103,214.116,5701.82]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_04_aaa_point_03": {
+      "type": "Point",
+      "tm": [
+        [-0.115831,0.0,-0.993267],
+        [0.0,1.0,0.0],
+        [0.993267,0.0,-0.115831],
+        [-1079.33,215.524,5420.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_04_aaa_point_04": {
+      "type": "Point",
+      "tm": [
+        [-0.115831,0.0,-0.993267],
+        [0.0,1.0,0.0],
+        [0.993267,0.0,-0.115831],
+        [-1024.88,214.721,5658.56]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_01_aaa_point_01": {
+      "type": "Point",
+      "tm": [
+        [0.322309,0.0,-0.946635],
+        [0.0,1.0,0.0],
+        [0.946635,0.0,0.322309],
+        [-3790.07,-61.0559,-7706.38]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_01_aaa_point_02": {
+      "type": "Point",
+      "tm": [
+        [0.322309,0.0,-0.946635],
+        [0.0,1.0,0.0],
+        [0.946635,0.0,0.322309],
+        [-3902.02,56.3881,-7216.03]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_01_aaa_point_03": {
+      "type": "Point",
+      "tm": [
+        [0.322309,0.0,-0.946635],
+        [0.0,1.0,0.0],
+        [0.946635,0.0,0.322309],
+        [-4109.16,2.05304,-7515.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_01_aaa_point_04": {
+      "type": "Point",
+      "tm": [
+        [0.322309,0.0,-0.946635],
+        [0.0,1.0,0.0],
+        [0.946635,0.0,0.322309],
+        [-4056.47,-23.5108,-7292.95]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_02_aaa_point_01": {
+      "type": "Point",
+      "tm": [
+        [0.322309,0.0,-0.946635],
+        [0.0,1.0,0.0],
+        [0.946635,0.0,0.322309],
+        [-8087.07,-69.6962,-7239.62]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_02_aaa_point_02": {
+      "type": "Point",
+      "tm": [
+        [0.322309,0.0,-0.946635],
+        [0.0,1.0,0.0],
+        [0.946635,0.0,0.322309],
+        [-8110.05,-26.4062,-6950.27]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_02_aaa_point_03": {
+      "type": "Point",
+      "tm": [
+        [0.322309,0.0,-0.946635],
+        [0.0,1.0,0.0],
+        [0.946635,0.0,0.322309],
+        [-8861.33,138.381,-6912.02]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_02_aaa_point_04": {
+      "type": "Point",
+      "tm": [
+        [0.322309,0.0,-0.946635],
+        [0.0,1.0,0.0],
+        [0.946635,0.0,0.322309],
+        [-8394.65,-32.8623,-6787.15]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_03_aaa_point_01": {
+      "type": "Point",
+      "tm": [
+        [0.21533,0.0,-0.976541],
+        [0.0,1.0,0.0],
+        [0.976541,0.0,0.21533],
+        [-13305.9,55.4673,-4782.26]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_03_aaa_point_02": {
+      "type": "Point",
+      "tm": [
+        [0.21533,0.0,-0.976541],
+        [0.0,1.0,0.0],
+        [0.976541,0.0,0.21533],
+        [-12816.7,50.8513,-5032.86]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_03_aaa_point_03": {
+      "type": "Point",
+      "tm": [
+        [0.21533,0.0,-0.976541],
+        [0.0,1.0,0.0],
+        [0.976541,0.0,0.21533],
+        [-12798.9,87.1254,-4909.42]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_03_aaa_point_04": {
+      "type": "Point",
+      "tm": [
+        [0.21533,0.0,-0.976541],
+        [0.0,1.0,0.0],
+        [0.976541,0.0,0.21533],
+        [-13169.3,51.0723,-5154.09]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_04_aaa_point_01": {
+      "type": "Point",
+      "tm": [
+        [0.973967,0.0,0.226687],
+        [0.0,1.0,0.0],
+        [-0.226687,0.0,0.973967],
+        [-16424.2,157.926,-776.819]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_04_aaa_point_02": {
+      "type": "Point",
+      "tm": [
+        [0.973967,0.0,0.226687],
+        [0.0,1.0,0.0],
+        [-0.226687,0.0,0.973967],
+        [-16211.9,27.0804,-322.309]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_04_aaa_point_03": {
+      "type": "Point",
+      "tm": [
+        [0.973967,0.0,0.226687],
+        [0.0,1.0,0.0],
+        [-0.226687,0.0,0.973967],
+        [-16173.6,127.936,-875.965]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_04_aaa_point_04": {
+      "type": "Point",
+      "tm": [
+        [0.973967,0.0,0.226687],
+        [0.0,1.0,0.0],
+        [-0.226687,0.0,0.973967],
+        [-16447.6,31.0302,-361.642]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_05": {
+      "type": "Sphere",
+      "tm": [
+        [85.6696,0.0,-441.77],
+        [0.0,450.0,0.0],
+        [441.77,0.0,85.6696],
+        [-17296.6,27.8231,-2168.07]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_06": {
+      "type": "Sphere",
+      "tm": [
+        [85.6696,0.0,-441.77],
+        [0.0,450.0,0.0],
+        [441.77,0.0,85.6696],
+        [-15469.2,26.3188,-3686.63]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_07": {
+      "type": "Sphere",
+      "tm": [
+        [85.6696,0.0,-441.77],
+        [0.0,450.0,0.0],
+        [441.77,0.0,85.6696],
+        [-14088.6,26.4637,-5885.5]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_08": {
+      "type": "Sphere",
+      "tm": [
+        [-117.665,0.0,-434.344],
+        [0.0,450.0,0.0],
+        [434.344,0.0,-117.665],
+        [-3112.84,257.475,-5695.45]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_09": {
+      "type": "Sphere",
+      "tm": [
+        [-117.665,0.0,-434.344],
+        [0.0,450.0,0.0],
+        [434.344,0.0,-117.665],
+        [-6693.8,103.087,-5661.84]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_10": {
+      "type": "Sphere",
+      "tm": [
+        [-117.665,0.0,-434.344],
+        [0.0,450.0,0.0],
+        [434.344,0.0,-117.665],
+        [-9464.22,133.61,-7758.54]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_05_aaa_point_01": {
+      "type": "Point",
+      "tm": [
+        [0.21533,0.0,-0.976541],
+        [0.0,1.0,0.0],
+        [0.976541,0.0,0.21533],
+        [-17333.1,19.3079,-1896.48]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_05_aaa_point_02": {
+      "type": "Point",
+      "tm": [
+        [0.21533,0.0,-0.976541],
+        [0.0,1.0,0.0],
+        [0.976541,0.0,0.21533],
+        [-17413.6,38.1356,-2065.76]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_05_aaa_point_03": {
+      "type": "Point",
+      "tm": [
+        [0.21533,0.0,-0.976541],
+        [0.0,1.0,0.0],
+        [0.976541,0.0,0.21533],
+        [-17269.0,24.0168,-2454.47]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_05_aaa_point_04": {
+      "type": "Point",
+      "tm": [
+        [0.21533,0.0,-0.976541],
+        [0.0,1.0,0.0],
+        [0.976541,0.0,0.21533],
+        [-17070.6,132.661,-2329.22]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_06_aaa_point_01": {
+      "type": "Point",
+      "tm": [
+        [0.21533,0.0,-0.976541],
+        [0.0,1.0,0.0],
+        [0.976541,0.0,0.21533],
+        [-15723.4,3.74927,-3768.46]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_06_aaa_point_02": {
+      "type": "Point",
+      "tm": [
+        [0.21533,0.0,-0.976541],
+        [0.0,1.0,0.0],
+        [0.976541,0.0,0.21533],
+        [-15442.3,21.4746,-3362.43]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_06_aaa_point_03": {
+      "type": "Point",
+      "tm": [
+        [0.21533,0.0,-0.976541],
+        [0.0,1.0,0.0],
+        [0.976541,0.0,0.21533],
+        [-15165.3,89.0243,-3629.98]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_06_aaa_point_04": {
+      "type": "Point",
+      "tm": [
+        [0.21533,0.0,-0.976541],
+        [0.0,1.0,0.0],
+        [0.976541,0.0,0.21533],
+        [-15533.3,85.7873,-3866.26]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_07_aaa_point_01": {
+      "type": "Point",
+      "tm": [
+        [0.21533,0.0,-0.976541],
+        [0.0,1.0,0.0],
+        [0.976541,0.0,0.21533],
+        [-13801.0,-8.00122,-5975.08]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_07_aaa_point_02": {
+      "type": "Point",
+      "tm": [
+        [0.21533,0.0,-0.976541],
+        [0.0,1.0,0.0],
+        [0.976541,0.0,0.21533],
+        [-14141.6,58.6285,-5629.5]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_07_aaa_point_03": {
+      "type": "Point",
+      "tm": [
+        [0.21533,0.0,-0.976541],
+        [0.0,1.0,0.0],
+        [0.976541,0.0,0.21533],
+        [-14176.9,48.4775,-6209.69]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_07_aaa_point_04": {
+      "type": "Point",
+      "tm": [
+        [0.21533,0.0,-0.976541],
+        [0.0,1.0,0.0],
+        [0.976541,0.0,0.21533],
+        [-13947.2,35.4847,-5750.17]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_08_aaa_point_01": {
+      "type": "Point",
+      "tm": [
+        [0.322309,0.0,-0.946635],
+        [0.0,1.0,0.0],
+        [0.946635,0.0,0.322309],
+        [-2852.92,331.034,-5525.13]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_08_aaa_point_02": {
+      "type": "Point",
+      "tm": [
+        [0.322309,0.0,-0.946635],
+        [0.0,1.0,0.0],
+        [0.946635,0.0,0.322309],
+        [-3311.59,319.643,-5462.87]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_08_aaa_point_03": {
+      "type": "Point",
+      "tm": [
+        [0.322309,0.0,-0.946635],
+        [0.0,1.0,0.0],
+        [0.946635,0.0,0.322309],
+        [-3426.87,248.821,-5867.03]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_08_aaa_point_04": {
+      "type": "Point",
+      "tm": [
+        [0.322309,0.0,-0.946635],
+        [0.0,1.0,0.0],
+        [0.946635,0.0,0.322309],
+        [-3019.63,261.538,-5951.14]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_09_aaa_point_01": {
+      "type": "Point",
+      "tm": [
+        [0.322309,0.0,-0.946635],
+        [0.0,1.0,0.0],
+        [0.946635,0.0,0.322309],
+        [-6756.52,154.438,-5218.26]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_09_aaa_point_02": {
+      "type": "Point",
+      "tm": [
+        [0.322309,0.0,-0.946635],
+        [0.0,1.0,0.0],
+        [0.946635,0.0,0.322309],
+        [-7095.39,74.9076,-5577.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_09_aaa_point_03": {
+      "type": "Point",
+      "tm": [
+        [0.322309,0.0,-0.946635],
+        [0.0,1.0,0.0],
+        [0.946635,0.0,0.322309],
+        [-6192.44,160.744,-5424.57]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_09_aaa_point_04": {
+      "type": "Point",
+      "tm": [
+        [0.322309,0.0,-0.946635],
+        [0.0,1.0,0.0],
+        [0.946635,0.0,0.322309],
+        [-6919.05,211.722,-5997.2]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_10_aaa_point_01": {
+      "type": "Point",
+      "tm": [
+        [0.322309,0.0,-0.946635],
+        [0.0,1.0,0.0],
+        [0.946635,0.0,0.322309],
+        [-9618.33,162.18,-7422.73]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_10_aaa_point_02": {
+      "type": "Point",
+      "tm": [
+        [0.322309,0.0,-0.946635],
+        [0.0,1.0,0.0],
+        [0.946635,0.0,0.322309],
+        [-9062.02,129.827,-7568.64]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_10_aaa_point_03": {
+      "type": "Point",
+      "tm": [
+        [0.322309,0.0,-0.946635],
+        [0.0,1.0,0.0],
+        [0.946635,0.0,0.322309],
+        [-9700.82,139.277,-7876.2]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t1_bomb_zone_10_aaa_point_04": {
+      "type": "Point",
+      "tm": [
+        [0.322309,0.0,-0.946635],
+        [0.0,1.0,0.0],
+        [0.946635,0.0,0.322309],
+        [-9364.82,150.365,-8063.27]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_05": {
+      "type": "Sphere",
+      "tm": [
+        [-44.0049,0.0,-447.843],
+        [0.0,450.0,0.0],
+        [447.843,0.0,-44.0049],
+        [490.169,250.347,5392.31]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_06": {
+      "type": "Sphere",
+      "tm": [
+        [171.307,0.0,-416.118],
+        [0.0,450.0,0.0],
+        [416.118,0.0,171.307],
+        [-292.404,247.799,7577.9]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_07": {
+      "type": "Sphere",
+      "tm": [
+        [-44.0049,0.0,-447.843],
+        [0.0,450.0,0.0],
+        [447.843,0.0,-44.0049],
+        [-3090.03,647.592,10812.1]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_08": {
+      "type": "Sphere",
+      "tm": [
+        [213.034,0.0,-396.38],
+        [0.0,450.0,0.0],
+        [396.38,0.0,213.034],
+        [-15489.8,42.8394,8412.23]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_09": {
+      "type": "Sphere",
+      "tm": [
+        [213.034,0.0,-396.38],
+        [0.0,450.0,0.0],
+        [396.38,0.0,213.034],
+        [-15159.4,75.6805,10337.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_10": {
+      "type": "Sphere",
+      "tm": [
+        [213.034,0.0,-396.38],
+        [0.0,450.0,0.0],
+        [396.38,0.0,213.034],
+        [-12143.8,164.672,10923.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_05_aaa_point_01": {
+      "type": "Point",
+      "tm": [
+        [-0.115831,0.0,-0.993267],
+        [0.0,1.0,0.0],
+        [0.993267,0.0,-0.115831],
+        [165.419,250.421,5514.72]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_05_aaa_point_02": {
+      "type": "Point",
+      "tm": [
+        [-0.115831,0.0,-0.993267],
+        [0.0,1.0,0.0],
+        [0.993267,0.0,-0.115831],
+        [668.167,250.811,5061.82]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_05_aaa_point_03": {
+      "type": "Point",
+      "tm": [
+        [-0.115831,0.0,-0.993267],
+        [0.0,1.0,0.0],
+        [0.993267,0.0,-0.115831],
+        [793.056,250.378,5225.66]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_05_aaa_point_04": {
+      "type": "Point",
+      "tm": [
+        [-0.115831,0.0,-0.993267],
+        [0.0,1.0,0.0],
+        [0.993267,0.0,-0.115831],
+        [571.398,249.839,5708.41]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_06_aaa_point_01": {
+      "type": "Point",
+      "tm": [
+        [0.36384,0.0,-0.931464],
+        [0.0,1.0,0.0],
+        [0.931464,0.0,0.36384],
+        [-462.811,208.318,7876.83]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_06_aaa_point_02": {
+      "type": "Point",
+      "tm": [
+        [0.36384,0.0,-0.931464],
+        [0.0,1.0,0.0],
+        [0.931464,0.0,0.36384],
+        [95.0644,199.054,7353.63]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_06_aaa_point_03": {
+      "type": "Point",
+      "tm": [
+        [0.36384,0.0,-0.931464],
+        [0.0,1.0,0.0],
+        [0.931464,0.0,0.36384],
+        [-197.367,202.108,7209.15]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_06_aaa_point_04": {
+      "type": "Point",
+      "tm": [
+        [0.36384,0.0,-0.931464],
+        [0.0,1.0,0.0],
+        [0.931464,0.0,0.36384],
+        [-1300.96,57.3636,7659.66]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_07_aaa_point_01": {
+      "type": "Point",
+      "tm": [
+        [-0.115831,0.0,-0.993267],
+        [0.0,1.0,0.0],
+        [0.993267,0.0,-0.115831],
+        [-3493.86,629.582,10947.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_07_aaa_point_02": {
+      "type": "Point",
+      "tm": [
+        [-0.115831,0.0,-0.993267],
+        [0.0,1.0,0.0],
+        [0.993267,0.0,-0.115831],
+        [-2857.73,666.141,10453.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_07_aaa_point_03": {
+      "type": "Point",
+      "tm": [
+        [-0.115831,0.0,-0.993267],
+        [0.0,1.0,0.0],
+        [0.993267,0.0,-0.115831],
+        [-2640.17,641.403,10882.5]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_07_aaa_point_04": {
+      "type": "Point",
+      "tm": [
+        [-0.115831,0.0,-0.993267],
+        [0.0,1.0,0.0],
+        [0.993267,0.0,-0.115831],
+        [-3203.19,664.084,11198.8]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_08_aaa_point_01": {
+      "type": "Point",
+      "tm": [
+        [-0.00495335,0.0,-0.999986],
+        [0.0,1.0,0.0],
+        [0.999986,0.0,-0.00495335],
+        [-15537.7,4.75708,8193.08]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_08_aaa_point_02": {
+      "type": "Point",
+      "tm": [
+        [-0.00495335,0.0,-0.999986],
+        [0.0,1.0,0.0],
+        [0.999986,0.0,-0.00495335],
+        [-15619.8,11.5098,8721.94]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_08_aaa_point_03": {
+      "type": "Point",
+      "tm": [
+        [-0.00495335,0.0,-0.999986],
+        [0.0,1.0,0.0],
+        [0.999986,0.0,-0.00495335],
+        [-15159.7,123.691,8418.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_08_aaa_point_04": {
+      "type": "Point",
+      "tm": [
+        [-0.00495335,0.0,-0.999986],
+        [0.0,1.0,0.0],
+        [0.999986,0.0,-0.00495335],
+        [-15353.7,208.923,8722.52]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_09_aaa_point_01": {
+      "type": "Point",
+      "tm": [
+        [-0.00495335,0.0,-0.999986],
+        [0.0,1.0,0.0],
+        [0.999986,0.0,-0.00495335],
+        [-15485.9,193.829,10114.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_09_aaa_point_02": {
+      "type": "Point",
+      "tm": [
+        [-0.00495335,0.0,-0.999986],
+        [0.0,1.0,0.0],
+        [0.999986,0.0,-0.00495335],
+        [-15068.5,79.6264,10620.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_09_aaa_point_03": {
+      "type": "Point",
+      "tm": [
+        [-0.00495335,0.0,-0.999986],
+        [0.0,1.0,0.0],
+        [0.999986,0.0,-0.00495335],
+        [-14963.4,-249.455,10028.1]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_09_aaa_point_04": {
+      "type": "Point",
+      "tm": [
+        [-0.00495335,0.0,-0.999986],
+        [0.0,1.0,0.0],
+        [0.999986,0.0,-0.00495335],
+        [-15536.8,250.199,10488.8]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_10_aaa_point_01": {
+      "type": "Point",
+      "tm": [
+        [-0.00495335,0.0,-0.999986],
+        [0.0,1.0,0.0],
+        [0.999986,0.0,-0.00495335],
+        [-12657.3,165.423,10524.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_10_aaa_point_02": {
+      "type": "Point",
+      "tm": [
+        [-0.00495335,0.0,-0.999986],
+        [0.0,1.0,0.0],
+        [0.999986,0.0,-0.00495335],
+        [-11942.3,-68.765,10628.2]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_10_aaa_point_03": {
+      "type": "Point",
+      "tm": [
+        [-0.00495335,0.0,-0.999986],
+        [0.0,1.0,0.0],
+        [0.999986,0.0,-0.00495335],
+        [-12439.7,472.62,11144.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bdt_t2_bomb_zone_10_aaa_point_04": {
+      "type": "Point",
+      "tm": [
+        [-0.00495335,0.0,-0.999986],
+        [0.0,1.0,0.0],
+        [0.999986,0.0,-0.00495335],
+        [-11854.4,32.0468,11128.5]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bomb_zones_area": {
+      "type": "Sphere",
+      "tm": [
+        [-13151.3,0.0,-12289.7],
+        [0.0,18000.0,0.0],
+        [12289.7,0.0,-13151.3],
+        [-8641.72,369.009,2576.71]
+      ],
+      "objLayer": 4,
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": false
+      }
+    }
+  ],
+  "wayPoints": []
+}

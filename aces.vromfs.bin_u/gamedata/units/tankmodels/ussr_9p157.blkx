@@ -546,8 +546,10 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -569,8 +571,9 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
         "fireParamsPreset": "fuel_exterior",
         "fuel_tank_exterior_r_01_dm": [],
         "fuel_tank_exterior_r_02_dm": [],
@@ -614,7 +617,15 @@
       "ex_decor_l_10_dm": true,
       "ex_decor_l_11_dm": true,
       "ex_decor_r_12_dm": true,
-      "ex_decor_l_12_dm": true
+      "ex_decor_l_12_dm": true,
+      "turret_01_top_dm": false,
+      "turret_03_front_dm": false,
+      "body_bottom_dm": false,
+      "ammo_body_05_dm": false,
+      "ammo_body_06_dm": false,
+      "ammo_body_07_dm": false,
+      "ammo_body_08_dm": false,
+      "ammo_body_09_dm": false
     }
   },
   {
@@ -2123,6 +2134,15 @@
           "name": "fuel_exterior",
           "fx": {
             "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
             "centerDmgPart": true
           }
         }

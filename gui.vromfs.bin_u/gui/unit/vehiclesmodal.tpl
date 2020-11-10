@@ -1,5 +1,6 @@
 root {
-  background-color:t = '@modalShadeColor'
+  blur {}
+  blur_foreground {}
   type:t="big"
 
   frame {
@@ -32,18 +33,9 @@ root {
         <<#isRightAlign>>
         pos:t='pw-w, 0'
         position:t='absolute'
-        on_wrap_left:t='onWrapUp'
-        <</isRightAlign>>
-        <<^isRightAlign>>
-        on_wrap_right:t='onWrapDown'
         <</isRightAlign>>
         id:t='<<id>>'
         padding:t='@blockInterval'
-        behaviour:t='wrapNavigator'
-        navigatorShortcuts:t='yes'
-        childsActivate:t='yes'
-        on_wrap_up:t='onWrapUp'
-        on_wrap_down:t='onWrapDown'
         <<@boxes>>
       }
       <</filters>>
@@ -62,8 +54,6 @@ root {
       alwaysShowBorder:t='yes'
       navigatorShortcuts:t='yes'
       on_select:t='onUnitSelect'
-      on_wrap_up:t='onWrapUp'
-      on_wrap_down:t='onWrapDown'
       <<@unitsList>>
     }
 

@@ -365,7 +365,8 @@
           "armorThickness": 90.0
         },
         "turret_09_back_dm": {
-          "armorThickness": 150.0
+          "armorThickness": 30.0,
+          "createSecondaryShatters": false
         },
         "gun_barrel_armor_dm": {
           "armorThickness": 200.0
@@ -432,6 +433,13 @@
         "ex_era_turret_10_dm": [],
         "ex_era_turret_11_dm": [],
         "ex_era_turret_12_dm": [],
+        "ex_era_turret_13_dm": [],
+        "ex_era_turret_14_dm": [],
+        "ex_era_turret_15_dm": [],
+        "ex_era_turret_16_dm": [],
+        "ex_era_turret_17_dm": [],
+        "ex_era_turret_18_dm": [],
+        "ex_era_turret_19_dm": [],
         "ex_era_hull_01_dm": [],
         "ex_era_hull_02_dm": [],
         "ex_era_hull_03_dm": [],
@@ -441,7 +449,15 @@
         "ex_era_hull_07_dm": [],
         "ex_era_hull_08_dm": [],
         "ex_era_hull_09_dm": [],
-        "ex_era_hull_10_dm": []
+        "ex_era_hull_10_dm": [],
+        "ex_era_hull_11_dm": [],
+        "ex_era_hull_12_dm": [],
+        "ex_era_hull_13_dm": [],
+        "ex_era_hull_14_dm": [],
+        "ex_era_hull_15_dm": [],
+        "ex_era_hull_16_dm": [],
+        "ex_era_hull_17_dm": [],
+        "ex_era_hull_18_dm": []
       },
       "body_side_screens": {
         "armorClass": "t_90_rubber_fabric_screens",
@@ -491,6 +507,12 @@
         "turret_03_back_dm": [],
         "ex_armor_05_dm": [],
         "ex_decor_05_dm": [],
+        "turret_11_top_dm": [],
+        "turret_12_top_dm": [],
+        "turret_13_top_dm": [],
+        "turret_14_top_dm": [],
+        "turret_15_top_dm": [],
+        "turret_16_top_dm": [],
         "timber": {
           "armorClass": "ship_wood",
           "armorThickness": 100.0,
@@ -950,6 +972,7 @@
         "armorThrough": 12.0,
         "fireProtectionHp": 15.0,
         "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -2083,10 +2106,12 @@
           "blk": "gameData/Weapons/groundModels_weapons/125mm_2A46_2_user_cannon.blk",
           "emitter": "bone_gun_barrel",
           "flash": "emtr_gun_flame",
+          "maxAdditionalPitch": 0.0,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
           "barrelDP": "gun_barrel_dm",
           "breechDP": "cannon_breech_dm",
+          "aimForOperatedShell": true,
           "autoLoader": true,
           "speedYaw": 24.0,
           "speedPitch": 3.35,
@@ -3013,6 +3038,15 @@
       },
       {
         "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -3157,10 +3191,12 @@
                 "blk": "gameData/Weapons/groundModels_weapons/125mm_2A46_2_user_cannon.blk",
                 "emitter": "bone_gun_barrel",
                 "flash": "emtr_gun_flame",
+                "maxAdditionalPitch": 0.0,
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
                 "barrelDP": "gun_barrel_dm",
                 "breechDP": "cannon_breech_dm",
+                "aimForOperatedShell": true,
                 "autoLoader": true,
                 "speedYaw": 24.0,
                 "speedPitch": 3.35,
@@ -3553,10 +3589,12 @@
                 "blk": "gameData/Weapons/groundModels_weapons/125mm_2A46_2_user_cannon.blk",
                 "emitter": "bone_gun_barrel",
                 "flash": "emtr_gun_flame",
+                "maxAdditionalPitch": 0.0,
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
                 "barrelDP": "gun_barrel_dm",
                 "breechDP": "cannon_breech_dm",
+                "aimForOperatedShell": true,
                 "autoLoader": true,
                 "speedYaw": 24.0,
                 "speedPitch": 3.35,

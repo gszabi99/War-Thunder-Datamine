@@ -3,10 +3,6 @@
   "bin_dump_file": "",
   "mission_settings": {
     "proximity": "airplane",
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 0.0
-    },
     "player": {
       "army": 1,
       "wing": "armada_01"
@@ -17,13 +13,13 @@
     "mission": {
       "level": "levels/krymsk.bin",
       "type": "benchmark",
+      "environment": "Day",
+      "weather": "hazy",
+      "windDirection": [1.0,0.0,0.0],
       "restoreType": "attempts",
       "optionalTakeOff": false,
-      "environment": "Day",
-      "weather": "good",
-      "windDirection": [1.0,0.0,0.0],
       "forceSkiesInitialRandomSeed": true,
-      "skiesInitialRandomSeed": 1,
+      "skiesInitialRandomSeed": 6,
       "stars": {
         "latitude": 44.0,
         "longitude": 37.0,
@@ -33,37 +29,17 @@
       },
       "customWeather": {
         "sky": {
-          "mie_height": 0.5,
-          "mieG": 0.7,
-          "betaMScale": 1.0,
-          "clouds_overcast": 0.5
-        },
-        "clouds_gen": {
-          "humidity": 0.4,
-          "persistence": 0.5,
-          "asymmetry": 0.11
-        },
-        "clouds_position": {
-          "start_altitude": 1.5,
-          "thickness": 4.5,
-          "light_extinction": 2.2,
-          "amb_extinction_mul": 1.0
-        },
-        "clouds_render": {
-          "silver_lining": 0.5,
-          "sun_light": 0.5,
-          "ambient": 0.5,
-          "silver_lining_eccentricity": 0.6
+          "mie_height": 0.5
         },
         "strata_clouds": {
           "amount": 0.5,
           "altitude": 10.0
-        },
-        "rain": {
-          "rainFromInvisibleClouds": false,
-          "probability": 0.0
         }
       }
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 20.0
     },
     "spectator_points": []
   },
@@ -148,6 +124,18 @@
         },
         {
           "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
             {
               "object": "aa_sq"
             },
@@ -258,6 +246,11 @@
             "horizontalDirectionForTeleport": true,
             "object_marking": 0,
             "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "fiat_cut"
           }
         },
@@ -279,6 +272,11 @@
             "horizontalDirectionForTeleport": true,
             "object_marking": 0,
             "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "fiat_cut",
             "move_type": "teleport",
             "lookat": "fiat_move02",
@@ -323,6 +321,11 @@
             "horizontalDirectionForTeleport": true,
             "object_marking": 0,
             "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "fiat_cut"
           }
         },
@@ -344,6 +347,11 @@
             "horizontalDirectionForTeleport": true,
             "object_marking": 0,
             "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "fiat_cut",
             "move_type": "teleport",
             "lookat": "airfield1500",
@@ -388,6 +396,11 @@
             "horizontalDirectionForTeleport": true,
             "object_marking": 0,
             "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "fiat_cut"
           }
         },
@@ -599,6 +612,11 @@
             "horizontalDirectionForTeleport": true,
             "object_marking": 0,
             "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "bf_cut",
             "move_type": "teleport",
             "lookat": "airfield02_spawn02",
@@ -610,6 +628,21 @@
             "runwayName": "airfield02_start",
             "objects": "i16_spawn_cut",
             "takeoffInterval": 60.0
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect": "bomb_expl_200kg",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "loop": false,
+            "scale": 1.0,
+            "effect_type": "specify",
+            "attach": false,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "airfield02_spawn01",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -626,6 +659,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "i16_spawn_cut",
             "isImmortal": true,
             "aiEnabled": false,
@@ -654,6 +691,11 @@
             "horizontalDirectionForTeleport": true,
             "object_marking": 0,
             "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "bf_cut"
           }
         },
@@ -672,6 +714,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "bf_leader",
             "isImmortal": true,
             "plane": {
@@ -724,6 +770,11 @@
             "horizontalDirectionForTeleport": true,
             "object_marking": 0,
             "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "bf_leader",
             "move_type": "teleport",
             "lookat": "bf_move02",
@@ -743,6 +794,11 @@
             "horizontalDirectionForTeleport": true,
             "object_marking": 0,
             "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "bf_leader"
           }
         },
@@ -793,6 +849,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "i16_cut",
             "isImmortal": false
           }
@@ -812,6 +872,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "bf_leader01",
             "isImmortal": true
           }
@@ -1049,6 +1113,11 @@
             "horizontalDirectionForTeleport": true,
             "object_marking": 0,
             "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "hs_cut"
           }
         },
@@ -1189,6 +1258,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "hs_cut",
             "effShootingRate": 0.0
           }
@@ -1216,6 +1289,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "la5_cut",
             "isImmortal": true
           }
@@ -1322,6 +1399,7 @@
           "unitRestore": {
             "ressurectIfDead": true,
             "fullRestore": true,
+            "target_marking": 0,
             "target": "spitfire_cut"
           }
         },
@@ -1329,6 +1407,7 @@
           "unitRestore": {
             "ressurectIfDead": true,
             "fullRestore": true,
+            "target_marking": 0,
             "target": "hs_cut",
             "randomTargetsCount": 1
           }
@@ -1359,6 +1438,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "spitfire_cut",
             "plane": {
               "targetDeviation": {
@@ -1401,6 +1484,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "hs_cut01",
             "engineFire": true
           }
@@ -1429,6 +1516,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "yak_cut01",
             "plane": {
               "targetDeviation": {
@@ -1471,6 +1562,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "fiat_cut01",
             "engineFire": true
           }
@@ -1499,6 +1594,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "spitfire_cut01",
             "plane": {
               "targetDeviation": {
@@ -1541,6 +1640,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "bf_cut01",
             "engineFire": true
           }
@@ -1581,6 +1684,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "la5_cut01",
             "plane": {
               "targetDeviation": {
@@ -1618,6 +1725,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "fw_cut01",
             "engineFire": true
           }
@@ -1750,17 +1861,17 @@
         },
         {
           "unitPlayEffect": {
-            "effect": "ship_model_expl_sfx",
+            "effect": "bomb_expl_200kg",
             "offset": [0.0,0.0,0.0],
             "show": true,
             "loop": false,
             "scale": 1.0,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "eff_area01"
+            "target": "eff_area01",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -1770,17 +1881,17 @@
         },
         {
           "unitPlayEffect": {
-            "effect": "ship_model_expl_sfx",
+            "effect": "bomb_expl_200kg",
             "offset": [0.0,0.0,0.0],
             "show": true,
             "loop": false,
-            "scale": 2.0,
+            "scale": 1.0,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "eff_area02"
+            "target": "eff_area02",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -1790,17 +1901,17 @@
         },
         {
           "unitPlayEffect": {
-            "effect": "bomb_ground_explosion_big_sfx",
+            "effect": "bomb_expl_1000kg",
             "offset": [0.0,0.0,0.0],
             "show": true,
             "loop": false,
             "scale": 1.0,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "eff_area03"
+            "target": "eff_area03",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -1810,17 +1921,17 @@
         },
         {
           "unitPlayEffect": {
-            "effect": "ship_model_expl_sfx",
+            "effect": "bomb_expl_200kg",
             "offset": [0.0,0.0,0.0],
             "show": true,
             "loop": false,
-            "scale": 1.5,
+            "scale": 1.1,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "eff_area04"
+            "target": "eff_area04",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -1830,17 +1941,17 @@
         },
         {
           "unitPlayEffect": {
-            "effect": "ship_model_expl_sfx",
+            "effect": "bomb_expl_200kg",
             "offset": [0.0,0.0,0.0],
             "show": true,
             "loop": false,
             "scale": 1.0,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "eff_area05"
+            "target": "eff_area05",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -1850,17 +1961,17 @@
         },
         {
           "unitPlayEffect": {
-            "effect": "ship_model_expl_sfx",
+            "effect": "bomb_expl_200kg",
             "offset": [0.0,0.0,0.0],
             "show": true,
             "loop": false,
-            "scale": 2.0,
+            "scale": 1.2,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "eff_area06"
+            "target": "eff_area06",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -1870,17 +1981,17 @@
         },
         {
           "unitPlayEffect": {
-            "effect": "ship_model_expl_sfx",
+            "effect": "bomb_expl_200kg",
             "offset": [0.0,0.0,0.0],
             "show": true,
             "loop": false,
             "scale": 1.0,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "eff_area07"
+            "target": "eff_area07",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -1890,17 +2001,17 @@
         },
         {
           "unitPlayEffect": {
-            "effect": "bomb_ground_explosion_big_sfx",
+            "effect": "bomb_expl_1000kg",
             "offset": [0.0,0.0,0.0],
             "show": true,
             "loop": false,
             "scale": 1.0,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "eff_area08"
+            "target": "eff_area08",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -1973,15 +2084,15 @@
   "effects": [],
   "units": [
     {
-      "structures": {
+      "armada": {
         "name": "armada_01",
         "tm": [
-          [1.0,0.0,0.0],
+          [-0.939692,0.0,0.34202],
           [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-4991.1,3000.0,6401.55]
+          [-0.34202,0.0,-0.939692],
+          [-10994.8,5125.9,-10892.5]
         ],
-        "unit_class": "dummy",
+        "unit_class": "a5m4",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -1994,15 +2105,26 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
         },
         "way": []
       }
@@ -2029,6 +2151,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 4,
@@ -2076,6 +2199,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 4,
@@ -2122,6 +2246,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 4,
@@ -2168,6 +2293,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 4,
@@ -2213,6 +2339,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -2248,6 +2375,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -2283,6 +2411,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -2318,6 +2447,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -2353,6 +2483,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -2388,6 +2519,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -2423,6 +2555,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -2458,6 +2591,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -2493,6 +2627,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -2528,6 +2663,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -2563,6 +2699,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -2598,6 +2735,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -2633,6 +2771,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -2668,6 +2807,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -2691,6 +2831,9 @@
           [-10394.3,207.6,8645.65]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "aaa_small01"
           },
@@ -2726,6 +2869,9 @@
         ],
         "props": [
           {
+            "object_marking": 0
+          },
+          {
             "squad_members": "aaa_big01"
           },
           {
@@ -2760,6 +2906,9 @@
         ],
         "props": [
           {
+            "object_marking": 0
+          },
+          {
             "squad_members": "aa_small_sq"
           },
           {
@@ -2777,7 +2926,7 @@
           [0.382683,0.0,0.92388],
           [-11333.3,1500.0,9106.6]
         ],
-        "unit_class": "yak-1b",
+        "unit_class": "yak-9",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -2790,6 +2939,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 4,
@@ -2823,11 +2973,11 @@
           [0.707107,0.0,-0.707107],
           [-6674.85,4000.0,12826.5]
         ],
-        "unit_class": "hs-129b-2",
+        "unit_class": "ju-87d-3",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
-        "weapons": "hs_129b_2_bombs",
+        "weapons": "Ju87_D3_3x250",
         "bullets0": "",
         "bullets1": "",
         "bullets2": "",
@@ -2836,6 +2986,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 5,
@@ -2882,6 +3033,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 3,
@@ -2929,6 +3081,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 4,
@@ -2975,6 +3128,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 4,
@@ -3008,7 +3162,7 @@
           [0.5373,0.0,-0.843392],
           [-12360.3,1500.0,8017.7]
         ],
-        "unit_class": "yak-1b",
+        "unit_class": "yak-9",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -3021,6 +3175,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3083,6 +3238,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3145,6 +3301,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -3209,6 +3366,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3241,7 +3399,7 @@
           [-4.47035e-08,0.0,1.0],
           [-11100.0,1000.0,8075.6]
         ],
-        "unit_class": "yak-1b",
+        "unit_class": "yak-9",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -3254,6 +3412,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3299,6 +3458,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -3346,6 +3506,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3392,6 +3553,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3438,6 +3600,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3489,6 +3652,9 @@
           [-14172.5,612.05,9423.6]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "i16_cut"
           },
@@ -3542,6 +3708,9 @@
         ],
         "props": [
           {
+            "object_marking": 0
+          },
+          {
             "squad_members": "fiat_cut"
           },
           {
@@ -3584,6 +3753,7 @@
           [-10603.7,208.95,8635.1]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": "i16_spawn_cut",
           "object_type": "isFormationLeader"
         }
@@ -3611,6 +3781,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3657,6 +3828,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3707,11 +3879,11 @@
           [0.707107,0.0,-0.707107],
           [-10403.7,1000.0,9011.55]
         ],
-        "unit_class": "hs-129b-2",
+        "unit_class": "ju-87d-5",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
-        "weapons": "",
+        "weapons": "Ju87_D5_3x250",
         "bullets0": "",
         "bullets1": "",
         "bullets2": "",
@@ -3720,6 +3892,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3766,6 +3939,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4051,7 +4225,7 @@
         [1.0,0.0,0.0],
         [0.0,1.0,0.0],
         [0.0,0.0,1.0],
-        [-10194.0,220.4,8650.25]
+        [-10194.0,232.256,8650.25]
       ],
       "props": {
         "forceReplication": true
@@ -4087,7 +4261,7 @@
         [1.0,0.0,0.0],
         [0.0,1.0,0.0],
         [0.0,0.0,1.0],
-        [-10348.1,210.4,9210.3]
+        [-10374.4,210.4,9158.66]
       ],
       "props": {
         "forceReplication": true
@@ -4135,7 +4309,7 @@
         [1.0,0.0,0.0],
         [0.0,1.0,0.0],
         [0.0,0.0,1.0],
-        [-10274.7,210.4,8985.1]
+        [-10348.2,210.4,8853.42]
       ],
       "props": {
         "forceReplication": true
@@ -4147,7 +4321,7 @@
         [1.0,0.0,0.0],
         [0.0,1.0,0.0],
         [0.0,0.0,1.0],
-        [-10222.1,210.4,8936.85]
+        [-10263.4,210.4,8973.31]
       ],
       "props": {
         "forceReplication": true
@@ -4159,7 +4333,7 @@
         [1.0,0.0,0.0],
         [0.0,1.0,0.0],
         [0.0,0.0,1.0],
-        [-10233.5,210.4,8873.25]
+        [-10192.1,210.4,8773.52]
       ],
       "props": {
         "forceReplication": true

@@ -1,7 +1,8 @@
 {
   "root": {
-    "background-color": "@shadeBackgroundColor",
     "type": "big",
+    "blur": [],
+    "blur_foreground": [],
     "frame": {
       "size": "0.8*@scrn_tgt, 0.5@scrn_tgt",
       "pos": "0.5pw-0.5w, 1@titleLogoPlateHeight + 0.3*(sh - 1@titleLogoPlateHeight - h)",
@@ -22,21 +23,16 @@
         "id": "candidatesList",
         "width": "pw",
         "height": "fh",
+        "padding-bottom": "0.02*@scrn_tgt",
         "class": "lbTable",
-        "behavior": "TableNavigator",
+        "selfFocusBorder": "yes",
+        "behavior": "PosNavigator",
         "text-valign": "center",
         "text-halign": "center",
         "navigatorShortcuts": "yes",
-        "focus": "yes",
         "on_click": "onSelect",
         "_on_r_click": "onUserRClick",
-        "on_dbl_click": "onUserCard",
-        "cur_row": "1",
-        "cur_col": "0",
-        "num_rows": "-1",
-        "on_wrap_up": "onWrapUp",
-        "on_wrap_down": "onWrapDown",
-        "padding-bottom": "0.02*@scrn_tgt"
+        "on_dbl_click": "onUserCard"
       },
       "navBar": {
         "navLeft": [

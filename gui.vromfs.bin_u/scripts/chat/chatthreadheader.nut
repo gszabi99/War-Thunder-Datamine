@@ -66,10 +66,6 @@ class ::gui_handlers.ChatThreadHeader extends ::gui_handlers.BaseGuiHandlerWT
     doWhenActiveOnce("updateInfo")
   }
 
-  function onEventContactsBlockStatusUpdated(p) {
-    doWhenActiveOnce("updateInfo")
-  }
-
   function onThreadTimer(obj, dt)
   {
     threadInfo.checkRefreshThread()

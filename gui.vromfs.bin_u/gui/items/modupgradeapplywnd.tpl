@@ -29,7 +29,6 @@ popup_menu {
     pos:t='50%pw-50%w, 0'
     position:t='relative'
     itemShopList:t='yes'
-    mouse-focusable:t='yes'
     clearOnFocusLost:t='no'
 
     flow:t='h-flow'
@@ -40,7 +39,6 @@ popup_menu {
     value:t='0'
 
     on_select:t = 'onItemSelect'
-    on_wrap_down:t='onWrapDown'
 
     <<@items>>
   }

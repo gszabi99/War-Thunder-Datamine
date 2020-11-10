@@ -1,5 +1,5 @@
-local progressMsg = ::require("sqDagui/framework/progressMsg.nut")
-local contentSignKeys = ::require("scripts/inventory/inventoryContentSign.nut")
+local progressMsg = require("sqDagui/framework/progressMsg.nut")
+local contentSignKeys = require("scripts/inventory/inventoryContentSign.nut")
 
 enum validationCheckBitMask {
   VARTYPE            = 0x01
@@ -644,7 +644,7 @@ local InventoryClient = class {
                                      handleItemsDelta(data, cb, errocCb, shouldCheckInventory)
                                  })(cb, shouldCheckInventory), this)
     local taskId = ::char_send_custom_action("cln_inventory_exchange_items",
-                                             EATT_JSON_REQUEST,
+                                             ::EATT_JSON_REQUEST,
                                              ::DataBlock(),
                                              ::json_to_string(json, false),
                                              -1)

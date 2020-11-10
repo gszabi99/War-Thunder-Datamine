@@ -31,7 +31,7 @@ foreach (fn in [
 
 ::queues <- null //init in second mainmenu
 
-class QueueManager {
+::QueueManager <- class {
   state              = queueStates.NOT_IN_QUEUE
 
   progressBox        = null

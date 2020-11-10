@@ -20,220 +20,92 @@
     "antiTankRocket": true,
     "antiShipRocket": true
   },
-  "rocket": [
-    {
-      "rotationRocketX": 12.0
-    },
-    {
-      "operated": true
-    },
-    {
-      "operatedDist": 6000.0
-    },
-    {
-      "autoAiming": true
-    },
-    {
-      "autoLeveling": true
-    },
-    {
-      "aimSensitivity": 60.0
-    },
-    {
-      "bulletType": "atgm_tank"
-    },
-    {
-      "bulletName": "136mm_k3s_hot"
-    },
-    {
-      "caliber": 0.13
-    },
-    {
-      "explosiveType": "comp_b"
-    },
-    {
-      "explosiveMass": 7.0
-    },
-    {
-      "mass": 42.0
-    },
-    {
-      "massEnd": 42.0
-    },
-    {
-      "maxDeltaAngle": 0.02
-    },
-    {
-      "dragCx": 0.01
-    },
-    {
-      "length": 1.83
-    },
-    {
-      "distFromCmToStab": 0.01
-    },
-    {
-      "CxK": 0.1
-    },
-    {
-      "WdK": [0.1,0.1,0.1]
-    },
-    {
-      "force": 5000.0
-    },
-    {
-      "timeFire": 5.0
-    },
-    {
-      "thrustDeviation": 0.0
-    },
-    {
-      "explosionEffect": "atgm_hit"
-    },
-    {
-      "defFxScale": [1.8,2.1]
-    },
-    {
-      "groundCollisionEffect": "bomb_ground_explosion_small"
-    },
-    {
-      "groundFxScale": [1.0,1.2]
-    },
-    {
-      "ricochetEffect": "cannon_ricochet"
-    },
-    {
-      "waterCollisionEffect": "120-203_he_water_splash"
-    },
-    {
-      "waterFxScale": [1.0,1.2]
-    },
-    {
-      "explosionPatchRadius": 3.4
-    },
-    {
-      "smokeEffect": ""
-    },
-    {
-      "maxDistance": 6500.0
-    },
-    {
-      "minDistance": 30.0
-    },
-    {
-      "spawnExplosionWreckage": false
-    },
-    {
-      "spawnExplosionFx": false
-    },
-    {
-      "explosionOffset": 0.05
-    },
-    {
-      "hitPowerMult": 1.0
-    },
-    {
-      "nearHitPower": [1.0,50.0]
-    },
-    {
-      "midHitPower": [0.9,400.0]
-    },
-    {
-      "farHitPower": [0.1,1000.0]
-    },
-    {
-      "endHitPower": [0.01,1500.0]
-    },
-    {
-      "relativeVelHitShift": [300.0,1000.0]
-    },
-    {
-      "nearArmorPower": [10.0,50.0]
-    },
-    {
-      "midArmorPower": [7.0,400.0]
-    },
-    {
-      "farArmorPower": [0.2,700.0]
-    },
-    {
-      "relativeVelArmorShift": [200.0,1000.0]
-    },
-    {
-      "distanceFuse": false
-    },
-    {
-      "explodeTreshold": 0.1
-    },
-    {
-      "explosionPatchRadius": 1.0
-    },
-    {
-      "rendinstDamageRadius": 4.0
-    },
-    {
-      "statType": "hydra"
-    },
-    {
-      "advancedMissiles": false
-    },
-    {
-      "useStartSpeed": true
-    },
-    {
-      "startSpeed": 200.0
-    },
-    {
-      "endSpeed": 540.0
-    },
-    {
-      "maxSpeed": 540.0
-    },
-    {
-      "speedViscosity": 0.1
-    },
-    {
-      "timeToLive": 30.0
-    },
-    {
-      "price": 3000.0
-    },
-    {
-      "collisions": {
-        "steel": {
-          "fx": "atgm_hit",
-          "fxScale": [4.0,4.2]
-        },
-        "armor": {
-          "fx": "atgm_hit",
-          "fxScale": [4.0,4.2]
-        },
-        "buildings": {
-          "fx": "atgm_hit",
-          "fxScale": [4.0,4.2]
-        },
-        "wood": {
-          "fx": "atgm_hit",
-          "fxScale": [4.0,4.2]
-        }
+  "rocket": {
+    "rotationRocketX": 12.0,
+    "operated": true,
+    "operatedDist": 6000.0,
+    "autoAiming": true,
+    "autoLeveling": true,
+    "aimSensitivity": 60.0,
+    "bulletType": "atgm_tank",
+    "bulletName": "136mm_k3s_hot",
+    "caliber": 0.13,
+    "explosiveType": "comp_b",
+    "explosiveMass": 7.0,
+    "mass": 42.0,
+    "massEnd": 42.0,
+    "maxDeltaAngle": 0.02,
+    "dragCx": 0.01,
+    "length": 1.83,
+    "distFromCmToStab": 0.01,
+    "CxK": 0.1,
+    "WdK": [0.1,0.1,0.1],
+    "force": 5000.0,
+    "timeFire": 5.0,
+    "thrustDeviation": 0.0,
+    "explosionEffect": "explosion_midair_big",
+    "groundCollisionEffect": "bomb_expl_50kg",
+    "ricochetEffect": "cannon_ricochet",
+    "waterCollisionEffect": "120-203_he_water_splash",
+    "waterFxScale": [1.0,1.2],
+    "explosionPatchRadius": 4.0,
+    "fireEffect": "rocket_fire_short",
+    "smokeEffect": "",
+    "hazeEffect": "haze_missile",
+    "endSmokeViscosity": 0.05,
+    "maxDistance": 6500.0,
+    "minDistance": 30.0,
+    "spawnExplosionWreckage": false,
+    "spawnExplosionFx": false,
+    "explosionOffset": 0.05,
+    "hitPowerMult": 1.0,
+    "nearHitPower": [1.0,50.0],
+    "midHitPower": [0.9,400.0],
+    "farHitPower": [0.1,1000.0],
+    "endHitPower": [0.01,1500.0],
+    "relativeVelHitShift": [300.0,1000.0],
+    "nearArmorPower": [10.0,50.0],
+    "midArmorPower": [7.0,400.0],
+    "farArmorPower": [0.2,700.0],
+    "relativeVelArmorShift": [200.0,1000.0],
+    "distanceFuse": false,
+    "explodeTreshold": 0.1,
+    "rendinstDamageRadius": 4.0,
+    "statType": "hydra",
+    "advancedMissiles": false,
+    "useStartSpeed": true,
+    "startSpeed": 200.0,
+    "endSpeed": 540.0,
+    "maxSpeed": 540.0,
+    "speedViscosity": 0.1,
+    "timeToLive": 30.0,
+    "price": 3000.0,
+    "collisions": {
+      "steel": {
+        "fx": "explosion_midair_small"
+      },
+      "armor": {
+        "fx": "explosion_midair_small"
+      },
+      "buildings": {
+        "fx": "explosion_midair_small"
+      },
+      "wood": {
+        "fx": "explosion_midair_small"
       }
     },
-    {
-      "DamageParts": {
-        "body": {
-          "hp": 5.0,
-          "armorClass": "tank_structural_steel",
-          "armorThickness": 1.0
-        }
+    "DamageParts": {
+      "body": {
+        "hp": 5.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 1.0
       }
     },
-    {
-      "cumulativeDamage": {
-        "armorPower": 800.0,
-        "distance": 7.5,
-        "damage": 800.0,
-        "onHitChanceMultFire": 25.0
-      }
+    "cumulativeDamage": {
+      "armorPower": 800.0,
+      "distance": 7.5,
+      "damage": 800.0,
+      "onHitChanceMultFire": 25.0
     }
-  ]
+  }
 }

@@ -6,6 +6,7 @@ const URL_TAG_AUTO_LOCALIZE = "auto_local"
 const URL_TAG_AUTO_LOGIN = "auto_login"
 const URL_TAG_SSO_SERVICE = "sso_service="
 const URL_TAG_NO_ENCODING = "no_encoding"
+const URL_TAG_ADD_STOKEN = "add_stoken"
 
 const AUTH_ERROR_LOG_COLLECTION = "log"
 
@@ -37,6 +38,8 @@ local function getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated = false
   url = urlWithoutTags
 
   local urlType = ::g_url_type.getByUrl(url)
+  if (::isInArray(URL_TAG_ADD_STOKEN, urlTags))
+    url = urlType.applySToken(url)
   if (::isInArray(URL_TAG_AUTO_LOCALIZE, urlTags))
     url = urlType.applyCurLang(url)
 

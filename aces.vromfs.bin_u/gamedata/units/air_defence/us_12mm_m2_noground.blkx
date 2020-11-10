@@ -1,107 +1,163 @@
-{
-  "model": "12mm_m2_usa_noground_a",
-  "collisionSphere0": [0.0,-1.5,0.0,5.0],
-  "collisionSphere1": [5.0,2.0,0.0,1.0],
-  "timeToFire": 5.0,
-  "maxFwdSpeed": 0.0,
-  "maxRevSpeed": 0.0,
-  "maxAngSpeed": 0.0,
-  "maxAccel": 0.0,
-  "maxDecel": 0.0,
-  "maxAngAccel0": 0.0,
-  "maxAngAccelV": 0.0,
-  "maxAngAccel": 0.0,
-  "groundNormSmoothViscosity": 0.1,
-  "subclass": "fortification",
-  "onRadarAs": "aam",
-  "bulletHitFx": "ground_model_hit",
-  "partDamageFx": "part_damage",
-  "explosionFx": "ground_model_expl",
-  "fireFx": "ground_model_fire",
-  "toGround": true,
-  "expClass": "exp_aaa",
-  "attach": {
-    "inc_gunner": "usa_young_gunner_sit3",
-    "inc_soldier00": "usa_young_soldier_sit",
-    "inc_soldier01": "usa_young_stand_soldier"
+[
+  {
+    "model": "12mm_m2_usa_noground_a"
   },
-  "DamageParts": {
-    "steel": {
-      "body_dm": {
-        "hp": 240.0
-      }
-    },
-    "armor50_tanks": {
-      "armor1_dm": {
-        "hp": 99999.0
-      }
+  {
+    "collisionSphere0": [0.0,-1.5,0.0,5.0]
+  },
+  {
+    "collisionSphere1": [5.0,2.0,0.0,1.0]
+  },
+  {
+    "timeToFire": 5.0
+  },
+  {
+    "maxFwdSpeed": 0.0
+  },
+  {
+    "maxRevSpeed": 0.0
+  },
+  {
+    "maxAngSpeed": 0.0
+  },
+  {
+    "maxAccel": 0.0
+  },
+  {
+    "maxDecel": 0.0
+  },
+  {
+    "maxAngAccel0": 0.0
+  },
+  {
+    "maxAngAccelV": 0.0
+  },
+  {
+    "maxAngAccel": 0.0
+  },
+  {
+    "groundNormSmoothViscosity": 0.1
+  },
+  {
+    "fireFx": "fire_ground_black_fx"
+  },
+  {
+    "subclass": "fortification"
+  },
+  {
+    "onRadarAs": "aam"
+  },
+  {
+    "bulletHitFx": "ground_model_hit"
+  },
+  {
+    "partDamageFx": "part_damage"
+  },
+  {
+    "explosionFx": "ground_model_expl"
+  },
+  {
+    "fireFx": "ground_model_fire"
+  },
+  {
+    "toGround": true
+  },
+  {
+    "expClass": "exp_aaa"
+  },
+  {
+    "attach": {
+      "inc_gunner": "usa_young_gunner_sit3",
+      "inc_soldier00": "usa_young_soldier_sit",
+      "inc_soldier01": "usa_young_stand_soldier"
     }
   },
-  "DamageEffects": {
-    "part": {
-      "name": "body_dm",
-      "onHit": {
-        "smoke": 0.01
+  {
+    "DamageParts": {
+      "steel": {
+        "body_dm": {
+          "hp": 240.0
+        }
       },
-      "onKill": {
-        "expl": 1.0
+      "armor50_tanks": {
+        "armor1_dm": {
+          "hp": 99999.0
+        }
       }
     }
   },
-  "explosion": {
-    "expl": {
-      "node": "body",
-      "partNo": 0,
-      "timeToExplode": 1.0,
-      "preEffectName": "ground_model_fire",
-      "postEffectName": "ground_model_gray_smoke",
-      "explosionEffectName": "ground_model_expl",
-      "timeForPostEffect": 450.0,
-      "preScale": 1.0,
-      "postScale": 4.0
+  {
+    "DamageEffects": {
+      "part": {
+        "name": "body_dm",
+        "onHit": {
+          "smoke": 0.01
+        },
+        "onKill": {
+          "expl": 1.0
+        }
+      }
     }
   },
-  "class_tags": {
-    "mediterran": true,
-    "westernfront": true,
-    "pacific": true,
-    "country_britain": true,
-    "country_usa": true,
-    "country_australia": true,
-    "light_air_defence": true
+  {
+    "explosion": {
+      "expl": {
+        "node": "body",
+        "partNo": 0,
+        "timeToExplode": 0.5,
+        "postEffectName": "smoke_ground_black_fx",
+        "explosionEffectName": "explosion_midair_medium",
+        "timeForPostEffect": 60.0,
+        "preScale": 1.0,
+        "postScale": 1.0
+      }
+    }
   },
-  "weapon": {
-    "trigger": "gunner0",
-    "blk": "gameData/weapons/groundModels_weapons/common_mGun12mm.blk",
-    "emitter": "gun1",
-    "flash": "flame1",
-    "defaultYaw": 0.0,
-    "defaultPitch": 30.0,
-    "speedYaw": 66.0,
-    "speedPitch": 66.0,
-    "fireConeAngle": 20.0,
-    "salvoAmount": 100.0,
-    "ChainfireTime": 3.0,
-    "DelayAfterShoot": 3.0,
-    "AttackMaxDistance": 1000.0,
-    "AttackMaxRadius": 1000.0,
-    "AttackMaxHeight": 1000.0,
-    "accuracyAir": 0.8,
-    "accuracyGnd": 0.0,
-    "errMeasureVel": 0.0,
-    "errTargettingOn100kmph": 0.0,
-    "errMeasureVelFast": 40.0,
-    "errMeasureVelFwdShift": 1.0,
-    "errMeasureVelDir": 3.0,
-    "errTargetting": 1.0,
-    "errExplTime": 0.0,
-    "turret": {
-      "head": "turret1",
-      "gun": "gun1"
-    },
-    "limits": {
-      "yaw": [-180.0,180.0],
-      "pitch": [5.0,85.0]
+  {
+    "class_tags": {
+      "mediterran": true,
+      "westernfront": true,
+      "pacific": true,
+      "country_britain": true,
+      "country_usa": true,
+      "country_australia": true,
+      "light_air_defence": true
+    }
+  },
+  {
+    "weapon": {
+      "trigger": "gunner0",
+      "blk": "gameData/weapons/groundModels_weapons/common_mGun12mm.blk",
+      "emitter": "gun1",
+      "flash": "flame1",
+      "defaultYaw": 0.0,
+      "defaultPitch": 30.0,
+      "speedYaw": 66.0,
+      "speedPitch": 66.0,
+      "fireConeAngle": 20.0,
+      "salvoAmount": 100.0,
+      "ChainfireTime": 3.0,
+      "DelayAfterShoot": 3.0,
+      "AttackMaxDistance": 1000.0,
+      "AttackMaxRadius": 1000.0,
+      "AttackMaxHeight": 1000.0,
+      "accuracyAir": 0.8,
+      "accuracyGnd": 0.0,
+      "errMeasureVel": 0.0,
+      "errTargettingOn100kmph": 0.0,
+      "errMeasureVelFast": 40.0,
+      "errMeasureVelFwdShift": 1.0,
+      "errMeasureVelDir": 3.0,
+      "errTargetting": 1.0,
+      "errExplTime": 0.0,
+      "turret": {
+        "head": "turret1",
+        "gun": "gun1"
+      },
+      "limits": {
+        "yaw": [-180.0,180.0],
+        "pitch": [5.0,85.0]
+      }
     }
   }
-}
+]

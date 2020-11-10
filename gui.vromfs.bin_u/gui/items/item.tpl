@@ -90,6 +90,14 @@ itemDiv {
   }
   <</onClick>>
 
+  <<#interactive>>
+  interactive:t='yes'
+  <</interactive>>
+
+  <<#skipNavigation>>
+  skip-navigation:t='yes'
+  <</skipNavigation>>
+
   tdiv {
     size:t='pw, ph'
     text-halign:t='center'
@@ -265,7 +273,9 @@ itemDiv {
   }
   <</arrowNext>>
 
+  <<#hasFocusBorder>>
   focus_border {}
+  <</hasFocusBorder>>
 
   <<#hasButton>>
   <<#modActionName>>
@@ -273,6 +283,7 @@ itemDiv {
   showButtonAlways:t='yes'
   <</needShowActionButtonAlways>>
 
+  hasButton:t='yes'
   Button_text {
     id:t='actionBtn'
     pos:t='50%pw-50%w, ph-h/2' //empty zone in button texture
@@ -290,7 +301,7 @@ itemDiv {
     <</isInactive>>
     ButtonImg {
       btnName:t='A'
-      showOnSelect:t='focus'
+      showOnSelect:t='hover'
     }
   }
   <</modActionName>>
@@ -307,6 +318,7 @@ itemDiv {
     display:t='hide'
   }
   title:t='$tooltipObj';
+  tooltip-float:t='horizontal'
   <</tooltipId>>
 }
 <</items>>

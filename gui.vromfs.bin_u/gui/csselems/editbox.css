@@ -35,11 +35,17 @@ EditBox
   padding:8@sf/@pf, 5@sf/@pf;
   margin-bottom:8@sf/@pf;
   multiShortcuts:no;
+  mouse-focusable:yes;
+  not-input-transparent:yes;
 
   edit-hint-back-color:@transparent;
   edit-hint-color: @editboxHintColor;
 
   overflow:hidden;
+}
+
+.optionsTable EditBox {
+  mouse-pointer-centering:15, 50;
 }
 
 EditBox[twoStepType="yes"]
@@ -53,7 +59,9 @@ EditBox[noMargin="yes"]
   margin-bottom:0;
 }
 
-EditBox:focus, EditBox[select="yes"]
+[show_console_buttons=no] EditBox:focus,
+[show_console_buttons=yes] EditBox:hover,
+EditBox[select="yes"]
 {
   background-color: @editboxColorFocus;
   foreground-color:@editboxFgColorFocus;
@@ -63,8 +71,13 @@ EditBox:focus, EditBox[select="yes"]
   edit-hint:"";
 }
 
-[has_ime=yes] EditBox:focus {
-  edit-hint:"#default_editbox_hint_message";
+[show_console_buttons=yes] EditBox:hover {
+  foreground-color: @gamepadFocusFrameColor;
+  foreground-image: #ui/gameuiskin#item_selection;
+  foreground-position: 8, 10, 8, 8;
+  foreground-repeat: expand;
+  behavior:focusFrameTarget;
+  focusImageSource:foreground;
 }
 
 EditBox[multiline] {

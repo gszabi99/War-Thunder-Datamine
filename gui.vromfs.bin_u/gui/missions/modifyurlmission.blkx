@@ -1,8 +1,7 @@
 {
   "root": {
-    "size": "sw, sh",
-    "position": "root",
-    "background-color": "@shadeBackgroundColor",
+    "blur": [],
+    "blur_foreground": [],
     "frame": [
       {
         "width": "0.4@scrn_tgt"
@@ -37,12 +36,10 @@
           "width": "pw",
           "pos": "0, 1@blockInterval",
           "position": "relative",
-          "mouse-focusable": "yes",
           "max-len": "24",
           "_on_cancel_edit": "goBack",
           "on_change_value": "onChangeName",
-          "on_wrap_down": "onWrapDown",
-          "on_activate": "onWrapDown"
+          "on_activate": "onKbdWrapDown"
         }
       },
       {
@@ -58,10 +55,8 @@
           "width": "pw",
           "pos": "0, 1@blockInterval",
           "position": "relative",
-          "mouse-focusable": "yes",
           "_on_cancel_edit": "goBack",
           "on_change_value": "onChangeUrl",
-          "on_wrap_up": "onWrapUp",
           "_on_activate": "onApply"
         }
       },
@@ -77,6 +72,13 @@
               "ButtonImg": []
             }
           }
+        }
+      },
+      {
+        "dummy": {
+          "on_click": "onKbdWrapDown",
+          "behaviour": "accesskey",
+          "accessKey": "Tab"
         }
       }
     ]

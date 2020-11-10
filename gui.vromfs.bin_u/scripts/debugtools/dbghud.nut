@@ -20,7 +20,7 @@
 ::hud_message_player_damage_debug <- function hud_message_player_damage_debug(id = -1)
 {
   ::g_hud_event_manager.onHudEvent("HudMessage", {
-    type = HUD_MSG_DAMAGE
+    type = ::HUD_MSG_DAMAGE
     text = ::loc(dbg_player_damage_messages[(::math.frnd() * dbg_player_damage_messages.len()).tointeger()])
     id = id
   })

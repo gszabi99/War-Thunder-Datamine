@@ -277,11 +277,6 @@
           "armorThickness": 200.0,
           "armorEffectiveThicknessMax": 300.0
         },
-        "turret_06_front_dm": {
-          "armorThickness": 220.0,
-          "armorEffectiveThicknessMax": 410.0,
-          "createSecondaryShatters": false
-        },
         "turret_07_front_dm": {
           "armorThickness": 125.0,
           "armorEffectiveThicknessMax": 140.0,
@@ -326,11 +321,6 @@
         "turret_05_bottom_dm": {
           "armorThickness": 280.0,
           "armorEffectiveThicknessMax": 400.0,
-          "cumulativeArmorQuality": 0.1
-        },
-        "turret_08_back_dm": {
-          "armorThickness": 270.0,
-          "armorEffectiveThicknessMax": 300.0,
           "cumulativeArmorQuality": 0.1
         },
         "turret_bottom_dm": {
@@ -391,6 +381,9 @@
         },
         "turret_04_bottom_dm": {
           "armorThickness": 80.0
+        },
+        "turret_06_front_dm": {
+          "armorThickness": 20.0
         }
       },
       "body_side_screens": {
@@ -440,6 +433,7 @@
         "ex_decor_r_03_dm": [],
         "ex_decor_r_04_dm": [],
         "ex_decor_r_05_dm": [],
+        "turret_03_back_dm": [],
         "ex_armor_body_l_01_dm": [],
         "ex_armor_body_l_02_dm": [],
         "ex_armor_body_l_03_dm": [],
@@ -467,6 +461,7 @@
         "stopChanceOnDeadPart": 0.0,
         "createSecondaryShatters": false,
         "hidableInViewer": true,
+        "turret_08_back_dm": [],
         "ex_decor_04_dm": [],
         "ex_decor_12_dm": [],
         "ex_decor_13_dm": [],
@@ -566,10 +561,6 @@
           },
           "ex_armor_body_02_dm": {
             "hp": 300.0
-          },
-          "turret_03_back_dm": {
-            "armorClass": "tank_structural_steel",
-            "armorThickness": 20.0
           }
         }
       },
@@ -935,6 +926,7 @@
         "armorThrough": 12.0,
         "fireProtectionHp": 15.0,
         "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -1041,6 +1033,38 @@
         }
       }
     }
+  },
+  {
+    "chainIK": [
+      {
+        "points": [
+          {
+            "point": {
+              "nameTemplate": "roll_05"
+            }
+          },
+          {
+            "point": {
+              "nameTemplate": "roll_06"
+            }
+          }
+        ]
+      },
+      {
+        "points": [
+          {
+            "point": {
+              "nameTemplate": "roll_11"
+            }
+          },
+          {
+            "point": {
+              "nameTemplate": "roll_12"
+            }
+          }
+        ]
+      }
+    ]
   },
   {
     "sound": {
@@ -2883,6 +2907,15 @@
           "name": "fuel_exterior",
           "fx": {
             "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
             "centerDmgPart": true
           }
         }

@@ -759,6 +759,7 @@
         "armorThrough": 12.0,
         "fireProtectionHp": 15.0,
         "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -2045,7 +2046,7 @@
   },
   {
     "sound": {
-      "EngineName": "engine_panther",
+      "EngineName": "engine_ikv91",
       "TrackSoundPath": "tanks/engines_tanks",
       "TrackSoundPathStudio": "ground/engines",
       "TrackSoundName": "tracks",
@@ -2838,6 +2839,15 @@
       },
       {
         "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -2859,7 +2869,7 @@
     "cockpit": {
       "zoomOutFov": 9.2,
       "zoomInFov": 4.6,
-      "sightFov": 6.5,
+      "sightFov": 4.5,
       "sightName": "tzf_1a",
       "headPos": [0.0,4.2,-8.5],
       "headPosOnShooting": [-0.55,2.9,0.65],

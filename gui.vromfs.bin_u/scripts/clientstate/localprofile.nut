@@ -1,3 +1,4 @@
+local { set_blk_value_by_path, get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
 local penalties = require("scripts/penitentiary/penalties.nut")
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
@@ -43,7 +44,7 @@ const PS4_SAVE_PROFILE_DELAY_MSEC = 60000
   }
 
   local cdb = ::get_local_custom_settings_blk()
-  if (::set_blk_value_by_path(cdb, path, value))
+  if (set_blk_value_by_path(cdb, path, value))
     ::save_profile_offline_limited(forceSave)
 }
 
@@ -57,21 +58,21 @@ const PS4_SAVE_PROFILE_DELAY_MSEC = 60000
   }
 
   local cdb = ::get_local_custom_settings_blk()
-  return ::get_blk_value_by_path(cdb, path, defValue)
+  return get_blk_value_by_path(cdb, path, defValue)
 }
 
 //save/load setting to local profile, not depend on account, so can be usable before login.
 ::save_local_shared_settings <- function save_local_shared_settings(path, value, isForced = false)
 {
   local blk = ::get_common_local_settings_blk()
-  if (::set_blk_value_by_path(blk, path, value))
+  if (set_blk_value_by_path(blk, path, value))
     ::save_profile_offline_limited(isForced)
 }
 
 ::load_local_shared_settings <- function load_local_shared_settings(path, defValue = null)
 {
   local blk = ::get_common_local_settings_blk()
-  return ::get_blk_value_by_path(blk, path, defValue)
+  return get_blk_value_by_path(blk, path, defValue)
 }
 
 local getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
@@ -150,14 +151,14 @@ local getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
   local profileBlk = cdb?.accounts?[id]
   if (profileBlk)
   {
-    local value = ::get_blk_value_by_path(profileBlk, path)
+    local value = get_blk_value_by_path(profileBlk, path)
     if (value != null)
       return value
   }
   profileBlk = cdb?.accounts?[::my_user_id_str]
   if (profileBlk)
   {
-    local value = ::get_blk_value_by_path(profileBlk, path)
+    local value = get_blk_value_by_path(profileBlk, path)
     if (value != null)
       return value
   }
@@ -176,6 +177,6 @@ local getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
 
   local cdb = ::get_local_custom_settings_blk()
   local id = ::my_user_id_str + "." + (::isProductionCircuit() ? "production" : ::get_cur_circuit_name())
-  if (::set_blk_value_by_path(cdb, "accounts/" + id + "/" + path, value) && shouldSaveProfile)
+  if (set_blk_value_by_path(cdb, "accounts/" + id + "/" + path, value) && shouldSaveProfile)
     ::save_profile_offline_limited(forceSave)
 }

@@ -1,180 +1,253 @@
-{
-  "model": "light_bt7_a",
-  "hasExpl": true,
-  "hasDmg2": true,
-  "collisionSphere0": [0.0,-1.5,0.0,5.0],
-  "collisionSphere1": [5.0,2.0,0.0,1.0],
-  "timeToFire": 180.0,
-  "averageArmor": 60.0,
-  "subclass": "heavyVehicle",
-  "onRadarAs": "tracked",
-  "moveType": "vehicle",
-  "maxFwdSpeed": 60.0,
-  "maxRevSpeed": 10.0,
-  "maxAngSpeed": 30.0,
-  "maxAccel": 4.0,
-  "maxDecel": 8.0,
-  "maxAngAccel0": 20.0,
-  "maxAngAccelV": 0.0,
-  "maxAngAccel": 40.0,
-  "groundNormSmoothViscosity": 0.1,
-  "minDistBetween": 10.0,
-  "expClass": "exp_ai_tank",
-  "mass": 3500.0,
-  "bulletHitFx": "ground_model_hit",
-  "partDamageFx": "part_damage",
-  "explosionFx": "ground_model_expl",
-  "fireFx": "ground_model_fire",
-  "destroysRendInstances": true,
-  "destroysTrees": true,
-  "DamageParts": {
-    "formatVersion": 2,
-    "armorClass": "RHA_tank",
-    "hp": 8000.0,
-    "hull": {
+[
+  {
+    "model": "light_bt7_a"
+  },
+  {
+    "hasExpl": true
+  },
+  {
+    "hasDmg2": true
+  },
+  {
+    "collisionSphere0": [0.0,-1.5,0.0,5.0]
+  },
+  {
+    "collisionSphere1": [5.0,2.0,0.0,1.0]
+  },
+  {
+    "timeToFire": 180.0
+  },
+  {
+    "averageArmor": 60.0
+  },
+  {
+    "fireFx": "fire_ground_black_fx"
+  },
+  {
+    "subclass": "heavyVehicle"
+  },
+  {
+    "onRadarAs": "tracked"
+  },
+  {
+    "moveType": "vehicle"
+  },
+  {
+    "maxFwdSpeed": 60.0
+  },
+  {
+    "maxRevSpeed": 10.0
+  },
+  {
+    "maxAngSpeed": 30.0
+  },
+  {
+    "maxAccel": 4.0
+  },
+  {
+    "maxDecel": 8.0
+  },
+  {
+    "maxAngAccel0": 20.0
+  },
+  {
+    "maxAngAccelV": 0.0
+  },
+  {
+    "maxAngAccel": 40.0
+  },
+  {
+    "groundNormSmoothViscosity": 0.1
+  },
+  {
+    "minDistBetween": 10.0
+  },
+  {
+    "expClass": "exp_ai_tank"
+  },
+  {
+    "mass": 3500.0
+  },
+  {
+    "bulletHitFx": "ground_model_hit"
+  },
+  {
+    "partDamageFx": "part_damage"
+  },
+  {
+    "explosionFx": "ground_model_expl"
+  },
+  {
+    "fireFx": "ground_model_fire"
+  },
+  {
+    "destroysRendInstances": true
+  },
+  {
+    "destroysTrees": true
+  },
+  {
+    "DamageParts": {
+      "formatVersion": 2,
       "armorClass": "RHA_tank",
-      "hp": 10000.0,
-      "armor1_dm": {
-        "armorThickness": 20.0,
-        "restrainDamage": 0.0
-      },
-      "armor3_dm": {
-        "armorThickness": 20.0,
-        "restrainDamage": 0.0
-      },
-      "armor2_dm": {
-        "armorThickness": 10.0,
-        "restrainDamage": 0.0,
-        "hp": 20.0,
-        "explosionDamageMult": 10.0,
-        "genericDamageMult": 0.0,
-        "secondaryShatterDamageMult": 0.0,
-        "shatterDamageMult": 0.0
-      },
-      "engine_dm": {
-        "armorThickness": 1.0,
-        "restrainDamage": 0.5,
-        "hp": 20.0,
-        "secondaryShatterDamageMult": 0.0
-      },
-      "body_dm": {
-        "armorThickness": 1.0,
-        "restrainDamage": 0.5,
-        "hp": 20.0,
-        "secondaryShatterDamageMult": 0.0
+      "hp": 8000.0,
+      "hull": {
+        "armorClass": "RHA_tank",
+        "hp": 10000.0,
+        "armor1_dm": {
+          "armorThickness": 20.0,
+          "restrainDamage": 0.0
+        },
+        "armor3_dm": {
+          "armorThickness": 20.0,
+          "restrainDamage": 0.0
+        },
+        "armor2_dm": {
+          "armorThickness": 10.0,
+          "restrainDamage": 0.0,
+          "hp": 20.0,
+          "explosionDamageMult": 10.0,
+          "genericDamageMult": 0.0,
+          "secondaryShatterDamageMult": 0.0,
+          "shatterDamageMult": 0.0
+        },
+        "engine_dm": {
+          "armorThickness": 1.0,
+          "restrainDamage": 0.5,
+          "hp": 20.0,
+          "secondaryShatterDamageMult": 0.0
+        },
+        "body_dm": {
+          "armorThickness": 1.0,
+          "restrainDamage": 0.5,
+          "hp": 20.0,
+          "secondaryShatterDamageMult": 0.0
+        }
       }
     }
   },
-  "DamageEffects": [
-    {
-      "part": [
-        {
-          "name": "body_dm"
-        },
-        {
-          "name": "armor2_dm"
-        },
-        {
-          "onHit": []
-        },
-        {
+  {
+    "DamageEffects": [
+      {
+        "part": [
+          {
+            "name": "body_dm"
+          },
+          {
+            "name": "armor2_dm"
+          },
+          {
+            "onHit": []
+          },
+          {
+            "onKill": {
+              "fire": 2.0,
+              "smoke": 5.0,
+              "expl": 5.0
+            }
+          }
+        ]
+      },
+      {
+        "part": {
+          "name": "engine_dm",
+          "onHit": {
+            "smoke": 0.1
+          },
           "onKill": {
-            "fire": 2.0,
-            "smoke": 5.0,
-            "expl": 5.0
+            "body_dm": 1.0
           }
         }
-      ]
-    },
-    {
-      "part": {
-        "name": "engine_dm",
-        "onHit": {
-          "smoke": 0.1
-        },
-        "onKill": {
-          "body_dm": 1.0
+      }
+    ]
+  },
+  {
+    "explosion": {
+      "expl": {
+        "node": "body",
+        "partNo": 0,
+        "timeToExplode": 0.5,
+        "preEffectName": "",
+        "postEffectName": "smoke_ground_black_fx",
+        "explosionEffectName": "explosion_midair_medium",
+        "timeForPostEffect": 60.0,
+        "preScale": 1.0,
+        "postScale": 1.0
+      }
+    }
+  },
+  {
+    "sound": {
+      "path": "sounds/engines",
+      "pathStudio": "aircraft/engines",
+      "engine": "tank"
+    }
+  },
+  {
+    "class_tags": {
+      "westernfront": true,
+      "easternfront": true,
+      "country_ussr": true,
+      "heavy_vehicles": true,
+      "year1940": true,
+      "year1941": true,
+      "year1942": true,
+      "max_ratio": 0.5
+    }
+  },
+  {
+    "weapon": {
+      "trigger": "gunner0",
+      "blk": "gameData/Weapons/groundModels_weapons/common_cannon50mm.blk",
+      "emitter": "gun1",
+      "flash": "flame1",
+      "defaultYaw": 0.0,
+      "defaultPitch": 0.0,
+      "speedYaw": 24.0,
+      "speedPitch": 24.0,
+      "fireConeAngle": 1.0,
+      "salvoAmount": 100.0,
+      "ChainfireTime": 0.0,
+      "DelayAfterShoot": 0.0,
+      "AttackMaxDistance": 7000.0,
+      "AttackMaxRadius": 7000.0,
+      "AttackMaxHeight": 7000.0,
+      "accuracyAir": 0.0,
+      "accuracyGnd": 0.5,
+      "errMeasureVel": 20.0,
+      "errMeasureVelFast": 40.0,
+      "errMeasureVelFwdShift": 0.7,
+      "errMeasureVelDir": 3.0,
+      "errTargettingOn100kmph": 0.0,
+      "errTargetting": 0.0,
+      "errExplTime": 0.0,
+      "turret": {
+        "head": "turret1",
+        "gun": "gun1"
+      },
+      "limits": {
+        "yaw": [-180.0,180.0],
+        "pitch": [-4.0,40.0]
+      }
+    }
+  },
+  {
+    "skin": [
+      {
+        "name": "snow"
+      },
+      {
+        "replace_tex": {
+          "from": "light_bt7_main_olive_c*",
+          "to": "light_bt7_main_snow_c*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "light_bt7_alpha_olive_c*",
+          "to": "light_bt7_alpha_snow_c*"
         }
       }
-    }
-  ],
-  "explosion": {
-    "expl": {
-      "node": "body",
-      "partNo": 0,
-      "timeToExplode": 1.0,
-      "preEffectName": "ground_model_fire",
-      "postEffectName": "ground_model_gray_smoke",
-      "explosionEffectName": "ground_model_expl",
-      "timeForPostEffect": 450.0,
-      "preScale": 4.0,
-      "postScale": 4.0
-    }
-  },
-  "sound": {
-    "path": "sounds/engines",
-    "pathStudio": "aircraft/engines",
-    "engine": "tank"
-  },
-  "class_tags": {
-    "westernfront": true,
-    "easternfront": true,
-    "country_ussr": true,
-    "heavy_vehicles": true,
-    "year1940": true,
-    "year1941": true,
-    "year1942": true,
-    "max_ratio": 0.5
-  },
-  "weapon": {
-    "trigger": "gunner0",
-    "blk": "gameData/Weapons/groundModels_weapons/common_cannon50mm.blk",
-    "emitter": "gun1",
-    "flash": "flame1",
-    "defaultYaw": 0.0,
-    "defaultPitch": 0.0,
-    "speedYaw": 24.0,
-    "speedPitch": 24.0,
-    "fireConeAngle": 1.0,
-    "salvoAmount": 100.0,
-    "ChainfireTime": 0.0,
-    "DelayAfterShoot": 0.0,
-    "AttackMaxDistance": 7000.0,
-    "AttackMaxRadius": 7000.0,
-    "AttackMaxHeight": 7000.0,
-    "accuracyAir": 0.0,
-    "accuracyGnd": 0.5,
-    "errMeasureVel": 20.0,
-    "errMeasureVelFast": 40.0,
-    "errMeasureVelFwdShift": 0.7,
-    "errMeasureVelDir": 3.0,
-    "errTargettingOn100kmph": 0.0,
-    "errTargetting": 0.0,
-    "errExplTime": 0.0,
-    "turret": {
-      "head": "turret1",
-      "gun": "gun1"
-    },
-    "limits": {
-      "yaw": [-180.0,180.0],
-      "pitch": [-4.0,40.0]
-    }
-  },
-  "skin": [
-    {
-      "name": "snow"
-    },
-    {
-      "replace_tex": {
-        "from": "light_bt7_main_olive_c*",
-        "to": "light_bt7_main_snow_c*"
-      }
-    },
-    {
-      "replace_tex": {
-        "from": "light_bt7_alpha_olive_c*",
-        "to": "light_bt7_alpha_snow_c*"
-      }
-    }
-  ]
-}
+    ]
+  }
+]

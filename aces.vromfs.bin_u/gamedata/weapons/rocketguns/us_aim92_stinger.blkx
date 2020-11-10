@@ -6,6 +6,7 @@
   "sound": "weapon.rocketgun_132",
   "helicopterGroup": 2,
   "mesh": "us_aim92_stinger_rocket",
+  "mesh_deployed": "us_aim92_stinger_rocket_deployed",
   "tags": [],
   "rocket": [
     {
@@ -96,7 +97,7 @@
       "spawnExplosionWreckage": false
     },
     {
-      "explosionEffect": "atgm_hit"
+      "explosionEffect": "explosion_midair_small"
     },
     {
       "defFxScale": [2.2,2.5]
@@ -120,7 +121,16 @@
       "explosionPatchRadius": 5.0
     },
     {
-      "smokeEffect": "hydra_smoke_modern"
+      "fireEffect": "rocket_fire_light_huge"
+    },
+    {
+      "smokeEffect": ""
+    },
+    {
+      "hazeEffect": "haze_missile"
+    },
+    {
+      "endSmokeViscosity": 0.5
     },
     {
       "maxDistance": 10000.0
@@ -175,9 +185,6 @@
     },
     {
       "explodeRadius": [1.0,3.5]
-    },
-    {
-      "explosionPatchRadius": 5.0
     },
     {
       "rendinstDamageRadius": 15.0

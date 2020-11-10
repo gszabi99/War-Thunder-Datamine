@@ -36,6 +36,7 @@ local textButton = require("textButton.nut")
 local tabs = require("tabs.nut")
 local image = require("image.nut")
 local panel = require("panel.nut")
+
 local function mkpanel(def){
   return function(elem_, ...) {
     return panel.acall([null, def.__merge(elem_)].extend(vargv))
@@ -46,22 +47,22 @@ local vpanel = mkpanel({flow=FLOW_VERTICAL size=flex() minWidth=SIZE_TO_CONTENT 
 
 
 return {
-  textArea = textArea
-  contextMenu = contextMenu
-  textInput = textInput
-  scrollbar = scrollbar
-  combobox = combobox
-  msgbox = msgbox
-  textButton = textButton
-  tabs = tabs
-  text = text
-  dtext = dtext
-  stext = stext
-  image = image
-  panel = panel
-  mkpanel = mkpanel
-  hpanel = hpanel
-  vpanel = vpanel
+  textArea
+  contextMenu
+  textInput
+  scrollbar
+  combobox
+  msgbox
+  textButton
+  tabs
+  text
+  dtext
+  stext
+  image
+  panel
+  mkpanel
+  hpanel
+  vpanel
 
   red = Color(255,0,0)
   blue = Color(0,0,255)

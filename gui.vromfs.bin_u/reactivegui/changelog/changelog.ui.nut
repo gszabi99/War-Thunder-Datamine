@@ -1,7 +1,7 @@
 local scrollbar = require("reactiveGui/components/scrollbar.nut")
 local {formatText} = require("reactiveGui/components/formatText.nut")
 local {curPatchnote, curPatchnoteIdx, choosePatchnote, nextPatchNote, prevPatchNote,
-  versions, curVersionInfo } = require("changelogState.nut")
+  versions, curVersionInfo } = require("changeLogState.nut")
 local colors = require("reactiveGui/style/colors.nut")
 local { commonTextButton } = require("reactiveGui/components/textButton.nut")
 local modalWindow = require("reactiveGui/components/modalWindow.nut")

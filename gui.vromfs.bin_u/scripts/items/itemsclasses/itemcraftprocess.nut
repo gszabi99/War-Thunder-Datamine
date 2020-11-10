@@ -1,4 +1,4 @@
-local ItemExternal = ::require("scripts/items/itemsClasses/itemExternal.nut")
+local ItemExternal = require("scripts/items/itemsClasses/itemExternal.nut")
 local inventoryClient = require("scripts/inventory/inventoryClient.nut")
 
 class ::items_classes.CraftProcess extends ItemExternal {

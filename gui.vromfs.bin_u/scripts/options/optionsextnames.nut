@@ -15,7 +15,7 @@ global enum AIR_MOUSE_USAGE {
   VIEW        = 0x0010
 }
 
-::options_mode_names <- [
+local options_mode_names = [
     "OPTIONS_MODE_GAMEPLAY",
     "OPTIONS_MODE_TRAINING",
     "OPTIONS_MODE_CAMPAIGN",
@@ -27,7 +27,7 @@ global enum AIR_MOUSE_USAGE {
     "OPTIONS_MODE_SEARCH",
 ]
 
-::user_option_names <- [
+local user_option_names = [
     "USEROPT_LANGUAGE",
     "USEROPT_VIEWTYPE",
     "USEROPT_INGAME_VIEWTYPE",
@@ -267,6 +267,7 @@ global enum AIR_MOUSE_USAGE {
     "USEROPT_ACTIVATE_AIRBORNE_RADAR_ON_SPAWN",
     "USEROPT_USE_RECTANGULAR_RADAR_INDICATOR",
     "USEROPT_USE_RADAR_HUD_IN_COCKPIT",
+    "USEROPT_ACTIVATE_AIRBORNE_ACTIVE_COUNTER_MEASURES_ON_SPAWN",
     "USEROPT_SAVE_AI_TARGET_TYPE",
     "USEROPT_DEFAULT_AI_TARGET_TYPE",
     "USEROPT_DEFAULT_TORPEDO_FORESTALL_ACTIVE",
@@ -372,6 +373,7 @@ global enum AIR_MOUSE_USAGE {
     "USEROPT_MISSION_NAME_POSTFIX",
     "USEROPT_SHOW_DESTROYED_PARTS",
     "USEROPT_ACTIVATE_GROUND_RADAR_ON_SPAWN",
+    "USEROPT_ACTIVATE_GROUND_ACTIVE_COUNTER_MEASURES_ON_SPAWN",
     "USEROPT_FPS_CAMERA_PHYSICS",
     "USEROPT_FPS_VR_CAMERA_PHYSICS",
     "USEROPT_FREE_CAMERA_INERTIA",
@@ -400,6 +402,9 @@ global enum AIR_MOUSE_USAGE {
     "USEROPT_PS4_CROSSPLAY",
     "USEROPT_PS4_CROSSNETWORK_CHAT",
     "USEROPT_PS4_ONLY_LEADERBOARD",
+    //
+
+
 
     "USEROPT_REPLACE_MY_NICK_LOCAL",
     "USEROPT_SHOW_SOCIAL_NOTIFICATIONS",
@@ -409,13 +414,15 @@ global enum AIR_MOUSE_USAGE {
     "USEROPT_ENABLE_SOUND_SPEED",
     "USEROPT_AIR_RADAR_SIZE",
     "USEROPT_ATGM_AIM_SENS_HELICOPTER",
-    "USEROPT_ATGM_AIM_ZOOM_SENS_HELICOPTER"
+    "USEROPT_ATGM_AIM_ZOOM_SENS_HELICOPTER",
+
+    "USEROPT_TORPEDO_DIVE_DEPTH"
 ]
 
 ::options_mode_name_by_idx <- {}
 ::user_option_name_by_idx <- {}
 
-foreach(idx, modeName in ::options_mode_names)
+foreach(idx, modeName in options_mode_names)
 {
   local res = ::add_option_mode(modeName)
   local realIdx = (res != null) ? res : idx
@@ -423,7 +430,7 @@ foreach(idx, modeName in ::options_mode_names)
   options_mode_name_by_idx[realIdx] <- modeName
 }
 
-foreach(idx, useropt in ::user_option_names)
+foreach(idx, useropt in user_option_names)
 {
   local res = ::add_user_option(useropt)
   local realIdx = (res != null) ? res : idx
@@ -431,9 +438,6 @@ foreach(idx, useropt in ::user_option_names)
   user_option_name_by_idx[realIdx] <- useropt
 }
 
-// we don't need this tables anymore
-delete options_mode_names
-delete user_option_names
 
 ::get_option_in_mode <- function get_option_in_mode(optionId, mode)
 {

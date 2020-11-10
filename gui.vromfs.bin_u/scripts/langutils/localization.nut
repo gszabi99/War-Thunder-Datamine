@@ -78,7 +78,7 @@ g_localization.getFilledFeedTextByLang <- function getFilledFeedTextByLang(locId
     foreach(name in customFeedParams.requireLocalization)
       localizedKeyWords[name] <- getLocalizedTextWithAbbreviation(customFeedParams[name])
 
-  local activityFeed_config = ::combine_tables(activityFeedRequestLocParams, customFeedParams)
+  local activityFeed_config = customFeedParams.__merge(activityFeedRequestLocParams)
 
   local captions = []
 

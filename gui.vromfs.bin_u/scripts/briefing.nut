@@ -440,7 +440,7 @@ class ::gui_handlers.Briefing extends ::gui_handlers.GenericOptions
     optionsContainers = []
 
     local optionItems = get_briefing_options(gm, gt, missionBlk)
-    local container = create_options_container("briefing_options", optionItems, true, true)
+    local container = create_options_container("briefing_options", optionItems, true)
     guiScene.replaceContentFromText("optionslist", container.tbl, container.tbl.len(), this)
     if (optionItems.len()>0)
     {

@@ -792,6 +792,7 @@
         "armorThrough": 12.0,
         "fireProtectionHp": 15.0,
         "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -2028,7 +2029,7 @@
   },
   {
     "sound": {
-      "EngineName": "engine_type90",
+      "EngineName": "engine_patria",
       "TrackSoundPath": "tanks/engines_tanks",
       "TrackSoundPathStudio": "ground/engines",
       "TrackSoundName": "tracks_wheels",
@@ -2899,6 +2900,15 @@
       },
       {
         "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -2920,7 +2930,7 @@
     "cockpit": {
       "zoomOutFov": 9.2,
       "zoomInFov": 4.6,
-      "sightFov": 6.5,
+      "sightFov": 4.5,
       "sightName": "tzf_1a",
       "openedCockpit": false,
       "headPos": [0.0,4.0,-8.5],
@@ -3318,6 +3328,17 @@
       "name": "type_16",
       "replace_tex": {
         "from": "jp_camo_sdf_green*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "jp_camo_post_green",
+      "nameLocId": "skin/jp_camo_post_green",
+      "descLocId": "skin/jp_camo_post_green/desc",
+      "replace_tex": {
+        "from": "jp_camo_sdf_green*",
+        "to": "jp_camo_post_green*"
       }
     }
   },

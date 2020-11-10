@@ -814,8 +814,10 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -837,8 +839,9 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
         "fireParamsPreset": "fuel_exterior",
         "fuel_tank_exterior_r_01_dm": [],
         "fuel_tank_exterior_r_02_dm": [],
@@ -2049,6 +2052,20 @@
                 "verLimits": [-6.0,10.0],
                 "verOriginLimits": [-6.0,16.0]
               }
+            },
+            {
+              "linkedAnimPart": {
+                "verNode": "bone_roll_06",
+                "verLimits": [6.0,-16.0],
+                "verOriginLimits": [-6.0,16.0]
+              }
+            },
+            {
+              "linkedAnimPart": {
+                "verNode": "bone_roll_07",
+                "verLimits": [-6.0,16.0],
+                "verOriginLimits": [-6.0,16.0]
+              }
             }
           ],
           "limits": {
@@ -2833,6 +2850,15 @@
       },
       {
         "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -2911,6 +2937,9 @@
             },
             {
               "node": "ex_armor_body_l_03"
+            },
+            {
+              "node": "ex_armor_mount"
             }
           ]
         }
@@ -3001,6 +3030,20 @@
                     "linkedAnimPart": {
                       "verNode": "bone_mg_gun_twin",
                       "verLimits": [-6.0,10.0],
+                      "verOriginLimits": [-6.0,16.0]
+                    }
+                  },
+                  {
+                    "linkedAnimPart": {
+                      "verNode": "bone_roll_06",
+                      "verLimits": [6.0,-16.0],
+                      "verOriginLimits": [-6.0,16.0]
+                    }
+                  },
+                  {
+                    "linkedAnimPart": {
+                      "verNode": "bone_roll_07",
+                      "verLimits": [-6.0,16.0],
                       "verOriginLimits": [-6.0,16.0]
                     }
                   }

@@ -1,15 +1,18 @@
 {
   "SlotbarBackground": {
     "id": "slotbar_background",
-    "size": "pw, 1@slotbarHeight + 1@slotbarOffset",
+    "size": "pw, ph",
     "display": "hide",
     "pos": "50%pw-50%w, 0",
     "position": "absolute",
-    "slotbarEdge": {
-      "size": "pw, 1@slotbarHeight+1@slotbarOffset",
-      "pos": "0, 0",
-      "position": "absolute"
+    "hasPresetsPanel": "no",
+    "tdiv": {
+      "size": "pw, ph",
+      "overflow": "hidden",
+      "blur": [],
+      "blur_foreground": []
     },
+    "blockSeparator": [],
     "slotbarTop": [
       {
         "id": "slotbar_buttons_place"
@@ -59,13 +62,10 @@
               "class": "slotsHeader",
               "normalFont": "yes",
               "isShort": "no",
-              "on_select": "onHeaderCountry",
               "css-hier-invalidate": "yes",
               "total-input-transparent": "yes",
-              "navigatorShortcuts": "active",
-              "on_wrap_up": "onWrapUp",
-              "on_wrap_down": "onWrapDown",
-              "on_wrap_right": "onWrapUp",
+              "navigatorShortcuts": "yes",
+              "on_select": "onHeaderCountry",
               "on_dbl_click": "onCountriesListDblClick"
             }
           },
@@ -102,24 +102,6 @@
           },
           {
             "display": "hide"
-          },
-          {
-            "behavior": "wrapNavigator"
-          },
-          {
-            "navigatorShortcuts": "yes"
-          },
-          {
-            "childsActivate": "yes"
-          },
-          {
-            "on_wrap_up": "onWrapUp"
-          },
-          {
-            "on_wrap_down": "onWrapDown"
-          },
-          {
-            "on_wrap_left": "onWrapDown"
           },
           {
             "CheckBox": {

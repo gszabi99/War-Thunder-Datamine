@@ -75,8 +75,10 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
     groupCost = {}
 
     local data = ""
-    local curChapter = ""
+    local rowsView = []
     local idx = 0
+    local isGold = chapter == "eagles"
+    local curChapter = ""
     local eblk = ::DataBlock()
     ::get_shop_prices(eblk)
 
@@ -123,12 +125,10 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
       if (goods[name]?.group && !groupCost?[goods[name].group])
         groupCost[goods[name].group] <- getPricePerItem(goods[name])
 
-      if (useRowVisual)
-      {
-        data += ::format("tr { id:t='%s'; even:t='%s' } ", name, (idx%2 == 0)? "yes":"no")
+      if (useRowVisual) {
+        rowsView.append(getRowView(name, goods[name], isGold, (idx%2 == 0) ? "yes" :"no"))
         if (goods[name]?.chapterImage)
           chImages[goods[name].chapter] <- goods[name].chapterImage
-        idx++
       }
       else
       {
@@ -158,105 +158,34 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
         data += ::handyman.renderCached("gui/missions/missionBoxItem", view)
       }
       first = false
+      idx++
     }
 
     // Buy Eagles, Lions, Premium Account.
     if (useRowVisual)
     {
+      guiScene.setUpdatesEnabled(false, false)
+
       scene.findObject("wnd_update").setUserData(this)
       scene.findObject("wnd_title").setValue(::loc("charServer/chapter/" + chapter))
 
-      guiScene.setUpdatesEnabled(false, false)
-      data = "table { id:t='items_list'; class:t='crewTable'; " +
-               "pos:t='0.5(pw-w), 0'; position:t='relative'; " +
-               "behavior:t = 'OptionsNavigator'; cur_col:t='0'; cur_row:t='0'; num_rows:t='-1'; " +
-               "on_click:t='onItemSelect'; selfFocusBorder:t='yes'; " +
-               data +
-             "} "
-
-      data = "textarea { id:t = 'item_desc_text'; width:t = '@onlineShopWidth'; wrapRight:t='yes'; font-bold:t='@fontMedium'; padding-left:t='0.02@sf';}" + data
-
-      if (chapter in chImages)
-        data = ::format("img { size:t='0.9@onlineShopWidth, 0.125w'; halign:t='center' background-image:t='%s' }", "#ui/onlineShop/" + chImages[chapter]) + data
-
       local rootObj = scene.findObject("wnd_frame")
       rootObj["class"] = "wnd"
-      rootObj.width = "@onlineShopWidth + 2*5*@sf/@pf_outdated"
+      rootObj.width = "@onlineShopWidth + 2@blockInterval"
+      rootObj.padByLine = "yes"
       local contentObj = scene.findObject("wnd_content")
       contentObj.flow = "vertical"
+
+      data = ::handyman.renderCached(("gui/onlineShop/onlineShopWithVisualRow"), {
+        chImages = (chapter in chImages) ? $"#ui/onlineShop/{chImages[chapter]}" : null
+        rows = rowsView
+      })
       guiScene.replaceContentFromText(contentObj, data, data.len(), this)
-
-      local isGold = chapter == "eagles"
       local tblObj = scene.findObject("items_list")
-      foreach(name, item in goods)
-      {
-        local rowObj = tblObj.findObject(name)
-        if (!rowObj) continue
-
-        local useExternalLinksView = {
-          externalLink = isGold
-        }
-        local onlineShopRowBlk = ::handyman.renderCached(("gui/onlineShopRow"), useExternalLinksView)
-        guiScene.replaceContentFromText(rowObj, onlineShopRowBlk, onlineShopRowBlk.len(), this)
-
-        local amount = ent.getEntitlementAmount(item)
-        local additionalAmount = ent.getFirstPurchaseAdditionalAmount(item)
-        local amountText = ""
-        local savingText = ""
-
-        local discount = ::g_discount.getEntitlementDiscount(item.name)
-
-        if (additionalAmount > 0)
-        {
-          savingText = ::loc("ui/parentheses", {text = ::loc("charServer/entitlement/firstBuy")})
-        }
-        else if (item?.group && item.group in groupCost)
-        {
-          local itemPrice = getPrice(item)
-          local defItemPrice = groupCost[item.group]
-          if (itemPrice && defItemPrice && (!isGold || !::steam_is_running()))
-          {
-            local calcAmount = amount + additionalAmount
-            local saving = (1 - ((itemPrice * (1 - discount*0.01)) / (calcAmount * defItemPrice))) * 100
-            saving = saving.tointeger()
-            if (saving >= MIN_DISPLAYED_PERCENT_SAVING)
-              savingText = ::format(::loc("charServer/entitlement/discount"), saving)
-          }
-        }
-
-        local isTimeAmount = item?.httl || item?.ttl
-        if (isTimeAmount)
-          amount *= 24
-
-        if (isTimeAmount)
-          amountText = time.hoursToString(amount, false, false, true)
-        else
-        {
-          amount = amount.tointeger()
-
-          local originAmount = isGold? ::Cost(0, amount) : ::Cost(amount, 0)
-          local addString = ""
-          if (additionalAmount > 0)
-          {
-            local addAmount = isGold? ::Cost(0, additionalAmount) : ::Cost(additionalAmount, 0)
-            addString = ::loc("ui/parentheses/space", {text = "+" + addAmount.tostring()})
-          }
-
-          amountText = originAmount.tostring() + addString
-        }
-
-        if (discount > 0)
-          rowObj.findObject("buy-discount").setValue("-" + discount + "%")
-
-        rowObj.findObject("holder").id = name
-        rowObj.findObject("amount").setValue(amountText)
-        rowObj.findObject("discount").setValue(savingText)
-        rowObj.findObject("cost").setValue(getItemPriceText(name))
-      }
-
-      onItemSelect()
+      tblObj.setValue(goods.len() > 0 ? 0 : -1)
 
       guiScene.setUpdatesEnabled(true, true)
+      guiScene.performDelayed(this, @() ::move_mouse_on_child_by_value(tblObj))
     }
     else
     {// Buy Campaigns & Bonuses.
@@ -289,7 +218,7 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
     premiumBattleTimeWpMult = premiumWpMult * (wBlk?.battleTimePremMul || 1.0)
     premiumOtherModesWpMult = premiumWpMult
 
-    scene.findObject("items_list").select()
+    ::move_mouse_on_child_by_value(scene.findObject("items_list"))
     onItemSelect()
   }
 
@@ -381,7 +310,7 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
   function onItemSelect()
   {
     local listObj = scene.findObject("items_list")
-    local value = useRowVisual? listObj.cur_row.tointeger() : listObj.getValue()
+    local value = listObj.getValue()
     if (value < 0 || value >= listObj.childrenCount())
       return
 
@@ -658,7 +587,6 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
     for (local idx = 0; idx < listObj.childrenCount(); idx++)
       if (listObj.getChild(idx).id == id)
       {
-        listObj.cur_row = idx.tostring()
         listObj.setValue(idx)
         onItemSelect()
 
@@ -690,14 +618,70 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
       updateItemIcon(task)
       ::update_gamercards()
     }
+    ::broadcastEvent("OnlineShopPurchaseSuccessful", { purchData = goods?[task] ?? {} })
+  }
 
-    local purchData = goods[task] || {}
-    ::broadcastEvent("OnlineShopPurchaseSuccessful", {purchData = purchData})
+  function onEventModalWndDestroy(params)
+  {
+    if (isSceneActiveNoModals())
+      ::move_mouse_on_child_by_value(getObj("items_list"))
   }
 
   function onFav() {}
   function onChapterSelect() {}
   function onListItemsFocusChange(obj) {}
+
+  function getRowView(name, item, isGold, even) {
+    local amount = ent.getEntitlementAmount(item)
+    local additionalAmount = ent.getFirstPurchaseAdditionalAmount(item)
+    local amountText = ""
+    local savingText = ""
+    local discount = ::g_discount.getEntitlementDiscount(item.name)
+
+    if (additionalAmount > 0)
+      savingText = ::loc("ui/parentheses", {text = ::loc("charServer/entitlement/firstBuy")})
+    else if (item?.group && item.group in groupCost) {
+      local itemPrice = getPrice(item)
+      local defItemPrice = groupCost[item.group]
+      if (itemPrice && defItemPrice && (!isGold || !::steam_is_running())) {
+        local calcAmount = amount + additionalAmount
+        local saving = (1 - ((itemPrice * (1 - discount*0.01)) / (calcAmount * defItemPrice))) * 100
+        saving = saving.tointeger()
+        if (saving >= MIN_DISPLAYED_PERCENT_SAVING)
+          savingText = ::format(::loc("charServer/entitlement/discount"), saving)
+      }
+    }
+
+    local isTimeAmount = item?.httl || item?.ttl
+    if (isTimeAmount)
+      amount *= 24
+
+    if (isTimeAmount)
+      amountText = time.hoursToString(amount, false, false, true)
+    else {
+      amount = amount.tointeger()
+
+      local originAmount = isGold? ::Cost(0, amount) : ::Cost(amount, 0)
+      local addString = ""
+      if (additionalAmount > 0) {
+        local addAmount = isGold? ::Cost(0, additionalAmount) : ::Cost(additionalAmount, 0)
+        addString = ::loc("ui/parentheses/space", {text = "+" + addAmount.tostring()})
+      }
+
+      amountText = originAmount.tostring() + addString
+    }
+
+    return {
+      externalLink = isGold
+      rowName = name
+      rowEven = even
+      amount = amountText
+      savingText = savingText
+      cost = getItemPriceText(name)
+      discount = discount > 0 ? $"-{discount}%": null
+    }
+  }
+
 }
 
 class ::gui_handlers.OnlineShopRowHandler extends ::gui_handlers.OnlineShopHandler

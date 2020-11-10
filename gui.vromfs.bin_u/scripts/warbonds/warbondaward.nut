@@ -1,4 +1,4 @@
-local bhvUnseen = ::require("scripts/seen/bhvUnseen.nut")
+local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
 
 class ::WarbondAward
 {
@@ -187,13 +187,15 @@ class ::WarbondAward
     if (maxBoughtCount <= 0 || !isValid())
       return ""
 
-    local leftAmount = maxBoughtCount - awardType.getBoughtCount(warbondWeak, blk)
+    local leftAmount = getLeftBoughtCount()
     if (leftAmount <= 0)
       return ::colorize("warningTextColor", ::loc("warbond/alreadyBoughtMax"))
     if (!awardType.showAvailableAmount)
       return ""
     return ::loc("warbond/availableForPurchase") + ::loc("ui/colon") + leftAmount
   }
+
+  getLeftBoughtCount = @() maxBoughtCount - awardType.getBoughtCount(warbondWeak, blk)
 
   function addAmountTextToDesc(desc)
   {
@@ -220,6 +222,7 @@ class ::WarbondAward
     if (!item)
       return false
 
+    descObj.scrollToView(true)
     ::ItemsManager.fillItemDescr(item, descObj, handler, true, true,
                                  { descModifyFunc = addAmountTextToDesc.bindenv(this) })
     return true

@@ -52,10 +52,6 @@
         "genericDamageMult": 1.6,
         "hp": 32.4
       },
-      "propeller_shaft2_dm": {
-        "genericDamageMult": 1.6,
-        "hp": 30.5
-      },
       "transmission1_dm": {
         "genericDamageMult": 1.6,
         "hp": 30.5
@@ -140,6 +136,9 @@
       }
     },
     "protected_controls": {
+      "propeller_shaft2_dm": {
+        "hp": 60.5
+      },
       "tailcontrol_dm": {
         "hp": 80.5
       },
@@ -673,41 +672,9 @@
       }
     },
     {
-      "part": [
-        {
-          "name": "propeller_shaft2_dm"
-        },
-        {
-          "onHit": {
-            "fire": 0.001,
-            "leak_oil": 0.8,
-            "cut": 0.0
-          }
-        },
-        {
-          "onHit": {
-            "damage": 30.0,
-            "fire": 0.005,
-            "leak_oil": 0.95,
-            "cut": 0.0
-          }
-        },
-        {
-          "onKill": {
-            "fire": 25.0,
-            "leak_oil": 10.0,
-            "cut": 0.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 30.0,
-            "fire": 30.0,
-            "leak_oil": 10.0,
-            "cut": 0.0
-          }
-        }
-      ]
+      "part": {
+        "name": "propeller_shaft2_dm"
+      }
     },
     {
       "part": [
@@ -5044,6 +5011,7 @@
           {
             "Weapon": {
               "trigger": "flares",
+              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
               "emitter": "emtr_flare1",
               "bullets": 64,
@@ -5054,6 +5022,7 @@
           {
             "Weapon": {
               "trigger": "flares",
+              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
               "emitter": "emtr_flare2",
               "bullets": 64,

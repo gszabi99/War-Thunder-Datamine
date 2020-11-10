@@ -10,15 +10,15 @@ global enum bit_unit_status
   disabled    = 128
   broken      = 256
   inRent      = 512
+  empty       = 1024
 }
 
 local basicUnitRoles = {
   [::ES_UNIT_TYPE_AIRCRAFT] = ["type_fighter", "type_assault", "type_bomber"],
   [::ES_UNIT_TYPE_TANK] = ["type_tank", "type_light_tank", "type_medium_tank", "type_heavy_tank",
     "type_tank_destroyer", "type_spaa", "type_lbv", "type_mbv", "type_hbv"],
-  [::ES_UNIT_TYPE_SHIP] = ["type_ship", "type_boat", "type_heavy_boat", "type_barge",
-    "type_destroyer", "type_frigate", "type_light_cruiser",
-    "type_cruiser", //FIX ME This role has been replaced by type_heavy_cruiser. Need this for compatibility with 1_95_0_X
+  [::ES_UNIT_TYPE_BOAT] = ["type_boat", "type_heavy_boat", "type_barge", "type_frigate"],
+  [::ES_UNIT_TYPE_SHIP] = ["type_ship", "type_destroyer", "type_light_cruiser",
     "type_heavy_cruiser", "type_battlecruiser", "type_battleship", "type_submarine"],
   [::ES_UNIT_TYPE_HELICOPTER] = ["type_attack_helicopter", "type_utility_helicopter"],
 }
@@ -167,6 +167,7 @@ local function getUnitTooltipImage(unit)
     case ::ES_UNIT_TYPE_AIRCRAFT:       return "ui/aircrafts/" + unit.name
     case ::ES_UNIT_TYPE_HELICOPTER:     return "ui/aircrafts/" + unit.name
     case ::ES_UNIT_TYPE_TANK:           return "ui/tanks/" + unit.name
+    case ::ES_UNIT_TYPE_BOAT:           return "ui/ships/" + unit.name
     case ::ES_UNIT_TYPE_SHIP:           return "ui/ships/" + unit.name
   }
   return ""
@@ -249,6 +250,8 @@ local function getUnitItemStatusText(bitStatus, isGroup = false)
     statusText = "broken"
   else if (bit_unit_status.disabled & bitStatus)
     statusText = "disabled"
+  else if (bit_unit_status.empty & bitStatus)
+    statusText = "empty"
 
   if (!isGroup && statusText != "")
     return statusText

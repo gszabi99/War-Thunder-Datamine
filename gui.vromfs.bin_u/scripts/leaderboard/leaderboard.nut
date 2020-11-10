@@ -1,6 +1,6 @@
 local time = require("scripts/time.nut")
-local playerContextMenu = ::require("scripts/user/playerContextMenu.nut")
-local clanContextMenu = ::require("scripts/clans/clanContextMenu.nut")
+local playerContextMenu = require("scripts/user/playerContextMenu.nut")
+local clanContextMenu = require("scripts/clans/clanContextMenu.nut")
 local { hasAllFeatures } = require("scripts/user/features.nut")
 local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay.nut")
 
@@ -409,7 +409,7 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
   forClans      = false
 
   pos         = 0
-  rowsInPage  = 16
+  rowsInPage  = 0
   maxRows     = 1000
 
   platformFilter = ""
@@ -423,6 +423,8 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
   }
   pageData    = null
   selfRowData = null
+
+  curDataRowIdx = -1
 
   afterLoadSelfRow = null
   tableWeak = null
@@ -441,8 +443,7 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
     curLbCategory = lb_presets[0]
     lbType = ::loadLocalByAccount("leaderboards_type", ::ETTI_VALUE_INHISORY)
     platformFilter = getSeparateLeaderboardPlatformName()
-    pos = 0
-    rowsInPage = 16
+    setRowsInPage()
 
     ::add_big_query_record("global_leaderboard.open", platformFilter)
 
@@ -451,10 +452,18 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
     initTopItems()
     fetchLbData()
     updateButtons()
-    initFocusArray()
   }
 
   //----CONTROLLER----//
+  function setRowsInPage()
+  {
+    rowsInPage = rowsInPage > 0
+      ? rowsInPage
+      : ::max(::ceil((scene.findObject("lb_table_nest").getSize()[1]
+        - ::to_pixels("1@leaderboardHeaderHeight"))
+          / (::to_pixels("1@rows16height") || 1)).tointeger() - 2, 19)
+  }
+
   function getSelfPos()
   {
     if (!selfRowData || selfRowData.len() <= 0)
@@ -492,20 +501,19 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(scene) || !pageData)
       return null
 
-    local objTbl = scene.findObject("lb_table")
-    local idx = objTbl.getValue() - 1 //header row
-    local row = ::getTblValue(idx, getLbRows())
+    local row = getLbRows()?[curDataRowIdx]
     if (row)
       return row
 
-    if (idx == rowsInPage + 1 && selfRowData && selfRowData.len())
+    if (curDataRowIdx == rowsInPage + 1 && selfRowData && selfRowData.len())
       return selfRowData[0]
 
     return null
   }
 
-  function onSelect()
+  function onSelect(dataIdx)
   {
+    curDataRowIdx = dataIdx
     updateButtons()
   }
 
@@ -679,26 +687,6 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
     fetchLbData(true)
   }
 
-  function getMainFocusObj()
-  {
-    local obj = scene.findObject("top_checkboxes")
-    if (!::check_obj(obj) || !obj.childrenCount())
-      return null
-
-    for (local i = 0; i < obj.childrenCount(); i++)
-    {
-      local chObj = obj.getChild(i)
-      if (chObj.isVisible() && chObj.isEnabled())
-        return obj
-    }
-    return null
-  }
-
-  function getMainFocusObj2()
-  {
-    return scene.findObject("lb_table")
-  }
-
   function isCountriesLeaderboard()
   {
     return false
@@ -717,10 +705,9 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
       rowsInPage = rowsInPage
       onCategoryCb = ::Callback(onCategory, this)
       onRowSelectCb = ::Callback(onSelect, this)
+      onRowHoverCb = ::show_console_buttons ? ::Callback(onSelect, this) : null
       onRowDblClickCb = ::Callback(onUserDblClick, this)
       onRowRClickCb = ::Callback(onUserRClick, this)
-      onWrapUpCb = ::Callback(onWrapUp, this)
-      onWrapDownCb = ::Callback(onWrapDown, this)
     }).weakref()
     registerSubHandler(tableWeak)
   }
@@ -888,7 +875,6 @@ class ::gui_handlers.EventsLeaderboardWindow extends ::gui_handlers.LeaderboardW
     headerName.setValue(::events.getEventNameText(eventData))
 
     updateButtons()
-    initFocusArray()
   }
 
   function getTopItemsTplView()

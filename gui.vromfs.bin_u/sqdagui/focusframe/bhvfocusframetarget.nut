@@ -28,6 +28,9 @@ local bhvFocusFrameTarget = class
   static function hideImage(obj)
   {
     local focusImageSource = obj.getFinalProp("focusImageSource")
+    if (focusImageSource == null)
+      return
+
     local style = ""
     if (focusImageSource != "foreground")
       style += "background-color:#00000000;"

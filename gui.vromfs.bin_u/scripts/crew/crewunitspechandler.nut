@@ -4,22 +4,11 @@ class ::gui_handlers.CrewUnitSpecHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
   sceneBlkName = "gui/empty.blk"
-  isPrimaryFocus = false
   crew = null
   crewLevel = null
   units = null
   curCrewUnitType = null
   isHandlerVisible = true
-
-  function initScreen()
-  {
-    initFocusArray()
-  }
-
-  function getMainFocusObj()
-  {
-    return scene
-  }
 
   function setHandlerVisible(value)
   {
@@ -41,8 +30,6 @@ class ::gui_handlers.CrewUnitSpecHandler extends ::gui_handlers.BaseGuiHandlerWT
     local totalRows = scene.childrenCount()
     if (totalRows > 0 && totalRows <= scene.getValue())
       scene.setValue(0)
-    else
-      ::selectTableNavigatorObj(scene)
   }
 
   function loadSceneTpl()

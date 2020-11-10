@@ -38,13 +38,16 @@
       "stabilityReductionAfterPenetration": 0.15
     },
     {
+      "stucking": 0.3
+    },
+    {
+      "stuckingAngle": 40.0
+    },
+    {
       "bulletType": "ap_tank"
     },
     {
       "slopeEffectPreset": "ap"
-    },
-    {
-      "modelName": "tank_bullet_ap"
     },
     {
       "fresnel": [0.23,0.1,2.0]
@@ -77,7 +80,7 @@
       "timeFire": 1.0
     },
     {
-      "explosionEffect": "cannon_hit_ship_cumulative"
+      "explosionEffect": "explosion_midair_small"
     },
     {
       "groundCollisionEffect": "ground_explosion_fx"
@@ -98,9 +101,6 @@
       "explosionPatchRadius": 3.4
     },
     {
-      "smokeEffect": "hydra_smoke"
-    },
-    {
       "spawnExplosionFx": false
     },
     {
@@ -113,13 +113,19 @@
       "minDistance": 30.0
     },
     {
-      "smokeEffect": "trail_smoke"
+      "fireEffect": "rocket_fire_light"
+    },
+    {
+      "smokeEffect": ""
+    },
+    {
+      "hazeEffect": "haze_missile"
+    },
+    {
+      "endSmokeViscosity": 0.05
     },
     {
       "distanceFuse": false
-    },
-    {
-      "explosionPatchRadius": 0.152
     },
     {
       "rendinstDamageRadius": 0.152

@@ -1,5 +1,5 @@
-local seenEvents = ::require("scripts/seen/seenList.nut").get(SEEN.EVENTS)
-local bhvUnseen = ::require("scripts/seen/bhvUnseen.nut")
+local seenEvents = require("scripts/seen/seenList.nut").get(SEEN.EVENTS)
+local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
 local { getTextWithCrossplayIcon,
         isCrossPlayEnabled,
         needShowCrossPlayInfo } = require("scripts/social/crossplay.nut")
@@ -91,19 +91,14 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
     updateButtons()
     updateClusters()
 
-    initFocusArray()
     scene.findObject("event_update").setUserData(this)
-  }
-
-  function getMainFocusObj()
-  {
-    return queueToShow ? queueInfoHandlerWeak?.getObj("custom_mode_checkbox") : getObj("items_list")
+    ::move_mouse_on_child_by_value(eventsListObj)
   }
 
   //----CONTROLLER----//
   function updateEventsListFocusStatus()
   {
-    isEventsListInFocus = !::show_console_buttons || (::check_obj(eventsListObj) && eventsListObj.isFocused())
+    isEventsListInFocus = !::show_console_buttons || (::check_obj(eventsListObj) && eventsListObj.isHovered())
   }
 
   function onItemSelect()
@@ -291,11 +286,6 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::queues.isEventQueue(p?.queue))
       return
 
-    if (p.queue.state == queueStates.NOT_IN_QUEUE)
-      eventsListObj.select()
-    else
-      restoreFocus()
-
     updateEventsListFocusStatus()
     updateQueueInterface()
     updateButtons()
@@ -429,9 +419,6 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
     ::handlersManager.loadHandler(::gui_handlers.FramedOptionsWnd, params)
   }
 
-  function onSlotbarPrevAir() { slotbarWeak?.onSlotbarPrevAir?() }
-  function onSlotbarNextAir() { slotbarWeak?.onSlotbarNextAir?() }
-
   function onCreateRoom() {}
 
   //----END_CONTROLLER----//
@@ -462,8 +449,6 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
     local queueHandlerClass = queueToShow && ::queues.getQueuePreferredViewClass(queueToShow)
     local queueHandler = ::handlersManager.loadHandler(queueHandlerClass, {
       scene = queueObj,
-      onWrapUpCb = ::Callback(onWrapUp, this),
-      onWrapDownCb = ::Callback(onWrapDown, this),
       leaveQueueCb = ::Callback(onLeaveEvent, this)
     })
     registerSubHandler(queueHandler)

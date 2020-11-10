@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 0.0
-    },
     "player": {
       "army": 1,
       "wing": "player"
@@ -17,14 +13,14 @@
       "level": "levels/honolulu.bin",
       "type": "training",
       "gt_training": false,
-      "restoreType": "manual",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
       "windDirection": [1.0,0.0,0.0],
       "gt_reload_explosives": true,
       "isLimitedFuel": false,
       "isLimitedAmmo": false,
+      "restoreType": "manual",
+      "optionalTakeOff": false,
       "forceSkiesInitialRandomSeed": true,
       "skiesInitialRandomSeed": 666,
       "customWeather": {
@@ -32,37 +28,17 @@
         "wind_scale": 1.0,
         "max_wind_strength": 6.0,
         "sky": {
-          "mie_height": 0.9,
-          "mieG": 0.5,
-          "betaMScale": 0.65,
-          "clouds_overcast": 0.1
-        },
-        "clouds_gen": {
-          "humidity": 0.4,
-          "persistence": 1.1,
-          "asymmetry": 0.45
-        },
-        "clouds_position": {
-          "start_altitude": 1.5,
-          "thickness": 5.5,
-          "light_extinction": 0.2,
-          "amb_extinction_mul": 0.2
-        },
-        "clouds_render": {
-          "silver_lining": 0.3,
-          "sun_light": 0.3,
-          "ambient": 0.3,
-          "silver_lining_eccentricity": 0.6
+          "mie_height": 0.9
         },
         "strata_clouds": {
           "amount": 0.5,
           "altitude": 11.0
-        },
-        "rain": {
-          "rainFromInvisibleClouds": false,
-          "probability": 0.0
         }
       }
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 0.0
     },
     "spectator_points": [],
     "briefing": [
@@ -766,6 +742,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target_marking": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "instructor",
             "move_type": "teleport",
             "speed": 300.0,
@@ -798,6 +776,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target_marking": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "instructor"
           }
         },
@@ -828,7 +808,9 @@
       "actions": [
         {
           "moAddMissionObjective": {
-            "target": "tutorial_mission4_takeOff"
+            "target": "tutorial_mission4_takeOff",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -1337,7 +1319,10 @@
           "property": "throttle",
           "check_filter": "all",
           "object_type": "isAlive",
-          "object_marking": 0
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
         }
       },
       "actions": [
@@ -1483,9 +1468,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "player",
-          "target": "elevatorTime"
+          "target": "elevatorTime",
+          "object_var_value": 0
         },
         "gameWhenDifficulty": {
           "difficulty": "simulator",
@@ -1555,6 +1540,8 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0,
           "target_marking": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "instructor"
         },
         "triggerEnable": [
@@ -1664,9 +1651,9 @@
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "player",
-            "target": "uss_enterprise"
+            "target": "uss_enterprise",
+            "object_var_value": 0
           }
         }
       ],
@@ -1689,6 +1676,8 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0,
           "target_marking": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "instructor"
         },
         "unitSetIndication": {
@@ -2150,7 +2139,9 @@
         {
           "moSetObjectiveStatus": {
             "target": "tutorial_mission4_takeOff",
-            "status": 2
+            "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -2179,6 +2170,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target_marking": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "instructor"
           }
         },
@@ -2204,7 +2197,9 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "tutorial_mission4_follow00"
+            "target": "tutorial_mission4_follow00",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -2316,6 +2311,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target_marking": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "instructor",
             "move_type": "teleport",
             "lookat": "target_ship01",
@@ -2657,6 +2654,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target_marking": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "instructor",
             "move_type": "teleport",
             "speed": 300.0,
@@ -2684,6 +2683,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target_marking": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "instructor"
           }
         },
@@ -2731,6 +2732,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target_marking": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "lookat": "target_ship02",
@@ -2766,6 +2769,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target_marking": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "instructor"
           }
         },
@@ -2796,7 +2801,9 @@
         {
           "moSetObjectiveStatus": {
             "target": "tutorial_mission4_follow00",
-            "status": 2
+            "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -2836,7 +2843,9 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "tutorial_mission4_torpedoing"
+            "target": "tutorial_mission4_torpedoing",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -3549,9 +3558,9 @@
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "player",
-          "target": "target_ship02"
+          "target": "target_ship02",
+          "object_var_value": 0
         }
       },
       "actions": [
@@ -4151,6 +4160,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target_marking": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "instructor"
           }
         },
@@ -5183,7 +5194,9 @@
         },
         "moSetObjectiveStatus": {
           "target": "tutorial_mission4_torpedoing",
-          "status": 2
+          "status": 2,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "missionPlayDialogue": {
           "dialog": "tutorial_m4_d20",
@@ -5198,7 +5211,9 @@
           "target": "waypoint06"
         },
         "moAddMissionObjective": {
-          "target": "tutorial_mission4_follow01"
+          "target": "tutorial_mission4_follow01",
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "triggerEnable": [
           {
@@ -5242,6 +5257,7 @@
         "unitRestore": {
           "ressurectIfDead": false,
           "fullRestore": true,
+          "target_marking": 0,
           "target": "player"
         }
       },
@@ -5281,7 +5297,9 @@
         },
         "moSetObjectiveStatus": {
           "target": "tutorial_mission4_follow01",
-          "status": 2
+          "status": 2,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "missionMarkAsWaypoint": {
           "visible": false,
@@ -5455,6 +5473,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target_marking": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "lookat": "target_ship02",
@@ -5468,6 +5488,9 @@
             },
             {
               "fullRestore": true
+            },
+            {
+              "target_marking": 0
             },
             {
               "target": "player"
@@ -5653,6 +5676,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target_marking": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "lookat": "target_ship02",
@@ -5666,6 +5691,9 @@
             },
             {
               "fullRestore": true
+            },
+            {
+              "target_marking": 0
             },
             {
               "target": "player"
@@ -5869,6 +5897,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target_marking": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "lookat": "target_ship02",
@@ -5882,6 +5912,9 @@
             },
             {
               "fullRestore": true
+            },
+            {
+              "target_marking": 0
             },
             {
               "target": "player"
@@ -5947,6 +5980,7 @@
         "unitRestore": {
           "ressurectIfDead": true,
           "fullRestore": true,
+          "target_marking": 0,
           "target": "instructor"
         },
         "unitSetProperties": {
@@ -6094,6 +6128,7 @@
           "unitRestore": {
             "ressurectIfDead": true,
             "fullRestore": true,
+            "target_marking": 0,
             "target": "player"
           }
         },
@@ -6257,6 +6292,7 @@
           "unitRestore": {
             "ressurectIfDead": true,
             "fullRestore": true,
+            "target_marking": 0,
             "target": "player"
           }
         },
@@ -6281,6 +6317,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target_marking": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "follow_radius": 300.0,
@@ -6498,6 +6536,9 @@
               "fullRestore": true
             },
             {
+              "target_marking": 0
+            },
+            {
               "target": "player"
             },
             {
@@ -6532,6 +6573,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target_marking": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "lookat": "target_ship02",
@@ -6701,6 +6744,7 @@
           "unitRestore": {
             "ressurectIfDead": true,
             "fullRestore": true,
+            "target_marking": 0,
             "target": "player"
           }
         },
@@ -6731,6 +6775,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target_marking": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "lookat": "training_ship00",
@@ -6881,6 +6927,7 @@
           "unitRestore": {
             "ressurectIfDead": true,
             "fullRestore": true,
+            "target_marking": 0,
             "target": "player"
           }
         },
@@ -6905,6 +6952,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target_marking": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "follow_radius": 300.0,
@@ -6991,6 +7040,8 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0,
           "target_marking": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "instructor"
         }
       },
@@ -7771,6 +7822,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -7817,6 +7869,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -7863,6 +7916,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7898,6 +7952,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7933,6 +7988,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7968,6 +8024,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -8003,6 +8060,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -8039,6 +8097,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -8063,6 +8122,9 @@
           [5419.74,2.0,-21027.1]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "target_ship01"
           },
@@ -8094,6 +8156,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -8130,6 +8193,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -8166,6 +8230,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -8190,6 +8255,9 @@
           [-3428.05,2.0,-19594.2]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "training_ship00"
           },
@@ -8224,6 +8292,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 2,
@@ -8259,6 +8328,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 3,
@@ -8294,6 +8364,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 3,
@@ -8329,6 +8400,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 3,
@@ -8364,6 +8436,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 4,
@@ -8399,6 +8472,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -8422,6 +8496,9 @@
           [-1488.05,2.0,-11547.8]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "ships_01"
           },
@@ -8489,6 +8566,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 3,
@@ -8524,6 +8602,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 2,
@@ -8559,6 +8638,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 6,
@@ -8594,6 +8674,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 7,
@@ -8629,6 +8710,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 3,
@@ -8664,6 +8746,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 2,
@@ -8796,6 +8879,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 6,
@@ -8831,6 +8915,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 3,
@@ -9507,6 +9592,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "free_distance": 70.0,

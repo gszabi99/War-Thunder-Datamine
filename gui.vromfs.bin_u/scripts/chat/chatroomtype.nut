@@ -1,6 +1,6 @@
-local enums = ::require("sqStdlibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 local platformModule = require("scripts/clientState/platform.nut")
-local { isCrossNetworkMessageAllowed, isChatEnableWithPlayer } = require("scripts/chat/chatStates.nut")
+local { isCrossNetworkMessageAllowed } = require("scripts/chat/chatStates.nut")
 
 enum chatRoomCheckOrder {
   CUSTOM
@@ -59,9 +59,9 @@ enum chatRoomTabOrder {
   inviteLocIdNoNick = "chat/receiveInvite/noNick"
   inviteLocIdFull = "chat/receiveInvite"
   inviteIcon = "#ui/gameuiskin#chat.svg"
-  getInviteClickNameText = function(roomId)
-  {
-    return format(::loc("chat/receiveInvite/clickToJoin"), getRoomName(roomId))
+  getInviteClickNameText = function(roomId) {
+    local locId = ::show_console_buttons ? "chat/receiveInvite/acceptToJoin" : "chat/receiveInvite/clickToJoin"
+    return ::format(::loc(locId), getRoomName(roomId))
   }
 
   canCreateRoom = function() { return false }
@@ -74,6 +74,9 @@ enum chatRoomTabOrder {
 
   needCountAsImportant = false
   needShowMessagePopup = true
+
+  isHaveOwner =  true //To remove "@" symbol in nickname of creator of room added by the IRC server
+                      //!!!FIX ME: Nickname can start with "@" symbol. And there is no way to find out the owner by the config from the IRC server
 }
 
 enums.addTypesByGlobalName("g_chat_room_type", {
@@ -114,7 +117,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
       return ""
     }
 
-    isConcealed = @(roomId) !isCrossNetworkMessageAllowed(roomId) || !isChatEnableWithPlayer(roomId)
+    isConcealed = @(roomId) !isCrossNetworkMessageAllowed(roomId)
   }
 
   SQUAD = { //param - random
@@ -138,7 +141,9 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     getRoomColorTag = @(roomId) roomId == ::g_chat.getMySquadRoomId() ? "squad" : "disbanded_squad"
 
     canBeClosed = function(roomId) { return !::g_squad_manager.isInSquad() || roomId != ::g_chat.getMySquadRoomId() }
-    getInviteClickNameText = function(roomId) { return ::loc("squad/inviteSquadName") }
+    getInviteClickNameText = function(roomId) {
+      return ::loc(::show_console_buttons ? "squad/inviteSquadName/acceptToJoin" : "squad/inviteSquadName")
+    }
   }
 
   CLAN = { //para - clanId
@@ -149,6 +154,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     isErrorPopupAllowed = false
     needShowMessagePopup = false
     needCountAsImportant = true
+    isHaveOwner = false
 
     canBeClosed = function(roomId) { return roomId != getRoomId(::clan_get_my_clan_id()) }
   }
@@ -158,6 +164,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     roomPrefix = "#___empty___"
     havePlayersList = false
     isErrorPopupAllowed = false
+    isHaveOwner = false
     checkRoomId = function(roomId) { return roomId == roomPrefix }
     getRoomId   = function(...) { return roomPrefix }
     canBeClosed = function(roomId) { return false }
@@ -168,6 +175,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     roomPrefix = "#lobby_room_"
     havePlayersList = false
     isErrorPopupAllowed = false
+    isHaveOwner = false
   }
 
   GLOBAL = {

@@ -1,4 +1,4 @@
-local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
+local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 
 local curSubscribeOperationId = persist("curSubscribeOperationId", @() ::Watched(-1))
 

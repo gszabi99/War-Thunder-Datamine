@@ -32,10 +32,12 @@ class ::gui_handlers.InvitesWnd extends ::gui_handlers.BaseGuiHandlerWT
     local view = { invites = list }
     local data = ::handyman.renderCached("gui/chat/inviteListRows", view)
     guiScene.replaceContentFromText(listObj, data, data.len(), this)
-    listObj.select()
 
     if (list.len())
+    {
       listObj.setValue(::find_in_array(list, selInvite, 0))
+      ::move_mouse_on_child_by_value(listObj)
+    }
 
     scene.findObject("now_new_invites").show(list.len() == 0)
   }

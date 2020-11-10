@@ -4,6 +4,8 @@ local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.n
 local { askPurchaseDecorator, askConsumeDecoratorCoupon,
   findDecoratorCouponOnMarketplace } = require("scripts/customization/decoratorAcquire.nut")
 
+const MAX_COLLECTION_ITEMS = 10
+
 local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType          = handlerType.MODAL
   sceneBlkName     = "gui/collections/collectionsWnd.blk"
@@ -11,6 +13,8 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   collectionsList = null
   curPage = 0
   collectionsPerPage = -1
+  countItemsInRow = -1
+  collectionHeight = 0
   lastSelectedDecoratorObjId = ""
   collectionsListObj = null
 
@@ -19,13 +23,7 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     collectionsListObj = scene.findObject("collections_list")
     initCollectionsListSizeOnce()
     fillPage()
-    initFocusArray()
-    if (collectionsListObj.childrenCount() > 0)
-      collectionsListObj.select()
-  }
-
-  function getMainFocusObj() {
-    return collectionsListObj
+    ::move_mouse_on_child_by_value(collectionsListObj)
   }
 
   function initCollectionsListSizeOnce() {
@@ -33,8 +31,13 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
       return
 
     local wndCollectionsObj = scene.findObject("wnd_collections")
+    countItemsInRow = ::to_pixels("1@collectionWidth-1@collectionPrizeWidth")
+      / (::to_pixels("1@collectionItemSizeWithIndent"))
+    local countRowInCollection = ::ceil(MAX_COLLECTION_ITEMS / (countItemsInRow*1.0))
+    collectionHeight = "".concat(countRowInCollection,
+      "@collectionItemSizeWithIndent+1@buttonHeight-1@blockInterval")
     local sizes = ::g_dagui_utils.adjustWindowSize(wndCollectionsObj, collectionsListObj,
-      "@collectionWidth", "@collectionHeight", "@blockInterval", "@blockInterval", { windowSizeX = 0 })
+      "@collectionWidth", collectionHeight, "@blockInterval", "@blockInterval", {windowSizeX = 0})
     collectionsPerPage = sizes.itemsCountY
   }
 
@@ -49,7 +52,9 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     local pageEndIndex = min((curPage + 1) * collectionsPerPage, collectionsList.len())
     local idxOnPage = 0
     for(local i=pageStartIndex; i < pageEndIndex; i++) {
-      view.collections.append(collectionsList[i].getView(idxOnPage))
+      local collectionTopPos = $"{idxOnPage} * ({collectionHeight} + 1@blockInterval)"
+      view.collections.append(
+        collectionsList[i].getView(countItemsInRow, collectionTopPos, collectionHeight))
       idxOnPage++
     }
 
@@ -84,7 +89,8 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function getDecoratorConfig(id = null) {
-    local curDecoratorParams = (id ?? getCurDecoratorObj()?.id ?? "").split(";")
+    local curDecoratorParams = (id ?? getCurDecoratorObj()?.id
+      ?? lastSelectedDecoratorObjId ?? "").split(";")
     if (curDecoratorParams.len() < 2)
       return {
         collectionIdx = null
@@ -102,7 +108,7 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function getCurDecoratorObj() {
-    if (::show_console_buttons && !collectionsListObj.isFocused())
+    if (::show_console_buttons && !collectionsListObj.isHovered())
       return null
 
     local value = ::get_obj_valid_index(collectionsListObj)
@@ -176,8 +182,7 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function onColletionsListFocusChange() {
-    if (isValid())
-      updateDecoratorInfo()
+    updateDecoratorInfo()
   }
 
   function getHandlerRestoreData() {

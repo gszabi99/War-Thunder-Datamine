@@ -1,8 +1,6 @@
 <<#collapsableBlocks>>
 collapsableBlock {
   id:t='<<id>>'
-  collapsed:t='<<#collapsed>>yes<</collapsed>><<^collapsed>>no<</collapsed>>'
-  selected:t='<<selected>>'
   type:t='<<type>>'
 
   header {
@@ -19,11 +17,13 @@ collapsableBlock {
   content {
     id:t='collapse_content_<<id>>'
 
+    total-input-transparent:t='yes'
     css-hier-invalidate:t='yes'
 
     <<#onSelect>> on_select:t='<<onSelect>>' <</onSelect>>
     <<#onActivate>> on_activate:t='<<onActivate>>' <</onActivate>>
     <<#onCancelEdit>> on_cancel_edit:t='<<onCancelEdit>>' <</onCancelEdit>>
+    <<@contentParams>>
   }
 }
 <</collapsableBlocks>>

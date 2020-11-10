@@ -1,5 +1,6 @@
 root {
-  background-color:t='@shadeBackgroundColor'
+  blur {}
+  blur_foreground {}
 
   frame {
     id:t='window_root'
@@ -14,7 +15,7 @@ root {
     height:t='60%sh'
     <</hasActiveTicket>>
     max-width:t='800*@sf/@pf_outdated + 2@framePadding'
-    max-height:t='sh'
+    max-height:t='@rh'
     class:t='wndNav'
 
     frame_header {
@@ -56,8 +57,6 @@ root {
       clearOnFocusLost:t='no'
       on_select:t = 'onTicketSelected'
       _on_dbl_click:t = 'onTicketDoubleClicked'
-      on_wrap_up:t='onWrapUp'
-      on_wrap_down:t='onWrapDown'
       position:t='relative'
       pos:t='0.5pw-0.5w, 0.5ph-0.5h'
       itemShopList:t='yes'

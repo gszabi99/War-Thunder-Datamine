@@ -32,7 +32,8 @@ local { getConfigValueById } = require("scripts/hud/hudTankStates.nut")
     local blk = ::handyman.renderCached("gui/hud/HudTankDebuffs",
         {
           stabilizerValue = getConfigValueById("stabilizer"),
-          lwsValue = getConfigValueById("lws")
+          lwsValue = getConfigValueById("lws"),
+          ircmValue = getConfigValueById("ircm")
         }
       )
     guiScene.replaceContentFromText(scene, blk, blk.len(), this)

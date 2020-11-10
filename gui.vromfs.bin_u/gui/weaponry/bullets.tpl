@@ -16,6 +16,7 @@ img{
 
   <<#useTooltip>>
   title:t='$tooltipObj'
+  tooltip-float:t='horizontal'
   tooltipObj {
     id:t='tooltip_<<tooltipId>>'
     on_tooltip_open:t='onGenericTooltipOpen'

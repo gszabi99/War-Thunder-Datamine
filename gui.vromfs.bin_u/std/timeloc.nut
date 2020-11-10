@@ -51,7 +51,7 @@ local function hoursToString(time, full = true, useSeconds = false, dontShowZero
       stdStr.format((time >= 1)? "%02d%s" : "%d%s", mm, i18n("measureUnits/minutes")))
   }
 
-  if (((ss && useSeconds) || res.len()==0) && (time < 1.0 / 6)) { // < 10min
+  if ((((ss > 0 || !dontShowZeroParam) && useSeconds) || res.len()==0) && (time < 1.0 / 6)) { // < 10min
     if (res.len()>0)
       res.append(" ")
     res.append(fullUnits ? i18n("measureUnits/full/seconds", { n = ss }) :

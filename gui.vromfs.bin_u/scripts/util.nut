@@ -1,11 +1,15 @@
+//ATTENTION! this file is coupling things to much! Split it!
+//shouldDecreaseSize, allowedSizeIncrease = 100
+
 local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 local time = require("scripts/time.nut")
-local penalty = require_native("penalty")
+local penalty = ::require_native("penalty")
 local { isPlatformSony, getPlayerName } = require("scripts/clientState/platform.nut")
 local stdMath = require("std/math.nut")
 local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 local { isCrossPlayEnabled } = require("scripts/social/crossplay.nut")
 local { startLogout } = require("scripts/login/logout.nut")
+local { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
 
 ::usageRating_amount <- [0.0003, 0.0005, 0.001, 0.002]
 ::allowingMultCountry <- [1.5, 2, 2.5, 3, 4, 5]
@@ -62,48 +66,15 @@ foreach (i, v in ::cssColorsMapDark)
 ::global_max_players_versus <- 64
 ::global_max_players_coop <- 4
 
-::get_blk_by_path_array <- function get_blk_by_path_array(path, blk, defaultValue = null)
-{
-  local currentBlk = blk
-  foreach (p in path)
-  {
-    if (!(currentBlk instanceof ::DataBlock))
-      return defaultValue
-    currentBlk = currentBlk?[p]
-  }
-  return currentBlk ?? defaultValue
-}
-
-::get_blk_value_by_path <- function get_blk_value_by_path(blk, path, defVal=null)
-{
-  if (!blk || !path)
-    return defVal
-
-  local nodes = ::split(path, "/")
-  local key = nodes.len() ? nodes.pop() : null
-  if (!key || !key.len())
-    return defVal
-
-  blk = ::get_blk_by_path_array(nodes, blk, defVal)
-  if (blk == defVal || !::u.isDataBlock(blk))
-    return defVal
-  local val = blk?[key]
-  val = (val!=null && (defVal == null || type(val) == type(defVal))) ? val : defVal
-  return val
-}
-
 ::getFromSettingsBlk <- function getFromSettingsBlk(path, defVal=null)
 {
   // Important: On production, settings blk does NOT contain all variables from config.blk, use getSystemConfigOption() instead.
   local blk = ::get_settings_blk()
-  local val = ::get_blk_value_by_path(blk, path)
+  local val = get_blk_value_by_path(blk, path)
   return (val != null) ? val : defVal
 }
 
-::isInArray <- function isInArray(v, arr)
-{
-  return arr.indexof(v) != null
-}
+::isInArray <- @(v, arr) arr.contains(v)
 
 ::locOrStrip <- function locOrStrip(text)
 {
@@ -260,17 +231,17 @@ foreach (i, v in ::cssColorsMapDark)
 {
   switch (game_mode)
   {
-    case GM_CAMPAIGN: return OPTIONS_MODE_CAMPAIGN;
-    case GM_TRAINING: return OPTIONS_MODE_TRAINING;
-    case GM_TEST_FLIGHT: return OPTIONS_MODE_TRAINING;
-    case GM_SINGLE_MISSION: return OPTIONS_MODE_SINGLE_MISSION;
-    case GM_USER_MISSION: return OPTIONS_MODE_SINGLE_MISSION;
-    case GM_DYNAMIC: return OPTIONS_MODE_DYNAMIC;
-    case GM_BUILDER: return OPTIONS_MODE_DYNAMIC;
-    case GM_DOMINATION: return OPTIONS_MODE_MP_DOMINATION;
-    case GM_SKIRMISH: return OPTIONS_MODE_MP_SKIRMISH;
+    case ::GM_CAMPAIGN: return ::OPTIONS_MODE_CAMPAIGN;
+    case ::GM_TRAINING: return ::OPTIONS_MODE_TRAINING;
+    case ::GM_TEST_FLIGHT: return ::OPTIONS_MODE_TRAINING;
+    case ::GM_SINGLE_MISSION: return ::OPTIONS_MODE_SINGLE_MISSION;
+    case ::GM_USER_MISSION: return ::OPTIONS_MODE_SINGLE_MISSION;
+    case ::GM_DYNAMIC: return ::OPTIONS_MODE_DYNAMIC;
+    case ::GM_BUILDER: return ::OPTIONS_MODE_DYNAMIC;
+    case ::GM_DOMINATION: return ::OPTIONS_MODE_MP_DOMINATION;
+    case ::GM_SKIRMISH: return ::OPTIONS_MODE_MP_SKIRMISH;
   }
-  return OPTIONS_MODE_GAMEPLAY
+  return ::OPTIONS_MODE_GAMEPLAY
 }
 
 ::restart_current_mission <- function restart_current_mission()
@@ -298,12 +269,12 @@ foreach (i, v in ::cssColorsMapDark)
 
     if (::u.isTable(item))
     {
-      itemView = ::combine_tables(item, itemView)
+      itemView.__update(item)
       if (itemView.isInactive)
         itemView.onClick = "onInactiveItem"
     }
 
-    result += ::handyman.renderCached("gui/menuButton", itemView)
+    result += ::handyman.renderCached("gui/flightMenu/menuButton", itemView)
   }
   return result
 }
@@ -823,29 +794,18 @@ foreach (i, v in ::cssColorsMapDark)
   foreach(idx, cell in rowData)
   {
     local haveParams = typeof cell == "table"
-    local config = {
+    local config = (haveParams ? cell : {}).__merge({
       params = haveParams
       display = (cell?.show ?? true) ? "show" : "hide"
       id = ::getTblValue("id", cell, "td_" + idx)
-      width = ::getTblValue("width", cell)
-      tdalign = ::getTblValue("tdAlign", cell)
-      tooltip = ::getTblValue("tooltip", cell)
-      tooltipId = cell?.tooltipId
-      callback = ::getTblValue("callback", cell)
-      active = ::getTblValue("active", cell, false)
-      cellType = ::getTblValue("cellType", cell)
       rawParam = ::getTblValue("rawParam", cell, "")
       needText = ::getTblValue("needText", cell, true)
       textType = ::getTblValue("textType", cell, "activeText")
       text = haveParams? ::getTblValue("text", cell, "") : cell.tostring()
-      autoScrollText = cell?.autoScrollText ?? false
       textRawParam = ::getTblValue("textRawParam", cell, "")
       imageType = ::getTblValue("imageType", cell, "cardImg")
-      image = ::getTblValue("image", cell)
-      imageRawParams = ::getTblValue("imageRawParams", cell)
       fontIconType = ::getTblValue("fontIconType", cell, "fontIcon20")
-      fontIcon = ::getTblValue("fontIcon", cell)
-    }
+    })
 
     view.cell.append(config)
   }
@@ -1338,58 +1298,6 @@ foreach (i, v in ::cssColorsMapDark)
   return ::char_send_blk("cln_move_exp_to_module", blk)
 }
 
-/**
- * Set val to slot, specified by path.
- * Checks for identity before save.
- * If value in specified slot was changed returns true. Otherwise return false.
- */
-::set_blk_value_by_path <- function set_blk_value_by_path(blk, path, val)
-{
-  if (!blk || !path)
-    return false
-
-  local nodes = ::split(path, "/")
-  local key = nodes.len() ? nodes.pop() : null
-
-  if (!key || !key.len())
-    return false
-
-  foreach (dir in nodes)
-  {
-    if (blk?[dir] != null && type(blk[dir]) != "instance")
-      blk[dir] = null
-    blk = blk.addBlock(dir)
-  }
-
-  //If current value is equal to existent in DataBlock don't override it
-  if (::u.isEqual(blk?[key], val))
-    return u.isInstance(val) //If the same instance was changed, then need to save
-
-  //Remove DataBlock slot if it contains an instance or if it has different type
-  //from new value
-  local destType = type(blk?[key])
-  if (destType == "instance")
-    blk[key] <- null
-  else if (blk?[key] != null && destType != type(val))
-    blk[key] = null
-
-  if (::isInArray(type(val), [ "string", "bool", "float", "integer", "int64", "instance", "null"]))
-    blk[key] = val
-  else if (::u.isTable(val))
-  {
-    blk = blk.addBlock(key)
-    foreach(k,v in val)
-      ::set_blk_value_by_path(blk, k, v)
-  }
-  else
-  {
-    ::dagor.assertf(false, "Data type not suitable for writing to blk: " + type(val))
-    return false
-  }
-
-  return true
-}
-
 ::get_config_blk_paths <- function get_config_blk_paths()
 {
   // On PS4 path is "/app0/config.blk", but it is read-only.
@@ -1403,8 +1311,8 @@ foreach (i, v in ::cssColorsMapDark)
 {
   local filename = ::get_config_blk_paths().read
   if (!filename) return defVal
-  local blk = ::DataBlock(filename)
-  local val = ::get_blk_value_by_path(blk, path)
+  local blk = blkOptFromPath(filename)
+  local val = get_blk_value_by_path(blk, path)
   return (val != null) ? val : defVal
 }
 
@@ -1412,8 +1320,8 @@ foreach (i, v in ::cssColorsMapDark)
 {
   local filename = ::get_config_blk_paths().write
   if (!filename) return
-  local blk = ::DataBlock(filename)
-  if (::set_blk_value_by_path(blk, path, val))
+  local blk = blkOptFromPath(filename)
+  if (set_blk_value_by_path(blk, path, val))
     blk.saveToTextFile(filename)
 }
 
@@ -1516,18 +1424,6 @@ foreach (i, v in ::cssColorsMapDark)
   }
 
   return bestIdx;
-}
-
-::combine_tables <- function combine_tables(primaryTable, secondaryTable)
-{
-  local primTable = clone primaryTable
-
-  if (secondaryTable.len() > 0)
-    foreach(name, value in secondaryTable)
-      if (!(name in primTable))
-        primTable[name] <- value
-
-  return primTable
 }
 
 ::checkRemnantPremiumAccount <- function checkRemnantPremiumAccount()
@@ -1870,12 +1766,12 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
     return
   if (enable)
   {
-    ::enable_dof(::getTblValue("nearFrom",   params, 1000000), // meters
+    ::enable_dof(::getTblValue("nearFrom",   params, 0), // meters
                  ::getTblValue("nearTo",     params, 0), // meters
-                 ::getTblValue("nearEffect", params, 1), // 0..1
-                 ::getTblValue("farFrom",    params, 0), // meters
+                 ::getTblValue("nearEffect", params, 0), // 0..1
+                 ::getTblValue("farFrom",    params, 1000000), // meters
                  ::getTblValue("farTo",      params, 0), // meters
-                 ::getTblValue("farEffect",  params, 0)) // 0..1
+                 ::getTblValue("farEffect",  params, 1)) // 0..1
   }
   else
     ::disable_dof()

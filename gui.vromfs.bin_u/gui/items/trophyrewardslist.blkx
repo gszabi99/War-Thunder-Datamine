@@ -1,7 +1,8 @@
 {
   "root": {
-    "background-color": "@modalShadeColor",
     "type": "big",
+    "blur": [],
+    "blur_foreground": [],
     "frame": {
       "width": "1@itemWidth + 2@itemSpacing + 1@blockInterval + 1@itemInfoWidth + 2@framePadding",
       "pos": "50%pw-50%w, 50%ph-50%h",
@@ -31,7 +32,7 @@
           "max-height": "1@maxWindowHeight"
         },
         {
-          "frameBlock": {
+          "tdiv": {
             "id": "items_list",
             "width": "1@itemWidth + 2@itemSpacing",
             "flow": "vertical",
@@ -47,7 +48,12 @@
           }
         },
         {
-          "frameBlock": {
+          "chapterSeparator": {
+            "margin": "1@blockInterval, 0, 0, 0"
+          }
+        },
+        {
+          "tdiv": {
             "size": "fw, ph",
             "pos": "1@blockInterval, 0",
             "position": "relative",

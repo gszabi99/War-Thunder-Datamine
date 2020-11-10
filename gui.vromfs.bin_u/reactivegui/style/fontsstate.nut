@@ -12,14 +12,14 @@ local baseNameFontsById = {
 local fontGenId = extWatched("fontGenId",  @() ::cross_call.getCurrentFontParams()?.fontGenId ?? "")
 local fontSizePx = extWatched("fontSizePx", @() ::cross_call.getCurrentFontParams()?.fontSizePx ?? 0)
 
-local get = @(fontId) Fonts?[(baseNameFontsById?[fontId] ?? "") + fontGenId.value]
+local get = @(fontId) Fonts?["".concat((baseNameFontsById?[fontId] ?? ""), fontGenId.value)]
 local getSizePx = @(val = 1) ::math.round(val * fontSizePx.value / 1080.0).tointeger()
 local getSizeByScrnTgt = @(val = 1) ::math.round(val * fontSizePx.value).tointeger()
 local getSizeByDp = @(val = 1) val * max((fontSizePx.value/900.0 + 0.5).tointeger(), 1)
 
 return {
-  get = get
-  getSizePx = getSizePx
-  getSizeByScrnTgt = getSizeByScrnTgt
-  getSizeByDp = getSizeByDp
+  get
+  getSizePx
+  getSizeByScrnTgt
+  getSizeByDp
 }

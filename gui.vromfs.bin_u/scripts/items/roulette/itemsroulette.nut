@@ -1,4 +1,4 @@
-local u = ::require("sqStdLibs/helpers/u.nut")
+local u = require("sqStdLibs/helpers/u.nut")
 
 /*
 ItemsRoulette API:
@@ -22,7 +22,7 @@ const MIN_ITEMS_OFFSET = 0.1
 const MAX_ITEMS_OFFSET = 0.4
 
 local ItemGenerators = require("scripts/items/itemsClasses/itemGenerators.nut")
-local rouletteAnim = ::require("scripts/items/roulette/rouletteAnim.nut")
+local rouletteAnim = require("scripts/items/roulette/rouletteAnim.nut")
 
 local ROULETTE_PARAMS_DEFAULTS = {
   rouletteObj = null

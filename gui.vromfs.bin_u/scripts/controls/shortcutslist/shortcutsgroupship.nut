@@ -7,7 +7,10 @@ return [
   {
     id = "ID_SHIP_CONTROL_HEADER"
     type = CONTROL_TYPE.HEADER
-    unitType = unitTypes.SHIP
+    unitTypes = [
+      unitTypes.SHIP
+      unitTypes.BOAT
+    ]
     needShowInHelp = true
   }
 //-------------------------------------------------------

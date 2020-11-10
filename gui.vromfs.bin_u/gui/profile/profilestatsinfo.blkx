@@ -1,80 +1,131 @@
-{
-  "flow": "vertical",
-  "HorizontalListBox": {
-    "id": "modes_list",
-    "height": "4*@scrn_tgt/100.0",
-    "pos": "0, 0",
-    "position": "relative",
-    "activeAccesskeys": "LeftRight",
-    "navigatorShortcuts": "yes",
-    "on_wrap_up": "onWrapUp",
-    "on_wrap_down": "onWrapDown",
-    "on_select": "onStatsModeChange"
+[
+  {
+    "flow": "vertical"
   },
-  "tdiv": [
-    {
-      "width": "pw"
-    },
-    {
-      "tdiv": {
-        "id": "countries_boxes",
-        "margin": "1@blockInterval, 1@blockInterval",
-        "behaviour": "wrapNavigator",
-        "navigatorShortcuts": "yes",
-        "childsActivate": "yes",
-        "on_wrap_up": "onWrapUp",
-        "on_wrap_down": "onWrapDown",
-        "on_wrap_right": "onWrapDown"
-      }
-    },
-    {
-      "tdiv": {
-        "id": "units_boxes",
-        "pos": "pw-w, 0",
-        "position": "absolute",
-        "margin": "1@blockInterval, 1@blockInterval",
-        "behaviour": "wrapNavigator",
-        "navigatorShortcuts": "yes",
-        "childsActivate": "yes",
-        "on_wrap_up": "onWrapUp",
-        "on_wrap_down": "onWrapDown",
-        "on_wrap_left": "onWrapUp"
-      }
+  {
+    "HorizontalListBox": {
+      "id": "modes_list",
+      "type": "transparent",
+      "navigatorShortcuts": "yes",
+      "move-only-hover": "yes",
+      "on_select": "onStatsModeChange"
     }
-  ],
-  "frameBlock": [
-    {
-      "size": "pw, fh"
-    },
-    {
-      "position": "relative"
-    },
-    {
-      "pos": "50%pw-50%w, 0"
-    },
-    {
-      "position": "relative"
-    },
-    {
-      "padding-top": "1@blockInterval"
-    },
-    {
-      "table": {
-        "id": "airs_stats_table",
-        "size": "pw, ph",
-        "pos": "50%pw-50%w, 0",
+  },
+  {
+    "tdiv": {
+      "flow": "horizontal",
+      "height": "1@buttonHeight+2@blockInterval",
+      "Button_text": {
+        "id": "filter_button",
+        "margin-left": "0",
+        "text": "#stats_filter_show",
+        "on_click": "onShowFilterBtnClick",
+        "btnName": "Y",
+        "ButtonImg": []
+      },
+      "tdiv": {
+        "id": "icon_nest",
+        "flow": "horizontal",
         "position": "relative",
-        "class": "lbTable",
-        "higlightRowOnHover": "yes",
-        "text-valign": "center",
-        "text-halign": "center"
+        "pos": "0, 0.5ph-0.5h"
       }
     }
-  ],
-  "animated_wait_icon": {
-    "id": "stats_loading",
-    "pos": "50%pw-50%w, 50%ph-50%h",
-    "position": "absolute",
-    "background-rotation": "0"
+  },
+  {
+    "tdiv": [
+      {
+        "size": "pw, fh"
+      },
+      {
+        "position": "relative"
+      },
+      {
+        "pos": "0.5pw-0.5w, 0"
+      },
+      {
+        "position": "relative"
+      },
+      {
+        "table": {
+          "id": "airs_stats_table",
+          "size": "pw, ph",
+          "pos": "0.5pw-0.5w, 0",
+          "position": "relative",
+          "class": "lbTable",
+          "higlightRowOnHover": "yes",
+          "text-valign": "center",
+          "text-halign": "center"
+        }
+      }
+    ]
+  },
+  {
+    "popup_menu": [
+      {
+        "id": "stats_filter"
+      },
+      {
+        "position": "absolute"
+      },
+      {
+        "top": "2@buttonHeight+3@blockInterval"
+      },
+      {
+        "height": "10@buttonHeight+2@framePadding"
+      },
+      {
+        "display": "hide"
+      },
+      {
+        "enable": "no"
+      },
+      {
+        "flow": "horizontal"
+      },
+      {
+        "not-input-transparent": "yes"
+      },
+      {
+        "css-hier-invalidate": "yes"
+      },
+      {
+        "rootUnderPopupMenu": {
+          "on_click": "onShowFilterBtnClick",
+          "on_r_click": "onShowFilterBtnClick"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "countries_boxes",
+          "width": "0.5pw",
+          "position": "relative",
+          "flow": "vertical"
+        }
+      },
+      {
+        "tdiv": {
+          "size": "1@dp, 10@buttonHeight",
+          "position": "relative",
+          "margin": "1@blockInterval, 0",
+          "background-color": "@separatorBlockColor"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "units_boxes",
+          "width": "0.5pw",
+          "position": "relative",
+          "flow": "vertical"
+        }
+      }
+    ]
+  },
+  {
+    "animated_wait_icon": {
+      "id": "stats_loading",
+      "pos": "50%pw-50%w, 50%ph-50%h",
+      "position": "absolute",
+      "background-rotation": "0"
+    }
   }
-}
+]

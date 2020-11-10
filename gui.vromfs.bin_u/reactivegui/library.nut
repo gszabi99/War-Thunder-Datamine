@@ -30,3 +30,5 @@ global const LINE_WIDTH = 1.6
     return result
   }
 }()
+
+::str <- @(...) "".join(vargv)

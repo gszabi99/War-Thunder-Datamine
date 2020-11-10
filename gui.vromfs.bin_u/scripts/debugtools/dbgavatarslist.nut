@@ -1,7 +1,7 @@
-local bhvAvatar = ::require("scripts/user/bhvAvatar.nut")
-local u = ::require("sqStdLibs/helpers/u.nut")
+local bhvAvatar = require("scripts/user/bhvAvatar.nut")
+local u = require("sqStdLibs/helpers/u.nut")
 local stdPath = require("std/path.nut")
-local avatars = ::require("scripts/user/avatars.nut")
+local avatars = require("scripts/user/avatars.nut")
 local dagor_fs = require("dagor.fs")
 local stdMath = require("std/math.nut")
 
@@ -14,7 +14,7 @@ enum avatarPlace { //higher index has more priority to show icon when same icons
 ::debug_avatars <- function debug_avatars(filePath = "../develop/gameBase/config/avatars.blk")
 {
   local blk = ::DataBlock()
-  if (!blk.load(filePath))
+  if (!blk.tryLoad(filePath))
     return "Failed to load avatars config from " + filePath
 
   ::handlersManager.loadHandler(::gui_handlers.DbgAvatars, { savePath = filePath, configBlk = blk })

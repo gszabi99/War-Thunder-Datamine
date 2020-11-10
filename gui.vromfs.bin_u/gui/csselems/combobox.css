@@ -22,6 +22,7 @@
 ComboBox {
   behaviour:dropdown-select;
   re-type:dropdown-select;
+  move-only-hover:yes;
   css-hier-invalidate:yes;
   total-input-transparent:yes;
 
@@ -40,6 +41,8 @@ ComboBox {
   max-width:pw;
   pos:0, 50%ph-50%h;
   position:relative;
+  mouse-pointer-centering:10, 50;
+  input-transparent:yes;
 }
 
 tr[optionWidthInc=double] > td > ComboBox {
@@ -61,7 +64,7 @@ tr > tdiv > ComboBox {
   width:fw;
 }
 
-[show_console_buttons=yes] .optionsTable > tr > td > ComboBox {
+[show_console_buttons=yes] .optionsTable[rightOpen=yes] > tr > td > ComboBox {
   btnPos:left;
   btnType:leftOpen;
 }
@@ -112,9 +115,9 @@ ComboBox > button {
   background-svg-size: 1@buttonImgSvgHeight, 1@buttonImgSvgHeight;
   background-repeat:aspect-ratio;
   color-factor:127;
+  skip-navigation:yes;
 }
 
-ComboBox:focus > button,
 ComboBox:hover > button {
   color-factor:255;
 }
@@ -193,27 +196,21 @@ ComboBox[btnPos=leftOutside] > button {
 
 
 [show_console_buttons=yes] ComboBox[_hasBtnImage=yes]:expanded > button,
-[show_console_buttons=yes] PosOptionsNavigator > * > * > ComboBox:focus > button,
-[show_console_buttons=yes] .optionsMultiColumn > tr > td > ComboBox:focus > button,
-[show_console_buttons=yes] ComboBox[focusFrame=yes]:focus > button {
+[show_console_buttons=yes] ComboBox:hover > button {
   _hasBtnImage:yes;
   background-image:@control_button_a;
 }
 
 [swap_ab=yes][show_console_buttons=yes] ComboBox[_hasBtnImage=yes]:expanded > button,
-[swap_ab=yes][show_console_buttons=yes] PosOptionsNavigator > * > * > ComboBox:focus > button,
-[swap_ab=yes][show_console_buttons=yes] .optionsMultiColumn > tr > td > ComboBox:focus > button,
-[swap_ab=yes][show_console_buttons=yes] ComboBox[focusFrame=yes]:focus > button {
+[swap_ab=yes][show_console_buttons=yes] ComboBox:hover > button {
   background-image:@control_button_b;
 }
 
-[show_console_buttons=yes] PosOptionsNavigator > * > * > ComboBox:focus:pushed > button,
-[show_console_buttons=yes] .optionsMultiColumn > tr > td > ComboBox:focus:pushed > button {
+[show_console_buttons=yes] ComboBox:hover:pushed > button {
   background-image:@control_button_a_pressed;
 }
 
-[swap_ab=yes][show_console_buttons=yes] PosOptionsNavigator > * > * > ComboBox:focus:pushed > button,
-[swap_ab=yes][show_console_buttons=yes] .optionsMultiColumn > tr > td > ComboBox:focus:pushed > button {
+[swap_ab=yes][show_console_buttons=yes] ComboBox:hover:pushed > button {
   background-image:@control_button_b_pressed;
 }
 
@@ -249,7 +246,7 @@ ComboBox > listBox {
   background-color:@comboListBgColor;
 
   not-input-transparent:yes;
-  notify:~;   navigatorShortcuts:active; }
+  notify:~;   navigatorShortcuts:yes; }
 
 ComboBox > option,
 ComboBox > listBox > option {
@@ -293,7 +290,6 @@ ComboBox > listBox > option > optiontext {
 }
 
 ComboBox:hover > option > optiontext,
-ComboBox:focus > option > optiontext,
 ComboBox > listBox > option:hover > optiontext,
 ComboBox > listBox > option:current > optiontext {
   auto-scroll:slow;
@@ -315,11 +311,6 @@ ComboBox > listBox > option > optiontext {
 ComboBox > listBox > option:hover,
 ComboBox > listBox > option:hover > optiontext {
   color:@comboExpandedHoverTextColor;
-}
-
-ComboBox:focus > option > optiontext {
-  color:@activeTextColor;
-  font:@option_selected_font;
 }
 
 ComboBox > listBox > option:current > optiontext,

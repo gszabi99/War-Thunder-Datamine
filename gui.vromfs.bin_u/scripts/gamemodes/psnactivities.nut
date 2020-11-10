@@ -1,4 +1,4 @@
-local { addListenersWithoutEnv } = require("sqStdlibs/helpers/subscriptions.nut")
+local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
 local { invert } = require("std/underscore.nut")
 
 local activityToGameMode = {

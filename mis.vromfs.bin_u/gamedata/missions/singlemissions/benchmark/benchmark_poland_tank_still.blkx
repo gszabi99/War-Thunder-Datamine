@@ -13,48 +13,22 @@
     "mission": {
       "level": "levels/avg_poland.bin",
       "type": "benchmark",
+      "environment": "Day",
+      "weather": "cloudy",
       "restoreType": "attempts",
       "optionalTakeOff": false,
-      "environment": "Day",
-      "weather": "hazy",
       "forceSkiesInitialRandomSeed": true,
       "skiesInitialRandomSeed": 18,
       "customWeather": {
-        "scatteringEffect": 0.0,
-        "cloud_shadow_intensity": 0.9,
         "windDir": [0.6,0.8],
         "wind_scale": 1.0,
         "max_wind_strength": 6.0,
         "sky": {
-          "mie_height": 0.5,
-          "mieG": 0.5,
-          "betaMScale": 1.0,
-          "clouds_overcast": 0.5
-        },
-        "clouds_gen": {
-          "humidity": 0.5,
-          "persistence": 0.5,
-          "asymmetry": 0.11
-        },
-        "clouds_position": {
-          "start_altitude": 1.5,
-          "thickness": 4.5,
-          "light_extinction": 1.2,
-          "amb_extinction_mul": 1.0
-        },
-        "clouds_render": {
-          "silver_lining": 0.5,
-          "sun_light": 0.7,
-          "ambient": 0.5,
-          "silver_lining_eccentricity": 0.6
+          "mie_height": 0.5
         },
         "strata_clouds": {
           "amount": 0.5,
           "altitude": 10.0
-        },
-        "rain": {
-          "rainFromInvisibleClouds": false,
-          "probability": 0.0
         }
       }
     },
@@ -175,6 +149,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -211,6 +186,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -347,6 +323,7 @@
           [1963.67,3.7802,1861.01]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": "tankModels_01"
         }
       }

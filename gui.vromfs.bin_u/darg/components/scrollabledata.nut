@@ -33,5 +33,5 @@ local function make(log_state) {
 
 
 return {
-  make = make
+  make
 }

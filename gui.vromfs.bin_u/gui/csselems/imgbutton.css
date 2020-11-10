@@ -7,6 +7,7 @@ imgFrame {
   background-position:6,6;
   background-image:#ui/gameuiskin#window_body;
   padding:@imgFramePad;
+  tooltip-float:horizontal;
 }
 imgFrame {
   margin:0, 0, @imgFramePad, @imgFramePad;
@@ -157,4 +158,13 @@ LockedImg[statusLock=noPremium_2] {
 LockedImg[statusLock=country] {
   size:@lIco,@lIco;
   background-color:@white;
+}
+
+img[click_to_resize] {
+  tooltip:#click_to_view_image;
+  behaviour:button;
+  snd_click:click;
+  on_click:onViewImage;
+  input-transparent:no;
+  focusBtnName:A;
 }

@@ -1,12 +1,16 @@
-local shipState = require("shipState.nut")
+local {speed, portSideMachine, sideboardSideMachine, stopping, brokenEnginesCount, enginesInCooldown, enginesCount,
+  transmissionCount, brokenTransmissionCount, transmissionsInCooldown, torpedosCount, brokenTorpedosCount, artilleryType,
+  artilleryCount, brokenArtilleryCount, steeringGearsCount, brokenSteeringGearsCount, fire, aiGunnersState, buoyancy,
+  steering, sightAngle, fwdAngle, hasAiGunners, fov
+} = require("shipState.nut")
 local { bestMinCrewMembersCount, minCrewMembersCount, totalCrewMembersCount,
   aliveCrewMembersCount, driverAlive } = require("crewState.nut")
 local { isVisibleDmgIndicator } = require("hudState.nut")
 local dmModule = require("dmModule.nut")
-local colors = require("style/colors.nut")
+local {damageModule, shipSteeringGauge} = require("style/colors.nut").hud
 local setHudBg = require("style/hudBackground.nut")
 
-local mathEx = require("std/math.nut")
+local {lerp, sin} = require("std/math.nut")
 
 const STATE_ICON_MARGIN = 1
 const STATE_ICON_SIZE = 54
@@ -61,48 +65,61 @@ local images = {
   ]
 }
 
+local fitTextToBox = ::kwarg(function(box, text, font, fontSize=null, minSize = 8){
+  local sz = ::calc_comp_size({rendObj = ROBJ_DTEXT, text, font, fontSize})
+  fontSize = fontSize ?? ::calc_comp_size({rendObj = ROBJ_DTEXT, text = "A", font, fontSize})
+  sz = [sz[0] > 1 ? sz[0] : 1, sz[1] > 1 ? sz[1] : 1]
+  local scale = min(box[0]/sz[0], box[1]/sz[1])
+  if (scale >= 1.0)
+    return fontSize
+  local res = fontSize*scale
+  if (res < minSize)
+    return minSize
+  return res
+})
 
 local fontFxColor = Color(80, 80, 80)
 local fontFx = FFT_GLOW
 local font = Fonts.tiny_text_hud
 
-local speed = function () {
-  local speedValue = @() {
-    watch = shipState.speed
+local speedValue = @() {
+  watch = speed
+  rendObj = ROBJ_DTEXT
+  text = speed.value.tostring()
+  font = Fonts.tiny_text_hud
+  margin = [0,0,0,sh(1)]
+}
+
+local function speedUnits(){
+  local text = ::cross_call.measureTypes.SPEED.getMeasureUnitsName()
+  local tgtFontSize = hdpx(13)
+  local fontFitIntoBox = [hdpx(50), hdpx(18.5)]
+  local fontSize = fitTextToBox({text, box = fontFitIntoBox, fontSize = tgtFontSize, font})
+  return {
     rendObj = ROBJ_DTEXT
-    text = shipState.speed.value.tostring()
-    font = Fonts.tiny_text_hud
-    margin = [0,0,0,sh(1)]
+    font
+    fontSize
+    text
+    margin = [0,0,hdpx(1.5),sh(0.5)]
   }
+}
 
-  local speedUnits = @() {
-    rendObj = ROBJ_STEXT
-    font = font
-    fontSize = hdpx(13)
-    fontFitIntoBox = [hdpx(40), hdpx(13)]
-    text = ::cross_call.measureTypes.SPEED.getMeasureUnitsName()
-    margin = [0,0,0,sh(0.5)]
+local averageSpeed = Computed(@() clamp((portSideMachine.value + sideboardSideMachine.value) / 2, 0, machineSpeedLoc.len()))
+
+local function machine() {
+  local text = $"{machineSpeedLoc[averageSpeed.value]}  {machineDirectionLoc[averageSpeed.value]}"
+  local fontSize = fitTextToBox({fontSize = hdpx(18.5), text, box = [hdpx(200), hdpx(18.5)], font})
+  return {
+    watch = [averageSpeed, stopping]
+    rendObj = ROBJ_DTEXT
+    font
+    fontSize
+    color = stopping.value ? Color(255, 100, 100) : Color(200, 200, 200)
+    text
   }
+}
 
-  local machine = function (port, sideboard, stopping) {
-    return function () {
-      local averageSpeed = clamp((port.value + sideboard.value) / 2, 0, machineSpeedLoc.len())
-      return {
-        size = SIZE_TO_CONTENT
-        watch = [port, sideboard, stopping]
-        children = {
-          rendObj = ROBJ_STEXT
-          validateStaticText = false
-          font = font
-          color = stopping.value ? Color(255, 100, 100) : Color(200, 200, 200)
-          fontSize = hdpx(13)
-          fontFitIntoBox = [hdpx(200), hdpx(13)]
-          text = machineSpeedLoc[averageSpeed] + " " + machineDirectionLoc[averageSpeed]
-        }
-      }
-    }
-  }
-
+local function speedComp() {
   return {
     size = [flex(), SIZE_TO_CONTENT]
     flow = FLOW_HORIZONTAL
@@ -113,7 +130,7 @@ local speed = function () {
     children = [
       {
         size = [flex(4), SIZE_TO_CONTENT]
-        children = [machine(shipState.portSideMachine, shipState.sideboardSideMachine, shipState.stopping)]
+        children = machine
         halign = ALIGN_RIGHT
       }
       {
@@ -134,39 +151,39 @@ local speed = function () {
 local engine = dmModule({
   icon = images.engine
   iconSize = [STATE_ICON_SIZE, STATE_ICON_SIZE]
-  totalCountState = shipState.enginesCount
-  brokenCountState = shipState.brokenEnginesCount
-  cooldownState = shipState.enginesInCooldown
+  totalCountState = enginesCount
+  brokenCountState = brokenEnginesCount
+  cooldownState = enginesInCooldown
 })
 
 local transmission = dmModule({
   icon = images.transmission
   iconSize = [STATE_ICON_SIZE, STATE_ICON_SIZE]
-  totalCountState = shipState.transmissionCount
-  brokenCountState = shipState.brokenTransmissionCount
-  cooldownState = shipState.transmissionsInCooldown
+  totalCountState = transmissionCount
+  brokenCountState = brokenTransmissionCount
+  cooldownState = transmissionsInCooldown
 })
 local torpedo = dmModule({
   icon = images.torpedo
   iconSize = [STATE_ICON_SIZE, STATE_ICON_SIZE]
-  totalCountState = shipState.torpedosCount
-  brokenCountState = shipState.brokenTorpedosCount
+  totalCountState = torpedosCount
+  brokenCountState = brokenTorpedosCount
 })
 local artillery = dmModule({
   icon = @(art_type) art_type == TRIGGER_GROUP_PRIMARY     ? images.artillery
                    : art_type == TRIGGER_GROUP_SECONDARY   ? images.artillerySecondary
                    : art_type == TRIGGER_GROUP_MACHINE_GUN ? images.machineGun
                    : images.artillery
-  iconWatch = shipState.artilleryType
+  iconWatch = artilleryType
   iconSize = [STATE_ICON_SIZE, STATE_ICON_SIZE]
-  totalCountState = shipState.artilleryCount
-  brokenCountState = shipState.brokenArtilleryCount
+  totalCountState = artilleryCount
+  brokenCountState = brokenArtilleryCount
 })
 local steeringGears = dmModule({
   icon = images.steeringGear
   iconSize = [30, 30]
-  totalCountState = shipState.steeringGearsCount
-  brokenCountState = shipState.brokenSteeringGearsCount
+  totalCountState = steeringGearsCount
+  brokenCountState = brokenSteeringGearsCount
 })
 
 
@@ -182,18 +199,20 @@ local damageModules = @() {
   ]
 }
 
+local buoyancyOpacity = Computed(@() buoyancy.value < 1.0 ? 1.0 : 0.0)
+local buoyancyPercent = Computed(@() (buoyancy.value * 100).tointeger())
 local buoyancyIndicator = @() {
   size = SIZE_TO_CONTENT
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
-  watch = shipState.buoyancy
-  opacity = shipState.buoyancy.value < 1.0 ? 1.0 : 0.0
+  watch = buoyancyOpacity
+  opacity = buoyancyOpacity.value
   children = [
     @() {
       rendObj = ROBJ_DTEXT
-      text = (shipState.buoyancy.value * 100).tointeger() + "%"
+      text = $"{buoyancyPercent.value}%"
       font = Fonts.small_text_hud
-      watch = shipState.buoyancy
+      watch = buoyancyPercent
     }
     {
       rendObj = ROBJ_IMAGE
@@ -203,15 +222,16 @@ local buoyancyIndicator = @() {
   ]
 }
 
+local picFire = ::Picture($"{images.fire}{hdpx(STATE_ICON_SIZE)}:{hdpx(STATE_ICON_SIZE)}:K")
 local stateBlock = @() {
   size = SIZE_TO_CONTENT
   flow = FLOW_VERTICAL
   children = [
     @() {
       rendObj = ROBJ_IMAGE
-      color =  shipState.fire.value ? colors.hud.damageModule.alert : colors.hud.damageModule.inactive
-      watch = shipState.fire
-      image = ::Picture($"{images.fire}{hdpx(STATE_ICON_SIZE)}:{hdpx(STATE_ICON_SIZE)}:K")
+      color =  fire.value ? damageModule.alert : damageModule.inactive
+      watch = fire
+      image = picFire
       size = [hdpx(STATE_ICON_SIZE), hdpx(STATE_ICON_SIZE)]
     }
     buoyancyIndicator
@@ -220,7 +240,7 @@ local stateBlock = @() {
 
 
 local playAiSwithAnimation = function (ne_value) {
-  ::anim_start(shipState.aiGunnersState)
+  ::anim_start(aiGunnersState)
 }
 
 local aiGunners = @() {
@@ -229,49 +249,53 @@ local aiGunners = @() {
   marigin = [hdpx(STATE_ICON_MARGIN), 0]
 
   rendObj = ROBJ_IMAGE
-  image = images.gunnerState?[shipState.aiGunnersState.value] ?? images.gunnerState[0]
-  color = colors.hud.damageModule.active
-  watch = shipState.aiGunnersState
-  onAttach = @(elem) shipState.aiGunnersState.subscribe(playAiSwithAnimation)
-  onDetach = @(elem) shipState.aiGunnersState.unsubscribe(playAiSwithAnimation)
+  image = images.gunnerState?[aiGunnersState.value] ?? images.gunnerState[0]
+  color = damageModule.active
+  watch = aiGunnersState
+  onAttach = @(elem) aiGunnersState.subscribe(playAiSwithAnimation)
+  onDetach = @(elem) aiGunnersState.unsubscribe(playAiSwithAnimation)
   transform = {}
   animations = [
     {
       prop = AnimProp.color
-      from = colors.hud.damageModule.aiSwitchHighlight
+      from = damageModule.aiSwitchHighlight
       easing = Linear
       duration = 0.15
-      trigger = shipState.aiGunnersState
+      trigger = aiGunnersState
     }
     {
       prop = AnimProp.scale
       from = [1.5, 1.5]
       easing = InOutCubic
       duration = 0.2
-      trigger = shipState.aiGunnersState
+      trigger = aiGunnersState
     }
   ]
 }
 
 
-local crewCountColor = function(minimum, current) {
+local crewCountColor = Computed(function() {
+  local minimum = minCrewMembersCount.value
+  local current = aliveCrewMembersCount.value
   if (current < minimum) {
-    return colors.hud.damageModule.dmModuleDestroyed
+    return damageModule.dmModuleDestroyed
   } else if (current < minimum * 1.1) {
-    return colors.hud.damageModule.dmModuleDamaged
+    return damageModule.dmModuleDamaged
   }
-  return colors.hud.damageModule.active
-}
+  return damageModule.active
+})
 
-local getMaxCrewLeftPercent = @() totalCrewMembersCount.value > 0
+local maxCrewLeftPercent = Computed(@() totalCrewMembersCount.value > 0
   ? (100.0 * (1.0 + (bestMinCrewMembersCount.value.tofloat() - minCrewMembersCount.value)
       / totalCrewMembersCount.value)
     + 0.5).tointeger()
   : 0
-local countCrewLeftPercent = @()
-  ::clamp(mathEx.lerp(minCrewMembersCount.value - 1, totalCrewMembersCount.value,
-      0, getMaxCrewLeftPercent(), aliveCrewMembersCount.value),
+)
+local countCrewLeftPercent = Computed(@()
+  ::clamp(lerp(minCrewMembersCount.value - 1, totalCrewMembersCount.value,
+      0, maxCrewLeftPercent.value, aliveCrewMembersCount.value),
     0, 100)
+)
 
 local crewBlock = @() {
   vplace = ALIGN_BOTTOM
@@ -284,7 +308,7 @@ local crewBlock = @() {
       marigin = [hdpx(STATE_ICON_MARGIN), 0]
       rendObj = ROBJ_IMAGE
       image = images.driver
-      color = driverAlive.value ? colors.hud.damageModule.inactive : colors.hud.damageModule.alert
+      color = driverAlive.value ? damageModule.inactive : damageModule.alert
       watch = driverAlive
     }
     @() {
@@ -292,19 +316,14 @@ local crewBlock = @() {
       marigin = [hdpx(STATE_ICON_MARGIN), 0]
       rendObj = ROBJ_IMAGE
       image = images.shipCrew
-      color = crewCountColor(
-        minCrewMembersCount.value,
-        aliveCrewMembersCount.value
-      )
-      watch = [
-        aliveCrewMembersCount
-        minCrewMembersCount
-      ]
-      children = {
+      color = crewCountColor.value
+      watch = crewCountColor
+      children = @() {
         vplace = ALIGN_BOTTOM
         hplace = ALIGN_RIGHT
         rendObj = ROBJ_DTEXT
-        text = countCrewLeftPercent() + "%"
+        watch = countCrewLeftPercent
+        text = $"{countCrewLeftPercent.value}%"
         font = Fonts.tiny_text_hud
         fontFx = fontFx
         fontFxColor = fontFxColor
@@ -316,10 +335,10 @@ local crewBlock = @() {
 local steeringLine = {
   size = [hdpx(1), flex()]
   rendObj = ROBJ_SOLID
-  color = colors.hud.shipSteeringGauge.serif
+  color = shipSteeringGauge.serif
 }
 
-local steering = {
+local steeringComp = {
   size = [pw(50), hdpx(3)]
   hplace = ALIGN_CENTER
 
@@ -327,7 +346,7 @@ local steering = {
     {
       size = flex()
       rendObj = ROBJ_SOLID
-      color = colors.hud.shipSteeringGauge.background
+      color = shipSteeringGauge.background
       flow = FLOW_HORIZONTAL
       gap = {
         size = flex()
@@ -343,30 +362,30 @@ local steering = {
     }
     @() {
       rendObj = ROBJ_IMAGE
-      watch = shipState.steering
+      watch = steering
       image = images.steeringMark
-      color = colors.hud.shipSteeringGauge.mark
+      color = shipSteeringGauge.mark
       size = [hdpx(12), hdpx(10)]
       hplace = ALIGN_CENTER
-      pos = [pw(-shipState.steering.value*50), -hdpx(5)]
+      pos = [pw(-steering.value*50), -hdpx(5)]
     }
   ]
 }
 
 
-local fov = function (pivot) {
+local function mkFov(pivot) {
   return @() {
     watch = [
-      shipState.fwdAngle
-      shipState.sightAngle
-      shipState.fov
+      fwdAngle
+      sightAngle
+      fov
     ]
     pos = [pivot[0] - sh(15), pivot[1] - sh(15)]
     size = [sh(30), sh(30)]
     transform = {
       pivot = [0.5, 0.5]
-      rotate = shipState.sightAngle.value - shipState.fwdAngle.value
-      scale = [::math.sin(shipState.fov.value), 1.0]
+      rotate = sightAngle.value - fwdAngle.value
+      scale = [sin(fov.value), 1.0]
     }
     children = [
       {
@@ -385,7 +404,7 @@ local fov = function (pivot) {
   }
 }
 
-local doll = function() {
+local function doll() {
   local dollSize = [sh(16), sh(32)]
   return {
     color = Color(0, 255, 0)
@@ -393,7 +412,7 @@ local doll = function() {
     rendObj = ROBJ_XRAYDOLL
     rotateWithCamera = false
 
-    children = fov([dollSize[0]/2, (dollSize[1] + sh(4))/2])
+    children = mkFov([dollSize[0]/2, (dollSize[1] + sh(4))/2])
   }
 }
 
@@ -406,10 +425,10 @@ local rightBlock = @() {
   children = [
     stateBlock
     { size = [SIZE_TO_CONTENT, flex()] }
-    shipState.hasAiGunners.value ? aiGunners : null
+    hasAiGunners.value ? aiGunners : null
     crewBlock
   ]
-  watch = shipState.hasAiGunners
+  watch = hasAiGunners
 }
 
 
@@ -428,11 +447,16 @@ local shipStateDisplay = @() {
       ]
     }
     steeringGears
-    steering
+    steeringComp
   ]
 }
 
 local updateFunc = null
+
+local xraydoll = {
+  rendObj = ROBJ_XRAYDOLL     ///Need add ROBJ_XRAYDOLL in scene for correct update isVisibleDmgIndicator state
+  size = [1, 1]
+}
 
 return @() setHudBg({
   size = SIZE_TO_CONTENT
@@ -440,13 +464,11 @@ return @() setHudBg({
   padding = isVisibleDmgIndicator.value ? hdpx(10) : 0
   gap = isVisibleDmgIndicator.value ? {size=[flex(),hdpx(5)]} : 0
   watch = isVisibleDmgIndicator
-  onAttach = function(elem)
-  {
-    if(updateFunc)
+  onAttach = function(elem) {
+    if (updateFunc)
       ::gui_scene.clearTimer(updateFunc)
     updateFunc = function() {
-      if(elem.getWidth() > 1 && elem.getHeight() > 1)
-      {
+      if(elem.getWidth() > 1 && elem.getHeight() > 1) {
         ::gui_scene.clearTimer(callee())
         ::cross_call.update_damage_panel_state({
           pos = [elem.getScreenPosX(), elem.getScreenPosY()]
@@ -458,19 +480,15 @@ return @() setHudBg({
   }
   onDetach = function(elem) {
     ::cross_call.update_damage_panel_state(null)
-    if(updateFunc)
-    {
+    if (updateFunc) {
       ::gui_scene.clearTimer(updateFunc)
       updateFunc = null
     }
   }
   children = isVisibleDmgIndicator.value
     ? [
-        speed
+        speedComp
         shipStateDisplay
       ]
-    : {
-        rendObj = ROBJ_XRAYDOLL     ///Need add ROBJ_XRAYDOLL in scene for correct update isVisibleDmgIndicator state
-        size = [1, 1]
-      }
+    : xraydoll
 })

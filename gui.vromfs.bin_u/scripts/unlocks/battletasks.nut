@@ -6,7 +6,7 @@ local statsd = require("statsd")
 
 ::g_battle_tasks <- null
 
-class BattleTasks
+::BattleTasks <- class
 {
   PLAYER_CONFIG_PATH = "seen/battletasks"
   specialTasksId = "specialTasksPersonalUnlocks"
@@ -30,12 +30,17 @@ class BattleTasks
 
   currentPlayback = null
 
+  isCompleteMediumTask = null
+  isCompleteEasyTask = null
 
   constructor()
   {
     currentTasksArray = []
     activeTasksArray = []
     proposedTasksArray = []
+
+    isCompleteMediumTask = ::Watched(false)
+    isCompleteEasyTask = ::Watched(false)
 
     seenTasks = {}
     newIconWidgetByTaskId = {}
@@ -87,6 +92,7 @@ class BattleTasks
 
     if (::isInMenu())
       checkNewSpecialTasks()
+    updateCompleteTaskWatched()
     ::broadcastEvent("BattleTasksFinishedUpdate")
   }
 
@@ -998,6 +1004,31 @@ class BattleTasks
   {
     local diff = ::g_battle_task_difficulty.getDifficultyTypeByTask(task)
     return ::g_battle_task_difficulty.canPlayerInteractWithDifficulty(diff, currentTasksArray, showAllTasksValue)
+  }
+
+  function updateCompleteTaskWatched() {
+    local isCompleteMedium = false
+    local isCompleteEasy = false
+    foreach (task in currentTasksArray) {
+      if (isCompleteMedium && isCompleteEasy)
+        break
+
+      if (!isTaskDone(task))
+        continue
+
+      if (::g_battle_task_difficulty.EASY == ::g_battle_task_difficulty.getDifficultyTypeByTask(task)) {
+        isCompleteEasy = true
+        continue
+      }
+
+      if (::g_battle_task_difficulty.MEDIUM == ::g_battle_task_difficulty.getDifficultyTypeByTask(task)) {
+        isCompleteMedium = true
+        continue
+      }
+    }
+
+    isCompleteMediumTask(isCompleteMedium)
+    isCompleteEasyTask(isCompleteEasy)
   }
 }
 

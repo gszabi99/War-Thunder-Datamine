@@ -1,4 +1,4 @@
-local enums = ::require("sqStdlibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 local time = require("scripts/time.nut")
 
 ::g_battle_task_difficulty <- {

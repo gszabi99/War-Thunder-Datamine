@@ -1,4 +1,4 @@
-local enums = require("sqStdlibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 local transportManager = require("scripts/worldWar/inOperation/wwTransportManager.nut")
 local actionModesManager = require("scripts/worldWar/inOperation/wwActionModesManager.nut")
 

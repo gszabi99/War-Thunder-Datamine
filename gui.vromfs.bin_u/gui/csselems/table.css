@@ -1,0 +1,766 @@
+@const rowHoverBackgroundColor: #18181818;
+@const rowFocusBackgroundColor: #332C2C2C;
+@const rowFocusForegroundColor: #C6AEAEAE;
+
+optiontext {
+  min-width:pw-1*@scrn_tgt/100.0;   text-align:right;
+  font:@option_font;
+}
+
+optionBlockHeader {
+  behaviour:textArea;
+  re-type:textarea;
+  min-width:pw-1*@scrn_tgt/100.0;
+  text-align:left;
+  font:@mis_chapter_font;
+  color:@chapterUnlockedColor;
+  padding-left:0.08@sf;
+}
+
+dropright[tankBullet=yes] optiontext{
+  min-width:0;
+  max-width:pw-0.2@sf;
+  pare-text:yes;
+}
+
+optiontext[textStyle=textarea] {
+  behaviour:textArea;
+  re-type:textarea;
+  height:ph;
+}
+
+optionheader {
+  text-align:center;
+  font:@fontMedium;
+  pare-text:yes;
+  color:@activeTextColor;
+}
+
+td > optionheader {
+   width:p.p.w;
+   pos:(p.p.w-w)/2,p.p.h-h-0.5*@scrn_tgt/100.0;
+   position:absolute;
+}
+
+table
+{
+  re-type:table;
+  background-color:@transparent;
+}
+
+option {
+  re-type:9rect;
+    }
+
+option:current {
+  color:@activeTextColor;
+  re-type:9rect;
+  background-repeat:expand;
+}
+
+
+[text-valign=center] td > text, [text-valign=center] td > activeText, [text-valign=center] > activeText,
+tr[text-valign=center] optiontext, .optionsTable optiontext, .optionsTable activeText, .crewTable optiontext, textareaNoTab[text-valign=center] {
+  position:relative;
+  top:(ph-h)/2;
+}
+[text-halign=center] td > text, [text-halign=center] td > activeText, [text-halign=center] > activeText, [tdalign=center] > activeText {
+  min-width:pw;
+  text-align:center;
+  padding:0;
+}
+
+td[text-align=left] > optiontext {
+  text-align:left;
+  padding:0, 0, 0, 0;
+}
+
+td[text-align=center] > optiontext {
+  text-align:center;
+  padding:0, 0, 0, 0;
+}
+
+activeText[tdalign=right], [tdalign=right] > activeText, [tdalign=right] > textarea {
+  width:pw;
+  text-align:right;
+  padding:0;
+}
+activeText[tdalign=left], [tdalign=left] > activeText {
+  text-align:left;
+}
+[tdalign=split] > activeText {
+  pos:pw-50%w, 50%ph-50%h;
+  position:absolute;
+}
+
+td {
+  padding:@tablePad,0;
+}
+
+tdIcon34x30, tdIcon45x25, sideLogIcon {
+  background-color:@controlColor;
+    size:34*@sf/@pf_outdated, 30*@sf/@pf_outdated;
+  max-height:ph;
+  max-width:1.14ph;
+  pos:50%pw-50%w,50%ph-50%h;
+  position:relative;
+}
+
+tdIcon34x30[align=left] {
+  pos:0, 50%ph-50%h;
+}
+
+tdIcon45x25 {
+  size:45*@sf/@pf_outdated, 25*@sf/@pf_outdated;
+  max-height:ph;
+  max-width:45/25h;
+}
+
+tdIcon34x30[tdalign=right] {
+  pos:pw-w,50%ph-50%h;
+}
+
+fontIcon20, fontIcon32 {
+  pos:pw/2-w/2, ph/2-h/2;
+  position:relative;
+  background-color:@transparent;
+}
+
+[tdalign=center] > fontIcon20, [tdalign=center] > fontIcon32 {
+  position:absolute;
+}
+
+fonticon {
+  re-type:text;
+  pos:pw/2-w/2, ph/2-h/2;
+  position:absolute;
+  color:@controlColor;
+  text-shade:"smooth:24";
+  text-shade-x:0;
+  text-shade-y:0;
+  text-shade-color:#80000000;
+}
+
+fontIcon20 {
+  size:@cIco, @cIco;
+}
+fontIcon20 > fonticon {
+  font:@fontNormal;
+}
+
+fontIcon32 {
+  size:@mIco, @mIco;
+}
+fontIcon32 > fonticon {
+  font:@fontMedium;
+}
+
+[normalFont=yes] fontIcon32 > fonticon {
+  font:@fontNormal;
+}
+
+sideLogIcon {
+  pos:-w,2.5*@scrn_tgt/100.0-50%h;
+}
+
+logIcon {
+  background-color:@controlColor;
+  height:3.0*@scrn_tgt/100.0;
+  width:1.8h;
+  pos:0, 50%ph-50%h;
+  position:relative;
+}
+
+playerStateIcon {
+  re-type:9rect;
+  background-repeat:aspect-ratio;
+  size:1@tableIcoSize, 1@tableIcoSize;
+  background-svg-size:@tableIcoSize, @tableIcoSize;
+}
+
+playerStateIcon[background-image=""] {
+  background-color:@transparent;
+  display:hide;
+}
+
+[baseRow=yes] > tr {
+  size:pw,@baseTrHeight;
+}
+
+.fastshortcut > tr {
+  re-type:9rect;
+  background-image:#ui/gameuiskin#horizontal_fade;
+  background-repeat:expand;
+  background-position:1,0,0,0;
+  background-color:@black;
+  text-valign:center;
+}
+
+[baseRow=yes] > tr[headerRow=yes] {
+  size:pw,@baseTrHeaderHeight;
+  padding-top:@baseTrHeaderHeight-1@baseTrHeight;
+}
+
+verticalCellsOptions[baseRow=yes] > tr {
+  size:pw, 1@optionsHeaderRowHeight + 1@baseTrHeight;
+}
+
+[baseRow=rows16] > tr {
+  size:pw,@rows16height;
+}
+[baseRow=small] > tr {
+  size:pw,@smallRowHeight;
+}
+
+[baseRow=slider] > tr {
+  size:pw,@sliderRowHeight;
+}
+
+.controls_settings > tr {
+  size:pw,@baseTrHeight;
+}
+.crewTable > tr {
+  height:@crewTrHeight;
+}
+.lbTable > tr, .schemeTable > tr {
+  height:@leaderboardTrHeight;
+}
+.lbTable tr[headerRow=yes] {
+  height:2@leaderboardTrHeight;
+}
+.lbTable tr[headerRow=first] {
+  height:1.3@leaderboardTrHeight;
+}
+tr[isLeaderBoardHeader=yes] {
+  background-color: @separatorBlockColor;
+  commonTextColor: yes;
+  bigIcons: yes;
+}
+.lbTable > tr[bigIcons] {
+  height:@leaderboardHeaderHeight;
+}
+
+.crewTable > tr > td, .lbTable > tr > td {
+  height:ph;
+  padding:0.005@scrn_tgt, 0;
+}
+.lbTable > tr > td {
+  min-width:0.06@sf;
+}
+.lbTable > tr > td[cellType=splitRight] {
+  min-width:10*@sf/@pf_outdated;
+  padding-right:0.25*@scrn_tgt/100.0;
+}
+.lbTable > tr > td[cellType=splitLeft] {
+  min-width:10*@sf/@pf_outdated;
+  padding-left:0.25*@scrn_tgt/100.0;
+}
+.lbTable > tr > td[cellType=top_numeration] {
+  min-width:0.03@sf;
+}
+
+[show_console_buttons=no] table.lbTable[useNavigatorOrInteractiveCells=yes] {
+  behavior:PosNavigator;
+}
+[show_console_buttons=yes] table.lbTable[useNavigatorOrInteractiveCells=yes] > tr {
+  on_hover:onRowHover;
+  on_unhover:onRowHover;
+}
+[show_console_buttons=yes] table.lbTable[useNavigatorOrInteractiveCells=yes][isClansTable=yes] > tr {
+  on_hover:onRowHoverClan;
+  on_unhover:onRowHoverClan;
+}
+[show_console_buttons=yes] table.lbTable[useNavigatorOrInteractiveCells=yes] > tr > td {
+  mouse-pointer-centering:50, 90;
+  interactive:yes;
+}
+[show_console_buttons=yes] table.lbTable[useNavigatorOrInteractiveCells=yes] > tr[inactive=yes] > td {
+  interactive:no;
+}
+[show_console_buttons=yes] table.lbTable[useNavigatorOrInteractiveCells=yes] > tr[id=row_header] > td {
+  interactive:yes;
+}
+
+.airInfoPanel > tr > td {
+  max-width:0.45pw;
+  overflow:hidden;
+}
+
+.airInfoPanel > tr > td > textarea {
+  auto-scroll:slow;
+}
+
+.airInfoPanel[showStatsProgress=no] > tr > td {
+  padding:0, 0, @blockInterval, 0;
+}
+.airInfoPanel[showStatsProgress=yes] > tr > td {
+  padding:0, @referenceProgressHeight, @blockInterval, @referenceProgressHeight + @referenceProgressOffset;
+}
+.airInfoPanel, .airInfoPanel > tr, .airInfoPanel > tr > td {
+  css-hier-invalidate:yes;
+}
+
+tr[totalRowStyle], tr[totalRowStyle] > td {
+  css-hier-invalidate:yes;
+}
+[baseRow=rows16] > tr[totalRowStyle=yes] {
+  size:pw, @rows16height + 0.03@sf;
+}
+[baseRow=rows16] > tr[totalRowStyle=first] {
+  size:pw, @rows16height + 0.01@sf;
+}
+[baseRow=rows16] > tr[totalRowStyle=last] {
+  size:pw, @rows16height + 0.02@sf;
+}
+tr[totalRowStyle=yes] > td, tr[totalRowStyle=first] > td {
+  padding-top:0.01@sf;
+}
+tr[totalRowStyle=yes] > td, tr[totalRowStyle=last] > td {
+  padding-bottom:0.02@sf;
+}
+[baseRow=rows16] > tr[buttonRow=yes] {
+  size:pw, @rows16height + 1@buttonHeight + 2*@sf/@pf_outdated;
+}
+[baseRow=rows16] > tr[buttonRow=yes] > td {
+  padding-bottom:1@buttonHeight + 2*@sf/@pf_outdated;
+}
+
+tr[iconType] {
+  text-valign:center;
+}
+
+tr[iconType=pilot] {
+  size:pw,15*@scrn_tgt/100.0;
+}
+
+tr[iconType=aircraft] {
+  size:pw,@shopAirHeight + 6*@sf/@pf_outdated;
+}
+
+tr[iconType=country] {
+  size:pw,8*@scrn_tgt/100.0;
+}
+tr[iconType=listbox] {
+  size:pw, 3@baseTrHeight;
+}
+tr[iconType=listbox_country] {
+  size:pw, 3@baseTrHeight;
+}
+
+tr[iconType=crosshair] {
+}
+
+tr[queueTableIconRow=yes] > td > img {
+  iconType:country_battle;
+  position:relative;
+  pos:0.5pw-0.5w, 0.5ph-0.5h;
+}
+
+tr[queueTableIconRow=yes] > td {
+  min-width:1@queueTableColumnWidth;
+}
+
+tr[queueTableTitleRow=yes] {
+  background-color:@evenQueueTableTrColor;
+  height:0.03@sf;
+}
+
+tr[queueTableBigTitleRow=yes] {
+  height:0.06@sf;
+  background-color:@evenQueueTableTrColor;
+}
+
+tr[queueTableTitleRow=yes] text,
+tr[queueTableBigTitleRow=yes] text {
+  pos:0.5p.p.w-0.5w, 0.5ph-0.5h;
+  position:absolute;
+}
+
+[baseRow=yes] > tr > td > textareaNoTab {
+  word-wrap:no;
+}
+
+[baseRow=rows16] > tr > td > textareaNoTab {
+  max-height:@rows16height;
+  word-wrap:no;
+}
+
+.optionsTable > tr, .headerTable > tr, .transpTable > tr {
+  background-color:@transparent;
+}
+
+verticalCellsOptions {
+  flow:vertical;
+}
+
+verticalCellsOptions > tr {
+  flow:vertical;
+  width:pw;
+}
+
+tr[even=yes] {
+  background-color:@evenTrColor;
+}
+tr[even=yes][queueTableRow=yes] {
+  background-color:@evenQueueTableTrColor;
+}
+
+tr[selected=yes],
+.crewTable > tr:hover,
+.mpTable > tr:hover,
+.optionsTable > tr:hover,
+.lbTable > tr:hover {
+  re-type:9rect;
+  background-image:"";
+  background-position:0;
+  background-color:@rowHoverBackgroundColor;
+  foreground-position:0, h-1@dp, 0, 0;
+  foreground-color:@transparent;
+}
+
+tr[inactive=yes]:hover {
+  background-color:@transparent;
+  foreground-color:@transparent;
+}
+
+tr[selected=yes], [higlightRowOnHover=yes] > tr:hover {
+  _needHighLight:yes;
+}
+
+[higlightRowOnHover=yes] > tr[inactive=yes],
+[invisibleSelection=yes] > * > tr {
+  _needHighLight:no;
+}
+
+tr[_needHighLight=yes] {
+  re-type:9rect;
+  background-image:"";
+  background-position:0;
+  background-color:@rowFocusBackgroundColor;
+  foreground-position:0, h-1@dp, 0, 0;
+  foreground-color:@rowFocusForegroundColor;
+}
+
+tr[_needHighLight=no] {
+  background-color:@transparent;
+  foreground-color:@transparent;
+}
+
+tr[selType=left], [selType=left] > tr[selected=yes] {
+  re-type:rotation;
+  background-rotation:180;
+  background-image:#ui/gameuiskin#option_select_right;
+}
+
+[selType=left] > tr > td {
+  padding-right:2*@scrn_tgt/100.0;
+}
+[selType=left] > tr > td > text {
+  width:pw;
+  text-align:right;
+}
+
+td[cellType=left] {
+  padding-right:@optPad;
+}
+
+td[cellType=right] {
+  margin:0;
+}
+
+td[cellType=border] > activeText {
+  text-align:center;
+}
+
+td[cellType=right] optiontext, td[cellType=top] optiontext, td[cellType=bottom] optiontext,
+[optionsTextLeftCell=left] td[cellType=left] optiontext
+{
+  text-align:left;
+}
+
+td[cellType=tdRight] activeText {
+  text-align:right;
+  width:pw;
+  padding:0;
+}
+
+td[cellType=tdCenter] activeText {
+  text-align:center;
+  width:pw;
+  padding:0;
+}
+
+td[cellType=top] {
+  width:pw;
+  height:@smallRowHeight;
+}
+td[cellType=bottom] {
+  width:pw;
+  height:@rows16height;
+}
+td[cellType=info] {
+  width:pw;
+}
+
+verticalCellsOptions > * > td[cellType=top] {
+  height:1@optionsHeaderRowHeight;
+}
+verticalCellsOptions > * > td[cellType=bottom] {
+  height:1@baseTrHeight;
+}
+
+tr[hiddenTr=yes] {
+  inactive:yes;
+  display:hide;
+}
+
+.optionsTable > tr, .optionsTable > tr > td,
+.crewTable > tr, .crewTable > tr > td,
+.lbTable > tr, .lbTable > tr > td,
+.mpTable > tr, .mpTable > tr > td,
+.optionsMultiColumn > tr, .optionsMultiColumn > tr > td
+{
+  css-hier-invalidate:yes;
+}
+.optionsTable > tr, .mpTable > tr, .crewTable > tr, .lbTable > tr,
+.optionsMultiColumn > tr {
+  total-input-transparent:yes;
+  input-transparent:yes;
+}
+
+.mpTable > tr activeText,
+.mpTable > tr textareaNoTab {
+  color:@commonTextColor;
+}
+
+tr > td > optiontext {
+  auto-scroll:no;
+}
+tr:hover > td > optiontext {
+  color:@hoverTextColor;
+  auto-scroll:yes;
+}
+tr[selected=yes] > td > optiontext {
+  color:@activeTextColor;
+  font:@option_selected_font;
+  auto-scroll:yes;
+}
+td[cellType=top] > optiontext {
+  color:@grayOptionColor;
+  font:@fontSmall;
+}
+td[cellType=info] > optiontext {
+  min-width:0;
+}
+
+verticalCellsOptions > tr > td[cellType=top] > optiontext {
+  color:@silver;
+}
+
+optionValueText {
+  pos:1@blockInterval, 50%ph-50%h;
+  position:relative;
+  text-align:left;
+}
+[fullWidthOptions=yes] > * > * > optionValueText {
+  text-align:right;
+}
+
+tr[selected=yes] > td > optionValueText {
+  color:@activeTextColor;
+  font:@option_selected_font;
+}
+
+tr[selected=yes] > td > text, tr[selected=yes] activeText
+{
+  color:@trSelectedTextColor;
+
+}
+
+[team=red] activeText, [team=red] textareaNoTab {
+  color:@teamRedColor;
+}
+[team=blue] activeText, [team=blue] textareaNoTab {
+  color:@teamBlueColor;
+}
+
+[team=red] [inGame=no] activeText,
+[team=red] [inGame=no] textareaNoTab {
+  color:@teamRedInactiveColor;
+}
+
+[team=blue] [inGame=no] activeText,
+[team=blue] [inGame=no] textareaNoTab {
+  color:@teamBlueInactiveColor;
+}
+
+tr[winnerPlace=1st] activeText,
+tr[winnerPlace=1st] textareaNoTab {
+  color:@raceMode1stPlace;
+}
+tr[winnerPlace=2nd] activeText,
+tr[winnerPlace=2nd] textareaNoTab {
+  color:@raceMode2ndPlace;
+}
+
+tr[inMySquad=yes] activeText,
+tr[inMySquad=yes] textareaNoTab {
+  color:@mySquadColor;
+}
+tr[spectator=yes] activeText,
+tr[spectator=yes] textareaNoTab {
+  color:@spectatorColor;
+}
+
+tr[mainPlayer=yes] activeText, tr[mainPlayer=yes] > td > text,
+text[mainPlayer=yes], tr[mainPlayer=yes] textareaNoTab {
+  color:@mainPlayerColor;
+}
+
+tr[totalColor=yes] > td > activeText,
+tr[totalColor=yes] > td > textareaNoTab {
+  color:@totalTextColor;
+}
+
+tr[winAwardColor=yes] > td > activeText, tr[winAwardColor=yes] > td > textareaNoTab {
+  color:@userlogColoredText;
+}
+.lbTable td[active=yes] activeText {
+  color:@lbActiveColumnColor;
+}
+.lbTable tr[headerRow] > td > activeText {
+  pos:50%p.p.w-50%w, ph-1.1h;
+  position:absolute;
+  color:@white;
+  font:@fontMedium;
+}
+
+tr[enable=no] activeText, tr[enable=no] > td > text, tr[enable=no] optiontext,
+tr[enable=no] textarea {
+  color:@disabledTextColor;
+}
+
+tr[inactive=yes] {
+  total-input-transparent:yes;
+}
+
+tr[inactive=yes] {
+  input-transparent:yes;
+}
+
+tr[selected=yes] > td[autoScrollText="hoverOrSelect"] > activeText,
+tr::hover > td[autoScrollText="hoverOrSelect"] > activeText {
+  behaviour:OverflowScroller;
+  move-pixel-per-sec:15*@scrn_tgt/100.0;
+  move-sleep-time:8000;
+  move-delay-time:2000;
+}
+
+activeText[caption=yes], textarea[caption=yes], textAreaCentered[caption=yes] {
+  font:@fontMedium;
+}
+[smallFont=yes] activeText[caption=yes] {
+  font:@fontNormal;
+}
+
+activeText[titleFont=yes], textAreaCentered[titleFont=yes], menutitle[titleFont=yes] {
+  font:@fontBigBold;
+}
+
+td[team]   > text {color:@commonTextColor;}
+td[team=a] > text, td[team=b] > text {
+  color:@transparent;
+}
+
+teamAImg, teamBImg {
+  height:0.035@sf;
+  width:h;
+  background-svg-size:0.035@sf, 0.035@sf;
+  position:relative;
+  top:50%ph-50%h;
+  input-transparent:yes;
+}
+
+teamAImg, [team=a] > teamImg, [teamIco=allies] > teamImg {
+  background-color:@white;
+  background-image:#ui/gameuiskin#mp_logo_allies.svg;
+}
+
+teamBImg, [team=b] > teamImg, [teamIco=axis] > teamImg {
+  background-color:@white;
+  background-image:#ui/gameuiskin#mp_logo_axis.svg;
+}
+
+[playerTeam=a] [team=b] > teamImg, [team=red] > teamImg,
+[playerTeam=b] [team=a] > teamImg,
+[playerTeam=a] > teamBImg,
+[playerTeam=b] > teamAImg {
+  background-color:@teamRedColor;
+}
+
+[playerTeam=a] [team=a] > teamImg, [team=blue] > teamImg,
+[playerTeam=b] [team=b] > teamImg,
+[playerTeam=a] > teamAImg,
+[playerTeam=b] > teamBImg {
+  background-color:@teamBlueColor;
+}
+
+td[team] > teamImg {
+  height:@tableIcoSize;
+  width:h;
+  background-svg-size:@tableIcoSize, @tableIcoSize;
+  position:relative;
+  pos:50%pw-50%w, 50%ph-50%h;
+}
+
+teamImg > activeText {
+  font:@fontSmall;
+  margin-top:4;
+  text-align:center;
+  padding:0;
+}
+
+[team=blue] > teamImg[iconSquad=squad] {
+  size:0.033@sf, 0.033@sf;
+  background-svg-size:0.033@sf, 0.033@sf;
+  background-image:#ui/gameuiskin#icon_squad;
+  background-color:@white;
+}
+[team=blue] > teamImg[iconSquad=squad][topSquad=yes] {
+  background-image:#ui/gameuiskin#icon_best_squad;
+}
+[team=red] > teamImg[iconSquad=squad] {
+  size:0.033@sf, 0.033@sf;
+  background-svg-size:0.033@sf, 0.033@sf;
+  background-image:#ui/gameuiskin#icon_squad_enemy;
+  background-color:@white;
+}
+[team=red] > teamImg[iconSquad=squad][topSquad=yes] {
+  background-image:#ui/gameuiskin#icon_best_squad_enemy;
+}
+teamImg[iconSquad=squad] > activeText {
+  margin-top:0.01@sf;
+}
+teamImg[iconSquad=autosquad] {
+  size:0.025@sf, 0.025@sf;
+  background-svg-size:0.025@sf, 0.025@sf;
+  background-image:#ui/gameuiskin#table_autosquad_background;
+}
+teamImg[iconSquad=autosquad][topSquad=yes] {
+  background-image:#ui/gameuiskin#table_best_autosquad_background;
+}
+teamImg[iconSquad=autosquad] > activeText {
+  margin-top:0.004@sf;
+}
+
+[id=controls_tbl] > tr > td {
+  border-color:@commonMenuButtonColor;
+}
+
+table.transpTable, .transpTable > tr, .transpTable > tr > td {
+  input-transparent: yes;
+}
+
+.noPad > tr > td {
+  padding:0;
+}

@@ -7,7 +7,7 @@ global enum HangarModelLoadState
 /**
  * This class incapsulates hangar model loading.
  */
-class HangarModelLoadManager
+::HangarModelLoadManager <- class
 {
   _isLoading = false
 

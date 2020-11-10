@@ -1,22 +1,22 @@
 #no-func-decl-sugar
 
+local {Watched, Computed} = require("frp")
+local {Color, sh, calc_comp_size, gui_scene} = require("daRg")
+
 local {tostring_r} = require("std/string.nut")
-local Color = ::Color
 local logLib = require("std/log.nut")
 local functools = require("std/functools.nut")
-local dagor_sys = require("dagor.system")
-local frp = require("frp")
 
 
 local tostringfuncTbl = [
   {
-    compare = @(val) val instanceof ::Watched
+    compare = @(val) val instanceof Watched
     tostring = @(val) "::Watched: {0}".subst(tostring_r(val.value,{maxdeeplevel = 3, splitlines=false}))
   }
 ]
 local log = logLib(tostringfuncTbl)
 
-local function make_persists(val){
+local function make_persists(persist, val){
   ::assert(::type(val)=="table", "not a table value passed!")
 //  local ret = {}
   foreach (k,v in val)
@@ -24,60 +24,12 @@ local function make_persists(val){
   return val
 }
 
-local function isDargComponent(comp) {
-//better to have natived daRg function to check if it is valid component!
-  local c = comp
-  if (::type(c) == "function") {
-    local info = c.getfuncinfos()
-    if (info?.parameters && info.parameters.len() > 1)
-      return false
-    c = c()
-  }
-  local c_type = ::type(c)
-  if (c_type == "null")
-    return true
-  if (c_type != "table" && c_type != "class")
-    return false
-  local knownProps = ["size","rendObj","children","watch","behavior","halign","valign","flow","pos","hplace","vplace"]
-  foreach(k,val in c) {
-    if (knownProps.indexof(k) != null)
-      return true
-  }
-  return false
-}
-
-
-/*
-  this function returns new array that is combination of two arrays, or extended arrays
-  is safe wrapper to array.extend(). Can handle obj and val of any type.
-  this is really helpful when manipulating behaviours\chlidren\watch, that can be null, array, class, table, function or instance
-*/
-local function extend_to_array (obj, val, skipNulls=true) {
-  local isObjArray = ::type(obj) == "array"
-  local isValArray = ::type(val) == "array"
-
-  if (obj == null && val == null && skipNulls)
-    return []
-  if (obj == null && skipNulls)
-    return (isValArray) ? clone val : [val]
-  if (val == null && skipNulls)
-    return (isObjArray) ? obj : [obj]
-  local obj_ = (isObjArray) ? clone obj : [obj]
-  if (isValArray)
-    obj_.extend(val)
-  else
-    obj_.append(val)
-
-  return obj_
-}
-
-
 /*
 //===== DARG specific methods=====
   this function create element that has internal basic stateFlags (S_HOVER S_ACTIVE S_DRAG)
 */
 local function watchElemState(builder) {
-  local stateFlags = ::Watched(0)
+  local stateFlags = Watched(0)
   return function() {
     local desc = builder(stateFlags.value)
     local watch = desc?.watch ?? []
@@ -108,10 +60,31 @@ local NamedColor = {
 /*
 //===== DARG specific methods=====
 */
+local function isDargComponent(comp) {
+//better to have natived daRg function to check if it is valid component!
+  local c = comp
+  if (::type(c) == "function") {
+    local info = c.getfuncinfos()
+    if (info?.parameters && info.parameters.len() > 1)
+      return false
+    c = c()
+  }
+  local c_type = ::type(c)
+  if (c_type == "null")
+    return true
+  if (c_type != "table" && c_type != "class")
+    return false
+  local knownProps = ["size","rendObj","children","watch","behavior","halign","valign","flow","pos","hplace","vplace"]
+  foreach(k,val in c) {
+    if (knownProps.indexof(k) != null)
+      return true
+  }
+  return false
+}
 
 //this function returns sh() for pixels for fullhd resolution (1080p)
 local function hdpx(pixels) {
-  return ::sh(100.0 * pixels / 1080)
+  return sh(100.0 * pixels / 1080)
 }
 
 local wrapParams= {width=0, flowElemProto={}, hGap=null, vGap=0, height=null, flow=FLOW_HORIZONTAL}
@@ -133,9 +106,8 @@ local function wrap(elems, params=wrapParams) {
   local vgap = params?.vGap ?? wrapParams?.vGap
   local gap = isFlowHor ? hgap : vgap
   local secondaryGap = isFlowHor ? vgap : hgap
-  if (["float","integer"].indexof(::type(gap)) !=null)
-    gap = isFlowHor ? {size=[gap,0]} : {size=[0,gap]}
-  gap = gap ?? 0
+  if (["float","integer"].contains(::type(gap)))
+    gap = isFlowHor ? freeze({size=[gap,0]}) : freeze({size=[0,gap]})
   local flowElemProto = params?.flowElemProto ?? {}
   local flowElems = []
   if (paddingTop && isFlowHor)
@@ -149,8 +121,8 @@ local function wrap(elems, params=wrapParams) {
     local tailidx = 0
     local flowSizeIdx = isFlowHor ? 0 : 1
     foreach (i, elem in elems) {
-      local esize = ::calc_comp_size(elem)[flowSizeIdx]
-      local gapsize = isDargComponent(gap) ? ::calc_comp_size(gap)[flowSizeIdx] : gap
+      local esize = calc_comp_size(elem)[flowSizeIdx]
+      local gapsize = isDargComponent(gap) ? calc_comp_size(gap)[flowSizeIdx] : gap
       if (i==0 && ((curwidth + esize) <= dimensionLim)) {
         children.append(elem)
         curwidth = curwidth + esize
@@ -185,22 +157,23 @@ local function wrap(elems, params=wrapParams) {
 
 
 local function dump_observables() {
-  local list = ::gui_scene.getAllObservables()
+  local list = gui_scene.getAllObservables()
   ::print("{0} observables:".subst(list.len()))
   foreach (obs in list)
     ::print(tostring_r(obs))
 }
 
+local colorPart = @(value) ::min(255, (value + 0.5).tointeger())
 local function mul_color(color, mult) {
-  return ::Color(::min(255, ((color >> 16) & 0xff) * mult),
-               ::min(255, ((color >>  8) & 0xff) * mult),
-               ::min(255, (color & 0xff) * mult),
-               ::min(255, ((color >> 24) & 0xff) * mult))
+  return Color(  colorPart(((color >> 16) & 0xff) * mult),
+                 colorPart(((color >>  8) & 0xff) * mult),
+                 colorPart((color & 0xff) * mult),
+                 colorPart(((color >> 24) & 0xff) * mult))
 }
 
 //frp
-::Watched <- frp.Watched
-::Computed <- frp.Computed
+::Watched <- Watched //warning disable: -ident-hides-ident
+::Computed <- Computed //warning disable: -ident-hides-ident
 
 //darg helpers
 ::watchElemState <- watchElemState //warning disable: -ident-hides-ident
@@ -210,8 +183,6 @@ local function mul_color(color, mult) {
 ::mul_color <- mul_color //warning disable: -ident-hides-ident
 ::dump_observables <- dump_observables //warning disable: -ident-hides-ident
 ::wrap <- wrap //warning disable: -ident-hides-ident
-::isDargComponent <- isDargComponent //warning disable: -ident-hides-ident
-::extend_to_array <- extend_to_array //warning disable: -ident-hides-ident
 
 //function tools
 ::partial <- functools.partial
@@ -228,7 +199,6 @@ local function mul_color(color, mult) {
 ::dlogsplit <- log.dlogsplit
 ::vlog <- log.vlog
 ::console_print <- log.console_print
-::logg <- dagor_sys.DBGLEVEL !=0 ? log.dlog : log.log //should have settings in config.blk to enable dev behavior on release exe, or switch it off on dev
 
 ::XmbNode <- function XmbNode(params={}) {
   return clone params

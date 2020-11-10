@@ -43,7 +43,6 @@
     "bulletType": "heat_fs_tank",
     "cumulativeSecondaryShattersPreset": "heat_fs",
     "explodeOnRendinst": true,
-    "modelName": "tank_bullet_heat_fs",
     "fresnel": [0.23,0.1,2.0],
     "bulletName": "120mm_m830",
     "onHitChanceMultExplFuel": 0.3,
@@ -51,7 +50,7 @@
     "relativeVelArmorShift": [200.0,1000.0],
     "hitPower": 260.0,
     "fuseDelayDist": 0.05,
-    "explodeTreshold": 1.0,
+    "explodeTreshold": 0.1,
     "ricochetEffect": "cannon_ricochet",
     "waterCollisionEffect": "120-203_he_water_splash",
     "waterFxScale": [1.1,1.2],
@@ -209,7 +208,6 @@
       "stabilityReductionAfterPenetration": 0.05,
       "bulletType": "apds_fs_long_tank",
       "slopeEffectPreset": "apds_fs_long",
-      "modelName": "tank_bullet_apdsfs_long",
       "fresnel": [0.23,0.1,2.0],
       "bulletName": "120mm_m829",
       "onHitChanceMultExplFuel": 0.1,
@@ -236,6 +234,11 @@
           "mod4": [50.0,0.7]
         }
       ],
+      "tracePattern": {
+        "caliber": 10.0,
+        "circleCount": 2,
+        "pointCount": 6
+      },
       "hitpower": {
         "HitPower0m": [1.0,1000.0],
         "HitPower10000m": [0.8,10000.0]
@@ -384,7 +387,6 @@
       "bulletType": "heat_fs_tank",
       "cumulativeSecondaryShattersPreset": "heat_fs",
       "explodeOnRendinst": true,
-      "modelName": "tank_bullet_heat_fs",
       "fresnel": [0.23,0.1,2.0],
       "bulletName": "120mm_m830a1",
       "selfDestructionFx": "bullet_self_expl",
@@ -395,7 +397,7 @@
       "relativeVelArmorShift": [200.0,1000.0],
       "hitPower": 260.0,
       "fuseDelayDist": 0.05,
-      "explodeTreshold": 1.0,
+      "explodeTreshold": 0.1,
       "ricochetEffect": "cannon_ricochet",
       "waterCollisionEffect": "120-203_he_water_splash",
       "waterFxScale": [1.1,1.2],

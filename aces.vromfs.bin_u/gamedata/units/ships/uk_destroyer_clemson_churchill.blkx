@@ -111,6 +111,18 @@
     "depthTraceCriticalDepth": 2.0
   },
   {
+    "haveAnchor": true
+  },
+  {
+    "anchorPos": [45.35,4.42,-1.3]
+  },
+  {
+    "spawn_count": {
+      "numSpawnsPerBattleArcade": 3,
+      "numSpawnsPerBattleHistorical": 3
+    }
+  },
+  {
     "hideNodesInDmg": {
       "node": "flag"
     }
@@ -120,6 +132,12 @@
       {
         "replace_tex": {
           "from": "flag_ussr_01_c*",
+          "to": "flag_ussr_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "flag_ussr_03_c*",
           "to": "flag_ussr_01_c_tomoe*"
         }
       },
@@ -192,6 +210,12 @@
       {
         "replace_tex": {
           "from": "flag_germany_04_c*",
+          "to": "flag_germany_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "flag_germany_05_c*",
           "to": "flag_germany_01_c_tomoe*"
         }
       },
@@ -2487,8 +2511,8 @@
           },
           {
             "onKill": {
-              "nothing": 0.85,
-              "fire": 0.15
+              "nothing": 0.75,
+              "fire": 0.25
             }
           }
         ]
@@ -2795,14 +2819,10 @@
           "emitter": "emtr_gun_flame_10",
           "flash": "emtr_gun_flame_10",
           "useEmitter": true,
-          "useGunnerTargetingQuality": false,
           "barrelDP": "auxiliary_caliber_gun_01_dm",
           "breechDP": "auxiliary_caliber_gun_01_dm",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
-          "speedYaw": 25.0,
-          "speedPitch": 25.0,
-          "bullets": 200,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -2819,11 +2839,20 @@
           "errMeasureVelDir": 3.0,
           "errTargetting": 1.0,
           "errExplTime": 0.0,
+          "speedYaw": 25.0,
+          "speedPitch": 25.0,
+          "bullets": 200,
+          "useGunnerTargetingQuality": false,
+          "fireConeAngle": 1.0,
           "turret": {
             "head": "auxiliary_caliber_turret_01",
             "gun": "auxiliary_caliber_gun_01",
             "barrel": "gun_barrel_08",
             "gunnerDm": "auxiliary_caliber_turret_01_dm"
+          },
+          "limits": {
+            "yaw": [-142.0,142.0],
+            "pitch": [-10.0,70.0]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": true,
@@ -2841,10 +2870,6 @@
                 "row": [70.0,0.05]
               }
             ]
-          },
-          "limits": {
-            "yaw": [-142.0,142.0],
-            "pitch": [-10.0,70.0]
           }
         }
       },

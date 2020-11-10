@@ -1,9 +1,9 @@
-local enums = ::require("sqStdlibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 local time = require("scripts/time.nut")
 local stdMath = require("std/math.nut")
 local { getUnitRole, getUnitBasicRole, getRoleText, getUnitTooltipImage,
   getFullUnitRoleText, getShipMaterialTexts } = require("scripts/unit/unitInfoTexts.nut")
-local { countMeasure } = ::require("scripts/options/optionsMeasureUnits.nut")
+local { countMeasure } = require("scripts/options/optionsMeasureUnits.nut")
 local { getWeaponInfoText } = require("scripts/weaponry/weaponryVisual.nut")
 local { isWeaponAux,
         getLastWeapon,
@@ -16,11 +16,13 @@ local UNIT_INFO_ARMY_TYPE  = {
   TANK       = unitTypes.TANK.bit
   SHIP       = unitTypes.SHIP.bit
   HELICOPTER = unitTypes.HELICOPTER.bit
+  BOAT       = unitTypes.BOAT.bit
 
   AIR_TANK   = unitTypes.AIRCRAFT.bit | unitTypes.TANK.bit
   AIR_HELICOPTER   = unitTypes.AIRCRAFT.bit | unitTypes.HELICOPTER.bit
+  SHIP_BOAT  = unitTypes.SHIP.bit | unitTypes.BOAT.bit
   ALL        = unitTypes.AIRCRAFT.bit | unitTypes.TANK.bit
-               | unitTypes.SHIP.bit | unitTypes.HELICOPTER.bit
+               | unitTypes.SHIP.bit | unitTypes.HELICOPTER.bit | unitTypes.BOAT.bit
 }
 enum UNIT_INFO_ORDER{
   TRAIN_COST = 0,
@@ -196,7 +198,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
 
   {
     id = "role"
-    infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP
+    infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
     addToExportDataBlock = function(blk, unit)
     {
         blk.stringValue = getUnitBasicRole(unit)
@@ -1049,7 +1051,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     order = UNIT_INFO_ORDER.DISPLACEMENT
     compare = COMPARE_MORE_BETTER
     headerLocId = "info/ship/displacement"
-    infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP
+    infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
     addToExportDataBlock = function(blk, unit)
     {
       local value = ::get_full_unit_blk(unit.name)?.ShipPhys?.mass?.TakeOff
@@ -1071,7 +1073,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     order = UNIT_INFO_ORDER.SHIP_SPEED
     compare = COMPARE_MORE_BETTER
     headerLocId = "shop/max_speed"
-    infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP
+    infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
     addToExportDataBlock = function(blk, unit)
     {
       local value = ::get_unittags_blk()?[unit.name].Shop.maxSpeed ?? 0
@@ -1091,7 +1093,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     order = UNIT_INFO_ORDER.ARMOR_THICKNESS_CITADEL_FRONT
     compare = COMPARE_MORE_BETTER
     headerLocId = "info/ship/citadelArmor"
-    infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP
+    infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
     addToExportDataBlock = function(blk, unit)
     {
       local armorThicknessCitadel = ::get_unittags_blk()?[unit.name]?.Shop?.armorThicknessCitadel
@@ -1113,7 +1115,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     order = UNIT_INFO_ORDER.ARMOR_THICKNESS_CITADEL_REAR
     compare = COMPARE_MORE_BETTER
     headerLocId = "info/ship/citadelArmor"
-    infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP
+    infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
     addToExportDataBlock = function(blk, unit)
     {
       local armorThicknessCitadel = ::get_unittags_blk()?[unit.name]?.Shop?.armorThicknessCitadel
@@ -1135,7 +1137,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     order = UNIT_INFO_ORDER.ARMOR_THICKNESS_CITADEL_BACK
     compare = COMPARE_MORE_BETTER
     headerLocId = "info/ship/citadelArmor"
-    infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP
+    infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
     addToExportDataBlock = function(blk, unit)
     {
       local armorThicknessCitadel = ::get_unittags_blk()?[unit.name]?.Shop?.armorThicknessCitadel
@@ -1157,7 +1159,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     order = UNIT_INFO_ORDER.ARMOR_THICKNESS_TOWER_FRONT
     compare = COMPARE_MORE_BETTER
     headerLocId = "info/ship/mainFireTower"
-    infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP
+    infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
     addToExportDataBlock = function(blk, unit)
     {
       local armorThicknessMainFireTower = ::get_unittags_blk()?[unit.name]?.Shop?.armorThicknessTurretMainCaliber
@@ -1179,7 +1181,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     order = UNIT_INFO_ORDER.ARMOR_THICKNESS_TOWER_REAR
     compare = COMPARE_MORE_BETTER
     headerLocId = "info/ship/mainFireTower"
-    infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP
+    infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
     addToExportDataBlock = function(blk, unit)
     {
       local armorThicknessMainFireTower = ::get_unittags_blk()?[unit.name]?.Shop?.armorThicknessTurretMainCaliber
@@ -1201,7 +1203,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     order = UNIT_INFO_ORDER.ARMOR_THICKNESS_TOWER_BACK
     compare = COMPARE_MORE_BETTER
     headerLocId = "info/ship/mainFireTower"
-    infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP
+    infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
     addToExportDataBlock = function(blk, unit)
     {
       local armorThicknessMainFireTower = ::get_unittags_blk()?[unit.name]?.Shop?.armorThicknessTurretMainCaliber
@@ -1223,7 +1225,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     order = UNIT_INFO_ORDER.HULL_MATERIAL
     compare = COMPARE_NO_COMPARE
     headerLocId = "info/ship/part/hull"
-    infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP
+    infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
     addToExportDataBlock = function(blk, unit)
     {
       local value = (::get_wpcost_blk()?[unit.name]?.Shop?.hullThickness ?? 0).tointeger()
@@ -1239,7 +1241,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     order = UNIT_INFO_ORDER.SUPERSTRUCTURE_MATERIAL
     compare = COMPARE_NO_COMPARE
     headerLocId = "info/ship/part/superstructure"
-    infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP
+    infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
     addToExportDataBlock = function(blk, unit)
     {
       local value = (::get_wpcost_blk()?[unit.name]?.Shop?.superstructureThickness ?? 0).tointeger()

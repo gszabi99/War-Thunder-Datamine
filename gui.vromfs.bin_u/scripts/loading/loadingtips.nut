@@ -115,7 +115,7 @@ g_tips.loadTipsKeysByUnitType <- function loadTipsKeysByUnitType(unitType, isNee
     })
 
   local notExistInARow = 0
-  for(local idx = 0; notExistInARow <= MISSING_TIPS_IN_A_ROW_ALLOWED; idx++)
+  for(local idx = 0; notExistInARow <= MISSING_TIPS_IN_A_ROW_ALLOWED; idx++) // warning disable: -mismatch-loop-variable
   {
     local isShow = false
     local key = ""

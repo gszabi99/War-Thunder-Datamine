@@ -1,0 +1,193 @@
+@const baseToggleButtonWidth: 1@dIco;
+
+TopMenuPanel {
+  pos:0,0;
+  position:root;
+  size:sw, 1@topBarHeight;
+  css-hier-invalidate:yes;
+}
+
+TopMenuPanelBg {
+  height:ph;
+  re-type:9rect;
+  background-image:#ui/gameuiskin#top_bar;
+  background-color:@white;
+  background-position:1, 6, 1, 2;
+  background-repeat:expand;
+}
+
+BottomMenuPanel {
+  re-type:9rect;
+  pos:0, sh-h - 1@bh;
+  position:root;
+  size:sw, @bottomMenuPanelHeight;
+  background-color:@bottomBarBackgroundColor;
+}
+
+BottomMenuPanel > line {
+  position: "absolute";
+  size: "pw, 1@dp";
+  background-color: '@bottomBarForegroundColor';
+}
+
+shadowSafeArea {
+  size:pw, 1@bh;
+  pos:0, 0;
+  position: "absolute";
+  background-color:'@gameModeColor';
+}
+
+BottomMenuPanel > shadowSafeArea {
+  pos:0, ph;
+}
+
+CompanyLogo {
+  re-type: fgPict;
+  size: @companyLogoW, @companyLogoH;
+  foreground-svg-size: @companyLogoW, @companyLogoH;
+  foreground-image: !ui/gaijin_logo.svg;
+  foreground-repeat: aspect-ratio;
+  foreground-color: #ffffff;
+  background-image: #ui/gaijin_logo_shadow;
+  background-repeat: aspect-ratio;
+  background-color: #80000000;
+  input-transparent:yes;
+}
+
+copyright {
+  re-type:text;
+  color:@commonTextColor;
+  text:"#mainmenu/legal_text";
+  font:@fontNormal;
+  padding-right:0.04@sf;
+  text-align:center;
+  input-transparent:yes;
+}
+
+Red_shadow_light {
+  background-color: #00550000;
+  background-image:#ui/gameuiskin#top_bar_light;
+  input-transparent:yes;
+}
+
+Red_shadow_light.inverted {
+  background-position:0,h,0,h;
+}
+
+TopMenuPanelBGPlace[needRedShadow=no] > * > Red_shadow_light {
+  background-color:@transparent;
+}
+
+TopMenuPanel > TopMenuPanelBGPlace {
+  size:"pw, ph-1@bh+1@topGamercardDarkLineHeight";
+  pos:"0, 1@bh-1@topGamercardDarkLineHeight";
+  position:absolute;
+  css-hier-invalidate:yes;
+}
+
+GameLogoPlate {
+  total-input-transparent:yes;
+}
+
+GameLogoPlate > Shadow {
+  re-type:9rect;
+  position:relative;
+  padding:@titleLogoShadePaddingW, @titleLogoShadePaddingH;
+  background-image:#ui/gameuiskin#window_body_shadow;
+  background-color:@white;
+  background-position:6;
+  background-repeat:expand;
+}
+
+GameLogoPlate redPlate {
+  re-type:9rect;
+  padding:@titleLogoShadePaddingW, @titleLogoShadePaddingH;
+  background-image:#ui/gameuiskin#red_plate;
+  background-color:@white;
+  background-position:6;
+  background-repeat:expand;
+}
+
+GameLogoPlate > infoBlock {
+  height:0.02@sf;
+}
+
+GameLogoPlate > infoBlock[type=left] {
+  pos:-w, 1@topBarHeight+4@dp;
+  position:absolute;
+  padding-right:10*@sf/@pf_outdated;
+}
+
+GameLogoPlate > infoBlock[type=right] {
+  pos:pw, 1@topBarHeight;
+  position:absolute;
+  padding-left:10*@sf/@pf_outdated;
+}
+
+TopMenuPanel > infoBlock {
+  pos:sw - w - 1@offsetBetweenScreenAndAirinfo, 1@topBarHeight;
+  position:absolute;
+}
+
+gamercard_div[type=wwMap] > gamercard > TopMenuPanel > infoBlock {
+  pos: sw -1@wwMapOffset -w -1@wwMapPanelInfoWidth -2@framePadding, 1@wwMapQueueInfoYpos;
+}
+gamercard_div[type=wwMap][switchBtnStat=switchOff] > gamercard > TopMenuPanel > infoBlock {
+  pos: sw -1@wwMapOffset -w -1@wwMapPanelInfoWidth -2@framePadding -1@baseToggleButtonWidth -1@blockInterval, 1@wwMapQueueInfoYpos;
+}
+gamercard_div[type=wwMap][switchBtnStat=switchOn] > gamercard > TopMenuPanel > infoBlock {
+  pos: sw -1@wwMapOffset -w -1@framePadding -1@baseToggleButtonWidth -1@blockInterval, 1@wwMapQueueInfoYpos;
+}
+
+topMenuButtons {
+  border:yes;
+  border-color: @frameDarkMenuBorderColor;
+  background-color: @frameDarkBackgroundColor;
+  padding:1@dp;
+}
+topMenuButtons > line {
+  size:pw, 1@dp;
+  pos:0,-1@dp;
+  position:absolute;
+  background-color:@frameDarkBackgroundColor;
+}
+
+gamercardShade {
+  size:2*sw, sh/2;
+  pos:50%sw-50%w, 0;
+  position:root;
+  background-color:@black;
+  background-image:#ui/gameuiskin#optionlist_background_top;
+  background-position:4;
+  background-repeat:expand;
+}
+
+ShadowPlate {
+  re-type:9rect;
+  background-image:#ui/gameuiskin#window_body_shadow;
+  background-color:@white;
+  background-position:4;
+  background-repeat:expand;
+}
+
+ShadeDiv {
+  background-color:#91020509;
+}
+
+ProjectAwardsPanel {
+  position:absolute;
+  right:1@bw;
+  top:50%sh-50%h;
+  flow:vertical;
+  input-transparent:yes;
+}
+
+ProjectAwardsPanel > img {
+  size:48*@sf/@pf_outdated, 48*@sf/@pf_outdated;
+  color-factor:145;
+  input-transparent:yes;
+}
+
+ProjectAwardsPanel > img:hover {
+  color-factor:255;
+}

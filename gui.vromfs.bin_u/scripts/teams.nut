@@ -1,4 +1,4 @@
-local enums = ::require("sqStdlibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 global enum Team //better to replace it everywhere by g_teams
 {
   Any   = 0,

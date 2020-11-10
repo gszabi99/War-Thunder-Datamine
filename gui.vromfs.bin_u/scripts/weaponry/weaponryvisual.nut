@@ -1,3 +1,4 @@
+local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
 local time = require("scripts/time.nut")
 local stdMath = require("std/math.nut")
 local weaponryEffects = require("scripts/weaponry/weaponryEffects.nut")
@@ -261,9 +262,8 @@ local function getWeaponDescTextByTriggerGroup(triggerGroup, unit, ediff)
     foreach (wp in (unitBlk.weapon_presets % "preset"))
       if (wp.name == secondaryWeapon)
       {
-        local wpBlk = ::DataBlock(wp.blk)
-        if (wpBlk)
-          weaponTypes = addWeaponsFromBlk(weaponTypes, wpBlk, unit)
+        local wpBlk = blkFromPath(wp.blk)
+        weaponTypes = addWeaponsFromBlk(weaponTypes, wpBlk, unit)
         break
       }
 
@@ -671,8 +671,7 @@ local function getWeaponItemViewParams(id, unit, item, params = {})
       (flushExp > 0 || !canShowResearch)))
       btnText = ::loc("mainmenu/btnResearch")
     btnText = params?.actionBtnText ?? btnText
-    res.actionBtnCanShow = btnText == "" ? "no"
-      : !res.isBundle || params?.isMenuBtn ? "yes" : "console"
+    res.actionBtnCanShow = btnText == "" ? "no" : "yes"
     res.actionBtnText = btnText
     local altBtnText = ""
     local altBtnTooltip = ""

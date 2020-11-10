@@ -162,12 +162,11 @@
           "node": "explosion1",
           "partNo": 2,
           "timeToExplode": 1.0,
-          "preEffectName": "ship_model_fire",
-          "postEffectName": "ship_model_fire",
-          "explosionEffectName": "ship_model_expl",
+          "preEffectName": "ship_fire_large",
+          "postEffectName": "ship_fire_large",
+          "explosionEffectName": "ship_explosion_large",
           "timeForPostEffect": 45.0,
-          "preScale": 4.0,
-          "postScale": 4.0
+          "explScale": 0.4
         }
       },
       {
@@ -175,12 +174,11 @@
           "node": "explosion2",
           "partNo": 3,
           "timeToExplode": 1.0,
-          "preEffectName": "ship_model_fire",
-          "postEffectName": "ship_model_fire",
-          "explosionEffectName": "ship_model_expl",
+          "preEffectName": "ship_fire_large",
+          "postEffectName": "ship_fire_large",
+          "explosionEffectName": "ship_explosion_large",
           "timeForPostEffect": 65.0,
-          "preScale": 7.0,
-          "postScale": 7.0
+          "explScale": 0.4
         }
       },
       {
@@ -188,12 +186,11 @@
           "node": "explosion3",
           "partNo": 4,
           "timeToExplode": 1.0,
-          "preEffectName": "ship_model_fire",
-          "postEffectName": "ship_model_fire",
-          "explosionEffectName": "ship_model_expl",
+          "preEffectName": "ship_fire_large",
+          "postEffectName": "ship_fire_large",
+          "explosionEffectName": "ship_explosion_large",
           "timeForPostEffect": 45.0,
-          "preScale": 4.0,
-          "postScale": 4.0
+          "explScale": 0.4
         }
       },
       {
@@ -201,12 +198,11 @@
           "node": "explosion4",
           "partNo": 5,
           "timeToExplode": 1.0,
-          "preEffectName": "ship_model_fire",
-          "postEffectName": "ship_model_fire",
-          "explosionEffectName": "ship_model_expl",
+          "preEffectName": "ship_fire_large",
+          "postEffectName": "ship_fire_large",
+          "explosionEffectName": "ship_explosion_large",
           "timeForPostEffect": 105.0,
-          "preScale": 4.0,
-          "postScale": 4.0
+          "explScale": 0.4
         }
       }
     ]
@@ -271,12 +267,20 @@
     ]
   },
   {
-    "attachedEffects": {
-      "effect": {
-        "node": "whitesmoke",
-        "fxName": "white_smoke"
+    "attachedEffects": [
+      {
+        "effect": {
+          "node": "exhaust00",
+          "fxName": "ps_exhaust_large"
+        }
+      },
+      {
+        "effect": {
+          "node": "exhaust01",
+          "fxName": "ps_exhaust_large"
+        }
       }
-    }
+    ]
   },
   {
     "attach": {

@@ -1,3 +1,4 @@
+local { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
 local time = require("scripts/time.nut")
 local wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 
@@ -47,9 +48,9 @@ class ::WwArmy extends ::WwFormation
     local unitTypeTextCode = blk?.specs.unitType ?? ""
     unitType = ::g_ww_unit_type.getUnitTypeByTextCode(unitTypeTextCode).code
     morale = ::getTblValue("morale", blk, -1)
-    armyIsDead = ::get_blk_value_by_path(blk, "specs/isDead", false)
-    deathReason = ::get_blk_value_by_path(blk, "specs/deathReason", "")
-    armyFlags = ::get_blk_value_by_path(blk, "specs/flags", 0)
+    armyIsDead = get_blk_value_by_path(blk, "specs/isDead", false)
+    deathReason = get_blk_value_by_path(blk, "specs/deathReason", "")
+    armyFlags = get_blk_value_by_path(blk, "specs/flags", 0)
     transportType = transportTypeByTextCode?[blk?.specs.transportInfo.type ?? "TT_NONE"] ?? ::TT_NONE
     if (isTransport())
       loadedArmyType = blk?.loadedArmyType ?? ::ww_get_loaded_army_type(armyName, false)

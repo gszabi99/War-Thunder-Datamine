@@ -1,5 +1,5 @@
-local enums = require("sqStdlibs/helpers/enums.nut")
-local globalEnv = require_native("globalEnv")
+local enums = require("sqStdLibs/helpers/enums.nut")
+local globalEnv = ::require_native("globalEnv")
 
 
 local function getNullInput(shortcutId, showShortcutsNameIfNotAssign) {

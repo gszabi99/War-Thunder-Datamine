@@ -1,5 +1,6 @@
 local xboxContactsManager = require("scripts/contacts/xboxContactsManager.nut")
 local { getPlayerName } = require("scripts/clientState/platform.nut")
+local { updateMuteStatus } = require("scripts/contacts/contactsManager.nut")
 
 ::contacts_handler <- null
 ::contacts_sizes <- null
@@ -57,7 +58,7 @@ local { getPlayerName } = require("scripts/clientState/platform.nut")
     if (existContactIdx == null)
       ::contacts[groupName].append(contact)
 
-    contact?.updateMuteStatus()
+    updateMuteStatus(contact)
     return contact
   }
 }

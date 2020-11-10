@@ -2,7 +2,6 @@ class ::gui_handlers.ChooseAmountWnd extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
   sceneTplName = "gui/wndLib/chooseAmountWnd"
-  shouldBlurSceneBg = false
   needVoiceChat = false
 
   parentObj = null
@@ -35,14 +34,8 @@ class ::gui_handlers.ChooseAmountWnd extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (::check_obj(parentObj))
       align = ::g_dagui_utils.setPopupMenuPosAndAlign(parentObj, align, scene.findObject("popup_frame"))
-    initFocusArray()
     updateButtons()
     updateValueText()
-  }
-
-  function getMainFocusObj()
-  {
-    return scene.findObject("amount_slider")
   }
 
   function updateButtons()

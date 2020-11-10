@@ -1,4 +1,4 @@
-local results = ::require("scripts/dmViewer/protectionAnalysisHintResults.nut")
+local results = require("scripts/dmViewer/protectionAnalysisHintResults.nut")
 
 class ::gui_handlers.ProtectionAnalysisHint extends ::gui_handlers.BaseGuiHandlerWT
 {

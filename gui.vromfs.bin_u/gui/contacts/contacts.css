@@ -1,9 +1,9 @@
 contactItem {
+  behaviour: button;
   re-type:text;
   size: pw, 0.04@scrn_tgt;
   padding:1@blockInterval, 0;
   css-hier-invalidate:yes;
-  not-input-transparent:yes;
 }
 
 contactItem:current {
@@ -23,21 +23,28 @@ contactItem textareaNoTab[contact_presence=yes] {
   font:@fontSmall;
 }
 
-contactItem:hover > tdiv[contact_buttons_holder=yes] {
-  display: show;
+contact_buttons_holder {
+  input-transparent:yes;
 }
 
-[show_console_buttons=yes] :focus > contactItem:current {
-  re-type:9rect;
-  foreground-color: @gamepadFocusFrameColor;
-  foreground-image: #ui/gameuiskin#item_selection;
-  foreground-position: 6;
-  foreground-repeat: expand;
-  behavior:focusFrameTarget;
-  focusImageSource:foreground;
+[show_console_buttons=no] contactItem:hover > contact_buttons_holder {
+  display: show;
 }
 
 contactStatusImg {
   size:1@sIco, 1@sIco;
+  background-svg-size:1@sIco, 1@sIco;
   input-transparent:yes;
+}
+
+airRow {
+  min-height:1@cIco;
+}
+airRow > activeText, airRow > text {
+  top:50%ph-50%h;
+  position:relative;
+  talign:left;
+}
+airRow > cardImg {
+  margin-left:0.02@sf;
 }

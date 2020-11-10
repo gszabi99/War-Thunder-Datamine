@@ -1,5 +1,6 @@
 root {
-  background-color:t='@modalShadeColor'
+  blur {}
+  blur_foreground {}
   on_click:t='goBack'
 
   frame {
@@ -30,12 +31,6 @@ root {
         id:t='master_skin'
         size:t='pw, 0.6@buttonHeight'
         on_select:t='onMasterSkinSelect'
-
-        behaviour:t='wrapBroadcast'
-        on_wrap_up:t='onWrapUp'
-        on_wrap_down:t='onWrapDown'
-        navigatorShortcuts:t='yes'
-        focusFrame:t='yes'
       }
 
       textareaNoTab {
@@ -68,10 +63,7 @@ root {
         flow:t='vertical'
         on_select:t='onDestinationSkinSelect'
 
-        on_wrap_up:t='onWrapUp'
-        on_wrap_down:t='onWrapDown'
         navigatorShortcuts:t='yes'
-        childsActivate:t='yes'
 
         <<#list>>
         multiOption {

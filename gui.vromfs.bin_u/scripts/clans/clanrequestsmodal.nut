@@ -1,4 +1,4 @@
-local clanContextMenu = ::require("scripts/clans/clanContextMenu.nut")
+local clanContextMenu = require("scripts/clans/clanContextMenu.nut")
 
 ::showClanRequests <- function showClanRequests(candidatesData, clanId, owner)
 {
@@ -33,7 +33,6 @@ class ::gui_handlers.clanRequestsModal extends ::gui_handlers.BaseGuiHandlerWT
     local isMyClan = !::my_clan_info ? false : (::my_clan_info.id == clanId ? true : false)
     clanId = isMyClan ? "-1" : clanId
     fillRequestList()
-    initFocusArray()
   }
 
   function fillRequestList()
@@ -79,7 +78,8 @@ class ::gui_handlers.clanRequestsModal extends ::gui_handlers.BaseGuiHandlerWT
         tdAlign="center",
       });
     }
-    data = buildTableRow("row_header", headerRow, null, "inactive:t='yes'; commonTextColor:t='yes'; bigIcons:t='yes'; style:t='height:0.05sh;'; ");
+    data = buildTableRow("row_header", headerRow, null,
+      "enable:t='no'; commonTextColor:t='yes'; bigIcons:t='yes'; style:t='height:0.05sh;'; ");
 
     local startIdx = curPage * rowsPerPage
     local lastIdx = min((curPage + 1) * rowsPerPage, rowTexts.len())
@@ -108,9 +108,9 @@ class ::gui_handlers.clanRequestsModal extends ::gui_handlers.BaseGuiHandlerWT
         tblObj.findObject("row_"+i).findObject("txt_"+item).setValue(itemValue.text);
     }
 
-    tblObj.cur_row = "1" //after header
+    tblObj.setValue(1) //after header
     guiScene.setUpdatesEnabled(true, true);
-    selectOptionsNavigatorObj(tblObj)
+    ::move_mouse_on_child_by_value(tblObj)
     onSelect()
 
     generatePaginator(scene.findObject("paginator_place"), this, curPage, ((rowTexts.len()-1) / rowsPerPage).tointeger())
@@ -128,7 +128,7 @@ class ::gui_handlers.clanRequestsModal extends ::gui_handlers.BaseGuiHandlerWT
     if (candidatesList && candidatesList.len()>0)
     {
       local objTbl = scene.findObject("candidatesList");
-      local index = objTbl.cur_row.tointeger() + curPage*rowsPerPage - 1; //header
+      local index = objTbl.getValue() + curPage*rowsPerPage - 1; //header
       if (index in candidatesList)
         curCandidate = candidatesList[index];
     }
@@ -218,11 +218,6 @@ class ::gui_handlers.clanRequestsModal extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function onDeleteFromBlacklist(){}
-
-  function getMainFocusObj()
-  {
-    return scene.findObject("candidatesList")
-  }
 
   function onEventClanCandidatesListChanged(p)
   {

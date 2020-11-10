@@ -1,5 +1,3 @@
-local exitGame = require("scripts/utils/exitGame.nut")
-
 enum LOGIN_PROGRESS
 {
   NOT_STARTED
@@ -51,8 +49,6 @@ class ::LoginProcess
 
   function nextStep()
   {
-    if (showVersionMsgBox())
-      return
     curProgress++
 
     if (curProgress == LOGIN_PROGRESS.IN_LOGIN_WND)
@@ -112,16 +108,5 @@ class ::LoginProcess
   {
     if (isValid())
       curProgress = LOGIN_PROGRESS.NOT_STARTED
-  }
-
-  function showVersionMsgBox()
-  {
-    if (::is_version_equals_or_newer("1.77.0.0"))
-      return false
-
-    ::scene_msg_box("old exe version", null, ::loc("charServer/updateError/75"),
-      [["exit", exitGame ]], "exit",
-      { saved = true })
-    return true
   }
 }

@@ -1,6 +1,6 @@
-local enums = ::require("sqStdlibs/helpers/enums.nut")
-local workshop = ::require("scripts/items/workshop/workshop.nut")
-local seenList = ::require("scripts/seen/seenList.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
+local workshop = require("scripts/items/workshop/workshop.nut")
+local seenList = require("scripts/seen/seenList.nut")
 
 local shopSheets = {
   types = []
@@ -173,7 +173,7 @@ shopSheets.addSheets({
     isAllowedForTab = @(shopTab) shopTab != itemsTab.WORKSHOP && ::has_feature("ItemModUpgrade")
   }
   VEHICLES = {
-    typeMask = itemType.VEHICLE
+    typeMask = itemType.VEHICLE | itemType.RENTED_UNIT
     isMarketplace = true
     sortId = sortId++
     isAllowedForTab = isOnlyExtInventory
@@ -206,6 +206,7 @@ shopSheets.addSheets({
   OTHER = {
     locId = "attachables/category/other"
     typeMask = itemType.WARBONDS | itemType.ENTITLEMENT | itemType.INTERNAL_ITEM
+      | itemType.WARPOINTS | itemType.UNLOCK
     isMarketplace = true
     sortId = sortId++
     isAllowedForTab = isOnlyExtInventory

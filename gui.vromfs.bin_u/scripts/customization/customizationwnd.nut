@@ -1,5 +1,5 @@
 local time = require("scripts/time.nut")
-local penalty = require_native("penalty")
+local penalty = ::require_native("penalty")
 local decorLayoutPresets = require("scripts/customization/decorLayoutPresetsWnd.nut")
 local unitActions = require("scripts/unit/unitActions.nut")
 local contentPreview = require("scripts/customization/contentPreview.nut")
@@ -96,8 +96,6 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
   isUnitOwn = false
 
   currentState = decoratorEditState.NONE
-  currentFocusItem = MAIN_FOCUS_ITEM_IDX + 2
-  needToRestoreFocusOnTypeList = false
 
   previewParams = null
   previewMode = PREVIEW_MODE.NONE
@@ -108,6 +106,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
   preSelectDecoratorSlot = -1
 
   unitInfoPanelWeak = null
+  needForceShowUnitInfoPanel = false
 
   function initScreen()
   {
@@ -131,6 +130,8 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     local unitInfoPanel = ::create_slot_info_panel(scene, false, "showroom")
     registerSubHandler(unitInfoPanel)
     unitInfoPanelWeak = unitInfoPanel.weakref()
+    if (needForceShowUnitInfoPanel)
+      unitInfoPanelWeak.uncollapse()
 
     initPreviewMode()
     initMainParams()
@@ -146,8 +147,6 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       if (skinId != "" && skinId != initialAppliedSkinId)
         applySkin(skinId, true)
     }
-
-    initFocusArray()
 
     if (preSelectDecorator)
     {
@@ -256,7 +255,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       return decalsObj
 
     local categoryObj = decalsObj.getChild(value)
-    if (::checkObj(categoryObj) && categoryObj?.collapsed == "no")
+    if (::checkObj(categoryObj))
     {
       local categoryListObj = categoryObj.findObject("collapse_content_" + (categoryObj?.id ?? ""))
       if (::checkObj(categoryListObj))
@@ -264,34 +263,6 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
 
     return decalsObj
-  }
-
-  function getMainFocusObj()
-  {
-    if (isDecoratorsListOpen)
-      return getCurDecalsListObj(false)
-    return getObj("skins_navigator")
-  }
-
-  function getMainFocusObj2()
-  {
-    if (!isDecoratorsListOpen && isUnitTank)
-      return getObj("tank_skin_settings")
-    return null
-  }
-
-  function getMainFocusObj3()
-  {
-    if (isDecoratorsListOpen)
-      return getCurDecalsListObj(false)
-    return getObj("slots_attachable_list")
-  }
-
-  function getMainFocusObj4()
-  {
-    if (isDecoratorsListOpen)
-      return getCurDecalsListObj(false)
-    return getObj("slots_list")
   }
 
   function updateDecalActionsTexts()
@@ -727,20 +698,11 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       rarityColor = decorator?.isRare() ? decorator.getRarityColor() : null
       tooltipText = buttonTooltip
       tooltipId = slot.isEmpty? null : ::g_tooltip_type.DECORATION.getTooltipId(decalId, decoratorType.unlockedItemType)
+      tooltipOffset = "1@bw, 1@bh + 0.1@sf"
     }
   }
 
-  function onWrapUp(obj)
-  {
-    base.onWrapUp(obj)
-    updateButtons(getCurrentFocusedType(), false)
-  }
-
-  function onWrapDown(obj)
-  {
-    base.onWrapDown(obj)
-    updateButtons(getCurrentFocusedType(), false)
-  }
+  onSlotsHoverChange = @() updateButtons()
 
   function updateButtons(decoratorType = null, needUpdateSlotDivs = true)
   {
@@ -748,6 +710,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     local canBuyOnline = ::canBuyUnitOnline(unit)
     local canBuyNotResearchedUnit = canBuyNotResearched(unit)
     local canBuyIngame = !canBuyOnline && (::canBuyUnit(unit) || canBuyNotResearchedUnit)
+    local canFindUnitOnMarketplace = !canBuyOnline && !canBuyIngame && ::canBuyUnitOnMarketplace(unit)
 
     if (isGift && canUseIngameShop() && getShopItemsTable().len() == 0)
     {
@@ -757,10 +720,8 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       canBuyOnline = false
     }
 
-    guiScene.setUpdatesEnabled(false, false)
-
     local bObj = showSceneBtn("btn_buy", canBuyIngame)
-    if (::checkObj(bObj) && canBuyIngame)
+    if (canBuyIngame && ::check_obj(bObj))
     {
       local price = canBuyNotResearchedUnit ? unit.getOpenCost() : ::getUnitCost(unit)
       placePriceTextToButton(scene, "btn_buy", ::loc("mainmenu/btnOrder"), price)
@@ -769,8 +730,10 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
 
     local bOnlineObj = showSceneBtn("btn_buy_online", canBuyOnline)
-    if (::checkObj(bOnlineObj) && canBuyOnline)
+    if (canBuyOnline && ::check_obj(bOnlineObj))
       ::showUnitDiscount(bOnlineObj.findObject("buy_online_discount"), unit)
+
+    showSceneBtn("btn_marketplace_find_unit", canFindUnitOnMarketplace)
 
     local skinDecorator = null
     local skinCouponItemdefId = null
@@ -787,15 +750,11 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       (::ItemsManager.getInventoryItemById(skinCouponItemdefId)?.canConsume() ?? false)
     local canFindSkinOnMarketplace = !canBuySkin && !canConsumeSkinCoupon && skinCouponItemdefId != null
 
-    bObj = scene.findObject("btn_buy_skin")
-    if (::checkObj(bObj))
+    bObj = showSceneBtn("btn_buy_skin", canBuySkin)
+    if (canBuySkin && ::check_obj(bObj))
     {
-      bObj.show(canBuySkin)
-      if (canBuySkin)
-      {
-        local price = skinDecorator.getCost()
-        placePriceTextToButton(scene, "btn_buy_skin", ::loc("mainmenu/btnOrder"), price)
-      }
+      local price = skinDecorator.getCost()
+      placePriceTextToButton(scene, "btn_buy_skin", ::loc("mainmenu/btnOrder"), price)
     }
 
     local can_testflight = ::isTestFlightAvailable(unit) && !decoratorPreview
@@ -873,42 +832,11 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     })
 
     updateDecoratorActions(isInEditMode, decoratorType)
-    guiScene.setUpdatesEnabled(true, true)
-
-    if (needUpdateSlotDivs)
-      updateFocusItem()
-  }
-
-  function updateFocusItem()
-  {
-    if (!isNavigationAllowed())
-    {
-      scene.findObject("screen_button").select() //remove focus rom all active elements
-      needToRestoreFocusOnTypeList = true
-      return
-    }
-
-    if (needToRestoreFocusOnTypeList)
-    {
-      local listId = currentType.listId
-      guiScene.performDelayed(this, (@(listId) function() {
-        setCurrentFocusObj(scene.findObject(listId))
-      })(listId))
-      needToRestoreFocusOnTypeList = false
-    }
-    else
-      delayedRestoreFocus()
   }
 
   function isNavigationAllowed()
   {
     return !(currentState & decoratorEditState.EDITING)
-  }
-
-  function restoreFocus(checkPrimaryFocus = true)
-  {
-    if (isNavigationAllowed())
-      base.restoreFocus(checkPrimaryFocus)
   }
 
   function updateDecoratorActions(show, decoratorType)
@@ -1060,10 +988,8 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     local value = obj.getValue()
     local childObj = (value >= 0 && value < obj.childrenCount()) ? obj.getChild(value) : null
-    if (!::checkObj(childObj))
-      return
-
-    onDecalSlotClick(childObj)
+    if (::check_obj(childObj))
+      onDecalSlotClick(childObj)
   }
 
   function onAttachSlotSelect(obj)
@@ -1096,10 +1022,8 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!checkCurrentUnit())
       return
-
     if (!checkCurrentSkin())
       return
-
     if (!checkSlotIndex(slotId, decoratorType))
       return
 
@@ -1200,12 +1124,8 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onDecalSlotClick(obj)
   {
-    if (!::checkObj(obj))
-      return
-
     local slotName = ::getObjIdByPrefix(obj, "slot_")
     local slotId = slotName ? slotName.tointeger() : -1
-
     openDecorationsListForSlot(slotId, obj, ::g_decorator_type.DECALS)
   }
 
@@ -1244,22 +1164,21 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     currentType = decoratorType
 
+    local decCategories = ::g_decorator.getCachedOrderByType(decoratorType)
     local view = { collapsableBlocks = [] }
-
-    foreach (idx, category in ::g_decorator.getCachedOrderByType(decoratorType))
+    foreach (idx, category in decCategories)
       view.collapsableBlocks.append({
         id = decoratorType.categoryWidgetIdPrefix + category
         headerText = "#" + decoratorType.categoryPathPrefix + category
-        collapsed = true
         type = "decoratorsList"
         onSelect = "onDecoratorItemSelect"
         onActivate = "onDecoratorItemActivate"
         onCancelEdit = "onDecalItemCancel"
+        contentParams = "on_wrap_up:t='onDecalItemHeader'; on_wrap_down:t='onDecalItemNextHeader';"
       })
 
     local data = ::handyman.renderCached("gui/commonParts/collapsableBlock", view)
     guiScene.replaceContentFromText(wObj, data, data.len(), this)
-    wObj.setValue(0)
 
     showDecoratorsList()
 
@@ -1276,9 +1195,9 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     if (selCategoryId != "")
     {
-      local categoryObj = wObj.findObject(decoratorType.categoryWidgetIdPrefix + selCategoryId)
-      if (::checkObj(categoryObj))
-        onDecalCategoryClick(categoryObj)
+      local idx = decCategories.indexof(selCategoryId) ?? -1
+      if (idx >= 0)
+        wObj.setValue(idx)
       else
         updateButtons(decoratorType)
     }
@@ -1423,11 +1342,32 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     onDecoratorItemClick(childObj)
   }
 
-  function onDecalItemCancel(obj)
-  {
-    toggleDecalsCategory(currentType, null, false)
-    local categoriesObj = getObj("decals_list")
-    setCurrentFocusObj(categoriesObj)
+  function onDecalItemCancel(obj) {
+    local wObj = scene.findObject("decals_list")
+    if (!::check_obj(wObj))
+      return
+    local prevValue = wObj.getValue()
+    wObj.setValue(-1)
+    guiScene.applyPendingChanges(false)
+    ::move_mouse_on_child(wObj, prevValue)
+  }
+
+  function moveMouseOnDecalsHeader(valueDiff = 0) {
+    local wObj = scene.findObject("decals_list")
+    if (!::check_obj(wObj))
+      return false
+    local newValue = wObj.getValue() + valueDiff
+    if (newValue < 0 || wObj.childrenCount() <= newValue)
+      return false
+    ::move_mouse_on_child(wObj.getChild(newValue), 0)
+    return true
+  }
+
+  onDecalItemHeader = @(obj) moveMouseOnDecalsHeader()
+
+  function onDecalItemNextHeader(obj) {
+    if (!moveMouseOnDecalsHeader(1))
+      ::set_dirpad_event_processed(false)
   }
 
   function onDecoratorItemClick(obj)
@@ -1502,22 +1442,12 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       enterEditDecalMode(slotIdx, decal)
   }
 
-  function onCollapse(obj)
-  {
-    if (!checkObj(obj))
-      return
-    local categoryObj = obj.getParent().getParent()
-    onDecalCategoryClick(categoryObj)
-  }
-
   function onDecalCategoryActivate(obj)
   {
     local value = obj.getValue()
     local childObj = (value >= 0 && value < obj.childrenCount()) ? obj.getChild(value) : null
-    if (!::checkObj(childObj))
-      return
-
-    onDecalCategoryClick(childObj)
+    if (::checkObj(childObj))
+      fillDecalCategoryContent(childObj)
   }
 
   function onDecalCategoryCancel(obj)
@@ -1525,68 +1455,46 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     onBtnCloseDecalsMenu()
   }
 
-  function onDecalCategoryClick(obj)
+  function fillDecalCategoryContent(obj)
   {
-    local categoryId = ::getObjIdByPrefix(obj, currentType.categoryWidgetIdPrefix)
-    if (!categoryId)
-      return
-
-    local categoriesOrder = ::g_decorator.getCachedOrderByType(currentType)
-    local index = ::find_in_array(categoriesOrder, categoryId)
-    if (obj.getParent().getValue() != index)
-      obj.getParent().setValue(index)
-
-    local show = obj.collapsed == "yes"
-    toggleDecalsCategory(currentType, categoryId, show)
+    fillDecalsCategoryContentImpl(currentType)
   }
 
-  function toggleDecalsCategory(decoratorType, categoryId = null, show = true)
+  function fillDecalsCategoryContentImpl(decoratorType)
   {
     local wObj = scene.findObject("decals_list")
     if (!::checkObj(wObj))
       return
+    local idx = wObj.getValue()
+    if (idx < 0)
+      return
 
     local categoriesOrder = ::g_decorator.getCachedOrderByType(decoratorType)
-    foreach (idx, category in categoriesOrder)
-    {
-      local categoryBlockId = decoratorType.categoryWidgetIdPrefix + category
-      local categoryObj = wObj.findObject(categoryBlockId)
-      if (!::checkObj(categoryObj))
-        continue
+    local category = categoriesOrder[idx]
+    local categoryBlockId = decoratorType.categoryWidgetIdPrefix + category
+    local categoryObj = wObj.findObject(categoryBlockId)
+    if (!::checkObj(categoryObj))
+      return
 
-      local isToggledCategory = category == categoryId
+    local decalsListObj = categoryObj.findObject("collapse_content_" + categoryBlockId)
+    if (!::checkObj(decalsListObj))
+      return
 
-      local isOpen = categoryObj.collapsed == "no"
-      local open = isToggledCategory ? show : false
+    local data = generateDecalCategoryContent(category, decoratorType)
+    guiScene.replaceContentFromText(decalsListObj, data, data.len(), this)
 
-      if (open == isOpen)
-        continue
+    ::saveLocalByAccount(decoratorType.currentOpenedCategoryLocalSafePath, category)
 
-      local decalsListObj = categoryObj.findObject("collapse_content_" + categoryBlockId)
-      if (!::checkObj(decalsListObj))
-        return
+    local decalId = preSelectDecorator ? preSelectDecorator.id :
+      getSlotInfo(getCurrentDecoratorSlot(decoratorType), false, decoratorType).decalId
+    local decal = ::g_decorator.getDecorator(decalId, decoratorType)
+    local index = decal && decal.category == category? decal.catIndex : 0
+    editableDecoratorId = decal? decalId : null
 
-      categoryObj.collapsed = open ? "no" : "yes"
-      decalsListObj.show(open)
-
-      local data = open ? generateDecalCategoryContent(category, decoratorType) : ""
-      guiScene.replaceContentFromText(decalsListObj, data, data.len(), this)
-
-      if (isToggledCategory && open)
-      {
-        ::saveLocalByAccount(decoratorType.currentOpenedCategoryLocalSafePath, categoryId)
-
-        local decalId = preSelectDecorator ? preSelectDecorator.id :
-          getSlotInfo(getCurrentDecoratorSlot(decoratorType), false, decoratorType).decalId
-        local decal = ::g_decorator.getDecorator(decalId, decoratorType)
-        local index = decal && decal.category == category? decal.catIndex : 0
-        editableDecoratorId = decal? decalId : null
-
-        decalsListObj.setValue(index)
-        setCurrentFocusObj(decalsListObj)
-        scrollDecalsCategory(categoryId, decoratorType)
-      }
-    }
+    decalsListObj.setValue(index)
+    scrollDecalsCategory(category, decoratorType)
+    guiScene.applyPendingChanges(false)
+    ::move_mouse_on_child_by_value(decalsListObj)
   }
 
   function scrollDecalsCategory(categoryId, decoratorType)
@@ -1656,7 +1564,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     local categoryBlockId = decorator.decoratorType.categoryWidgetIdPrefix + decorator.category
     local categoryObj = getObj(categoryBlockId)
 
-    if (!::checkObj(categoryObj) || categoryObj.collapsed != "no" )
+    if (!::checkObj(categoryObj) || categoryObj.isVisible())
       return
 
     local decalsListObj = categoryObj.findObject("collapse_content_" + categoryBlockId)
@@ -1984,7 +1892,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (unit.isAir() || unit.isHelicopter())
     {
-      ::hangar_set_dm_viewer_mode(obj.getValue() ? DM_VIEWER_EXTERIOR : DM_VIEWER_NONE)
+      ::hangar_set_dm_viewer_mode(obj.getValue() ? ::DM_VIEWER_EXTERIOR : ::DM_VIEWER_NONE)
       if (obj.getValue())
       {
         local bObj = scene.findObject("dmg_skin_state")
@@ -2123,6 +2031,14 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
   function onBuy()
   {
     unitActions.buy(unit, "customization")
+  }
+
+  function onBtnMarketplaceFindUnit(obj)
+  {
+    local item = ::ItemsManager.findItemById(unit.marketplaceItemdefId)
+    if (!(item?.hasLink() ?? false))
+      return
+    item.openLink()
   }
 
   function onEventUnitBought(params)
@@ -2307,10 +2223,6 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     local headerObj = mObj.findObject("decals_wnd_header")
     if (::check_obj(headerObj))
       headerObj.setValue(::loc(currentType.listHeaderLocId))
-
-    local focusObj = show ? getCurDecalsListObj(false) : slotsObj
-    if (::check_obj(focusObj))
-      setCurrentFocusObj(focusObj)
   }
 
   function onScreenClick()
@@ -2348,6 +2260,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (isValid())
       setDmgSkinMode(false)
     ::hangar_show_model_damaged(MDS_ORIGINAL)
+    ::hangar_prem_vehicle_view_close()
     guiScene.performDelayed(this, base.goBack)
   }
 
@@ -2389,9 +2302,10 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getCurrentFocusedType()
   {
-    local obj = getFocusItemObj(currentFocusItem, false)
-    if (obj)
-      return ::g_decorator_type.getTypeByListId(obj?.id)
+    if (scene.findObject("slots_list").isHovered())
+      return ::g_decorator_type.DECALS
+    if (scene.findObject("slots_attachable_list").isHovered())
+      return ::g_decorator_type.ATTACHABLES
     return ::g_decorator_type.UNKNOWN
   }
 

@@ -1,4 +1,5 @@
-local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
+local { set_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
+local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 local api = require("dagor.webpoll")
 
 const WEBPOLL_TOKENS_VALIDATION_TIMEOUT_MS = 3000000
@@ -62,7 +63,7 @@ local function webpollEvent(id, token, voted) {
 
   local idString = id.tostring()
   if (voted) {
-    ::set_blk_value_by_path(getVotedPolls(), idString, true)
+    set_blk_value_by_path(getVotedPolls(), idString, true)
     saveVotedPolls()
   }
   ::broadcastEvent("WebPollAuthResult", {pollId = idString})
@@ -156,7 +157,7 @@ local function clearOldVotedPolls(pollsTable) {
   for (local i = votedCount; i >= 0; i--) {
     local savedId = getVotedPolls().getParamName(i)
     if (!(savedId in pollsTable))
-      ::set_blk_value_by_path(getVotedPolls(), savedId, null)
+      set_blk_value_by_path(getVotedPolls(), savedId, null)
   }
   saveVotedPolls()
 }

@@ -1,6 +1,6 @@
 ::g_script_reloader.loadOnce("scripts/ranks_common_shared.nut")
 
-local avatars = ::require("scripts/user/avatars.nut")
+local avatars = require("scripts/user/avatars.nut")
 
 if (!("EUCT_TOTAL" in ::getroottable()))
   ::EUCT_TOTAL <- 7 //temporary to work without new exe

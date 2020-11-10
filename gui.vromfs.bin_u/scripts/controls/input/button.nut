@@ -48,7 +48,7 @@ class ::Input.Button extends ::Input.InputBase
 
   function getText()
   {
-    return ::getLocalizedControlShortName(preset, deviceId, buttonId)
+    return ::getLocalizedControlName(preset, deviceId, buttonId)
   }
 
   function getDeviceId()

@@ -1,137 +1,206 @@
-{
-  "model": "ger_aa_gmc_gepard_a",
-  "hasExpl": true,
-  "hasDmg2": true,
-  "collisionSphere0": [0.0,-1.5,0.0,5.0],
-  "collisionSphere1": [5.0,2.0,0.0,1.0],
-  "timeToFire": 5.0,
-  "subclass": "lightVehicle",
-  "moveType": "vehicle",
-  "maxFwdSpeed": 60.0,
-  "maxRevSpeed": 30.0,
-  "maxAngSpeed": 50.0,
-  "maxAccel": 40.0,
-  "maxDecel": 40.0,
-  "maxAngAccel0": 4.0,
-  "maxAngAccelV": 3.0,
-  "maxAngAccel": 170.0,
-  "groundNormSmoothViscosity": 0.1,
-  "minDistBetween": 10.0,
-  "mass": 60000.0,
-  "bulletHitFx": "ground_model_hit",
-  "partDamageFx": "part_damage",
-  "explosionFx": "ground_model_expl",
-  "fireFx": "ground_model_fire",
-  "destroysRendInstances": true,
-  "destroysTrees": true,
-  "expClass": "exp_aaa",
-  "attach": {
-    "inc_driver00": "german_middle_cap_driver"
+[
+  {
+    "model": "ger_aa_gmc_gepard_a"
   },
-  "DamageParts": {
-    "formatVersion": 2,
-    "armorClass": "RHA_tank",
-    "hp": 1000.0,
-    "cover": {
+  {
+    "hasExpl": true
+  },
+  {
+    "hasDmg2": true
+  },
+  {
+    "collisionSphere0": [0.0,-1.5,0.0,5.0]
+  },
+  {
+    "collisionSphere1": [5.0,2.0,0.0,1.0]
+  },
+  {
+    "timeToFire": 5.0
+  },
+  {
+    "fireFx": "fire_ground_black_fx"
+  },
+  {
+    "subclass": "lightVehicle"
+  },
+  {
+    "moveType": "vehicle"
+  },
+  {
+    "maxFwdSpeed": 60.0
+  },
+  {
+    "maxRevSpeed": 30.0
+  },
+  {
+    "maxAngSpeed": 50.0
+  },
+  {
+    "maxAccel": 40.0
+  },
+  {
+    "maxDecel": 40.0
+  },
+  {
+    "maxAngAccel0": 4.0
+  },
+  {
+    "maxAngAccelV": 3.0
+  },
+  {
+    "maxAngAccel": 170.0
+  },
+  {
+    "groundNormSmoothViscosity": 0.1
+  },
+  {
+    "minDistBetween": 10.0
+  },
+  {
+    "mass": 60000.0
+  },
+  {
+    "bulletHitFx": "ground_model_hit"
+  },
+  {
+    "partDamageFx": "part_damage"
+  },
+  {
+    "explosionFx": "ground_model_expl"
+  },
+  {
+    "fireFx": "ground_model_fire"
+  },
+  {
+    "destroysRendInstances": true
+  },
+  {
+    "destroysTrees": true
+  },
+  {
+    "expClass": "exp_aaa"
+  },
+  {
+    "attach": {
+      "inc_driver00": "german_middle_cap_driver"
+    }
+  },
+  {
+    "DamageParts": {
+      "formatVersion": 2,
       "armorClass": "RHA_tank",
-      "hp": 480.0,
-      "armorThickness": 2.0,
-      "engine_dm": {
-        "armorThickness": 1.0,
-        "hp": 30.0,
-        "explosionDamageMult": 3.0
-      },
-      "body_dm": {
+      "hp": 1000.0,
+      "cover": {
+        "armorClass": "RHA_tank",
+        "hp": 480.0,
         "armorThickness": 2.0,
-        "hp": 60.0,
-        "explosionDamageMult": 3.0
-      }
-    }
-  },
-  "DamageEffects": [
-    {
-      "part": {
-        "name": "body_dm",
-        "onHit": [],
-        "onKill": {
-          "fire": 2.0,
-          "smoke": 5.0,
-          "expl": 5.0
-        }
-      }
-    },
-    {
-      "part": {
-        "name": "engine_dm",
-        "onHit": {
-          "smoke": 0.1
+        "engine_dm": {
+          "armorThickness": 1.0,
+          "hp": 30.0,
+          "explosionDamageMult": 3.0
         },
-        "onKill": {
-          "body_dm": 1.0
+        "body_dm": {
+          "armorThickness": 2.0,
+          "hp": 60.0,
+          "explosionDamageMult": 3.0
         }
       }
     }
-  ],
-  "explosion": {
-    "expl": {
-      "node": "body",
-      "partNo": 0,
-      "timeToExplode": 1.0,
-      "preEffectName": "ground_model_fire",
-      "postEffectName": "ground_model_gray_smoke",
-      "explosionEffectName": "ground_model_expl",
-      "timeForPostEffect": 450.0,
-      "preScale": 4.0,
-      "postScale": 4.0
+  },
+  {
+    "DamageEffects": [
+      {
+        "part": {
+          "name": "body_dm",
+          "onHit": [],
+          "onKill": {
+            "fire": 2.0,
+            "smoke": 5.0,
+            "expl": 5.0
+          }
+        }
+      },
+      {
+        "part": {
+          "name": "engine_dm",
+          "onHit": {
+            "smoke": 0.1
+          },
+          "onKill": {
+            "body_dm": 1.0
+          }
+        }
+      }
+    ]
+  },
+  {
+    "explosion": {
+      "expl": {
+        "node": "body",
+        "partNo": 0,
+        "timeToExplode": 0.5,
+        "preEffectName": "",
+        "postEffectName": "smoke_ground_black_fx",
+        "explosionEffectName": "explosion_midair_medium",
+        "timeForPostEffect": 60.0,
+        "preScale": 1.0,
+        "postScale": 1.0
+      }
     }
   },
-  "sound": {
-    "path": "sounds/engines",
-    "pathStudio": "aircraft/engines",
-    "engine": "truck"
+  {
+    "sound": {
+      "path": "sounds/engines",
+      "pathStudio": "aircraft/engines",
+      "engine": "truck"
+    }
   },
-  "class_tags": {
-    "mediterran": true,
-    "westernfront": true,
-    "easternfront": true,
-    "country_germany": true,
-    "light_air_defence": true,
-    "year1943": true,
-    "year1944": true,
-    "year1945": true
+  {
+    "class_tags": {
+      "mediterran": true,
+      "westernfront": true,
+      "easternfront": true,
+      "country_germany": true,
+      "light_air_defence": true,
+      "year1943": true,
+      "year1944": true,
+      "year1945": true
+    }
   },
-  "weapon": {
-    "trigger": "gunner0",
-    "blk": "gameData/weapons/groundModels_weapons/common_AAgun40mm.blk",
-    "emitter": "gun1",
-    "flash": "flame1",
-    "defaultYaw": 0.0,
-    "defaultPitch": 30.0,
-    "speedYaw": 36.0,
-    "speedPitch": 36.0,
-    "fireConeAngle": 15.0,
-    "salvoAmount": 100.0,
-    "ChainfireTime": 5.0,
-    "DelayAfterShoot": 5.0,
-    "AttackMaxDistance": 4000.0,
-    "AttackMaxRadius": 4000.0,
-    "AttackMaxHeight": 4000.0,
-    "accuracyAir": 0.6,
-    "accuracyGnd": 0.0,
-    "errMeasureVel": 0.0,
-    "errTargettingOn100kmph": 0.0,
-    "errMeasureVelFast": 100.0,
-    "errMeasureVelFwdShift": 1.0,
-    "errMeasureVelDir": 10.0,
-    "errTargetting": 0.0,
-    "errExplTime": 0.02,
-    "turret": {
-      "head": "turret1",
-      "gun": "gun1"
-    },
-    "limits": {
-      "yaw": [-360.0,360.0],
-      "pitch": [10.0,85.0]
+  {
+    "weapon": {
+      "trigger": "gunner0",
+      "blk": "gameData/weapons/groundModels_weapons/common_AAgun40mm.blk",
+      "emitter": "gun1",
+      "flash": "flame1",
+      "defaultYaw": 0.0,
+      "defaultPitch": 30.0,
+      "speedYaw": 36.0,
+      "speedPitch": 36.0,
+      "fireConeAngle": 15.0,
+      "salvoAmount": 100.0,
+      "ChainfireTime": 5.0,
+      "DelayAfterShoot": 5.0,
+      "AttackMaxDistance": 4000.0,
+      "AttackMaxRadius": 4000.0,
+      "AttackMaxHeight": 4000.0,
+      "accuracyAir": 0.6,
+      "accuracyGnd": 0.0,
+      "errMeasureVel": 0.0,
+      "errTargettingOn100kmph": 0.0,
+      "errMeasureVelFast": 100.0,
+      "errMeasureVelFwdShift": 1.0,
+      "errMeasureVelDir": 10.0,
+      "errTargetting": 0.0,
+      "errExplTime": 0.02,
+      "turret": {
+        "head": "turret1",
+        "gun": "gun1"
+      },
+      "limits": {
+        "yaw": [-360.0,360.0],
+        "pitch": [10.0,85.0]
+      }
     }
   }
-}
+]

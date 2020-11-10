@@ -1,7 +1,7 @@
-local enums = ::require("sqStdlibs/helpers/enums.nut")
-local callback = ::require("sqStdLibs/helpers/callback.nut")
-local u = ::require("sqStdLibs/helpers/u.nut")
-local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
+local callback = require("sqStdLibs/helpers/callback.nut")
+local u = require("sqStdLibs/helpers/u.nut")
+local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 
 local netAssertsList = []
 ::script_net_assert_once <- function script_net_assert_once(id, msg)

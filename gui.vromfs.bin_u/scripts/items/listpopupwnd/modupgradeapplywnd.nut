@@ -1,4 +1,4 @@
-local weaponryEffects = ::require("scripts/weaponry/weaponryEffects.nut")
+local weaponryEffects = require("scripts/weaponry/weaponryEffects.nut")
 
 class ::gui_handlers.ModUpgradeApplyWnd extends ::gui_handlers.ItemsListWndBase
 {
@@ -6,10 +6,6 @@ class ::gui_handlers.ModUpgradeApplyWnd extends ::gui_handlers.ItemsListWndBase
 
   unit = null
   mod = null
-
-  focusArray = [
-    @() itemsList.len() > 1 ? "items_list" : null
-  ]
 
   static function open(unitToActivate, modToActivate, wndAlignObj = null, wndAlign = AL_ORIENT.TOP)
   {

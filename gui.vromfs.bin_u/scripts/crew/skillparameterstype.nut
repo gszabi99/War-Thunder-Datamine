@@ -1,6 +1,6 @@
 local { getMeasureTypeBySkillParameterName } = require("scripts/crew/crewSkills.nut")
 
-local enums = ::require("sqStdlibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 ::g_skill_parameters_type <- {
   types = []
 }

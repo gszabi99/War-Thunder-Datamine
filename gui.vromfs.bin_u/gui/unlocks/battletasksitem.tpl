@@ -132,7 +132,7 @@ expandable {
           text:t = '#battletask/reroll'
           on_click:t = 'onTaskReroll'
           hideText:t='yes'
-          btnName:t='A'
+          btnName:t='Y'
           buttonGlance{}
           buttonWink{}
           ButtonImg {}
@@ -151,11 +151,11 @@ expandable {
           position:t='relative'
           text:t = '#mainmenu/battleTasks/receiveReward'
           on_click:t = 'onGetRewardForTask'
-          btnName:t='A'
+          btnName:t='Y'
           visualStyle:t='secondary'
           buttonWink {}
           ButtonImg {
-           showOnSelect:t='focus'
+           showOnSelect:t='hover'
           }
         }
         <</canGetReward>>

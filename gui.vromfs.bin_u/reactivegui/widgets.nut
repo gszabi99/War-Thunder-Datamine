@@ -24,14 +24,12 @@ local widgetsMap = {
 
     ::gui_scene.removePanel(0)
     ::gui_scene.removePanel(1)
-    if (hudUnitType.isHelicopter())
-    {
+    if (hudUnitType.isHelicopter()) {
       ::gui_scene.addPanel(0, mfdHud)
       ::gui_scene.addPanel(1, heliIlsHud)
       return helicopterHud
     }
-    else if (hudUnitType.isAir())
-    {
+    else if (hudUnitType.isAir()) {
       ::gui_scene.addPanel(0, planeMfd)
       return airHud
     }

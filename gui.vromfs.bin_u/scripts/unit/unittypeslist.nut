@@ -1,4 +1,4 @@
-local enums = require("sqStdlibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 
 const BULLETS_SETS_QUANTITY_SHORT = 4
 
@@ -32,10 +32,13 @@ local unitTypes = {
     fontIcon = ""
     testFlightIcon = ""
     testFlightName = ""
+    bailoutName = ""
+    bailoutQuestion = ""
     canChangeViewType = false
     hudTypeCode = ::HUD_TYPE_UNKNOWN
     missionSettingsAvailabilityFlag = ""
     isUsedInKillStreaks = false
+    isPresentOnMatching = true
 
     firstChosenTypeUnlockName = null
     crewUnitType = ::CUT_INVALID
@@ -48,6 +51,8 @@ local unitTypes = {
       { return firstChosenTypeUnlockName != null && ::is_unlocked(-1, firstChosenTypeUnlockName) }
     getTestFlightText = function() { return ::loc("mainmenu/btn" + testFlightName ) }
     getTestFlightUnavailableText = function() { return ::loc("mainmenu/cant" + testFlightName ) }
+    getBailoutButtonText = @() ::loc($"flightmenu/{bailoutName}")
+    getBailoutQuestionText = @() ::loc($"flightmenu/{bailoutQuestion}")
     getArmyLocName = function() { return ::loc("mainmenu/" + armyId, "") }
     getCrewArmyLocName = @() ::loc("unit_type/" + (crewUnitTypeConfig?[crewUnitType]?.crewTag ?? ""))
     getCrewTag = @() crewUnitTypeConfig?[crewUnitType]?.crewTag ?? ""

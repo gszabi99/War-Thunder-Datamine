@@ -8,13 +8,6 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
   keepLoaded = true
   sceneBlkName = "gui/mainmenu/topMenuScene.blk"
 
-  gamercardTopIds = [ //OVERRIDE
-    function() { return leftSectionHandlerWeak && leftSectionHandlerWeak.getFocusObj() }
-    "gamercard_panel_left"
-    "gamercard_panel_right"
-    function() { return rightSectionHandlerWeak && rightSectionHandlerWeak.getFocusObj() }
-  ]
-
   leftSectionHandlerWeak = null
 
   topMenu = true
@@ -75,10 +68,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
         },
         "nav-topMenu"
       )
-      currentFocusItem = topMenuShopActive.value ? 2 : 11 //shop : slotbar
-      initFocusArray()
     }
-    delayedRestoreFocus()
   }
 
   function initTopMenuTimer()
@@ -187,16 +177,6 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
     return (topMenuShopActive.value && shopWeak) ? shopWeak.getCurrentEdiff() : ::get_current_ediff()
   }
 
-  function focusShopTable()
-  {
-    if (!topMenuShopActive.value)
-        return restoreFocus()
-    local obj = getObj("shop_items_list")
-    if (::checkObj(obj))
-      obj.select()
-    checkCurrentFocusItem(obj)
-  }
-
   function canShowShop()
   {
     return !topMenuShopActive.value
@@ -246,7 +226,6 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
     activateShopImpl(topMenuShopActive.value, unitType)
     if (shopWeak && shopWeak.getCurrentEdiff() != ::get_current_ediff())
       shopWeak.updateSlotbarDifficulty()
-    focusShopTable()
 
     ::broadcastEvent("ShopWndSwitched")
   }
@@ -369,25 +348,6 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
       }
     })
   }
-
-  function getMainFocusObjByIdx(idx)
-  {
-    local id = "getMainFocusObj" + ((idx == 1)? "" : idx)
-    local focusHandler = null
-    if (topMenuShopActive.value && shopWeak)
-      focusHandler = shopWeak
-    else
-      focusHandler = ::handlersManager.getActiveBaseHandler()
-
-    if (focusHandler && (id in focusHandler))
-      return focusHandler[id].call(focusHandler)
-    return null
-  }
-
-  function getMainFocusObj()  { return getMainFocusObjByIdx(1) }
-  function getMainFocusObj2() { return getMainFocusObjByIdx(2) }
-  function getMainFocusObj3() { return getMainFocusObjByIdx(3) }
-  function getMainFocusObj4() { return getMainFocusObjByIdx(4) }
 
   function onSceneActivate(show)
   {

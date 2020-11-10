@@ -31,7 +31,6 @@ class ::gui_handlers.MultiSelectMenu extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType      = handlerType.MODAL
   sceneTplName = "gui/multiSelectMenu"
-  shouldBlurSceneBg = false
   needVoiceChat = false
 
   list = null
@@ -66,7 +65,8 @@ class ::gui_handlers.MultiSelectMenu extends ::gui_handlers.BaseGuiHandlerWT
       return goBack()
 
     align = ::g_dagui_utils.setPopupMenuPosAndAlign(alignObj, align, scene.findObject("main_frame"))
-    scene.findObject("multi_select").select()
+    guiScene.applyPendingChanges(false)
+    ::move_mouse_on_child(scene.findObject("multi_select"), 0)
   }
 
   function initListValues()

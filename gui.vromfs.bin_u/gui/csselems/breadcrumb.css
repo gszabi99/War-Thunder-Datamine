@@ -1,0 +1,36 @@
+Breadcrumb {
+  position: absolute;
+  flow: horizontal;
+}
+
+Breadcrumb > Button_text > text,
+Breadcrumb > Button_text > btnText {
+  position: relative;
+  top: 0.5ph-0.5h;
+  color:@commonMenuButtonColor;
+}
+
+Breadcrumb > Button_text > img {
+  size: 1@cIco, 1@cIco;
+  position: relative;
+  top: 0.5ph-0.5h;
+  background-image: #ui/gameuiskin#spinnerListBox_arrow_up.svg;
+  rotation: 270;
+  background-svg-size: 1@cIco, 1@cIco;
+  background-color:@commonMenuButtonColor;
+}
+
+Breadcrumb > Button_text > textareaNoTab {
+  position: relative;
+  top: 0.5ph-0.5h;
+  font:@fontBigBold;
+  color: @activeTextColor;
+}
+
+Breadcrumb > Button_text:hover > btnText {
+  color:@activeTextColor;
+}
+
+Breadcrumb > Button_text:hover > img {
+  background-color:@activeTextColor;
+}

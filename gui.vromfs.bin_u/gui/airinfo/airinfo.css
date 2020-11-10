@@ -1,0 +1,46 @@
+airInfoBlock {
+  flow:horizontal;
+  pos: 0, @infoPanelVertPosition;
+  position:absolute;
+  min-height:4@sIco;
+  overflow:hidden;
+  css-hier-invalidate:yes;
+  total-input-transparent:yes;
+  behaviour:Timer;
+}
+
+airInfoBlock > bgGradientLeft {
+  size:pw - 0.5(sw - @swMain), ph;
+  pos:pw-w, 0;
+  position:absolute;
+  background-image: #ui/gameuiskin#expandable_item_ww_transp_reflect;
+  re-type:9rect;
+  background-position:3, 3, 33, 3;
+  color-factor:175;
+  background-color:@white;
+  background-repeat:expand;
+}
+
+airInfoBlock[toggled=no] > bgGradientLeft {
+  background-color:@transparent;
+}
+
+airInfoBlock textarea, airInfoBlock text {
+  font:@fontSmall;
+  paragraph-indent:0;
+  padding-left:0; padding-right:0;
+}
+
+airInfoBlock textarea[crew_data=yes], airInfoBlock text[crew_data=yes] {
+  font:@fontNormal;
+}
+
+airInfoHeader {
+  re-type:textarea;
+  behaviour:textArea;
+  color:@lightHighlightedTextColor;
+  font:@fontNormalBold;
+  text-align:center;
+  position:relative;
+  pos: 0, 0.5ph-0.5h;
+}

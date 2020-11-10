@@ -1,10 +1,13 @@
 local safeAreaMenu = require("scripts/options/safeAreaMenu.nut")
 local safeAreaHud = require("scripts/options/safeAreaHud.nut")
 local contentPreset = require("scripts/customization/contentPreset.nut")
-local soundDevice = require_native("soundDevice")
+local soundDevice = ::require_native("soundDevice")
 local { chatStatesCanUseVoice } = require("scripts/chat/chatStates.nut")
 local { onSystemOptionsApply, canUseGraphicsOptions } = require("scripts/options/systemOptions.nut")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+//
+
+
 
 local getSystemOptions = @() {
   name = "graphicsParameters"
@@ -28,15 +31,18 @@ local getMainOptions = function()
     isSearchAvaliable = true
     options = [
       ["options/mainParameters"],
+      [::USEROPT_LANGUAGE, "spinner", ! ::is_in_flight() && ::canSwitchGameLocalization()],
       [::USEROPT_PS4_CROSSPLAY, "spinner", isPlatformSony && ::has_feature("PS4CrossNetwork") && !::is_in_flight()],
       [::USEROPT_PS4_ONLY_LEADERBOARD, "spinner", isPlatformSony && ::has_feature("ConsoleSeparateLeaderboards")],
-      [::USEROPT_LANGUAGE, "spinner", ! ::is_in_flight() && ::canSwitchGameLocalization()],
-      [::USEROPT_AUTOLOGIN, "spinner", ! ::is_in_flight() && !(isPlatformSony || isPlatformXboxOne)],
+      [::USEROPT_CLUSTER, "spinner", ! ::is_in_flight() && isPlatformSony],
+      //
+
+
       [::USEROPT_FONTS_CSS, "spinner"],
       [::USEROPT_GAMMA, "slider", !::is_hdr_enabled() && ::target_platform != "macosx"
                                   && (!::is_platform_windows
                                       || ::getSystemConfigOption("video/mode") == "fullscreen") ],
-      [::USEROPT_CLUSTER, "spinner", ! ::is_in_flight() && isPlatformSony],
+      [::USEROPT_AUTOLOGIN, "spinner", ! ::is_in_flight() && !(isPlatformSony || isPlatformXboxOne)],
 
       ["options/header/commonBattleParameters"],
       [::USEROPT_HUD_SHOW_BONUSES, "spinner"],
@@ -71,6 +77,7 @@ local getMainOptions = function()
       [::USEROPT_ACTIVATE_AIRBORNE_RADAR_ON_SPAWN, "spinner"],
       [::USEROPT_USE_RECTANGULAR_RADAR_INDICATOR, "spinner"],
       [::USEROPT_USE_RADAR_HUD_IN_COCKPIT, "spinner"],
+      [::USEROPT_ACTIVATE_AIRBORNE_ACTIVE_COUNTER_MEASURES_ON_SPAWN, "spinner"],
       [::USEROPT_AIR_RADAR_SIZE, "slider"],
       [::USEROPT_CROSSHAIR_TYPE, "combobox"],
       [::USEROPT_CROSSHAIR_COLOR, "combobox"],
@@ -95,6 +102,7 @@ local getMainOptions = function()
         ::has_feature("Tanks") && ( ! ::is_in_flight() || ! ::is_tank_gunner_camera_from_sight_available())],
       [::USEROPT_SHOW_DESTROYED_PARTS, "spinner", ::has_feature("Tanks")],
       [::USEROPT_ACTIVATE_GROUND_RADAR_ON_SPAWN, "spinner", ::has_feature("Tanks")],
+      [::USEROPT_ACTIVATE_GROUND_ACTIVE_COUNTER_MEASURES_ON_SPAWN, "spinner", ::has_feature("Tanks")],
       [::USEROPT_TACTICAL_MAP_SIZE, "slider"],
       [::USEROPT_MAP_ZOOM_BY_LEVEL, "spinner", !(isPlatformSony || isPlatformXboxOne) && !::is_platform_android],
       // show option by code != -1 need for compatibility with 1_93_0_X

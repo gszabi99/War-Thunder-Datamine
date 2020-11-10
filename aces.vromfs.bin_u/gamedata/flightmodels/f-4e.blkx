@@ -112,9 +112,6 @@
         },
         "cannon4_dm": {
           "hp": 15.0
-        },
-        "radar_dm": {
-          "hp": 15.0
         }
       },
       "armor8_5": {
@@ -212,6 +209,14 @@
         "wing2_r_dm": {
           "genericDamageMult": 0.3,
           "hp": 80.5
+        },
+        "wing_l_dm": {
+          "genericDamageMult": 0.3,
+          "hp": 80.5
+        },
+        "wing_r_dm": {
+          "genericDamageMult": 0.3,
+          "hp": 80.5
         }
       },
       "dural": {
@@ -237,6 +242,11 @@
         },
         "spar_r_dm": {
           "hp": 60.5
+        }
+      },
+      "dural5": {
+        "radar_dm": {
+          "hp": 35.0
         }
       },
       "protected_controls": {
@@ -306,14 +316,6 @@
         },
         "tank8_dm": {
           "hp": 120.5
-        }
-      },
-      "wood": {
-        "wing_l_dm": {
-          "hp": 140.7
-        },
-        "wing_r_dm": {
-          "hp": 140.7
         }
       }
     }
@@ -1641,8 +1643,8 @@
         "part": {
           "name": "spar1_l_dm",
           "onKill": {
-            "nothing": 0.0,
-            "cut": 1.0
+            "nothing": 2.0,
+            "cut": 4.0
           }
         }
       },
@@ -1650,8 +1652,8 @@
         "part": {
           "name": "spar1_r_dm",
           "onKill": {
-            "nothing": 0.0,
-            "cut": 1.0
+            "nothing": 2.0,
+            "cut": 4.0
           }
         }
       },
@@ -1659,8 +1661,8 @@
         "part": {
           "name": "spar2_l_dm",
           "onKill": {
-            "nothing": 0.0,
-            "cut": 1.0
+            "nothing": 2.0,
+            "cut": 4.0
           }
         }
       },
@@ -1668,8 +1670,8 @@
         "part": {
           "name": "spar2_r_dm",
           "onKill": {
-            "nothing": 0.0,
-            "cut": 1.0
+            "nothing": 2.0,
+            "cut": 4.0
           }
         }
       },
@@ -2901,11 +2903,13 @@
           "altitude_hour": [0.0,10000.0],
           "altitude_min": [0.0,1000.0],
           "altitude1_hour": [0.0,100000.0],
+          "radio_altitude": [0.0,5000.0],
           "altitude_koef": 3.28,
           "bank": [-8.0,8.0],
           "turn": [-0.23562,0.23562],
-          "aviahorizon_pitch": [-180.0,180.0],
+          "aviahorizon_pitch": [-90.0,90.0],
           "aviahorizon_roll": [-180.0,180.0],
+          "aoa": [0.0,30.0],
           "compass": [0.0,360.0],
           "compass1": [0.0,360.0],
           "compass2": [0.0,360.0],
@@ -2994,6 +2998,7 @@
       {
         "Weapon": {
           "trigger": "flares",
+          "startFx": "",
           "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk",
           "emitter": "emtr_flare1",
           "bullets": 30,
@@ -3004,6 +3009,7 @@
       {
         "Weapon": {
           "trigger": "flares",
+          "startFx": "",
           "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk",
           "emitter": "emtr_flare2",
           "bullets": 30,
@@ -3014,6 +3020,7 @@
       {
         "Weapon": {
           "trigger": "flares",
+          "startFx": "",
           "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk",
           "emitter": "emtr_flare3",
           "bullets": 15,
@@ -3024,6 +3031,7 @@
       {
         "Weapon": {
           "trigger": "flares",
+          "startFx": "",
           "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk",
           "emitter": "emtr_flare4",
           "bullets": 15,
@@ -4889,6 +4897,7 @@
             {
               "Weapon": {
                 "trigger": "flares",
+                "startFx": "",
                 "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk",
                 "emitter": "emtr_flare1",
                 "bullets": 30,
@@ -4899,6 +4908,7 @@
             {
               "Weapon": {
                 "trigger": "flares",
+                "startFx": "",
                 "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk",
                 "emitter": "emtr_flare2",
                 "bullets": 30,
@@ -4909,6 +4919,7 @@
             {
               "Weapon": {
                 "trigger": "flares",
+                "startFx": "",
                 "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk",
                 "emitter": "emtr_flare3",
                 "bullets": 15,
@@ -4919,6 +4930,7 @@
             {
               "Weapon": {
                 "trigger": "flares",
+                "startFx": "",
                 "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk",
                 "emitter": "emtr_flare4",
                 "bullets": 15,

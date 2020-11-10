@@ -2,7 +2,196 @@
   "explMats": {
     "default": {
       "shader": "explosion_patch",
-      "normalMap": "explosion_patch_rocks_n"
+      "normalMap": "explosion_patch_rocks_n",
+      "rendinst_normalMap": "explosion_patch_environment_n",
+      "rendinst_colorMap": "explosion_patch_environment_c",
+      "rendinstProps": {
+        "pr_gen": {
+          "tc": [0.0,0.0,0.5,0.25],
+          "sizeScale": 0.7,
+          "randomCount": 2
+        },
+        "st_gen": {
+          "tc": [0.0,0.0,0.5,0.25],
+          "sizeScale": 0.7,
+          "randomCount": 2
+        },
+        "pr_splash": {
+          "tc": [0.5,0.0,0.75,0.25],
+          "sizeScale": 0.7,
+          "randomCount": 1
+        },
+        "st_splash": {
+          "tc": [0.5,0.0,0.75,0.25],
+          "sizeScale": 0.7,
+          "randomCount": 1
+        },
+        "pr_sub": {
+          "tc": [0.0,0.0,0.5,0.25],
+          "sizeScale": 0.7,
+          "randomCount": 2
+        },
+        "st_sub": {
+          "tc": [0.0,0.0,0.5,0.25],
+          "sizeScale": 0.7,
+          "randomCount": 2
+        },
+        "pr_jet": {
+          "tc": [0.5,0.0,0.75,0.25],
+          "sizeScale": 0.7,
+          "randomCount": 1
+        },
+        "st_jet": {
+          "tc": [0.5,0.0,0.75,0.25],
+          "sizeScale": 0.7,
+          "randomCount": 1
+        }
+      }
+    },
+    "bricks_red": {
+      "shader": "explosion_patch_color",
+      "normalMap": "explosion_patch_ps_n",
+      "colorMap": "explosion_patch_ps_c",
+      "rendinst_normalMap": "explosion_patch_environment_n",
+      "rendinst_colorMap": "explosion_patch_environment_c",
+      "rendinstProps": {
+        "pr_gen": {
+          "tc": [0.75,0.0,1.0,0.25],
+          "sizeScale": 0.7,
+          "randomCount": 1
+        },
+        "st_gen": {
+          "tc": [0.75,0.0,1.0,0.25],
+          "sizeScale": 0.7,
+          "randomCount": 1
+        },
+        "pr_splash": {
+          "tc": [0.75,0.25,1.0,0.5],
+          "sizeScale": 0.7,
+          "randomCount": 1
+        },
+        "st_splash": {
+          "tc": [0.75,0.25,1.0,0.5],
+          "sizeScale": 0.7,
+          "randomCount": 1
+        },
+        "pr_sub": {
+          "tc": [0.75,0.0,1.0,0.25],
+          "sizeScale": 0.7,
+          "randomCount": 1
+        },
+        "st_sub": {
+          "tc": [0.75,0.0,1.0,0.25],
+          "sizeScale": 0.7,
+          "randomCount": 1
+        },
+        "pr_jet": {
+          "tc": [0.75,0.25,1.0,0.5],
+          "sizeScale": 0.7,
+          "randomCount": 1
+        },
+        "st_jet": {
+          "tc": [0.75,0.25,1.0,0.5],
+          "sizeScale": 0.7,
+          "randomCount": 1
+        }
+      }
+    },
+    "glass": {
+      "shader": "explosion_patch",
+      "normalMap": "explosion_patch_rocks_n",
+      "rendinst_normalMap": "explosion_patch_environment_n",
+      "rendinst_colorMap": "explosion_patch_environment_c",
+      "rendinstProps": {
+        "pr_gen": {
+          "tc": [0.0,0.75,0.75,1.0],
+          "sizeScale": 0.6,
+          "randomCount": 3
+        },
+        "st_gen": {
+          "tc": [0.0,0.75,0.75,1.0],
+          "sizeScale": 0.6,
+          "randomCount": 3
+        },
+        "pr_splash": {
+          "tc": [0.75,0.75,1.0,1.0],
+          "sizeScale": 0.6,
+          "randomCount": 1
+        },
+        "st_splash": {
+          "tc": [0.75,0.75,1.0,1.0],
+          "sizeScale": 0.6,
+          "randomCount": 1
+        },
+        "pr_sub": {
+          "tc": [0.0,0.75,0.75,1.0],
+          "sizeScale": 0.6,
+          "randomCount": 3
+        },
+        "st_sub": {
+          "tc": [0.0,0.75,0.75,1.0],
+          "sizeScale": 0.6,
+          "randomCount": 3
+        },
+        "pr_jet": {
+          "tc": [0.75,0.75,1.0,1.0],
+          "sizeScale": 0.6,
+          "randomCount": 1
+        },
+        "st_jet": {
+          "tc": [0.75,0.75,1.0,1.0],
+          "sizeScale": 0.6,
+          "randomCount": 1
+        }
+      }
+    },
+    "glass_small": {
+      "shader": "explosion_patch",
+      "normalMap": "explosion_patch_rocks_n",
+      "rendinst_normalMap": "explosion_patch_environment_n",
+      "rendinst_colorMap": "explosion_patch_environment_c",
+      "rendinstProps": {
+        "pr_gen": {
+          "tc": [0.0,0.75,0.75,1.0],
+          "sizeScale": 0.25,
+          "randomCount": 3
+        },
+        "st_gen": {
+          "tc": [0.0,0.75,0.75,1.0],
+          "sizeScale": 0.25,
+          "randomCount": 3
+        },
+        "pr_splash": {
+          "tc": [0.75,0.75,1.0,1.0],
+          "sizeScale": 0.25,
+          "randomCount": 1
+        },
+        "st_splash": {
+          "tc": [0.75,0.75,1.0,1.0],
+          "sizeScale": 0.25,
+          "randomCount": 1
+        },
+        "pr_sub": {
+          "tc": [0.0,0.75,0.75,1.0],
+          "sizeScale": 0.25,
+          "randomCount": 3
+        },
+        "st_sub": {
+          "tc": [0.0,0.75,0.75,1.0],
+          "sizeScale": 0.25,
+          "randomCount": 3
+        },
+        "pr_jet": {
+          "tc": [0.75,0.75,1.0,1.0],
+          "sizeScale": 0.25,
+          "randomCount": 1
+        },
+        "st_jet": {
+          "tc": [0.75,0.75,1.0,1.0],
+          "sizeScale": 0.25,
+          "randomCount": 1
+        }
+      }
     },
     "horLandMesh": {
       "shader": "explosion_patch_color",
@@ -20,6 +209,8 @@
       "shader": "explosion_patch_color",
       "normalMap": "explosion_patch_ps_n",
       "colorMap": "explosion_patch_ps_c",
+      "rendinst_normalMap": "explosion_patch_environment_n",
+      "rendinst_colorMap": "explosion_patch_environment_c",
       "props": {
         "pr_gen": {
           "tc": [0.0,0.25,0.25,0.5],
@@ -53,12 +244,105 @@
           "tc": [0.75,0.5,1.0,0.75],
           "sizeScale": 5.0
         }
+      },
+      "rendinstProps": {
+        "pr_gen": {
+          "tc": [0.0,0.25,0.5,0.5],
+          "sizeScale": 0.3,
+          "randomCount": 2
+        },
+        "st_gen": {
+          "tc": [0.0,0.25,0.5,0.5],
+          "sizeScale": 0.3,
+          "randomCount": 2
+        },
+        "pr_splash": {
+          "tc": [0.5,0.25,0.75,0.5],
+          "sizeScale": 0.3,
+          "randomCount": 1
+        },
+        "st_splash": {
+          "tc": [0.5,0.25,0.75,0.5],
+          "sizeScale": 0.3,
+          "randomCount": 1
+        },
+        "pr_sub": {
+          "tc": [0.0,0.25,0.5,0.5],
+          "sizeScale": 0.3,
+          "randomCount": 2
+        },
+        "st_sub": {
+          "tc": [0.0,0.25,0.5,0.5],
+          "sizeScale": 0.3,
+          "randomCount": 2
+        },
+        "pr_jet": {
+          "tc": [0.5,0.25,0.75,0.5],
+          "sizeScale": 0.3,
+          "randomCount": 1
+        },
+        "st_jet": {
+          "tc": [0.5,0.25,0.75,0.5],
+          "sizeScale": 0.3,
+          "randomCount": 1
+        }
+      }
+    },
+    "stone": {
+      "shader": "explosion_patch_color",
+      "normalMap": "explosion_patch_ps_n",
+      "colorMap": "explosion_patch_ps_c",
+      "rendinst_normalMap": "explosion_patch_environment_n",
+      "rendinst_colorMap": "explosion_patch_environment_c",
+      "rendinstProps": {
+        "pr_gen": {
+          "tc": [0.0,0.0,0.5,0.25],
+          "sizeScale": 0.7,
+          "randomCount": 2
+        },
+        "st_gen": {
+          "tc": [0.0,0.0,0.5,0.25],
+          "sizeScale": 0.7,
+          "randomCount": 2
+        },
+        "pr_splash": {
+          "tc": [0.5,0.0,0.75,0.25],
+          "sizeScale": 0.7,
+          "randomCount": 1
+        },
+        "st_splash": {
+          "tc": [0.5,0.0,0.75,0.25],
+          "sizeScale": 0.7,
+          "randomCount": 1
+        },
+        "pr_sub": {
+          "tc": [0.0,0.0,0.5,0.25],
+          "sizeScale": 0.7,
+          "randomCount": 2
+        },
+        "st_sub": {
+          "tc": [0.0,0.0,0.5,0.25],
+          "sizeScale": 0.7,
+          "randomCount": 2
+        },
+        "pr_jet": {
+          "tc": [0.5,0.0,0.75,0.25],
+          "sizeScale": 0.7,
+          "randomCount": 1
+        },
+        "st_jet": {
+          "tc": [0.5,0.0,0.75,0.25],
+          "sizeScale": 0.7,
+          "randomCount": 1
+        }
       }
     },
     "wood": {
       "shader": "explosion_patch_color",
       "normalMap": "explosion_patch_ps_n",
       "colorMap": "explosion_patch_ps_c",
+      "rendinst_normalMap": "explosion_patch_environment_n",
+      "rendinst_colorMap": "explosion_patch_environment_c",
       "props": {
         "pr_gen": {
           "tc": [0.0,0.0,0.25,0.25],
@@ -75,6 +359,48 @@
         "st_splash": {
           "tc": [0.75,0.0,1.0,0.25],
           "sizeScale": 2.5
+        }
+      },
+      "rendinstProps": {
+        "pr_gen": {
+          "tc": [0.0,0.5,0.75,0.75],
+          "sizeScale": 0.3,
+          "randomCount": 3
+        },
+        "st_gen": {
+          "tc": [0.0,0.5,0.75,0.75],
+          "sizeScale": 0.3,
+          "randomCount": 3
+        },
+        "pr_splash": {
+          "tc": [0.75,0.5,1.0,0.75],
+          "sizeScale": 0.3,
+          "randomCount": 1
+        },
+        "st_splash": {
+          "tc": [0.75,0.5,1.0,0.75],
+          "sizeScale": 0.3,
+          "randomCount": 1
+        },
+        "pr_sub": {
+          "tc": [0.0,0.5,0.75,0.75],
+          "sizeScale": 0.3,
+          "randomCount": 3
+        },
+        "st_sub": {
+          "tc": [0.0,0.5,0.75,0.75],
+          "sizeScale": 0.3,
+          "randomCount": 3
+        },
+        "pr_jet": {
+          "tc": [0.75,0.5,1.0,0.75],
+          "sizeScale": 0.3,
+          "randomCount": 1
+        },
+        "st_jet": {
+          "tc": [0.75,0.5,1.0,0.75],
+          "sizeScale": 0.3,
+          "randomCount": 1
         }
       }
     }

@@ -1,10 +1,10 @@
 local guidParser = require("scripts/guidParser.nut")
 local itemRarity = require("scripts/items/itemRarity.nut")
 local contentPreview = require("scripts/customization/contentPreview.nut")
-local skinLocations = ::require("scripts/customization/skinLocations.nut")
+local skinLocations = require("scripts/customization/skinLocations.nut")
 local stdMath = require("std/math.nut")
 
-class Decorator
+::Decorator <- class
 {
   id = ""
   blk = null

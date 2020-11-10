@@ -5,17 +5,11 @@ class ::gui_handlers.AddRadioModalHandler extends ::gui_handlers.BaseGuiHandlerW
   wndType = handlerType.MODAL
   sceneBlkName = "gui/popup/addRadio.blk"
 
-  focusArray = [
-    "newradio_name"
-    "newradio_url"
-  ]
-  currentFocusItem = 0
   editStationName = ""
 
   function initScreen()
   {
-    restoreFocus()
-    scene.findObject("newradio_name").select()
+    ::select_editbox(scene.findObject("newradio_name"))
     local nameRadio = ::loc("options/internet_radio_" + ((editStationName == "") ? "add" : "edit"))
     local titleRadio = scene.findObject("internet_radio_title")
     titleRadio.setValue(nameRadio)
@@ -47,11 +41,7 @@ class ::gui_handlers.AddRadioModalHandler extends ::gui_handlers.BaseGuiHandlerW
     return isEmpty ? ::loc("options/no_"+name+"_radio") : ""
   }
 
-  function onFocusUrl()
-  {
-    local guiScene = ::get_gui_scene()
-    guiScene["newradio_url"].select()
-  }
+  onFocusUrl = @() ::select_editbox(scene.findObject("newradio_url"))
 
   function onAddRadio()
   {

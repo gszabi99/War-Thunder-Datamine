@@ -1,4 +1,4 @@
-local enums = ::require("sqStdlibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 local platformModule = require("scripts/clientState/platform.nut")
 
 ::g_clan_log_type <- {

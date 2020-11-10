@@ -1,110 +1,166 @@
-{
-  "model": "37mm_61k_a",
-  "collisionSphere0": [0.0,-1.5,0.0,5.0],
-  "collisionSphere1": [5.0,2.0,0.0,1.0],
-  "timeToFire": 5.0,
-  "maxFwdSpeed": 0.0,
-  "maxRevSpeed": 0.0,
-  "maxAngSpeed": 0.0,
-  "maxAccel": 0.0,
-  "maxDecel": 0.0,
-  "maxAngAccel0": 0.0,
-  "maxAngAccelV": 0.0,
-  "maxAngAccel": 0.0,
-  "groundNormSmoothViscosity": 0.1,
-  "subclass": "fortification",
-  "onRadarAs": "aam",
-  "bulletHitFx": "ground_model_hit",
-  "partDamageFx": "part_damage",
-  "explosionFx": "ground_model_expl",
-  "fireFx": "ground_model_fire",
-  "toGround": true,
-  "expClass": "exp_aaa",
-  "attach": {
-    "inc_soldier": "sov_middle_soldier",
-    "inc_driver00": "sov_young_driver",
-    "inc_driver01": "sov_young_driver"
+[
+  {
+    "model": "37mm_61k_a"
   },
-  "DamageParts": {
-    "steel": {
-      "body_dm": {
-        "hp": 240.0
-      }
-    },
-    "armor50_tanks": {
-      "armor1_dm": {
-        "hp": 99999.0
-      }
+  {
+    "collisionSphere0": [0.0,-1.5,0.0,5.0]
+  },
+  {
+    "collisionSphere1": [5.0,2.0,0.0,1.0]
+  },
+  {
+    "timeToFire": 5.0
+  },
+  {
+    "maxFwdSpeed": 0.0
+  },
+  {
+    "maxRevSpeed": 0.0
+  },
+  {
+    "maxAngSpeed": 0.0
+  },
+  {
+    "maxAccel": 0.0
+  },
+  {
+    "maxDecel": 0.0
+  },
+  {
+    "maxAngAccel0": 0.0
+  },
+  {
+    "maxAngAccelV": 0.0
+  },
+  {
+    "maxAngAccel": 0.0
+  },
+  {
+    "groundNormSmoothViscosity": 0.1
+  },
+  {
+    "fireFx": "fire_ground_black_fx"
+  },
+  {
+    "subclass": "fortification"
+  },
+  {
+    "onRadarAs": "aam"
+  },
+  {
+    "bulletHitFx": "ground_model_hit"
+  },
+  {
+    "partDamageFx": "part_damage"
+  },
+  {
+    "explosionFx": "ground_model_expl"
+  },
+  {
+    "fireFx": "ground_model_fire"
+  },
+  {
+    "toGround": true
+  },
+  {
+    "expClass": "exp_aaa"
+  },
+  {
+    "attach": {
+      "inc_soldier": "sov_middle_soldier",
+      "inc_driver00": "sov_young_driver",
+      "inc_driver01": "sov_young_driver"
     }
   },
-  "DamageEffects": {
-    "part": {
-      "name": "body_dm",
-      "onHit": {
-        "smoke": 0.01
+  {
+    "DamageParts": {
+      "steel": {
+        "body_dm": {
+          "hp": 240.0
+        }
       },
-      "onKill": {
-        "expl": 1.0
+      "armor50_tanks": {
+        "armor1_dm": {
+          "hp": 99999.0
+        }
       }
     }
   },
-  "explosion": {
-    "expl": {
-      "node": "body",
-      "partNo": 0,
-      "timeToExplode": 1.0,
-      "preEffectName": "ground_model_fire",
-      "postEffectName": "ground_model_gray_smoke",
-      "explosionEffectName": "ground_model_expl",
-      "timeForPostEffect": 450.0,
-      "preScale": 1.0,
-      "postScale": 4.0
+  {
+    "DamageEffects": {
+      "part": {
+        "name": "body_dm",
+        "onHit": {
+          "smoke": 0.01
+        },
+        "onKill": {
+          "expl": 1.0
+        }
+      }
     }
   },
-  "class_tags": {
-    "westernfront": true,
-    "easternfront": true,
-    "country_ussr": true,
-    "light_air_defence": true,
-    "year1940": true,
-    "year1941": true,
-    "year1942": true,
-    "year1943": true,
-    "year1944": true,
-    "year1945": true
+  {
+    "explosion": {
+      "expl": {
+        "node": "body",
+        "partNo": 0,
+        "timeToExplode": 0.5,
+        "postEffectName": "smoke_ground_black_fx",
+        "explosionEffectName": "explosion_midair_medium",
+        "timeForPostEffect": 60.0,
+        "preScale": 1.0,
+        "postScale": 1.0
+      }
+    }
   },
-  "weapon": {
-    "trigger": "gunner0",
-    "blk": "gameData/weapons/groundModels_weapons/common_AAgun20mm.blk",
-    "emitter": "gun1",
-    "flash": "flame1",
-    "defaultYaw": 0.0,
-    "defaultPitch": 30.0,
-    "speedYaw": 36.0,
-    "speedPitch": 36.0,
-    "fireConeAngle": 15.0,
-    "salvoAmount": 100.0,
-    "ChainfireTime": 5.0,
-    "DelayAfterShoot": 5.0,
-    "AttackMaxDistance": 4000.0,
-    "AttackMaxRadius": 4000.0,
-    "AttackMaxHeight": 4000.0,
-    "accuracyAir": 0.6,
-    "accuracyGnd": 0.0,
-    "errMeasureVel": 0.0,
-    "errTargettingOn100kmph": 0.0,
-    "errMeasureVelFast": 100.0,
-    "errMeasureVelFwdShift": 1.0,
-    "errMeasureVelDir": 10.0,
-    "errTargetting": 0.0,
-    "errExplTime": 0.02,
-    "turret": {
-      "head": "turret1",
-      "gun": "gun1"
-    },
-    "limits": {
-      "yaw": [-180.0,180.0],
-      "pitch": [-7.0,85.0]
+  {
+    "class_tags": {
+      "westernfront": true,
+      "easternfront": true,
+      "country_ussr": true,
+      "light_air_defence": true,
+      "year1940": true,
+      "year1941": true,
+      "year1942": true,
+      "year1943": true,
+      "year1944": true,
+      "year1945": true
+    }
+  },
+  {
+    "weapon": {
+      "trigger": "gunner0",
+      "blk": "gameData/weapons/groundModels_weapons/common_AAgun20mm.blk",
+      "emitter": "gun1",
+      "flash": "flame1",
+      "defaultYaw": 0.0,
+      "defaultPitch": 30.0,
+      "speedYaw": 36.0,
+      "speedPitch": 36.0,
+      "fireConeAngle": 15.0,
+      "salvoAmount": 100.0,
+      "ChainfireTime": 5.0,
+      "DelayAfterShoot": 5.0,
+      "AttackMaxDistance": 4000.0,
+      "AttackMaxRadius": 4000.0,
+      "AttackMaxHeight": 4000.0,
+      "accuracyAir": 0.6,
+      "accuracyGnd": 0.0,
+      "errMeasureVel": 0.0,
+      "errTargettingOn100kmph": 0.0,
+      "errMeasureVelFast": 100.0,
+      "errMeasureVelFwdShift": 1.0,
+      "errMeasureVelDir": 10.0,
+      "errTargetting": 0.0,
+      "errExplTime": 0.02,
+      "turret": {
+        "head": "turret1",
+        "gun": "gun1"
+      },
+      "limits": {
+        "yaw": [-180.0,180.0],
+        "pitch": [-7.0,85.0]
+      }
     }
   }
-}
+]

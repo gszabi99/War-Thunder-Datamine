@@ -1,0 +1,42 @@
+{
+  "model": "tank_target_12",
+  "subclass": "fortification",
+  "dynCollisionGeom": true,
+  "damageableByGun": true,
+  "expClass": "exp_zero",
+  "renderInWaterReflection": true,
+  "forceFastPhysForAI": true,
+  "useDestrPhysObj": true,
+  "hasExpl": false,
+  "damageCollisionMultiplier": 0.001,
+  "explosionImpulse": 10000.0,
+  "timeToFire": 4.0,
+  "useDestroyedFx": false,
+  "explosionFx": "dstr_wood_target_red_smoke",
+  "DamageParts": {
+    "steel": {
+      "armorClass": "tank_structural_steel",
+      "body_dm": {
+        "armorThickness": 80.0,
+        "hp": 900000000.0
+      }
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body_dm",
+      "onHit": {
+        "smoke": 0.0,
+        "fire": 0.0
+      },
+      "onKill": {
+        "expl": 0.0
+      }
+    }
+  },
+  "anims": {
+    "rootName": "fifo3",
+    "name": "work_anim",
+    "playAnimName": "work_anim"
+  }
+}

@@ -23,13 +23,13 @@ local function getSlotActionFunctionName(unit, params)
   params = ACTION_FUNCTION_PARAMS.__merge(params)
 
   if (::isUnitBroken(unit))
-    return "#mainmenu/btnRepair"
+    return "mainmenu/btnRepair"
   if (::isUnitInSlotbar(unit))
     return ""
   if (unit.isUsable() && !::isUnitInSlotbar(unit))
-    return "#mainmenu/btnTakeAircraft"
+    return "mainmenu/btnTakeAircraft"
   if (::canBuyUnit(unit) || ::canBuyUnitOnline(unit))
-    return "#mainmenu/btnOrder"
+    return "mainmenu/btnOrder"
 
   local isSquadronVehicle = unit.isSquadronVehicle()
   local isInResearch = ::isUnitInResearch(unit)
@@ -39,16 +39,16 @@ local function getSlotActionFunctionName(unit, params)
       || (params.isSquadronResearchMode && params.needChosenResearchOfSquadron)
       || (isSquadronVehicle && !::is_in_clan() && !canFlushSquadronExp))
     && (::canResearchUnit(unit) || isInResearch))
-    return "#mainmenu/btnResearch"
+    return "mainmenu/btnResearch"
   if (isInResearch && ::has_feature("SpendGold") &&  ::has_feature("SpendFreeRP") && !isSquadronVehicle)
-    return "#mainmenu/btnConvert"
+    return "mainmenu/btnConvert"
 
   if (canFlushSquadronExp && (isInResearch || params.isSquadronResearchMode))
-    return "#mainmenu/btnInvestSquadronExp"
+    return "mainmenu/btnInvestSquadronExp"
   if (isInResearch && unitStatus.canBuyNotResearched(unit))
-    return "#mainmenu/btnOrder"
+    return "mainmenu/btnOrder"
   if (!::isUnitUsable(unit) && !::isUnitGift(unit) && (!isSquadronVehicle || !isInResearch))
-    return ::isUnitMaxExp(unit) ? "#mainmenu/btnOrder" : "#mainmenu/btnResearch"
+    return ::isUnitMaxExp(unit) ? "mainmenu/btnOrder" : "mainmenu/btnResearch"
   return ""
 }
 

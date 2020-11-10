@@ -248,7 +248,7 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
     { id = "_fake_get_current_mission_desc", value = function() { local b = ::DataBlock();
       ::get_current_mission_desc(b); return b } }
     { id = "get_user_custom_state", args = [ ::my_user_id_int64, false ] }
-    { id = "_fake_mpchat_log", value = ::require("scripts/chat/mpChatModel.nut").getLog() }
+    { id = "_fake_mpchat_log", value = require("scripts/chat/mpChatModel.nut").getLog() }
     "LAST_SESSION_DEBUG_INFO"
     "get_game_type"
     "get_game_mode"
@@ -347,7 +347,7 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
   ::g_mis_custom_state.getCurMissionRules()
   ::g_crews_list.crewsList = []
   ::SquadIcon.initListLabelsSquad()
-  ::require("scripts/chat/mpChatModel.nut")?.setLog(::_fake_mpchat_log)
+  require("scripts/chat/mpChatModel.nut")?.setLog(::_fake_mpchat_log)
   ::gui_start_respawn()
   ::broadcastEvent("MpChatLogUpdated")
   ::broadcastEvent("BattleLogMessage")

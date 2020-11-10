@@ -4,6 +4,9 @@ local workshopPreview = require("scripts/items/workshop/workshopPreview.nut")
 local { disableSeenUserlogs } = require("scripts/userLog/userlogUtils.nut")
 local { showEntitlement } = require("scripts/onlineShop/entitlementRewardWnd.nut")
 local { showUnlock } = require("scripts/unlocks/unlockRewardWnd.nut")
+local { isUserstatItemRewards, removeUserstatItemRewardToShow,
+  userstatRewardTitleLocId, userstatItemsListLocId
+} = require("scripts/userstat/userstatItemsRewards.nut")
 
 ::shown_userlog_notifications <- []
 
@@ -131,9 +134,10 @@ local logNameByType = {
     showSellAmount = ::getTblValue("type", params, -1) == ::EULT_BUY_ITEM,
     bigPicture = false
     contentIcon = false
+    interactive = true
   }
 
-  params = ::combine_tables(params, defaultParams)
+  params = defaultParams.__merge(params)
   return item ? ::handyman.renderCached(("gui/items/item"), { items = item.getViewData(params)}) : ""
 }
 
@@ -375,12 +379,21 @@ local logNameByType = {
       local key = blk.body.id + "" + ::getTblValue("parentTrophyRandId", blk.body, "")
       local itemId = blk?.body?.itemDefId || blk?.body?.trophyItemDefId || blk?.body?.id || ""
       local item = ::ItemsManager.findItemById(itemId)
-      if (!item?.shouldAutoConsume &&
+      local isUserstatRewards = isUserstatItemRewards(item?.id)
+      if ((!item?.shouldAutoConsume || isUserstatRewards) &&
         (item?.needShowRewardWnd?() || blk?.body?.id == "@external_inventory_trophy"))
       {
+        local trophyRewardTable = buildTableFromBlk(blk.body)
+        if (isUserstatRewards) {
+          trophyRewardTable.__update({
+            rewardTitle = ::loc(userstatRewardTitleLocId)
+            rewardListLocId = userstatItemsListLocId
+          })
+          removeUserstatItemRewardToShow(item.id)
+        }
         if (!(key in trophyRewardsTable))
           trophyRewardsTable[key] <- []
-        trophyRewardsTable[key].append(buildTableFromBlk(blk.body))
+        trophyRewardsTable[key].append(trophyRewardTable)
         markDisabled = true
       }
     }

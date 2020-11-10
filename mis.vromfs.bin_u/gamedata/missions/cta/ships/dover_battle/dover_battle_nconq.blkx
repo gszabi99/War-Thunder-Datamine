@@ -218,8 +218,6 @@
     "mission": {
       "level": "levels/dover_strait.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
       "locName": "missions/_NConq;dover/name",
@@ -230,6 +228,9 @@
       "randomSpawnTeams": true,
       "country_axis": "germany",
       "country_allies": "ussr",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "showTacticalMapCellSize": true,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": false,
@@ -306,6 +307,11 @@
               "icontype": "ship",
               "side": "enemy",
               "target": "briefing_t2_boatspawn02"
+            }
+          },
+          {
+            "battleArea": {
+              "target": "briefing_battlearea"
             }
           }
         ]
@@ -429,6 +435,7 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
       "props": {
         "army": 1,
         "count": 1,
@@ -518,6 +525,17 @@
         [11636.8,0.00585938,7882.81]
       ],
       "objLayer": 0,
+      "props": []
+    },
+    "briefing_battlearea": {
+      "type": "Box",
+      "tm": [
+        [-30000.0,0.0,0.0],
+        [0.0,600.0,0.0],
+        [0.0,0.0,-30000.0],
+        [0.0,0.0,0.0]
+      ],
+      "objLayer": 3,
       "props": []
     }
   },

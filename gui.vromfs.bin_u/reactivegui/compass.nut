@@ -7,7 +7,8 @@ local generateCompassNumber = function(num, line_style, width, height, color){
     flow = FLOW_VERTICAL
     children = [
       line_style.__merge({
-        rendObj = ROBJ_STEXT
+        rendObj = ROBJ_DTEXT
+        fontSize = hdpx(20)
         size = [width, 0.5 * height]
         halign = ALIGN_CENTER
         text = num
@@ -42,8 +43,8 @@ local compassLine = function(line_style, total_width, width, height, color){
   const step = 5.0
   local children = []
 
-  for (local i = 0; i <= 2.0 * 360.0 / step; ++i)
-  {
+  for (local i = 0; i <= 2.0 * 360.0 / step; ++i) {
+
     local num = (i * step) % 360
 
     if (num == 0)

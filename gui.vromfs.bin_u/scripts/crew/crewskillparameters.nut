@@ -1,5 +1,5 @@
-local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
-local { calc_crew_parameters } = require_native("unitCalculcation")
+local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+local { calc_crew_parameters } = require("unitCalculcation")
 local { getSortOrderBySkillParameterName, getMinSkillsUnitRepairRank } = require("scripts/crew/crewSkills.nut")
 
 local parametersByCrewId = {}

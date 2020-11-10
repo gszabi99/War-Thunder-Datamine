@@ -76,20 +76,20 @@
 
 local datablockConverter = require("scripts/utils/datablockConverter.nut")
 
-local persist = {
+local persistent = {
   backup = null
 }
-::g_script_reloader.registerPersistentData("dbgDump", persist, [ "backup" ])
+::g_script_reloader.registerPersistentData("dbgDump", persistent, [ "backup" ])
 
 local isLoaded = function()
 {
-  return persist.backup != null
+  return persistent.backup != null
 }
 
 local getOriginal = function(id)
 {
-  if (persist.backup && (id in persist.backup))
-    return (persist.backup[id] != "__destroy") ? persist.backup[id] : null
+  if (persistent.backup && (id in persistent.backup))
+    return (persistent.backup[id] != "__destroy") ? persistent.backup[id] : null
   return (id in ::getroottable()) ? ::getroottable()[id] : null
 }
 
@@ -171,18 +171,18 @@ local load = function(filename, needUnloadPrev = true)
 {
   if (needUnloadPrev)
     unload()
-  persist.backup = persist.backup || {}
+  persistent.backup = persistent.backup || {}
 
   local rootTable = ::getroottable()
   local blk = ::DataBlock()
-  if (!blk.load(filename))
+  if (!blk.tryLoad(filename))
     return false
   for (local b = 0; b < blk.blockCount(); b++)
   {
     local data = blk.getBlock(b)
     local id = datablockConverter.strToKey(data.getBlockName())
-    if (!(id in persist.backup))
-      persist.backup[id] <- pathGet(rootTable, id, "__destroy")
+    if (!(id in persistent.backup))
+      persistent.backup[id] <- pathGet(rootTable, id, "__destroy")
     if (data?.__function)
     {
       local cases = []
@@ -191,7 +191,7 @@ local load = function(filename, needUnloadPrev = true)
           args = datablockConverter.blkToData(c?.args ?? []),
           result = datablockConverter.blkToData(c.result)
         })
-      local origFunc = ::u.isFunction(persist.backup[id]) ? persist.backup[id] : null
+      local origFunc = ::u.isFunction(persistent.backup[id]) ? persistent.backup[id] : null
 
       pathSet(rootTable, id, function(...) {
         local args = []
@@ -210,8 +210,8 @@ local load = function(filename, needUnloadPrev = true)
   {
     local data = blk.getParamValue(p)
     local id = datablockConverter.strToKey(blk.getParamName(p))
-    if (!(id in persist.backup))
-      persist.backup[id] <- pathGet(rootTable, id, "__destroy")
+    if (!(id in persistent.backup))
+      persistent.backup[id] <- pathGet(rootTable, id, "__destroy")
     pathSet(rootTable, id, datablockConverter.blkToData(data))
   }
   return true
@@ -221,13 +221,13 @@ local loadFuncs = function(functions, needUnloadPrev = true)
 {
   if (needUnloadPrev)
     unload()
-  persist.backup = persist.backup || {}
+  persistent.backup = persistent.backup || {}
 
   local rootTable = ::getroottable()
   foreach (id, func in functions)
   {
-    if (!(id in persist.backup))
-      persist.backup[id] <- pathGet(rootTable, id, "__destroy")
+    if (!(id in persistent.backup))
+      persistent.backup[id] <- pathGet(rootTable, id, "__destroy")
     pathSet(rootTable, id, func)
   }
   return true
@@ -238,14 +238,14 @@ local unload = function()
   if (!isLoaded())
     return false
   local rootTable = ::getroottable()
-  foreach (id, v in persist.backup)
+  foreach (id, v in persistent.backup)
   {
     if (v == "__destroy")
       pathDelete(rootTable, id)
     else
       pathSet(rootTable, id, v)
   }
-  persist.backup = null
+  persistent.backup = null
   return true
 }
 

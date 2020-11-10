@@ -1,4 +1,4 @@
-local seenWarbondsShop = ::require("scripts/seen/seenList.nut").get(SEEN.WARBONDS_SHOP)
+local seenWarbondsShop = require("scripts/seen/seenList.nut").get(SEEN.WARBONDS_SHOP)
 
 const MAX_ALLOWED_WARBONDS_BALANCE = 0x7fffffff
 local OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
@@ -18,6 +18,28 @@ local OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
   maxAllowedWarbondsBalance = MAX_ALLOWED_WARBONDS_BALANCE //default value as on server side, MAX_ALLOWED_WARBONDS_BALANCE
 
   WARBOND_ID = "WarBond"
+
+  function isOverLimitForExchangeCoupon(warbondsAmount) {
+    local curWb = ::g_warbonds.getCurrentWarbond()
+    if (!curWb)
+      return false
+    local limit = getLimit()
+    local newBalance = curWb.getBalance() + warbondsAmount
+    if (newBalance <= limit)
+      return false
+
+    ::scene_msg_box("warbonds_over_limit",
+      null,
+      ::loc("warbond/msg/needSpendBeforeReceiving", { maxWarbonds = limit }),
+      [
+        ["#mainmenu/btnWarbondsShop", @() ::g_warbonds.openShop()],
+        ["no", @() null ]
+      ],
+      "#mainmenu/btnWarbondsShop",
+      {cancel_fn = @() null})
+
+    return true
+  }
 }
 
 g_warbonds.getList <- function getList(filterFunc = null)

@@ -1,3 +1,4 @@
+local { get_blk_by_path_array } = require("sqStdLibs/helpers/datablockUtils.nut")
 /*
   config {
     purchaseData = (OnlineShopModel.getPurchaseData) //required
@@ -66,7 +67,7 @@ class ::gui_handlers.ReqPurchaseWnd extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     image = "#ui/images/login_reward.jpg?P1"
-    local imgBlk = ::get_blk_by_path_array(["entitlementsAdvert", purchaseData.sourceEntitlement],
+    local imgBlk = get_blk_by_path_array(["entitlementsAdvert", purchaseData.sourceEntitlement],
                                            ::get_gui_regional_blk())
     if (!::u.isDataBlock(imgBlk))
       return

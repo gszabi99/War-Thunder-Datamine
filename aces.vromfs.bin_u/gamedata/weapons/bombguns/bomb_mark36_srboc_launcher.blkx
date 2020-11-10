@@ -16,91 +16,232 @@
     "antiTankRocket": true,
     "antiShipRocket": true
   },
-  "rocket": {
-    "normalizationPreset": "heat",
-    "ricochetPreset": "he",
-    "secondaryShattersPreset": "ap",
-    "stabilityThreshold": 0.4,
-    "stabilityCaliberToArmorThreshold": 10.0,
-    "stabilityReductionAfterRicochet": 0.45,
-    "stabilityReductionAfterPenetration": 1.0,
-    "bulletType": "smoke_grenade_tank",
-    "slopeEffectPreset": "ap",
-    "modelName": "tank_bullet_he",
-    "fresnel": [0.23,0.1,2.0],
-    "explodeOnRendinst": true,
-    "bulletName": "130mm_srboc",
-    "caliber": 0.13,
-    "mass": 7.84,
-    "massEnd": 3.7,
-    "maxDeltaAngle": 20.0,
-    "maxDeltaAngleVertical": 2.0,
-    "dragCx": 0.027,
-    "length": 0.015,
-    "distFromCmToStab": 0.005,
-    "CxK": 0.5,
-    "WdK": [0.1,0.1,0.1],
-    "force": 100.0,
-    "timeFire": 0.0,
-    "thrustDeviation": 0.01,
-    "explosionEffect": "smoke_shell_explosion",
-    "waterExplosionEffect": "water_splash",
-    "defFxScale": [0.3,0.5],
-    "fireEffect": "",
-    "smokeEffect": "",
-    "startFx": "",
-    "maxDistance": 100.0,
-    "minDistance": 100.0,
-    "smokeShell": true,
-    "smokeShellRad": 25.0,
-    "smokeActivateTime": 1.1,
-    "smokeTime": 30.0,
-    "groundCollisionEffect": "smoke_shell_explosion",
-    "groundFxScale": [1.2,1.4],
-    "ricochetEffect": "cannon_ricochet",
-    "waterCollisionEffect": "smoke_shell_explosion",
-    "waterFxScale": [0.7,0.9],
-    "explosionPatchRadius": 1.9,
-    "spawnExplosionWreckage": false,
-    "spawnExplosionFx": false,
-    "explosionOffset": 0.05,
-    "hitPowerMult": 1.0,
-    "nearHitPower": [1.0,50.0],
-    "midHitPower": [0.9,400.0],
-    "farHitPower": [0.1,1000.0],
-    "endHitPower": [0.01,1500.0],
-    "relativeVelHitShift": [300.0,1000.0],
-    "nearArmorPower": [3.0,50.0],
-    "midArmorPower": [2.0,400.0],
-    "farArmorPower": [0.2,700.0],
-    "relativeVelArmorShift": [200.0,1000.0],
-    "distanceFuse": false,
-    "rendinstDamageRadius": 0.1,
-    "advancedMissiles": false,
-    "useStartSpeed": true,
-    "startSpeed": 39.0,
-    "endSpeed": 39.0,
-    "speedViscosity": 0.2,
-    "timeToLive": 2.0,
-    "price": 300.0,
-    "stabilityRicochetModifier": {
-      "mod1": [0.0,0.5],
-      "mod2": [20.0,0.6],
-      "mod3": [30.0,1.0]
+  "rocket": [
+    {
+      "normalizationPreset": "heat"
     },
-    "collisions": {
-      "steel": {
-        "fx": "smoke_shell_explosion"
+    {
+      "ricochetPreset": "he"
+    },
+    {
+      "secondaryShattersPreset": "ap"
+    },
+    {
+      "stabilityThreshold": 0.4
+    },
+    {
+      "stabilityCaliberToArmorThreshold": 10.0
+    },
+    {
+      "stabilityReductionAfterRicochet": 0.45
+    },
+    {
+      "stabilityReductionAfterPenetration": 1.0
+    },
+    {
+      "bulletType": "smoke_grenade_tank"
+    },
+    {
+      "slopeEffectPreset": "ap"
+    },
+    {
+      "modelName": "tank_bullet_he"
+    },
+    {
+      "fresnel": [0.23,0.1,2.0]
+    },
+    {
+      "explodeOnRendinst": true
+    },
+    {
+      "bulletName": "130mm_srboc"
+    },
+    {
+      "caliber": 0.13
+    },
+    {
+      "mass": 7.84
+    },
+    {
+      "massEnd": 3.7
+    },
+    {
+      "maxDeltaAngle": 20.0
+    },
+    {
+      "maxDeltaAngleVertical": 2.0
+    },
+    {
+      "dragCx": 0.027
+    },
+    {
+      "length": 0.015
+    },
+    {
+      "distFromCmToStab": 0.005
+    },
+    {
+      "CxK": 0.5
+    },
+    {
+      "WdK": [0.1,0.1,0.1]
+    },
+    {
+      "force": 100.0
+    },
+    {
+      "timeFire": 0.0
+    },
+    {
+      "thrustDeviation": 0.01
+    },
+    {
+      "explosionFx": "bomb_expl_50kg"
+    },
+    {
+      "explosionPatchRadius": 4.0
+    },
+    {
+      "waterExplosionEffect": "water_splash"
+    },
+    {
+      "defFxScale": [0.3,0.5]
+    },
+    {
+      "fireEffect": ""
+    },
+    {
+      "smokeEffect": ""
+    },
+    {
+      "startFx": ""
+    },
+    {
+      "maxDistance": 100.0
+    },
+    {
+      "minDistance": 100.0
+    },
+    {
+      "smokeShell": true
+    },
+    {
+      "smokeShellRad": 25.0
+    },
+    {
+      "smokeActivateTime": 1.1
+    },
+    {
+      "smokeTime": 30.0
+    },
+    {
+      "groundCollisionEffect": "smoke_shell_explosion"
+    },
+    {
+      "groundFxScale": [1.2,1.4]
+    },
+    {
+      "ricochetEffect": "cannon_ricochet"
+    },
+    {
+      "waterCollisionEffect": "smoke_shell_explosion"
+    },
+    {
+      "waterFxScale": [0.7,0.9]
+    },
+    {
+      "explosionPatchRadius": 1.9
+    },
+    {
+      "spawnExplosionWreckage": false
+    },
+    {
+      "spawnExplosionFx": false
+    },
+    {
+      "explosionOffset": 0.05
+    },
+    {
+      "hitPowerMult": 1.0
+    },
+    {
+      "nearHitPower": [1.0,50.0]
+    },
+    {
+      "midHitPower": [0.9,400.0]
+    },
+    {
+      "farHitPower": [0.1,1000.0]
+    },
+    {
+      "endHitPower": [0.01,1500.0]
+    },
+    {
+      "relativeVelHitShift": [300.0,1000.0]
+    },
+    {
+      "nearArmorPower": [3.0,50.0]
+    },
+    {
+      "midArmorPower": [2.0,400.0]
+    },
+    {
+      "farArmorPower": [0.2,700.0]
+    },
+    {
+      "relativeVelArmorShift": [200.0,1000.0]
+    },
+    {
+      "distanceFuse": false
+    },
+    {
+      "rendinstDamageRadius": 0.1
+    },
+    {
+      "advancedMissiles": false
+    },
+    {
+      "useStartSpeed": true
+    },
+    {
+      "startSpeed": 39.0
+    },
+    {
+      "endSpeed": 39.0
+    },
+    {
+      "speedViscosity": 0.2
+    },
+    {
+      "timeToLive": 2.0
+    },
+    {
+      "price": 300.0
+    },
+    {
+      "stabilityRicochetModifier": {
+        "mod1": [0.0,0.5],
+        "mod2": [20.0,0.6],
+        "mod3": [30.0,1.0]
       }
     },
-    "DamageParts": {
-      "body": {
-        "hp": 35.0,
-        "armorClass": "tank_structural_steel",
-        "armorThickness": 5.0,
-        "explosionArmorQuality": 45.0,
-        "shatterArmorQuality": 45.0
+    {
+      "collisions": {
+        "steel": {
+          "fx": "smoke_shell_explosion"
+        }
+      }
+    },
+    {
+      "DamageParts": {
+        "body": {
+          "hp": 35.0,
+          "armorClass": "tank_structural_steel",
+          "armorThickness": 5.0,
+          "explosionArmorQuality": 45.0,
+          "shatterArmorQuality": 45.0
+        }
       }
     }
-  }
+  ]
 }

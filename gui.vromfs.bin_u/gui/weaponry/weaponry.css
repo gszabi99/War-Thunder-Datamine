@@ -5,6 +5,19 @@ weaponInfoBg {
   background-color:@weaponryItem;
 }
 
+weaponry_item {
+  mouse-pointer-centering:50, 75;
+  input-transparent:yes;
+  tooltip-float:horizontal;
+}
+
+[interactiveChildren=yes] weaponry_item {
+  interactive:yes;
+}
+
+weaponry_item.dropDown:hover {
+  input-transparent:no; }
+
 weaponry_item > weaponBody > weaponInfoBg:hover,
 weaponry_item[equipped=yes] > weaponBody > weaponInfoBg {
   background-color:@weaponryItemFocus;
@@ -81,9 +94,13 @@ weaponry_item[isBundle=yes] > weaponBody RadioButton {
   display: hide;
 }
 
+modIco {
+  css-hier-invalidate:yes;
+  total-input-transparent:yes;
+}
+
 modIcon:hover,
-weaponry_item > weaponBody:hover > modIcon,
-.researchesTable > tr > td > .unitItem > weaponry_item:hover > weaponBody > modIcon
+weaponry_item > weaponBody:hover > modIcon
 {
   hoverStyle:yes;
 }
@@ -179,12 +196,7 @@ weaponry_item[status=disabled] > weaponBody text {
   color-factor:150;
 }
 
-.researchesTable > tr,
-.researchesTable > tr > td > img[selectRowImage=yes] {
-  background-color:@transparent;
-}
-
-[show_console_buttons=yes] weaponry_item[selected=yes] > selImg {
+[show_console_buttons=yes] weaponry_item:hover > selImg {
   size:pw+10*@sf/@pf_outdated, ph+8*@sf/@pf_outdated;
   pos:50%pw-50%w, 50%ph-50%h;
   position:absolute;
@@ -195,41 +207,6 @@ weaponry_item[status=disabled] > weaponBody text {
   background-color:@gamepadFocusFrameColor;
   behavior:focusFrameTarget;
   focusImageSource:background;
-}
-
-.researchesTable > tr > td > .unitItem selImg {
-  size:pw+10*@sf/@pf_outdated, ph+8*@sf/@pf_outdated;
-  pos:50%pw-50%w, 50%ph-50%h;
-  position:absolute;
-  re-type:9rect;
-  background-position:6;
-  background-repeat:expand;
-  background-image:#ui/gameuiskin#item_selection;
-  background-color:@transparent;
-  behavior:focusFrameTarget;
-  focusImageSource:background;
-}
-
-.researchesTable > tr:hover > td > .unitItem[highlightStartModification=yes] > weaponry_item > selImg,
-.researchesTable > tr:hover > td > .unitItem[highlightStartModification=yes] > td > shopItem > selImg,
-.researchesTable > tr[inactive=no]:hover > td > img[selectRowImage=yes] {
-  background-color:@selImgHoverColor;
-}
-[show_console_buttons=yes] .researchesTable > tr[selected=yes] > td > .unitItem[highlightStartModification=yes] > weaponry_item > selImg,
-[show_console_buttons=yes] .researchesTable > tr[selected=yes] > td > .unitItem[highlightStartModification=yes] > td > shopItem > selImg,
-[show_console_buttons=yes] .researchesTable > tr[selected=yes] > td > img[selectRowImage=yes] {
-  background-color:@white;
-}
-
-.researchesTable .unitItem > td {
-  input-transparent:yes;
-  size:@slot_width, @slot_height + 2@slot_vert_pad;
-  padding:@slot_interval, @slot_vert_pad;
-  css-hier-invalidate:yes;
-}
-
-.researchesTable > tr > td{
-  padding:0,0.5@discountBoxDownHeight;
 }
 
 .unitItem > weaponry_item {
@@ -243,24 +220,25 @@ weaponry_item[status=disabled] > weaponBody text {
 
 modArrow {
   re-type:9rect;
-  background-image:#ui/gameuiskin#arrow_simple;
-  background-repeat:expand;
-  background-position:4,2,4,10;
-  background-color:@white;
+  background-image:#ui/gameuiskin#arrow_simple.svg;
+  background-repeat:expand-svg;
+  background-svg-size:@modArrowWidth, @modArrowWidth;
+  background-position:0@dp, 2@dp, 0@dp, 11@dp;
+  background-color:@shopArrowNormalColor;
   position:absolute;
 }
 modArrow[type=down] {
   width:@modArrowWidth;
 }
 modArrow[type=right] {
-  background-image:#ui/gameuiskin#arrow_simple_hor;
-  background-position:2,4,10,4;
+  background-image:#ui/gameuiskin#arrow_simple_hor.svg;
+  background-position:2@dp, 0@dp, 11@dp, 0@dp;
   height:@modArrowWidth;
 }
 
 modBlockHor[type=locked] > modBlockTierNum > modArrow,
 modBlockHor[type=locked] > modArrow {
-  background-color:@controlDisabledColor;
+  background-color:@shopArrowLockedColor;
 }
 
 modArrowPlate{
@@ -457,26 +435,49 @@ weapon_item_unit, weapon_item_unit > td {
 weaponryTier {
   background-position:1;
   background-color:@frameHeaderColor;
-}
-
-weaponryPreset, weaponryTier {
-  behaviour:button;
   css-hier-invalidate:yes;
-}
-
-weaponryPreset [selected=yes] {
-  background-position:1;
-  background-color:@chosenPresetColor;
 }
 
 weaponryPreset:hover {
   background-color:@evenTrColor;
 }
 
-[show_console_buttons=no] weaponryPreset:focus,
+weaponryPreset[selected=yes] {
+  background-position:1;
+  background-color:@chosenPresetColor;
+}
+
 [show_console_buttons=no] weaponryTier[selected=yes],
 [show_console_buttons=no] presetHeader[selected=yes]{
   border:yes;
   border-offset:@dp;
   border-color:@selectedPresetBorderColor;
+}
+
+fadedImageFrame {
+  re-type:9rect;
+  background-image:#ui/gameuiskin#block_bg_rounded_dark;
+  background-color:@white;
+  background-repeat:expand;
+  background-position:4;
+  foreground-repeat:repeat;
+  foreground-color:@white;
+  foreground-position:4,4;
+  foreground-image:#ui/gameuiskin#pattern_bright_hor_lines;
+  padding: 1@fadedImageFramePad;
+}
+
+fadingBox {
+  re-type:9rect;
+  background-repeat:expand;
+  background-image:#ui/gameuiskin#white_with_gradient_alpha;
+}
+
+fadingBox[type=right] {
+  rotation:180;
+}
+
+fadedImageFrame fadingBox {
+  background-color:@fadedImageFrameColor;
+  background-position:0, 4;
 }

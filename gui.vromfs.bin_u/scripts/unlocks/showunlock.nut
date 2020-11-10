@@ -1,4 +1,4 @@
-local tutorialModule = ::require("scripts/user/newbieTutorialDisplay.nut")
+local tutorialModule = require("scripts/user/newbieTutorialDisplay.nut")
 local unitActions = require("scripts/unit/unitActions.nut")
 local { setPollBaseUrl, generatePollUrl } = require("scripts/web/webpoll.nut")
 local { disableSeenUserlogs } = require("scripts/userLog/userlogUtils.nut")
@@ -259,7 +259,8 @@ class ::gui_handlers.ShowUnlockHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onUnitHover(obj)
   {
-    openUnitActionsList(obj, true, true)
+    if (!::show_console_buttons)
+      openUnitActionsList(obj, true)
   }
 
   function onEventCrewTakeUnit(params)

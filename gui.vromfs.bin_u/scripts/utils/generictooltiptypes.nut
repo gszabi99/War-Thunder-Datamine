@@ -1,4 +1,4 @@
-local enums = require("sqStdlibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 local workshop = require("scripts/items/workshop/workshop.nut")
 local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
 local { getSkillCategoryByName } = require("scripts/crew/crewSkills.nut")

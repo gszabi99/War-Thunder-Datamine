@@ -19,7 +19,7 @@ global enum RCLICK_MENU_ORIENT
   RIGHT
 }
 
-::gui_right_click_menu <- function gui_right_click_menu(config, owner, position = null, orientation = null)
+::gui_right_click_menu <- function gui_right_click_menu(config, owner, position = null, orientation = null, onClose = null)
 {
   if (typeof config == "array")
     config = { actions = config }
@@ -27,7 +27,8 @@ global enum RCLICK_MENU_ORIENT
     config = config,
     owner = owner,
     position = position,
-    orientation = orientation
+    orientation = orientation,
+    onClose = onClose,
   })
 }
 
@@ -35,13 +36,13 @@ class ::gui_handlers.RightClickMenu extends ::BaseGuiHandler
 {
   wndType      = handlerType.MODAL
   sceneTplName = "gui/rightClickMenu"
-  shouldBlurSceneBg = false
   needVoiceChat = false
 
   owner        = null
   config       = null
   position     = null
   orientation  = RCLICK_MENU_ORIENT.LEFT
+  onClose      = null
 
   choosenValue = -1
 
@@ -118,7 +119,7 @@ class ::gui_handlers.RightClickMenu extends ::BaseGuiHandler
     listObj.pos = menuPos[0] - shift + ", " + menuPos[1]
     listObj.width = listObj.getSize()[0]
     guiScene.applyPendingChanges(false)
-    listObj.select()
+    ::move_mouse_on_child(listObj, 0)
   }
 
   function initTimers(listObj, actions)
@@ -175,10 +176,10 @@ class ::gui_handlers.RightClickMenu extends ::BaseGuiHandler
 
   function afterModalDestroy()
   {
-    if (!(choosenValue in config.actions))
-      return
-
-    local applyFunc = ::getTblValue("action", config.actions[choosenValue])
-    ::call_for_handler(owner, applyFunc)
+    if (choosenValue in config.actions) {
+      local applyFunc = ::getTblValue("action", config.actions[choosenValue])
+      ::call_for_handler(owner, applyFunc)
+    }
+    onClose?()
   }
 }

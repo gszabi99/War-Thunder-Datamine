@@ -81,7 +81,8 @@ controlsHelpTextArea {
 }
 
 helpLine, helpLineDot {
-  background-color:@white;
+  re-type:fgPict;
+  foreground-color:@white;
   input-transparent:yes;
 }
 
@@ -89,9 +90,17 @@ helpLineDot {
   size:5@dp, 5@dp;
 }
 
-helpLineDotTest {
-  size:5@dp, 5@dp;
-  background-color:@red;
+helpLineShadow, helpLineDotShadow {
+  background-color:@helpLineShadowColor;
+  input-transparent:yes;
+}
+
+helpLine > shadow {
+  size:pw, ph;
+  pos:1@helpLineShadowOffset, 1@helpLineShadowOffset;
+  position:absolute;
+  background-color:@helpLineShadowColor;
+  input-transparent:yes;
 }
 
 controlsHelpBtn {
@@ -143,19 +152,30 @@ controlsHelpHint {
   input-transparent:yes;
 }
 
-controlsHelpPs4Dot {
-  size:8*@sf/@pf_outdated, 8*@sf/@pf_outdated;
+controlsHelpPs4Dot, controlsHelpPs4Dot > shadow {
+  size:11@sf/@pf, 11@sf/@pf;
   position:absolute;
-  background-image:#ui/gameuiskin#ps4_controls_help_point;
-  background-color:@white;
+}
+controlsHelpPs4Dot {
+  re-type:fgPict;
+  foreground-image:#ui/gameuiskin#controls_help_point.svg;
+  foreground-svg-size:11@sf/@pf, 11@sf/@pf;
+  foreground-color:@white;
+}
+controlsHelpPs4Dot > shadow {
+  pos:1@helpLineShadowOffset, 1@helpLineShadowOffset;
+  background-image:#ui/gameuiskin#controls_help_point.svg;
+  background-svg-size:11@sf/@pf, 11@sf/@pf;
+  background-color:@helpLineShadowColor;
 }
 
 controlsHelpPs4Bubble {
   position:absolute;
-  background-image:#ui/gameuiskin#ps4_controls_help_bubble;
+  background-image:#ui/gameuiskin#controls_help_bubble.svg;
+  background-svg-size:32@dp, 32@dp;
   background-color:@white;
-  background-position:10;
-  background-repeat:expand;
+  background-position:10@dp;
+  background-repeat:expand-svg;
 }
 controlsHelpPs4Bubble, controlsHelpPs4Bubble > tdiv {
   behaviour:textArea;
@@ -163,9 +183,18 @@ controlsHelpPs4Bubble, controlsHelpPs4Bubble > tdiv {
   font:@fontNormal;
   color:@white;
   text-align:left;
-  padding:8*@sf/@pf_outdated;
-  padding-left:40*@sf/@pf_outdated;
+  padding:10@sf/@pf;
+  padding-left:54@sf/@pf;
   input-transparent:yes;
+}
+
+controlsHelpPs4Bubble.noIcon, controlsHelpPs4Bubble.noIcon > tdiv {
+  padding-left:10@sf/@pf;
+}
+
+controlsHelpPs4Bubble[tooltip], controlsHelpPs4Bubble > tdiv[tooltip] {
+  interactive:yes;
+  mouse-pointer-centering:50, 80;
 }
 
 controlsHelpPs4Bubble > tdiv {
@@ -176,8 +205,9 @@ controlsHelpPs4Bubble > tdiv {
 
 controlsHelpPs4Bubble img, controlsHelpPs4Bubble > tdiv > img {
   position:absolute;
-  size:28*@sf/@pf_outdated, 28*@sf/@pf_outdated;
-  pos:8*@sf/@pf_outdated, ph/2-h/2;
+  size:40@sf/@pf, 40@sf/@pf;
+  background-svg-size:40@sf/@pf, 40@sf/@pf;
+  pos:8@sf/@pf, ph/2-h/2;
 }
 
 textareaNoTab[controlsHelp=yes] {

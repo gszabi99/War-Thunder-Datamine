@@ -438,7 +438,7 @@
           "mulHardcore": 3
         },
         {
-          "num": 90
+          "num": 80
         },
         {
           "condition": {
@@ -468,7 +468,8 @@
         "type": "char_aircrafts_in_era",
         "num": 1,
         "era": 4,
-        "premium": true
+        "premium": true,
+        "elite": 2
       }
     }
   },
@@ -502,7 +503,7 @@
           "mulHardcore": 3
         },
         {
-          "num": 150
+          "num": 130
         },
         {
           "condition": {
@@ -549,7 +550,7 @@
       "mode": {
         "type": "char_aircrafts_in_era",
         "num": 3,
-        "era": 4,
+        "era": 5,
         "premium": true
       }
     }
@@ -585,7 +586,7 @@
       "mode": {
         "type": "char_aircrafts_in_era",
         "num": 1,
-        "era": 4,
+        "era": 5,
         "premium": true
       }
     }
@@ -653,7 +654,7 @@
       "mode": {
         "type": "char_aircrafts_in_era",
         "num": 2,
-        "era": 4,
+        "era": 5,
         "premium": true
       }
     }
@@ -722,7 +723,7 @@
           "mulHardcore": 3
         },
         {
-          "num": 150
+          "num": 100
         },
         {
           "condition": {
@@ -733,12 +734,6 @@
           "condition": {
             "type": "activity",
             "percent": 50
-          }
-        },
-        {
-          "condition": {
-            "type": "playerType",
-            "unitType": "aircraft"
           }
         },
         {
@@ -768,7 +763,7 @@
           "mulHardcore": 3
         },
         {
-          "num": 350
+          "num": 250
         },
         {
           "condition": {
@@ -808,7 +803,7 @@
           "mulHardcore": 3
         },
         {
-          "num": 550
+          "num": 330
         },
         {
           "condition": {
@@ -819,12 +814,6 @@
           "condition": {
             "type": "activity",
             "percent": 50
-          }
-        },
-        {
-          "condition": {
-            "type": "playerType",
-            "unitType": "aircraft"
           }
         },
         {
@@ -854,7 +843,7 @@
           "mulHardcore": 3
         },
         {
-          "num": 230
+          "num": 180
         },
         {
           "condition": {
@@ -885,7 +874,7 @@
         "mulArcade": 1,
         "mulRealistic": 2,
         "mulHardcore": 3,
-        "num": 750,
+        "num": 700,
         "condition": {
           "type": "online"
         }
@@ -1221,7 +1210,7 @@
         "mulArcade": 1,
         "mulRealistic": 2,
         "mulHardcore": 3,
-        "num": 500,
+        "num": 400,
         "condition": {
           "type": "online"
         }
@@ -1246,7 +1235,7 @@
           "mulHardcore": 3
         },
         {
-          "num": 300
+          "num": 150
         },
         {
           "condition": {
@@ -1292,7 +1281,7 @@
           "mulHardcore": 3
         },
         {
-          "num": 700
+          "num": 430
         },
         {
           "condition": {
@@ -1339,7 +1328,7 @@
           "mulHardcore": 3
         },
         {
-          "num": 500
+          "num": 150
         },
         {
           "condition": {
@@ -1414,10 +1403,17 @@
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -1454,10 +1450,17 @@
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -1494,10 +1497,17 @@
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -1540,12 +1550,23 @@
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship",
-            "inSession": true,
-            "inSessionAnd": false
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            },
+            {
+              "inSession": true
+            },
+            {
+              "inSessionAnd": false
+            }
+          ]
         },
         {
           "condition": {
@@ -1588,12 +1609,23 @@
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship",
-            "inSession": true,
-            "inSessionAnd": false
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            },
+            {
+              "inSession": true
+            },
+            {
+              "inSessionAnd": false
+            }
+          ]
         },
         {
           "condition": {
@@ -1630,10 +1662,17 @@
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -1670,10 +1709,17 @@
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -1710,10 +1756,17 @@
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -1756,12 +1809,23 @@
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship",
-            "inSession": true,
-            "inSessionAnd": false
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            },
+            {
+              "inSession": true
+            },
+            {
+              "inSessionAnd": false
+            }
+          ]
         },
         {
           "condition": {
@@ -1804,12 +1868,23 @@
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship",
-            "inSession": true,
-            "inSessionAnd": false
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            },
+            {
+              "inSession": true
+            },
+            {
+              "inSessionAnd": false
+            }
+          ]
         },
         {
           "condition": {
@@ -1846,10 +1921,17 @@
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -1886,10 +1968,17 @@
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -1926,10 +2015,17 @@
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -1972,12 +2068,23 @@
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship",
-            "inSession": true,
-            "inSessionAnd": false
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            },
+            {
+              "inSession": true
+            },
+            {
+              "inSessionAnd": false
+            }
+          ]
         },
         {
           "condition": {
@@ -2020,12 +2127,23 @@
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship",
-            "inSession": true,
-            "inSessionAnd": false
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            },
+            {
+              "inSession": true
+            },
+            {
+              "inSessionAnd": false
+            }
+          ]
         },
         {
           "condition": {
@@ -2062,10 +2180,17 @@
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -2102,10 +2227,17 @@
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -2142,10 +2274,17 @@
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -2188,12 +2327,23 @@
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship",
-            "inSession": true,
-            "inSessionAnd": false
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            },
+            {
+              "inSession": true
+            },
+            {
+              "inSessionAnd": false
+            }
+          ]
         },
         {
           "condition": {
@@ -2236,12 +2386,23 @@
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship",
-            "inSession": true,
-            "inSessionAnd": false
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            },
+            {
+              "inSession": true
+            },
+            {
+              "inSessionAnd": false
+            }
+          ]
         },
         {
           "condition": {
@@ -2279,10 +2440,17 @@
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -2320,10 +2488,17 @@
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -2361,10 +2536,17 @@
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -2408,12 +2590,23 @@
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship",
-            "inSession": true,
-            "inSessionAnd": false
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            },
+            {
+              "inSession": true
+            },
+            {
+              "inSessionAnd": false
+            }
+          ]
         },
         {
           "condition": {
@@ -2457,12 +2650,23 @@
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship",
-            "inSession": true,
-            "inSessionAnd": false
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            },
+            {
+              "inSession": true
+            },
+            {
+              "inSessionAnd": false
+            }
+          ]
         },
         {
           "condition": {
@@ -4230,6 +4434,9 @@
         },
         {
           "unitClass": "ship"
+        },
+        {
+          "unitClass": "boat"
         }
       ]
     }
@@ -4252,10 +4459,17 @@
           }
         },
         {
-          "condition": {
-            "type": "playerPlatform",
-            "platform": "ps4"
-          }
+          "condition": [
+            {
+              "type": "playerPlatform"
+            },
+            {
+              "platform": "ps4"
+            },
+            {
+              "platform": "ps5"
+            }
+          ]
         }
       ]
     }
@@ -4295,10 +4509,17 @@
         "type": "unlockOpenCount",
         "num": 1,
         "unlock": "heroic_mission_maker",
-        "condition": {
-          "type": "playerPlatform",
-          "platform": "ps4"
-        }
+        "condition": [
+          {
+            "type": "playerPlatform"
+          },
+          {
+            "platform": "ps4"
+          },
+          {
+            "platform": "ps5"
+          }
+        ]
       }
     }
   },
@@ -4311,10 +4532,17 @@
         "type": "unlockOpenCount",
         "num": 1,
         "unlock": "heroic_fighter",
-        "condition": {
-          "type": "playerPlatform",
-          "platform": "ps4"
-        }
+        "condition": [
+          {
+            "type": "playerPlatform"
+          },
+          {
+            "platform": "ps4"
+          },
+          {
+            "platform": "ps5"
+          }
+        ]
       }
     }
   },
@@ -4327,10 +4555,17 @@
         "type": "unlockOpenCount",
         "num": 1,
         "unlock": "tank_best_antiAircraft",
-        "condition": {
-          "type": "playerPlatform",
-          "platform": "ps4"
-        }
+        "condition": [
+          {
+            "type": "playerPlatform"
+          },
+          {
+            "platform": "ps4"
+          },
+          {
+            "platform": "ps5"
+          }
+        ]
       }
     }
   },
@@ -4343,10 +4578,17 @@
         "type": "unlockOpenCount",
         "num": 1,
         "unlock": "heroic_bomber",
-        "condition": {
-          "type": "playerPlatform",
-          "platform": "ps4"
-        }
+        "condition": [
+          {
+            "type": "playerPlatform"
+          },
+          {
+            "platform": "ps4"
+          },
+          {
+            "platform": "ps5"
+          }
+        ]
       }
     }
   },
@@ -4359,10 +4601,17 @@
         "type": "unlockOpenCount",
         "num": 1,
         "unlock": "heroic_tankman",
-        "condition": {
-          "type": "playerPlatform",
-          "platform": "ps4"
-        }
+        "condition": [
+          {
+            "type": "playerPlatform"
+          },
+          {
+            "platform": "ps4"
+          },
+          {
+            "platform": "ps5"
+          }
+        ]
       }
     }
   },
@@ -4395,10 +4644,17 @@
           }
         },
         {
-          "condition": {
-            "type": "playerPlatform",
-            "platform": "ps4"
-          }
+          "condition": [
+            {
+              "type": "playerPlatform"
+            },
+            {
+              "platform": "ps4"
+            },
+            {
+              "platform": "ps5"
+            }
+          ]
         }
       ]
     }
@@ -4444,10 +4700,17 @@
           }
         },
         {
-          "condition": {
-            "type": "playerPlatform",
-            "platform": "ps4"
-          }
+          "condition": [
+            {
+              "type": "playerPlatform"
+            },
+            {
+              "platform": "ps4"
+            },
+            {
+              "platform": "ps5"
+            }
+          ]
         }
       ]
     }
@@ -4482,10 +4745,17 @@
           }
         },
         {
-          "condition": {
-            "type": "playerPlatform",
-            "platform": "ps4"
-          }
+          "condition": [
+            {
+              "type": "playerPlatform"
+            },
+            {
+              "platform": "ps4"
+            },
+            {
+              "platform": "ps5"
+            }
+          ]
         }
       ]
     }
@@ -4514,10 +4784,17 @@
           }
         },
         {
-          "condition": {
-            "type": "playerPlatform",
-            "platform": "ps4"
-          }
+          "condition": [
+            {
+              "type": "playerPlatform"
+            },
+            {
+              "platform": "ps4"
+            },
+            {
+              "platform": "ps5"
+            }
+          ]
         }
       ]
     }
@@ -4546,10 +4823,17 @@
           }
         },
         {
-          "condition": {
-            "type": "playerPlatform",
-            "platform": "ps4"
-          }
+          "condition": [
+            {
+              "type": "playerPlatform"
+            },
+            {
+              "platform": "ps4"
+            },
+            {
+              "platform": "ps5"
+            }
+          ]
         }
       ]
     }
@@ -4578,10 +4862,17 @@
           }
         },
         {
-          "condition": {
-            "type": "playerPlatform",
-            "platform": "ps4"
-          }
+          "condition": [
+            {
+              "type": "playerPlatform"
+            },
+            {
+              "platform": "ps4"
+            },
+            {
+              "platform": "ps5"
+            }
+          ]
         }
       ]
     }
@@ -4624,10 +4915,17 @@
           }
         },
         {
-          "condition": {
-            "type": "playerPlatform",
-            "platform": "ps4"
-          }
+          "condition": [
+            {
+              "type": "playerPlatform"
+            },
+            {
+              "platform": "ps4"
+            },
+            {
+              "platform": "ps5"
+            }
+          ]
         }
       ]
     }
@@ -4670,10 +4968,17 @@
           }
         },
         {
-          "condition": {
-            "type": "playerPlatform",
-            "platform": "ps4"
-          }
+          "condition": [
+            {
+              "type": "playerPlatform"
+            },
+            {
+              "platform": "ps4"
+            },
+            {
+              "platform": "ps5"
+            }
+          ]
         }
       ]
     }
@@ -4716,10 +5021,17 @@
           }
         },
         {
-          "condition": {
-            "type": "playerPlatform",
-            "platform": "ps4"
-          }
+          "condition": [
+            {
+              "type": "playerPlatform"
+            },
+            {
+              "platform": "ps4"
+            },
+            {
+              "platform": "ps5"
+            }
+          ]
         }
       ]
     }
@@ -4762,10 +5074,17 @@
           }
         },
         {
-          "condition": {
-            "type": "playerPlatform",
-            "platform": "ps4"
-          }
+          "condition": [
+            {
+              "type": "playerPlatform"
+            },
+            {
+              "platform": "ps4"
+            },
+            {
+              "platform": "ps5"
+            }
+          ]
         }
       ]
     }
@@ -4808,10 +5127,17 @@
           }
         },
         {
-          "condition": {
-            "type": "playerPlatform",
-            "platform": "ps4"
-          }
+          "condition": [
+            {
+              "type": "playerPlatform"
+            },
+            {
+              "platform": "ps4"
+            },
+            {
+              "platform": "ps5"
+            }
+          ]
         }
       ]
     }
@@ -7537,10 +7863,17 @@
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -7548,10 +7881,17 @@
           }
         },
         {
-          "condition": {
-            "type": "targetType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "targetType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -7734,6 +8074,9 @@
             },
             {
               "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
             },
             {
               "unitType": "aircraft"
@@ -72410,42 +72753,6 @@
   },
   {
     "unlockable": {
-      "id": "tu-2_postwar/china",
-      "type": "skin",
-      "chapter": "skins",
-      "group": "aircraft_ussr",
-      "mode": [
-        {
-          "type": "amountDamagesZone"
-        },
-        {
-          "mulArcade": 1
-        },
-        {
-          "mulRealistic": 2
-        },
-        {
-          "mulHardcore": 2
-        },
-        {
-          "num": 46800
-        },
-        {
-          "condition": {
-            "type": "online"
-          }
-        },
-        {
-          "condition": {
-            "type": "playerUnit",
-            "class": "tu-2_postwar"
-          }
-        }
-      ]
-    }
-  },
-  {
-    "unlockable": {
       "id": "tu-2_postwar/green",
       "type": "skin",
       "chapter": "skins",
@@ -98651,6 +98958,31 @@
   },
   {
     "unlockable": {
+      "id": "us_pt811_decals_unlock",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "ships_usa",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "char_unit_exist",
+        "unit": "us_pt811"
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "ussr_destroyer_7y_stroyny_decals_unlock",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "ships_ussr",
+      "mode": {
+        "type": "char_unit_exist",
+        "unit": "ussr_destroyer_7y_stroyny"
+      }
+    }
+  },
+  {
+    "unlockable": {
       "id": "us_destroyer_fletcher_cowell_decals_unlock",
       "type": "decal",
       "chapter": "decals",
@@ -98672,31 +99004,6 @@
       "mode": {
         "type": "char_unit_exist",
         "unit": "us_destroyer_fletcher_bennion"
-      }
-    }
-  },
-  {
-    "unlockable": {
-      "id": "us_pt811_decals_unlock",
-      "type": "decal",
-      "chapter": "decals",
-      "group": "ships_usa",
-      "hideUntilUnlocked": true,
-      "mode": {
-        "type": "char_unit_exist",
-        "unit": "us_pt811"
-      }
-    }
-  },
-  {
-    "unlockable": {
-      "id": "ussr_destroyer_7y_stroyny_decals_unlock",
-      "type": "decal",
-      "chapter": "decals",
-      "group": "ships_ussr",
-      "mode": {
-        "type": "char_unit_exist",
-        "unit": "ussr_destroyer_7y_stroyny"
       }
     }
   },
@@ -100957,6 +101264,617 @@
           "condition": {
             "type": "playerType",
             "unitType": "tank"
+          }
+        },
+        {
+          "condition": {
+            "type": "activity",
+            "percent": 50
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "fr_af_roundel",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "roundels",
+      "mode": [
+        {
+          "type": "killedPlayersScore"
+        },
+        {
+          "mulArcade": 1
+        },
+        {
+          "mulRealistic": 3
+        },
+        {
+          "mulHardcore": 6
+        },
+        {
+          "num": 200
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerTag",
+            "tag": "country_france"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerType",
+            "unitType": "aircraft"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "it_af_roundel_low_visible",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "roundels",
+      "hideForLang": "HChinese",
+      "mode": [
+        {
+          "type": "killedPlayersScore"
+        },
+        {
+          "mulArcade": 1
+        },
+        {
+          "mulRealistic": 3
+        },
+        {
+          "mulHardcore": 6
+        },
+        {
+          "num": 300
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerTag",
+            "tag": "country_italy"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerType",
+            "unitType": "aircraft"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 6,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "jp_af_roundel_low_visible",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "roundels",
+      "hideForLang": "HChinese",
+      "mode": [
+        {
+          "type": "killedPlayersScore"
+        },
+        {
+          "mulArcade": 1
+        },
+        {
+          "mulRealistic": 3
+        },
+        {
+          "mulHardcore": 6
+        },
+        {
+          "num": 300
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerTag",
+            "tag": "country_japan"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerType",
+            "unitType": "aircraft"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 6,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "ca_af_roundel_low_visible",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "roundels",
+      "hideForLang": "HChinese",
+      "mode": [
+        {
+          "type": "killedPlayersScore"
+        },
+        {
+          "mulArcade": 1
+        },
+        {
+          "mulRealistic": 3
+        },
+        {
+          "mulHardcore": 6
+        },
+        {
+          "num": 300
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": [
+            {
+              "type": "playerTag"
+            },
+            {
+              "tag": "country_usa"
+            },
+            {
+              "tag": "country_britain"
+            }
+          ]
+        },
+        {
+          "condition": {
+            "type": "playerType",
+            "unitType": "aircraft"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 6,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "ca_gf_rounder",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "roundels",
+      "hideForLang": "HChinese",
+      "mode": [
+        {
+          "type": "killedPlayersScore"
+        },
+        {
+          "mulArcade": 1
+        },
+        {
+          "mulRealistic": 3
+        },
+        {
+          "mulHardcore": 6
+        },
+        {
+          "num": 300
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": [
+            {
+              "type": "playerTag"
+            },
+            {
+              "tag": "country_usa"
+            },
+            {
+              "tag": "country_britain"
+            }
+          ]
+        },
+        {
+          "condition": {
+            "type": "playerType",
+            "unitType": "tank"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 6,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "uk_af_roundel_low_visible",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "roundels",
+      "hideForLang": "HChinese",
+      "mode": [
+        {
+          "type": "killedPlayersScore"
+        },
+        {
+          "mulArcade": 1
+        },
+        {
+          "mulRealistic": 3
+        },
+        {
+          "mulHardcore": 6
+        },
+        {
+          "num": 300
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerTag",
+            "tag": "country_britain"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerType",
+            "unitType": "aircraft"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 6,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "uk_af_roundel_low_visible_tail",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "roundels",
+      "hideForLang": "HChinese",
+      "mode": [
+        {
+          "type": "killedPlayersScore"
+        },
+        {
+          "mulArcade": 1
+        },
+        {
+          "mulRealistic": 3
+        },
+        {
+          "mulHardcore": 6
+        },
+        {
+          "num": 300
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerTag",
+            "tag": "country_britain"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerType",
+            "unitType": "aircraft"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 6,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "usa_af_roundel_low_visible",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "roundels",
+      "hideForLang": "HChinese",
+      "mode": [
+        {
+          "type": "killedPlayersScore"
+        },
+        {
+          "mulArcade": 1
+        },
+        {
+          "mulRealistic": 3
+        },
+        {
+          "mulHardcore": 6
+        },
+        {
+          "num": 300
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerTag",
+            "tag": "country_usa"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerType",
+            "unitType": "aircraft"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 6,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "noak_af_roundel_low_visible",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "roundels",
+      "hideForLang": "HChinese",
+      "mode": [
+        {
+          "type": "killedPlayersScore"
+        },
+        {
+          "mulArcade": 1
+        },
+        {
+          "mulRealistic": 3
+        },
+        {
+          "mulHardcore": 6
+        },
+        {
+          "num": 300
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerTag",
+            "tag": "country_china"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerType",
+            "unitType": "aircraft"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 6,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "ussr_af_roundel_vks",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "roundels",
+      "hideForLang": "HChinese",
+      "mode": [
+        {
+          "type": "killedPlayersScore"
+        },
+        {
+          "mulArcade": 1
+        },
+        {
+          "mulRealistic": 3
+        },
+        {
+          "mulHardcore": 6
+        },
+        {
+          "num": 300
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerTag",
+            "tag": "country_ussr"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerType",
+            "unitType": "aircraft"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 6,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "usa_af_roundel_1919",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "roundels",
+      "mode": [
+        {
+          "type": "missionsWonScore"
+        },
+        {
+          "mulArcade": 1
+        },
+        {
+          "mulRealistic": 2
+        },
+        {
+          "mulHardcore": 3
+        },
+        {
+          "num": 150
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerTag",
+            "tag": "country_usa"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerType",
+            "unitType": "aircraft"
+          }
+        },
+        {
+          "condition": {
+            "type": "activity",
+            "percent": 50
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "usa_af_roundel_1947",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "roundels",
+      "mode": [
+        {
+          "type": "missionsWonScore"
+        },
+        {
+          "mulArcade": 1
+        },
+        {
+          "mulRealistic": 2
+        },
+        {
+          "mulHardcore": 3
+        },
+        {
+          "num": 200
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerTag",
+            "tag": "country_usa"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerType",
+            "unitType": "aircraft"
           }
         },
         {
@@ -110412,7 +111330,7 @@
         {
           "condition": {
             "type": "playerType",
-            "unitType": "ship"
+            "unitType": "boat"
           }
         },
         {
@@ -113953,7 +114871,7 @@
         {
           "condition": {
             "type": "playerType",
-            "unitType": "ship"
+            "unitType": "boat"
           }
         },
         {
@@ -113986,7 +114904,7 @@
         {
           "condition": {
             "type": "playerType",
-            "unitType": "ship"
+            "unitType": "boat"
           }
         },
         {
@@ -118417,7 +119335,7 @@
         {
           "condition": {
             "type": "playerType",
-            "unitType": "ship"
+            "unitType": "boat"
           }
         },
         {
@@ -118450,7 +119368,7 @@
         {
           "condition": {
             "type": "playerType",
-            "unitType": "ship"
+            "unitType": "boat"
           }
         },
         {
@@ -118483,7 +119401,7 @@
         {
           "condition": {
             "type": "playerType",
-            "unitType": "ship"
+            "unitType": "boat"
           }
         },
         {
@@ -118522,7 +119440,7 @@
         {
           "condition": {
             "type": "playerType",
-            "unitType": "ship"
+            "unitType": "boat"
           }
         },
         {
@@ -118561,7 +119479,7 @@
         {
           "condition": {
             "type": "playerType",
-            "unitType": "ship"
+            "unitType": "boat"
           }
         },
         {
@@ -118600,7 +119518,7 @@
         {
           "condition": {
             "type": "playerType",
-            "unitType": "ship"
+            "unitType": "boat"
           }
         },
         {
@@ -118639,7 +119557,7 @@
         {
           "condition": {
             "type": "playerType",
-            "unitType": "ship"
+            "unitType": "boat"
           }
         },
         {
@@ -124674,30 +125592,48 @@
         "group": "rank"
       },
       {
-        "mode": {
-          "type": "char_player_era",
-          "country": "country_ussr",
-          "era": 4,
-          "unitClass": "ship"
-        }
+        "mode": [
+          {
+            "type": "char_player_era"
+          },
+          {
+            "country": "country_ussr"
+          },
+          {
+            "era": 5
+          },
+          {
+            "unitClass": "ship"
+          },
+          {
+            "unitClass": "boat"
+          }
+        ]
       },
       {
         "stage": {
           "param": 2,
           "amount_warpoints": 0,
-          "amount_exp": 250
+          "amount_exp": 100
         }
       },
       {
         "stage": {
           "param": 3,
           "amount_warpoints": 0,
-          "amount_exp": 1000
+          "amount_exp": 250
         }
       },
       {
         "stage": {
           "param": 4,
+          "amount_warpoints": 0,
+          "amount_exp": 1000
+        }
+      },
+      {
+        "stage": {
+          "param": 5,
           "amount_warpoints": 0,
           "amount_exp": 10000
         }
@@ -124725,30 +125661,48 @@
         "group": "rank"
       },
       {
-        "mode": {
-          "type": "char_player_era",
-          "country": "country_germany",
-          "era": 4,
-          "unitClass": "ship"
-        }
+        "mode": [
+          {
+            "type": "char_player_era"
+          },
+          {
+            "country": "country_germany"
+          },
+          {
+            "era": 5
+          },
+          {
+            "unitClass": "ship"
+          },
+          {
+            "unitClass": "boat"
+          }
+        ]
       },
       {
         "stage": {
           "param": 2,
           "amount_warpoints": 0,
-          "amount_exp": 250
+          "amount_exp": 100
         }
       },
       {
         "stage": {
           "param": 3,
           "amount_warpoints": 0,
-          "amount_exp": 1000
+          "amount_exp": 250
         }
       },
       {
         "stage": {
           "param": 4,
+          "amount_warpoints": 0,
+          "amount_exp": 1000
+        }
+      },
+      {
+        "stage": {
+          "param": 5,
           "amount_warpoints": 0,
           "amount_exp": 10000
         }
@@ -124776,30 +125730,48 @@
         "group": "rank"
       },
       {
-        "mode": {
-          "type": "char_player_era",
-          "country": "country_usa",
-          "era": 4,
-          "unitClass": "ship"
-        }
+        "mode": [
+          {
+            "type": "char_player_era"
+          },
+          {
+            "country": "country_usa"
+          },
+          {
+            "era": 5
+          },
+          {
+            "unitClass": "ship"
+          },
+          {
+            "unitClass": "boat"
+          }
+        ]
       },
       {
         "stage": {
           "param": 2,
           "amount_warpoints": 0,
-          "amount_exp": 250
+          "amount_exp": 100
         }
       },
       {
         "stage": {
           "param": 3,
           "amount_warpoints": 0,
-          "amount_exp": 1000
+          "amount_exp": 250
         }
       },
       {
         "stage": {
           "param": 4,
+          "amount_warpoints": 0,
+          "amount_exp": 1000
+        }
+      },
+      {
+        "stage": {
+          "param": 5,
           "amount_warpoints": 0,
           "amount_exp": 10000
         }
@@ -124827,30 +125799,48 @@
         "group": "rank"
       },
       {
-        "mode": {
-          "type": "char_player_era",
-          "country": "country_britain",
-          "era": 4,
-          "unitClass": "ship"
-        }
+        "mode": [
+          {
+            "type": "char_player_era"
+          },
+          {
+            "country": "country_britain"
+          },
+          {
+            "era": 5
+          },
+          {
+            "unitClass": "ship"
+          },
+          {
+            "unitClass": "boat"
+          }
+        ]
       },
       {
         "stage": {
           "param": 2,
           "amount_warpoints": 0,
-          "amount_exp": 250
+          "amount_exp": 100
         }
       },
       {
         "stage": {
           "param": 3,
           "amount_warpoints": 0,
-          "amount_exp": 1000
+          "amount_exp": 250
         }
       },
       {
         "stage": {
           "param": 4,
+          "amount_warpoints": 0,
+          "amount_exp": 1000
+        }
+      },
+      {
+        "stage": {
+          "param": 5,
           "amount_warpoints": 0,
           "amount_exp": 10000
         }
@@ -124878,30 +125868,48 @@
         "group": "rank"
       },
       {
-        "mode": {
-          "type": "char_player_era",
-          "country": "country_japan",
-          "era": 4,
-          "unitClass": "ship"
-        }
+        "mode": [
+          {
+            "type": "char_player_era"
+          },
+          {
+            "country": "country_japan"
+          },
+          {
+            "era": 5
+          },
+          {
+            "unitClass": "ship"
+          },
+          {
+            "unitClass": "boat"
+          }
+        ]
       },
       {
         "stage": {
           "param": 2,
           "amount_warpoints": 0,
-          "amount_exp": 250
+          "amount_exp": 100
         }
       },
       {
         "stage": {
           "param": 3,
           "amount_warpoints": 0,
-          "amount_exp": 1000
+          "amount_exp": 250
         }
       },
       {
         "stage": {
           "param": 4,
+          "amount_warpoints": 0,
+          "amount_exp": 1000
+        }
+      },
+      {
+        "stage": {
+          "param": 5,
           "amount_warpoints": 0,
           "amount_exp": 10000
         }
@@ -124929,30 +125937,48 @@
         "group": "rank"
       },
       {
-        "mode": {
-          "type": "char_player_era",
-          "country": "country_italy",
-          "era": 4,
-          "unitClass": "ship"
-        }
+        "mode": [
+          {
+            "type": "char_player_era"
+          },
+          {
+            "country": "country_italy"
+          },
+          {
+            "era": 5
+          },
+          {
+            "unitClass": "ship"
+          },
+          {
+            "unitClass": "boat"
+          }
+        ]
       },
       {
         "stage": {
           "param": 2,
           "amount_warpoints": 0,
-          "amount_exp": 250
+          "amount_exp": 100
         }
       },
       {
         "stage": {
           "param": 3,
           "amount_warpoints": 0,
-          "amount_exp": 1000
+          "amount_exp": 250
         }
       },
       {
         "stage": {
           "param": 4,
+          "amount_warpoints": 0,
+          "amount_exp": 1000
+        }
+      },
+      {
+        "stage": {
+          "param": 5,
           "amount_warpoints": 0,
           "amount_exp": 10000
         }
@@ -125731,13 +126757,26 @@
         "group": "ship"
       },
       {
-        "mode": {
-          "type": "char_aircrafts_in_era",
-          "country": "country_ussr",
-          "num": 20,
-          "elite": 2,
-          "unitClass": "ship"
-        }
+        "mode": [
+          {
+            "type": "char_aircrafts_in_era"
+          },
+          {
+            "country": "country_ussr"
+          },
+          {
+            "num": 20
+          },
+          {
+            "elite": 2
+          },
+          {
+            "unitClass": "ship"
+          },
+          {
+            "unitClass": "boat"
+          }
+        ]
       },
       {
         "stage": {
@@ -125790,13 +126829,26 @@
         "group": "ship"
       },
       {
-        "mode": {
-          "type": "char_aircrafts_in_era",
-          "country": "country_germany",
-          "num": 20,
-          "elite": 2,
-          "unitClass": "ship"
-        }
+        "mode": [
+          {
+            "type": "char_aircrafts_in_era"
+          },
+          {
+            "country": "country_germany"
+          },
+          {
+            "num": 20
+          },
+          {
+            "elite": 2
+          },
+          {
+            "unitClass": "ship"
+          },
+          {
+            "unitClass": "boat"
+          }
+        ]
       },
       {
         "stage": {
@@ -125849,13 +126901,26 @@
         "group": "ship"
       },
       {
-        "mode": {
-          "type": "char_aircrafts_in_era",
-          "country": "country_usa",
-          "num": 20,
-          "elite": 2,
-          "unitClass": "ship"
-        }
+        "mode": [
+          {
+            "type": "char_aircrafts_in_era"
+          },
+          {
+            "country": "country_usa"
+          },
+          {
+            "num": 20
+          },
+          {
+            "elite": 2
+          },
+          {
+            "unitClass": "ship"
+          },
+          {
+            "unitClass": "boat"
+          }
+        ]
       },
       {
         "stage": {
@@ -125908,13 +126973,26 @@
         "group": "ship"
       },
       {
-        "mode": {
-          "type": "char_aircrafts_in_era",
-          "country": "country_britain",
-          "num": 20,
-          "elite": 2,
-          "unitClass": "ship"
-        }
+        "mode": [
+          {
+            "type": "char_aircrafts_in_era"
+          },
+          {
+            "country": "country_britain"
+          },
+          {
+            "num": 20
+          },
+          {
+            "elite": 2
+          },
+          {
+            "unitClass": "ship"
+          },
+          {
+            "unitClass": "boat"
+          }
+        ]
       },
       {
         "stage": {
@@ -125967,13 +127045,26 @@
         "group": "ship"
       },
       {
-        "mode": {
-          "type": "char_aircrafts_in_era",
-          "country": "country_japan",
-          "num": 20,
-          "elite": 2,
-          "unitClass": "ship"
-        }
+        "mode": [
+          {
+            "type": "char_aircrafts_in_era"
+          },
+          {
+            "country": "country_japan"
+          },
+          {
+            "num": 20
+          },
+          {
+            "elite": 2
+          },
+          {
+            "unitClass": "ship"
+          },
+          {
+            "unitClass": "boat"
+          }
+        ]
       },
       {
         "stage": {
@@ -126026,13 +127117,26 @@
         "group": "ship"
       },
       {
-        "mode": {
-          "type": "char_aircrafts_in_era",
-          "country": "country_italy",
-          "num": 20,
-          "elite": 2,
-          "unitClass": "ship"
-        }
+        "mode": [
+          {
+            "type": "char_aircrafts_in_era"
+          },
+          {
+            "country": "country_italy"
+          },
+          {
+            "num": 20
+          },
+          {
+            "elite": 2
+          },
+          {
+            "unitClass": "ship"
+          },
+          {
+            "unitClass": "boat"
+          }
+        ]
       },
       {
         "stage": {
@@ -126072,12 +127176,23 @@
       "amount_warpoints": 100000,
       "chapter": "achievements",
       "group": "ship",
-      "mode": {
-        "type": "char_aircrafts_in_era",
-        "num": 50,
-        "elite": 2,
-        "unitClass": "ship"
-      }
+      "mode": [
+        {
+          "type": "char_aircrafts_in_era"
+        },
+        {
+          "num": 50
+        },
+        {
+          "elite": 2
+        },
+        {
+          "unitClass": "ship"
+        },
+        {
+          "unitClass": "boat"
+        }
+      ]
     }
   },
   {
@@ -126088,12 +127203,23 @@
       "amount_warpoints": 500000,
       "chapter": "achievements",
       "group": "ship",
-      "mode": {
-        "type": "char_aircrafts_in_era",
-        "num": 1,
-        "era": 4,
-        "unitClass": "ship"
-      }
+      "mode": [
+        {
+          "type": "char_aircrafts_in_era"
+        },
+        {
+          "num": 1
+        },
+        {
+          "era": 4
+        },
+        {
+          "unitClass": "ship"
+        },
+        {
+          "unitClass": "boat"
+        }
+      ]
     }
   },
   {
@@ -126114,30 +127240,41 @@
         "group": "ship"
       },
       {
-        "mode": {
-          "type": "char_aircrafts_in_era",
-          "num": 50,
-          "unitClass": "ship",
-          "premium": true
-        }
+        "mode": [
+          {
+            "type": "char_aircrafts_in_era"
+          },
+          {
+            "num": 100
+          },
+          {
+            "unitClass": "ship"
+          },
+          {
+            "unitClass": "boat"
+          },
+          {
+            "premium": true
+          }
+        ]
       },
       {
         "stage": {
-          "param": 10,
+          "param": 25,
           "amount_warpoints": 0,
           "amount_exp": 1000
         }
       },
       {
         "stage": {
-          "param": 25,
+          "param": 50,
           "amount_warpoints": 0,
           "amount_exp": 5000
         }
       },
       {
         "stage": {
-          "param": 50,
+          "param": 100,
           "amount_warpoints": 0,
           "amount_exp": 25000
         }
@@ -126172,16 +127309,30 @@
             }
           },
           {
-            "condition": {
-              "type": "targetUnitClass",
-              "unitClass": "ship"
-            }
+            "condition": [
+              {
+                "type": "targetUnitClass"
+              },
+              {
+                "unitClass": "ship"
+              },
+              {
+                "unitClass": "boat"
+              }
+            ]
           },
           {
-            "condition": {
-              "type": "playerType",
-              "unitType": "ship"
-            }
+            "condition": [
+              {
+                "type": "playerType"
+              },
+              {
+                "unitType": "ship"
+              },
+              {
+                "unitType": "boat"
+              }
+            ]
           }
         ]
       },
@@ -126249,10 +127400,17 @@
             }
           },
           {
-            "condition": {
-              "type": "playerType",
-              "unitType": "ship"
-            }
+            "condition": [
+              {
+                "type": "playerType"
+              },
+              {
+                "unitType": "ship"
+              },
+              {
+                "unitType": "boat"
+              }
+            ]
           }
         ]
       },
@@ -126313,10 +127471,17 @@
             }
           },
           {
-            "condition": {
-              "type": "playerType",
-              "unitType": "ship"
-            }
+            "condition": [
+              {
+                "type": "playerType"
+              },
+              {
+                "unitType": "ship"
+              },
+              {
+                "unitType": "boat"
+              }
+            ]
           },
           {
             "condition": {
@@ -126386,16 +127551,30 @@
             }
           },
           {
-            "condition": {
-              "type": "targetUnitClass",
-              "unitClass": "ship"
-            }
+            "condition": [
+              {
+                "type": "targetUnitClass"
+              },
+              {
+                "unitClass": "ship"
+              },
+              {
+                "unitClass": "boat"
+              }
+            ]
           },
           {
-            "condition": {
-              "type": "playerType",
-              "unitType": "ship"
-            }
+            "condition": [
+              {
+                "type": "playerType"
+              },
+              {
+                "unitType": "ship"
+              },
+              {
+                "unitType": "boat"
+              }
+            ]
           },
           {
             "condition": {
@@ -126463,16 +127642,30 @@
             }
           },
           {
-            "condition": {
-              "type": "targetUnitClass",
-              "unitClass": "ship"
-            }
+            "condition": [
+              {
+                "type": "targetUnitClass"
+              },
+              {
+                "unitClass": "ship"
+              },
+              {
+                "unitClass": "boat"
+              }
+            ]
           },
           {
-            "condition": {
-              "type": "playerType",
-              "unitType": "ship"
-            }
+            "condition": [
+              {
+                "type": "playerType"
+              },
+              {
+                "unitType": "ship"
+              },
+              {
+                "unitType": "boat"
+              }
+            ]
           },
           {
             "condition": {
@@ -126539,16 +127732,30 @@
             }
           },
           {
-            "condition": {
-              "type": "playerType",
-              "unitType": "ship"
-            }
+            "condition": [
+              {
+                "type": "playerType"
+              },
+              {
+                "unitType": "ship"
+              },
+              {
+                "unitType": "boat"
+              }
+            ]
           },
           {
-            "condition": {
-              "type": "targetUnitClass",
-              "unitClass": "ship"
-            }
+            "condition": [
+              {
+                "type": "targetUnitClass"
+              },
+              {
+                "unitClass": "ship"
+              },
+              {
+                "unitClass": "boat"
+              }
+            ]
           }
         ]
       },
@@ -126609,16 +127816,30 @@
             }
           },
           {
-            "condition": {
-              "type": "playerType",
-              "unitType": "ship"
-            }
+            "condition": [
+              {
+                "type": "playerType"
+              },
+              {
+                "unitType": "ship"
+              },
+              {
+                "unitType": "boat"
+              }
+            ]
           },
           {
-            "condition": {
-              "type": "targetUnitClass",
-              "unitClass": "ship"
-            }
+            "condition": [
+              {
+                "type": "targetUnitClass"
+              },
+              {
+                "unitClass": "ship"
+              },
+              {
+                "unitClass": "boat"
+              }
+            ]
           }
         ]
       },
@@ -126679,16 +127900,30 @@
             }
           },
           {
-            "condition": {
-              "type": "playerType",
-              "unitType": "ship"
-            }
+            "condition": [
+              {
+                "type": "playerType"
+              },
+              {
+                "unitType": "ship"
+              },
+              {
+                "unitType": "boat"
+              }
+            ]
           },
           {
-            "condition": {
-              "type": "targetUnitClass",
-              "unitClass": "ship"
-            }
+            "condition": [
+              {
+                "type": "targetUnitClass"
+              },
+              {
+                "unitClass": "ship"
+              },
+              {
+                "unitClass": "boat"
+              }
+            ]
           }
         ]
       },
@@ -126749,16 +127984,30 @@
             }
           },
           {
-            "condition": {
-              "type": "playerType",
-              "unitType": "ship"
-            }
+            "condition": [
+              {
+                "type": "playerType"
+              },
+              {
+                "unitType": "ship"
+              },
+              {
+                "unitType": "boat"
+              }
+            ]
           },
           {
-            "condition": {
-              "type": "targetUnitClass",
-              "unitClass": "ship"
-            }
+            "condition": [
+              {
+                "type": "targetUnitClass"
+              },
+              {
+                "unitClass": "ship"
+              },
+              {
+                "unitClass": "boat"
+              }
+            ]
           }
         ]
       },
@@ -126819,16 +128068,30 @@
             }
           },
           {
-            "condition": {
-              "type": "playerType",
-              "unitType": "ship"
-            }
+            "condition": [
+              {
+                "type": "playerType"
+              },
+              {
+                "unitType": "ship"
+              },
+              {
+                "unitType": "boat"
+              }
+            ]
           },
           {
-            "condition": {
-              "type": "targetUnitClass",
-              "unitClass": "ship"
-            }
+            "condition": [
+              {
+                "type": "targetUnitClass"
+              },
+              {
+                "unitClass": "ship"
+              },
+              {
+                "unitClass": "boat"
+              }
+            ]
           }
         ]
       },
@@ -126889,16 +128152,30 @@
             }
           },
           {
-            "condition": {
-              "type": "playerType",
-              "unitType": "ship"
-            }
+            "condition": [
+              {
+                "type": "playerType"
+              },
+              {
+                "unitType": "ship"
+              },
+              {
+                "unitType": "boat"
+              }
+            ]
           },
           {
-            "condition": {
-              "type": "targetUnitClass",
-              "unitClass": "ship"
-            }
+            "condition": [
+              {
+                "type": "targetUnitClass"
+              },
+              {
+                "unitClass": "ship"
+              },
+              {
+                "unitClass": "boat"
+              }
+            ]
           }
         ]
       },
@@ -126962,16 +128239,30 @@
             }
           },
           {
-            "condition": {
-              "type": "playerType",
-              "unitType": "ship"
-            }
+            "condition": [
+              {
+                "type": "playerType"
+              },
+              {
+                "unitType": "ship"
+              },
+              {
+                "unitType": "boat"
+              }
+            ]
           },
           {
-            "condition": {
-              "type": "targetUnitClass",
-              "unitClass": "ship"
-            }
+            "condition": [
+              {
+                "type": "targetUnitClass"
+              },
+              {
+                "unitClass": "ship"
+              },
+              {
+                "unitClass": "boat"
+              }
+            ]
           }
         ]
       },
@@ -127035,16 +128326,30 @@
             }
           },
           {
-            "condition": {
-              "type": "playerType",
-              "unitType": "ship"
-            }
+            "condition": [
+              {
+                "type": "playerType"
+              },
+              {
+                "unitType": "ship"
+              },
+              {
+                "unitType": "boat"
+              }
+            ]
           },
           {
-            "condition": {
-              "type": "targetUnitClass",
-              "unitClass": "ship"
-            }
+            "condition": [
+              {
+                "type": "targetUnitClass"
+              },
+              {
+                "unitClass": "ship"
+              },
+              {
+                "unitClass": "boat"
+              }
+            ]
           }
         ]
       },
@@ -127108,16 +128413,30 @@
             }
           },
           {
-            "condition": {
-              "type": "playerType",
-              "unitType": "ship"
-            }
+            "condition": [
+              {
+                "type": "playerType"
+              },
+              {
+                "unitType": "ship"
+              },
+              {
+                "unitType": "boat"
+              }
+            ]
           },
           {
-            "condition": {
-              "type": "targetUnitClass",
-              "unitClass": "ship"
-            }
+            "condition": [
+              {
+                "type": "targetUnitClass"
+              },
+              {
+                "unitClass": "ship"
+              },
+              {
+                "unitClass": "boat"
+              }
+            ]
           }
         ]
       },
@@ -127181,16 +128500,30 @@
             }
           },
           {
-            "condition": {
-              "type": "playerType",
-              "unitType": "ship"
-            }
+            "condition": [
+              {
+                "type": "playerType"
+              },
+              {
+                "unitType": "ship"
+              },
+              {
+                "unitType": "boat"
+              }
+            ]
           },
           {
-            "condition": {
-              "type": "targetUnitClass",
-              "unitClass": "ship"
-            }
+            "condition": [
+              {
+                "type": "targetUnitClass"
+              },
+              {
+                "unitClass": "ship"
+              },
+              {
+                "unitClass": "boat"
+              }
+            ]
           }
         ]
       },
@@ -127254,16 +128587,30 @@
             }
           },
           {
-            "condition": {
-              "type": "playerType",
-              "unitType": "ship"
-            }
+            "condition": [
+              {
+                "type": "playerType"
+              },
+              {
+                "unitType": "ship"
+              },
+              {
+                "unitType": "boat"
+              }
+            ]
           },
           {
-            "condition": {
-              "type": "targetUnitClass",
-              "unitClass": "ship"
-            }
+            "condition": [
+              {
+                "type": "targetUnitClass"
+              },
+              {
+                "unitClass": "ship"
+              },
+              {
+                "unitClass": "boat"
+              }
+            ]
           }
         ]
       },
@@ -127327,16 +128674,30 @@
             }
           },
           {
-            "condition": {
-              "type": "playerType",
-              "unitType": "ship"
-            }
+            "condition": [
+              {
+                "type": "playerType"
+              },
+              {
+                "unitType": "ship"
+              },
+              {
+                "unitType": "boat"
+              }
+            ]
           },
           {
-            "condition": {
-              "type": "targetUnitClass",
-              "unitClass": "ship"
-            }
+            "condition": [
+              {
+                "type": "targetUnitClass"
+              },
+              {
+                "unitClass": "ship"
+              },
+              {
+                "unitClass": "boat"
+              }
+            ]
           }
         ]
       },
@@ -131697,6 +133058,15 @@
               },
               {
                 "class": "uk_centurion_mk_1"
+              },
+              {
+                "class": "uk_centurion_action_x"
+              },
+              {
+                "class": "uk_centurion_mk_5_avre_era"
+              },
+              {
+                "class": "uk_centurion_shot_kal_d"
               }
             ]
           }
@@ -131780,6 +133150,15 @@
               },
               {
                 "class": "uk_centurion_mk_1"
+              },
+              {
+                "class": "uk_centurion_action_x"
+              },
+              {
+                "class": "uk_centurion_mk_5_avre_era"
+              },
+              {
+                "class": "uk_centurion_shot_kal_d"
               }
             ]
           }
@@ -132296,6 +133675,12 @@
               },
               {
                 "class": "jp_type_89b_i_go_otsu"
+              },
+              {
+                "class": "jp_m24_chaffee"
+              },
+              {
+                "class": "jp_m41_walker_bulldog"
               }
             ]
           }
@@ -132382,6 +133767,12 @@
               },
               {
                 "class": "jp_type_89b_i_go_otsu"
+              },
+              {
+                "class": "jp_m24_chaffee"
+              },
+              {
+                "class": "jp_m41_walker_bulldog"
               }
             ]
           }
@@ -132795,6 +134186,9 @@
               },
               {
                 "class": "fr_amx_13_dca_40"
+              },
+              {
+                "class": "fr_amx_13_chaffee"
               }
             ]
           }
@@ -132872,6 +134266,9 @@
               },
               {
                 "class": "fr_amx_13_75_ss11"
+              },
+              {
+                "class": "fr_amx_13_hot"
               }
             ]
           }
@@ -133118,6 +134515,15 @@
               },
               {
                 "class": "fr_amx_30_1972"
+              },
+              {
+                "class": "fr_amx_30"
+              },
+              {
+                "class": "fr_amx_30_b2_brenus"
+              },
+              {
+                "class": "fr_amx_30_super"
               }
             ]
           }
@@ -133198,6 +134604,15 @@
               },
               {
                 "class": "fr_amx_30_1972"
+              },
+              {
+                "class": "fr_amx_30"
+              },
+              {
+                "class": "fr_amx_30_b2_brenus"
+              },
+              {
+                "class": "fr_amx_30_super"
               }
             ]
           }
@@ -133619,6 +135034,9 @@
               },
               {
                 "class": "it_oto_r3_106sr"
+              },
+              {
+                "class": "it_aubl_74_60_70m"
               }
             ]
           }
@@ -133702,6 +135120,9 @@
               },
               {
                 "class": "it_oto_r3_t20_fa"
+              },
+              {
+                "class": "it_aubl_74_60_70m"
               }
             ]
           }
@@ -133785,6 +135206,9 @@
               },
               {
                 "class": "it_b1_centauro_romor"
+              },
+              {
+                "class": "it_centauro_mgs_120"
               }
             ]
           }
@@ -133862,6 +135286,9 @@
               },
               {
                 "class": "it_b1_centauro_romor"
+              },
+              {
+                "class": "it_centauro_mgs_120"
               }
             ]
           }
@@ -137543,6 +138970,15 @@
               },
               {
                 "class": "bf-109b_2"
+              },
+              {
+                "class": "bf-109a_1"
+              },
+              {
+                "class": "bf-109e-4"
+              },
+              {
+                "class": "bf-109e-7"
               }
             ]
           }
@@ -137820,6 +139256,9 @@
               },
               {
                 "class": "spitfire_f24"
+              },
+              {
+                "class": "spitfiremkiia_ep"
               }
             ]
           }
@@ -137915,6 +139354,9 @@
               },
               {
                 "class": "il-10_1946"
+              },
+              {
+                "class": "il_2_m82"
               }
             ]
           }
@@ -138010,6 +139452,9 @@
               },
               {
                 "class": "il-10_1946"
+              },
+              {
+                "class": "il_2_m82"
               }
             ]
           }
@@ -138280,6 +139725,21 @@
               },
               {
                 "class": "la-7_dolgushin"
+              },
+              {
+                "class": "la-9"
+              },
+              {
+                "class": "la-11"
+              },
+              {
+                "class": "la-15"
+              },
+              {
+                "class": "la_200_toriy"
+              },
+              {
+                "class": "la_174"
               }
             ]
           }
@@ -138576,6 +140036,21 @@
               },
               {
                 "class": "yak-9ut"
+              },
+              {
+                "class": "yak-3u"
+              },
+              {
+                "class": "yak-23"
+              },
+              {
+                "class": "yak-30d"
+              },
+              {
+                "class": "yak_2_kabb"
+              },
+              {
+                "class": "yak-4"
               }
             ]
           }
@@ -138683,6 +140158,12 @@
               },
               {
                 "class": "fw-190d-9_ussr"
+              },
+              {
+                "class": "fw-190a-5_u2"
+              },
+              {
+                "class": "fw-190c"
               }
             ]
           }
@@ -138766,6 +140247,9 @@
               },
               {
                 "class": "fw-190a-5_cannons"
+              },
+              {
+                "class": "fw-190a-5_u2"
               }
             ]
           }
@@ -138934,6 +140418,12 @@
               },
               {
                 "class": "f7f1"
+              },
+              {
+                "class": "f6f-5n"
+              },
+              {
+                "class": "f7f3"
               }
             ]
           }
@@ -146526,7 +148016,7 @@
       },
       {
         "stage": {
-          "param": 25,
+          "param": 30,
           "amount_warpoints": 0,
           "amount_exp": 1000
         }
@@ -146581,30 +148071,44 @@
       {
         "mode": {
           "type": "char_aircrafts_in_era",
-          "num": 50,
+          "num": 200,
           "unitClass": "tank",
           "premium": true
         }
       },
       {
         "stage": {
-          "param": 14,
+          "param": 25,
           "amount_warpoints": 0,
           "amount_exp": 1000
         }
       },
       {
         "stage": {
-          "param": 25,
+          "param": 50,
           "amount_warpoints": 0,
           "amount_exp": 5000
         }
       },
       {
         "stage": {
-          "param": 50,
+          "param": 100,
           "amount_warpoints": 0,
           "amount_exp": 25000
+        }
+      },
+      {
+        "stage": {
+          "param": 150,
+          "amount_warpoints": 0,
+          "amount_exp": 50000
+        }
+      },
+      {
+        "stage": {
+          "param": 200,
+          "amount_warpoints": 0,
+          "amount_exp": 100000
         }
       }
     ]
@@ -147971,10 +149475,17 @@
           }
         },
         {
-          "condition": {
-            "type": "targetUnitClass",
-            "unitClass": "ship"
-          }
+          "condition": [
+            {
+              "type": "targetUnitClass"
+            },
+            {
+              "unitClass": "ship"
+            },
+            {
+              "unitClass": "boat"
+            }
+          ]
         }
       ]
     }
@@ -148000,10 +149511,17 @@
           }
         },
         {
-          "condition": {
-            "type": "targetUnitClass",
-            "unitClass": "ship"
-          }
+          "condition": [
+            {
+              "type": "targetUnitClass"
+            },
+            {
+              "unitClass": "ship"
+            },
+            {
+              "unitClass": "boat"
+            }
+          ]
         }
       ]
     }
@@ -148029,10 +149547,17 @@
           }
         },
         {
-          "condition": {
-            "type": "targetUnitClass",
-            "unitClass": "ship"
-          }
+          "condition": [
+            {
+              "type": "targetUnitClass"
+            },
+            {
+              "unitClass": "ship"
+            },
+            {
+              "unitClass": "boat"
+            }
+          ]
         }
       ]
     }
@@ -148372,7 +149897,7 @@
         {
           "condition": {
             "type": "enemyOffender",
-            "oflag": "typeShip"
+            "oflag": "typeWater"
           }
         },
         {
@@ -148498,14 +150023,21 @@
         {
           "condition": {
             "type": "enemyOffender",
-            "oflag": "typeShip"
+            "oflag": "typeWater"
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         }
       ]
     }
@@ -149035,7 +150567,10 @@
           "distTank": 100.0
         },
         {
-          "distShip": 500.0
+          "distShip": 1000.0
+        },
+        {
+          "distBoat": 200.0
         },
         {
           "distMix": 3000.0
@@ -152295,12 +153830,26 @@
       "id": "unlocked_usa_ship_2_era",
       "type": "achievement",
       "hidden": true,
-      "mode": {
-        "type": "char_player_era",
-        "country": "country_usa",
-        "era": 2,
-        "unitClass": "ship"
-      }
+      "mode": [
+        {
+          "type": "char_aircrafts_in_era"
+        },
+        {
+          "country": "country_usa"
+        },
+        {
+          "era": 2
+        },
+        {
+          "num": 1
+        },
+        {
+          "unitClass": "ship"
+        },
+        {
+          "unitClass": "boat"
+        }
+      ]
     }
   },
   {
@@ -152781,6 +154330,156 @@
         },
         {
           "unlock": "chosen_unit_type_ship"
+        },
+        {
+          "unlock": "first_battle"
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "germ_destroyer_class1924_iltis",
+      "type": "aircraft",
+      "popupImage": "#ui/images/first_battle_eagle.jpg?P1",
+      "popupInDebriefing": true,
+      "mode": [
+        {
+          "type": "char_unlocks"
+        },
+        {
+          "num": 3
+        },
+        {
+          "unlock": "chosen_country_germany"
+        },
+        {
+          "unlock": "chosen_unit_type_ship_without_boat"
+        },
+        {
+          "unlock": "first_battle"
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "us_destroyer_clemson_welborn_c_wood",
+      "type": "aircraft",
+      "popupImage": "#ui/images/first_battle_eagle.jpg?P1",
+      "popupInDebriefing": true,
+      "mode": [
+        {
+          "type": "char_unlocks"
+        },
+        {
+          "num": 3
+        },
+        {
+          "unlock": "chosen_country_usa"
+        },
+        {
+          "unlock": "chosen_unit_type_ship_without_boat"
+        },
+        {
+          "unlock": "first_battle"
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "ussr_destroyer_kerch",
+      "type": "aircraft",
+      "popupImage": "#ui/images/first_battle_eagle.jpg?P1",
+      "popupInDebriefing": true,
+      "mode": [
+        {
+          "type": "char_unlocks"
+        },
+        {
+          "num": 3
+        },
+        {
+          "unlock": "chosen_country_ussr"
+        },
+        {
+          "unlock": "chosen_unit_type_ship_without_boat"
+        },
+        {
+          "unlock": "first_battle"
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "uk_destroyer_clemson_montgomery_g95",
+      "type": "aircraft",
+      "popupImage": "#ui/images/first_battle_eagle.jpg?P1",
+      "popupInDebriefing": true,
+      "mode": [
+        {
+          "type": "char_unlocks"
+        },
+        {
+          "num": 3
+        },
+        {
+          "unlock": "chosen_country_britain"
+        },
+        {
+          "unlock": "chosen_unit_type_ship_without_boat"
+        },
+        {
+          "unlock": "first_battle"
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "jp_destroyer_satsuki",
+      "type": "aircraft",
+      "popupImage": "#ui/images/first_battle_eagle.jpg?P1",
+      "popupInDebriefing": true,
+      "mode": [
+        {
+          "type": "char_unlocks"
+        },
+        {
+          "num": 3
+        },
+        {
+          "unlock": "chosen_country_japan"
+        },
+        {
+          "unlock": "chosen_unit_type_ship_without_boat"
+        },
+        {
+          "unlock": "first_battle"
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "it_destroyer_aquilone",
+      "type": "aircraft",
+      "popupImage": "#ui/images/first_battle_eagle.jpg?P1",
+      "popupInDebriefing": true,
+      "mode": [
+        {
+          "type": "char_unlocks"
+        },
+        {
+          "num": 3
+        },
+        {
+          "unlock": "chosen_country_italy"
+        },
+        {
+          "unlock": "chosen_unit_type_ship_without_boat"
         },
         {
           "unlock": "first_battle"
@@ -153368,7 +155067,8 @@
           "type": "char_invited_progress",
           "rankAircraft": 2,
           "rankTank": 2,
-          "rankShip": 2
+          "rankShip": 2,
+          "rankBoat": 2
         }
       }
     }
@@ -153389,6 +155089,7 @@
           "rankAircraft": 2,
           "rankTank": 2,
           "rankShip": 2,
+          "rankBoat": 2,
           "from_unlock": "notify_invited_rank5_disabled"
         }
       }
@@ -153409,6 +155110,7 @@
           "rankAircraft": 2,
           "rankTank": 2,
           "rankShip": 2,
+          "rankBoat": 2,
           "from_unlock": "notify_invited_rank5"
         }
       }
@@ -153431,7 +155133,8 @@
             "type": "char_invited_progress",
             "rankAircraft": 2,
             "rankTank": 2,
-            "rankShip": 2
+            "rankShip": 2,
+            "rankBoat": 2
           }
         },
         {
@@ -153467,6 +155170,7 @@
           "rankAircraft": 2,
           "rankTank": 2,
           "rankShip": 2,
+          "rankBoat": 2,
           "from_unlock": "notify_invited_rank5_14nov2018"
         }
       }
@@ -153486,7 +155190,8 @@
           "type": "char_invited_progress",
           "rankAircraft": 3,
           "rankTank": 3,
-          "rankShip": 3
+          "rankShip": 3,
+          "rankBoat": 3
         }
       }
     }
@@ -153507,6 +155212,7 @@
           "rankAircraft": 3,
           "rankTank": 3,
           "rankShip": 3,
+          "rankBoat": 3,
           "from_unlock": "notify_invited_rank10_disabled"
         }
       }
@@ -153527,6 +155233,7 @@
           "rankAircraft": 3,
           "rankTank": 3,
           "rankShip": 3,
+          "rankBoat": 3,
           "from_unlock": "notify_invited_rank10"
         }
       }
@@ -153559,7 +155266,8 @@
             "type": "char_invited_progress",
             "rankAircraft": 3,
             "rankTank": 3,
-            "rankShip": 3
+            "rankShip": 3,
+            "rankBoat": 3
           }
         },
         {
@@ -153595,6 +155303,7 @@
           "rankAircraft": 3,
           "rankTank": 3,
           "rankShip": 3,
+          "rankBoat": 3,
           "from_unlock": "notify_invited_rank10_14nov2018"
         }
       }
@@ -153614,7 +155323,8 @@
           "type": "char_invited_progress",
           "rankAircraft": 5,
           "rankTank": 5,
-          "rankShip": 5
+          "rankShip": 5,
+          "rankBoat": 5
         }
       }
     }
@@ -153635,6 +155345,7 @@
           "rankAircraft": 5,
           "rankTank": 5,
           "rankShip": 5,
+          "rankBoat": 5,
           "from_unlock": "notify_invited_rank20_disabled"
         }
       }
@@ -153655,6 +155366,7 @@
           "rankAircraft": 5,
           "rankTank": 5,
           "rankShip": 5,
+          "rankBoat": 5,
           "from_unlock": "notify_invited_rank20"
         }
       }
@@ -153677,7 +155389,8 @@
             "type": "char_invited_progress",
             "rankAircraft": 5,
             "rankTank": 5,
-            "rankShip": 5
+            "rankShip": 5,
+            "rankBoat": 5
           }
         },
         {
@@ -153713,6 +155426,7 @@
           "rankAircraft": 5,
           "rankTank": 5,
           "rankShip": 5,
+          "rankBoat": 5,
           "from_unlock": "notify_invited_rank20_14nov2018"
         }
       }
@@ -153731,6 +155445,7 @@
           "rankAircraft": 3,
           "rankTank": 3,
           "rankShip": 3,
+          "rankBoat": 3,
           "from_unlock": "notify_invited_rank10"
         }
       }
@@ -154011,6 +155726,14 @@
   {
     "unlockable": {
       "id": "chosen_unit_type_ship",
+      "type": "achievement",
+      "hidden": true,
+      "isAllowByClient": true
+    }
+  },
+  {
+    "unlockable": {
+      "id": "chosen_unit_type_ship_without_boat",
       "type": "achievement",
       "hidden": true,
       "isAllowByClient": true
@@ -156350,10 +158073,17 @@
           "num": 800000
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -156386,10 +158116,17 @@
           "num": 400000
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -156422,10 +158159,17 @@
           "num": 200000
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -157520,10 +159264,17 @@
           "num": 200000
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -158018,10 +159769,17 @@
           "num": 100000
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -159369,10 +161127,17 @@
           "num": 50
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -159410,10 +161175,17 @@
           "num": 400000
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -159461,12 +161233,23 @@
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship",
-            "inSession": true,
-            "inSessionAnd": false
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            },
+            {
+              "inSession": true
+            },
+            {
+              "inSessionAnd": false
+            }
+          ]
         },
         {
           "condition": {
@@ -159508,10 +161291,17 @@
           "num": 50
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -159563,10 +161353,17 @@
           "num": 300
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -159881,12 +161678,23 @@
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship",
-            "inSession": true,
-            "inSessionAnd": false
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            },
+            {
+              "inSession": true
+            },
+            {
+              "inSessionAnd": false
+            }
+          ]
         },
         {
           "condition": {
@@ -160537,10 +162345,17 @@
           "num": 200000
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -160893,12 +162708,23 @@
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship",
-            "inSession": true,
-            "inSessionAnd": false
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            },
+            {
+              "inSession": true
+            },
+            {
+              "inSessionAnd": false
+            }
+          ]
         },
         {
           "condition": {
@@ -161103,10 +162929,17 @@
           "num": 10000
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -161266,12 +163099,23 @@
           }
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship",
-            "inSession": true,
-            "inSessionAnd": false
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            },
+            {
+              "inSession": true
+            },
+            {
+              "inSessionAnd": false
+            }
+          ]
         },
         {
           "condition": {
@@ -161667,10 +163511,17 @@
           "num": 800000
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -161817,12 +163668,23 @@
           "num": 3000
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship",
-            "inSession": true,
-            "inSessionAnd": false
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            },
+            {
+              "inSession": true
+            },
+            {
+              "inSessionAnd": false
+            }
+          ]
         },
         {
           "condition": {
@@ -162685,10 +164547,17 @@
           "num": 400000
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -162768,10 +164637,17 @@
           "num": 400000
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -163318,10 +165194,17 @@
           "num": 200000
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {
@@ -163414,10 +165297,17 @@
           "num": 300
         },
         {
-          "condition": {
-            "type": "playerType",
-            "unitType": "ship"
-          }
+          "condition": [
+            {
+              "type": "playerType"
+            },
+            {
+              "unitType": "ship"
+            },
+            {
+              "unitType": "boat"
+            }
+          ]
         },
         {
           "condition": {

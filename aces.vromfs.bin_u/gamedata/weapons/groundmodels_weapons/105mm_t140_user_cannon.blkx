@@ -38,9 +38,10 @@
     "stabilityCaliberToArmorThreshold": 5.0,
     "stabilityReductionAfterRicochet": 0.5,
     "stabilityReductionAfterPenetration": 0.15,
+    "stucking": 0.3,
+    "stuckingAngle": 40.0,
     "bulletType": "apbc_usa_tank",
     "slopeEffectPreset": "ap",
-    "modelName": "tank_bullet_apbc",
     "fresnel": [0.23,0.1,2.0],
     "bulletName": "105mm_t182e1",
     "onHitChanceMultExplFuel": 0.1,
@@ -208,7 +209,6 @@
       "bulletType": "heat_fs_tank",
       "cumulativeSecondaryShattersPreset": "heat_fs",
       "explodeOnRendinst": true,
-      "modelName": "tank_bullet_heat_fs",
       "fresnel": [0.23,0.1,2.0],
       "bulletName": "105mm_t298e1",
       "onHitChanceMultExplFuel": 0.3,
@@ -369,7 +369,6 @@
       "stabilityReductionAfterPenetration": 0.2,
       "bulletType": "apds_tank",
       "slopeEffectPreset": "apds",
-      "modelName": "tank_bullet_apdc",
       "fresnel": [0.23,0.1,2.0],
       "bulletName": "105mm_t279",
       "breakingArmorThicknessEffective": true,
@@ -399,6 +398,11 @@
           "mod4": [50.0,0.7]
         }
       ],
+      "tracePattern": {
+        "caliber": 10.0,
+        "circleCount": 2,
+        "pointCount": 6
+      },
       "hitpower": {
         "HitPower0m": [0.85,500.0],
         "HitPower10000m": [0.8,10000.0]

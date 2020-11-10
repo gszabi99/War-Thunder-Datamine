@@ -217,11 +217,6 @@ g_chat_latest_threads.onEventCrossNetworkChatOptionChanged <- function onEventCr
   forceAutoRefreshInSecond()
 }
 
-g_chat_latest_threads.onEventContactsBlockStatusUpdated <- function onEventContactsBlockStatusUpdated(p)
-{
-  forceAutoRefreshInSecond()
-}
-
 g_chat_latest_threads.onEventChatThreadCreateRequested <- function onEventChatThreadCreateRequested(p)
 {
   ::g_chat_latest_threads.forceAutoRefreshInSecond()

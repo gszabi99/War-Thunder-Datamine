@@ -10,13 +10,13 @@ local function combinec(obss, func) {
   local params = infos.parameters.len()-1
   local multiparamfunc = ::type(obss)=="array" && (infos.varargs>0 || (params > 1 && params == obss.len()))
   local curData = obss.map(@(v) v.value)
-  local res = multiparamfunc ? Watched(func.pacall([null].extend(curData))) : Watched(func(curData))
+  local res = multiparamfunc ? Watched(func.acall([null].extend(curData))) : Watched(func(curData))
   foreach(id, w in obss) {
     local key = id
     local function listener(v) {
       curData[key] = v
       if (multiparamfunc)
-        res(func.pacall([null].extend(curData)))
+        res(func.acall([null].extend(curData)))
       else
         res(func(curData))
     }
@@ -36,12 +36,12 @@ local function combinef(func) {
   local obss = info.defparams
   ::assert((obss.len()==(info.parameters.len()-1)) && info.varargs==0)
   local curData = obss.map(@(v) v.value)
-  local res = Watched(func.pacall([null].extend(curData)))
+  local res = Watched(func.acall([null].extend(curData)))
   foreach(id, w in obss) {
     local key = id
     local function listener(v) {
       curData[key] = v
-      res(func.pacall([null].extend(curData)))
+      res(func.acall([null].extend(curData)))
     }
     if (FORBID_MUTATE_COMPUTED)
       res.whiteListMutatorClosure(listener)
@@ -64,40 +64,6 @@ local function map(src_observable, func) {
   return obs
 }
 
-local function invertBool(src_observable) {
-  return map(src_observable, @(val) !val)
-}
-
-local function reduceAny(list) {
-  return list.reduce(@(a, b) a||b)
-}
-
-local function reduceAll(list) {
-  return list.reduce(@(a, b) a&&b)
-}
-
-local function reduceNone(list) {
-  return !list.reduce(@(a, b) a||b)
-}
-
-local NO_INITIALIZER = {}
-local function merge(list, initial_value=NO_INITIALIZER) {
-  ::assert(list.len() > 0)
-  local res = Watched(initial_value!=NO_INITIALIZER ? initial_value : list[0].value)
-  local function listener(val) {
-    res(val)
-  }
-
-  foreach (input in list) {
-    input.subscribe(listener)
-    if (FORBID_MUTATE_COMPUTED)
-      res.whiteListMutatorClosure(listener)
-  }
-
-  return res
-}
-
-
 local function subscribe(list, func){
   foreach(idx, observable in list)
     observable.subscribe(func)
@@ -105,12 +71,7 @@ local function subscribe(list, func){
 
 
 return {
-  combine = combine
-  reduceAny = reduceAny
-  reduceNone = reduceNone
-  reduceAll = reduceAll
-  invertBool = invertBool
-  map = map
-  merge = merge
-  subscribe = subscribe
+  combine
+  map
+  subscribe
 }

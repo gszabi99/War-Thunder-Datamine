@@ -18,6 +18,7 @@
   "useDestrPhysObj": true,
   "damageCollisionMultiplier": 0.001,
   "explosionImpulse": 10000.0,
+  "fireFx": "fire_ground_black_fx",
   "DamageParts": {
     "steel": {
       "body_dm": {
@@ -41,13 +42,13 @@
     "expl": {
       "node": "body",
       "partNo": 0,
-      "timeToExplode": 0.1,
-      "preEffectName": "ad_metal",
-      "postEffectName": "ad_metal",
-      "explosionEffectName": "ad_car_wreck",
-      "timeForPostEffect": 45.0,
-      "preScale": 8.0,
-      "postScale": 8.0
+      "timeToExplode": 0.5,
+      "preEffectName": "",
+      "postEffectName": "smoke_ground_black_fx",
+      "explosionEffectName": "explosion_midair_medium",
+      "timeForPostEffect": 60.0,
+      "preScale": 1.0,
+      "postScale": 1.0
     }
   }
 }

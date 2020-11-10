@@ -1,5 +1,6 @@
 local g_string =  require("std/string.nut")
 local regexp2 = require("regexp2")
+local { wrapIdxInArrayLen } = require("sqStdLibs/helpers/u.nut")
 
 global enum ALIGN {
   LEFT   = "left"
@@ -12,6 +13,11 @@ local DEFAULT_OVERRIDE_PARAMS = {
   windowSizeX = -1
   windowSizeY = -1
 }
+
+// Table ======================================================================
+// Please don't add new funcs into this global table.
+// Add into a module instead, it is in the end of this file.
+// ============================================================================
 
 ::g_dagui_utils <- {
   textAreaTagsRegexp = [
@@ -360,6 +366,11 @@ local DEFAULT_OVERRIDE_PARAMS = {
   }
 }
 
+// Global funcs ===============================================================
+// Please don't add new global funcs unless absolutely necessary.
+// Add into a module instead, it is in the end of this file.
+// ============================================================================
+
 ::check_obj <- function check_obj(obj) {
   return obj!=null && obj.isValid()
 }
@@ -394,4 +405,23 @@ local DEFAULT_OVERRIDE_PARAMS = {
   obj.enable(status)
   obj.show(status)
   return obj
+}
+
+// Module =====================================================================
+// Please add all new funcs into this module.
+// ============================================================================
+
+local function setFocusToNextObj(scene, objIdsList, increment) {
+  local objectsList = objIdsList.map(@(id) id != null ? scene.findObject(id) : null)
+    .filter(@(obj) ::check_obj(obj) && obj.isVisible() && obj.isEnabled())
+  local listLen = objectsList.len()
+  if (listLen == 0)
+    return
+  local curIdx = objectsList.findindex(@(obj) obj.isFocused()) ?? (increment >= 0 ? -1 : listLen)
+  local newIdx = wrapIdxInArrayLen(curIdx + increment, listLen)
+  objectsList[newIdx].select()
+}
+
+return {
+  setFocusToNextObj = setFocusToNextObj
 }

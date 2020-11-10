@@ -1,288 +1,436 @@
-local interopGen = require("daRg/helpers/interopGen.nut")
+local interopGen = require("interopGen.nut")
 
 const NUM_ENGINES_MAX = 3
 const NUM_TRANSMISSIONS_MAX = 6
 const NUM_CANNONS_MAX = 3
 
+local IndicatorsVisible = Watched(false)
+local CurrentTime = Watched(false)
+
+local DistanceToGround = Watched(0.0)
+local VerticalSpeed = Watched(0.0)
+
+local RocketAimX = Watched(0.0)
+local RocketAimY = Watched(0.0)
+local RocketAimVisible = Watched(false)
+local RocketSightMode = Watched(0) //Sight shape need to change in function of CCIP/CCRP
+
+local TATargetX = Watched(0.0)
+local TATargetY = Watched(0.0)
+local TATargetVisible = Watched(false)
+
+local GunDirectionX = Watched(0.0)
+local GunDirectionY = Watched(0.0)
+local GunDirectionVisible = Watched(false)
+local GunInDeadZone = Watched(false)
+local GunSightMode = Watched(0)
+
+local HorAngle = Watched(0.0)
+
+local TurretYaw   = Watched(0.0)
+local TurretPitch = Watched(0.0)
+local FovYaw    = Watched(0.0)
+local FovPitch  = Watched(0.0)
+
+local IsAgmLaunchZoneVisible       = Watched(false)
+local IsZoomedAgmLaunchZoneVisible = Watched(false)
+local AgmLaunchZoneYawMin          = Watched(0.0)
+local AgmLaunchZoneYawMax          = Watched(0.0)
+local AgmLaunchZonePitchMin        = Watched(0.0)
+local AgmLaunchZonePitchMax        = Watched(0.0)
+local AgmRotatedLaunchZoneYawMax   = Watched(0.0)
+local AgmRotatedLaunchZoneYawMin   = Watched(0.0)
+local AgmRotatedLaunchZonePitchMax = Watched(0.0)
+local AgmRotatedLaunchZonePitchMin = Watched(0.0)
+local AgmLaunchZoneDistMin         = Watched(0.0)
+local AgmLaunchZoneDistMax         = Watched(0.0)
+
+local IRCMState                    = Watched(0)
+
+local IsInsideLaunchZoneYawPitch = Watched(false)
+local IsInsideLaunchZoneDist = Watched(false)
+
+local IsSightLocked = Watched(false)
+local IsTargetTracked = Watched(false)
+local HasTargetTracker = Watched(false)
+local IsLaserDesignatorEnabled = Watched(false)
+local IsATGMOutOfTrackerSector = Watched(false)
+local NoLosToATGM = Watched(false)
+local AtgmTrackerRadius = Watched(0.0)
+local TargetRadius = Watched(0.0)
+local TargetAge = Watched(0.0)
+
+local MainMask = Watched(0)
+local SightMask = Watched(0)
+local IlsMask = Watched(0)
+local MfdSightMask = Watched(0)
+
+local HudColor = Watched(Color(71, 232, 39, 240))
+local AlertColor = Watched(Color(255, 0, 0, 240))
+local MfdColor = Watched(Color(71, 232, 39, 240))
+
+local TrtMode = Watched(0)
+
+local Rpm = Watched(0)
+local Trt = Watched(0)
+local Spd = Watched(0)
+
+local CannonCount = []
+local CannonReloadTime = []
+local IsCannonEmpty = []
+local CannonMode = Watched(0)
+local CannonSelected = Watched(false)
+
+local MachineGuns = {
+  count = Watched(0)
+  seconds = Watched(-1)
+  mode = Watched(0)
+  selected = Watched(false)
+}
+
+local CannonsAdditional = {
+  count = Watched(0)
+  seconds = Watched(-1)
+  mode = Watched(0)
+  selected = Watched(false)
+}
+
+local Rockets = {
+  count = Watched(0)
+  seconds = Watched(-1)
+  mode = Watched(0)
+  selected = Watched(false)
+  salvo = Watched(0)
+}
+
+local Agm = {
+  count = Watched(0)
+  seconds = Watched(-1)
+  timeToHit = Watched(-1)
+  timeToWarning = Watched(-1)
+  selected = Watched(false)
+}
+
+local Aam = {
+  count = Watched(0)
+  seconds = Watched(-1)
+  selected = Watched(false)
+}
+
+local Bombs = {
+  seconds = Watched(-1)
+  count = Watched(0)
+  mode = Watched(0)
+  selected = Watched(false)
+  salvo = Watched(0)
+}
+
+local Flares = {
+  count = Watched(0)
+  seconds = Watched(-1)
+  mode = Watched(0)
+  selected = Watched(false)
+}
+
+local IsMachineGunEmpty = Watched(false)
+local IsCanAdditionalEmpty = Watched(false)
+local IsRktEmpty = Watched(false)
+local IsAgmEmpty = Watched(false)
+local IsAamEmpty = Watched(false)
+local IsBmbEmpty = Watched(false)
+local IsFlrEmpty = Watched(false)
+
+local IsHighRateOfFire = Watched(false)
+
+local IsRpmCritical = Watched(false)
+
+local FixedGunDirectionX = Watched(-100)
+local FixedGunDirectionY = Watched(-100)
+local FixedGunDirectionVisible = Watched(false)
+local FixedGunSightMode = Watched(0)
+
+local IsRangefinderEnabled = Watched(false)
+local RangefinderDist = Watched(0)
+
+local OilTemperature = []
+local WaterTemperature = []
+local EngineTemperature = []
+
+local OilState = []
+local WaterState = []
+local EngineState = []
+local TransmissionOilState = []
+local Fuel = Watched(-1)
+local IsFuelCritical = Watched(false)
+
+local IsOilAlert = []
+local IsWaterAlert = []
+local IsEngineAlert = []
+local IsTransmissionOilAlert = []
+
+local IsMainHudVisible = Watched(false)
+local IsSightHudVisible = Watched(false)
+local IsPilotHudVisible = Watched(false)
+local IsGunnerHudVisible = Watched(false)
+local IsMfdEnabled = Watched(false)
+local IsIlsEnabled = Watched(false)
+local IsMfdSightHudVisible = Watched(false)
+local RwrForMfd = Watched(false)
+local RwrPosSize = [0, 0, 20, 20]
+local MlwsLwsForMfd = Watched(false)
+local MfdSightPosSize = [0, 0, 0, 0]
+local IlsPosSize = [0, 0, 0, 0]
+local AimCorrectionEnabled = Watched(false)
+local DetectAllyProgress = Watched(-1)
+local DetectAllyState = Watched(false)
+
+local GunOverheatState = Watched(0)
+
+local IsCompassVisible = Watched(false)
+
 local helicopterState = {
-  IndicatorsVisible = Watched(false)
-  CurrentTime = Watched(false)
 
-  DistanceToGround = Watched(0.0)
-  VerticalSpeed = Watched(0.0)
+  IndicatorsVisible,
+  CurrentTime,
 
-  RocketAimX = Watched(0.0)
-  RocketAimY = Watched(0.0)
-  RocketAimVisible = Watched(false)
-  RocketSightMode = Watched(0) //Sight shape need to change in function of CCIP/CCRP
+  DistanceToGround,
+  VerticalSpeed,
 
-  TATargetX = Watched(0.0)
-  TATargetY = Watched(0.0)
-  TATargetVisible = Watched(false)
+  RocketAimX,
+  RocketAimY,
+  RocketAimVisible,
+  RocketSightMode,
 
-  GunDirectionX = Watched(0.0)
-  GunDirectionY = Watched(0.0)
-  GunDirectionVisible = Watched(false)
-  GunInDeadZone = Watched(false)
-  GunSightMode = Watched(0)
+  TATargetX,
+  TATargetY,
+  TATargetVisible,
 
-  HorAngle = Watched(0.0)
+  GunDirectionX,
+  GunDirectionY,
+  GunDirectionVisible,
+  GunInDeadZone,
+  GunSightMode,
 
-  TurretYaw   = Watched(0.0)
-  TurretPitch = Watched(0.0)
-  FovYaw    = Watched(0.0)
-  FovPitch  = Watched(0.0)
+  HorAngle,
 
-  IsAgmLaunchZoneVisible = Watched(false)
-  AgmLaunchZoneYawMin   = Watched(0.0)
-  AgmLaunchZoneYawMax   = Watched(0.0)
-  AgmLaunchZonePitchMin = Watched(0.0)
-  AgmLaunchZonePitchMax = Watched(0.0)
-  AgmLaunchZoneDistMin  = Watched(0.0)
-  AgmLaunchZoneDistMax  = Watched(0.0)
+  TurretYaw,
+  TurretPitch,
+  FovYaw,
+  FovPitch,
 
-  IsInsideLaunchZoneYawPitch = Watched(false)
-  IsInsideLaunchZoneDist = Watched(false)
+  IsAgmLaunchZoneVisible,
+  IsZoomedAgmLaunchZoneVisible,
+  AgmLaunchZoneYawMin,
+  AgmLaunchZoneYawMax,
+  AgmLaunchZonePitchMin,
+  AgmLaunchZonePitchMax,
+  AgmRotatedLaunchZoneYawMax,
+  AgmRotatedLaunchZoneYawMin,
+  AgmRotatedLaunchZonePitchMax,
+  AgmRotatedLaunchZonePitchMin,
+  AgmLaunchZoneDistMin,
+  AgmLaunchZoneDistMax,
 
-  IsSightLocked = Watched(false)
-  IsTargetTracked = Watched(false)
-  HasTargetTracker = Watched(false)
-  IsLaserDesignatorEnabled = Watched(false)
-  IsATGMOutOfTrackerSector = Watched(false)
-  NoLosToATGM = Watched(false)
-  AtgmTrackerRadius = Watched(0.0)
-  TargetRadius = Watched(0.0)
-  TargetAge = Watched(0.0)
+  IRCMState,
 
-  MainMask = Watched(0)
-  SightMask = Watched(0)
-  IlsMask = Watched(0)
-  MfdSightMask = Watched(0)
+  IsInsideLaunchZoneYawPitch,
+  IsInsideLaunchZoneDist,
 
-  HudColor = Watched(Color(71, 232, 39, 240))
-  AlertColor = Watched(Color(255, 0, 0, 240))
-  MfdColor = Watched(Color(71, 232, 39, 240))
+  IsSightLocked,
+  IsTargetTracked,
+  HasTargetTracker,
+  IsLaserDesignatorEnabled,
+  IsATGMOutOfTrackerSector,
+  NoLosToATGM,
+  AtgmTrackerRadius,
+  TargetRadius,
+  TargetAge,
 
-  TrtMode = Watched(0)
+  MainMask,
+  SightMask,
+  IlsMask,
+  MfdSightMask,
 
-  Rpm = Watched(0)
-  Trt = Watched(0)
-  Spd = Watched(0)
+  HudColor,
+  AlertColor,
+  MfdColor,
 
-  CannonCount = []
-  CannonReloadTime = []
-  IsCannonEmpty = []
-  CannonMode = Watched(0)
-  CannonSelected = Watched(false)
+  TrtMode,
 
-  MachineGuns = {
-    count = Watched(0)
-    seconds = Watched(-1)
-    mode = Watched(0)
-    selected = Watched(false)
-  }
+  Rpm,
+  Trt,
+  Spd,
 
-  CannonsAdditional = {
-    count = Watched(0)
-    seconds = Watched(-1)
-    mode = Watched(0)
-    selected = Watched(false)
-  }
+  CannonCount,
+  CannonReloadTime,
+  IsCannonEmpty,
+  CannonMode,
+  CannonSelected,
 
-  Rockets = {
-    count = Watched(0)
-    seconds = Watched(-1)
-    mode = Watched(0)
-    selected = Watched(false)
-  }
+  MachineGuns,
+  CannonsAdditional,
+  Rockets, Agm, Aam, Bombs, Flares
 
-  Agm = {
-    count = Watched(0)
-    seconds = Watched(-1)
-    timeToHit = Watched(-1)
-    timeToWarning = Watched(-1)
-    selected = Watched(false)
-  }
+  IsMachineGunEmpty,
+  IsCanAdditionalEmpty,
+  IsRktEmpty,
+  IsAgmEmpty,
+  IsAamEmpty,
+  IsBmbEmpty,
+  IsFlrEmpty,
 
-  Aam = {
-    count = Watched(0)
-    seconds = Watched(-1)
-    selected = Watched(false)
-  }
+  IsHighRateOfFire,
 
-  Bombs = {
-    count = Watched(0)
-    seconds = Watched(-1)
-    mode = Watched(0)
-    selected = Watched(false)
-  }
+  IsRpmCritical,
 
-  Flares = {
-    count = Watched(0)
-    seconds = Watched(-1)
-    mode = Watched(0)
-  }
+  FixedGunDirectionX,
+  FixedGunDirectionY,
+  FixedGunDirectionVisible,
+  FixedGunSightMode,
 
-  IsMachineGunEmpty = Watched(false)
-  IsCanAdditionalEmpty = Watched(false)
-  IsRktEmpty = Watched(false)
-  IsAgmEmpty = Watched(false)
-  IsAamEmpty = Watched(false)
-  IsBmbEmpty = Watched(false)
-  IsFlrEmpty = Watched(false)
+  IsRangefinderEnabled,
+  RangefinderDist,
 
-  IsHighRateOfFire = Watched(false)
+  OilTemperature,
+  WaterTemperature,
+  EngineTemperature,
 
-  IsRpmCritical = Watched(false)
+  OilState,
+  WaterState,
+  EngineState,
+  TransmissionOilState,
+  Fuel,
+  IsFuelCritical,
 
-  FixedGunDirectionX = Watched(-100)
-  FixedGunDirectionY = Watched(-100)
-  FixedGunDirectionVisible = Watched(false)
-  FixedGunSightMode = Watched(0)
+  IsOilAlert,
+  IsWaterAlert,
+  IsEngineAlert,
+  IsTransmissionOilAlert,
 
-  IsRangefinderEnabled = Watched(false)
-  RangefinderDist = Watched(0)
+  IsMainHudVisible,
+  IsSightHudVisible,
+  IsPilotHudVisible,
+  IsGunnerHudVisible,
+  IsMfdEnabled,
+  IsIlsEnabled,
+  IsMfdSightHudVisible,
+  RwrForMfd,
+  RwrPosSize,
+  MlwsLwsForMfd,
+  MfdSightPosSize,
+  IlsPosSize,
+  AimCorrectionEnabled,
+  DetectAllyProgress,
+  DetectAllyState,
 
-  OilTemperature = []
-  WaterTemperature = []
-  EngineTemperature = []
+  GunOverheatState,
 
-  OilState = []
-  WaterState = []
-  EngineState = []
-  TransmissionOilState = []
-  Fuel = Watched(-1)
-  IsFuelCritical = Watched(false)
-
-  IsOilAlert = []
-  IsWaterAlert = []
-  IsEngineAlert = []
-  IsTransmissionOilAlert = []
-
-  IsMainHudVisible = Watched(false)
-  IsSightHudVisible = Watched(false)
-  IsPilotHudVisible = Watched(false)
-  IsGunnerHudVisible = Watched(false)
-  IsMfdEnabled = Watched(false)
-  IsIlsEnabled = Watched(false)
-  IsMfdSightHudVisible = Watched(false)
-  RwrForMfd = Watched(false)
-  RwrPosSize = [0, 0, 20, 20]
-  TwsForMfd = Watched(false)
-  MfdSightPosSize = [0, 0, 0, 0]
-  IlsPosSize = [0, 0, 0, 0]
-  AimCorrectionEnabled = Watched(false)
-  DetectAllyProgress = Watched(-1)
-  DetectAllyState = Watched(false)
-
-  GunOverheatState = Watched(0)
-
-  IsCompassVisible = Watched(false)
+  IsCompassVisible,
 }
 
 ::interop.updateCannons <- function(index, count, sec = -1) {
-  helicopterState.CannonCount[index].update(count)
-  helicopterState.CannonReloadTime[index].update(sec)
+  CannonCount[index].update(count)
+  CannonReloadTime[index].update(sec)
 }
 
 ::interop.updateIsCannonEmpty <- function(index, is_empty) {
-  helicopterState.IsCannonEmpty[index].update(is_empty)
+  IsCannonEmpty[index].update(is_empty)
 }
 
 ::interop.updateRwrPosSize <- function(x, y, w, h = null) {
-  helicopterState.RwrPosSize[0] = x
-  helicopterState.RwrPosSize[1] = y
-  helicopterState.RwrPosSize[2] = w
-  helicopterState.RwrPosSize[3] = h ?? w
+  RwrPosSize[0] = x
+  RwrPosSize[1] = y
+  RwrPosSize[2] = w
+  RwrPosSize[3] = h ?? w
 }
 
 ::interop.updateMfdSightPosSize <- function(x, y, w, h) {
-  helicopterState.MfdSightPosSize[0] = x
-  helicopterState.MfdSightPosSize[1] = y
-  helicopterState.MfdSightPosSize[2] = w
-  helicopterState.MfdSightPosSize[3] = h
+  MfdSightPosSize[0] = x
+  MfdSightPosSize[1] = y
+  MfdSightPosSize[2] = w
+  MfdSightPosSize[3] = h
 }
 
 ::interop.updateIlsPosSize <- function(x, y, w, h) {
-  helicopterState.IlsPosSize[0] = x
-  helicopterState.IlsPosSize[1] = y
-  helicopterState.IlsPosSize[2] = w
-  helicopterState.IlsPosSize[3] = h
+  IlsPosSize[0] = x
+  IlsPosSize[1] = y
+  IlsPosSize[2] = w
+  IlsPosSize[3] = h
 }
 
 ::interop.updateMachineGuns <- function(count, sec = -1, mode = 0, selected = false) {
-  helicopterState.MachineGuns.count.update(count)
-  helicopterState.MachineGuns.mode.update(mode)
-  helicopterState.MachineGuns.seconds.update(sec)
-  helicopterState.MachineGuns.selected.update(selected)
+  MachineGuns.count.update(count)
+  MachineGuns.mode.update(mode)
+  MachineGuns.seconds.update(sec)
+  MachineGuns.selected.update(selected)
 }
 
 ::interop.updateAdditionalCannons <- function(count, sec = -1, mode = 0, selected = false) {
-  helicopterState.CannonsAdditional.count.update(count)
-  helicopterState.CannonsAdditional.seconds.update(sec)
-  helicopterState.CannonsAdditional.mode.update(mode)
-  helicopterState.CannonsAdditional.selected.update(selected)
+  CannonsAdditional.count.update(count)
+  CannonsAdditional.seconds.update(sec)
+  CannonsAdditional.mode.update(mode)
+  CannonsAdditional.selected.update(selected)
 }
 
-::interop.updateRockets <- function(count, sec = -1, mode = 0, selected = false) {
-  helicopterState.Rockets.count.update(count)
-  helicopterState.Rockets.mode.update(mode)
-  helicopterState.Rockets.seconds.update(sec)
-  helicopterState.Rockets.selected.update(selected)
+::interop.updateRockets <- function(count, sec = -1, mode = 0, selected = false, salvo = 0) {
+  Rockets.count.update(count)
+  Rockets.mode.update(mode)
+  Rockets.seconds.update(sec)
+  Rockets.selected.update(selected)
+  Rockets.salvo.update(salvo)
 }
 
 ::interop.updateAgm <- function(count, sec, timeToHit, timeToWarning, selected = false) {
-  helicopterState.Agm.count.update(count)
-  helicopterState.Agm.seconds.update(sec)
-  helicopterState.Agm.timeToHit.update(timeToHit)
-  helicopterState.Agm.timeToWarning.update(timeToWarning)
-  helicopterState.Agm.selected.update(selected)
+  Agm.count.update(count)
+  Agm.seconds.update(sec)
+  Agm.timeToHit.update(timeToHit)
+  Agm.timeToWarning.update(timeToWarning)
+  Agm.selected.update(selected)
 }
 
-::interop.updateAam <- function(count, sec = -1, selected = false) {
-  helicopterState.Aam.count.update(count)
-  helicopterState.Aam.seconds.update(sec)
-  helicopterState.Aam.selected.update(selected)
+::interop.updateAam <- function(count, sec = -1, selected = -1) {
+  Aam.count.update(count)
+  Aam.seconds.update(sec)
+  Aam.selected.update(selected)
 }
 
-::interop.updateBombs <- function(count, sec = -1,  mode = 0, selected = false) {
-  helicopterState.Bombs.count.update(count)
-  helicopterState.Bombs.mode.update(mode)
-  helicopterState.Bombs.seconds.update(sec)
-  helicopterState.Bombs.selected.update(selected)
+::interop.updateBombs <- function(count, sec = -1,  mode = 0, selected = false, salvo = 0) {
+  Bombs.count.update(count)
+  Bombs.mode.update(mode)
+  Bombs.seconds.update(sec)
+  Bombs.selected.update(selected)
+  Bombs.salvo.update(salvo)
 }
 
 ::interop.updateFlares <- function(count, mode = 0, sec = -1) {
-  helicopterState.Flares.count.update(count)
-  helicopterState.Flares.mode.update(mode)
-  helicopterState.Flares.seconds.update(sec)
+  Flares.count.update(count)
+  Flares.mode.update(mode)
+  Flares.seconds.update(sec)
 }
 
 for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
-  helicopterState.CannonCount.append(Watched(0))
-  helicopterState.CannonReloadTime.append(Watched(-1))
-  helicopterState.IsCannonEmpty.append(Watched(false))
+  CannonCount.append(Watched(0))
+  CannonReloadTime.append(Watched(-1))
+  IsCannonEmpty.append(Watched(false))
 }
 
-for (local i = 0; i < NUM_ENGINES_MAX; ++i)
-{
-  helicopterState.OilTemperature.append(Watched(0))
-  helicopterState.WaterTemperature.append(Watched(0))
-  helicopterState.EngineTemperature.append(Watched(0))
+for (local i = 0; i < NUM_ENGINES_MAX; ++i){
+  OilTemperature.append(Watched(0))
+  WaterTemperature.append(Watched(0))
+  EngineTemperature.append(Watched(0))
 
-  helicopterState.OilState.append(Watched(0))
-  helicopterState.WaterState.append(Watched(0))
-  helicopterState.EngineState.append(Watched(0))
+  OilState.append(Watched(0))
+  WaterState.append(Watched(0))
+  EngineState.append(Watched(0))
 
-  helicopterState.IsOilAlert.append(Watched(false))
-  helicopterState.IsWaterAlert.append(Watched(false))
-  helicopterState.IsEngineAlert.append(Watched(false))
+  IsOilAlert.append(Watched(false))
+  IsWaterAlert.append(Watched(false))
+  IsEngineAlert.append(Watched(false))
 }
 
-for (local i = 0; i < NUM_TRANSMISSIONS_MAX; ++i)
-{
-  helicopterState.TransmissionOilState.append(Watched(0))
-  helicopterState.IsTransmissionOilAlert.append(Watched(false))
+for (local i = 0; i < NUM_TRANSMISSIONS_MAX; ++i) {
+  TransmissionOilState.append(Watched(0))
+  IsTransmissionOilAlert.append(Watched(false))
 }
 
 interopGen({
@@ -292,38 +440,38 @@ interopGen({
 })
 
 ::interop.updateOilTemperature <- function (temperature, state, index) {
-  helicopterState.OilTemperature[index].update(temperature)
-  helicopterState.OilState[index].update(state)
+  OilTemperature[index].update(temperature)
+  OilState[index].update(state)
 }
 
 ::interop.updateWaterTemperature <- function (temperature, state, index) {
-  helicopterState.WaterTemperature[index].update(temperature)
-  helicopterState.WaterState[index].update(state)
+  WaterTemperature[index].update(temperature)
+  WaterState[index].update(state)
 }
 
 ::interop.updateEngineTemperature <- function (temperature, state, index) {
-  helicopterState.EngineTemperature[index].update(temperature)
-  helicopterState.EngineState[index].update(state)
+  EngineTemperature[index].update(temperature)
+  EngineState[index].update(state)
 }
 
 ::interop.updateTransmissionOilState <- function (state, index) {
-  helicopterState.TransmissionOilState[index].update(state)
+  TransmissionOilState[index].update(state)
 }
 
 ::interop.updateOilAlert <- function (value, index) {
-  helicopterState.IsOilAlert[index].update(value)
+  IsOilAlert[index].update(value)
 }
 
 ::interop.updateTransmissionOilAlert <- function (value, index) {
-  helicopterState.IsTransmissionOilAlert[index].update(value)
+  IsTransmissionOilAlert[index].update(value)
 }
 
 ::interop.updateWaterAlert <- function (value, index) {
-  helicopterState.IsWaterAlert[index].update(value)
+  IsWaterAlert[index].update(value)
 }
 
 ::interop.updateEngineAlert <- function (value, index) {
-  helicopterState.IsEngineAlert[index].update(value)
+  IsEngineAlert[index].update(value)
 }
 
 return helicopterState

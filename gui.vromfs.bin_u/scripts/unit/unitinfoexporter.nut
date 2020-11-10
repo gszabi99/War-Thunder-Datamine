@@ -16,7 +16,7 @@ const EXTENDED_GROUP = "extended"
 
 web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
 
-class UnitInfoExporter
+::UnitInfoExporter <- class
 {
   static EXPORT_TIME_OUT = 20000
   static activeUnitInfoExporters = []

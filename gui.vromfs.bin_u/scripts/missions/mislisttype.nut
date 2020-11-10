@@ -1,4 +1,5 @@
-local enums = ::require("sqStdlibs/helpers/enums.nut")
+local { get_blk_value_by_path, blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 enum mislistTabsOrder {
@@ -62,8 +63,8 @@ g_mislist_type._getMissionsByBlkArray <- function _getMissionsByBlkArray(campaig
       // Can be removed after http://cvs1.gaijin.lan:8080/#/c/57465/ reach all PC platforms.
       if (!misBlk?.player_class)
       {
-        local missionBlk = ::DataBlock(misBlk?.mis_file ?? "")
-        local wing = ::get_blk_value_by_path(missionBlk, "mission_settings/player/wing")
+        local missionBlk = blkOptFromPath(misBlk?.mis_file)
+        local wing = get_blk_value_by_path(missionBlk, "mission_settings/player/wing")
         local unitsBlk = missionBlk?.units
         if (unitsBlk && wing)
           for (local i = 0; i < unitsBlk.blockCount(); i++)

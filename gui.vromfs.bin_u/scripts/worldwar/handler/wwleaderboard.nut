@@ -1,5 +1,5 @@
 local wwLeaderboardData = require("scripts/worldWar/operations/model/wwLeaderboardData.nut")
-local wwRewards = ::require("scripts/worldWar/handler/wwRewards.nut")
+local wwRewards = require("scripts/worldWar/handler/wwRewards.nut")
 local time = require("scripts/time.nut")
 local { getSeparateLeaderboardPlatformName,
         getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.nut")
@@ -59,6 +59,7 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
       lb_presets = ::ww_leaderboards_list
 
     platformFilter = getSeparateLeaderboardPlatformName()
+    setRowsInPage()
     ::add_big_query_record("ww_leaderboard.open", platformFilter)
 
     initTable()
@@ -68,7 +69,6 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
     updateButtons()
     fetchRewardsData()
     fetchRewardsTimeData()
-    initFocusArray()
   }
 
   function fetchRewardsData()
@@ -301,7 +301,6 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
     forClans = lbMode == "ww_clans"
     ::add_big_query_record("ww_leaderboard.select_mode", lbMode);
 
-    delayedRestoreFocus()
     checkLbCategory()
 
     local callback = ::Callback(

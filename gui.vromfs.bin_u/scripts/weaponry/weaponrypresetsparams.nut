@@ -25,7 +25,7 @@ local PURPOSE_TYPE = {
 }
 
 local GROUP_ORDER = [
-  [TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.TORPEDOES],
+  [TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.MINES, TRIGGER_TYPE.TORPEDOES],
   [TRIGGER_TYPE.ROCKETS],
   [TRIGGER_TYPE.MACHINE_GUN, TRIGGER_TYPE.CANNON, TRIGGER_TYPE.ADD_GUN, TRIGGER_TYPE.TURRETS,
     TRIGGER_TYPE.SMOKE, TRIGGER_TYPE.FLARES],
@@ -265,7 +265,7 @@ local function getPredefinedTiers(preset, sizes)
                 currTier.weaponry.addWeaponry <- weaponry.__merge(params.__merge({
                   itemsNum = weaponry.num / (tier?.amountPerTier ?? amountPerTier)}))
                 currTier.tierTooltipId = ::g_tooltip_type.TIER.getTooltipId(unit.name,
-                  currTier.weaponry, preset.id, idx)
+                  currTier.weaponry, preset.id, tierId)
               }
 
               continue

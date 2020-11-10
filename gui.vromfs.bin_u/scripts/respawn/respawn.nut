@@ -1,7 +1,7 @@
 local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 local statsd = require("statsd")
-local time = ::require("scripts/time.nut")
-local respawnBases = ::require("scripts/respawn/respawnBases.nut")
+local time = require("scripts/time.nut")
+local respawnBases = require("scripts/respawn/respawnBases.nut")
 local gamepadIcons = require("scripts/controls/gamepadIcons.nut")
 local contentPreset = require("scripts/customization/contentPreset.nut")
 local actionBarInfo = require("scripts/hud/hudActionBarInfo.nut")
@@ -16,10 +16,8 @@ local { AMMO,
         getAmmoMaxAmountInSession,
         getAmmoAmountData } = require("scripts/weaponry/ammoInfo.nut")
 local { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
-local { isChatEnabled } = require("scripts/chat/chatStates.nut")
 local { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 local { hasFlares , bombNbr } = require("scripts/unit/unitStatus.nut")
-local { checkInRoomMembers } = require("scripts/contacts/updateContactsStatus.nut")
 
 ::last_ca_aircraft <- null
 ::used_planes <- {}
@@ -56,6 +54,9 @@ enum ESwitchSpectatorTarget
      user_option = ::USEROPT_DEPTHCHARGE_ACTIVATION_TIME, isShowForRandomUnit =false },
   {id = "rocket_fuse_dist",  hint = "options/rocket_fuse_dist",
     user_option = ::USEROPT_ROCKET_FUSE_DIST, isShowForRandomUnit =false },
+  {id = "torpedo_dive_depth",  hint = "options/torpedo_dive_depth",
+    user_option = ::USEROPT_TORPEDO_DIVE_DEPTH, isShowForRandomUnit =false,
+    isVisible = @() !get_option_torpedo_dive_depth_auto() },
   {id = "fuel",        hint = "options/fuel_amount",
     user_option = ::USEROPT_LOAD_FUEL_AMOUNT, isShowForRandomUnit =false },
   {id = "flares_periods",        hint = "options/flares_periods",
@@ -70,8 +71,6 @@ enum ESwitchSpectatorTarget
 ::gui_start_respawn <- function gui_start_respawn(is_match_start = false)
 {
   ::mp_stat_handler = ::handlersManager.loadHandler(::gui_handlers.RespawnHandler)
-  ::mp_stat_handler.initStats()
-  ::mp_stat_handler.onUpdate(null, 0.03)
   ::handlersManager.setLastBaseHandlerStartFunc(::gui_start_respawn)
 }
 
@@ -168,22 +167,6 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
   prevAutoChangedUnit = null
   delayAfterAutoChangeUnitMsec = 1000
 
-  focusArray = [
-    function() { return slotbarWeak && slotbarWeak.getCurFocusObj() }   // slotbar
-    function() { return getFocusObjUnderSlotbar() }
-    "respawn_options_table"
-    "mis_obj_button_header"
-    "chat_tabs"
-    "chat_prompt_place"
-    "chat_input"
-    function() { return getCurrentBottomGCPanel() }    //gamercard bottom
-  ]
-  focusItemAirsTable = 0
-  focusItemChatTabs  = 4
-  focusItemChatInput = 5
-
-  currentFocusItem = 2
-
   static mainButtonsId = ["btn_select", "btn_select_no_enter"]
 
   function initScreen()
@@ -259,11 +242,6 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     updateButtons()
     ::add_tags_for_mp_players()
 
-    currentFocusItem = canChangeAircraft && !isSpectate ? focusItemAirsTable :
-      isChatEnabled() ? focusItemChatInput :
-      focusItemChatTabs
-    restoreFocus()
-
     showSceneBtn("screen_button_back", ::use_touchscreen && !isRespawn)
     showSceneBtn("gamercard_bottom", isRespawn)
 
@@ -281,7 +259,6 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
 
     updateControlsAllowMask()
     updateVoiceChatWidget(!isRespawn)
-    checkInRoomMembers()
   }
 
   function isModeWithFriendlyUnits(gt = null)
@@ -355,35 +332,9 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       return
 
     local handler = ::handlersManager.loadHandler(::gui_handlers.teamUnitsLeftView,
-                                      { scene = scene.findObject("team_units_left_respawns")
-                                        parentHandlerWeak = this
-                                        missionRules = missionRules
-                                      })
+      { scene = scene.findObject("team_units_left_respawns"), missionRules = missionRules })
     registerSubHandler(handler)
     teamUnitsLeftWeak = handler?.weakref()
-  }
-
-  function getFocusObjUnderSlotbar()
-  {
-    local obj = teamUnitsLeftWeak && teamUnitsLeftWeak.getMainFocusObj()
-    if (::checkObj(obj) && obj.isFocused())
-      return obj
-
-    return weaponsSelectorWeak && weaponsSelectorWeak.getMainFocusObj()
-  }
-
-  function onWrapLeft(obj)
-  {
-    local newObj = weaponsSelectorWeak && weaponsSelectorWeak.getMainFocusObj()
-    if (::checkObj(newObj))
-      newObj.select()
-  }
-
-  function onWrapRight(obj)
-  {
-    local newObj = teamUnitsLeftWeak && teamUnitsLeftWeak.getMainFocusObj()
-    if (::checkObj(newObj))
-      newObj.select()
   }
 
   /*override*/ function onSceneActivate(show)
@@ -509,7 +460,6 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     updateButtons()
     updateApplyText()
     checkReady()
-    restoreFocus()
   }
 
   function onEventChangedMissionRespawnBasesStatus(params)
@@ -531,8 +481,6 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
   {
     setParams(params)
     initScreen()
-
-    delayedRestoreFocus()
   }
 
   function createRespawnOptions()
@@ -597,7 +545,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
         slotbarInited = true
         updateUnitOptions()
 
-        scene.findObject("respawn_options_table").select()
+        ::move_mouse_on_child_by_value(scene.findObject("respawn_options_table"))
         if (canChangeAircraft)
           readyForRespawn = false
       }
@@ -649,7 +597,8 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
 
       beforeSlotbarSelect = beforeSlotbarSelect
       afterSlotbarSelect = onChangeUnit
-      onSlotDblClick = @(crew) onApply()
+      onSlotDblClick = ::Callback(@(crew) onApply(), this)
+      onSlotActivate = ::Callback(@(crew) onApply(), this)
       beforeFullUpdate = beforeRefreshSlotbar
       afterFullUpdate = afterRefreshSlotbar
       onSlotBattleBtn = onApply
@@ -817,6 +766,10 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     local unit = ::getSlotAircraft(selSlot.countryId, selSlot.crewIdInCountry)
     local crew = ::getSlotItem(selSlot.countryId, selSlot.crewIdInCountry)
     local isAvailable = ::is_crew_available_in_session(selSlot.crewIdInCountry, false)
+    if (crew == null) {
+      onCancel()
+      return
+    }
 
     if (unit && (isAvailable || !slotbarInited))  //can init wnd without any available aircrafts
     {
@@ -870,14 +823,12 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       weaponsSelectorWeak.setUnit(unit)
       weaponsSelectorWeak.setCanChangeWeaponry(canChangeWeaponry, isRespawn && !isUnitChanged)
       weaponsSelectorObj.show(shouldShowWeaponry)
-      delayedRestoreFocus()
       return
     }
 
     local handler = ::handlersManager.loadHandler(::gui_handlers.unitWeaponsHandler,
                                        { scene = weaponsSelectorObj
                                          unit = unit
-                                         parentHandlerWeak = this
                                          canShowPrice = true
                                          canChangeWeaponry = canChangeWeaponry
                                        })
@@ -885,7 +836,6 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     weaponsSelectorWeak = handler.weakref()
     registerSubHandler(handler)
     weaponsSelectorObj.show(shouldShowWeaponry)
-    delayedRestoreFocus()
   }
 
   function showOptionRow(id, show)
@@ -1189,6 +1139,21 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     }
     showOptionRow(depthChargeDescr.id, air.isDepthChargeAvailable()
       && air.getAvailableSecondaryWeapons().hasDepthCharges)
+
+    local torpedoDepthObj = scene.findObject("torpedo_dive_depth")
+    if (::checkObj(torpedoDepthObj))
+    {
+      local ship = air.isShip()
+      torpedoDepthObj.show(ship)
+      if (ship)
+      {
+        local torpedoDepthDescr = ::get_option(::USEROPT_TORPEDO_DIVE_DEPTH)
+        local data = ""
+        foreach (idx, item in torpedoDepthDescr.items)
+          data += build_option_blk(item, "", idx == torpedoDepthDescr.value)
+        guiScene.replaceContentFromText(torpedoDepthObj, data, data.len(), this)
+      }
+    }
   }
 
   function updateAircraftWeaponsOptions(unit, needUpdateOptionItems = true)
@@ -1206,8 +1171,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       }
     }
 
-    local bombDescr = ::get_option(::USEROPT_BOMB_ACTIVATION_TIME,
-      {diffCode = ::get_difficulty_by_ediff(getCurrentEdiff()).diffCode})
+    local bombDescr = ::get_option(::USEROPT_BOMB_ACTIVATION_TIME)
     local bombTimeObj = scene.findObject(bombDescr.id)
     if (needUpdateOptionItems && ::check_obj(bombTimeObj))
     {
@@ -1545,7 +1509,8 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
 
     foreach(optId in [::USEROPT_GUN_TARGET_DISTANCE, ::USEROPT_GUN_VERTICAL_TARGETING,
                       ::USEROPT_BOMB_ACTIVATION_TIME,
-                      ::USEROPT_ROCKET_FUSE_DIST, ::USEROPT_LOAD_FUEL_AMOUNT
+                      ::USEROPT_ROCKET_FUSE_DIST, ::USEROPT_LOAD_FUEL_AMOUNT,
+                      ::USEROPT_TORPEDO_DIVE_DEPTH
                      ])
     {
       local opt = ::get_option(optId)
@@ -2275,7 +2240,6 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     ::on_spectator_mode(is_spectator)
 
     updateApplyText()
-    delayedRestoreFocus()
     updateControlsAllowMask()
   }
 
@@ -2468,12 +2432,6 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       return
 
     obj.show(show)
-    if (show)
-    {
-      //delayed restore focus still find all objects invisible.  so need to force update scene before restore,
-      guiScene.setUpdatesEnabled(true, true)
-      restoreFocus()
-    }
   }
 
   function onSpectatorNext(obj)

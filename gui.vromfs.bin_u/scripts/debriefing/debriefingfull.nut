@@ -404,7 +404,7 @@ global enum debrState {
               || ::debriefing_result.exp.result == ::STATS_RESULT_SUCCESS
               || ::debriefing_result.exp.result == ::STATS_RESULT_FAIL
               || (::debriefing_result.gm != ::GM_DOMINATION
-                  && !!(::get_game_type() & ::GT_RACE)
+                  && !!(::debriefing_result.gameType & ::GT_RACE)
                   && ::debriefing_result.exp.result != ::STATS_RESULT_IN_PROGRESS)
              )
          )
@@ -421,13 +421,27 @@ global enum debrState {
   ::debriefing_result.isSucceed <- (::get_mission_status() == ::MISSION_STATUS_SUCCESS)
   ::debriefing_result.restoreType <- ::get_mission_restore_type()
   ::debriefing_result.gm <- gm
+  ::debriefing_result.gameType <- ::get_game_type()
+  ::debriefing_result.isTeamplay <- ::is_mode_with_teams(::debriefing_result.gameType)
+
+  local isInRoom = ::SessionLobby.isInRoom()
+  ::debriefing_result.isInRoom <- isInRoom
+  ::debriefing_result.mGameMode <- isInRoom ? ::SessionLobby.getMGameMode() : null
+  ::debriefing_result.isSpectator <- isInRoom && ::SessionLobby.spectator
+
   ::debriefing_result.isMp <- ::is_multiplayer()
+  ::debriefing_result.isReplay <- ::is_replay_playing()
   ::debriefing_result.sessionId <- ::get_mp_session_id()
   ::debriefing_result.useFinalResults <- ::getTblValue("useFinalResults", ::get_current_mission_info_cached(), false)
   ::debriefing_result.mpTblTeams <- ::get_mp_tbl_teams()
   ::debriefing_result.unitTypesMask <- ::SessionLobby.getUnitTypesMask()
+  ::debriefing_result.playersInfo <- clone ::SessionLobby.getPlayersInfo()
+  ::debriefing_result.missionDifficultyInt <-::get_mission_difficulty_int()
+  ::debriefing_result.isSymmetric <- ::SessionLobby.getPublicParam("symmetricTeams", true)
+  ::debriefing_result.missionObjectives <- ::g_mission_type.getCurrentObjectives()
 
-  if (::get_game_mode() == ::GM_BENCHMARK)
+
+  if (gm == ::GM_BENCHMARK)
     ::debriefing_result.benchmark <- ::stat_get_benchmark()
 
   ::debriefing_result.numberOfWinningPlaces <- ::get_race_winners_count()
@@ -550,6 +564,9 @@ global enum debrState {
   ::update_debriefing_exp_investment_data()
   ::calculate_debriefing_tabular_data(false)
   ::recount_debriefing_result()
+
+  if (::is_mplayer_peer())
+    ::destroy_session_scripted()
 }
 
 ::update_debriefing_exp_investment_data <- function update_debriefing_exp_investment_data()

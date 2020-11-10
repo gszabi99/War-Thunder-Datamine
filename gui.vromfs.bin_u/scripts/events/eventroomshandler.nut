@@ -2,6 +2,7 @@ local stdMath = require("std/math.nut")
 local clustersModule = require("scripts/clusterSelect.nut")
 local antiCheat = require("scripts/penitentiary/antiCheat.nut")
 local { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { checkDiffTutorial } = require("scripts/tutorials/tutorialsData.nut")
 local { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
 
 enum eRoomFlags { //bit enum. sorted by priority
@@ -95,7 +96,7 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     scene.findObject("wnd_title").setValue(::events.getEventNameText(event))
     scene.findObject("event_update").setUserData(this)
-    initFocusArray()
+    ::move_mouse_on_child_by_value(roomsListObj)
   }
 
   function initFrameOverEventsWnd()
@@ -117,11 +118,6 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
     roomsListBtn.style = format("position:root; pos:%d,%d;", pos[0], pos[1])
   }
 
-  function getMainFocusObj()
-  {
-    return roomsListObj
-  }
-
   function getCurRoom()
   {
     return roomsListData.getRoom(curRoomId)
@@ -129,7 +125,7 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateEventsListFocusStatus()
   {
-    isEventsListInFocus = !::show_console_buttons || (::check_obj(roomsListObj) && roomsListObj.isFocused())
+    isEventsListInFocus = !::show_console_buttons || (::check_obj(roomsListObj) && roomsListObj.isHovered())
   }
 
   function onItemSelect()
@@ -325,7 +321,6 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     generateChapters(roomsList)
     updateListInfo(roomsList.len())
-    restoreFocus()
   }
 
   function getMGameModeFlags(mGameMode, room, isMultiSlot)
@@ -753,9 +748,6 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     ::events.openCreateRoomWnd(event)
   }
-
-  function onSlotbarPrevAir() { slotbarWeak?.onSlotbarPrevAir?() }
-  function onSlotbarNextAir() { slotbarWeak?.onSlotbarNextAir?() }
 
   function onStart() {
     if (!suggestAndAllowPsnPremiumFeatures())

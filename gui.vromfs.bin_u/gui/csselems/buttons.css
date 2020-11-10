@@ -1,11 +1,7 @@
-@const menubutton_font:           @fontMedium;
-@const menubutton_selected_font:  @fontMedium;
-
 button {
   behaviour:button;
   re-type:9rect;
   selected-border:none;
-  input-sensitive:yes;
 
   font:@fontNormal;
 
@@ -16,106 +12,49 @@ button {
   css-hier-invalidate:yes;
 }
 
+button:hover {
+  color:@hoverMenuButtonColor;
+}
+
+button:pushed {
+  color:@pushedMenuButtonColor;
+}
+
 emptyButton {
   behaviour:button;
-  input-sensitive:yes;
 }
 
-menu_button, menu_button_inactive, area > button
-{
+menu_button {
   behaviour:button;
   re-type:9rect;
-  background-color:@transparent;
-
-  selected-border:none;
-  border:none;
-  font:@menubutton_font;
-  color:@commonMenuButtonColor;
-  snd_click:click;
-  snd_set_focus:focus;
-  text-align:left;
-
-  position:relative;
-  padding:40@sf/@pf, @blockInterval;
-
-  transition:none;
-
-  css-hier-invalidate:current;
-}
-
-menu_button, menu_button_inactive {
-  text-align:center;
   left:50%pw-50%w;
   position:relative;
   height:@mainMenuButtonHeight;
   min-width:pw;
-  padding-top:2*@sf/@pf_outdated;
-  padding-bottom:2*@sf/@pf_outdated;
-  mouse-focusable:yes;
-}
-
-menu_button, menu_button_inactive {
-  behaviour:navigator;
-  tabStop:yes;
-}
-
-menu_button_inactive
-{
-  color:@inactiveButtonTextColor;
-}
-
-menu_button:current, menu_button:active, menu_button:focus
-{
-  color:@hoverMenuButtonColor;
-  font:@menubutton_selected_font;
-}
-
-area > button:focus {
-  color:@hoverMenuButtonColor;
-}
-
-menu_button:hover, button:hover
-{
-  color:@hoverMenuButtonColor;
-}
-
-menu_button:pushed
-{
-  color:@hoverMenuButtonColor;
-}
-
-button:pushed
-{
-  color:@pushedMenuButtonColor;
-}
-
-menu_button_inactive:current, menu_button_inactive:focus
-{
-  color:@inactiveButtonFocusTextColor;
-  font:@menubutton_selected_font;
-}
-
-menu_button_inactive:hover, menu_button_inactive:hover
-{
-  color:@inactiveButtonHoverTextColor;
-}
-
-menu_button_inactive:pushed
-{
-  color:@inactiveButtonFocusTextColor;
-}
-
-menu_button:hover, menu_button_inactive:hover
-{
+  padding:40@sf/@pf, 3@sf/@pf;
   background-image:#ui/gameuiskin#bottom_bar_straight;
+  background-color:@transparent;
+  font:@fontMedium;
+  color:@commonMenuButtonColor;
+  text-align:center;
+  snd_click:click;
+  mouse-pointer-centering:50, 80;
+  css-hier-invalidate:current;
+}
+
+menu_button[selected=yes]
+{
+  color:@hoverMenuButtonColor;
   background-color:#1E1E1E1E;
 }
 
-menu_button:current, menu_button:active, menu_button:focus,
-menu_button_inactive:current, menu_button_inactive:active, menu_button_inactive:focus
-{
-  background-image:#ui/gameuiskin#bottom_bar_straight;
+menu_button:hover {
+  color:@hoverMenuButtonColor;
   background-color:#48484848;
+}
+
+menu_button:pushed {
+  color:@pushedMenuButtonColor;
 }
 
 [toggled=yes] airInfoButton {
@@ -127,7 +66,7 @@ menu_button_inactive:current, menu_button_inactive:active, menu_button_inactive:
 
 underline {
   width:pw;
-  height:(@sf/@pf_outdated*0.75) $max 1;
+  height:(@sf/@pf) $max 1;
   top:ph-h;
   left:50%pw-50%w;
   position:absolute;
@@ -165,6 +104,10 @@ hoverBgButton:hover {
   background-color:@white;
 }
 
+[show_console_buttons=yes] hoverBgButton:hover {
+  needFocusBorder:back;
+}
+
 hoverBgButton:pushed {
   background-image:#ui/gameuiskin#header_button_active;
   background-color:@white;
@@ -195,4 +138,13 @@ imageButton:pushed {
 
 imageButton:disabled {
   background-color:@inactiveButtonBgColor;
+}
+
+dummy {
+  behaviour:button;
+  re-type:9rect;
+  background-color:@transparent;
+  color:@transparent;
+  selected-border:none;
+  border:none;
 }

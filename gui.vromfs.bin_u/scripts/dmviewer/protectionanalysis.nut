@@ -1,7 +1,7 @@
 local protectionAnalysisOptions = require("scripts/dmViewer/protectionAnalysisOptions.nut")
 local protectionAnalysisHint = require("scripts/dmViewer/protectionAnalysisHint.nut")
 
-local controllerState = require_native("controllerState")
+local controllerState = ::require_native("controllerState")
 
 
 local switch_damage = false
@@ -54,7 +54,6 @@ class ::gui_handlers.ProtectionAnalysis extends ::gui_handlers.BaseGuiHandlerWT
 
     hintHandler = protectionAnalysisHint.open(scene.findObject("hint_scene"))
     registerSubHandler(hintHandler)
-    initFocusArray()
 
     switch_damage = true //value is off by default it will be changed in AllowSimulation
     allow_cutting = false
@@ -78,8 +77,6 @@ class ::gui_handlers.ProtectionAnalysis extends ::gui_handlers.BaseGuiHandlerWT
   onButtonDec = @(obj) onProgressButton(obj, false)
   onDistanceInc = @(obj) onButtonInc(scene.findObject("buttonInc"))
   onDistanceDec = @(obj) onButtonDec(scene.findObject("buttonDec"))
-
-  getMainFocusObj   = @() "options_container"
 
   function onProgressButton(obj, isIncrement)
   {
