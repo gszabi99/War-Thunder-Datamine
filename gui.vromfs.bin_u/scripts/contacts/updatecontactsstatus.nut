@@ -3,7 +3,7 @@ local { appendOnce, isEmpty } = require("sqStdLibs/helpers/u.nut")
 
 local timeBase = require("std/timeLoc.nut")
 
-local UPDATE_DELAY_MSEC = timeBase.secondsToMilliseconds(2) //Reduced from 60seconds, on submission time
+local UPDATE_DELAY_MSEC = timeBase.secondsToMilliseconds(60)
 local lastUpdate = persist("lastUpdate", @() ::Watched(0))
 local saveLastUpdate = function() { lastUpdate(::dagor.getCurTime()) }
 local canUpdate = @() ::dagor.getCurTime() - lastUpdate.value >= UPDATE_DELAY_MSEC
@@ -126,7 +126,7 @@ addListenersWithoutEnv({
 })
 
 return {
-  updateContactsStatusByContacts
+  updateContactsStatusByContacts = @(arr, cb = @() null) cb()
   checkInRoomMembers
   cachedUids
 }
