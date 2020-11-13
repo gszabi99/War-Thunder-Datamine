@@ -454,9 +454,29 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
       ::loc(isSaveFile ? "filesystem/savefile" : "filesystem/openfile"))
     updateAllDelayed()
 
-    ::move_mouse_on_child_by_value(getObj("file_table"))
+    local fileTableObj = getObj("file_table")
+    fileTableObj.select()
+
+    initFocusArray()
 
     restorePathFromSettings()
+  }
+
+
+  // ================================================================
+  // ======================= HELPER FUNTIONS ========================
+  // ================================================================
+
+
+  function getMainFocusObj()
+  {
+    return getObj("nav_list")
+  }
+
+
+  function getMainFocusObj2()
+  {
+    return getObj("file_table")
   }
 
 
@@ -545,7 +565,7 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
     local dirPathObj = getObj("dir_path")
     local path = dirPathObj.isFocused() ? dirPathObj.getValue() : dirPath
     openDirectory(path)
-    ::move_mouse_on_child_by_value(getObj("file_table"))
+    getObj("file_table").select()
   }
 
 
@@ -554,7 +574,7 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
     local dirPathObj = getObj("dir_path")
     local path = dirPathObj.isFocused() ? dirPathObj.getValue() : dirPath
     openFileOrDir(path)
-    ::move_mouse_on_child_by_value(getObj("file_table"))
+    getObj("file_table").select()
   }
 
 
@@ -582,20 +602,21 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
   {
     local fileTableObj = getObj("file_table")
     local fileNameObj = getObj("file_name")
-    if (fileNameObj.isHovered())
-      ::move_mouse_on_child_by_value(fileTableObj)
+    if (!fileNameObj.isFocused())
+      fileNameObj.select()
     else
-      ::select_editbox(fileNameObj)
+      fileTableObj.select()
   }
+
 
   function onToggleFocusDirPath()
   {
     local fileTableObj = getObj("file_table")
     local dirPathObj = getObj("dir_path")
-    if (dirPathObj.isHovered())
-      ::move_mouse_on_child_by_value(fileTableObj)
+    if (!dirPathObj.isFocused())
+      dirPathObj.select()
     else
-      ::select_editbox(dirPathObj)
+      fileTableObj.select()
   }
 
 
@@ -744,7 +765,12 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
   }
 
 
-  setFocusToFileTable = @() ::move_mouse_on_child_by_value(getObj("file_table"))
+  function setFocusToFileTable()
+  {
+    local fileTableObj = getObj("file_table")
+    if (fileTableObj)
+      fileTableObj.select()
+  }
 
 
   function updateSelectedFileName()

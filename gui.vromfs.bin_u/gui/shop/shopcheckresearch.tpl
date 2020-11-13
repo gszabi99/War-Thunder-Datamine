@@ -1,6 +1,5 @@
 root {
-  blur {}
-  blur_foreground {}
+  background-color:t = '@shadeBackgroundColor'
   type:t="shop"
 
   navBar{

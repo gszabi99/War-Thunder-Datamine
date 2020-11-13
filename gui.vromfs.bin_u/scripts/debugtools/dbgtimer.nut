@@ -33,9 +33,9 @@
   function show(msg = "show")
   {
     if (timers.len())
-      ::dagor.console_print($"dbg_timer: {msg}: {::dagor.getCurTime() - timers.top()}")
+      ::clog($"dbg_timer: {msg}: {::dagor.getCurTime() - timers.top()}")
     else
-      ::dagor.console_print($"dbg_timer: not found timer for {msg}")
+      ::clog($"dbg_timer: not found timer for {msg}")
   }
 
   function stop(msg = "stop")

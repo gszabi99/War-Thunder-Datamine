@@ -13,12 +13,12 @@
     "mission": {
       "level": "levels/avg_rheinland.bin",
       "type": "benchmark",
-      "environment": "Day",
-      "weather": "hazy",
       "restoreType": "attempts",
       "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "hazy",
       "forceSkiesInitialRandomSeed": true,
-      "skiesInitialRandomSeed": 8,
+      "skiesInitialRandomSeed": 12,
       "stars": {
         "latitude": 51.0,
         "longitude": 6.0,
@@ -31,11 +31,35 @@
         "wind_scale": 1.0,
         "max_wind_strength": 6.0,
         "sky": {
-          "mie_height": 0.7
+          "mie_height": 0.7,
+          "mieG": 0.5,
+          "betaMScale": 1.0,
+          "clouds_overcast": 0.5
+        },
+        "clouds_gen": {
+          "humidity": 0.39,
+          "persistence": 0.66,
+          "asymmetry": 0.4
+        },
+        "clouds_position": {
+          "start_altitude": 1.5,
+          "thickness": 4.5,
+          "light_extinction": 0.2,
+          "amb_extinction_mul": 0.2
+        },
+        "clouds_render": {
+          "silver_lining": 0.5,
+          "sun_light": 0.5,
+          "ambient": 0.5,
+          "silver_lining_eccentricity": 0.6
         },
         "strata_clouds": {
           "amount": 0.5,
           "altitude": 10.0
+        },
+        "rain": {
+          "rainFromInvisibleClouds": false,
+          "probability": 0.0
         }
       }
     },
@@ -496,7 +520,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -533,7 +556,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -601,7 +623,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -671,7 +692,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -757,7 +777,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -843,7 +862,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 15,
@@ -908,7 +926,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,

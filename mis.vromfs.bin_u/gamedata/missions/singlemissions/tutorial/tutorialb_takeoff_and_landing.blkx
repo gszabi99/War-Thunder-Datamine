@@ -13,15 +13,33 @@
       "level": "levels/stalingrad.bin",
       "type": "training",
       "gt_training": false,
+      "restoreType": "manual",
+      "optionalTakeOff": false,
       "environment": "Noon",
       "weather": "hazy",
       "isLimitedFuel": false,
       "isLimitedAmmo": false,
-      "restoreType": "manual",
-      "optionalTakeOff": false,
       "forceSkiesInitialRandomSeed": true,
-      "skiesInitialRandomSeed": 4,
-      "customWeather": []
+      "skiesInitialRandomSeed": 1,
+      "customWeather": {
+        "clouds_gen": {
+          "humidity": 0.39,
+          "persistence": 0.66,
+          "asymmetry": 0.4
+        },
+        "clouds_position": {
+          "start_altitude": 1.5,
+          "thickness": 4.5,
+          "light_extinction": 0.2,
+          "amb_extinction_mul": 0.2
+        },
+        "clouds_render": {
+          "silver_lining": 1.0,
+          "sun_light": 1.5,
+          "ambient": 1.5,
+          "silver_lining_eccentricity": 0.6
+        }
+      }
     },
     "spectator_points": [],
     "briefing": {
@@ -467,7 +485,6 @@
           "unitRestore": {
             "ressurectIfDead": true,
             "fullRestore": true,
-            "target_marking": 0,
             "target": "player",
             "ammoRestore": true
           }
@@ -641,9 +658,7 @@
           }
         ],
         "moAddMissionObjective": {
-          "target": "tutorialB_t&l_takeoff",
-          "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "target": "tutorialB_t&l_takeoff"
         }
       },
       "else_actions": []
@@ -3673,10 +3688,7 @@
           "property": "speed",
           "check_filter": "all",
           "object_type": "isAlive",
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0
+          "object_marking": 0
         }
       },
       "actions": [
@@ -3814,10 +3826,7 @@
           "property": "speed",
           "check_filter": "all",
           "object_type": "isAlive",
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0
+          "object_marking": 0
         }
       },
       "actions": [
@@ -5312,9 +5321,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "player",
-          "target": "waypoint00",
-          "object_var_value": 0
+          "target": "waypoint00"
         }
       },
       "actions": [
@@ -5580,9 +5589,7 @@
         {
           "moSetObjectiveStatus": {
             "target": "tutorialB_t&l_takeoff",
-            "status": 2,
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "status": 2
           }
         },
         {
@@ -6529,7 +6536,6 @@
           "unitRestore": {
             "ressurectIfDead": true,
             "fullRestore": true,
-            "target_marking": 0,
             "target": "player",
             "ammoRestore": true
           }
@@ -6560,8 +6566,6 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "speed": 250.0,
@@ -7166,9 +7170,7 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "tutorialB_t&l_landing",
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "target": "tutorialB_t&l_landing"
           }
         }
       ],
@@ -7261,9 +7263,7 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "tutorialB_t&l_landing",
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "target": "tutorialB_t&l_landing"
           }
         }
       ],
@@ -7329,9 +7329,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "player",
-          "target": "landing_waypoint00",
-          "object_var_value": 0
+          "target": "landing_waypoint00"
         }
       },
       "actions": [
@@ -7465,9 +7465,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "player",
-          "target": "landing_waypoint00",
-          "object_var_value": 0
+          "target": "landing_waypoint00"
         }
       },
       "actions": [
@@ -7972,9 +7972,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "player",
-          "target": "landing_waypoint01",
-          "object_var_value": 0
+          "target": "landing_waypoint01"
         },
         "gameWhenControlMode": {
           "controlmode": "mouseaim",
@@ -8103,9 +8103,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "player",
-          "target": "landing_waypoint01",
-          "object_var_value": 0
+          "target": "landing_waypoint01"
         },
         "playerWhenOptions": {
           "isMouseJoy": true
@@ -8228,9 +8228,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "player",
-          "target": "landing_waypoint01",
-          "object_var_value": 0
+          "target": "landing_waypoint01"
         },
         "gameWhenControlMode": {
           "controlmode": "mouseaim",
@@ -8365,9 +8365,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "player",
-          "target": "landing_waypoint02",
-          "object_var_value": 0
+          "target": "landing_waypoint02"
         }
       },
       "actions": {
@@ -8422,9 +8422,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "player",
-          "target": "landing_waypoint02",
-          "object_var_value": 0
+          "target": "landing_waypoint02"
         }
       },
       "actions": {
@@ -8538,9 +8538,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "player",
-          "target": "landing_waypoint02",
-          "object_var_value": 0
+          "target": "landing_waypoint02"
         }
       },
       "actions": {
@@ -8654,9 +8654,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "player",
-          "target": "landing_waypoint02",
-          "object_var_value": 0
+          "target": "landing_waypoint02"
         }
       },
       "actions": {
@@ -11271,10 +11271,7 @@
           "property": "speed",
           "check_filter": "all",
           "object_type": "isAlive",
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0
+          "object_marking": 0
         }
       },
       "actions": [
@@ -11558,10 +11555,7 @@
           "property": "speed",
           "check_filter": "all",
           "object_type": "isAlive",
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0
+          "object_marking": 0
         },
         "playerAxisValueReached": {
           "value": 0.05,
@@ -11873,10 +11867,7 @@
           "property": "speed",
           "check_filter": "all",
           "object_type": "isAlive",
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0
+          "object_marking": 0
         }
       },
       "actions": [
@@ -12241,9 +12232,7 @@
         {
           "moSetObjectiveStatus": {
             "target": "tutorialB_t&l_landing",
-            "status": 2,
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "status": 2
           }
         },
         {
@@ -12335,9 +12324,7 @@
         {
           "moSetObjectiveStatus": {
             "target": "tutorialB_t&l_landing",
-            "status": 2,
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "status": 2
           }
         },
         {
@@ -14421,7 +14408,6 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
-      "crewSkillK": 0.0,
       "props": {
         "army": 1,
         "count": 1,

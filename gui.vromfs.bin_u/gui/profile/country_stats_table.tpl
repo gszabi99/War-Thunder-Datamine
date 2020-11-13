@@ -1,18 +1,11 @@
 table {
   id:t='country_stats';
-  width:t='pw'
+  width:t='pw';
   overflow-w:t='auto';
-  class:t='mpTable'
 
   tr {
-    height:t='@leaderboardHeaderHeight'
-    background-color:t='@separatorBlockColor'
+    inactive:t='yes'
     td {
-      activeText {
-        position:t='relative'
-        pos:t='1@blockInterval, 0.5ph-0.5h'
-        text:t='<<tableName>>'
-      }
     }
     <<#columns>>
     td {

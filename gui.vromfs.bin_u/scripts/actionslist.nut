@@ -30,7 +30,7 @@
 global enum AL_ORIENT
 {
   VERTICAL   = "vertical",
-  HORIZONTAL = "horizontal",
+  HORISONTAL = "horisontal",
   TOP        = "top",
   BOTTOM     = "bottom",
   LEFT       = "left",
@@ -46,7 +46,7 @@ class ::gui_handlers.ActionsList extends ::BaseGuiHandler
   params    = null
   parentObj = null
 
-  closeOnUnhover = true
+  closeOnUnhover = false
 
   __al_item_obj_tpl = "gui/actionsList/actionsListItem"
 
@@ -73,8 +73,9 @@ class ::gui_handlers.ActionsList extends ::BaseGuiHandler
 
   function initScreen()
   {
-    closeOnUnhover = params?.closeOnUnhover ?? closeOnUnhover
-    scene.closeOnUnhover = closeOnUnhover ? "yes" : "no"
+    if (!("closeOnUnhover" in params))
+      params.closeOnUnhover <- false
+    scene.closeOnUnhover = params.closeOnUnhover ? "yes" : "no"
     fillList()
     setOrientation()
   }
@@ -108,20 +109,23 @@ class ::gui_handlers.ActionsList extends ::BaseGuiHandler
       maxWidth = ::max(maxWidth, nest.getChild(i).getSize()[0])
     nest.width = maxWidth
 
-    if (::show_console_buttons)
-      guiScene.performDelayed(this, function () {
+    if (!params?.closeOnUnhover)
+    {
+      guiScene.performDelayed(this, (@(nest, params) function () {
         if (!::checkObj(nest))
           return
 
         local selIdx = params.actions.findindex(@(action) (action?.selected ?? false) && (action?.show ?? false)) ?? -1
-        guiScene.applyPendingChanges(false)
-        ::move_mouse_on_child(nest, ::max(selIdx, 0))
-      })
+
+        nest.setValue(::max(selIdx, 0))
+        nest.select()
+      })(nest, params))
+    }
   }
 
   function setOrientation()
   {
-    guiScene.applyPendingChanges(false)
+    guiScene.setUpdatesEnabled(true, true)
 
     local selfSize = scene.getSize()
     local prntSize = parentObj.getSize()
@@ -186,25 +190,24 @@ class ::gui_handlers.ActionsList extends ::BaseGuiHandler
 
   function onFocus(obj)
   {
-    guiScene.performDelayed(this, function () {
-      if (!::checkObj(scene) || scene?.close == "yes" || !::checkObj(obj))
-        return
-      local total = obj.childrenCount()
-      if (!total)
-        return close()
+    guiScene.performDelayed(this, (@(obj) function () {
+        if (!::checkObj(scene) || scene?.close == "yes" || !::checkObj(obj))
+          return
+        local total = obj.childrenCount()
+        if (!total)
+          return close()
 
-      local value = ::clamp(obj.getValue(), 0, total - 1)
-      local currentObj = obj.getChild(value)
-      if (( !::checkObj(currentObj) || !currentObj.isFocused()) &&
-        !obj.isFocused() && !closeOnUnhover)
-        close()
-    })
+        local value = ::clamp(obj.getValue(), 0, total - 1)
+        local currentObj = obj.getChild(value)
+        if (( !::checkObj(currentObj) || !currentObj.isFocused()) &&
+          !obj.isFocused() && !params?.closeOnUnhover)
+          close()
+      })(obj)
+    )
   }
 
   function onBtnClose()
   {
-    if (scene.isValid())
-      ::move_mouse_on_obj(scene.getParent())
     close()
   }
 

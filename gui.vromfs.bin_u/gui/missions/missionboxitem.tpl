@@ -25,11 +25,6 @@
   class:t='<<itemClass>>'
   <</itemClass>>
 
-  <<#onHoverChangeFunc>>
-  on_hover:t='<<onHoverChangeFunc>>'
-  on_unhover:t='<<onHoverChangeFunc>>'
-  <</onHoverChangeFunc>>
-
   <<#itemPrefixText>>
   hasItemPrefixText:t='yes'
   mission_item_text {
@@ -76,7 +71,6 @@
 
     <<#unseenIcon>>
     unseenIcon {
-      <<#unseenIconId>>id:t='<<unseenIconId>>'<</unseenIconId>>
       value:t='<<unseenIcon>>'
     }
     <</unseenIcon>>
@@ -102,7 +96,6 @@
     id:t='btn_<<id>>'
     css-hier-invalidate:t='yes'
     square:t='yes'
-    on_click:t='onCollapse'
     activeText{}
   }
   <</isCollapsable>>

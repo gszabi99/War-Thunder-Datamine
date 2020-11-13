@@ -1,4 +1,3 @@
-local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
 ::lights <- []
 
 ::light_lerp <- function light_lerp(t1, t2, v)
@@ -14,7 +13,7 @@ local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
     return
 
   ::lights_inited = true
-  local blk = blkFromPath( "levels/hangar_winter_airfield_lights.blk" )
+  local blk = ::DataBlock( "levels/hangar_winter_airfield_lights.blk" )
   local list = blk?.lights ?? ::DataBlock()
   for ( local i = 0 ; i < list.blockCount() ; ++i )
   {

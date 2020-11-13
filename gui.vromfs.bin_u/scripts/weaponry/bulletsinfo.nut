@@ -1,4 +1,3 @@
-local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
 local stdMath = require("std/math.nut")
 local { WEAPON_TYPE,
         getLastWeapon,
@@ -216,9 +215,10 @@ local function getBulletsSetData(air, modifName, noModList = null)
     foreach (preset in (airBlk.weapon_presets % "preset"))
       if (preset?.blk)
       {
-        local pBlk = blkFromPath(preset.blk)
-        if (::u.isEmpty(pBlk))
+        local pBlk = ::DataBlock(preset.blk)
+        if (!pBlk)
           continue
+
         foreach (weapon in (pBlk % "Weapon"))
           if (weapon?.blk && !weapon?.dummy && !::isInArray(weapon.blk, wpList))
             wpList.append(weapon.blk)
@@ -228,8 +228,8 @@ local function getBulletsSetData(air, modifName, noModList = null)
   local fakeBulletsSets = []
   foreach (wBlkName in wpList)
   {
-    local wBlk = blkFromPath(wBlkName)
-    if (::u.isEmpty(wBlk) || (!wBlk?[getModificationBulletsEffect(searchName)] && !noModList))
+    local wBlk = ::DataBlock(wBlkName)
+    if (!wBlk || (!wBlk?[getModificationBulletsEffect(searchName)] && !noModList))
       continue
     if (noModList)
     {
@@ -407,8 +407,8 @@ local function getActiveBulletsIntByWeaponsBlk(air, weaponsBlk, weaponToFakeBull
         continue
       }
 
-      local wBlk = blkFromPath(wBlkName)
-      if (::u.isEmpty(wBlk))
+      local wBlk = ::DataBlock(wBlkName)
+      if (!wBlk)
         continue
 
       foreach(idx, modName in modsList)
@@ -462,8 +462,8 @@ local function findIdenticalWeapon(weapon, weaponList, modsList) {
   if (weapon in weaponList)
     return weapon
 
-  local weaponBlk = blkFromPath(weapon)
-  if (::u.isEmpty(weaponBlk))
+  local weaponBlk = ::DataBlock(weapon)
+  if (!weaponBlk)
     return null
 
   local cartridgeSize = weaponBlk?.bulletsCartridge || 1
@@ -509,8 +509,8 @@ local function getBulletsInfoForPrimaryGuns(air)
           continue
 
         wpList[weapon.blk].total = weapon?.bullets ?? 0
-        local wBlk = blkFromPath(weapon.blk)
-        if (::u.isEmpty(wBlk))
+        local wBlk = ::DataBlock(weapon.blk)
+        if (!wBlk)
           continue
 
         wpList[weapon.blk].catridge = wBlk?.bulletsCartridge || 1
@@ -976,8 +976,8 @@ local function getActiveBulletsGroupInt(air, checkPurchased = true)
         foreach (wp in (airBlk.weapon_presets % "preset"))
           if (wp.name == secondaryWeapon)
           {
-            local wpBlk = blkFromPath(wp.blk)
-            if (!::u.isEmpty(wpBlk))
+            local wpBlk = ::DataBlock(wp.blk)
+            if (wpBlk)
               secondary = getActiveBulletsIntByWeaponsBlk(air, wpBlk, weaponToFakeBulletMask)
           }
       air.secondaryBullets[secondaryWeapon] <- secondary

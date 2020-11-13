@@ -40,14 +40,14 @@
         "hp": 40.0
       }
     },
-    "armor_engine_light": {
+    "armor_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
-        "hp": 49.5
+        "hp": 22.3
       },
       "engine2_dm": {
         "genericDamageMult": 1.6,
-        "hp": 49.5
+        "hp": 22.3
       }
     },
     "c_dural3": {
@@ -478,9 +478,10 @@
         },
         {
           "onHit": {
-            "damage": 2.7,
+            "damage": 2.0,
             "fire": 0.01,
             "leak_oil": 0.5,
+            "leak_water": 0.45,
             "cut": 0.0
           }
         },
@@ -488,7 +489,8 @@
           "onHit": {
             "damage": 30.0,
             "fire": 0.1,
-            "leak_oil": 1.0,
+            "leak_oil": 0.8,
+            "leak_water": 1.0,
             "cut": 0.0
           }
         },
@@ -496,14 +498,16 @@
           "onKill": {
             "fire": 30.0,
             "leak_oil": 10.0,
+            "leak_water": 10.0,
             "cut": 0.0
           }
         },
         {
           "onKill": {
             "damage": 30.0,
-            "fire": 44.0,
+            "fire": 45.0,
             "leak_oil": 10.0,
+            "leak_water": 10.0,
             "cut": 0.0
           }
         }
@@ -521,9 +525,10 @@
         },
         {
           "onHit": {
-            "damage": 2.7,
+            "damage": 2.0,
             "fire": 0.01,
             "leak_oil": 0.5,
+            "leak_water": 0.45,
             "cut": 0.0
           }
         },
@@ -531,7 +536,8 @@
           "onHit": {
             "damage": 30.0,
             "fire": 0.1,
-            "leak_oil": 1.0,
+            "leak_oil": 0.8,
+            "leak_water": 1.0,
             "cut": 0.0
           }
         },
@@ -539,14 +545,16 @@
           "onKill": {
             "fire": 30.0,
             "leak_oil": 10.0,
+            "leak_water": 10.0,
             "cut": 0.0
           }
         },
         {
           "onKill": {
             "damage": 30.0,
-            "fire": 44.0,
+            "fire": 45.0,
             "leak_oil": 10.0,
+            "leak_water": 10.0,
             "cut": 0.0
           }
         }
@@ -554,12 +562,26 @@
     },
     {
       "part": {
-        "name": "fin1_dm"
+        "name": "fin1_dm",
+        "onHit": {
+          "tailcontrol_dm": 0.001
+        },
+        "onKill": {
+          "tailcontrol_dm": 1.0,
+          "nothing": 9.0
+        }
       }
     },
     {
       "part": {
-        "name": "fin2_dm"
+        "name": "fin2_dm",
+        "onHit": {
+          "tailcontrol_dm": 0.001
+        },
+        "onKill": {
+          "tailcontrol_dm": 1.0,
+          "nothing": 9.0
+        }
       }
     },
     {
@@ -1236,8 +1258,8 @@
       "part": {
         "name": "spar1_l_dm",
         "onKill": {
-          "nothing": 2.0,
-          "cut": 4.0
+          "nothing": 0.0,
+          "cut": 1.0
         }
       }
     },
@@ -1245,8 +1267,8 @@
       "part": {
         "name": "spar1_r_dm",
         "onKill": {
-          "nothing": 2.0,
-          "cut": 4.0
+          "nothing": 0.0,
+          "cut": 1.0
         }
       }
     },
@@ -1254,8 +1276,8 @@
       "part": {
         "name": "spar2_l_dm",
         "onKill": {
-          "nothing": 2.0,
-          "cut": 4.0
+          "nothing": 0.0,
+          "cut": 1.0
         }
       }
     },
@@ -1263,8 +1285,8 @@
       "part": {
         "name": "spar2_r_dm",
         "onKill": {
-          "nothing": 2.0,
-          "cut": 4.0
+          "nothing": 0.0,
+          "cut": 1.0
         }
       }
     },

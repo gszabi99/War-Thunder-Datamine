@@ -102,8 +102,29 @@ class ::gui_handlers.BanHandler extends ::gui_handlers.BaseGuiHandlerWT
       typeObj.id = opt.id
     }
 
+    initFocusArray()
     onTypeChange()
     updateButtons()
+  }
+
+  function getMainFocusObj()
+  {
+    return getObj(optionsList[0].id)
+  }
+
+  function getMainFocusObj2()
+  {
+    return getObj(optionsList[1].id)
+  }
+
+  function getMainFocusObj3()
+  {
+    return getObj(optionsList[2].id)
+  }
+
+  function getMainFocusObj4()
+  {
+    return getObj("complaint_text")
   }
 
   function canBan()
@@ -136,7 +157,10 @@ class ::gui_handlers.BanHandler extends ::gui_handlers.BaseGuiHandlerWT
       updateButtons()
   }
 
-  onTypeChange = @() ::select_editbox(scene.findObject("complaint_text"))
+  function onTypeChange()
+  {
+    scene.findObject("complaint_text").select()
+  }
 
   function onApply()
   {
@@ -248,10 +272,24 @@ class ::gui_handlers.ComplainHandler extends ::gui_handlers.BaseGuiHandlerWT
     guiScene.replaceContentFromText(typeObj, data, data.len(), this)
     typeObj.id = option.id
 
+    initFocusArray()
     onTypeChange()
   }
 
-  onTypeChange = @() ::select_editbox(scene.findObject("complaint_text"))
+  function getMainFocusObj()
+  {
+    return getObj(optionsList[0].id)
+  }
+
+  function getMainFocusObj2()
+  {
+    return getObj("complaint_text")
+  }
+
+  function onTypeChange()
+  {
+    scene.findObject("complaint_text").select()
+  }
 
   function collectThreadListForTribunal()
   {

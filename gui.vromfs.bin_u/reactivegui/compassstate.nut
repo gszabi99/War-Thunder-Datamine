@@ -1,4 +1,4 @@
-local interopGen = require("interopGen.nut")
+local interopGen = require("daRg/helpers/interopGen.nut")
 
 local compassState = {
   CompassValue = Watched(0)

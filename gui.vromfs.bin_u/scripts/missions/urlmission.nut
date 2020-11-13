@@ -1,4 +1,4 @@
-::UrlMission <- class
+class UrlMission
 {
   name = ""
   url = ""

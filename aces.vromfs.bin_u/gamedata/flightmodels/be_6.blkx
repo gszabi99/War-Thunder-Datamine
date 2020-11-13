@@ -94,11 +94,11 @@
       "armor_engine": {
         "engine1_dm": {
           "genericDamageMult": 1.6,
-          "hp": 71.5
+          "hp": 70.5
         },
         "engine2_dm": {
           "genericDamageMult": 1.6,
-          "hp": 71.5
+          "hp": 70.5
         }
       },
       "c_dural20": {
@@ -678,12 +678,26 @@
       },
       {
         "part": {
-          "name": "fin1_dm"
+          "name": "fin1_dm",
+          "onHit": {
+            "tailcontrol_dm": 0.001
+          },
+          "onKill": {
+            "tailcontrol_dm": 1.0,
+            "nothing": 9.0
+          }
         }
       },
       {
         "part": {
-          "name": "fin2_dm"
+          "name": "fin2_dm",
+          "onHit": {
+            "tailcontrol_dm": 0.001
+          },
+          "onKill": {
+            "tailcontrol_dm": 1.0,
+            "nothing": 9.0
+          }
         }
       },
       {
@@ -1308,8 +1322,8 @@
         "part": {
           "name": "spar1_l_dm",
           "onKill": {
-            "nothing": 2.0,
-            "cut": 4.0
+            "nothing": 0.0,
+            "cut": 1.0
           }
         }
       },
@@ -1317,8 +1331,8 @@
         "part": {
           "name": "spar1_r_dm",
           "onKill": {
-            "nothing": 2.0,
-            "cut": 4.0
+            "nothing": 0.0,
+            "cut": 1.0
           }
         }
       },
@@ -1326,8 +1340,8 @@
         "part": {
           "name": "spar2_l_dm",
           "onKill": {
-            "nothing": 2.0,
-            "cut": 4.0
+            "nothing": 0.0,
+            "cut": 1.0
           }
         }
       },
@@ -1335,8 +1349,8 @@
         "part": {
           "name": "spar2_r_dm",
           "onKill": {
-            "nothing": 2.0,
-            "cut": 4.0
+            "nothing": 0.0,
+            "cut": 1.0
           }
         }
       },

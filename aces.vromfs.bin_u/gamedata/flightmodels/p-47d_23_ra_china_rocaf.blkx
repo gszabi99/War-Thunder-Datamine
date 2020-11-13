@@ -1,21 +1,15 @@
 [
   {
-    "model": "p_47d_23_ra_china"
+    "model": "p_47d"
   },
   {
-    "fmFile": "fm/p-47d_23_re.blk"
+    "fmFile": "fm/p-47d.blk"
   },
   {
     "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk"
   },
   {
     "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk"
-  },
-  {
-    "gearSinkRangeLR": 0.139
-  },
-  {
-    "gearSinkRangeC": 0.076
   },
   {
     "type": "typeFighter"
@@ -63,18 +57,6 @@
     "fightAiBehaviour": "fighter"
   },
   {
-    "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg"
-  },
-  {
-    "customImage": "!#ui/unitskin#image_in_progress"
-  },
-  {
-    "customTooltipImage": "ui/aircrafts/image_in_progress"
-  },
-  {
-    "harmonizationSuffix": "_tomoe"
-  },
-  {
     "DamageParts": {
       "armor10": {
         "mgun1_dm": {
@@ -116,25 +98,29 @@
       "armor_engine": {
         "engine1_dm": {
           "genericDamageMult": 1.6,
-          "hp": 70.0
+          "hp": 55.0
         }
       },
       "c_dural3": {
         "aileron_l_dm": {
           "genericDamageMult": 0.3,
-          "hp": 26.1
+          "hp": 24.4
         },
         "aileron_r_dm": {
           "genericDamageMult": 0.3,
-          "hp": 26.1
+          "hp": 24.4
+        },
+        "elevator_dm": {
+          "genericDamageMult": 0.3,
+          "hp": 40.5
         },
         "elevator0_dm": {
           "genericDamageMult": 0.3,
-          "hp": 21.4
+          "hp": 40.5
         },
         "elevator1_dm": {
           "genericDamageMult": 0.3,
-          "hp": 21.4
+          "hp": 40.5
         },
         "fin_dm": {
           "hp": 32.9
@@ -147,20 +133,10 @@
         },
         "rudder_dm": {
           "genericDamageMult": 0.3,
-          "hp": 27.0
+          "hp": 27.1
         },
         "stab_dm": {
-          "hp": 29.4
-        }
-      },
-      "c_dural7": {
-        "wing_l_dm": {
-          "genericDamageMult": 0.3,
-          "hp": 80.5
-        },
-        "wing_r_dm": {
-          "genericDamageMult": 0.3,
-          "hp": 80.5
+          "hp": 26.5
         }
       },
       "c_dural8_5": {
@@ -168,7 +144,7 @@
           "hp": 105.5
         },
         "fuse_dm": {
-          "hp": 105.5
+          "hp": 95.7
         },
         "tail_dm": {
           "genericDamageMult": 0.5,
@@ -189,11 +165,19 @@
         "wing2_r_dm": {
           "genericDamageMult": 0.3,
           "hp": 55.5
+        },
+        "wing_l_dm": {
+          "genericDamageMult": 0.3,
+          "hp": 55.5
+        },
+        "wing_r_dm": {
+          "genericDamageMult": 0.3,
+          "hp": 55.5
         }
       },
       "dural": {
         "cover1_dm": {
-          "hp": 40.0
+          "hp": 21.9
         },
         "cover2_dm": {
           "hp": 19.5
@@ -201,16 +185,16 @@
       },
       "dural50": {
         "spar1_l_dm": {
-          "hp": 58.8
+          "hp": 60.9
         },
         "spar1_r_dm": {
-          "hp": 58.8
+          "hp": 60.9
         },
         "spar2_l_dm": {
-          "hp": 36.1
+          "hp": 36.8
         },
         "spar2_r_dm": {
-          "hp": 36.1
+          "hp": 36.8
         },
         "spar_l_dm": {
           "hp": 70.5
@@ -240,10 +224,10 @@
           "hp": 39.5
         },
         "gear_l_dm": {
-          "hp": 49.6
+          "hp": 60.5
         },
         "gear_r_dm": {
-          "hp": 48.9
+          "hp": 60.5
         }
       },
       "steel_cooling_sys": {
@@ -268,7 +252,7 @@
           "hp": 75.5
         },
         "tank2_dm": {
-          "hp": 66.6
+          "hp": 69.0
         }
       }
     }
@@ -418,6 +402,63 @@
         "part": {
           "name": "cover2_dm"
         }
+      },
+      {
+        "part": [
+          {
+            "name": "elevator_dm"
+          },
+          {
+            "onHit": {
+              "damage": 10.0,
+              "cut": 0.1
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "cut": 0.4
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "cut": 1.0,
+              "nothing": 4.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 20.0,
+              "cut": 1.0,
+              "nothing": 2.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 1.0,
+              "nothing": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          }
+        ]
       },
       {
         "part": [
@@ -1163,8 +1204,8 @@
         "part": {
           "name": "spar1_l_dm",
           "onKill": {
-            "nothing": 2.0,
-            "cut": 4.0
+            "nothing": 0.0,
+            "cut": 1.0
           }
         }
       },
@@ -1172,8 +1213,8 @@
         "part": {
           "name": "spar1_r_dm",
           "onKill": {
-            "nothing": 2.0,
-            "cut": 4.0
+            "nothing": 0.0,
+            "cut": 1.0
           }
         }
       },
@@ -1181,8 +1222,8 @@
         "part": {
           "name": "spar2_l_dm",
           "onKill": {
-            "nothing": 2.0,
-            "cut": 4.0
+            "nothing": 0.0,
+            "cut": 1.0
           }
         }
       },
@@ -1190,8 +1231,8 @@
         "part": {
           "name": "spar2_r_dm",
           "onKill": {
-            "nothing": 2.0,
-            "cut": 4.0
+            "nothing": 0.0,
+            "cut": 1.0
           }
         }
       },
@@ -1896,6 +1937,72 @@
     }
   },
   {
+    "ikPilot": [
+      {
+        "model": "pilot_us_char"
+      },
+      {
+        "maxHeadHorAngle": 60.0
+      },
+      {
+        "maxHeadDownAngle": 60.0
+      },
+      {
+        "maxHeadUpAngle": 10.0
+      },
+      {
+        "headNode": "Bip01 Head"
+      },
+      {
+        "pelvisNode": "Bip01 Pelvis"
+      },
+      {
+        "pelvisTargetNode": "Bip01 Pelvis01"
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "throttle_lhand_1",
+          "flexionDir": [0.0,-1.0,0.2]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "stick_rhand_1",
+          "flexionDir": [0.0,-1.0,-0.5]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_1",
+          "flexionDir": [0.0,1.0,0.3]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_1",
+          "flexionDir": [0.0,1.0,-0.3]
+        }
+      }
+    ]
+  },
+  {
+    "attach": {
+      "pilot1": "pilot_us_500"
+    }
+  },
+  {
     "Params": {
       "Range": 1287.48
     }
@@ -1908,19 +2015,24 @@
   },
   {
     "cockpit": {
-      "headPos": [-1.07,0.934,-0.05],
-      "headPosOnShooting": [-1.07,0.934,-0.05],
+      "headPos": [-1.07,0.988,0.0],
+      "headPosOnShooting": [-1.07,0.988,0.0],
       "bulletHoleFreeRadius": 1.8,
-      "headMoveLimitRight": 0.1,
-      "mirror": true,
-      "mirrorPos": [0.0,572.0,1.23],
-      "mirrorNorm": [-0.964,-0.267,0.0],
-      "lightPos": [-0.402696,0.464179,0.00412],
-      "lightColor": [0.01,0.55,0.35],
-      "lightRadius": 0.4,
+      "lightPos": [-0.398419,0.554743,0.182353],
+      "lightColor": [0.05,0.07,0.3],
+      "lightRadius": 0.5,
+      "lightPos1": [-0.398419,0.554743,-0.182353],
+      "lightColor1": [0.05,0.07,0.3],
+      "lightRadius1": 0.5,
+      "lightPos2": [-0.407039,0.383726,0.19146],
+      "lightColor2": [0.05,0.07,0.3],
+      "lightRadius2": 0.2,
+      "lightPos3": [-0.444636,0.358885,-0.270326],
+      "lightColor3": [0.05,0.07,0.3],
+      "lightRadius3": 0.2,
       "devices": {
         "stick_ailerons": [-1.0,1.0],
-        "stick_elevator": [-1.0,1.0],
+        "stick_elevator": [-1.0,2.0],
         "pedals1": [-1.0,1.0],
         "pedals2": [-1.0,1.0],
         "pedals3": [-1.0,1.0],
@@ -1929,8 +2041,6 @@
         "pedals6": [-1.0,1.0],
         "pedals7": [-1.0,1.0],
         "pedals8": [-1.0,1.0],
-        "pedals9": [-1.0,1.0],
-        "pedals10": [-1.0,1.0],
         "throttle": [0.0,1.0],
         "throttle_0": [0.0,1.0],
         "throttle_1": [0.0,1.0],
@@ -1949,12 +2059,11 @@
         "supercharger_2": [0.0,1.0],
         "gears_lamp": [0.0,0.0],
         "trimmer": [-1.0,1.0],
-        "trimmer_indicator": [-1.0,1.0],
         "flaps": [0.0,1.0],
         "flaps_fixed": true,
         "gears": [0.0,1.0],
         "gear_fixed": true,
-        "speed": [0.0,223.52],
+        "speed": [0.0,312.928],
         "vario": [-30.0,30.0],
         "altitude_10k": [0.0,100000.0],
         "altitude_hour": [0.0,10000.0],
@@ -1970,18 +2079,15 @@
         "clock_hour": [0.0,12.0],
         "clock_min": [0.0,60.0],
         "clock_sec": [0.0,60.0],
-        "manifold_pressure": [0.333,2.5],
+        "manifold_pressure": [0.33,2.49],
+        "rpm_hour": [0.0,10000.0],
         "rpm_min": [0.0,1000.0],
-        "rpm_hour": [0.0,4000.0],
-        "rpm_turbocharger_min": [0.0,10000.0],
-        "rpm_turbocharger_hour": [0.0,35000.0],
-        "carb_temperature": [-40.0,40.0],
+        "rpm_turbocharger": [0.0,35000.0],
+        "carb_temperature": [-70.0,150.0],
         "head_temperature": [0.0,350.0],
-        "oil_temperature": [0.0,100.0],
         "oil_pressure": [0.0,200.0],
         "fuel_pressure": [0.0,15.0],
-        "fuel": [0.0,275.0],
-        "fuel1": [0.0,560.0]
+        "fuel1": [0.0,1022.0]
       },
       "parts_holes_dmg": {
         "part": "fuse"
@@ -2179,6 +2285,15 @@
             "reqModification": "fmbc_mk1"
           }
         ]
+      },
+      {
+        "preset": {
+          "name": "p-47d_rockets_3x_500",
+          "blk": "gameData/FlightModels/weaponPresets/p-47d_rockets_3x_500.blk",
+          "tags": {
+            "aux": true
+          }
+        }
       },
       {
         "preset": [
@@ -2428,6 +2543,33 @@
     }
   },
   {
+    "user_skin": [
+      {
+        "name": "p_47d"
+      },
+      {
+        "replace_tex": {
+          "from": "p_47d_a*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "p_47d_a_dmg*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "p_47d_n*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "p_47d_n_dmg*"
+        }
+      }
+    ]
+  },
+  {
     "cutting": {
       "_emtr_break_wing0_l_from": [-0.0969611,-0.433865,0.937503],
       "_emtr_break_wing0_l_to": [-0.0969611,-0.433865,1.50677],
@@ -2452,113 +2594,32 @@
     }
   },
   {
-    "ikPilot": [
+    "default_skin": [
       {
-        "model": "pilot_china1_char"
-      },
-      {
-        "maxHeadHorAngle": 60.0
-      },
-      {
-        "maxHeadDownAngle": 60.0
-      },
-      {
-        "maxHeadUpAngle": 10.0
-      },
-      {
-        "headNode": "Bip01 Head"
-      },
-      {
-        "pelvisNode": "Bip01 Pelvis"
-      },
-      {
-        "pelvisTargetNode": "Bip01 Pelvis01"
-      },
-      {
-        "ikNode": {
-          "downNode": "Bip01 L Hand",
-          "midNode": "Bip01 L Forearm",
-          "upNode": "Bip01 L UpperArm",
-          "targetNode": "throttle_lhand_1",
-          "flexionDir": [0.0,-1.0,0.2]
-        }
-      },
-      {
-        "ikNode": {
-          "downNode": "Bip01 R Hand",
-          "midNode": "Bip01 R Forearm",
-          "upNode": "Bip01 R UpperArm",
-          "targetNode": "stick_rhand_1",
-          "flexionDir": [0.0,-1.0,-0.5]
-        }
-      },
-      {
-        "ikNode": {
-          "downNode": "Bip01 L Foot",
-          "midNode": "Bip01 L Calf",
-          "upNode": "Bip01 L Thigh",
-          "targetNode": "pedal_lfoot_1",
-          "flexionDir": [0.0,1.0,0.3]
-        }
-      },
-      {
-        "ikNode": {
-          "downNode": "Bip01 R Foot",
-          "midNode": "Bip01 R Calf",
-          "upNode": "Bip01 R Thigh",
-          "targetNode": "pedal_rfoot_1",
-          "flexionDir": [0.0,1.0,-0.3]
-        }
-      }
-    ]
-  },
-  {
-    "attach": {
-      "pilot1": "pilot_china_500"
-    }
-  },
-  {
-    "default_skin_tomoe": [
-      {
-        "name": "china_tomoe"
+        "name": "green"
       },
       {
         "replace_tex": {
-          "from": "p_47d_23_ra_china_c*",
-          "to": "p_47d_23_ra_china_c_tomoe*"
+          "from": "p_47d_a*",
+          "to": "p_47d_23_ra_china_rocaf_green_a*"
         }
       },
       {
         "replace_tex": {
-          "from": "p_47d_23_ra_china_c_dmg*",
-          "to": "p_47d_23_ra_china_c_tomoe_dmg*"
-        }
-      }
-    ]
-  },
-  {
-    "user_skin": [
-      {
-        "name": "p_47d_23_ra_china"
-      },
-      {
-        "replace_tex": {
-          "from": "p_47d_23_ra_china_c*"
+          "from": "p_47d_a_dmg*",
+          "to": "p_47d_23_ra_china_rocaf_green_a_dmg*"
         }
       },
       {
         "replace_tex": {
-          "from": "p_47d_23_ra_china_c_dmg*"
+          "from": "p_47d_n*",
+          "to": "p_47d_23_ra_china_rocaf_green_n*"
         }
       },
       {
         "replace_tex": {
-          "from": "p_47d_23_ra_china_n*"
-        }
-      },
-      {
-        "replace_tex": {
-          "from": "p_47d_23_ra_china_n_dmg*"
+          "from": "p_47d_n_dmg*",
+          "to": "p_47d_23_ra_china_rocaf_green_n_dmg*"
         }
       }
     ]

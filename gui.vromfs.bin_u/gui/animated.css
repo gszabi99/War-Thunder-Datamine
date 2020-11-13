@@ -13,8 +13,9 @@ hoverSize {
   css-hier-invalidate:yes;
 }
 
+:hover > hoverSize,
 hoverSize:hover,
-[show_console_buttons=no] :hover > hoverSize,
+[show_console_buttons=yes] :focus > hoverSize,
 [stickHover=yes] > hoverSize {
   moveOut:yes;
   size-time:250;
@@ -117,7 +118,7 @@ testCorner {
 usertalk {
   width: pw;
   background-color: @transparent;
-  flow: horizontal;
+  flow: horisontal;
   css-hier-invalidate:yes;
   behaviour:basicSize;
   height-base: 0;
@@ -240,10 +241,6 @@ awardPlace[even=no] {
 }
 awardPlace[even=yes] {
   pos:-0.5w, h;
-}
-
-[show_console_buttons=yes] awardPlace:hover {
-  needFocusBorder:yes;
 }
 
 animShow {

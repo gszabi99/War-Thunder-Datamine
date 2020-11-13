@@ -2,6 +2,7 @@ class ::gui_handlers.squadInviteListWnd extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType             = handlerType.MODAL
   sceneBlkName        = "gui/squads/squadInvites.blk"
+  shouldBlurSceneBg   = false
 
   inviteListTplName   = "gui/squads/squadInvites"
 
@@ -54,6 +55,9 @@ class ::gui_handlers.squadInviteListWnd extends ::gui_handlers.BaseGuiHandlerWT
     updateReceiveApplicationsOption()
     updateInviteesList()
     updateApplicationsList()
+
+    initFocusArray()
+    restoreFocus()
   }
 
   function updateInviteesList()
@@ -211,6 +215,16 @@ class ::gui_handlers.squadInviteListWnd extends ::gui_handlers.BaseGuiHandlerWT
           ["yes", function() { ::g_squad_manager.denyAllAplication() }],
           ["no",  function() {} ],
         ], "no")
+  }
+
+  function getMainFocusObj()
+  {
+    return scene.findObject(CONFIG_PLAYERS_LISTS.invites.listObjId)
+  }
+
+  function getMainFocusObj2()
+  {
+    return scene.findObject(CONFIG_PLAYERS_LISTS.applications.listObjId)
   }
 
   /**event handlers**/

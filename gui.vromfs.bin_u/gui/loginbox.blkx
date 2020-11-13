@@ -107,7 +107,6 @@
               "imgSize": "big",
               "on_click": "onPopupLanguages",
               "popupMenuBrightIcons": "yes",
-              "popupMenuWithoutHover": "yes",
               "btnName": "Y",
               "ButtonImg": [],
               "cardImg": {
@@ -283,7 +282,9 @@
                           "_on_activate": "onDoneEnter",
                           "on_change_value": "onChangeLogin",
                           "_on_cancel_edit": "goBack",
-                          "navigatorShortcuts": "active"
+                          "navigatorShortcuts": "active",
+                          "on_wrap_down": "onWrapDown",
+                          "mouse-focusable": "yes"
                         }
                       }
                     },
@@ -303,7 +304,11 @@
                           "type": "password",
                           "ime-title": "#mainmenu/password",
                           "_on_activate": "onDoneEnter",
-                          "_on_cancel_edit": "goBack"
+                          "_on_cancel_edit": "goBack",
+                          "on_wrap_up": "onWrapUp",
+                          "on_wrap_down": "onWrapDown",
+                          "mouse-focusable": "yes",
+                          "switchFocus": "yes"
                         },
                         "tdiv": [
                           {
@@ -339,6 +344,21 @@
                       "LoginCheckBoxesBlock": [
                         {
                           "id": "login_boxes_block"
+                        },
+                        {
+                          "behavior": "wrapNavigator"
+                        },
+                        {
+                          "navigatorShortcuts": "yes"
+                        },
+                        {
+                          "on_wrap_up": "onWrapUp"
+                        },
+                        {
+                          "on_wrap_down": "onWrapDown"
+                        },
+                        {
+                          "on_set_focus": "checkCurrentFocusItem"
                         },
                         {
                           "flow": "vertical"
@@ -520,6 +540,12 @@
                         "width": "90%pw",
                         "pos": "0, 0.02@scrn_tgt",
                         "position": "relative",
+                        "childsActivate": "yes",
+                        "behavior": "wrapNavigator",
+                        "navigatorShortcuts": "yes",
+                        "on_wrap_up": "onWrapUp",
+                        "on_wrap_down": "onWrapDown",
+                        "on_set_focus": "checkCurrentFocusItem",
                         "textarea": {
                           "text": "#mainmenu/server",
                           "style": "paragraph-indent:0;",
@@ -542,6 +568,12 @@
                     "position": "relative",
                     "width": "pw",
                     "padding-top": "2@framePadding",
+                    "childsActivate": "yes",
+                    "behavior": "wrapNavigator",
+                    "navigatorShortcuts": "yes",
+                    "on_wrap_up": "onWrapUp",
+                    "on_wrap_down": "onWrapDown",
+                    "on_set_focus": "checkCurrentFocusItem",
                     "class": "authorization",
                     "Button_text": {
                       "id": "login_action_button",
@@ -587,6 +619,24 @@
                 },
                 {
                   "flow": "vertical"
+                },
+                {
+                  "childsActivate": "yes"
+                },
+                {
+                  "behavior": "wrapNavigator"
+                },
+                {
+                  "navigatorShortcuts": "yes"
+                },
+                {
+                  "on_wrap_up": "onWrapUp"
+                },
+                {
+                  "on_wrap_down": "onWrapDown"
+                },
+                {
+                  "on_set_focus": "checkCurrentFocusItem"
                 },
                 {
                   "Button_text": {
@@ -637,6 +687,24 @@
                   },
                   {
                     "flow": "vertical"
+                  },
+                  {
+                    "childsActivate": "yes"
+                  },
+                  {
+                    "behavior": "wrapNavigator"
+                  },
+                  {
+                    "navigatorShortcuts": "yes"
+                  },
+                  {
+                    "on_wrap_up": "onWrapUp"
+                  },
+                  {
+                    "on_set_focus": "checkCurrentFocusItem"
+                  },
+                  {
+                    "on_activate": "onSelectAction"
                   },
                   {
                     "button": {
@@ -737,7 +805,7 @@
   ],
   "dummy": {
     "behavior": "button",
-    "_on_click": "onKbdWrapDown",
+    "_on_click": "switchTabFocus",
     "accesskey": "Tab"
   }
 }

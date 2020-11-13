@@ -71,6 +71,9 @@
                         "class": "optionsMultiColumn"
                       },
                       {
+                        "selfFocusBorder": "yes"
+                      },
+                      {
                         "baseRow": "yes"
                       },
                       {
@@ -86,7 +89,13 @@
                         "behavior": "PosOptionsNavigator"
                       },
                       {
-                        "navigatorShortcuts": "noSelect"
+                        "navigatorShortcuts": "yes"
+                      },
+                      {
+                        "on_wrap_up": "onWrapUp"
+                      },
+                      {
+                        "on_wrap_down": "onWrapDown"
                       },
                       {
                         "tr": {
@@ -203,7 +212,6 @@
                                   "on_click": "refreshSkinsList",
                                   "class": "image",
                                   "showConsoleImage": "no",
-                                  "not-input-transparent": "yes",
                                   "img": {
                                     "background-image": "#ui/gameuiskin#refresh.svg"
                                   }
@@ -218,7 +226,6 @@
                                   "on_click": "exportSampleUserSkin",
                                   "class": "image",
                                   "showConsoleImage": "no",
-                                  "not-input-transparent": "yes",
                                   "img": {
                                     "background-image": "#ui/gameuiskin#btn_wizard.svg"
                                   }
@@ -235,11 +242,15 @@
                       "id": "tank_skin_settings",
                       "width": "pw",
                       "class": "optionsMultiColumn",
+                      "selfFocusBorder": "yes",
                       "baseRow": "yes",
+                      "selectOnAttach": "no",
                       "css-hier-invalidate": "yes",
                       "moveY": "linear",
                       "behavior": "PosOptionsNavigator",
-                      "navigatorShortcuts": "noSelect"
+                      "navigatorShortcuts": "yes",
+                      "on_wrap_up": "onWrapUp",
+                      "on_wrap_down": "onWrapDown"
                     }
                   },
                   {
@@ -313,15 +324,13 @@
                     "behaviour": "posNavigator",
                     "moveX": "linear",
                     "moveY": "linear",
-                    "navigatorShortcuts": "cancel",
-                    "move-only-hover": "yes",
-                    "on_select": "onDecalCategoryActivate",
+                    "navigatorShortcuts": "full",
+                    "on_activate": "onDecalCategoryActivate",
                     "on_cancel_edit": "onDecalCategoryCancel",
                     "css-hier-invalidate": "yes",
                     "flow": "vertical",
                     "class": "decalsList",
-                    "overflow-y": "auto",
-                    "canSelectNone": "yes"
+                    "overflow-y": "auto"
                   }
                 }
               ]
@@ -419,12 +428,11 @@
                       "moveX": "linear",
                       "moveY": "linear",
                       "navigatorShortcuts": "active",
+                      "on_wrap_up": "onWrapUp",
+                      "on_wrap_down": "onWrapDown",
                       "css-hier-invalidate": "yes",
-                      "total-input-transparent": "yes",
                       "on_activate": "onAttachableSlotActivate",
-                      "on_select": "onAttachSlotSelect",
-                      "on_hover": "onSlotsHoverChange",
-                      "on_unhover": "onSlotsHoverChange"
+                      "on_select": "onAttachSlotSelect"
                     }
                   }
                 }
@@ -452,12 +460,11 @@
                       "moveX": "linear",
                       "moveY": "linear",
                       "navigatorShortcuts": "active",
+                      "on_wrap_up": "onWrapUp",
+                      "on_wrap_down": "onWrapDown",
                       "css-hier-invalidate": "yes",
-                      "total-input-transparent": "yes",
                       "on_activate": "onDecalSlotActivate",
-                      "on_select": "onDecalSlotSelect",
-                      "on_hover": "onSlotsHoverChange",
-                      "on_unhover": "onSlotsHoverChange"
+                      "on_select": "onDecalSlotSelect"
                     }
                   }
                 }
@@ -713,23 +720,6 @@
           },
           {
             "Button_text": {
-              "id": "btn_marketplace_find_unit",
-              "text": "#msgbox/btn_find_on_marketplace",
-              "btnName": "X",
-              "on_click": "onBtnMarketplaceFindUnit",
-              "display": "hide",
-              "showButtonImageOnConsole": "no",
-              "visualStyle": "secondary",
-              "class": "image",
-              "buttonWink": [],
-              "img": {
-                "background-image": "#ui/gameuiskin#gc.svg"
-              },
-              "ButtonImg": []
-            }
-          },
-          {
-            "Button_text": {
               "id": "btn_buy_skin",
               "text": "#mainmenu/btnOrder",
               "btnName": "X",
@@ -802,10 +792,13 @@
               "showButtonImageOnConsole": "no",
               "text": "#mainmenu/btnAircraftInfo",
               "hideText": "yes",
+              "class": "image",
+              "btnName": "LB",
               "externalLink": "yes",
               "img": {
                 "background-image": "#ui/gameuiskin#btn_info.svg"
               },
+              "ButtonImg": [],
               "activeText": {
                 "text": "#mainmenu/btnAircraftInfo",
                 "css-hier-invalidate": "yes",
@@ -821,7 +814,7 @@
               "display": "hide",
               "showButtonImageOnConsole": "no",
               "class": "image",
-              "btnName": "LB",
+              "btnName": "RT",
               "img": {
                 "background-image": "#ui/gameuiskin#slot_preset.svg"
               },
@@ -916,6 +909,7 @@
               "showButtonImageOnConsole": "no",
               "btnName": "B",
               "_on_click": "onBtnBack",
+              "focus": "yes",
               "display": "hide",
               "ButtonImg": []
             }
@@ -1285,6 +1279,27 @@
                             "gcButtonsInterval": "yes"
                           },
                           {
+                            "behaviour": "wrapNavigator"
+                          },
+                          {
+                            "navigatorShortcuts": "yes"
+                          },
+                          {
+                            "childsActivate": "yes"
+                          },
+                          {
+                            "on_wrap_up": "onWrapUp"
+                          },
+                          {
+                            "on_wrap_down": "onWrapDown"
+                          },
+                          {
+                            "on_wrap_left": "onTopGCPanelLeft"
+                          },
+                          {
+                            "on_wrap_right": "onTopGCPanelRight"
+                          },
+                          {
                             "Button_text": {
                               "id": "gc_clanTag",
                               "tooltip": "#mainmenu/btnClanCard",
@@ -1375,6 +1390,27 @@
                         },
                         {
                           "gcButtonsInterval": "yes"
+                        },
+                        {
+                          "behaviour": "wrapNavigator"
+                        },
+                        {
+                          "navigatorShortcuts": "yes"
+                        },
+                        {
+                          "childsActivate": "yes"
+                        },
+                        {
+                          "on_wrap_up": "onWrapUp"
+                        },
+                        {
+                          "on_wrap_down": "onWrapDown"
+                        },
+                        {
+                          "on_wrap_left": "onTopGCPanelLeft"
+                        },
+                        {
+                          "on_wrap_right": "onTopGCPanelRight"
                         },
                         {
                           "Button_text": [
@@ -1590,6 +1626,9 @@
               "shadowSafeArea": []
             },
             {
+              "line": []
+            },
+            {
               "tdiv": {
                 "size": "pw, 0.02@sf",
                 "pos": "0, ph",
@@ -1630,7 +1669,7 @@
                       "id": "slotbar-presetsPlace",
                       "size": "pw, ph",
                       "position": "absolute",
-                      "display": "hide"
+                      "pos": "1@dp, 0"
                     }
                   }
                 },
@@ -1687,7 +1726,14 @@
                     "position": "relative",
                     "top": "0.5(ph-h)",
                     "margin-right": "2@buttonTextPadding",
-                    "class": "header"
+                    "class": "header",
+                    "behaviour": "wrapNavigator",
+                    "navigatorShortcuts": "yes",
+                    "childsActivate": "yes",
+                    "on_wrap_up": "onWrapUp",
+                    "on_wrap_down": "onWrapDown",
+                    "on_wrap_left": "onWrapLeft",
+                    "on_wrap_right": "onWrapRight"
                   }
                 },
                 {
@@ -1703,6 +1749,27 @@
                     },
                     {
                       "class": "header"
+                    },
+                    {
+                      "behaviour": "wrapNavigator"
+                    },
+                    {
+                      "navigatorShortcuts": "yes"
+                    },
+                    {
+                      "childsActivate": "yes"
+                    },
+                    {
+                      "on_wrap_up": "onWrapUp"
+                    },
+                    {
+                      "on_wrap_down": "onWrapDown"
+                    },
+                    {
+                      "on_wrap_left": "onBottomGCPanelLeft"
+                    },
+                    {
+                      "on_wrap_right": "onBottomGCPanelRight"
                     },
                     {
                       "Button_text": [

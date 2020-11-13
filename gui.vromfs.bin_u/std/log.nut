@@ -1,5 +1,3 @@
-// warning disable: -file:forbidden-function
-
 local dagorDebug = require("dagor.debug")
 local string = require("string.nut")
 local tostring_r = string.tostring_r

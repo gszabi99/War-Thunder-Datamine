@@ -1,4 +1,3 @@
-local { get_blk_value_by_path, blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
 local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 local hudElementsAabb = require("scripts/hud/hudElementsAabb.nut")
 
@@ -37,15 +36,15 @@ g_hud_tutorial_elements.init <- function init(_nest)
   if (!active)
     return
 
-  if (::u.isEmpty(blkOptFromPath(blkPath)))
+  if (::u.isEmpty(::DataBlock(blkPath)))
   {
-    local msg = $"Hud_tutorial_elements: blk file is empty. (blkPath = {blkPath})"
+    local msg = "Hud_tutorial_elements: blk file is empty. (blkPath = " + blkPath + ")"
     dagor.debug(msg)
     ::dagor.assertf(false, msg)
     return
   }
 
-  dagor.debug($"Hud_tutorial_elements: loaded {blkPath}")
+  dagor.debug("Hud_tutorial_elements: loaded " + blkPath)
 
   local guiScene = scene.getScene()
   guiScene.replaceContent(scene, blkPath, this)
@@ -88,8 +87,8 @@ g_hud_tutorial_elements.getBlkNameByCurMission <- function getBlkNameByCurMissio
   local misBlk = ::DataBlock()
   ::get_current_mission_desc(misBlk)
 
-  local fullMisBlk = misBlk?.mis_file ? blkOptFromPath(misBlk.mis_file) : null
-  local res = fullMisBlk  && get_blk_value_by_path(fullMisBlk, "mission_settings/mission/tutorialObjectsFile")
+  local fullMisBlk = misBlk?.mis_file ? ::DataBlock(misBlk.mis_file) : null
+  local res = fullMisBlk  && ::get_blk_value_by_path(fullMisBlk, "mission_settings/mission/tutorialObjectsFile")
   return ::u.isString(res) ? res : null
 }
 

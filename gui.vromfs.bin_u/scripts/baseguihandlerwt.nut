@@ -11,20 +11,35 @@ local { getModificationByName } = require("scripts/weaponry/modificationInfo.nut
 
 local stickedDropDown = null
 local defaultSlotbarActions = [ "autorefill", "aircraft", "sec_weapons", "weapons", "showroom", "testflight", "crew", "info", "repair" ]
-local timerPID = ::dagui_propid.add_name_id("_size-timer")
-
-local function moveToFirstEnabled(obj) {
-  local total = obj.childrenCount()
-  for(local i = 0; i < total; i++) {
-    local child = obj.getChild(i)
-    if (!child.isValid() || !child.isEnabled())
-      continue
-    ::move_mouse_on_obj(child)
-    break
-  }
-}
 
 local class BaseGuiHandlerWT extends ::BaseGuiHandler {
+  defaultFocusArray = [
+    function() { return getCurrentTopGCPanel() }     //gamercard top
+    function() { return getCurGCDropdownMenu() }                    //gamercard menu
+    function() { return ::get_menuchat_focus_obj() }
+    function() { return ::contacts_handler? ::contacts_handler.getCurFocusObj() : null }
+    function() { return getMainFocusObj() }       //main focus obj of handler
+    function() { return getMainFocusObj2() }      //main focus obj of handler
+    function() { return getMainFocusObj3() }      //main focus obj of handler
+    function() { return getMainFocusObj4() }      //main focus obj of handler
+    "crew_unlock_buttons"
+    function() { return slotbarWeak && slotbarWeak.getCurFocusObj() }   // slotbar
+    function() { return getCurrentBottomGCPanel() }    //gamercard bottom
+  ]
+  currentFocusItem = MAIN_FOCUS_ITEM_IDX
+  gamercardTopIds = [
+    "gamercard_panel_left"
+    @() ::isInMenu() ? "gamercard_panel_right" : null
+    function() { return rightSectionHandlerWeak && rightSectionHandlerWeak.getFocusObj() }
+  ]
+  gamercardBottomIds = [
+    "slotbar-presetsList"
+    function() { return squadWidgetHandlerWeak && squadWidgetHandlerWeak.getFocusObj() }
+    "gamercard_bottom_right"
+  ]
+  currentTopGCPanelIdx = 0
+  currentBottomGCPanelIdx = 2
+
   canQuitByGoBack = true
 
   squadWidgetHandlerWeak = null
@@ -109,7 +124,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
     if (!::checkObj(nestObj))
       return
 
-    squadWidgetHandlerWeak = ::init_squad_widget_handler(nestObj)
+    squadWidgetHandlerWeak = ::init_squad_widget_handler(this, nestObj)
     registerSubHandler(squadWidgetHandlerWeak)
   }
 
@@ -521,26 +536,18 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
     crew = unitObj?.crew_id ? ::get_crew_by_id(unitObj.crew_id.tointeger()) : null
   }
 
-  function openUnitActionsList(unitObj, ignoreSelect = false, ignoreHover = false)
+  function openUnitActionsList(unitObj, closeOnUnhover, ignoreSelect = false)
   {
-    if (!::checkObj(unitObj) || (!ignoreHover && !unitObj.isHovered()))
+    if (!::checkObj(unitObj) || (closeOnUnhover && !unitObj.isHovered()))
       return
     local parentObj = unitObj.getParent()
-    if (!::checkObj(parentObj)
-      || (!ignoreSelect && (parentObj?.chosen ?? parentObj?.selected) != "yes"))
+    if (!::checkObj(parentObj) || (!ignoreSelect && parentObj?.selected != "yes"))
       return
-
-    if (::show_console_buttons)
-    {
-      local currentMenuUnitObj = unitContextMenuState.value?.unitObj
-      if (currentMenuUnitObj != null && unitObj.isEqual(currentMenuUnitObj))
-        return unitContextMenuState(null)
-    }
 
     unitContextMenuState({
       unitObj = unitObj
       actionsNames = getSlotbarActions()
-      closeOnUnhover = !ignoreHover
+      closeOnUnhover = closeOnUnhover
       curEdiff = getCurrentEdiff?() ?? -1
       shouldCheckCrewsReady = shouldCheckCrewsReady
       slotbar = getSlotbar()
@@ -549,13 +556,12 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function onUnitHover(obj)
   {
-    if (!::show_console_buttons)
-      openUnitActionsList(obj)
+    openUnitActionsList(obj, true)
   }
 
   function onOpenActionsList(obj)
   {
-    openUnitActionsList(obj.getParent().getParent(), true)
+    openUnitActionsList(obj.getParent().getParent(), false)
   }
 
   function getSlotbarPresetsList()
@@ -742,25 +748,28 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
     if (!obj)
       return
 
+    local canStick = !::use_touchscreen || !obj.isHovered()
+
     if (obj?["class"] != "dropDown")
       obj = obj.getParent()
     if (obj?["class"] != "dropDown")
       return
 
-    local needStick = obj?.stickHover != "yes"
-    obj.stickHover = needStick ? "yes" : "no"
+    local stickTxt = obj?.stickHover
+    local stick = !stickTxt || stickTxt=="no"
+    if (!canStick && stick)
+      return
+
+    obj.stickHover = stick? "yes" : "no"
     unstickLastDropDown(obj)
 
     guiScene.applyPendingChanges(false)
-    stickedDropDown = needStick ? obj : null
-    onStickDropDown(obj, needStick)
+    stickedDropDown = stick? obj : null
+    onStickDropDown(obj, stick)
   }
 
   function onHoverSizeMove(obj)
   {
-    //this only for pc mouse logic. For animated gamepad cursor look onDropdownAnimFinish
-    if (::show_console_buttons)
-      return
     if (obj?["class"] != "dropDown")
       obj = obj.getParent()
     unstickLastDropDown(obj)
@@ -789,34 +798,21 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
     if (!show || !::isInArray(id, GCDropdownsList))
     {
       curGCDropdown = null
+      restoreFocus(false)
       return
     }
 
     curGCDropdown = id
-    ::move_mouse_on_obj(obj)
-    guiScene.playSound("menu_appear")
-  }
+    guiScene.performDelayed(this, function() {
+      local focusObj = getCurGCDropdownMenu()
+      if (!::checkObj(focusObj))
+        return
 
-  function onDropdownAnimFinish(obj) {
-    //this only for animated gamepad cursor. for pc mouse logic look onHoverSizeMove
-    if (!::show_console_buttons || !::check_obj(stickedDropDown) || obj.getFloatProp(timerPID, 0.0) < 1)
-      return
-    if (stickedDropDown.isEqual(obj.getParent())) {
-      local menuObj = getCurGCDropdownMenu()
-      if (::check_obj(menuObj))
-        moveToFirstEnabled(menuObj)
-    }
-  }
-
-  function onDropdownHover(obj) {
-    // see func onDropdownAnimFinish
-    if (!::show_console_buttons || !::check_obj(stickedDropDown) || obj.getFloatProp(timerPID, 0.0) < 1)
-      return
-    unstickGCDropdownMenu()
-  }
-
-  function onBackDropdownMenu(obj) {
-    ::move_mouse_on_obj(getObj($"{obj?.sectionId}_btn"))
+      guiScene.playSound("menu_appear")
+      focusObj.select()
+      checkCurrentFocusItem(focusObj)
+    })
+    return
   }
 
   function getCurGCDropdownMenu()
@@ -831,6 +827,13 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
     local btnObj = getObj(curGCDropdown + "_btn")
     if (::checkObj(btnObj))
       onDropDown(btnObj)
+  }
+
+  function checkGCDropdownMenu(focusObj)
+  {
+    local ddObj = getCurGCDropdownMenu()
+    if (ddObj && !ddObj.isEqual(focusObj))
+      unstickGCDropdownMenu()
   }
 
   function setSceneTitle(text, placeObj = null, name = "gc_title")
@@ -917,6 +920,45 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
          }, this)
   }
 
+  function checkDiffTutorial(diff, unitType, needMsgBox = true, cancelFunc = null)
+  {
+    if (!::check_diff_pkg(diff, !needMsgBox))
+      return true
+    if (!::g_difficulty.getDifficultyByDiffCode(diff).needCheckTutorial)
+      return false
+    if (::g_squad_manager.isNotAloneOnline())
+      return false
+
+    if (::isDiffUnlocked(diff, unitType))
+      return false
+
+    local reqName = ::get_req_tutorial(unitType)
+    local mData = ::get_uncompleted_tutorial_data(reqName, diff)
+    if (!mData)
+      return false
+
+    local msgText = ::loc((diff==2)? "msgbox/req_tutorial_for_real" : "msgbox/req_tutorial_for_hist")
+    msgText += "\n\n" + format(::loc("msgbox/req_tutorial_for_mode"), ::loc("difficulty" + diff))
+
+    msgText += "\n<color=@userlogColoredText>" + ::loc("missions/" + mData.mission.name) + "</color>"
+
+    if(needMsgBox)
+      msgBox("req_tutorial_msgbox", msgText,
+        [
+          ["startTutorial", (@(mData, diff) function() {
+            mData.mission.setStr("difficulty", ::get_option(::USEROPT_DIFFICULTY).values[diff])
+            ::select_mission(mData.mission, true)
+            ::current_campaign_mission = mData.mission.name
+            ::save_tutorial_to_check_reward(mData.mission)
+            goForward(::gui_start_flight)
+          })(mData, diff)],
+          ["cancel", cancelFunc]
+        ], "cancel")
+    else if(cancelFunc)
+      cancelFunc()
+    return true
+  }
+
   function proccessLinkFromText(obj, itype, link)
   {
     openUrl(link, false, false, obj?.bqKey ?? obj?.id)
@@ -935,6 +977,62 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
     ::instant_domination_handler.checkQueue(
       @() ::g_squad_utils.checkSquadUnreadyAndDo(
         @() ::gui_handlers.GameModeSelect.open(), null))
+  }
+
+  function onGCWrap(obj, moveRight, ids, currentIdx)
+  {
+    if (!::checkObj(scene))
+      return currentIdx
+
+    local dir = moveRight ? 1 : -1
+    local total = ids.len()
+    for(local i = 1; i < total; i++)
+    {
+      local idx = (total + currentIdx + dir * i) % total
+      local newObj = getObjByConfigItem(ids[idx])
+
+      if (::checkObj(newObj) && newObj.isEnabled() && newObj.isVisible())
+      {
+        newObj.select()
+        return idx
+      }
+    }
+
+    return currentIdx
+  }
+
+  function onTopGCPanelLeft(obj)
+  {
+    currentTopGCPanelIdx = onGCWrap(obj, false, gamercardTopIds, currentTopGCPanelIdx)
+  }
+  function onTopGCPanelRight(obj)
+  {
+    currentTopGCPanelIdx = onGCWrap(obj, true, gamercardTopIds, currentTopGCPanelIdx)
+  }
+
+  function onBottomGCPanelLeft(obj)
+  {
+    currentBottomGCPanelIdx = onGCWrap(obj, false, gamercardBottomIds, currentBottomGCPanelIdx)
+  }
+
+  function onBottomGCPanelRight(obj)
+  {
+    currentBottomGCPanelIdx = onGCWrap(obj, true, gamercardBottomIds, currentBottomGCPanelIdx)
+  }
+
+  function getCurrentTopGCPanel()
+  {
+    return getObjByConfigItem(gamercardTopIds[currentTopGCPanelIdx])
+  }
+
+  function getCurrentBottomGCPanel()
+  {
+    return getObjByConfigItem(gamercardBottomIds[currentBottomGCPanelIdx])
+  }
+
+  function onFocusItemSelected(obj)
+  {
+    checkGCDropdownMenu(obj)
   }
 
   function onModalWndDestroy()
@@ -997,6 +1095,11 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
       pos = placeholderObj.getPosRC()
       size = placeholderObj.getSize()
     }
+  }
+
+  function onEventClosedUnitItemMenu(params)
+  {
+    restoreFocus()
   }
 
   function onHeaderTabSelect() {} //empty frame

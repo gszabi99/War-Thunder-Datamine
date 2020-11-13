@@ -3,19 +3,21 @@ const IS_GAMEPAD_CURSOR_ENABLED_DEFAULT = true
 
 ::g_gamepad_cursor_controls <- {
   currentOptionValue = IS_GAMEPAD_CURSOR_ENABLED_DEFAULT
+  isPaused = false
+
 
   function init()
   {
     currentOptionValue = getValue()
-    ::get_cur_gui_scene()?.setUseGamepadCursorControl(currentOptionValue)
+    ::set_use_gamepad_cursor_control(currentOptionValue)
   }
 
 
   function setValue(newValue)
   {
-    if (!canChangeValue() || currentOptionValue == newValue)
+    if (currentOptionValue == newValue)
       return
-    ::get_cur_gui_scene()?.setUseGamepadCursorControl(newValue)
+    ::set_use_gamepad_cursor_control(newValue)
     if (::g_login.isProfileReceived())
       ::set_gui_option_in_mode(
         ::USEROPT_GAMEPAD_CURSOR_CONTROLLER,
@@ -31,26 +33,37 @@ const IS_GAMEPAD_CURSOR_ENABLED_DEFAULT = true
 
   function getValue()
   {
-    if (!canChangeValue())
-      return IS_GAMEPAD_CURSOR_ENABLED_DEFAULT
     if (!::g_login.isProfileReceived())
       return ::getSystemConfigOption(GAMEPAD_CURSOR_CONTROL_CONFIG_NAME, IS_GAMEPAD_CURSOR_ENABLED_DEFAULT)
-    return ::get_gui_option_in_mode(
-      ::USEROPT_GAMEPAD_CURSOR_CONTROLLER,
-      ::OPTIONS_MODE_GAMEPLAY,
-      IS_GAMEPAD_CURSOR_ENABLED_DEFAULT
-    )
+    if (canChangeValue())
+      return ::get_gui_option_in_mode(
+        ::USEROPT_GAMEPAD_CURSOR_CONTROLLER,
+        ::OPTIONS_MODE_GAMEPLAY,
+        IS_GAMEPAD_CURSOR_ENABLED_DEFAULT
+      )
+    return IS_GAMEPAD_CURSOR_ENABLED_DEFAULT
   }
 
   function canChangeValue()
   {
-    return ::is_mouse_available()
+    return ::has_feature("GamepadCursorControl") && ::is_mouse_available()
+  }
+
+  function pause(isPause)
+  {
+    local shouldPause = canChangeValue() && getValue()
+    if (shouldPause || (isPaused && !isPause))
+      isPaused = isPause
+    if (shouldPause)
+      ::set_use_gamepad_cursor_control(!isPause)
   }
 
   function onEventProfileUpdated(p)
   {
     if (!::g_login.isLoggedIn())
       setValue(getValue())
+    else if (isPaused)
+      pause(false)
   }
 }
 

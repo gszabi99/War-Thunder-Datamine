@@ -109,6 +109,14 @@
         "wing2_r_dm": {
           "genericDamageMult": 0.3,
           "hp": 62.2
+        },
+        "wing_l_dm": {
+          "genericDamageMult": 0.3,
+          "hp": 108.0
+        },
+        "wing_r_dm": {
+          "genericDamageMult": 0.3,
+          "hp": 108.0
         }
       },
       "c_dural5": {
@@ -117,6 +125,22 @@
           "hp": 45.5
         },
         "aileron_r_dm": {
+          "genericDamageMult": 0.3,
+          "hp": 45.5
+        },
+        "airbrake_l_dm": {
+          "genericDamageMult": 0.3,
+          "hp": 45.5
+        },
+        "airbrake_r_dm": {
+          "genericDamageMult": 0.3,
+          "hp": 45.5
+        },
+        "airbrake_l1_dm": {
+          "genericDamageMult": 0.3,
+          "hp": 45.5
+        },
+        "airbrake_r1_dm": {
           "genericDamageMult": 0.3,
           "hp": 45.5
         },
@@ -163,29 +187,7 @@
           "hp": 39.6
         }
       },
-      "c_dural7": {
-        "wing_l_dm": {
-          "genericDamageMult": 0.3,
-          "hp": 80.5
-        },
-        "wing_r_dm": {
-          "genericDamageMult": 0.3,
-          "hp": 80.5
-        }
-      },
       "dural": {
-        "airbrake_l1_dm": {
-          "hp": 19.5
-        },
-        "airbrake_l_dm": {
-          "hp": 19.5
-        },
-        "airbrake_r1_dm": {
-          "hp": 19.5
-        },
-        "airbrake_r_dm": {
-          "hp": 19.5
-        },
         "cover1_dm": {
           "hp": 20.0
         },
@@ -394,24 +396,232 @@
         ]
       },
       {
-        "part": {
-          "name": "airbrake_l1_dm"
-        }
+        "part": [
+          {
+            "name": "airbrake_l_dm"
+          },
+          {
+            "onHit": {
+              "damage": 10.0,
+              "cut": 0.1
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "cut": 0.4
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "cut": 1.0,
+              "nothing": 4.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 20.0,
+              "cut": 1.0,
+              "nothing": 2.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 1.0,
+              "nothing": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          }
+        ]
       },
       {
-        "part": {
-          "name": "airbrake_l_dm"
-        }
+        "part": [
+          {
+            "name": "airbrake_r_dm"
+          },
+          {
+            "onHit": {
+              "damage": 10.0,
+              "cut": 0.1
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "cut": 0.4
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "cut": 1.0,
+              "nothing": 4.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 20.0,
+              "cut": 1.0,
+              "nothing": 2.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 1.0,
+              "nothing": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          }
+        ]
       },
       {
-        "part": {
-          "name": "airbrake_r1_dm"
-        }
+        "part": [
+          {
+            "name": "airbrake_l1_dm"
+          },
+          {
+            "onHit": {
+              "damage": 10.0,
+              "cut": 0.1
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "cut": 0.4
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "cut": 1.0,
+              "nothing": 4.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 20.0,
+              "cut": 1.0,
+              "nothing": 2.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 1.0,
+              "nothing": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          }
+        ]
       },
       {
-        "part": {
-          "name": "airbrake_r_dm"
-        }
+        "part": [
+          {
+            "name": "airbrake_r1_dm"
+          },
+          {
+            "onHit": {
+              "damage": 10.0,
+              "cut": 0.1
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "cut": 0.4
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "cut": 1.0,
+              "nothing": 4.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 20.0,
+              "cut": 1.0,
+              "nothing": 2.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 1.0,
+              "nothing": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          }
+        ]
       },
       {
         "part": {
@@ -1494,8 +1704,8 @@
         "part": {
           "name": "spar1_l_dm",
           "onKill": {
-            "nothing": 2.0,
-            "cut": 4.0
+            "nothing": 0.0,
+            "cut": 1.0
           }
         }
       },
@@ -1503,8 +1713,8 @@
         "part": {
           "name": "spar1_r_dm",
           "onKill": {
-            "nothing": 2.0,
-            "cut": 4.0
+            "nothing": 0.0,
+            "cut": 1.0
           }
         }
       },
@@ -1512,8 +1722,8 @@
         "part": {
           "name": "spar2_l_dm",
           "onKill": {
-            "nothing": 2.0,
-            "cut": 4.0
+            "nothing": 0.0,
+            "cut": 1.0
           }
         }
       },
@@ -1521,8 +1731,8 @@
         "part": {
           "name": "spar2_r_dm",
           "onKill": {
-            "nothing": 2.0,
-            "cut": 4.0
+            "nothing": 0.0,
+            "cut": 1.0
           }
         }
       },

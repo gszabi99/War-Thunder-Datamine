@@ -70,10 +70,7 @@ class gui_bhv.MultiSelect extends gui_bhv.posNavigator
     if (is_down)
       return ::RETCODE_NOTHING
 
-    local value = isShortcutsByHover(obj) ? getHoveredChild(obj).hoveredIdx : getSelectedValue(obj)
-    chooseItem(obj, value)
+    chooseItem(obj, getSelectedValue(obj))
     return ::RETCODE_HALT
   }
-
-  isOnlyHover = @(obj) false
 }

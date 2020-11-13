@@ -8,7 +8,7 @@ enum MESSAGE_TYPE {
   CUSTOM      = "custom"
 }
 
-local persistent = {
+local persist = {
   lastCreatedMessageIndex = 0
 }
 
@@ -16,7 +16,7 @@ local privateColor = "@chatTextPrivateColor"
 local blockedColor = "@chatTextBlockedColor"
 local systemColor = "@chatInfoColor"
 
-::g_script_reloader.registerPersistentData("MenuChatMessagesGlobals", persistent, ["lastCreatedMessageIndex"])
+::g_script_reloader.registerPersistentData("MenuChatMessagesGlobals", persist, ["lastCreatedMessageIndex"])
 
 local function filterSystemUserMsg(msg)
 {
@@ -75,8 +75,7 @@ local function colorMyNameInText(msg)
   return msg
 }
 
-local function newMessage(from, msg, privateMsg = false, myPrivate = false, overlaySystemColor = null,
-    important = false, needCensore = false, isMyActionInfo = false) {
+local function newMessage(from, msg, privateMsg=false, myPrivate=false, overlaySystemColor=null, important=false, needCensore=false) {
   local text = ""
   local clanTag = ""
   local uid = null
@@ -158,7 +157,6 @@ local function newMessage(from, msg, privateMsg = false, myPrivate = false, over
     clanTag = clanTag
     userColor = userColor
     isMeSender = messageType == MESSAGE_TYPE.MY
-    isMyActionInfo = isMyActionInfo
 
     msgs = [msg]
     msgsSrc = [msgSrc]
@@ -224,7 +222,7 @@ local function newMessage(from, msg, privateMsg = false, myPrivate = false, over
       }
 
       mBlock.text += (!isCustomScene ? "\n":"") + mBlock.msgs.top()
-      mBlock.messageIndex = persistent.lastCreatedMessageIndex++
+      mBlock.messageIndex = persist.lastCreatedMessageIndex++
 
       if (mBlocks.len() > ::g_chat.getMaxRoomMsgAmount())
         mBlocks.remove(0)

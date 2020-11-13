@@ -1,6 +1,6 @@
 local time = require("scripts/time.nut")
 local { hasAllFeatures } = require("scripts/user/features.nut")
-local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
+local bhvUnseen = ::require("scripts/seen/bhvUnseen.nut")
 local promoConditions = require("scripts/promo/promoConditions.nut")
 local { getPollIdByFullUrl, invalidateTokensCache } = require("scripts/web/webpoll.nut")
 local { isPlatformSony,
@@ -9,9 +9,6 @@ local { isPlatformSony,
 local { canUseIngameShop, openIngameStore } = require("scripts/onlineShop/entitlementsStore.nut")
 local { getBundleId } = require("scripts/onlineShop/onlineBundles.nut")
 local { validateLink, openUrl } = require("scripts/onlineShop/url.nut")
-local { getStringWidthPx } = require("scripts/viewUtils/daguiFonts.nut")
-local { promoTextFunctions } = require("scripts/promo/promoInfo.nut")
-local { tryOpenNextTutorialHandler } = require("scripts/tutorials/nextTutorialHandler.nut")
 
 enum ONLINE_SHOP_TYPES {
   WARPOINTS = "warpoints"
@@ -46,10 +43,10 @@ local function onOpenTutorial(owner, params = [])
   else if (::u.isArray(params) && params.len() > 0)
     tutorialId = params[0]
 
-  owner.checkedNewFlight(function() {
-    if (!tryOpenNextTutorialHandler(tutorialId, false))
+  owner.checkedNewFlight((@(tutorialId) function() {
+    if (!::gui_start_checkTutorial(tutorialId, false))
       ::gui_start_tutorial()
-  })
+  })(tutorialId))
 }
 
 local function openEventsWnd(owner, params = [])
@@ -123,6 +120,7 @@ local openProfileSheetParams = {
   }
 
   BUTTON_OUT_OF_DATE_DAYS = 15
+  MAX_IMAGE_WIDTH_COEF = 2
   PERFORM_ACTON_NAME = "performAction"
 
   DEFAULT_TIME_SWITCH_SEC = 10
@@ -406,8 +404,8 @@ g_promo.generateBlockView <- function generateBlockView(block)
   view.id <- id
   view.type <- ::g_promo.getType(block)
   view.collapsed <- ::g_promo.isCollapsed(id)? "yes" : "no"
+  view.aspect_ratio <- countMaxSize(block)
   view.fillBlocks <- []
-  view.h_ratio <- 1 / (block?.aspect_ratio ?? 1.0)
 
   local unseenIcon = getCustomSeenId(id)
   if (unseenIcon)
@@ -433,7 +431,7 @@ g_promo.generateBlockView <- function generateBlockView(block)
   }
 
   local requiredBlocks = isMultiblock? blocksCount : 1
-  local hasImage = isMultiblock
+
   for (local i = 0; i < requiredBlocks; i++)
   {
     local blockId = view.id + (isMultiblock? ("_" + i) : "")
@@ -468,19 +466,12 @@ g_promo.generateBlockView <- function generateBlockView(block)
 
     local image = getImage(fillBlock)
     if (image != "")
-    {
       fillBlock.image <- image
-      hasImage = true
-    }
 
-    local text = ::isInArray(id,
-      ["world_war_button", "events_mainmenu_button", "tutorial_mainmenu_button"])
-        ? promoTextFunctions[id].bindenv(this)() : getViewText(fillBlock, isMultiblock ? "" : null)
+    local text = getViewText(fillBlock, isMultiblock ? "" : null)
     if (::u.isEmpty(text) && isMultiblock)
       text = getViewText(block)
     fillBlock.text <- text
-    fillBlock.needAutoScroll <- getStringWidthPx(text, "fontNormal")
-      > ::to_pixels("1@arrowButtonWidth-2@blockInterval") ? "yes" : "no"
 
     local showTextShade = !::is_chat_message_empty(text) || isDebugModeEnabled
     fillBlock.showTextShade <- showTextShade
@@ -491,14 +482,11 @@ g_promo.generateBlockView <- function generateBlockView(block)
       show = false
     fillBlock.blockShow <- show
 
-    fillBlock.h_ratio <- view.h_ratio
+    fillBlock.aspect_ratio <- view.aspect_ratio
     view.fillBlocks.append(fillBlock)
 
     view.radiobuttons.append({selected = isBlockSelected})
   }
-
-  if (!hasImage)
-    view.h_ratio = 0
 
   if ("action" in view)
     delete view.action
@@ -532,6 +520,21 @@ g_promo.getCollapsedText <- function getCollapsedText(view, promoButtonId)
     result = ::g_language.getLocTextFromConfig(view, "collapsedText", defaultCollapsedText)
 
   return ::loc(result)
+}
+
+g_promo.countMaxSize <- function countMaxSize(block)
+{
+  local ratio = block?.aspect_ratio ?? 1
+  local height = 1.0
+  local width = ratio
+
+  if (ratio > MAX_IMAGE_WIDTH_COEF)
+  {
+    width = MAX_IMAGE_WIDTH_COEF
+    height = MAX_IMAGE_WIDTH_COEF / ratio
+  }
+
+  return ::format("height:t='%0.2f@arrowButtonWithImageHeight'; width:t='%0.2fh'", height, width)
 }
 
 /**
@@ -674,12 +677,8 @@ g_promo.setButtonText <- function setButtonText(buttonObj, id, text = "")
     return
 
   local obj = buttonObj.findObject(id + "_text")
-  if (::check_obj(obj))
-  {
+  if (::checkObj(obj))
     obj.setValue(text)
-    obj.needAutoScroll = getStringWidthPx(text, "fontNormal")
-      > ::to_pixels("1@arrowButtonWidth-2@blockInterval") ? "yes" : "no"
-  }
 }
 
 g_promo.getVisibilityById <- function getVisibilityById(id)
@@ -811,8 +810,6 @@ g_promo.toggleItem <- function toggleItem(toggleButtonObj)
   local toggled = isCollapsed(promoButtonObj.id)
   local newVal = changeToggleStatus(promoButtonObj.id, toggled)
   promoButtonObj.collapsed = newVal? "yes" : "no"
-  toggleButtonObj.getScene().applyPendingChanges(false)
-  ::move_mouse_on_obj(toggleButtonObj)
 }
 
 g_promo.isCollapsed <- function isCollapsed(id)
@@ -855,7 +852,7 @@ g_promo.updateCollapseStatuses <- function updateCollapseStatuses(arr)
 
 g_promo.switchBlock <- function switchBlock(obj, promoHolderObj)
 {
-  if (!::check_obj(promoHolderObj))
+  if (!::checkObj(promoHolderObj))
     return
 
   if (obj?.blockId == null || multiblockData?[obj.blockId] == null)
@@ -874,17 +871,11 @@ g_promo.switchBlock <- function switchBlock(obj, promoHolderObj)
   local curObj = promoButtonObj.findObject(searchId)
   curObj.animation = "show"
   multiblockData[promoButtonObj.id].value = value
-
-  local curListObj = curObj.findObject("multiblock_radiobuttons_list")
-  if (!::check_obj(curListObj))
-      return
-
-  curListObj.setValue(value)
 }
 
 g_promo.manualSwitchBlock <- function manualSwitchBlock(obj, promoHolderObj)
 {
-  if (!::check_obj(promoHolderObj))
+  if (!::checkObj(promoHolderObj))
     return
 
   local pId = obj.blockId
@@ -906,7 +897,7 @@ g_promo.selectNextBlock <- function selectNextBlock(obj, dt)
   multiblockData[obj.id].life_time = multiblockData[obj.id].switch_time_sec
 
   local listObj = obj.findObject("multiblock_radiobuttons_list")
-  if (!::check_obj(listObj))
+  if (!::checkObj(listObj))
     return
 
   local curVal = listObj.getValue()

@@ -242,6 +242,18 @@
                 "navigatorShortcuts": "yes"
               },
               {
+                "on_wrap_up": "onWrapUp"
+              },
+              {
+                "on_wrap_down": "onWrapDown"
+              },
+              {
+                "on_wrap_left": "onWrapUp"
+              },
+              {
+                "on_wrap_right": "onWrapDown"
+              },
+              {
                 "wwTopNest": {
                   "id": "top_daily_players"
                 }
@@ -352,7 +364,7 @@
                 "Button_text": {
                   "id": "btn_operation_descr",
                   "text": "#worldwar/scenarioDescription",
-                  "btnName": "X",
+                  "btnName": "A",
                   "display": "hide",
                   "enable": "no",
                   "_on_click": "onOperationDescr",
@@ -691,6 +703,27 @@
                               "gcButtonsInterval": "yes"
                             },
                             {
+                              "behaviour": "wrapNavigator"
+                            },
+                            {
+                              "navigatorShortcuts": "yes"
+                            },
+                            {
+                              "childsActivate": "yes"
+                            },
+                            {
+                              "on_wrap_up": "onWrapUp"
+                            },
+                            {
+                              "on_wrap_down": "onWrapDown"
+                            },
+                            {
+                              "on_wrap_left": "onTopGCPanelLeft"
+                            },
+                            {
+                              "on_wrap_right": "onTopGCPanelRight"
+                            },
+                            {
                               "Button_text": {
                                 "id": "gc_clanTag",
                                 "tooltip": "#mainmenu/btnClanCard",
@@ -781,6 +814,27 @@
                           },
                           {
                             "gcButtonsInterval": "yes"
+                          },
+                          {
+                            "behaviour": "wrapNavigator"
+                          },
+                          {
+                            "navigatorShortcuts": "yes"
+                          },
+                          {
+                            "childsActivate": "yes"
+                          },
+                          {
+                            "on_wrap_up": "onWrapUp"
+                          },
+                          {
+                            "on_wrap_down": "onWrapDown"
+                          },
+                          {
+                            "on_wrap_left": "onTopGCPanelLeft"
+                          },
+                          {
+                            "on_wrap_right": "onTopGCPanelRight"
                           },
                           {
                             "Button_text": [
@@ -996,6 +1050,9 @@
                 "shadowSafeArea": []
               },
               {
+                "line": []
+              },
+              {
                 "tdiv": {
                   "size": "pw, 0.02@sf",
                   "pos": "0, ph",
@@ -1036,7 +1093,7 @@
                         "id": "slotbar-presetsPlace",
                         "size": "pw, ph",
                         "position": "absolute",
-                        "display": "hide"
+                        "pos": "1@dp, 0"
                       }
                     }
                   },
@@ -1093,7 +1150,14 @@
                       "position": "relative",
                       "top": "0.5(ph-h)",
                       "margin-right": "2@buttonTextPadding",
-                      "class": "header"
+                      "class": "header",
+                      "behaviour": "wrapNavigator",
+                      "navigatorShortcuts": "yes",
+                      "childsActivate": "yes",
+                      "on_wrap_up": "onWrapUp",
+                      "on_wrap_down": "onWrapDown",
+                      "on_wrap_left": "onWrapLeft",
+                      "on_wrap_right": "onWrapRight"
                     }
                   },
                   {
@@ -1109,6 +1173,27 @@
                       },
                       {
                         "class": "header"
+                      },
+                      {
+                        "behaviour": "wrapNavigator"
+                      },
+                      {
+                        "navigatorShortcuts": "yes"
+                      },
+                      {
+                        "childsActivate": "yes"
+                      },
+                      {
+                        "on_wrap_up": "onWrapUp"
+                      },
+                      {
+                        "on_wrap_down": "onWrapDown"
+                      },
+                      {
+                        "on_wrap_left": "onBottomGCPanelLeft"
+                      },
+                      {
+                        "on_wrap_right": "onBottomGCPanelRight"
                       },
                       {
                         "Button_text": [
@@ -1291,10 +1376,15 @@
           "flow": "vertical",
           "overflow-y": "auto",
           "css-hier-invalidate": "yes",
+          "focus": "yes",
           "behaviour": "posNavigator",
           "moveY": "linear",
           "navigatorShortcuts": "yes",
           "on_select": "onItemSelect",
+          "on_wrap_up": "onWrapUp",
+          "on_wrap_down": "onWrapDown",
+          "on_wrap_left": "onWrapUp",
+          "on_wrap_right": "onWrapDown",
           "snd_select": "ww_globe_battle_select"
         }
       }

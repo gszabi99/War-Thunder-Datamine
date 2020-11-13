@@ -1,23 +1,28 @@
-menu_button {
+menu_button, menu_button_inactive {
   shortcutActivate:"J:A | Enter | NumEnter | Space";
+  shortcutUp:"@shortcutUpGamepad | Up";
+  shortcutDown:"@shortcutDownGamepad | Down";
+  navUp:"#prev:wrap";
+  navDown:"#next:wrap";
+  navBack:"#parent";
+  navLeft:"#prev:wrap";
+  navRight:"#next:wrap";
+  navLobbyRight:"#next:wrap";
 }
-[swap_ab=yes] menu_button {
+
+[swap_ab=yes] menu_button, [swap_ab=yes] menu_button_inactive {
   shortcutActivate:"J:B | Enter | NumEnter | Space";
 }
 
-Button_text, emptyButton, CheckBox, promoButton, gameModeChangeButton, button, fillBlock,
-Button_close, hoverBgButton, SwitchBox, promoButton[type=battleTask] > expandable, imgButton,
-td[on_click], itemDiv[on_click], fullSizeCollapseBtn[on_click], toggleButton, clanBattleSeasonFrame,
-contactItem[on_click] {
+[childsActivate=yes] > Button_text, [childsActivate=yes] > emptyButton,
+[childsActivate=yes] > CheckBox, [childsActivate=yes] > promoButton,
+SwitchBox {
   shortcutActivate:"J:A | Space";
 }
 
-[swap_ab=yes] Button_text, [swap_ab=yes] emptyButton, [swap_ab=yes] CheckBox,
-[swap_ab=yes] promoButton, [swap_ab=yes] gameModeChangeButton, [swap_ab=yes] button,
-[swap_ab] fillBlock, [swap_ab] Button_close, [swap_ab] hoverBgButton, [swap_ab=yes] SwitchBox,
-[swap_ab] promoButton[type=battleTask] > expandable, [swap_ab=yes] imgButton,
-[swap_ab] td[on_click], [swap_ab] itemDiv[on_click], [swap_ab] fullSizeCollapseBtn[on_click],
-[swap_ab] toggleButton, [swap_ab] clanBattleSeasonFrame, [swap_ab] contactItem[on_click] {
+[swap_ab=yes] [childsActivate=yes] > Button_text, [swap_ab=yes] [childsActivate=yes] > emptyButton,
+[swap_ab=yes] [childsActivate=yes] > CheckBox, [swap_ab=yes] [childsActivate=yes] > promoButton,
+[swap_ab=yes] SwitchBox {
   shortcutActivate:"J:B | Space";
 }
 
@@ -32,6 +37,7 @@ MultiSelect {
 MultiSelect[optionsShortcuts] {
   shortcutLeft:'@shortcutLeftGamepad | Left';
   shortcutRight:'@shortcutRightGamepad | Right';
+  shortcutSelect:"J:X | Space";
 }
 
 options_list > * > MultiSelect {
@@ -76,11 +82,6 @@ slider, sliderProgress, invisSlider {
   shortcutUp:"";
   shortcutDown:"";
   shortcutCancel:"";
-  shortcutSetValueByCursor:"Space | J:A";
-}
-
-[swap_ab=yes] slider, [swap_ab=yes] sliderProgress, [swap_ab=yes] invisSlider {
-  shortcutSetValueByCursor:"Space | J:B";
 }
 
 slider[canWrap=yes], invisSlider[canWrap=yes] {
@@ -91,6 +92,8 @@ slider[canWrap=yes], invisSlider[canWrap=yes] {
 spinnerListBox {
   shortcutLeft: "@shortcutLeftGamepad | Left";
   shortcutRight: "@shortcutRightGamepad | Right";
+  navUp:"#prev:wrap";
+  navDown:"#next:wrap";
 }
 
 [dontUseAxisShortcuts=yes] slider, [dontUseAxisShortcuts=yes] sliderProgress,
@@ -102,6 +105,9 @@ spinnerListBox {
 .optionsTable SwitchBox, SwitchBox[selectable=yes] {
   shortcutUnset: "@shortcutLeftGamepad | Left";
   shortcutSet: "@shortcutRightGamepad | Right";
+  shortcutActivate:"";
+  navUp:"#prev:wrap";
+  navDown:"#next:wrap";
 }
 
 .optionsTable[dontUseAxisShortcuts=yes] SwitchBox {
@@ -158,15 +164,13 @@ textareaNoTab[scrollbarShortcutsOnSelect] {
   shortcutSelect: "Space | J:B";
 }
 
-[navigatorShortcuts=noSelect], [navigatorShortcuts=cancelNoSelect] {
-  shortcutSelect:"";
-}
-
-[navigatorShortcuts=SpaceA] {
+CheckBox, gameModeChangeButton,
+CheckBox[btnName=SpaceA], button[btnName=SpaceA], [navigatorShortcuts=SpaceA] {
   shortcutActivate:"Space | J:A";
 }
 
-[swap_ab=yes] [navigatorShortcuts=SpaceA] {
+[swap_ab=yes] CheckBox, [swap_ab=yes] gameModeChangeButton,
+[swap_ab=yes] CheckBox[btnName=SpaceA], [swap_ab=yes] button[btnName=SpaceA], [swap_ab=yes] [navigatorShortcuts=SpaceA] {
   shortcutActivate:"Space | J:B";
 }
 
@@ -184,20 +188,16 @@ textareaNoTab[scrollbarShortcutsOnSelect] {
 [swap_ab=yes] [navigatorShortcuts=active], [swap_ab=yes] [navigatorShortcuts=full], [swap_ab=yes] [navigatorShortcuts=onlyActivate] {
   shortcutActivate:'J:B | Enter | NumEnter | Space';
 }
-[navigatorShortcuts=onlyActivate],
-[navigatorShortcuts=onlySelect] {
+[navigatorShortcuts=onlyActivate] {
   shortcutLeft:"";
   shortcutRight:"";
-  shortcutUp:"";
-  shortcutDown:"";
 }
 
-[navigatorShortcuts=cancel], [navigatorShortcuts=cancelNoSelect], [navigatorShortcuts=full] {
+[navigatorShortcuts=cancel], [navigatorShortcuts=full] {
   shortcutCancel:"Esc | J:B";
 }
 
-[swap_ab=yes] [navigatorShortcuts=cancel], [swap_ab=yes] [navigatorShortcuts=cancelNoSelect],
-[swap_ab=yes] [navigatorShortcuts=full] {
+[swap_ab=yes] [navigatorShortcuts=cancel], [swap_ab=yes] [navigatorShortcuts=full] {
   shortcutCancel:"Esc | J:A";
 }
 
@@ -207,6 +207,8 @@ SlideListBox, SlideListBoxOptions
   shortcutRight: "@shortcutRightGamepad | Right";
   shortcutUp:"@shortcutUpGamepad | Up";
   shortcutDown:"@shortcutDownGamepad | Down";
+  navUp:"#prev:wrap";
+  navDown:"#next:wrap";
 }
 
 HangarSliderListBox, HorizontalListBox {
@@ -236,22 +238,18 @@ RadioButtonList[activeAccesskeys=RSLeftRight] {
 }
 
 EditBox {
-  shortcutShowIME:"J:A";
-}
-
-[swap_ab=yes] EditBox {
-  shortcutShowIME:"J:B";
+  shortcutShowIME:"J:LT";
 }
 
 EditBox[multiShortcuts=no] {
-  shortcutActivate:"Enter | NumEnter";
+  shortcutActivate:"Enter | NumEnter | J:A";
   shortcutCancel:"Esc | J:B";
   shortcutUp:"@shortcutUpGamepad | Up";
   shortcutDown:"@shortcutDownGamepad | Down";
 }
 
 [swap_ab=yes] EditBox[multiShortcuts=no] {
-  shortcutActivate:"Enter | NumEnter";
+  shortcutActivate:"Enter | NumEnter | J:B";
   shortcutCancel:"Esc | J:A";
 }
 
@@ -267,9 +265,11 @@ EditBox[withTab=yes] {
   shortcutActivate:"Enter | NumEnter | Tab";
 }
 
-EditBox[twoStepType=yes] {
-  shortcutActivate:"Enter | NumEnter";
-  shortcutCancel:"";
+EditBox[switchFocus=yes] {
+  shortcutWrapUp: "@shortcutUpGamepad | Up";
+  shortcutWrapDown: "@shortcutDownGamepad | Down";
+  on_wrap_up:"onWrapUp";
+  on_wrap_down:"onWrapDown";
 }
 
 .optionsTable EditBox {
@@ -297,9 +297,15 @@ ComboBox {
   shortcutClose:'Esc | J:A | Backspace';
 }
 
-.optionsTable[rightOpen=yes] > tr > td > ComboBox {
+.optionsTable > tr > td > ComboBox {
   shortcutOpen:"Right | @shortcutRightGamepad";
 }
+.optionsTable > tr > td > ComboBox > listBox {
+  shortcutLeft:"";
+  shortcutRight:"";
+  shortcutActivate:'@shortcutLeftGamepad | Left | J:A | Space | Enter | NumEnter'; }
+[swap_ab=yes] .optionsTable > tr > td > ComboBox > listBox {
+  shortcutActivate:'@shortcutLeftGamepad | Left | J:B | Space | Enter | NumEnter'; }
 
 spectatorFrame {
   shortcutActivate:"J:A | Enter";

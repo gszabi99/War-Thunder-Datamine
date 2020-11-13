@@ -1,7 +1,9 @@
-local ItemCouponBase = require("scripts/items/itemsClasses/itemCouponBase.nut")
+local ItemExternal = require("scripts/items/itemsClasses/itemExternal.nut")
 
-class ::items_classes.ItemVehicle extends ItemCouponBase {
+class ::items_classes.ItemVehicle extends ItemExternal {
   static iType = itemType.VEHICLE
+  static defaultLocId = "coupon"
+  static combinedNameLocId = "coupon/name"
   static typeIcon = "#ui/gameuiskin#item_type_blueprints"
   static descHeaderLocId = "coupon/for/vehicle"
 

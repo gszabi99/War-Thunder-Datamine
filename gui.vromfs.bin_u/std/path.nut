@@ -188,7 +188,7 @@ local function join(...) {
 local function splitToArray(path) {
   if (path == "")
     return []
-  ::assert(::type(path)=="string", @() $"path type is not string ({::type(path)})")
+  ::assert(::type(path)=="string")
   local segments = split(path, "/")
   if (path[0] == '/')
     segments.insert(0, "/")

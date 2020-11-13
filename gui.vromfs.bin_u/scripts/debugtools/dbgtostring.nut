@@ -1,7 +1,5 @@
 // warning disable: -file:forbidden-function
 
-local time = require("scripts/time.nut")
-
 ::dlog <- function dlog(...)
 {
   for (local i = 0; i < vargv.len(); i++)
@@ -14,19 +12,12 @@ local time = require("scripts/time.nut")
 ::clog <- function clog(...)
 {
   foreach (arg in vargv)
-    ::dagor.console_print(":  ".concat(time.getCurTimeMillisecStr(), ::type(arg) == "string" ? arg : ::toString(arg)))
+    ::dagor.console_print(::type(arg) == "string" ? arg : ::toString(arg))
 }
 
 ::can_be_readed_as_datablock <- function can_be_readed_as_datablock(blk) //can be overrided by dataBlockAdapter
 {
   return u.isDataBlock(blk)
-}
-
-function initEventBroadcastLogging()
-{
-  local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
-  subscriptions.setDebugLoggingParams(::dagor.debug, ::dagor.getCurTime, ::toString)
-  ::debug_event_logging <- subscriptions.debugLoggingEnable
 }
 
 local function tableKeyToString(k) {
@@ -171,7 +162,7 @@ local DEBUG_TABLE_DATA_PARAMS = {
 
 ::toString <- function toString(val, recursion = 1, addStr = "")
 {
-  if (::type(val) == "instance")
+  if (type(val) == "instance")
   {
     if (::can_be_readed_as_datablock(val))
     {
@@ -222,7 +213,7 @@ local DEBUG_TABLE_DATA_PARAMS = {
           //or it make harder to read debugtableData result in log, also arrays in one string generate too long strings
           if (typeof(v) != "function")
           {
-            local index = ::isInArray(::type(idx), [ "float", "null" ]) ? ::toString(idx) : idx
+            local index = ::isInArray(type(idx), [ "float", "null" ]) ? ::toString(idx) : idx
             ret += "\n" + addStr + "  " + index + " = " + ::toString(v, recursion - 1, addStr + "  ")
           }
         }
@@ -232,13 +223,13 @@ local DEBUG_TABLE_DATA_PARAMS = {
   }
   if (val == null)
     return "null"
-  if (::type(val) == "string")
+  if (type(val) == "string")
     return format("\"%s\"", val)
-  if (::type(val) == "float")
+  if (type(val) == "float")
     return val.tostring() + ((val % 1) ? "" : ".0")
-  if (::type(val) != "array" && ::type(val) != "table")
+  if (type(val) != "array" && type(val) != "table")
     return "" + val
-  local isArray = ::type(val) == "array"
+  local isArray = type(val) == "array"
   local str = ""
   if (recursion > 0)
   {
@@ -253,5 +244,3 @@ local DEBUG_TABLE_DATA_PARAMS = {
     str = val.len() ? "..." : ""
   return isArray ? ("[ " + str + " ]") : ("{ " + str + " }")
 }
-
-initEventBroadcastLogging()

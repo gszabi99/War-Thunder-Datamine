@@ -7,11 +7,13 @@
   "on_end_edit": "onActionsListDeactivate",
   "itemsList": {
     "id": "list_nest",
-    "flow": "vertical",
-    "behavior": "posNavigator",
+    "behavior": "wrapNavigator",
+    "moveX": "closest",
+    "moveY": "linear",
     "navigatorShortcuts": "cancel",
-    "on_set_focus": "onFocus",
-    "on_cancel_edit": "onBtnClose"
+    "_on_cancel_edit": "onBtnClose",
+    "flow": "vertical",
+    "on_set_focus": "onFocus"
   },
   "popup_menu_arrow": []
 }

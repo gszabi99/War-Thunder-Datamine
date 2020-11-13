@@ -6,6 +6,7 @@ class ::gui_handlers.teamUnitsLeftView extends ::gui_handlers.BaseGuiHandlerWT
 
   blockId = "leftUnits"
 
+  parentHandlerWeak = null
   missionRules = null
   isSceneLoaded = false
   isCollapsed = true
@@ -16,6 +17,9 @@ class ::gui_handlers.teamUnitsLeftView extends ::gui_handlers.BaseGuiHandlerWT
 
   function initScreen()
   {
+    if (parentHandlerWeak)
+      parentHandlerWeak = parentHandlerWeak.weakref() //we are miss weakref on assigning from params table
+
     scene.setUserData(this) //to not unload handler even when scene not loaded
     scene.findObject(blockId).setUserData(this)
 
@@ -37,6 +41,7 @@ class ::gui_handlers.teamUnitsLeftView extends ::gui_handlers.BaseGuiHandlerWT
         showTextShade = true
         collapsed = isCollapsed ? "yes" : "no"
         timerFunc = "onUpdate"
+        needNavigateToCollapseButtton = true
         needCollapsedTextAnimSwitch = true
         hasSafeAreaPadding = "no"
 
@@ -148,5 +153,30 @@ class ::gui_handlers.teamUnitsLeftView extends ::gui_handlers.BaseGuiHandlerWT
   function onEventMyCustomStateChanged(p)
   {
     doWhenActiveOnce("updateInfo")
+  }
+
+  function getMainFocusObj()
+  {
+    return isSceneLoaded ? scene.findObject(blockId + "_toggle") : null
+  }
+
+  function wrapNextSelect(obj = null, dir = 0)
+  {
+    if (::handlersManager.isHandlerValid(parentHandlerWeak))
+      parentHandlerWeak.wrapNextSelect(obj, dir)
+  }
+
+  function onWrapLeft(obj)
+  {
+    if (::handlersManager.isHandlerValid(parentHandlerWeak)
+        && ::u.isFunction(parentHandlerWeak.onWrapLeft))
+      parentHandlerWeak.onWrapLeft(obj)
+  }
+
+  function onWrapRight(obj)
+  {
+    if (::handlersManager.isHandlerValid(parentHandlerWeak)
+        && ::u.isFunction(parentHandlerWeak.onWrapRight))
+      parentHandlerWeak.onWrapRight(obj)
   }
 }

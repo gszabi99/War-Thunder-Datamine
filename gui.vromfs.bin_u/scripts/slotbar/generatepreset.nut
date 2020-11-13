@@ -1,5 +1,4 @@
 local { setUnits, getSlotItem, getCurPreset} = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-local { batchTrainCrew } = require("scripts/crew/crewActions.nut")
 
 local stepsSpecForFindBestCrew = [
   ::g_crew_spec_type.ACE.code,
@@ -131,7 +130,7 @@ local function generatePreset(availableUnits, country, hasSlotbarByUnitsGroups) 
         if (hasSlotbarByUnitsGroups)
           setUnits(bestPresetData.trainCrewsDataForGroups)
         else
-          batchTrainCrew(
+          ::batch_train_crew(
             ::get_crews_list_by_country(country).map(@(c) {crewId = c.id,
               airName = bestPresetData.trainCrewsData?[c.id].name ?? ""}),
             null, @() ::broadcastEvent("SlotbarPresetLoaded"))

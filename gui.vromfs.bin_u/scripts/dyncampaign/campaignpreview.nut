@@ -112,8 +112,6 @@ class ::gui_handlers.CampaignPreview extends ::gui_handlers.BaseGuiHandlerWT
     } else
       if (!::first_generation)
         setDoubleTextToButton(scene, "btn_apply", ::loc("mainmenu/btnNext"))
-
-    ::move_mouse_on_obj(scene.findObject("btn_apply"))
   }
 
   function buildLogLine(blk)

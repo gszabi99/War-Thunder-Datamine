@@ -12,12 +12,12 @@
     "mission": {
       "level": "levels/krymsk.bin",
       "type": "testFlight",
+      "restoreType": "manual",
+      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "good",
       "windDirection": [1.0,0.0,0.0],
-      "locName": "missions/testFlight",
-      "restoreType": "manual",
-      "optionalTakeOff": false
+      "locName": "missions/testFlight"
     },
     "spectator_points": [],
     "briefing": {
@@ -151,26 +151,12 @@
             "target": "armada_02"
           },
           {
+            "target": "armada_02"
+          },
+          {
             "target": "armada_03"
-          },
-          {
-            "target": "tracked_vehicles_01"
-          },
-          {
-            "target": "tracked_vehicles_02"
-          },
-          {
-            "target": "tracked_vehicles_03"
           }
-        ],
-        "unitSetProperties": {
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "tracked_vehicles_03",
-          "useSearchRadar": true
-        }
+        ]
       },
       "else_actions": []
     },
@@ -309,7 +295,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -356,7 +341,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -392,7 +376,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 2,
@@ -428,7 +411,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 2,
@@ -464,7 +446,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 3,
@@ -500,7 +481,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 4,
@@ -536,7 +516,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 2,
@@ -572,7 +551,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 2,
@@ -608,7 +586,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 5,
@@ -644,7 +621,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 3,
@@ -680,7 +656,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 6,
@@ -734,7 +709,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -772,7 +746,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -796,7 +769,7 @@
           [0.333856,0.0,0.942624],
           [-16562.9,1000.0,8976.5]
         ],
-        "unit_class": "f-86f-25",
+        "unit_class": "f-86f-35",
         "objLayer": 1,
         "closed_waypoints": true,
         "isShipSpline": false,
@@ -811,7 +784,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -948,7 +920,7 @@
           [0.333856,0.0,0.942624],
           [-17421.8,4009.6,9026.35]
         ],
-        "unit_class": "f-86f-25",
+        "unit_class": "f-86f-35",
         "objLayer": 1,
         "closed_waypoints": true,
         "isShipSpline": false,
@@ -963,7 +935,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -1089,44 +1060,6 @@
             }
           }
         }
-      }
-    },
-    {
-      "tankModels": {
-        "name": "tracked_vehicles_03",
-        "tm": [
-          [0.470021,0.0,0.882655],
-          [0.0,1.0,0.0],
-          [-0.882655,0.0,0.470021],
-          [-14528.7,345.393,9887.2]
-        ],
-        "unit_class": "us_adats_bradley",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "hold_fire",
-          "targetGnd": false
-        },
-        "way": []
       }
     }
   ],

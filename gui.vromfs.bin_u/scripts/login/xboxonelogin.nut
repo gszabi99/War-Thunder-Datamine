@@ -34,12 +34,11 @@ class ::gui_handlers.LoginWndHandlerXboxOne extends ::BaseGuiHandler
       {
         id = "authorization_button"
         text = "#HUD_PRESS_A_CNT"
-        shortcut = "X"
+        shortcut = "A"
         funcName = "onOk"
         delayed = true
         isToBattle = true
         titleButtonFont = true
-        mousePointerCenteringBelowText = true
       },
       {
         id = "change_profile"
@@ -47,7 +46,6 @@ class ::gui_handlers.LoginWndHandlerXboxOne extends ::BaseGuiHandler
         shortcut = "Y"
         visualStyle = "secondary"
         funcName = "onChangeGamertag"
-        mousePointerCenteringBelowText = true
       }
     ]
 
@@ -60,12 +58,7 @@ class ::gui_handlers.LoginWndHandlerXboxOne extends ::BaseGuiHandler
     updateGamertag()
 
     if (::xbox_is_game_started_by_invite())
-    {
       onOk()
-      return
-    }
-
-    ::move_mouse_on_obj("authorization_button")
   }
 
   function onOk()

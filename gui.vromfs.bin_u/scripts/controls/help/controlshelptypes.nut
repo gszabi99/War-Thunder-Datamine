@@ -1,9 +1,8 @@
-local enums = require("sqStdLibs/helpers/enums.nut")
+local enums = ::require("sqStdlibs/helpers/enums.nut")
 local helpMarkup = require("scripts/controls/help/controlsHelpMarkup.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { checkJoystickThustmasterHotas } = require("scripts/controls/hotas.nut")
 local { isPlatformSony, isPlatformPC } = require("scripts/clientState/platform.nut")
-local { blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
 
 local result = {
   types = []
@@ -33,7 +32,7 @@ local function isUnitWithRadarOrRwr(unit)
   local sensorTypes = [ "radar", "rwr" ]
   if (unitBlk?.sensors)
     foreach (sensor in (unitBlk.sensors % "sensor"))
-      if (sensorTypes.indexof(blkOptFromPath(sensor?.blk)?.type) != null)
+      if (sensorTypes.indexof(::DataBlock(sensor?.blk ?? "")?.type) != null)
         return true
   return false
 }
@@ -250,7 +249,7 @@ enums.addTypes(result, {
     helpPattern = CONTROL_HELP_PATTERN.IMAGE
 
     checkFeature = unitTypes.SHIP.isAvailable
-    pageUnitTypeBit = unitTypes.SHIP.bit | unitTypes.BOAT.bit
+    pageUnitTypeBit = unitTypes.SHIP.bit
 
     pageBlkName = "gui/help/controlsShip.blk"
 

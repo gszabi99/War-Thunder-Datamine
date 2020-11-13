@@ -1,4 +1,4 @@
-local clanMembershipAcceptance = require("scripts/clans/clanMembershipAcceptance.nut")
+local clanMembershipAcceptance = ::require("scripts/clans/clanMembershipAcceptance.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 class ::gui_handlers.clanChangeMembershipReqWnd extends ::gui_handlers.BaseGuiHandlerWT
@@ -22,6 +22,7 @@ class ::gui_handlers.clanChangeMembershipReqWnd extends ::gui_handlers.BaseGuiHa
 
   minRankCondTypeObject = null
   autoAcceptMembershipObject = null
+  focusArray = ["optionslist"]
 
   // MembershipRequirementsBlk looks like this
   // {
@@ -41,11 +42,12 @@ class ::gui_handlers.clanChangeMembershipReqWnd extends ::gui_handlers.BaseGuiHa
     if ( !clanData )
       return goBack()
     reinitScreen()
+    initFocusArray()
   }
 
   function reinitScreen()
   {
-    local container = ::create_options_container("optionslist", optionItems, true, 0.5, true, false)
+    local container = ::create_options_container("optionslist", optionItems, true, true, 0.5, true, false)
     guiScene.replaceContentFromText("contentBody", container.tbl, container.tbl.len(), this)
 
     local option = ::get_option(::USEROPT_CLAN_REQUIREMENTS_ALL_MIN_RANKS)

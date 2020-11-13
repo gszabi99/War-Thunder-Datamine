@@ -1,0 +1,49 @@
+@const engineeringModIconHeight: 170*@sf/@pf;
+@const engineeringModBlockInterval: 20@sf/@pf;
+
+@const engineeringModItemHeight: 1@engineeringModIconHeight + 1@engineeringModBlockInterval;
+@const engineeringModItemWidth: 1@engineeringModItemHeight;
+
+@const engineeringItemColorCommon: #88000000;
+@const engineeringItemColorHover: #88888888;
+
+@const engineeringItemImgColorCommon: #777777;
+@const engineeringItemImgColorHover:  #FFFFFF;
+@const engineeringItemImgColorOwn:    #BBBBBB;
+
+
+engineeringItem {
+  size:1@engineeringModItemWidth, 1@engineeringModItemHeight;
+  padding:1@engineeringModBlockInterval;
+  background-color: @transparent;
+  css-hier-invalidate:yes;
+  total-input-transparent:yes;
+}
+
+engineeringItem[isGroup = yes] {
+  background-color: @engineeringItemColorCommon;
+}
+
+engineeringItem > img {
+  background-color: @engineeringItemImgColorCommon;
+}
+
+engineeringItem[equipped=yes] > img {
+  background-color: @engineeringItemImgColorOwn;
+}
+
+engineeringItem[status=locked] > img {
+  background-color:@shopItemLocked;
+}
+
+engineeringItem:hover {
+  background-color: @engineeringItemColorHover;
+}
+
+engineeringItem:hover > img {
+  background-color: @engineeringItemImgColorHover;
+}
+
+engineeringItem[status=locked] > img {
+ background-color:@shopItemLockedFocus;
+}

@@ -1,4 +1,3 @@
-local { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
 local time = require("scripts/time.nut")
 local systemMsg = require("scripts/utils/systemMsg.nut")
 local seenEvents = require("scripts/seen/seenList.nut").get(SEEN.EVENTS)
@@ -35,11 +34,11 @@ global enum UnitRelevance
 
 ::events <- null
 
-::allUnitTypesMask <- (::ES_UNIT_TYPE_AIRCRAFT | ::ES_UNIT_TYPE_TANK | ::ES_UNIT_TYPE_SHIP | ::ES_UNIT_TYPE_BOAT)
+::allUnitTypesMask <- (1 << ::ES_UNIT_TYPE_TOTAL_RELEASED) - 1
 
 systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_for_event" })
 
-::Events <- class
+class Events
 {
   __game_events        = {}
   lastUpdate           = 0
@@ -262,15 +261,6 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return ::getUnitTypeByText(rule["class"])
   }
 
-  function getMatchingUnitType(unit)
-  {
-    local matchingUnitType = ::get_es_unit_type(unit)
-    // override boats as ships because there are no boats on the matching
-    if (matchingUnitType == ::ES_UNIT_TYPE_BOAT)
-      return ::ES_UNIT_TYPE_SHIP
-    return matchingUnitType
-  }
-
   /**
    * Supports event objects and session lobby info as parameter.
    */
@@ -291,12 +281,10 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
         {
           local unit = ::getAircraftByName(rule.name)
           if (unit)
-            unitType = getMatchingUnitType(unit)
+            unitType = ::get_es_unit_type(unit)
         }
         if (unitType >= 0)
           teamUnitTypes = teamUnitTypes | (1 << unitType)
-        if (unitType == ::ES_UNIT_TYPE_SHIP)
-          teamUnitTypes = teamUnitTypes | (1 << ::ES_UNIT_TYPE_BOAT)
       }
       if (!teamUnitTypes)
         teamUnitTypes = ::allUnitTypesMask
@@ -306,8 +294,6 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
         local unitType = getBaseUnitTypefromRule(rule, true)
         if (unitType >= 0)
           teamUnitTypes = teamUnitTypes & ~(1 << unitType)
-        if (unitType == ::ES_UNIT_TYPE_SHIP)
-          teamUnitTypes = teamUnitTypes & ~(1 << ::ES_UNIT_TYPE_BOAT)
       }
 
       resMask = resMask | teamUnitTypes
@@ -336,12 +322,10 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       {
         local unit = ::getAircraftByName(rule.name)
         if (unit)
-          unitType = getMatchingUnitType(unit)
+          unitType = ::get_es_unit_type(unit)
       }
       if (unitType != ::ES_UNIT_TYPE_INVALID)
         res = res | (1 << unitType)
-      if (unitType == ::ES_UNIT_TYPE_SHIP)
-        res = res | (1 << ::ES_UNIT_TYPE_BOAT)
     }
     return res
   }
@@ -1038,7 +1022,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
         continue
 
       local unitType = getBaseUnitTypefromRule(rule, false)
-      if (unitType != ::ES_UNIT_TYPE_INVALID && unitType != getMatchingUnitType(unit))
+      if (unitType != ::ES_UNIT_TYPE_INVALID && unitType != ::get_es_unit_type(unit))
         continue
       if (("type" in rule) && (::getWpcostUnitClass(unit.name) != "exp_" + rule.type))
         continue
@@ -1868,8 +1852,6 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     local haveRequiredRules = generateRulesText(handler, getRequiredCrafts(teamData), requiredAirsObj, true, true)
     requiredAirsObj.show(haveRequiredRules)
 
-    if ((allowedUnitTypes & (1 << ::ES_UNIT_TYPE_BOAT)) != 0)
-      allowedUnitTypes = allowedUnitTypes & ~(1 << ::ES_UNIT_TYPE_BOAT)
     local needTypeText = (!haveAllowedRules && !haveForbiddenRules && !haveRequiredRules) || allowedUnitTypes != ::allUnitTypesMask
     local allowedUnitTypesObj = teamObj.findObject("allowed_unit_types")
     allowedUnitTypesObj.show(needTypeText)
@@ -1962,12 +1944,8 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     }
     else if ("type" in rule)
       ruleString += ::loc("mainmenu/type_" + rule.type)
-    else if ("class" in rule) {
-      local ruleClass = rule["class"]
-      if (ruleClass == "ship")
-        ruleClass = "ship_and_boat"
-      ruleString += ::loc($"mainmenu/type_{ruleClass}")
-    }
+    else if ("class" in rule)
+      ruleString += ::loc("mainmenu/type_" + rule["class"])
     if ("ranks" in rule)
     {
       local minRank = ::max(1, ::getTblValue("min", rule.ranks, 1))
@@ -2424,12 +2402,12 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
    */
   function checkClan(event)
   {
-    local clanTournament = get_blk_value_by_path(::get_tournaments_blk(), event.name + "/clanTournament", false)
+    local clanTournament = ::get_blk_value_by_path(::get_tournaments_blk(), event.name + "/clanTournament", false)
     if (!clanTournament)
       return true
     if (!::is_in_clan())
       return false
-    if (get_blk_value_by_path(::get_tournaments_blk(), event.name + "/allowToSwitchClan"))
+    if (::get_blk_value_by_path(::get_tournaments_blk(), event.name + "/allowToSwitchClan"))
       return true
     local tournamentBlk = ::EventRewards.getTournamentInfoBlk(event)
     return tournamentBlk?.clanId ? ::clan_get_my_clan_id() == tournamentBlk.clanId.tostring() : true

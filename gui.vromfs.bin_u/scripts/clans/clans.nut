@@ -1094,7 +1094,7 @@ local function getSeasonName(blk)
   return name
 }
 
-::ClanSeasonTitle <- class
+class ClanSeasonTitle
 {
   clanTag = ""
   clanName = ""
@@ -1130,7 +1130,7 @@ local function getSeasonName(blk)
 }
 
 
-::ClanSeasonPlaceTitle <- class extends ClanSeasonTitle
+class ClanSeasonPlaceTitle extends ClanSeasonTitle
 {
   place = ""
   seasonType = ""

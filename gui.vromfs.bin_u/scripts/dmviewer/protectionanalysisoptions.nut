@@ -1,5 +1,4 @@
-local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-local enums = require("sqStdLibs/helpers/enums.nut")
+local enums = ::require("sqStdlibs/helpers/enums.nut")
 local stdMath = require("std/math.nut")
 local { WEAPON_TYPE,
         getLinkedGunIdx,
@@ -327,7 +326,7 @@ options.addTypes({
         foreach (block in (unitBlk.weapon_presets % "preset"))
         {
           local presetName = block.name
-          local presetBlk = blkFromPath(block.blk)
+          local presetBlk = ::DataBlock(block.blk)
           foreach (weap in (presetBlk % "Weapon"))
           {
             if (!weap?.blk || weap?.dummy || ::isInArray(weap.blk, knownWeapBlkArray))
@@ -335,7 +334,7 @@ options.addTypes({
             knownWeapBlkArray.append(weap.blk)
 
             local weaponBlkPath = weap.blk
-            local weaponBlk = blkFromPath(weaponBlkPath)
+            local weaponBlk = ::DataBlock(weaponBlkPath)
             local bulletBlk = null
             foreach (t in specialBulletTypes)
               bulletBlk = bulletBlk ?? weaponBlk?[t]

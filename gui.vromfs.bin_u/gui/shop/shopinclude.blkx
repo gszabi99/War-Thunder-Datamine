@@ -7,7 +7,6 @@
         "class": "header",
         "withImages": "yes",
         "activeAccesskeys": "RS",
-        "move-only-hover": "yes",
         "on_select": "onAircraftsPage"
       },
       "textareaNoTab": {
@@ -99,15 +98,21 @@
                 "height": "ph",
                 "flow": "vertical"
               },
-              "shopTable": {
+              "table": {
                 "id": "shop_items_list",
-                "behavior": "posNavigator",
+                "class": "shopTable",
+                "focus": "yes",
+                "behavior": "columnNavigator",
+                "cur_col": "0",
+                "cur_row": "0",
+                "fixed_row": "0",
                 "navigatorShortcuts": "yes",
                 "alwaysShowBorder": "yes",
-                "moveY": "linear",
                 "on_click": "onAircraftClick",
-                "on_activate": "onAircraftClick",
-                "on_select": "onUnitSelect"
+                "_on_dbl_click": "onDoubleClick",
+                "on_select": "onUnitSelect",
+                "on_wrap_up": "onWrapUp",
+                "on_wrap_down": "onWrapDown"
               }
             }
           },

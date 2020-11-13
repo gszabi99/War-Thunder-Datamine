@@ -8,7 +8,7 @@ const ROOM_LIST_TIME_OUT = 180000
 const MAX_SESSIONS_LIST_LEN = 1000
 const SKIRMISH_ROOMS_LIST_ID = "skirmish"
 
-::MRoomsList <- class
+class MRoomsList
 {
   id = ""
   roomsList = null

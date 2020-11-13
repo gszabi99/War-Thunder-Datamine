@@ -425,18 +425,8 @@ UnlockConditions.loadParamsConditions <- function loadParamsConditions(blk)
   if ((blk?.country ?? "") != "")
     res.append(_createCondition("country", blk.country))
 
-  if (blk?.unitClass != null) {
-    local cond = blk % "unitClass"
-    if (blk?.type == "char_crew_level_float" || blk?.type == "char_crew_level_count_float") {
-      local shipCondIdx = cond.indexof("ship")
-      if (shipCondIdx != null) {
-        cond.remove(shipCondIdx)
-        cond.append("ship_and_boat")
-      }
-    }
-
-    res.append(_createCondition("unitClass", cond))
-  }
+  if (blk?.unitClass != null)
+    res.append(_createCondition("unitClass", blk.unitClass))
 
   if (blk?.type == "maxUnitsRankOnStartMission") //2 params conditions instead of 1 base
   {
@@ -480,13 +470,16 @@ UnlockConditions.loadCondition <- function loadCondition(blk, unlockMode)
   }
   else if (t == "gameModeInfoString")
   {
+    res.values = [blk?.value]
     res.name <- blk?.name
-    res.values = (blk % "value")
-
-    if (blk?.locParamName)
+    if ("locParamName" in blk)
+    {
       res.locParamName <- blk.locParamName
-    if (blk?.locValuePrefix)
-      res.locValuePrefix <- blk.locValuePrefix
+    }
+    if ("locParamValue" in blk)
+    {
+      res.locParamValue <- blk.locParamValue
+    }
   }
   else if (t == "eventMode")
   {
@@ -736,8 +729,9 @@ UnlockConditions.getConditionsText <- function getConditionsText(conditions, cur
         continue
 
       foreach (condCustomData in customData)
-        foreach (descText in condCustomData.descText)
-          addTextToCondTextList(condTextsList, group, descText, condCustomData.groupText)
+      {
+        addTextToCondTextList(condTextsList, group, getTblValue("descText", condCustomData), getTblValue("groupText", condCustomData))
+      }
     }
   }
 
@@ -936,23 +930,6 @@ UnlockConditions._addUsualConditionsText <- function _addUsualConditionsText(gro
 
   if (typeof values != "array")
     values = [values]
-
-  local boatCondIdx = values.indexof("boat")
-  local shipCondIdx = values.indexof("ship")
-  if (boatCondIdx != null && shipCondIdx != null) {
-    values.remove(boatCondIdx)
-    values.remove(shipCondIdx)
-    values.append("ship_and_boat")
-  }
-  else if (boatCondIdx == null && shipCondIdx != null) {
-    values.remove(shipCondIdx)
-    values.append("ship_only")
-  }
-  else if (boatCondIdx != null && shipCondIdx == null) {
-    values.remove(boatCondIdx)
-    values.append("boat_only")
-  }
-
   foreach (v in values)
   {
     if (cType == "playerUnit" || cType=="targetUnit" || cType == "crewsUnit" || cType=="unitExists" ||
@@ -1000,7 +977,7 @@ UnlockConditions._addCustomConditionsTextData <- function _addCustomConditionsTe
 {
   local cType = condition.type
   local group = ""
-  local desc = []
+  local desc = ""
 
   local res = {
     groupText = ""
@@ -1015,13 +992,27 @@ UnlockConditions._addCustomConditionsTextData <- function _addCustomConditionsTe
   if (typeof values != "array")
     values = [values]
 
-  foreach (v in values) {
-    if (cType == "gameModeInfoString") {
-      group = condition?.locParamName ? ::loc(condition.locParamName)
-                                      : ::loc($"conditions/gameModeInfoString/{condition.name}")
+  foreach (v in values)
+  {
+    if (cType == "gameModeInfoString")
+    {
+      if ("locParamName" in condition)
+      {
+        group = ::loc(condition.locParamName)
+      }
+      else
+      {
+        group = ::loc("conditions/gameModeInfoString/" + condition.name)
+      }
 
-      local locValuePrefix = condition?.locValuePrefix ?? "conditions/gameModeInfoString/"
-      desc.append(::loc($"{locValuePrefix}{v}"))
+      if ("locParamValue" in condition)
+      {
+        desc += ::loc(condition.locParamValue)
+      }
+      else
+      {
+        desc += ::loc("conditions/gameModeInfoString/" + v)
+      }
     }
   }
 

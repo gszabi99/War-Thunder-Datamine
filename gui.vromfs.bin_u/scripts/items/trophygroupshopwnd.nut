@@ -25,6 +25,7 @@ class ::gui_handlers.TrophyGroupShopWnd extends ::gui_handlers.BaseGuiHandlerWT
   {
     updateTrophyInfo()
     updateContent()
+    initFocusArray()
   }
 
   function updateContent()
@@ -32,6 +33,7 @@ class ::gui_handlers.TrophyGroupShopWnd extends ::gui_handlers.BaseGuiHandlerWT
     fillTrophiesList()
     setDescription()
     updateHeader()
+    setNextItemInFocus()
   }
 
   function setDescription()
@@ -41,7 +43,6 @@ class ::gui_handlers.TrophyGroupShopWnd extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     guiScene.replaceContent(obj, "gui/items/itemDesc.blk", this)
-    obj.scrollToView(true)
     ::ItemsManager.fillItemDescr(trophy, obj, this)
   }
 
@@ -148,9 +149,39 @@ class ::gui_handlers.TrophyGroupShopWnd extends ::gui_handlers.BaseGuiHandlerWT
     guiScene.replaceContentFromText(scene.findObject("root-box"), data, data.len(), this)
   }
 
+  function getBestFocusValue()
+  {
+    local obj = getMainFocusObj()
+    local total = obj.childrenCount()
+    local startIdx = ::max(focusIdx, 0)
+    for (local i = startIdx; i < startIdx + total; i++)
+    {
+      local index = i % total
+      if (!isTrophyPurchased(index))
+        return index
+    }
+
+    return 0
+  }
+
+  function setNextItemInFocus()
+  {
+    local obj = getMainFocusObj()
+    if (!::checkObj(obj))
+      return
+
+    local bestVal = getBestFocusValue()
+    obj.setValue(bestVal)
+  }
+
   function isTrophyPurchased(value)
   {
     return stdMath.is_bit_set(bitMask, value)
+  }
+
+  function getMainFocusObj()
+  {
+    return scene.findObject("items_list")
   }
 
   function onItemAction(obj)
@@ -159,7 +190,11 @@ class ::gui_handlers.TrophyGroupShopWnd extends ::gui_handlers.BaseGuiHandlerWT
       doAction(obj.holderId.tointeger())
   }
 
-  onSelectedItemAction = @() doAction(scene.findObject("items_list").getValue())
+  function onSelectedItemAction()
+  {
+    local value = getMainFocusObj().getValue()
+    doAction(value)
+  }
 
   function doAction(index)
   {

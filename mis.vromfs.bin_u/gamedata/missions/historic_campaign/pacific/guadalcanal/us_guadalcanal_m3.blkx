@@ -2,6 +2,10 @@
   "selected_tag": "pacific",
   "bin_dump_file": "",
   "mission_settings": {
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 30.0
+    },
     "player": {
       "army": 1,
       "wing": "armada_01"
@@ -14,13 +18,11 @@
       "environment": "Day",
       "weather": "hazy",
       "isOnline": true,
+      "restoreType": "tactical control",
       "level": "levels/guadalcanal.bin",
       "type": "campaign",
-      "windDirection": [1.0,0.0,0.0],
-      "restoreType": "tactical control",
       "optionalTakeOff": false,
-      "forceSkiesInitialRandomSeed": true,
-      "skiesInitialRandomSeed": 6,
+      "windDirection": [1.0,0.0,0.0],
       "windSpeed": [7.0,7.0],
       "windDirectionDeg": [180.0,180.0],
       "stars": {
@@ -32,31 +34,44 @@
         "localTime": 10.0
       },
       "customWeather": {
+        "scatteringEffect": 0.0,
+        "cloud_shadow_intensity": 0.7,
         "windDir": [0.6,0.8],
         "wind_scale": 1.0,
         "max_wind_strength": 6.0,
         "sky": {
-          "mie_height": 0.5
+          "mie_height": 0.5,
+          "mieG": 0.5,
+          "betaMScale": 0.5,
+          "clouds_overcast": 0.5
+        },
+        "clouds_gen": {
+          "humidity": 0.15,
+          "persistence": 0.2,
+          "asymmetry": 0.3
+        },
+        "clouds_position": {
+          "start_altitude": 1.5,
+          "thickness": 4.5,
+          "light_extinction": 1.2,
+          "amb_extinction_mul": 1.0
+        },
+        "clouds_render": {
+          "silver_lining": 0.5,
+          "sun_light": 0.7,
+          "ambient": 0.5,
+          "silver_lining_eccentricity": 0.6
         },
         "strata_clouds": {
           "amount": 1.0,
           "altitude": 10.0
         },
-        "clouds_weather_gen": {
-          "cumulonimbusCoverage": 0.23,
-          "cumulonimbusSeed": 18.31
-        },
-        "clouds_form": {
-          "cumulonimbusShapeScale": 5,
-          "turbulenceFreq": 3
+        "rain": {
+          "rainFromInvisibleClouds": false,
+          "probability": 0.0
         }
       }
     },
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 30.0
-    },
-    "spectator_points": [],
     "cover_points": [
       {
         "coverPoint": "us_cover01"
@@ -83,6 +98,7 @@
         "coverPoint": "us_cover08"
       }
     ],
+    "spectator_points": [],
     "briefing": [
       {
         "place_loc": "mb/us_guadalcanal_m3/place"
@@ -1107,9 +1123,7 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "guadal_us3_mo1_takeoff",
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "target": "guadal_us3_mo1_takeoff"
           }
         },
         {
@@ -1379,9 +1393,7 @@
         {
           "moSetObjectiveStatus": {
             "target": "guadal_us3_mo1_takeoff",
-            "status": 2,
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "status": 2
           }
         },
         {
@@ -1407,9 +1419,7 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "guadal_us3_mo2_groundAttack",
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "target": "guadal_us3_mo2_groundAttack"
           }
         },
         {
@@ -1596,8 +1606,6 @@
           "target_marking": 0,
           "waypointReachedDist": 10.0,
           "recalculatePathDist": -1.0,
-          "fastClimb": false,
-          "destTimeMode": false,
           "object": "us_bombers01"
         }
       },
@@ -1666,6 +1674,9 @@
             "object_var_comp_op": "equal"
           },
           {
+            "object_var_value": 0
+          },
+          {
             "object": "jpn_12mm_sq"
           },
           {
@@ -1673,9 +1684,6 @@
           },
           {
             "killedByObject": "armada_01"
-          },
-          {
-            "object_var_value": 0
           }
         ]
       },
@@ -1755,6 +1763,9 @@
             "object_var_comp_op": "equal"
           },
           {
+            "object_var_value": 0
+          },
+          {
             "object": "jpn_12mm_sq"
           },
           {
@@ -1762,9 +1773,6 @@
           },
           {
             "killedByObject": "armada_01"
-          },
-          {
-            "object_var_value": 0
           }
         ]
       },
@@ -1844,6 +1852,9 @@
             "object_var_comp_op": "equal"
           },
           {
+            "object_var_value": 0
+          },
+          {
             "object": "jpn_12mm_sq"
           },
           {
@@ -1851,9 +1862,6 @@
           },
           {
             "killedByObject": "armada_01"
-          },
-          {
-            "object_var_value": 0
           }
         ]
       },
@@ -1927,13 +1935,13 @@
             "object_var_comp_op": "equal"
           },
           {
+            "object_var_value": 0
+          },
+          {
             "object": "jpn_12mm_sq"
           },
           {
             "object": "jpn_37mm_sq"
-          },
-          {
-            "object_var_value": 0
           }
         ]
       },
@@ -1976,9 +1984,7 @@
         {
           "moSetObjectiveStatus": {
             "target": "guadal_us3_mo2_groundAttack",
-            "status": 2,
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "status": 2
           }
         },
         {
@@ -2008,9 +2014,7 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "guadal_us3_mo3_landing",
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "target": "guadal_us3_mo3_landing"
           }
         },
         {
@@ -2190,9 +2194,7 @@
         {
           "moSetObjectiveStatus": {
             "target": "guadal_us3_mo3_landing",
-            "status": 2,
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "status": 2
           }
         },
         {
@@ -2256,8 +2258,6 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "jpn_fighters",
             "speed": 250.0
           }
@@ -2278,8 +2278,6 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "jpn_bombers01",
             "speed": 250.0
           }
@@ -2288,7 +2286,6 @@
           "unitRestore": {
             "ressurectIfDead": true,
             "fullRestore": true,
-            "target_marking": 0,
             "target": "armada_01"
           }
         },
@@ -2308,8 +2305,6 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "armada_01",
             "move_type": "teleport",
             "lookat": "lookAt",
@@ -2570,8 +2565,6 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "cut_us_fighters",
             "move_type": "teleport",
             "lookat": "lookAt",
@@ -2618,8 +2611,6 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "cut_us_fighters"
           }
         },
@@ -2759,7 +2750,6 @@
           "unitRestore": {
             "ressurectIfDead": false,
             "fullRestore": true,
-            "target_marking": 0,
             "target": "armada_01",
             "ammoRestore": true
           }
@@ -2785,8 +2775,6 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "us_fighters01",
             "move_type": "teleport",
             "lookat": "lookAt",
@@ -2849,9 +2837,7 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "guadal_us3_mo4_bomberAttack",
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "target": "guadal_us3_mo4_bomberAttack"
           }
         },
         {
@@ -2929,6 +2915,9 @@
             "object_var_comp_op": "equal"
           },
           {
+            "object_var_value": 0
+          },
+          {
             "object": "armada_01"
           },
           {
@@ -2936,9 +2925,6 @@
           },
           {
             "target": "jpn_bombers01"
-          },
-          {
-            "object_var_value": 0
           }
         ]
       },
@@ -3002,9 +2988,9 @@
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "jpn_bombers01",
-          "target": "lunga_point",
-          "object_var_value": 0
+          "target": "lunga_point"
         }
       },
       "actions": {
@@ -3023,8 +3009,6 @@
           "target_marking": 0,
           "waypointReachedDist": 10.0,
           "recalculatePathDist": -1.0,
-          "fastClimb": false,
-          "destTimeMode": false,
           "object": "jpn_bombers01"
         },
         "unitAttackTarget": {
@@ -3069,8 +3053,8 @@
             "value": 1,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object": "jpn_bombers01",
-            "object_var_value": 0
+            "object_var_value": 0,
+            "object": "jpn_bombers01"
           }
         },
         {
@@ -3081,8 +3065,8 @@
             "value": 2,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object": "jpn_bombers01",
-            "object_var_value": 0
+            "object_var_value": 0,
+            "object": "jpn_bombers01"
           }
         }
       ],
@@ -3120,8 +3104,8 @@
           "value": 2,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object": "jpn_bombers01",
-          "object_var_value": 0
+          "object_var_value": 0,
+          "object": "jpn_bombers01"
         },
         "unitDistanceBetween": {
           "value": 7000.0,
@@ -3134,9 +3118,9 @@
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "jpn_bombers01",
-          "target": "lunga_point3000",
-          "object_var_value": 0
+          "target": "lunga_point3000"
         }
       },
       "actions": {
@@ -3170,8 +3154,8 @@
           "value": 1,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object": "jpn_bombers01",
           "object_var_value": 0,
+          "object": "jpn_bombers01",
           "var": "player_kill_count"
         }
       },
@@ -3221,9 +3205,7 @@
         {
           "moSetObjectiveStatus": {
             "target": "guadal_us3_mo4_bomberAttack",
-            "status": 2,
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "status": 2
           }
         },
         {
@@ -3296,8 +3278,6 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "cut_us_fighters",
             "move_type": "teleport",
             "lookat": "fighters_lookat_cut",
@@ -3413,7 +3393,6 @@
           "unitRestore": {
             "ressurectIfDead": true,
             "fullRestore": true,
-            "target_marking": 0,
             "target": "player_sq"
           }
         },
@@ -3448,8 +3427,6 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "g4m1_cut"
           }
         },
@@ -3623,8 +3600,6 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "cut_us_fighters",
             "move_type": "teleport",
             "lookat": "fighters_lookat_cut",
@@ -3671,8 +3646,6 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "cut_us_fighters"
           }
         },
@@ -3845,9 +3818,9 @@
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "jpn_bombers01",
-            "target": "lunga_point3000",
-            "object_var_value": 0
+            "target": "lunga_point3000"
           }
         },
         {
@@ -3858,8 +3831,8 @@
             "value": 3,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object": "jpn_bombers01",
-            "object_var_value": 0
+            "object_var_value": 0,
+            "object": "jpn_bombers01"
           }
         },
         {
@@ -3870,8 +3843,8 @@
             "value": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object": "jpn_bombers01",
-            "object_var_value": 0
+            "object_var_value": 0,
+            "object": "jpn_bombers01"
           }
         }
       ],
@@ -3952,8 +3925,8 @@
           "value": 1,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object": "jpn_bombers01",
-          "object_var_value": 0
+          "object_var_value": 0,
+          "object": "jpn_bombers01"
         }
       },
       "actions": {
@@ -4034,8 +4007,6 @@
           "target_marking": 0,
           "waypointReachedDist": 10.0,
           "recalculatePathDist": -1.0,
-          "fastClimb": false,
-          "destTimeMode": false,
           "object": "armada_01",
           "move_type": "teleport",
           "lookat": "fighters_spawn_lookAt",
@@ -4349,7 +4320,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -4385,9 +4355,6 @@
           [-2325.85,51.1188,-13797.9]
         ],
         "props": [
-          {
-            "object_marking": 0
-          },
           {
             "squad_members": "us_12mm_01"
           },
@@ -4425,9 +4392,6 @@
           [-3365.2,48.1565,-13226.7]
         ],
         "props": [
-          {
-            "object_marking": 0
-          },
           {
             "squad_members": "jpn_12mm_01"
           },
@@ -4471,7 +4435,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -4518,7 +4481,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -4566,7 +4528,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4602,7 +4563,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4638,7 +4598,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4674,7 +4633,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4710,7 +4668,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4746,7 +4703,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4782,7 +4738,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4818,7 +4773,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4854,7 +4808,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4890,7 +4843,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4926,7 +4878,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4950,9 +4901,6 @@
           [3597.0,99.25,-12382.2]
         ],
         "props": [
-          {
-            "object_marking": 0
-          },
           {
             "squad_members": "art_target01"
           },
@@ -5011,15 +4959,10 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
-          "count": 10,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1]
+          "count": 10
         },
         "way": {
           "us_inf01_wp_01": {
@@ -5127,15 +5070,10 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
           "count": 20,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
           "dontUseCovers": true,
           "alwaysRun": true,
           "distributionRadius": 30.0,
@@ -5183,7 +5121,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5284,7 +5221,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5401,7 +5337,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5454,7 +5389,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5507,7 +5441,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5656,7 +5589,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5692,7 +5624,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5728,7 +5659,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5764,7 +5694,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5800,7 +5729,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5836,7 +5764,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5872,7 +5799,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5908,7 +5834,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5944,7 +5869,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5980,7 +5904,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6016,7 +5939,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6052,7 +5974,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6088,7 +6009,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6124,7 +6044,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6160,7 +6079,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6184,9 +6102,6 @@
           [-2509.8,35.4486,-13944.0]
         ],
         "props": [
-          {
-            "object_marking": 0
-          },
           {
             "squad_members": "us_inf01"
           },
@@ -6212,9 +6127,6 @@
           [-2386.8,36.269,-13862.0]
         ],
         "props": [
-          {
-            "object_marking": 0
-          },
           {
             "squad_members": "us_37mm_01"
           },
@@ -6249,15 +6161,10 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
-          "count": 10,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1]
+          "count": 10
         },
         "way": []
       }
@@ -6284,15 +6191,10 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
-          "count": 10,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1]
+          "count": 10
         },
         "way": {
           "us_inf03_wp_01": {
@@ -6384,15 +6286,10 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
-          "count": 10,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1]
+          "count": 10
         },
         "way": {
           "us_inf04_wp_01": {
@@ -6489,9 +6386,6 @@
         ],
         "props": [
           {
-            "object_marking": 0
-          },
-          {
             "squad_members": "us_tank01"
           },
           {
@@ -6519,9 +6413,6 @@
           [-2598.1,43.4424,-13972.0]
         ],
         "props": [
-          {
-            "object_marking": 0
-          },
           {
             "squad_members": "us_tank_sq"
           },
@@ -6559,15 +6450,10 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
           "count": 10,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
           "dontUseCovers": true,
           "alwaysRun": true,
           "distributionRadius": 30.0,
@@ -6615,15 +6501,10 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
           "count": 20,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
           "dontUseCovers": true,
           "alwaysRun": true,
           "distributionRadius": 30.0,
@@ -6671,15 +6552,10 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
           "count": 20,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
           "dontUseCovers": true,
           "distributionRadius": 30.0,
           "skin": "japan"
@@ -6742,15 +6618,10 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
           "count": 20,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
           "dontUseCovers": true,
           "alwaysRun": true,
           "distributionRadius": 30.0,
@@ -6798,15 +6669,10 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
           "count": 10,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
           "dontUseCovers": true,
           "alwaysRun": true,
           "distributionRadius": 30.0,
@@ -6843,9 +6709,6 @@
         ],
         "props": [
           {
-            "object_marking": 0
-          },
-          {
             "squad_members": "jpn_37mm_01"
           },
           {
@@ -6876,9 +6739,6 @@
           [-3485.1,40.9365,-13163.6]
         ],
         "props": [
-          {
-            "object_marking": 0
-          },
           {
             "squad_members": "jpn_tank01"
           },
@@ -6929,9 +6789,6 @@
         ],
         "props": [
           {
-            "object_marking": 0
-          },
-          {
             "squad_members": "jpn_inf01"
           },
           {
@@ -6981,9 +6838,6 @@
         ],
         "props": [
           {
-            "object_marking": 0
-          },
-          {
             "squad_members": "jpn_tanks_sq"
           },
           {
@@ -7020,7 +6874,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7056,7 +6909,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7092,7 +6944,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7128,7 +6979,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7164,7 +7014,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7200,7 +7049,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -7247,7 +7095,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -7295,7 +7142,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7331,7 +7177,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7367,7 +7212,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7391,9 +7235,6 @@
           [-2990.8,32.35,-13801.3]
         ],
         "props": [
-          {
-            "object_marking": 0
-          },
           {
             "squad_members": "tank_fake01"
           },
@@ -7440,7 +7281,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7476,7 +7316,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7512,7 +7351,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7548,7 +7386,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7584,7 +7421,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7620,7 +7456,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7656,7 +7491,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7692,7 +7526,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7728,7 +7561,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7764,7 +7596,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7800,7 +7631,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7836,7 +7666,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7872,7 +7701,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7908,7 +7736,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7944,7 +7771,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7980,7 +7806,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -8161,7 +7986,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -8197,7 +8021,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -8233,15 +8056,10 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
-          "count": 5,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1]
+          "count": 5
         },
         "way": {
           "infantry_01_wp_01": {
@@ -8317,15 +8135,10 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
-          "count": 3,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1]
+          "count": 3
         },
         "way": []
       }
@@ -8352,15 +8165,10 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
-          "count": 3,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1]
+          "count": 3
         },
         "way": []
       }
@@ -8387,7 +8195,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -8423,7 +8230,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -8684,7 +8490,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -8720,7 +8525,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -8756,7 +8560,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -8792,7 +8595,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -8828,7 +8630,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -8864,7 +8665,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -8900,7 +8700,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -8936,7 +8735,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -8972,7 +8770,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -9008,7 +8805,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -9044,7 +8840,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -9068,7 +8863,6 @@
           [4905.65,0.0,-9608.65]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": "armada_01",
           "object_type": "isPlayer"
         }
@@ -9084,9 +8878,6 @@
           [-4306.05,45.15,-12912.9]
         ],
         "props": [
-          {
-            "object_marking": 0
-          },
           {
             "squad_members": "cut_jpn_inf_01"
           },
@@ -9136,7 +8927,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -9189,7 +8979,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -9242,7 +9031,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -9295,7 +9083,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -9348,7 +9135,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -9401,15 +9187,10 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
           "count": 30,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
           "skin": "japan"
         },
         "way": {
@@ -9454,15 +9235,10 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
           "count": 30,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
           "skin": "japan"
         },
         "way": {
@@ -9507,15 +9283,10 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
           "count": 30,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
           "skin": "japan"
         },
         "way": {
@@ -9560,15 +9331,10 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
           "count": 30,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
           "skin": "japan"
         },
         "way": {
@@ -9601,9 +9367,6 @@
           [-4317.1,56.95,-13013.3]
         ],
         "props": [
-          {
-            "object_marking": 0
-          },
           {
             "squad_members": "cut_jpn_tank_01"
           },
@@ -9659,7 +9422,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -9712,7 +9474,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -9765,7 +9526,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -9818,7 +9578,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -9871,7 +9630,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -9924,15 +9682,10 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
           "count": 30,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
           "skin": "japan"
         },
         "way": {
@@ -9977,15 +9730,10 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
           "count": 30,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
           "skin": "japan"
         },
         "way": {
@@ -10030,15 +9778,10 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
           "count": 10,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
           "skin": "japan"
         },
         "way": {
@@ -10083,7 +9826,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -10120,9 +9862,6 @@
         ],
         "props": [
           {
-            "object_marking": 0
-          },
-          {
             "squad_members": "jpn_bombers01"
           },
           {
@@ -10153,7 +9892,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -10201,7 +9939,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -10249,7 +9986,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -10286,7 +10022,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -10323,7 +10058,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -10360,7 +10094,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -10429,7 +10162,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -10482,7 +10214,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -10567,7 +10298,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -10636,7 +10366,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -10672,7 +10401,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -10725,15 +10453,10 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
           "count": 10,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
           "dontUseCovers": true,
           "alwaysRun": true,
           "distributionRadius": 30.0,
@@ -10781,15 +10504,10 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
           "count": 20,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
           "dontUseCovers": true,
           "alwaysRun": true,
           "distributionRadius": 30.0,
@@ -10837,15 +10555,10 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
           "count": 5,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
           "dontUseCovers": true,
           "alwaysRun": true,
           "distributionRadius": 30.0,
@@ -10876,15 +10589,10 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
           "count": 5,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
           "dontUseCovers": true,
           "distributionRadius": 30.0,
           "skin": "japan"
@@ -10914,15 +10622,10 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
           "count": 5,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
           "dontUseCovers": true,
           "alwaysRun": true,
           "distributionRadius": 30.0,
@@ -10953,15 +10656,10 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
           "count": 5,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
           "dontUseCovers": true,
           "distributionRadius": 30.0,
           "skin": "japan"
@@ -10991,7 +10689,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -11092,15 +10789,10 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
-          "count": 3,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1]
+          "count": 3
         },
         "way": []
       }
@@ -11127,15 +10819,10 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
-          "count": 3,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1]
+          "count": 3
         },
         "way": []
       }
@@ -11162,7 +10849,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -11198,7 +10884,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -11283,7 +10968,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -11319,7 +11003,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -11343,9 +11026,6 @@
           [3393.75,17.5,-13304.6]
         ],
         "props": [
-          {
-            "object_marking": 0
-          },
           {
             "squad_members": "vehicles_fake01"
           },

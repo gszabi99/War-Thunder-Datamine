@@ -1,4 +1,4 @@
-local playerContextMenu = require("scripts/user/playerContextMenu.nut")
+local playerContextMenu = ::require("scripts/user/playerContextMenu.nut")
 
 class ::gui_handlers.WwSquadList extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -10,6 +10,8 @@ class ::gui_handlers.WwSquadList extends ::gui_handlers.BaseGuiHandlerWT
   remainUnits = null
   squadListObj = null
 
+  onWrapUpCb = null
+  onWrapDownCb = null
   isFirstSquadInfoUpdate = true
 
   function getSceneTplView()
@@ -104,6 +106,9 @@ class ::gui_handlers.WwSquadList extends ::gui_handlers.BaseGuiHandlerWT
     updateSquadInfoPanel()
   }
 
+  onWrapUp   = @(obj) onWrapUpCb?(obj)
+  onWrapDown = @(obj) onWrapDownCb?(obj)
+
   function onMemberRClick()
   {
     local curMemberIdx = squadListObj.getValue()
@@ -125,7 +130,9 @@ class ::gui_handlers.WwSquadList extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateButtons(needShowList) {
     showSceneBtn("member_menu_open", needShowList)
-    if (needShowList)
-      ::move_mouse_on_child_by_value(squadListObj)
+    if (needShowList && squadListObj.childrenCount() > 0)
+      squadListObj.select()
+    else if (needShowList)
+      restoreFocus()
   }
 }

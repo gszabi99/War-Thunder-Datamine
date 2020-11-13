@@ -1,8 +1,7 @@
 {
   "root": {
     "type": "big",
-    "blur": [],
-    "blur_foreground": [],
+    "background-color": "@modalShadeColor",
     "frame": {
       "width": "@srw-2*@scrn_tgt/100.0",
       "pos": "50%pw-50%w, 1@minYposWindow",
@@ -135,13 +134,18 @@
             "pos": "50%pw-50%w, 0",
             "position": "relative",
             "id": "axis_setup_table",
-            "behavior": "PosOptionsNavigator",
-            "disableFixedCoord": "yes",
+            "behavior": "OptionsNavigator",
             "dontUseAxisShortcuts": "yes",
+            "selfFocusBorder": "yes",
             "on_dbl_click": "onTblDblClick",
             "on_click": "onTblSelect",
+            "on_wrap_up": "onWrapUp",
+            "on_wrap_down": "onWrapDown",
             "class": "optionsTable",
-            "baseRow": "yes"
+            "baseRow": "yes",
+            "cur_col": "0",
+            "cur_row": "0",
+            "num_rows": "-1"
           }
         }
       },
@@ -179,7 +183,7 @@
         "navRight": [
           {
             "Button_text": {
-              "id": "btn_reset_shortcut",
+              "id": "btn_axis_reset_shortcut",
               "changeButtonStyleDependingOnPlatformTo": "image",
               "display": "hide",
               "text": "#mainmenu/btnResetButton",
@@ -194,7 +198,7 @@
           },
           {
             "Button_text": {
-              "id": "btn_assign",
+              "id": "btn_axis_assign",
               "text": "#mainmenu/btnAssign",
               "btnName": "A",
               "on_click": "callAssignButton",
@@ -491,6 +495,27 @@
                             "gcButtonsInterval": "yes"
                           },
                           {
+                            "behaviour": "wrapNavigator"
+                          },
+                          {
+                            "navigatorShortcuts": "yes"
+                          },
+                          {
+                            "childsActivate": "yes"
+                          },
+                          {
+                            "on_wrap_up": "onWrapUp"
+                          },
+                          {
+                            "on_wrap_down": "onWrapDown"
+                          },
+                          {
+                            "on_wrap_left": "onTopGCPanelLeft"
+                          },
+                          {
+                            "on_wrap_right": "onTopGCPanelRight"
+                          },
+                          {
                             "Button_text": {
                               "id": "gc_clanTag",
                               "tooltip": "#mainmenu/btnClanCard",
@@ -581,6 +606,27 @@
                         },
                         {
                           "gcButtonsInterval": "yes"
+                        },
+                        {
+                          "behaviour": "wrapNavigator"
+                        },
+                        {
+                          "navigatorShortcuts": "yes"
+                        },
+                        {
+                          "childsActivate": "yes"
+                        },
+                        {
+                          "on_wrap_up": "onWrapUp"
+                        },
+                        {
+                          "on_wrap_down": "onWrapDown"
+                        },
+                        {
+                          "on_wrap_left": "onTopGCPanelLeft"
+                        },
+                        {
+                          "on_wrap_right": "onTopGCPanelRight"
                         },
                         {
                           "Button_text": [
@@ -796,6 +842,9 @@
               "shadowSafeArea": []
             },
             {
+              "line": []
+            },
+            {
               "tdiv": {
                 "size": "pw, 0.02@sf",
                 "pos": "0, ph",
@@ -836,7 +885,7 @@
                       "id": "slotbar-presetsPlace",
                       "size": "pw, ph",
                       "position": "absolute",
-                      "display": "hide"
+                      "pos": "1@dp, 0"
                     }
                   }
                 },
@@ -893,7 +942,14 @@
                     "position": "relative",
                     "top": "0.5(ph-h)",
                     "margin-right": "2@buttonTextPadding",
-                    "class": "header"
+                    "class": "header",
+                    "behaviour": "wrapNavigator",
+                    "navigatorShortcuts": "yes",
+                    "childsActivate": "yes",
+                    "on_wrap_up": "onWrapUp",
+                    "on_wrap_down": "onWrapDown",
+                    "on_wrap_left": "onWrapLeft",
+                    "on_wrap_right": "onWrapRight"
                   }
                 },
                 {
@@ -909,6 +965,27 @@
                     },
                     {
                       "class": "header"
+                    },
+                    {
+                      "behaviour": "wrapNavigator"
+                    },
+                    {
+                      "navigatorShortcuts": "yes"
+                    },
+                    {
+                      "childsActivate": "yes"
+                    },
+                    {
+                      "on_wrap_up": "onWrapUp"
+                    },
+                    {
+                      "on_wrap_down": "onWrapDown"
+                    },
+                    {
+                      "on_wrap_left": "onBottomGCPanelLeft"
+                    },
+                    {
+                      "on_wrap_right": "onBottomGCPanelRight"
                     },
                     {
                       "Button_text": [

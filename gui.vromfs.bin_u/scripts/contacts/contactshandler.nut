@@ -1,5 +1,5 @@
 local { clearBorderSymbols } = require("std/string.nut")
-local playerContextMenu = require("scripts/user/playerContextMenu.nut")
+local playerContextMenu = ::require("scripts/user/playerContextMenu.nut")
 local platformModule = require("scripts/clientState/platform.nut")
 local crossplayModule = require("scripts/social/crossplay.nut")
 local { topMenuBorders } = require("scripts/mainmenu/topMenuStates.nut")
@@ -17,6 +17,13 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_FULL
 
+  isPrimaryFocus = false
+  focusArray = [
+    "search_edit_box"
+    function() { return getListFocusObj() }
+  ]
+  currentFocusItem = 0
+
   scene = null
   sceneChanged = true
   owner = null
@@ -26,7 +33,6 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   curGroup = ""
   curPlayer = null
-  curHoverObjId = null
 
   searchGroup = ::EPLX_SEARCH
   maxSearchPlayers = 20
@@ -76,14 +82,30 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::last_contacts_scene_show)
       return
 
+    local focusObj = getCurFocusObj(true)
     local mask = CtrlsInGui.CTRL_ALLOW_FULL
-    if (curHoverObjId != null)
+    if (::check_obj(focusObj))
       if (::show_console_buttons)
         mask = CtrlsInGui.CTRL_ALLOW_VEHICLE_FULL & ~CtrlsInGui.CTRL_ALLOW_VEHICLE_XINPUT
-      else if (curHoverObjId == "search_edit_box")
-        mask = CtrlsInGui.CTRL_ALLOW_VEHICLE_FULL & ~CtrlsInGui.CTRL_ALLOW_VEHICLE_KEYBOARD
+      else if (focusObj?.id == "search_edit_box")
+        mask =CtrlsInGui.CTRL_ALLOW_VEHICLE_FULL & ~CtrlsInGui.CTRL_ALLOW_VEHICLE_KEYBOARD
 
     switchControlsAllowMask(mask)
+  }
+
+  _lastMaskUpdateDelayedCall = 0
+  function updateControlsAllowMaskDelayed()
+  {
+    if (_lastMaskUpdateDelayedCall
+        && _lastMaskUpdateDelayedCall < ::dagor.getCurTime() + LOST_DELAYED_ACTION_MSEC)
+      return
+
+    _lastMaskUpdateDelayedCall = ::dagor.getCurTime()
+    ::handlersManager.doDelayed(::Callback(function()
+    {
+      _lastMaskUpdateDelayedCall = 0
+      updateControlsAllowMask()
+    }, this))
   }
 
   function switchScene(obj, newOwner = null, onlyShow = false)
@@ -117,6 +139,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
         local handler = ::contacts_prev_scenes[i].owner
         if (!handler.isSceneActiveNoModals() || !prevScene.isVisible())
           continue
+
         scene = ::contacts_prev_scenes[i].scene
         owner = handler
         guiScene = scene.getScene()
@@ -139,8 +162,15 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (show==null)
       show = !wasVisible
     if (!show)
+    {
       loadSizes()
-
+      if (wasVisible)
+      {
+        local focusObj = getCurFocusObj(true)
+        if (focusObj)
+          broadcastEvent("OutsideObjWrap", { obj = focusObj, dir = -1 })
+      }
+    }
     scene.show(show)
     scene.enable(show)
     ::last_contacts_scene_show = show
@@ -153,11 +183,10 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
         fillContactsList()
         closeSearchGroup()
       }
-      local cgObj = scene.findObject("contacts_groups")
-      ::move_mouse_on_child(cgObj, cgObj.getValue())
+      scene.findObject("contacts_groups").select()
     }
 
-    updateControlsAllowMask()
+    updateControlsAllowMaskDelayed()
   }
 
   function loadSizes()
@@ -250,7 +279,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     return listObj.childrenCount() != count
   }
 
-  needShowContactHoverButtons = @() !::show_console_buttons
+  needShowContactHoverButtons = @() !platformModule.isPlatformSony && !platformModule.isPlatformXboxOne
 
   function buildPlayersList(gName, showOffline=true)
   {
@@ -433,8 +462,8 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
       on_select:t='onPlayerSelect';
       on_dbl_click:t='%s';
       on_cancel_edit:t='onPlayerCancel';
-      on_hover:t='onContactsFocus';
-      on_unhover:t='onContactsFocus';
+      on_wrap_up:t='onPlayerWrapUp';
+      on_set_focus:t='onContactsFocus'
       contacts_group_list:t='yes';
     }
   }"
@@ -523,20 +552,31 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     applyContactFilter()
   }
 
-  function onContactsFocus(obj)
+  _lastFocusdelayedCall = 0
+  function onContactsFocus()
   {
-    local isValidCurScene = ::check_obj(scene)
-    if (!isValidCurScene) {
-      curHoverObjId = null
+    if (_lastFocusdelayedCall
+        && _lastFocusdelayedCall < ::dagor.getCurTime() + LOST_DELAYED_ACTION_MSEC)
       return
-    }
-    local newObjId = obj.isHovered() ? obj.id : null
-    if (curHoverObjId == newObjId)
-      return
-    curHoverObjId = newObjId
-    updateControlsAllowMask()
-    updateConsoleButtons()
-    setSearchAdviceVisibility(!::show_console_buttons && curHoverObjId == "search_edit_box")
+
+    _lastFocusdelayedCall = ::dagor.getCurTime()
+    ::handlersManager.doDelayed(::Callback(function()
+    {
+      _lastFocusdelayedCall = 0
+      if (!checkScene())
+        return
+
+      updateControlsAllowMask()
+      updateConsoleButtons()
+
+      local showAdvice = false
+      if (!::show_console_buttons)
+      {
+        local focusObj = getCurFocusObj(true)
+        showAdvice = focusObj?.id == "search_edit_box"
+      }
+      setSearchAdviceVisibility(showAdvice)
+    }, this))
   }
 
   function setSearchText(search_text, set_in_edit_box = true)
@@ -630,7 +670,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     guiScene.setUpdatesEnabled(true, true)
 
     gObj.setValue(selected[0])
-    onGroupSelectImpl(gObj)
+    onGroupSelect(gObj)
   }
 
   function updateContactsGroup(groupName)
@@ -688,30 +728,11 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     checkScene()
   }
 
-  function selectCurContactGroup() {
-    if (!checkScene())
-      return
-    local groupsObj = scene.findObject("contacts_groups")
-    local value = groupsObj.getValue()
-    if (value >= 0 && value < groupsObj.childrenCount())
-      ::move_mouse_on_child(groupsObj.getChild(value), 0) //header
-  }
-
-  function onGroupSelectImpl(obj)
-  {
-    selectItemInGroup(obj, false)
-    applyContactFilter()
-  }
-
-  prevGroup = -1
   function onGroupSelect(obj)
   {
-    onGroupSelectImpl(obj)
-    if (::show_console_buttons && prevGroup != obj.getValue()) {
-      guiScene.applyPendingChanges(false)
-      selectCurContactGroup()
-    }
-    prevGroup = obj.getValue()
+    if (!obj) return
+    selectItemInGroup(obj, false)
+    applyContactFilter()
   }
 
   function onGroupActivate(obj)
@@ -725,11 +746,43 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     goBack()
   }
 
-  onPlayerCancel = @(obj) selectCurContactGroup()
+  function onPlayerCancel(obj)
+  {
+    if (!checkScene())
+      return
+
+    scene.findObject("contacts_groups").select()
+  }
+
+  function getCurFocusObj(getOnlyFocused = false)
+  {
+    if (!checkScene() || scene.getModalCounter() != 0 || !scene.isVisible())
+      return null
+    local obj = findObjInFocusArray(true)
+    if (!obj && !getOnlyFocused)
+      obj = getFocusItemObj(currentFocusItem) || findObjInFocusArray(false)
+    return obj
+  }
 
   function onSearchButtonClick(obj)
   {
     doSearch()
+  }
+
+  function getListFocusObj(getOnlyFocused = false)
+  {
+    local listObj = scene.findObject("contacts_groups")
+    if (listObj.isFocused())
+      return listObj
+
+    local groupObj = scene.findObject("group_" + curGroup)
+    if (::checkObj(groupObj) && groupObj.isFocused())
+      return groupObj
+
+    local searchBox = scene.findObject("search_edit")
+    if (::checkObj(searchBox) && searchBox.isFocused())
+      return searchBox
+    return getOnlyFocused? null : listObj
   }
 
   function onBtnSelect(obj)
@@ -737,15 +790,22 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!checkScene())
       return
 
-    if (curHoverObjId == "contacts_groups")
+    local listObj = scene.findObject("contacts_groups")
+    if (listObj.isFocused())
       onGroupActivate(listObj)
-    else if (curHoverObjId == "search_edit_box")
-      doSearch()
     else
     {
-      local groupObj = scene.findObject("group_" + curGroup)
-      if (::checkObj(groupObj))
-        onPlayerMenu(groupObj)
+      local searchObject = getSearchObj()
+      if (searchObject.isFocused())
+      {
+        doSearch()
+      }
+      else
+      {
+        local groupObj = scene.findObject("group_" + curGroup)
+        if (::checkObj(groupObj))
+          onPlayerMenu(groupObj)
+      }
     }
   }
 
@@ -771,8 +831,31 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     onPlayerSelect(listObj)
     showSceneBtn("button_invite_friend", curGroup == ::EPL_FRIENDLIST)
 
-    if (switchFocus)
-      ::move_mouse_on_child(listObj, listObj.getValue())
+    if (!switchFocus)
+      return
+
+   listObj.select()
+  }
+
+  function onInsWrapDown(obj)
+  {
+    if (!checkScene())
+      return
+
+    local listObj = scene.findObject("contacts_groups").findObject("group_" + curGroup)
+    if (::checkObj(listObj) && listObj.childrenCount())
+      listObj.select()
+  }
+
+  function onPlayerWrapUp(obj)
+  {
+    if (!checkScene())
+      return
+
+    local groupObj = scene.findObject("contacts_groups").findObject("group_" + curGroup)
+    local editObj = ::checkObj(groupObj)? groupObj.findObject("search_edit") : null
+    if (::checkObj(editObj))
+      editObj.select()
   }
 
   function onPlayerSelect(obj)
@@ -784,6 +867,9 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
       curPlayer = ::contacts[curGroup][value]
     else
       curPlayer = null
+
+    if (needShowContactHoverButtons())
+      updateContactButtonsVisibility(curPlayer, scene)
   }
 
   function onPlayerMenu(obj)
@@ -874,15 +960,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function showCurPlayerRClickMenu(position = null)
   {
-    playerContextMenu.showMenu(curPlayer, this,
-      {
-        position = position
-        curContactGroup = curGroup
-        onClose = function() {
-          if (checkScene())
-            ::move_mouse_on_child_by_value(scene.findObject("group_" + curGroup))
-        }.bindenv(this)
-      })
+    playerContextMenu.showMenu(curPlayer, this, {position = position, curContactGroup = curGroup})
   }
 
   function isContactsWindowActive()
@@ -906,12 +984,20 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::show_console_buttons)
       return
 
-    local showSelectButton = curHoverObjId != null
-    local btn = showSceneBtn("btn_contactsSelect", showSelectButton)
+    local focusObj = getListFocusObj(true)
+    local showSelectButton = focusObj != null || getSearchObj().isFocused()
+
     if (showSelectButton)
-      btn.setValue(::loc(curHoverObjId == "contacts_groups" ? "contacts/chooseGroup"
-        : curHoverObjId == "search_edit_box" ? "contacts/search"
-        : "contacts/choosePlayer"))
+    {
+      local btnTextLocId = "contacts/choosePlayer"
+      if (focusObj?.id == "contacts_groups")
+        btnTextLocId = "contacts/chooseGroup"
+      else if (getSearchObj().isFocused())
+        btnTextLocId = "contacts/search"
+      scene.findObject("btn_contactsSelect").setValue(::loc(btnTextLocId))
+    }
+
+    showSceneBtn("btn_contactsSelect", showSelectButton)
   }
 
   function onFacebookFriendsAdd()
@@ -1172,7 +1258,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
       return
     }
 
-    if (owner.isSceneActiveNoModals() || scene?.isVisible())
+    if (owner.isSceneActiveNoModals() && scene?.isVisible())
       return
 
     local curScene = scene

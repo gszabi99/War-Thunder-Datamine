@@ -75,10 +75,6 @@
     }
   <</isToBattle>>
 
-  <<#mousePointerCenteringBelowText>>
-    mouse-pointer-centering:t='50, 80'
-  <</mousePointerCenteringBelowText>>
-
   <<#link>>
     link:t='<<link>>'
     <<#isLink>>

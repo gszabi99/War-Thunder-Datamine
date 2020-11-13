@@ -20,7 +20,8 @@ local hintTags = {
   }
 }
 
-local getSlice = function(slice, override) {
+local getSlice = function(slice, override)
+{
   if("shortcut" in slice)
     return hintTags.shortcut(slice.shortcut, override)
   if("text" in slice)
@@ -29,7 +30,8 @@ local getSlice = function(slice, override) {
   return null
 }
 
-local getHintBySlices = function(slices, override) {
+local getHintBySlices = function(slices, override)
+{
   return {
     size = [SIZE_TO_CONTENT, SIZE_TO_CONTENT]
     flow = FLOW_HORIZONTAL

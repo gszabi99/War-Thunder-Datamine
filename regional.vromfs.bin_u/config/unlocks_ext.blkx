@@ -10390,6 +10390,39 @@
   },
   {
     "unlockable": {
+      "id": "p-47m-1-re_boxted_check_popup",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2020-11-11 00:00:00",
+        "endDate": "2020-11-13 00:00:00",
+        "condition": {
+          "type": "char_unlocked",
+          "positive": false,
+          "unlock": "p-47m-1-re_boxted_check"
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "p-47m-1-re_boxted_check",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "char_unit_exist",
+        "unit": "p-47m-1-re_boxted",
+        "condition": {
+          "type": "char_time_range",
+          "beginDate": "2020-11-11 00:00:00",
+          "endDate": "2020-11-13 00:00:00"
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
       "id": "mi_24v_check_popup",
       "type": "achievement",
       "hidden": true,
@@ -12874,6 +12907,68 @@
       "chapter": "decals",
       "group": "axis_emblems",
       "hidden": true
+    }
+  },
+  {
+    "unlockable": {
+      "id": "11_11_20_hussar_helmet_decal",
+      "type": "achievement",
+      "chapter": "independence_day_polish",
+      "mode": [
+        {
+          "type": "missionsPlayedScore"
+        },
+        {
+          "num": 3
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "activity",
+            "percent": 60
+          }
+        },
+        {
+          "condition": {
+            "type": "playerTag",
+            "tag": "country_britain"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 2,
+            "maxRank": 7,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2020-11-11 11:00:00",
+            "endDate": "2020-11-13 11:30:00"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "11_11_20_hussar_helmet_decal_gift",
+      "userLogId": "11_11_20_hussar_helmet_decal_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "11_11_20_hussar_helmet_decal"
+      }
     }
   },
   {

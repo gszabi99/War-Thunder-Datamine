@@ -1,5 +1,3 @@
-local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-
 local checkArgument = function(id, arg, varType) {
   if (typeof arg == varType)
     return true
@@ -154,7 +152,7 @@ local fillDynMapOption = function(descr)
   {
     if (::get_game_mode() == ::GM_BUILDER)
     {
-      local db = blkFromPath(layout.mis_file)
+      local db = ::DataBlock(layout.mis_file)
       local tags = db.mission_settings.mission.tags % "tag"
       local airTags = ::show_aircraft.tags
       local skip = false

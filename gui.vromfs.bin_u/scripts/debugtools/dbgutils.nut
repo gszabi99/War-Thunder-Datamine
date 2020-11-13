@@ -1,6 +1,5 @@
 // warning disable: -file:forbidden-function
 
-local { blkOptFromPath, blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
 local dbgExportToFile = require("scripts/debugTools/dbgExportToFile.nut")
 local shopSearchCore = require("scripts/shop/shopSearchCore.nut")
 local dirtyWordsFilter = require("scripts/dirtyWords/dirtyWords.nut")
@@ -12,10 +11,7 @@ local { isWeaponAux, getWeaponNameByBlkPath } = require("scripts/weaponry/weapon
 
 ::reload <- function reload()
 {
-  ::get_cur_gui_scene()?.resetGamepadMouseTarget()
-  local res = ::g_script_reloader.reload(::reload_main_script_module)
-  ::update_objects_under_windows_state(::get_cur_gui_scene())
-  return res
+  return ::g_script_reloader.reload(::reload_main_script_module)
 }
 
 ::get_stack_string <- function get_stack_string(level = 2)
@@ -232,16 +228,16 @@ local { isWeaponAux, getWeaponNameByBlkPath } = require("scripts/weaponry/weapon
 {
   local missionBlk = ::get_meta_mission_info_by_name(missionName)
   if (!::u.isDataBlock(missionBlk))
-    return dlog("Not found mission " + missionName) //warning disable: -dlog-warn
+    return dlog("Not found mission " + missionName)
 
   local filePath = missionBlk?.mis_file
-  if (filePath==null)
-    return dlog("No mission blk filepath") //warning disable: -dlog-warn
-  local fullBlk = blkFromPath(filePath)
+  local fullBlk = filePath && ::DataBlock(filePath)
+  if (!::u.isDataBlock(fullBlk))
+    return dlog("Not found mission blk " + filePath)
 
   local briefing = fullBlk?.mission_settings.briefing
   if (!::u.isDataBlock(briefing) || !briefing.blockCount())
-    return dlog("Mission does not have briefing") //warning disable: -dlog-warn
+    return dlog("Mission does not have briefing")
 
   local briefingClone = ::DataBlock()
   if (slidesAmount <= 0)
@@ -376,8 +372,8 @@ local { isWeaponAux, getWeaponNameByBlkPath } = require("scripts/weaponry/weapon
 
     foreach (presetMetaBlk in (unitBlk.weapon_presets % "preset"))
     {
-      local presetBlk = blkOptFromPath(presetMetaBlk?.blk)
-      if (::u.isEmpty(presetBlk))
+      local presetBlk = ::DataBlock(presetMetaBlk?.blk ?? "")
+      if (!presetBlk)
         continue
       foreach (weaponMetaBlk in (presetBlk % "Weapon"))
         if (weaponName == getWeaponNameByBlkPath(weaponMetaBlk?.blk ?? ""))
@@ -461,7 +457,7 @@ local { isWeaponAux, getWeaponNameByBlkPath } = require("scripts/weaponry/weapon
 
 ::debug_reset_unseen <- function debug_reset_unseen()
 {
-  require("scripts/seen/seenList.nut").clearAllSeenData()
+  ::require("scripts/seen/seenList.nut").clearAllSeenData()
 }
 
 ::debug_check_dirty_words <- function debug_check_dirty_words(path = null)
@@ -523,59 +519,4 @@ local { isWeaponAux, getWeaponNameByBlkPath } = require("scripts/weaponry/weapon
   return idx != null ? dir.slice(0, idx + 9) : ""
 }
 
-
-//
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ::debug_load_anim_bg <- require("scripts/loading/animBg.nut").debugLoad
-
-local dbgFocusData = persist("dbgFocusData", @() { debugFocusTask = -1, prevSelObj = null })
-::debug_focus <- function debug_focus(needShow = true) {
-  if (!needShow) {
-    if (dbgFocusData.debugFocusTask != -1)
-      ::periodic_task_unregister(dbgFocusData.debugFocusTask)
-    dbgFocusData.debugFocusTask = -1
-    return "Switch off debug focus"
-  }
-
-  if (dbgFocusData.debugFocusTask == -1)
-    dbgFocusData.debugFocusTask = ::periodic_task_register({},
-      function(_) {
-        local newObj = ::get_cur_gui_scene().getSelectedObject()
-        local { prevSelObj } = dbgFocusData
-        local isSame = newObj == prevSelObj
-          || (newObj != null && (prevSelObj?.isValid() ?? true) && newObj.isEqual(prevSelObj))
-        if (isSame)
-          return
-        local text = $"Cur focused object = {newObj?.tag} / {newObj?.id}"
-        dlog(text)
-        ::dagor.console_print(text)
-        dbgFocusData.prevSelObj = newObj
-      },
-      1)
-
-  dbgFocusData.prevSelObj = ::get_cur_gui_scene().getSelectedObject()
-  local { prevSelObj } = dbgFocusData
-  local text = $"Cur focused object = {prevSelObj?.tag} / {prevSelObj?.id}"
-  dlog(text)
-  return text
-}

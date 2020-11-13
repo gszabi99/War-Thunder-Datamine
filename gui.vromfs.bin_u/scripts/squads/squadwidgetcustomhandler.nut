@@ -5,11 +5,23 @@ local { chatStatesCanUseVoice } = require("scripts/chat/chatStates.nut")
 
 const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
 
-::init_squad_widget_handler <- function init_squad_widget_handler(nestObj)
+::init_squad_widget_handler <- function init_squad_widget_handler(parentHandler, nestObj)
 {
-  if (!::has_feature("Squad") || !::has_feature("SquadWidget") || !::checkObj(nestObj))
+  if (!::has_feature("Squad") || !::has_feature("SquadWidget"))
     return null
-  return ::handlersManager.loadCustomHandler(::gui_handlers.SquadWidgetCustomHandler, { scene = nestObj })
+
+  if (!::checkObj(nestObj))
+    return null
+
+  if (!::handlersManager.isHandlerValid(parentHandler))
+    return null
+
+  local params = {
+    scene = nestObj
+    parentHandlerWeak = parentHandler
+  }
+
+  return ::handlersManager.loadCustomHandler(::gui_handlers.SquadWidgetCustomHandler, params)
 }
 
 class ::gui_handlers.SquadWidgetCustomHandler extends ::gui_handlers.BaseGuiHandlerWT
@@ -24,6 +36,8 @@ class ::gui_handlers.SquadWidgetCustomHandler extends ::gui_handlers.BaseGuiHand
     [squadMemberState.SQUAD_MEMBER_READY] = "ready",
     [squadMemberState.SQUAD_MEMBER_OFFLINE] = "offline",
   }
+
+  parentHandlerWeak = null
 
   function getSceneTplView()
   {
@@ -48,11 +62,15 @@ class ::gui_handlers.SquadWidgetCustomHandler extends ::gui_handlers.BaseGuiHand
 
   function initScreen()
   {
+    if (parentHandlerWeak)
+      parentHandlerWeak = parentHandlerWeak.weakref()
+
     updateView()
   }
 
   function updateView()
   {
+    local needToRestoreFocus = isSelectedItemFocused()
     local leader = ::g_squad_manager.getSquadLeaderData()
     updateMemberView(0, leader)
     local memberViewIndex = 1
@@ -69,6 +87,8 @@ class ::gui_handlers.SquadWidgetCustomHandler extends ::gui_handlers.BaseGuiHand
       updateMemberView(memberViewIndex++, null)
 
     updateVisibles()
+    if (needToRestoreFocus)
+      getFocusObj().select()
   }
 
   function updateMemberView(mebmerObjIndex, member)
@@ -116,6 +136,7 @@ class ::gui_handlers.SquadWidgetCustomHandler extends ::gui_handlers.BaseGuiHand
 
   function updateVisibles()
   {
+    local needToRestoreFocus = isSelectedItemFocused()
     local canInvite = ::g_squad_manager.canInviteMember()
     local isInTransition = ::g_squad_manager.isStateInTransition()
 
@@ -138,6 +159,9 @@ class ::gui_handlers.SquadWidgetCustomHandler extends ::gui_handlers.BaseGuiHand
     btnSquadLeave.tooltip = ::loc("squadAction/leave")
 
     scene.show(isInTransition || canInvite || ::g_squad_manager.isInSquad())
+
+    if (needToRestoreFocus)
+      getFocusObj().select()
   }
 
   function canShowContactTooltip(contact)
@@ -195,6 +219,28 @@ class ::gui_handlers.SquadWidgetCustomHandler extends ::gui_handlers.BaseGuiHand
         ::g_squad_manager.hasNewApplication) ? "yes" : "no"
   }
 
+  function onWrapUp(obj) {
+    if (::handlersManager.isHandlerValid(parentHandlerWeak))
+      parentHandlerWeak.onWrapUp(obj)
+  }
+
+  function onWrapDown(obj) {
+    if (::handlersManager.isHandlerValid(parentHandlerWeak))
+      parentHandlerWeak.onWrapDown(obj)
+  }
+
+  function onWrapLeft(obj)
+  {
+    if (::handlersManager.isHandlerValid(parentHandlerWeak))
+      parentHandlerWeak.onBottomGCPanelLeft(obj)
+  }
+
+  function onWrapRight(obj)
+  {
+    if (::handlersManager.isHandlerValid(parentHandlerWeak))
+      parentHandlerWeak.onBottomGCPanelRight(obj)
+  }
+
   /**event handlers**/
   function onEventSquadHasNewApplications(params)
   {
@@ -243,5 +289,23 @@ class ::gui_handlers.SquadWidgetCustomHandler extends ::gui_handlers.BaseGuiHand
   function checkActiveForDelayedAction()
   {
     return isSceneActive()
+  }
+
+  function getFocusObj()
+  {
+    return scene
+  }
+
+  function isSelectedItemFocused()
+  {
+    local navigatorObj = getFocusObj()
+    if (!::check_obj(navigatorObj))
+      return false
+    local value = navigatorObj.getValue()
+    if (value < 0 || value > navigatorObj.childrenCount())
+      return false
+
+    local child = navigatorObj.getChild(value)
+    return ::checkObj(child) && child.isFocused()
   }
 }

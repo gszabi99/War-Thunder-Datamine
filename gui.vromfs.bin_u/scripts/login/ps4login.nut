@@ -2,14 +2,11 @@ local statsd = require("statsd")
 local { animBgLoad } = require("scripts/loading/animBg.nut")
 local showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
 local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
-local { targetPlatform } = require("scripts/clientState/platform.nut")
-local { requestPackageUpdateStatus } = ::require_native("sony")
 
 class ::gui_handlers.LoginWndHandlerPs4 extends ::BaseGuiHandler
 {
   sceneBlkName = "gui/loginBoxSimple.blk"
   isLoggingIn = false
-  isPendingPackageCheck = false
 
   function initScreen()
   {
@@ -35,16 +32,14 @@ class ::gui_handlers.LoginWndHandlerPs4 extends ::BaseGuiHandler
       ::ps4_initial_check_settings()
     })
 
-    if ((::getroottable()?.disable_autorelogin_once ?? false) != true)
+    if (::dgs_get_argv("autologin"))
       ::on_ps4_autologin()
   }
 
-  function onPackageUpdateCheckResult(isUpdateAvailable) {
-    isPendingPackageCheck = false
-    if (isUpdateAvailable) {
-      msgBox("new_package_available", ::loc("ps4/updateAvailable"), [["ok", function() {}]], "ok")
+  function onOk()
+  {
+    if (isLoggingIn)
       return
-    }
 
     if ((::ps4_initial_check_network() >= 0) && (::ps4_init_trophies() >= 0))
     {
@@ -54,11 +49,11 @@ class ::gui_handlers.LoginWndHandlerPs4 extends ::BaseGuiHandler
       local ret = ::ps4_login();
       if (ret >= 0)
       {
-        local cfgName = ::ps4_is_production_env() ? "updater.blk" : "updater_dev.blk"
+        local isProd = ::ps4_is_production_env()
 
         ::gui_start_modal_wnd(::gui_handlers.UpdaterModal,
           {
-            configPath = $"/app0/{targetPlatform}/{cfgName}"
+            configPath = isProd ? "/app0/ps4/updater.blk" : "/app0/ps4/updater_dev.blk"
             onFinishCallback = ::ps4_load_after_login
           })
       }
@@ -69,16 +64,6 @@ class ::gui_handlers.LoginWndHandlerPs4 extends ::BaseGuiHandler
           msgBox("no_internet_connection", ::loc("ps4/noInternetConnection"), [["ok", function() {} ]], "ok")
       }
     }
-  }
-
-
-  function onOk()
-  {
-    if (isLoggingIn || isPendingPackageCheck)
-      return
-
-    isPendingPackageCheck = true
-    requestPackageUpdateStatus(onPackageUpdateCheckResult)
   }
 
   function onEventPs4AutoLoginRequested(p)

@@ -1,9 +1,12 @@
-local ItemCouponBase = require("scripts/items/itemsClasses/itemCouponBase.nut")
+local ItemExternal = require("scripts/items/itemsClasses/itemExternal.nut")
 
-class ::items_classes.InternalItem extends ItemCouponBase
+class ::items_classes.InternalItem extends ItemExternal
 {
   static iType = itemType.INTERNAL_ITEM
+  static defaultLocId = "coupon"
+  static combinedNameLocId = "coupon/name"
   static typeIcon = "#ui/gameuiskin#item_type_trophies"
+  static descHeaderLocId = "coupon/for"
 
   getContentItem   = function()
   {
@@ -17,17 +20,15 @@ class ::items_classes.InternalItem extends ItemCouponBase
     if (!isInventoryItem || !item)
       return false
 
-    if (item.iType == itemType.TROPHY) {
+    if (item.iType == itemType.TROPHY)
       foreach (blk in item.getContent())
       {
         local decoratorType = ::g_decorator_type.getTypeByResourceType(blk?.resourceType)
         if (!blk?.resource || !decoratorType.isPlayerHaveDecorator(blk.resource))
           return true
       }
-      return false
-    }
 
-    return true
+    return false
   }
 
   function updateShopFilterMask()
@@ -44,23 +45,5 @@ class ::items_classes.InternalItem extends ItemCouponBase
     return contentItem && { contentIcon = contentItem.typeIcon }
   }
 
-  getIcon = @(addItemName = true) showAsContentItem()
-    ? getContentItem()?.getIcon(addItemName) ?? base.getIcon(addItemName)
-    : base.getIcon(addItemName)
-  getSmallIconName = @() getContentItem()?.getSmallIconName() ?? typeIcon
-  getBigIcon = @() showAsContentItem()
-    ? getContentItem()?.getBigIcon() ?? base.getBigIcon()
-    : base.getBigIcon()
-
   needShowRewardWnd = @() !metaBlk?.trophy
-
-  function getViewData(params = {}) {
-    if (showAsContentItem())
-      return getContentItem()?.getViewData(
-          params.__update({count = (params?.count ?? 0) * (metaBlk?.count ?? 0)}))
-        ?? base.getViewData(params)
-    return base.getViewData(params)
-  }
-
-  showAsContentItem = @() itemDef?.tags?.showAsContentItem ?? false
 }

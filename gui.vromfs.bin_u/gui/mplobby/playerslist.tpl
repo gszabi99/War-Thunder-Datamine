@@ -13,14 +13,17 @@ table
   moveY:t='linear'
   navigatorShortcuts:t='yes'
   selfFocusBorder:t='yes'
+  mouse-focusable:t='yes'
 
   css-hier-invalidate:t='yes'
   on_click:t = 'onTableClick'
   on_select:t = 'onTableSelect'
   on_dbl_click:t='onTableDblClick'
   on_r_click:t='onTableRClick'
-  on_hover:t='onTableHover'
-  on_unhover:t='onTableHover'
+  on_wrap_up:t='onWrapUp'
+  on_wrap_down:t='onWrapDown'
+  on_wrap_left:t='onWrapLeft'
+  on_wrap_right:t='onWrapRight'
 
   <<@content>>
 }

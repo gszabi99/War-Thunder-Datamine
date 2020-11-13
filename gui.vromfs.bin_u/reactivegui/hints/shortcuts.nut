@@ -31,20 +31,21 @@ local shortcutsParamsByPlace = @() {
 local hasImage = @(shortcutConfig) shortcutConfig?.buttonImage
   && shortcutConfig?.buttonImage != ""
 
-local function gamepadButton(shortcutConfig, override, isAxis = true) {
+local gamepadButton = function(shortcutConfig, override, isAxis = true)
+{
   local sizeParam = shortcutsParamsByPlace()[override?.place ?? "defaultP"]
   local buttonSize = isAxis ? sizeParam.shortcutAxis : sizeParam.gamepadButtonSize
   local image = shortcutConfig.buttonImage
-  image = image.slice(0, 1) == "#" ? $"!{image.slice(1, image.len())}" : image
-  return {
-    size = buttonSize
+  image = image.slice(0, 1) == "#" ? "!" + image.slice(1, image.len()) : image
+  return { size = buttonSize
     rendObj = ROBJ_IMAGE
     image = Picture(image)
     color = colors.white
   }
 }
 
-local function keyboardButton(shortcutConfig, override) {
+local keyboardButton = function(shortcutConfig, override)
+{
   local sizeParam = shortcutsParamsByPlace()[override?.place ?? "defaultP"]
   return {
     size = sizeParam.keyboardButtonSize
@@ -64,13 +65,13 @@ local function keyboardButton(shortcutConfig, override) {
   }
 }
 
-local function arrowImg(direction, override) {
-
+local arrowImg = function(direction, override)
+{
   local img = direction == 0 ? "ui/gameuiskin#cursor_size_hor" : "ui/gameuiskin#cursor_size_vert"
   return {
     rendObj = ROBJ_IMAGE
     size = [::fpx(30), ::fpx(30)]
-    image = ::Picture($"!{img}")
+    image = ::Picture("!" + img)
     color = colors.white
   }
 }
@@ -164,7 +165,8 @@ local shortcutByInputName = {
       : null
 }
 
-getShortcut = function(shortcutConfig, override) {
+getShortcut = function(shortcutConfig, override)
+{
   return shortcutByInputName?[shortcutConfig?.inputName ?? ""]?(shortcutConfig, override)
 }
 

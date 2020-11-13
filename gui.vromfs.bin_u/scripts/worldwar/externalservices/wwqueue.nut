@@ -2,7 +2,7 @@ local { getMyClanOperation, isMyClanInQueue
 } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 local { actionWithGlobalStatusRequest } = require("scripts/worldWar/operations/model/wwGlobalStatus.nut")
 
-::WwQueue <- class
+class WwQueue
 {
   map = null
   data = null

@@ -1,93 +1,90 @@
-local { isPlatformPS4, isPlatformPS5 } = require("scripts/clientState/platform.nut")
+local { isPlatformPS4, isPlatformPS5, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
-const GAMEPAD_CURSOR_CONTROLS_SPLASH_DISPLAYED_SAVE_ID = "gamepad_cursor_controls_splash_displayed"
+::gui_start_gamepad_cursor_controls_splash <- function gui_start_gamepad_cursor_controls_splash(onEnable)
+{
+  ::gui_start_modal_wnd(::gui_handlers.GampadCursorControlsSplash, {onEnable = onEnable})
+}
+
 
 class ::gui_handlers.GampadCursorControlsSplash extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
   sceneBlkName = "gui/controls/gamepadCursorControlsSplash.blk"
+  onEnable = null
 
-  // All contactPointX/contactPointY coords below are X/Y coords on the source image canvas (840 x 452 px).
-  // Just open the image in any image viewer, point mouse anywhere on it, and it will display X/Y coords of
-  // the mouse pointer on the image canvas. Those coords can be used here as contactPointX/contactPointY.
+  controller360View = {
+    image = "#ui/images/controller/controller_xbox360"
+    rightTrigger = {
+     contactPointX = "pw-510"
+     contactPointY = "297"
+    }
+    leftStick = {
+      contactPointX = "470"
+      contactPointY = "452"
+    }
+    rightStick = {
+      contactPointX = "pw-570"
+      contactPointY = "550"
+    }
+  }
 
   controllerDualshock4View = {
     image = "#ui/images/controller/controller_dualshock4"
-    isSwapDirpadAndLStickBubblesPos = false
-    dirpad = {
-      contactPointX = "168"
-      contactPointY = "232"
+    rightTrigger = {
+     contactPointX = "pw-432"
+     contactPointY = "297"
     }
     leftStick = {
-      contactPointX = "290"
-      contactPointY = "349"
+      contactPointX = "520"
+      contactPointY = "552"
     }
     rightStick = {
-      contactPointX = "549"
-      contactPointY = "349"
-    }
-    actionKey = {
-     contactPointX = "698"
-     contactPointY = "284"
+      contactPointX = "pw-542"
+      contactPointY = "560"
     }
   }
 
   controllerDualsenseView = {
     image = "#ui/images/controller/controller_dualsense"
-    isSwapDirpadAndLStickBubblesPos = false
-    dirpad = {
-      contactPointX = "163"
-      contactPointY = "239"
+    rightTrigger = {
+     contactPointX = "pw-432"
+     contactPointY = "297"
     }
     leftStick = {
-      contactPointX = "289"
-      contactPointY = "356"
+      contactPointX = "540"
+      contactPointY = "555"
     }
     rightStick = {
-      contactPointX = "551"
-      contactPointY = "356"
-    }
-    actionKey = {
-     contactPointX = "702"
-     contactPointY = "287"
+      contactPointX = "pw-540"
+      contactPointY = "555"
     }
   }
 
   controllerXboxOneView = {
     image = "#ui/images/controller/controller_xbox_one"
-    isSwapDirpadAndLStickBubblesPos = true
-    dirpad = {
-      contactPointX = "325"
-      contactPointY = "334"
+    rightTrigger = {
+     contactPointX = "pw-480"
+     contactPointY = "305"
     }
     leftStick = {
-      contactPointX = "191"
-      contactPointY = "259"
+      contactPointX = "490"
+      contactPointY = "460"
     }
     rightStick = {
-      contactPointX = "517"
-      contactPointY = "387"
-    }
-    actionKey = {
-     contactPointX = "635"
-     contactPointY = "277"
+      contactPointX = "pw-570"
+      contactPointY = "570"
     }
   }
 
-  bubblesList = [ "dirpad", "lstick", "rstick", "actionx" ]
-
-  static function open() {
-    ::gui_start_modal_wnd(::gui_handlers.GampadCursorControlsSplash)
+  static function isDisplayed()
+  {
+    return ::loadLocalByAccount("gamepad_cursor_controls_splash_displayed", false)
   }
 
-  static function shouldDisplay() {
-    // Possible values: int 2 (version 2 seen), bool true (version 1 seen), null (new account)
-    local value = ::loadLocalByAccount(GAMEPAD_CURSOR_CONTROLS_SPLASH_DISPLAYED_SAVE_ID)
-    return value == true // Show it only to old accounts.
-  }
 
-  static function markDisplayed() {
-    ::saveLocalByAccount(GAMEPAD_CURSOR_CONTROLS_SPLASH_DISPLAYED_SAVE_ID, 2)
+  static function markDisplayed()
+  {
+    ::saveLocalByAccount("gamepad_cursor_controls_splash_displayed", true)
   }
 
 
@@ -97,24 +94,28 @@ class ::gui_handlers.GampadCursorControlsSplash extends ::gui_handlers.BaseGuiHa
     if (!::check_obj(contentObj))
       goBack()
 
-    local view = isPlatformPS4 ? controllerDualshock4View
-               : isPlatformPS5 ? controllerDualsenseView
-               :                 controllerXboxOneView
-
-    view.isGamepadCursorControlsEnabled <- ::g_gamepad_cursor_controls.getValue()
+    local view = controller360View
+    if (isPlatformPS4)
+      view = controllerDualshock4View
+    else if (isPlatformPS5)
+      view = controllerDualsenseView
+    else if (isPlatformXboxOne)
+      view = controllerXboxOneView
 
     local markUp = ::handyman.renderCached("gui/controls/gamepadCursorcontrolsController", view)
     guiScene.replaceContentFromText(contentObj, markUp, markUp.len(), this)
+  }
 
-    local linkingObjsContainer = getObj("gamepad_image")
-    local linesGeneratorConfig = {
-      startObjContainer = linkingObjsContainer
-      endObjContainer   = linkingObjsContainer
-      lineInterval = "@helpLineInterval"
-      links = bubblesList.map(@(id) { start = $"bubble_{id}", end = $"dot_{id}" })
+
+  function enableGamepadCursorcontrols()
+  {
+    if (::g_gamepad_cursor_controls.canChangeValue())
+    {
+      ::g_gamepad_cursor_controls.setValue(true)
+      if (onEnable)
+        onEnable()
     }
-    local linesMarkup = ::LinesGenerator.getLinkLinesMarkup(linesGeneratorConfig)
-    guiScene.replaceContentFromText(getObj("lines_block"), linesMarkup, linesMarkup.len(), this)
+    goBack()
   }
 
 
@@ -128,10 +129,19 @@ class ::gui_handlers.GampadCursorControlsSplash extends ::gui_handlers.BaseGuiHa
   function getNavbarTplView()
   {
     return {
-      right = [
+      middle = [
         {
-          text = "#msgbox/btn_ok"
-          shortcut = "X"
+          text = "#gamepad_cursor_control_splash/accept"
+          shortcut = "A"
+          funcName = "enableGamepadCursorcontrols"
+          isToBattle = true
+          button = true
+        }
+      ]
+      left = [
+        {
+          text = "#gamepad_cursor_control_splash/decline"
+          shortcut = "B"
           funcName = "goBack"
           button = true
         }

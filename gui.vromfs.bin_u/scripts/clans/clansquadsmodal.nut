@@ -18,7 +18,7 @@ class ::gui_handlers.MyClanSquadsListModal extends ::gui_handlers.BaseGuiHandler
       id = "btn_squad_info"
       buttonClass ="image"
       shortcut = ""
-      showOnSelect = "hover"
+      showOnSelect = "focus"
       btnName = "X"
       btnKey = "X"
       tooltip = @() ::loc("squad/info")
@@ -31,7 +31,7 @@ class ::gui_handlers.MyClanSquadsListModal extends ::gui_handlers.BaseGuiHandler
       id = "btn_application"
       buttonClass ="image"
       shortcut = ""
-      showOnSelect = "hover"
+      showOnSelect = "focus"
       btnName = "A"
       btnKey = "A"
       tooltip = @() ::loc("squad/membership_request")
@@ -44,7 +44,7 @@ class ::gui_handlers.MyClanSquadsListModal extends ::gui_handlers.BaseGuiHandler
       id = "btn_revoke_application"
       buttonClass ="image"
       shortcut = ""
-      showOnSelect = "hover"
+      showOnSelect = "focus"
       btnName = "A"
       btnKey = "A"
       isColoredImg = "yes"
@@ -86,6 +86,8 @@ class ::gui_handlers.MyClanSquadsListModal extends ::gui_handlers.BaseGuiHandler
     refreshOnlineUsersTable()
     updateSquadsList()
     updateSquadsListInfo(curList.len())
+    initFocusArray()
+    restoreFocus()
   }
 
   function createSquadButtons()
@@ -373,6 +375,11 @@ class ::gui_handlers.MyClanSquadsListModal extends ::gui_handlers.BaseGuiHandler
 
     obj = getSquadObj(curList.indexof(actionSquad)).findObject("btn_squad_info")
     ::gui_handlers.clanSquadInfoWnd.open(obj, actionSquad)
+  }
+
+  function getMainFocusObj()
+  {
+    return squadsListObj
   }
 
   function onEventPlayerApplicationsChanged(params)

@@ -1,5 +1,3 @@
-local { markChildrenInteractive, markInteractive, markObjShortcutOnHover } = require("sqDagui/guiBhv/guiBhvUtils.nut")
-
 //blk params:
 //  value
 //  moveX, moveY  =  "linear", "closest"  (default = "closest")
@@ -7,7 +5,7 @@ local { markChildrenInteractive, markInteractive, markObjShortcutOnHover } = req
 class gui_bhv.posNavigator
 {
   eventMask = ::EV_JOYSTICK | ::EV_PROCESS_SHORTCUTS | ::EV_MOUSE_L_BTN | ::EV_MOUSE_EXT_BTN | ::EV_MOUSE_DBL_CLICK
-              | ::EV_ON_FOCUS_SET | ::EV_ON_FOCUS_LOST | ::EV_ON_CMD | ::EV_ON_INSERT_REMOVE
+              | ::EV_ON_FOCUS_SET | ::EV_ON_FOCUS_LOST | ::EV_ON_CMD
   valuePID    = ::dagui_propid.add_name_id("value")
   selectedPID = ::dagui_propid.add_name_id("value") //value = selected
   moveTypeXPID = ::dagui_propid.add_name_id("moveX")
@@ -26,14 +24,6 @@ class gui_bhv.posNavigator
   {
     if (obj?.value)
       setValue(obj, obj.value.tointeger())
-    markChildrenInteractive(obj, true)
-    markObjShortcutOnHover(obj, true)
-    return ::RETCODE_NOTHING
-  }
-
-  function onDetach(obj) {
-    markChildrenInteractive(obj, false)
-    markObjShortcutOnHover(obj, false)
     return ::RETCODE_NOTHING
   }
 
@@ -41,7 +31,7 @@ class gui_bhv.posNavigator
   {
     if (event == ::EV_ON_FOCUS_SET)
     {
-      if (!isOnlyHover(obj))
+      if (!checkWrapFrom(obj))
         selectCurItem(obj)
       obj.getScene().playSound("focus")
     }
@@ -62,7 +52,7 @@ class gui_bhv.posNavigator
 
   function canSelectOnlyFocused(obj)
   {
-    return obj?.clearOnFocusLost == "yes"
+    return obj?.clearOnFocusLost != "no"
   }
 
   function getValue(obj)
@@ -122,42 +112,31 @@ class gui_bhv.posNavigator
 
   function selectCurItem(obj)
   {
-    local byHover = isOnlyHover(obj)
-    local value = byHover ? getHoveredChild(obj).hoveredIdx : getSelectedValue(obj)
+    local value = getSelectedValue(obj)
     local valObj = getChildObj(obj, value)
-    if (valObj && isSelectable(valObj) && selectItem(obj, value, valObj, false, true))
+    if (valObj && isSelectable(valObj) && selectItem(obj, value, valObj, false))
       return
 
-    local coords = valObj? getMiddleCoords(valObj)
-      : byHover ? ::get_dagui_mouse_cursor_pos_RC()
-      : obj.getPos()
-
-    local { foundObj, foundIdx } = getClosestItem(obj, coords)
-    if (foundObj)
-      selectItem(obj, foundIdx, foundObj, false, true)
+    local coords = valObj? getMiddleCoords(valObj) : obj.getPos()
+    selectClosestItem(obj, coords, false)
   }
 
   function isSelectable(obj)
   {
-    return obj.isVisible() && obj.isEnabled() && obj?.inactive != "yes" && !obj.isUnderWindow()
+    return obj.isVisible() && obj.isEnabled() && obj?.inactive != "yes"
   }
 
-  function eachSelectable(obj, handler) {
-    for(local i = 0; i < obj.childrenCount(); i++)
-    {
-      local cObj = obj.getChild(i)
-      if (isSelectable(cObj))
-        if (handler(cObj, i))
-          break
-    }
-  }
-
-  function getClosestItem(obj, coords)
+  function selectClosestItem(obj, coords, needSound)
   {
     local foundObj = null
     local foundIdx = -1
     local sqDist = -1
-    eachSelectable(obj, function(cObj, i) {
+    for(local i = 0; i < obj.childrenCount(); i++)
+    {
+      local cObj = obj.getChild(i)
+      if (!isSelectable(cObj))
+        continue
+
       local coords2 = getClosestCoords(cObj, coords)
       local cSqDist = (coords[0]-coords2[0])*(coords[0]-coords2[0]) + (coords[1]-coords2[1])*(coords[1]-coords2[1])
       if (sqDist < 0 || cSqDist < sqDist)
@@ -166,12 +145,15 @@ class gui_bhv.posNavigator
         foundIdx = i
         sqDist = cSqDist
       }
-      return !sqDist
-    })
-    return { foundObj = foundObj, foundIdx = foundIdx }
+      if (!sqDist)
+        break
+    }
+    if (foundObj)
+      selectItem(obj, foundIdx, foundObj, needSound)
+    return foundObj
   }
 
-  function selectItem(obj, idx, idxObj = null, needSound = true, needSetMouse = false)
+  function selectItem(obj, idx, idxObj = null, needSound = true)
   {
     local canSelectNone = getCanSelectNone(obj)
 
@@ -204,8 +186,6 @@ class gui_bhv.posNavigator
     {
       setChildSelected(obj, idxObj, true)
       idxObj.scrollToView()
-      if (needSetMouse)
-        idxObj.setMouseCursorOnObject()
     }
 
     if (needSound && needNotify)
@@ -213,13 +193,6 @@ class gui_bhv.posNavigator
     if (needNotify)
       onSelectAction(obj)
     return true
-  }
-
-  function hoverMove(obj, childObj, needSound = true) {
-    childObj.scrollToView()
-    childObj.setMouseCursorOnObject()
-    if (needSound)
-      obj.getScene().playSound(obj?.snd_select ? obj.snd_select : "choose")
   }
 
   function chooseItem(obj, idx, needSound = true) {}
@@ -231,9 +204,8 @@ class gui_bhv.posNavigator
 
   function activateAction(obj)
   {
-    obj.sendNotify("dbl_click")
-    if (obj.isValid())
-      obj.sendNotify("activate")
+    obj.sendNotify("dbl_click");
+    obj.sendNotify("activate");
   }
 
   function onShortcutActivate(obj, is_down)
@@ -245,42 +217,42 @@ class gui_bhv.posNavigator
 
   function findClickedObj(obj, mx, my)
   {
-    local res = null
-    eachSelectable(obj, function(iObj, i) {
+    for (local i=0; i < obj.childrenCount(); i++)
+    {
+      local iObj = obj.getChild(i)
+      if (!isSelectable(iObj))
+        continue
+
       local pos = iObj.getPos()
       local size = iObj.getSize()
       if (mx >= pos[0] && mx <= pos[0]+size[0] && my >= pos[1] && my <= pos[1]+size[1])
-        res = { idx = i, obj = iObj }
-      return res != null
-    })
-    return res
+        return { idx = i, obj = iObj }
+    }
+    return null
   }
 
-  function selectItemByClick(obj, mx, my) {
-    local clicked = findClickedObj(obj, mx, my)
-    if (!clicked)
-      return ::RETCODE_NOTHING
-
-    selectItem(obj, clicked.idx, clicked.obj, !canChooseByMClick)
-    resetFixedCoord(obj)
-    obj.sendNotify("click")
-    if (canChooseByMClick)
-      chooseItem(obj, clicked.idx, true)
-    return ::RETCODE_HALT
-  }
-
-  function onLMouse(obj, mx, my, is_up, bits) {
+  function onLMouse(obj, mx, my, is_up, bits)
+  {
     if (is_up)
       return ::RETCODE_NOTHING
 
-    if (!is_up && (bits&::BITS_MOUSE_DBL_CLICK) && (bits&::BITS_MOUSE_BTN_L)) {
-      if (getValue(obj) == -1)
-        selectItemByClick(obj, mx, my)
+    if (!is_up && (bits&::BITS_MOUSE_DBL_CLICK) && (bits&::BITS_MOUSE_BTN_L))
+    {
       activateAction(obj)
       return ::RETCODE_HALT;
     }
 
-    return selectItemByClick(obj, mx, my)
+    local clicked = findClickedObj(obj, mx, my)
+    if (clicked)
+    {
+      selectItem(obj, clicked.idx, clicked.obj, !canChooseByMClick)
+      resetFixedCoord(obj)
+      obj.sendNotify("click")
+      if (canChooseByMClick)
+        chooseItem(obj, clicked.idx, true)
+      return ::RETCODE_HALT
+    }
+    return ::RETCODE_NOTHING
   }
 
   function onExtMouse(obj, mx, my, btn_id, is_up, bits)
@@ -324,61 +296,48 @@ class gui_bhv.posNavigator
     return ::RETCODE_NOTHING
   }
 
-  function onShortcutSelect(obj, is_down)
-  {
-    if (is_down || !isShortcutsByHover(obj))
-      return ::RETCODE_NOTHING
-
-    local { hoveredObj, hoveredIdx } = getHoveredChild(obj)
-    if (hoveredIdx == null)
-      return ::RETCODE_NOTHING
-    if (hoveredIdx == getSelectedValue(obj)) {
-      activateAction(obj)
-      return ::RETCODE_HALT
-    }
-    selectItem(obj, hoveredIdx, hoveredObj, true, true)
-    return ::RETCODE_HALT
-  }
-
   function moveSelect(obj, axis, dir)
   {
-    local byHover = isShortcutsByHover(obj)
-    local valueObj = byHover ? getHoveredChild(obj).hoveredObj : getChildObj(obj, getSelectedValue(obj))
+    local valueObj = getChildObj(obj, getSelectedValue(obj))
     if (!valueObj)
     {
-      local { foundObj, foundIdx } = getClosestItem(obj, byHover ? ::get_dagui_mouse_cursor_pos_RC() : obj.getPos())
-      if (!foundObj)
+      if (!selectClosestItem(obj, obj.getPos(), true))
         sendNotifyWrap(obj, axis, dir)
-      else if (byHover)
-        hoverMove(obj, foundObj)
-      else
-        selectItem(obj, foundIdx, foundObj, true, true)
       return ::RETCODE_HALT
     }
+
     return moveFromObj(obj, valueObj, axis, dir)
   }
 
-  function moveFromObj(obj, objFrom, axis, dir)
+  function moveFromObj(obj, objFrom, axis, dir, isFromOutside = false)
   {
     local moveType = obj?[axis? "moveY" : "moveX"]
-    local { foundObj, foundIdx } = moveType == "linear" ? moveSelectLinear(obj, objFrom, axis, dir)
-      : moveSelectClosest(obj, objFrom, axis, dir)
-    if (!foundObj)
-      sendNotifyWrap(obj, axis, dir)
-    else if (isOnlyHover(obj))
-      hoverMove(obj, foundObj)
-    else
-      selectItem(obj, foundIdx, foundObj, true, true)
-    return ::RETCODE_HALT
+    if (moveType=="linear")
+      return moveSelectLinear(obj, objFrom, axis, dir, isFromOutside)
+    return moveSelectClosest(obj, objFrom, axis, dir, isFromOutside)
+  }
+
+  function checkWrapFrom(obj)
+  {
+    local wrapObj = ::g_last_nav_wrap.getWrapObj()
+    if (!wrapObj)
+      return false
+
+    local wrapDir = ::g_last_nav_wrap.getWrapDir()
+    ::g_last_nav_wrap.clearWrap()
+    moveFromObj(obj, wrapObj, wrapDir.isVertical ? 1 : 0, wrapDir.isPositive ? 1 : -1, true)
+    return true
   }
 
   function sendNotifyWrap(obj, axis, dir)
   {
-    obj.setIntProp(lastMoveTimeMsecPID, 0)
-
     local wrapDir = ::g_wrap_dir.getWrapDir(axis == 1, dir > 0)
-    if (!obj.sendSceneEvent(wrapDir.notifyId))
-      ::set_dirpad_event_processed(false)
+    local wrapObj = getChildObj(obj, getSelectedValue(obj))
+    if (!wrapObj)
+      wrapObj = obj
+    ::g_last_nav_wrap.setWrapFrom(wrapObj, wrapDir)
+
+    obj.sendNotify(wrapDir.notifyId)
   }
 
   function resetFixedCoord(obj)
@@ -438,24 +397,27 @@ class gui_bhv.posNavigator
 
   function moveSelectClosest(obj, valueObj, axis, dir, isFromOutside = false)
   {
-    local pos = isOnlyHover ? ::get_dagui_mouse_cursor_pos_RC() : getMiddleCoords(valueObj)
+    local pos = getMiddleCoords(valueObj)
     pos = validateOutsidePos(obj, pos, axis, dir, isFromOutside)
     pos = checkFixedCoord(obj, axis, pos, !isFromOutside)
 
     local foundObj = null
     local foundIdx = -1
     local sqDist = -1
-    eachSelectable(obj, function(cObj, i) {
-      if (valueObj?.isEqual(cObj))
-        return
+    for(local i = 0; i < obj.childrenCount(); i++)
+    {
+      local cObj = obj.getChild(i)
+      if (!isSelectable(cObj))
+        continue
+
       local pos2 = getClosestCoords(cObj, pos)
       if ((pos2[axis] - pos[axis]) * dir <= 0)
-        return
+        continue
 
       local primOffsetSq = (pos[axis] - pos2[axis]) * (pos[axis] - pos2[axis])
       local secOffsetSq = (pos[1-axis] - pos2[1-axis]) * (pos[1-axis] - pos2[1-axis])
       if (4 * primOffsetSq < secOffsetSq)  // 60 degrees
-        return
+        continue
 
       local cSqDist = primOffsetSq + secOffsetSq
       if (sqDist < 0 || cSqDist < sqDist)
@@ -464,13 +426,17 @@ class gui_bhv.posNavigator
         foundIdx = i
         sqDist = cSqDist
       }
-    })
-    return { foundObj = foundObj, foundIdx = foundIdx }
+    }
+    if (foundObj)
+      selectItem(obj, foundIdx, foundObj)
+    else
+      sendNotifyWrap(obj, axis, dir)
+    return ::RETCODE_HALT
   }
 
   function moveSelectLinear(obj, valueObj, axis, dir, isFromOutside = false)
   {
-    local pos = isOnlyHover ? ::get_dagui_mouse_cursor_pos_RC() : getMiddleCoords(valueObj)
+    local pos = getMiddleCoords(valueObj)
     pos = validateOutsidePos(obj, pos, axis, dir, isFromOutside)
     pos = checkFixedCoord(obj, axis, pos, !isFromOutside)
     local posDiv = isFromOutside ? getScreenSizeByAxis(axis) : 0.4 * valueObj.getSize()[1-axis]
@@ -478,14 +444,16 @@ class gui_bhv.posNavigator
     local foundObj = null
     local foundIdx = -1
     local distRating = -1 //best distance is not shorter
-    eachSelectable(obj, function(cObj, i) {
-      if (valueObj?.isEqual(cObj))
-        return
+    for(local i = 0; i < obj.childrenCount(); i++)
+    {
+      local cObj = obj.getChild(i)
+      if (!isSelectable(cObj))
+        continue
       local pos2 = getClosestCoordsByAxis(cObj, pos, 1-axis)
       local distSubAxis = ::abs(pos[1-axis] - pos2[1-axis])
       if ((pos2[axis] - pos[axis]) * dir <= 0
           || distSubAxis > posDiv)
-        return
+        continue
 
       //we trying to keep choosen line, so distance in other line has much lower priority
       local distAxis = abs(pos[axis] - pos2[axis])
@@ -496,8 +464,12 @@ class gui_bhv.posNavigator
         foundIdx = i
         distRating = cDistRating
       }
-    })
-    return { foundObj = foundObj, foundIdx = foundIdx }
+    }
+    if (foundObj)
+      selectItem(obj, foundIdx, foundObj)
+    else
+      sendNotifyWrap(obj, axis, dir)
+    return ::RETCODE_HALT
   }
 
   function setChildSelected(obj, childObj, isSelected = true)
@@ -511,7 +483,7 @@ class gui_bhv.posNavigator
 
   function canSelectChild(obj)
   {
-    return obj.isHovered() || !canSelectOnlyFocused(obj)
+    return obj.isFocused() || !canSelectOnlyFocused(obj)
   }
 
   function clearSelect(obj)
@@ -526,30 +498,4 @@ class gui_bhv.posNavigator
       obj.sendNotify("cancel_edit")
     return ::RETCODE_HALT
   }
-
-  function getHoveredChild(obj) {
-    local hoveredObj = null
-    local hoveredIdx = null
-    eachSelectable(obj, function(child, i) {
-      if (!child.isHovered())
-        return false
-      hoveredObj = child
-      hoveredIdx = i
-      return true
-    })
-    return { hoveredObj = hoveredObj, hoveredIdx = hoveredIdx }
-  }
-
-  function onGamepadMouseFinishMove(obj) {
-    if (isOnlyHover(obj))
-      return true;
-    local { hoveredObj, hoveredIdx } = getHoveredChild(obj)
-    if (hoveredObj && getSelectedValue(obj) != hoveredIdx)
-      selectItem(obj, hoveredIdx, hoveredObj)
-    return true;
-  }
-
-  onInsert = @(obj, child, index) markInteractive(child, true)
-  isShortcutsByHover = @(obj) obj.getFinalProp("shortcut-on-hover") == "yes"
-  isOnlyHover = @(obj) obj.getFinalProp("move-only-hover") == "yes"
 }

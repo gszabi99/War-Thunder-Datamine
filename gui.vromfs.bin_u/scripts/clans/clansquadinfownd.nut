@@ -4,6 +4,7 @@ class ::gui_handlers.clanSquadInfoWnd extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType             = handlerType.MODAL
   sceneBlkName   = "gui/clans/clanSquadInfo.blk"
+  shouldBlurSceneBg = false
   needVoiceChat = false
   memberTplName = "gui/squads/squadMembers"
   membersObj = null
@@ -39,6 +40,8 @@ class ::gui_handlers.clanSquadInfoWnd extends ::gui_handlers.BaseGuiHandlerWT
     updatePosition()
 
     membersObj.setValue(0)
+    initFocusArray()
+    restoreFocus()
   }
 
   function refreshList()
@@ -160,6 +163,11 @@ class ::gui_handlers.clanSquadInfoWnd extends ::gui_handlers.BaseGuiHandlerWT
   function onEventContactsUpdated(params)
   {
     doWhenActiveOnce("refreshList")
+  }
+
+  function getMainFocusObj()
+  {
+    return membersObj
   }
 
   function onUpdate(obj, dt)

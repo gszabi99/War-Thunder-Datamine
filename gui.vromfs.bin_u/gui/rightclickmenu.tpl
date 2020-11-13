@@ -6,6 +6,9 @@ root {
 
   rightClickMenu {
     id:t='rclick_menu_div'
+    behaviour:t='wrapNavigator';
+    navigatorShortcuts:t='yes';
+    childsActivate:t='yes';
     position:t='absolute'
     flow:t='vertical'
     overflow-y:t='auto';

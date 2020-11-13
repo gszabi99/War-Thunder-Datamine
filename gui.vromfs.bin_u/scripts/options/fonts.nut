@@ -1,7 +1,6 @@
-local enums = require("sqStdLibs/helpers/enums.nut")
-local screenInfo = require("scripts/options/screenInfo.nut")
+local enums = ::require("sqStdlibs/helpers/enums.nut")
+local screenInfo = ::require("scripts/options/screenInfo.nut")
 local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
-local { setFontDefHt, getFontInitialHt } = require("fonts")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 const FONTS_SAVE_PATH = "fonts_css"
@@ -35,22 +34,10 @@ enum FONT_SIZE_ORDER {
   HUGE
 }
 
+local hasNewFontsSizes = ::is_dev_version || ::is_version_equals_or_newer("1.71.1.63")
+local hasNewFonts = ::is_dev_version || ::is_version_equals_or_newer("1.71.1.72")
+
 local getFontsSh = screenInfo.getScreenHeightForFonts
-
-local appliedFontsSh = 0
-local appliedFontsScale = 0
-
-local function update_font_heights(font)
-{
-  local fontsSh = getFontsSh(::screen_width(), ::screen_height())
-  if (appliedFontsSh == fontsSh && appliedFontsScale == font.sizeMultiplier)
-    return font;
-  foreach(prefixId in daguiFonts.getRealFontNamePrefixesMap())
-    setFontDefHt(prefixId, ::round(getFontInitialHt(prefixId) * font.sizeMultiplier).tointeger())
-  appliedFontsSh = fontsSh
-  appliedFontsScale = font.sizeMultiplier
-  return font;
-}
 
 ::g_font <- {
   types = []
@@ -96,45 +83,50 @@ local function update_font_heights(font)
   //text visible in options
   getOptionText = @() ::loc("fontSize/" + id.tolower())
     + ::loc("ui/parentheses/space", { text = "{0}%".subst(::round(100 * sizeMultiplier).tointeger()) })
-  getFontExample = @() "small_text; font-pixht: {0}".subst(::round(::require_native("fonts").getFontInitialHt("small_text") * sizeMultiplier).tointeger())
+  getFontExample = @() "small_text" + fontGenId
 }
 
 enums.addTypesByGlobalName("g_font",
 {
   TINY = {
+    fontGenId = "_set_tiny"
     saveId = FONT_SAVE_ID.TINY
     sizeMultiplier = 0.5
     sizeOrder = FONT_SIZE_ORDER.TINY
 
-    isAvailable = @(sWidth, sHeight) getFontsSh(sWidth, sHeight) >= 800
+    isAvailable = @(sWidth, sHeight) hasNewFonts && getFontsSh(sWidth, sHeight) >= 800
   }
 
   SMALL = {
+    fontGenId = "_set_small"
     saveId = FONT_SAVE_ID.SMALL
     sizeMultiplier = 0.66667
     sizeOrder = FONT_SIZE_ORDER.SMALL
 
-    isAvailable = @(sWidth, sHeight) getFontsSh(sWidth, sHeight) >= 768
+    isAvailable = @(sWidth, sHeight) getFontsSh(sWidth, sHeight) >= (hasNewFontsSizes ? 768 : 900)
   }
 
   COMPACT = {
+    fontGenId = "_set_compact"
     saveId = FONT_SAVE_ID.COMPACT
     sizeMultiplier = 0.75
     sizeOrder = FONT_SIZE_ORDER.COMPACT
 
-    isAvailable = @(sWidth, sHeight) getFontsSh(sWidth, sHeight) >= 720
+    isAvailable = @(sWidth, sHeight) hasNewFonts && getFontsSh(sWidth, sHeight) >= 720
   }
 
   MEDIUM = {
+    fontGenId = "_set_medium"
     saveId = FONT_SAVE_ID.MEDIUM
     sizeMultiplier = 0.83334
     saveIdCompatibility = [FONT_SAVE_ID.PX]
     sizeOrder = FONT_SIZE_ORDER.MEDIUM
 
-    isAvailable = @(sWidth, sHeight) getFontsSh(sWidth, sHeight) >= 720
+    isAvailable = @(sWidth, sHeight) getFontsSh(sWidth, sHeight) >= (hasNewFontsSizes ? 720 : 800)
   }
 
   LARGE = {
+    fontGenId = "_hud" //better to rename it closer to major
     saveId = FONT_SAVE_ID.LARGE
     sizeMultiplier = 1.0
     sizeOrder = FONT_SIZE_ORDER.LARGE
@@ -142,6 +134,7 @@ enums.addTypesByGlobalName("g_font",
   }
 
   HUGE = {
+    fontGenId = "_set_huge"
     saveId = FONT_SAVE_ID.HUGE
     sizeMultiplier = 1.2
     sizeOrder = FONT_SIZE_ORDER.HUGE
@@ -220,13 +213,13 @@ g_font.getDefault <- function getDefault()
 g_font.getCurrent <- function getCurrent()
 {
   if (!canChange())
-    return update_font_heights(getDefault())
+    return getDefault()
 
   if (!::g_login.isProfileReceived())
   {
     local fontSaveId = ::getSystemConfigOption(FONTS_SAVE_PATH_CONFIG)
-    return update_font_heights((fontSaveId && getAvailableFontBySaveId(fontSaveId))
-      || getDefault())
+    return (fontSaveId && getAvailableFontBySaveId(fontSaveId))
+      || getDefault()
   }
 
   local fontSaveId = ::load_local_account_settings(FONTS_SAVE_PATH)
@@ -242,7 +235,7 @@ g_font.getCurrent <- function getCurrent()
       ::clear_local_by_screen_size(FONTS_SAVE_PATH)
     }
   }
-  return update_font_heights(res || getDefault())
+  return res || getDefault()
 }
 
 //return isChanged
@@ -257,7 +250,6 @@ g_font.setCurrent <- function setCurrent(font)
     ::save_local_account_settings(FONTS_SAVE_PATH, font.saveId)
 
   saveFontToConfig(font)
-  update_font_heights(font)
   return isChanged
 }
 

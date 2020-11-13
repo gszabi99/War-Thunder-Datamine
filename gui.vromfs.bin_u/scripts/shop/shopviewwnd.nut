@@ -14,6 +14,7 @@ class ::gui_handlers.ShopViewWnd extends ::gui_handlers.ShopMenuHandler
   function initScreen()
   {
     base.initScreen()
+    initFocusArray()
 
     if(!::is_small_screen)
       createSlotbar(
@@ -23,6 +24,22 @@ class ::gui_handlers.ShopViewWnd extends ::gui_handlers.ShopMenuHandler
           showTopPanel = false
         },
         "slotbar_place")
+  }
+
+  function restoreFocus(checkPrimaryFocus = true)
+  {
+    if (!checkGroupObj())
+      ::gui_handlers.BaseGuiHandlerWT.restoreFocus.call(this, checkPrimaryFocus)
+  }
+
+  function onWrapUp(obj)
+  {
+    ::gui_handlers.BaseGuiHandlerWT.onWrapUp.call(this, obj)
+  }
+
+  function onWrapDown(obj)
+  {
+    ::gui_handlers.BaseGuiHandlerWT.onWrapDown.call(this, obj)
   }
 
   function onCloseShop()

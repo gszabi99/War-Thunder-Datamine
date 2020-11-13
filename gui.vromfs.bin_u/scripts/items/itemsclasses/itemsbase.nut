@@ -270,7 +270,7 @@ class ::BaseItem
   {
     return ::handyman.renderCached("gui/items/itemString", {
       title = showTitle? colorize("activeTextColor",getName()) : null
-      icon = getSmallIconName()
+      icon = typeIcon
       tooltipId = ::g_tooltip.getIdItem(id, { isDisguised = isDisguised })
       count = count > 1? (colorize("activeTextColor", " x") + colorize("userlogColoredText", count)) : null
       hasPadding = hasPadding
@@ -378,7 +378,7 @@ class ::BaseItem
 
     res.hasButton <- ::getTblValue("hasButton", params, true)
     res.onClick <- ::getTblValue("onClick", params, null)
-    res.hasFocusBorder <- params?.hasFocusBorder ?? true
+    res.hasHoverBorder <- ::getTblValue("hasHoverBorder", params, false)
 
     if (::getTblValue("contentIcon", params, true))
       res.contentIconData <- getContentIconData()
@@ -791,5 +791,4 @@ class ::BaseItem
   showAllowableRecipesOnly = @() false
   canRecraftFromRewardWnd = @() false
   canOpenForGold = @() false
-  getTopPrize = @() null
 }

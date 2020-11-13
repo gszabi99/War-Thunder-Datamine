@@ -1,35 +1,44 @@
-local {IlsPosSize, IlsMask, MfdColor, IsIlsEnabled, IndicatorsVisible, IsMfdEnabled} = require("helicopterState.nut")
-local {paramsTable, compassElem, horSpeed, vertSpeed, rocketAim, taTarget} = require("helicopterHudElems.nut")
-local {hudFontHgt, fontOutlineColor, fontOutlineFxFactor} = require("style/airHudStyle.nut")
+local helicopterState = require("helicopterState.nut")
+local hudElems = require("helicopterHudElems.nut")
 
-local styleLineBackground = {
+local style = {}
+local fontOutlineColor = Color(0, 0, 0, 235)
+
+style.lineBackground <- class {
   fillColor = Color(0, 0, 0, 0)
-  lineWidth = max( LINE_WIDTH + 1.5, hdpx(LINE_WIDTH + 1.5))
+  lineWidth = hdpx(1) * (LINE_WIDTH + 1.5)
   font = Fonts.hud
   fontFxColor = fontOutlineColor
-  fontFxFactor = fontOutlineFxFactor
+  fontFxFactor = 40
   fontFx = FFT_GLOW
-  fontSize = hudFontHgt*2
+  fontScale = 2.0
 }
 
 
-local styleLineForeground = {
+style.lineForeground <- class {
   fillColor = Color(0, 0, 0, 0)
-  lineWidth = max(hdpx(LINE_WIDTH), LINE_WIDTH)
+  lineWidth = hdpx(1) * LINE_WIDTH
   font = Fonts.hud
   fontFxColor = fontOutlineColor
-  fontFxFactor = fontOutlineFxFactor
+  fontFxFactor = 40
   fontFx = FFT_GLOW
-  fontSize = hudFontHgt*2
+  fontScale = 2.0
 }
 
-local pilotSh = @(h) h * IlsPosSize[3] / 100
+local pilotSh = function(h)
+{
+  return h * helicopterState.IlsPosSize[3] / 100
+}
+local pilotSw = function(w)
+{
+  return w * helicopterState.IlsPosSize[2] / 100
+}
+local pilotHdpx = function(px)
+{
+  return px * helicopterState.IlsPosSize[3] / 1024
+}
 
-local pilotSw = @(w) w * IlsPosSize[2] / 100
-
-local pilotHdpx = @(px) px * IlsPosSize[3] / 1024
-
-local mfdPilotParamsTable = paramsTable(IlsMask,
+local mfdPilotParamsTable = hudElems.paramsTable(helicopterState.IlsMask,
   600,
   [50, 550],
   10,  false, true)
@@ -37,24 +46,24 @@ local mfdPilotParamsTable = paramsTable(IlsMask,
 local function ilsHud(elemStyle, isBackground) {
   local ilsStyle = elemStyle.__merge({
     lineWidth = LINE_WIDTH * 3
-    color = MfdColor.value
+    color = helicopterState.MfdColor.value
   })
   return @(){
-    watch = IsIlsEnabled
+    watch = helicopterState.IsIlsEnabled
     behavior = Behaviors.RtPropUpdate
     update = function() {
       return {
         transform = {
-          translate = [IlsPosSize[0], IlsPosSize[1]]
+          translate = [helicopterState.IlsPosSize[0], helicopterState.IlsPosSize[1]]
         }
       }
     }
-    children = IsIlsEnabled.value ?
+    children = helicopterState.IsIlsEnabled.value ?
     [
       mfdPilotParamsTable(ilsStyle, isBackground)
-      vertSpeed(ilsStyle, pilotSh(5), pilotSh(40), pilotSw(50) + pilotHdpx(330), pilotSh(45), isBackground)
-      horSpeed(ilsStyle, isBackground, pilotSw(50), pilotSh(80), pilotHdpx(100))
-      compassElem(ilsStyle, isBackground, pilotSw(100), pilotSh(13), pilotSw(50) - 0.5 * pilotSw(100), pilotSh(15))
+      hudElems.vertSpeed(ilsStyle, pilotSh(5), pilotSh(40), pilotSw(50) + pilotHdpx(330), pilotSh(45), isBackground)
+      hudElems.horSpeed(ilsStyle, isBackground, pilotSw(50), pilotSh(80), pilotHdpx(100))
+      hudElems.compassElem(ilsStyle, isBackground, pilotSw(100), pilotSh(13), pilotSw(50) - 0.5 * pilotSw(100), pilotSh(15))
     ]
     : null
   }
@@ -63,14 +72,14 @@ local function ilsHud(elemStyle, isBackground) {
 local function ilsMovingMarks(elemStyle, isBackground) {
   local ilsStyle = elemStyle.__merge({
     lineWidth = LINE_WIDTH * 3
-    color = MfdColor.value
+    color = helicopterState.MfdColor.value
   })
   return @(){
-    watch = IsIlsEnabled
-    children = IsIlsEnabled.value ?
+    watch = helicopterState.IsIlsEnabled
+    children = helicopterState.IsIlsEnabled.value ?
     [
-      rocketAim(ilsStyle, pilotSw(4), pilotSh(8), isBackground)
-      taTarget(ilsStyle, pilotSw(25), pilotSh(25), isBackground)
+      hudElems.rocketAim(ilsStyle, pilotSw(4), pilotSh(8), isBackground)
+      hudElems.taTarget(ilsStyle, pilotSw(25), pilotSh(25), isBackground)
     ]
     : null
   }
@@ -83,20 +92,21 @@ local function ilsHUD(colorStyle, isBackground) {
   ]
 }
 
-local function Root() {
-  local children = ilsHUD(styleLineBackground, true)
-  children.extend(ilsHUD(styleLineForeground, false))
+local Root = function() {
+  local children = ilsHUD(style.lineBackground, true)
+  children.extend(ilsHUD(style.lineForeground, false))
 
   return {
     watch = [
-      IndicatorsVisible
-      MfdColor
-      IsMfdEnabled
+      helicopterState.IndicatorsVisible
+      helicopterState.MfdColor
+      helicopterState.IsMfdEnabled
     ]
     halign = ALIGN_LEFT
     valign = ALIGN_TOP
     size = [sw(100), sh(100)]
-    children = (IndicatorsVisible.value || IsMfdEnabled.value) ? children : null
+    children = (helicopterState.IndicatorsVisible.value ||
+    helicopterState.IsMfdEnabled.value) ? children : null
   }
 }
 

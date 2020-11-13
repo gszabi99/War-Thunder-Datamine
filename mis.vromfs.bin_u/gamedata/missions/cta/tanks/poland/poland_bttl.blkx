@@ -215,6 +215,12 @@
         "type": "domination"
       },
       {
+        "restoreType": "attempts"
+      },
+      {
+        "optionalTakeOff": false
+      },
+      {
         "environment": "Day"
       },
       {
@@ -257,19 +263,10 @@
         "battleAreaColorPreset": "battleArea"
       },
       {
-        "showTacticalMapCellSize": true
-      },
-      {
         "country_axis": "germany"
       },
       {
         "country_allies": "ussr"
-      },
-      {
-        "restoreType": "attempts"
-      },
-      {
-        "optionalTakeOff": false
       },
       {
         "allowedUnitTypes": {
@@ -347,8 +344,22 @@
             {
               "icon": {
                 "icontype": "tank",
+                "side": "ally",
+                "target": "briefing_bttl_t1_spawn_02"
+              }
+            },
+            {
+              "icon": {
+                "icontype": "tank",
                 "side": "enemy",
                 "target": "briefing_bttl_t2_spawn_01"
+              }
+            },
+            {
+              "icon": {
+                "icontype": "tank",
+                "side": "enemy",
+                "target": "briefing_bttl_t2_spawn_02"
               }
             },
             {
@@ -615,7 +626,6 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
-      "crewSkillK": 0.0,
       "props": {
         "army": 2,
         "count": 1,
@@ -668,7 +678,7 @@
         [0.996195,0.0,0.0871554],
         [0.0,1.0,0.0],
         [-0.0871554,0.0,0.996195],
-        [2973.2,14.0,2496.24]
+        [3176.55,14.0,1554.55]
       ],
       "objLayer": 0,
       "props": []
@@ -724,6 +734,28 @@
         [0.0,51.09,0.0],
         [0.0,0.0,84.0],
         [1594.7,0.8,2016.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "briefing_bttl_t2_spawn_02": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [1335.14,15.5479,1893.28]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "briefing_bttl_t1_spawn_02": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [2606.84,7.24939,1933.21]
       ],
       "objLayer": 0,
       "props": []

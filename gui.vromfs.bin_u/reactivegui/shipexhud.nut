@@ -1,13 +1,11 @@
-local {floor} = require("math")
+local networkState = require("networkState.nut")
 local activeOrder = require("activeOrder.nut")
 local shipStateModule = require("shipStateModule.nut")
 local hudLogs = require("hudLogs.nut")
-local {depthLevel, waterDist, wishDist, buoyancyEx} = require("shipState.nut")
-local {isAimCamera, GimbalX, GimbalY, GimbalSize, altitude, isActiveSensor,
-  remainingDist, isOperated, isTrackingTarget, wireLoseTime, isWireConnected,
-  IsGimbalVisible, TrackerSize, TrackerX, TrackerY, IsTrackerVisible} = require("shellState.nut")
+local shipState = require("shipState.nut")
+local shellState = require("shellState.nut")
 local voiceChat = require("chat/voiceChat.nut")
-local {safeAreaSizeHud} = require("style/screenState.nut")
+local screenState = require("style/screenState.nut")
 
 local styleLine = {
   color = Color(255, 255, 255, 255)
@@ -36,18 +34,18 @@ local shVertSpeedHeight = sh(20)
 
 local function depthLevelCmp(){
   return styleShipHudText.__merge({
-    color = getDepthColor(depthLevel.value)
-    watch = [depthLevel, waterDist]
+    color = getDepthColor(shipState.depthLevel.value)
+    watch = [shipState.depthLevel, shipState.waterDist]
     halign = ALIGN_RIGHT
-    text = floor(waterDist.value).tostring()
+    text = ::math.floor(shipState.waterDist.value).tostring()
   })
 }
 local function wishDistCmp(){
   return styleShipHudText.__merge({
-    watch = [depthLevel, wishDist]
-    color = getDepthColor(depthLevel.value)
+    watch = [shipState.depthLevel, shipState.wishDist]
+    color = getDepthColor(shipState.depthLevel.value)
     halign = ALIGN_LEFT
-    text = floor(::max(wishDist.value, 0)).tostring()
+    text = ::math.floor(::max(shipState.wishDist.value, 0)).tostring()
   })
 }
 
@@ -56,11 +54,11 @@ local function buoyancyExCmp(){
   return styleLine.__merge({
     pos = [-shVertSpeedScaleWidth, -height*0.5]
     transform = {
-      translate = [0, shVertSpeedHeight * 0.01 * clamp(50 - buoyancyEx.value * 50.0, 0, 100)]
+      translate = [0, shVertSpeedHeight * 0.01 * clamp(50 - shipState.buoyancyEx.value * 50.0, 0, 100)]
     }
-    watch = [depthLevel, buoyancyEx]
+    watch = [shipState.depthLevel, shipState.buoyancyEx]
     size = [height, height]
-    color = getDepthColor(depthLevel.value)
+    color = getDepthColor(shipState.depthLevel.value)
     rendObj = ROBJ_VECTOR_CANVAS
     commands = [
       [VECTOR_LINE, 0, 0, 100, 50, 0, 100, 0, 0],
@@ -69,9 +67,9 @@ local function buoyancyExCmp(){
 }
 local function depthLevelLineCmp(){
   return styleLine.__merge({
-    watch = depthLevel
+    watch = shipState.depthLevel
     size = [shVertSpeedScaleWidth, shVertSpeedHeight]
-    color = getDepthColor(depthLevel.value)
+    color = getDepthColor(shipState.depthLevel.value)
     rendObj = ROBJ_VECTOR_CANVAS
     halign = ALIGN_RIGHT
     commands = [
@@ -96,11 +94,11 @@ local childrenShVerSpeed = [
 
 local function ShipVertSpeed() {
   return {
-    watch = isAimCamera
+    watch = shellState.isAimCamera
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
     gap = hdpx(15)
-    children = !isAimCamera.value ? childrenShVerSpeed : null
+    children = !shellState.isAimCamera.value ? childrenShVerSpeed : null
   }
 }
 
@@ -111,7 +109,7 @@ local shellAimGimbal = function(line_style, color_func) {
     color = color_func()
     fillColor = Color(0, 0, 0, 0)
     commands = [
-      [VECTOR_ELLIPSE, 0, 0, GimbalSize.value, GimbalSize.value]
+      [VECTOR_ELLIPSE, 0, 0, shellState.GimbalSize.value, shellState.GimbalSize.value]
     ]
   })
 
@@ -119,11 +117,11 @@ local shellAimGimbal = function(line_style, color_func) {
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     size = SIZE_TO_CONTENT
-    watch = [GimbalX, GimbalY, GimbalSize, IsGimbalVisible]
+    watch = [shellState.GimbalX, shellState.GimbalY, shellState.GimbalSize, shellState.IsGimbalVisible]
     transform = {
-      translate = [GimbalX.value, GimbalY.value]
+      translate = [shellState.GimbalX.value, shellState.GimbalY.value]
     }
-    children = IsGimbalVisible.value ? [circle] : null
+    children = shellState.IsGimbalVisible.value ? [circle] : null
   }
 }
 
@@ -134,7 +132,7 @@ local shellAimTracker = function(line_style, color_func) {
     color = color_func()
     fillColor = Color(0, 0, 0, 0)
     commands = [
-      [VECTOR_ELLIPSE, 0, 0, TrackerSize.value * 0.33, TrackerSize.value * 0.33]
+      [VECTOR_ELLIPSE, 0, 0, shellState.TrackerSize.value * 0.33, shellState.TrackerSize.value * 0.33]
     ]
   })
 
@@ -142,11 +140,11 @@ local shellAimTracker = function(line_style, color_func) {
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     size = SIZE_TO_CONTENT
-    watch = [TrackerX, TrackerY, TrackerSize, IsTrackerVisible]
+    watch = [shellState.TrackerX, shellState.TrackerY, shellState.TrackerSize, shellState.IsTrackerVisible]
     transform = {
-      translate = [TrackerX.value, TrackerY.value]
+      translate = [shellState.TrackerX.value, shellState.TrackerY.value]
     }
-    children = IsTrackerVisible.value ? [circle] : null
+    children = shellState.IsTrackerVisible.value ? [circle] : null
   }
 }
 local function mkShellComp(watches, textCtor){
@@ -160,31 +158,31 @@ local shellAltitude = {
   flow = FLOW_HORIZONTAL
   children = [
     styleShipHudText.__merge({text = $"{::loc("hud/depth")} "})
-    mkShellComp(altitude,
-        @() ::cross_call.measureTypes.DISTANCE_SHORT.getMeasureUnitsText(max(0, -altitude.value), false))
+    mkShellComp(shellState.altitude,
+        @() ::cross_call.measureTypes.DISTANCE_SHORT.getMeasureUnitsText(max(0, -shellState.altitude.value), false))
   ]
 }
 
 local shellChildren = [
   shellAltitude
-  mkShellComp(remainingDist, @() remainingDist.value <= 0.0 ? "" :
-          ::cross_call.measureTypes.DISTANCE_SHORT.getMeasureUnitsText(remainingDist.value))
-  mkShellComp([isOperated, isTrackingTarget],
-              @() isOperated.value ? ::loc("hud/shell_operated") :
-              ::string.format("%s: %s", ::loc("hud/shell_homing"), isTrackingTarget.value ? ::loc("hud/shell_tracking") : ::loc("hud/shell_searching")))
-  mkShellComp(isActiveSensor, @() isActiveSensor.value ? ::loc("activeSonar") : ::loc("passiveSonar"))
-  mkShellComp([wireLoseTime, isWireConnected],
-              @() isWireConnected.value ?
-               (wireLoseTime.value > 0.0 ?
-                  ::string.format("%s: %d", ::loc("hud/wireMayBeLost"), floor(wireLoseTime.value + 0.5)) : "") :
+  mkShellComp(shellState.remainingDist, @() shellState.remainingDist.value <= 0.0 ? "" :
+          ::cross_call.measureTypes.DISTANCE_SHORT.getMeasureUnitsText(shellState.remainingDist.value))
+  mkShellComp([shellState.isOperated, shellState.isTrackingTarget],
+              @() shellState.isOperated.value ? ::loc("hud/shell_operated") :
+              ::string.format("%s: %s", ::loc("hud/shell_homing"), shellState.isTrackingTarget.value ? ::loc("hud/shell_tracking") : ::loc("hud/shell_searching")))
+  mkShellComp(shellState.isActiveSensor, @() shellState.isActiveSensor.value ? ::loc("activeSonar") : ::loc("passiveSonar"))
+  mkShellComp([shellState.wireLoseTime, shellState.isWireConnected],
+              @() shellState.isWireConnected.value ?
+               (shellState.wireLoseTime.value > 0.0 ?
+                  ::string.format("%s: %d", ::loc("hud/wireMayBeLost"), math.floor(shellState.wireLoseTime.value + 0.5)) : "") :
               ::loc("hud/wireIsLost"))
 ]
 
 local function ShipShellState() {
   return {
-    watch = isAimCamera
+    watch = shellState.isAimCamera
     flow = FLOW_VERTICAL
-    children = isAimCamera.value ? shellChildren : null
+    children = shellState.isAimCamera.value ? shellChildren : null
   }
 }
 
@@ -204,15 +202,15 @@ local shellAimChildren = [
 
 local function ShipShellAimState() {
   return {
-    watch = isAimCamera
-    children = isAimCamera.value ? shellAimChildren : null
+    watch = shellState.isAimCamera
+    children = shellState.isAimCamera.value ? shellAimChildren : null
   }
 }
 
 local shipHud = @(){
-  watch = safeAreaSizeHud
+  watch = networkState.isMultiplayer
   size = [SIZE_TO_CONTENT, flex()]
-  margin = safeAreaSizeHud.value.borders
+  margin = screenState.safeAreaSizeHud.value.borders
   padding = [0, 0, hdpx(32) + ::fpx(6), 0]
   flow = FLOW_VERTICAL
   valign = ALIGN_BOTTOM
@@ -221,7 +219,7 @@ local shipHud = @(){
   children = [
     voiceChat
     activeOrder
-    hudLogs
+    networkState.isMultiplayer.value ? hudLogs : null
     shipStateModule
   ]
 }

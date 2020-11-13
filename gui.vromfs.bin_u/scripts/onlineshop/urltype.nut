@@ -1,4 +1,4 @@
-local enums = require("sqStdLibs/helpers/enums.nut")
+local enums = ::require("sqStdlibs/helpers/enums.nut")
 const URL_ANY_ENDING = @"(\/.*$|\/$|$)"
 
 enum URL_CHECK_ORDER
@@ -44,7 +44,6 @@ enum URL_CHECK_ORDER
     return null
   }
   applyLangKey = function(url, langKey) { return url }
-  applySToken = @(url) url
 }
 
 enums.addTypesByGlobalName("g_url_type", {
@@ -77,11 +76,12 @@ enums.addTypesByGlobalName("g_url_type", {
     urlRegexpList = [
       regexp(@"^https?:\/\/login\.gaijin\.net" + URL_ANY_ENDING)
     ]
-    applyLangKey = @(url, langKey)
-      $"{url}{url.indexof("?") == null ? "?" : "&"}lang={langKey}"
-
-    applySToken = @(url)
-      $"{url}{url.indexof("?") == null ? "?" : "&"}st={::get_sso_short_token()?.shortToken ?? ""}"
+    applyLangKey = function(url, langKey)
+    {
+      url += url.indexof("?") == null ? "?" : "&";
+      url += "lang=" + langKey;
+      return url
+    }
   }
 
   WARTHUNDER_RU = {

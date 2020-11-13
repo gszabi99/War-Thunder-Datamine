@@ -252,7 +252,7 @@ Money.__impl_get_text <- function __impl_get_text(params = null)
   return text
 }
 
-::Balance <- class extends Money
+class Balance extends Money
 {
   mType = money_type.balance
 
@@ -273,7 +273,7 @@ Money.__impl_get_text <- function __impl_get_text(params = null)
   function __get_sap_color_id()   { return __get_color_id_by_value(sap) }
 }
 
-::Cost <- class extends Money
+class Cost extends Money
 {
   mType = money_type.cost
 

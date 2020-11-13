@@ -56,6 +56,10 @@
               "on_click": "onPlayerClick",
               "on_r_click": "onPlayerRClick",
               "on_activate": "onSelectPlayer",
+              "on_wrap_up": "onPlayersTblWrapUp",
+              "on_wrap_down": "onPlayersTblWrapDown",
+              "on_wrap_left": "onSwitchPlayersTbl",
+              "on_wrap_right": "onSwitchPlayersTbl",
               "on_set_focus": "onChangeFocusTable"
             }
           },
@@ -104,6 +108,10 @@
               "on_click": "onPlayerClick",
               "on_r_click": "onPlayerRClick",
               "on_activate": "onSelectPlayer",
+              "on_wrap_up": "onPlayersTblWrapUp",
+              "on_wrap_down": "onPlayersTblWrapDown",
+              "on_wrap_left": "onSwitchPlayersTbl",
+              "on_wrap_right": "onSwitchPlayersTbl",
               "on_set_focus": "onChangeFocusTable"
             }
           },
@@ -134,7 +142,9 @@
               "class": "tabs",
               "smallFont": "yes",
               "navigatorShortcuts": "yes",
-              "on_select": "onBtnLogTabSwitch"
+              "on_select": "onBtnLogTabSwitch",
+              "on_wrap_up": "onWrapUpTabs",
+              "on_wrap_down": "onWrapDown"
             },
             "tdiv": [
               {
@@ -282,6 +292,15 @@
             "navigatorShortcuts": "active"
           },
           {
+            "on_wrap_up": "onWrapUp"
+          },
+          {
+            "on_wrap_down": "onWrapDownControls"
+          },
+          {
+            "childsActivate": "yes"
+          },
+          {
             "on_activate": "onActivateSelectedControl"
           },
           {
@@ -349,8 +368,7 @@
                 "size": "@sIco, @sIco",
                 "style": "background-color:#4c4c4c4c",
                 "input-transparent": "yes",
-                "background-image": "#ui/gameuiskin#player_spectator.svg",
-                "background-svg-size": "@sIco, @sIco"
+                "background-image": "#ui/gameuiskin#player_spectator"
               }
             }
           },
@@ -490,7 +508,7 @@
               "position": "relative",
               "width": "0.07@sf;",
               "text": "#ui/not_applicable",
-              "enable": "no"
+              "inactive": "yes"
             }
           },
           {
@@ -527,7 +545,7 @@
                 "position": "relative"
               },
               {
-                "enable": "no"
+                "inactive": "yes"
               },
               {
                 "text": {
@@ -563,7 +581,7 @@
             "buttons_block": {
               "id": "controls_timer",
               "height": "@spectatorToolbarBtnSize",
-              "enable": "no",
+              "inactive": "yes",
               "text": {
                 "id": "txt_mission_timer",
                 "top": "ph/2-h/2",

@@ -5,9 +5,7 @@ local { isFakeBullet,
 
 const LONG_ACTIONBAR_TEXT_LEN = 6;
 
-local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
-
-::ActionBar <- class
+class ActionBar
 {
   actionItems             = null
   guiScene                = null
@@ -138,21 +136,22 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
     if ((item.type == ::EII_BULLET || item.type == ::EII_FORCED_GUN) && unit != null)
     {
-      local modifName = item.modificationName != null
-        ? item.modificationName
-        : getDefaultBulletName(unit)
-
       viewItem.bullets <- ::handyman.renderNested(::load_template_text("gui/weaponry/bullets"),
-        function (text) {
+        (@(item, unit, canControl) function (text) {
+          local modifName = item.modificationName != null
+            ? item.modificationName
+            : getDefaultBulletName(unit)
+
           // if fake bullets are not generated yet, generate them
           if (isFakeBullet(modifName) && !(modifName in unit.bulletsSets))
             getBulletsSetData(unit, ::fakeBullets_prefix, {})
           local data = getBulletsSetData(unit, modifName)
-          return getBulletsIconView(data)
-        }
+          local tooltipId = ::g_tooltip.getIdModification(unit.name, modifName,
+            { isInHudActionBar = true })
+          local tooltipDelayed = !canControl
+          return getBulletsIconView(data, tooltipId, tooltipDelayed)
+        })(item, unit, canControl)
       )
-      viewItem.tooltipId <- ::g_tooltip.getIdModification(unit.name, modifName, { isInHudActionBar = true })
-      viewItem.tooltipDelayed <- !canControl
     }
     else if (item.type == ::EII_ARTILLERY_TARGET)
     {
@@ -181,14 +180,6 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
   function getWaitGaugeDegree(val)
   {
     return (360 - (::clamp(val, 0.0, 1.0) * 360)).tointeger()
-  }
-
-  function updateWaitGaugeDegree(obj, val) {
-    local degree = getWaitGaugeDegree(val)
-    if (degree == (obj.getFinalProp(sectorAngle1PID) ?? -1).tointeger())
-      return
-    obj.set_prop_latent(sectorAngle1PID, degree)
-    obj.updateRendElem()
   }
 
   function onUpdate(obj = null, dt = 0.0)
@@ -223,6 +214,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
     }
 
     local ship = getActionBarUnit()?.isShip()
+
     foreach(item in actionItems)
     {
       local itemObj = scene.findObject(__action_id_prefix + item.id)
@@ -237,14 +229,16 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
       if (::check_obj(automaticObj))
         automaticObj.show(ship && item?.automatic)
 
-      if (item.type != ::EII_BULLET && !itemObj.isEnabled() && isActionReady(item))
+      if (item.type != ::EII_BULLET &&
+          itemObj.enabled != "yes" &&
+          isActionReady(item))
         blink(itemObj)
 
       handleIncrementCount(item, prewActionItems, itemObj)
 
       itemObj.selected = item.selected ? "yes" : "no"
       itemObj.active = item.active ? "yes" : "no"
-      itemObj.enable(isActionReady(item))
+      itemObj.enabled = isActionReady(item) ? "yes" : "no"
 
       local mainActionButtonObj = itemObj.findObject("mainActionButton")
       local activatedActionButtonObj = itemObj.findObject("activatedActionButton")
@@ -263,6 +257,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
       local iconObj = itemObj.findObject("action_icon")
       if (::checkObj(iconObj))
       {
+        iconObj.tooltip = actionBarType.getTooltipText(item)
         if (backgroundImage.len() > 0)
           iconObj["background-image"] = backgroundImage
       }
@@ -274,8 +269,11 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
         ::broadcastEvent("ArtilleryTarget", { active = artillery_target_mode })
       }
 
-      updateWaitGaugeDegree(itemObj.findObject("cooldown"), item.cooldown)
-      updateWaitGaugeDegree(itemObj.findObject("blockedCooldown"), item?.blockedCooldown ?? 0.0)
+      local cooldownObj = itemObj.findObject("cooldown")
+      cooldownObj["sector-angle-1"] = getWaitGaugeDegree(item.cooldown)
+
+      local blockedCooldownObj = itemObj.findObject("blockedCooldown")
+      blockedCooldownObj["sector-angle-1"] = getWaitGaugeDegree(item?.blockedCooldown ?? 0.0)
     }
   }
 
@@ -287,9 +285,6 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
       return ""
 
     local countExText = countEx < 0 ? "" : countEx.tostring()
-//
-
-
     local text = count.tostring() + (countExText.len() ? "/" + countExText : "")
     if (text.len() > LONG_ACTIONBAR_TEXT_LEN && !isFull)
       text = count.tostring() + (countExText.len() ? "/" + ::loc("weapon/bigAmountNumberIcon") : "")
@@ -350,12 +345,14 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
   {
     local isUnitValid = ::get_es_unit_type(getActionBarUnit()) != ::ES_UNIT_TYPE_INVALID
     local rawActionBarItem = isUnitValid ? ::get_action_bar_items() : []
+    local rawWheelItem = isUnitValid ? (::getWheelBarItems() != null?
+    ::getWheelBarItems() : []) : []
+    killStreaksActions = []
+    weaponActions = []
+
     if (!useWheelmenu)
       return rawActionBarItem
 
-    local rawWheelItem = isUnitValid ? (::getWheelBarItems() ?? []) : []
-    killStreaksActions = []
-    weaponActions = []
     for (local i = rawActionBarItem.len() - 1; i >= 0; i--)
     {
       local actionBarType = ::g_hud_action_bar_type.getByActionItem(rawActionBarItem[i])

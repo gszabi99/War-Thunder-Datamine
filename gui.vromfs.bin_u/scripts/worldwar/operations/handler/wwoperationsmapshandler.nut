@@ -72,6 +72,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
     reinitScreen()
     updateRightPanel()
     ::enableHangarControls(true)
+    initFocusArray()
 
     if (needToOpenBattles)
       onStart()
@@ -89,6 +90,16 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
     findMapForSelection()
     updateLeftPanel()
     onClansQueue()
+  }
+
+  function getMainFocusObj()
+  {
+    return scene.findObject("countries_container")
+  }
+
+  function getMainFocusObj2()
+  {
+    return isDeveloperMode ? mapsListObj : leaderBoardsObj
   }
 
   function collectMaps()
@@ -391,7 +402,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
     if (!canEditMapCountries(countriesContainerObj))
       return
 
-    ::move_mouse_on_child_by_value(countriesContainerObj)
+    countriesContainerObj.select()
     updateButtons()
   }
 
@@ -515,6 +526,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
     updateQueueElementsInList()
     updateDescription()
     updateButtons()
+    restoreFocus()
   }
 
   function updateDescription()
@@ -535,6 +547,8 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
 
     mapDescrObj = ::gui_handlers.WwMapDescription.link(scene.findObject("item_desc"), item, item,
       isCreateOperationMode ? {
+        onWrapUpCb = onWrapUp.bindenv(this)
+        onWrapDownCb = onWrapDown.bindenv(this)
         onJoinQueueCb = onJoinQueue.bindenv(this)
         onLeaveQueueCb = onLeaveQueue.bindenv(this)
         onJoinClanOperationCb = onJoinClanOperation.bindenv(this)
@@ -705,7 +719,9 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
 
     descHandlerWeak = null
     updateWindow()
-    ::move_mouse_on_child_by_value(scene.findObject("countries_container"))
+    local countriesContainerObj = scene.findObject("countries_container")
+    if (::check_obj(countriesContainerObj))
+      countriesContainerObj.select()
   }
 
   function onJoinClanOperation(obj)
@@ -753,7 +769,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
       selObj = mapsListObj
     }
     updateWindow()
-    ::move_mouse_on_child_by_value(selObj)
+    selObj.select()
   }
 
   function onOperationDescr()
@@ -1222,6 +1238,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
     findMapForSelection()
     updateDescription()
     updateButtons()
+    restoreFocus()
   }
 
   function onEventUpdateClansInfoList(p) {

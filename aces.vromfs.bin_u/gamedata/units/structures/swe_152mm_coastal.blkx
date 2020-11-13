@@ -8,7 +8,10 @@
   "hasExpl": true,
   "hasDmg2": true,
   "damageableByGun": true,
-  "fireFx": "fire_ground_black_fx",
+  "bulletHitFx": "ground_model_hit",
+  "partDamageFx": "part_damage",
+  "explosionFx": "ground_model_expl",
+  "fireFx": "ground_model_fire",
   "maxFwdSpeed": 0.0,
   "maxRevSpeed": 0.0,
   "maxAngSpeed": 0.0,
@@ -35,18 +38,6 @@
       "onKill": {
         "expl": 1.0
       }
-    }
-  },
-  "explosion": {
-    "expl": {
-      "node": "body",
-      "partNo": 0,
-      "timeToExplode": 0.5,
-      "postEffectName": "smoke_ground_black_fx",
-      "explosionEffectName": "explosion_midair_medium",
-      "timeForPostEffect": 60.0,
-      "preScale": 1.0,
-      "postScale": 1.0
     }
   },
   "weapon": {

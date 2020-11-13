@@ -17,7 +17,6 @@ class ::items_classes.Chest extends ItemExternal {
 
   _isInitialized = false
   generator = null
-  categoryWeight = null
 
   function getGenerator()
   {
@@ -108,7 +107,7 @@ class ::items_classes.Chest extends ItemExternal {
       getMarketablePropDesc(),
       getCurExpireTimeText(),
       getDescRecipesText(params),
-      (hasContent ? ::PrizesView.getPrizesListText(content, getDescHeaderFunction()) : ""),
+      (hasContent ? ::PrizesView.getPrizesListText(content, _getDescHeader) : ""),
       getHiddenItemsDesc() || "",
       getLongDescription(),
     ], "\n")
@@ -119,36 +118,21 @@ class ::items_classes.Chest extends ItemExternal {
     return itemDef?.tags?.hideDesc ? "" : (itemDef?.description ?? "")
   }
 
-  function getDescHeaderFunction() {
-    return isContentPack() ? (@(fixedAmount = 1) ::loc("trophy/chest_contents/all"))
-      : _getDescHeader
-  }
-
   function getLongDescriptionMarkup(params = null)
   {
     params = params || {}
     params.receivedPrizes <- false
     params.needShowDropChance <- needShowDropChance()
+
     local content = getContent()
     local hasContent = content.len() != 0
 
-    local prizeMarkupArray = [::PrizesView.getPrizesListView([], { header = getTransferText() }),
-      ::PrizesView.getPrizesListView([], { header = getMarketablePropDesc() }),
-      (hasTimer() ? ::PrizesView.getPrizesListView([], { header = getCurExpireTimeText(), timerId = "expire_timer" }) : ""),
-      getDescRecipesMarkup(clone params)
-    ]
-
-    if (hasContent) {
-      local categoryWeightArray = getCategoryWeight()
-      if (params.needShowDropChance && categoryWeightArray.len() > 0) {
-        params.categoryWeight <- categoryWeightArray
-        prizeMarkupArray.append(::PrizesView.getPrizesStacksViewByWeight(content, getDescHeaderFunction(),clone params))
-      }
-      else
-        prizeMarkupArray.append(::PrizesView.getPrizesStacksView(content, getDescHeaderFunction(), params))
-      prizeMarkupArray.append(::PrizesView.getPrizesListView([], { header = getHiddenItemsDesc() }))
-    }
-    return "".join(prizeMarkupArray)
+    return ::PrizesView.getPrizesListView([], { header = getTransferText() })
+      + ::PrizesView.getPrizesListView([], { header = getMarketablePropDesc() })
+      + (hasTimer() ? ::PrizesView.getPrizesListView([], { header = getCurExpireTimeText(), timerId = "expire_timer" }) : "")
+      + getDescRecipesMarkup(params)
+      + (hasContent ? ::PrizesView.getPrizesStacksView(content, _getDescHeader, params) : "")
+      + (hasContent ? ::PrizesView.getPrizesListView([], { header = getHiddenItemsDesc() }) : "")
   }
 
   function _getDescHeader(fixedAmount = 1)
@@ -209,8 +193,7 @@ class ::items_classes.Chest extends ItemExternal {
   })
 
   needShowDropChance = @() ::has_feature("ShowDropChanceInTrophy")
-    && ((itemDef?.tags?.showDropChance ?? false)
-      || getCategoryWeight().len() > 0)
+    && (itemDef?.tags?.showDropChance ?? false)
 
   function getTableData() {
     if (!needShowDropChance())
@@ -265,46 +248,5 @@ class ::items_classes.Chest extends ItemExternal {
       return ::loc($"{getLocIdsList().descReceipesListHeaderPrefix}item")
 
     return base.getDescRecipeListHeader(showAmount, totalAmount, isMultipleExtraItems, hasFakeRecipes, timeText)
-  }
-
-  function getCategoryWeight() {
-    if (categoryWeight != null)
-      return categoryWeight
-
-    categoryWeight = []
-    if (itemDef?.tags.categoryWeight == null)
-      return categoryWeight
-
-    foreach (category in (itemDef.tags % "categoryWeight")) {
-      local paramsArray = category.split("_")
-      if (paramsArray.len() < 2)
-        continue
-
-      local prizeType = paramsArray[0]
-      local weight = paramsArray[1]
-      local rarity = paramsArray?[2]
-      local hasRarity = rarity != null
-      local categoryIdx = categoryWeight.findindex(@(c) c.prizeType == prizeType)
-      if (categoryIdx == null) {
-        categoryWeight.append({
-          prizeType = prizeType
-          rarity = hasRarity ? [{ rarity = rarity, weight = weight }] : null
-          weight = hasRarity ? null : weight
-        })
-        continue
-      }
-
-      local categ = categoryWeight[categoryIdx]
-      if (categ?.weight != null)  //All prizes of this type are filled by one group
-        continue
-
-      if (!hasRarity) {
-        categ.__update({ weight = weight })
-        continue
-      }
-
-      categ.__update({ rarity = categ.rarity.append({ rarity = rarity, weight = weight }) })
-    }
-    return categoryWeight
   }
 }

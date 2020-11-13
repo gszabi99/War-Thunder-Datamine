@@ -1,8 +1,7 @@
 {
   "root": {
     "type": "big",
-    "blur": [],
-    "blur_foreground": [],
+    "background-color": "@modalShadeColor",
     "frame": [
       {
         "id": "wnd_frame"
@@ -118,6 +117,7 @@
               "margin-top": "1@buttonMargin",
               "text": "",
               "tooltip": "#filesystem/directoryPathInput",
+              "mouse-focusable": "yes",
               "on_set_focus": "onDirPathEditBoxFocus",
               "on_activate": "onDirPathEditBoxActivate",
               "on_cancel_edit": "onDirPathEditBoxCancelEdit",
@@ -159,7 +159,12 @@
             "moveX": "closest",
             "moveY": "linear",
             "scrollbarShortcuts": "yes",
+            "mouse-focusable": "yes",
             "navigatorShortcuts": "full",
+            "on_wrap_up": "onWrapUp",
+            "on_wrap_down": "onWrapDown",
+            "on_wrap_left": "onWrapUp",
+            "on_wrap_right": "onWrapDown",
             "on_click": "onNavListSelect",
             "on_select": "onNavListSelect"
           },
@@ -182,11 +187,16 @@
               "text-halign": "left",
               "navigatorShortcuts": "yes",
               "selfFocusBorder": "yes",
+              "selectOnAttach": "no",
               "moveX": "closest",
               "moveY": "linear",
               "on_click": "onFileTableClick",
               "on_dbl_click": "onFileTableDblClick",
-              "on_select": "onFileTableSelect"
+              "on_select": "onFileTableSelect",
+              "on_wrap_left": "onWrapUp",
+              "on_wrap_right": "onWrapDown",
+              "on_wrap_up": "onWrapUp",
+              "on_wrap_down": "onWrapDown"
             }
           }
         }
@@ -198,6 +208,7 @@
             "id": "file_name",
             "class": "fileDialogEditBox",
             "btnName": "X",
+            "mouse-focusable": "yes",
             "width": "fw",
             "text": "",
             "tooltip": "#filesystem/fileNameInput",
@@ -526,6 +537,27 @@
                             "gcButtonsInterval": "yes"
                           },
                           {
+                            "behaviour": "wrapNavigator"
+                          },
+                          {
+                            "navigatorShortcuts": "yes"
+                          },
+                          {
+                            "childsActivate": "yes"
+                          },
+                          {
+                            "on_wrap_up": "onWrapUp"
+                          },
+                          {
+                            "on_wrap_down": "onWrapDown"
+                          },
+                          {
+                            "on_wrap_left": "onTopGCPanelLeft"
+                          },
+                          {
+                            "on_wrap_right": "onTopGCPanelRight"
+                          },
+                          {
                             "Button_text": {
                               "id": "gc_clanTag",
                               "tooltip": "#mainmenu/btnClanCard",
@@ -616,6 +648,27 @@
                         },
                         {
                           "gcButtonsInterval": "yes"
+                        },
+                        {
+                          "behaviour": "wrapNavigator"
+                        },
+                        {
+                          "navigatorShortcuts": "yes"
+                        },
+                        {
+                          "childsActivate": "yes"
+                        },
+                        {
+                          "on_wrap_up": "onWrapUp"
+                        },
+                        {
+                          "on_wrap_down": "onWrapDown"
+                        },
+                        {
+                          "on_wrap_left": "onTopGCPanelLeft"
+                        },
+                        {
+                          "on_wrap_right": "onTopGCPanelRight"
                         },
                         {
                           "Button_text": [
@@ -831,6 +884,9 @@
               "shadowSafeArea": []
             },
             {
+              "line": []
+            },
+            {
               "tdiv": {
                 "size": "pw, 0.02@sf",
                 "pos": "0, ph",
@@ -871,7 +927,7 @@
                       "id": "slotbar-presetsPlace",
                       "size": "pw, ph",
                       "position": "absolute",
-                      "display": "hide"
+                      "pos": "1@dp, 0"
                     }
                   }
                 },
@@ -928,7 +984,14 @@
                     "position": "relative",
                     "top": "0.5(ph-h)",
                     "margin-right": "2@buttonTextPadding",
-                    "class": "header"
+                    "class": "header",
+                    "behaviour": "wrapNavigator",
+                    "navigatorShortcuts": "yes",
+                    "childsActivate": "yes",
+                    "on_wrap_up": "onWrapUp",
+                    "on_wrap_down": "onWrapDown",
+                    "on_wrap_left": "onWrapLeft",
+                    "on_wrap_right": "onWrapRight"
                   }
                 },
                 {
@@ -944,6 +1007,27 @@
                     },
                     {
                       "class": "header"
+                    },
+                    {
+                      "behaviour": "wrapNavigator"
+                    },
+                    {
+                      "navigatorShortcuts": "yes"
+                    },
+                    {
+                      "childsActivate": "yes"
+                    },
+                    {
+                      "on_wrap_up": "onWrapUp"
+                    },
+                    {
+                      "on_wrap_down": "onWrapDown"
+                    },
+                    {
+                      "on_wrap_left": "onBottomGCPanelLeft"
+                    },
+                    {
+                      "on_wrap_right": "onBottomGCPanelRight"
                     },
                     {
                       "Button_text": [

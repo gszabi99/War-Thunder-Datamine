@@ -669,15 +669,6 @@
       },
       {
         "event": {
-          "name": "fuel_internal",
-          "fx": {
-            "name": "tank_engine_fire",
-            "centerDmgPart": true
-          }
-        }
-      },
-      {
-        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -1746,6 +1737,10 @@
         "body_bottom_dm": {
           "armorThickness": 20.0
         },
+        "body_back_dm": {
+          "armorThickness": 20.0,
+          "hidableInViewer": true
+        },
         "superstructure_bottom_dm": {
           "armorThickness": 25.0
         },
@@ -1817,7 +1812,6 @@
         "stopChanceOnDeadPart": 0.0,
         "createSecondaryShatters": false,
         "hidableInViewer": true,
-        "ex_decor_01_dm": [],
         "ex_decor_r_01_dm": [],
         "ex_decor_r_02_dm": [],
         "ex_decor_r_03_dm": [],
@@ -1916,7 +1910,6 @@
         "wheel_r_top_01_dm": [],
         "wheel_r_top_02_dm": [],
         "wheel_r_top_03_dm": [],
-        "body_back_dm": [],
         "submodule": {
           "armorClass": "tank_traks",
           "armorThickness": 30.0,
@@ -2269,9 +2262,8 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 10.0,
-        "fireProtectionHp": 10.0,
-        "createSecondaryShatters": false,
+        "armorThrough": 12.0,
+        "fireProtectionHp": 15.0,
         "fireParamsPreset": "fuel_exterior",
         "fuel_tank_exterior_r_01_dm": [],
         "fuel_tank_exterior_r_02_dm": [],

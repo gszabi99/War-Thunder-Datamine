@@ -8,8 +8,6 @@
   "height-end": "100",
   "size-scale": "",
   "_size-timer": "0",
-  "on_anim_finish": "onBundleAnimFinish",
-  "on_hover": "onBundleHover",
   "div": {
     "pos": "50%pw-50%w, ph-h-1@modBundlePopupAdditionalBtnsHeight",
     "position": "absolute",
@@ -25,12 +23,13 @@
       "width": "@modCellWidth",
       "height": "@modCellHeight",
       "behavior": "posNavigator",
-      "navigatorShortcuts": "cancelNoSelect",
+      "navigatorShortcuts": "cancel",
       "moveX": "closest",
       "moveY": "linear",
       "disableFocusParent": "yes",
       "css-hier-invalidate": "yes",
-      "on_cancel_edit": "onCloseBundle"
+      "_on_wrap_up": "unstickCurBundle",
+      "_on_cancel_edit": "unstickCurBundle"
     }
   }
 }

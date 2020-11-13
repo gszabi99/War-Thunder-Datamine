@@ -1,10 +1,10 @@
 local platformModule = require("scripts/clientState/platform.nut")
 local extContactsService = require("scripts/contacts/externalContactsService.nut")
 
-local persistent = { isInitedXboxContacts = false }
+local persist = { isInitedXboxContacts = false }
 local pendingXboxContactsToUpdate = {}
 
-::g_script_reloader.registerPersistentData("XboxContactsManagerGlobals", persistent, ["isInitedXboxContacts"])
+::g_script_reloader.registerPersistentData("XboxContactsManagerGlobals", persist, ["isInitedXboxContacts"])
 
 local updateContactXBoxPresence = function(xboxId, isAllowed)
 {
@@ -36,15 +36,15 @@ local updateContacts = function(needIgnoreInitedFlag = false)
 {
   if (!::is_platform_xbox || !::isInMenu())
   {
-    if (needIgnoreInitedFlag && persistent.isInitedXboxContacts)
-      persistent.isInitedXboxContacts = false
+    if (needIgnoreInitedFlag && persist.isInitedXboxContacts)
+      persist.isInitedXboxContacts = false
     return
   }
 
-  if (!needIgnoreInitedFlag && persistent.isInitedXboxContacts)
+  if (!needIgnoreInitedFlag && persist.isInitedXboxContacts)
     return
 
-  persistent.isInitedXboxContacts = true
+  persist.isInitedXboxContacts = true
   fetchContactsList()
 }
 
@@ -194,7 +194,7 @@ local xboxOverlayContactClosedCallback = function(playerStatus)
 
 ::add_event_listener("SignOut", function(p) {
   pendingXboxContactsToUpdate.clear()
-  persistent.isInitedXboxContacts = false
+  persist.isInitedXboxContacts = false
 }, this)
 
 ::add_event_listener("XboxSystemUIReturn", function(p) {

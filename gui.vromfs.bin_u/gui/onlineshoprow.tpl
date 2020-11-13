@@ -8,15 +8,16 @@ td {
     id:t='amount';
     class:t='active';
     text-align:t='right';
+    overlayTextColor:t='active'
     min-width:t='0.13@sf';
-    text:t='<<amount>>';
+    text:t=' ';
     valign:t='center';
   }
 }
 td {
   activeText {
     id:t='discount';
-    text:t='<<savingText>>';
+    text:t=' ';
     text-align:t='left';
     valign:t='center'
   }
@@ -26,20 +27,21 @@ td {
     id:t='cost';
     class:t='active';
     text-align:t='right';
+    overlayTextColor:t='active'
     min-width:t='0.13@sf';
-    text:t='<<cost>>';
+    text:t=' ';
     valign:t='center';
   }
 }
 td {
-  id:t='<<rowName>>'
+  id:t='holder'
 
   Button_text {
     id:t='buttonBuy';
     pos:t='0, 50%ph-50%h';
     position:t='relative';
     noMargin:t='yes'
-    showOn:t='hoverOrPcSelect'
+    showOn:t='hoverOrSelect';
     btnName:t='A';
     on_click:t='onRowBuy';
 
@@ -64,7 +66,7 @@ td {
   }
   discount {
     id:t='buy-discount'
-    text:t='<<discount>>'
+    text:t=''
     pos:t='pw-65%w, -30%h'; position:t='absolute'
     rotation:t='-10'
   }

@@ -4,6 +4,7 @@ smallFont:t='yes'
 <<#taskDescription>>
 textareaNoTab {
   id:t='taskDescription'
+  padding-top:t='0.01@scrn_tgt'
   max-width:t='pw'
   <<#isPromo>>
   text-align:t='right'

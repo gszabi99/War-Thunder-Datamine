@@ -1,10 +1,7 @@
 <<#items>>
 shopFilter
 {
-  size:t='1@arrowButtonHeight, 1@arrowButtonHeight'
-  margin-left:t='0'
-  margin-top:t='0'
-  margin-bottom:t='0'
+  size:t='@mIco, @mIco'
   tooltip:t='<<tooltip>>'
   shopFilterImg
   {

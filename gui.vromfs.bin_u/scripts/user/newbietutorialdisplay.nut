@@ -1,5 +1,4 @@
-local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
-local { skipTutorialBitmaskId } = require("scripts/tutorials/tutorialsData.nut")
+local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
 
 local TUTORIAL_VERSION_COUNTER = 1
 
@@ -21,7 +20,7 @@ subscriptions.addListenersWithoutEnv({
     saveVersion()
     ::saveLocalByAccount("tutor", null)
     ::save_local_account_settings("tutor", null)
-    ::saveLocalByAccount(skipTutorialBitmaskId, null)
+    ::saveLocalByAccount(::skip_tutorial_bitmask_id, null)
   }
 }, ::g_listener_priority.CONFIG_VALIDATION)
 

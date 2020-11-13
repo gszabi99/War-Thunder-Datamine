@@ -16,6 +16,7 @@ class ::gui_handlers.EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
   sceneBlkName = "gui/items/everyDayLoginAward.blk"
+  shouldBlurSceneBg = false
   needVoiceChat = false
 
   stylePrefix = "every_day_award_trophy_"
@@ -46,8 +47,6 @@ class ::gui_handlers.EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT
     updateAwards()
     updateDaysProgressBar()
     fillOpenedChest()
-
-    ::move_mouse_on_obj(getObj("btn_nav_open"))
   }
 
   function updateHeader()
@@ -85,6 +84,7 @@ class ::gui_handlers.EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT
     local imageSectionNameAlt = "tencent_image"
     if (::is_vendor_tencent() && ::u.isDataBlock(data[imageSectionNameAlt]))
       imageSectionName = imageSectionNameAlt
+
 
     savePeriodAwardData(data)
 
@@ -194,16 +194,15 @@ class ::gui_handlers.EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT
       if (isOpened)
         return item.getOpenedBigIcon()
 
-      return ::handyman.renderCached("gui/items/item", {
-        items = item.getViewData({
-          enableBackground = false,
-          showAction = false,
-          showPrice = false,
-          bigPicture = true,
-          contentIcon = false,
-          skipNavigation = true,
-        })
-      })
+      return ::handyman.renderCached(("gui/items/item"), {
+                                                           items = item.getViewData({
+                                                             enableBackground = false,
+                                                             showAction = false,
+                                                             showPrice = false,
+                                                             bigPicture = true,
+                                                             contentIcon = false
+                                                            })
+                                                          })
     }
 
     ::dagor.debug("Every Day Login Award: not found item by id = " + id)
@@ -533,8 +532,7 @@ class ::gui_handlers.EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT
         enableBackground = true,
         itemHighlight = today? "white" : previousAwards? "black" : "none"
         openedPicture = previousAwards
-        showTooltip = !previousAwards
-        skipNavigation = previousAwards
+        showTooltip = offset >= 0
       })
 
       checkMissingDays(view, day, i)
@@ -572,7 +570,6 @@ class ::gui_handlers.EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT
       current = today
       havePeriodReward = recentRewardData != null
       periodicRewardImage = periodicRewImage
-      skipNavigation = true
       item = ::get_userlog_image_item(::ItemsManager.findItemById(::getTblValue("itemId", viewItemConfig)), viewItemConfig)
     }
   }
@@ -587,15 +584,7 @@ class ::gui_handlers.EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT
       daysDiff = 3
 
     for (local i = 1; i < daysDiff; i++)
-      view.items.append({
-        item = ::handyman.renderCached("gui/items/item", {
-          items = [{
-            enableBackground = true
-            skipNavigation = true
-          }]
-        }),
-        emptyBlock = "yes",
-      })
+      view.items.append({item = ::handyman.renderCached(("gui/items/item"), { items=[{enableBackground = true}] }), emptyBlock = "yes"})
   }
 
   function updateDaysProgressBar()

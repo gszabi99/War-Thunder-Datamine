@@ -26,6 +26,12 @@
         "on_select": "onChatTabChange"
       },
       {
+        "on_wrap_up": "onWrapUp"
+      },
+      {
+        "on_wrap_down": "onWrapDown"
+      },
+      {
         "shopFilter": {
           "id": "mpchat",
           "shopFilterText": {
@@ -66,6 +72,12 @@
       "size": "pw, @buttonHeight",
       "tdiv": {
         "id": "chat_prompt_place",
+        "behaviour": "wrapNavigator",
+        "navigatorShortcuts": "yes",
+        "childsActivate": "yes",
+        "on_wrap_up": "onWrapUp",
+        "on_wrap_down": "onWrapDown",
+        "on_wrap_right": "onWrapDown",
         "Button_text": {
           "id": "chat_prompt",
           "text": "",
@@ -88,7 +100,10 @@
         "max-len": "250",
         "on_activate": "onChatEntered",
         "on_cancel_edit": "onChatCancel",
-        "on_change_value": "onChatChanged"
+        "on_change_value": "onChatChanged",
+        "on_wrap_up": "onWrapUp",
+        "on_wrap_down": "onWrapDown",
+        "mouse-focusable": "yes"
       },
       "Button_text": {
         "id": "btn_send",

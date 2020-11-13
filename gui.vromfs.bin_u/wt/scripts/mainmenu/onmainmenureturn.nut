@@ -2,10 +2,10 @@ local onMainMenuReturnActions = require("scripts/mainmenu/onMainMenuReturnAction
 
 local time = require("scripts/time.nut")
 local penalties = require("scripts/penitentiary/penalties.nut")
-local itemNotifications = require("scripts/items/itemNotifications.nut")
-local { checkGaijinPassReminder } = require("scripts/mainmenu/reminderGaijinPass.nut")
+local itemNotifications = ::require("scripts/items/itemNotifications.nut")
 local { systemOptionsMaintain } = require("scripts/options/systemOptions.nut")
 local { checkJoystickThustmasterHotas } = require("scripts/controls/hotas.nut")
+local { checkGaijinPassReminder } = require("scripts/mainmenu/reminderGaijinPass.nut")
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
 local { checkInvitesAfterFlight } = require("scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")

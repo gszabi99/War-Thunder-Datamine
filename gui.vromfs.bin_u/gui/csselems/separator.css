@@ -6,32 +6,18 @@ blockSeparator {
 }
 
 gamercard blockSeparator {
-  size: 1@dp, ph - 6@dp;
-  pos: 0, 50%ph-50%h;
-  position: relative;
   margin:1@bigButtonTextPadding, 0;
-  background-color: @black;
   display:show;
 }
 
-gamercard activateTab > blockSeparator {
-  pos:pw, 50%ph-50%h;
-  position:absolute;
-  margin:0;
-}
-
-SlotbarBackground > blockSeparator {
-  size:pw, 3@dp;
-  pos:0, ph - h;
-  position:absolute;
-  background-color:@slotbarBgColor;
-}
-
 chapterSeparator {
-  width:1@dp;
+  width:@chapterSeparatorSize;
   height:ph;
   input-transparent:yes;
-  background-color:@separatorBlockColor;
+  background-repeat:expand;
+  background-position:0, 3;
+  background-color:@white;
+  background-image:#ui/gameuiskin#separator_vertical;
 }
 
 chapterSeparator.notFull {
@@ -53,6 +39,12 @@ trSeparator {
 
 rowSeparator {
   size: pw, 1@dp;
+  pos: 50%pw-50%w, 0;
   position: relative;
   background-color: @separatorBlockColor;
+}
+
+rowSeparator.inset {
+  pos: 0, ph - h;
+  position: absolute;
 }

@@ -1,6 +1,6 @@
 local { getRoleText } = require("scripts/unit/unitInfoTexts.nut")
 
-::TrophyMultiAward <- class
+class TrophyMultiAward
 {
   blk = null
   trophyWeak = null //req to generate tooltip id, and search trophy by award

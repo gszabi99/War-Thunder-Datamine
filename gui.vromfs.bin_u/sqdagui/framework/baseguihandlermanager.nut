@@ -1,6 +1,12 @@
 local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+local { isPlatformSony,
+        isPlatformXboxOne,
+        targetPlatform } = require("scripts/clientState/platform.nut")
 
 global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
+
+::dagui_propid.add_name_id("has_ime")
+::dagui_propid.add_name_id("target_platform")
 
 ::current_base_gui_handler <- null //active base handler in main gui scene
 ::always_reload_scenes <- false //debug only
@@ -44,7 +50,6 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
   beforeLoadHandler                  = function(hType) {}
   onBaseHandlerLoadFailed            = function(handler) {}
   beforeInitHandler                  = function(handler) {}
-  updateCssParams                    = function(guiScene) {}
 
   _loadHandlerRecursionLevel         = 0
 
@@ -412,8 +417,6 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
       handler.onSceneActivate(show)
   }
 
-  getRootScreenBlkPath = @() "gui/rootScreen.blk"
-
   //if guiScene == null, will be used current scene
   function clearScene(guiScene = null)
   {
@@ -423,9 +426,8 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
     beforeClearScene(guiScene)
 
-    guiScene.loadScene(getRootScreenBlkPath(), this)
+    guiScene.loadScene("gui/rootScreen.blk", this)
 
-    updateCssParams(guiScene)
     setGuiRootOptions(guiScene, false)
     startActionsDelay()
     guiScene.initCursor("gui/cursor.blk", "normal")
@@ -482,6 +484,12 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
     rootObj["show_console_buttons"] = ::show_console_buttons ? "yes" : "no" //should to force box buttons in WoP?
     if ("ps4_is_circle_selected_as_enter_button" in ::getroottable() && ::ps4_is_circle_selected_as_enter_button())
       rootObj["swap_ab"] = "yes";
+
+    //Check for special hints, because IME is called with special action, and need to show text about it
+    local hasIME = isPlatformSony || isPlatformXboxOne || ::is_platform_android || ::is_steam_big_picture()
+    rootObj["has_ime"] = hasIME? "yes" : "no"
+
+    rootObj["target_platform"] = targetPlatform
 
     if (!forceUpdate)
       return

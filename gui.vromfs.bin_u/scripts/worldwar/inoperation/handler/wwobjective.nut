@@ -20,6 +20,8 @@ class ::gui_handlers.wwObjective extends ::BaseGuiHandler
   reqFullMissionObjectsButton = true
   restrictShownObjectives = false
   hasObjectiveDesc = false
+  onWrapUpCb = null
+  onWrapDownCb = null
 
   function getSceneTplView()
   {
@@ -445,4 +447,7 @@ class ::gui_handlers.wwObjective extends ::BaseGuiHandler
   {
     ::ww_clear_outlined_zones()
   }
+
+  onWrapUp = @(obj) onWrapUpCb(obj)
+  onWrapDown = @(obj) onWrapDownCb(obj)
 }

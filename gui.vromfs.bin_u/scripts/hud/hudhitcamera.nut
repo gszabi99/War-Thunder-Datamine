@@ -29,7 +29,6 @@
 
   debuffTemplates = {
     [::ES_UNIT_TYPE_TANK] = "gui/hud/hudEnemyDebuffsTank.blk",
-    [::ES_UNIT_TYPE_BOAT] = "gui/hud/hudEnemyDebuffsShip.blk",
     [::ES_UNIT_TYPE_SHIP] = "gui/hud/hudEnemyDebuffsShip.blk",
   }
   debuffsListsByUnitType = {}

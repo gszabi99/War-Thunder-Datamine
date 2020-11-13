@@ -19,15 +19,6 @@ local pendingContactsChanges = {}
 local checkGroups = []
 
 
-//For now it is for PSN only. For all will be later
-local updateMuteStatus = function(contact = null) {
-  if (!contact)
-    return
-
-  local ircName = ::g_string.replace(contact.name, "@", "%40") //!!!Temp hack, *_by_uid will not be working on sony testing build
-  ::gchat_voice_mute_peer_by_name(contact.isInBlockGroup(), ircName)
-}
-
 local tryUpdateContacts = function(contactsBlk)
 {
   local haveAnyUpdate = false
@@ -56,7 +47,7 @@ local tryUpdateContacts = function(contactsBlk)
         else
           ::g_contacts.removeContact(contact, group)
 
-        updateMuteStatus(contact)
+        contact.updateMuteStatus()
       }
       ::broadcastEvent(contactEvent.CONTACTS_GROUP_UPDATE { groupName = group })
     }
@@ -258,6 +249,5 @@ local function updateContacts(needIgnoreInitedFlag = false) {
 })
 
 return {
-  updateContacts = updateContacts
-  updateMuteStatus = updateMuteStatus
+  updateContacts
 }

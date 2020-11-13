@@ -1,6 +1,4 @@
 // warning disable: -file:forbidden-function
-//
-
 
 ::debug_show_test_unlocks <- function debug_show_test_unlocks(chapter = "test", group = null)
 {
@@ -169,6 +167,3 @@ web_rpc.register_handler("exportUnlockInfo", exportUnlockInfo)
       needShowUnitTutorial = needTutorial
     })
 }
-//
-
-

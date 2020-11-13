@@ -34,6 +34,15 @@ imgButton {
       background-repeat:t='aspect-ratio';
     }
     <</image>>
+
+    <<#onDeleteClick>>
+      Button_close {
+        smallIcon:t='yes'
+        tooltip:t='#msgbox/btn_delete'
+        on_click:t='<<onDeleteClick>>'
+      }
+    <</onDeleteClick>>
+
   <</emptySlot>>
 
   <<^unlocked>>
@@ -103,18 +112,6 @@ imgButton {
 
   focus_border{}
 
-  <<^emptySlot>>
-    <<#onDeleteClick>>
-      hasButton:t='yes'
-      Button_close {
-        smallIcon:t='yes'
-        tooltip:t='#msgbox/btn_delete'
-        have_shortcut:t='no'
-        on_click:t='<<onDeleteClick>>'
-      }
-    <</onDeleteClick>>
-  <</emptySlot>>
-
   <<#tooltipId>>
     tooltipObj {
       tooltipId:t='<<tooltipId>>'
@@ -123,13 +120,8 @@ imgButton {
       max-width:t='8*@decalIconHeight+10*@sf/@pf_outdated'
       smallFont:t='yes';
       display:t='hide';
-
-      <<#tooltipOffset>>
-      style:t='tooltip-screen-offset:<<tooltipOffset>>;';
-      <</tooltipOffset>>
     }
     title:t='$tooltipObj';
-    tooltip-float:t='horizontal';
   <</tooltipId>>
 }
 <</buttons>>

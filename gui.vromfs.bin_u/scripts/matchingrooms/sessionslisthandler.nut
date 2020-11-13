@@ -116,9 +116,17 @@ class ::gui_handlers.SessionsList extends ::gui_handlers.GenericOptions
     onSessionsUpdate(null, 0.0)
     updateRoomsList()
     updateButtons()
+    initFocusArray()
 
     checkNotInvitablePlayers()
   }
+
+  function getMainFocusObj()
+  {
+    return sessionsListObj
+  }
+
+  getMainFocusObj2 = @() optionsContainer
 
   function initRoomsPerPage()
   {
@@ -174,7 +182,7 @@ class ::gui_handlers.SessionsList extends ::gui_handlers.GenericOptions
 
     if (!options) return
 
-    local container = create_options_container(optionsContainer, options, false, 0.5, true, false)
+    local container = create_options_container(optionsContainer, options, true, false, 0.5, true, false)
     local optObj = scene.findObject("session-options")
     if (::check_obj(optObj))
       guiScene.replaceContentFromText(optObj, container.tbl, container.tbl.len(), this)
@@ -368,7 +376,11 @@ class ::gui_handlers.SessionsList extends ::gui_handlers.GenericOptions
     sessionsListObj.deleteChildren()
     guiScene.appendWithBlk(sessionsListObj, data, this)
 
-    sessionsListObj.setValue(curPageRoomsList.len() > 0 ? selectedRow : -1)
+    if (curPageRoomsList.len() > 0)
+      sessionsListObj.setValue(selectedRow)
+    else
+      gui_bhv.TableNavigator.clearSelect(sessionsListObj)
+
     updateCurRoomInfo()
     updatePaginator(maxPage)
   }
@@ -415,7 +427,11 @@ class ::gui_handlers.SessionsList extends ::gui_handlers.GenericOptions
     updateCurRoomInfo()
   }
 
-  doSelectSessions = @() ::move_mouse_on_child_by_value(sessionsListObj)
+  function doSelectSessions()
+  {
+    if (::checkObj(sessionsListObj))
+      sessionsListObj.select()
+  }
 
   function onGamercard(obj)
   {

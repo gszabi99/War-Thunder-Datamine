@@ -35,6 +35,7 @@ tdiv {
     {
       size:t='0.5@sf, 2@buttonHeight'
       multiline:t='yes'
+      mouse-focusable:t='yes'
       text:t='<<fontsAdditionalText>>'
       on_change_value:t='onTextChange'
     }

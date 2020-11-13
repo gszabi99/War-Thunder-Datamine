@@ -2,6 +2,10 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 0.0
+    },
     "player": {
       "army": 1,
       "wing": "player"
@@ -12,33 +16,53 @@
     "mission": {
       "level": "levels/stalingrad.bin",
       "type": "training",
+      "restoreType": "manual",
+      "optionalTakeOff": false,
       "environment": "Day",
-      "weather": "cloudy",
+      "weather": "hazy",
       "gt_training": false,
+      "difficulty": "arcade",
+      "forceSkiesInitialRandomSeed": true,
+      "skiesInitialRandomSeed": 18,
       "isLimitedFuel": false,
       "isLimitedAmmo": false,
       "openDiffLevels": false,
-      "restoreType": "manual",
-      "difficulty": "arcade",
-      "optionalTakeOff": false,
-      "forceSkiesInitialRandomSeed": true,
-      "skiesInitialRandomSeed": 3,
       "customWeather": {
         "windDir": [0.6,0.8],
         "wind_scale": 1.0,
         "max_wind_strength": 6.0,
         "sky": {
-          "mie_height": 1.0
+          "mie_height": 1.0,
+          "mieG": 0.45,
+          "betaMScale": 0.55,
+          "clouds_overcast": 0.1
+        },
+        "clouds_gen": {
+          "humidity": 0.39,
+          "persistence": 0.66,
+          "asymmetry": 0.4
+        },
+        "clouds_position": {
+          "start_altitude": 1.0,
+          "thickness": 4.5,
+          "light_extinction": 0.2,
+          "amb_extinction_mul": 0.2
+        },
+        "clouds_render": {
+          "silver_lining": 0.2,
+          "sun_light": 1.1,
+          "ambient": 1.5,
+          "silver_lining_eccentricity": 0.6
         },
         "strata_clouds": {
           "amount": 0.5,
           "altitude": 11.0
+        },
+        "rain": {
+          "rainFromInvisibleClouds": false,
+          "probability": 0.0
         }
       }
-    },
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 0.0
     },
     "spectator_points": [],
     "briefing": {
@@ -232,9 +256,6 @@
         {
           "unitSetProperties": {
             "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "crowd_enemy_squad",
             "targetableByAi": false,
             "attack_type": "hold_fire",
@@ -246,9 +267,6 @@
         {
           "unitSetProperties": {
             "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "player",
             "isImmortal": true
           }
@@ -293,9 +311,6 @@
         {
           "unitSetProperties": {
             "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "enemy_planes",
             "effShootingRate": 0.1,
             "plane": {
@@ -319,9 +334,6 @@
             },
             {
               "fullRestore": true
-            },
-            {
-              "target_marking": 0
             },
             {
               "target": "player"
@@ -352,11 +364,6 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "speed": 200.0,
@@ -372,9 +379,6 @@
         {
           "unitSetProperties": {
             "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "dummy_airfield",
             "stealthRadius": 0.0
           }
@@ -473,10 +477,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "shouldBlink": false
           }
         },
@@ -494,10 +494,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "shouldBlink": false
           }
         },
@@ -554,11 +550,7 @@
             "shouldFadeOut": true,
             "time": -1.0,
             "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
+            "isOverFade": false
           }
         },
         {
@@ -583,10 +575,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "shouldBlink": false
           }
         },
@@ -604,10 +592,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "shouldBlink": false
           }
         },
@@ -663,10 +647,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "shouldBlink": false
           }
         },
@@ -692,10 +672,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "shouldBlink": false
           }
         },
@@ -713,10 +689,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "shouldBlink": false
           }
         },
@@ -766,10 +738,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "shouldBlink": false
           }
         },
@@ -795,10 +763,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "shouldBlink": false
           }
         },
@@ -816,10 +780,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "shouldBlink": false
           }
         },
@@ -880,10 +840,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "shouldBlink": false
           }
         },
@@ -910,10 +866,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_TOGGLE_VIEW",
             "shouldBlink": false
           }
@@ -975,10 +927,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "shouldBlink": false
           }
         },
@@ -1005,10 +953,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_TOGGLE_VIEW=2",
             "shouldBlink": false
           }
@@ -1070,10 +1014,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_TOGGLE_VIEW",
             "shouldBlink": false
           }
@@ -1097,10 +1037,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_TOGGLE_VIEW",
             "shouldBlink": false
           }
@@ -1252,10 +1188,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_TOGGLE_VIEW",
             "shouldBlink": false
           }
@@ -1286,10 +1218,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_CAMERA_BOMBVIEW",
             "shouldBlink": false
           }
@@ -1361,10 +1289,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_CAMERA_BOMBVIEW",
             "shouldBlink": false
           }
@@ -1401,10 +1325,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_BOMBS",
             "shouldBlink": false
           }
@@ -1424,9 +1344,7 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "tutorialB_bomber_destroy_airfield",
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "target": "tutorialB_bomber_destroy_airfield"
           }
         }
       ],
@@ -1473,10 +1391,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_BOMBS",
             "shouldBlink": false
           }
@@ -1527,10 +1441,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "shouldBlink": false
           }
         },
@@ -1560,10 +1470,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "shouldBlink": false
           }
         }
@@ -1598,10 +1504,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "shouldBlink": false
           }
         },
@@ -1639,10 +1541,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_BOMBS",
             "shouldBlink": false
           }
@@ -1696,10 +1594,6 @@
           "time": -1.0,
           "priority": 0,
           "isOverFade": false,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "shouldBlink": false
         },
         "missionSetTimeSpeed": {
@@ -1741,9 +1635,6 @@
           "check_objects": "all",
           "target_type": "isAlive",
           "check_period": 1.0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "player"
         },
         "varCompareInt": {
@@ -1766,9 +1657,6 @@
         {
           "unitSetProperties": {
             "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "crowd_enemy_vehicles06",
             "speed": 30.0
           }
@@ -1869,17 +1757,17 @@
         },
         {
           "unitPlayEffect": {
-            "effect": "bomb_expl_100kg",
+            "effect": "bomb_ground_explosion_big",
             "offset": [0.0,0.0,0.0],
             "show": true,
             "loop": false,
             "scale": 1.0,
             "effect_type": "specify",
+            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "explosion00",
-            "radiusOffset": [0.0,0.0]
+            "target": "explosion00"
           }
         },
         {
@@ -1895,17 +1783,17 @@
         },
         {
           "unitPlayEffect": {
-            "effect": "bomb_expl_100kg",
+            "effect": "bomb_ground_explosion_big",
             "offset": [0.0,0.0,0.0],
             "show": true,
             "loop": false,
             "scale": 1.0,
             "effect_type": "specify",
+            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "explosion01",
-            "radiusOffset": [0.0,0.0]
+            "target": "explosion01"
           }
         },
         {
@@ -1921,17 +1809,17 @@
         },
         {
           "unitPlayEffect": {
-            "effect": "bomb_expl_100kg",
+            "effect": "bomb_ground_explosion_big",
             "offset": [0.0,0.0,0.0],
             "show": true,
             "loop": false,
             "scale": 1.0,
             "effect_type": "specify",
+            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "explosion02",
-            "radiusOffset": [0.0,0.0]
+            "target": "explosion02"
           }
         },
         {
@@ -1947,17 +1835,17 @@
         },
         {
           "unitPlayEffect": {
-            "effect": "bomb_expl_100kg",
+            "effect": "bomb_ground_explosion_big",
             "offset": [0.0,0.0,0.0],
             "show": true,
             "loop": false,
             "scale": 1.0,
             "effect_type": "specify",
+            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "explosion03",
-            "radiusOffset": [0.0,0.0]
+            "target": "explosion03"
           }
         },
         {
@@ -1973,17 +1861,17 @@
         },
         {
           "unitPlayEffect": {
-            "effect": "bomb_expl_100kg",
+            "effect": "bomb_ground_explosion_big",
             "offset": [0.0,0.0,0.0],
             "show": true,
             "loop": false,
             "scale": 1.0,
             "effect_type": "specify",
+            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "explosion04",
-            "radiusOffset": [0.0,0.0]
+            "target": "explosion04"
           }
         },
         {
@@ -2004,17 +1892,17 @@
         },
         {
           "unitPlayEffect": {
-            "effect": "bomb_expl_100kg",
+            "effect": "bomb_ground_explosion_big",
             "offset": [0.0,0.0,0.0],
             "show": true,
             "loop": false,
             "scale": 1.0,
             "effect_type": "specify",
+            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "explosion05",
-            "radiusOffset": [0.0,0.0]
+            "target": "explosion05"
           }
         },
         {
@@ -2031,7 +1919,7 @@
         {
           "unitPlayEffect": [
             {
-              "effect": "bomb_expl_100kg"
+              "effect": "bomb_ground_explosion_big"
             },
             {
               "offset": [0.0,0.0,0.0]
@@ -2049,6 +1937,9 @@
               "effect_type": "specify"
             },
             {
+              "radiusOffset": [0.0,0.0]
+            },
+            {
               "attach": false
             },
             {
@@ -2062,9 +1953,6 @@
             },
             {
               "target": "explosion07"
-            },
-            {
-              "radiusOffset": [0.0,0.0]
             }
           ]
         },
@@ -2088,17 +1976,17 @@
         },
         {
           "unitPlayEffect": {
-            "effect": "bomb_expl_100kg",
+            "effect": "bomb_ground_explosion_big",
             "offset": [0.0,0.0,0.0],
             "show": true,
             "loop": false,
             "scale": 1.0,
             "effect_type": "specify",
+            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "explosion08",
-            "radiusOffset": [0.0,0.0]
+            "target": "explosion08"
           }
         },
         {
@@ -2114,17 +2002,17 @@
         },
         {
           "unitPlayEffect": {
-            "effect": "bomb_expl_100kg",
+            "effect": "bomb_ground_explosion_big",
             "offset": [0.0,0.0,0.0],
             "show": true,
             "loop": false,
             "scale": 1.0,
             "effect_type": "specify",
+            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "explosion09",
-            "radiusOffset": [0.0,0.0]
+            "target": "explosion09"
           }
         },
         {
@@ -2140,17 +2028,17 @@
         },
         {
           "unitPlayEffect": {
-            "effect": "bomb_expl_100kg",
+            "effect": "bomb_ground_explosion_big",
             "offset": [0.0,0.0,0.0],
             "show": true,
             "loop": false,
             "scale": 1.0,
             "effect_type": "specify",
+            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "explosion10",
-            "radiusOffset": [0.0,0.0]
+            "target": "explosion10"
           }
         },
         {
@@ -2162,9 +2050,6 @@
         {
           "unitSetProperties": {
             "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "crowd_enemy_squad",
             "stealthRadius": 0.0
           }
@@ -2322,9 +2207,6 @@
         {
           "unitSetProperties": {
             "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "dummy_airfield",
             "stealthRadius": 0.0
           }
@@ -2332,9 +2214,7 @@
         {
           "moSetObjectiveStatus": {
             "target": "tutorialB_bomber_destroy_airfield",
-            "status": 2,
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "status": 2
           }
         },
         {
@@ -2386,9 +2266,6 @@
           "check_objects": "all",
           "target_type": "isAlive",
           "check_period": 1.0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "player"
         }
       },
@@ -2528,10 +2405,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "shouldBlink": false
           }
         },
@@ -2550,10 +2423,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "shouldBlink": false
           }
         },
@@ -2571,10 +2440,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "shouldBlink": false
           }
         },
@@ -2781,9 +2646,6 @@
         {
           "unitSetProperties": {
             "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "player",
             "isImmortal": true
           }
@@ -2797,10 +2659,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "shouldBlink": false
           }
         },
@@ -2836,9 +2694,6 @@
               "fullRestore": true
             },
             {
-              "target_marking": 0
-            },
-            {
               "target": "player"
             },
             {
@@ -2867,11 +2722,6 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "speed": 250.0,
@@ -2897,11 +2747,6 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "enemy_planes",
             "move_type": "teleport",
             "lookat": "player_spawn02",
@@ -3005,10 +2850,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_CAMERA_GUNNER",
             "shouldBlink": false
           }
@@ -3216,9 +3057,6 @@
         {
           "unitSetProperties": {
             "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "player",
             "isImmortal": true
           }
@@ -3232,10 +3070,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "shouldBlink": false
           }
         },
@@ -3271,9 +3105,6 @@
               "fullRestore": true
             },
             {
-              "target_marking": 0
-            },
-            {
               "target": "player"
             },
             {
@@ -3302,11 +3133,6 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "speed": 250.0,
@@ -3332,11 +3158,6 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "enemy_planes",
             "move_type": "teleport",
             "lookat": "player_spawn02",
@@ -3465,10 +3286,6 @@
           "time": -1.0,
           "priority": 0,
           "isOverFade": false,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "item": "ID_TOGGLE_VIEW",
           "shouldBlink": false
         },
@@ -3551,10 +3368,6 @@
           "time": -1.0,
           "priority": 0,
           "isOverFade": false,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "item": "ID_TOGGLE_VIEW=2",
           "shouldBlink": false
         },
@@ -3613,10 +3426,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "ID_CAMERA_GUNNER",
             "shouldBlink": false
           }
@@ -3693,9 +3502,7 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "tutorialB_bomber_destroy_planes",
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "target": "tutorialB_bomber_destroy_planes"
           }
         },
         {
@@ -3723,9 +3530,6 @@
           "unitSetIndication": {
             "set": true,
             "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "target": "enemy_planes"
           }
         },
@@ -3738,10 +3542,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "item": "pseudo_fire",
             "shouldBlink": false
           }
@@ -3773,18 +3573,6 @@
             },
             {
               "isOverFade": false
-            },
-            {
-              "target_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
             },
             {
               "item": "ID_FIRE"
@@ -3831,9 +3619,6 @@
             "check_objects": "all",
             "target_type": "isAlive",
             "check_period": 1.0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "player"
           }
         },
@@ -3990,10 +3775,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "shouldBlink": false
           }
         },
@@ -4012,10 +3793,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "shouldBlink": false
           }
         },
@@ -4033,10 +3810,6 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "shouldBlink": false
           }
         },
@@ -4078,9 +3851,6 @@
           "check_objects": "all",
           "target_type": "isAlive",
           "check_period": 1.0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "enemy_planes"
         }
       },
@@ -4213,9 +3983,7 @@
         {
           "moSetObjectiveStatus": {
             "target": "tutorialB_bomber_destroy_planes",
-            "status": 2,
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "status": 2
           }
         },
         {
@@ -4263,8 +4031,6 @@
           "target_marking": 0,
           "check_objects": "all",
           "check_targets": "any",
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
           "object": "player",
           "target": "enemy_planes"
         }
@@ -4411,20 +4177,12 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "enemy_planes"
           }
         },
         {
           "unitSetProperties": {
             "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "enemy_planes",
             "attack_type": "hold_fire"
           }
@@ -4449,19 +4207,13 @@
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "shouldBlink": false
           }
         },
         {
           "moSetObjectiveStatus": {
             "target": "tutorialB_bomber_destroy_planes",
-            "status": 2,
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "status": 2
           }
         },
         {
@@ -4541,7 +4293,6 @@
         "unitRestore": {
           "ressurectIfDead": false,
           "fullRestore": true,
-          "target_marking": 0,
           "target": "player",
           "ammoRestore": true
         },
@@ -4984,11 +4735,7 @@
           "shouldFadeOut": true,
           "time": -1.0,
           "priority": 0,
-          "isOverFade": false,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0
+          "isOverFade": false
         },
         "missionPlayDialogue": {
           "dialog": "tutorialB_bomber_turrets_p04",
@@ -5306,7 +5053,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5354,7 +5100,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5378,7 +5123,6 @@
           [-6875.67,94.8005,3843.63]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": "enemy_planes"
         }
       }
@@ -5405,7 +5149,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 2,
@@ -5453,7 +5196,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5477,9 +5219,6 @@
           [-12298.1,-75.3415,3279.72]
         ],
         "props": [
-          {
-            "object_marking": 0
-          },
           {
             "squad_members": "damagable_place01"
           },
@@ -5511,7 +5250,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5561,7 +5299,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5611,7 +5348,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5661,7 +5397,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5711,7 +5446,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5761,7 +5495,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5811,7 +5544,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5861,7 +5593,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5911,7 +5642,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5961,7 +5691,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6011,7 +5740,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6061,7 +5789,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6111,7 +5838,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6161,7 +5887,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 4,
@@ -6197,7 +5922,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 4,
@@ -6233,7 +5957,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 3,
@@ -6269,7 +5992,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 3,
@@ -6305,7 +6027,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 3,
@@ -6341,7 +6062,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 8,
@@ -6365,9 +6085,6 @@
           [-11760.0,179.55,1772.5]
         ],
         "props": [
-          {
-            "object_marking": 0
-          },
           {
             "squad_members": "crowd_enemy_plane00"
           },
@@ -6453,7 +6170,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 2,

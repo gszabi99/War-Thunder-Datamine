@@ -6,16 +6,9 @@ local mkSelItem = @(state, onClickCtor=null, isCurrent=null, textCtor=null, elem
   local onClick = onClickCtor!=null ? onClickCtor(p, idx) : @() state(p)
   local text = textCtor != null ? textCtor(p, idx, stateFlags) : p
   local {textCommonColor, textActiveColor, textHoverColor, borderColor, borderRadius, borderWidth,
-        bkgActiveColor, bkgHoverColor, bkgNormalColor, padding} = defStyle.elemStyle.__merge(style ?? {})
+        bkgActiveColor, bkgHoverColor, bkgNormalColor, padding} = (style ?? defStyle.elemStyle)
   return function(){
     local selected = isCurrent(p, idx)
-    local nBw = borderWidth
-    if (list.len() > 2) {
-      if (idx != list.len()-1 && idx != 0)
-        nBw = [borderWidth,0,borderWidth,borderWidth]
-      if (idx == 1)
-        nBw = [borderWidth,0,borderWidth,0]
-    }
     return {
       size = SIZE_TO_CONTENT
       rendObj = ROBJ_BOX
@@ -37,13 +30,13 @@ local mkSelItem = @(state, onClickCtor=null, isCurrent=null, textCtor=null, elem
       }
       onClick = onClick
       borderColor = borderColor
-      borderWidth = nBw
+      borderWidth = borderWidth
       borderRadius = list.len()==1 || (borderRadius ?? 0)==0
         ? borderRadius
         : idx==0
-          ? [borderRadius, 0, 0, borderRadius]
+          ? [borderRadius,0,0, borderRadius]
           : idx==list.len()-1
-            ? [0,borderRadius, borderRadius, 0]
+            ? [0,borderRadius,borderRadius, 0]
             : 0
       fillColor = stateFlags.value & S_HOVER
         ? bkgActiveColor
@@ -54,12 +47,12 @@ local mkSelItem = @(state, onClickCtor=null, isCurrent=null, textCtor=null, elem
   }
 }  : elemCtor
 
-local select = ::kwarg(function selectImpl(state, options, onClickCtor=null, isCurrent=null, textCtor=null, elemCtor=null, elem_style=null, root_style=null, flow = FLOW_HORIZONTAL){
-  local selItem = mkSelItem(state, onClickCtor, isCurrent, textCtor, elemCtor, elem_style)
+local select = ::kwarg(function selectImpl(state, options, onClickCtor=null, isCurrent=null, textCtor=null, elem_style=null, root_style=null){
+  local selItem = mkSelItem(state, onClickCtor, isCurrent, textCtor, elem_style)
   return function(){
     return {
       size = SIZE_TO_CONTENT
-      flow = flow
+      flow = FLOW_HORIZONTAL
       children = options.map(selItem)
     }.__update(root_style ?? defStyle.rootStyle)
   }

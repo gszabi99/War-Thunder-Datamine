@@ -12,29 +12,53 @@
     "mission": {
       "level": "levels/arcade_alps.bin",
       "type": "singleMission",
-      "environment": "Day",
-      "weather": "cloudy",
-      "gt_cooperative": false,
-      "openDiffLevels": false,
-      "scoreLimit": 5000,
-      "timeLimit": 15,
-      "country_axis": "germany",
-      "country_allies": "britain",
       "restoreType": "manual",
-      "difficulty": "arcade",
       "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "clear",
       "forceSkiesInitialRandomSeed": true,
       "skiesInitialRandomSeed": 237,
+      "scoreLimit": 5000,
+      "timeLimit": 15,
+      "gt_cooperative": false,
+      "country_axis": "germany",
+      "country_allies": "britain",
+      "difficulty": "arcade",
+      "openDiffLevels": false,
       "customWeather": {
         "windDir": [0.6,0.8],
         "wind_scale": 1.0,
         "max_wind_strength": 6.0,
         "sky": {
-          "mie_height": 1.2
+          "mie_height": 1.2,
+          "mieG": 0.5,
+          "betaMScale": 0.5,
+          "clouds_overcast": 0.5
+        },
+        "clouds_gen": {
+          "humidity": 0.25,
+          "persistence": 0.6,
+          "asymmetry": 0.4
+        },
+        "clouds_position": {
+          "start_altitude": 2.0,
+          "thickness": 4.0,
+          "light_extinction": 1.0,
+          "amb_extinction_mul": 1.0
+        },
+        "clouds_render": {
+          "silver_lining": 0.7,
+          "sun_light": 0.7,
+          "ambient": 0.8,
+          "silver_lining_eccentricity": 0.6
         },
         "strata_clouds": {
           "amount": 0.5,
           "altitude": 11.0
+        },
+        "rain": {
+          "rainFromInvisibleClouds": false,
+          "probability": 0.0
         }
       }
     },
@@ -87,6 +111,9 @@
               "offset": [0.0,0.0,0.0]
             },
             {
+              "radiusOffset": [0.0,0.0]
+            },
+            {
               "show": true
             },
             {
@@ -100,9 +127,6 @@
             },
             {
               "target": "@future_waypoint_str"
-            },
-            {
-              "radiusOffset": [0.0,0.0]
             }
           ]
         },
@@ -153,15 +177,6 @@
             "shouldKeepFormation": false,
             "teleportHeightValue": 0.0,
             "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "lookat": "@current_waypoint_str"
@@ -244,10 +259,6 @@
         },
         {
           "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "planes_squad",
             "speed": 700.0,
             "lockSpeed": true,
@@ -294,10 +305,6 @@
         },
         {
           "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "player",
             "isImmortal": true
           }
@@ -345,9 +352,7 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "alps_demo_mission_main_objective",
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "target": "alps_demo_mission_main_objective"
           }
         },
         {
@@ -382,11 +387,6 @@
           "shouldFadeOut": false,
           "time": -1.0,
           "priority": 0,
-          "isOverFade": false,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "item": "ID_CONTINUE",
           "shouldBlink": false
         },
@@ -450,11 +450,6 @@
             "shouldFadeOut": false,
             "time": -1.0,
             "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "shouldBlink": false
           }
         },
@@ -526,8 +521,6 @@
           "object_type": "isAlive",
           "object_marking": 0,
           "check_objects": "any",
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
           "object": "player",
           "target": "@current_waypoint_str"
         }
@@ -546,11 +539,6 @@
             "shouldFadeOut": false,
             "time": -1.0,
             "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "shouldBlink": false
           }
         },
@@ -665,11 +653,11 @@
             "delay": [1.0,1.0],
             "effect": "pv_point_smoke_blue",
             "offset": [0.0,0.0,0.0],
+            "radiusOffset": [0.0,0.0],
             "show": true,
             "attach": true,
             "scale": 3.0,
-            "target": "@future_waypoint_str",
-            "radiusOffset": [0.0,0.0]
+            "target": "@future_waypoint_str"
           }
         },
         {
@@ -721,11 +709,11 @@
           "delay": [1.0,1.0],
           "effect": "pv_point_smoke_blue",
           "offset": [0.0,0.0,0.0],
+          "radiusOffset": [0.0,0.0],
           "show": false,
           "attach": true,
           "scale": 1.0,
-          "target": "@past_waypoint_str",
-          "radiusOffset": [0.0,0.0]
+          "target": "@past_waypoint_str"
         },
         "missionMarkAsWaypoint": {
           "visible": false,
@@ -761,11 +749,6 @@
             "shouldFadeOut": false,
             "time": 6.0,
             "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "shouldBlink": false
           }
         },
@@ -782,11 +765,6 @@
             "shouldFadeOut": false,
             "time": -1.0,
             "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "shouldBlink": false
           }
         }
@@ -987,9 +965,7 @@
       "actions": {
         "moSetObjectiveStatus": {
           "target": "alps_demo_mission_main_objective",
-          "status": 2,
-          "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "status": 2
         },
         "wait": {
           "time": 2.0
@@ -1023,9 +999,6 @@
             "object_marking": 0,
             "target_type": "isAlive",
             "check_period": 1.0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "player"
           }
         },
@@ -1036,9 +1009,6 @@
             "object_marking": 0,
             "target_type": "isAlive",
             "check_period": 1.0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "player"
           }
         }
@@ -1060,7 +1030,6 @@
           "unitRestore": {
             "ressurectIfDead": true,
             "fullRestore": true,
-            "target_marking": 0,
             "target": "player",
             "ammoRestore": true
           }
@@ -1079,15 +1048,6 @@
             "shouldKeepFormation": false,
             "teleportHeightValue": 700.0,
             "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "lookat": "@current_waypoint_str"
@@ -1129,9 +1089,6 @@
             "object_marking": 0,
             "target_type": "isAlive",
             "check_period": 1.0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "player"
           }
         },
@@ -1142,9 +1099,6 @@
             "object_marking": 0,
             "target_type": "isAlive",
             "check_period": 1.0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "player"
           }
         }
@@ -1166,7 +1120,6 @@
           "unitRestore": {
             "ressurectIfDead": true,
             "fullRestore": true,
-            "target_marking": 0,
             "target": "player",
             "ammoRestore": true
           }
@@ -1185,15 +1138,6 @@
             "shouldKeepFormation": false,
             "teleportHeightValue": 500.0,
             "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport"
           }
@@ -1267,10 +1211,6 @@
         },
         {
           "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "event_plane01",
             "isImmortal": true
           }
@@ -1287,11 +1227,11 @@
             "delay": [1.0,1.0],
             "effect": "major_fuel_fire",
             "offset": [0.0,0.0,0.0],
+            "radiusOffset": [0.0,0.0],
             "show": true,
             "attach": true,
             "scale": 1.0,
-            "target": "event_plane01",
-            "radiusOffset": [0.0,0.0]
+            "target": "event_plane01"
           }
         },
         {
@@ -1308,15 +1248,6 @@
             "shouldKeepFormation": false,
             "teleportHeightValue": 1000.0,
             "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "event_plane01"
           }
         },
@@ -1349,33 +1280,6 @@
               "horizontalDirectionForTeleport": true
             },
             {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "target_marking": 0
-            },
-            {
-              "waypointReachedDist": 10.0
-            },
-            {
-              "recalculatePathDist": -1.0
-            },
-            {
-              "fastClimb": false
-            },
-            {
-              "destTimeMode": false
-            },
-            {
               "object": "event_plane02"
             },
             {
@@ -1405,8 +1309,6 @@
           "object_type": "isAlive",
           "object_marking": 0,
           "check_objects": "any",
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
           "object": "player",
           "target": "event_area02"
         }
@@ -1419,10 +1321,6 @@
         },
         {
           "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "event_planes_squad02",
             "speed": 600.0,
             "lockSpeed": true,
@@ -1445,15 +1343,6 @@
             "shouldKeepFormation": false,
             "teleportHeightValue": 1000.0,
             "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "event_planes_squad02"
           }
         },
@@ -1466,15 +1355,6 @@
             "shouldKeepFormation": false,
             "teleportHeightValue": 0.0,
             "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "event_plane04",
             "move_type": "teleport",
             "follow_radius": 5.0,
@@ -1492,15 +1372,6 @@
             "shouldKeepFormation": false,
             "teleportHeightValue": 0.0,
             "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "event_plane05",
             "move_type": "teleport",
             "follow_offset": [5.0,0.0,-10.0],
@@ -1548,15 +1419,6 @@
             "shouldKeepFormation": false,
             "teleportHeightValue": 1000.0,
             "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "event_planes_squad02"
           }
         },
@@ -1584,10 +1446,6 @@
         },
         {
           "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "event_plane14",
             "speed": 700.0,
             "lockSpeed": true,
@@ -1612,15 +1470,6 @@
             "shouldKeepFormation": false,
             "teleportHeightValue": 1000.0,
             "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "event_plane14"
           }
         },
@@ -1649,15 +1498,6 @@
             "shouldKeepFormation": false,
             "teleportHeightValue": 1000.0,
             "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
             "object": "event_planes_squad02"
           }
         }
@@ -1683,8 +1523,6 @@
           "object_type": "isAlive",
           "object_marking": 0,
           "check_objects": "any",
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
           "object": "player",
           "target": "waypoint08"
         }
@@ -1800,8 +1638,6 @@
           "object_type": "isAlive",
           "object_marking": 0,
           "check_objects": "any",
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
           "object": "player",
           "target": "waypoint09"
         }
@@ -1819,18 +1655,6 @@
         },
         {
           "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
             {
               "object": "dummies_squad"
             },
@@ -1902,7 +1726,6 @@
           "unitRestore": {
             "ressurectIfDead": false,
             "fullRestore": false,
-            "target_marking": 0,
             "target": "event_planes_squad04",
             "ammoRestore": true
           }
@@ -1956,8 +1779,6 @@
           "object_type": "isAlive",
           "object_marking": 0,
           "check_objects": "any",
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
           "object": "player",
           "target": "waypoint10"
         }
@@ -1981,6 +1802,9 @@
               "offset": [0.0,0.0,0.0]
             },
             {
+              "radiusOffset": [0.0,0.0]
+            },
+            {
               "show": true
             },
             {
@@ -1997,9 +1821,6 @@
             },
             {
               "target": "effect_area03"
-            },
-            {
-              "radiusOffset": [0.0,0.0]
             },
             {
               "delayForObjects": [1.0,3.0]
@@ -2029,6 +1850,9 @@
               "offset": [0.0,0.0,0.0]
             },
             {
+              "radiusOffset": [0.0,0.0]
+            },
+            {
               "show": true
             },
             {
@@ -2048,9 +1872,6 @@
             },
             {
               "target": "effect_area07"
-            },
-            {
-              "radiusOffset": [0.0,0.0]
             },
             {
               "delayForObjects": [1.0,3.0]
@@ -2080,6 +1901,9 @@
               "offset": [0.0,0.0,0.0]
             },
             {
+              "radiusOffset": [0.0,0.0]
+            },
+            {
               "show": true
             },
             {
@@ -2096,9 +1920,6 @@
             },
             {
               "target": "effect_area10"
-            },
-            {
-              "radiusOffset": [0.0,0.0]
             },
             {
               "delayForObjects": [1.0,3.0]
@@ -2128,6 +1949,9 @@
               "offset": [0.0,0.0,0.0]
             },
             {
+              "radiusOffset": [0.0,0.0]
+            },
+            {
               "show": true
             },
             {
@@ -2144,9 +1968,6 @@
             },
             {
               "target": "effect_area13"
-            },
-            {
-              "radiusOffset": [0.0,0.0]
             },
             {
               "delayForObjects": [2.0,3.0]
@@ -2176,6 +1997,9 @@
               "offset": [0.0,0.0,0.0]
             },
             {
+              "radiusOffset": [0.0,0.0]
+            },
+            {
               "show": true
             },
             {
@@ -2192,9 +2016,6 @@
             },
             {
               "target": "effect_area16"
-            },
-            {
-              "radiusOffset": [0.0,0.0]
             },
             {
               "delayForObjects": [1.0,3.0]
@@ -2219,6 +2040,9 @@
               "offset": [0.0,0.0,0.0]
             },
             {
+              "radiusOffset": [0.0,0.0]
+            },
+            {
               "show": true
             },
             {
@@ -2241,9 +2065,6 @@
             },
             {
               "target": "effect_area21"
-            },
-            {
-              "radiusOffset": [0.0,0.0]
             },
             {
               "delayForObjects": [1.0,3.0]
@@ -2271,6 +2092,9 @@
             },
             {
               "offset": [0.0,0.0,0.0]
+            },
+            {
+              "radiusOffset": [0.0,0.0]
             },
             {
               "show": true
@@ -2303,9 +2127,6 @@
               "target": "effect_area28"
             },
             {
-              "radiusOffset": [0.0,0.0]
-            },
-            {
               "delayForObjects": [1.0,3.0]
             }
           ]
@@ -2322,11 +2143,11 @@
             "delay": [1.0,1.0],
             "effect": "bomb_ground_explosion_big",
             "offset": [0.0,0.0,0.0],
+            "radiusOffset": [0.0,0.0],
             "show": true,
             "attach": false,
             "scale": 1.0,
             "target": "dummies_squad",
-            "radiusOffset": [0.0,0.0],
             "delayForObjects": [2.0,4.0]
           }
         }
@@ -2352,8 +2173,6 @@
           "object_type": "isAlive",
           "object_marking": 0,
           "check_objects": "any",
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
           "object": "player",
           "target": "waypoint05"
         }
@@ -2365,11 +2184,11 @@
           "delay": [1.0,1.0],
           "effect": "pv_point_smoke_blue",
           "offset": [0.0,0.0,0.0],
+          "radiusOffset": [0.0,0.0],
           "show": true,
           "attach": true,
           "scale": 3.0,
-          "target": "waypoint08",
-          "radiusOffset": [0.0,0.0]
+          "target": "waypoint08"
         }
       },
       "else_actions": []
@@ -2446,8 +2265,6 @@
         "unit_class": "boomerang_mkii",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -2457,7 +2274,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -2689,8 +2505,6 @@
         "unit_class": "ki-49_2b",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -2700,7 +2514,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -2734,9 +2547,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane01_wp_03": {
@@ -2750,9 +2561,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane01_wp_05": {
@@ -2766,9 +2575,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane01_wp_06": {
@@ -2782,9 +2589,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane01_wp_07": {
@@ -2798,9 +2603,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane01_wp_08": {
@@ -2814,9 +2617,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane01_wp_09": {
@@ -2830,9 +2631,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane01_wp_10": {
@@ -2846,9 +2645,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane01_wp_11": {
@@ -2862,9 +2659,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane01_wp_12": {
@@ -2878,9 +2673,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           }
         }
@@ -2898,8 +2691,6 @@
         "unit_class": "beaufort_mkviii",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -2909,7 +2700,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -2943,9 +2733,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane02_wp_02": {
@@ -2959,9 +2747,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane02_wp_03": {
@@ -2975,9 +2761,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane02_wp_04": {
@@ -2991,9 +2775,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane02_wp_05": {
@@ -3007,9 +2789,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane02_wp_06": {
@@ -3023,9 +2803,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane02_wp_07": {
@@ -3039,9 +2817,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane02_wp_08": {
@@ -3055,9 +2831,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane02_wp_09": {
@@ -3071,9 +2845,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane02_wp_10": {
@@ -3087,9 +2859,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           }
         }
@@ -3107,8 +2877,6 @@
         "unit_class": "sm_79_1942",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3118,7 +2886,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -3152,9 +2919,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane03_wp_02": {
@@ -3168,9 +2933,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane03_wp_03": {
@@ -3184,9 +2947,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane03_wp_04": {
@@ -3200,9 +2961,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane03_wp_05": {
@@ -3216,9 +2975,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane03_wp_06": {
@@ -3232,9 +2989,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane03_wp_07": {
@@ -3248,9 +3003,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane03_wp_08": {
@@ -3264,9 +3017,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane03_wp_09": {
@@ -3280,9 +3031,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane03_wp_10": {
@@ -3296,9 +3045,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           }
         }
@@ -3316,8 +3063,6 @@
         "unit_class": "tu-2_postwar",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3327,7 +3072,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -3361,9 +3105,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane04_wp_02": {
@@ -3377,9 +3119,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane04_wp_03": {
@@ -3393,9 +3133,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane04_wp_04": {
@@ -3409,9 +3147,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane04_wp_05": {
@@ -3425,9 +3161,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane04_wp_06": {
@@ -3441,9 +3175,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane04_wp_07": {
@@ -3457,9 +3189,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane04_wp_08": {
@@ -3473,9 +3203,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane04_wp_09": {
@@ -3489,9 +3217,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane04_wp_10": {
@@ -3505,9 +3231,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           }
         }
@@ -3525,8 +3249,6 @@
         "unit_class": "he-111h-16_winter",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3536,7 +3258,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -3570,9 +3291,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane05_wp_02": {
@@ -3586,9 +3305,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           }
         }
@@ -3606,8 +3323,6 @@
         "unit_class": "he-111h-16_winter",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3617,7 +3332,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -3651,9 +3365,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane06_wp_02": {
@@ -3667,9 +3379,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane06_wp_03": {
@@ -3683,9 +3393,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           }
         }
@@ -3703,8 +3411,6 @@
         "unit_class": "germ_panther_II",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "germ_panther_II_default",
         "bullets0": "",
         "bullets1": "",
@@ -3714,7 +3420,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 5,
@@ -3737,9 +3442,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           }
         }
@@ -3757,8 +3460,6 @@
         "unit_class": "ussr_t_34_1942",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3768,7 +3469,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 0,
           "count": 5,
@@ -3791,9 +3491,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           }
         }
@@ -3811,8 +3509,6 @@
         "unit_class": "germ_37mm_flak43",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3822,7 +3518,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 2,
@@ -3870,8 +3565,6 @@
         "unit_class": "germ_37mm_flak43",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3881,7 +3574,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 2,
@@ -3907,8 +3599,6 @@
         "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3918,7 +3608,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3944,8 +3633,6 @@
         "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3955,7 +3642,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3981,8 +3667,6 @@
         "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -3992,7 +3676,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4018,8 +3701,6 @@
         "unit_class": "germ_37mm_flak43",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4029,7 +3710,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 2,
@@ -4055,8 +3735,6 @@
         "unit_class": "us_m16_truck",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4066,7 +3744,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 5,
@@ -4089,9 +3766,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "air_defence_04_wp_02": {
@@ -4105,9 +3780,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "air_defence_04_wp_03": {
@@ -4121,9 +3794,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "air_defence_04_wp_04": {
@@ -4137,9 +3808,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "air_defence_04_wp_05": {
@@ -4153,9 +3822,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "air_defence_04_wp_06": {
@@ -4169,9 +3836,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "air_defence_04_wp_07": {
@@ -4185,9 +3850,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "air_defence_04_wp_08": {
@@ -4201,9 +3864,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "air_defence_04_wp_09": {
@@ -4217,9 +3878,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "air_defence_04_wp_10": {
@@ -4233,9 +3892,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           }
         }
@@ -4253,8 +3910,6 @@
         "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4264,7 +3919,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4290,8 +3944,6 @@
         "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4301,7 +3953,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4327,8 +3978,6 @@
         "unit_class": "germ_37mm_flak43",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4338,7 +3987,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 2,
@@ -4364,8 +4012,6 @@
         "unit_class": "germ_37mm_flak43",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4375,7 +4021,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 2,
@@ -4401,8 +4046,6 @@
         "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4412,7 +4055,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4438,8 +4080,6 @@
         "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4449,7 +4089,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4475,8 +4114,6 @@
         "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4486,7 +4123,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4512,8 +4148,6 @@
         "unit_class": "germ_37mm_flak43",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4523,7 +4157,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 5,
@@ -4549,8 +4182,6 @@
         "unit_class": "us_m16_truck",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4560,7 +4191,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 5,
@@ -4583,9 +4213,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "wheeled_aaa_02_wp_03": {
@@ -4599,9 +4227,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "wheeled_aaa_02_wp_04": {
@@ -4615,9 +4241,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "wheeled_aaa_02_wp_05": {
@@ -4631,9 +4255,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "wheeled_aaa_02_wp_06": {
@@ -4647,9 +4269,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "wheeled_aaa_02_wp_07": {
@@ -4663,9 +4283,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "wheeled_aaa_02_wp_08": {
@@ -4679,9 +4297,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "wheeled_aaa_02_wp_09": {
@@ -4695,9 +4311,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "wheeled_aaa_02_wp_10": {
@@ -4711,9 +4325,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           }
         }
@@ -4731,8 +4343,6 @@
         "unit_class": "us_m16_truck",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4742,7 +4352,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 5,
@@ -4765,9 +4374,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "wheeled_aaa_03_wp_06": {
@@ -4781,9 +4388,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "wheeled_aaa_03_wp_07": {
@@ -4797,9 +4402,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "wheeled_aaa_03_wp_08": {
@@ -4813,9 +4416,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "wheeled_aaa_03_wp_09": {
@@ -4829,9 +4430,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           }
         }
@@ -4849,8 +4448,6 @@
         "unit_class": "us_m16_truck",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4860,7 +4457,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 5,
@@ -4883,9 +4479,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "wheeled_aaa_04_wp_02": {
@@ -4899,9 +4493,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "wheeled_aaa_04_wp_03": {
@@ -4915,9 +4507,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "wheeled_aaa_04_wp_04": {
@@ -4931,9 +4521,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           }
         }
@@ -4951,8 +4539,6 @@
         "unit_class": "us_m16_truck",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -4962,7 +4548,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 5,
@@ -4985,9 +4570,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "wheeled_aaa_05_wp_03": {
@@ -5001,9 +4584,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "wheeled_aaa_05_wp_04": {
@@ -5017,9 +4598,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           }
         }
@@ -5037,8 +4616,6 @@
         "unit_class": "us_m16_truck",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -5048,7 +4625,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 5,
@@ -5071,9 +4647,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "wheeled_aaa_06_wp_04": {
@@ -5087,9 +4661,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           }
         }
@@ -5107,8 +4679,6 @@
         "unit_class": "ijn_lcvp",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -5118,7 +4688,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 5,
@@ -5141,9 +4710,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "ships_01_wp_02": {
@@ -5157,9 +4724,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "ships_01_wp_03": {
@@ -5173,9 +4738,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "ships_01_wp_04": {
@@ -5189,9 +4752,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "ships_01_wp_05": {
@@ -5205,9 +4766,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "ships_01_wp_06": {
@@ -5221,9 +4780,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "ships_01_wp_07": {
@@ -5237,9 +4794,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "ships_01_wp_08": {
@@ -5253,9 +4808,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           }
         }
@@ -5273,8 +4826,6 @@
         "unit_class": "ijn_lcvp",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -5284,7 +4835,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 4,
@@ -5307,9 +4857,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "ships_02_wp_04": {
@@ -5323,9 +4871,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "ships_02_wp_05": {
@@ -5339,9 +4885,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "ships_02_wp_06": {
@@ -5355,9 +4899,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "ships_02_wp_07": {
@@ -5371,9 +4913,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "ships_02_wp_08": {
@@ -5387,9 +4927,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           }
         }
@@ -5407,8 +4945,6 @@
         "unit_class": "germ_37mm_flak43",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -5418,7 +4954,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 2,
@@ -5444,8 +4979,6 @@
         "unit_class": "b_24d",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -5455,7 +4988,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 0,
           "count": 1,
@@ -5492,8 +5024,6 @@
         "unit_class": "bf-109e-3",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -5503,7 +5033,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5540,8 +5069,6 @@
         "unit_class": "bf-109e-3",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -5551,7 +5078,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5613,8 +5139,6 @@
         "unit_class": "meteor_fmk8",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -5624,7 +5148,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 0,
           "count": 1,
@@ -5661,8 +5184,6 @@
         "unit_class": "j8m1",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -5672,7 +5193,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5734,8 +5254,6 @@
         "unit_class": "f4u-1d",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -5745,7 +5263,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 3,
@@ -5782,8 +5299,6 @@
         "unit_class": "fw-190a-5",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -5793,7 +5308,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 0,
           "count": 3,
@@ -5852,8 +5366,6 @@
         "unit_class": "germ_37mm_flak43",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -5863,7 +5375,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 5,
@@ -5889,8 +5400,6 @@
         "unit_class": "germ_37mm_flak43",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -5900,7 +5409,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 5,
@@ -5926,8 +5434,6 @@
         "unit_class": "dummy",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -5937,7 +5443,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5963,8 +5468,6 @@
         "unit_class": "dummy",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -5974,7 +5477,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6000,8 +5502,6 @@
         "unit_class": "dummy",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -6011,7 +5511,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6037,8 +5536,6 @@
         "unit_class": "dummy",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -6048,7 +5545,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6074,8 +5570,6 @@
         "unit_class": "dummy",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -6085,7 +5579,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6111,8 +5604,6 @@
         "unit_class": "dummy",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -6122,7 +5613,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6148,8 +5638,6 @@
         "unit_class": "dummy",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -6159,7 +5647,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6185,8 +5672,6 @@
         "unit_class": "dummy",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -6196,7 +5681,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6222,8 +5706,6 @@
         "unit_class": "dummy",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -6233,7 +5715,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6259,8 +5740,6 @@
         "unit_class": "dummy",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -6270,7 +5749,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6296,8 +5774,6 @@
         "unit_class": "dummy",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -6307,7 +5783,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6333,8 +5808,6 @@
         "unit_class": "dummy",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -6344,7 +5817,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6370,8 +5842,6 @@
         "unit_class": "dummy",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -6381,7 +5851,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6462,8 +5931,6 @@
         "unit_class": "b-17e",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "b-17e_8x1000lbs",
         "bullets0": "",
         "bullets1": "",
@@ -6473,7 +5940,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 0,
           "count": 5,
@@ -6510,8 +5976,6 @@
         "unit_class": "il-2m",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "IL2M_fab100_rs132",
         "bullets0": "",
         "bullets1": "",
@@ -6521,7 +5985,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 0,
           "count": 5,
@@ -6558,8 +6021,6 @@
         "unit_class": "b-17e",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "b-17e_2x2000lbs",
         "bullets0": "",
         "bullets1": "",
@@ -6569,7 +6030,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 0,
           "count": 5,
@@ -6606,8 +6066,6 @@
         "unit_class": "b-17e",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "b-17e_2x2000lbs",
         "bullets0": "",
         "bullets1": "",
@@ -6617,7 +6075,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 0,
           "count": 5,
@@ -6654,8 +6111,6 @@
         "unit_class": "ju-87r-2",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "Ju-87R-2_500",
         "bullets0": "",
         "bullets1": "",
@@ -6665,7 +6120,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 0,
           "count": 3,
@@ -6702,8 +6156,6 @@
         "unit_class": "ju-87r-2",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "Ju-87R-2_500",
         "bullets0": "",
         "bullets1": "",
@@ -6713,7 +6165,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 0,
           "count": 5,
@@ -6784,8 +6235,6 @@
         "unit_class": "fw-190a-5",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -6795,7 +6244,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 0,
           "count": 3,
@@ -6857,8 +6305,6 @@
         "unit_class": "f4u-1d",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -6868,7 +6314,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 3,
@@ -6930,8 +6375,6 @@
         "unit_class": "f4u-1d",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -6941,7 +6384,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 3,
@@ -6978,8 +6420,6 @@
         "unit_class": "fw-190a-5",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -6989,7 +6429,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 0,
           "count": 3,
@@ -7026,8 +6465,6 @@
         "unit_class": "mig-15_ns23",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -7037,7 +6474,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7358,8 +6794,6 @@
         "unit_class": "f-86a-5",
         "objLayer": 1,
         "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -7369,7 +6803,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7403,9 +6836,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane07_wp_02": {
@@ -7419,9 +6850,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane07_wp_03": {
@@ -7435,9 +6864,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           },
           "racing_plane07_wp_04": {
@@ -7451,9 +6878,7 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
+              "shouldKeepFormation": false
             }
           }
         }

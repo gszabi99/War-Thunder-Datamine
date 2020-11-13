@@ -71,6 +71,8 @@ class ::gui_handlers.CrewModalHandler extends ::gui_handlers.BaseGuiHandlerWT
         onSlotDblClick = onSlotDblClick
       }.__update(getSlotbarParams()))
 
+    initFocusArray()
+
     if (showTutorial)
       onUpgrCrewSkillsTutorial()
     else if (!::loadLocalByAccount("upgradeCrewSpecTutorialPassed", false)
@@ -83,6 +85,21 @@ class ::gui_handlers.CrewModalHandler extends ::gui_handlers.BaseGuiHandlerWT
   getSlotbarParams = @() {
     crewId = crew.id
     showNewSlot=false
+  }
+
+  function getMainFocusObj()
+  {
+    return getObj("skills_table")
+  }
+
+  function getMainFocusObj2()
+  {
+    return getObj("specs_table")
+  }
+
+  function getMainFocusObj3()
+  {
+    return getObj("rb_unit_type")
   }
 
   function updateCrewInfo()
@@ -195,6 +212,7 @@ class ::gui_handlers.CrewModalHandler extends ::gui_handlers.BaseGuiHandlerWT
                      curCrewUnitType == crewUnitType ? "selected:t='yes';" : "")
     }
     guiScene.replaceContentFromText(rbObj, data, data.len(), this)
+    delayedRestoreFocus()
     updateUnitType()
   }
 
@@ -430,6 +448,9 @@ class ::gui_handlers.CrewModalHandler extends ::gui_handlers.BaseGuiHandlerWT
   function updatePage()
   {
     local page = pages[curPage]
+    local skillsTableObj = scene.findObject("skills_table")
+    local specsTableObj = scene.findObject("specs_table")
+    local hasFocusOnTable = skillsTableObj.isFocused() || specsTableObj.isFocused()
     if (isSkillsPage(page))
     {
       local skillsHandlerParams = {
@@ -449,6 +470,8 @@ class ::gui_handlers.CrewModalHandler extends ::gui_handlers.BaseGuiHandlerWT
         skillsPageHandler.updateHandlerData(skillsHandlerParams)
       if (skillsPageHandler != null)
         skillsPageHandler.setHandlerVisible(true)
+      if (hasFocusOnTable)
+        skillsTableObj.select()
     }
     else if (page.id=="trained")
     {
@@ -461,6 +484,8 @@ class ::gui_handlers.CrewModalHandler extends ::gui_handlers.BaseGuiHandlerWT
         unitSpecHandler.setHandlerVisible(true)
         unitSpecHandler.setHandlerData(crew, crewCurLevel, airList, curCrewUnitType)
       }
+      if (hasFocusOnTable)
+        specsTableObj.select()
     }
     updatePointsAdvice()
     updateUnitTypeWarning(isSkillsPage(page))
@@ -472,6 +497,12 @@ class ::gui_handlers.CrewModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (skillsVisible)
       show = curUnit != null && curUnit.getCrewUnitType() != curCrewUnitType
     scene.findObject("skills_unit_type_warning").show(show)
+  }
+
+  function onButtonRowApply(obj)
+  {
+    if (::handlersManager.isHandlerValid(unitSpecHandler) && unitSpecHandler.isHandlerVisible)
+      unitSpecHandler.applyRowButton(obj)
   }
 
   function onBuyPoints()

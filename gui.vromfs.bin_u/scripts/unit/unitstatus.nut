@@ -1,4 +1,3 @@
-local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
 local { isWeaponAux, getLastPrimaryWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 local { getWeaponInfoText} = require("scripts/weaponry/weaponryVisual.nut")
 
@@ -121,7 +120,7 @@ local function isAvailablePrimaryWeapon(unit, weaponName) {
         if (!weap?.blk || weap?.dummy)
           continue
 
-        local weapBlk = blkFromPath(weap.blk)
+        local weapBlk = ::DataBlock(weap.blk)
         if (availableWeapons!=null && (weapBlk?.rocket.isFlare ?? false))
           availableWeapons.flares = modName
       }

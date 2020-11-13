@@ -194,6 +194,8 @@ class ::gui_handlers.LoadingBrief extends ::gui_handlers.BaseGuiHandlerWT
         }
       }
     }
+
+    initFocusArray()
   }
 
   function count_misObj_add(blk)

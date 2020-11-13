@@ -4,8 +4,6 @@ local battleLog = require("hudBattleLog.nut")
 local tabs = require("components/tabs.nut")
 local hudState = require("hudState.nut")
 local hudChatState = require("hudChatState.nut")
-local { isMultiplayer } = require("networkState.nut")
-local { isChatPlaceVisible } = require("hud/hudPartVisibleState.nut")
 
 
 local tabsList = [
@@ -22,7 +20,8 @@ currentTab.subscribe(function (new_val) {
 currentTab.update(tabsList[0])
 
 local selectChatTab = function (enable) {
-  if (enable) {
+  if (enable)
+  {
     currentTab.update(tabsList[0])
   }
 }
@@ -53,16 +52,13 @@ local logsHeader = @(){
   transitions = [transition()]
 }
 
-local isChatVisible = ::Computed(@() isChatPlaceVisible.value && isMultiplayer.value)
 
 return @() {
   size = [min(sw(30), sh(53)), SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
-  watch = [ currentTab, isChatVisible]
-  children = isChatVisible.value
-    ? [
-        logsHeader
-        currentTab.value.content
-      ]
-    : []
+  watch = currentTab
+  children = [
+    logsHeader
+    currentTab.value.content
+  ]
 }

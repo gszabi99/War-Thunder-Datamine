@@ -1,5 +1,5 @@
-local modsTree = require("scripts/weaponry/modsTree.nut")
-local tutorialModule = require("scripts/user/newbieTutorialDisplay.nut")
+local modsTree = ::require("scripts/weaponry/modsTree.nut")
+local tutorialModule = ::require("scripts/user/newbieTutorialDisplay.nut")
 local weaponryPresetsModal = require("scripts/weaponry/weaponryPresetsModal.nut")
 local prepareUnitsForPurchaseMods = require("scripts/weaponry/prepareUnitsForPurchaseMods.nut")
 local { canBuyMod,
@@ -50,7 +50,6 @@ local tutorAction = require("scripts/tutorials/tutorialActions.nut")
 local { setDoubleTextToButton, setColoredDoubleTextToButton,
   placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
-local timerPID = ::dagui_propid.add_name_id("_size-timer")
 ::header_len_per_cell <- 17
 ::tooltip_display_delay <- 2
 ::max_spare_amount <- 100
@@ -189,6 +188,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     shownTiers = []
 
+    initFocusArray()
     updateWindowTitle()
   }
 
@@ -341,6 +341,16 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
 
     ::gui_modal_tutor(steps, this)
+  }
+
+  function getMainFocusObj()
+  {
+    return mainModsObj
+  }
+
+  function getMainFocusObj2()
+  {
+    return curBundleTblObj
   }
 
   function fillPage()
@@ -1050,19 +1060,14 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     return -1
   }
 
-  function getCurItemObj() {
+  function doCurrentItemAction()
+  {
     if (!::checkObj(mainModsObj))
-      return null
+      return
 
     local val = mainModsObj.getValue() - 1
     local itemObj = mainModsObj.findObject("item_" + val)
-    return ::check_obj(itemObj) ? itemObj : null
-  }
-
-  function doCurrentItemAction()
-  {
-    local itemObj = getCurItemObj()
-    if (itemObj)
+    if (::checkObj(itemObj))
       onModAction(itemObj, false)
   }
 
@@ -1076,7 +1081,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       return
     }
 
-    onModAction(obj, false, ::show_console_buttons)
+    onModAction(obj, false)
   }
 
   function onModItemDblClick(obj)
@@ -1155,39 +1160,32 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!show)
     {
       curBundleTblObj = null
+      restoreFocus()
       return
     }
 
     curBundleTblObj = obj.findObject("items_field")
-    guiScene.playSound("menu_appear")
+    guiScene.performDelayed(this, function() {
+      local focusObj = getMainFocusObj2()
+      if (!::checkObj(focusObj))
+        return
+
+      guiScene.playSound("menu_appear")
+      focusObj.select()
+    })
     return
   }
 
   function unstickCurBundle()
   {
-    if (!::checkObj(curBundleTblObj))
-      return
-    onDropDown(curBundleTblObj.getParent().getParent()) //need a hoverSize here or bundleItem.
-    curBundleTblObj = null
-  }
+    if (::checkObj(curBundleTblObj))
+      onDropDown(curBundleTblObj.getParent().getParent()) //need a hoverSize here or bundleItem.
 
-  function onBundleAnimFinish(obj) {
-    //this only for animated gamepad cursor. for pc mouse logic look onHoverSizeMove
-    if (!::show_console_buttons || !curBundleTblObj?.isValid() || obj.getFloatProp(timerPID, 0.0) < 1)
-      return
-    ::move_mouse_on_child(curBundleTblObj, 0)
-  }
-
-  function onBundleHover(obj) {
-    // see func onBundleAnimFinish
-    if (!::show_console_buttons || !curBundleTblObj?.isValid() || obj.getFloatProp(timerPID, 0.0) < 1)
-      return
-    unstickCurBundle()
-  }
-
-  function onCloseBundle(obj) {
-    if (::show_console_buttons)
-      ::move_mouse_on_obj(obj.getParent().getParent().getParent())
+    if (::check_obj(mainModsObj))
+    {
+      checkCurrentFocusItem(mainModsObj)
+      mainModsObj.select()
+    }
   }
 
   function onModAction(obj, fullAction = true, stickBundle = false)
@@ -1456,15 +1454,9 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function checkAndBuyWeaponry(modItem, open = false)
   {
-    local listObj = mainModsObj
-    local curValue = mainModsObj.getValue()
-    checkSaveBulletsAndDo(::Callback(function() {
-      ::WeaponsPurchase(air, {
-        modItem = modItem,
-        open = open,
-        onFinishCb = @() ::move_mouse_on_child(listObj, curValue)
-      })
-    }, this))
+    checkSaveBulletsAndDo(::Callback((@(air, modItem, open) function() {
+      ::WeaponsPurchase(air, {modItem = modItem, open = open})
+    })(air, modItem, open), this))
   }
 
   function setLastPrimary(item)
@@ -1688,7 +1680,6 @@ class ::gui_handlers.MultiplePurchase extends ::gui_handlers.BaseGuiHandlerWT
     ::showAirDiscount(scene.findObject("multPurch_discount"), unit.name, discountType, item.name, true)
 
     sceneUpdate()
-    ::move_mouse_on_obj(scene.findObject("skillSlider"))
   }
 
   function updateSlider()
@@ -1709,6 +1700,7 @@ class ::gui_handlers.MultiplePurchase extends ::gui_handlers.BaseGuiHandlerWT
 
     local sObj = scene.findObject("skillSlider")
     sObj.max = maxValue
+    sObj.select()
 
     local oldObj = scene.findObject("oldSkillProgress")
     oldObj.max = maxValue

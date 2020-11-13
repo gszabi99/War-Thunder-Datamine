@@ -1,4 +1,4 @@
-::Popup <- class
+class Popup
 {
   static POPUP_BLK = "gui/popup/popup.blk"
   static POPUP_BUTTON_BLK = "gui/popup/popupButton.blk"

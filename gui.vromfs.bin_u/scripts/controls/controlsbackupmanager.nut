@@ -52,7 +52,7 @@ class ::gui_handlers.ControlsBackupManager extends ::gui_handlers.SaveDataDialog
     if (params.success)
     {
       ::preset_changed = true
-      ::broadcastEvent("ControlsPresetChanged")
+      ::broadcastEvent("PresetChanged")
     }
     else
       ::showInfoMsgBox(::loc("msgbox/errorSavingPreset"))

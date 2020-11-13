@@ -1,4 +1,3 @@
-local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
 local string = require("std/string.nut")
 local guidParser = require("scripts/guidParser.nut")
 local stdMath = require("std/math.nut")
@@ -63,9 +62,7 @@ local function loadSkinMasksOnce()
     return false
   isMasksLoaded = true
 
-  local skinsBlk = ::DataBlock()
-  skinsBlk.load("config/skinsLocations.blk")
-
+  local skinsBlk = ::DataBlock("config/skinsLocations.blk")
   for(local i = 0; i < skinsBlk.blockCount(); i++)
   {
     local blk = skinsBlk.getBlock(i)
@@ -118,7 +115,7 @@ local function getMaskByLevel(level)
     return levelsMask[level]
 
   local res = 0
-  local levelBlk = blkFromPath($"{string.slice(level, 0, -3)}blk")
+  local levelBlk = ::DataBlock(string.slice(level, 0, -3) + "blk")
   local vehiclesSkinsBlk = levelBlk?.technicsSkins
   if (::u.isDataBlock(vehiclesSkinsBlk))
     res = getLocationMaskByNamesArray(vehiclesSkinsBlk % "groundSkin")

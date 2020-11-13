@@ -1,7 +1,6 @@
 ww_map_item {
   class:t='header'
   isReflected:t='yes'
-  skip-navigation:t='yes'
 
   textareaNoTab{
     position:t='relative'
@@ -34,8 +33,6 @@ ww_map_item {
         font:t='small_text_hud'
       }
       tdiv {
-        interactive:t='yes'
-
         <<@wwTrophyMarkup>>
 
         <<#isTrophyRecieved>>

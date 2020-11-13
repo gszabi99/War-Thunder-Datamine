@@ -11,16 +11,7 @@ local tutorAction = require("scripts/tutorials/tutorialActions.nut")
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { needShowChangelog, openChangelog } = require("scripts/changelog/openChangelog.nut")
-local { checkDiffTutorial } = require("scripts/tutorials/tutorialsData.nut")
 local { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
-//
-
-
-
-
-
-
-
 
 class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -35,6 +26,8 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
   inited = false
   wndGameMode = ::GM_DOMINATION
   clusters = null
+  needBattleMenuShow = false
+  isBattleMenuShow = false
   curCluster = 0
   startEnabled = false
   waitTime = 0
@@ -106,11 +99,10 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
 
     updateStartButton()
 
+    setCurrentFocusObj(getSlotbar()?.getCurFocusObj())
+
     inited = true
     ::dmViewer.update()
-    //
-
-
   }
 
   function reinitScreen(params)
@@ -309,29 +301,6 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
 
     obj.show(::getTblValue("update_avail", params, false))
   }
-//
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   function checkCountries()
   {
@@ -420,6 +389,18 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
       topMenuHandler.value.leftSectionHandlerWeak.switchMenuFocus()
       return
     }
+  }
+
+  function canRestoreFocus()
+  {
+    local drawer = getGamercardDrawerHandler()
+    return !drawer || !drawer.isBlockOtherRestoreFocus || !drawer.isActive()
+  }
+
+  function onEventGamercardDrawerAnimationStart(params)
+  {
+    if (!params.isOpening)
+      restoreFocus()
   }
 
   _isToBattleAccessKeyActive = true
@@ -880,10 +861,21 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
 
   function goBack()
   {
+    if (isBattleMenuShow)
+    {
+      local blocksObj = scene.findObject("ia_active_blocks")
+      local selObj = getIaBlockSelObj(blocksObj)
+      if (selObj && selObj.isFocused())
+        return blocksObj.select()
+    }
+
     if (leaveCurQueue({ isLeaderCanJoin = true
       msgId = "squad/only_leader_can_cancel"
       isCanceledByPlayer = true }))
       return
+
+    if (needBattleMenuShow)
+      return onInstantActionMenu()
 
     onTopMenuGoBack()
   }
@@ -983,6 +975,16 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
     return gameMode ? ::events.checkRequiredUnits(::game_mode_manager.getGameModeEvent(gameMode), null, country) : true
   }
 
+  function onInstantActionMenu()
+  {
+    //showBattleMenu(!isBattleMenuShow)
+  }
+
+  function onCloseBattleMenu()
+  {
+    //showBattleMenu(false)
+  }
+
   function getIaBlockSelObj(obj)
   {
     local value = obj.getValue() || 0
@@ -1004,6 +1006,41 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     selObj.select()
+  }
+
+  function getMainFocusObj()
+  {
+    if (::handlersManager.isHandlerValid(queueTableHandler))
+      return queueTableHandler.getCurFocusObj()
+    return null
+  }
+
+  function getMainFocusObj2()
+  {
+    if (!isBattleMenuShow)
+      return null
+
+    local blocksObj = scene.findObject("ia_active_blocks")
+    local selObj = getIaBlockSelObj(blocksObj)
+    if (selObj && selObj.isFocused())
+      return selObj
+    return blocksObj
+  }
+
+  function getMainFocusObj3()
+  {
+    local obj = scene.findObject("promo_mainmenu_place_top")
+    return ::g_dagui_utils.getFirstActiveChild(obj) != null
+      ? obj
+      : null
+  }
+
+  function getMainFocusObj4()
+  {
+    local obj = scene.findObject("promo_mainmenu_place_bottom")
+    return ::g_dagui_utils.getFirstActiveChild(obj) != null
+      ? obj
+      : null
   }
 
   function onUnlockCrew(obj)
@@ -1090,7 +1127,7 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
         actionType = tutorAction.OBJ_CLICK
         shortcut = ::GAMEPAD_ENTER_SHORTCUT
         nextActionShortcut = "help/OBJ_CLICK"
-        cb = @() openUnitActionsList(curCrewSlot, true, true)
+        cb = @() openUnitActionsList(curCrewSlot, false, true)
       },
       {
         actionType = tutorAction.WAIT_ONLY

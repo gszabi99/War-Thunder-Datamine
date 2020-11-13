@@ -24,6 +24,11 @@ class ::gui_handlers.AxisControls extends ::gui_handlers.Hotkeys
   changedAxes = null
   optionTableId = "axis_setup_table"
 
+  function getMainFocusObj()
+  {
+    return getObj(optionTableId)
+  }
+
   function initScreen()
   {
     axisRawValues = []
@@ -36,6 +41,7 @@ class ::gui_handlers.AxisControls extends ::gui_handlers.Hotkeys
     if (::check_obj(titleObj))
       titleObj.setValue(::loc("controls/" + axisItem.id))
 
+    initFocusArray()
     reinitScreen()
     dontCheckControlsDupes = ::refillControlsDupes()
 
@@ -62,6 +68,7 @@ class ::gui_handlers.AxisControls extends ::gui_handlers.Hotkeys
     fillAxisDropright()
     fillAxisTable(axis)
     updateAxisRelativeOptions(axis.relative)
+    restoreFocus()
   }
 
   function reinitAutodetectAxis()
@@ -112,7 +119,7 @@ class ::gui_handlers.AxisControls extends ::gui_handlers.Hotkeys
       if (::isInArray(item.id, hideAxisOptionsArray))
         addTrParams = "hiddenTr:t='yes'; inactive:t='yes';"
 
-      local hotkeyData = ::buildHotkeyItem(idx, shortcuts, item, axis, idx%2 == 0, addTrParams)
+      local hotkeyData = ::buildHotkeyItem(item.id, shortcuts, item, axis, idx%2 == 0, addTrParams)
       data += hotkeyData.markup
     }
 
@@ -159,14 +166,15 @@ class ::gui_handlers.AxisControls extends ::gui_handlers.Hotkeys
 
     foreach (item in [shortcutsAxisListModule.kRelSpd, shortcutsAxisListModule.kRelStep])
     {
-      local idx = shortcutsAxisListModule.types.indexof(item)
-      local obj = scene.findObject($"table_row_{idx}")
+      local obj = scene.findObject("table_row_" + item.id)
       if (!::check_obj(obj))
         continue
 
       obj.inactive = isRelative? "no" : "yes"
       obj.enable = isRelative? "yes" : "no"
     }
+
+    restoreFocus()
   }
 
   function onSliderChange(obj)
@@ -298,7 +306,14 @@ class ::gui_handlers.AxisControls extends ::gui_handlers.Hotkeys
     updateAxisListValue()
   }
 
-  getScById = @(scId) shortcutsAxisListModule.types?[(scId ?? "-1").tointeger()]
+  function getCurItem()
+  {
+    local objTbl = scene.findObject(optionTableId)
+    if (!::check_obj(objTbl))
+      return null
+
+    return shortcutsAxisListModule.types?[objTbl.cur_row.tointeger()]
+  }
 
   function onAxisInputTimer(obj, dt)
   {
@@ -503,7 +518,9 @@ class ::gui_handlers.AxisControls extends ::gui_handlers.Hotkeys
     if (!item)
       return
 
-    local showScReset = item.type == CONTROL_TYPE.SHORTCUT || item.type == CONTROL_TYPE.AXIS_SHORTCUT
+    local isItemRowSelected = isCurrentRowSelected()
+    local showScReset = isItemRowSelected &&
+     (item.type == CONTROL_TYPE.SHORTCUT || item.type == CONTROL_TYPE.AXIS_SHORTCUT)
     showSceneBtn("btn_axis_reset_shortcut", showScReset)
     showSceneBtn("btn_axis_assign", showScReset)
   }
@@ -511,6 +528,16 @@ class ::gui_handlers.AxisControls extends ::gui_handlers.Hotkeys
   function onTblSelect()
   {
     updateButtons()
+  }
+
+  function onTblChangeFocus()
+  {
+    guiScene.performDelayed(this,
+      function () {
+        if (isValid())
+          updateButtons()
+      }
+    )
   }
 
   function onTblDblClick()
@@ -662,12 +689,6 @@ class ::gui_handlers.AxisControls extends ::gui_handlers.Hotkeys
 
     shortcuts[item.shortcutId].clear()
     onShortcutChange(item.shortcutId)
-  }
-
-  function doApplyJoystick()
-  {
-    if (curJoyParams != null)
-      doApplyJoystickImpl(shortcutsAxisListModule.types, curJoyParams.getAxis(setupAxisMode))
   }
 
   function onApply()

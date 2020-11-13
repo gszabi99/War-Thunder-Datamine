@@ -4,7 +4,6 @@ foreach (fn in [
                  "login.nut"
                  "loginWnd.nut"
                  "steamLogin.nut"
-                 "epicLogin.nut"
                  "ps4Login.nut"
                  "xboxOneLogin.nut"
                  "tencentLogin.nut"

@@ -7,7 +7,7 @@ local { getItemCost,
         getItemStatusTbl,
         getItemUnlockCost } = require("scripts/weaponry/itemInfo.nut")
 
-::WeaponsPurchase <- class
+class WeaponsPurchase
 {
   static PROCESS_TIME_OUT = 60000
 
@@ -28,7 +28,6 @@ local { getItemCost,
   cost = null
 
   afterSuccessfullPurchaseCb = null
-  onFinishCb = null
 
   msgLocId = ""
   repairMsgLocId = ""
@@ -53,10 +52,9 @@ local { getItemCost,
     activePurchaseProcess.append(this)
     processStartTime = ::dagor.getCurTime()
 
-    silent = _additionalParams?.silent ?? false
-    open = _additionalParams?.open ?? false
-    afterSuccessfullPurchaseCb = _additionalParams?.afterSuccessfullPurchaseCb ?? function(){}
-    onFinishCb = _additionalParams?.onFinishCb
+    silent = ::getTblValue("silent", _additionalParams, false)
+    open = ::getTblValue("open", _additionalParams, false)
+    afterSuccessfullPurchaseCb = ::getTblValue("afterSuccessfullPurchaseCb", _additionalParams, function(){})
 
     modItem = ::getTblValue("modItem", _additionalParams)
     if (!::u.isEmpty(modItem))
@@ -73,7 +71,6 @@ local { getItemCost,
     foreach(idx, process in activePurchaseProcess)
       if (process == this)
         activePurchaseProcess.remove(idx)
-    onFinishCb?()
   }
 
   function getAllModificationsPrice()

@@ -1,17 +1,17 @@
-local { showOrder, scoresTable, statusText, statusTextBottom } = require("orderState.nut")
+local orderState = require("orderState.nut")
 local colors = require("style/colors.nut")
 local teamColors = require("style/teamColors.nut")
 local fontsState = require("reactiveGui/style/fontsState.nut")
-local { isOrderStatusVisible } = require("hud/hudPartVisibleState.nut")
+
 
 
 local pilotIcon = Picture("!ui/gameuiskin#player_in_queue")
 
-local scoresTableComp = @() {
+local scoresTable = @() {
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
-  watch = scoresTable
-  children = scoresTable.value.map(@(item) {
+  watch = orderState.scoresTable
+  children = orderState.scoresTable.value.map(@(item) {
     size = [flex(), ::scrn_tgt(0.0224)]
     flow = FLOW_HORIZONTAL
     valign = ALIGN_BOTTOM
@@ -48,39 +48,39 @@ local updateFunction = function () {
   ::cross_call.active_order_request_update()
 }
 
-local isOrderVisible = ::Computed(@() isOrderStatusVisible.value && showOrder.value)
 
-return @() {
-  flow = FLOW_VERTICAL
-  size = [::scrn_tgt(0.4), SIZE_TO_CONTENT]
-  watch = isOrderVisible
-  onAttach = function (elem) {
-    ::cross_call.active_order_enable()
-    ::gui_scene.setInterval(1, updateFunction) }
-  onDetach = function (elem) { ::gui_scene.clearTimer(updateFunction) }
-  children = isOrderVisible.value
-    ? [
-        @() {
-          watch = [statusText, teamColors]
-          rendObj = ROBJ_TEXTAREA
-          behavior = Behaviors.TextArea
-          size = [flex(), SIZE_TO_CONTENT]
-          text = statusText.value
-          font = fontsState.get("small")
-          color = colors.menu.commonTextColor
-          colorTable = teamColors.value
-        }
-        scoresTableComp
-        @() {
-          watch = [statusTextBottom, teamColors]
-          rendObj = ROBJ_TEXTAREA
-          behavior = Behaviors.TextArea
-          size = [flex(), SIZE_TO_CONTENT]
-          text = statusTextBottom.value
-          font = fontsState.get("small")
-          color = colors.menu.commonTextColor
-          colorTable = teamColors.value
-        }
-      ]
-    : []
+return function() {
+  return {
+    flow = FLOW_VERTICAL
+    size = [::scrn_tgt(0.4), SIZE_TO_CONTENT]
+    watch = orderState.showOrder
+    isHidden = !orderState.showOrder.value
+    onAttach = function (elem) {
+      ::cross_call.active_order_enable()
+      ::gui_scene.setInterval(1, updateFunction) }
+    onDetach = function (elem) { ::gui_scene.clearTimer(updateFunction) }
+    children = [
+      @() {
+        watch = [orderState.statusText, teamColors]
+        rendObj = ROBJ_TEXTAREA
+        behavior = Behaviors.TextArea
+        size = [flex(), SIZE_TO_CONTENT]
+        text = orderState.statusText.value
+        font = fontsState.get("small")
+        color = colors.menu.commonTextColor
+        colorTable = teamColors.value
+      }
+      scoresTable
+      @() {
+        watch = [orderState.statusTextBottom, teamColors]
+        rendObj = ROBJ_TEXTAREA
+        behavior = Behaviors.TextArea
+        size = [flex(), SIZE_TO_CONTENT]
+        text = orderState.statusTextBottom.value
+        font = fontsState.get("small")
+        color = colors.menu.commonTextColor
+        colorTable = teamColors.value
+      }
+    ]
+  }
 }

@@ -37,7 +37,6 @@ listboxNoScroll {
   snd_dbl_click:click;
   scrollBox-dontResendShortcut:yes;
   total-input-transparent:yes;
-  not-input-transparent:yes;
 }
 
 listbox {
@@ -47,6 +46,7 @@ listbox {
 
 HorizontalListBox, VerticalListBox{
   re-type:9rect;
+  background-color:@listboxBgColor;
   padding:@listboxPad-1@listboxItemsInterval;
   snd_select:choose;
   snd_set_focus:focus;
@@ -54,15 +54,6 @@ HorizontalListBox, VerticalListBox{
   need_flow:yes;
   _has_navigator:no;
   total-input-transparent:yes;
-}
-
-HorizontalListBox {
-  background-color:@listboxBgColor;
-}
-
-HorizontalListBox.header {
-  move-only-hover:yes;
-  navigatorShortcuts:yes;
 }
 
 shopFilter {
@@ -78,14 +69,14 @@ shopFilter[useParentHeight=yes] {
   height: ph;
 }
 
-VerticalListBox > shopFilter {
-  margin:1@listboxItemsInterval;
+SlotbarBackground {
+  background-color: @slotbarBgColor;
+  background-position: 1, 0;
 }
 
-frame[fullScreenSize=yes] > tdiv > HorizontalListBox > shopFilter,
-frame.wndNav > frame_header > HorizontalListBox > shopFilter,
-HorizontalListBox.header > shopFilter {
-  margin:0, 0, 0, 2@dp;
+VerticalListBox > shopFilter,
+HorizontalListBox > shopFilter {
+  margin:1@listboxItemsInterval;
 }
 
 VerticalListBox[navigator=posNavigator],
@@ -116,6 +107,7 @@ VerticalListBox.options {
   width:pw;
 }
 
+HorizontalListBox[isTransparentBg=yes],
 HorizontalListBox.header {
   background-color:@transparent;
   padding: 0;
@@ -227,30 +219,29 @@ shopFilter[selected=yes] > img {
   background-color:@white;
 }
 
-[type=transparent] > shopFilter:hover {
+HorizontalListBox.inset{
+  background-color:@transparent;
+  padding:0, -1@dp;
+}
+
+.inset > shopFilter{
+  border:yes; border-color:@frameBorderColor; border-offset: 1@dp;
+}
+
+.inset > shopFilter:hover {
   background-color:@transparent;
   foreground-color:@transparent;
 }
 
-[type=transparent] > shopFilter:hover > shopFilterText {
+.inset > shopFilter:hover > shopFilterText {
   color:@activeTextColor;
 }
 
-HorizontalListBox[type=transparent] {
-  padding: 0;
-  background-color:@transparent;
-}
-
-[type=transparent] > shopFilter {
-  border:no;
-  background-color:@listboxBgColor;
-}
-
-[type=transparent] > shopFilter[selected=yes]{
-  background-color:@listboxSelOptionColor;
-  foreground-color:@headerOptionSelectedColor;
-  background-position:0, 0, 0, 2@listboxItemsInterval;
-  foreground-position:0, h-2@listboxItemsInterval, 0, 0;
+.inset > shopFilter[selected=yes]{
+  background-color:@insetColor;
+  foreground-color:@insetColor;
+  background-position:0, 0, 0, 1@dp;
+  foreground-position:0, h - 1@dp, 0, 0;
 }
 
 .choice3 > shopFilter {
@@ -447,8 +438,7 @@ shopFilterImg {
 
 .countryChoice :hover shopFilterImg,
 .countries :hover shopFilterImg,
-.countries_small :hover shopFilterImg,
-[type=transparent] > shopFilter:hover > shopFilterImg {
+.countries_small :hover shopFilterImg {
   background-color:@imageHoverCountryColor;
 }
 
@@ -587,6 +577,9 @@ CountriesCrews {
   size: pw, 1@slotbarHeight;
   css-hier-invalidate: yes;
   background-color:@transparent;
+  background-position:1, 2, 1, 0;
+  margin-top: 2;
+  padding-top: 2;
 }
 
 CountriesCrews > massTransp {

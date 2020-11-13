@@ -1,7 +1,6 @@
 root {
   id:t='clan_average_activity_modal'
-  blur {}
-  blur_foreground {}
+  background-color:t = '@modalShadeColor'
   type:t='big'
 
   frame {

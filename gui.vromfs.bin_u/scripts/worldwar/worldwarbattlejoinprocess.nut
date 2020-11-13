@@ -1,7 +1,6 @@
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
-local { checkDiffTutorial } = require("scripts/tutorials/tutorialsData.nut")
 
-::WwBattleJoinProcess <- class
+class WwBattleJoinProcess
 {
   wwBattle = null
   side = ::SIDE_NONE
@@ -78,8 +77,9 @@ local { checkDiffTutorial } = require("scripts/tutorials/tutorialsData.nut")
     local availableUnitTypes = wwBattle.getAvailableUnitTypes()
     if (availableUnitTypes.len() > 0)
     {
+      local baseGuiHandler = ::get_cur_base_gui_handler()
       foreach(idx, unitType in availableUnitTypes)
-        if (checkDiffTutorial(::DIFFICULTY_REALISTIC, unitType))
+        if (baseGuiHandler.checkDiffTutorial(::DIFFICULTY_REALISTIC, unitType))
           return remove()
     }
 

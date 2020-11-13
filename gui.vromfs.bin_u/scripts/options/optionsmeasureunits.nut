@@ -1,7 +1,7 @@
-local persistent = {
+local persist = {
   unitsCfg = null
 }
-::g_script_reloader.registerPersistentData("OptionsMeasureUnits", persistent, persistent.keys())
+::g_script_reloader.registerPersistentData("OptionsMeasureUnits", persist, persist.keys())
 
 // Preserve the same order as in measureUnits.blk
 local optionsByIndex = [
@@ -16,9 +16,8 @@ local optionsByIndex = [
 
 local function init()
 {
-  persistent.unitsCfg = []
-  local blk = ::DataBlock()
-  blk.load("config/measureUnits.blk")
+  persist.unitsCfg = []
+  local blk = ::DataBlock("config/measureUnits.blk")
   for (local i = 0; i < blk.blockCount(); i++)
   {
     local blkUnits = blk.getBlock(i)
@@ -36,20 +35,20 @@ local function init()
       }
       units.append(unit)
     }
-    persistent.unitsCfg.append(units)
+    persist.unitsCfg.append(units)
   }
 }
 
 local function isInitialized()
 {
-  return (persistent.unitsCfg?.len() ?? 0) != 0
+  return (persist.unitsCfg?.len() ?? 0) != 0
 }
 
 local function getOption(useroptId)
 {
   local unitNo = optionsByIndex.findindex(@(option) option.useroptId == useroptId)
   local option = optionsByIndex[unitNo]
-  local units = persistent.unitsCfg[unitNo]
+  local units = persist.unitsCfg[unitNo]
   local unitName = ::get_option_unit_type(unitNo)
 
   return {
@@ -63,10 +62,10 @@ local function getOption(useroptId)
 local function getMeasureCfg(unitNo)
 {
   local unitName = ::get_option_unit_type(unitNo)
-  return persistent.unitsCfg[unitNo].findvalue(@(u) u.name == unitName)
+  return persist.unitsCfg[unitNo].findvalue(@(u) u.name == unitName)
 }
 
-local function countMeasure(unitNo, value, separator = " - ", addMeasureUnits = true, forceMaxPrecise = false, isPresize = true)
+local function countMeasure(unitNo, value, separator = " - ", addMeasureUnits = true, forceMaxPrecise = false)
 {
   local unit = getMeasureCfg(unitNo)
   if (!unit)
@@ -82,9 +81,9 @@ local function countMeasure(unitNo, value, separator = " - ", addMeasureUnits = 
     (unit.roundAfterBy > 0 && (maxValue * unit.koef) > unit.roundAfterVal)
   local valuesList = value.map(function(val) {
     val = val * unit.koef
-    if (shouldRoundValue && isPresize)
+    if (shouldRoundValue)
       return ::format("%d", ((val / unit.roundAfterBy + 0.5).tointeger() * unit.roundAfterBy).tointeger())
-    local roundPrecision = (unit.round == 0 || !isPresize) ? 1 : ::pow(0.1, unit.round)
+    local roundPrecision = unit.round == 0 ? 1 : ::pow(0.1, unit.round)
     return ::g_string.floatToStringRounded(val, roundPrecision)
   })
   local result = separator.join(valuesList)
@@ -96,7 +95,7 @@ local function countMeasure(unitNo, value, separator = " - ", addMeasureUnits = 
 local function isMetricSystem(unitNo)
 {
   local unitName = ::get_option_unit_type(unitNo)
-  return persistent.unitsCfg[unitNo].findindex(@(u) u.name == unitName) == 0
+  return persist.unitsCfg[unitNo].findindex(@(u) u.name == unitName) == 0
 }
 
 return {

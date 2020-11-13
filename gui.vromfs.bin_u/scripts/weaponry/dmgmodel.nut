@@ -15,16 +15,12 @@ const DEFAULT_ARMOR_FOR_PENETRATION_RADIUS = 50
 
 g_dmg_model.getDmgModelBlk <- function getDmgModelBlk()
 {
-  local blk = ::DataBlock()
-  blk.load("config/damageModel.blk")
-  return blk
+  return ::DataBlock("config/damageModel.blk")
 }
 
 g_dmg_model.getExplosiveBlk <- function getExplosiveBlk()
 {
-  local blk = ::DataBlock()
-  blk.load("gameData/damage_model/explosive.blk")
-  return blk
+  return ::DataBlock("gameData/damage_model/explosive.blk")
 }
 
 g_dmg_model.getRicochetData <- function getRicochetData(presetName)

@@ -159,7 +159,7 @@ trophyReward.getImageByConfig <- function getImageByConfig(config = null, onlyIm
   else if (rewardType == "warpoints")
     image = getFullWPIcon(rewardValue)
   else if (rewardType == "warbonds")
-    image = getFullWarbondsIcon()
+    image = getFullWarbondsIcon(rewardValue)
 
   if (image == "")
     image = ::LayersIcon.getIconData(style)
@@ -226,12 +226,18 @@ trophyReward.getWPIcon <- function getWPIcon(wp)
 
 trophyReward.getFullWPIcon <- function getFullWPIcon(wp)
 {
-  return ::LayersIcon.getIconData(getWPIcon(wp), null, null, "reward_warpoints")
+  local layer = ::LayersIcon.findLayerCfg("item_warpoints")
+  local wpLayer = ::LayersIcon.findLayerCfg(getWPIcon(wp))
+  if (layer && wpLayer)
+    layer.img <- ::getTblValue("img", wpLayer, "")
+  return ::LayersIcon.genDataFromLayer(layer)
 }
 
-trophyReward.getFullWarbondsIcon <- function getFullWarbondsIcon()
+trophyReward.getFullWarbondsIcon <- function getFullWarbondsIcon(wbId)
 {
-  return ::LayersIcon.genDataFromLayer(::LayersIcon.findLayerCfg("item_warbonds"))
+  local layer = ::LayersIcon.findLayerCfg("item_warpoints")
+  layer.img <- "#ui/gameuiskin#item_warbonds"
+  return ::LayersIcon.genDataFromLayer(layer)
 }
 
 trophyReward.getRestRewardsNumLayer <- function getRestRewardsNumLayer(configsArray, maxNum)
