@@ -1,6 +1,6 @@
 local time = require("scripts/time.nut")
 local controllerState = require_native("controllerState")
-local { isPlatformSony } = require("scripts/clientState/platform.nut")
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 ::classic_control_preset <- "classic"
 ::shooter_control_preset <- "shooter"
@@ -11,7 +11,7 @@ local { isPlatformSony } = require("scripts/clientState/platform.nut")
   ::shooter_control_preset
 ]
 
-if (::is_platform_xbox)
+if (isPlatformXboxOne)
   ::recomended_control_presets.append(::thrustmaster_hotas_one_preset_type)
 
 ::g_controls_utils <- {
